@@ -815,7 +815,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7C6000A6, "mfmsr\tr3");
             AssertCode(0x7C7A03A6, "mtspr\t00000340,r3");
-            AssertCode(0x7C600124, "mtmsr\tr3");
+            AssertCode(0x7C600124, "mtmsr\tr3,00");
             AssertCode(0x4C00012C, "isync");
         }
 
@@ -844,6 +844,90 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7C3DF52E, "stfsx\tf1,r29,r30");
             AssertCode(0x7DAB4D6E, "stfsux\tf13,r11,r9");
             AssertCode(0x7C00186C, "dcbst\tr0,r3");
+        }
+
+        [Test]
+        public void PPCDis_regression8()
+        {
+            AssertCode(0x13E058C7, "vcmpequd\tv31,v0,v11"); 
+            AssertCode(0x11400484, "vor\tv10,v0,v0");
+
+            AssertCode(0x11A91D03, "evmhessfaaw\tr13,r9,r3");
+            AssertCode(0x1001350B, "evmhesmfaaw\tr0,r1,r6");
+            AssertCode(0x7C6BF82A, "ldx\tr3,r11,r31");
+            AssertCode(0x7D0018A8, "ldarx\tr8,r0,r3");
+            AssertCode(0x7D40592D, "stwcx.\tr10,r0,r11");
+            AssertCode(0x7DA10164, "mtmsrd\tr13,01");
+            AssertCode(0x7D4019AD, "stdcx.\tr10,r0,r3");
+            AssertCode(0x7D6B5238, "eqv\tr11,r11,r10");
+            AssertCode(0x7C8B22AA, "lwax\tr4,r11,r4");
+            AssertCode(0x7D6B5392, "divdu\tr11,r11,r10");
+            AssertCode(0x7D2943D2, "divd\tr9,r9,r8");
+            AssertCode(0x7C0A5C6E, "lfsux\tf0,r10,r11");
+            AssertCode(0x7DAA44EE, "lfdux\tf13,r10,r8");
+            AssertCode(0x7D2B5E34, "srad\tr11,r9,r11");
+            AssertCode(0x7C23F7EC, "dcbz\tr3,r30");
+
+            AssertCode(0x13040000, "vaddubm\tv24,v4,v0");
+            AssertCode(0x10011002, "vmaxub\tv0,v1,v2");
+            AssertCode(0x10101010, "mulhhwu\tr0,r16,r2");
+            AssertCode(0x10000022, "vmladduhm\tv0,v0,v0,v0");
+            AssertCode(0x10000042, "vmaxuh\tv0,v0,v0");
+            AssertCode(0x11b268e2, "vmladduhm\tv13,v18,v13,v3");
+            AssertCode(0x12020100, "vadduqm\tv16,v2,v0");
+            AssertCode(0x1003c200, "vaddubs\tv0,v3,v24");
+            AssertCode(0x10010401, "bcdadd.\tv0,v1,v0,00");
+            AssertCode(0x117d9406, "vcmpequb.\tv11,v29,v18");
+            AssertCode(0x7c0019ec, "dcbtst\tr0,r3");
+
+
+            // The following instructions were found in an
+            // XBox 360 binary, but no PowerPC documentation
+            // seems to exist for them.
+            /*
+            AssertCode(0x12a0f9c7, ".long 0x12a0f9c7");
+            AssertCode(0x10030001, ".long 0x10030001");
+            AssertCode(0x10011003, ".long 0x10011003");
+            AssertCode(0x111110b0, ".long 0x111110b0");
+            AssertCode(0x100050c3, ".long 0x100050c3");
+            AssertCode(0x100130cb, ".long 0x100130cb");
+            AssertCode(0x13fff935, ".long 0x13fff935");
+            AssertCode(0x136a2987, ".long 0x136a2987");
+            AssertCode(0x13D29A35, ".long 0x13d29a35");
+            AssertCode(0x13e95187, ".long 0x13e95187");
+            AssertCode(0x100059c3, ".long 0x100059c3");
+            AssertCode(0x100b61cb, ".long 0x100b61cb");
+            AssertCode(0x13d29a35, ".long 0x13d29a35");
+            AssertCode(0x4d48c976, ".long 0x4d48c976");
+            AssertCode(0x4f8e1ae5, ".long 0x4f8e1ae5");
+            AssertCode(0x4c4d4e4f, ".long 0x4c4d4e4f");
+            AssertCode(0x7c53b17e, ".long 0x7c53b17e");
+            AssertCode(0x7dc2dec0, ".long 0x7dc2dec0");
+            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
+            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
+            AssertCode(0x7fefffff, ".long 0x7fefffff");
+
+            AssertCode(0x102038C3, ".long 0x102038c3");
+            AssertCode(0x102020CB, ".long 0x102020cb");
+            AssertCode(0x13CA1987, ".long 0x13ca1987");
+            AssertCode(0x100059C3, ".long 0x100059c3");
+            AssertCode(0x13E051C7, ".long 0x13e051c7");
+            AssertCode(0x116021C3, ".long 0x116021c3");
+            AssertCode(0x126B61CB, ".long 0x126b61cb");
+
+
+            AssertCode(0x100b60cf, "psq_stux\tf0,r11,r12,0,1");
+            AssertCode(0x100b61cf, "psq_stux\tf0,r11,r12,0,3");
+            AssertCode(0x1000001a, "ps_muls1\tf0,f0,f0");
+            AssertCode(0xf3d4a7eb, "psq_st\tf30,2027(r20),1,2");
+            AssertCode(0xf3f895aa, "psq_st\tf31,1450(r24),1,1");
+            AssertCode(0x13C100CF, "psq_stux\tf30,r1,r0,0,1");
+            AssertCode(0x13A05C07, "udi0fcm\t29,0,11");
+            AssertCode(0x13C55C47, "udi1fcm\t30,5,11");
+            AssertCode(0x13E03507, "udi4fcm 31,0,6");
+            AssertCode(0x13E85D47, "udi5fcm 31,8,11");
+            AssertCode(0xf0a65dff, "xxsel\tvs37,vs38,vs43,vs55");
+            */
         }
     }
 }

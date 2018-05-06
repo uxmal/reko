@@ -256,6 +256,21 @@ namespace Reko.Arch.PowerPC
             return new ImmediateOperand(Constant.SByte(r));
         }
 
+        private PowerPcInstruction EmitUnknown(uint instr)
+        {
+#if DEBUG
+            Debug.WriteLine(
+$@"        [Test]
+        public void PPCDis_{instr:X8}()
+        {{
+            AssertCode(0x{instr:X8}, ""@@@"");
+        }}
+");
+#endif
+            return new PowerPcInstruction(Opcode.illegal);
+        }
+
+
         private abstract class OpRec
         {
             public abstract PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr);
@@ -364,8 +379,8 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Debug.Print("Unknown PowerPC X instruction {0:X8} {1:X2}-{2:X3}", wInstr, wInstr >> 26, xOp);
-                    return new PowerPcInstruction(Opcode.illegal);
+                    Debug.Print("Unknown PowerPC X instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, xOp);
+                    return dasm.EmitUnknown(wInstr);
                 }
             }
         }
@@ -386,8 +401,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var x = (wInstr >> shift) & mask;
-                OpRec opRec;
-                if (fpuOpRecs.TryGetValue(x, out opRec))
+                if (fpuOpRecs.TryGetValue(x, out OpRec opRec))
                 {
                     return opRec.Decode(dasm, wInstr);
                 }
@@ -686,9 +700,8 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var xOp = wInstr  & 0x7FFu;
-                OpRec opRec;
-                if (vxOpRecs.TryGetValue(xOp, out opRec))
+                var xOp = wInstr & 0x7FFu;
+                if (vxOpRecs.TryGetValue(xOp, out OpRec opRec))
                 {
                     return opRec.Decode(dasm, wInstr);
                 }
@@ -698,8 +711,8 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Debug.Print("Unknown PowerPC VX instruction {0:X8} {1:X2}-{2:X3}", wInstr, wInstr >> 26, xOp);
-                    return new PowerPcInstruction(Opcode.illegal);
+                    Debug.Print("Unknown PowerPC VX instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, xOp);
+                    return dasm.EmitUnknown(wInstr);
                 }
             }
         }
@@ -738,8 +751,8 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Debug.Print("Unknown PowerPC XX3 instruction {0:X8} {1:X2}-{2:X3}", wInstr, wInstr >> 26, subOp);
-                    return new PowerPcInstruction(Opcode.illegal);
+                    Debug.Print("Unknown PowerPC XX3 instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, subOp);
+                    return dasm.EmitUnknown(wInstr);
                 }
             }
         }
@@ -756,26 +769,41 @@ namespace Reko.Arch.PowerPC
                 new DOpRec(Opcode.twi, "I1,r2,S"),
                 new VXOpRec(new Dictionary<uint, OpRec>     // 4
                     {
+                        { 0x000, new DOpRec(Opcode.vaddubm, "v1,v2,v3") },
+                        { 0x002, new DOpRec(Opcode.vmaxub, "v1,v2,v3") },
                         { 0x00A, new DOpRec(Opcode.vaddfp, "v1,v2,v3") },
+                        { 0x010, new DOpRec(Opcode.mulhhwu, "r1,r2,r3") },
                         { 0x020, new DOpRec(Opcode.vmhaddshs, "v1,v2,v3,v4") },
+                        { 0x022, new DOpRec(Opcode.vmladduhm, "v1,v2,v3,v4") },
+                        { 0x042, new DOpRec(Opcode.vmaxuh, "v1,v2,v3") },
                         { 0x04A, new DOpRec(Opcode.vsubfp, "v1,v2,v3") },
                         { 0x080, new DOpRec(Opcode.vadduwm, "v1,v2,v3") },
                         { 0x086, new DOpRec(Opcode.vcmpequw, "v1,v2,v3") },
                         { 0x08C, new DOpRec(Opcode.vmrghw, "v1,v2,v3") },
                         { 0x0C6, new DOpRec(Opcode.vcmpeqfp, "v1,v2,v3") },
+                        { 0x0C7, new DOpRec(Opcode.vcmpequd, "v1,v2,v3") },
+                        { 0x0E2, new DOpRec(Opcode.vmladduhm, "v1,v2,v3,v4") },
+                        { 0x100, new DOpRec(Opcode.vadduqm, "v1,v2,v3") },
                         { 0x10A, new DOpRec(Opcode.vrefp, "v1,v3") },
                         { 0x14A, new DOpRec(Opcode.vrsqrtefp, "v1,v3") },
                         { 0x184, new DOpRec(Opcode.vslw, "v1,v2,v3") },
                         { 0x18C, new DOpRec(Opcode.vmrglw, "v1,v2,v3") },
+                        { 0x200, new DOpRec(Opcode.vaddubs, "v1,v2,v3") },
                         { 0x28C, new DOpRec(Opcode.vspltw, "v1,v3,u16:2") },
                         { 0x2C6, new DOpRec(Opcode.vcmpgtfp, "v1,v2,v3") },
                         { 0x34A, new DOpRec(Opcode.vcfsx, "v1,v3,u16:5") },
                         { 0x38C, new DOpRec(Opcode.vspltisw, "v1,s16:5") },
                         { 0x3CA, new DOpRec(Opcode.vctsxs, "v1,v3,u16:5") },
+                        { 0x401, new DOpRec(Opcode.bcdadd, ":v1,v2,v3,u9:1") },
                         { 0x404, new DOpRec(Opcode.vand, "v1,v2,v3") },
+                        { 0x406, new DOpRec(Opcode.vcmpequb, ":v1,v2,v3") },
                         { 0x444, new DOpRec(Opcode.vandc, "v1,v2,v3") },
+                        { 0x484, new DOpRec(Opcode.vor, "v1,v2,v3") },
                         { 0x4C4, new DOpRec(Opcode.vxor, "v1,v2,v3")},
                         { 0x4C6, new DOpRec(Opcode.vcmpeqfp, ":v1,v2,v3") },
+                        { 0x4C7, new DOpRec(Opcode.vcmpequd, ":v1,v2,v3") },
+                        { 0x503, new DOpRec(Opcode.evmhessfaaw, "r1,r2,r3") },
+                        { 0x50B, new DOpRec(Opcode.evmhesmfaaw, "r1,r2,r3") },
                         { 0x686, new DOpRec(Opcode.vcmpgtuw, ":v1,v2,v3") },
                         { 0x6C6, new DOpRec(Opcode.vcmpgtfp, ":v1,v2,v3") },
                     },
@@ -836,6 +864,7 @@ namespace Reko.Arch.PowerPC
                     { 0x00A, new DOpRec(Opcode.addc, "r1,r2,r3")},
                     { 0x00B, new DOpRec(Opcode.mulhwu, ".r1,r2,r3")},
                     { 0x013, new DOpRec(Opcode.mfcr, "r1") },
+                    { 0x015, new DOpRec(Opcode.ldx, "r1,r2,r3") },
                     { 0x017, new DOpRec(Opcode.lwzx, "r1,r2,r3") },
                     { 0x018, new DOpRec(Opcode.slw, ".r2,r1,r3") },
                     { 0x01A, new DOpRec(Opcode.cntlzw, "r2,r1") },
@@ -847,49 +876,58 @@ namespace Reko.Arch.PowerPC
                     { 0x035, new DOpRec(Opcode.ldux, "r1,r2,r3")},
                     { 0x036, new DOpRec(Opcode.dcbst, "r2,r3")},
                     { 0x037, new DOpRec(Opcode.lwzux, "r1,r2,r3")},
-                    { 0x03A, new DOpRec(Opcode.cntlzd, "r2,r1")},
-                    { 0x03C, new DOpRec(Opcode.andc, ".r2,r1,r3")},
-                    { 0x047, new DOpRec(Opcode.lvewx, "v1,r2,r3")},
-                    { 0x04B, new DOpRec(Opcode.mulhw, ".r1,r2,r3")},
+                    { 0x03A, new DOpRec(Opcode.cntlzd, "r2,r1") },
+                    { 0x03C, new DOpRec(Opcode.andc, ".r2,r1,r3") },
+                    { 0x047, new DOpRec(Opcode.lvewx, "v1,r2,r3") },
+                    { 0x04B, new DOpRec(Opcode.mulhw, ".r1,r2,r3") },
                     { 0x053, new DOpRec(Opcode.mfmsr, "r1") },
+                    { 0x054, new DOpRec(Opcode.ldarx, "r1,r2,r3") },
                     { 0x056, new DOpRec(Opcode.dcbf, "r2,r3") },
                     { 0x057, new DOpRec(Opcode.lbzx, "r1,r2,r3") },
                     { 0x067, new DOpRec(Opcode.lvx, "v1,r2,r3") },
                     { 0x068, new DOpRec(Opcode.neg, "r1,r2") },
-                    { 0x077, new DOpRec(Opcode.lbzux, "r1,r2,r3")},
-                    { 124, new DOpRec(Opcode.nor, ".r2,r1,r3")},
-                    { 0x088, new DOpRec(Opcode.subfe, "r1,r2,r3")},
-                    { 0x08A, new DOpRec(Opcode.adde, ".r1,r2,r3")},
-                    { 0x090, new DOpRec(Opcode.mtcrf, "M,r1")},
-                    { 0x092, new DOpRec(Opcode.mtmsr, "r1") },
+                    { 0x077, new DOpRec(Opcode.lbzux, "r1,r2,r3") },
+                    { 124, new DOpRec(Opcode.nor, ".r2,r1,r3") },
+                    { 0x088, new DOpRec(Opcode.subfe, "r1,r2,r3") },
+                    { 0x08A, new DOpRec(Opcode.adde, ".r1,r2,r3") },
+                    { 0x090, new DOpRec(Opcode.mtcrf, "M,r1") },
+                    { 0x092, new DOpRec(Opcode.mtmsr, "r1,u16:1") },
                     { 0x095, new DOpRec(Opcode.stdx, "r1,r2,r3") },
+                    { 0x096, new DOpRec(Opcode.stwcx, ".r1,r2,r3") },
                     { 0x097, new DOpRec(Opcode.stwx, "r1,r2,r3") },
                     { 0x0C7, new DOpRec(Opcode.stvewx, "v1,r2,r3")},
+                    { 0x0B2, new DOpRec(Opcode.mtmsrd, "r1,u16:1") },
                     { 0x0B7, new DOpRec(Opcode.stwux, "r1,r2,r3") },
                     { 0x0E7, new DOpRec(Opcode.stvx, "v1,r2,r3") },
                     { 215, new DOpRec(Opcode.stbx, "r1,r2,r3") },
                     { 235, new DOpRec(Opcode.mullw, ".r1,r2,r3") },
                     { 0x0C8, new DOpRec(Opcode.subfze, ".r1,r2") },
                     { 0x0CA, new DOpRec(Opcode.addze, ".r1,r2") },
+                    { 0x0D6, new DOpRec(Opcode.stdcx, ":r1,r2,r3") },
                     { 0x0E9, new DOpRec(Opcode.mulld, ".r1,r2,r3")},
                     { 0x0EA, new DOpRec(Opcode.addme, ".r1,r2")},
+                    { 0x0F6, new DOpRec(Opcode.dcbtst, "r2,r3") },
                     { 247, new DOpRec(Opcode.stbux, "r1,r2,r3") },
                     { 0x10A, new DOpRec(Opcode.add, ".r1,r2,r3") },
                     { 279, new DOpRec(Opcode.lhzx, "r1,r2,r3") },
                     { 0x116, new DOpRec(Opcode.dcbt, "r2,r3,u21:4") },
+                    { 0x11C, new DOpRec(Opcode.eqv, "r1,r2,r3") },
                     { 316, new DOpRec(Opcode.xor, ".r2,r1,r3") },
-                    { 0x19C, new DOpRec(Opcode.orc, ".r2,r1,r3") },
                     { 444, new DOpRec(Opcode.or, ".r2,r1,r3") },
-                    { 459, new DOpRec(Opcode.divwu, ".r1,r2,r3") },
-                    { 0x1DC, new DOpRec(Opcode.nand, ".r2,r1,r3") },
 
                     { 0x153, new SprOpRec(false) },
+                    { 0x155, new DOpRec(Opcode.lwax, "r1,r2,r3") },
+                    { 0x157, new DOpRec(Opcode.lhax, "r1,r2,r3") },
                     { 0x173, new XfxOpRec(Opcode.mftb, "r1,X3") },
                     { 0x177, new DOpRec(Opcode.lhaux, "r1,r2,r3") },
                     { 0x197, new DOpRec(Opcode.sthx, "r1,r2,r3") },
-                    { 0x157, new DOpRec(Opcode.lhax, "r1,r2,r3")},
+                    { 0x19C, new DOpRec(Opcode.orc, ".r2,r1,r3") },
+                    { 0x1C9, new DOpRec(Opcode.divdu, ".r1,r2,r3") },
+                    { 0x1CB, new DOpRec(Opcode.divwu, ".r1,r2,r3") },
+                    { 0x1DC, new DOpRec(Opcode.nand, ".r2,r1,r3") },
                     { 0x1D3, new SprOpRec(true) },
                     { 0x1D6, new DOpRec(Opcode.dcbi, "r2,r3")},
+                    { 0x1E9, new DOpRec(Opcode.divd, ".r1,r2,r3")},
                     { 0x1EB, new DOpRec(Opcode.divw, ".r1,r2,r3")},
                     { 0x207, new DOpRec(Opcode.lvlx, "r1,r2,r3") },
                     { 0x216, new DOpRec(Opcode.lwbrx, "r1,r2,r3") },
@@ -897,7 +935,9 @@ namespace Reko.Arch.PowerPC
                     { 0x218, new DOpRec(Opcode.srw, ".r2,r1,r3") },
                     { 0x21B, new DOpRec(Opcode.srd, ".r2,r1,r3") },
                     { 0x255, new DOpRec(Opcode.lswi, "r1,r2,I3") },
+                    { 0x237, new DOpRec(Opcode.lfsux, "f1,r2,r3") },
                     { 0x257, new DOpRec(Opcode.lfdx, "f1,r2,r3") },
+                    { 0x277, new DOpRec(Opcode.lfdux, "f1,r2,r3") },
                     { 0x256, new DOpRec(Opcode.sync, "") },
                     { 0x296, new DOpRec(Opcode.stwbrx, ".r2,r1,r3") },
                     { 0x297, new DOpRec(Opcode.stfsx, "f1,r2,r3") },
@@ -906,6 +946,7 @@ namespace Reko.Arch.PowerPC
                     { 0x2D7, new DOpRec(Opcode.stfdx, "f1,r2,r3") },
                     { 0x316, new DOpRec(Opcode.lhbrx, "r1,r2,r3")},
                     { 0x318, new DOpRec(Opcode.sraw, ".r2,r1,r2")},
+                    { 0x31A, new DOpRec(Opcode.srad, ".r2,r1,r2")},
                     { 0x33A, new DOpRec(Opcode.sradi, ".r2,r1,I3") },
                     { 0x338, new DOpRec(Opcode.srawi, "r2,r1,I3") },
                     { 0x33B, new XSOpRec(Opcode.sradi, ".r2,r1,I3") },
@@ -914,7 +955,8 @@ namespace Reko.Arch.PowerPC
                     { 0x3BA, new DOpRec(Opcode.extsb, ".r2,r1")},
                     { 0x3D7, new DOpRec(Opcode.stfiwx, "f1,r2,r3")},
                     { 0x3D6, new DOpRec(Opcode.icbi, "r2,r3")},
-                    { 0x3DA, new DOpRec(Opcode.extsw, ".r2,r1")}
+                    { 0x3DA, new DOpRec(Opcode.extsw, ".r2,r1")},
+                    { 0x3F6, new DOpRec(Opcode.dcbz, "r2,r3") }
                 }),
                 // 20
                 new DOpRec(Opcode.lwz, "r1,E2"),

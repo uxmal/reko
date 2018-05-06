@@ -1461,5 +1461,147 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r11 + r30:real32] = (real32) f13");
         }
+
+        /* //$TODO!
+        [Test]
+        public void PPCRw_stfdx()
+        {
+            AssertCode(0x7C07ADAE,   // stfdx	f0,r7,r21
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_stfdu()
+        {
+            AssertCode(0xDC0B0010,   // stfdu	f0,16(r11)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_lfdu()
+        {
+            AssertCode(0xCC0B0010,   // lfdu	f0,16(r11)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_lfsu()
+        {
+            AssertCode(0xC43D0004,   // lfsu	f1,4(r29)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fctidz()
+        {
+            AssertCode(0xFD80665E,   // fctidz	f12,f12
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fnmsubs()
+        {
+            AssertCode(0xEDAC6AFC,   // fnmsubs	f13,f12,f13,f11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fsel()
+        {
+            AssertCode(0xFC0A682E,   // fsel	f0,f10,f0,f13
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_srd()
+        {
+            AssertCode(0x7CC84436,   // srd	r8,r6,r8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+        [Test]
+        public void PPCRw_twi()
+        {
+            AssertCode(0x0CCA0000,   // twi	06,r10,+0000
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_bltlr()
+        {
+            AssertCode(0x4D980020,   // bltlr	cr6
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_lwarx()
+        {
+            AssertCode(0x7D405828,   // lwarx	r10,r0,r11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+        [Test]
+        public void PPCRw_eieio()
+        {
+            AssertCode(0x7C0006AC,   // eieio
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+        [Test]
+        public void PPCRw_stfsu()
+        {
+            AssertCode(0xD41C0010,   // stfsu	f0,16(r28)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+        [Test]
+        public void PPCRw_fctid()
+        {
+            AssertCode(0xFD606E5C,   // fctid	f11,f13
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fnmsub()
+        {
+            AssertCode(0xFD6A037C,   // fnmsub	f11,f10,f13,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_bgelr()
+        {
+            AssertCode(0x4C980020,   // bgelr	cr6
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fsqrt()
+        {
+            AssertCode(0xFC00002C,   // fsqrt	f0,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_lwzux()
+        {
+            AssertCode(0x7CC9506E,   // lwzux	r6,r9,r10
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+        */
     }
 }
