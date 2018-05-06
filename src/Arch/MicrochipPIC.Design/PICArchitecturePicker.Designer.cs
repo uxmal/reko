@@ -145,7 +145,7 @@
             // 
             // picImage
             // 
-            this.picImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PIC;
+            this.picImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PICImage;
             this.picImage.Location = new System.Drawing.Point(12, 9);
             this.picImage.Name = "picImage";
             this.picImage.Size = new System.Drawing.Size(137, 74);
