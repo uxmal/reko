@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 {
     public class DisassemblerTestsBase
     {
-        protected IPICProcessorModel picMode;
+        protected IPICProcessorModel picModel;
         protected static PICArchitecture arch;
         protected Address baseAddr = Address.Ptr32(0x200);
 
@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             }).ToArray();
             var image = new MemoryArea(baseAddr, bytes);
             var rdr = new LeImageReader(image, 0);
-            var dasm = picMode.CreateDisassembler(arch, rdr);
+            var dasm = picModel.CreateDisassembler(arch, rdr);
             return dasm.First();
         }
 
@@ -61,10 +61,10 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.AreEqual(sExpected, instr.ToString(), _fmtBinary(sMesg, words));
         }
 
-        protected void SetPICMode(string picName, PICExecMode mode = PICExecMode.Traditional)
+        protected void SetPICModel(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
             arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
-            picMode = arch.ProcessorMode;
+            picModel = arch.ProcessorModel;
             arch.CreatePICProcessorModel();
             PICMemoryDescriptor.ExecMode = mode;
         }

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         [TestFixtureSetUp]
         public void OneSetup()
         {
-            SetPICMode(PIC16FullFeaturedName);
+            SetPICModel(PIC16FullFeaturedName);
         }
 
         [Test]

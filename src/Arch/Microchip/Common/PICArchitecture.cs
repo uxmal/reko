@@ -62,12 +62,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the processor mode builders.
         /// </summary>
-        public IPICProcessorModel ProcessorMode => Options?.ProcessorModel;
+        public IPICProcessorModel ProcessorModel => Options?.ProcessorModel;
 
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC PICDescriptor => ProcessorMode?.PICDescriptor;
+        public PIC PICDescriptor => ProcessorModel?.PICDescriptor;
 
         /// <summary>
         /// Gets the PIC processor state.
@@ -83,9 +83,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (Options == null || Options.ProcessorModel == null)
                 throw new InvalidOperationException($"Needs to set architecture's {nameof(Options)} before calling {nameof(CreatePICProcessorModel)} method.");
             Description = Options.ProcessorModel.PICName;
-            ProcessorMode.CreateMemoryDescriptor();
-            ProcessorMode.CreateRegisters();
-            State = ProcessorMode.CreateProcessorState(this);
+            ProcessorModel.CreateMemoryDescriptor();
+            ProcessorModel.CreateRegisters();
+            State = ProcessorModel.CreateProcessorState(this);
             StackRegister = PICRegisters.STKPTR;
         }
 
@@ -320,19 +320,19 @@ namespace Reko.Arch.MicrochipPIC.Common
             => new LeImageWriter(mem, addr);
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-            => ProcessorMode.CreateRewriter(this, ProcessorMode.CreateDisassembler(this, rdr), (PICProcessorState)state, frame, host);
+            => ProcessorModel.CreateRewriter(this, ProcessorModel.CreateDisassembler(this, rdr), (PICProcessorState)state, frame, host);
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             => CreateDisassemblerImpl(imageReader);
 
         public override ProcessorState CreateProcessorState()
-            => ProcessorMode.CreateProcessorState(this);
+            => ProcessorModel.CreateProcessorState(this);
 
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());
 
         public override Address MakeSegmentedAddress(Constant seg, Constant offset)
-            => ProcessorMode.CreateBankedAddress(seg.ToByte(), offset.ToByte());
+            => ProcessorModel.CreateBankedAddress(seg.ToByte(), offset.ToByte());
 
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
@@ -349,15 +349,15 @@ namespace Reko.Arch.MicrochipPIC.Common
             => mem.TryReadLe(addr, dt, out value);
 
         public override void PostprocessProgram(Program program)
-            => ProcessorMode.PostprocessProgram(program, this);
+            => ProcessorModel.PostprocessProgram(program, this);
 
         private PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
-            => ProcessorMode.CreateDisassembler(this, imageReader);
+            => ProcessorModel.CreateDisassembler(this, imageReader);
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
-            return ProcessorMode.CreatePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
+            return ProcessorModel.CreatePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
     }
 

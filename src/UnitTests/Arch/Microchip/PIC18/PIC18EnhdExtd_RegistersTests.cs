@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
         [TestFixtureSetUp]
         public void OneSetup()
         {
-            SetPICMode(PIC18EnhancedName, PICExecMode.Extended);
+            SetPICModel(PIC18EnhancedName, PICExecMode.Extended);
         }
 
         /// <summary>

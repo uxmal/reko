@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
         protected PICProcessorState state;
 
-        protected void SetPICMode(string picName, PICExecMode mode)
+        protected void SetPICModel(string picName, PICExecMode mode)
         {
             arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
             arch.CreatePICProcessorModel();

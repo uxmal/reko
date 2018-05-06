@@ -36,7 +36,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
 
         protected PICArchitecture arch;
-        protected Dictionary<PICRegisterStorage, uint> ValidRegsValues; // Registers values. Only for valid registers.
+        protected Dictionary<PICRegisterStorage, Constant> ValidRegsValues; // Registers values. Only for valid registers.
         protected HashSet<RegisterStorage> ValidRegs;                   // Validity of registers. Note: if not valid, there is no corresponding entry in 'regs'.
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICProcessorState(PICArchitecture arch)
         {
             this.arch = arch;
-            ValidRegsValues = new Dictionary<PICRegisterStorage, uint>();
+            ValidRegsValues = new Dictionary<PICRegisterStorage, Constant>();
             ValidRegs = new HashSet<RegisterStorage>();
         }
 
@@ -58,7 +58,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             arch = st.arch;
             HWStackItems = st.HWStackItems;
-            ValidRegsValues = new Dictionary<PICRegisterStorage, uint>(st.ValidRegsValues);
+            ValidRegsValues = new Dictionary<PICRegisterStorage, Constant>(st.ValidRegsValues);
             ValidRegs = new HashSet<RegisterStorage>(st.ValidRegs);
         }
 
@@ -92,7 +92,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if ((reg is PICRegisterStorage preg) && IsValid(preg))
             {
-                return Constant.Create(reg.DataType, ValidRegsValues[preg] & preg.Impl);
+                return Constant.Create(reg.DataType, ValidRegsValues[preg].ToUInt64() & preg.Impl);
             }
             return Constant.Invalid;
         }
@@ -109,7 +109,15 @@ namespace Reko.Arch.MicrochipPIC.Common
                 if (c?.IsValid ?? false)
                 {
                     ValidRegs.Add(preg);
-                    ValidRegsValues[preg] = (byte)(c.ToByte() & preg.Impl);
+                    ValidRegsValues[preg] = c;
+                    if (preg.HasAttachedRegs)
+                    {
+                        foreach (var subreg in preg.AttachedRegs)
+                        {
+                            var subc = Constant.Create(subreg.DataType, (c.ToUInt64() >> (int)subreg.BitAddress) & subreg.BitMask);
+                            SetRegister(subreg, subc);
+                        }
+                    }
                     return;
                 }
             }

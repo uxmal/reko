@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [TestFixtureSetUp]
         public void OneSetup()
         {
-            SetPICMode(PIC16EnhancedName);
+            SetPICModel(PIC16EnhancedName);
         }
 
         [Test]

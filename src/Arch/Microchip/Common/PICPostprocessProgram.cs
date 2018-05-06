@@ -83,12 +83,14 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
             program.SegmentMap = newMap;
             SetPICExecMode();
-
-            //TODO: Assign registers initial values
             
             return program;
         }
 
+        /// <summary>
+        /// Gets a unique region's name.
+        /// </summary>
+        /// <param name="regn">The PIC program memory region descriptor.</param>
         private string GetRegionSequentialName(IMemoryRegion regn)
         {
             if (regionsCounter == null)
@@ -104,6 +106,14 @@ namespace Reko.Arch.MicrochipPIC.Common
             return $"{regn.RegionName}_1";
         }
 
+        /// <summary>
+        /// Gets the memory segment access mode based on PIC memory region's attributes
+        /// </summary>
+        /// <param name="regn">The PIC program memory region descriptor.</param>
+        /// <returns>
+        /// The Reko memory segment access mode.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         private AccessMode GetAccessMode(IMemoryRegion regn)
         {
             if (regn.TypeOfMemory != MemoryDomain.Prog && regn.TypeOfMemory != MemoryDomain.Other)
@@ -120,6 +130,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             return AccessMode.Read;
         }
 
+        /// <summary>
+        /// Sets the PIC execution mode per the configuration bits (if present in the memory image).
+        /// </summary>
         private void SetPICExecMode()
         {
             var dcf = PICMemoryDescriptor.GetDCRField("XINST");

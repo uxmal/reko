@@ -59,10 +59,15 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         public override void SetInstructionPointer(Address addr)
         {
             uint off = addr.ToUInt32();
-            SetRegister(PIC16Registers.PCL, Constant.Byte((byte)(off)));
-            SetRegister(PIC16Registers.PCLATH, Constant.Byte((byte)(off>>8)));
+            SetRegister(PICRegisters.PCL, Constant.Byte((byte)(off)));
+            SetRegister(PICRegisters.PCLATH, Constant.Byte((byte)(off>>8)));
         }
 
+
+        private void PresetRegisters()
+        {
+            //TODO: Assign registers initial values
+        }
     }
 
 }
