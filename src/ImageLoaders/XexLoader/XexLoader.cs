@@ -239,13 +239,13 @@ namespace Reko.ImageLoaders.Xex
                                 }
 
                                 if(_j == name_index) {
-                                    name = rdr.ReadAt<string>(string_table + (i * 4), r => r.ReadCString(
+                                    name = rdr.ReadAt<string>(string_table + (_i * 4), r => r.ReadCString(
                                         PrimitiveType.Char, Encoding.ASCII
                                     ).ToString());
                                     break;
                                 }
 
-                                uint ptr = rdr.ReadAt<UInt32>(string_table + (i * 4), r => r.ReadUInt32());
+                                uint ptr = rdr.ReadAt<UInt32>(string_table + (_i * 4), r => r.ReadUInt32());
                                 if(ptr == 0) {
                                     _i++;
                                     if((_i % 4) != 0) {
