@@ -63,9 +63,9 @@ namespace Reko.Arch.MicrochipPIC.Design.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PIC {
+        internal static System.Drawing.Bitmap PICImage {
             get {
-                object obj = ResourceManager.GetObject("PIC", resourceCulture);
+                object obj = ResourceManager.GetObject("PICImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
