@@ -240,7 +240,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public static string RenderDeviceConfigRegister(PICDevConfigRegister dcr, int value) => deviceConfigDefinitions.Render(dcr, value);
+        public static string RenderDeviceConfigRegister(PICDevConfigRegister dcr, uint value) => deviceConfigDefinitions.Render(dcr, value);
 
         /// <summary>
         /// Renders the Device Configuration Register state at given address for given value.
@@ -250,7 +250,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public static string RenderDeviceConfigRegister(Address addr, int value) => deviceConfigDefinitions?.Render(addr, value);
+        public static string RenderDeviceConfigRegister(Address addr, uint value) => deviceConfigDefinitions?.Render(addr, value);
 
 
         protected void Reset()

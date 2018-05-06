@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Common\FlagM.cs" />
     <Compile Include="Common\FSRIndexedMode.cs" />
-    <Compile Include="Common\ImageLoadListener.cs" />
     <Compile Include="Common\IOperandVisitor.cs" />
     <Compile Include="Common\IPICProcessorModel.cs" />
     <Compile Include="Common\PICArchitectureOptions.cs" />

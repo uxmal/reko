@@ -34,18 +34,15 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICDevConfigRegister
     {
-        #region Member fields
 
         private HashSet<DevConfigField> fields;
         private List<DevConfigIllegal> illegals;
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="dcr">The <see cref="DCRDef"/> instance describing the register.</param>
+        /// <param name="dcr">The <see cref="DCRDef"/> instance describing the device configuration register.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcr"/> is null.</exception>
         public PICDevConfigRegister(DCRDef dcr)
         {
@@ -62,9 +59,41 @@ namespace Reko.Arch.MicrochipPIC.Common
             illegals = new List<DevConfigIllegal>();
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the program memory address of this device configuration register.
+        /// </summary>
+        public Address Address { get; }
 
-        #region Methods
+        /// <summary>
+        /// Gets the name of this device configuration register.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets the description of this device configuration register.
+        /// </summary>
+        public string Descr { get; }
+
+        /// <summary>
+        /// Gets the total bit-width of this device configuration register.
+        /// </summary>
+        public int BitWidth { get; }
+
+        /// <summary>
+        /// Gets the access bits  of this device configuration register.
+        /// </summary>
+        public string Access { get; }
+
+        /// <summary>
+        /// Gets the implementation mask  of this device configuration register.
+        /// </summary>
+        public int Impl { get; }
+
+        /// <summary>
+        /// Gets the default value of this device configuration register.
+        /// </summary>
+        public int DefaultValue { get; }
+
 
         /// <summary>
         /// Adds a bit-field to this device configuration register.
@@ -102,53 +131,24 @@ namespace Reko.Arch.MicrochipPIC.Common
         public IEnumerable<DevConfigField> Fields => fields;
 
         /// <summary>
-        /// Enurates the illegal conditions for this Device Configuration Register.
+        /// Enumerates the illegal conditions for this Device Configuration Register.
         /// </summary>
         public IEnumerable<DevConfigIllegal> Illegals => illegals;
 
         public override string ToString() => $"{Name}@{Address}";
 
-        #endregion
+        public bool CheckIf(string fieldName, string fieldState, uint valueToCheck)
+        {
+            var dcf = GetField(fieldName);
+            if (dcf == null)
+                return false;
+            uint val = (uint)(((valueToCheck & Impl) >> dcf.BitPos) & dcf.BitMask);
+            var sem = dcf.GetSemantic(val);
+            return (sem.State.ToUpper() == fieldState.ToUpper());
+        }
 
-        #region Properties
-
-        /// <summary>
-        /// Gets the program memory address of this device configuration register.
-        /// </summary>
-        public Address Address { get; }
-
-        /// <summary>
-        /// Gets the name of this device configuration register.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets the description of this device configuration register.
-        /// </summary>
-        public string Descr { get; }
-
-        /// <summary>
-        /// Gets the total bit-width of this device configuration register.
-        /// </summary>
-        public int BitWidth { get; }
-
-        /// <summary>
-        /// Gets the access bits  of this device configuration register.
-        /// </summary>
-        public string Access { get; }
-
-        /// <summary>
-        /// Gets the implementation mask  of this device configuration register.
-        /// </summary>
-        public int Impl { get; }
-
-        /// <summary>
-        /// Gets the default value of this device configuration register.
-        /// </summary>
-        public int DefaultValue { get; }
-
-        #endregion
-
+        public bool CheckIf(string fieldName, string fieldState, int valueToCheck)
+            => CheckIf(fieldName, fieldState, (uint)valueToCheck);
     }
 
     /// <summary>
@@ -157,13 +157,8 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class DevConfigField
     {
 
-        #region Member fields
-
         private List<DevConfigSemantic> semantics;
 
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Constructor.
@@ -184,9 +179,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             semantics = new List<DevConfigSemantic>();
         }
 
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the name of the device configuration bit-field.
@@ -217,9 +209,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Gets the bit mask of the device configuration bit-field.
         /// </summary>
         public int BitMask { get; }
-        #endregion
 
-        #region Methods
 
         /// <summary>
         /// Adds a semantic to this device configuration bit field.
@@ -242,7 +232,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The semantic or null.
         /// </returns>
-        public DevConfigSemantic GetSemantic(int value)
+        public DevConfigSemantic GetSemantic(uint value)
         {
             var sem = semantics.FirstOrDefault(s => s.Match(value));
             if (sem is null)
@@ -252,7 +242,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override string ToString() => $"{Name}@{RegAddress}.b{BitPos}[{BitWidth}]";
 
-        #endregion
 
     }
 
@@ -261,7 +250,6 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class DevConfigSemantic
     {
-        #region Member fields
 
         // 'When' expression in PIC XML is of the form: "(field mask 0xNN) op 0xHH"
         // with 'mask' being either the AND (&) operator or the OR (|) operator and
@@ -276,13 +264,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static DevConfigSemantic invalid =
             new DevConfigSemantic(new DCRFieldSemantic() { CName = "<invalid>", Desc = "Invalid fuse value", When = "?" });
 
-        #endregion
-
-        #region Constructors
 
         private DevConfigSemantic()
         {
-
         }
 
         public DevConfigSemantic(DCRFieldSemantic dcrsem)
@@ -292,9 +276,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             When = dcrsem.When.Trim();
         }
 
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the name of the device configuration bit-field state.
@@ -311,9 +292,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public string When { get; }
 
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Indicates whenever the given value corresponds to a valid device configuration bit-field state.
@@ -323,7 +301,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if it succeeds, false if it fails.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        public bool Match(int value)
+        public bool Match(uint value)
         {
             var m = Regex.Match(When, pattern);
             if (!m.Success)
@@ -333,9 +311,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             return EvaluateWhen(value, m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value, m.Groups[4].Value);
         }
 
-        private static bool EvaluateWhen(int iValueToTest, string whenOper, string whenMask, string whenCompare, string expectedResult)
+        private static bool EvaluateWhen(uint iValueToTest, string whenOper, string whenMask, string whenCompare, string expectedResult)
         {
-            int mask = whenMask.ToInt32Ex();
+            uint mask = (uint)whenMask.ToInt32Ex();
             int expectValue = expectedResult.ToInt32Ex();
             if (whenOper == "&")
                 iValueToTest &= mask;
@@ -359,8 +337,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override string ToString()
             => $"When '{When}' then fuse={State}, meaning '{Descr}'";
 
-        #endregion
-
     }
 
     /// <summary>
@@ -369,8 +345,6 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class DevConfigIllegal
     {
 
-        #region Members
-
         // 'When' expression in PIC XML is of the form: "(reg mask 0xNN) op 0xHH"
         // with 'mask' being either the AND (&) operator or the OR (|) operator and
         // with 'op' being one of the comparison operators (==, !=, <, <=, etc...).
@@ -378,9 +352,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         // 
         private const string pattern = @"^\(\s*reg\s+([^ ]*)\s+([^ ]*)\s*\)\s+([^ ]*)\s+([^ ]*)$";
 
-        #endregion
-
-        #region Constructors
 
         public DevConfigIllegal(DCRDefIllegal dcrill)
         {
@@ -388,9 +359,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             Descr = dcrill.Desc;
         }
 
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the description of the illegal device configuration register state.
@@ -402,9 +370,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public string When { get; }
 
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Indicates whenever the given value corresponds to an invalid device configuration register state.
@@ -414,7 +379,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if it succeeds, false if it fails.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        public bool Match(int value)
+        public bool Match(uint value)
         {
             var m = Regex.Match(When, pattern);
             if (!m.Success)
@@ -424,9 +389,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             return EvaluateWhen(value, m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value, m.Groups[4].Value);
         }
 
-        private static bool EvaluateWhen(int iValueToTest, string whenOper, string whenMask, string whenCompare, string expectedResult)
+        private static bool EvaluateWhen(uint iValueToTest, string whenOper, string whenMask, string whenCompare, string expectedResult)
         {
-            int mask = whenMask.ToInt32Ex();
+            uint mask = (uint)whenMask.ToInt32Ex();
             int expectValue = expectedResult.ToInt32Ex();
             if (whenOper == "&")
                 iValueToTest &= mask;
@@ -449,8 +414,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override string ToString()
             => $"When '{When}' then '{Descr}'";
-
-        #endregion
 
     }
 

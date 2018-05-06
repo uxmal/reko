@@ -34,13 +34,9 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICDeviceConfigDefs : IPICDeviceConfigDefs
     {
 
-        #region Member fields
 
         private SortedList<Address, PICDevConfigRegister> dcregisters;
 
-        #endregion
-
-        #region Constructors
 
         private PICDeviceConfigDefs(PIC thePIC)
         {
@@ -95,9 +91,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             return dcrconf;
         }
 
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the target PIC for this Device Configuration Definitions.
@@ -107,9 +100,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </value>
         public PIC PIC { get; }
 
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets a Device Configuration Register by its name.
@@ -142,13 +132,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string describing the configuration bits/fuses.
         /// </returns>
-        public string Render(PICDevConfigRegister dcr, int value)
+        public string Render(PICDevConfigRegister dcr, uint value)
         {
-            value &= dcr.Impl;
+            value &= (uint)dcr.Impl;
             var ilg = dcr.Illegals.FirstOrDefault(p => p.Match(value));
             if (ilg != null)
                 return $"** Fuse=0x{value:X}: {ilg.Descr}**";
-            var sems = dcr.Fields.Select(f => f.GetSemantic((value >> f.BitPos) & f.BitMask));
+            var sems = dcr.Fields.Select(f => f.GetSemantic((uint)((value >> f.BitPos) & f.BitMask)));
             var flds = dcr.Fields.Zip(sems, (fl, se) => fl.Name + "=" + se.State);
             return String.Join(", ", flds);
         }
@@ -161,15 +151,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public string Render(Address addr, int value)
+        public string Render(Address addr, uint value)
         {
             var dcr = GetDCR(addr);
             if (dcr != null)
                 return Render(dcr, value);
             return String.Empty;
         }
-
-        #endregion
 
     }
 

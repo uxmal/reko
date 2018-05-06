@@ -82,8 +82,8 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             }
             program.SegmentMap = newMap;
+            SetPICExecMode();
 
-            //TODO: Check PIC actual execution mode (XINST configuration bit)
             //TODO: Assign registers initial values
             
             return program;
@@ -119,6 +119,34 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
             return AccessMode.Read;
         }
+
+        private void SetPICExecMode()
+        {
+            var dcf = PICMemoryDescriptor.GetDCRField("XINST");
+            if (dcf == null)
+                return;
+            var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
+            if (!program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
+                return;
+            uint xinstval;
+            if (dcr.BitWidth <= 8)
+                xinstval = xinstsegt.MemoryArea.ReadByte(dcf.RegAddress);
+            else if (dcr.BitWidth <= 16)
+                xinstval = xinstsegt.MemoryArea.ReadLeUInt16(dcf.RegAddress);
+            else
+                xinstval = xinstsegt.MemoryArea.ReadLeUInt32(dcf.RegAddress);
+            if (dcr.CheckIf("XINST", "ON", xinstval))
+            {
+                PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+                architecture.Description = architecture.Options.ProcessorModel.PICName + " (extended)";
+            }
+            else
+            {
+                PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
+                architecture.Description = architecture.Options.ProcessorModel.PICName + " (traditional)";
+            }
+        }
+
     }
 
 }

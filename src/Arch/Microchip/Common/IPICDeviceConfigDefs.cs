@@ -64,7 +64,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        string Render(PICDevConfigRegister dcr, int value);
+        string Render(PICDevConfigRegister dcr, uint value);
 
         /// <summary>
         /// Renders the Device Configuration Register state at given address for given value.
@@ -74,7 +74,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        string Render(Address addr, int value);
+        string Render(Address addr, uint value);
 
     }
 
