@@ -69,7 +69,7 @@
   <ItemGroup>
     <None Include="MicrochipPIC.licenseheader" />
     <None Include="Resources\PICPickerIcon.ico" />
-    <Content Include="Images\PIC.png" />
+    <Content Include="Images\PICImage.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
