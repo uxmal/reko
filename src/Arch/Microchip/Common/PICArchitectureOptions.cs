@@ -34,13 +34,13 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICArchitectureOptions() { }
 
-        public PICArchitectureOptions(IPICProcessorMode processorMode, PICExecMode execMode)
+        public PICArchitectureOptions(IPICProcessorModel processorMode, PICExecMode execMode)
         {
-            ProcessorMode = processorMode ?? throw new ArgumentNullException(nameof(processorMode));
+            ProcessorModel = processorMode ?? throw new ArgumentNullException(nameof(processorMode));
             PICExecutionMode = execMode;
         }
 
-        public PICArchitectureOptions(string picName, PICExecMode execMode) : this(PICProcessorMode.GetMode(picName), execMode)
+        public PICArchitectureOptions(string picName, PICExecMode execMode) : this(PICProcessorModel.GetModel(picName), execMode)
         {
         }
 
@@ -48,19 +48,21 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (picker == null)
                 throw new ArgumentNullException(nameof(picker));
-            ProcessorMode = PICProcessorMode.GetMode(picker.PICName);
+            ProcessorModel = PICProcessorModel.GetModel(picker.PICName);
             PICExecutionMode = (picker.AllowExtended ? PICExecMode.Extended : PICExecMode.Traditional);
         }
 
         /// <summary>
         /// Gets or sets the processor mode builders.
         /// </summary>
-        public IPICProcessorMode ProcessorMode { get; set; }
+        public IPICProcessorModel ProcessorModel { get; set; }
 
         /// <summary>
         /// Gets or sets the PIC instruction set execution mode.
         /// </summary>
         public PICExecMode PICExecutionMode { get; set; }
+
+        public override string ToString() => $"{ProcessorModel.PICName},{PICExecutionMode}";
 
     }
 
@@ -76,7 +78,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (opts == null)
                 throw new ArgumentNullException(nameof(opts));
-            PICName = opts.ProcessorMode.PICName;
+            PICName = opts.ProcessorModel.PICName;
             AllowExtended = opts.PICExecutionMode == PICExecMode.Extended;
         }
 

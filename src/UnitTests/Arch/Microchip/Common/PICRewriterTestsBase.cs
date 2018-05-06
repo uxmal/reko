@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 {
     public class PICRewriterTestsBase : RewriterTestBase
     {
-        protected IPICProcessorMode picMode;
+        protected IPICProcessorModel picMode;
         protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
         protected MemoryArea image;

@@ -28,7 +28,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
 
-    internal abstract class PIC18ProcessorMode : PICProcessorMode
+    internal abstract class PIC18ProcessorModel : PICProcessorModel
     {
         public override void CreateMemoryDescriptor()
             => PIC18MemoryDescriptor.Create(PICDescriptor);
@@ -48,15 +48,10 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         public override PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             => new PIC18PointerScanner(rdr, knownLinAddresses, flags);
 
-        public override void PostprocessProgram(Program program, PICArchitecture arch)
-        {
-            base.PostprocessProgram(program, arch);
-        }
-
     }
 
 
-    internal class PIC18LegacyMode : PIC18ProcessorMode
+    internal class PIC18LegacyModel : PIC18ProcessorModel
     {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18LegacyDisasm.Create(arch, rdr);
@@ -69,7 +64,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
     }
 
-    internal class PIC18EggMode : PIC18ProcessorMode
+    internal class PIC18EggModel : PIC18ProcessorModel
     {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18EggDisasm.Create(arch, rdr);
@@ -82,7 +77,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
     }
 
-    internal class PIC18EnhancedMode : PIC18ProcessorMode
+    internal class PIC18EnhancedModel : PIC18ProcessorModel
     {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18EnhancedDisasm.Create(arch, rdr);

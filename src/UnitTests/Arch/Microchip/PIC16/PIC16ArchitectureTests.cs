@@ -47,57 +47,57 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_WrongPICMode()
         {
-            var picMode = PICProcessorMode.GetMode("PICUnknown");
-            Assert.IsNull(picMode);
-            Assert.Throws<ArgumentNullException>(() => picMode = PICProcessorMode.GetMode(""));
+            var picModel = PICProcessorModel.GetModel("PICUnknown");
+            Assert.IsNull(picModel);
+            Assert.Throws<ArgumentNullException>(() => picModel = PICProcessorModel.GetModel(""));
         }
 
         [Test]
         public void PIC16arch_CheckBasicPICFromDBTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            Assert.NotNull(picMode);
-            Assert.NotNull(picMode.PICDescriptor);
-            var pic = picMode.PICDescriptor;
+            var picModel = PICProcessorModel.GetModel(PIC16BasicName);
+            Assert.NotNull(picModel);
+            Assert.NotNull(picModel.PICDescriptor);
+            var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16, pic.GetInstructionSetID);
             Assert.AreEqual(PIC16BasicName, pic.Name);
 
             var arch = GetArch(PIC16BasicName);
             Assert.NotNull(arch);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
+            Assert.AreEqual(picModel.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
         public void PIC16arch_CheckEnhancedPICFromDBTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            Assert.NotNull(picMode);
-            Assert.NotNull(picMode.PICDescriptor);
-            var pic = picMode.PICDescriptor;
+            var picModel = PICProcessorModel.GetModel(PIC16EnhancedName);
+            Assert.NotNull(picModel);
+            Assert.NotNull(picModel.PICDescriptor);
+            var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, pic.GetInstructionSetID);
             Assert.AreEqual(PIC16EnhancedName, pic.Name);
 
             var arch = GetArch(PIC16EnhancedName);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
+            Assert.AreEqual(picModel.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
         public void PIC16arch_CheckFullPICFromDBTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            Assert.NotNull(picMode);
-            Assert.NotNull(picMode.PICDescriptor);
-            var pic = picMode.PICDescriptor;
+            var picModel = PICProcessorModel.GetModel(PIC16FullFeaturedName);
+            Assert.NotNull(picModel);
+            Assert.NotNull(picModel.PICDescriptor);
+            var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, pic.GetInstructionSetID);
             Assert.AreEqual(PIC16FullFeaturedName, pic.Name);
 
             var arch = GetArch(PIC16FullFeaturedName);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
+            Assert.AreEqual(picModel.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
@@ -143,16 +143,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_FailGetRegisterFromNameTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16BasicName).CreateRegisters();
             Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
 
-            picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16EnhancedName).CreateRegisters();
             Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
 
-            picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16FullFeaturedName).CreateRegisters();
             Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
 
         }
@@ -160,8 +157,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetBasicRegisterFromNameTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16BasicName).CreateRegisters();
             Assert.AreEqual("STATUS", PICRegisters.GetRegister("STATUS").Name);
             Assert.AreEqual("FSR", PICRegisters.GetRegister("FSR").Name);
             Assert.AreEqual("INDF", PICRegisters.GetRegister("INDF").Name);
@@ -175,8 +171,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetEnhancedRegisterFromNameTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16EnhancedName).CreateRegisters();
             Assert.AreEqual("STATUS", PICRegisters.GetRegister("STATUS").Name);
             Assert.AreEqual("FSR1L", PICRegisters.GetRegister("FSR1L").Name);
             Assert.AreEqual("FSR1H", PICRegisters.GetRegister("FSR1H").Name);
@@ -195,8 +190,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetFullFeaturedRegisterFromNameTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16FullFeaturedName).CreateRegisters();
             Assert.AreEqual("STATUS", PICRegisters.GetRegister("STATUS").Name);
             Assert.AreEqual("FSR1L", PICRegisters.GetRegister("FSR1L").Name);
             Assert.AreEqual("FSR1H", PICRegisters.GetRegister("FSR1H").Name);
@@ -215,8 +209,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetBasicCoreRegisterTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16BasicName).CreateRegisters();
             Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
             Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
@@ -228,8 +221,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetEnhancedCoreRegisterTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16EnhancedName).CreateRegisters();
             Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
             Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
@@ -240,8 +232,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetFullFeaturedCoreRegisterTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            picMode.CreateRegisters();
+            PICProcessorModel.GetModel(PIC16FullFeaturedName).CreateRegisters();
             Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
             Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));

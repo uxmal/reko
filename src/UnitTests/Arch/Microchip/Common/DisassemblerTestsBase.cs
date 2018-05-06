@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 {
     public class DisassemblerTestsBase
     {
-        protected IPICProcessorMode picMode;
+        protected IPICProcessorModel picMode;
         protected static PICArchitecture arch;
         protected Address baseAddr = Address.Ptr32(0x200);
 

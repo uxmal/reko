@@ -32,34 +32,34 @@ namespace Reko.Arch.MicrochipPIC.Common
     using PIC16;
     using PIC18;
 
-    public abstract class PICProcessorMode : IPICProcessorMode
+    public abstract class PICProcessorModel : IPICProcessorModel
     {
-        private static SortedList<InstructionSetID, PICProcessorMode> modes = new SortedList<InstructionSetID, PICProcessorMode>()
+        private static SortedList<InstructionSetID, PICProcessorModel> modes = new SortedList<InstructionSetID, PICProcessorModel>()
             {
-                { InstructionSetID.PIC16, new PIC16BasicMode() },
-                { InstructionSetID.PIC16_ENHANCED, new PIC16EnhancedMode() },
-                { InstructionSetID.PIC16_FULLFEATURED, new PIC16FullMode() },
-                { InstructionSetID.PIC18, new PIC18LegacyMode() },
-                { InstructionSetID.PIC18_EXTENDED, new PIC18EggMode() },
-                { InstructionSetID.PIC18_ENHANCED, new PIC18EnhancedMode() },
+                { InstructionSetID.PIC16, new PIC16BasicModel() },
+                { InstructionSetID.PIC16_ENHANCED, new PIC16EnhancedModel() },
+                { InstructionSetID.PIC16_FULLFEATURED, new PIC16FullFeatureModel() },
+                { InstructionSetID.PIC18, new PIC18LegacyModel() },
+                { InstructionSetID.PIC18_EXTENDED, new PIC18EggModel() },
+                { InstructionSetID.PIC18_ENHANCED, new PIC18EnhancedModel() },
             };
 
         /// <summary>
         /// Specialised default constructor for use only by derived class.
         /// </summary>
-        protected PICProcessorMode()
+        protected PICProcessorModel()
         { }
 
         /// <summary>
-        /// Gets the processor mode corresponding to the given processor name.
+        /// Gets the PIC processor model corresponding to the given processor name.
         /// </summary>
-        /// <param name="procName">Name of the processor.</param>
+        /// <param name="procName">Name of the PIC processor.</param>
         /// <returns>
-        /// The processor mode.
+        /// The processor model.
         /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown the processor name is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="procName"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown the PIC database is not accessible.</exception>
-        public static IPICProcessorMode GetMode(string procName)
+        public static IPICProcessorModel GetModel(string procName)
         {
             if (string.IsNullOrEmpty(procName))
                 throw new ArgumentNullException(nameof(procName));
@@ -69,7 +69,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var pic = db.GetPIC(procName);
             if (pic is null)
                 return null;
-            if (modes.TryGetValue(pic.GetInstructionSetID, out PICProcessorMode mode))
+            if (modes.TryGetValue(pic.GetInstructionSetID, out PICProcessorModel mode))
             {
                 mode.PICDescriptor = pic;
                 return mode;
@@ -85,7 +85,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC name.
         /// </summary>
-        string IPICProcessorMode.PICName => PICDescriptor?.Name;
+        string IPICProcessorModel.PICName => PICDescriptor?.Name;
 
         /// <summary>
         /// Creates a disassembler for the target processor.
@@ -167,16 +167,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="arch">The architecture of the processor.</param>
         public virtual void PostprocessProgram(Program program, PICArchitecture arch)
         {
-            if (program == null)
-                throw new ArgumentNullException(nameof(program));
-            if (arch == null)
-                throw new ArgumentNullException(nameof(arch));
-            if (program.User != null)
-            {
-                var user = program.User;
-                user.Processor = arch.PICDescriptor.Name;
-                user.TextEncoding = Encoding.ASCII;
-            }
+            PICPostprocessProgram.Validate(program, arch);
         }
 
     }

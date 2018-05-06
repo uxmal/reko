@@ -11,9 +11,9 @@
     <user>
       <address>00000000</address>
       <loader>IntelHex</loader>
-      <processor>
+      <processor name="PIC18F4455">
         <item key="Model">PIC18F4455</item>
-        <item key="ExecuteMode">Extended</item>
+        <item key="ExecuteMode">Traditional</item>
       </processor>
       <registerValues />
     </user>

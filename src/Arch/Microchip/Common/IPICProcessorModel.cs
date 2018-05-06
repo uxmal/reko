@@ -28,12 +28,12 @@ using System.Collections.Generic;
 namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
-    /// Interface for PIC processor mode builders.
+    /// Interface for PIC processor model.
     /// </summary>
-    public interface IPICProcessorMode
+    public interface IPICProcessorModel
     {
         /// <summary>
-        /// Gets the PIC descriptor.
+        /// Gets the PIC descriptor as defined by Microchip.
         /// </summary>
         PIC PICDescriptor { get; }
 
@@ -113,7 +113,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
 
         /// <summary>
-        /// Postprocess the program which has been loaded.
+        /// Postprocess the program image which has been loaded.
         /// </summary>
         /// <param name="program">The program.</param>
         /// <param name="arch">The architecture of the processor.</param>

@@ -49,24 +49,24 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         [Test]
         public void PIC18arch_WrongPIC()
         {
-            var picMode = PICProcessorMode.GetMode("PICUnknown");
-            Assert.IsNull(picMode);
-            Assert.Throws<ArgumentNullException>(() => picMode = PICProcessorMode.GetMode(""));
+            var picModel = PICProcessorModel.GetModel("PICUnknown");
+            Assert.IsNull(picModel);
+            Assert.Throws<ArgumentNullException>(() => picModel = PICProcessorModel.GetModel(""));
         }
 
         [Test]
         public void PIC18arch_CheckArchLegacyFromDBTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
-            Assert.NotNull(picMode);
-            Assert.NotNull(picMode.PICDescriptor);
-            var pic = picMode.PICDescriptor;
+            var picModel = PICProcessorModel.GetModel(PIC18LegacyName);
+            Assert.NotNull(picModel);
+            Assert.NotNull(picModel.PICDescriptor);
+            var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC18, pic.GetInstructionSetID);
             Assert.AreEqual(PIC18LegacyName, pic.Name);
 
             var arch = GetArch(PIC18LegacyName);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
+            Assert.AreEqual(picModel.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
             Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
 
@@ -79,16 +79,16 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         [Test]
         public void PIC18arch_CheckArchEggFromDBTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18EggName);
-            Assert.NotNull(picMode);
-            Assert.NotNull(picMode.PICDescriptor);
-            var pic = picMode.PICDescriptor;
+            var picModel = PICProcessorModel.GetModel(PIC18EggName);
+            Assert.NotNull(picModel);
+            Assert.NotNull(picModel.PICDescriptor);
+            var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, pic.GetInstructionSetID);
             Assert.AreEqual(PIC18EggName, pic.Name);
 
             var arch = GetArch(PIC18EggName);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
+            Assert.AreEqual(picModel.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
             Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
 
@@ -101,17 +101,17 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         [Test]
         public void PIC18arch_CheckArchEnhancedFromDBTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
-            Assert.NotNull(picMode);
-            Assert.NotNull(picMode.PICDescriptor);
-            var pic = picMode.PICDescriptor;
+            var picModel = PICProcessorModel.GetModel(PIC18EnhancedName);
+            Assert.NotNull(picModel);
+            Assert.NotNull(picModel.PICDescriptor);
+            var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, pic.GetInstructionSetID);
             Assert.AreEqual(PIC18EnhancedName, pic.Name);
 
 
             var arch = GetArch(PIC18EnhancedName);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
+            Assert.AreEqual(picModel.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
             Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
 

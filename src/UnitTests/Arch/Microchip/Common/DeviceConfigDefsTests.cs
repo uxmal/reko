@@ -35,8 +35,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16DevConf_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            picMode.CreateMemoryDescriptor();
+            PICProcessorModel.GetModel(PIC16BasicName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x2007), dcr.Address);
@@ -53,8 +52,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhDevConf_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            picMode.CreateMemoryDescriptor();
+            PICProcessorModel.GetModel(PIC16EnhancedName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
@@ -71,8 +69,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16FullDevConf_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            picMode.CreateMemoryDescriptor();
+            PICProcessorModel.GetModel(PIC16FullFeaturedName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG4");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x800A), dcr.Address);
@@ -91,8 +88,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18DevConf_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
-            picMode.CreateMemoryDescriptor();
+            PICProcessorModel.GetModel(PIC18LegacyName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
@@ -114,8 +110,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EggDevConf_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18EggName);
-            picMode.CreateMemoryDescriptor();
+            PICProcessorModel.GetModel(PIC18EggName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
@@ -137,8 +132,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdDevConf_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
-            picMode.CreateMemoryDescriptor();
+            PICProcessorModel.GetModel(PIC18EnhancedName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);

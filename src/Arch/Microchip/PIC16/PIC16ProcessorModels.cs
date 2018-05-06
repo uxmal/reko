@@ -28,7 +28,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
 
-    internal abstract class PIC16ProcessorMode : PICProcessorMode
+    internal abstract class PIC16ProcessorModel : PICProcessorModel
     {
         public override void CreateMemoryDescriptor()
             => PIC16MemoryDescriptor.Create(PICDescriptor);
@@ -45,14 +45,9 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         public override PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             => new PIC16PointerScanner(rdr, knownLinAddresses, flags);
 
-        public override void PostprocessProgram(Program program, PICArchitecture arch)
-        {
-            base.PostprocessProgram(program, arch);
-        }
-
     }
 
-    internal class PIC16BasicMode : PIC16ProcessorMode
+    internal class PIC16BasicModel : PIC16ProcessorModel
     {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16BasicDisasm.Create(arch, rdr);
@@ -65,7 +60,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
     }
 
-    internal class PIC16EnhancedMode : PIC16ProcessorMode
+    internal class PIC16EnhancedModel : PIC16ProcessorModel
     {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16EnhancedDisasm.Create(arch, rdr);
@@ -78,7 +73,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
     }
 
-    internal class PIC16FullMode : PIC16ProcessorMode
+    internal class PIC16FullFeatureModel : PIC16ProcessorModel
     {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16FullDisasm.Create(arch, rdr);

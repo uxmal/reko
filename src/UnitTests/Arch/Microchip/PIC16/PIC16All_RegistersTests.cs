@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             {
                 try
                 {
-                    PICProcessorMode.GetMode(pic.Name).CreateRegisters();
+                    PICProcessorModel.GetModel(pic.Name).CreateRegisters();
                     Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
                     Assert.IsNotNull(PIC16BasicRegisters.RP0, $"Null RP0 register for '{pic.Name}'");
                     Assert.IsNotNull(PIC16BasicRegisters.RP1, $"Null RP1 register for '{pic.Name}'");
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             {
                 try
                 {
-                    PICProcessorMode.GetMode(pic.Name).CreateRegisters();
+                    PICProcessorModel.GetModel(pic.Name).CreateRegisters();
                     Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
                     Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.Name}'");
                 }
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             {
                 try
                 {
-                    PICProcessorMode.GetMode(pic.Name).CreateRegisters();
+                    PICProcessorModel.GetModel(pic.Name).CreateRegisters();
                     Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
                     Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.Name}'");
                 }

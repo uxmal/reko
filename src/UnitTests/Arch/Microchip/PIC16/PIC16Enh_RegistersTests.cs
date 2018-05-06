@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         /// </summary>
         public PIC16Enh_RegistersTests()
         {
-            PICProcessorMode.GetMode(PIC16EnhancedName).CreateRegisters();
+            PICProcessorModel.GetModel(PIC16EnhancedName).CreateRegisters();
         }
 
         [Test]

@@ -62,7 +62,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the processor mode builders.
         /// </summary>
-        public IPICProcessorMode ProcessorMode => Options?.ProcessorMode;
+        public IPICProcessorModel ProcessorMode => Options?.ProcessorModel;
 
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
@@ -80,9 +80,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public void CreatePICProcessorModel()
         {
-            if (Options == null || Options.ProcessorMode == null)
+            if (Options == null || Options.ProcessorModel == null)
                 throw new InvalidOperationException($"Needs to set architecture's {nameof(Options)} before calling {nameof(CreatePICProcessorModel)} method.");
-            Description = PICDescriptor.Desc;
+            Description = Options.ProcessorModel.PICName;
             ProcessorMode.CreateMemoryDescriptor();
             ProcessorMode.CreateRegisters();
             State = ProcessorMode.CreateProcessorState(this);
@@ -298,7 +298,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return null;
             var dict = new Dictionary<string, object>
             {
-                ["Model"] = Options.ProcessorMode.PICName,
+                ["Model"] = Options.ProcessorModel.PICName,
                 ["ExecuteMode"] = Options.PICExecutionMode.ToString()
             };
             return dict;

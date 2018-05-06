@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         /// </summary>
         public PIC16Basic_RegistersTests()
         {
-            PICProcessorMode.GetMode(PIC16BasicName).CreateRegisters();
+            PICProcessorModel.GetModel(PIC16BasicName).CreateRegisters();
         }
 
         [Test]

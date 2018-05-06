@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
     public class PICRegistersTestsBase
     {
 
-        protected IPICProcessorMode picMode;
+        protected IPICProcessorModel picMode;
         protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
         protected PICProcessorState state;
