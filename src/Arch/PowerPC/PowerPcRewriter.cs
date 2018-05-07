@@ -215,7 +215,9 @@ namespace Reko.Arch.PowerPC
                 case Opcode.lmw: RewriteLmw(); break;
                 case Opcode.lq: RewriteLq(); break;
                 case Opcode.lvewx: RewriteLvewx(); break;
-                case Opcode.lvlx: RewriteLvlx(); break;
+                case Opcode.lvlx:
+                case Opcode.lvlx128: RewriteLvlx(); break;
+                case Opcode.lvrx128: RewriteLvrx(); break;
                 case Opcode.lvsl: RewriteLvsl(); break;
                 case Opcode.lvx:
                 case Opcode.lvx128: RewriteLzx(PrimitiveType.Word128, PrimitiveType.Word128); break;
@@ -292,7 +294,9 @@ namespace Reko.Arch.PowerPC
                 case Opcode.stmw: RewriteStmw(); break;
                 case Opcode.stvewx: RewriteStvewx(); break;
                 case Opcode.stvx: RewriteStx(PrimitiveType.Word128); break;
+                case Opcode.stvx128: RewriteStx(PrimitiveType.Word128); break;
                 case Opcode.stvlx128: RewriteStx(PrimitiveType.Word128); break;
+                case Opcode.stvrx128: RewriteStx(PrimitiveType.Word128); break;
                 case Opcode.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Opcode.stwbrx: RewriteStwbrx(); break;
                 case Opcode.stwcx: RewriteStcx("__stwcx", PrimitiveType.Word32); break;
@@ -326,20 +330,31 @@ namespace Reko.Arch.PowerPC
                 case Opcode.vmaxub: RewriteVectorBinOp("__vmaxub", PrimitiveType.UInt8); break;
                 case Opcode.vmaxuh: RewriteVectorBinOp("__vmaxuh", PrimitiveType.UInt16); break;
                 case Opcode.vmladduhm: RewriteVectorBinOp("__vmladduhm", PrimitiveType.UInt16); break;
-                case Opcode.vmrghw: RewriteVmrghw(); break;
-                case Opcode.vmrglw: RewriteVmrglw(); break;
+                case Opcode.vmrghw:
+                case Opcode.vmrghw128: RewriteVmrghw(); break;
+                case Opcode.vmrglw:
+                case Opcode.vmrglw128: RewriteVmrglw(); break;
+                case Opcode.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp128", PrimitiveType.Real32); break;  //$REVIEW: is it correct?
+                case Opcode.vmulfp128: RewriteVectorBinOp("__vmulfp", PrimitiveType.Real32); break;         //$REVIEW: is it correct?
                 case Opcode.vnmsubfp: RewriteVnmsubfp(); break;
-                case Opcode.vor: RewriteVor(); break;
+                case Opcode.vor:
+                case Opcode.vor128: RewriteVor(); break;
                 case Opcode.vperm: RewriteVperm(); break;
                 case Opcode.vrefp: RewriteVrefp(); break;
+                case Opcode.vrlimi128: RewriteVrlimi(); break;
                 case Opcode.vrsqrtefp: RewriteVrsqrtefp(); break;
                 case Opcode.vsel: RewriteVsel(); break;
                 case Opcode.vsldoi: RewriteVsldoi(); break;
-                case Opcode.vslw: RewriteVslw(); break;
-                case Opcode.vspltisw: RewriteVspltisw(); break;
-                case Opcode.vspltw: RewriteVspltw(); break;
+                case Opcode.vslw:
+                case Opcode.vslw128: RewriteVslw(); break;
+                case Opcode.vspltisw:
+                case Opcode.vspltisw128: RewriteVspltisw(); break;
+                case Opcode.vspltw:
+                case Opcode.vspltw128: RewriteVspltw(); break;
                 case Opcode.vsubfp: RewriteVsubfp(); break;
-                case Opcode.vxor: RewriteXor(false); break;
+                case Opcode.vupkd3d128: RewriteVupkd3d(); break;
+                case Opcode.vxor:
+                case Opcode.vxor128: RewriteXor(false); break;
                 case Opcode.xor: RewriteXor(false); break;
                 case Opcode.xori: RewriteXor(false); break;
                 case Opcode.xoris: RewriteXoris(); break;

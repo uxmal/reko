@@ -982,5 +982,677 @@ namespace Reko.UnitTests.Arch.PowerPC
             // 0001 0101 0101 1111 1010 1100 0011 1001
             AssertCode(0x155FAC39, "vaddfp128\tv74,v127,v53");
         }
+
+        [Test]
+        public void PPCDis_regression9()
+        {
+            // There's always some more work to do.... but most of these really are
+            // invalid and should be removable.
+            /*
+            Unknown PowerPC instruction 00000000
+            Unknown PowerPC instruction 00000001
+            Unknown PowerPC instruction 00000002
+            Unknown PowerPC instruction 00000003
+            Unknown PowerPC instruction 00000004
+            Unknown PowerPC instruction 00000005
+            Unknown PowerPC instruction 00000006
+            Unknown PowerPC instruction 00000007
+            Unknown PowerPC instruction 00000008
+            Unknown PowerPC instruction 00000009
+            Unknown PowerPC instruction 0000000A
+            Unknown PowerPC instruction 0000000B
+            Unknown PowerPC instruction 0000000C
+            Unknown PowerPC instruction 0000000D
+            Unknown PowerPC instruction 0000000E
+            Unknown PowerPC instruction 0000000F
+            Unknown PowerPC instruction 00000010
+            Unknown PowerPC instruction 00000011
+            Unknown PowerPC instruction 00000012
+            Unknown PowerPC instruction 00000013
+            Unknown PowerPC instruction 00000014
+            Unknown PowerPC instruction 00000015
+            Unknown PowerPC instruction 00000016
+            Unknown PowerPC instruction 00000017
+            Unknown PowerPC instruction 00000018
+            Unknown PowerPC instruction 00000019
+            Unknown PowerPC instruction 0000001A
+            Unknown PowerPC instruction 0000001B
+            Unknown PowerPC instruction 0000001C
+            Unknown PowerPC instruction 0000001D
+            Unknown PowerPC instruction 0000001E
+            Unknown PowerPC instruction 0000001F
+            Unknown PowerPC instruction 00000020
+            Unknown PowerPC instruction 00000021
+            Unknown PowerPC instruction 00000022
+            Unknown PowerPC instruction 00000023
+            Unknown PowerPC instruction 00000024
+            Unknown PowerPC instruction 00000025
+            Unknown PowerPC instruction 00000026
+            Unknown PowerPC instruction 00000027
+            Unknown PowerPC instruction 00000028
+            Unknown PowerPC instruction 00000029
+            Unknown PowerPC instruction 0000002A
+            Unknown PowerPC instruction 0000002B
+            Unknown PowerPC instruction 0000002C
+            Unknown PowerPC instruction 0000002D
+            Unknown PowerPC instruction 0000002E
+            Unknown PowerPC instruction 0000002F
+            Unknown PowerPC instruction 00000030
+            Unknown PowerPC instruction 00000031
+            Unknown PowerPC instruction 00000032
+            Unknown PowerPC instruction 00000033
+            Unknown PowerPC instruction 00000034
+            Unknown PowerPC instruction 00000035
+            Unknown PowerPC instruction 00000036
+            Unknown PowerPC instruction 00000037
+            Unknown PowerPC instruction 00000038
+            Unknown PowerPC instruction 00000039
+            Unknown PowerPC instruction 0000003A
+            Unknown PowerPC instruction 0000003B
+            Unknown PowerPC instruction 0000003C
+            Unknown PowerPC instruction 0000003D
+            Unknown PowerPC instruction 0000003E
+            Unknown PowerPC instruction 0000003F
+            Unknown PowerPC instruction 00000040
+            Unknown PowerPC instruction 00000041
+            Unknown PowerPC instruction 00000042
+            Unknown PowerPC instruction 00000043
+            Unknown PowerPC instruction 00000044
+            Unknown PowerPC instruction 00000045
+            Unknown PowerPC instruction 00000046
+            Unknown PowerPC instruction 00000047
+            Unknown PowerPC instruction 00000048
+            Unknown PowerPC instruction 00000049
+            Unknown PowerPC instruction 0000004A
+            Unknown PowerPC instruction 0000004B
+            Unknown PowerPC instruction 0000004C
+            Unknown PowerPC instruction 0000004D
+            Unknown PowerPC instruction 0000004E
+            Unknown PowerPC instruction 0000004F
+            Unknown PowerPC instruction 00000050
+            Unknown PowerPC instruction 00000051
+            Unknown PowerPC instruction 00000052
+            Unknown PowerPC instruction 00000053
+            Unknown PowerPC instruction 00000054
+            Unknown PowerPC instruction 00000055
+            Unknown PowerPC instruction 00000056
+            Unknown PowerPC instruction 00000057
+            Unknown PowerPC instruction 00000058
+            Unknown PowerPC instruction 00000059
+            Unknown PowerPC instruction 0000005A
+            Unknown PowerPC instruction 0000005B
+            Unknown PowerPC instruction 0000005C
+            Unknown PowerPC instruction 0000005D
+            Unknown PowerPC instruction 0000005E
+            Unknown PowerPC instruction 0000005F
+            Unknown PowerPC instruction 00000060
+            Unknown PowerPC instruction 00000061
+            Unknown PowerPC instruction 00000062
+            Unknown PowerPC instruction 00000063
+            Unknown PowerPC instruction 00000064
+            Unknown PowerPC instruction 00000065
+            Unknown PowerPC instruction 00000066
+            Unknown PowerPC instruction 00000067
+            Unknown PowerPC instruction 00000068
+            Unknown PowerPC instruction 00000069
+            Unknown PowerPC instruction 0000006B
+            Unknown PowerPC instruction 0000006C
+            Unknown PowerPC instruction 0000006D
+            Unknown PowerPC instruction 00000070
+            Unknown PowerPC instruction 00000072
+            Unknown PowerPC instruction 0000007F
+            Unknown PowerPC instruction 00000080
+            Unknown PowerPC instruction 00000081
+            Unknown PowerPC instruction 00000082
+            Unknown PowerPC instruction 00000083
+            Unknown PowerPC instruction 00000084
+            Unknown PowerPC instruction 00000087
+            Unknown PowerPC instruction 00000091
+            Unknown PowerPC instruction 0000009E
+            Unknown PowerPC instruction 000000A1
+            Unknown PowerPC instruction 000000A4
+            Unknown PowerPC instruction 000000A7
+            Unknown PowerPC instruction 000000B7
+            Unknown PowerPC instruction 000000C0
+            Unknown PowerPC instruction 000000CE
+            Unknown PowerPC instruction 000000D7
+            Unknown PowerPC instruction 000000F0
+            Unknown PowerPC instruction 000000FF
+            Unknown PowerPC instruction 00000100
+            Unknown PowerPC instruction 00000190
+            Unknown PowerPC instruction 00000191
+            Unknown PowerPC instruction 000001A4
+            Unknown PowerPC instruction 000001A9
+            Unknown PowerPC instruction 000001C0
+            Unknown PowerPC instruction 000001C4
+            Unknown PowerPC instruction 000001C5
+            Unknown PowerPC instruction 000001CC
+            Unknown PowerPC instruction 000001CD
+            Unknown PowerPC instruction 000001CE
+            Unknown PowerPC instruction 000001CF
+            Unknown PowerPC instruction 000001D7
+            Unknown PowerPC instruction 000001D9
+            Unknown PowerPC instruction 000001E0
+            Unknown PowerPC instruction 000001FC
+            Unknown PowerPC instruction 000001FD
+            Unknown PowerPC instruction 000001FE
+            Unknown PowerPC instruction 000001FF
+            Unknown PowerPC instruction 00000200
+            Unknown PowerPC instruction 00000204
+            Unknown PowerPC instruction 00000280
+            Unknown PowerPC instruction 000002DC
+            Unknown PowerPC instruction 00000300
+            Unknown PowerPC instruction 000003CB
+            Unknown PowerPC instruction 000003CD
+            Unknown PowerPC instruction 000003D1
+            Unknown PowerPC instruction 000003F8
+            Unknown PowerPC instruction 000003FF
+            Unknown PowerPC instruction 00000400
+            Unknown PowerPC instruction 00000404
+            Unknown PowerPC instruction 00000409
+            Unknown PowerPC instruction 0000044F
+            Unknown PowerPC instruction 0000047F
+            Unknown PowerPC instruction 000005C8
+            Unknown PowerPC instruction 000005F8
+            Unknown PowerPC instruction 000006F8
+            Unknown PowerPC instruction 00000718
+            Unknown PowerPC instruction 00000778
+            Unknown PowerPC instruction 000007B8
+            Unknown PowerPC instruction 000007D8
+            Unknown PowerPC instruction 000007E8
+            Unknown PowerPC instruction 000007F0
+            Unknown PowerPC instruction 00000800
+            Unknown PowerPC instruction 00000A00
+            Unknown PowerPC instruction 00000A31
+            Unknown PowerPC instruction 00000C38
+            Unknown PowerPC instruction 00000C39
+            Unknown PowerPC instruction 00000C3C
+            Unknown PowerPC instruction 00000C80
+            Unknown PowerPC instruction 00000C81
+            Unknown PowerPC instruction 00000C82
+            Unknown PowerPC instruction 00000C83
+            Unknown PowerPC instruction 00000C84
+            Unknown PowerPC instruction 00000C94
+            Unknown PowerPC instruction 00000CA4
+            Unknown PowerPC instruction 00000E00
+            Unknown PowerPC instruction 00000E18
+            Unknown PowerPC instruction 00000E1C
+            Unknown PowerPC instruction 00000E25
+            Unknown PowerPC instruction 00000E2E
+            Unknown PowerPC instruction 00000E37
+            Unknown PowerPC instruction 00000E41
+            Unknown PowerPC instruction 00000F01
+            Unknown PowerPC instruction 00000F26
+            Unknown PowerPC instruction 00000FFC
+            Unknown PowerPC instruction 00001000
+            Unknown PowerPC instruction 00001003
+            Unknown PowerPC instruction 00001004
+            Unknown PowerPC instruction 00001005
+            Unknown PowerPC instruction 00001006
+            Unknown PowerPC instruction 00001010
+            Unknown PowerPC instruction 00001200
+            Unknown PowerPC instruction 00001388
+            Unknown PowerPC instruction 00001800
+            Unknown PowerPC instruction 00002000
+            Unknown PowerPC instruction 00002001
+            Unknown PowerPC instruction 00002007
+            Unknown PowerPC instruction 0000200E
+            Unknown PowerPC instruction 00002020
+            Unknown PowerPC instruction 00002200
+            Unknown PowerPC instruction 00002201
+            Unknown PowerPC instruction 00002203
+            Unknown PowerPC instruction 00002206
+            Unknown PowerPC instruction 00002208
+            Unknown PowerPC instruction 00002222
+            Unknown PowerPC instruction 00002301
+            Unknown PowerPC instruction 00002309
+            Unknown PowerPC instruction 00002312
+            Unknown PowerPC instruction 00002318
+            Unknown PowerPC instruction 00002319
+            Unknown PowerPC instruction 0000231A
+            Unknown PowerPC instruction 0000231B
+            Unknown PowerPC instruction 00002694
+            Unknown PowerPC instruction 00002709
+            Unknown PowerPC instruction 00002B09
+            Unknown PowerPC instruction 00002EE0
+            Unknown PowerPC instruction 00002FFD
+            Unknown PowerPC instruction 00003333
+            Unknown PowerPC instruction 00004000
+            Unknown PowerPC instruction 00006009
+            Unknown PowerPC instruction 00006015
+            Unknown PowerPC instruction 00008000
+            Unknown PowerPC instruction 00009873
+            Unknown PowerPC instruction 00009875
+            Unknown PowerPC instruction 0000E00F
+            Unknown PowerPC instruction 0000FFFF
+            Unknown PowerPC instruction 00010000
+            Unknown PowerPC instruction 00010001
+            Unknown PowerPC instruction 00010002
+            Unknown PowerPC instruction 0001004D
+            Unknown PowerPC instruction 0001007B
+            Unknown PowerPC instruction 00010083
+            Unknown PowerPC instruction 00010089
+            Unknown PowerPC instruction 000100BD
+            Unknown PowerPC instruction 00010102
+            Unknown PowerPC instruction 0001013A
+            Unknown PowerPC instruction 000101BD
+            Unknown PowerPC instruction 000101C7
+            Unknown PowerPC instruction 0001025B
+            Unknown PowerPC instruction 00010A2F
+            Unknown PowerPC instruction 00011002
+            Unknown PowerPC instruction 00012180
+            Unknown PowerPC instruction 00018006
+            Unknown PowerPC instruction 0001F400
+            Unknown PowerPC instruction 00020000
+            Unknown PowerPC instruction 00020001
+            Unknown PowerPC instruction 00020003
+            Unknown PowerPC instruction 00020004
+            Unknown PowerPC instruction 00020005
+            Unknown PowerPC instruction 00020006
+            Unknown PowerPC instruction 00020007
+            Unknown PowerPC instruction 00020008
+            Unknown PowerPC instruction 00020009
+            Unknown PowerPC instruction 0002000A
+            Unknown PowerPC instruction 0002000B
+            Unknown PowerPC instruction 0002000C
+            Unknown PowerPC instruction 0002000D
+            Unknown PowerPC instruction 0002000E
+            Unknown PowerPC instruction 0002000F
+            Unknown PowerPC instruction 00020010
+            Unknown PowerPC instruction 00020011
+            Unknown PowerPC instruction 00020012
+            Unknown PowerPC instruction 00022080
+            Unknown PowerPC instruction 00022100
+            Unknown PowerPC instruction 00022204
+            Unknown PowerPC instruction 00030088
+            Unknown PowerPC instruction 00032388
+            Unknown PowerPC instruction 0003238C
+            Unknown PowerPC instruction 00032390
+            Unknown PowerPC instruction 00032394
+            Unknown PowerPC instruction 00032398
+            Unknown PowerPC instruction 0003239C
+            Unknown PowerPC instruction 0003E01F
+            Unknown PowerPC instruction 00040000
+            Unknown PowerPC instruction 00040086
+            Unknown PowerPC instruction 00042180
+            Unknown PowerPC instruction 0005210F
+            Unknown PowerPC instruction 00054800
+            Unknown PowerPC instruction 000548BA
+            Unknown PowerPC instruction 00072380
+            Unknown PowerPC instruction 00080000
+            Unknown PowerPC instruction 00080008
+            Unknown PowerPC instruction 00080010
+            Unknown PowerPC instruction 00080020
+            Unknown PowerPC instruction 00090000
+            Unknown PowerPC instruction 000A61FF
+            Unknown PowerPC instruction 000B2200
+            Unknown PowerPC instruction 000C000D
+            Unknown PowerPC instruction 000F2000
+            Unknown PowerPC instruction 000F4000
+            Unknown PowerPC instruction 000F4400
+            Unknown PowerPC instruction 000FF000
+            Unknown PowerPC instruction 000FF100
+            Unknown PowerPC instruction 00100000
+            Unknown PowerPC instruction 00130001
+            Unknown PowerPC instruction 00130002
+            Unknown PowerPC instruction 00130003
+            Unknown PowerPC instruction 00130004
+            Unknown PowerPC instruction 00130005
+            Unknown PowerPC instruction 00130006
+            Unknown PowerPC instruction 00142100
+            Unknown PowerPC instruction 00142280
+            Unknown PowerPC instruction 00166C00
+            Unknown PowerPC instruction 001A1A6C
+            Unknown PowerPC instruction 00200000
+            Unknown PowerPC instruction 00200020
+            Unknown PowerPC instruction 00252300
+            Unknown PowerPC instruction 00253B08
+            Unknown PowerPC instruction 00253B48
+            Unknown PowerPC instruction 00274900
+            Unknown PowerPC instruction 002E0000
+            Unknown PowerPC instruction 00300000
+            Unknown PowerPC instruction 00400000
+            Unknown PowerPC instruction 00414243
+            Unknown PowerPC instruction 00616263
+            Unknown PowerPC instruction 006C1AC6
+            Unknown PowerPC instruction 006D1A6C
+            Unknown PowerPC instruction 006D6D6C
+            Unknown PowerPC instruction 006D6E6C
+            Unknown PowerPC instruction 00700730
+            Unknown PowerPC instruction 00800050
+            Unknown PowerPC instruction 00AABC00
+            Unknown PowerPC instruction 00AC00B1
+            Unknown PowerPC instruction 00B00000
+            Unknown PowerPC instruction 00B00080
+            Unknown PowerPC instruction 00B01A6C
+            Unknown PowerPC instruction 00B06C00
+            Unknown PowerPC instruction 00B06CC6
+            Unknown PowerPC instruction 00B06D6C
+            Unknown PowerPC instruction 00B0B000
+            Unknown PowerPC instruction 00B0B26C
+            Unknown PowerPC instruction 00B0C600
+            Unknown PowerPC instruction 00BC6CB1
+            Unknown PowerPC instruction 00BF4800
+            Unknown PowerPC instruction 00C00100
+            Unknown PowerPC instruction 00C71A6C
+            Unknown PowerPC instruction 00FFFF00
+            Unknown PowerPC instruction 00FFFFFF
+            Unknown PowerPC instruction 01000000
+            Unknown PowerPC instruction 01000101
+            Unknown PowerPC instruction 01000190
+            Unknown PowerPC instruction 01000191
+            Unknown PowerPC instruction 010001A4
+            Unknown PowerPC instruction 01000202
+            Unknown PowerPC instruction 01000300
+            Unknown PowerPC instruction 01000302
+            Unknown PowerPC instruction 010003D1
+            Unknown PowerPC instruction 01000400
+            Unknown PowerPC instruction 01000404
+            Unknown PowerPC instruction 01000C14
+            Unknown PowerPC instruction 01010000
+            Unknown PowerPC instruction 01010001
+            Unknown PowerPC instruction 01010003
+            Unknown PowerPC instruction 0101000D
+            Unknown PowerPC instruction 01010010
+            Unknown PowerPC instruction 01010015
+            Unknown PowerPC instruction 01010019
+            Unknown PowerPC instruction 01010028
+            Unknown PowerPC instruction 01010052
+            Unknown PowerPC instruction 01010053
+            Unknown PowerPC instruction 0101005A
+            Unknown PowerPC instruction 0101005D
+            Unknown PowerPC instruction 0101005F
+            Unknown PowerPC instruction 0101006B
+            Unknown PowerPC instruction 0101006C
+            Unknown PowerPC instruction 0101006F
+            Unknown PowerPC instruction 0101007D
+            Unknown PowerPC instruction 0101008F
+            Unknown PowerPC instruction 01010097
+            Unknown PowerPC instruction 01010099
+            Unknown PowerPC instruction 0101009A
+            Unknown PowerPC instruction 010100B0
+            Unknown PowerPC instruction 010100BA
+            Unknown PowerPC instruction 010100CC
+            Unknown PowerPC instruction 010100CF
+            Unknown PowerPC instruction 010100D1
+            Unknown PowerPC instruction 010100D2
+            Unknown PowerPC instruction 010100DA
+            Unknown PowerPC instruction 010100DB
+            Unknown PowerPC instruction 010100DC
+            Unknown PowerPC instruction 010100DF
+            Unknown PowerPC instruction 010100E4
+            Unknown PowerPC instruction 010100E7
+            Unknown PowerPC instruction 010100E8
+            Unknown PowerPC instruction 010100EE
+            Unknown PowerPC instruction 010100EF
+            Unknown PowerPC instruction 010100F0
+            Unknown PowerPC instruction 010100F1
+            Unknown PowerPC instruction 010100F7
+            Unknown PowerPC instruction 010100FD
+            Unknown PowerPC instruction 010100FF
+            Unknown PowerPC instruction 01010101
+            Unknown PowerPC instruction 01010102
+            Unknown PowerPC instruction 01010103
+            Unknown PowerPC instruction 01010104
+            Unknown PowerPC instruction 01010105
+            Unknown PowerPC instruction 01010110
+            Unknown PowerPC instruction 0101011B
+            Unknown PowerPC instruction 01010126
+            Unknown PowerPC instruction 01010127
+            Unknown PowerPC instruction 0101012B
+            Unknown PowerPC instruction 0101012C
+            Unknown PowerPC instruction 0101012D
+            Unknown PowerPC instruction 0101012F
+            Unknown PowerPC instruction 01010133
+            Unknown PowerPC instruction 01010135
+            Unknown PowerPC instruction 01010136
+            Unknown PowerPC instruction 01010142
+            Unknown PowerPC instruction 01010143
+            Unknown PowerPC instruction 01010147
+            Unknown PowerPC instruction 0101014D
+            Unknown PowerPC instruction 01010152
+            Unknown PowerPC instruction 01010153
+            Unknown PowerPC instruction 01010154
+            Unknown PowerPC instruction 01010155
+            Unknown PowerPC instruction 01010194
+            Unknown PowerPC instruction 01010197
+            Unknown PowerPC instruction 01010199
+            Unknown PowerPC instruction 010101A1
+            Unknown PowerPC instruction 010101A5
+            Unknown PowerPC instruction 010101B1
+            Unknown PowerPC instruction 010101BA
+            Unknown PowerPC instruction 010101C2
+            Unknown PowerPC instruction 010101C5
+            Unknown PowerPC instruction 010101C6
+            Unknown PowerPC instruction 010101C9
+            Unknown PowerPC instruction 010101CA
+            Unknown PowerPC instruction 010101D3
+            Unknown PowerPC instruction 010101D4
+            Unknown PowerPC instruction 010101D5
+            Unknown PowerPC instruction 010101DC
+            Unknown PowerPC instruction 01010269
+            Unknown PowerPC instruction 0101026A
+            Unknown PowerPC instruction 01020000
+            Unknown PowerPC instruction 01020203
+            Unknown PowerPC instruction 01800000
+            Unknown PowerPC instruction 01E00280
+            Unknown PowerPC instruction 02000000
+            Unknown PowerPC instruction 02000001
+            Unknown PowerPC instruction 02000190
+            Unknown PowerPC instruction 02000191
+            Unknown PowerPC instruction 020001A4
+            Unknown PowerPC instruction 020003D1
+            Unknown PowerPC instruction 02010000
+            Unknown PowerPC instruction 02010001
+            Unknown PowerPC instruction 02010003
+            Unknown PowerPC instruction 0201000D
+            Unknown PowerPC instruction 02010010
+            Unknown PowerPC instruction 02010015
+            Unknown PowerPC instruction 02010019
+            Unknown PowerPC instruction 02010028
+            Unknown PowerPC instruction 02010052
+            Unknown PowerPC instruction 02010053
+            Unknown PowerPC instruction 0201005A
+            Unknown PowerPC instruction 0201005D
+            Unknown PowerPC instruction 0201005F
+            Unknown PowerPC instruction 0201006B
+            Unknown PowerPC instruction 0201006C
+            Unknown PowerPC instruction 0201006F
+            Unknown PowerPC instruction 0201007D
+            Unknown PowerPC instruction 0201008F
+            Unknown PowerPC instruction 02010097
+            Unknown PowerPC instruction 02010099
+            Unknown PowerPC instruction 0201009A
+            Unknown PowerPC instruction 020100B0
+            Unknown PowerPC instruction 020100BA
+            Unknown PowerPC instruction 020100CC
+            Unknown PowerPC instruction 020100CF
+            Unknown PowerPC instruction 020100D1
+            Unknown PowerPC instruction 020100D2
+            Unknown PowerPC instruction 020100DA
+            Unknown PowerPC instruction 020100DB
+            Unknown PowerPC instruction 020100DC
+            Unknown PowerPC instruction 020100DF
+            Unknown PowerPC instruction 020100E4
+            Unknown PowerPC instruction 020100E7
+            Unknown PowerPC instruction 020100E8
+            Unknown PowerPC instruction 020100EE
+            Unknown PowerPC instruction 020100EF
+            Unknown PowerPC instruction 020100F0
+            Unknown PowerPC instruction 020100F1
+            Unknown PowerPC instruction 020100F7
+            Unknown PowerPC instruction 020100FD
+            Unknown PowerPC instruction 020100FF
+            Unknown PowerPC instruction 02010103
+            Unknown PowerPC instruction 02010104
+            Unknown PowerPC instruction 02010105
+            Unknown PowerPC instruction 02010110
+            Unknown PowerPC instruction 0201011B
+            Unknown PowerPC instruction 02010126
+            Unknown PowerPC instruction 02010127
+            Unknown PowerPC instruction 0201012B
+            Unknown PowerPC instruction 0201012C
+            Unknown PowerPC instruction 0201012D
+            Unknown PowerPC instruction 0201012F
+            Unknown PowerPC instruction 02010133
+            Unknown PowerPC instruction 02010135
+            Unknown PowerPC instruction 02010136
+            Unknown PowerPC instruction 02010142
+            Unknown PowerPC instruction 02010143
+            Unknown PowerPC instruction 02010147
+            Unknown PowerPC instruction 0201014D
+            Unknown PowerPC instruction 02010152
+            Unknown PowerPC instruction 02010153
+            Unknown PowerPC instruction 02010154
+            Unknown PowerPC instruction 02010155
+            Unknown PowerPC instruction 02010194
+            Unknown PowerPC instruction 02010197
+            Unknown PowerPC instruction 02010199
+            Unknown PowerPC instruction 020101A1
+            Unknown PowerPC instruction 020101A5
+            Unknown PowerPC instruction 020101B1
+            Unknown PowerPC instruction 020101BA
+            Unknown PowerPC instruction 020101C2
+            Unknown PowerPC instruction 020101C5
+            Unknown PowerPC instruction 020101C6
+            Unknown PowerPC instruction 020101C9
+            Unknown PowerPC instruction 020101CA
+            Unknown PowerPC instruction 020101D3
+            Unknown PowerPC instruction 020101D4
+            Unknown PowerPC instruction 020101D5
+            Unknown PowerPC instruction 020101DC
+            Unknown PowerPC instruction 02010201
+            Unknown PowerPC instruction 02010269
+            Unknown PowerPC instruction 0201026A
+            Unknown PowerPC instruction 02020000
+            Unknown PowerPC instruction 02020101
+            Unknown PowerPC instruction 02020201
+            Unknown PowerPC instruction 02020202
+            Unknown PowerPC instruction 02030201
+            Unknown PowerPC instruction 02030304
+            Unknown PowerPC instruction 03000000
+            Unknown PowerPC instruction 03000100
+            Unknown PowerPC instruction 03010000
+            Unknown PowerPC instruction 03030302
+            Unknown PowerPC instruction 04000000
+            Unknown PowerPC instruction 04000002
+            Unknown PowerPC instruction 04000010
+            Unknown PowerPC instruction 04001000
+            Unknown PowerPC instruction 04010002
+            Unknown PowerPC instruction 04040404
+            Unknown PowerPC instruction 04B06C00
+            Unknown PowerPC instruction 04C56C00
+            Unknown PowerPC instruction 04C8D2CE
+            Unknown PowerPC instruction 05000000
+            Unknown PowerPC instruction 05010000
+            Unknown PowerPC instruction 05030000
+            Unknown PowerPC instruction 05F80000
+            Unknown PowerPC instruction 06000000
+            Unknown PowerPC instruction 06600640
+            Unknown PowerPC instruction 07000000
+            Unknown PowerPC instruction 07020000
+            Unknown PowerPC instruction 08000000
+            Unknown PowerPC instruction 08010000
+            Unknown PowerPC instruction 08030000
+            Unknown PowerPC instruction 08100100
+            Unknown PowerPC instruction 085888DC
+            Unknown PowerPC instruction 08A7FFFF
+            Unknown PowerPC instruction 08A9FFFF
+            Unknown PowerPC instruction 08AAFFFF
+            Unknown PowerPC instruction 08ABFFFF
+            Unknown PowerPC instruction 08C40000
+            Unknown PowerPC instruction 08C80000
+            Unknown PowerPC instruction 08CA0000
+            Unknown PowerPC instruction 09000000
+            Unknown PowerPC instruction 09010000
+            Unknown PowerPC instruction 0A000000
+            Unknown PowerPC instruction 0A000280
+            Unknown PowerPC instruction 0A010000
+            Unknown PowerPC instruction 0A3D70A3
+            Unknown PowerPC instruction 0AD8A6DD
+            Unknown PowerPC instruction 0B000000
+            Unknown PowerPC instruction 0B040000
+            Unknown PowerPC instruction 0B0A0B0A
+            Unknown PowerPC instruction 0BCA0000
+            Unknown PowerPC instruction 0BCC0000
+            Unknown PowerPC instruction 24000000
+            Unknown PowerPC instruction 25000000
+            Unknown PowerPC instruction 256BCEAE
+            Unknown PowerPC instruction 25FD5DD0
+            Unknown PowerPC instruction 26000000
+            Unknown PowerPC instruction 58480000
+            Unknown PowerPC instruction 58595A00
+            Unknown PowerPC instruction 5A88E79E
+            Unknown PowerPC instruction 5A8BFDD1
+            Unknown PowerPC instruction 5A929E8B
+            Unknown PowerPC instruction E4A1AC7D
+            Unknown PowerPC instruction F78D3927
+
+            Unknown PowerPC VX instruction 1000001A 04-01A (26)
+            Unknown PowerPC VX instruction 10011003 04-003 (3)
+            Unknown PowerPC VX instruction 10030001 04-001 (1)
+            Unknown PowerPC VX instruction 10101010 04-010 (16)
+            Unknown PowerPC VX instruction 111110B0 04-0B0 (176)
+            Unknown PowerPC VX instruction 136A2987 04-187 (391)
+            Unknown PowerPC VX instruction 136A3987 04-187 (391)
+            Unknown PowerPC VX instruction 138A2187 04-187 (391)
+            Unknown PowerPC VX instruction 138A3187 04-187 (391)
+            Unknown PowerPC VX instruction 13A05187 04-187 (391)
+            Unknown PowerPC VX instruction 13C05987 04-187 (391)
+            Unknown PowerPC VX instruction 13CA1987 04-187 (391)
+            Unknown PowerPC VX instruction 13D29A35 04-235 (565)
+            Unknown PowerPC VX instruction 13E05987 04-187 (391)
+            Unknown PowerPC VX instruction 13E95187 04-187 (391)
+            Unknown PowerPC VX instruction 13FFF935 04-135 (309)
+
+            Unknown PowerPC VMX instruction 14000825 05-000 (0)
+            Unknown PowerPC VMX instruction 1400E851 05-005 (5)
+            Unknown PowerPC VMX instruction 14020100 05-010 (16)
+            Unknown PowerPC VMX instruction 177B011C 05-011 (17)
+            Unknown PowerPC VMX instruction 173FE1B5 05-019 (25)
+            Unknown PowerPC VMX instruction 16D6BA35 05-021 (33)
+            Unknown PowerPC VMX instruction 15BAAA71 05-025 (37)
+
+            Unknown PowerPC VMX instruction 18000000 06-000 (0)
+            Unknown PowerPC VMX instruction 187EF823 06-002 (2)
+            Unknown PowerPC VMX instruction 18F7E121 06-012 (18)
+            Unknown PowerPC VMX instruction 18280186 06-018 (24)
+            Unknown PowerPC VMX instruction 195CB9F1 06-01F (31)
+            Unknown PowerPC VMX instruction 1925FA11 06-021 (33)
+            Unknown PowerPC VMX instruction 1AC0FA35 06-023 (35)
+            Unknown PowerPC VMX instruction 18F4D251 06-025 (37)
+            Unknown PowerPC VMX instruction 180EB291 06-029 (41)
+            Unknown PowerPC VMX instruction 1BDEE2A5 06-02A (42)
+            Unknown PowerPC VMX instruction 1801F2B1 06-02B (43)
+            Unknown PowerPC VMX instruction 1803FAD1 06-02D (45)
+            Unknown PowerPC VMX instruction 1BFFF2E5 06-02E (46)
+            Unknown PowerPC VMX instruction 1927FB11 06-031 (49)
+            Unknown PowerPC VMX instruction 1BA00334 06-033 (51)
+            Unknown PowerPC VMX instruction 181AF353 06-035 (53)
+            Unknown PowerPC VMX instruction 1BC0DB75 06-037 (55)
+            Unknown PowerPC VMX instruction 18069391 06-039 (57)
+            Unknown PowerPC VMX instruction 18ADA3D1 06-03D (61)
+            Unknown PowerPC VMX instruction 18A0DBF1 06-03F (63)
+            Unknown PowerPC VMX instruction 1BCECCED 06-04E (78)
+            Unknown PowerPC VMX instruction 1A013E1A 06-061 (97)
+            Unknown PowerPC VMX instruction 1800F631 06-063 (99)
+            Unknown PowerPC VMX instruction 19000640 06-064 (100)
+            Unknown PowerPC VMX instruction 1800F671 06-067 (103)
+            Unknown PowerPC VMX instruction 1BA0EEB5 06-06B (107)
+            Unknown PowerPC VMX instruction 1BEDFED7 06-06D (109)
+            Unknown PowerPC VMX instruction 1AA0EEF5 06-06F (111)
+
+            Unknown PowerPC X instruction 4C4D4E4F 13-327 (807)
+            Unknown PowerPC X instruction 4D48C976 13-0BB (187)
+            Unknown PowerPC X instruction 4F8E1AE5 13-172 (370)
+            Unknown PowerPC X instruction 7C53B17E 1F-0BF (191)
+            Unknown PowerPC X instruction 7DC2DEC0 1F-360 (864)
+            Unknown PowerPC X instruction 7F7F7F7F 1F-3BF (959)
+            Unknown PowerPC X instruction 7FEFFFFF 1F-3FF (1023)
+            Unknown PowerPC XX3 instruction F0A65DFF 3C-BBF (3007)
+            Unknown PowerPC XX3 instruction F3D4A7EB 3C-14FD (5373)
+            Unknown PowerPC XX3 instruction F3F895AA 3C-12B5 (4789)
+             */
+        }
     }
 }

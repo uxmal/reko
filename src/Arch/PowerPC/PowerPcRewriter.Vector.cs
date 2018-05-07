@@ -252,6 +252,22 @@ namespace Reko.Arch.PowerPC
                     vra));
         }
 
+        private void RewriteVrlimi()
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var vra = RewriteOperand(instr.op2);
+            var vrb = RewriteOperand(instr.op3);
+            var vrc = RewriteOperand(instr.op4);
+            m.Assign(
+                vrt,
+                host.PseudoProcedure(
+                    "__vrlimi",
+                    PrimitiveType.Word128,
+                    vra,
+                    vrb,
+                    vrc));
+        }
+
         public void RewriteVrsqrtefp()
         {
             var vrt = RewriteOperand(instr.op1);
@@ -355,5 +371,27 @@ namespace Reko.Arch.PowerPC
 
             m.Assign(opD, host.PseudoProcedure("__lvlx", opD.DataType, opS, opI));
         }
+
+        public void RewriteLvrx()
+        {
+            //$TODO: can't find any documentation of the LVLX instruction or what it does.
+            // assuming an instrinsic is used for this.
+            var opD = RewriteOperand(instr.op1);
+            var opS = RewriteOperand(instr.op2);
+            var opI = RewriteOperand(instr.op3);
+
+            m.Assign(opD, host.PseudoProcedure("__lvrx", opD.DataType, opS, opI));
+        }
+
+        // Very specific to XBOX 360
+
+        private void RewriteVupkd3d()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opA = RewriteOperand(instr.op2);
+            var opB = RewriteOperand(instr.op3);
+            m.Assign(opD, host.PseudoProcedure("__vupkd3d", opD.DataType, opA, opB));
+        }
+
     }
 }
