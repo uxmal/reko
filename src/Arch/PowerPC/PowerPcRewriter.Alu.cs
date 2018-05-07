@@ -596,6 +596,78 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr0(rd);
         }
 
+        private void RewriteRldicr()
+        {
+            var rd = RewriteOperand(instr.op1);
+            var rs = RewriteOperand(instr.op2);
+            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.op4)).ToByte();
+            ulong maskEnd = 0ul - (ulong)(1ul << (63 - me));
+
+            // Extract double word and right justify immediate | extrdi RA, RS, n, b   | rldicl RA, RS, b + n, 64 - n   | n > 0
+            // Rotate double word left immediate               | rotldi RA, RS, n      | rldicl RA, RS, n, 0            | None
+            // Rotate double word right immediate              | rotrdi RA, RS, n      | rldicl RA, RS, 64 - n, 0       | None
+            // Rotate double word right immediate              | srdi RA, RS, n	       | rldicl RA, RS, 64 - n, n       | n < 64
+            // Clear left double word immediate                | clrldi RA, RS, n      | rldicl RA, RS, 0, n	        | n < 64
+            // Extract double word and left justify immediate  | extldi RA, RS, n, b   | rldicr RA, RS, b, n - 1        | None
+            // Shift left double word immediate                | sldi RA, RS, n        | rldicr RA, RS, n, 63 - n	    | None
+            // Clear right double word immediate               | clrrdi RA, RS, n      | rldicr RA, RS, 0, 63 - n	    | None
+            // Clear left double word and shift left immediate | clrlsldi RA, RS, b, n | rldic RA, RS, n, b - n         | None
+            // Insert double word from right immediate         | insrdi RA, RS, n, b   | rldimi RA, RS, 64 - (b + n), b | None
+            // Rotate double word left                         | rotld RA, RS, RB      | rldcl RA, RS, RB, 0	        | None
+            if (sh + me == 63)
+            {
+                // sldi
+                m.Assign(rd, m.Shl(rs, sh));
+            }
+            else if (me == 63)
+            {
+                // rotldi
+                m.Assign(rd, host.PseudoProcedure(
+                    PseudoProcedure.Rol,
+                    PrimitiveType.Word64,
+                    rs, Constant.Byte(sh)));
+            }
+            else
+            {
+                host.Error(
+                    instr.Address,
+                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                EmitUnitTest();
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            MaybeEmitCr0(rd);
+        }
+
+        private void RewriteRldimi()
+        {
+            var rd = RewriteOperand(instr.op1);
+            var rs = RewriteOperand(instr.op2);
+            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.op4)).ToByte();
+
+            MaybeEmitCr0(rd);
+            if (sh == 0x20 && me == 0x00)
+            {
+                m.Assign(rd,
+                    m.Dpb(rd, m.Cast(PrimitiveType.Word32, rs), 0x20));
+            }
+            else
+            {
+                host.Error(
+                    instr.Address,
+                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                EmitUnitTest();
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            MaybeEmitCr0(rd);
+
+        }
+
         void RewriteRlwinm()
         {
             var rd = RewriteOperand(instr.op1);

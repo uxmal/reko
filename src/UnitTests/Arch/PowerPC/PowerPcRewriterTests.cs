@@ -1048,6 +1048,24 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_rldicr()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x798C0F86, // rldicr\tr12,r12,33,30
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r12 = r12 << 0x21");
+        }
+
+        [Test]
+        public void PPCRw_rldimi()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x790A000E,  // rldimi r10,r8,20,00
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r10 = DPB(r10, (word32) r8, 32)");
+        }
+
+        [Test]
         public void PPCRw_mftb()
         {
             AssertCode(0x7eac42e6, //"mftb\tr21,0188");

@@ -255,6 +255,8 @@ namespace Reko.Arch.PowerPC
                 case Opcode.oris: RewriteOris(); break;
                 case Opcode.rfi: RewriteRfi(); break;
                 case Opcode.rldicl: RewriteRldicl(); break;
+                case Opcode.rldicr: RewriteRldicr(); break;
+                case Opcode.rldimi: RewriteRldimi(); break;
                 case Opcode.rlwinm: RewriteRlwinm(); break;
                 case Opcode.rlwimi: RewriteRlwimi(); break;
                 case Opcode.rlwnm: RewriteRlwnm(); break;

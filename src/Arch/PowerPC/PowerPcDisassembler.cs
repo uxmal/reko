@@ -333,7 +333,18 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    Opcode opcode = ((wInstr & (1 << 2)) == 0) ? Opcode.rldicl : Opcode.rldicr;
+                    Opcode opcode;
+                    switch ((wInstr >> 1) & 0xF)
+                    {
+                    case 0: case 1: opcode = Opcode.rldicl; break;
+                    case 2: case 3: opcode = Opcode.rldicr; break;
+                    case 4: case 5: opcode = Opcode.rldic; break;
+                    case 6: case 7: opcode = Opcode.rldimi; break;
+                    case 8: opcode = Opcode.rldcl; break;
+                    case 9: opcode = Opcode.rldcr; break;
+                    default: return new PowerPcInstruction(Opcode.illegal);
+                    }
+                    
                     wInstr &= ~1u;
                     return new PowerPcInstruction(opcode)
                     {
