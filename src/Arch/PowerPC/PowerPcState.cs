@@ -34,26 +34,18 @@ namespace Reko.Arch.PowerPC
     public class PowerPcState : ProcessorState
     {
         private PowerPcArchitecture arch;
-        private ulong[] regs;
-        private ulong[] valid;
+        private Dictionary<RegisterStorage, Constant> regs;
 
         public PowerPcState(PowerPcArchitecture arch)
         {
             this.arch = arch;
-            this.regs = new ulong[0x80];
-            this.valid = new ulong[0x80];
+            this.regs = new Dictionary<RegisterStorage, Constant>();
         }
 
         public PowerPcState(PowerPcState other) : base(other)
         {
             this.arch = other.arch;
-            this.regs = new ulong[other.regs.Length];
-            this.valid = new ulong[other.valid.Length];
-            for (int i = 0; i < other.regs.Length; ++i)
-            {
-                this.regs[i] = other.regs[i];
-                this.valid[i] = other.valid[i];
-            }
+            this.regs = new Dictionary<RegisterStorage, Constant>(other.regs);
         }
 
         public override IProcessorArchitecture Architecture
@@ -68,10 +60,9 @@ namespace Reko.Arch.PowerPC
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (reg.Number < valid.Length &&  (valid[reg.Number] & reg.BitMask) == reg.BitMask)
+            if (regs.TryGetValue(reg, out Constant value))
             {
-                var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
-                return Constant.Create(reg.DataType, val);
+                return value;
             }
             else
                 return Constant.Invalid;
@@ -79,21 +70,8 @@ namespace Reko.Arch.PowerPC
 
         public override void SetRegister(RegisterStorage reg, Constant c)
         {
-            if (c == null || !c.IsValid)
-            {
-                valid[reg.Number] &= ~reg.BitMask;
-            }
-            else if (c.DataType is PrimitiveType pt && pt.Domain == Domain.Real)
-            {
-                regs[reg.Number] = 0xDEADBEEF;
-                valid[reg.Number] &= ~reg.BitMask;
-            }
-            else
-            {
-                valid[reg.Number] |= reg.BitMask;
-                var val = (regs[reg.Number] & ~reg.BitMask) | (c.ToUInt64() & reg.BitMask);
-                regs[reg.Number] = val;
-            }
+            c = c ?? Constant.Invalid;
+            regs[reg] = c;
         }
 
         public override void SetInstructionPointer(Address addr)
