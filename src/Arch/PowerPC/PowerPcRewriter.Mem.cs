@@ -423,9 +423,20 @@ namespace Reko.Arch.PowerPC
             case 0x10: op = m.Lt; break;
             case 0x14: op = m.Le; break;
             case 0x18: op = m.Ne; break;
-            default: throw new AddressCorrelatedException(
-                instr.Address,
-                string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
+            case 0x1F:
+                rtlc = RtlClass.Linear;
+                m.SideEffect(
+                    host.PseudoProcedure(
+                        "__trap",
+                        VoidType.Instance));
+                return;
+            default:
+                host.Error(
+                    instr.Address,
+                    string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
             }
             rtlc = RtlClass.Linear;
             m.BranchInMiddleOfInstruction(
@@ -436,7 +447,6 @@ namespace Reko.Arch.PowerPC
                 host.PseudoProcedure(
                     "__trap",
                     VoidType.Instance));
-
         }
     }
 }

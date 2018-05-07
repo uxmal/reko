@@ -259,13 +259,13 @@ namespace Reko.Arch.PowerPC
         private PowerPcInstruction EmitUnknown(uint instr)
         {
 #if DEBUG
-            Debug.WriteLine(
-$@"        [Test]
-        public void PPCDis_{instr:X8}()
-        {{
-            AssertCode(0x{instr:X8}, ""@@@"");
-        }}
-");
+//            Debug.WriteLine(
+//$@"        [Test]
+//        public void PPCDis_{instr:X8}()
+//        {{
+//            AssertCode(0x{instr:X8}, ""@@@"");
+//        }}
+//");
 #endif
             return new PowerPcInstruction(Opcode.illegal);
         }
@@ -333,7 +333,7 @@ $@"        [Test]
                 }
                 else
                 {
-                    Opcode opcode = ((wInstr & (1 << 4)) == 0) ? Opcode.rldicl : Opcode.rldicr;
+                    Opcode opcode = ((wInstr & (1 << 2)) == 0) ? Opcode.rldicl : Opcode.rldicr;
                     wInstr &= ~1u;
                     return new PowerPcInstruction(opcode)
                     {
