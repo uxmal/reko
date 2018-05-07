@@ -289,7 +289,8 @@ namespace Reko.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return new PowerPcInstruction(Opcode.illegal);
+                Debug.Print("Unknown PowerPC instruction {0:X8}", wInstr);
+                return dasm.EmitUnknown(wInstr);
             }
         }
 
@@ -945,89 +946,6 @@ Conventions:
    vaddfp128                        Vector128 Add Floating Point
 |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 0 0|a|1|VDh|VBh|
    vaddfp128     vr(VD128), vr(VA128), vr(VB128)
-   
-                { 0x010, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x011, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x012, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x013, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x014, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x015, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x016, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x017, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x018, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x019, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x01A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x01B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x01C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x01D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x01E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x01F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x030, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x031, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x032, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x033, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x034, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x035, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x036, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x037, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x038, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x039, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x03A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x03B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x03C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x03D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x03E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x03F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x410, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x411, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x412, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x413, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x414, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x415, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x416, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x417, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x418, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x419, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x41A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x41B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x41C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x41D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x41E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x41F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x430, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x431, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x432, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x433, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x434, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x435, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x436, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x437, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x438, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x439, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x43A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x43B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-
-                { 0x43C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x43D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x43E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                { 0x43F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
-                 
-                 */
-/*
 =================================================================
    vand128                                 Vector128 Logical AND
 |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 0 0|a|1|VDh|VBh|
@@ -1350,9 +1268,49 @@ Conventions:
                     }),
                 new VMXDecoder(0x3D, new Dictionary<uint, OpRec>
                 {
+                    { 0x01, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },         // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 0 0|a|1|VDh|VBh|    vaddfp128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x03, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },         // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 0 0|a|1|VDh|VBh|    vaddfp128     vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x09, new DOpRec(Opcode.vmulfp128, "Wd,Wa,Wb") },         // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 1 0|a|1|VDh|VBh|    vmulfp128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x0B, new DOpRec(Opcode.vmulfp128, "Wd,Wa,Wb") },         // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 1 0|a|1|VDh|VBh|    vmulfp128     vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x1D, new DOpRec(Opcode.vmsub4fp128, "Wd,Wa,Wb") },       // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 1 1 1|a|1|VDh|VBh|    vmsub4fp128   vr(VD128), vr(VA128), vr(VB128)
+                    { 0x1F, new DOpRec(Opcode.vmsub4fp128, "Wd,Wa,Wb") },       // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 1 1 1|a|1|VDh|VBh|    vmsub4fp128   vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x2D, new DOpRec(Opcode.vor128, "Wd,Wa,Wb") },            // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 1|a|1|VDh|VBh|    vor128        vr(VD128), vr(VA128), vr(VB128)
+                    { 0x2F, new DOpRec(Opcode.vor128, "Wd,Wa,Wb") },            // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 1|a|1|VDh|VBh|    vor128        vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x31, new DOpRec(Opcode.vxor128, "Wd,Wa,Wb") },            // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|1|VDh|VBh|    vxor128       vr(VD128), vr(VA128), vr(VB128)
+                    { 0x33, new DOpRec(Opcode.vxor128, "Wd,Wa,Wb") },            // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|1|VDh|VBh|    vxor128       vr(VD128), vr(VA128), vr(VB128)
+
                 }),
                 new VMXDecoder(0x7F, new Dictionary<uint, OpRec>
                 {
+                    { 0x0D, new DOpRec(Opcode.vslw128, "Wd,Wa,Wb") },           // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 1 1|a|1|VDh|VBh|    vslw128       vr(VD128), vr(VA128), vr(VB128)
+                    { 0x0F, new DOpRec(Opcode.vslw128, "Wd,Wa,Wb") },           // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 1 1|a|1|VDh|VBh|    vslw128       vr(VD128), vr(VA128), vr(VB128)
+                    { 0x4D, new DOpRec(Opcode.vslw128, "Wd,Wa,Wb") },           // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 1 1|a|1|VDh|VBh|    vslw128       vr(VD128), vr(VA128), vr(VB128)
+                    { 0x4F, new DOpRec(Opcode.vslw128, "Wd,Wa,Wb") },           // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 1 1|a|1|VDh|VBh|    vslw128       vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x30, new DOpRec(Opcode.vmrghw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|0|VDh|VBh|    vmrghw128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x32, new DOpRec(Opcode.vmrghw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|0|VDh|VBh|    vmrghw128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x70, new DOpRec(Opcode.vmrghw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|0|VDh|VBh|    vmrghw128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x72, new DOpRec(Opcode.vmrghw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|0|VDh|VBh|    vmrghw128     vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x34, new DOpRec(Opcode.vmrglw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 1|a|0|VDh|VBh|    vmrglw128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x36, new DOpRec(Opcode.vmrglw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 1|a|0|VDh|VBh|    vmrglw128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x74, new DOpRec(Opcode.vmrglw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 1|a|0|VDh|VBh|    vmrglw128     vr(VD128), vr(VA128), vr(VB128)
+                    { 0x76, new DOpRec(Opcode.vmrglw128, "Wd,Wa,Wb") },         // |0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 1|a|0|VDh|VBh|    vmrglw128     vr(VD128), vr(VA128), vr(VB128)
+
+                    { 0x77, new DOpRec(Opcode.vspltisw128, "Wd,Wb,s16:5") },
+
+                    { 0x71, new DOpRec(Opcode.vrlimi128, "Wd,Wb,u16:5,u14:2") },    // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1| z |0 1|VDh|VBh|    vrlimi128     vr(VD128), vr(VB128), UIMM, z
+                    { 0x75, new DOpRec(Opcode.vrlimi128, "Wd,Wb,u16:5,u14:2") },    // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1| z |0 1|VDh|VBh|    vrlimi128     vr(VD128), vr(VB128), UIMM, z
+                    { 0x79, new DOpRec(Opcode.vrlimi128, "Wd,Wb,u16:5,u14:2") },    // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1| z |0 1|VDh|VBh|    vrlimi128     vr(VD128), vr(VB128), UIMM, z
+                    { 0x7D, new DOpRec(Opcode.vrlimi128, "Wd,Wb,u16:5,u14:2") },    // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1| z |0 1|VDh|VBh|    vrlimi128     vr(VD128), vr(VB128), UIMM, z
+
+                    { 0x73, new DOpRec(Opcode.vspltw128, "Wd,Wb,u16:5") },      // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1 0 0 1 1|VDh|VBh|    vspltw128     vr(VD128), vr(VB128), UIMM
+
+                    { 0x7F, new DOpRec(Opcode.vupkd3d128, "Wd,Wb,u16:5") },     // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1 1 1 1 1|VDh|VBh|    vupkd3d128    vr(VD128), vr(VB128), UIMM
                 }),
                 new DOpRec(Opcode.mulli, "r1,r2,S"),
 

@@ -1897,5 +1897,127 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__dcbtst(r3)");
         }
+
+        /* //$TODO!
+        [Test]
+        public void PPCRw_stvrx128()
+        {
+            AssertCode(0x13E85D47,   // stvrx128	v63,r8,r11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_lvlx128()
+        {
+            AssertCode(0x13A05C07,   // lvlx128	v61,r0,r11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vspltw128()
+        {
+            AssertCode(0x1923CF31,   // vspltw128	v9,v57,03
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vmsub4fp128()
+        {
+            AssertCode(0x157FA9F1,   // vmsub4fp128	v11,v63,v53
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_stvx128()
+        {
+            AssertCode(0x116021C3,   // stvx128	v11,r0,r4
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_lvrx128()
+        {
+            AssertCode(0x13C55C47,   // lvrx128	v62,r5,r11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vxor128()
+        {
+            AssertCode(0x145AE331,   // vxor128	v2,v58,v60
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vmulfp128()
+        {
+            AssertCode(0x1497B0B1,   // vmulfp128	v4,v55,v54
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vslw128()
+        {
+            AssertCode(0x1B5FF8F5,   // vslw128	v58,v63,v63
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vspltisw128()
+        {
+            AssertCode(0x1B600774,   // vspltisw128	v59,v0,+20
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vmrghw128()
+        {
+            AssertCode(0x1B1FF325,   // vmrghw128	v56,v63,v62
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vmrglw128()
+        {
+            AssertCode(0x1BFFF365,   // vmrglw128	v63,v63,v62
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vor128()
+        {
+            AssertCode(0x15B8C2F1,   // vor128	v13,v56,v56
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vupkd3d128()
+        {
+            AssertCode(0x1B24DFF5,   // vupkd3d128	v57,v59,04
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vrlimi128()
+        {
+            AssertCode(0x19ACFF91,   // vrlimi128	v13,v63,0C,03
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+        */
     }
 }

@@ -336,6 +336,17 @@ namespace Reko.Arch.PowerPC
         stvlx128,
         stvrx128,
         vaddfp128,
+        vmrghw128,
+        vmrglw128,
+        vmsub4fp128,
+        vmulfp128,
+        vor128,
+        vrlimi128,
         vsldoi128,
+        vslw128,
+        vspltisw128,
+        vspltw128,
+        vupkd3d128,
+        vxor128,
     }
 }
