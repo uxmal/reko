@@ -29,6 +29,12 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter
     {
+        private ArrayType MakeArrayType(DataType bitvectorType, DataType elemType)
+        {
+            var cElems = bitvectorType.BitSize / elemType.BitSize;
+            return new ArrayType(elemType, cElems);
+        }
+
         private void MaybeEmitCr6(Expression e)
         {
             if (!instr.setsCR0)
@@ -65,6 +71,40 @@ namespace Reko.Arch.PowerPC
                     vrb));
         }
 
+        private void RewriteVectorBinOp(string intrinsic, DataType elemType)
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var vra = RewriteOperand(instr.op2);
+            var vrb = RewriteOperand(instr.op3);
+            var arrayType = MakeArrayType(vrt.DataType, elemType);
+            var tmp1 = binder.CreateTemporary(arrayType);
+            var tmp2 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, vra);
+            m.Assign(tmp2, vrb);
+            m.Assign(
+                vrt,
+                host.PseudoProcedure(intrinsic, arrayType, tmp1, tmp2));
+        }
+
+        private void RewriteVectorPairOp(string intrinsic, DataType elemType)
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var vra = RewriteOperand(instr.op2);
+            var vrb = RewriteOperand(instr.op3);
+            var arrayType = MakeArrayType(vrt.DataType, elemType);
+            var tmp1 = binder.CreateTemporary(arrayType);
+            var tmp2 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, vra);
+            m.Assign(tmp2, vrb);
+            m.Assign(
+                vrt,
+                host.PseudoProcedure(intrinsic, arrayType, tmp1, tmp2));
+            m.Assign(
+                binder.EnsureRegister(arch.acc),
+                vrt);
+        }
+
+
         public void RewriteVcmpfp(string fnName)
         {
             var vrt = RewriteOperand(instr.op1);
@@ -80,7 +120,7 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr6(vrt);
         }
 
-        public void RewriteVcmpuw(string fnName)
+        public void RewriteVcmpu(string fnName, DataType elemType)
         {
             var vrt = RewriteOperand(instr.op1);
             var vra = RewriteOperand(instr.op2);
@@ -89,7 +129,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.PseudoProcedure(
                     fnName,
-                    new ArrayType(PrimitiveType.Int32, 4),
+                    MakeArrayType(vra.DataType, elemType),
                     vra,
                     vrb));
             MaybeEmitCr6(vrt);
@@ -167,6 +207,21 @@ namespace Reko.Arch.PowerPC
                     vra,
                     vrb,
                     vrc));
+        }
+
+        private void RewriteVor()
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var vra = RewriteOperand(instr.op2);
+            var vrb = RewriteOperand(instr.op3);
+            if (vra == vrb)
+            {
+                m.Assign(vrt, vra);
+            }
+            else
+            {
+                m.Assign(vrt, m.Or(vra, vrb));
+            }
         }
 
         public void RewriteVperm()

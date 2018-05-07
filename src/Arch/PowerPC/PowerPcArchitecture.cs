@@ -50,13 +50,17 @@ namespace Reko.Arch.PowerPC
         public RegisterStorage fpscr { get; private set; }
         public RegisterStorage cr { get; private set; }
 
+
+        public RegisterStorage acc { get; private set; }
+
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
-        public PowerPcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
+        public PowerPcArchitecture(string archId, PrimitiveType wordWidth, PrimitiveType signedWord) : base(archId)
         {
             WordWidth = wordWidth;
+            SignedWord = signedWord;
             PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
             FramePointerType = PointerType;
             InstructionBitSize = 32;
@@ -67,6 +71,7 @@ namespace Reko.Arch.PowerPC
             this.fpscr = new RegisterStorage("fpscr", 0x6C, 0, wordWidth);
 
             this.cr = new RegisterStorage("cr", 0x80, 0, wordWidth);
+            this.acc = new RegisterStorage("acc", 0x81, 0, PrimitiveType.Word64);
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
@@ -128,6 +133,8 @@ namespace Reko.Arch.PowerPC
         {
             get { return spregs; }
         }
+
+        public PrimitiveType SignedWord { get; }
 
         #region IProcessorArchitecture Members
 
@@ -331,7 +338,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
-        public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32)
+        public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -385,7 +392,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
     {
-        public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32)
+        public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
         {
 
         }
@@ -434,7 +441,7 @@ namespace Reko.Arch.PowerPC
     public class PowerPcBe64Architecture : PowerPcArchitecture
     {
         public PowerPcBe64Architecture(string archId)
-            : base(archId, PrimitiveType.Word64)
+            : base(archId, PrimitiveType.Word64, PrimitiveType.Int64)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(

@@ -165,6 +165,16 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr0(opD);
         }
 
+        private void RewriteBcdadd()
+        {
+            var d = RewriteOperand(instr.op1);
+            var a = RewriteOperand(instr.op2);
+            var b = RewriteOperand(instr.op3);
+            m.Assign(
+                d,
+                host.PseudoProcedure("__bcdadd", d.DataType, a, b));
+        }
+
         private void RewriteCmp()
         {
             var cr = RewriteOperand(instr.op1);
@@ -271,6 +281,15 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
         }
 
+        private void RewriteDivd(Func<Expression,Expression,Expression> div)
+        {
+            var opL = RewriteOperand(instr.op2, true);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, div(opL, opR));
+            MaybeEmitCr0(opD);
+        }
+
         private void RewriteDivw()
         {
             var opL = RewriteOperand(instr.op2, true);
@@ -359,6 +378,15 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, src);
         }
 
+        private void RewriteMulhhwu()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, m.UMul(m.Shr(opL, 0x10), m.Shr(opR, 0x10)));
+            MaybeEmitCr0(opD);
+        }
+
         private void RewriteMulhw()
         {
             var opL = RewriteOperand(instr.op2);
@@ -376,6 +404,8 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, m.Sar(m.UMul(opL, opR), 0x20));
             MaybeEmitCr0(opD);
         }
+
+
 
         private void RewriteMull()
         {
@@ -767,7 +797,7 @@ namespace Reko.Arch.PowerPC
         }
 
 
-        private void RewriteXor()
+        private void RewriteXor(bool negate)
         {
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
@@ -775,6 +805,10 @@ namespace Reko.Arch.PowerPC
             var s = (opL == opR)
                 ? Constant.Zero(opL.DataType)
                 : m.Xor(opL, opR);
+            if (negate)
+            {
+                s = m.Comp(s);
+            }
             m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }

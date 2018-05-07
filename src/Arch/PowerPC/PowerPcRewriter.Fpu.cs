@@ -69,6 +69,23 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, m.Cond(m.FSub(opL, opR)));
         }
 
+
+        private void RewriteFctid()
+        {
+            //$TODO: require <math.h>
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            m.Assign(dst, host.PseudoProcedure("round", PrimitiveType.Real64, src));
+        }
+
+        private void RewriteFctidz()
+        {
+            //$TODO: require <math.h>
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            m.Assign(dst, host.PseudoProcedure("trunc", PrimitiveType.Real64, src));
+        }
+
         private void RewriteFctiwz()
         {
             var dst = RewriteOperand(instr.op1);
@@ -113,6 +130,31 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr1(opt);
         }
 
+        public void RewriteFnmsub(PrimitiveType dt)
+        {
+            var opc = RewriteOperand(instr.op4);
+            var opb = RewriteOperand(instr.op3);
+            var opa = RewriteOperand(instr.op2);
+            var opt = RewriteOperand(instr.op1);
+            if (dt == PrimitiveType.Real32)
+            {
+                m.Assign(opt,
+                    m.Cast(
+                        PrimitiveType.Real64,
+                        m.FNeg(
+                            m.FSub(
+                                m.FMul(
+                                    m.Cast(PrimitiveType.Real32, opa),
+                                    m.Cast(PrimitiveType.Real32, opc)),
+                                m.Cast(PrimitiveType.Real32, opb)))));
+            }
+            else
+            {
+                m.Assign(opt, m.FNeg(m.FSub(m.FMul(opa, opc), opb)));
+            }
+            MaybeEmitCr1(opt);
+        }
+
         public void RewriteFmul()
         {
             var opL = RewriteOperand(instr.op2);
@@ -136,6 +178,31 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             m.Assign(opD, m.Cast(PrimitiveType.Real32, opS));
             MaybeEmitCr1(opD);
+        }
+
+        private void RewriteFsel()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opC = RewriteOperand(instr.op2);
+            var opT = RewriteOperand(instr.op3);
+            var opE = RewriteOperand(instr.op4);
+            m.Assign(
+                opD,
+                m.Conditional(
+                    PrimitiveType.Real64,
+                    m.FGe(opC, Constant.Real64(0.0)),
+                    opT,
+                    opE));
+        }
+
+        private void RewriteFsqrt()
+        {
+            //$TODO: include math.h
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            m.Assign(
+                dst,
+                host.PseudoProcedure("sqrt", PrimitiveType.Real64, src));
         }
 
         public void RewriteFsub()

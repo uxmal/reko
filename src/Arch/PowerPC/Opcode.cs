@@ -254,6 +254,7 @@ namespace Reko.Arch.PowerPC
         stdx,
         stfd,
         stfdu,
+        stfdux,
         stfdx,
         stfiwx,
         stfs,
