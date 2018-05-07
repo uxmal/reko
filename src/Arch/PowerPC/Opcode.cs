@@ -327,5 +327,15 @@ namespace Reko.Arch.PowerPC
         xsmaddasp,
         xsmaddmsp,
         xxsldwi,
+
+        // XBox360 extensions
+        lvlx128,
+        lvrx128,
+        lvx128,
+        stvx128,
+        stvlx128,
+        stvrx128,
+        vaddfp128,
+        vsldoi128,
     }
 }

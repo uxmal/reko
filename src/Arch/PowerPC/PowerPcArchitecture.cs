@@ -65,40 +65,47 @@ namespace Reko.Arch.PowerPC
             FramePointerType = PointerType;
             InstructionBitSize = 32;
 
-            this.lr = new RegisterStorage("lr", 0x68, 0, wordWidth);
-            this.ctr = new RegisterStorage("ctr", 0x6A, 0, wordWidth);
-            this.xer = new RegisterStorage("xer", 0x6B, 0, wordWidth);
-            this.fpscr = new RegisterStorage("fpscr", 0x6C, 0, wordWidth);
+            this.lr = new RegisterStorage("lr", 0x48, 0, wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x49, 0, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x4A, 0, wordWidth);
+            this.fpscr = new RegisterStorage("fpscr", 0x4B, 0, wordWidth);
 
-            this.cr = new RegisterStorage("cr", 0x80, 0, wordWidth);
-            this.acc = new RegisterStorage("acc", 0x81, 0, PrimitiveType.Word64);
+            this.cr = new RegisterStorage("cr", 0x4C, 0, wordWidth);
+            this.acc = new RegisterStorage("acc", 0x4D, 0, PrimitiveType.Word64);
 
-            regs = new ReadOnlyCollection<RegisterStorage>(
-                Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("r" + n, n, 0, wordWidth))
-                .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("f" + n, n + 0x20, 0, PrimitiveType.Word64)))
-                .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("v" + n, n + 0x40, 0, PrimitiveType.Word128)))
-                .Concat(Enumerable.Range(0, 8)
-                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, 0, PrimitiveType.Byte)))
-                .Concat(new[] { lr, ctr, xer })
-                .ToList());
-
+            // gp regs  0..1F
+            // fpu regs 20..3F
+            // CR regs  40..47
+            // vectors  80..FF
             fpregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x20).Take(0x20).ToList());
+                Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("f" + n, n + 0x20, 0, PrimitiveType.Word64))
+                    .ToList());
+            cregs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 8)
+                    .Select(n => new RegisterStorage("cr" + n, n + 0x40, 0, PrimitiveType.Byte))
+                    .ToList());
 
             vregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x40).Take(0x20).ToList());
-
-            cregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x60).Take(0x8).ToList());
+                Enumerable.Range(0, 128)        // VMX128 extension has 128 regs
+                    .Select(n => new RegisterStorage("v" + n, n + 0x80, 0, PrimitiveType.Word128))
+                    .ToList());
 
             ccFlagGroups = Enumerable.Range(0, 8)
                 .Select(n => new FlagGroupStorage(cr, 0xFu << (n * 4), $"cr{n}", PrimitiveType.Byte))
                 .ToDictionary(f => f.FlagGroupBits);
             ccFlagGroupsByName = ccFlagGroups.Values
                 .ToDictionary(f => f.Name);
+
+
+            regs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("r" + n, n, 0, wordWidth))
+                .Concat(fpregs)
+                .Concat(cregs)
+                .Concat(new[] { lr, ctr, xer })
+                .Concat(vregs)
+                .ToList());
 
             spregs = new Dictionary<int, RegisterStorage>
             {

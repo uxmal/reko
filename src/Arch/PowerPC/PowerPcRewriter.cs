@@ -217,7 +217,8 @@ namespace Reko.Arch.PowerPC
                 case Opcode.lvewx: RewriteLvewx(); break;
                 case Opcode.lvlx: RewriteLvlx(); break;
                 case Opcode.lvsl: RewriteLvsl(); break;
-                case Opcode.lvx: RewriteLzx(PrimitiveType.Word128, PrimitiveType.Word128); break;
+                case Opcode.lvx:
+                case Opcode.lvx128: RewriteLzx(PrimitiveType.Word128, PrimitiveType.Word128); break;
                 case Opcode.lwarx: RewriteLarx("__lwarx", PrimitiveType.Word32); break;
                 case Opcode.lwax: RewriteLax(PrimitiveType.Int32, arch.SignedWord); break;
                 case Opcode.lwbrx: RewriteLwbrx(); break;
@@ -291,6 +292,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.stmw: RewriteStmw(); break;
                 case Opcode.stvewx: RewriteStvewx(); break;
                 case Opcode.stvx: RewriteStx(PrimitiveType.Word128); break;
+                case Opcode.stvlx128: RewriteStx(PrimitiveType.Word128); break;
                 case Opcode.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Opcode.stwbrx: RewriteStwbrx(); break;
                 case Opcode.stwcx: RewriteStcx("__stwcx", PrimitiveType.Word32); break;

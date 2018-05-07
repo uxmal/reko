@@ -849,11 +849,11 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_regression8()
         {
-            AssertCode(0x13E058C7, "vcmpequd\tv31,v0,v11"); 
+            AssertCode(0x13E058C7, "lvx128\tv63,r0,r11"); 
             AssertCode(0x11400484, "vor\tv10,v0,v0");
 
-            AssertCode(0x11A91D03, "evmhessfaaw\tr13,r9,r3");
-            AssertCode(0x1001350B, "evmhesmfaaw\tr0,r1,r6");
+            AssertCode(0x11A91D03, "stvlx128\tv13,r9,r3");
+            AssertCode(0x1001350B, "stvlx128\tv64,r1,r6");
             AssertCode(0x7C6BF82A, "ldx\tr3,r11,r31");
             AssertCode(0x7D0018A8, "ldarx\tr8,r0,r3");
             AssertCode(0x7D40592D, "stwcx.\tr10,r0,r11");
@@ -870,7 +870,6 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0x13040000, "vaddubm\tv24,v4,v0");
             AssertCode(0x10011002, "vmaxub\tv0,v1,v2");
-            AssertCode(0x10101010, "mulhhwu\tr0,r16,r2");
             AssertCode(0x10000022, "vmladduhm\tv0,v0,v0,v0");
             AssertCode(0x10000042, "vmaxuh\tv0,v0,v0");
             AssertCode(0x11b268e2, "vmladduhm\tv13,v18,v13,v3");
@@ -907,6 +906,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
             AssertCode(0x7fefffff, ".long 0x7fefffff");
 
+
+
             AssertCode(0x102038C3, ".long 0x102038c3");
             AssertCode(0x102020CB, ".long 0x102020cb");
             AssertCode(0x13CA1987, ".long 0x13ca1987");
@@ -928,6 +929,35 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x13E85D47, "udi5fcm 31,8,11");
             AssertCode(0xf0a65dff, "xxsel\tvs37,vs38,vs43,vs55");
             */
+        }
+
+        [Test]
+        public void PPCDis_VMX128()
+        {
+            AssertCode(0x102038C3, "lvx128\tv1,r0,r7"); // 04 - 0C3(195)
+            AssertCode(0x102338CB, "lvx128\tv65,r3,r7"); // 04 - 0CB(203)
+            AssertCode(0x13C100CF, "lvx128\tv126,r1,r0"); // 04 - 0CF(207)
+            //AssertCode(0x13FFF935, "@@@"); // 04 - 135(309)
+            //AssertCode(0x13A05187, "@@@"); // 04 - 187(391)
+            AssertCode(0x116021C3, "stvx128\tv11,r0,r4"); // 04 - 1C3(451)
+            AssertCode(0x13C031C7, "stvx128\tv62,r0,r6"); // 04 - 1C7(455)
+            AssertCode(0x100B61CB, "stvx128\tv64,r11,r12"); // 04 - 1CB(459)
+            AssertCode(0x13C161CF, "stvx128\tv126,r1,r12"); // 04 - 1CF(463)
+            //AssertCode(0x13D29A35, "@@@"); // 04 - 235(565)
+            AssertCode(0x13C55C47, "lvrx128\tv62,r5,r11"); // 04 - 447(1095)
+            AssertCode(0x13A05C07, "lvlx128\tv61,r0,r11"); // 04 - 407(1031)
+            AssertCode(0x13E04507, "stvlx128\tv63,r0,r8"); // 04 - 507(1287)
+            AssertCode(0x13E85D47, "stvrx128\tv63,r8,r11"); // 04 - 547(1351)
+        }
+
+        [Test]
+        [Ignore("wait for primary opcode 5")]
+        public void PPCDis_vaddfp128()
+        {
+            //| 0 0 0 1 0 1 | VD128 | VA128 | VB128 | A | 0 0 0 0 | a | 1 | VDh | VBh |
+            // 000101 01010 11111 10101 1 0000 1 1 10 01
+            // 0001 0101 0101 1111 1010 1100 0011 1001
+            AssertCode(0x155FAC39, "vaddfp128");
         }
     }
 }

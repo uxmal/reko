@@ -134,10 +134,10 @@ namespace Reko.Arch.PowerPC
                 case 'v':
                     switch (opFmt[++i])
                     {
-                    case '1': op = this.VRegFromBits(wInstr >> 21); break;
-                    case '2': op = this.VRegFromBits(wInstr >> 16); break;
-                    case '3': op = this.VRegFromBits(wInstr >> 11); break;
-                    case '4': op = this.VRegFromBits(wInstr >> 6); break;
+                    case '1': op = this.VRegFromBits((wInstr >> 21) & 0x1F); break;
+                    case '2': op = this.VRegFromBits((wInstr >> 16) & 0x1F); break;
+                    case '3': op = this.VRegFromBits((wInstr >> 11) & 0x1F); break;
+                    case '4': op = this.VRegFromBits((wInstr >> 6) & 0x1F); break;
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
                     }
                     break;
@@ -166,7 +166,16 @@ namespace Reko.Arch.PowerPC
                 case 's':
                     op = GetImmediateSignedField(opFmt, ref i, wInstr);
                     break;
-
+                case 'W':   // VMX extension to access 128 vector regs
+                    switch (opFmt[++i])
+                    {
+                    case 'd': op = VRegFromBits(((wInstr >> 21) & 0x1Fu) | ((wInstr & 0xCu) << 3)); break;
+//| A | 0 0 0 0 | a | 1 | VDh | VBh |
+                    case 'a': op = VRegFromBits(((wInstr >> 16) & 0x1Fu) | ((wInstr >> 4) & 0x40) | (wInstr & 0x20)); break;
+                    case 'b': op = VRegFromBits(((wInstr >> 11) & 0x1Fu) | ((wInstr & 0x3) << 5)); break;
+                        throw new NotImplementedException();
+                    }
+                    break;
                 case 'X': // Special format used by the CMP[L][I] instructions.
                     op = CRegFromBits((wInstr >> 23) & 0x7);
                     break;
@@ -209,7 +218,7 @@ namespace Reko.Arch.PowerPC
 
         private RegisterOperand VRegFromBits(uint r)
         {
-            return new RegisterOperand(arch.VecRegisters[(int)r & 0x1F]);
+            return new RegisterOperand(arch.VecRegisters[(int)r]);
         }
 
         private ImmediateOperand GetImmediateUnsignedField(string fmt, ref int i, uint wInstr)
@@ -768,6 +777,33 @@ namespace Reko.Arch.PowerPC
             }
         }
 
+        private class VMXDecoder : OpRec
+        {
+            private uint mask;
+            public Dictionary<uint, OpRec> decoders;
+
+            public VMXDecoder(uint mask, Dictionary<uint, OpRec> decoders)
+            {
+                this.mask = mask;
+                this.decoders = decoders;
+            }
+
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            {
+                var key = (wInstr >> 0x4) & mask;
+                if (decoders.TryGetValue(key, out OpRec decoder))
+                {
+                    return decoder.Decode(dasm, wInstr);
+                }
+                else
+                {
+                    Debug.Print("Unknown PowerPC VMX instruction {0:X8} {1:X2}-{2:X3} ({2})", wInstr, wInstr >> 26, key);
+                    return dasm.EmitUnknown(wInstr);
+                }
+            }
+        }
+
+
         static OpRec[] oprecs;
 
         static PowerPcDisassembler()
@@ -778,12 +814,498 @@ namespace Reko.Arch.PowerPC
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new DOpRec(Opcode.twi, "I1,r2,S"),
-                new VXOpRec(new Dictionary<uint, OpRec>     // 4
+                new VXOpRec(
+                    new Dictionary<uint, OpRec>     // 4
                     {
+/*
+
+Conventions:
+
+   VD128, VS128:  5 lower bits of a VMX128 vector register 
+                  number
+   VDh:	          upper 2 bits of VD128
+                  (so register number is (VDh << 5 | VD128))
+   VA128:         same as VD128
+   A:             bit 6 of VA128
+   a:             bit 5 of VA128
+                  (so register number is (A<<6 | a<<5 | VA128))
+   VB128:         same as VD128
+   VBh:           same as VDh
+   VC128:         3 bits of a VMX128 vector register number
+                  (you can only use vr0-vr7 here)
+   RA, RB:        general purpose register number
+   UIMM:          unsigned immediate value
+   SIMM:          signed immediate value
+   PERMh:         upper 3 bits of a permutation
+   PERMl:         lower 5 bits of a permutation
+   x, y, z:       unknown immediate values
+=================================================================
+   lvewx128                  Load Vector128 Element Word Indexed
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |0 0 0 1 0 0 0|VDh|1 1|
+   lvewx128      vr(VD128), r(RA), r(RB)
+=================================================================
+   lvlx128                           Load Vector128 Left Indexed
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |1 0 0 0 0 0 0|VDh|1 1|
+   lvlx128       vr(VD128), r(RA), r(RB)*/
+                { 0x403, new DOpRec(Opcode.lvlx128, "Wd,r2,r3") },
+                { 0x407, new DOpRec(Opcode.lvlx128, "Wd,r2,r3") },
+                { 0x40B, new DOpRec(Opcode.lvlx128, "Wd,r2,r3") },
+                { 0x40F, new DOpRec(Opcode.lvlx128, "Wd,r2,r3") },
+   /*
+=================================================================
+   lvrx128                          Load Vector128 Right Indexed
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |1 0 0 0 1 0 0|VDh|1 1|
+   lvrx128       vr(VD128), r(RA), r(RB) */
+                { 0x443, new DOpRec(Opcode.lvrx128, "Wd,r2,r3") },
+                { 0x447, new DOpRec(Opcode.lvrx128, "Wd,r2,r3") },
+                { 0x44B, new DOpRec(Opcode.lvrx128, "Wd,r2,r3") },
+                { 0x44F, new DOpRec(Opcode.lvrx128, "Wd,r2,r3") },
+   /*
+=================================================================
+   lvlxl128                      Load Vector128 Left Indexed LRU
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |1 1 0 0 0 0 0|VDh|1 1|
+   lvlxl128      vr(VD128), r(RA), r(RB)
+=================================================================
+   lvrxl128                     Load Vector128 Right Indexed LRU
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |1 1 0 0 1 0 0|VDh|1 1|
+   lvrxl128      vr(VD128), r(RA), r(RB)
+=================================================================
+   lvsl128                         Load Vector128 for Shift Left
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |0 0 0 0 0 0 0|VDh|1 1|
+   lvsl128       vr(VD128), r(RA), r(RB)
+=================================================================
+   lvsr128                        Load Vector128 for Shift Right
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |0 0 0 0 1 0 0|VDh|1 1|
+   lvsr128       vr(VD128), r(RA), r(RB)
+=================================================================
+   lvx128                                 Load Vector128 Indexed
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |0 0 0 1 1 0 0|VDh|1 1|
+   lvx128        vr(VD128), r(RA), r(RB)
+=================================================================*/
+                { 0x0C3, new DOpRec(Opcode.lvx128, "Wd,r2,r3") },
+                { 0x0C7, new DOpRec(Opcode.lvx128, "Wd,r2,r3") },
+                { 0x0CB, new DOpRec(Opcode.lvx128, "Wd,r2,r3") },
+                { 0x0CF, new DOpRec(Opcode.lvx128, "Wd,r2,r3") },
+/*
+   lvxl128                            Load Vector128 Indexed LRU
+|0 0 0 1 0 0|  VD128  |   RA    |   RB    |0 1 0 1 1 0 0|VDh|1 1|
+   lvxl128       vr(VD128), r(RA), r(RB)
+=================================================================
+   stewx128                 Store Vector128 Element Word Indexed
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |0 1 1 0 0 0 0|VDh|1 1|
+   stvewx128     vr(VS128), r(RA), r(RB)
+=================================================================
+   stvlx128                         Store Vector128 Left Indexed
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |1 0 1 0 0 0 0|VDh|1 1|
+   stvlx128      vr(VS128), r(RA), r(RB)
+*/
+                { 0x503, new DOpRec(Opcode.stvlx128, "Wd,r2,r3") },
+                { 0x507, new DOpRec(Opcode.stvlx128, "Wd,r2,r3") },
+                { 0x50B, new DOpRec(Opcode.stvlx128, "Wd,r2,r3") },
+                { 0x50F, new DOpRec(Opcode.stvlx128, "Wd,r2,r3") },
+
+/*=================================================================
+   stvlxl128                    Store Vector128 Left Indexed LRU
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |1 1 1 0 0 0 0|VDh|1 1|
+   lvlxl128      vr(VS128), r(RA), r(RB)
+=================================================================
+   stvrx128                        Store Vector128 Right Indexed
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |1 0 1 0 1 0 0|VDh|1 1|
+   stvrx128       vr(VS128), r(RA), r(RB)
+*/
+                { 0x543, new DOpRec(Opcode.stvrx128, "Wd,r2,r3") },
+                { 0x547, new DOpRec(Opcode.stvrx128, "Wd,r2,r3") },
+                { 0x54B, new DOpRec(Opcode.stvrx128, "Wd,r2,r3") },
+                { 0x54F, new DOpRec(Opcode.stvrx128, "Wd,r2,r3") },
+
+/*=================================================================
+   stvrxl128                   Store Vector128 Right Indexed LRU
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |1 1 1 0 1 0 0|VDh|1 1|
+   stvrxl128     vr(VS128), r(RA), r(RB)
+=================================================================
+   stvx128                               Store Vector128 Indexed
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |0 0 1 1 1 0 0|VDh|1 1|
+   stvx128       vr(VS128), r(RA), r(RB)*/
+                { 0x1C3, new DOpRec(Opcode.stvx128, "Wd,r2,r3") },
+                { 0x1C7, new DOpRec(Opcode.stvx128, "Wd,r2,r3") },
+                { 0x1CB, new DOpRec(Opcode.stvx128, "Wd,r2,r3") },
+                { 0x1CF, new DOpRec(Opcode.stvx128, "Wd,r2,r3") },
+
+/*=================================================================
+   stvxl128                          Store Vector128 Indexed LRU
+|0 0 0 1 0 0|  VS128  |   RA    |   RB    |0 1 1 1 1 0 0|VDh|1 1|
+   stvxl128      vr(VS128), r(RA), r(RB)
+=================================================================
+   vsldoi128                         Vector128 Shift Left Double 
+                                              by Octet Immediate
+|0 0 0 1 0 0|  VD128  |  VA128  |  VB128  |A|  SHB  |a|1|VDh|VBh|
+   vsldoi128     vr(VD128), vr(VA128), vr(VB128), SHB
+
+=================================================================
+   vaddfp128                        Vector128 Add Floating Point
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 0 0|a|1|VDh|VBh|
+   vaddfp128     vr(VD128), vr(VA128), vr(VB128)
+   
+                { 0x010, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x011, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x012, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x013, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x014, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x015, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x016, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x017, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x018, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x019, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x01A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x01B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x01C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x01D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x01E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x01F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x030, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x031, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x032, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x033, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x034, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x035, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x036, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x037, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x038, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x039, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x03A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x03B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x03C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x03D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x03E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x03F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x410, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x411, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x412, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x413, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x414, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x415, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x416, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x417, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x418, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x419, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x41A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x41B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x41C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x41D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x41E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x41F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x430, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x431, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x432, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x433, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x434, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x435, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x436, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x437, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x438, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x439, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x43A, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x43B, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+
+                { 0x43C, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x43D, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x43E, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                { 0x43F, new DOpRec(Opcode.vaddfp128, "Wd,Wa,Wb") },
+                 
+                 */
+/*
+=================================================================
+   vand128                                 Vector128 Logical AND
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 0 0|a|1|VDh|VBh|
+   vand128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vandc128                                Vector128 Logical AND 
+                                                 with Complement
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 0|a|1|VDh|VBh|
+   vandc128      vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vmaddcfp128                            Vector128 Multiply Add 
+                                                  Floating Point
+|0 0 0 1 0 1|  VDS128 |  VA128  |  VB128  |A|0 1 0 0|a|1|VDh|VBh|
+   vmaddcfp128   vr(VDS128), vr(VA128), vr(VSD128), vr(VB128)
+=================================================================
+   vmaddfp128                             Vector128 Multiply Add 
+                                                  Floating Point
+|0 0 0 1 0 1|  VDS128 |  VA128  |  VB128  |A|0 0 1 1|a|1|VDh|VBh|
+   vmaddfp128    vr(VDS128), vr(VA128), vr(VB128), vr(VDS128)
+=================================================================
+   vmsum3fp128                      Vector128 Multiply Sum 3-way 
+                                                  Floating Point
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 1 1 0|a|1|VDh|VBh|
+   vmsub3fp128   vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vmsum4fp128                      Vector128 Multiply Sum 4-way 
+                                                  Floating-Point
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 1 1 1|a|1|VDh|VBh|
+   vmsub4fp128   vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vmulfp128                                  Vector128 Multiply
+                                                  Floating-Point
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 1 0|a|1|VDh|VBh|
+   vmulfp128     vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vnmsubfp128              Vector128 Negative Multiply-Subtract 
+                                                  Floating Point
+|0 0 0 1 0 1|  VDS128 |  VA128  |  VB128  |A|0 1 0 1|a|1|VDh|VBh|
+   vnmsubfp128   vr(VDS128), vr(VA128), vr(VB128), vr(VDS128)
+=================================================================
+   vnor128                                 Vector128 Logical NOR
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 0|a|1|VDh|VBh|
+   vnor128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vor128                                   Vector128 Logical OR
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 1|a|1|VDh|VBh|
+   vor128        vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vperm128                                Vector128 Permutation
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0| VC  |a|0|VDh|VBh|
+   vperm128      vr(VD128), vr(VA128), vr(VB128), vr(VC)
+=================================================================
+   vpkshss128                    Vector128 Pack Signed Half Word 
+                                                 Signed Saturate
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 0 0|a|0|VDh|VBh|
+   vpkshss128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkshus128                    Vector128 Pack Signed Half Word 
+                                               Unsigned Saturate
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 0 1|a|0|VDh|VBh|
+   vpkshus128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkswss128                         Vector128 Pack Signed Word
+                                                 Signed Saturate
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 0|a|0|VDh|VBh|
+   vpkswss128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkswus128                         Vector128 Pack Signed Word   
+                                               Unsigned Saturate
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 0 1 1|a|0|VDh|VBh|
+   vpkswus128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkuhum128                  Vector128 Pack Unsigned Half Word 
+                                                 Unsigned Modulo
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|0|VDh|VBh|
+   vpkuhum128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkuhus128                  Vector128 Pack Unsigned Half Word 
+                                               Unsigned Saturate
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 0 1|a|0|VDh|VBh|
+   vpkuhus128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkuwum128                       Vector128 Pack Unsigned Word
+                                                 Unsigned Modulo
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 1 0|a|0|VDh|VBh|
+   vpkuwum128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpkuwus128                       Vector128 Pack Unsigned Word
+                                               Unsigned Saturate
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 1 1|a|0|VDh|VBh|
+   vpkuwus128    vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vsel128                                      Vector128 Select
+|0 0 0 1 0 1| VDS128  |  VA128  |  VB128  |A|1 1 0 1|a|1|VDh|VBh|
+   vsel128       vr(VDS128), vr(VA128), vr(VB128), vr(VDS128)
+=================================================================
+   vslo128                            Vector128 Shift Left Octet
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 1 0|a|1|VDh|VBh|
+   vslo128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vsubfp128                   Vector128 Subtract Floating Point
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 0 1|a|1|VDh|VBh|
+   vsubfp128     vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vxor128                                 Vector128 Logical XOR
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|1|VDh|VBh|
+   vxor128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vrlw128                            Vector128 Rotate Left Word
+|0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0 0 0 1|a|1|VDh|VBh|
+   vrlw128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vcfpsxws128          Vector128 Convert From Floating-Point to 
+                                Signed Fixed-Point Word Saturate
+|0 0 0 1 1 0|  VD128  |  SIMM   |  VB128  |0 1 0 0 0 1 1|VDh|VBh|
+   vcfpsxws128   vr(VD128), vr(VB128), SIMM
+=================================================================
+   vcfpuxws128          Vector128 Convert From Floating-Point to 
+                              Unsigned Fixed-Point Word Saturate
+|0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |0 1 0 0 1 1 1|VDh|VBh|
+   vcfpuxws128   vr(VD128), vr(VB128), UIMM
+=================================================================
+   vcmpbfp128                           Vector128 Compare Bounds 
+                                                  Floating Point
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 1 1|R|a|0|VDh|VBh|
+   vcmpbfp128    vr(VD128), vr(VA128), vr(VB128)         (R == 0)
+   vcmpbfp128.   vr(VD128), vr(VA128), vr(VB128)         (R == 1)
+=================================================================
+   vcmpeqfp128                        Vector128 Compare Equal-to
+                                                  Floating Point
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 0|R|a|0|VDh|VBh|
+   vcmpeqfp128   vr(VD128), vr(VA128), vr(VB128)         (R == 0)
+   vcmpeqfp128.  vr(VD128), vr(VA128), vr(VB128)         (R == 1)
+=================================================================
+   vcmpequw128                        Vector128 Compare Equal-to 
+                                                   Unsigned Word
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 0 0|R|a|0|VDh|VBh|
+   vcmpequw128   vr(VD128), vr(VA128), vr(VB128)         (R == 0)
+   vcmpequw128.  vr(VD128), vr(VA128), vr(VB128)         (R == 1)
+=================================================================
+   vcmpgefp128                    Vector128 Compare Greater-Than-
+                                      or-Equal-to Floating Point
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 1|R|a|0|VDh|VBh|
+   vcmpgefp128   vr(VD128), vr(VA128), vr(VB128)         (R == 0)
+   vcmpgefp128.  vr(VD128), vr(VA128), vr(VB128)         (R == 1)
+=================================================================
+   vcmpgtfp128                    Vector128 Compare Greater-Than 
+                                                  Floating-Point
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 1 0|R|a|0|VDh|VBh|
+   vcmpgtfp128   vr(VD128), vr(VA128), vr(VB128)         (R == 0)
+   vcmpgtfp128.  vr(VD128), vr(VA128), vr(VB128)         (R == 1)
+=================================================================
+   vcsxwfp128          Vector128 Convert From Signed Fixed-Point 
+                                          Word to Floating-Point
+|0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |0 1 0 1 0 1 1|VDh|VBh|
+   vcsxwfp128    vr(VD128), vr(VB128), SIMM
+=================================================================
+   vcuxwfp128        Vector128 Convert From Unsigned Fixed-Point
+                                          Word to Floating-Point
+|0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |0 1 0 1 1 1 1|VDh|VBh|
+   vcuxwfp128    vr(VD128), vr(VB128), UIMM
+=================================================================
+   vexptefp128                Vector128 2 Raised to the Exponent 
+                                         Estimate Floating Point
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |1 1 0 1 0 1 1|VDh|VBh|
+   vexptefp128   vr(VD128), vr(VB128)
+=================================================================
+   vlogefp128                            Vector128 Log2 Estimate 
+                                                  Floating Point
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |1 1 0 1 1 1 1|VDh|VBh|
+   vlogefp128    vr(VD128), vr(VB128)
+=================================================================
+   vmaxfp128                                   Vector128 Maximum 
+                                                  Floating Point
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 0 1 0|a|0|VDh|VBh|
+   vmaxfp128     vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vminfp128                                   Vector128 Minimum
+                                                  Floating Point
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 0 1 1|a|0|VDh|VBh|
+   vminfp128     vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vmrghw128                           Vector128 Merge High Word
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 0|a|0|VDh|VBh|
+   vmrghw128     vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vmrglw128                            Vector128 Merge Low Word
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 0 1|a|0|VDh|VBh|
+   vmrglw128     vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vpermwi128                 Vector128 Permutate Word Immediate
+|0 0 0 1 1 0|  VD128  |  PERMl  |  VB128  |0|1|PERMh|0|1|VDh|VBh|
+   vpermwi128    vr(VD128), vr(VB128), (PERMh << 5 | PERMl)
+=================================================================
+   vpkd3d128                 Vector128 Pack D3Dtype, Rotate Left 
+                                       Immediate and Mask Insert
+|0 0 0 1 1 0|  VD128  |  x  | y |  VB128  |1 1 0| z |0 1|VDh|VBh|
+   vpkd3d128     vr(VD128), vr(VB128), x, y, z
+=================================================================
+   vrefp128                        Vector128 Reciprocal Estimate 
+                                                  Floating Point
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |1 1 0 0 0 1 1|VDh|VBh|
+   vrefp128      vr(VD128), vr(VB128)
+=================================================================
+   vrfim128                    Vector128 Round to Floating-Point 
+                                              Integer toward -oo
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |0 1 1 0 0 1 1|VDh|VBh|
+   vrfim128      vr(VD128), vr(VB128)
+=================================================================
+   vrfin128                    Vector128 Round to Floating-Point 
+                                          Integer toward Nearest
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |0 1 1 0 1 1 1|VDh|VBh|
+   vrfin128      vr(VD128), vr(VB128)
+=================================================================
+   vrfip128                    Vector128 Round to Floating-Point 
+                                              Integer toward +oo
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |0 1 1 1 0 1 1|VDh|VBh|
+   vrfip128      vr(VD128), vr(VB128)
+=================================================================
+   vrfiz128                    Vector128 Round to Floating-Point 
+                                             Integer toward Zero
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |0 1 1 1 1 1 1|VDh|VBh|
+   vrfiz128      vr(VD128), vr(VB128)
+=================================================================
+   vrlimi128                     Vector128 Rotate Left Immediate 
+                                                 and Mask Insert
+|0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1| z |0 1|VDh|VBh|
+   vrlimi128     vr(VD128), vr(VB128), UIMM, z
+=================================================================
+   vrsqrtefp128                 Vector128 Reciprocal Square Root 
+                                         Estimate Floating Point
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |1 1 0 0 1 1 1|VDh|VBh|
+   vrsqrtefp128  vr(VD128), vr(VB128)
+=================================================================
+   vslw128                             Vector128 Shift Left Word
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 0 1 1|a|1|VDh|VBh|
+   vslw128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vspltisw128                         Vector128 Splat Immediate 
+                                                     Signed Word
+|0 0 0 1 1 0|  VD128  |  SIMM   |  VB128  |1 1 1 0 1 1 1|VDh|VBh|
+   vspltisw128   vr(VD128), vr(VB128), SIMM
+=================================================================
+   vspltw128                                Vector128 Splat Word
+|0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1 0 0 1 1|VDh|VBh|
+   vspltw128     vr(VD128), vr(VB128), UIMM
+=================================================================
+   vsraw128                                Vector128 Shift Right 
+                                                 Arithmetic Word
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 1 0 1|a|1|VDh|VBh|
+   vsraw128      vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vsro128                           Vector128 Shift Right Octet
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|1 1 1 1|a|1|VDh|VBh|
+   vsro128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vsrw128                            Vector128 Shift Right Word
+|0 0 0 1 1 0|  VD128  |  VA128  |  VB128  |A|0 1 1 1|a|1|VDh|VBh|
+   vsrw128       vr(VD128), vr(VA128), vr(VB128)
+=================================================================
+   vupkd3d128                           Vector128 Unpack D3Dtype
+|0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1 1 1 1 1|VDh|VBh|
+   vupkd3d128    vr(VD128), vr(VB128), UIMM
+=================================================================
+   vupkhsb128                                   Vector128 Unpack 
+                                                High Signed Byte
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |0 1 1 1 0 0 0|VDh|VBh|
+   vupkhsb128    vr(VD128), vr(VB128)
+=================================================================
+   vupklsb128                                   Vector128 Unpack 
+                                                 Low Signed Byte
+|0 0 0 1 1 0|  VD128  |0 0 0 0 0|  VB128  |0 1 1 1 1 0 0|VDh|VBh|
+   vupkhsb128    vr(VD128), vr(VB128)
+*/
                         { 0x000, new DOpRec(Opcode.vaddubm, "v1,v2,v3") },
                         { 0x002, new DOpRec(Opcode.vmaxub, "v1,v2,v3") },
                         { 0x00A, new DOpRec(Opcode.vaddfp, "v1,v2,v3") },
-                        { 0x010, new DOpRec(Opcode.mulhhwu, "r1,r2,r3") },
+                       // { 0x010, new DOpRec(Opcode.mulhhwu, "r1,r2,r3") },
                         { 0x020, new DOpRec(Opcode.vmhaddshs, "v1,v2,v3,v4") },
                         { 0x022, new DOpRec(Opcode.vmladduhm, "v1,v2,v3,v4") },
                         { 0x042, new DOpRec(Opcode.vmaxuh, "v1,v2,v3") },
@@ -792,7 +1314,6 @@ namespace Reko.Arch.PowerPC
                         { 0x086, new DOpRec(Opcode.vcmpequw, "v1,v2,v3") },
                         { 0x08C, new DOpRec(Opcode.vmrghw, "v1,v2,v3") },
                         { 0x0C6, new DOpRec(Opcode.vcmpeqfp, "v1,v2,v3") },
-                        { 0x0C7, new DOpRec(Opcode.vcmpequd, "v1,v2,v3") },
                         { 0x0E2, new DOpRec(Opcode.vmladduhm, "v1,v2,v3,v4") },
                         { 0x100, new DOpRec(Opcode.vadduqm, "v1,v2,v3") },
                         { 0x10A, new DOpRec(Opcode.vrefp, "v1,v3") },
@@ -813,12 +1334,13 @@ namespace Reko.Arch.PowerPC
                         { 0x4C4, new DOpRec(Opcode.vxor, "v1,v2,v3")},
                         { 0x4C6, new DOpRec(Opcode.vcmpeqfp, ":v1,v2,v3") },
                         { 0x4C7, new DOpRec(Opcode.vcmpequd, ":v1,v2,v3") },
-                        { 0x503, new DOpRec(Opcode.evmhessfaaw, "r1,r2,r3") },
-                        { 0x50B, new DOpRec(Opcode.evmhesmfaaw, "r1,r2,r3") },
+                        // These aren't present for the VMX extension of PowerPC architecture
+                        //{ 0x503, new DOpRec(Opcode.evmhessfaaw, "r1,r2,r3") },
+                        //{ 0x50B, new DOpRec(Opcode.evmhesmfaaw, "r1,r2,r3") },
                         { 0x686, new DOpRec(Opcode.vcmpgtuw, ":v1,v2,v3") },
                         { 0x6C6, new DOpRec(Opcode.vcmpgtfp, ":v1,v2,v3") },
                     },
-                    new Dictionary<uint, OpRec>()
+                    new Dictionary<uint, OpRec>
                     {
                         { 0x02A, new DOpRec(Opcode.vsel, "v1,v2,v3,v4") },
                         { 0x02B, new DOpRec(Opcode.vperm, "v1,v2,v3,v4") },
@@ -826,8 +1348,12 @@ namespace Reko.Arch.PowerPC
                         { 0x02E, new DOpRec(Opcode.vmaddfp, "v1,v2,v4,v3") },
                         { 0x02F, new DOpRec(Opcode.vnmsubfp, "v1,v2,v4,v3") }
                     }),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
+                new VMXDecoder(0x3D, new Dictionary<uint, OpRec>
+                {
+                }),
+                new VMXDecoder(0x7F, new Dictionary<uint, OpRec>
+                {
+                }),
                 new DOpRec(Opcode.mulli, "r1,r2,S"),
 
                 new DOpRec(Opcode.subfic, "r1,r2,S"),
