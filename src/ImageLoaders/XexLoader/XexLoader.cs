@@ -71,7 +71,7 @@ namespace Reko.ImageLoaders.Xex
         {
             get
             {
-                return new Address32(xexData.exe_address);
+                return null; //the format is self describing
             }
 
             set
@@ -537,10 +537,11 @@ namespace Reko.ImageLoaders.Xex
                     acc |= AccessMode.Execute;
                 }
 
-                peSections.Add(new PESection(section));
+                PESection managedSection = new PESection(section);
+                peSections.Add(managedSection);
 
                 ImageSegment seg = new ImageSegment(sectionName, new MemoryArea(
-                    new Address32(section.VirtualAddress), sectionData
+                    new Address32(managedSection.PhysicalOffset + xexData.exe_address), sectionData
                 ), acc);
                 segments.Add(seg);
             }
@@ -640,6 +641,7 @@ namespace Reko.ImageLoaders.Xex
 
             PopulateImports();
 
+            addrLoad = new Address32(xexData.exe_address);
             var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
 
             var entryPointAddress = new Address32(xexData.exe_entry_point);
