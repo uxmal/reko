@@ -39,24 +39,32 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         public static void Create(PIC pic)
         {
             LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
-            new PIC18EnhancedRegisters().SetCoreRegisters();
+            var regs = new PIC18EnhancedRegisters();
+            regs.SetCoreRegisters();
+            regs.SetRegistersValuesAtPOR();
         }
 
         /// <summary>
-        /// This method sets each of the standard "core" registers of the PIC18.
-        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition.
+        /// This method sets each of the standard "core" registers of the Enhanced PIC18.
+        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition as provided by Microchip.
         /// </summary>
         /// <remarks>
         /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
         /// </remarks>
         /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
-        public override void SetCoreRegisters()
+        protected override void SetCoreRegisters()
         {
             base.SetCoreRegisters();
 
             // Some registers are invalid memory destination for some move instructions.
             AddForbiddenDests(true, PCL, TOSL, TOSH, TOSU);
         }
+
+        /// <summary>
+        /// Registers values at Power-On Reset time for Enhanced PIC18.
+        /// </summary>
+        protected override void SetRegistersValuesAtPOR()
+            => base.SetRegistersValuesAtPOR();
 
     }
 

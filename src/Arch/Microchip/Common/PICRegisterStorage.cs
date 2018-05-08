@@ -62,7 +62,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             : base(regName, regNumber, bitAddress, dt)
         {
             Traits = traits ?? throw new ArgumentNullException(nameof(traits));
-            BinTraits = new PICRegisterBinaryTraits(Traits);
             AttachedRegs = new List<PICRegisterStorage>();
             BitFields = new SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage>();
         }
@@ -99,67 +98,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICRegisterStorage ParentRegister { get; internal set; }
 
         /// <summary>
-        /// Gets the traits of the PIC register.
+        /// Gets the traits of the PIC register as provided by Microchip.
         /// </summary>
         public PICRegisterTraits Traits { get; }
-
-        public PICRegisterBinaryTraits BinTraits { get; }
-
-        /// <summary>
-        /// Gets the data memory address of this register (or null if Non-Memory-Mapped).
-        /// </summary>
-        public PICAddress Address => Traits.Address;
-
-        /// <summary>
-        /// Gets the Non-Memory-Mapped ID or null if register is memory-mapped.
-        /// </summary>
-        public string NMMRID => Traits.NMMRID;
-
-        /// <summary>
-        /// Gets a value indicating whether this register is Memory-Mapped (true) or Non-Memory-Mapped (false)..
-        /// </summary>
-        public bool IsMemoryMapped => Traits.IsMemoryMapped;
-
-        /// <summary>
-        /// Gets this register access bits descriptor.
-        /// </summary>
-        /// <value>
-        /// The access descriptor as a string (see <seealso cref="MicrochipPIC.Crownking.PIC"/>.
-        /// </value>
-        public string Access => Traits.Access;
-
-        /// <summary>
-        /// Gets the state of each register's bit after a Master-Clear Reset.
-        /// </summary>
-        public string MCLR => Traits.MCLR;
-
-        /// <summary>
-        /// Gets the state of each register's bit after a Power-On Reset.
-        /// </summary>
-        public string POR => Traits.POR;
-
-        /// <summary>
-        /// Gets the implementation bit-mask.
-        /// </summary>
-        public ulong Impl => Traits.Impl;
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC register is volatile.
-        /// </summary>
-        public bool IsVolatile => Traits.IsVolatile;
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC register is indirect.
-        /// </summary>
-        public bool IsIndirect => Traits.IsIndirect;
-
-        /// <summary>
-        /// Gets the actual bit width of this PIC register.
-        /// </summary>
-        /// <value>
-        /// The width in number of bits.
-        /// </value>
-        public int BitWidth => Traits.BitWidth;
 
         /// <summary>
         /// Gets the attached registers of this PIC register, if any.

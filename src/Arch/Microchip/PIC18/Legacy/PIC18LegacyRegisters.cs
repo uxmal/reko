@@ -40,22 +40,27 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         public static void Create(PIC pic)
         {
             LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
-            new PIC18LegacyRegisters().SetCoreRegisters();
+            var regs = new PIC18LegacyRegisters();
+            regs.SetCoreRegisters();
+            regs.SetRegistersValuesAtPOR();
         }
 
         /// <summary>
-        /// This method sets each of the standard "core" registers of the PIC18.
-        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition.
+        /// This method sets each of the standard "core" registers of the Legacy PIC18. They are retrieved from
+        /// the registers symbol table which has been previously populated by loading the PIC definition as provided by Microchip.
         /// </summary>
         /// <remarks>
-        /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
+        /// This permits to still get a direct reference to standard registers and keeps having some
+        /// flexibility on definitions.
         /// </remarks>
-        /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
-        public override void SetCoreRegisters()
-        {
-            base.SetCoreRegisters();
-        }
+        protected override void SetCoreRegisters()
+            =>base.SetCoreRegisters();
 
+        /// <summary>
+        /// Registers values at Power-On Reset time for the Legacy PIC18.
+        /// </summary>
+        protected override void SetRegistersValuesAtPOR()
+            => base.SetRegistersValuesAtPOR();
     }
 
 }

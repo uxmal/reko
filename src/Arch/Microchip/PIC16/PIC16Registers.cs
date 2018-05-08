@@ -20,6 +20,9 @@
  */
 #endregion
 
+using Reko.Core;
+using System.Collections.Generic;
+
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
@@ -43,7 +46,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// <summary>
         /// Sets core registers common to all PIC16.
         /// </summary>
-        public override void SetCoreRegisters()
+        protected override void SetCoreRegisters()
         {
             base.SetCoreRegisters();
 
@@ -51,6 +54,15 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             GIE = GetBitField("GIE");
         }
 
+        /// <summary>
+        /// Registers values at Power-On Reset time.
+        /// </summary>
+        protected override void SetRegistersValuesAtPOR()
+        {
+            base.SetRegistersValuesAtPOR();
+            AddRegisterAtPOR(GetRegisterResetValue(INTCON));
+        }
+
     }
 
-}
+    }

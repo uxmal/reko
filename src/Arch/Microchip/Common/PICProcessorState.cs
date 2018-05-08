@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -36,7 +37,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
 
         protected PICArchitecture arch;
-        protected Dictionary<PICRegisterStorage, Constant> ValidRegsValues; // Registers values. Only for valid registers.
+        protected Dictionary<PICRegisterStorage, PICRegisterContent> ValidRegsValues; // Registers values. Only for valid registers.
         protected HashSet<RegisterStorage> ValidRegs;                   // Validity of registers. Note: if not valid, there is no corresponding entry in 'regs'.
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICProcessorState(PICArchitecture arch)
         {
             this.arch = arch;
-            ValidRegsValues = new Dictionary<PICRegisterStorage, Constant>();
+            ValidRegsValues = new Dictionary<PICRegisterStorage, PICRegisterContent>();
             ValidRegs = new HashSet<RegisterStorage>();
         }
 
@@ -58,7 +59,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             arch = st.arch;
             HWStackItems = st.HWStackItems;
-            ValidRegsValues = new Dictionary<PICRegisterStorage, Constant>(st.ValidRegsValues);
+            ValidRegsValues = new Dictionary<PICRegisterStorage, PICRegisterContent>(st.ValidRegsValues);
             ValidRegs = new HashSet<RegisterStorage>(st.ValidRegs);
         }
 
@@ -79,10 +80,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         public bool IsValid(RegisterStorage reg)
             => ValidRegs.Contains(reg);
 
-        //TODO: use 'access' mask of PIC registers to amend GetRegister/SetRegister results.
-
         /// <summary>
-        /// Get the PIC register value.
+        /// Get the PIC register value. If the register is composed of subregisters, then calculate the value based on individual subregisters.
         /// </summary>
         /// <param name="reg">The PIC register.</param>
         /// <returns>
@@ -92,7 +91,22 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if ((reg is PICRegisterStorage preg) && IsValid(preg))
             {
-                return Constant.Create(reg.DataType, ValidRegsValues[preg].ToUInt64() & preg.Impl);
+                uint ival;
+                if (preg.HasAttachedRegs)
+                {
+                    ival = 0;
+                    foreach (var sreg in preg.AttachedRegs)
+                    {
+                        if (!IsValid(sreg))
+                            return Constant.Invalid;
+                        ival |= ValidRegsValues[sreg].ActualValue << (int)sreg.BitAddress;
+                    }
+                }
+                else
+                {
+                    ival = ValidRegsValues[preg].ActualValue;
+                }
+                return Constant.Create(reg.DataType, ival);
             }
             return Constant.Invalid;
         }
@@ -101,27 +115,34 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Sets a PIC register value.
         /// </summary>
         /// <param name="reg">The PIC register.</param>
-        /// <param name="c">A Constant to process.</param>
+        /// <param name="c">A Constant to assign to this register.</param>
         public override void SetRegister(RegisterStorage reg, Constant c)
         {
             if (reg is PICRegisterStorage preg)
             {
                 if (c?.IsValid ?? false)
                 {
-                    ValidRegs.Add(preg);
-                    ValidRegsValues[preg] = c;
-                    if (preg.HasAttachedRegs)
-                    {
-                        foreach (var subreg in preg.AttachedRegs)
-                        {
-                            var subc = Constant.Create(subreg.DataType, (c.ToUInt64() >> (int)subreg.BitAddress) & subreg.BitMask);
-                            SetRegister(subreg, subc);
-                        }
-                    }
+                    SetRegister(preg, c.ToUInt32());
+                    return;
+                }
+                if (preg.HasAttachedRegs)
+                {
+                    preg.AttachedRegs.ForEach((sreg) => ValidRegs.Remove(sreg));
                     return;
                 }
             }
             ValidRegs.Remove(reg);
+        }
+
+        private void SetRegister(PICRegisterStorage preg, uint ival)
+        {
+            if (preg.HasAttachedRegs)
+            {
+                preg.AttachedRegs.ForEach((sreg) => SetRegister(sreg, (uint)((ival >> (int)sreg.BitAddress) & sreg.BitMask)));
+                return;
+            }
+            ValidRegs.Add(preg);
+            ValidRegsValues[preg] = new PICRegisterContent(preg.Traits) { ActualValue = ival };
         }
 
         /// <summary>

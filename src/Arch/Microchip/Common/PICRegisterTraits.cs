@@ -93,12 +93,12 @@ namespace Reko.Arch.MicrochipPIC.Common
             Name = joinedSFR.CName;
             Desc = joinedSFR.Desc;
             RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(joinedSFR.Addr), (int)joinedSFR.NzWidth);
-            Access = String.Join("", joinedRegs.Reverse().Select(e => e.Access));
-            MCLR = String.Join("", joinedRegs.Reverse().Select(e => e.MCLR));
-            POR = String.Join("", joinedRegs.Reverse().Select(e => e.POR));
-            Impl = joinedRegs.Reverse().Aggregate(0UL, (total, reg) => total = total * 256 + reg.Impl);
-            IsVolatile = joinedRegs.Any(e => e.IsVolatile == true);
-            IsIndirect = joinedRegs.Any(e => e.IsIndirect == true);
+            Access = String.Join("", joinedRegs.Reverse().Select(e => e.Traits.Access));
+            MCLR = String.Join("", joinedRegs.Reverse().Select(e => e.Traits.MCLR));
+            POR = String.Join("", joinedRegs.Reverse().Select(e => e.Traits.POR));
+            Impl = joinedRegs.Reverse().Aggregate(0UL, (total, reg) => total = (total << 8) + reg.Traits.Impl);
+            IsVolatile = joinedRegs.Any(e => e.Traits.IsVolatile == true);
+            IsIndirect = joinedRegs.Any(e => e.Traits.IsIndirect == true);
         }
 
 

@@ -50,7 +50,8 @@
     <Compile Include="Common\PICMemoryDescriptor.cs" />
     <Compile Include="Common\PICPointerScanner.cs" />
     <Compile Include="Common\PICPostprocessProgram.cs" />
-    <Compile Include="Common\PICRegisterBinaryTraits.cs" />
+    <Compile Include="Common\PICRegisterAccessMasks.cs" />
+    <Compile Include="Common\PICRegisterContent.cs" />
     <Compile Include="Common\PICRegisterBitFieldStorage.cs" />
     <Compile Include="Common\PICDisassemblerBase.cs" />
     <Compile Include="Common\PICInstructionComparer.cs" />

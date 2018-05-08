@@ -89,6 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         private static object symTabLock = new object(); // lock to allow concurrent access.
+        private static PICRegisters regs = null;
 
         private static SortedList<string, PICRegisterStorage> registersByName
             = new SortedList<string, PICRegisterStorage>();
@@ -104,6 +105,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         private static Dictionary<PICRegisterStorage, (FSRIndexedMode iop, PICRegisterStorage fsr)> indirectParentRegisters
             = new Dictionary<PICRegisterStorage, (FSRIndexedMode, PICRegisterStorage)>();
 
+        private static List<UserRegisterValue> registersAtPOR
+            = new List<UserRegisterValue>();
+
         public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
         public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte);
         public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
@@ -116,11 +120,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
         }
 
-        /// <summary> PCL register. </summary>
         public static PICRegisterStorage PCL { get; protected set; }
-
-        /// <summary> STATUS register. </summary>
         public static PICRegisterStorage STATUS { get; protected set; }
+        public static PICRegisterStorage WREG { get; protected set; }
+        public static PICRegisterStorage PCLATH { get; protected set; }
+        public static PICRegisterStorage STKPTR { get; protected set; }
+        public static PICRegisterStorage BSR { get; protected set; }
 
         /// <summary> Carry bit in STATUS register. </summary>
         public static PICRegisterBitFieldStorage C { get; protected set; }
@@ -137,51 +142,26 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary> Timed-Out bit in STATUS or PCON register. </summary>
         public static PICRegisterBitFieldStorage TO { get; protected set; }
 
-        /// <summary> WREG special function register. </summary>
-        public static PICRegisterStorage WREG { get; protected set; }
-
-        /// <summary> PCLATH special function register. </summary>
-        public static PICRegisterStorage PCLATH { get; protected set; }
-
-        /// <summary> STKPTR pseudo-register. </summary>
-        public static PICRegisterStorage STKPTR { get; protected set; }
-
-        /// <summary> BSR special function register. </summary>
-        public static PICRegisterStorage BSR { get; protected set; }
-
 
         /// <summary>
         /// Loads the PIC registers into the registers symbol table.
         /// </summary>
-        /// <param name="pic">The PIC definition.</param>
+        /// <param name="pic">The PIC definition as provided by Microchip.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
         public static void LoadRegisters(PIC pic)
         {
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
-            var regs = new PICRegisters();
+            regs = new PICRegisters();
             regs.Reset();
             regs.LoadRegistersInTable(regs, pic);
             HWStackDepth = pic.ArchDef.MemTraits.HWStackDepth;
         }
 
-        private void Reset()
-        {
-            lock (symTabLock)
-            {
-                registersByName.Clear();
-                bitFieldsByName.Clear();
-                registersByAddressAndWidth.Clear();
-                accessibleRegisters.Clear();
-                invalidDestRegisters.Clear();
-                indirectParentRegisters.Clear();
-            }
-        }
-
         /// <summary>
         /// Sets core registers common to all 8-bit PIC.
         /// </summary>
-        public virtual void SetCoreRegisters()
+        protected virtual void SetCoreRegisters()
         {
             STATUS = GetRegister("STATUS");
             C = GetBitField("C");
@@ -201,6 +181,24 @@ namespace Reko.Arch.MicrochipPIC.Common
             PCLATH = GetRegister("PCLATH");
             WREG = GetRegister("WREG");
             STKPTR = GetRegister("STKPTR");
+        }
+
+        /// <summary>
+        /// Set the registers values at Power-On Reset time.
+        /// </summary>
+        protected virtual void SetRegistersValuesAtPOR()
+        {
+            AddRegisterAtPOR(GetRegisterResetValue(STATUS));
+            AddRegisterAtPOR(GetRegisterResetValue(PCL));
+            AddRegisterAtPOR(GetRegisterResetValue(PCLATH));
+            AddRegisterAtPOR(GetRegisterResetValue(WREG));
+            AddRegisterAtPOR(GetRegisterResetValue(STKPTR));
+        }
+
+        protected void AddRegisterAtPOR(UserRegisterValue registerValue)
+        {
+            if ((registerValue != null) && (!registersAtPOR.Contains(registerValue)))
+                registersAtPOR.Add(registerValue);
         }
 
         #region IPICRegisterSymTable interface
@@ -413,7 +411,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             lock (symTabLock)
             {
-                if (bitPos > parentReg.BitWidth || (bitPos + bitWidth) > parentReg.BitWidth)
+                if (bitPos > parentReg.Traits.BitWidth || (bitPos + bitWidth) > parentReg.Traits.BitWidth)
                     return false;
                 if (parentReg.BitFields.Count <= 0)
                     return false;
@@ -459,7 +457,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if bit-field found, false otherwise.
         /// </returns>
-        public static bool TryGetBitField(string regName, out PICRegisterBitFieldStorage field,  byte bitPos, byte bitWidth = 0)
+        public static bool TryGetBitField(string regName, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
             field = null;
             if (TryGetRegister(regName, out var reg))
@@ -497,7 +495,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (reg is PICRegisterStorage preg)
             {
                 if (preg.HasAttachedRegs)
-                    return preg.AttachedRegs.Find(r => r.BitAddress == (ulong)offset && r.BitWidth == width);
+                    return preg.AttachedRegs.Find(r => r.BitAddress == (ulong)offset && r.Traits.BitWidth == width);
             }
             return null;
         }
@@ -512,6 +510,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public static RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
+            if (regs == null || regs.Count <= 0)
+                return reg;
             ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
@@ -623,18 +623,20 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static bool TryGetAlwaysAccessibleRegister(ushort regAbsAddr, out PICRegisterStorage reg)
             => TryGetAlwaysAccessibleRegister(PICDataAddress.Ptr(regAbsAddr), out reg);
 
+        public static List<UserRegisterValue> GetPORRegistersList() => registersAtPOR;
+
         #endregion
 
 
-        protected bool AddRegister(PICRegisterStorage reg)
+        protected static bool AddRegister(PICRegisterStorage reg)
         {
             if (reg is null)
                 return false;
 
             PICRegisterSizedUniqueAddress addr =
-                (reg.IsMemoryMapped
-                    ? new PICRegisterSizedUniqueAddress(reg.Address, reg.BitWidth)
-                    : new PICRegisterSizedUniqueAddress(reg.NMMRID, reg.BitWidth)
+                (reg.Traits.IsMemoryMapped
+                    ? new PICRegisterSizedUniqueAddress(reg.Traits.Address, reg.Traits.BitWidth)
+                    : new PICRegisterSizedUniqueAddress(reg.Traits.NMMRID, reg.Traits.BitWidth)
                 );
 
             lock (symTabLock)
@@ -649,7 +651,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             return true;
         }
 
-        protected bool AddRegisterBitField(PICRegisterBitFieldStorage field)
+        protected static bool AddRegisterBitField(PICRegisterBitFieldStorage field)
         {
             lock (symTabLock)
             {
@@ -698,8 +700,25 @@ namespace Reko.Arch.MicrochipPIC.Common
             {
                 foreach (var reg in regs)
                 {
-                    accessibleRegisters.Add(reg.Address, reg);
+                    accessibleRegisters.Add(reg.Traits.Address, reg);
                 }
+            }
+        }
+
+        protected static UserRegisterValue GetRegisterResetValue(PICRegisterStorage reg)
+            => new UserRegisterValue() { Register = reg, Value = Constant.Create(reg.DataType, new PICRegisterContent(reg.Traits).ResetValue()) };
+
+        private void Reset()
+        {
+            lock (symTabLock)
+            {
+                registersByName.Clear();
+                bitFieldsByName.Clear();
+                registersByAddressAndWidth.Clear();
+                accessibleRegisters.Clear();
+                invalidDestRegisters.Clear();
+                indirectParentRegisters.Clear();
+                registersAtPOR.Clear();
             }
         }
 

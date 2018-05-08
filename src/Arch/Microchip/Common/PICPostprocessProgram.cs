@@ -83,7 +83,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
             program.SegmentMap = newMap;
             SetPICExecMode();
-            
+            SetResetRegisters();
+
             return program;
         }
 
@@ -160,6 +161,15 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
+        private void SetResetRegisters()
+        {
+            var rlist = program.User.RegisterValues;
+            if (rlist == null)
+            {
+                rlist = new SortedList<Address, List<UserRegisterValue>>();
+            }
+            rlist[PICProgAddress.Ptr(0)] = PICRegisters.GetPORRegistersList();
+        }
     }
 
 }

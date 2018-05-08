@@ -32,11 +32,16 @@ namespace Reko.Arch.MicrochipPIC.PIC16
     /// </summary>
     public class PIC16BasicRegisters : PIC16Registers
     {
-
         private PIC16BasicRegisters()
         {
         }
 
+        public static PICRegisterBitFieldStorage RP0 { get; protected set; }
+        public static PICRegisterBitFieldStorage RP1 { get; protected set; }
+        public static PICRegisterStorage INDF { get; private set; }
+        public static PICRegisterStorage FSR { get; private set; }
+
+        /// <summary> Sets core registers for PIC16 Basic. </summary>
         /// <summary>
         /// Creates the Basic PIC16 registers.
         /// </summary>
@@ -45,22 +50,20 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         public static void Create(PIC pic)
         {
             LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
-            new PIC16BasicRegisters().SetCoreRegisters();
+            var regs = new PIC16BasicRegisters();
+            regs.SetCoreRegisters();
+            regs.SetRegistersValuesAtPOR();
         }
 
-        /// <summary> Register Page in STATUS register. </summary>
-        public static PICRegisterBitFieldStorage RP0 { get; protected set; }
-
-        /// <summary> Register Page in STATUS register. </summary>
-        public static PICRegisterBitFieldStorage RP1 { get; protected set; }
-
-        /// <summary> INDF special function register. </summary>
-        public static PICRegisterStorage INDF { get; private set; }
-
-        /// <summary> FSR pseudo-register (alias to FSRH:FSRL). </summary>
-        public static PICRegisterStorage FSR { get; private set; }
-
-        public override void SetCoreRegisters()
+        /// <summary>
+        /// This method sets each of the standard "core" registers of the Basic PIC16.
+        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition as provided by Microchip.
+        /// </summary>
+        /// <remarks>
+        /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
+        protected override void SetCoreRegisters()
         {
             base.SetCoreRegisters();
 
@@ -79,6 +82,15 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 );
 
             AddAlwaysAccessibleRegisters(true, INDF, PCL, STATUS, FSR, PCLATH, INTCON);
+
+        }
+
+        /// <summary> Registers values at Power-On Reset time for PIC16 Basic. </summary>
+        protected override void SetRegistersValuesAtPOR()
+        {
+            base.SetRegistersValuesAtPOR();
+            AddRegisterAtPOR(GetRegisterResetValue(BSR));
+            AddRegisterAtPOR(GetRegisterResetValue(FSR));
         }
 
         private void AddPseudoBSR()

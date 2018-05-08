@@ -20,8 +20,10 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Libraries.Microchip;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
@@ -37,6 +39,19 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
         }
 
+        public static PICRegisterStorage INDF0 { get; private set; }
+        public static PICRegisterStorage INDF1 { get; private set; }
+        public static PICRegisterStorage FSR0L { get; private set; }
+        public static PICRegisterStorage FSR0H { get; private set; }
+        public static PICRegisterStorage FSR1L { get; private set; }
+        public static PICRegisterStorage FSR1H { get; private set; }
+
+        /// <summary> FSR0 pseudo-register (alias to FSR0H:FSR0L). </summary>
+        public static PICRegisterStorage FSR0 { get; private set; }
+
+        /// <summary> FSR1 pseudo-register (alias to FSR1H:FSR1L). </summary>
+        public static PICRegisterStorage FSR1 { get; private set; }
+
         /// <summary>
         /// Creates the Full-Featured PIC16 registers.
         /// </summary>
@@ -45,53 +60,20 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         public static void Create(PIC pic)
         {
             LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
-            new PIC16FullRegisters().SetCoreRegisters();
+            var regs = new PIC16FullRegisters();
+            regs.SetCoreRegisters();
+            regs.SetRegistersValuesAtPOR();
         }
 
-
-        #region Full-featured PIC16 standard (core) registers and bit fields. 
-
         /// <summary>
-        /// INDF0 special function register.
+        /// This method sets each of the standard "core" registers of the Full-featured PIC16.
+        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition as provided by Microchip.
         /// </summary>
-        public static PICRegisterStorage INDF0 { get; private set; }
-
-        /// <summary>
-        /// INDF1 special function register.
-        /// </summary>
-        public static PICRegisterStorage INDF1 { get; private set; }
-
-        /// <summary>
-        /// FSR0L special function register.
-        /// </summary>
-        public static PICRegisterStorage FSR0L { get; private set; }
-
-        /// <summary>
-        /// FSR0H special function register.
-        /// </summary>
-        public static PICRegisterStorage FSR0H { get; private set; }
-
-        /// <summary>
-        /// FSR1L special function register.
-        /// </summary>
-        public static PICRegisterStorage FSR1L { get; private set; }
-
-        /// <summary>
-        /// FSR1H special function register.
-        /// </summary>
-        public static PICRegisterStorage FSR1H { get; private set; }
-
-        /// <summary>
-        /// FSR0 pseudo-register (alias to FSR0H:FSR0L).
-        /// </summary>
-        public static PICRegisterStorage FSR0 { get; private set; }
-
-        /// <summary>
-        /// FSR1 pseudo-register (alias to FSR1H:FSR1L).
-        /// </summary>
-        public static PICRegisterStorage FSR1 { get; private set; }
-
-        public override void SetCoreRegisters()
+        /// <remarks>
+        /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
+        protected override void SetCoreRegisters()
         {
             base.SetCoreRegisters();
 
@@ -113,9 +95,18 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 );
 
             AddAlwaysAccessibleRegisters(true, INDF0, INDF1, PCL, STATUS, FSR0L, FSR0H, FSR1L, FSR1H, BSR, WREG, PCLATH, INTCON);
+
+            SetRegistersValuesAtPOR();
         }
 
-        #endregion
+        /// <summary> Registers values at Power-On Reset time for PIC16 Full-featured. </summary>
+        protected override void SetRegistersValuesAtPOR()
+        {
+            base.SetRegistersValuesAtPOR();
+            AddRegisterAtPOR(GetRegisterResetValue(BSR));
+            AddRegisterAtPOR(GetRegisterResetValue(FSR0));
+            AddRegisterAtPOR(GetRegisterResetValue(FSR1));
+        }
 
     }
 

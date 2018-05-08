@@ -21,8 +21,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
@@ -41,100 +39,38 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary> Negative bit in STATUS register. </summary>
         public static PICRegisterBitFieldStorage N { get; protected set; }
 
-        /// <summary> FSR2L special function register. </summary>
         public static PICRegisterStorage FSR2L { get; protected set; }
-
-        /// <summary> FSR2H special function register. </summary>
         public static PICRegisterStorage FSR2H { get; protected set; }
-
-        /// <summary> PLUSW2 special function register. </summary>
         public static PICRegisterStorage PLUSW2 { get; protected set; }
-
-        /// <summary> PREINC2 special function register. </summary>
         public static PICRegisterStorage PREINC2 { get; protected set; }
-
-        /// <summary> POSTDEC2 special function register. </summary>
         public static PICRegisterStorage POSTDEC2 { get; protected set; }
-
-        /// <summary> POSTINC2 special function register. </summary>
         public static PICRegisterStorage POSTINC2 { get; protected set; }
-
-        /// <summary> INDF2 special function register. </summary>
         public static PICRegisterStorage INDF2 { get; protected set; }
-
-        /// <summary> FSR1L special function register. </summary>
         public static PICRegisterStorage FSR1L { get; protected set; }
-
-        /// <summary> FSR1H special function register. </summary>
         public static PICRegisterStorage FSR1H { get; protected set; }
-
-        /// <summary> PLUSW1 special function register. </summary>
         public static PICRegisterStorage PLUSW1 { get; protected set; }
-
-        /// <summary> PREINC1 special function register. </summary>
         public static PICRegisterStorage PREINC1 { get; protected set; }
-
-        /// <summary> POSTDEC1 special function register. </summary>
         public static PICRegisterStorage POSTDEC1 { get; protected set; }
-
-        /// <summary> POSTINC1 special function register. </summary>
         public static PICRegisterStorage POSTINC1 { get; protected set; }
-
-        /// <summary> INDF1 special function register. </summary>
         public static PICRegisterStorage INDF1 { get; protected set; }
-
-        /// <summary> FSR0L special function register. </summary>
         public static PICRegisterStorage FSR0L { get; protected set; }
-
-        /// <summary> FSR0H special function register. </summary>
         public static PICRegisterStorage FSR0H { get; protected set; }
-
-        /// <summary> PLUSW0 special function register. </summary>
         public static PICRegisterStorage PLUSW0 { get; protected set; }
-
-        /// <summary> PREINC0 special function register. </summary>
         public static PICRegisterStorage PREINC0 { get; protected set; }
-
-        /// <summary> POSTDEC0 special function register. </summary>
         public static PICRegisterStorage POSTDEC0 { get; protected set; }
-
-        /// <summary> POSTINC0 special function register. </summary>
         public static PICRegisterStorage POSTINC0 { get; protected set; }
-
-        /// <summary> INDF0 special function register. </summary>
         public static PICRegisterStorage INDF0 { get; protected set; }
-
-        /// <summary> PRODL special function register. </summary>
         public static PICRegisterStorage PRODL { get; protected set; }
-
-        /// <summary> PRODH special function register. </summary>
         public static PICRegisterStorage PRODH { get; protected set; }
-
-        /// <summary> TABLAT special function register. </summary>
         public static PICRegisterStorage TABLAT { get; protected set; }
-
-        /// <summary> TBLPTRL special function register. </summary>
         public static PICRegisterStorage TBLPTRL { get; protected set; }
-
-        /// <summary> TBLPTRH special function register. </summary>
         public static PICRegisterStorage TBLPTRH { get; protected set; }
-
-        /// <summary> TBLPTRU special function register. </summary>
         public static PICRegisterStorage TBLPTRU { get; protected set; }
-
-        /// <summary> PCLU special function register. </summary>
         public static PICRegisterStorage PCLATU { get; protected set; }
-
-        /// <summary> TOSL special function register. </summary>
         public static PICRegisterStorage TOSL { get; protected set; }
-
-        /// <summary> TOSH special function register. </summary>
         public static PICRegisterStorage TOSH { get; protected set; }
-
-        ///<summary> TOSU special function register.</summary>
         public static PICRegisterStorage TOSU { get; protected set; }
 
-        #region Pseudo-registers
 
         /// <summary> PROD pseudo-register (alias to PRODH:PRODL). </summary>
         public static PICRegisterStorage PROD { get; protected set; }
@@ -157,28 +93,25 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary> TBLPTR pseudo-register (alias to TBLPTRU:TBLPTRH:TBLPTRL). </summary>
         public static PICRegisterStorage TBLPTR { get; protected set; }
 
-        #region Shadow registers for some PIC18
 
         public static PICRegisterStorage STATUS_CSHAD { get; protected set; }
         public static PICRegisterStorage WREG_CSHAD { get; protected set; }
         public static PICRegisterStorage BSR_CSHAD { get; protected set; }
 
-        #endregion
 
-        /// <summary>
-        /// Hardware Return Address Stack of the PIC.
-        /// </summary>
+        /// <summary> Hardware Return Address Stack of the PIC. </summary>
         public static MemoryIdentifier HWStack { get; private set; }
 
         /// <summary>
         /// This method sets each of the standard "core" registers of the PIC18.
-        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition.
+        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition
+        /// as providd by Microchip.
         /// </summary>
         /// <remarks>
         /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
         /// </remarks>
         /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
-        public override void SetCoreRegisters()
+        protected override void SetCoreRegisters()
         {
 
             base.SetCoreRegisters();
@@ -260,7 +193,22 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         }
 
-        #endregion
+        /// <summary>
+        /// Registers values at Power-On Reset time for all PIC18.
+        /// </summary>
+        /// <param name="rlist">The list of register/value pairs.</param>
+        protected override void SetRegistersValuesAtPOR()
+        {
+            base.SetRegistersValuesAtPOR();
+            AddRegisterAtPOR(GetRegisterResetValue(BSR));
+            AddRegisterAtPOR(GetRegisterResetValue(FSR0));
+            AddRegisterAtPOR(GetRegisterResetValue(FSR1));
+            AddRegisterAtPOR(GetRegisterResetValue(FSR2));
+            AddRegisterAtPOR(GetRegisterResetValue(PROD));
+            AddRegisterAtPOR(GetRegisterResetValue(PCLAT));
+            AddRegisterAtPOR(GetRegisterResetValue(TOS));
+            AddRegisterAtPOR(GetRegisterResetValue(TBLPTR));
+        }
 
     }
 
