@@ -3343,42 +3343,46 @@ void OSRAMStringDraw(word32 r6)
 		;
 }
 
-// 00009881: void OSRAMImageDraw(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r10, Register word32 ip)
-void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word32 ip)
+// 00009881: void OSRAMImageDraw(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 ip)
+void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 ip)
 {
 	if (!Z)
 	{
-		Mem48[r7 + 0x00:word32] = r0;
-		Mem50[r7 - 0x04 + 0x00:word32] = r3;
-		Mem52[r7 - 0x08 + 0x00:word32] = r5;
-		Mem53[r7 - 0x0C + 0x00:word32] = r6;
-		Mem54[r7 - 0x0010 + 0x00:word32] = r7;
-		Mem55[r7 - 0x0014 + 0x00:word32] = ip;
-		Mem56[r7 - 0x0018 + 0x00:word32] = fp;
-		Mem58[r7 - 0x001C + 0x00:word32] = lr;
-		Mem60[r7 - 0x0020 + 0x00:word32] = pc;
+		Mem50[r7 + 0x00:word32] = r0;
+		Mem52[r7 - 0x04 + 0x00:word32] = r3;
+		Mem54[r7 - 0x08 + 0x00:word32] = r5;
+		Mem55[r7 - 0x0C + 0x00:word32] = r6;
+		Mem56[r7 - 0x0010 + 0x00:word32] = r7;
+		Mem57[r7 - 0x0014 + 0x00:word32] = ip;
+		Mem58[r7 - 0x0018 + 0x00:word32] = fp;
+		Mem60[r7 - 0x001C + 0x00:word32] = lr;
+		Mem62[r7 - 0x0020 + 0x00:word32] = pc;
+	}
+	if (!Z)
+	{
+		r3 = r3 + 0x069E;
+		r8 = Mem0[r3 + 0x069E:word32];
 	}
 	if (!ZC)
 	{
-		Mem37[r6 - 0x04 + 0x00:word32] = r1;
-		Mem39[r6 - 0x08 + 0x00:word32] = r2;
-		Mem40[r6 - 0x0C + 0x00:word32] = r6;
-		Mem42[r6 - 0x0010 + 0x00:word32] = r10;
-		Mem44[r6 - 0x0014 + 0x00:word32] = ip;
+		Mem39[r6 - 0x04 + 0x00:word32] = r1;
+		Mem41[r6 - 0x08 + 0x00:word32] = r2;
+		Mem42[r6 - 0x0C + 0x00:word32] = r6;
+		Mem44[r6 - 0x0010 + 0x00:word32] = r10;
+		Mem46[r6 - 0x0014 + 0x00:word32] = ip;
 	}
 	if (!NZV)
 	{
-		byte NZCV_32 = cond(r1 ^ r6 >> 0x08);
-		Z = NZCV_32;
-		C = NZCV_32;
+		byte NZCV_34 = cond(r1 ^ r6 >> 0x08);
+		Z = NZCV_34;
+		C = NZCV_34;
 	}
-	if (Z)
-	{
-		if (!Z)
-			Z = cond((r4 >> 0x0010) - r0 - C);
-		if (!Z)
-			__syscall(0x00F00108);
-	}
+	if (!Z)
+		r0 = __ssub8(r8, r3);
+	if (!Z)
+		Z = cond((r4 >> 0x0010) - r0 - C);
+	if (!Z)
+		__syscall(0x00F00108);
 }
 
 // 000098F1: void OSRAMInit(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r6, Register word32 r8, Register word32 r9)

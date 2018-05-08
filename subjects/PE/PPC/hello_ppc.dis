@@ -343,7 +343,7 @@ l004004B4:
 	Mem54[v3 + 64:word32] = r29
 	Mem57[v3 + 68:word32] = r30
 	Mem60[v3 + 72:word32] = r31
-	word32 r31_190 = (int32) (int8) (word32) Mem60[r4:byte]
+	word32 r31_190 = (int32) (int8) Mem60[r4:byte]
 	word32 r23_183 = r4 + 1
 	word32 dwLoc0284_174 = 0
 	branch Test(EQ,cr0) l00400DEC
@@ -390,14 +390,14 @@ l00400544:
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -001C(32) Local -0020(32) Local -0284(32) Local -02C0(32)
 
 l00400524:
-	r10_194 = (int32) (int8) (word32) Mem60[r14_169 + -28 + r31_190:byte] & 0x0000000F
+	r10_194 = (int32) (int8) Mem60[r14_169 + -28 + r31_190:byte] & 0x0000000F
 // DataOut: cr0 lr r0 r10 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -704 r23:<invalid> r4:0 r31:<invalid> r12:<invalid> r22:r3 r6:<invalid> r26:<invalid> r21:fp + -128 r14:<invalid> r16:<invalid> r13:<invalid> r17:<invalid> cr1:<invalid> r10:<invalid> r5:<invalid> r11:<invalid> r0:<invalid> lr:<invalid> r3:<invalid> r7:<invalid> r27:<invalid> r30:<invalid> r28:<invalid> r29:<invalid> r9:<invalid> ctr:<invalid> r2:<invalid> r8:<invalid> r25:<invalid> -704(fp):fp -648(fp):0 -644(fp):<invalid> -88(fp):fp + -648 8(fp):lr 32(fp):r5
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -001C(32) Local -0020(32) Local -0284(32) Local -02C0(32)
 
 l00400548:
-	word32 r4_205 = (int32) (int8) ((int32) (int8) (word32) Mem60[r14_169 + 4 + ((r10_194 << 0x03) + dwLoc0284_174):byte] >> 0x00000004)
+	word32 r4_205 = (int32) (int8) ((int32) (int8) Mem60[r14_169 + 4 + ((r10_194 << 0x03) + dwLoc0284_174):byte] >> 0x00000004)
 	dwLoc0284_174 = r4_205
 	branch Test(GE,cond(r4_205 - 0x00000008)) l00400DDC
 // DataOut: cr0 lr r0 r11 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r30 r31
@@ -422,7 +422,7 @@ l004005B0:
 l004005C8:
 	r2 = fn00400E04(r0, r2, r31_190, r3, fp + -648, r25, r26_167, r27, r28, r29, r30, cr0, lr, dwLoc02B8, out r25, out r26_167, out r27, out r28, out r29, out r30)
 	r23_183 = r23_183 + 1
-	r31_190 = (int32) (int8) (word32) Mem60[r23_183:byte]
+	r31_190 = (int32) (int8) Mem60[r23_183:byte]
 // DataOut: cr0 lr r0 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -704 r23:<invalid> r4:<invalid> r31:<invalid> r12:<invalid> r22:r3 r6:<invalid> r26:<invalid> r21:fp + -128 r14:<invalid> r16:<invalid> r13:<invalid> r17:<invalid> cr1:<invalid> r10:<invalid> r5:<invalid> r11:<invalid> r0:<invalid> lr:<invalid> r3:<invalid> r7:<invalid> r27:<invalid> r30:<invalid> r28:<invalid> r29:<invalid> r9:<invalid> ctr:<invalid> r2:<invalid> r8:<invalid> r25:<invalid> -704(fp):fp -648(fp):0 -644(fp):<invalid> -88(fp):fp + -648 8(fp):lr 32(fp):r5
@@ -437,7 +437,7 @@ l004005EC:
 
 l00400DDC:
 	r23_183 = r23_183 + 1
-	r31_190 = (int32) (int8) (word32) Mem60[r23_183:byte]
+	r31_190 = (int32) (int8) Mem60[r23_183:byte]
 	branch Test(NE,cr0) l00400508
 // DataOut: cr0 lr r0 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r30 r31
 // DataOut (flags): crX
@@ -594,9 +594,9 @@ l00400E5C:
 // SymbolicIn: r1:fp + -64 r31:r5 r5:<invalid> r12:lr cr1:<invalid> -64(fp):fp -8(fp):r31 8(fp):lr
 
 l00400E2C:
-	Mem53[Mem16[r4:word32]:byte] = (byte) (int32) (int8) r3
+	Mem53[Mem16[r4:word32]:byte] = (int32) (int8) r3
 	word32 r6_54 = Mem53[r4:word32]
-	word32 r7_55 = (word32) Mem53[r6_54:byte]
+	word32 r7_55 = Mem53[r6_54:byte]
 	Mem57[r4:word32] = r6_54 + 1
 	r11_30 = (int32) (int16) ((int32) (int8) r7_55 & 0x000000FF)
 // DataOut: cr0 r11 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r30 r31
@@ -714,7 +714,7 @@ l00400F00:
 // LocalsOut: fp(32) Local -0048(32)
 
 l00400F30:
-	r2 = fn00400E04(r0, r2, (int32) (int8) (word32) Mem15[r30_24:byte], r28_26, r29_28, r25, r26, r27, r28_26, r29_28, r30_24 + 1, cr0, lr, dwLoc40, out r25, out r26, out r27, out r28_26, out r29_28, out r30_24)
+	r2 = fn00400E04(r0, r2, (int32) (int8) Mem15[r30_24:byte], r28_26, r29_28, r25, r26, r27, r28_26, r29_28, r30_24 + 1, cr0, lr, dwLoc40, out r25, out r26, out r27, out r28_26, out r29_28, out r30_24)
 	r31_30 = r31_88 + -1
 	word32 r31_88 = r31_30
 	branch Test(GT,cond(r31_88)) l00400F30
@@ -1473,7 +1473,7 @@ l00401474:
 // SymbolicIn: r1:fp
 
 l00401490:
-	return (int32) (int8) (word32) Mem0[Mem0[r2 + 120:word32] + r3:byte] & 0x00000040
+	return (int32) (int8) Mem0[Mem0[r2 + 120:word32] + r3:byte] & 0x00000040
 // DataOut: cr0 lr r0 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp r4:<invalid> r5:r3 cr1:<invalid>
@@ -1535,7 +1535,7 @@ l004014FC:
 // SymbolicIn: r1:fp r10:r3 cr1:cond(r5) r3:0
 
 l00401500:
-	word32 r11_43 = (word32) Mem0[r4:word16]
+	word32 r11_43 = Mem0[r4:word16]
 	branch Test(GE,cond(r11_43 - 0x00000100)) l00401538
 // DataOut: ctr r10 r11 r2 r3 r4
 // DataOut (flags): crX
@@ -1551,7 +1551,7 @@ l00401538:
 l0040150C:
 	Mem49[r3 + r3_42:byte] = (byte) (int32) (int8) (r11_43 & 0x000000FF)
 	r4 = r4 + 2
-	branch Test(EQ,cond((word32) Mem49[r4:word16])) l0040154C
+	branch Test(EQ,cond(Mem49[r4:word16])) l0040154C
 // DataOut: ctr r10 r2 r3 r4
 // DataOut (flags): crX
 // SymbolicIn: r1:fp r10:r3 cr1:<invalid> r3:<invalid> ctr:<invalid> r11:<invalid> r5:<invalid> r4:<invalid>
@@ -1590,7 +1590,7 @@ l004014CC:
 l004014D0:
 	r11_15 = r11_63 + 2
 	word32 r11_63 = r11_15
-	branch Test(NE,cond((word32) Mem0[r11_63:word16])) l004014D0
+	branch Test(NE,cond(Mem0[r11_63:word16])) l004014D0
 // DataOut: r11 r4
 // DataOut (flags): crX
 // SymbolicIn: r1:fp r10:r3 cr1:<invalid> r3:0 r11:<invalid> r5:<invalid>
@@ -1639,7 +1639,7 @@ l00401568:
 // SymbolicIn: r1:fp cr1:cond(r3) r4:r4 & 0x0000FFFF
 
 l00401584:
-	Mem25[r3:byte] = (byte) (int32) (int8) (r4 & 0x0000FFFF & 0x000000FF)
+	Mem25[r3:byte] = (int32) (int8) (r4 & 0x0000FFFF & 0x000000FF)
 	return
 // DataOut:
 // DataOut (flags): crX
@@ -1851,7 +1851,7 @@ l004016B8:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Local -000C(32) Local -0010(32) Local -0014(32)
 
 l004016FC:
-	Mem196[Mem182[r31_137 + 8:word32]:byte] = (byte) (int32) (int8) r27_118
+	Mem196[Mem182[r31_137 + 8:word32]:byte] = (int32) (int8) r27_118
 // DataOut: cr0 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -80 r31:<invalid> r10:<invalid> r12:<invalid> r11:<invalid> r4:<invalid> r27:<invalid> r30:<invalid> r9:<invalid> r5:<invalid> r28:<invalid> r29:<invalid> r3:<invalid> r6:<invalid> r7:<invalid> cr1:<invalid> r0:<invalid> ctr:<invalid> r2:<invalid> r8:<invalid> r26:<invalid> r25:<invalid> -80(fp):fp 8(fp):lr
@@ -2247,7 +2247,7 @@ l00401BD8:
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -001C(32) Local -0044(32) Local -0058(32)
 
 l00401BE0:
-	branch Test(EQ,cond((word32) Mem24[Mem24[Mem24[r2 + 152:word32]:word32]:word16])) l00401C74
+	branch Test(EQ,cond(Mem24[Mem24[Mem24[r2 + 152:word32]:word32]:word16])) l00401C74
 // DataOut: cr0 lr r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r26 r28 r29 r30 r31 r9
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -88 r25:<invalid> r28:<invalid> r11:<invalid> r4:<invalid> r30:<invalid> r12:<invalid> cr1:<invalid> r26:<invalid> r27:<invalid> r5:<invalid> r29:<invalid> r9:<invalid> r31:<invalid> r3:<invalid> r0:<invalid> ctr:<invalid> r2:<invalid> r7:<invalid> r8:<invalid> r10:<invalid> r6:<invalid> -88(fp):fp 8(fp):lr
@@ -2501,7 +2501,7 @@ l00401E24:
 	r28 = r30_29 - r10_30 + r9_28 + 8 & -8
 	r2 = dwLoc3C
 	r11_125 = r10_123 + (r3 << 0x04)
-	branch Test(EQ,cond((word32) Mem15[Mem15[Mem15[dwLoc3C + 152:word32]:word32]:word16])) l00401E78
+	branch Test(EQ,cond(Mem15[Mem15[Mem15[dwLoc3C + 152:word32]:word32]:word16])) l00401E78
 // DataOut: cr0 lr r10 r11 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -80 r29:<invalid> r31:r3 << 0x04 r5:<invalid> r30:r4 + 7 & -8 r7:-8 r11:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> cr1:<invalid> r12:lr r3:<invalid> -80(fp):fp 8(fp):lr
@@ -2961,7 +2961,7 @@ l00402248:
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Local -0010(32) Local -0038(32) Local -008C(32) Local -00A0(32)
 
 l00402270:
-	word32 r11_149 = (int32) (int8) (word32) Mem23[Mem23[r2 + 120:word32] + r3:byte]
+	word32 r11_149 = (int32) (int8) Mem23[Mem23[r2 + 120:word32] + r3:byte]
 	branch Test(EQ,cr0) l00402374
 // DataOut: cr0 r0 r10 r11 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30 r31 r4 r5
 // DataOut (flags): crX
@@ -3235,7 +3235,7 @@ l004024F0:
 	word32 r4_8 = Mem0[r2 + 112:word32]
 	Mem12[v8:word32] = r30
 	Mem16[v8 + 4:word32] = r31
-	Mem25[r4_8:byte] = (byte) (int32) (int8) r5
+	Mem25[r4_8:byte] = (int32) (int8) r5
 	word32 r30_19 = r3
 	word32 r31_21 = r5
 	branch Test(NE,cond(r4)) l00402544
@@ -3576,7 +3576,7 @@ l0040287C:
 	word32 ctr_209 = 5
 // DataOut: cr0 ctr r11 r14 r16 r2 r22 r23 r25 r27
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -65) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -65) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -008C(0) Local -00A0(0)
 
 l00402888:
@@ -3590,7 +3590,7 @@ l00402888:
 	branch ctr_209 != 0x00000000 l00402888
 // DataOut: cr0 ctr r11 r14 r16 r2 r22 r23 r25 r27
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -65) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -65) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -008C(0) Local -00A0(0)
 
 l004028AC:
@@ -3600,7 +3600,7 @@ l004028AC:
 	branch Test(NE,cond(fp + -104)) l00402920
 // DataOut: cr0 r0 r14 r16 r2 r22 r23 r25 r27 r3
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -65) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -65) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -008C(32) Local -00A0(32)
 
 l004028D0:
@@ -3608,7 +3608,7 @@ l004028D0:
 	word32 ctr_232 = 5
 // DataOut: cr0 ctr r11 r14 r16 r2 r22 r23 r25 r27
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -104) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -104) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -008C(32) Local -00A0(32)
 
 l004028DC:
@@ -3622,7 +3622,7 @@ l004028DC:
 	branch ctr_232 != 0x00000000 l004028DC
 // DataOut: cr0 ctr r11 r14 r16 r2 r22 r23 r25 r27
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -104) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -104) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32) Local -008C(32) Local -00A0(32)
 
 l00402900:
@@ -3631,14 +3631,14 @@ l00402900:
 	r2 = dwLoc8C
 // DataOut: cr0 r0 r14 r16 r2 r22 r23 r25 r3
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -104) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:cond(fp + -104) r12:<invalid> r11:<invalid> r3:fp + -104 r30:0 r31:fp + -104 r9:5 ctr:<invalid> r27:<invalid> r26:1 r0:<invalid> r2:<invalid> r5:r3 << 0x02 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32)
 
 l00402920:
 	branch Test(EQ,cond(r3_120)) l00402948
 // DataOut: cr0 r0 r14 r16 r2 r22 r23 r25 r3
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:<invalid> r12:<invalid> r11:<invalid> r3:<invalid> r30:0 r31:<invalid> r9:5 ctr:<invalid> r5:r3 << 0x02 r0:<invalid> r2:<invalid> r27:<invalid> r26:1 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:<invalid> r12:<invalid> r11:<invalid> r3:<invalid> r30:0 r31:<invalid> r9:5 ctr:<invalid> r5:r3 << 0x02 r0:<invalid> r2:<invalid> r27:<invalid> r26:1 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 // LocalsOut: fp(32) Local -0004(32) Local -000C(32) Local -0010(32) Local -0014(32) Local -0018(32)
 
 l00402948:
@@ -3649,7 +3649,7 @@ l00402948:
 	return r2
 // DataOut: cr0 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r31
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:<invalid> r12:<invalid> r11:<invalid> r3:<invalid> r30:0 r31:<invalid> r9:5 ctr:<invalid> r5:r3 << 0x02 r0:<invalid> r2:<invalid> r27:<invalid> r26:1 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:<invalid> r12:<invalid> r11:<invalid> r3:<invalid> r30:0 r31:<invalid> r9:5 ctr:<invalid> r5:r3 << 0x02 r0:<invalid> r2:<invalid> r27:<invalid> r26:1 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 
 l00402928:
 	fn00403104(r2, r3_120)
@@ -3660,7 +3660,7 @@ l00402928:
 	return r2
 // DataOut: cr0 r14 r16 r2 r22 r23 r25 r26 r27 r28 r29 r31
 // DataOut (flags): crX
-// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:<invalid> r12:<invalid> r11:<invalid> r3:<invalid> r30:0 r31:<invalid> r9:5 ctr:<invalid> r5:r3 << 0x02 r0:<invalid> r2:<invalid> r27:<invalid> r26:1 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp + -160 r29:<invalid> r4:<invalid> r28:<invalid> r6:r3 cr1:<invalid> r12:<invalid> r11:<invalid> r3:<invalid> r30:0 r31:<invalid> r9:5 ctr:<invalid> r5:r3 << 0x02 r0:<invalid> r2:<invalid> r27:<invalid> r26:1 -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 
 l0040271C:
 	Mem267[Mem21[r2 + 124:word32]:word32] = 22
@@ -3672,7 +3672,7 @@ l0040271C:
 fn004026B8_exit:
 // DataOut: r2 r26 r27 r28 r29 r31
 // DataOut (flags): crX
-// SymbolicIn: r1:fp r29:<invalid> r4:<invalid> r28:<invalid> r6:<invalid> cr1:<invalid> r12:lr r11:<invalid> r5:<invalid> r30:<invalid> r31:<invalid> r7:0 r3:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r0:<invalid> r26:<invalid> r27:<invalid> lr:lr ctr:<invalid> r2:<invalid> -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):0x0001 -58(fp):<invalid> 8(fp):lr
+// SymbolicIn: r1:fp r29:<invalid> r4:<invalid> r28:<invalid> r6:<invalid> cr1:<invalid> r12:lr r11:<invalid> r5:<invalid> r30:<invalid> r31:<invalid> r7:0 r3:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r0:<invalid> r26:<invalid> r27:<invalid> lr:lr ctr:<invalid> r2:<invalid> -160(fp):fp -104(fp):0 -100(fp):0 -96(fp):0 -92(fp):0 -80(fp):<invalid> -76(fp):<invalid> -60(fp):1 -58(fp):<invalid> 8(fp):lr
 
 
 
@@ -4347,7 +4347,7 @@ l00403128:
 // SymbolicIn: r1:fp r4:<invalid> r8:<invalid> r3:<invalid> r9:<invalid> r5:<invalid> r10:<invalid> r11:<invalid> cr1:<invalid>
 
 l00403148:
-	Mem35[Mem12[r2 + 124:word32]:word32] = (word32) Mem12[r8_5 + 2 + (r10_13 << 0x02):word16]
+	Mem35[Mem12[r2 + 124:word32]:word32] = Mem12[r8_5 + 2 + (r10_13 << 0x02):word16]
 // DataOut: cr0 r0 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28
 // DataOut (flags): crX
 // SymbolicIn: r1:fp r4:<invalid> r8:<invalid> r3:<invalid> r9:<invalid> r5:<invalid> r10:<invalid> r11:<invalid> cr1:<invalid>
@@ -4601,15 +4601,15 @@ l004032B4:
 
 l004032C0:
 	word32 r11_21 = r3 + 1
-	word32 r10_22 = (word32) Mem0[r3:byte]
+	word32 r10_22 = Mem0[r3:byte]
 // DataOut: cr0 lr r0 r10 r11 r2 r28 r29 r3 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp cr1:cond(r3) r4:<invalid>
 
 l004032C8:
-	word32 r4_25 = (word32) Mem0[r11_21 + 0:byte]
+	word32 r4_25 = Mem0[r11_21 + 0:byte]
 	r11_21 = r11_21 + 1
-	Mem27[r11_21:byte] = (byte) r10_22
+	Mem27[r11_21:byte] = r10_22
 	r10_22 = r4_25
 	branch Test(NE,cond(r4_25)) l004032C8
 // DataOut: cr0 lr r0 r10 r11 r2 r28 r29 r3 r30 r31
@@ -4631,7 +4631,7 @@ l004032EC:
 // SymbolicIn: r1:fp cr1:<invalid> r4:<invalid> r11:<invalid> r10:<invalid> r9:255
 
 l004032F0:
-	Mem36[r3:byte] = (byte) (int32) (int8) r9_32
+	Mem36[r3:byte] = (int32) (int8) r9_32
 // DataOut: cr0 lr r0 r2 r28 r29 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp cr1:<invalid> r4:<invalid> r11:<invalid> r10:<invalid> r9:<invalid>
@@ -4698,7 +4698,7 @@ l0040339C:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l00403380:
-	Mem107[Mem78[r31_70:word32]:byte] = 0x00
+	Mem107[Mem78[r31_70:word32]:byte] = 0
 	Mem110[r31_70:word32] = Mem107[r31_70:word32] + 1
 // DataOut: cr0 r2 r29 r30
 // DataOut (flags): crX
@@ -5091,7 +5091,7 @@ l00403654:
 l00403664:
 	word32 r4_48 = Mem0[r8_6 + 4 + r11_20:word32]
 	word32 r5_52 = 0
-	branch Test(EQ,cond((word32) (byte) (word32) Mem0[r4_48:byte])) l00403694
+	branch Test(EQ,cond(Mem0[r4_48:byte])) l00403694
 // DataOut: cr0 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30 r31 r4 r5
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -64 r12:lr r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> r4:<invalid> cr1:<invalid> -64(fp):fp 8(fp):lr
@@ -5099,7 +5099,7 @@ l00403664:
 
 l00403684:
 	r5_52 = r5_52 + 1
-	branch Test(NE,cond((word32) Mem0[r4_48 + r5_52:byte])) l00403684
+	branch Test(NE,cond(Mem0[r4_48 + r5_52:byte])) l00403684
 // DataOut: cr0 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30 r31 r4 r5
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -64 r12:lr r8:<invalid> r9:<invalid> r10:<invalid> r11:<invalid> r4:<invalid> cr1:<invalid> r5:<invalid> r6:<invalid> -64(fp):fp -8(fp):<invalid> 8(fp):lr
@@ -5253,7 +5253,7 @@ l00403744:
 
 l00403760:
 	word32 r11_149 = 0
-	branch Test(EQ,cond((word32) Mem21[r3:byte])) l00403780
+	branch Test(EQ,cond(Mem21[r3:byte])) l00403780
 // DataOut: cr0 r0 r11 r2 r28 r29 r3 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -408 r4:<invalid> r12:lr -408(fp):fp 8(fp):lr
@@ -5261,7 +5261,7 @@ l00403760:
 
 l00403770:
 	r11_149 = r11_149 + 1
-	branch Test(NE,cond((word32) Mem21[r3 + r11_149:byte])) l00403770
+	branch Test(NE,cond(Mem21[r3 + r11_149:byte])) l00403770
 // DataOut: cr0 r0 r11 r2 r28 r29 r3 r30 r31
 // DataOut (flags): crX
 // SymbolicIn: r1:fp + -408 r4:<invalid> r12:lr r11:<invalid> cr1:<invalid> -408(fp):fp 8(fp):lr
@@ -5291,7 +5291,7 @@ l00403788:
 // LocalsOut: fp(32) Local -0008(32) Local -000C(32) Local -0010(32) Local -0184(0) Local -0198(0)
 
 l00403790:
-	word32 r4_68 = (word32) Mem21[r3 + r11_66:byte]
+	word32 r4_68 = Mem21[r3 + r11_66:byte]
 	Mem70[fp + -352 + r11_66:byte] = (byte) r4_68
 	r11_66 = r11_66 + 1
 	branch Test(NE,cond(r4_68)) l00403790
@@ -5530,7 +5530,7 @@ l004038F8:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Local -000C(32) Local -0010(32)
 
 l004039A0:
-	Mem115[r28_92:byte] = 0x00
+	Mem115[r28_92:byte] = 0
 	branch Test(EQ,cond(r3_113)) l004039CC
 // DataOut: cr0 r0 r2 r3
 // DataOut (flags): crX
@@ -5897,7 +5897,7 @@ l00403D7C:
 // SymbolicIn: r1:fp
 
 l00403D84:
-	word32 r8_16 = (word32) Mem0[r3:byte]
+	word32 r8_16 = Mem0[r3:byte]
 	branch Test(EQ,cond(r8_16)) l00403DCC
 // DataOut: cr0 lr r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r8
 // DataOut (flags): crX
@@ -5919,7 +5919,7 @@ l00403DA4:
 // SymbolicIn: r1:fp cr1:<invalid> r8:<invalid> r11:<invalid> r9:r3 + 1 r10:r3
 
 l00403DAC:
-	Mem37[r10_28 + 0:byte] = (byte) (word32) Mem0[r9_29 + 0:byte]
+	Mem37[r10_28 + 0:byte] = (byte) Mem0[r9_29 + 0:byte]
 	r11_18 = r11_18 + -1
 	r9_29 = r9_29 + 1
 	r10_28 = r10_28 + 1
@@ -5935,7 +5935,7 @@ l00403DC0:
 // SymbolicIn: r1:fp cr1:<invalid> r8:<invalid> r11:<invalid> r9:<invalid> r10:<invalid> r4:<invalid>
 
 l00403DC4:
-	Mem27[r10_21:byte] = 0x00
+	Mem27[r10_21:byte] = 0
 // DataOut: cr0 lr r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29
 // DataOut (flags): crX
 // SymbolicIn: r1:fp cr1:<invalid> r8:<invalid> r11:<invalid> r9:<invalid> r10:<invalid> r4:<invalid>
