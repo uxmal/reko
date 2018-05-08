@@ -63,11 +63,6 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             SetRegister(PICRegisters.PCLATH, Constant.Byte((byte)(off>>8)));
         }
 
-
-        private void PresetRegisters()
-        {
-            //TODO: Assign registers initial values
-        }
     }
 
 }
