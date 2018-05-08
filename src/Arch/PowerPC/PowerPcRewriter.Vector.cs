@@ -135,6 +135,24 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr6(vrt);
         }
 
+        private void RewriteVcfpsxws(string name)
+        {
+            var d = RewriteOperand(instr.op1);
+            var a = RewriteOperand(instr.op2);
+            var b = RewriteOperand(instr.op3);
+            m.Assign(d,
+                host.PseudoProcedure(name, d.DataType, a, b));
+        }
+
+        private void RewriteVcsxwfp(string name)
+        {
+            var d = RewriteOperand(instr.op1);
+            var a = RewriteOperand(instr.op2);
+            var b = RewriteOperand(instr.op3);
+            m.Assign(d,
+                host.PseudoProcedure(name, d.DataType, a, b));
+        }
+
         public void RewriteVct(string name, PrimitiveType dt)
         {
             var vrt = RewriteOperand(instr.op1);
@@ -147,6 +165,13 @@ namespace Reko.Arch.PowerPC
                     new ArrayType(dt, 4),
                     vrb,
                     uim));
+        }
+
+        private void RewriteVectorUnary(string intrinsic)
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var vra = RewriteOperand(instr.op2);
+            m.Assign(vrt, host.PseudoProcedure(intrinsic, vrt.DataType, vra));
         }
 
         public void RewriteVmaddfp()
@@ -240,6 +265,18 @@ namespace Reko.Arch.PowerPC
                     vrc));
         }
 
+        private void RewriterVpkD3d()
+        {
+            var vt = RewriteOperand(instr.op1);
+            var va = RewriteOperand(instr.op2);
+            var vb = RewriteOperand(instr.op3);
+            var vc = RewriteOperand(instr.op4);
+            var vd = RewriteOperand(instr.op5);
+            m.Assign(
+                vt,
+                host.PseudoProcedure("__vpkd3d", vt.DataType, va, vb, vc, vd));
+        }
+
         public void RewriteVrefp()
         {
             var vrt = RewriteOperand(instr.op1);
@@ -312,7 +349,7 @@ namespace Reko.Arch.PowerPC
                     vrc));
         }
 
-        public void RewriteVslw()
+        public void RewriteVsxw(string intrinsic)
         {
             var vrt = RewriteOperand(instr.op1);
             var vra = RewriteOperand(instr.op2);
@@ -320,7 +357,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 vrt,
                 host.PseudoProcedure(
-                    "__vslw",
+                    intrinsic,
                     new ArrayType(PrimitiveType.Word32, 4),
                     vra,
                     vrb));

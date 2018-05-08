@@ -1929,7 +1929,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v5 = v63",
                 "2|L--|v6 = v53",
-                "3|L--|v11 = __vmsub4fp128(v5, v6)");
+                "3|L--|v11 = __vmsub4fp(v5, v6)");
         }
 
         [Test]
@@ -2020,6 +2020,195 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x19ACFF91,   // vrlimi128	v13,v63,0C,03
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v13 = __vrlimi(v63, 0x0000000C, 0x00000003)");
+        }
+
+        [Test]
+        public void PPCRw_tdi()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x08C40000,   // tdi	06,r4,+0000
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (r4 >u 0) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void PPCRw_vand128()
+        {
+            Given_Xenon();
+            AssertCode(0x16D6BA35,   // vand128	v54,v54,v55
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v54 = v54 & v55");
+        }
+
+        [Test]
+        public void PPCRw_vcfpsxws128()
+        {
+            Given_Xenon();
+            AssertCode(0x1AC0FA35,   // vcfpsxws128	v54,v63,+00
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v54 = __vcfpsxws(v63, 0)");
+        }
+
+        [Test]
+        public void PPCRw_vcmpeqfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x187EF823,   // vcmpeqfp128	v3,v62,v127
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v3 = __vcmpeqfp(v62, v127)");
+        }
+
+        [Test]
+        public void PPCRw_vcmpgtfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1ABBF925,   // vcmpgtfp128	v53,v59,v63
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v53 = __vcmpgtfp(v59, v63)");
+        }
+
+        [Test]
+        public void PPCRw_vcsxwfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1801F2B1,   // vcsxwfp128	v0,v62,01
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v0 = __vcsxwfp(v62, 0x0000000000000001)");
+        }
+
+        [Test]
+        public void PPCRw_vexptefp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1BA0EEB5,   // vexptefp128	v61,v61
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v61 = __vexptefp(v61)");
+        }
+
+        [Test]
+        public void PPCRw_vlogefp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1AA0EEF5,   // vlogefp128	v53,v61
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v53 = __vlogefp(v61)");
+        }
+
+        [Test]
+        public void PPCRw_vmaddcfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x17DE591C,   // vmaddcfp128	v126,v30,v11
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v5 = v30",
+                "2|L--|v6 = v11",
+                "3|L--|v126 = __vmaddcfp(v5, v6)");
+        }
+
+        [Test]
+        public void PPCRw_vmaxfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1BDEEAA5,   // vmaxfp128	v62,v62,v61
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = v62",
+                "2|L--|v5 = v61",
+                "3|L--|v62 = __vmaxfp(v4, v5)");
+        }
+
+        [Test]
+        public void PPCRw_vminfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1BFFF2E5,   // vminfp128	v63,v63,v62
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = v63",
+                "2|L--|v5 = v62",
+                "3|L--|v63 = __vminfp(v4, v5)");
+        }
+
+        [Test]
+        public void PPCRw_vmsub3fp128()
+        {
+            Given_Xenon();
+            AssertCode(0x17E21194,   // vmsub3fp128	v63,v2,v2
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = v2",
+                "2|L--|v5 = v2",
+                "3|L--|v63 = __vmsub3fp(v4, v5)");
+        }
+
+        [Test]
+        public void PPCRw_vperm128()
+        {
+            Given_Xenon();
+            AssertCode(0x17FFF025,   // vperm128	v63,v63,v62,v0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v63 = __vperm(v63, v62, v0)");
+        }
+
+        [Test]
+        public void PPCRw_vpkd3d128()
+        {
+            Given_Xenon();
+            AssertCode(0x1BEDFED7,   // vpkd3d128	v63,v127,03,01,03
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v63 = __vpkd3d(v127, 0x0000000000000003, 0x0000000000000001, 0x0000000000000003)");
+        }
+
+        [Test]
+        public void PPCRw_vrefp128()
+        {
+            Given_Xenon();
+            AssertCode(0x1800FE31,   // vrefp128	v0,v63
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v0 = __vrefp(v63)");
+        }
+
+        [Test]
+        public void PPCRw_vrfin128()
+        {
+            Given_Xenon();
+            AssertCode(0x1BC0DB75,   // vrfin128	v62,v59
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v62 = __vrfin(v59)");
+        }
+
+        [Test]
+        public void PPCRw_vrfiz128()
+        {
+            Given_Xenon();
+            AssertCode(0x1AC0FBF5,   // vrfiz128	v54,v63
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v54 = __vrfiz(v63)");
+        }
+
+        [Test]
+        public void PPCRw_vrsqrtefp128()
+        {
+            Given_Xenon();
+            AssertCode(0x19A0FE71,   // vrsqrtefp128	v13,v63
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v13 = __vrsqrtefp(v63)");
+        }
+
+        [Test]
+        public void PPCRw_vsrw128()
+        {
+            Given_Xenon();
+            AssertCode(0x195CB9F1,   // vsrw128	v10,v60,v55
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v10 = __vsrw(v60, v55)");
+        }
+
+        [Test]
+        public void PPCRw_vsubfp128()
+        {
+            Given_Xenon();
+            AssertCode(0x145D0870,   // vsubfp128	v2,v61,v1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v2 = __vsubfp(v61, v1)");
         }
     }
 }

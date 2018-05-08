@@ -937,7 +937,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x102038C3, "lvx128\tv1,r0,r7");         // 04 - 0C3(195)
             AssertCode(0x102338CB, "lvx128\tv65,r3,r7");        // 04 - 0CB(203)
             AssertCode(0x13C100CF, "lvx128\tv126,r1,r0");       // 04 - 0CF(207)
-            //AssertCode(0x13FFF935, "@@@"); // 04 - 135(309)
             //AssertCode(0x13A05187, "@@@"); // 04 - 187(391)
             AssertCode(0x116021C3, "stvx128\tv11,r0,r4");       // 04 - 1C3(451)
             AssertCode(0x13C031C7, "stvx128\tv62,r0,r6");       // 04 - 1C7(455)
@@ -976,11 +975,14 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1BFFF2E5, "vminfp128\tv63,v63,v62");   // 06 - 02E(46)
             //AssertCode(0x1B04AB15, "@@@");    // 06 - 031(49)
             AssertCode(0x1B1FF325, "vmrghw128\tv56,v63,v62");   // 06 - 032(50)
+            //AssertCode(0x1BA0AB35, "@@@");      // 06 - 033(51)
             //AssertCode(0x1B1BD355, "@@@");    // 06 - 035(53)
             AssertCode(0x1BFFF365, "vmrglw128\tv63,v63,v62");   // 06 - 036(54)
             AssertCode(0x1BC0DB75, "vrfin128\tv62,v59");        // 06 - 037(55)
             //AssertCode(0x1B4CD395, "@@@");    // 06 - 039(57)
             //AssertCode(0x18ADA3D1, "@@@");    // 06 - 03D(61)
+
+
             AssertCode(0x18A0DBF1, "vrfiz128\tv5,v59");         // 06 - 03F(63)
             AssertCode(0x1BCECCED, "vcmpgefp128.\tv126,v110,v57"); // 06 - 04E(78)
             AssertCode(0x1A013E1A, "vpkd3d128\tv80,v71,00,01,00"); // 06 - 061(97)

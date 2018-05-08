@@ -405,7 +405,7 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
         }
 
-        private void RewriteTw()
+        private void RewriteTrap(PrimitiveType size)
         {
             var c = (Constant) RewriteOperand(instr.op1);
             var ra = RewriteOperand(instr.op2);

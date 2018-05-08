@@ -309,24 +309,36 @@ namespace Reko.Arch.PowerPC
                 case Opcode.subfic: RewriteSubfic(); break;
                 case Opcode.subfze: RewriteSubfze(); break;
                 case Opcode.sync: RewriteSync(); break;
-                case Opcode.tw: RewriteTw(); break;
-                case Opcode.twi: RewriteTw(); break;
+                case Opcode.td: RewriteTrap(PrimitiveType.Word64); break;
+                case Opcode.tdi: RewriteTrap(PrimitiveType.Word64); break;
+                case Opcode.tw: RewriteTrap(PrimitiveType.Word32); break;
+                case Opcode.twi: RewriteTrap(PrimitiveType.Word32); break;
                 case Opcode.vaddfp: RewriteVaddfp(); break;
                 case Opcode.vaddubm: RewriteVectorBinOp("__vaddubm", PrimitiveType.UInt8); break;
                 case Opcode.vaddubs: RewriteVectorBinOp("__vaddubs", PrimitiveType.UInt8); break;
                 case Opcode.vadduwm: RewriteVectorBinOp("__vadduwm", PrimitiveType.UInt32); break;
                 case Opcode.vadduqm: RewriteAdd(); break;
-                case Opcode.vand: RewriteAnd(false); break;
+                case Opcode.vand:
+                case Opcode.vand128: RewriteAnd(false); break;
                 case Opcode.vandc: RewriteAndc(); break;
                 case Opcode.vcfsx: RewriteVct("__vcfsx", PrimitiveType.Real32); break;
-                case Opcode.vcmpgtfp: RewriteVcmpfp("__vcmpgtfp"); break;
+                case Opcode.vcfpsxws128: RewriteVcfpsxws("__vcfpsxws"); break;
+                case Opcode.vcmpeqfp:
+                case Opcode.vcmpeqfp128: RewriteVcmpfp("__vcmpeqfp"); break;
+                case Opcode.vcmpgtfp:
+                case Opcode.vcmpgtfp128: RewriteVcmpfp("__vcmpgtfp"); break;
                 case Opcode.vcmpgtuw: RewriteVcmpu("__vcmpgtuw", PrimitiveType.UInt32); break;
-                case Opcode.vcmpeqfp: RewriteVcmpfp("__vcmpeqfp"); break;
                 case Opcode.vcmpequb: RewriteVcmpu("__vcmpequb", PrimitiveType.UInt8); break;
                 case Opcode.vcmpequd: RewriteVcmpu("__vcmpequd", PrimitiveType.UInt64); break;
                 case Opcode.vcmpequw: RewriteVcmpu("__vcmpequw", PrimitiveType.UInt32); break;
+                case Opcode.vcsxwfp128: RewriteVcsxwfp("__vcsxwfp"); break;
                 case Opcode.vctsxs: RewriteVct("__vctsxs", PrimitiveType.Int32); break;
+                case Opcode.vexptefp128: RewriteVectorUnary("__vexptefp"); break;
+                case Opcode.vlogefp128: RewriteVectorUnary("__vlogefp"); break;
                 case Opcode.vmaddfp: RewriteVmaddfp(); break;
+                case Opcode.vmaddcfp128: RewriteVectorBinOp("__vmaddcfp", PrimitiveType.Real32); break;
+                case Opcode.vmaxfp128: RewriteVectorBinOp("__vmaxfp", PrimitiveType.Real32); break;
+                case Opcode.vminfp128: RewriteVectorBinOp("__vminfp", PrimitiveType.Real32); break;
                 case Opcode.vmaxub: RewriteVectorBinOp("__vmaxub", PrimitiveType.UInt8); break;
                 case Opcode.vmaxuh: RewriteVectorBinOp("__vmaxuh", PrimitiveType.UInt16); break;
                 case Opcode.vmladduhm: RewriteVectorBinOp("__vmladduhm", PrimitiveType.UInt16); break;
@@ -334,24 +346,33 @@ namespace Reko.Arch.PowerPC
                 case Opcode.vmrghw128: RewriteVmrghw(); break;
                 case Opcode.vmrglw:
                 case Opcode.vmrglw128: RewriteVmrglw(); break;
-                case Opcode.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp128", PrimitiveType.Real32); break;  //$REVIEW: is it correct?
+                case Opcode.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", PrimitiveType.Real32); break;
+                case Opcode.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", PrimitiveType.Real32); break;  //$REVIEW: is it correct?
                 case Opcode.vmulfp128: RewriteVectorBinOp("__vmulfp", PrimitiveType.Real32); break;         //$REVIEW: is it correct?
                 case Opcode.vnmsubfp: RewriteVnmsubfp(); break;
                 case Opcode.vor:
                 case Opcode.vor128: RewriteVor(); break;
-                case Opcode.vperm: RewriteVperm(); break;
-                case Opcode.vrefp: RewriteVrefp(); break;
+                case Opcode.vperm:
+                case Opcode.vperm128: RewriteVperm(); break;
+                case Opcode.vpkd3d128: RewriterVpkD3d(); break;
+                case Opcode.vrefp:
+                case Opcode.vrefp128: RewriteVrefp(); break;
+                case Opcode.vrfin128: RewriteVectorUnary("__vrfin"); break;
+                case Opcode.vrfiz128: RewriteVectorUnary("__vrfiz"); break;
                 case Opcode.vrlimi128: RewriteVrlimi(); break;
-                case Opcode.vrsqrtefp: RewriteVrsqrtefp(); break;
+                case Opcode.vrsqrtefp: 
+                case Opcode.vrsqrtefp128: RewriteVrsqrtefp(); break;
                 case Opcode.vsel: RewriteVsel(); break;
                 case Opcode.vsldoi: RewriteVsldoi(); break;
                 case Opcode.vslw:
-                case Opcode.vslw128: RewriteVslw(); break;
+                case Opcode.vslw128: RewriteVsxw("__vslw"); break;
                 case Opcode.vspltisw:
                 case Opcode.vspltisw128: RewriteVspltisw(); break;
                 case Opcode.vspltw:
                 case Opcode.vspltw128: RewriteVspltw(); break;
-                case Opcode.vsubfp: RewriteVsubfp(); break;
+                case Opcode.vsrw128: RewriteVsxw("__vsrw"); break;
+                case Opcode.vsubfp:
+                case Opcode.vsubfp128: RewriteVsubfp(); break;
                 case Opcode.vupkd3d128: RewriteVupkd3d(); break;
                 case Opcode.vxor:
                 case Opcode.vxor128: RewriteXor(false); break;
