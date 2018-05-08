@@ -1498,7 +1498,7 @@ Conventions:
                     { 0x210, new XlOpRecAux(Opcode.bcctr, Opcode.bctrl, "I1,I2")}
                 }),
                 new DOpRec(Opcode.rlwimi, "r2,r1,I3,I4,I5"),
-                new DOpRec(Opcode.rlwinm, "r2,r1,I3,I4,I5"),
+                new DOpRec(Opcode.rlwinm, ".r2,r1,I3,I4,I5"),
                 new InvalidOpRec(),
                 new DOpRec(Opcode.rlwnm, "r2,r1,r3,I4,I5"),
 

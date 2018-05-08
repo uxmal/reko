@@ -451,6 +451,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x5729103a, "rlwinm\tr9,r25,02,00,1D");
             AssertCode(0x57202036, "rlwinm\tr0,r25,04,00,1B");
+            AssertCode(0x556A06F7, "rlwinm.\tr10,r11,00,1B,1B");
         }
 
         [Test]
@@ -575,6 +576,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x5120f042, "rlwimi\tr0,r9,1E,01,01");
         }
+
+
 
         [Test]
         public void PPCDis_cror_2()

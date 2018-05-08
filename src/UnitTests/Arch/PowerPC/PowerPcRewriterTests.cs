@@ -224,6 +224,10 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x57897c20, // rlwinm  r9,r28,15,16,16	
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r9 = r28 << 0x0F & 0x00008000");
+            AssertCode(0x556A06F7, // rlwinm.\tr10,r11,00,1B,1B
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r10 = r11 & 0x00000010",
+                "2|L--|cr0 = cond(r10)");
         }
 
         [Test]

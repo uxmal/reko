@@ -694,17 +694,14 @@ namespace Reko.Arch.PowerPC
             if (sh == 0)
             {
                 m.Assign(rd, m.And(rs, Constant.UInt32(mask)));
-                return;
             }
             else if (mb == 32 - sh && me == 31)
             {
                 m.Assign(rd, m.Shr(rs, (byte)(32 - sh)));
-                return;
             }
             else if (mb == 0 && me == 31 - sh)
             {
                 m.Assign(rd, m.Shl(rs, sh));
-                return;
             }
             else if (mb == 0 && me == 31)
             {
@@ -712,7 +709,6 @@ namespace Reko.Arch.PowerPC
                     m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, PrimitiveType.Word32, rs, Constant.Byte(sh)));
                 else
                     m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
-                return;
             }
             else if (me == 31)
             {
@@ -722,7 +718,6 @@ namespace Reko.Arch.PowerPC
                 m.Assign(rd, m.And(
                     m.Shr(rs, Constant.Byte((byte)n)),
                     Constant.Word32(mask)));
-                return;
             }
             else if (mb <= me)
             {
@@ -733,6 +728,7 @@ namespace Reko.Arch.PowerPC
                     m.Assign(rd, m.And(
                         m.Shl(rs, Constant.Byte((byte)sh)),
                         Constant.Word32(mask)));
+                    MaybeEmitCr0(rd);
                     return;
                 }
                 else if (mb >= 32 - sh)
@@ -743,6 +739,7 @@ namespace Reko.Arch.PowerPC
                     m.Assign(rd, m.And(
                         m.Shr(rs, Constant.Byte((byte)(32 - sh))),
                         Constant.Word32(mask)));
+                    MaybeEmitCr0(rd);
                     return;
                 }
             }
@@ -767,6 +764,7 @@ namespace Reko.Arch.PowerPC
             //Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
             //Error,100338A0,rlwinm	r4,r11,08,08,0F not handled yet.
             //rlwinm	r12,r2,09,1D,09 
+            MaybeEmitCr0(rd);
         }
 
         public void RewriteRlwnm()
