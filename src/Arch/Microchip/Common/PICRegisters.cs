@@ -88,7 +88,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        private static object symTabLock = new object(); // lock to allow concurrent access.
+        private static readonly object symTabLock = new object(); // lock to allow concurrent access.
         private static PICRegisters regs = null;
 
         private static SortedList<string, PICRegisterStorage> registersByName
@@ -97,14 +97,12 @@ namespace Reko.Arch.MicrochipPIC.Common
             = new SortedList<string, PICRegisterBitFieldStorage>();
         private static SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage> registersByAddressAndWidth
             = new SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage>();
-        private static SortedList<PICAddress, PICRegisterStorage> accessibleRegisters
+        private static SortedList<PICAddress, PICRegisterStorage> alwayAccessibleRegisters
             = new SortedList<PICAddress, PICRegisterStorage>();
-
         private static HashSet<PICRegisterStorage> invalidDestRegisters
             = new HashSet<PICRegisterStorage>();
         private static Dictionary<PICRegisterStorage, (FSRIndexedMode iop, PICRegisterStorage fsr)> indirectParentRegisters
             = new Dictionary<PICRegisterStorage, (FSRIndexedMode, PICRegisterStorage)>();
-
         private static List<UserRegisterValue> registersAtPOR
             = new List<UserRegisterValue>();
 
@@ -195,13 +193,15 @@ namespace Reko.Arch.MicrochipPIC.Common
             AddRegisterAtPOR(GetRegisterResetValue(STKPTR));
         }
 
+        /// <summary>
+        /// Adds a register's value in the Power-On-Reset list.
+        /// </summary>
+        /// <param name="registerValue">The register value.</param>
         protected void AddRegisterAtPOR(UserRegisterValue registerValue)
         {
             if ((registerValue != null) && (!registersAtPOR.Contains(registerValue)))
                 registersAtPOR.Add(registerValue);
         }
-
-        #region IPICRegisterSymTable interface
 
         /// <summary>
         /// Adds a PIC register to the registers symbol table. Returns null if no addition done.
@@ -223,7 +223,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         bool IPICRegisterSymTable.AddRegisterBitField(PICRegisterBitFieldStorage field)
             => AddRegisterBitField(field);
 
-        #endregion
 
         #region PICRegisters API
 
@@ -593,7 +592,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if always accessible from any data memory bank, false if not.
         /// </returns>
         public static bool IsAlwaysAccessible(PICRegisterStorage reg)
-            => accessibleRegisters.ContainsValue(reg);
+            => alwayAccessibleRegisters.ContainsValue(reg);
 
         /// <summary>
         /// Attempts to get an always-accessible (any bank) register given a PIC data memory address.
@@ -609,7 +608,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (regAddr is null)
                 throw new ArgumentNullException(nameof(regAddr));
             var aAddr = PICMemoryDescriptor.RemapDataAddress(regAddr);
-            return accessibleRegisters.TryGetValue(aAddr, out reg);
+            return alwayAccessibleRegisters.TryGetValue(aAddr, out reg);
         }
 
         /// <summary>
@@ -623,6 +622,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static bool TryGetAlwaysAccessibleRegister(ushort regAbsAddr, out PICRegisterStorage reg)
             => TryGetAlwaysAccessibleRegister(PICDataAddress.Ptr(regAbsAddr), out reg);
 
+        /// <summary>
+        /// Gets the list of registers' values at Power-On-Reset.
+        /// </summary>
         public static List<UserRegisterValue> GetPORRegistersList() => registersAtPOR;
 
         #endregion
@@ -694,13 +696,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (clean)
             {
-                accessibleRegisters.Clear();
+                alwayAccessibleRegisters.Clear();
             }
             if (regs != null && regs.Count() > 0)
             {
                 foreach (var reg in regs)
                 {
-                    accessibleRegisters.Add(reg.Traits.Address, reg);
+                    alwayAccessibleRegisters.Add(reg.Traits.Address, reg);
                 }
             }
         }
@@ -715,7 +717,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 registersByName.Clear();
                 bitFieldsByName.Clear();
                 registersByAddressAndWidth.Clear();
-                accessibleRegisters.Clear();
+                alwayAccessibleRegisters.Clear();
                 invalidDestRegisters.Clear();
                 indirectParentRegisters.Clear();
                 registersAtPOR.Clear();

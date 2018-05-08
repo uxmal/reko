@@ -83,7 +83,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
             program.SegmentMap = newMap;
             SetPICExecMode();
-            SetResetRegisters();
+            SetRegistersAtPOR();
 
             return program;
         }
@@ -161,7 +161,10 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        private void SetResetRegisters()
+        /// <summary>
+        /// Sets the PIC registers at Power-On-Reset.
+        /// </summary>
+        private void SetRegistersAtPOR()
         {
             var rlist = program.User.RegisterValues;
             if (rlist == null)

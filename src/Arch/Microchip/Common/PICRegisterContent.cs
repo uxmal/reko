@@ -50,6 +50,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     //
 
 
+        //TODO$: Tests for PICRegisterContent
 
     /// <summary>
     /// This class provides PIC register content taking into account the PIC register's traits when resetting, reading or writing values.
