@@ -21,12 +21,7 @@
 using Reko.Core;
 using Reko.Gui.Controls;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -53,8 +48,8 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public event KeyEventHandler KeyDown;
-        public event KeyEventHandler KeyUp;
+        public event EventHandler<KeyEventArgs> KeyDown;
+        public event EventHandler<KeyEventArgs> KeyUp;
         public event EventHandler TextChanged;
         public event EventHandler LostFocus;
 

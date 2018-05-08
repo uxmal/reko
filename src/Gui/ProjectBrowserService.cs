@@ -29,7 +29,6 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
@@ -38,9 +37,12 @@ namespace Reko.Gui
     /// </summary>
     public class ProjectBrowserService : IProjectBrowserService, ITreeNodeDesignerHost, ICommandTarget
     {
+        /// <summary>
+        /// This event is raised when a file is dropped on the browser service.
+        /// </summary>
         public event EventHandler<FileDropEventArgs> FileDropped;
 
-        private ITreeView tree;
+        protected ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
         private Project project;
 
@@ -50,11 +52,6 @@ namespace Reko.Gui
             this.tree = treeView;
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             this.tree.AfterSelect += tree_AfterSelect;
-            this.tree.DragEnter += tree_DragEnter;
-            this.tree.DragOver += tree_DragOver;
-            this.tree.DragDrop += tree_DragDrop;
-            this.tree.DragLeave += tree_DragLeave;
-            this.tree.MouseWheel += tree_MouseWheel;
         }
 
         public IServiceProvider Services { get; private set; }
@@ -66,6 +63,7 @@ namespace Reko.Gui
 
         public Program CurrentProgram { get { return FindCurrentProgram(); } }
 
+        public bool ContainsFocus { get { return tree.Focused;  } }
         public void Clear()
         {
             Load(null);
@@ -76,7 +74,7 @@ namespace Reko.Gui
             var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
             uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree);
             uiPrefsSvc.UiPreferencesChanged += delegate { uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree); };
-            tree.ContextMenu = Services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxBrowser);
+            Services.RequireService<IDecompilerShellUiService>().SetContextMenu(tree, MenuIds.CtxBrowser);
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             if (project == null)
@@ -245,6 +243,11 @@ namespace Reko.Gui
             tree.SelectedNode = des.TreeNode;
         }
 
+        protected virtual void OnFileDropped(FileDropEventArgs e)
+        {
+            FileDropped?.Invoke(this, e);
+        }
+
         void TypeLibraries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -272,7 +275,7 @@ namespace Reko.Gui
             return false;
         }
 
-        public bool Execute(System.ComponentModel.Design.CommandID cmdId)
+        public bool Execute(CommandID cmdId)
         {
             var des = GetSelectedDesigner();
             if (des != null)
@@ -288,45 +291,6 @@ namespace Reko.Gui
                 }
             }
             return false;
-        }
-
-        void tree_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
-            else
-                e.Effect = DragDropEffects.None;
-        }
-
-        void tree_DragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
-            else
-                e.Effect = DragDropEffects.None;
-        }
-
-        void tree_DragLeave(object sender, EventArgs e)
-        {
-        }
-
-        void tree_DragDrop(object sender, DragEventArgs e)
-        {
-            var eh = FileDropped;
-            if (eh != null && e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                var filename = (string) e.Data.GetData(DataFormats.FileDrop);
-                eh(this, new FileDropEventArgs(filename));
-            }
-        }
-
-        private void tree_MouseWheel(object sender, MouseEventArgs e)
-        {
-
-            //model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
-            //RecomputeLayout();
-            //OnScroll();
-            //tree,Invalidate();
         }
     }
 }

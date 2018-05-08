@@ -37,9 +37,10 @@ namespace Reko.UnitTests.Typing
 
         protected override void RunTest(Program program, string outputFilename)
 		{
+            var listener = new FakeDecompilerEventListener();
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
-			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
+			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, listener);
 			eqb.Build(program);
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, program);
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Typing
 			tvr.ReplaceTypeVariables();
 
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, program);
-			ppr.ReplaceAll(new FakeDecompilerEventListener());
+			ppr.ReplaceAll(listener);
 
 			Verify(program, outputFilename);
 		}

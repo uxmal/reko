@@ -52,11 +52,11 @@ namespace Reko.UnitTests.Typing
                 fut = new FileUnitTester(outputFile);
                 var factory = program.TypeFactory;
                 var store = program.TypeStore;
-
+                var listener = new FakeDecompilerEventListener();
                 var aen = new ExpressionNormalizer(program.Platform.PointerType);
-                var eqb = new EquivalenceClassBuilder(factory, store);
+                var eqb = new EquivalenceClassBuilder(factory, store, listener);
 
-                var tyco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
+                var tyco = new TypeCollector(factory, store, program, listener);
 
                 aen.Transform(program);
                 eqb.Build(program);

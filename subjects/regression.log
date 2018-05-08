@@ -155,7 +155,6 @@ fn092A: error: An error occurred during data flow analysis.
 00009AF5: warning: Call target address 0120AC29 is invalid.
 00009ADD: warning: Call target address 0120AC11 is invalid.
 000099F5: warning: Call target address FFC09C73 is invalid.
-00009891: error: Rewriting ARM opcode 'ssub8ne' is not supported yet.
 000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 000096C9: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
@@ -243,13 +242,13 @@ fn092A: error: An error occurred during data flow analysis.
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
 : error: Error when reconstructing types.
     Parameter count must match.
-       at Reko.Typing.EquivalenceClassBuilder.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 131
+       at Reko.Typing.EquivalenceClassBuilder.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 138
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
    at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.EquivalenceClassBuilder.Build(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 67
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 87
-   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
+   at Reko.Typing.EquivalenceClassBuilder.Build(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 75
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 86
+   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 308
 xQueueGiveMutexRecursive: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xTaskNotifyWait: error: An error occurred while rewriting procedure to high-level language.
@@ -258,14 +257,14 @@ xTaskNotifyWait: error: An error occurred while rewriting procedure to high-leve
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 uxTaskResetEventItemValue: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 pvTaskIncrementMutexHeldCount: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xPortStartScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 ResetISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -275,7 +274,7 @@ PDCWrite: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 xQueueCRSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xPortRaisePrivilege: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 vStartFlashCoRoutines: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -285,7 +284,7 @@ MPU_xTaskCreate: error: An error occurred while rewriting procedure to high-leve
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 GPIOPadConfigSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -295,21 +294,21 @@ SysCtlPeripheralDisable: error: An error occurred while rewriting procedure to h
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 SysCtlPeripheralSleepDisable: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 SysCtlPeripheralDeepSleepDisable: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 SysCtlReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -429,9 +428,9 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000122C0: error: An error occurred while processing the statement branch o3_129 - l1_122 <=u 0x00000000 l000122B8_ds_t.
     Pulling difference uint32 and (ptr (struct 0001 (0 byte b0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
@@ -439,9 +438,9 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0001618C: error: An error occurred while processing the statement branch l0_1003 - strlen(Mem26[l1_1018 + 0x00000000:word32]) == 0x00000000 l00016178_ds_t.
     Pulling difference ptr32 and size_t
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -449,9 +448,9 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000166A0: error: An error occurred while processing the statement branch l0_570 - strlen(Mem351[i3_363 + 0x00000000:word32]) == 0x00000000 l0001668C_ds_t.
     Pulling difference ptr32 and size_t
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -459,9 +458,9 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 safe_read: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection.
 Parameter name: index
@@ -471,7 +470,7 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
@@ -564,18 +563,18 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 000000000040401D: error: An error occurred while processing the statement word64 rax_1651 = Mem1649[rax_1628 - 0x0000000000000008 + 0x0000000000000000:word64].
-    Not handling (ptr (struct (0 T_2929 t0000))) and (union (int64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_2930 t0000))) and (union (int64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 163
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406158: error: An error occurred while processing the statement branch Mem0[rax_142 - 0x0000000000000018 + 0x0000000000000000:byte] != 0x00 l0000000000406164.
-    Not handling (ptr (struct (0 T_6862 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_6863 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -584,27 +583,27 @@ Parameter name: bitOffset
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 137
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 140
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406D12: error: An error occurred while processing the statement rbp = rbp - (fp - 0x0000000000000E88).
-    Pulling difference (union ((ptr (struct (0 T_7931 t0000) (9 T_7939 t0009) (A0 T_7913 t00A0) (B0 T_7904 t00B0) (413728 T_7928 t413728))) u1) ((ptr char) u0)) and ptr64
+    Pulling difference (union ((ptr (struct (0 T_7932 t0000) (9 T_7940 t0009) (A0 T_7914 t00A0) (B0 T_7905 t00B0) (413728 T_7929 t413728))) u1) ((ptr char) u0)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 126
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406FC3: error: An error occurred while processing the statement r13 = r13 - r12.
-    Pulling difference (union (bool u0) ((ptr char) u2) ((ptr (struct (0 T_7931 t0000) (9 T_7939 t0009) (A0 T_7913 t00A0) (B0 T_7904 t00B0) (413728 T_7928 t413728))) u1)) and ptr64
+    Pulling difference (union (bool u0) ((ptr char) u2) ((ptr (struct (0 T_7932 t0000) (9 T_7940 t0009) (A0 T_7914 t00A0) (B0 T_7905 t00B0) (413728 T_7929 t413728))) u1)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 126
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000407FC2: error: An error occurred while processing the statement r15 = (uint64) Mem0[r13 - 0x0000000000000384 + 0x0000000000000000:word32].
-    Not handling (ptr (struct (0 T_10371 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_10372 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -613,22 +612,22 @@ Parameter name: bitOffset
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
    at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 46
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 125
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 128
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00000000004086E0: error: An error occurred while processing the statement Mem0[r8 - 0x0000000000000001 + 0x0000000000000000:byte] = r15b.
-    Not handling (ptr (struct (0 T_11825 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_11826 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 217
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 220
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr (struct (0 T_12761 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_12762 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -637,17 +636,17 @@ Parameter name: bitOffset
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 137
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 140
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 : error: Error when reconstructing types.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
        at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 184
    at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
-   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 88
+   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 308
 fn000000000040E450: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === Elf\x86-64\pngpixel\pngpixel
 *** Elf\x86-64\pngpixel\pngpixel
@@ -691,9 +690,9 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 0000288D: warning: Expected sizes of arrays to have been determined by now
@@ -709,9 +708,9 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 000028C5: warning: Expected sizes of arrays to have been determined by now
@@ -727,9 +726,9 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00002B15: warning: Expected sizes of arrays to have been determined by now
 00004134: warning: Expected sizes of arrays to have been determined by now
 00002B15: warning: Expected sizes of arrays to have been determined by now
@@ -746,9 +745,9 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
 000028B1: warning: Expected sizes of arrays to have been determined by now
@@ -765,9 +764,9 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00002BED: warning: Expected sizes of arrays to have been determined by now
 00003DCC: warning: Expected sizes of arrays to have been determined by now
 00002BED: warning: Expected sizes of arrays to have been determined by now
@@ -817,9 +816,9 @@ l0000000000400E2D: warning: Non-integral switch expression
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 163
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 l0800_112E: warning: Non-integral switch expression
 === MachO\const.o
 === PDP-11\lunar.lda
@@ -875,14 +874,14 @@ fn0AF6: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 0000: error: An error occurred while processing the statement NZ_14 = PHI(NZ_12, NZ).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement V_15 = PHI(V_13, V).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 l0888: warning: Non-integral switch expression
 0000013E: warning: Expected sizes of arrays to have been determined by now
 0000168C: warning: Expected sizes of arrays to have been determined by now
@@ -1219,9 +1218,9 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 02DE: error: An error occurred while processing the statement Mem122[r4_61 - 0x003E + 0x0000:byte] = 0x0000.
     Not handling (ptr (struct (0 T_212 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
@@ -1230,19 +1229,19 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 217
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 220
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement r4_16 = PHI(r4_22, r4_20, r4, r4).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement r3_17 = PHI(r3_23, r3_21, r3, r3).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0D22: error: An error occurred while processing the statement word16 r1_71 = (fp - 0x0006 << 1) + (fp - 0x0006).
     Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 376
@@ -1250,24 +1249,24 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 163
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement r2_20 = PHI(r2_29, r2_26, r2, r2).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement r3_21 = PHI(r3_30, r3_27, r3, r3).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement r0_22 = PHI(r0_31, r0_28, r0, r0).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000047E4: warning: Expected sizes of arrays to have been determined by now
 0000487E: warning: Expected sizes of arrays to have been determined by now
 00004D3E: warning: Expected sizes of arrays to have been determined by now
@@ -1439,9 +1438,9 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00402BCC: error: An error occurred while processing the statement branch Test(EQ,cond((Mem14[r31_49 + 4:word32] & -4) - (r3 + -8))) l00402BD8.
     Pulling difference ui32 and (ptr word32)
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
@@ -1451,9 +1450,9 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00402FC8: error: An error occurred while processing the statement branch Test(LE,cond((Mem167[Mem167[r31_175 + 4:word32] + 4:word32] & -4) - r3)) l00402FFC.
     Pulling difference ui32 and (ptr (struct (0 T_4315 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
@@ -1463,9 +1462,9 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00403C4C: error: An error occurred while processing the statement branch Test(GT,cond(r10_9 - r11_10)) l00403C38.
     Pulling difference ui32 and (ptr (struct 000C (4 word32 dw0004)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
@@ -1475,9 +1474,9 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 === PE\m68k\hello_m68k.dcproject
 === PE\x86-64\varargs_test\varargs_test.exe
 *** PE\x86-64\varargs_test\varargs_test.exe
@@ -1530,9 +1529,9 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 64
    at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
-   at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 196
+   at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 199
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 === PE\x86\ExeDll\Executable.exe
 === PE\x86\IncorrectUserSignature\IncorrectUserSignature.dcproject
 === PE\x86\RussianText\RussianText.exe
@@ -1784,39 +1783,39 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 0000: error: An error occurred while processing the statement af_99 = PHI(af_92, af).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement bc_100 = PHI(bc_93, bc).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement de_101 = PHI(de_94, de).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement hl_102 = PHI(hl_95, hl).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement ix_103 = PHI(ix_96, ix).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement C_104 = PHI(C_97, C).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement SZHXVC_105 = PHI(SZHXVC_98, SZHXVC).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 064E: error: An error occurred while processing the statement word16 af_101 = DPB(Mem64[v3 - 2 + 0x0000:word16], 0x05, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -1829,9 +1828,9 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 161
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 026B: error: An error occurred while processing the statement word16 af_33 = DPB(Mem19[v3 - 2 + 0x0000:word16], 0x04, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -1844,9 +1843,9 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 161
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0A60: error: An error occurred while processing the statement word16 af_53 = DPB(Mem39[v3 - 2 + 0x0000:word16], 0x04, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -1859,114 +1858,114 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 161
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement SZHXVC_41 = PHI(SZHXVC_111, SZHXVC_39, SZHXVC, SZHXVC).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement H_42 = PHI(H_141, H_34, H, H).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement X_43 = PHI(X_142, X_35, X, X).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement N_44 = PHI(N_143, N_36, N, N).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement SZV_45 = PHI(SZV_145, SZV_38, SZV, SZV).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement c_46 = PHI(c_151, c, c, c).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement b_47 = PHI(b_154, b_10, b, b).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement l_48 = PHI(l_158, l_18, l, l).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement h_49 = PHI(h_161, h_22, h, h).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement sp_50 = PHI(sp_164, sp_1, sp, sp).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement a_51 = PHI(a_165, a_33, a, a).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement af_52 = PHI(af_167, af, af, af).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement bc_53 = PHI(bc_168, bc_12, bc, bc).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement de_54 = PHI(de_169, de, de, de).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement hl_55 = PHI(hl_170, hl_24, hl, hl).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement ix_56 = PHI(ix_171, ix, ix, ix).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement C_57 = PHI(C_172, C_37, C, C).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement de_10 = PHI(de_6, de, de).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement hl_11 = PHI(hl_7, hl, hl).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement ix_12 = PHI(ix_8, ix, ix).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000: error: An error occurred while processing the statement bc_13 = PHI(bc_9, bc, bc).
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 189
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0C9B: error: An error occurred while processing the statement word16 af_94 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -1979,9 +1978,9 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 161
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0CFE: error: An error occurred while processing the statement word16 af_112 = DPB(Mem99[v3 - 2 + 0x0000:word16], 0x04, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -1994,9 +1993,9 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 161
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0D6F: error: An error occurred while processing the statement word16 af_113 = DPB(Mem100[v3 - 2 + 0x0000:word16], 0x05, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -2009,9 +2008,9 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 161
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 fn03B2: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2019,7 +2018,7 @@ fn03B2: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 215
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 113
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 fn1BF9: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 00000823: warning: Expected sizes of arrays to have been determined by now
 00000823: warning: Expected sizes of arrays to have been determined by now
@@ -2221,7 +2220,7 @@ fn1483_1BB8: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 fn1483_1BB9: error: An error occurred during data flow analysis.
     Index was outside the bounds of the array.
-       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 387
+       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 396
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitReturnInstruction(ReturnInstruction ret) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 115
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
@@ -2237,9 +2236,9 @@ fn1483_1BB9: error: An error occurred during data flow analysis.
 Parameter name: Linear address 00000000 is not in known segment.
        at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 184
    at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
-   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 88
+   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 308
 fn1483_1BB9: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2247,9 +2246,9 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 215
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 113
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 35.27 seconds ---
+Decompiled 51 binaries in 42.18 seconds ---

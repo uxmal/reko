@@ -155,7 +155,7 @@ namespace Reko.Arch.X86
         private void RewriteJcxz()
         {
             m.Branch(
-                m.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)),
+                m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
                 OperandAsCodeAddress(instrCur.op1),
                 RtlClass.ConditionalTransfer);
             rtlc = RtlClass.ConditionalTransfer;

@@ -480,7 +480,7 @@ namespace Reko.UnitTests.Typing
         private TraitCollector CreateCollector(Program program)
         {
             en = new ExpressionNormalizer(program.Architecture.PointerType);
-            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
+            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, new FakeDecompilerEventListener());
             handler = new TestTraitHandler(program.TypeStore);
             return new TraitCollector(program.TypeFactory, program.TypeStore, handler, program);
         }

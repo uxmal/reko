@@ -438,6 +438,8 @@ namespace Reko.UnitTests.Analysis
             platform.Stub(p => p.MakeAddressFromLinear(0ul))
                 .IgnoreArguments()
                 .Do(new Func<ulong, Address>(ul => Address.Ptr32((uint) ul)));
+            platform.Stub(p => p.CreateTrashedRegisters())
+                .Return(new HashSet<RegisterStorage>());
             Given_Platform(platform);
         }
 	}

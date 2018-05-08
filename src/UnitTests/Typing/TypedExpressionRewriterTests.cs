@@ -174,6 +174,7 @@ namespace Reko.UnitTests.Typing
 
         public void SetupPreStages(Program program)
         {
+            var listener = new FakeDecompilerEventListener();
             foreach (var f in userDefinedGlobals)
             {
                 program.GlobalFields.Fields.Add(f);
@@ -183,7 +184,7 @@ namespace Reko.UnitTests.Typing
                 program.SegmentMap.Segments.Add(s.Address, s);
             }
             aen = new ExpressionNormalizer(program.Platform.PointerType);
-            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
+            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, listener);
             dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform);
             tvr = new TypeVariableReplacer(program.TypeStore);
             trans = new TypeTransformer(program.TypeFactory, program.TypeStore, program);

@@ -84,5 +84,14 @@ namespace Reko.UnitTests.Environments.Windows
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("(ptr wchar_t)", parser.ArgumentTypes[0].ToString());
         }
+
+        [Test]
+        public void MSPFP_S_precision()
+        {
+            ParseChar32("%.13d");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("int32", parser.ArgumentTypes[0].ToString());
+        }
+
     }
 }

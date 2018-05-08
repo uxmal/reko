@@ -258,11 +258,16 @@ namespace Reko.Core.Configuration
         /// <returns></returns>
         public static RekoConfigurationService Load()
         {
-            var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            var appDir = Path.GetDirectoryName(appConfig);
             var configFileName = ConfigurationManager.AppSettings["RekoConfiguration"];
             if (configFileName == null)
                 throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
+            return Load(configFileName);
+        }
+
+        public static RekoConfigurationService Load(string configFileName)
+        {
+            var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            var appDir = Path.GetDirectoryName(appConfig);
             configFileName = Path.Combine(appDir, configFileName);
 
             using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read))

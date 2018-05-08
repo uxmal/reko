@@ -73,7 +73,7 @@ namespace Reko.Analysis
 				else
 					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
-				pf.Emit(program.Architecture, output);
+				pf.Emit(proc.Architecture, output);
 
 				output.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
@@ -83,7 +83,7 @@ namespace Reko.Analysis
 					if (block != null)
 					{
 						BlockFlow bf = this.flow[block];
-						bf.Emit(program.Architecture, output);
+						bf.Emit(proc.Architecture, output);
 						output.WriteLine();
 						block.Write(output);
 					}

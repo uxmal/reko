@@ -47,9 +47,10 @@ namespace Reko.UnitTests.Typing
 
         protected override void RunTest(Program program, string outputFileName)
         {
+            var listener = new FakeDecompilerEventListener();
             ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);
             aen.Transform(program);
-            EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store);
+            EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store, listener);
             eq.Build(program);
 #if OLD
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Architecture);
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Typing
 			coll.CollectProgramTraits(program);
 			sktore.BuildEquivalenceClassDataTypes(factory);
 #else
-            TypeCollector coll = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
+            TypeCollector coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
 
             store.BuildEquivalenceClassDataTypes(factory);

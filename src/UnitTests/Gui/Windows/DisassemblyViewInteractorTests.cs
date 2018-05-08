@@ -22,10 +22,9 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
+using Reko.UserInterfaces.WindowsForms;
 using Rhino.Mocks;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows
 {

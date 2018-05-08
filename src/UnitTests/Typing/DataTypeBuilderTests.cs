@@ -43,14 +43,16 @@ namespace Reko.UnitTests.Typing
         private DataTypeBuilder dtb;
         private FakeArchitecture arch;
         private Program program;
+        private FakeDecompilerEventListener listener;
 
         [SetUp]
         public void SetUp()
         {
             store = new TypeStore();
             factory = new TypeFactory();
+            listener = new FakeDecompilerEventListener();
             aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
-            eqb = new EquivalenceClassBuilder(factory, store);
+            eqb = new EquivalenceClassBuilder(factory, store, listener);
             arch = new FakeArchitecture();
             program = new Program();
             program.Architecture = arch;
@@ -62,7 +64,7 @@ namespace Reko.UnitTests.Typing
         {
             aen.Transform(program);
             eqb.Build(program);
-            TypeCollector trco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
+            TypeCollector trco = new TypeCollector(factory, store, program, listener);
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
             Verify(program, outputFile);

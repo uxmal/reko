@@ -154,13 +154,14 @@ namespace Reko.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
+            var listener = new FakeDecompilerEventListener();
             program = new Program();
             program.Architecture = new FakeArchitecture();
             program.Platform = new DefaultPlatform(null, program.Architecture);
 			factory = program.TypeFactory;
 			store = program.TypeStore;
 			handler = new TestTraitHandler(store);
-			eqb = new EquivalenceClassBuilder(factory, store);
+			eqb = new EquivalenceClassBuilder(factory, store, listener);
 			store.EnsureExpressionTypeVariable(factory, program.Globals);
 			
 			atrco = new AddressTraitCollector(factory, store, handler, program);

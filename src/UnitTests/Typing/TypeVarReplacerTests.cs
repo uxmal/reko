@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Typing
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
-			eqb = new EquivalenceClassBuilder(factory, store);
+			eqb = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
             var platform = new DefaultPlatform(null, new FakeArchitecture());
 			dtb = new DataTypeBuilder(factory, store, platform);
 		}

@@ -132,6 +132,7 @@ namespace Reko.Scanning
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
+
                 if (!ri.Accept(this))
                 {
                     return false;
@@ -526,11 +527,8 @@ namespace Reko.Scanning
             Address addr = CallTargetAsAddress(call);
             if (addr != null)
             {
-                if (!program.SegmentMap.IsValidAddress(addr))
-                {
-                    return GenerateCallToOutsideProcedure(site, addr);
-                }
-
+                // Some image loaders generate import symbols at addresses
+                // outside of the program image. 
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)
                 {
@@ -543,6 +541,13 @@ namespace Reko.Scanning
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
+
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    return GenerateCallToOutsideProcedure(site, addr);
+                }
+
+
 
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
@@ -572,6 +577,9 @@ namespace Reko.Scanning
 
             if (call.Target is Identifier id)
             {
+                //$REVIEW: this is a hack. Were we in SSA form,
+                // we could quickly determine if `id` is assigned
+                // to constant.
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
                 {
@@ -699,6 +707,9 @@ namespace Reko.Scanning
 
             if (sigCallee != null && sigCallee.StackDelta != 0)
             {
+                // Generate explicit stack adjustment expression
+                // SP = SP + stackDelta
+                // after the call.
                 Expression newVal = new BinaryExpression(
                     Operator.IAdd,
                     stackReg.DataType,
@@ -743,7 +754,19 @@ namespace Reko.Scanning
                         new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
                 }
             }
+            TrashRegistersAfterCall();
             return true;
+        }
+
+        private void TrashRegistersAfterCall()
+        {
+            foreach (var reg in program.Platform.CreateTrashedRegisters())
+            {
+                // $REVIEW: do not trash stack register. It gives regression
+                // on some MSDOS binaries
+                if (reg != arch.StackRegister)
+                    state.SetValue(reg, Constant.Invalid);
+            }
         }
 
         private FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
