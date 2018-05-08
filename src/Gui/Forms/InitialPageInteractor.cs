@@ -137,8 +137,15 @@ namespace Reko.Gui.Forms
                 Program program = Decompiler.LoadRawImage(file, details);
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
-            browserSvc.Load(Decompiler.Project);
-            ShowLowLevelWindow();
+            if (Decompiler.Project != null)
+            {
+                browserSvc.Load(Decompiler.Project);
+                ShowLowLevelWindow();
+            }
+            else
+            {
+                browserSvc.Clear();
+            }
             return false;   // We never open projects this way.
         }
 
