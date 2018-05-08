@@ -180,12 +180,10 @@ namespace Reko.Analysis
                 TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
 					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
-				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
-					output.Write("Warning: no signature found for {0}", proc.Name);
+					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
-				pf.Emit(program.Architecture, output);
+				pf.Emit(proc.Architecture, output);
 
 				output.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
@@ -195,7 +193,7 @@ namespace Reko.Analysis
 					if (block != null)
 					{
 						BlockFlow bf = this.flow[block];
-						bf.Emit(program.Architecture, output);
+						bf.Emit(proc.Architecture, output);
 						output.WriteLine();
 						block.Write(output);
 					}
@@ -298,7 +296,7 @@ namespace Reko.Analysis
                 vp.Transform();
 
                 // At this point, the computation of _actual_ ProcedureFlow should be possible.
-                var tid = new TrashedRegisterFinder2(program.Architecture, flow, proc, ssa.Identifiers, this.eventListener);
+                var tid = new TrashedRegisterFinder2(proc.Architecture, flow, proc, ssa.Identifiers, this.eventListener);
                 tid.Compute();
                 DeadCode.Eliminate(proc, ssa);
 

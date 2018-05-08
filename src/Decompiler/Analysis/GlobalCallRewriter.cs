@@ -136,7 +136,7 @@ namespace Reko.Analysis
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
-			if (proc.Signature != null && proc.Signature.ParametersValid)
+			if (proc.Signature.ParametersValid)
 				return;
 
 			var sb = new SignatureBuilder(proc.Frame, proc.Architecture);

@@ -104,7 +104,6 @@ namespace Reko.Analysis
         {
             ci.Callee = ci.Callee.Accept(eval);
             if (ci.Callee is ProcedureConstant pc &&
-                pc.Procedure.Signature != null &&
                 pc.Procedure.Signature.ParametersValid)
             {
                 var ab = new ApplicationBuilder(

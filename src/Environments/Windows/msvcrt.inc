@@ -1,6 +1,7 @@
 ﻿// Types
 
 typedef unsigned int size_t;
+typedef size_t intptr_t;
 typedef void (*PVFV)(void);
 typedef int (*_onexit_t)(void);
 typedef int time_t;
@@ -60,3 +61,25 @@ void _initterm(PVFV * fStart, PVFV * fEnd);
 int _initterm_e(PVFV * fStart, PVFV * fEnd);
 void * _encoded_null();
 void * _decode_pointer(void *);
+
+int _chdir(const char *dirname);
+intptr_t _findfirst(const char * filespec, struct _finddata_t * fileinfo);
+int _findnext(intptr_t handle, struct _finddata_t * fileinfo);
+char * _getcwd(char * buffer, int maxlen);
+int _isnan(double x);  
+int _stat(const char *path,struct _stat *buffer); 
+double cos(double);
+double fabs(double);
+int fgetc(FILE *);
+char * fgets(char * buf, int size, FILE *);
+int fputc(int, FILE *);
+int fseek(FILE *, long offset, int origin);
+long ftell(FILE *);
+size_t fwrite(const void *, size_t size, size_t count, FILE *);
+double ldexp(double,int);
+double log(double);
+double pow(double, double);
+char * setlocale(int category, const char *locale);
+double sin(double);
+double sqrt(double);
+int sscanf(char *, const char  * fmt, ...);

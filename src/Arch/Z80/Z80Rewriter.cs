@@ -230,15 +230,11 @@ namespace Reko.Arch.Z80
             Expression src;
             if (useCarry)
             {
-                src = m.Fn(
-                    new PseudoProcedure(pseudoOp, reg.DataType, 3),
-                    reg, one, C);
+                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, one, C);
             }
             else 
             {
-                src = m.Fn(
-                    new PseudoProcedure(pseudoOp, reg.DataType, 2),
-                    reg, one);
+                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, one);
             }
             m.Assign(reg, src);
             m.Assign(C, m.Cond(reg));

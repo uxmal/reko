@@ -4,12 +4,12 @@
 
 #include "pngpixel.h"
 
-Eq_1482 g_a0001[];
-Eq_27 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+Eq_1502 g_a0001[];
+Eq_28 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
 ;
-Eq_30 g_t401780 = Unexpected function type (fn void ())
+Eq_31 g_t401780 = Unexpected function type (fn void ())
 ;
-Eq_31 g_t4017F0 = Unexpected function type (fn void ())
+Eq_32 g_t4017F0 = Unexpected function type (fn void ())
 ;
 char g_str401808[] = "pngpixel: invalid bit depth %u\n";
 char g_str4018B0[] = "GRAY %u\n";

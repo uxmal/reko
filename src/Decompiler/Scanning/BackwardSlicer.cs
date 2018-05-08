@@ -51,7 +51,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Error };
+        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Verbose };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private SliceState state;
@@ -327,6 +327,11 @@ namespace Reko.Scanning
         {
             return this.BitRange.CompareTo(that.BitRange);
         }
+
+        public override string ToString()
+        {
+            return $"({this.Type},{this.BitRange})";
+        }
     }
 
     /// <summary>
@@ -583,36 +588,26 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if (binExp.Operator == Operator.ISub && Live != null)
+            if (binExp.Operator == Operator.ISub && Live != null && ctx.Type == ContextType.Condition)
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
-                foreach (var live in Live.Keys)
+                foreach (var live in Live)
                 {
-                    if (DomainOf(live) == domLeft)
+                    if (live.Value.Type != ContextType.Jumptable)
+                        continue;
+                    if ((domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
+                        ||
+                        (this.slicer.AreEqual(live.Key, binExp.Left)))
                     {
-                        if (slicer.AreEqual(this.assignLhs, this.JumpTableIndex))
-                        {
-                            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-                            this.JumpTableIndex = live;
-                            this.JumpTableIndexToUse = binExp.Left;
-                            this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
-                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
-                            return new SlicerResult
-                            {
-                                SrcExpr = binExp,
-                                Stop = true
-                            };
-                        }
-                    }
-                    if (this.slicer.AreEqual(live, binExp.Left))
-                    {
-                        this.JumpTableIndex = live;
+                        //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+                        this.JumpTableIndex = live.Key;
                         this.JumpTableIndexToUse = binExp.Left;
-                        this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
+                        this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
+                        DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
                         return new SlicerResult
                         {
                             SrcExpr = binExp,
-                            Stop = true,
+                            Stop = true
                         };
                     }
                 }
@@ -628,9 +623,12 @@ namespace Reko.Scanning
                     Stop = true,
                 };
             }
+            IEnumerable<KeyValuePair<Expression,BackwardSlicerContext>> liveExpr = seLeft.LiveExprs;
+            if (seRight != null)
+                liveExpr = liveExpr.Concat(seRight.LiveExprs);
             var se = new SlicerResult
             {
-                LiveExprs = seLeft.LiveExprs.Concat(seRight.LiveExprs)
+                LiveExprs = liveExpr
                     .GroupBy(e => e.Key)
                     .ToDictionary(k => k.Key, v => v.Max(vv => vv.Value)),
                 SrcExpr = binExp,
@@ -640,7 +638,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitBranch(RtlBranch branch)
         {
-            var se = branch.Condition.Accept(this, BackwardSlicerContext.Jump(new BitRange(0, 0)));
+            var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
             var addrTarget = branch.Target as Address;
             if (addrTarget == null)
                 throw new NotImplementedException();    //#REVIEW: do we ever see this?
@@ -796,7 +794,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitNop(RtlNop rtlNop)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public SlicerResult VisitOutArgument(OutArgument outArgument, BackwardSlicerContext ctx)
@@ -841,7 +839,10 @@ namespace Reko.Scanning
 
         public SlicerResult VisitSideEffect(RtlSideEffect side)
         {
-            return null;
+            return new SlicerResult
+            {
+                Stop = true
+            };
         }
 
         public SlicerResult VisitSlice(Slice slice, BackwardSlicerContext ctx)
@@ -853,7 +854,6 @@ namespace Reko.Scanning
         {
             var se = tc.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(tc.Expression)));
             this.ccNext = tc.ConditionCode;
-            this.JumpTableIndex = tc.Expression;
             return se;
         }
 

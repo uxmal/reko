@@ -113,6 +113,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ntoskrnl.inc" />
+    <Content Include="ntoskrnl.xml" />
+    <Content Include="oleaut32.def" />
     <Content Include="shell32.xml" />
     <Content Include="user32.xml" />
     <Content Include="win64characteristics.xml" />

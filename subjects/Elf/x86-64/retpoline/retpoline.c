@@ -20,8 +20,8 @@ void _init()
 	}
 }
 
-// 0000000000400480: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00)
-void _start( * rdx, Eq_17 qwArg00)
+// 0000000000400480: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+void _start( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);

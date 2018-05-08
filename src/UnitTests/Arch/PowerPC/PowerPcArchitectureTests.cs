@@ -52,7 +52,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             var host = mr.Stub<IRewriterHost>();
             host.Stub(h => h.GetImportedProcedure(
                 Arg<Address>.Matches(a => a.ToLinear() == 0x10061234),
-                Arg<Address>.Is.Anything)).Return(new ExternalProcedure("foo", null));
+                Arg<Address>.Is.Anything))
+                .Return(new ExternalProcedure("foo", new FunctionType()));
             mr.ReplayAll();
 
             ProcedureBase proc = arch.GetTrampolineDestination(m.Instructions, host);
