@@ -231,15 +231,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var one = m.Byte(1);
             if (useCarry)
             {
-                src = m.Fn(
-                    new PseudoProcedure(pseudoOp, reg.DataType, 3),
-                    reg, one, c);
+                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, one, c);
             }
             else
             {
-                src = m.Fn(
-                    new PseudoProcedure(pseudoOp, reg.DataType, 2),
-                    reg, one);
+                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, one);
             }
             m.Assign(reg, src);
             EmitCc(reg, "**-0XP0*");

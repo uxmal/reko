@@ -598,7 +598,7 @@ T_148: (in fnFFC02AB1 : ptr32)
   DataType: 
   OrigDataType: 
 T_149: (in signature of fnFFC02AB1 : void)
-  Class: Eq_148
+  Class: Eq_149
   DataType: 
   OrigDataType: 
 T_150: (in -58 : int32)
@@ -682,7 +682,7 @@ T_169: (in fn01A18AC9 : ptr32)
   DataType: 
   OrigDataType: 
 T_170: (in signature of fn01A18AC9 : void)
-  Class: Eq_169
+  Class: Eq_170
   DataType: 
   OrigDataType: 
 T_171: (in __ror : ptr32)
@@ -858,7 +858,7 @@ T_213: (in fnFFC02AD1 : ptr32)
   DataType: 
   OrigDataType: 
 T_214: (in signature of fnFFC02AD1 : void)
-  Class: Eq_213
+  Class: Eq_214
   DataType: 
   OrigDataType: 
 T_215: (in Z : byte)
@@ -878,7 +878,7 @@ T_218: (in fnFEC5AB25 : ptr32)
   DataType: 
   OrigDataType: 
 T_219: (in signature of fnFEC5AB25 : void)
-  Class: Eq_218
+  Class: Eq_219
   DataType: 
   OrigDataType: 
 T_220: (in r0 : word32)
@@ -2634,7 +2634,7 @@ T_657: (in fn0183930D : ptr32)
   DataType: 
   OrigDataType: 
 T_658: (in signature of fn0183930D : void)
-  Class: Eq_657
+  Class: Eq_658
   DataType: 
   OrigDataType: 
 T_659: (in sp_34 : word32)
@@ -2694,7 +2694,7 @@ T_672: (in fn0118891D : ptr32)
   DataType: 
   OrigDataType: 
 T_673: (in signature of fn0118891D : void)
-  Class: Eq_672
+  Class: Eq_673
   DataType: 
   OrigDataType: 
 T_674: (in 0x00000000 : word32)
@@ -4410,7 +4410,7 @@ T_1101: (in fn012C128D : ptr32)
   DataType: 
   OrigDataType: 
 T_1102: (in signature of fn012C128D : void)
-  Class: Eq_1101
+  Class: Eq_1102
   DataType: 
   OrigDataType: 
 T_1103: (in r5_r4 : word64)
@@ -4946,7 +4946,7 @@ T_1235: (in fnFE3D4AF5 : ptr32)
   DataType: 
   OrigDataType: 
 T_1236: (in signature of fnFE3D4AF5 : void)
-  Class: Eq_1235
+  Class: Eq_1236
   DataType: 
   OrigDataType: 
 T_1237: (in __stc : ptr32)
@@ -5146,7 +5146,7 @@ T_1285: (in fn01A19079 : ptr32)
   DataType: 
   OrigDataType: 
 T_1286: (in signature of fn01A19079 : void)
-  Class: Eq_1285
+  Class: Eq_1286
   DataType: 
   OrigDataType: 
 T_1287: (in 0x00000000 : word32)
@@ -5626,7 +5626,7 @@ T_1405: (in fn00AC1031 : ptr32)
   DataType: 
   OrigDataType: 
 T_1406: (in signature of fn00AC1031 : void)
-  Class: Eq_1405
+  Class: Eq_1406
   DataType: 
   OrigDataType: 
 T_1407: (in 0x00000000 : word32)

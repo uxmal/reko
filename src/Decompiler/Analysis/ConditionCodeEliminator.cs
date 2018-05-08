@@ -479,8 +479,15 @@ namespace Reko.Analysis
 
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
-			Expression e = new Application(new ProcedureConstant(platform.PointerType, new PseudoProcedure("OVERFLOW", PrimitiveType.Bool, 1)),
-				PrimitiveType.Bool, bin);
+            var sig = new FunctionType(
+                new Identifier("", PrimitiveType.Bool, null),
+                new Identifier("", bin.DataType, null));
+            Expression e = new Application(
+                new ProcedureConstant(
+                    platform.PointerType,
+                    new PseudoProcedure("OVERFLOW", sig)),
+                PrimitiveType.Bool,
+                bin);
 			if (isNegated)
 			{
 				e = m.Not(e);

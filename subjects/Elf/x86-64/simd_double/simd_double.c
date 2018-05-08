@@ -20,8 +20,8 @@ void _init()
 	}
 }
 
-// 0000000000000620: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00)
-void _start( * rdx, Eq_17 qwArg00)
+// 0000000000000620: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+void _start( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 0x08, &globals->t0A70, &globals->t0AE0, rdx, fp);
@@ -92,8 +92,8 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000000000000072A: Register (ptr void) _mm_malloc(Register uint64 rsi, Register Eq_121 rdi)
-void(uint64 rsi, Eq_121 rdi)
+// 000000000000072A: Register (ptr void) _mm_malloc(Register uint64 rsi, Register Eq_123 rdi)
+void(uint64 rsi, Eq_123 rdi)
 {
 	void * rax_22;
 	if (rsi == 0x01)
@@ -141,13 +141,13 @@ uint64 vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi)
 		return rdx_27 - 0x08;
 }
 
-// 0000000000000898: void main(Register Eq_181 xmm0)
-void main(Eq_181 xmm0)
+// 0000000000000898: void main(Register Eq_184 xmm0)
+void main(Eq_184 xmm0)
 {
 	real64 rax_13[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_20[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_27[] = _mm_malloc(0x20, 0x2000);
-	Eq_198 qwLoc10_163 = 0x00;
+	Eq_201 qwLoc10_163 = 0x00;
 	while (qwLoc10_163 < 0x0400)
 	{
 		real64 * rcx_150 = rax_13 + qwLoc10_163;
@@ -165,7 +165,7 @@ void main(Eq_181 xmm0)
 	uint64 qwLoc18_133 = 0x01;
 	while (qwLoc18_133 < 0x03FF)
 	{
-		Eq_232 rax_117 = qwLoc18_133 + 0x00;
+		Eq_235 rax_117 = qwLoc18_133 + 0x00;
 		ui32 eax_118 = (word32) rax_117;
 		real64 * rcx_122 = rax_20 + qwLoc18_133;
 		if (rax_117 >= 0x00)
@@ -178,15 +178,15 @@ void main(Eq_181 xmm0)
 		*rcx_122 = (real64) xmm0;
 		qwLoc18_133 = qwLoc18_133 + 0x01;
 	}
-	Eq_198 qwLoc20_114 = 0x00;
+	Eq_201 qwLoc20_114 = 0x00;
 	while (qwLoc20_114 < 0x0400)
 	{
 		xmm0 = __xorpd(xmm0, xmm0);
 		rax_27[qwLoc20_114] = (real64) xmm0;
 		qwLoc20_114 = (word64) qwLoc20_114.u1 + 0x01;
 	}
-	struct Eq_275 * rsp_69 = vec_add(rax_20, rax_13, rax_27, 0x0400);
-	Eq_198 qwLoc28_103 = 0x00;
+	struct Eq_278 * rsp_69 = vec_add(rax_20, rax_13, rax_27, 0x0400);
+	Eq_201 qwLoc28_103 = 0x00;
 	while (qwLoc28_103 < 0x0400)
 	{
 		printf("%g\n", rsp_69->tFFFFFFF8);
