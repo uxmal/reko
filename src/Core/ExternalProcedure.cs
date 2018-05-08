@@ -33,14 +33,14 @@ namespace Reko.Core
     /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{
-		public ExternalProcedure(string name, FunctionType signature) : base(name)
-		{
-			this.Signature = signature;
-		}
+        public ExternalProcedure(string name, FunctionType signature) : base(name)
+        {
+            this.Signature = signature ?? throw new ArgumentNullException(nameof(signature));
+        }
 
         public ExternalProcedure(string name, FunctionType signature, ProcedureCharacteristics chars) : base(name)
         {
-            this.Signature = signature;
+            this.Signature = signature ?? throw new ArgumentNullException(nameof(signature));
             this.Characteristics = chars;
         }
 

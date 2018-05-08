@@ -258,7 +258,11 @@ namespace Reko.Environments.Windows
 
         public class SimulatedProc : ExternalProcedure
         {
-            public SimulatedProc(string name, Action<IProcessorEmulator> emulator) : base(name, null) { Emulator = emulator; }
+            public SimulatedProc(string name, Action<IProcessorEmulator> emulator)
+                : base(name, new FunctionType())
+            {
+                Emulator = emulator;
+            }
 
             public TWord uFakedAddress;
             public Action<IProcessorEmulator> Emulator;

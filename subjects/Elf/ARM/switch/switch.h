@@ -771,8 +771,8 @@ T_159: (in fn00000000 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_160: (in signature of fn00000000 : void)
-  Class: Eq_159
-  DataType: (ptr code)
+  Class: Eq_160
+  DataType: Eq_160
   OrigDataType: 
 T_161: (in r0 : Eq_161)
   Class: Eq_161

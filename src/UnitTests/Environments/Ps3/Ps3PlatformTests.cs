@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Environments.Ps3
 {
@@ -53,7 +54,8 @@ namespace Reko.UnitTests.Environments.Ps3
             var host = mr.Stub<IRewriterHost>();
             host.Stub(h => h.GetImportedProcedure(
                 Arg<Address>.Matches(a => a.ToLinear() == 0x10061234),
-                Arg<Address>.Is.Anything)).Return(new ExternalProcedure("foo", null));
+                Arg<Address>.Is.Anything))
+                .Return(new ExternalProcedure("foo", new FunctionType()));
             mr.ReplayAll();
 
             ProcedureBase proc = arch.GetTrampolineDestination(m.Instructions, host);

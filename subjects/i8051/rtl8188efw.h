@@ -64,8 +64,8 @@ T_14: (in fn4EF3 : ptr16)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_15: (in signature of fn4EF3 : void)
-  Class: Eq_14
-  DataType: (ptr code)
+  Class: Eq_15
+  DataType: Eq_15
   OrigDataType: 
 T_16: (in 0x05 : byte)
   Class: Eq_16
@@ -144,8 +144,8 @@ T_34: (in fn4AC0 : ptr16)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_35: (in signature of fn4AC0 : void)
-  Class: Eq_34
-  DataType: (ptr code)
+  Class: Eq_35
+  DataType: Eq_35
   OrigDataType: 
 */
 typedef struct Globals {

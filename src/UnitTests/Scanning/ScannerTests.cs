@@ -806,7 +806,9 @@ fn00001200_exit:
             var addrEmulated = Address.Ptr32(0x5000);
             var addrThunk = Address.Ptr32(0x1800);
             mem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
-            program.InterceptedCalls.Add(addrEmulated, new ExternalProcedure("Foo", null));
+            program.InterceptedCalls.Add(
+                addrEmulated,
+                new ExternalProcedure("Foo", new FunctionType()));
             var ep = scanner.GetInterceptedCall(addrThunk);
             Assert.AreEqual("Foo", ep.Name);
         }
