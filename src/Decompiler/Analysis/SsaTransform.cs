@@ -293,23 +293,32 @@ namespace Reko.Analysis
 
 			public override void VisitStore(Store store)
 			{
-				var access = (MemoryAccess) store.Dst;
-                var iBlock = ssa.RpoNumber(block);
-                byte grf;
-                defVars[iBlock].TryGetValue(access.MemoryId, out grf);
-				grf = (byte)((grf & ~BitDeadIn) | BitDefined);
-				defVars[iBlock][access.MemoryId] = grf;
+                switch (store.Dst)
+                {
+                case MemoryAccess access:
+                    var iBlock = ssa.RpoNumber(block);
+                    byte grf;
+                    defVars[iBlock].TryGetValue(access.MemoryId, out grf);
+                    grf = (byte)((grf & ~BitDeadIn) | BitDefined);
+                    defVars[iBlock][access.MemoryId] = grf;
 
-                if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
-                {
-                    var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
-                    MarkDefined(idFrame);
+                    if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
+                    {
+                        var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
+                        MarkDefined(idFrame);
+                    }
+                    else
+                    {
+                        store.Dst.Accept(this);
+                    }
+                    store.Src.Accept(this);
+                    break;
+                case ArrayAccess aaccess:
+                    aaccess.Array.Accept(this);
+                    aaccess.Index.Accept(this);
+                    store.Src.Accept(this);
+                    break;
                 }
-                else
-                {
-                    store.Dst.Accept(this);
-                }
-				store.Src.Accept(this);
 			}
 
 			public override void VisitApplication(Application app)

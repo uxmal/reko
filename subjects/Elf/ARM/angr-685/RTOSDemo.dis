@@ -14414,10 +14414,10 @@ l000097CD_1:
 
 
 
-void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word32 ip)
+void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 ip)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r7
+// MayUse:  ZCV ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -14428,75 +14428,83 @@ OSRAMImageDraw_exit:
 // SymbolicIn:
 
 OSRAMImageDraw_entry:
-// DataOut: ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r7
+// DataOut: ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00009881:
 	branch Z l00009885
-// DataOut: ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r7
+// DataOut: ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00009881_1:
-	Mem48[r7:word32] = r0
-	Mem50[r7 - 4:word32] = r3
-	Mem52[r7 - 8:word32] = r5
-	Mem53[r7 - 12:word32] = r6
-	Mem54[r7 - 16:word32] = r7
-	Mem55[r7 - 20:word32] = ip
-	Mem56[r7 - 24:word32] = fp
-	Mem58[r7 - 28:word32] = lr
-	Mem60[r7 - 32:word32] = pc
-// DataOut: ip r0 r1 r10 r2 r3 r4 r6
+	Mem50[r7:word32] = r0
+	Mem52[r7 - 4:word32] = r3
+	Mem54[r7 - 8:word32] = r5
+	Mem55[r7 - 12:word32] = r6
+	Mem56[r7 - 16:word32] = r7
+	Mem57[r7 - 20:word32] = ip
+	Mem58[r7 - 24:word32] = fp
+	Mem60[r7 - 28:word32] = lr
+	Mem62[r7 - 32:word32] = pc
+// DataOut: ip r0 r1 r10 r2 r3 r4 r6 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009885:
 	branch Z l00009889
-// DataOut: ip r0 r1 r10 r2 r3 r4 r6
+// DataOut: ip r0 r1 r10 r2 r3 r4 r6 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009885_1:
-// DataOut: ip r0 r1 r10 r2 r4 r6
+	r3 = r3 + 1694
+	r8 = Mem0[r3 + 1694:word32]
+// DataOut: ip r0 r1 r10 r2 r3 r4 r6 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009889:
 	branch ZC l0000988D
-// DataOut: ip r0 r1 r10 r2 r4 r6
+// DataOut: ip r0 r1 r10 r2 r3 r4 r6 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
 
 l00009889_1:
-	Mem37[r6 - 4:word32] = r1
-	Mem39[r6 - 8:word32] = r2
-	Mem40[r6 - 12:word32] = r6
-	Mem42[r6 - 16:word32] = r10
-	Mem44[r6 - 20:word32] = ip
-// DataOut: r0 r1 r4 r6
+	Mem39[r6 - 4:word32] = r1
+	Mem41[r6 - 8:word32] = r2
+	Mem42[r6 - 12:word32] = r6
+	Mem44[r6 - 16:word32] = r10
+	Mem46[r6 - 20:word32] = ip
+// DataOut: r0 r1 r3 r4 r6 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
 
 l0000988D:
 	branch NZV l00009891
-// DataOut: r0 r1 r4 r6
+// DataOut: r0 r1 r3 r4 r6 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
 
 l0000988D_1:
-	byte NZCV_32 = cond(r1 ^ r6 >> 8)
-	Z = NZCV_32 (alias)
-	C = NZCV_32 (alias)
-// DataOut: r0 r4
+	byte NZCV_34 = cond(r1 ^ r6 >> 8)
+	Z = NZCV_34 (alias)
+	C = NZCV_34 (alias)
+// DataOut: r0 r3 r4 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
 
 l00009891:
 	branch Z l00009895
+// DataOut: r0 r3 r4 r8
+// DataOut (flags): ZC
+// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
+
+l00009891_1:
+	r0 = __ssub8(r8, r3)
 // DataOut: r0 r4
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
@@ -14505,35 +14513,30 @@ l00009895:
 	branch Z l00009899
 // DataOut: r0 r4
 // DataOut (flags): ZC
-// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
+// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r0:<invalid>
 
 l00009895_1:
 	Z = cond((r4 >> 16) - r0 - C) (alias)
 // DataOut:
 // DataOut (flags): Z
-// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
+// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r0:<invalid>
 
 l00009899:
 	branch Z l0000989D
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r4:<invalid>
+// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r0:<invalid> r4:<invalid>
 
 l00009899_1:
 	__syscall(0x00F00108)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r4:<invalid>
+// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r0:<invalid> r4:<invalid>
 
 l0000989D:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r4:<invalid>
-
-l00009891_1:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
+// SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid> r0:<invalid> r4:<invalid>
 
 
 

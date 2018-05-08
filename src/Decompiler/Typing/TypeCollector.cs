@@ -64,8 +64,11 @@ namespace Reko.Typing
                 factory.CreateStructureType(),
                 program.Platform.PointerType.Size));
             CollectSegmentTypes();
+            int cProc = program.Procedures.Count;
+            int i = 0;
             foreach (Procedure p in program.Procedures.Values)
             {
+                eventListener.ShowProgress("Collecting data types.", i++, cProc);
                 proc = p;
                 CollectProcedureSignature(p);
                 foreach (Statement stm in p.Statements)

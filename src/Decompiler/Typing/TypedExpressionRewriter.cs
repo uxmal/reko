@@ -59,8 +59,11 @@ namespace Reko.Typing
 
         public void RewriteProgram(Program program)
         {
+            int cProc = program.Procedures.Count;
+            int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
             {
+                eventListener.ShowProgress("Rewriting expressions.", i++, cProc);
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {
