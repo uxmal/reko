@@ -80,7 +80,8 @@ namespace Reko.UnitTests.Typing
 
         private void RunTest(Expression e, DataType dt)
         {
-            var eq = new EquivalenceClassBuilder(factory, store);
+            var listener = new FakeDecompilerEventListener();
+            var eq = new EquivalenceClassBuilder(factory, store, listener);
             e.Accept(eq);
 
             e.Accept(exa);
@@ -93,9 +94,10 @@ namespace Reko.UnitTests.Typing
 
         private void RunTest(params Tuple<Expression, DataType>[] tests)
         {
+            var listener = new FakeDecompilerEventListener();
             foreach (var t in tests)
             {
-                var eq = new EquivalenceClassBuilder(factory, store);
+                var eq = new EquivalenceClassBuilder(factory, store, listener);
                 t.Item1.Accept(eq);
             }
 
