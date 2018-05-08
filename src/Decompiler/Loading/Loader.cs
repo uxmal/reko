@@ -119,8 +119,8 @@ namespace Reko.Loading
             if (program.NeedsScanning && !program.NeedsSsaTransform)
                 throw new InvalidOperationException(
                     "A programming error has been detected. " +
-                    "Image loader {0} has set the program.NeedsScanning " +
-                    "and program.NeedsSsaTransform to inconsistent values");
+                    $"Image loader {imgLoader.GetType().FullName} has set the program.NeedsScanning " +
+                    "and program.NeedsSsaTransform to inconsistent values.");
 
             program.Name = Path.GetFileName(filename);
             if (program.NeedsScanning)
