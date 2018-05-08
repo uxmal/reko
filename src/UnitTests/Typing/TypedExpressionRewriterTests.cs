@@ -160,20 +160,21 @@ namespace Reko.UnitTests.Typing
             }
         }
 
-        private void DumpProgAndStore(Program prog, FileUnitTester fut)
+        private void DumpProgAndStore(Program program, FileUnitTester fut)
         {
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
                 proc.Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
             }
 
-            prog.TypeStore.Write(fut.TextWriter);
+            program.TypeStore.Write(fut.TextWriter);
             fut.AssertFilesEqual();
         }
 
         public void SetupPreStages(Program program)
         {
+            var listener = new FakeDecompilerEventListener();
             foreach (var f in userDefinedGlobals)
             {
                 program.GlobalFields.Fields.Add(f);
@@ -183,7 +184,7 @@ namespace Reko.UnitTests.Typing
                 program.SegmentMap.Segments.Add(s.Address, s);
             }
             aen = new ExpressionNormalizer(program.Platform.PointerType);
-            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
+            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, listener);
             dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform);
             tvr = new TypeVariableReplacer(program.TypeStore);
             trans = new TypeTransformer(program.TypeFactory, program.TypeStore, program);
@@ -369,8 +370,8 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerAddNonConstantToPointer()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add("proc1", m =>
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add("proc1", m =>
             {
                 Identifier i = m.Local16("i");
                 Identifier p = m.Local16("p");
@@ -379,14 +380,14 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.IAdd(p, 4), m.Word16(4));
                 m.Assign(p, m.IAdd(p, i));
             });
-            RunTest(prog.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
+            RunTest(program.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
         }
 
         [Test]
         public void TerSignedCompare()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add("proc1", m =>
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add("proc1", m =>
             {
                 Identifier ds = m.Local16("ds");
                 ds.DataType = PrimitiveType.SegmentSelector;
@@ -398,14 +399,14 @@ namespace Reko.UnitTests.Typing
                     m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
                 m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
             });
-            RunTest(prog.BuildProgram(), "Typing/TerSignedCompare.txt");
+            RunTest(program.BuildProgram(), "Typing/TerSignedCompare.txt");
         }
 
         [Test]
         public void TerDereferenceSignedCompare()
         {
-            ProgramBuilder prog = CreateProgramBuilder(0x5000, 0x1000);
-            prog.Add("proc1", m =>
+            ProgramBuilder program = CreateProgramBuilder(0x5000, 0x1000);
+            program.Add("proc1", m =>
             {
                 Identifier ds = m.Local16("ds");
                 ds.DataType = PrimitiveType.SegmentSelector;
@@ -420,14 +421,14 @@ namespace Reko.UnitTests.Typing
                 m.Store(m.SegMem16(ds2, m.IAdd(m.SegMem16(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
                 m.Return();
             });
-            RunTest(prog.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");
+            RunTest(program.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");
         }
 
         [Test]
         public void TerFlatDereferenceSignedCompare()
         {
-            ProgramBuilder prog = CreateProgramBuilder(0x5400, 0x1000);
-            prog.Add("proc1", m =>
+            ProgramBuilder program = CreateProgramBuilder(0x5400, 0x1000);
+            program.Add("proc1", m =>
             {
                 Identifier ds = m.Local32("ds");
                 Identifier ds2 = m.Local32("ds2");
@@ -439,34 +440,34 @@ namespace Reko.UnitTests.Typing
                         m.Word16(20)));
                 m.MStore(m.IAdd(m.Mem32(m.IAdd(ds2, m.Word32(0x5404))), 4), m.Word16(0));
             });
-            RunTest(prog.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
+            RunTest(program.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
         }
 
         [Test]
         public void TerComparison()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add("proc1", m =>
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
                 Expression fetch = m.Mem(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
                 m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00001028)));
             });
-            RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
+            RunTest(program.BuildProgram(), "Typing/TerComparison.txt");
         }
 
         [Test]
         public void TerUnionConstants()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add("proc1", m =>
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add("proc1", m =>
             {
                 Identifier bx = m.Local16("bx");
                 m.Assign(bx, m.Shr(bx, 2));     // makes bx unsigned uint16
                 m.Assign(m.LocalBool("f"), m.Lt(bx, 4));    // makes bx also signed; assembler bug, but forces a union.
                 m.Assign(bx, m.Word16(4));          // what type should 4 have?
             });
-            RunTest(prog.BuildProgram(), "Typing/TerUnionConstants.txt");
+            RunTest(program.BuildProgram(), "Typing/TerUnionConstants.txt");
         }
 
         [Test]
@@ -553,9 +554,9 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerStaggeredArrays()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(new StaggeredArraysFragment());
-            RunTest(prog.BuildProgram(), "Typing/TerStaggeredArrays.txt");
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(new StaggeredArraysFragment());
+            RunTest(program.BuildProgram(), "Typing/TerStaggeredArrays.txt");
         }
 
         [Test]
