@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui.Visualizers;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -243,106 +244,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (x < 0 || x >= this.LineLength)
                 return null;
             return mem.BaseAddress + (vscroll.Value + y * LineLength + x);
-        }
-    }
-
-    public interface Visualizer
-    {
-        /// <summary>
-        /// Preferred number of bytes per line for this visualization.
-        /// </summary>
-        int DefaultLineLength { get; }
-
-        /// <summary>
-        /// Preferred number of pixels per byte
-        /// </summary>
-        int DefaultZoom { get; }
-
-        /// <summary>
-        /// If set, this visualization requires always having a certain width.
-        /// </summary>
-        bool IsLineLengthFixed { get; }
-
-        /// <summary>
-        /// If true, this visualization wants to track the current selection
-        /// of bytes.
-        /// </summary>
-        bool TrackSelection { get; }
-
-        bool ShowScrollbar { get; }
-
-        /// <summary>
-        /// Render the <paramref name="length"/> bytes of the memory area <paramref name="mem"/> starting
-        /// at address <paramref name="addrStart"/>. If the visualizer supports it, it can
-        /// render the current mouse position given by <paramref name="mouse"/>.
-        /// </summary>
-        /// <param name="mem">A memory area containing the bytes to render</param>
-        /// <param name="addrStart">The starting area from which to start rendering</param>
-        /// <param name="length">The number of bytes to render</param>
-        /// <param name="mouse">The offset from addrStart where the mouse cursor is located</param>
-        /// <returns>An array of bytes in ARGB format. Missing bytes are rendered with the 
-        /// ARGB value 0; this is in contrast with the ARGB value for 'black' which is
-        /// 0xFF000000.</returns>
-        int[] RenderBuffer(MemoryArea mem, Address addrStart, int length, int? mouse);
-
-        VisualAnnotation[] RenderAnnotations(Address addrStart, int length, int? mouse);
-    }
-
-    public class VisualAnnotation
-    {
-        public Address Address;
-        public string Text;
-        public int LineColor;
-        public int TextColor;
-    }
-
-    public class DefaultVisualizer : Visualizer
-    {
-        public int DefaultLineLength => 64;
-
-        public int DefaultZoom => 2;
-
-        public bool IsLineLengthFixed => false;
-        public bool TrackSelection => true;
-        public bool ShowScrollbar => true;
-
-        public int[] RenderBuffer(MemoryArea mem, Address addrStart, int length, int? mouse)
-        {
-            var iStart = addrStart - mem.BaseAddress;
-            var iEnd = Math.Min(iStart + length, mem.Bytes.Length);
-            var colors = new int[iEnd - iStart];
-            for (int i = 0; i < colors.Length; ++i)
-            {
-                if (i + iStart < 0)
-                {
-                    colors[i] = 0;
-                }
-                else
-                {
-                    // Render pixel in a heat map color
-                    // code taken from
-                    // http://stackoverflow.com/questions/20792445/calculate-rgb-value-for-a-range-of-values-to-create-heat-map
-                    var ratio = 2 * mem.Bytes[i + iStart] / 255;
-                    var b = Convert.ToInt32(Math.Max(0, 255 * (1 - ratio)));
-                    var r = Convert.ToInt32(Math.Max(0, 255 * (ratio - 1)));
-                    var g = 255 - b - r;
-                    colors[i] =  ~0x00FFFFFF | (r << 16) | (g << 8) | b;
-                }
-            }
-            return colors;
-        }
-
-        public VisualAnnotation[] RenderAnnotations(Address addrStart, int length, int? mouse)
-        {
-            return new VisualAnnotation[]
-            {
-                new VisualAnnotation { Address = Address.Ptr32(0x00123450), Text = "Line 1" },
-                new VisualAnnotation { Address = Address.Ptr32(0x00123650), Text = "Line 2" },
-                new VisualAnnotation { Address = Address.Ptr32(0x0012365F), Text = "Line 3" },
-                new VisualAnnotation { Address = Address.Ptr32(0x00123663), Text = "Line 4" },
-                new VisualAnnotation { Address = Address.Ptr32(0x00124450), Text = "Line 5" },
-            }.Where(a => addrStart <= a.Address && a.Address < addrStart  + length)
-            .ToArray();
         }
     }
 }

@@ -25,6 +25,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
+using Reko.Gui.Visualizers;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -285,11 +286,10 @@ namespace Reko.WindowsItp
             var buf = new byte[30000];
             new Random().NextBytes(buf);
             vis.MemoryArea = new MemoryArea(Address.Ptr32(0x00123400), buf);
-            vis.Visualizer = new DefaultVisualizer();
+            vis.Visualizer = new HeatmapVisualizer();
             vis.Dock = DockStyle.Fill;
             form.Controls.Add(vis);
             form.ShowDialog(this);
-
         }
     }
 }
