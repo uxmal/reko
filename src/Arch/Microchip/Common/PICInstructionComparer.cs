@@ -68,7 +68,55 @@ namespace Reko.Arch.MicrochipPIC.Common
                     if (pseudoA.Values.Length != pseudoB.Values.Length)
                         return false;
                     return NormalizeConstants || (pseudoA.Values == pseudoB.Values);
-                    
+
+                case PICOperandImmediate immedOpA:
+                    var immedOpB = (PICOperandImmediate)opB;
+                    return NormalizeConstants || (immedOpA.ImmediateValue.Equals(immedOpB.ImmediateValue));
+
+                case PICOperandFast fastOpA:
+                    var fastOpB = (PICOperandFast)opB;
+                    return NormalizeConstants || (fastOpA.IsFast == fastOpB.IsFast);
+
+                case PICOperandRegister picregOpA:
+                    var picregOpB = (PICOperandRegister)opB;
+                    return NormalizeRegisters || picregOpA.Register == picregOpB.Register;
+
+                case PICOperandProgMemoryAddress progMemOpA:
+                    var progMemOpB = (PICOperandProgMemoryAddress)opB;
+                    return NormalizeConstants || progMemOpA.CodeTarget == progMemOpB.CodeTarget;
+
+                case PICOperandDataMemoryAddress dataMemOpA:
+                    var dataMemOpB = (PICOperandDataMemoryAddress)opB;
+                    return NormalizeConstants || dataMemOpA.DataTarget == dataMemOpB.DataTarget;
+
+                case PICOperandBankedMemory bankmemOpA:
+                    var bankmemOpB = (PICOperandBankedMemory)opB;
+                    return NormalizeConstants || bankmemOpA.Offset == bankmemOpB.Offset;
+
+                case PICOperandMemBitNo bitnoOpA:
+                    var bitnoOpB = (PICOperandMemBitNo)opB;
+                    return NormalizeConstants || bitnoOpA.BitNo == bitnoOpB.BitNo;
+
+                case PICOperandMemWRegDest memWOpA:
+                    var memWOpB = (PICOperandMemWRegDest)opB;
+                    return NormalizeConstants || memWOpA.WRegIsDest == memWOpB.WRegIsDest;
+
+                case PICOperandFSRNum fsrnumOpA:
+                    var fsrnumOpB = (PICOperandFSRNum)opB;
+                    return NormalizeRegisters || fsrnumOpA.FSRNum == fsrnumOpB.FSRNum;
+
+                case PICOperandFSRIndexation fsridxOpA:
+                    var fsridxOpB = (PICOperandFSRIndexation)opB;
+                    return NormalizeConstants || (fsridxOpA.Offset == fsridxOpB.Offset && fsridxOpA.FSRNum == fsridxOpB.FSRNum);
+
+                case PICOperandTBLRW tblOpA:
+                    var tblOpB = (PICOperandTBLRW)opB;
+                    return NormalizeConstants || tblOpA.TBLIncrMode == tblOpB.TBLIncrMode;
+
+                case PICOperandTris trisOpA:
+                    var trisOpB = (PICOperandTris)opB;
+                    return NormalizeRegisters || trisOpA.TrisNum == trisOpB.TrisNum;
+
                 default:
                     throw new NotImplementedException($"NYI: {opA.GetType()}");
             }
@@ -122,20 +170,52 @@ namespace Reko.Arch.MicrochipPIC.Common
             switch (op)
             {
                 case RegisterOperand regOp:
-                    return base.GetRegisterHash(regOp.Register);
+                    return GetRegisterHash(regOp.Register);
 
                 case ImmediateOperand immOp:
-                    return base.GetConstantHash(immOp.Value);
+                    return GetConstantHash(immOp.Value);
 
                 case AddressOperand addrOp:
-                    return base.NormalizeConstants
-                        ? 1
-                        : addrOp.Address.GetHashCode();
+                    return NormalizeConstants ? 1 : addrOp.Address.GetHashCode();
 
                 case PICOperandPseudo pseudoOp:
-                    return base.NormalizeConstants
-                        ? 1
-                        : pseudoOp.Values.GetHashCode();
+                    return NormalizeConstants ? 1 : pseudoOp.Values.GetHashCode();
+
+                case PICOperandImmediate immedOp:
+                    return GetConstantHash(immedOp.ImmediateValue);
+
+                case PICOperandFast fastOp:
+                    return fastOp.IsFast.GetHashCode();
+
+                case PICOperandRegister picregOp:
+                    return GetRegisterHash(picregOp.Register);
+
+                case PICOperandProgMemoryAddress progMemOp:
+                    return NormalizeConstants ? 1 : progMemOp.CodeTarget.GetHashCode();
+
+                case PICOperandDataMemoryAddress dataMemOp:
+                    return NormalizeConstants ? 1 : dataMemOp.DataTarget.GetHashCode();
+
+                case PICOperandBankedMemory bankmemOp:
+                    return NormalizeConstants ? 1 : bankmemOp.Offset.GetHashCode();
+
+                case PICOperandMemBitNo bitnoOp:
+                    return bitnoOp.BitNo.GetHashCode();
+
+                case PICOperandMemWRegDest memWOp:
+                    return memWOp.WRegIsDest.GetHashCode();
+
+                case PICOperandFSRNum fsrnumOP:
+                    return fsrnumOP.FSRNum.GetHashCode();
+
+                case PICOperandFSRIndexation fsridxOp:
+                    return fsridxOp.FSRNum.GetHashCode() * 27 ^ fsridxOp.Offset.GetHashCode();
+
+                case PICOperandTBLRW tblOp:
+                    return tblOp.TBLIncrMode.GetHashCode();
+
+                case PICOperandTris trisOp:
+                    return trisOp.TrisNum.GetHashCode();
 
                 default:
                     throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
