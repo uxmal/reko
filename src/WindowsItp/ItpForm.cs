@@ -33,6 +33,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -275,6 +276,20 @@ namespace Reko.WindowsItp
             var dlg = new SymbolSourceDialog();
             dlg.Services = sc;
             dlg.ShowDialog(this);
+        }
+
+        private void visualizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new Form();
+            var vis = new VisualizerControl();
+            var buf = new byte[3000];
+            new Random().NextBytes(buf);
+            vis.MemoryArea = new MemoryArea(Address.Ptr32(0x00123400), buf);
+            vis.Visualizer = new DefaultVisualizer();
+            vis.Dock = DockStyle.Fill;
+            form.Controls.Add(vis);
+            form.ShowDialog(this);
+
         }
     }
 }
