@@ -231,6 +231,7 @@
     <Compile Include="Forms\FinalPageInteractor.cs" />
     <Compile Include="Forms\InitialPageInteractor.cs" />
     <Compile Include="Forms\PhasePageInteractor.cs" />
+    <Compile Include="Visualizers\AsciiStringVisualizer.cs" />
     <Compile Include="Visualizers\HeatmapVisualizer.cs" />
     <Compile Include="Visualizers\Visualizer.cs" />
   </ItemGroup>

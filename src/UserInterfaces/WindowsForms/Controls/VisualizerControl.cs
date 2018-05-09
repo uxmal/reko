@@ -92,22 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnSizeChanged(EventArgs e)
         {
-            var bytesOnScreen = LineLength * LinesOnScreen;
-            if (program == null ||
-                mem == null ||
-                bytesOnScreen >= mem.Bytes.Length ||
-                visualizer != null && !visualizer.ShowScrollbar)
-            {
-                this.vscroll.Value = 0;
-                this.vscroll.Enabled = false;
-            }
-            else
-            {
-                this.vscroll.Enabled = true;
-                this.vscroll.Maximum = mem.Bytes.Length - bytesOnScreen;
-                this.vscroll.LargeChange = bytesOnScreen;
-                this.vscroll.SmallChange = LineLength;
-            }
+            UpdateScrollbar();
             Invalidate();
             base.OnSizeChanged(e);
         }
@@ -178,7 +163,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void RenderAnnotations(Graphics g)
         {
-            if (visualizer == null)
+            if (visualizer == null || mem == null)
                 return;
             var addrStart = mem.BaseAddress + vscroll.Value;
             var bytesOnScreen = LinesOnScreen * LineLength;
@@ -248,6 +233,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected virtual void OnProgramChanged()
         {
             this.mem = Program?.SegmentMap.Segments.Values[0].MemoryArea;
+            UpdateScrollbar();
             this.Invalidate();
         }
 
@@ -271,9 +257,30 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 this.mem = null;
             }
-
+            UpdateScrollbar();
             Invalidate();
         }
+
+        private void UpdateScrollbar()
+        {
+            var bytesOnScreen = LineLength * LinesOnScreen;
+            if (program == null ||
+                mem == null ||
+                bytesOnScreen >= mem.Bytes.Length ||
+                visualizer != null && !visualizer.ShowScrollbar)
+            {
+                this.vscroll.Value = 0;
+                this.vscroll.Enabled = false;
+            }
+            else
+            {
+                this.vscroll.Enabled = true;
+                this.vscroll.Maximum = mem.Bytes.Length - bytesOnScreen;
+                this.vscroll.LargeChange = bytesOnScreen;
+                this.vscroll.SmallChange = LineLength;
+            }
+        }
+
 
         private Point PositionFromAddress(Address addr)
         {

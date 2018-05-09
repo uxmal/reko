@@ -113,7 +113,9 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
             this.Control.VisualizerControl.Services = services;
-            this.Control.VisualizerControl.Visualizer = new HeatmapVisualizer();
+            PopulateVisualizers();
+            this.Control.VisualizerList.SelectedIndexChanged += VisualizerList_SelectedIndexChanged;
+            this.control.VisualizerList.SelectedIndex = 0;
 
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
@@ -125,6 +127,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             return control;
         }
+
 
         public void SetSite(IServiceProvider sp)
         {
@@ -144,6 +147,15 @@ namespace Reko.UserInterfaces.WindowsForms
             if (!program.Architecture.TryParseAddress(txtAddr, out addr))
                 return;
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
+        }
+
+        private void PopulateVisualizers()
+        {
+            //$REVIEW: do this from a config file?
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -602,5 +614,14 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
+
+        private void VisualizerList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = (ListOption) this.control.VisualizerList.SelectedItem;
+            if (item == null)
+                return;
+            this.Control.VisualizerControl.Visualizer = (Visualizer)item.Value;
+        }
+
     }
 }

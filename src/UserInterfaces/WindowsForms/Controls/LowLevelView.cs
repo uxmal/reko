@@ -40,6 +40,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         IButton btnGoWrapped;
         IButton btnBackWrapped;
         IButton btnFwdWrapped;
+        IComboBox ddlVisualizerWrapped;
         Address addrCurrent;
 
         public LowLevelView()
@@ -49,6 +50,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             btnBackWrapped = new ToolStripButtonWrapper(btnBack);
             btnFwdWrapped = new ToolStripButtonWrapper(btnForward);
             btnGoWrapped = new ToolStripButtonWrapper(btnGo);
+            ddlVisualizerWrapped = new ComboBoxWrapper(ddlVisualizer);
         }
 
         public IButton ToolbarBackButton { get { return btnBackWrapped; } }
@@ -59,9 +61,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public MemoryControl MemoryView { get { return this.memCtrl; } }
         public DisassemblyControl DisassemblyView { get { return this.dasmCtrl; } }
         public VisualizerControl VisualizerControl { get { return this.visualizerControl; } }
+        public IComboBox VisualizerList { get { return ddlVisualizerWrapped; } }
         IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
         IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
         public Address CurrentAddress { get { return addrCurrent; } set { addrCurrent = value; CurrentAddressChanged.Fire(this); } }
+
         public event EventHandler CurrentAddressChanged;
     }
 }

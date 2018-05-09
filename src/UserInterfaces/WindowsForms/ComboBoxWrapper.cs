@@ -53,6 +53,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public Color ForeColor { get { return ddl.ForeColor; } set { ddl.ForeColor = value;  } }
         public IList Items { get { return ddl.Items; } }
         public int SelectedIndex { get { return ddl.SelectedIndex; } set { ddl.SelectedIndex = value; } }
+        public object SelectedItem { get { return ddl.SelectedItem; } set { ddl.SelectedItem = value; } }
         public object SelectedValue { get { return ddl.SelectedValue; } set { ddl.SelectedValue = value; } }
         public string Text { get { return ddl.Text; } set { ddl.Text = value; } }
     }
