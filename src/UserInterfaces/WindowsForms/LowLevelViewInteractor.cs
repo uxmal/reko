@@ -151,11 +151,11 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void PopulateVisualizers()
         {
-            //$REVIEW: do this from a config file?
-            this.Control.VisualizerList.Items.Add(
-                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
+            //$REVIEW: load the visualizers from a config file?
             this.Control.VisualizerList.Items.Add(
                 new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)

@@ -30,6 +30,14 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
+    /// <summary>
+    /// This control presents the contents of a visualizer in a 
+    /// Windows Forms Control
+    /// </summary>
+    /// <remarks>
+    /// Inspired by the Data Visualization plugin at 
+    /// https://github.com/patois/IDACyber
+    /// </remarks>
     public class VisualizerControl : Control
     {
         private Visualizer visualizer;
@@ -74,16 +82,28 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
         
+        /// <summary>
+        /// Number of bytes per line.
+        /// </summary>
         public int LineLength {get; set; }
 
+        /// <summary>
+        /// Number of lines that fit on the current client area.
+        /// </summary>
         public int LinesOnScreen => (this.Height + (this.pixelSize - 1)) / pixelSize;
 
+        /// <summary>
+        /// The visualizer to use to render the contents of the control.
+        /// </summary>
         public Visualizer Visualizer
         {
             get { return visualizer; }
             set { visualizer = value; OnVisualizerChanged(); }
         }
 
+        /// <summary>
+        /// Program being visualized.
+        /// </summary>
         public Program Program
         {
             get { return program; }
@@ -228,7 +248,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             // We paint our own background in OnPaint to avoid flicker.
         }
 
-        // Property changed handlers
         protected virtual void OnVisualizerChanged()
         {
             if (visualizer == null)
@@ -295,7 +314,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-
+        /// <summary>
+        /// Given an address, compute the position of the upper
+        /// left corner of the corresponding pixel.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns></returns>
         private Point PositionFromAddress(Address addr)
         {
             var offset = (addr - mem.BaseAddress) - vscroll.Value;
@@ -304,6 +328,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return new Point(x * pixelSize, y * pixelSize);
         }
 
+        /// <summary>
+        /// Given a client coordinate position, determine
+        /// what address it corresponds to, or return null
+        /// if there is no corresponding address.
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <returns></returns>
         private Address AddressFromPosition(Point pt)
         {
             int x = pt.X / pixelSize;
