@@ -206,6 +206,23 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             Invalidate();
         }
+
+        private Point PositionFromAddress(Address addr)
+        {
+            var offset = (addr - mem.BaseAddress) - vscroll.Value;
+            int x = (int)offset % this.LineLength;
+            int y = (int)offset / this.LineLength;
+            return new Point(x * pixelSize, y * pixelSize);
+        }
+
+        private Address AddressFromPosition(Point pt)
+        {
+            int x = pt.X / pixelSize;
+            int y = pt.Y / pixelSize;
+            if (x < 0 || x >= this.LineLength)
+                return null;
+            return mem.BaseAddress + (vscroll.Value + y * LineLength + x);
+        }
     }
 
     public interface Visualizer
