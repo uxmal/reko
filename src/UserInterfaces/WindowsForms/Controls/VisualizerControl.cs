@@ -90,6 +90,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             set { program = value; OnProgramChanged(); }
         }
 
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            var addr = AddressFromPosition(e.Location);
+            if (addr != null)
+            {
+                if (selSvc != null)
+                {
+                    var ar = new AddressRange(addr, addr);
+                    selSvc.SetSelectedComponents(new[] { ar });
+                }
+            }
+            base.OnMouseUp(e);
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             UpdateScrollbar();

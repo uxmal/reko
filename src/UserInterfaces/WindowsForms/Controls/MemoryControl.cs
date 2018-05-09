@@ -556,6 +556,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return;
             this.addrAnchor = ar.Begin;
             this.addrSelected = ar.End;
+            if (!IsVisible(addrAnchor))
+            {
+                Address newTopAddress = addrAnchor.Align((int)cbRow);
+                if (mem.IsValidAddress(newTopAddress))
+                {
+                    TopAddress = newTopAddress;
+                }
+            }
+
             Invalidate();
         }
 
