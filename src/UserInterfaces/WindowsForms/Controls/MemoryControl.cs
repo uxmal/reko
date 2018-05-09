@@ -361,6 +361,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            // We paint our own background.
+        }
+
         protected virtual void OnSelectionChanged()
         {
             var eh = SelectionChanged;
