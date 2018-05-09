@@ -252,14 +252,14 @@ void fn000012D0(int32 dwArg04)
 	Eq_542 a3_11[] = (Eq_542 (*)[]) 0x1404;
 	if (0x1404 != 0x00)
 	{
-		int32 d2_39 = 0x01;
+		int32 d2_38 = 0x01;
 		if (*(word32 *) 0x1408 != 0x00)
 		{
 			do
-				d2_39 = d2_39 + 0x01;
-			while (((word32[]) 0x1404)[d2_39] != 0x00);
+				d2_38 = d2_38 + 0x01;
+			while (((word32[]) 0x1404)[d2_38] != 0x00);
 		}
-		int32 d2_49 = d2_39 - 0x01;
+		int32 d2_49 = d2_38 - 0x01;
 		if (d2_49 != 0x00)
 		{
 			do
@@ -289,25 +289,25 @@ void fn0000131C(int32 dwArg04)
 {
 	if (*(word32 *) 5112 == 0x00)
 	{
-		struct Eq_566 * a3_28 = *(struct Eq_566 **) 0x140C;
+		struct Eq_566 * a3_27 = *(struct Eq_566 **) 0x140C;
 		*(int32 *) 5112 = 0x01;
-		if (a3_28 != null)
+		if (a3_27 != null)
 		{
 			do
 			{
-				<anonymous> * a2_50 = a3_28->ptr0004;
-				word32 a7_51;
-				struct Eq_566 ** a3_52;
-				word32 a2_53;
-				byte ZN_54;
-				byte C_55;
-				byte V_56;
-				byte Z_57;
-				word32 d0_58;
-				byte CVZN_59;
-				a2_50();
-				a3_28 = (struct Eq_566 *) *a3_52;
-			} while (a3_28 != null);
+				<anonymous> * a2_49 = a3_27->ptr0004;
+				word32 a7_50;
+				struct Eq_566 ** a3_51;
+				word32 a2_52;
+				byte ZN_53;
+				byte C_54;
+				byte V_55;
+				byte Z_56;
+				word32 d0_57;
+				byte CVZN_58;
+				a2_49();
+				a3_27 = (struct Eq_566 *) *a3_51;
+			} while (a3_27 != null);
 		}
 		fn000012D0(dwArg04);
 	}
