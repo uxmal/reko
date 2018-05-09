@@ -81,21 +81,24 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         [Test]
         public void MemCtl_ChangeSelection_RaisesSelectionServiceEvent()
         {
-            var selSvc = MockRepository.GenerateStrictMock<ISelectionService>();
+            var selSvc = MockRepository.GenerateStub<ISelectionService>();
             selSvc.Expect(s => s.SetSelectedComponents(
-                Arg<ICollection>.Matches(c => ExpectedRange(c, 0x10, 0x11))));
+                Arg<ICollection>.Matches(c => ExpectedRange(c, 0x10, 0x10))));
             selSvc.Replay();
+            sc.AddService<ISelectionService>(selSvc);
 
+            memctl.Services = sc;
+            selSvc.SelectionChanged += delegate { };
             memctl.SelectedAddress = Address.Ptr32(0x10);
 
             selSvc.VerifyAllExpectations();
         }
 
-        private bool ExpectedRange(ICollection c, uint uAddrBegin,uint  uAddrEnd)
+        private bool ExpectedRange(ICollection c, ulong uAddrBegin, ulong uAddrEnd)
         {
             var ar = c.Cast<AddressRange>().First();
-            Assert.AreEqual(uAddrBegin, ar.Begin);
-            Assert.AreEqual(uAddrEnd, ar.End);
+            Assert.AreEqual(uAddrBegin, ar.Begin.ToLinear());
+            Assert.AreEqual(uAddrEnd, ar.End.ToLinear());
             return true;
         }
 
