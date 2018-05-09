@@ -23,6 +23,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
@@ -67,7 +68,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected override void OnSizeChanged(EventArgs e)
         {
             var bytesOnScreen = LineLength * LinesOnScreen;
-            if (bytesOnScreen >= mem.Bytes.Length)
+            if (bytesOnScreen >= mem.Bytes.Length ||
+                visualizer != null && !visualizer.ShowScrollbar)
             {
                 this.vscroll.Value = 0;
                 this.vscroll.Enabled = false;
@@ -91,12 +93,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 g.FillRectangle(Brushes.Black, ClientRectangle);
 
-                g.DrawImage(bytesImage, 0, 0);
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.DrawImage(
+                    bytesImage,
+                    new Rectangle(0, 0, bytesImage.Width * pixelSize, bytesImage.Height * pixelSize));
 
-                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                e.Graphics.DrawImage(
-                    bmp,
-                    new Rectangle(0, 0, bmp.Width * pixelSize, bmp.Height * pixelSize));
+                RenderAnnotations(g);
+
+                e.Graphics.DrawImage(bmp, 0, 0);
             }
         }
 
@@ -143,6 +147,33 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
             }
             return bmp;
+        }
+
+        private void RenderAnnotations(Graphics g)
+        {
+            if (visualizer == null)
+                return;
+            var addrStart = mem.BaseAddress + vscroll.Value;
+            var bytesOnScreen = LinesOnScreen * LineLength;
+            var annotations = visualizer.RenderAnnotations(addrStart, bytesOnScreen, null);
+            if (annotations.Length == 0)
+                return;
+
+            const int spacing = 20;
+            int xStart = LineLength * pixelSize + spacing;
+            int yStart = (int)g.MeasureString("M", Font).Height;
+            int yOffs = yStart;
+            foreach (var annotation in annotations)
+            {
+                var txtColor = annotation.TextColor != 0 
+                    ? Color.FromArgb(annotation.TextColor) 
+                    : Color.White;
+                using (var textBrush = new SolidBrush(txtColor))
+                {
+                    g.DrawString(annotation.Text, this.Font, textBrush, xStart + 10, (yStart + yOffs) / 2);
+                }
+                yOffs += 2 * yStart + 5;
+            }
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
@@ -200,7 +231,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         bool TrackSelection { get; }
 
-        bool ShowAddressRange { get; }
+        bool ShowScrollbar { get; }
 
         /// <summary>
         /// Render the <paramref name="length"/> bytes of the memory area <paramref name="mem"/> starting
@@ -215,6 +246,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// ARGB value 0; this is in contrast with the ARGB value for 'black' which is
         /// 0xFF000000.</returns>
         int[] RenderBuffer(MemoryArea mem, Address addrStart, int length, int? mouse);
+
+        VisualAnnotation[] RenderAnnotations(Address addrStart, int length, int? mouse);
+    }
+
+    public class VisualAnnotation
+    {
+        public Address Address;
+        public string Text;
+        public int LineColor;
+        public int TextColor;
     }
 
     public class DefaultVisualizer : Visualizer
@@ -225,7 +266,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public bool IsLineLengthFixed => false;
         public bool TrackSelection => true;
-        public bool ShowAddressRange => true;
+        public bool ShowScrollbar => true;
+
         public int[] RenderBuffer(MemoryArea mem, Address addrStart, int length, int? mouse)
         {
             var iStart = addrStart - mem.BaseAddress;
@@ -250,6 +292,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
             }
             return colors;
+        }
+
+        public VisualAnnotation[] RenderAnnotations(Address addrStart, int length, int? mouse)
+        {
+            return new VisualAnnotation[]
+            {
+                new VisualAnnotation { Address = Address.Ptr32(0x00123450), Text = "Line 1" },
+                new VisualAnnotation { Address = Address.Ptr32(0x00123650), Text = "Line 2" },
+                new VisualAnnotation { Address = Address.Ptr32(0x0012365F), Text = "Line 3" },
+                new VisualAnnotation { Address = Address.Ptr32(0x00123663), Text = "Line 4" },
+                new VisualAnnotation { Address = Address.Ptr32(0x00124450), Text = "Line 5" },
+            }.Where(a => addrStart <= a.Address && a.Address < addrStart  + length)
+            .ToArray();
         }
     }
 }
