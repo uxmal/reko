@@ -285,7 +285,12 @@ namespace Reko.WindowsItp
             var vis = new VisualizerControl();
             var buf = new byte[30000];
             new Random().NextBytes(buf);
-            vis.MemoryArea = new MemoryArea(Address.Ptr32(0x00123400), buf);
+            var mem = new MemoryArea(Address.Ptr32(0x00123400), buf);
+            var program = new Reko.Core.Program
+            {
+                SegmentMap = new SegmentMap(mem.BaseAddress, new ImageSegment("text", mem, AccessMode.ReadExecute))
+            };
+            vis.Program = program; 
             vis.Visualizer = new HeatmapVisualizer();
             vis.Dock = DockStyle.Fill;
             form.Controls.Add(vis);

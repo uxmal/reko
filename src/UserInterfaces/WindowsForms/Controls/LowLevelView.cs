@@ -58,7 +58,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public ImageMapView ImageMapView { get { return imageMapControl1; } }
         public MemoryControl MemoryView { get { return this.memCtrl; } }
         public DisassemblyControl DisassemblyView { get { return this.dasmCtrl; } }
-        public ByteMapView ByteMapView { get { return this.byteMapView; } }
         public VisualizerControl VisualizerControl { get { return this.visualizerControl; } }
         IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
         IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
