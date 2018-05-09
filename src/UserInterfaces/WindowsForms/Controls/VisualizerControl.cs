@@ -162,6 +162,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             const int spacing = 20;
             int xStart = LineLength * pixelSize + spacing;
             int yStart = (int)g.MeasureString("M", Font).Height;
+            int xOffs = 5;
             int yOffs = yStart;
             foreach (var annotation in annotations)
             {
@@ -172,6 +173,26 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     g.DrawString(annotation.Text, this.Font, textBrush, xStart + 10, (yStart + yOffs) / 2);
                 }
+
+                // Draw a line from the address to the text
+
+                var pt = PositionFromAddress(annotation.Address);
+                var lineColor = annotation.LineColor != 0
+                    ? Color.FromArgb(annotation.LineColor)
+                    : Color.White;
+                using (var pen = new Pen(lineColor))
+                {
+                    g.DrawLines(pen, new Point[]
+                    {
+                        new Point(xStart + xOffs, (yStart + yOffs) / 2 + yStart / 2),
+
+                        new Point(xStart + xOffs - 4 - spacing, (yStart + yOffs) / 2 + yStart / 2), // left
+                        new Point(xStart + xOffs - 4 - spacing, ((pt.Y / 10) * 9) + this.pixelSize / 2), // down
+                        new Point(pt.X + this.pixelSize / 2, ((pt.Y / 10) * 9) + this.pixelSize / 2), // left
+                        new Point(pt.X + this.pixelSize / 2, pt.Y+ this.pixelSize / 2)
+                    });
+                }
+
                 yOffs += 2 * yStart + 5;
             }
         }
