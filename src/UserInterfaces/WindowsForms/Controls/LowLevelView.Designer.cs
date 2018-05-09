@@ -45,7 +45,7 @@
             this.lblDisassembly = new System.Windows.Forms.Label();
             this.memCtrl = new Reko.UserInterfaces.WindowsForms.Controls.MemoryControl();
             this.dasmCtrl = new Reko.UserInterfaces.WindowsForms.Controls.DisassemblyControl();
-            this.byteMapView = new Reko.UserInterfaces.WindowsForms.Controls.ByteMapView();
+            this.visualizerControl = new Reko.UserInterfaces.WindowsForms.Controls.VisualizerControl();
             this.imageMapControl1 = new Reko.UserInterfaces.WindowsForms.Controls.ImageMapView();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip.SuspendLayout();
@@ -135,7 +135,7 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.byteMapView);
+            this.splitContainer2.Panel2.Controls.Add(this.visualizerControl);
             this.splitContainer2.Panel2.Controls.Add(this.label1);
             this.splitContainer2.Size = new System.Drawing.Size(858, 433);
             this.splitContainer2.SplitterDistance = 692;
@@ -221,15 +221,15 @@
             this.dasmCtrl.Text = "disassemblyControl1";
             this.dasmCtrl.TopAddress = null;
             // 
-            // byteMapView
+            // visualizerControl
             // 
-            this.byteMapView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.byteMapView.SegmentMap = null;
-            this.byteMapView.Location = new System.Drawing.Point(0, 18);
-            this.byteMapView.Name = "byteMapView";
-            this.byteMapView.Size = new System.Drawing.Size(162, 415);
-            this.byteMapView.TabIndex = 0;
-            this.byteMapView.Text = "byteMapView1";
+            this.visualizerControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.visualizerControl.Program = null;
+            this.visualizerControl.Location = new System.Drawing.Point(0, 18);
+            this.visualizerControl.Name = "visualizerControl";
+            this.visualizerControl.Size = new System.Drawing.Size(162, 415);
+            this.visualizerControl.TabIndex = 0;
+            this.visualizerControl.Text = "";
             // 
             // imageMapControl1
             // 
@@ -299,6 +299,7 @@
         private DisassemblyControl dasmCtrl;
         private System.Windows.Forms.Label lblDisassembly;
         private ByteMapView byteMapView;
+        private VisualizerControl visualizerControl;
         private System.Windows.Forms.Label label1;
     }
 }

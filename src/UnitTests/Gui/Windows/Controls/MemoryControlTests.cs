@@ -21,8 +21,12 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.UserInterfaces.WindowsForms.Controls;
+using Rhino.Mocks;
 using System;
+using System.Collections;
+using System.ComponentModel.Design;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Controls
@@ -34,6 +38,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private Form form;
 		private byte [] bytes;
         private MemoryControl memctl;
+        private ServiceContainer sc;
 
 		public MemoryControlTests()
 		{
@@ -43,11 +48,13 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 		[SetUp]
 		public void Setup()
 		{
+            sc = new ServiceContainer();
             form = new Form();
             form.Size = new Size(300, 200);
             memctl = new MemoryControl();
             memctl.Dock = DockStyle.Fill;
             form.Controls.Add(memctl);
+            memctl.Services = sc;
 		}
 
         [TearDown]
@@ -57,18 +64,39 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         }
 
         [Test]
-        public void Invalidate()
+        public void MemCtl_Invalidate()
         {
             memctl.Invalidate();
         }
 
         [Test]
-        public void SetSelectedAddressShouldResetAnchor()
+        public void MemCtl_SetSelectedAddressShouldResetAnchor()
         {
             memctl.SelectedAddress = Address.Ptr32(0x010);
             AddressRange ar = memctl.GetAddressRange();
             Assert.AreEqual(0x010, ar.Begin.ToLinear());
             Assert.AreEqual(0x010, ar.End.ToLinear());
+        }
+
+        [Test]
+        public void MemCtl_ChangeSelection_RaisesSelectionServiceEvent()
+        {
+            var selSvc = MockRepository.GenerateStrictMock<ISelectionService>();
+            selSvc.Expect(s => s.SetSelectedComponents(
+                Arg<ICollection>.Matches(c => ExpectedRange(c, 0x10, 0x11))));
+            selSvc.Replay();
+
+            memctl.SelectedAddress = Address.Ptr32(0x10);
+
+            selSvc.VerifyAllExpectations();
+        }
+
+        private bool ExpectedRange(ICollection c, uint uAddrBegin,uint  uAddrEnd)
+        {
+            var ar = c.Cast<AddressRange>().First();
+            Assert.AreEqual(uAddrBegin, ar.Begin);
+            Assert.AreEqual(uAddrEnd, ar.End);
+            return true;
         }
 
 		private byte [] GenerateTestMemory()

@@ -25,8 +25,10 @@ using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -56,6 +58,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Encoding encoding;
+        private IServiceProvider services;
+        private ISelectionService selSvc;
         private Address addrSelected;
         private Address addrAnchor;
         private Address addrMin;
@@ -86,7 +90,25 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             encoding = Encoding.ASCII;
         }
 
-        public IServiceProvider Services { get; set; }
+        public IServiceProvider Services {
+            get { return services; }
+            set {
+                if (selSvc != null)
+                {
+                    this.selSvc.SelectionChanged -= SelSvc_SelectionChanged;
+                    this.selSvc = null;
+                }
+                this.services = value;
+                if (value != null)
+                {
+                    this.selSvc = value.GetService<ISelectionService>();
+                    if (selSvc != null)
+                    {
+                        selSvc.SelectionChanged += SelSvc_SelectionChanged;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Returns the selection as an address range. Note that the range is 
@@ -368,9 +390,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected virtual void OnSelectionChanged()
         {
-            var eh = SelectionChanged;
-            if (eh != null)
-                eh(this, new SelectionChangedEventArgs(GetAddressRange()));
+            var ar = GetAddressRange();
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(ar));
+            this.selSvc?.SetSelectedComponents(new[] { ar });
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -524,6 +546,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 Invalidate();
             }
         }
+
+        private void SelSvc_SelectionChanged(object sender, EventArgs e)
+        {
+            var ar = selSvc.GetSelectedComponents()
+                .Cast<AddressRange>()
+                .FirstOrDefault();
+            if (ar == null)
+                return;
+            this.addrAnchor = ar.Begin;
+            this.addrSelected = ar.End;
+            Invalidate();
+        }
+
 
         public void imageMap_MapChanged(object sender, EventArgs e)
         {

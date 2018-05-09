@@ -24,6 +24,7 @@ using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Visualizers;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -78,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 control.ImageMapView.ImageMap = value.ImageMap;
                 control.ImageMapView.SegmentMap = value.SegmentMap;
                 control.ImageMapView.Granularity = value.SegmentMap.GetExtent();
-                control.ByteMapView.SegmentMap = value.SegmentMap;
+                control.VisualizerControl.Program = value;
             }
             return;
         }
@@ -110,6 +111,9 @@ namespace Reko.UserInterfaces.WindowsForms
             uiService.SetContextMenu(this.Control.DisassemblyView, MenuIds.CtxDisassembler);
             this.Control.DisassemblyView.Services = this.services;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
+
+            this.Control.VisualizerControl.Services = services;
+            this.Control.VisualizerControl.Visualizer = new HeatmapVisualizer();
 
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;

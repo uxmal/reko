@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Gui.Visualizers;
 using System;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -32,13 +33,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     public class VisualizerControl : Control
     {
         private Visualizer visualizer;
+        private Program program;
         private MemoryArea mem;
         private VScrollBar vscroll;
         private int pixelSize;
+        private IServiceProvider services;
+        private ISelectionService selSvc;
 
         public VisualizerControl()
         {
             this.pixelSize = 2;
+            this.LineLength = 64;
 
             this.vscroll = new VScrollBar();
             this.vscroll.Dock = DockStyle.Right;
@@ -48,17 +53,30 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.Controls.Add(vscroll);
         }
 
-  
-
+        public IServiceProvider Services
+        {
+            get { return services; }
+            set
+            {
+                if (selSvc != null)
+                {
+                    selSvc.SelectionChanged += SelSvc_SelectionChanged;
+                }
+                services = value;
+                if (value != null)
+                {
+                    selSvc = value.GetService<ISelectionService>();
+                    if (selSvc != null)
+                    {
+                        selSvc.SelectionChanged += SelSvc_SelectionChanged;
+                    }
+                }
+            }
+        }
+        
         public int LineLength {get; set; }
 
         public int LinesOnScreen => (this.Height + (this.pixelSize - 1)) / pixelSize;
-
-        public MemoryArea MemoryArea
-        {
-            get {  return mem;}
-            set { mem = value; OnMemoryAreaChanged(); }
-        }
 
         public Visualizer Visualizer
         {
@@ -66,10 +84,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             set { visualizer = value; OnVisualizerChanged(); }
         }
 
+        public Program Program
+        {
+            get { return program; }
+            set { program = value; OnProgramChanged(); }
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             var bytesOnScreen = LineLength * LinesOnScreen;
-            if (bytesOnScreen >= mem.Bytes.Length ||
+            if (program == null ||
+                mem == null ||
+                bytesOnScreen >= mem.Bytes.Length ||
                 visualizer != null && !visualizer.ShowScrollbar)
             {
                 this.vscroll.Value = 0;
@@ -111,7 +137,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.LineLength,
                 this.LinesOnScreen,
                 PixelFormat.Format32bppArgb);
-            if (Visualizer == null || MemoryArea == null)
+            if (Visualizer == null || mem == null)
                 return bmp;
 
             var bgPattern = new[] { Color.FromArgb(0x7F,0,0), Color.FromArgb(0x30,0x00,0x00) };
@@ -219,13 +245,33 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.Invalidate();
         }
 
-        protected virtual void OnMemoryAreaChanged()
+        protected virtual void OnProgramChanged()
         {
+            this.mem = Program?.SegmentMap.Segments.Values[0].MemoryArea;
             this.Invalidate();
         }
 
         private void Vscroll_ValueChanged(object sender, EventArgs e)
         {
+            Invalidate();
+        }
+
+        private void SelSvc_SelectionChanged(object sender, EventArgs e)
+        {
+            var ar = selSvc.GetSelectedComponents()
+               .Cast<AddressRange>()
+               .FirstOrDefault();
+            if (ar == null)
+                return;
+            if (program.SegmentMap.TryFindSegment(ar.Begin, out var seg))
+            {
+                this.mem = seg.MemoryArea;
+            }
+            else
+            {
+                this.mem = null;
+            }
+
             Invalidate();
         }
 
