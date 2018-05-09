@@ -45,15 +45,16 @@ namespace Reko.Arch.MicrochipPIC.Common
             foreach (var c in sPOR)
             {
                 ResetValue <<= 1;
-                ResetValue = (c == '1' ? 1U : 0U);
+                ResetValue |= (c == '1' ? 1U : 0U);
             }
 
-            int bitno = 0;
-            uint fullimpl = (1U << traits.BitWidth) - 1U;
+            ulong fullimpl = ((1UL << traits.BitWidth) - 1UL) & traits.Impl;
             ReadOrMask = 0;
-            ReadAndMask = ~ReadOrMask;
+            ReadAndMask = (uint)fullimpl;
             WriteOrMask = 0;
-            WriteAndMask = ~WriteOrMask;
+            WriteAndMask = (uint)fullimpl;
+
+            int bitno = traits.BitWidth-1;
             foreach (char a in sAccess)
             {
                 uint orMask = 1U << bitno;
@@ -86,20 +87,15 @@ namespace Reko.Arch.MicrochipPIC.Common
                     case 'x': // Bit is read-write
                     case 'X':
                     case 'n':
-                        break;
-
                     case 'c': // Bit is clearable-only
-                        WriteAndMask &= andMask;
+                    case 's': // Bit is setable-only
                         break;
 
-                    case 's': // Bit is setable-only
-                        WriteOrMask |= orMask;
-                        break;
                 }
-                bitno++;
+                bitno--;
             }
 
-            ImplementedMask = fullimpl;
+            ImplementedMask = (uint)fullimpl;
             ResetValue &= ImplementedMask;
         }
 

@@ -42,3 +42,6 @@ TestResults
 /src/WixInstaller/*.user
 /subjects/Microchip/ASM/DioLAN/bootloader.asm
 /subjects/Microchip/ASM/DioLAN/bootloader.dis
+/subjects/Microchip/ASM/DioLAN/bootloader.c
+/subjects/Microchip/ASM/DioLAN/bootloader.globals.c
+/subjects/Microchip/ASM/DioLAN/bootloader.h

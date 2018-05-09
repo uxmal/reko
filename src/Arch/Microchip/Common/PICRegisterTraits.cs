@@ -47,9 +47,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             Name = "None";
             Desc = "";
             Impl = 0xFF;
-            Access = "nnnnnnnn";
-            MCLR = "uuuuuuuu";
-            POR = "uuuuuuuu";
+            Access = new string('n', 8);
+            POR = MCLR = new string('u', 8);
             IsVolatile = false;
             IsIndirect = false;
 
@@ -71,9 +70,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             Name = sfr.CName;
             Desc = sfr.Desc;
             Impl = sfr.Impl;
-            Access = sfr.Access;
-            MCLR = sfr.MCLR;
-            POR = sfr.POR;
+            Access = AdjustString(sfr.Access, '-');
+            MCLR = AdjustString(sfr.MCLR, 'u');
+            POR = AdjustString(sfr.POR, '0');
             IsVolatile = sfr.IsVolatile;
             IsIndirect = sfr.IsIndirect;
         }
@@ -93,9 +92,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             Name = joinedSFR.CName;
             Desc = joinedSFR.Desc;
             RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(joinedSFR.Addr), (int)joinedSFR.NzWidth);
-            Access = String.Join("", joinedRegs.Reverse().Select(e => e.Traits.Access));
-            MCLR = String.Join("", joinedRegs.Reverse().Select(e => e.Traits.MCLR));
-            POR = String.Join("", joinedRegs.Reverse().Select(e => e.Traits.POR));
+            Access = AdjustString(String.Join("", joinedRegs.Reverse().Select(e => e.Traits.Access)), '-');
+            MCLR = AdjustString(String.Join("", joinedRegs.Reverse().Select(e => e.Traits.MCLR)), 'u');
+            POR = AdjustString(String.Join("", joinedRegs.Reverse().Select(e => e.Traits.POR)), '0');
             Impl = joinedRegs.Reverse().Aggregate(0UL, (total, reg) => total = (total << 8) + reg.Traits.Impl);
             IsVolatile = joinedRegs.Any(e => e.Traits.IsVolatile == true);
             IsIndirect = joinedRegs.Any(e => e.Traits.IsIndirect == true);
@@ -110,7 +109,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC register description.
         /// </summary>
-        public string Desc {get;}
+        public string Desc { get; }
 
         /// <summary>
         /// Gets the register memory address or null if not memory-mapped.
@@ -130,17 +129,17 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the individual bits access modes.
         /// </summary>
-        public string Access { get; }
+        public string Access { get; private set; }
 
         /// <summary>
         /// Gets the individual bits state after a Master Clear.
         /// </summary>
-        public string MCLR { get; }
+        public string MCLR { get; private set; }
 
         /// <summary>
         /// Gets the individual bits state after a Power-On reset.
         /// </summary>
-        public string POR { get; }
+        public string POR { get; private set; }
 
         /// <summary>
         /// Gets the PIC register implementation mask.
@@ -191,6 +190,20 @@ namespace Reko.Arch.MicrochipPIC.Common
         public int GetHashCode(PICRegisterTraits obj) => obj?.GetHashCode() ?? 0;
 
         public override int GetHashCode() => (RegAddress.GetHashCode() * 1234417) ^ base.GetHashCode();
+
+        private string AdjustString(string s, char pad)
+        {
+            var len = BitWidth;
+            if (s.Length < len)
+            {
+                s = new string(pad, len - s.Length) + s;
+            }
+            else if (s.Length > len)
+            {
+                s = s.Substring(s.Length - len);
+            }
+            return s;
+        }
 
         private string _debugDisplay() => (RegAddress.Addr is null ? $"'{RegAddress.NMMRID}'" : $"{RegAddress.Addr}") + $"[b{BitWidth}]";
 

@@ -147,6 +147,7 @@
     <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
     <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
     <Compile Include="Arch\Microchip\Common\DeviceConfigDefsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterAccessTests.cs" />
     <Compile Include="Arch\Microchip\Common\PICRegistersTestsBase.cs" />
     <Compile Include="Arch\Microchip\Common\SamplePICNames.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
