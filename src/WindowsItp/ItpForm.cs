@@ -282,7 +282,7 @@ namespace Reko.WindowsItp
         {
             var form = new Form();
             var vis = new VisualizerControl();
-            var buf = new byte[3000];
+            var buf = new byte[30000];
             new Random().NextBytes(buf);
             vis.MemoryArea = new MemoryArea(Address.Ptr32(0x00123400), buf);
             vis.Visualizer = new DefaultVisualizer();

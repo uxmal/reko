@@ -31,12 +31,22 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     {
         private Visualizer visualizer;
         private MemoryArea mem;
+        private VScrollBar vscroll;
         private int pixelSize;
 
         public VisualizerControl()
         {
             this.pixelSize = 2;
+
+            this.vscroll = new VScrollBar();
+            this.vscroll.Dock = DockStyle.Right;
+            this.vscroll.ValueChanged += Vscroll_ValueChanged;
+            this.vscroll.Visible = true;
+
+            this.Controls.Add(vscroll);
         }
+
+  
 
         public int LineLength {get; set; }
 
@@ -54,13 +64,33 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             set { visualizer = value; OnVisualizerChanged(); }
         }
 
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            var bytesOnScreen = LineLength * LinesOnScreen;
+            if (bytesOnScreen >= mem.Bytes.Length)
+            {
+                this.vscroll.Value = 0;
+                this.vscroll.Enabled = false;
+            }
+            else
+            {
+                this.vscroll.Enabled = true;
+                this.vscroll.Maximum = mem.Bytes.Length - bytesOnScreen;
+                this.vscroll.LargeChange = bytesOnScreen;
+                this.vscroll.SmallChange = LineLength;
+            }
+            Invalidate();
+            base.OnSizeChanged(e);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             using (var bmp = new Bitmap(Width, Height, e.Graphics))
             using (var g = Graphics.FromImage(bmp))
+            using (var bytesImage = RenderVisualization())
             {
                 g.FillRectangle(Brushes.Black, ClientRectangle);
-                var bytesImage = RenderVisualization();
+
                 g.DrawImage(bytesImage, 0, 0);
 
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -69,8 +99,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     new Rectangle(0, 0, bmp.Width * pixelSize, bmp.Height * pixelSize));
             }
         }
-
-
 
         private Image RenderVisualization()
         {
@@ -82,8 +110,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return bmp;
 
             var bgPattern = new[] { Color.FromArgb(0x7F,0,0), Color.FromArgb(0x30,0x00,0x00) };
-            int offset = 0; //$TODO: scrollbar
-            var addrStart = mem.BaseAddress + offset;
+            var addrStart = mem.BaseAddress + vscroll.Value;
             var bytesOnScreen = LinesOnScreen * LineLength;
             var colors = visualizer.RenderBuffer(mem, addrStart, bytesOnScreen, null);
             int x = 0;
@@ -133,6 +160,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             else
             {
                 this.LineLength = visualizer.DefaultLineLength;
+                this.vscroll.SmallChange = LineLength;
                 this.pixelSize = visualizer.DefaultZoom;
             }
             this.Invalidate();
@@ -141,6 +169,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected virtual void OnMemoryAreaChanged()
         {
             this.Invalidate();
+        }
+
+        private void Vscroll_ValueChanged(object sender, EventArgs e)
+        {
+            Invalidate();
         }
     }
 
