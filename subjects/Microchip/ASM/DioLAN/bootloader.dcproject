@@ -15,7 +15,42 @@
         <item key="Model">PIC18F4455</item>
         <item key="ExecuteMode">Traditional</item>
       </processor>
-      <registerValues />
+      <procedure name="fn00000008">
+        <address>00000008</address>
+      </procedure>
+      <procedure name="fn00000016">
+        <address>00000016</address>
+      </procedure>
+      <procedure name="fn00000018">
+        <address>00000018</address>
+      </procedure>
+      <procedure name="fn00000234">
+        <address>00000234</address>
+      </procedure>
+      <procedure name="fn00000254">
+        <address>00000254</address>
+      </procedure>
+      <procedure name="fn00000276">
+        <address>00000276</address>
+      </procedure>
+      <procedure name="fn00000800">
+        <address>00000800</address>
+      </procedure>
+      <registerValues>
+        <assume addr="00000000" reg="STATUS" value="00" />
+        <assume addr="00000000" reg="PCL" value="00" />
+        <assume addr="00000000" reg="PCLATH" value="00" />
+        <assume addr="00000000" reg="WREG" value="00" />
+        <assume addr="00000000" reg="STKPTR" value="00" />
+        <assume addr="00000000" reg="BSR" value="00" />
+        <assume addr="00000000" reg="FSR0" value="0000" />
+        <assume addr="00000000" reg="FSR1" value="0000" />
+        <assume addr="00000000" reg="FSR2" value="0000" />
+        <assume addr="00000000" reg="PROD" value="0000" />
+        <assume addr="00000000" reg="PCLAT" value="00000000" />
+        <assume addr="00000000" reg="TOS" value="00000000" />
+        <assume addr="00000000" reg="TBLPTR" value="00000000" />
+      </registerValues>
     </user>
   </input>
 </project>

@@ -32,12 +32,12 @@ namespace Reko.Arch.MicrochipPIC.Common
     //        "n" -> read-write
     //        "X" -> read-write persistent
     //        "r" -> read-only
-    //        "w" -> write-only
+    //        "w" -> write-only. Read as 0.
     //        "0" -> 0-value
     //        "1" -> 1-value
     //        "c" -> clear-able only
     //        "s" -> settable only
-    //        "-" -> not implemented
+    //        "-" -> not implemented. Read as 0.
     //
     //    PIC registers Power-On/Master-Reset bits' state are coded as-follows:
     //
@@ -50,16 +50,11 @@ namespace Reko.Arch.MicrochipPIC.Common
     //
 
 
-        //TODO$: Tests for PICRegisterContent
-
     /// <summary>
     /// This class provides PIC register content taking into account the PIC register's traits when resetting, reading or writing values.
     /// </summary>
     public class PICRegisterContent
     {
-        /// <summary>
-        /// Helper class to build read/write/reset masks on-demand.
-        /// </summary>
         private readonly PICRegisterTraits traits;
 
         public PICRegisterContent(PICRegisterTraits traits)
@@ -77,7 +72,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
         private uint actualValue;
 
-        public uint ResetValue()
+        public uint ResetValue
             => ActualValue = Bits.ResetValue;
 
     }

@@ -132,33 +132,36 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         /// <summary>
-        /// Sets the PIC execution mode per the configuration bits (if present in the memory image).
+        /// Sets the PIC execution mode per the XINST device configuration bit value (if present in the memory image).
+        /// If no XINST bit can be found in the image or for this processor, the PIC execution mode is left to the user's choice.
         /// </summary>
         private void SetPICExecMode()
         {
+            PICExecMode pexec = architecture.Options.PICExecutionMode;
+
             var dcf = PICMemoryDescriptor.GetDCRField("XINST");
-            if (dcf == null)
-                return;
-            var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
-            if (!program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
-                return;
-            uint xinstval;
-            if (dcr.BitWidth <= 8)
-                xinstval = xinstsegt.MemoryArea.ReadByte(dcf.RegAddress);
-            else if (dcr.BitWidth <= 16)
-                xinstval = xinstsegt.MemoryArea.ReadLeUInt16(dcf.RegAddress);
-            else
-                xinstval = xinstsegt.MemoryArea.ReadLeUInt32(dcf.RegAddress);
-            if (dcr.CheckIf("XINST", "ON", xinstval))
+            if (dcf != null)
             {
-                PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
-                architecture.Description = architecture.Options.ProcessorModel.PICName + " (extended)";
+                var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
+                if (program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
+                {
+                    uint xinstval;
+                    if (dcr.BitWidth <= 8)
+                        xinstval = xinstsegt.MemoryArea.ReadByte(dcf.RegAddress);
+                    else if (dcr.BitWidth <= 16)
+                        xinstval = xinstsegt.MemoryArea.ReadLeUInt16(dcf.RegAddress);
+                    else
+                        xinstval = xinstsegt.MemoryArea.ReadLeUInt32(dcf.RegAddress);
+                    pexec = (dcr.CheckIf("XINST", "ON", xinstval) ? PICExecMode.Extended : PICExecMode.Traditional);
+                }
             }
             else
             {
-                PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
-                architecture.Description = architecture.Options.ProcessorModel.PICName + " (traditional)";
+                pexec = PICExecMode.Traditional;
             }
+            PICMemoryDescriptor.ExecMode = pexec;
+            architecture.Options.PICExecutionMode = pexec;
+            architecture.Description = architecture.Options.ProcessorModel.PICName + $" ({pexec})";
         }
 
         /// <summary>
@@ -173,6 +176,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
             rlist[PICProgAddress.Ptr(0)] = PICRegisters.GetPORRegistersList();
         }
+
     }
 
 }

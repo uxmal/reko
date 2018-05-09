@@ -78,26 +78,44 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         /// <summary>
-        /// Construct the PIC register's traits based on the given <see cref="JoinedSFRDef"/> descriptor.
+        /// Construct the PIC register's traits based on the given <see cref="JoinedSFRDef"/> descriptor
+        /// and its children PIC registers.
         /// </summary>
         /// <param name="joinedSFR">The joined PIC register descriptor.</param>
-        /// <param name="joinedRegs">The attached registers.</param>
-        /// <exception cref="ArgumentNullException">Thrown if either of the arguments are null.</exception>
-        public PICRegisterTraits(JoinedSFRDef joinedSFR, ICollection<PICRegisterStorage> joinedRegs)
+        /// <param name="attachedRegs">The attached (children) PIC registers.</param>
+        /// <exception cref="ArgumentNullException">Thrown if one of the arguments is null.</exception>
+        public PICRegisterTraits(JoinedSFRDef joinedSFR, IEnumerable<PICRegisterStorage> attachedRegs)
+            : this(joinedSFR, attachedRegs?.Select(e => e.Traits).ToList())
+        {
+        }
+
+        /// <summary>
+        /// Construct the PIC register's traits based on the given <see cref="JoinedSFRDef"/> descriptor
+        /// and its children PIC registers' traits.
+        /// </summary>
+        /// <remarks>
+        /// The construction of the joined register's traits assumes that the enumeration of attached registers/traits
+        /// is enuerable in increasing registers' order (LSB, MSB, little-endian).
+        /// </remarks>
+        /// <param name="joinedSFR">The joined PIC register descriptor.</param>
+        /// <param name="attachedRegsTraits">The joined registers' traits.</param>
+        /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+        public PICRegisterTraits(JoinedSFRDef joinedSFR, IEnumerable<PICRegisterTraits> attachedRegsTraits)
         {
             if (joinedSFR is null)
                 throw new ArgumentNullException(nameof(joinedSFR));
-            if (joinedRegs is null)
-                throw new ArgumentNullException(nameof(joinedRegs));
+            if (attachedRegsTraits is null)
+                throw new ArgumentNullException(nameof(attachedRegsTraits));
             Name = joinedSFR.CName;
             Desc = joinedSFR.Desc;
             RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(joinedSFR.Addr), (int)joinedSFR.NzWidth);
-            Access = AdjustString(String.Join("", joinedRegs.Reverse().Select(e => e.Traits.Access)), '-');
-            MCLR = AdjustString(String.Join("", joinedRegs.Reverse().Select(e => e.Traits.MCLR)), 'u');
-            POR = AdjustString(String.Join("", joinedRegs.Reverse().Select(e => e.Traits.POR)), '0');
-            Impl = joinedRegs.Reverse().Aggregate(0UL, (total, reg) => total = (total << 8) + reg.Traits.Impl);
-            IsVolatile = joinedRegs.Any(e => e.Traits.IsVolatile == true);
-            IsIndirect = joinedRegs.Any(e => e.Traits.IsIndirect == true);
+            var rev = attachedRegsTraits.Reverse();
+            Access = AdjustString(String.Join("", rev.Select(e => e.Access)), '-');
+            MCLR = AdjustString(String.Join("", rev.Select(e => e.MCLR)), 'u');
+            POR = AdjustString(String.Join("", rev.Select(e => e.POR)), '0');
+            Impl = rev.Aggregate(0UL, (total, reg) => total = (total << 8) + reg.Impl);
+            IsVolatile = attachedRegsTraits.Any(e => e.IsVolatile == true);
+            IsIndirect = attachedRegsTraits.Any(e => e.IsIndirect == true);
         }
 
 
@@ -205,7 +223,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             return s;
         }
 
-        private string _debugDisplay() => (RegAddress.Addr is null ? $"'{RegAddress.NMMRID}'" : $"{RegAddress.Addr}") + $"[b{BitWidth}]";
+        private string _debugDisplay() => (RegAddress.Addr is null ? $"'ID{RegAddress.NMMRID}'" : $"{RegAddress.Addr}") + $"[b{BitWidth}]";
 
     }
 

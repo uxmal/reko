@@ -22,7 +22,6 @@
 
 using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;
-using Reko.Core;
 using Reko.Libraries.Microchip;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
