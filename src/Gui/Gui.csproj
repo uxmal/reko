@@ -221,6 +221,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SearchService.cs" />
+    <Compile Include="SelectionService.cs" />
     <Compile Include="SignatureParser.cs" />
     <Compile Include="StatementNavigator.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
