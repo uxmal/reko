@@ -32,7 +32,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     /// <summary>
     /// This control presents the contents of a visualizer in a 
-    /// Windows Forms Control
+    /// Windows Forms Control.
     /// </summary>
     /// <remarks>
     /// Inspired by the Data Visualization plugin at 
@@ -162,7 +162,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var bgPattern = new[] { Color.FromArgb(0x7F,0,0), Color.FromArgb(0x30,0x00,0x00) };
             var addrStart = mem.BaseAddress + vscroll.Value;
             var bytesOnScreen = LinesOnScreen * LineLength;
-            var colors = visualizer.RenderBuffer(mem, addrStart, bytesOnScreen, null);
+            var colors = visualizer.RenderBuffer(program, mem, addrStart, bytesOnScreen, null);
             int x = 0;
             int y = 0;
             foreach (var byteColor in colors)
@@ -201,7 +201,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return;
             var addrStart = mem.BaseAddress + vscroll.Value;
             var bytesOnScreen = LinesOnScreen * LineLength;
-            var annotations = visualizer.RenderAnnotations(addrStart, bytesOnScreen, null);
+            var annotations = visualizer.RenderAnnotations(program, addrStart, bytesOnScreen, null);
             if (annotations.Length == 0)
                 return;
 

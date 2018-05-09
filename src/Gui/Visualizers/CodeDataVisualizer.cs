@@ -27,11 +27,12 @@ using System.Threading.Tasks;
 
 namespace Reko.Gui.Visualizers
 {
-    /// <summary>
-    /// Renders a memory area as a heatmap.
-    /// </summary>
-    public class HeatmapVisualizer : Visualizer
+    public class CodeDataVisualizer : Visualizer
     {
+        public CodeDataVisualizer()
+        {
+        }
+
         public int DefaultLineLength => 64;
 
         public int DefaultZoom => 2;
@@ -40,6 +41,20 @@ namespace Reko.Gui.Visualizers
         public bool TrackSelection => true;
         public bool ShowScrollbar => true;
 
+        public VisualAnnotation[] RenderAnnotations(Program program, Address addrStart, int length, int? mouse)
+        {
+            var addrEnd = addrStart + length;
+            var procs = program.Procedures
+                .Where(p => addrStart < p.Key && p.Key < addrEnd)
+                .Select(p => new VisualAnnotation
+                {
+                    Address = p.Key,
+                    Text = p.Value.Name
+                })
+                .ToArray();
+            return procs;
+        }
+
         public int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse)
         {
             var iStart = addrStart - mem.BaseAddress;
@@ -47,28 +62,26 @@ namespace Reko.Gui.Visualizers
             var colors = new int[iEnd - iStart];
             for (int i = 0; i < colors.Length; ++i)
             {
-                if (i + iStart < 0)
+                int c = mem.Bytes[iStart + i];
+                int r = c;
+                int g = c;
+                int b = c;
+                if (program.ImageMap.TryFindItem(addrStart + i, out var item))
                 {
-                    colors[i] = 0;
+                    if (item is ImageMapBlock)
+                    {
+                        g >>= 1;
+                        b >>= 1;
+                    }
+                    else
+                    {
+                        r >>= 1;
+                        g >>= 1;
+                    }
                 }
-                else
-                {
-                    // Render pixel in a heat map color
-                    // Code taken from
-                    // http://stackoverflow.com/questions/20792445/calculate-rgb-value-for-a-range-of-values-to-create-heat-map
-                    var ratio = 2 * mem.Bytes[i + iStart] / 255;
-                    var b = Convert.ToInt32(Math.Max(0, 255 * (1 - ratio)));
-                    var r = Convert.ToInt32(Math.Max(0, 255 * (ratio - 1)));
-                    var g = 255 - b - r;
-                    colors[i] = ~0x00FFFFFF | (r << 16) | (g << 8) | b;
-                }
+                colors[i] = (0xFF << 24) | (r << 16) | (g << 8) | b;
             }
             return colors;
-        }
-
-        public VisualAnnotation[] RenderAnnotations(Program program, Address addrStart, int length, int? mouse)
-        {
-            return new VisualAnnotation[0];
         }
     }
 }

@@ -68,9 +68,9 @@ namespace Reko.Gui.Visualizers
         /// <returns>An array of bytes in ARGB format. Missing bytes are rendered with the 
         /// ARGB value 0; this is in contrast with the ARGB value for 'black' which is
         /// 0xFF000000.</returns>
-        int[] RenderBuffer(MemoryArea mem, Address addrStart, int length, int? mouse);
+        int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse);
 
-        VisualAnnotation[] RenderAnnotations(Address addrStart, int length, int? mouse);
+        VisualAnnotation[] RenderAnnotations(Program program, Address addrStart, int length, int? mouse);
     }
 
     public class VisualAnnotation

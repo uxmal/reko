@@ -154,6 +154,8 @@ namespace Reko.UserInterfaces.WindowsForms
             //$REVIEW: load the visualizers from a config file?
             this.Control.VisualizerList.Items.Add(
                 new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
+            this.control.VisualizerList.Items.Add(
+                new ListOption { Text = "Code and data", Value = new CodeDataVisualizer() });
             this.Control.VisualizerList.Items.Add(
                 new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
         }

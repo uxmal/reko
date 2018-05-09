@@ -44,7 +44,7 @@ namespace Reko.Gui.Visualizers
         public bool TrackSelection => true;
         public bool ShowScrollbar => true;
 
-        public int[] RenderBuffer(MemoryArea mem, Address addrStart, int length, int? mouse)
+        public int[] RenderBuffer(Program program, MemoryArea mem, Address addrStart, int length, int? mouse)
         {
             var iStart = addrStart - mem.BaseAddress;
             var iEnd = Math.Min(iStart + length, mem.Bytes.Length);
@@ -108,7 +108,7 @@ namespace Reko.Gui.Visualizers
             return colors;
         }
 
-        public VisualAnnotation[] RenderAnnotations(Address addrStart, int length, int? mouse)
+        public VisualAnnotation[] RenderAnnotations(Program program, Address addrStart, int length, int? mouse)
         {
             return new VisualAnnotation[0];
         }
