@@ -282,14 +282,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                .FirstOrDefault();
             if (ar == null)
                 return;
-            if (program.SegmentMap.TryFindSegment(ar.Begin, out var seg))
+            if (!program.SegmentMap.TryFindSegment(ar.Begin, out var seg))
             {
-                this.mem = seg.MemoryArea;
+                return;
             }
-            else
-            {
-                this.mem = null;
-            }
+
+            this.mem = seg.MemoryArea;
             UpdateScrollbar();
             Invalidate();
         }
