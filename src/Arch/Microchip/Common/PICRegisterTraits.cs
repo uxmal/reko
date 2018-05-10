@@ -147,17 +147,17 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the individual bits access modes.
         /// </summary>
-        public string Access { get; private set; }
+        public string Access { get; }
 
         /// <summary>
         /// Gets the individual bits state after a Master Clear.
         /// </summary>
-        public string MCLR { get; private set; }
+        public string MCLR { get; }
 
         /// <summary>
         /// Gets the individual bits state after a Power-On reset.
         /// </summary>
-        public string POR { get; private set; }
+        public string POR { get; }
 
         /// <summary>
         /// Gets the PIC register implementation mask.

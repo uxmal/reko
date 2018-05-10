@@ -145,6 +145,10 @@ namespace Reko.Arch.MicrochipPIC.Common
                 if (retval && instrA.NumberOfOperands > 1)
                 {
                     retval = CompareOperands(instrA.op2, instrB.op2);
+                    if (retval && instrA.NumberOfOperands > 2)
+                    {
+                        retval = CompareOperands(instrA.op3, instrB.op3);
+                    }
                 }
             }
             return retval;
@@ -209,7 +213,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     return fsrnumOP.FSRNum.GetHashCode();
 
                 case PICOperandFSRIndexation fsridxOp:
-                    return fsridxOp.FSRNum.GetHashCode() * 27 ^ fsridxOp.Offset.GetHashCode();
+                    return (fsridxOp.FSRNum.GetHashCode() * 1217) ^ fsridxOp.Offset.GetHashCode();
 
                 case PICOperandTBLRW tblOp:
                     return tblOp.TBLIncrMode.GetHashCode();
