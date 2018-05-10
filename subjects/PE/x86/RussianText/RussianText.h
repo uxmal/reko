@@ -128,8 +128,8 @@ T_18: (in __CRTL_TLS_GetValue : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_19: (in signature of __CRTL_TLS_GetValue : void)
-  Class: Eq_18
-  DataType: (ptr code)
+  Class: Eq_19
+  DataType: Eq_19
   OrigDataType: 
 T_20: (in 0x00000000 : word32)
   Class: Eq_15
@@ -356,8 +356,8 @@ T_75: (in __CRTL_TLS_ExitThread : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_76: (in signature of __CRTL_TLS_ExitThread : void)
-  Class: Eq_75
-  DataType: (ptr code)
+  Class: Eq_76
+  DataType: Eq_76
   OrigDataType: 
 T_77: (in eax : word32)
   Class: Eq_77

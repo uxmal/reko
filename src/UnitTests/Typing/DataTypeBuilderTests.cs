@@ -43,14 +43,16 @@ namespace Reko.UnitTests.Typing
         private DataTypeBuilder dtb;
         private FakeArchitecture arch;
         private Program program;
+        private FakeDecompilerEventListener listener;
 
         [SetUp]
         public void SetUp()
         {
             store = new TypeStore();
             factory = new TypeFactory();
+            listener = new FakeDecompilerEventListener();
             aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
-            eqb = new EquivalenceClassBuilder(factory, store);
+            eqb = new EquivalenceClassBuilder(factory, store, listener);
             arch = new FakeArchitecture();
             program = new Program();
             program.Architecture = arch;
@@ -62,7 +64,7 @@ namespace Reko.UnitTests.Typing
         {
             aen.Transform(program);
             eqb.Build(program);
-            TypeCollector trco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
+            TypeCollector trco = new TypeCollector(factory, store, program, listener);
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
             Verify(program, outputFile);
@@ -73,14 +75,14 @@ namespace Reko.UnitTests.Typing
             Verify(null, outputFile);
         }
 
-        private void Verify(Program prog, string outputFile)
+        private void Verify(Program program, string outputFile)
         {
             store.CopyClassDataTypesToTypeVariables();
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                if (prog != null)
+                if (program != null)
                 {
-                    foreach (Procedure proc in prog.Procedures.Values)
+                    foreach (Procedure proc in program.Procedures.Values)
                     {
                         proc.Write(false, fut.TextWriter);
                         fut.TextWriter.WriteLine();
@@ -346,12 +348,12 @@ namespace Reko.UnitTests.Typing
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
             var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
-            Program prog = new Program
+            Program program = new Program
             {
                 Architecture = arch,
                 Platform = new DefaultPlatform(null, arch),
             };
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
             e = e.Accept(aen);
             e.Accept(eqb);
             e.Accept(trco);
@@ -372,17 +374,17 @@ namespace Reko.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
-            var prog = new Program
+            var program = new Program
             {
                 Architecture = arch,
                 Platform = new DefaultPlatform(null, arch)
             };
-            store.EnsureExpressionTypeVariable(factory, prog.Globals);
+            store.EnsureExpressionTypeVariable(factory, program.Globals);
 
             Identifier ds = m.Local16("ds");
             Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Word16(0x0200));
 
-            TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector coll = new TraitCollector(factory, store, dtb, program);
             e = e.Accept(aen);
             e.Accept(eqb);
             e.Accept(coll);
@@ -493,9 +495,9 @@ namespace Reko.UnitTests.Typing
                 m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
             m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
 
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog.BuildProgram(), "Typing/DtbSignedCompare.txt");
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(m);
+            RunTest(program.BuildProgram(), "Typing/DtbSignedCompare.txt");
         }
 
         [Test]
@@ -506,9 +508,9 @@ namespace Reko.UnitTests.Typing
             ds.DataType = PrimitiveType.SegmentSelector;
             m.SStore(ds, m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
 
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(m);
+            RunTest(program.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
         }
 
 

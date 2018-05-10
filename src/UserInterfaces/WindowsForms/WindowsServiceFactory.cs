@@ -27,6 +27,7 @@ using Reko.Gui.Forms;
 using Reko.Loading;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -179,6 +180,11 @@ namespace Reko.UserInterfaces.WindowsForms
         public ISymbolLoadingService CreateSymbolLoadingService()
         {
             return new SymbolLoadingService(services);
+        }
+
+        public ISelectionService CreateSelectionService()
+        {
+            return new SelectionService();
         }
     }
 }

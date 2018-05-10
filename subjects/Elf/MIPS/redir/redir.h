@@ -2124,8 +2124,8 @@ T_244: (in fork : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_245: (in signature of fork : void)
-  Class: Eq_244
-  DataType: (ptr code)
+  Class: Eq_245
+  DataType: Eq_245
   OrigDataType: 
 T_246: (in 0x00000000 : word32)
   Class: Eq_239
@@ -2492,8 +2492,8 @@ T_336: (in __xpg_basename : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_337: (in signature of __xpg_basename : void)
-  Class: Eq_336
-  DataType: (ptr code)
+  Class: Eq_337
+  DataType: Eq_337
   OrigDataType: 
 T_338: (in 0x10000A28 : word32)
   Class: Eq_338
@@ -2648,8 +2648,8 @@ T_375: (in getpid : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_376: (in signature of getpid : void)
-  Class: Eq_375
-  DataType: (ptr code)
+  Class: Eq_376
+  DataType: Eq_376
   OrigDataType: 
 T_377: (in fprintf : ptr32)
   Class: Eq_377
@@ -3276,8 +3276,8 @@ T_532: (in inet_addr : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_533: (in signature of inet_addr : void)
-  Class: Eq_532
-  DataType: (ptr code)
+  Class: Eq_533
+  DataType: Eq_533
   OrigDataType: 
 T_534: (in dwLoc0150_1363 : (ptr Eq_534))
   Class: Eq_534
@@ -4088,8 +4088,8 @@ T_735: (in select : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_736: (in signature of select : void)
-  Class: Eq_735
-  DataType: (ptr code)
+  Class: Eq_736
+  DataType: Eq_736
   OrigDataType: 
 T_737: (in 0x00000000 : word32)
   Class: Eq_730
@@ -7052,8 +7052,8 @@ T_1476: (in inet_ntoa : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1477: (in signature of inet_ntoa : void)
-  Class: Eq_1476
-  DataType: (ptr code)
+  Class: Eq_1477
+  DataType: Eq_1477
   OrigDataType: 
 T_1478: (in r25_248 : (ptr code))
   Class: Eq_114
@@ -7708,8 +7708,8 @@ T_1640: (in getsockopt : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1641: (in signature of getsockopt : void)
-  Class: Eq_1640
-  DataType: (ptr code)
+  Class: Eq_1641
+  DataType: Eq_1641
   OrigDataType: 
 T_1642: (in sp_45 : word32)
   Class: Eq_1642
@@ -7764,8 +7764,8 @@ T_1654: (in inet_ntoa : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1655: (in signature of inet_ntoa : void)
-  Class: Eq_1654
-  DataType: (ptr code)
+  Class: Eq_1655
+  DataType: Eq_1655
   OrigDataType: 
 T_1656: (in sp_62 : word32)
   Class: Eq_1656
@@ -7820,8 +7820,8 @@ T_1668: (in inet_ntoa : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1669: (in signature of inet_ntoa : void)
-  Class: Eq_1668
-  DataType: (ptr code)
+  Class: Eq_1669
+  DataType: Eq_1669
   OrigDataType: 
 T_1670: (in sp_89 : word32)
   Class: Eq_1670
@@ -7876,8 +7876,8 @@ T_1682: (in snprintf : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1683: (in signature of snprintf : void)
-  Class: Eq_1682
-  DataType: (ptr code)
+  Class: Eq_1683
+  DataType: Eq_1683
   OrigDataType: 
 T_1684: (in 256 : int32)
   Class: Eq_1677
@@ -10828,8 +10828,8 @@ T_2420: (in recv : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_2421: (in signature of recv : void)
-  Class: Eq_2420
-  DataType: (ptr code)
+  Class: Eq_2421
+  DataType: Eq_2421
   OrigDataType: 
 T_2422: (in 0x000007D8 : word32)
   Class: Eq_2422
@@ -10952,8 +10952,8 @@ T_2451: (in send : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_2452: (in signature of send : void)
-  Class: Eq_2451
-  DataType: (ptr code)
+  Class: Eq_2452
+  DataType: Eq_2452
   OrigDataType: 
 T_2453: (in 0x00000FAC : word32)
   Class: Eq_2453
@@ -11520,8 +11520,8 @@ T_2593: (in send : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_2594: (in signature of send : void)
-  Class: Eq_2593
-  DataType: (ptr code)
+  Class: Eq_2594
+  DataType: Eq_2594
   OrigDataType: 
 T_2595: (in 0x0000178C : word32)
   Class: Eq_2595
@@ -15160,8 +15160,8 @@ T_3503: (in snprintf : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_3504: (in signature of snprintf : void)
-  Class: Eq_3503
-  DataType: (ptr code)
+  Class: Eq_3504
+  DataType: Eq_3504
   OrigDataType: 
 T_3505: (in sp_150 : word32)
   Class: Eq_3505
@@ -15212,8 +15212,8 @@ T_3516: (in snprintf : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_3517: (in signature of snprintf : void)
-  Class: Eq_3516
-  DataType: (ptr code)
+  Class: Eq_3517
+  DataType: Eq_3517
   OrigDataType: 
 T_3518: (in sp_121 : word32)
   Class: Eq_3518
@@ -15264,8 +15264,8 @@ T_3529: (in snprintf : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_3530: (in signature of snprintf : void)
-  Class: Eq_3529
-  DataType: (ptr code)
+  Class: Eq_3530
+  DataType: Eq_3530
   OrigDataType: 
 T_3531: (in r4 : (ptr Eq_3531))
   Class: Eq_3531
@@ -15684,8 +15684,8 @@ T_3634: (in strsep : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_3635: (in signature of strsep : void)
-  Class: Eq_3634
-  DataType: (ptr code)
+  Class: Eq_3635
+  DataType: Eq_3635
   OrigDataType: 
 T_3636: (in strncpy : ptr32)
   Class: Eq_3636
@@ -15772,8 +15772,8 @@ T_3656: (in strsep : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_3657: (in signature of strsep : void)
-  Class: Eq_3656
-  DataType: (ptr code)
+  Class: Eq_3657
+  DataType: Eq_3657
   OrigDataType: 
 T_3658: (in strncpy : ptr32)
   Class: Eq_3636
@@ -15844,8 +15844,8 @@ T_3674: (in strsep : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_3675: (in signature of strsep : void)
-  Class: Eq_3674
-  DataType: (ptr code)
+  Class: Eq_3675
+  DataType: Eq_3675
   OrigDataType: 
 T_3676: (in strncpy : ptr32)
   Class: Eq_3636
@@ -17652,8 +17652,8 @@ T_4126: (in strspn : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4127: (in signature of strspn : void)
-  Class: Eq_4126
-  DataType: (ptr code)
+  Class: Eq_4127
+  DataType: Eq_4127
   OrigDataType: 
 T_4128: (in r2_218 : (ptr int8))
   Class: Eq_4128
@@ -17748,8 +17748,8 @@ T_4150: (in strcspn : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4151: (in signature of strcspn : void)
-  Class: Eq_4150
-  DataType: (ptr code)
+  Class: Eq_4151
+  DataType: Eq_4151
   OrigDataType: 
 T_4152: (in r2_242 : (ptr byte))
   Class: Eq_4152
@@ -17840,8 +17840,8 @@ T_4173: (in strspn : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4174: (in signature of strspn : void)
-  Class: Eq_4173
-  DataType: (ptr code)
+  Class: Eq_4174
+  DataType: Eq_4174
   OrigDataType: 
 T_4175: (in sp_313 : word32)
   Class: Eq_4175
@@ -17892,8 +17892,8 @@ T_4186: (in strcspn : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4187: (in signature of strcspn : void)
-  Class: Eq_4186
-  DataType: (ptr code)
+  Class: Eq_4187
+  DataType: Eq_4187
   OrigDataType: 
 T_4188: (in 0x00 : byte)
   Class: Eq_4188
@@ -19032,8 +19032,8 @@ T_4471: (in toupper : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4472: (in signature of toupper : void)
-  Class: Eq_4471
-  DataType: (ptr code)
+  Class: Eq_4472
+  DataType: Eq_4472
   OrigDataType: 
 T_4473: (in sp_384 : word32)
   Class: Eq_4473
@@ -19092,8 +19092,8 @@ T_4486: (in toupper : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4487: (in signature of toupper : void)
-  Class: Eq_4486
-  DataType: (ptr code)
+  Class: Eq_4487
+  DataType: Eq_4487
   OrigDataType: 
 T_4488: (in r16_389 == r2_392 : bool)
   Class: Eq_4488
@@ -19944,8 +19944,8 @@ T_4699: (in toupper : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4700: (in signature of toupper : void)
-  Class: Eq_4699
-  DataType: (ptr code)
+  Class: Eq_4700
+  DataType: Eq_4700
   OrigDataType: 
 T_4701: (in sp_158 : word32)
   Class: Eq_4701
@@ -19996,8 +19996,8 @@ T_4712: (in tolower : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4713: (in signature of tolower : void)
-  Class: Eq_4712
-  DataType: (ptr code)
+  Class: Eq_4713
+  DataType: Eq_4713
   OrigDataType: 
 T_4714: (in printf : ptr32)
   Class: Eq_4614
@@ -20204,8 +20204,8 @@ T_4764: (in vsnprintf : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4765: (in signature of vsnprintf : void)
-  Class: Eq_4764
-  DataType: (ptr code)
+  Class: Eq_4765
+  DataType: Eq_4765
   OrigDataType: 
 T_4766: (in sp_71 : word32)
   Class: Eq_4766
@@ -20836,8 +20836,8 @@ T_4922: (in rename : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4923: (in signature of rename : void)
-  Class: Eq_4922
-  DataType: (ptr code)
+  Class: Eq_4923
+  DataType: Eq_4923
   OrigDataType: 
 T_4924: (in r5 : word32)
   Class: Eq_4924
@@ -20944,8 +20944,8 @@ T_4949: (in gmtime : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_4950: (in signature of gmtime : void)
-  Class: Eq_4949
-  DataType: (ptr code)
+  Class: Eq_4950
+  DataType: Eq_4950
   OrigDataType: 
 T_4951: (in strftime : ptr32)
   Class: Eq_4951
@@ -21280,8 +21280,8 @@ T_5033: (in ftell : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_5034: (in signature of ftell : void)
-  Class: Eq_5033
-  DataType: (ptr code)
+  Class: Eq_5034
+  DataType: Eq_5034
   OrigDataType: 
 T_5035: (in r3_197 : int32)
   Class: Eq_289
@@ -21684,8 +21684,8 @@ T_5134: (in inet_addr : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_5135: (in signature of inet_addr : void)
-  Class: Eq_5134
-  DataType: (ptr code)
+  Class: Eq_5135
+  DataType: Eq_5135
   OrigDataType: 
 T_5136: (in 0x0000000C : word32)
   Class: Eq_5136
@@ -21992,8 +21992,8 @@ T_5211: (in listen : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_5212: (in signature of listen : void)
-  Class: Eq_5211
-  DataType: (ptr code)
+  Class: Eq_5212
+  DataType: Eq_5212
   OrigDataType: 
 T_5213: (in 0x00000000 : word32)
   Class: Eq_5208

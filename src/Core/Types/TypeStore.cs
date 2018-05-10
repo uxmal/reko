@@ -253,7 +253,7 @@ namespace Reko.Core.Types
             {
                 e.TypeVariable = null;
                 ProcedureConstant pc = e as ProcedureConstant;
-                if (pc != null && pc.Procedure.Signature != null)
+                if (pc != null)
                     pc.Procedure.Signature.TypeVariable = null;
             }
             TypeVariables.Clear();

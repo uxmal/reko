@@ -624,8 +624,8 @@ T_113: (in XcptFilter : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_114: (in signature of XcptFilter : void)
-  Class: Eq_113
-  DataType: (ptr code)
+  Class: Eq_114
+  DataType: Eq_114
   OrigDataType: 
 T_115: (in r8_7 : ui32)
   Class: Eq_115
@@ -672,8 +672,8 @@ T_125: (in COREDLL.dll!Ordinal_2696 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_126: (in signature of COREDLL.dll!Ordinal_2696 : void)
-  Class: Eq_125
-  DataType: (ptr code)
+  Class: Eq_126
+  DataType: Eq_126
   OrigDataType: 
 T_127: (in r8_32 : ui32)
   Class: Eq_115
@@ -1324,8 +1324,8 @@ T_288: (in fn00000000 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_289: (in signature of fn00000000 : void)
-  Class: Eq_288
-  DataType: (ptr code)
+  Class: Eq_289
+  DataType: Eq_289
   OrigDataType: 
 T_290: (in dwArg00_26 < r5 : bool)
   Class: Eq_290
@@ -1524,8 +1524,8 @@ T_338: (in msize : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_339: (in signature of msize : void)
-  Class: Eq_338
-  DataType: (ptr code)
+  Class: Eq_339
+  DataType: Eq_339
   OrigDataType: 
 T_340: (in 0x00000038 : word32)
   Class: Eq_340

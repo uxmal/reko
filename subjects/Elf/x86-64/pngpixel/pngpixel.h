@@ -284,8 +284,8 @@ T_15: (in __gmon_start__ : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_16: (in signature of __gmon_start__ : void)
-  Class: Eq_15
-  DataType: (ptr code)
+  Class: Eq_16
+  DataType: Eq_16
   OrigDataType: 
 T_17: (in rdx : (ptr Eq_17))
   Class: Eq_17
@@ -668,8 +668,8 @@ T_111: (in fn0000000000000000 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_112: (in signature of fn0000000000000000 : void)
-  Class: Eq_111
-  DataType: (ptr code)
+  Class: Eq_112
+  DataType: Eq_112
   OrigDataType: 
 T_113: (in register_tm_clones : ptr64)
   Class: Eq_113
@@ -1508,8 +1508,8 @@ T_321: (in png_get_bit_depth : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_322: (in signature of png_get_bit_depth : void)
-  Class: Eq_321
-  DataType: (ptr code)
+  Class: Eq_322
+  DataType: Eq_322
   OrigDataType: 
 T_323: (in eax_66 : word32)
   Class: Eq_323
@@ -1640,8 +1640,8 @@ T_354: (in png_get_color_type : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_355: (in signature of png_get_color_type : void)
-  Class: Eq_354
-  DataType: (ptr code)
+  Class: Eq_355
+  DataType: Eq_355
   OrigDataType: 
 T_356: (in rax_26 : word64)
   Class: Eq_356
@@ -1788,8 +1788,8 @@ T_391: (in png_error : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_392: (in signature of png_error : void)
-  Class: Eq_391
-  DataType: (ptr code)
+  Class: Eq_392
+  DataType: Eq_392
   OrigDataType: 
 T_393: (in 0x00401958 : word32)
   Class: Eq_393
@@ -2216,8 +2216,8 @@ T_498: (in png_get_PLTE : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_499: (in signature of png_get_PLTE : void)
-  Class: Eq_498
-  DataType: (ptr code)
+  Class: Eq_499
+  DataType: Eq_499
   OrigDataType: 
 T_500: (in eax_270 : up32)
   Class: Eq_415
@@ -2816,8 +2816,8 @@ T_648: (in png_get_tRNS : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_649: (in signature of png_get_tRNS : void)
-  Class: Eq_648
-  DataType: (ptr code)
+  Class: Eq_649
+  DataType: Eq_649
   OrigDataType: 
 T_650: (in 0x00000010 : word32)
   Class: Eq_650
@@ -3592,8 +3592,8 @@ T_842: (in png_create_read_struct : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_843: (in signature of png_create_read_struct : void)
-  Class: Eq_842
-  DataType: (ptr code)
+  Class: Eq_843
+  DataType: Eq_843
   OrigDataType: 
 T_844: (in 0x0000000000000000 : word64)
   Class: Eq_825
@@ -3736,8 +3736,8 @@ T_878: (in png_create_info_struct : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_879: (in signature of png_create_info_struct : void)
-  Class: Eq_878
-  DataType: (ptr code)
+  Class: Eq_879
+  DataType: Eq_879
   OrigDataType: 
 T_880: (in 0x0000000000000000 : word64)
   Class: Eq_860
@@ -3880,8 +3880,8 @@ T_914: (in png_init_io : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_915: (in signature of png_init_io : void)
-  Class: Eq_914
-  DataType: (ptr code)
+  Class: Eq_915
+  DataType: Eq_915
   OrigDataType: 
 T_916: (in rsp_278 : word64)
   Class: Eq_916
@@ -3980,8 +3980,8 @@ T_939: (in png_read_info : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_940: (in signature of png_read_info : void)
-  Class: Eq_939
-  DataType: (ptr code)
+  Class: Eq_940
+  DataType: Eq_940
   OrigDataType: 
 T_941: (in rsp_305 : word64)
   Class: Eq_941
@@ -4080,8 +4080,8 @@ T_964: (in png_get_rowbytes : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_965: (in signature of png_get_rowbytes : void)
-  Class: Eq_964
-  DataType: (ptr code)
+  Class: Eq_965
+  DataType: Eq_965
   OrigDataType: 
 T_966: (in rsp_332 : word64)
   Class: Eq_966
@@ -4180,8 +4180,8 @@ T_989: (in png_malloc : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_990: (in signature of png_malloc : void)
-  Class: Eq_989
-  DataType: (ptr code)
+  Class: Eq_990
+  DataType: Eq_990
   OrigDataType: 
 T_991: (in rsp_377 : word64)
   Class: Eq_991
@@ -4280,8 +4280,8 @@ T_1014: (in png_get_IHDR : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1015: (in signature of png_get_IHDR : void)
-  Class: Eq_1014
-  DataType: (ptr code)
+  Class: Eq_1015
+  DataType: Eq_1015
   OrigDataType: 
 T_1016: (in 0x00000000 : word32)
   Class: Eq_998
@@ -4388,8 +4388,8 @@ T_1041: (in png_error : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1042: (in signature of png_error : void)
-  Class: Eq_1041
-  DataType: (ptr code)
+  Class: Eq_1042
+  DataType: Eq_1042
   OrigDataType: 
 T_1043: (in eax_406 : word32)
   Class: Eq_1043
@@ -4532,8 +4532,8 @@ T_1077: (in png_error : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1078: (in signature of png_error : void)
-  Class: Eq_1077
-  DataType: (ptr code)
+  Class: Eq_1078
+  DataType: Eq_1078
   OrigDataType: 
 T_1079: (in __stack_chk_fail : ptr64)
   Class: Eq_600
@@ -4660,8 +4660,8 @@ T_1109: (in png_start_read_image : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1110: (in signature of png_start_read_image : void)
-  Class: Eq_1109
-  DataType: (ptr code)
+  Class: Eq_1110
+  DataType: Eq_1110
   OrigDataType: 
 T_1111: (in 0x00000000 : word32)
   Class: Eq_1082
@@ -4796,8 +4796,8 @@ T_1143: (in png_free : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1144: (in signature of png_free : void)
-  Class: Eq_1143
-  DataType: (ptr code)
+  Class: Eq_1144
+  DataType: Eq_1144
   OrigDataType: 
 T_1145: (in rsp_508 : word64)
   Class: Eq_1145
@@ -4896,8 +4896,8 @@ T_1168: (in png_destroy_info_struct : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1169: (in signature of png_destroy_info_struct : void)
-  Class: Eq_1168
-  DataType: (ptr code)
+  Class: Eq_1169
+  DataType: Eq_1169
   OrigDataType: 
 T_1170: (in rsp_196 : word64)
   Class: Eq_1170
@@ -4992,8 +4992,8 @@ T_1192: (in png_destroy_read_struct : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1193: (in signature of png_destroy_read_struct : void)
-  Class: Eq_1192
-  DataType: (ptr code)
+  Class: Eq_1193
+  DataType: Eq_1193
   OrigDataType: 
 T_1194: (in 0x00000028 : word32)
   Class: Eq_1194
@@ -5952,8 +5952,8 @@ T_1432: (in png_read_row : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1433: (in signature of png_read_row : void)
-  Class: Eq_1432
-  DataType: (ptr code)
+  Class: Eq_1433
+  DataType: Eq_1433
   OrigDataType: 
 T_1434: (in (uint64) dwLoc54_585 : uint64)
   Class: Eq_792

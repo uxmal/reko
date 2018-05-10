@@ -26,6 +26,7 @@ using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Typing
 {
@@ -44,7 +45,8 @@ namespace Reko.UnitTests.Typing
 
         private void RunTest(Program program, string outputFile)
         {
-            EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
+            var listener = new FakeDecompilerEventListener();
+            EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, listener);
             DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform);
             eqb.Build(program);
             TraitCollector trco = new TraitCollector(factory, store, dtb, program);
@@ -54,7 +56,7 @@ namespace Reko.UnitTests.Typing
             tv.ReplaceTypeVariables();
             store.CopyClassDataTypesToTypeVariables();
             var ppr = new PtrPrimitiveReplacer(factory, store, program);
-            ppr.ReplaceAll(new FakeDecompilerEventListener());
+            ppr.ReplaceAll(listener);
 
             var cpa = new ConstantPointerAnalysis(factory, store, program);
             cpa.FollowConstantPointers();

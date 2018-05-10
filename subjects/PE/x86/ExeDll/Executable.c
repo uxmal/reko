@@ -425,8 +425,8 @@ void fn004015EB(Eq_118 * dwArg04, byte bArg08)
 	}
 }
 
-// 00401613: Register word32 fn00401613(Stack ui32 dwArg04)
-word32 fn00401613(ui32 dwArg04)
+// 00401613: Register ui32 fn00401613(Stack ui32 dwArg04)
+ui32 fn00401613(ui32 dwArg04)
 {
 	word32 eax_24;
 	ui32 eax_7 = globals->dw403004;

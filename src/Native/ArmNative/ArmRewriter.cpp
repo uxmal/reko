@@ -137,8 +137,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_RFEDB:
 	case ARM_INS_RFEIA:
 	case ARM_INS_RFEIB:
-	case ARM_INS_SADD16:
-	case ARM_INS_SADD8:
 	case ARM_INS_SASX:
 	case ARM_INS_SEL:
 	case ARM_INS_SETEND:
@@ -178,8 +176,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SSAT:
 	case ARM_INS_SSAT16:
 	case ARM_INS_SSAX:
-	case ARM_INS_SSUB16:
-	case ARM_INS_SSUB8:
 	case ARM_INS_STL:
 	case ARM_INS_STLB:
 	case ARM_INS_STLEX:
@@ -192,8 +188,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_STREXH:
 	case ARM_INS_SXTAB16:
 	case ARM_INS_SXTB16:
-	case ARM_INS_UADD16:
-	case ARM_INS_UADD8:
 	case ARM_INS_UASX:
 	case ARM_INS_UHADD16:
 	case ARM_INS_UHADD8:
@@ -212,8 +206,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_USAT:
 	case ARM_INS_USAT16:
 	case ARM_INS_USAX:
-	case ARM_INS_USUB16:
-	case ARM_INS_USUB8:
 	case ARM_INS_UXTAB16:
 	case ARM_INS_UXTB16:
 	case ARM_INS_VABAL:
@@ -413,6 +405,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_REV: RewriteRev(); break;
 	case ARM_INS_RSB: RewriteRevBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_RSC: RewriteAdcSbc(&INativeRtlEmitter::ISub, true); break;
+	case ARM_INS_SADD16: RewriteVectorBinOp("__sadd16", ARM_VECTORDATA_S16); break;
+	case ARM_INS_SADD8: RewriteVectorBinOp("__sadd8", ARM_VECTORDATA_S8); break;
 	case ARM_INS_SBC: RewriteAdcSbc(&INativeRtlEmitter::ISub, false); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
 	case ARM_INS_SDIV: RewriteDiv(&INativeRtlEmitter::SDiv); break;
@@ -438,6 +432,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SSUB16: RewriteVectorBinOp("__ssub16", ARM_VECTORDATA_S16); break;
+	case ARM_INS_SSUB8: RewriteVectorBinOp("__ssub8", ARM_VECTORDATA_S8); break;
 	case ARM_INS_STC2L: RewriteStc("__stc2l"); break;
 	case ARM_INS_STC2: RewriteStc("__stc2"); break;
 	case ARM_INS_STC: RewriteStc("__stc"); break;
@@ -466,12 +462,16 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_TEQ: RewriteTeq(); break;
 	case ARM_INS_TRAP: RewriteTrap(); break;
 	case ARM_INS_TST: RewriteTst(); break;
+	case ARM_INS_UADD16: RewriteVectorBinOp("__uadd16", ARM_VECTORDATA_I16); break;
+	case ARM_INS_UADD8: RewriteVectorBinOp("__uadd8", ARM_VECTORDATA_I8); break;
 	case ARM_INS_UBFX: RewriteUbfx(); break;
 	case ARM_INS_UDF: RewriteUdf(); break;
 	case ARM_INS_UDIV: RewriteDiv(&INativeRtlEmitter::UDiv); break;
 	case ARM_INS_UMAAL: RewriteUmaal(); break;
 	case ARM_INS_UMLAL: RewriteUmlal(); break;
 	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;
+	case ARM_INS_USUB16: RewriteVectorBinOp("__usub16", ARM_VECTORDATA_I16); break;
+	case ARM_INS_USUB8: RewriteVectorBinOp("__usub8", ARM_VECTORDATA_I8); break;
 	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
 	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
 	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte, BaseType::UInt32); break;
