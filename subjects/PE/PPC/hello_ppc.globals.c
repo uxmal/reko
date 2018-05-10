@@ -5,15 +5,15 @@
 #include "hello_ppc.h"
 
 Eq_242 g_tFFFFFFFC;
-Eq_2520 g_tFFFFFFFD;
-Eq_2520 g_tFFFFFFFE;
-Eq_2520 g_tFFFFFFFF;
+Eq_2505 g_tFFFFFFFD;
+Eq_2505 g_tFFFFFFFE;
+Eq_2505 g_tFFFFFFFF;
 Eq_242 g_t0001;
 Eq_242 g_t0002;
 int32 g_dw0003;
-Eq_3298 g_t0016;
+Eq_3281 g_t0016;
 word32 g_dw092C;
-Eq_2036 g_t1000;
-Eq_2036 g_t1008;
+Eq_2022 g_t1000;
+Eq_2022 g_t1008;
 int32 g_dw1FF8;
 

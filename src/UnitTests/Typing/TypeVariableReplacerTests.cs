@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Typing;
 using NUnit.Framework;
 using System;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Typing
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Typing
 		{
 			TypeFactory factory = new TypeFactory();
 			TypeStore store = new TypeStore();
-			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
+			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
 
 			Identifier pptr = new Identifier("pptr", PrimitiveType.Word32, null);
 			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
