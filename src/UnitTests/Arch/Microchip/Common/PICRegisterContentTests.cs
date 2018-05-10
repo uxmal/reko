@@ -62,6 +62,28 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.AreEqual(0x55U, reg.ActualValue);
         }
 
+        [Test]
+        public void PICRegisterContent__RRRWWW_Test()
+        {
+            var reg = new PICRegisterContent(GetTraits(BuildSFRDef(0, "Reg8", 8, 0x7E, "-rrrwww-", "-010001-")));
+            Assert.NotNull(reg);
+            Assert.AreEqual(0x22U, reg.ResetValue);
+            Assert.AreEqual(0x20U, reg.ActualValue);
+            reg.ActualValue = 0xFF;
+            Assert.AreEqual(0x00U, reg.ActualValue);
+        }
+
+        [Test]
+        public void PICRegisterContent__NNNWWW_Test()
+        {
+            var reg = new PICRegisterContent(GetTraits(BuildSFRDef(0, "Reg8", 8, 0x7E, "-nnnwww-", "-010001-")));
+            Assert.NotNull(reg);
+            Assert.AreEqual(0x22U, reg.ResetValue);
+            Assert.AreEqual(0x20U, reg.ActualValue);
+            reg.ActualValue = 0xFF;
+            Assert.AreEqual(0x70U, reg.ActualValue);
+        }
+
     }
 
 

@@ -62,7 +62,18 @@ namespace Reko.Arch.MicrochipPIC.Common
             this.traits = traits ?? throw new ArgumentNullException(nameof(traits));
         }
 
-        private PICRegisterAccessMasks Bits => bits = bits ?? PICRegisterAccessMasks.Create(traits);
+        private PICRegisterAccessMasks Bits
+        {
+            get
+            {
+                if (bits == null)
+                {
+                    bits = PICRegisterAccessMasks.Create(traits);
+                    actualValue = bits.ResetValue;
+                }
+                return bits;
+            }
+        }
         private PICRegisterAccessMasks bits;
 
         public uint ActualValue
@@ -73,7 +84,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         private uint actualValue;
 
         public uint ResetValue
-            => ActualValue = Bits.ResetValue;
+            => Bits.ResetValue;
 
     }
 

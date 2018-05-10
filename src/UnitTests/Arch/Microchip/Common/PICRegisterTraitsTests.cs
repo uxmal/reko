@@ -100,6 +100,27 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.IsFalse(trait.IsIndirect);
         }
 
+        [Test]
+        public void PICRegisterTraits_FlagsTest()
+        {
+            var sfrl = BuildSFRDef(0, "REGL", 8, 0x7F, "-nnnnnnn", "-0000000");
+            sfrl.IsIndirect = true;
+            var regl = new PICRegisterTraits(sfrl);
+            var sfrh = BuildSFRDef(1, "REGH", 8, 0x1F, "nnnnn", "00000");
+            sfrh.IsVolatile = true;
+            var regh = new PICRegisterTraits(sfrh);
+            var reg = BuildJoinedSFRDef(0, "REG", 16);
+            var trait = new PICRegisterTraits(reg, new List<PICRegisterTraits>() { regl, regh });
+            Assert.NotNull(trait);
+            Assert.AreEqual(16, trait.BitWidth);
+            Assert.AreEqual(0x1F7F, trait.Impl);
+            Assert.AreEqual("---nnnnn-nnnnnnn", trait.Access);
+            Assert.AreEqual("00000000-0000000", trait.POR);
+            Assert.AreEqual("uuu00000-0000000", trait.MCLR);
+            Assert.IsTrue(trait.IsVolatile);
+            Assert.IsTrue(trait.IsIndirect);
+        }
+
     }
 
 }
