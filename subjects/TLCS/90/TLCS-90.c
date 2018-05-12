@@ -2165,6 +2165,7 @@ void fn291C(byte a, ptr16 hl)
 {
 	Eq_16 a_13 = 0x00 - (__ror(*(hl - 0x01), 0x01) < 0x00);
 	byte a_20 = 0x00 - (__ror(a, 0x01) < 0x00);
+	__rcl(a_13, 0x01, cond(__rcl(a_13 ^ a_20, 0x01, false))) >= 0x00;
 	fn1C54();
 }
 
