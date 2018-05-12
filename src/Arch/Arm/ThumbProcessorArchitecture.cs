@@ -88,6 +88,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new T32Disassembler(this, rdr);
+            /*
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -115,7 +117,7 @@ namespace Reko.Arch.Arm
                 {
                     hBytes.Free();
                 }
-            }
+            }*/
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -181,6 +183,39 @@ namespace Reko.Arch.Arm
                 return reg;
             else
                 return null;
+        }
+
+        public RegisterStorage GetGpRegister(int i)
+        {
+            //$TODO: SLOW. these should be in an array for spee.d
+            string name;
+            switch (i)
+            {
+            case 0: name = "r0"; break;
+            case 1: name = "r1"; break;
+            case 2: name = "r2"; break;
+            case 3: name = "r3"; break;
+
+            case 4: name = "r4"; break;
+            case 5: name = "r5"; break;
+            case 6: name = "r6"; break;
+            case 7: name = "r7"; break;
+
+            case 8: name = "r8"; break;
+            case 9: name = "r9"; break;
+            case 10: name = "r10"; break;
+            case 11: name = "fp"; break;
+
+            case 12: name = "r12"; break;
+            case 13: name = "sp"; break;
+            case 14: name = "r14"; break;
+            case 15: name = "pc"; break;
+            default: throw new NotSupportedException();
+            }
+            var reg = GetRegister(name);
+            if (reg == null)
+                throw new NotImplementedException($"Register {i} has no name.");
+            return reg;
         }
 
         public override RegisterStorage GetRegister(string name)

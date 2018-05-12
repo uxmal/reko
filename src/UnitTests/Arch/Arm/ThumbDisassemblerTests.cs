@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_sub()
+        public void ThumbDis_sub_sp()
         {
             var instr = Disassemble16(0xB082);
             Assert.AreEqual("sub\tsp,#8", instr.ToString());
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_add()
+        public void ThumbDis_add_sp()
         {
             var instr = Disassemble16(0xB002);
             Assert.AreEqual("add\tsp,#8", instr.ToString());
