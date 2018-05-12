@@ -82,7 +82,7 @@ namespace Reko.Arch.PowerPC
             }
             else 
             {
-                cr = binder.EnsureRegister(arch.CrRegisters[0]);
+                cr = binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(arch.CrRegisters[0]));
             }
             if (toLinkRegister)
             {

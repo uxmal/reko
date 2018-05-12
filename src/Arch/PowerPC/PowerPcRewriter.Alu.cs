@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr0 = binder.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr, 0xF, "cr0", PrimitiveType.Byte);
             m.Assign(cr0, m.Cond(e));
         }
 
@@ -164,6 +165,16 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr0(opD);
         }
 
+        private void RewriteBcdadd()
+        {
+            var d = RewriteOperand(instr.op1);
+            var a = RewriteOperand(instr.op2);
+            var b = RewriteOperand(instr.op3);
+            m.Assign(
+                d,
+                host.PseudoProcedure("__bcdadd", d.DataType, a, b));
+        }
+
         private void RewriteCmp()
         {
             var cr = RewriteOperand(instr.op1);
@@ -270,6 +281,15 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
         }
 
+        private void RewriteDivd(Func<Expression,Expression,Expression> div)
+        {
+            var opL = RewriteOperand(instr.op2, true);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, div(opL, opR));
+            MaybeEmitCr0(opD);
+        }
+
         private void RewriteDivw()
         {
             var opL = RewriteOperand(instr.op2, true);
@@ -358,6 +378,15 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, src);
         }
 
+        private void RewriteMulhhwu()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, m.UMul(m.Shr(opL, 0x10), m.Shr(opR, 0x10)));
+            MaybeEmitCr0(opD);
+        }
+
         private void RewriteMulhw()
         {
             var opL = RewriteOperand(instr.op2);
@@ -375,6 +404,8 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, m.Sar(m.UMul(opL, opR), 0x20));
             MaybeEmitCr0(opD);
         }
+
+
 
         private void RewriteMull()
         {
@@ -553,8 +584,88 @@ namespace Reko.Arch.PowerPC
                 m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, Constant.Byte((byte)sh)));
             }
             else
-                throw new NotImplementedException();
+            {
+                host.Error(
+                    instr.Address,
+                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                EmitUnitTest();
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
             MaybeEmitCr0(rd);
+        }
+
+        private void RewriteRldicr()
+        {
+            var rd = RewriteOperand(instr.op1);
+            var rs = RewriteOperand(instr.op2);
+            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.op4)).ToByte();
+            ulong maskEnd = 0ul - (ulong)(1ul << (63 - me));
+
+            // Extract double word and right justify immediate | extrdi RA, RS, n, b   | rldicl RA, RS, b + n, 64 - n   | n > 0
+            // Rotate double word left immediate               | rotldi RA, RS, n      | rldicl RA, RS, n, 0            | None
+            // Rotate double word right immediate              | rotrdi RA, RS, n      | rldicl RA, RS, 64 - n, 0       | None
+            // Rotate double word right immediate              | srdi RA, RS, n	       | rldicl RA, RS, 64 - n, n       | n < 64
+            // Clear left double word immediate                | clrldi RA, RS, n      | rldicl RA, RS, 0, n	        | n < 64
+            // Extract double word and left justify immediate  | extldi RA, RS, n, b   | rldicr RA, RS, b, n - 1        | None
+            // Shift left double word immediate                | sldi RA, RS, n        | rldicr RA, RS, n, 63 - n	    | None
+            // Clear right double word immediate               | clrrdi RA, RS, n      | rldicr RA, RS, 0, 63 - n	    | None
+            // Clear left double word and shift left immediate | clrlsldi RA, RS, b, n | rldic RA, RS, n, b - n         | None
+            // Insert double word from right immediate         | insrdi RA, RS, n, b   | rldimi RA, RS, 64 - (b + n), b | None
+            // Rotate double word left                         | rotld RA, RS, RB      | rldcl RA, RS, RB, 0	        | None
+            if (sh + me == 63)
+            {
+                // sldi
+                m.Assign(rd, m.Shl(rs, sh));
+            }
+            else if (me == 63)
+            {
+                // rotldi
+                m.Assign(rd, host.PseudoProcedure(
+                    PseudoProcedure.Rol,
+                    PrimitiveType.Word64,
+                    rs, Constant.Byte(sh)));
+            }
+            else
+            {
+                host.Error(
+                    instr.Address,
+                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                EmitUnitTest();
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            MaybeEmitCr0(rd);
+        }
+
+        private void RewriteRldimi()
+        {
+            var rd = RewriteOperand(instr.op1);
+            var rs = RewriteOperand(instr.op2);
+            byte sh = ((Constant)RewriteOperand(instr.op3)).ToByte();
+            byte me = ((Constant)RewriteOperand(instr.op4)).ToByte();
+
+            MaybeEmitCr0(rd);
+            if (sh == 0x20 && me == 0x00)
+            {
+                m.Assign(rd,
+                    m.Dpb(rd, m.Cast(PrimitiveType.Word32, rs), 0x20));
+            }
+            else
+            {
+                host.Error(
+                    instr.Address,
+                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                EmitUnitTest();
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            MaybeEmitCr0(rd);
+
         }
 
         void RewriteRlwinm()
@@ -583,17 +694,14 @@ namespace Reko.Arch.PowerPC
             if (sh == 0)
             {
                 m.Assign(rd, m.And(rs, Constant.UInt32(mask)));
-                return;
             }
             else if (mb == 32 - sh && me == 31)
             {
                 m.Assign(rd, m.Shr(rs, (byte)(32 - sh)));
-                return;
             }
             else if (mb == 0 && me == 31 - sh)
             {
                 m.Assign(rd, m.Shl(rs, sh));
-                return;
             }
             else if (mb == 0 && me == 31)
             {
@@ -601,7 +709,6 @@ namespace Reko.Arch.PowerPC
                     m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, PrimitiveType.Word32, rs, Constant.Byte(sh)));
                 else
                     m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
-                return;
             }
             else if (me == 31)
             {
@@ -611,7 +718,6 @@ namespace Reko.Arch.PowerPC
                 m.Assign(rd, m.And(
                     m.Shr(rs, Constant.Byte((byte)n)),
                     Constant.Word32(mask)));
-                return;
             }
             else if (mb <= me)
             {
@@ -622,6 +728,7 @@ namespace Reko.Arch.PowerPC
                     m.Assign(rd, m.And(
                         m.Shl(rs, Constant.Byte((byte)sh)),
                         Constant.Word32(mask)));
+                    MaybeEmitCr0(rd);
                     return;
                 }
                 else if (mb >= 32 - sh)
@@ -632,6 +739,7 @@ namespace Reko.Arch.PowerPC
                     m.Assign(rd, m.And(
                         m.Shr(rs, Constant.Byte((byte)(32 - sh))),
                         Constant.Word32(mask)));
+                    MaybeEmitCr0(rd);
                     return;
                 }
             }
@@ -656,6 +764,7 @@ namespace Reko.Arch.PowerPC
             //Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
             //Error,100338A0,rlwinm	r4,r11,08,08,0F not handled yet.
             //rlwinm	r12,r2,09,1D,09 
+            MaybeEmitCr0(rd);
         }
 
         public void RewriteRlwnm()
@@ -758,7 +867,7 @@ namespace Reko.Arch.PowerPC
         }
 
 
-        private void RewriteXor()
+        private void RewriteXor(bool negate)
         {
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
@@ -766,6 +875,10 @@ namespace Reko.Arch.PowerPC
             var s = (opL == opR)
                 ? Constant.Zero(opL.DataType)
                 : m.Xor(opL, opR);
+            if (negate)
+            {
+                s = m.Comp(s);
+            }
             m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
