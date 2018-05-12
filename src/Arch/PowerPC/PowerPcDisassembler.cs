@@ -703,12 +703,12 @@ namespace Reko.Arch.PowerPC
             {
                 MachineOperand op1 = dasm.RegFromBits(wInstr >> 21);
                 MachineOperand op2 = null;
-                var spr = (wInstr >> 11) & 0x3FF;
+                var spr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
                 Opcode opcode ;
                 switch (spr)
                 {
-                case 0x0100: opcode = to ? Opcode.mtlr : Opcode.mflr; break;
-                case 0x0120: opcode = to ? Opcode.mtctr : Opcode.mfctr; break;
+                case 0x08: opcode = to ? Opcode.mtlr : Opcode.mflr; break;
+                case 0x09: opcode = to ? Opcode.mtctr : Opcode.mfctr; break;
                 default:
                     opcode = to ? Opcode.mtspr : Opcode.mfspr;
                     op2 = op1;

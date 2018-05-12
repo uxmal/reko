@@ -1343,7 +1343,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7C7A03A6, // mtspr 0000340, r3
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__write_spr(0x00000340, r3)");
+                "1|L--|__write_spr(0x0000001A, r3)");
         }
 
         [Test]
@@ -1410,7 +1410,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7CB0E2A6, // mfspr 0000021C,r5
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = __read_spr(0x0000021C)");
+                "1|L--|r5 = __read_spr(0x00000390)");
         }
 
         [Test]

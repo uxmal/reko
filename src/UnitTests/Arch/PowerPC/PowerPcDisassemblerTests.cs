@@ -817,7 +817,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCDis_regression6()
         {
             AssertCode(0x7C6000A6, "mfmsr\tr3");
-            AssertCode(0x7C7A03A6, "mtspr\t00000340,r3");
+            AssertCode(0x7C7A03A6, "mtspr\t0000001A,r3");
             AssertCode(0x7C600124, "mtmsr\tr3,00");
             AssertCode(0x4C00012C, "isync");
         }
@@ -1035,6 +1035,12 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0xf7Ad3927, "illegal"); // stfdp\tf28,14628(r13) odd floating point register
             AssertCode(0xf78d392E, "illegal"); // "stfdp\tf28,14628(r13) odd offset
             AssertCode(0xf78d3928, "stfdp\tf28,14632(r13)");
+        }
+
+        [Test]
+        public void PPCDis_mfspr()
+        {
+            AssertCode(0x7FF94AA6, "mfspr\t00000139,r31");
         }
     }
 }

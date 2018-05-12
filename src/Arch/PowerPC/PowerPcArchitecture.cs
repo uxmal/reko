@@ -36,6 +36,9 @@ namespace Reko.Arch.PowerPC
 {
     public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
+        public const int CcFieldMin = 0x40;
+        public const int CcFieldMax = 0x48;
+
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
         private ReadOnlyCollection<RegisterStorage> vregs;
@@ -83,7 +86,7 @@ namespace Reko.Arch.PowerPC
                     .ToList());
             cregs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 8)
-                    .Select(n => new RegisterStorage("cr" + n, n + 0x40, 0, PrimitiveType.Byte))
+                    .Select(n => new RegisterStorage("cr" + n, n + CcFieldMin, 0, PrimitiveType.Byte))
                     .ToList());
 
             vregs = new ReadOnlyCollection<RegisterStorage>(
@@ -271,9 +274,9 @@ namespace Reko.Arch.PowerPC
 
         public FlagGroupStorage GetCcFieldAsFlagGroup(RegisterStorage reg)
         {
-            if (0x60 <= reg.Number && reg.Number < 0x60 + 8)
+            if (IsCcField(reg))
             {
-                var field = reg.Number - 0x60;
+                var field = reg.Number - CcFieldMin;
                 var grf = 0xFu << (4 *field);
                 if (this.ccFlagGroups.TryGetValue(grf, out var f))
                     return f;
@@ -313,7 +316,7 @@ namespace Reko.Arch.PowerPC
 
         public bool IsCcField(RegisterStorage reg)
         {
-            return 0x60 <= reg.Number && reg.Number < 0x60 + 8;
+            return CcFieldMin <= reg.Number && reg.Number < CcFieldMax;
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)

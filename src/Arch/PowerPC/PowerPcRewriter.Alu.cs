@@ -35,7 +35,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr0 = binder.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr, 0xF, "cr0", PrimitiveType.Byte);
             m.Assign(cr0, m.Cond(e));
         }
 

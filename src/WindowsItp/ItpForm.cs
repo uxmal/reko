@@ -25,6 +25,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
+using Reko.Gui.Visualizers;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -33,6 +34,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -275,6 +277,24 @@ namespace Reko.WindowsItp
             var dlg = new SymbolSourceDialog();
             dlg.Services = sc;
             dlg.ShowDialog(this);
+        }
+
+        private void visualizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new Form();
+            var vis = new VisualizerControl();
+            var buf = new byte[30000];
+            new Random().NextBytes(buf);
+            var mem = new MemoryArea(Address.Ptr32(0x00123400), buf);
+            var program = new Reko.Core.Program
+            {
+                SegmentMap = new SegmentMap(mem.BaseAddress, new ImageSegment("text", mem, AccessMode.ReadExecute))
+            };
+            vis.Program = program; 
+            vis.Visualizer = new HeatmapVisualizer();
+            vis.Dock = DockStyle.Fill;
+            form.Controls.Add(vis);
+            form.ShowDialog(this);
         }
     }
 }
