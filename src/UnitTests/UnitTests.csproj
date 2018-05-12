@@ -143,6 +143,7 @@
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
+    <Compile Include="Core\CriticalInstructionTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -218,7 +219,6 @@
     <Compile Include="Analysis\CallRewriterTests.cs" />
     <Compile Include="Analysis\CoalescerTests.cs" />
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
-    <Compile Include="Analysis\CriticalInstructionTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests2.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
