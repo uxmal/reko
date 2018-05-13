@@ -69,7 +69,7 @@ by applying one or more type contstructors to other types, or **unknown**,
 implying that nothing is known about the type.
 
 ### Primitives
-Each primtive type can be regarded as a combination of a size -- in bits --
+Each primtive type can be regarded as a combination of a size (in bits)
 and a member of one or more type domains. Some typical type domains are
 `SignedInteger`, `UnsignedInteger`, `Character` and `Real`.
 
@@ -84,6 +84,13 @@ resulting type is either a signed integer, an unsigned integer, or a
 "signless" integer, which is a union of the `SignedInteger` and 
 `UnsignedInteger` domains.
 
+A special type, different from all primitive types, is the `VoidType`.
+It denotes the absence of a type -- as opposed to the absence of 
+information _about_ a type. It is of particular importance when denoting 
+procedures that return no value: clearly such a procedure cannot have 
+a no return type. In the C programming language, this corresponds to a 
+function whose return type is `void`. 
+
 ### Composite types
 The `Pointer` type is composed of a "pointee" type and the size of the
 pointer itself in bits.
@@ -96,8 +103,9 @@ offset.
 A `UnionType` models A C/C++ union type.
 
 ### Unknown
-There are cases when Reko encounters symbols or machine instructions when absolutely
-nothing is known about the type, not even its size. For instance, this occurs when 
-demangling GCC C++ function names. The GCC demangling scheme doesn't record the return type
-of the function, so Reko has no idea what data type is returned from the function.
+There are cases when Reko encounters symbols or machine instructions
+when absolutely nothing is known about the type, not even its size.
+For instance, this occurs when demangling GCC C++ function names.
+The GCC demangling scheme doesn't record the return type of the function,
+so Reko has no idea what data type is returned from the function.
 

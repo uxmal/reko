@@ -102,7 +102,7 @@ namespace Reko.ImageLoaders.Dol
 		public override Program Load(Address addrLoad) {
 			var cfgSvc = Services.RequireService<IConfigurationService>();
 			var arch = cfgSvc.GetArchitecture("ppc-32-be");
-			var platform = new WiiPlatform(Services, arch);
+			var platform = cfgSvc.GetEnvironment("wii").Load(Services, arch);
 			return Load(addrLoad, arch, platform);
 		}
 

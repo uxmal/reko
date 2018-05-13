@@ -66,11 +66,16 @@ namespace Reko.Core
 		}
 
 
-		/// <summary>
-		/// </summary>
-		/// <param name="charType"></param>
-		/// <returns></returns>
-		public bool ReadNullCharTerminator(DataType charType)
+        public T ReadAt<T>(long offset, Func<EndianImageReader, T> action)
+        {
+            return base.ReadAt(offset, rdr => action.Invoke((EndianImageReader)rdr));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="charType"></param>
+        /// <returns></returns>
+        public bool ReadNullCharTerminator(DataType charType)
 		{
 			switch (charType.Size)
 			{
@@ -166,7 +171,12 @@ namespace Reko.Core
 			return new LeImageReader(image, (uint)(addr - image.BaseAddress));
 		}
 
-		public override short ReadInt16() { return ReadLeInt16(); }
+        public T ReadAt<T>(long offset, Func<LeImageReader, T> action)
+        {
+            return base.ReadAt(offset, rdr => action.Invoke((LeImageReader)rdr));
+        }
+
+        public override short ReadInt16() { return ReadLeInt16(); }
 		public override int ReadInt32() { return ReadLeInt32(); }
 		public override long ReadInt64() { return ReadLeInt64(); }
 		public override ushort ReadUInt16() { return ReadLeUInt16(); }
@@ -214,7 +224,12 @@ namespace Reko.Core
 			return new BeImageReader(image, (uint)(addr - image.BaseAddress));
 		}
 
-		public override short ReadInt16() { return ReadBeInt16(); }
+        public T ReadAt<T>(long offset, Func<BeImageReader, T> action)
+        {
+            return base.ReadAt<T>(offset, rdr => action.Invoke((BeImageReader)rdr));
+        }
+
+        public override short ReadInt16() { return ReadBeInt16(); }
 		public override int ReadInt32() { return ReadBeInt32(); }
 		public override long ReadInt64() { return ReadBeInt64(); }
 		public override ushort ReadUInt16() { return ReadBeUInt16(); }

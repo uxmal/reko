@@ -24,6 +24,7 @@ using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Visualizers;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -78,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 control.ImageMapView.ImageMap = value.ImageMap;
                 control.ImageMapView.SegmentMap = value.SegmentMap;
                 control.ImageMapView.Granularity = value.SegmentMap.GetExtent();
-                control.ByteMapView.SegmentMap = value.SegmentMap;
+                control.VisualizerControl.Program = value;
             }
             return;
         }
@@ -111,6 +112,11 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.DisassemblyView.Services = this.services;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
+            this.Control.VisualizerControl.Services = services;
+            PopulateVisualizers();
+            this.Control.VisualizerList.SelectedIndexChanged += VisualizerList_SelectedIndexChanged;
+            this.control.VisualizerList.SelectedIndex = 0;
+
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
 
@@ -121,6 +127,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             return control;
         }
+
 
         public void SetSite(IServiceProvider sp)
         {
@@ -133,13 +140,29 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void NavigateToToolbarAddress()
         {
-            Address addr;
-            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
+            var txtAddr = Control.ToolBarAddressTextbox.Text;
+            if (txtAddr[0] == 0xFEFF)
+            {
+                // Get rid of UTF-16 BOM Windows insists on prepending
+                 txtAddr = txtAddr.Substring(1);
+            }
+            txtAddr = txtAddr.Trim();
             if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
                 txtAddr = txtAddr.Substring(2);
-            if (!program.Architecture.TryParseAddress(txtAddr, out addr))
+            if (!program.Architecture.TryParseAddress(txtAddr, out Address addr))
                 return;
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
+        }
+
+        private void PopulateVisualizers()
+        {
+            //$REVIEW: load the visualizers from a config file?
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
+            this.control.VisualizerList.Items.Add(
+                new ListOption { Text = "Code and data", Value = new CodeDataVisualizer() });
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -598,5 +621,14 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
+
+        private void VisualizerList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = (ListOption) this.control.VisualizerList.SelectedItem;
+            if (item == null)
+                return;
+            this.Control.VisualizerControl.Visualizer = (Visualizer)item.Value;
+        }
+
     }
 }

@@ -240,8 +240,6 @@ namespace Reko.Core
             {
                 try
                 {
-                    if (s[0] == 0xFEFF)
-                        s = s.Substring(1);
                     result = Ptr32(Convert.ToUInt32(s, 16));
                     return true;
                 }

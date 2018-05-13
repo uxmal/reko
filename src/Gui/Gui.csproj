@@ -221,6 +221,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SearchService.cs" />
+    <Compile Include="SelectionService.cs" />
     <Compile Include="SignatureParser.cs" />
     <Compile Include="StatementNavigator.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
@@ -230,6 +231,10 @@
     <Compile Include="Forms\FinalPageInteractor.cs" />
     <Compile Include="Forms\InitialPageInteractor.cs" />
     <Compile Include="Forms\PhasePageInteractor.cs" />
+    <Compile Include="Visualizers\AsciiStringVisualizer.cs" />
+    <Compile Include="Visualizers\CodeDataVisualizer.cs" />
+    <Compile Include="Visualizers\HeatmapVisualizer.cs" />
+    <Compile Include="Visualizers\Visualizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -267,7 +272,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cmdids.xslt" />
+    <Content Include="cmdids.xslt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="decompiler-menus.xml">
       <SubType>Designer</SubType>
     </Content>
