@@ -124,10 +124,30 @@ namespace Reko.Analysis
         }
 
         /// <summary>
+        /// Check if there are uses which is not in the procedure statements
+        /// list
+        /// </summary>
+        private void ValidateDeadUses(Action<string> error)
+        {
+            var deadUses = Identifiers
+                .SelectMany(
+                    sid => sid.Uses
+                    .Except(Procedure.Statements)
+                    .Select(u => (sid, u)));
+            foreach (var (sid, use) in deadUses)
+            {
+                error(
+                    $"{Procedure.Name}: there is no {sid.Identifier} use " +
+                    $"({use}) in procedure statements list");
+            }
+        }
+
+        /// <summary>
         /// Compare uses stored in SsaState with actual ones
         /// </summary>
         public void ValidateUses(Action<string> error)
         {
+            ValidateDeadUses(error);
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
             {
