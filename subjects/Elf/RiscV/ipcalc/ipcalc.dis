@@ -1155,7 +1155,7 @@ void fn0000000000015180(word64 ra, word64 gp, word64 a0, word64 a1)
 
 // MayUse:  a0 a1 gp ra
 // LiveOut:
-// Trashed: a0 a1 a2 a3 a4 a5 a6 a7 fa3 fa4 fa5 ra s0 s1 s10 s11 s2 s3 s4 s5 s6 s7 s8 s9 sp t1 t3 t4 t5 t6
+// Trashed: a0 a1 a2 a3 a4 a5 a6 a7 fa3 fa4 fa5 s0 s1 s10 s2 s3 s4 s6 s7 s8 s9 sp t1 t3 t4 t5 t6
 // Preserved: a0 a1 ra s11 s5
 fn0000000000015180_entry:
 // DataOut: a0 a1 gp ra
@@ -2437,7 +2437,7 @@ l000000000001522C:
 fn0000000000015180_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:<invalid> s3:<invalid> s2:<invalid> s0:<invalid> s6:<invalid> s9:<invalid> s10:<invalid> s4:<invalid> s7:<invalid> a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> t3:<invalid> t1:<invalid> ra:<invalid> s5:<invalid> s11:<invalid> a6:<invalid> t4:<invalid> t5:<invalid> a7:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> t6:<invalid> -448(fp):<invalid> -440(fp):<invalid> -420(fp):0x0000000000000000 -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
+// SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:<invalid> s3:<invalid> s2:<invalid> s0:<invalid> s6:<invalid> s9:<invalid> s10:<invalid> s4:<invalid> s7:<invalid> a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> t3:<invalid> t1:<invalid> ra:ra s5:s5 s11:s11 a6:<invalid> t4:<invalid> t5:<invalid> a7:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> t6:<invalid> -448(fp):<invalid> -440(fp):<invalid> -420(fp):0x0000000000000000 -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 
 
@@ -4323,7 +4323,7 @@ word64 fn0000000000016D74(word64 ra, word64 gp, word64 s0, word64 a0, word64 a1,
 
 // MayUse:  a0 a1 a2 a3 gp ra s0
 // LiveOut: a0
-// Trashed: a0 a1 a2 a3 a4 a5 a6 a7 fa3 fa4 fa5 ra s0 s1 s2 s3 s4 s5 s6 s7 s8 sp t1 t3 t4 t5 t6
+// Trashed: a0 a1 a2 a3 a4 a5 a6 a7 fa3 fa4 fa5 t1 t3 t4 t5 t6
 // Preserved: ra s0 s1 s2 s3 s4 s5 s6 s7 s8 sp
 fn0000000000016D74_entry:
 // DataOut: a0 a1 a2 a3 gp ra s0 s10
@@ -4810,7 +4810,7 @@ l0000000000016E30:
 fn0000000000016D74_exit:
 // DataOut: a0
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> a5:<invalid> s6:<invalid> s1:<invalid> a2:<invalid> s5:<invalid> a0:<invalid> a1:<invalid> s8:<invalid> a3:<invalid> t3:<invalid> t1:<invalid> a4:<invalid> ra:<invalid> s0:<invalid> s2:<invalid> s3:<invalid> s4:<invalid> s7:<invalid> a7:<invalid> t5:<invalid> t4:<invalid> a6:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> t6:<invalid> -400(fp):<invalid> -88(fp):<invalid> -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
+// SymbolicIn: sp:fp a5:<invalid> s6:s6 s1:s1 a2:<invalid> s5:s5 a0:<invalid> a1:<invalid> s8:s8 a3:<invalid> t3:<invalid> t1:<invalid> a4:<invalid> ra:ra s0:s0 s2:s2 s3:s3 s4:s4 s7:s7 a7:<invalid> t5:<invalid> t4:<invalid> a6:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> t6:<invalid> -400(fp):<invalid> -88(fp):<invalid> -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 
 

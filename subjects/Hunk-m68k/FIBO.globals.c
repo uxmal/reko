@@ -4,13 +4,15 @@
 
 #include "FIBO.h"
 
-Eq_817 g_tFFFFFFFF;
-struct Eq_126 * g_ptr0000;
-Eq_981 g_t0001;
-Eq_817 g_t0005;
+Eq_757 g_tFFFFFFFF;
+struct Eq_125 * g_ptr0000;
+Eq_880 g_t0001;
+Eq_757 g_t0005;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_4562 g_a28B1[] = 
+byte g_b1410 = 0x49;
+byte g_b1438 = 0x49;
+Eq_4371 g_a28B1[] = 
 	{
 	};
 ptr32 g_ptr3E94 = 0x00000000;
@@ -24,13 +26,13 @@ ui32 g_dw3EB0 = 0x05050505;
 word32 g_dw3EBC = 0x05050505;
 ptr32 g_ptr3EC0 = 0x06060606;
 word32 g_dw3EC4 = 0x06060606;
-struct Eq_3117 * g_ptr3EC8 = &g_t6060606;
+struct Eq_2940 * g_ptr3EC8 = &g_t6060606;
 word32 g_dw3ECC = 0x06060606;
-Eq_3666 g_a3ED0[] = 
+Eq_3487 g_a3ED0[] = 
 	{
 	};
 Eq_5 g_t4000;
 Eq_68 g_t10202;
 Eq_68 g_t3030303;
-Eq_3117 g_t6060606;
+Eq_2940 g_t6060606;
 

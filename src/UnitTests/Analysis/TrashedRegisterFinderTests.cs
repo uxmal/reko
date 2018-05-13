@@ -76,8 +76,9 @@ namespace Reko.UnitTests.Analysis
             return bflow;
         }
 
-        private TrashedRegisterFinder CreateTrashedRegisterFinder()
+        private TrashedRegisterFinder CreateTrashedRegisterFinder(bool createFlow = false)
         {
+            this.flow = createFlow ? new ProgramDataFlow(program) : this.flow;
             return new TrashedRegisterFinder(program, program.Procedures.Values, this.flow, new FakeDecompilerEventListener());
         }
 
@@ -174,6 +175,39 @@ namespace Reko.UnitTests.Analysis
             if (rst != null)
                 return rst.Name;
             return o.ToString();
+        }
+
+        private void Given_TrashedRegisters(params Identifier[] regs)
+        {
+            program.Platform = new FakePlatform(null, arch)
+            {
+                Test_CreateTrashedRegisters =
+                    () => regs
+                        .Select(id => (RegisterStorage)id.Storage)
+                        .ToHashSet()
+            };
+        }
+
+        private void Given_Procedure(Action<ProcedureBuilder> generator)
+        {
+            generator(m);
+            program.Procedures.Add(Address.Ptr32(0x10000), m.Procedure);
+            program.CallGraph.AddProcedure(m.Procedure);
+        }
+
+        private void AssertPreservedRegisters(string expected)
+        {
+            var pf = flow[m.Procedure];
+            var actual = pf.EmitRegisters(
+                program.Architecture,
+                "",
+                pf.PreservedRegisters);
+            expected = " " + expected;
+            if (expected != actual)
+            {
+                Debug.Print(actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
         [Test]
@@ -419,6 +453,33 @@ namespace Reko.UnitTests.Analysis
             trf.Compute();
             ProcedureFlow pf = flow[proc];
             Assert.AreEqual(" ebp esp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
+        }
+
+        [Test(Description = "Indirect call should not prevent detection of preserved registers")]
+        public void TrfBackpropagateStackPointer()
+        {
+            var esp = m.Frame.EnsureRegister(Registers.esp);
+            var ebp = m.Frame.EnsureRegister(Registers.ebp);
+            var esi = m.Frame.EnsureRegister(Registers.esi);
+            Given_TrashedRegisters(esp, esi, ebp);
+            Given_Procedure(m =>
+            {
+                m.Assign(esp, m.ISub(esp, 4));
+                m.MStore(esp, ebp);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.MStore(esp, esi);
+                m.Call(esi, 4);
+                m.Assign(esi, m.Mem32(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Assign(ebp, m.Mem32(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Return();
+            });
+
+            trf = CreateTrashedRegisterFinder(true);
+            trf.Compute();
+
+            AssertPreservedRegisters("ebp esi esp");
         }
 
         [Test]
