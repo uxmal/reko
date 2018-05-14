@@ -96,6 +96,17 @@ namespace Reko.Arch.Arm
             case ImmediateOperand imm:
                 writer.WriteFormat($"#{imm.Value.ToInt32():X}");
                 break;
+            case MemoryOperand mem:
+                writer.WriteChar('[');
+                writer.WriteString(mem.BaseRegister.Name);
+                if (mem.Offset != null && !(mem.Offset.IsIntegerZero))
+                {
+                    writer.WriteChar(',');
+                    writer.WriteChar('#');
+                    writer.WriteUInt32(mem.Offset.ToUInt32());
+                }
+                writer.WriteChar(']');
+                break;
             default:
                 throw new NotImplementedException(op.GetType().Name);
             }
