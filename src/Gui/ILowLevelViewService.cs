@@ -20,8 +20,6 @@
 
 using Reko.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Gui
 {
@@ -37,12 +35,34 @@ namespace Reko.Gui
         public AddressRange AddressRange { get { return range; } }
     }
 
+    /// <summary>
+    /// The ILowLevelViewService can be used by user interface methods 
+    /// to display a memory dump and raw disassembly of a Program.
+    /// </summary>
     public interface ILowLevelViewService
     {
+        /// <summary>
+        /// Show a low level window for the specified <paramref name="program"/>.
+        /// If the window is already visible, bring it to the foreground.
+        /// </summary>
+        /// <param name="program">Program whose low-level details are to 
+        /// be shown.</param>
         void ShowWindow(Program program);
+        /// <summary>
+        /// Show a low level window for the specified <paramref name="program"/>, and
+        /// display the first few bytes.
+        /// </summary>
+        /// <param name="program">Program whose low-level details are to 
+        /// be shown.</param>
         void ViewImage(Program program);
+
+        /// <summary>
+        /// Show a low-level window for the specified <paramref name="program"/>, and
+        /// make the address <paramref name="addr"/> visible on screen.
+        /// </summary>
+        /// <param name="program">Program whose low-level details are to 
+        /// be shown.</param>
+        /// <param name="addr">Address to show.</param>
         void ShowMemoryAtAddress(Program program, Address addr);
-        AddressRange GetSelectedAddressRange();
-        void InvalidateWindow();
     }
 }
