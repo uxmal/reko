@@ -69,8 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="A32Rewriter.cs" />
     <Compile Include="AArch64.cs" />
+    <Compile Include="AArch64Disassembler.cs" />
     <Compile Include="AArch64Instruction.cs" />
     <Compile Include="Arm32Architecture.cs" />
     <Compile Include="Arm32InstructionNew.cs" />

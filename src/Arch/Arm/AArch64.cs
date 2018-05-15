@@ -89,6 +89,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new AArch64Disassembler(this, rdr);
+            /*
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -116,7 +118,7 @@ namespace Reko.Arch.Arm
                 {
                     hBytes.Free();
                 }
-            }
+            }*/
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
@@ -181,8 +183,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (regsByName.TryGetValue(name, out reg))
+            if (regsByName.TryGetValue(name, out var reg))
                 return reg;
             else
                 return null;

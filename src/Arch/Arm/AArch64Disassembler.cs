@@ -19,9 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Rtl;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,25 +27,23 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm
 {
-    public class T32Rewriter : IEnumerable<RtlInstructionCluster>
+    public class AArch64Disassembler : DisassemblerBase<Arm64Instruction>
     {
-        private ThumbArchitecture arch;
+        private Arm64Architecture arch;
         private EndianImageReader rdr;
+        private Address addr;
 
-        public T32Rewriter(ThumbArchitecture arch, EndianImageReader rdr)
+        public AArch64Disassembler(Arm64Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
         }
 
-        public IEnumerator<RtlInstructionCluster> GetEnumerator()
+        public override Arm64Instruction DisassembleInstruction()
         {
-
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+            this.addr = rdr.Address;
+            if (!rdr.TryReadLeUInt32(out var wInstr))
+                return null;
             throw new NotImplementedException();
         }
     }
