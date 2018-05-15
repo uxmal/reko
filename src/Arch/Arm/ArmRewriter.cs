@@ -402,7 +402,7 @@ namespace Reko.Arch.Arm
                 case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
                 case Opcode.qsub: RewriteQAddSub(m.ISub); break;
                 case Opcode.qsub16: RewriteVectorBinOp("__qsub_%s", ArmVectorData.S16); break;
-                case Opcode.pop: RewritePop(); break;
+                case Opcode.pop_w: RewritePop(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.rev: RewriteRev(); break;
                 case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.UpdateFlags); break;

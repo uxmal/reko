@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +28,29 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm
 {
-    public enum ArmShiftType
+    public class MultiRegisterOperand : MachineOperand
     {
-        LSL,
-        ROR
+        private ushort bitmask;
+
+        public MultiRegisterOperand(PrimitiveType width, ushort bitmask) : base(width)
+        {
+            this.bitmask = bitmask;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var sep = '{';
+            int mask = 1;
+            for (int i = 0; i < 16; ++i, mask <<= 1)
+            {
+                if ((bitmask & mask) != 0)
+                {
+                    writer.WriteChar(sep);
+                    sep = ',';
+                    writer.WriteString(Registers.GpRegs[i].Name);
+                }
+            }
+            writer.WriteChar('}');
+        }
     }
 }

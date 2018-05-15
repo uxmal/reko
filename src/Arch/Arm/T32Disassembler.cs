@@ -96,17 +96,17 @@ namespace Reko.Arch.Arm
                     break;
                 case 'r':   // register specified by 3 bits (r0..r7)
                     offset = format[++i] - '0';
-                    op = new RegisterOperand(arch.GetGpRegister(SBitfield(wInstr, offset, 3)));
+                    op = new RegisterOperand(Registers.GpRegs[SBitfield(wInstr, offset, 3)]);
                     break;
                 case 'Q':   // register specified by 7:2..0:
-                    op = new RegisterOperand(arch.GetGpRegister(
+                    op = new RegisterOperand(Registers.GpRegs[
                         ((((int)wInstr >> 7) & 1) << 3) |
-                        ((int)wInstr & 0x03)));
+                        ((int)wInstr & 0x03)]);
                     break;
                 case 'R':   // 4-bit register.
                     offset = format[++i] - '0';
-                    op = new RegisterOperand(arch.GetGpRegister(
-                        ((int)wInstr >> offset) & 0x0F));
+                    op = new RegisterOperand(Registers.GpRegs[
+                        ((int)wInstr >> offset) & 0x0F]);
                     break;
                 case '[':   // Memory access
                     ++i;
@@ -144,6 +144,13 @@ namespace Reko.Arch.Arm
                             Offset = Constant.Int32(offset)
                         };
                     }
+                    break;
+                case 'P': // PC-relative offset, aligned by 4 bytes
+                    ++i;
+                    offset = ReadDecimal(format, ref i);
+                    Expect(':', format, ref i);
+                    size = ReadDecimal(format, ref i);
+                    op = AddressOperand.Create(addr.Align(4) + (SBitfield(wInstr, offset, size) << 2));
                     break;
                 }
                 ops.Add(op);
@@ -225,8 +232,6 @@ namespace Reko.Arch.Arm
             private int shift;
             private uint mask;
 
-
-
             public MaskDecoder(int shift, uint mask, params Decoder [] decoders)
             {
                 Debug.Assert(decoders == null || (int) (mask + 1) == decoders.Length);
@@ -237,8 +242,31 @@ namespace Reko.Arch.Arm
 
             public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
             {
+                TraceDecoder(wInstr);
                 var op = (wInstr >> shift) & mask;
                 return decoders[op].Decode(dasm, wInstr);
+            }
+
+            [Conditional("DEBUG")]
+            public void TraceDecoder(uint wInstr)
+            {
+                var shMask = this.mask << shift;
+                var hibit = 0x80000000u;
+                var sb = new StringBuilder();
+                for (int i = 0; i < 32; ++i)
+                {
+                    if ((shMask & hibit) != 0)
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
+                    }
+                    else
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
+                    }
+                    shMask <<= 1;
+                    wInstr <<= 1;
+                }
+                Debug.Print(sb.ToString());
             }
         }
 
@@ -298,6 +326,31 @@ namespace Reko.Arch.Arm
             }
         }
 
+        // Decodes LDM* STM* instructions
+        private class LdmStmDecoder : Decoder
+        {
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                var rn = Registers.GpRegs[SBitfield(wInstr, 16, 4)];
+                var registers = (ushort)wInstr;
+                var w = SBitfield(wInstr, 16 + 5, 1) != 0;
+                var l = SBitfield(wInstr, 16 + 4, 1);
+                if (w)
+                {
+                    // writeback
+                    if (rn == Registers.sp)
+                    {
+                        return new Arm32InstructionNew
+                        {
+                            opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
+                            op1 = new MultiRegisterOperand(PrimitiveType.Word16, (registers))
+                        };
+                    }
+                }
+                throw new NotImplementedException();
+            }
+        }
+
         private class NyiDecoder : Decoder
         {
             private string message;
@@ -340,21 +393,23 @@ namespace Reko.Arch.Arm
         private static MaskDecoder Create16bitDecoders()
         {
             var decAlu = CreateAluDecoder();
-            var decDataLowRegisters = new MaskDecoder(1, 0, null);
+            var decDataLowRegisters = Nyi("data low registers");
             var decDataHiRegisters = new MaskDecoder(8, 0x03,
                 Nyi("add, adds"), // add, adds (register);
                 Nyi ("cmp (register)"), // cmp (register);
                 new Instr16Decoder(Opcode.mov, "Q,R3"), // mov,movs
                 invalid);
-            var decLdrLiteral = new MaskDecoder(1, 0, null);
-            var decLdStRegOffset = new MaskDecoder(1, 0, null);
-            var decLdStWB = new MaskDecoder(1, 0, null);
-            var decLdStHalfword = new MaskDecoder(1, 0, null);
-            var decLdStSpRelative = new MaskDecoder(1, 0, null);
-            var decAddPcSp = new MaskDecoder(1, 0, null);
+            var decLdrLiteral = Nyi("Ldr literal");
+            var decLdStRegOffset = Nyi("LdStRegOffset");
+            var decLdStWB = Nyi("LdStWB");
+            var decLdStHalfword = Nyi("LdStHalfWord");
+            var decLdStSpRelative = Nyi("LdStSpRelative");
+            var decAddPcSp = new MaskDecoder(11, 1,
+                new Instr16Decoder(Opcode.adr, "r8,P0:8"),
+                new Instr16Decoder(Opcode.add, "r8,sp,I0:8"));
             var decMisc16Bit = CreateMisc16bitDecoder();
-            var decLdmStm = new MaskDecoder(1, 0, null);
-            var decCondBranch = new MaskDecoder(1, 0, null);
+            var decLdmStm = Nyi("LdmStm");
+            var decCondBranch = Nyi("CondBranch");
 
             return new MaskDecoder(13, 0x07,
                 decAlu,
@@ -430,7 +485,7 @@ namespace Reko.Arch.Arm
                     new Instr16Decoder(Opcode.sub, "sp,I")),
 
                 invalid,
-                new MaskDecoder(3, 0, null), // Extend
+                Nyi("Extend"),
                 invalid,
 
                 invalid,
@@ -465,6 +520,7 @@ namespace Reko.Arch.Arm
         private static LongDecoder CreateLongDecoder()
         {
             var branchesMiscControl = CreateBranchesMiscControl();
+            var loadStoreMultipleTableBranch = CreateLoadStoreMultipleBranchDecoder();
 
             return new LongDecoder(new Decoder[16]
             {
@@ -473,7 +529,7 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid,
 
-                Nyi("Load/store (multiple, dual, exclusive) table branch"),
+                loadStoreMultipleTableBranch,
                 Nyi("Data processing (shifted register)"),
                 invalid,
                 invalid,
@@ -496,6 +552,35 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid
             });
+        }
+
+        private static MaskDecoder CreateLoadStoreMultipleBranchDecoder()
+        {
+            var ldmStm = new LdmStmDecoder();
+            var ldStExclusive = Nyi("Load/store exclusive, load-acquire/store-release, table branch");
+            var ldStDual = Nyi("Load/store dual (post-indexed)");
+            var ldStDualImm = Nyi("Load/store dual (literal and immediate)");
+            var ldStDualPre = Nyi("Load/store dual (literal and immediate)");
+            return new MaskDecoder(5 + 16, 0xF, // Load/store (multiple, dual, exclusive) table branch");
+                ldmStm,
+                ldmStm,
+                ldStExclusive,
+                ldStDual,
+
+                ldmStm,
+                ldmStm,
+                ldStExclusive,
+                ldStDual,
+
+                ldmStm,
+                ldmStm,
+                ldStDualImm,
+                ldStDualPre,
+
+                ldmStm,
+                ldmStm,
+                ldStDualImm,
+                ldStDualPre);
         }
 
         private static Decoder CreateBranchesMiscControl()

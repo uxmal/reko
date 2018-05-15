@@ -26,6 +26,14 @@ namespace Reko.Arch.Arm
 {
     public class Arm32InstructionNew : MachineInstruction
     {
+        #region Specially rendered opcodes
+        private static readonly Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
+        {
+            { Opcode.pop_w, "pop.w" },
+            { Opcode.push_w, "push.w" }
+        };
+        #endregion
+
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand op1 { get; set; }
@@ -68,31 +76,32 @@ namespace Reko.Arch.Arm
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(opcode.ToString());
+            if (!opcodes.TryGetValue(opcode, out var sOpcode))
+            {
+                sOpcode = opcode.ToString();
+            }
+            writer.WriteOpcode(sOpcode);
             if (op1 == null) return;
             writer.Tab();
-            RenderOperand(op1, writer);
+            RenderOperand(op1, writer, options);
 
             if (op2 == null) return;
             writer.WriteChar(',');
-            RenderOperand(op2, writer);
+            RenderOperand(op2, writer, options);
 
             if (op3 == null) return;
             writer.WriteChar(',');
-            RenderOperand(op3, writer);
+            RenderOperand(op3, writer, options);
 
             if (op4 == null) return;
             writer.WriteChar(',');
-            RenderOperand(op4, writer);
+            RenderOperand(op4, writer, options);
         }
 
-        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer)
+        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                writer.WriteString(rop.Register.Name);
-                break;
             case ImmediateOperand imm:
                 writer.WriteFormat($"#{imm.Value.ToInt32():X}");
                 break;
@@ -111,7 +120,8 @@ namespace Reko.Arch.Arm
                 writer.WriteAddress($"${aop.Address}", aop.Address);
                 break;
             default:
-                throw new NotImplementedException(op.GetType().Name);
+                op.Write(writer, options);
+                break;
             }
         }
 
@@ -119,11 +129,12 @@ namespace Reko.Arch.Arm
         {
             { Opcode.hlt, InstructionClass.System },
         };
-        internal bool Writeback;
-        internal bool UpdateFlags;
-        internal ArmShiftType ShiftType;
-        internal uint ShiftValue;
-        internal ArmVectorData vector_data;
-        internal int vector_size;
+
+        public bool Writeback;
+        public bool UpdateFlags;
+        public ArmShiftType ShiftType;
+        public uint ShiftValue;
+        public ArmVectorData vector_data;
+        public int vector_size;
     }
 }

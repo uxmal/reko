@@ -5653,7 +5653,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xA020);  // adr         r0,0040111C
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = 00100084");
+                "1|L--|r0 = 00100080");
         }
 
         [Test]
