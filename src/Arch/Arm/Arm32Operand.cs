@@ -34,10 +34,15 @@ namespace Reko.Arch.Arm
     {
         public RegisterStorage BaseRegister;
         public Constant Offset;
+        public RegisterOperand Index;
+        internal ArmShiftType ShiftType;
+        internal int Shift;
 
         public MemoryOperand(PrimitiveType dataType) : base(dataType)
         {
         }
+
+        public int Scale { get; internal set; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

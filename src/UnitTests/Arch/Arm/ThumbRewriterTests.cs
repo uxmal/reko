@@ -5563,7 +5563,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xB002); // add\tsp,#8
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|sp = sp + 0x00000008");
+                "1|L--|sp = sp + 8");
         }
 
         [Test]

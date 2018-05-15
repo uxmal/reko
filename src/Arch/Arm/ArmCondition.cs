@@ -22,6 +22,22 @@
 {
     public enum ArmCondition
     {
+        Invalid = -1,
+        EQ,
+        NE,
+        HS,
+        LO,
+        MI,
+        PL,
+        VS,
+        VC,
+        HI,
+        LS,
+        GE,
+        LT,
+        GT,
+        LE,
         AL = 0xE,
+
     }
 }

@@ -32,7 +32,67 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbRewriterNew : IEnumerable<RtlInstructionCluster>
+    public class ThumbRewriter : ArmRewriter
+    {
+        private int itState;
+        private ArmCondition itStateCondition;
+
+        public ThumbRewriter(
+            ThumbArchitecture arch,
+            EndianImageReader rdr,
+            IRewriterHost host,
+            IStorageBinder binder) :
+            base(arch, rdr, host, binder, new T32Disassembler(arch, rdr).GetEnumerator())
+        {
+
+
+            this.itState = 0;
+            this.itStateCondition = ArmCondition.AL;
+        }
+
+
+        protected override void PostRewrite()
+        {
+            itState = (itState << 1);
+            if ((itState & 0x0F) == 0)
+            {
+                itStateCondition = ArmCondition.AL;
+            }
+        }
+
+        protected override void ConditionalSkip(bool force)
+        {
+            if (this.itStateCondition != ArmCondition.AL)
+            {
+                rtlClass |= RtlClass.Conditional;
+                var cc = itStateCondition;
+                if ((itState & 0x10) != 0)
+                    cc = Invert(cc);
+                m.BranchInMiddleOfInstruction(
+                    TestCond(cc),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
+            }
+        }
+
+        protected override void RewriteIt()
+        {
+            int i;
+            itState = 0;
+            var mnemonic = instr.opcode.ToString();
+            for (i = 1; i < mnemonic.Length; ++i)
+            {
+                itState = (itState << 1) | (mnemonic[i] == 't' ? 1 : 0);
+            }
+            int sh = 5 - i;
+            itState = ((itState << 1) | 1) << sh;
+
+            itStateCondition = instr.condition;
+            m.Nop();
+        }
+    }
+
+    public class ThumbRewriterRetired : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
         private INativeArchitecture nArch;
@@ -40,7 +100,7 @@ namespace Reko.Arch.Arm
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ThumbRewriterNew(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public ThumbRewriterRetired(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.nArch = nArch;
@@ -75,7 +135,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterNew outer)
+            public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterRetired outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
@@ -154,7 +214,7 @@ namespace Reko.Arch.Arm
             }
         }
 
-        static ThumbRewriterNew()
+        static ThumbRewriterRetired()
         {
             IID_INativeRewriter = typeof(INativeRewriter).GUID;
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;

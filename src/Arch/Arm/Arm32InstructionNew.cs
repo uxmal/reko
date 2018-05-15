@@ -107,6 +107,9 @@ namespace Reko.Arch.Arm
                 }
                 writer.WriteChar(']');
                 break;
+            case AddressOperand aop:
+                writer.WriteAddress($"${aop.Address}", aop.Address);
+                break;
             default:
                 throw new NotImplementedException(op.GetType().Name);
             }
@@ -116,5 +119,11 @@ namespace Reko.Arch.Arm
         {
             { Opcode.hlt, InstructionClass.System },
         };
+        internal bool Writeback;
+        internal bool UpdateFlags;
+        internal ArmShiftType ShiftType;
+        internal uint ShiftValue;
+        internal ArmVectorData vector_data;
+        internal int vector_size;
     }
 }

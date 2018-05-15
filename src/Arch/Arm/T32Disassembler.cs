@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -31,6 +32,10 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm
 {
+    /// <summary>
+    /// Disassembles machine code in the ARM T32 encoding into 
+    /// ARM32 instructions.
+    /// </summary>
     public class T32Disassembler : DisassemblerBase<Arm32InstructionNew>
     {
         private static Decoder[] decoders;
@@ -38,6 +43,7 @@ namespace Reko.Arch.Arm
 
         private ImageReader rdr;
         private ThumbArchitecture arch;
+        private Address addr;
 
         public T32Disassembler(ThumbArchitecture arch, ImageReader rdr)
         {
@@ -47,11 +53,12 @@ namespace Reko.Arch.Arm
 
         public override Arm32InstructionNew DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out var wInstr))
                 return null;
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
             instr.Address = addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -237,16 +244,19 @@ namespace Reko.Arch.Arm
 
         private class LongDecoder : Decoder
         {
-            public LongDecoder()
+            private Decoder[] decoders;
+
+            public LongDecoder(Decoder [] decoders)
             {
+                this.decoders = decoders;
             }
 
             public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
             {
-                if (!dasm.rdr.TryReadLeUInt16(out var wHi))
+                if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
-                wInstr |= (uint)wHi << 16;
-                throw new NotImplementedException();
+                wInstr = (wInstr << 16) | wNext;
+                return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(dasm, wInstr);
             }
         }
 
@@ -267,11 +277,32 @@ namespace Reko.Arch.Arm
             }
         }
 
-        private class Nyi : Decoder
+        // Decodes the T1 BL instruction
+        private class BlDecoder : Decoder
+        {
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                var s = SBitfield(wInstr, 10 + 16, 1);
+                var i1 = 1 & ~(SBitfield(wInstr, 13, 1) ^ s);
+                var i2 = 1 & ~(SBitfield(wInstr, 11, 1) ^ s);
+                var off = (int) Bits.SignExtend((uint)s, 1);
+                off = (off << 2) | (i1 << 1) | i2;
+                off = (off << 10) | SBitfield(wInstr, 16, 10);
+                off = (off << 11) | SBitfield(wInstr, 0, 11);
+                off <<= 1;
+                return new Arm32InstructionNew
+                {
+                    opcode = Opcode.bl,
+                    op1 = AddressOperand.Create(dasm.addr + off)
+                };
+            }
+        }
+
+        private class NyiDecoder : Decoder
         {
             private string message;
 
-            public Nyi(string message)
+            public NyiDecoder(string message)
             {
                 this.message = message;
             }
@@ -287,8 +318,8 @@ namespace Reko.Arch.Arm
             invalid = new Instr16Decoder(Opcode.Invalid, "");
 
             var dec16bit = Create16bitDecoders();
-            var decB_T32 = new Nyi("B-T32 variant");
-            var dec32bit = new LongDecoder();
+            var decB_T32 = Nyi("B-T32 variant");
+            var dec32bit = CreateLongDecoder();
             decoders = new Decoder[8] {
                 dec16bit,
                 dec16bit,
@@ -311,8 +342,8 @@ namespace Reko.Arch.Arm
             var decAlu = CreateAluDecoder();
             var decDataLowRegisters = new MaskDecoder(1, 0, null);
             var decDataHiRegisters = new MaskDecoder(8, 0x03,
-                new Nyi("add, adds"), // add, adds (register);
-                new Nyi ("cmp (register)"), // cmp (register);
+                Nyi("add, adds"), // add, adds (register);
+                Nyi ("cmp (register)"), // cmp (register);
                 new Instr16Decoder(Opcode.mov, "Q,R3"), // mov,movs
                 invalid);
             var decLdrLiteral = new MaskDecoder(1, 0, null);
@@ -405,10 +436,10 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid,
                 new MaskDecoder(5, 0x7,
-                    new Nyi("SETPAN"),        // SETPAN
+                    Nyi("SETPAN"),        // SETPAN
                     invalid,
-                    new Nyi("Change processor state"),        // Change processor state
-                    new Nyi("WUT"),
+                    Nyi("Change processor state"),        // Change processor state
+                    Nyi("WUT"),
 
                     invalid,
                     invalid,
@@ -419,16 +450,96 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid,
                 new MaskDecoder(6, 0x3,
-                    new Nyi("Reverse bytes"),        // reverse bytes
-                    new Nyi("Reverse bytes"),        // reverse bytes
+                    Nyi("Reverse bytes"),        // reverse bytes
+                    Nyi("Reverse bytes"),        // reverse bytes
                     new Instr16Decoder(Opcode.hlt, ""),
-                    new Nyi("Reverse bytes")),        // reverse bytes),
+                    Nyi("Reverse bytes")),        // reverse bytes),
                 invalid,
 
                 invalid,
                 invalid,
                 new Instr16Decoder(Opcode.bkpt, ""),
-                new Nyi("Hints"));            // hints
+                Nyi("Hints"));            // hints
+        }
+
+        private static LongDecoder CreateLongDecoder()
+        {
+            var branchesMiscControl = CreateBranchesMiscControl();
+
+            return new LongDecoder(new Decoder[16]
+            {
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                Nyi("Load/store (multiple, dual, exclusive) table branch"),
+                Nyi("Data processing (shifted register)"),
+                invalid,
+                invalid,
+
+                new MaskDecoder(15, 1,
+                    Nyi("Data-processing (modified immediate)"),
+                    branchesMiscControl),
+                new MaskDecoder(15, 1,
+                    Nyi("Data-processing (plain binary immediate)"),
+                    branchesMiscControl),
+                branchesMiscControl,
+                branchesMiscControl,
+
+                Nyi("Load/store single"),       //$TODO: unallocated
+                new MaskDecoder(7 + 16, 3,
+                    Nyi("Data-processing (register)"),
+                    Nyi("Data-processing (register)"),
+                    Nyi("Multiply, multiply accumulate (register)"),
+                    Nyi("Long multiply and divide")),
+                invalid,
+                invalid
+            });
+        }
+
+        private static Decoder CreateBranchesMiscControl()
+        {
+            var branch_T3_variant = Nyi("B - T3 variant");
+            var branch_T4_variant = Nyi("B - T4 variant");
+            var branch = Nyi("Branch");
+            var nonbranch = Nyi("nonbranch");
+            var mixedDecoders = new MaskDecoder(7 + 16, 0xF,
+                branch_T3_variant,
+                branch_T3_variant,
+                branch_T3_variant,
+                branch_T3_variant,
+
+                branch_T3_variant,
+                branch_T3_variant,
+                branch_T3_variant,
+                nonbranch,
+
+                branch_T3_variant,
+                branch_T3_variant,
+                branch_T3_variant,
+                branch_T3_variant,
+
+                branch_T3_variant,
+                branch_T3_variant,
+                branch_T3_variant,
+                nonbranch);
+            var bl = new BlDecoder();
+            return new MaskDecoder(12, 7,
+                mixedDecoders,
+                branch_T4_variant,
+                mixedDecoders,
+                branch_T4_variant,
+
+                invalid,
+                bl,
+                invalid,
+                bl);
+        }
+
+        private static NyiDecoder Nyi(string msg)
+        {
+            return new NyiDecoder(msg);
         }
     }
 }

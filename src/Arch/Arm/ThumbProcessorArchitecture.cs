@@ -36,7 +36,6 @@ namespace Reko.Arch.Arm
 {
     public class ThumbArchitecture : ProcessorArchitecture
     {
-
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
@@ -122,7 +121,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new ThumbRewriterNew(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
+            return new ThumbRewriter(this, rdr, host, binder);
+            //return new ThumbRewriterRetired(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)

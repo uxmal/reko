@@ -1,0 +1,197 @@
+/*
+* Copyright (C) 1999-2018 John Källén.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+
+using Reko.Core.Rtl;
+using Reko.Core.Types;
+using System;
+
+namespace Reko.Arch.Arm
+{
+    public partial class ArmRewriter
+    {
+
+        private void RewriteCdp(string name)
+        {
+            throw new NotImplementedException();
+            //auto cdp = host.PseudoProcedure(name, VoidType.Instance, instr->detail->arm.op_count);
+            //auto begin = &instr->detail->arm.operands[0];
+            //auto end = begin + instr->detail->arm.op_count;
+            //for (auto op = begin; op != end; ++op)
+            //{
+            //	m.AddArg(Operand(*op));
+            //}
+            //m.SideEffect(m.Fn(cdp));
+        }
+
+        private void RewriteCps()
+        {
+            throw new NotImplementedException();
+            /*
+            if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
+            {
+                m.SideEffect(m.Fn(host.PseudoProcedure("__cps_id", VoidType.Instance, 1)));
+                return;
+            }
+            NotImplementedYet();
+            */
+        }
+
+        private void RewriteDmb()
+        {
+            /*
+            var memBarrier = MemBarrierName(instr->detail->arm.mem_barrier);
+            char name[100];
+            snprintf(name, sizeof(name), "__dmb_%s", memBarrier);
+            m.SideEffect(m.Fn(host.PseudoProcedure(name, VoidType.Instance, 1)));
+            */
+        }
+
+        private void RewriteLdc(string fnName)
+        {
+            var src2 = Operand(Src2());
+            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tmp, src2);
+            var  intrinsic = host.PseudoProcedure(fnName, PrimitiveType.Word32, 
+                Operand(Src1()),
+                tmp);
+            var fn = m.Fn(intrinsic);
+            var dst = Operand(Dst(), PrimitiveType.Word32, true);
+            m.Assign(dst, fn);
+        }
+
+        private void RewriteMcr()
+        {
+            throw new NotImplementedException();
+            /*
+            auto begin = &instr->detail->arm.operands[0];
+            auto end = begin + instr->detail->arm.op_count;
+            int cArgs = 0;
+            for (auto op = begin; op != end; ++op)
+            {
+                m.AddArg(Operand(*op));
+                ++cArgs;
+            }
+            auto ppp = host.PseudoProcedure("__mcr", VoidType.Instance, cArgs);
+            m.SideEffect(m.Fn(ppp));*/
+        }
+
+        private void RewriteMrc()
+        {
+            throw new NotImplementedException();
+            /*
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count;
+	int cArgs = 0;
+	HExpr regDst = HExpr(-1);
+	for (auto op = begin; op != end; ++op)
+	{
+		auto a = Operand(*op);
+		if (cArgs == 2)
+		{
+			regDst = a;
+		}
+		else
+		{
+			m.AddArg(a);
+		}
+		++cArgs;
+	}
+	auto ppp = host.PseudoProcedure("__mrc", VoidType.Instance, cArgs-1);
+	m.Assign(regDst, m.Fn(ppp));
+    */
+        }
+
+        private void RewriteMrs()
+        {
+            var ppp = host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1()));
+            m.Assign(Operand(Dst()), m.Fn(ppp));
+        }
+
+        private void RewriteMsr()
+        {
+            var ppp = host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst()), Operand(Src1()));
+            m.SideEffect(m.Fn(ppp));
+        }
+
+        private void RewriteStc(string name)
+        {
+            var intrinsic = host.PseudoProcedure("__stc", PrimitiveType.Word32,
+                Operand(Dst()),
+                Operand(Src1()),
+                Operand(Src2()));
+            m.SideEffect(m.Fn(intrinsic));
+        }
+
+        private void RewriteSvc()
+        {
+            this.rtlClass = RtlClass.Transfer | RtlClass.Call;
+            var intrinsic = host.PseudoProcedure("__syscall", VoidType.Instance, Operand(Dst()));
+            m.SideEffect(m.Fn(intrinsic));
+        }
+
+        private void RewriteTrap()
+        {
+            throw new NotImplementedException();
+            /*
+	var trapNo = m.UInt32(instr.bytes[0]);
+	var ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, 1);
+	m.AddArg(trapNo);
+	m.SideEffect(m.Fn(ppp));
+    */
+        }
+
+        private void RewriteUdf()
+        {
+            throw new NotImplementedException();
+            /*
+	auto trapNo = m.UInt32(instr->bytes[0]);
+	auto ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, 1);
+	m.AddArg(trapNo);
+	m.SideEffect(m.Fn(ppp));
+    */
+        }
+
+        /*
+
+string MemBarrierName(arm_mem_barrier barrier)
+{
+
+	switch (barrier)
+	{
+		//case ARM_MB_INVALID = 0,
+		//case 	ARM_MB_RESERVED_0,
+	case 	ARM_MB_OSHLD: return "oshld";
+	case 	ARM_MB_OSHST: return "oshst";
+	case 	ARM_MB_OSH: return "osh";
+		//case 	ARM_MB_RESERVED_4,
+	case 	ARM_MB_NSHLD: return "nshld";
+	case 	ARM_MB_NSHST: return "nshst";
+	case 	ARM_MB_NSH: return "nsh";
+		//case 	ARM_MB_RESERVED_8,
+	case 	ARM_MB_ISHLD: return "ishld";
+	case 	ARM_MB_ISHST: return "ishst";
+	case 	ARM_MB_ISH: return "ish";
+		//case 	ARM_MB_RESERVED_12,
+	case 	ARM_MB_LD: return "ld";
+	case 	ARM_MB_ST: return "st";
+	case 	ARM_MB_SY: return "sy";
+	}
+	return "NOT_IMPLEMENTED";
+    */
+    }
+}

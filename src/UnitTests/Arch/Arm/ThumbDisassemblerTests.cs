@@ -55,7 +55,13 @@ namespace Reko.UnitTests.Arch.Arm
             return armInstr;
         }
 
-        protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, EndianImageReader rdr)
+        private void AssertCode(string sExp, params ushort[] instrs)
+        {
+            var instr = Disassemble16(instrs);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
+    protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, EndianImageReader rdr)
         {
             return arch.CreateDisassembler(rdr).GetEnumerator();
         }
@@ -85,7 +91,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_bl()
         {
             var instr = Disassemble16(0xF000, 0xFA06);
-            Assert.AreEqual("bl\t$00100410", instr.ToString());
+            Assert.AreEqual("bl\t$0010040C", instr.ToString());
         }
 
         [Test]
@@ -121,6 +127,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble16(0xE8BD, 0x8800);
             Assert.AreEqual("pop.w\t{fp,pc}", instr.ToString());
+        }
+
+        [Test]
+        public void ThumbDis_add()
+        {
+            AssertCode("add\tsp,#8", 0xB002);
         }
     }
 }
