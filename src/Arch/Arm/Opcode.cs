@@ -53,6 +53,7 @@
         ldrd,
         ldrex,
         lsl,
+        lsls,
         lsr,
         nop,
         mcr,

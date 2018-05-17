@@ -5527,7 +5527,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xF000, 0xFA06); // bl\t$00100410
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|call 00100410 (0)");
+                "1|T--|call 0010040C (0)");
         }
 
         [Test]
@@ -5635,7 +5635,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xD101);  // bne         00401056
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (Test(NE,Z)) branch 00100006");
+                "1|T--|if (Test(NE,Z)) branch 00100002");
         }
 
         [Test]
@@ -5662,7 +5662,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0x0040);  // lsls        r0,#1
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|r0 = r0 << 0x00000001",
+                "1|L--|r0 = r0 << 1",
                 "2|L--|NZC = cond(r0)");
         }
 
@@ -5785,7 +5785,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0x1388);  // asrs        r0,r1,#0xE
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|r0 = r1 >> 0x0000000E",
+                "1|L--|r0 = r1 >> 14",
                 "2|L--|NZC = cond(r0)");
         }
 

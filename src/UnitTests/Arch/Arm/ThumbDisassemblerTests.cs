@@ -70,14 +70,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_push()
         {
             var instr = Disassemble16(0xE92D, 0x4800);
-            Assert.AreEqual("push.w\t{r11,lr}", instr.ToString());
+            Assert.AreEqual("push.w\t{fp,lr}", instr.ToString());
         }
 
         [Test]
         public void ThumbDis_mov()
         {
             var instr = Disassemble16(0x46EB);
-            Assert.AreEqual("mov\tr11,sp", instr.ToString());
+            Assert.AreEqual("mov\tfp,sp", instr.ToString());
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_pop()
         {
             var instr = Disassemble16(0xE8BD, 0x8800);
-            Assert.AreEqual("pop.w\t{r11,pc}", instr.ToString());
+            Assert.AreEqual("pop.w\t{fp,pc}", instr.ToString());
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_add_sp_imm()
         {
-            AssertCode("add\tr0,sp,0040111C", 0xA820);
+            AssertCode("add\tr0,sp,#80", 0xA820);
         }
     }
 }

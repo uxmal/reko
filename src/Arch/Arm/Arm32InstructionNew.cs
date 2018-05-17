@@ -136,5 +136,6 @@ namespace Reko.Arch.Arm
         public uint ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;
+        public byte itmask;
     }
 }

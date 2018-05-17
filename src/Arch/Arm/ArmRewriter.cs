@@ -379,7 +379,7 @@ namespace Reko.Arch.Arm
                 case Opcode.ldrsht: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
                 case Opcode.ldrd: RewriteLdrd(); break;
                 case Opcode.ldrex: RewriteLdrex(); break;
-                case Opcode.lsl: RewriteShift(m.Shl); break;
+                case Opcode.lsl: case Opcode.lsls: RewriteShift(m.Shl); break;
                 case Opcode.lsr: RewriteShift(m.Shr); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.mcr: RewriteMcr(); break;
@@ -402,8 +402,8 @@ namespace Reko.Arch.Arm
                 case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
                 case Opcode.qsub: RewriteQAddSub(m.ISub); break;
                 case Opcode.qsub16: RewriteVectorBinOp("__qsub_%s", ArmVectorData.S16); break;
-                case Opcode.pop_w: RewritePop(); break;
-                case Opcode.push: RewritePush(); break;
+                case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
+                case Opcode.push: case Opcode.push_w: RewritePush(); break;
                 case Opcode.rev: RewriteRev(); break;
                 case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.UpdateFlags); break;
                 case Opcode.rsc: RewriteAdcSbc(m.ISub, true); break;
@@ -789,8 +789,10 @@ case ARM_OP_SYSREG:
                     }
                     return m.Mem(SizeFromLoadStore(), ea);
                 }
+            case AddressOperand aop:
+                return aop.Address;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException(op.GetType().Name);
         }
 
         DataType SizeFromLoadStore()

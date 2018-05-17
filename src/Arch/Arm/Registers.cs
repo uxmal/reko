@@ -21,8 +21,8 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11 = new RegisterStorage("r11", 11, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r12 = new RegisterStorage("r12", 12, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage fp = new RegisterStorage("fp", 11, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage ip = new RegisterStorage("ip", 12, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage sp = new RegisterStorage("sp", 13, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage lr = new RegisterStorage("lr", 14, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage pc = new RegisterStorage("pc", 15, 0, PrimitiveType.Word32);
@@ -31,8 +31,8 @@ namespace Reko.Arch.Arm
         {
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3,
                 Registers.r4, Registers.r5, Registers.r6, Registers.r7,
-                Registers.r8, Registers.r9, Registers.r10, Registers.r11,
-                Registers.r12, Registers.sp, Registers.lr, Registers.pc,
+                Registers.r8, Registers.r9, Registers.r10, Registers.fp,
+                Registers.ip, Registers.sp, Registers.lr, Registers.pc,
         };
         public static readonly RegisterStorage cpsr = new RegisterStorage("cpsr", 16, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage fpscr = new RegisterStorage("fpscr", 17, 0, PrimitiveType.Word32);

@@ -65,6 +65,8 @@ namespace Reko.Arch.Arm
         private Arm32InstructionNew DecodeFormat16(uint wInstr, Opcode opcode, string format)
         {
             var ops = new List<MachineOperand>();
+            ArmCondition cc = ArmCondition.AL;
+            bool updateFlags = false;
             for (int i = 0; i < format.Length; ++i)
             {
                 int offset;
@@ -74,6 +76,9 @@ namespace Reko.Arch.Arm
                 switch (format[i])
                 {
                 case ',':
+                    continue;
+                case '.':
+                    updateFlags = true;
                     continue;
                 case 's':
                     ++i;
@@ -85,7 +90,15 @@ namespace Reko.Arch.Arm
                         throw new NotImplementedException(format);
                     }
                     break;
+                case 'S':   // shift amount in bitfield.
+                    ++i;
+                    offset = this.ReadDecimal(format, ref i);
+                    Expect(':', format, ref i);
+                    size = this.ReadDecimal(format, ref i);
+                    op = ImmediateOperand.Int32(SBitfield(wInstr, offset, size));
+                    break;
                 case 'i':   // immediate value in bitfield
+                    ++i;
                     offset = this.ReadDecimal(format, ref i);
                     Expect(':', format, ref i);
                     size = this.ReadDecimal(format, ref i);
@@ -108,14 +121,23 @@ namespace Reko.Arch.Arm
                     op = new RegisterOperand(Registers.GpRegs[
                         ((int)wInstr >> offset) & 0x0F]);
                     break;
+                case 'T':   // 4-bit register, specified by bits 7 || 2..0
+                    var tReg = ((wInstr & 0x80) >> 4) | (wInstr & 7);
+                    op = new RegisterOperand(Registers.GpRegs[tReg]);
+                    break;
                 case '[':   // Memory access
                     ++i;
                     if (PeekAndDiscard('s', format, ref i))
                     {
                         baseReg = arch.StackRegister;
                     }
-                    else
+                    else if (PeekAndDiscard('r', format, ref i))
                     {
+                        var reg = ReadDecimal(format, ref i);
+                        baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
+                    }
+                    else
+                    { 
                         throw new NotImplementedException();
                     }
                     if (PeekAndDiscard(',', format, ref i))
@@ -152,6 +174,19 @@ namespace Reko.Arch.Arm
                     size = ReadDecimal(format, ref i);
                     op = AddressOperand.Create(addr.Align(4) + (SBitfield(wInstr, offset, size) << 2));
                     break;
+                case 'p':   // PC-relative offset, shift by 1 bit.
+                    ++i;
+                    offset = ReadDecimal(format, ref i);
+                    Expect(':', format, ref i);
+                    size = ReadDecimal(format, ref i);
+                    op = AddressOperand.Create(addr + (SBitfield(wInstr, offset, size) << 1));
+                    break;
+                case 'c':
+                    ++i;
+                    offset = ReadDecimal(format, ref i);
+                    cc = (ArmCondition) SBitfield(wInstr, offset, 4);
+                    --i;
+                    continue;
                 }
                 ops.Add(op);
             }
@@ -159,6 +194,8 @@ namespace Reko.Arch.Arm
             return new Arm32InstructionNew
             {
                 opcode = opcode,
+                condition = cc,
+                UpdateFlags = updateFlags,
                 op1 = ops.Count > 0 ? ops[0] : null,
                 op2 = ops.Count > 1 ? ops[1] : null,
                 op3 = ops.Count > 2 ? ops[2] : null,
@@ -270,6 +307,27 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private class SelectDecoder : Decoder
+        {
+            private Func<uint, bool> predicate;
+            private Decoder trueDecoder;
+            private Decoder falseDecoder;
+
+            public SelectDecoder(Func<uint, bool> predicate, 
+                Decoder trueDecoder,
+                Decoder falseDecoder)
+            {
+                this.predicate = predicate;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                return (predicate(wInstr) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
+            }
+        }
+
         private class LongDecoder : Decoder
         {
             private Decoder[] decoders;
@@ -351,6 +409,42 @@ namespace Reko.Arch.Arm
             }
         }
 
+        // Decodes Mov/Movs instructions with optional shifts
+        private class MovMovsDecoder : Instr16Decoder
+        {
+            private string format;
+
+            public MovMovsDecoder(Opcode opcode, string format) : base(opcode, format)
+            {
+                this.format = format;
+            }
+
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                var instr = base.Decode(dasm, wInstr);
+                if (instr.op3 is ImmediateOperand imm && imm.Value.IsIntegerZero)
+                {
+                    instr.opcode = Opcode.movs;
+                }
+                return instr;
+            }
+        }
+
+        // Decodes IT instructions
+        private class ItDecoder : Decoder
+        {
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                var instr = new Arm32InstructionNew
+                {
+                    opcode = Opcode.it,
+                    condition = (ArmCondition)SBitfield(wInstr, 4, 4),
+                    itmask = (byte) SBitfield(wInstr, 0, 4)
+                };
+                return instr;
+            }
+        }
+
         private class NyiDecoder : Decoder
         {
             private string message;
@@ -393,10 +487,10 @@ namespace Reko.Arch.Arm
         private static MaskDecoder Create16bitDecoders()
         {
             var decAlu = CreateAluDecoder();
-            var decDataLowRegisters = Nyi("data low registers");
-            var decDataHiRegisters = new MaskDecoder(8, 0x03,
+            var decDataLowRegisters = CreateDataLowRegisters();
+            var decDataHiRegisters = new MaskDecoder(8, 0x03, // Add, subtract, compare, move (two high registers)
                 Nyi("add, adds"), // add, adds (register);
-                Nyi ("cmp (register)"), // cmp (register);
+                new Instr16Decoder(Opcode.cmp, ".T,R3"),
                 new Instr16Decoder(Opcode.mov, "Q,R3"), // mov,movs
                 invalid);
             var decLdrLiteral = Nyi("Ldr literal");
@@ -409,7 +503,26 @@ namespace Reko.Arch.Arm
                 new Instr16Decoder(Opcode.add, "r8,sp,I0:8"));
             var decMisc16Bit = CreateMisc16bitDecoder();
             var decLdmStm = Nyi("LdmStm");
-            var decCondBranch = Nyi("CondBranch");
+            var decCondBranch = new MaskDecoder(8, 0xF, // "CondBranch"
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.b, "c8p0:8"),
+                new Instr16Decoder(Opcode.udf, "i0:8"),
+                new Instr16Decoder(Opcode.svc, "i0:8"));
 
             return new MaskDecoder(13, 0x07,
                 decAlu,
@@ -421,8 +534,8 @@ namespace Reko.Arch.Arm
                         decDataHiRegisters,
                         decDataHiRegisters,
                         new MaskDecoder(7,1,
-                            new Instr16Decoder(Opcode.bx, "r3"),
-                            new Instr16Decoder(Opcode.blx, "r3"))),
+                            new Instr16Decoder(Opcode.bx, "R3"),
+                            new Instr16Decoder(Opcode.blx, "R3"))),
                     decLdrLiteral,
                     decLdrLiteral,
 
@@ -430,10 +543,16 @@ namespace Reko.Arch.Arm
                     decLdStRegOffset,
                     decLdStRegOffset,
                     decLdStRegOffset),
-                decLdStWB,
+                new MaskDecoder(11, 0x03,   // decLdStWB,
+                    new Instr16Decoder(Opcode.str, "r0,[r3,I6:5:w]"),
+                    new Instr16Decoder(Opcode.ldr, "r0,[r3,I6:5:w]"),
+                    new Instr16Decoder(Opcode.strb, "r0,[r3,I6:5:b]"),
+                    new Instr16Decoder(Opcode.ldrb, "r0,[r3,I6:5:b]")),
 
                 new MaskDecoder(12, 0x01,
-                    decLdStHalfword,
+                    new MaskDecoder(11, 0x01,
+                        new Instr16Decoder(Opcode.strh, "r0,[r3,I6:5:h]"),
+                        new Instr16Decoder(Opcode.ldrh, "r0,[r3,I6:5:h]")),
                     new MaskDecoder(11, 0x01,   // load store SP-relative
                         new Instr16Decoder(Opcode.str, "r8,[s,I0:8:w]"),
                         new Instr16Decoder(Opcode.ldr, "r8,[s,I0:8:w]"))),
@@ -448,10 +567,14 @@ namespace Reko.Arch.Arm
 
         private static Decoder CreateAluDecoder()
         {
-            var decAddSub3 = new MaskDecoder(3, 0, null);
-            var decAddSub3Imm = new MaskDecoder(3, 0, null);
-            var decMovMovs = new MaskDecoder(3, 0, null);
-            var decAddSub = new MaskDecoder(3, 0, null);
+            var decAddSub3 = Nyi("addsub3");
+            var decAddSub3Imm = Nyi("AddSub3Imm");
+            var decMovMovs = new MaskDecoder(11, 3,
+                new MovMovsDecoder(Opcode.lsls, ".r0,r3,S6:5"),
+                new MovMovsDecoder(Opcode.lsrs, ".r0,r3,S6:5"),
+                new Instr16Decoder(Opcode.asrs, ".r0,r3,S6:5"),
+                invalid);
+            var decAddSub = Nyi("AddSub");
             return new MaskDecoder(10, 0xF,
                 decMovMovs,
                 decMovMovs,
@@ -475,6 +598,30 @@ namespace Reko.Arch.Arm
                 decAddSub,
                 decAddSub,
                 decAddSub);
+        }
+
+        private static Decoder CreateDataLowRegisters()
+        {
+            return new MaskDecoder(6, 0xF,
+                new Instr16Decoder(Opcode.and, ".r0,r3"),
+                new Instr16Decoder(Opcode.eor, ".r0,r3"),
+                Nyi("MOV,MOVS"),
+                Nyi("MOV,MOVS"),
+
+                Nyi("MOV,MOVS"),
+                new Instr16Decoder(Opcode.adc, ".r0,r3"),
+                new Instr16Decoder(Opcode.sbc, ".r0,r3"),
+                Nyi("MOV,MOVS"),
+
+                new Instr16Decoder(Opcode.adc, ".r0,r3"),
+                new Instr16Decoder(Opcode.rsb, ".r0,r3"),
+                new Instr16Decoder(Opcode.cmp, ".r0,r3"),
+                new Instr16Decoder(Opcode.cmn, ".r0,r3"),
+
+                invalid,
+                invalid,
+                invalid,
+                invalid);
         }
 
         private static Decoder CreateMisc16bitDecoder()
@@ -514,7 +661,29 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid,
                 new Instr16Decoder(Opcode.bkpt, ""),
-                Nyi("Hints"));            // hints
+                new SelectDecoder(w => (w & 0xF) == 0,
+                    new MaskDecoder(4, 0xF, // Hints
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.yield, ""),
+                        new Instr16Decoder(Opcode.wfe, ""),
+                        new Instr16Decoder(Opcode.wfi, ""),
+
+                        new Instr16Decoder(Opcode.sev, ""),
+                        new Instr16Decoder(Opcode.nop, ""), // Reserved hints, behaves as NOP.
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.nop, ""),
+
+                        new Instr16Decoder(Opcode.nop, ""), // Reserved hints, behaves as NOP.
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.nop, ""),
+
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.nop, ""),
+                        new Instr16Decoder(Opcode.nop, "")),
+                    new ItDecoder()));
+
         }
 
         private static LongDecoder CreateLongDecoder()

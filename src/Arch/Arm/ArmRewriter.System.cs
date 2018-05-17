@@ -16,6 +16,7 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -157,13 +158,9 @@ namespace Reko.Arch.Arm
 
         private void RewriteUdf()
         {
-            throw new NotImplementedException();
-            /*
-	auto trapNo = m.UInt32(instr->bytes[0]);
-	auto ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, 1);
-	m.AddArg(trapNo);
-	m.SideEffect(m.Fn(ppp));
-    */
+            var trapNo = ((ImmediateOperand)instr.op1).Value;
+            var ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, trapNo);
+            m.SideEffect(ppp);
         }
 
         /*
