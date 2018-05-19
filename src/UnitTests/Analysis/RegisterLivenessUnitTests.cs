@@ -349,5 +349,14 @@ namespace Reko.UnitTests.Analysis
 			}
 			return sw.ToString();
 		}	
-	}
+
+        [Test]
+        public void Rl_DepositBytes()
+        {
+            Identifier edx = f.EnsureRegister(Registers.edx);
+            Identifier al = f.EnsureRegister(Registers.al);
+            m.Assign(edx, m.Dpb(edx, al, 0)).Accept(rl);
+            Assert.AreEqual(" al", Dump(rl.IdentifierLiveness));
+        }
+    }
 }
