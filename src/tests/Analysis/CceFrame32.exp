@@ -1,6 +1,6 @@
 fp:fp
     def:  def fp
-    uses: call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
+    uses: call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Stack +0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 esp_2: orig: esp
 Top_3: orig: Top
 Mem0:Mem
@@ -9,13 +9,13 @@ Mem0:Mem
 eax_5: orig: eax
     def:  eax_5 = Mem0[0x10003420:word32]
     uses: dwLoc04_16 = eax_5
-          call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
+          call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Stack +0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 esp_6: orig: esp
 Mem7: orig: Mem0
 esp_8: orig: esp
-    def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
+    def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Stack +0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 eax_9: orig: eax
-    def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
+    def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Stack +0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
     uses: ax_14 = (word16) eax_9 (alias)
 Top_10: orig: Top
 SCZO_11: orig: SCZO
@@ -28,7 +28,7 @@ Mem15: orig: Mem0
     def:  Mem15[0x10003428:word16] = ax_14
 dwLoc04_16: orig: dwLoc04
     def:  dwLoc04_16 = eax_5
-    uses: call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
+    uses: call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Stack +0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 // fn10000000
 // Return size: 4
 define fn10000000
@@ -40,7 +40,7 @@ l10000000:
 	eax_5 = Mem0[0x10003420:word32]
 	dwLoc04_16 = eax_5
 	call fn10000017 (retsize: 4;)
-		uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0
+		uses: eax:eax_5,esp:fp - 0x00000004,Stack +0004:dwLoc04_16,Top:0
 		defs: eax:eax_9,esp:esp_8
 	ax_14 = (word16) eax_9 (alias)
 	Mem15[0x10003428:word16] = ax_14

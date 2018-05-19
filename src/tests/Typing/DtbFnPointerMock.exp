@@ -6,7 +6,7 @@ FnPointerFragment_entry:
 l1:
 	Mem4[0x10000000:word32] = 0x01213130
 	call Mem4[0x10000000:word32] (retsize: 4;)
-		uses: Local -0004:0x01213130,r63:fp
+		uses: r63:fp,Stack +0000:0x01213130
 	return
 	// succ:  FnPointerFragment_exit
 FnPointerFragment_exit:

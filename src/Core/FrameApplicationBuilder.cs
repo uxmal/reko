@@ -134,14 +134,18 @@ namespace Reko.Core
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
         {
             if (ensureVariables)
+            {
                 return binder.EnsureStackVariable(
                     stack.StackOffset - site.StackDepthOnEntry,
                     stack.DataType);
+            }
             else
+            {
                 return arch.CreateStackAccess(
-                    binder, 
+                    binder,
                     stack.StackOffset - site.SizeOfReturnAddressOnStack,
                     stack.DataType);
+            }
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

@@ -66,11 +66,11 @@ namespace Reko.UnitTests.Analysis
             this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
             this.r4 = new Identifier("r4", PrimitiveType.Word32, new RegisterStorage("r4", 4, 0, PrimitiveType.Word32));
+            this.programFlow = new ProgramDataFlow();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
-            this.programFlow = new ProgramDataFlow();
             var proc = pb.Add("proc1", builder);
             RunTest(sExp);
         }
@@ -155,7 +155,6 @@ namespace Reko.UnitTests.Analysis
                 }
             };
             program.Platform = platform;
-            this.programFlow = new ProgramDataFlow();
             var writer = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
@@ -682,7 +681,6 @@ proc1_exit:
 
                 // Simulate the creation of a subroutine.
                 var procSub = this.pb.Add("Adder", mm => { });
-
                 var procSubFlow = new ProcedureFlow(m.Procedure) { Trashed = { r1.Storage } };
                 programFlow.ProcedureFlows.Add(procSub, procSubFlow);
 
@@ -692,6 +690,82 @@ proc1_exit:
                 m.MStore(m.Word32(0x012300), r1);
                 m.Return();
             });
+        }
+
+        [Test]
+        public void SsaCallSubroutineWithStackParameters()
+        {
+            var sExp =
+            #region Expected
+@"// Adder
+// Return size: 0
+define Adder
+Adder_entry:
+Adder_exit:
+======
+r63:r63
+    def:  def r63
+    uses: r63_2 = r63 - 0x00000004
+r63_2: orig: r63
+    def:  r63_2 = r63 - 0x00000004
+    uses: Mem3[r63_2:word32] = 0x0000002A
+          call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
+Mem3: orig: Mem0
+    def:  Mem3[r63_2:word32] = 0x0000002A
+    uses: call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
+r1_4: orig: r1
+    def:  r1_4 = 0x00000018
+    uses: call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
+r1_5: orig: r1
+    def:  call Adder (retsize: 4;)	uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]	defs: r1:r1_5
+    uses: Mem6[0x00012300:word32] = r1_5
+Mem6: orig: Mem0
+    def:  Mem6[0x00012300:word32] = r1_5
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r63
+	// succ:  l1
+l1:
+	r63_2 = r63 - 0x00000004
+	Mem3[r63_2:word32] = 0x0000002A
+	r1_4 = 0x00000018
+	call Adder (retsize: 4;)
+		uses: r1:r1_4,Stack +0004:Mem3[r63_2:word32]
+		defs: r1:r1_5
+	Mem6[0x00012300:word32] = r1_5
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                var sp = m.Frame.EnsureRegister(m.Procedure.Architecture.StackRegister);
+
+                // Simulate the creation of a subroutine.
+                var procSub = this.pb.Add("Adder", mm => { });
+                var procSubFlow = new ProcedureFlow(m.Procedure) {
+                    BitsUsed = {
+                        { new StackArgumentStorage(4, PrimitiveType.Word32), new BitRange(0,32) },
+                        { r1.Storage, new BitRange(0, 32) }
+                    },
+                    Trashed = { r1.Storage } };
+                programFlow.ProcedureFlows.Add(procSub, procSubFlow);
+
+                m.Assign(sp, m.ISub(sp, 4));    // push an argument on the stack...
+                m.MStore(sp, m.Word32(42));
+                m.Assign(r1, m.Word32(24));     // ..and one in a register.
+                m.Call(procSub, 4);
+                m.MStore(m.Word32(0x012300), r1);
+                m.Return();
+            });
+
         }
 
         [Test]
@@ -983,7 +1057,7 @@ proc1_exit:
     def:  def fp
     uses: r63_2 = fp
           r63_7 = fp - 0x00000004
-          call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+          call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: r63_19 = PHI(r63_14, r63_2)
@@ -1000,22 +1074,22 @@ r4_5: orig: r4
 r4_6: orig: r4
     def:  r4_6 = Mem0[r4_4 + 0x00000004:word32]
     uses: dwLoc04_16 = r4_6
-          call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+          call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 r63_7: orig: r63
     def:  r63_7 = fp - 0x00000004
 Mem8: orig: Mem0
 r63_9: orig: r63
-    def:  call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
     uses: r63_14 = r63_9 + 0x00000004
 r3:r3
     def:  def r3
-    uses: call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    uses: call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
           r3_17 = PHI(r3_11, r3)
 r3_11: orig: r3
-    def:  call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
     uses: r3_17 = PHI(r3_11, r3)
 r4_12: orig: r4
-    def:  call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
     uses: r4_13 = r4_12 + 0x00000001
 r4_13: orig: r4
     def:  r4_13 = r4_12 + 0x00000001
@@ -1026,10 +1100,10 @@ r63_14: orig: r63
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: r4_4 = dwArg04
-          call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+          call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 dwLoc04_16: orig: dwLoc04
     def:  dwLoc04_16 = r4_6
-    uses: call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
+    uses: call proc1 (retsize: 0;)	uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 r3_17: orig: r3
     def:  r3_17 = PHI(r3_11, r3)
     uses: use r3_17
@@ -1058,7 +1132,7 @@ m0Induction:
 	r63_7 = fp - 0x00000004
 	dwLoc04_16 = r4_6
 	call proc1 (retsize: 0;)
-		uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04
+		uses: r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0000:dwLoc04_16,Stack +0008:dwArg04
 		defs: r3:r3_11,r4:r4_12,r63:r63_9
 	r4_13 = r4_12 + 0x00000001
 	r63_14 = r63_9 + 0x00000004
@@ -3128,7 +3202,8 @@ proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
-        }
+
+    }
 
         [Test]
         public void SsaFPUBlockStateAfterTrivialPhiRemoving()

@@ -104,7 +104,6 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/DfaFactorial.txt");

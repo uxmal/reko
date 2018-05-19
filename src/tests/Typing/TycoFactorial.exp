@@ -4,7 +4,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[ds:0x0064:word16] = fn0C00_000F(0x0064)
+	Mem18[ds:0x0064:word16] = fn0C00_000F(0x0064)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -15,79 +15,96 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 ax_16
+	word16 ax_13
 	branch wArg02 == 0x0001 l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_16 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) (alias)
+	ax_13 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax_16 = 0x0001
+	ax_13 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	return ax_16
+	return ax_13
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
-T_2 (in ds : selector)
-	trait_primitive(selector)
-	trait_mem(T_9, 64)
-T_3 (in fn0C00_000F : segptr32)
-	trait_func(T_6 -> T_7)
-T_5 (in wArg02 : word16)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_equal(T_12)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_primitive(int16)
-T_6 (in 0x0064 : word16)
-	trait_primitive(word16)
-	trait_equal(T_5)
-T_7 (in fn0C00_000F(0x0064) : word16)
-	trait_primitive(word16)
-	trait_equal(T_10)
-T_8 (in 0x0064 : word16)
-	trait_primitive(word16)
-	trait_mem(T_2:T_9, 0)
-T_9 (in Mem8[ds:0x0064:word16] : word16)
-	trait_primitive(word16)
-	trait_equal(T_7)
-T_10 (in ax : word16)
-	trait_primitive(word16)
-	trait_equal(T_11)
-T_11 (in ax_16 : word16)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_equal(T_14)
-	trait_primitive(word16)
-	trait_primitive(word16)
-	trait_equal(T_20)
-	trait_primitive(word16)
-T_12 (in 0x0001 : word16)
-	trait_primitive(word16)
-T_13 (in wArg02 == 0x0001 : bool)
-	trait_primitive(bool)
-T_14 (in 0x0001 : word16)
-	trait_primitive(word16)
-T_15 (in fn0C00_000F : segptr32)
-	trait_func(T_17 -> T_18)
-T_16 (in 0x0001 : word16)
-	trait_primitive(word16)
-T_17 (in wArg02 - 0x0001 : word16)
-	trait_primitive(word16)
-	trait_equal(T_5)
-T_18 (in fn0C00_000F(wArg02 - 0x0001) : word16)
-	trait_primitive(word16)
-	trait_equal(T_10)
-	trait_primitive(int16)
-T_19 (in wArg02 *s fn0C00_000F(wArg02 - 0x0001) : int32)
-	trait_primitive(int32)
-	trait_primitive(int32)
-T_20 (in (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) : word16)
-	trait_primitive(word16)
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in ds : selector)
+  Class: Eq_2
+  DataType: (ptr (segment (64 T_9 t0064)))
+  OrigDataType: (ptr (segment (64 T_9 t0064)))
+T_3: (in fn0C00_000F : segptr32)
+  Class: Eq_3
+  DataType: (ptr (fn T_7 (T_6)))
+  OrigDataType: (ptr (fn T_7 (T_6)))
+T_4: (in signature of fn0C00_000F : void)
+  Class: Eq_3
+  DataType: 
+  OrigDataType: 
+T_5: (in wArg02 : word16)
+  Class: Eq_5
+  DataType: int16
+  OrigDataType: int16
+T_6: (in 0x0064 : word16)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_7: (in fn0C00_000F(0x0064) : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_8: (in 0x0064 : word16)
+  Class: Eq_8
+  DataType: (memptr T_2 (struct (0 T_9 t0000)))
+  OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
+T_9: (in Mem18[ds:0x0064:word16] : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_10: (in ax : word16)
+  Class: Eq_10
+  DataType: word16
+  OrigDataType: word16
+T_11: (in ax_13 : word16)
+  Class: Eq_10
+  DataType: word16
+  OrigDataType: word16
+T_12: (in 0x0001 : word16)
+  Class: Eq_5
+  DataType: int16
+  OrigDataType: int16
+T_13: (in wArg02 == 0x0001 : bool)
+  Class: Eq_13
+  DataType: bool
+  OrigDataType: bool
+T_14: (in 0x0001 : word16)
+  Class: Eq_10
+  DataType: word16
+  OrigDataType: word16
+T_15: (in fn0C00_000F : segptr32)
+  Class: Eq_3
+  DataType: (ptr (fn T_17 (T_16)))
+  OrigDataType: (ptr (fn T_17 (T_16)))
+T_16: (in wArg02 - 0x0001 : word16)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_17: (in fn0C00_000F(wArg02 - 0x0001) : word16)
+  Class: Eq_17
+  DataType: int16
+  OrigDataType: int16
+T_18: (in wArg02 *s fn0C00_000F(wArg02 - 0x0001) : int32)
+  Class: Eq_18
+  DataType: int32
+  OrigDataType: int32
+T_19: (in (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) : word16)
+  Class: Eq_10
+  DataType: word16
+  OrigDataType: word16

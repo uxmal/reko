@@ -391,6 +391,9 @@ namespace Reko.Analysis
                 programFlow.ProcedureFlows.TryGetValue(proc, out var calleeFlow) && 
                 !sccProcs.Contains(proc))
             {
+                // If the callee is a procedure constant and it's not part of the
+                // current recursion group, we should know what storages are live
+                // in and trashed.
                 GenerateUseDefsForKnownCallee(ci, proc, calleeFlow);
             }
             else
@@ -425,17 +428,11 @@ namespace Reko.Analysis
             else
             {
                 fpuStackDelta = calleeFlow.GetFpuStackDelta(arch);
+                var spDepth = GetStackDepthAtCall(ssa.Procedure, ci);
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
-                foreach (var use in calleeFlow.BitsUsed.Keys)
+                foreach (var stgUse in calleeFlow.BitsUsed.Keys)
                 {
-                    var fpuUse = use as FpuStackStorage;
-                    if (fpuUse == null)
-                    {
-                        var arg = use.Accept(ab);
-                        arg = arg.Accept(this);
-                        ci.Uses.Add(new CallBinding(use, arg));
-                    }
-                    else
+                    if (stgUse is FpuStackStorage fpuUse)
                     {
                         var fpuUseExpr = arch.CreateFpuStackAccess(
                             ssa.Procedure.Frame,
@@ -444,8 +441,14 @@ namespace Reko.Analysis
                         fpuUseExpr = fpuUseExpr.Accept(this);
                         ci.Uses.Add(
                             new CallBinding(
-                                use,
+                                stgUse,
                                 fpuUseExpr));
+                    }
+                    else
+                    {
+                        var arg = stgUse.Accept(ab);
+                        arg = arg.Accept(this);
+                        ci.Uses.Add(new CallBinding(stgUse, arg));
                     }
                 }
 
@@ -542,28 +545,65 @@ namespace Reko.Analysis
 
             // Hell node implementation - use and define all variables.
             var frame = ssa.Procedure.Frame;
+            var stackDepth = this.GetStackDepthAtCall(ssa.Procedure, ci);
             var ids = CollectFlagGroups(frame.Identifiers, frame, arch);
             foreach (Identifier id in ResolveOverlaps(ids))
             {
-                if (!existingUses.Contains(id.Storage) &&
-                    (IsTrashed(trashedRegisters, id.Storage)
-                    || id.Storage is StackStorage))
+                var calleeStg = FrameShift(ci, id.Storage, stackDepth);
+                if (!existingUses.Contains(calleeStg) &&
+                    (IsTrashed(trashedRegisters, calleeStg)
+                    || calleeStg is StackStorage))
                 {
                     ci.Uses.Add(new CallBinding(
-                        id.Storage,
+                        calleeStg,
                         NewUse(id, stmCur, true)));
-                    existingUses.Add(id.Storage);
+                    existingUses.Add(calleeStg);
                 }
-                if (!existingDefs.Contains(id.Storage) &&
-                    (IsTrashed(trashedRegisters, id.Storage)
-                    || id.Storage is FlagGroupStorage))
+                if (!existingDefs.Contains(calleeStg) &&
+                    (IsTrashed(trashedRegisters, calleeStg)
+                    || calleeStg is FlagGroupStorage))
                 {
                     ci.Definitions.Add(new CallBinding(
-                        id.Storage,
+                        calleeStg,
                         NewDef(id, ci.Callee, false)));
-                    existingDefs.Add(id.Storage);
+                    existingDefs.Add(calleeStg);
                 }
             }
+        }
+
+        private int GetStackDepthAtCall(Procedure proc, CallInstruction call)
+        {
+            var sp = call.Uses.FirstOrDefault(u => u.Storage == proc.Architecture.StackRegister);
+            if (sp == null)
+                return 0;
+            if (sp.Expression is Identifier fp && fp.Storage == proc.Frame.FramePointer.Storage)
+                return 0;
+            if (sp.Expression is BinaryExpression bin &&
+                bin.Left is Identifier fpLeft && fpLeft.Storage == proc.Frame.FramePointer.Storage &&
+                bin.Right is Constant cRight)
+            {
+                if (bin.Operator == Operator.IAdd)
+                {
+                    return cRight.ToInt32();
+                }
+                else if (bin.Operator == Operator.ISub)
+                {
+                    return -cRight.ToInt32();
+                }
+            }
+            // Give up.
+            return 0;
+        }
+
+        private Storage FrameShift(CallInstruction call, Storage callerStorage, int spDepth)
+        {
+            if (callerStorage is StackStorage stgArg)
+            {
+                return new StackArgumentStorage(
+                    stgArg.StackOffset - spDepth + call.CallSite.SizeOfReturnAddressOnStack,
+                    stgArg.DataType);
+            }
+            return callerStorage;
         }
 
         private bool IsTrashed(
