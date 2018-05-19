@@ -4,35 +4,35 @@
 
 #include "BENCHFN.h"
 
-Eq_768 g_tFFFFFFFF;
-struct Eq_125 * g_ptr0000;
-Eq_887 g_t0001;
-Eq_768 g_t0005;
+Eq_764 g_tFFFFFFFF;
+struct Eq_124 * g_ptr0000;
+Eq_878 g_t0001;
+Eq_764 g_t0005;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b142C = 0x65;
 byte g_b1468 = 0x66;
-Eq_4378 g_a288D[] = 
+Eq_4312 g_a288D[] = 
 	{
 	};
 ptr32 g_ptr3E70 = 0x00000000;
-struct Eq_5 * g_ptr3E74 = &g_t4000;
-struct Eq_32 * g_ptr3E78 = null;
-struct Eq_68 * g_ptr3E7C = &g_t10202;
-struct Eq_68 * g_ptr3E80 = &g_t3030303;
+struct Eq_4 * g_ptr3E74 = &g_t4000;
+struct Eq_31 * g_ptr3E78 = null;
+struct Eq_67 * g_ptr3E7C = &g_t10202;
+struct Eq_67 * g_ptr3E80 = &g_t3030303;
 int32 g_dw3E84 = 67372036;
 int32 g_dw3E88 = 67372036;
 ui32 g_dw3E8C = 0x05050505;
 word32 g_dw3E98 = 0x05050505;
 ptr32 g_ptr3E9C = 0x06060606;
 word32 g_dw3EA0 = 0x06060606;
-struct Eq_2947 * g_ptr3EA4 = &g_t6060606;
+struct Eq_2914 * g_ptr3EA4 = &g_t6060606;
 word32 g_dw3EA8 = 0x06060606;
-Eq_3493 g_a3EAC[] = 
+Eq_3433 g_a3EAC[] = 
 	{
 	};
-Eq_5 g_t4000;
-Eq_68 g_t10202;
-Eq_68 g_t3030303;
-Eq_2947 g_t6060606;
+Eq_4 g_t4000;
+Eq_67 g_t10202;
+Eq_67 g_t3030303;
+Eq_2914 g_t6060606;
 

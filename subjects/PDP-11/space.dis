@@ -763,7 +763,7 @@ l068E:
 	word16 r1_37 = r1_18 << 1
 	word16 r5_39 = __rol(r5, r5)
 	branch r0_38 == 0x0000 l06B2
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r0 r1 r2 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0008 r4:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid>
 // LocalsOut: fp(16) Stack +0008(16) v30(16)
@@ -771,7 +771,7 @@ l068E:
 l069C:
 	word16 r2_91 = r2_22 << 1
 	branch r2_91 == 0x0000 l06B2
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r0 r1 r2 r3 r5
 // DataOut (flags): C
 // SymbolicIn: sp:fp + 0x0006 r4:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> 6(fp):r5 8(fp):<invalid>
 // LocalsOut: fp(16) Stack +0008(16) v30(16)
@@ -795,14 +795,14 @@ l06AE:
 l06B8:
 	r4_100 = r4_100 & 0x7F00
 	branch (r4_100 & 0x7F00) == 0x0000 l06B0
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r0 r1 r2 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0006 r4:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> 6(fp):r5 8(fp):<invalid>
 // LocalsOut: fp(16) Stack +0008(16) v30(16)
 
 l06A8:
 	branch r4_100 > 0x0000 l06BE
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r0 r1 r2 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0006 r4:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> 6(fp):r5 8(fp):<invalid>
 // LocalsOut: fp(16) Stack +0008(16) v30(16)

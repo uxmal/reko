@@ -458,16 +458,16 @@ fn00001680_exit:
 
 
 
-void fn000016D0(word32 d0, word32 d6, word32 a5, word32 dwArg08)
+void fn000016D0(word32 a5, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 d0 d6
+// MayUse:  a5
 // LiveOut:
 // Trashed: CVZNX a0 a2 a3 a4 a6 a7 d0 d2 d3 d4 d5 d6 d7
 // Preserved: a2 a3 a4 a6 a7 d3 d4 d5 d6 d7
 // Stack args: Stack +0008(32)
 fn000016D0_entry:
-// DataOut: a5 d0 d6
+// DataOut: a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -0020(32) Stack +0008(32)
@@ -478,20 +478,20 @@ l000016D0:
 	word32 d6_130 = DPB(d6, v17_42, 0)
 	word32 dwArg08_122 = dwArg08 + 0x00000001
 	branch v17_42 == 0x00 l00001C34
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -000C(32) Local -0020(32) Stack +0008(32)
 
 l000016FA:
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:0 a0:<invalid> d6:<invalid> -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):0 -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l0000170E:
 	branch false l00001C34
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
@@ -499,28 +499,28 @@ l0000170E:
 l00001716:
 	word32 d0_138
 	branch (byte) d6_130 < 0x20 l00001734
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l0000171C:
 	branch (byte) d6_130 > 0x78 l00001734
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001734:
 	d0_138 = 0
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001722:
 	d0_138 = (int32) (Mem0[a5 + -2072 + (int32) ((byte) d6_130):byte] & 0x0F)
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
@@ -529,7 +529,7 @@ l00001736:
 	word32 d0_149 = (int32) (Mem0[a5 + -2040 + ((d0_138 << 0x00000003) + dwLoc0C_121):byte] >> 0x04)
 	dwLoc0C_121 = d0_149
 	branch 7 - d0_149 <u 0x00000000 l00001C24
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
@@ -539,7 +539,7 @@ l00001C24:
 	d6_130 = DPB(d6_130, v38_182, 0)
 	dwArg08_122 = dwArg08_122 + 0x00000001
 	branch v38_182 != 0x00 l0000170E
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
@@ -721,14 +721,14 @@ fn00001CC4_entry:
 
 l00001CC4:
 	branch false l00001D02
-// DataOut: a5 d0 d5
+// DataOut: a5 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32) Stack +000C(32) Stack +0010(32)
 
 l00001CD8:
 	word32 d3_57 = dwArg04
-// DataOut: a5 d0 d3 d4 d5 d6
+// DataOut: a5 d3 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d5:<invalid> d0:<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
@@ -738,7 +738,7 @@ l00001CE4:
 	fn00001C40(a5, d0_78, SLICE(d0_78, byte, 24), dwArg0C, dwArg10)
 	d3_57 = d3_57 + 0x00000001
 	branch false l00001CE4
-// DataOut: a5 d0 d3 d4 d5 d6
+// DataOut: a5 d3 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d5:<invalid> d0:<invalid> d3:<invalid> d4:<invalid> d6:<invalid> a0:<invalid> a1:<invalid> d2:-1 d1:<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
@@ -1821,23 +1821,23 @@ fn000021F0_exit:
 
 
 
-void fn00002264(word32 d1, word32 dwArg04)
+void fn00002264(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d1
+// MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a2 a6 a7
 // Stack args: Stack +0004(32)
 fn00002264_entry:
-// DataOut: d1
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00002264:
 	branch dwArg04 == 0x00000000 l0000228C
-// DataOut: a0 d0 d1
+// DataOut: a0 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
@@ -2490,7 +2490,7 @@ l00002510:
 // LocalsOut: fp(32) Local -0004(32)
 
 l0000252A:
-	branch -1 - fn000028A0(a0_22, d0_23, a5, fp - 0x00000004, dwArg04) == 0x00000000 l000025A8
+	branch -1 - fn000028A0(a0_22, a5, fp - 0x00000004, dwArg04) == 0x00000000 l000025A8
 // DataOut: a5 a6 a7 d3 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d3:<invalid> a2:<invalid> a1:<invalid> d2:<invalid> d0:<invalid> a0:<invalid> d1:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
@@ -3039,16 +3039,16 @@ l000027FE:
 
 
 
-word32 fn000028A0(word32 a0, word32 a2, word32 a5, word32 a6, word32 dwArg04)
+word32 fn000028A0(word32 a0, word32 a5, word32 a6, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a0 a2 a5 a6
+// MayUse:  a0 a5 a6
 // LiveOut: d0
 // Trashed: CVZNX a0 a1 a2 a3 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // Preserved: a2 a6 a7 d3 d4 d5 d6 d7
 // Stack args: Stack +0004(32)
 fn000028A0_entry:
-// DataOut: a0 a2 a5 a6
+// DataOut: a0 a5 a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
@@ -3965,19 +3965,19 @@ fn00002EA8_exit:
 
 
 
-void fn00003340(word32 d0, word32 d1, word32 a5, word16 wArg06)
+void fn00003340(word32 a5, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 d0 d1
+// MayUse:  a5
 // LiveOut:
 // Trashed: CVZNX a0 a1 d0 d1 d2
 // Preserved: a6 a7
-// Stack args: Stack +0006(32)
+// Stack args: Stack +0006(16)
 fn00003340_entry:
-// DataOut: a5 d0 d1
+// DataOut: a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0006(32)
+// LocalsOut: fp(32) Stack +0006(16)
 
 l00003340:
 	Mem18[a5 + -1728:word32] = (int32) wArg06

@@ -4,31 +4,31 @@
 
 #include "MAX.h"
 
-struct Eq_125 * g_ptr0000;
-Eq_5401 g_t0001;
+struct Eq_124 * g_ptr0000;
+Eq_5348 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_826 g_a2BED[] = 
+Eq_819 g_a2BED[] = 
 	{
 	};
 ptr32 g_ptr3D90 = 0x00000000;
-struct Eq_5 * g_ptr3D94 = &g_t4000;
-union Eq_32 * g_ptr3D98 = null;
-struct Eq_68 * g_ptr3D9C = &g_t10202;
-struct Eq_68 * g_ptr3DA0 = &g_t3030303;
+struct Eq_4 * g_ptr3D94 = &g_t4000;
+union Eq_31 * g_ptr3D98 = null;
+struct Eq_67 * g_ptr3D9C = &g_t10202;
+struct Eq_67 * g_ptr3DA0 = &g_t3030303;
 int32 g_dw3DA4 = 67372036;
 int32 g_dw3DA8 = 67372036;
 ui32 g_dw3DAC = 0x05050505;
 word32 g_dw3DB8 = 0x05050505;
 ptr32 g_ptr3DBC = 0x06060606;
 word32 g_dw3DC0 = 0x06060606;
-struct Eq_4623 * g_ptr3DC4 = &g_t6060606;
+struct Eq_4613 * g_ptr3DC4 = &g_t6060606;
 word32 g_dw3DC8 = 0x06060606;
-Eq_7406 g_a3DCC[] = 
+Eq_7339 g_a3DCC[] = 
 	{
 	};
-Eq_5 g_t4000;
-Eq_68 g_t10202;
-Eq_68 g_t3030303;
-Eq_4623 g_t6060606;
+Eq_4 g_t4000;
+Eq_67 g_t10202;
+Eq_67 g_t3030303;
+Eq_4613 g_t6060606;
 
