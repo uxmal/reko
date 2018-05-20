@@ -55,11 +55,11 @@ namespace Reko.UnitTests.Arch.Mips
         private RegisterStorage r12 { get { return arch.GeneralRegs[12]; } }
         private RegisterStorage r30 { get { return arch.GeneralRegs[30]; } }
         private RegisterStorage r21 { get { return arch.GeneralRegs[21]; } }
-        private RegisterStorage sp {  get { return arch.GeneralRegs[29]; } }
-        private RegisterStorage ra {  get { return arch.GeneralRegs[31]; } }
-        private RegisterStorage f0 {  get { return arch.fpuRegs[0]; } }
-        private RegisterStorage f1 {  get { return arch.fpuRegs[1]; } }
-        private RegisterStorage f12 {  get { return arch.fpuRegs[12]; } }
+        private RegisterStorage sp { get { return arch.GeneralRegs[29]; } }
+        private RegisterStorage ra { get { return arch.GeneralRegs[31]; } }
+        private RegisterStorage f0 { get { return arch.fpuRegs[0]; } }
+        private RegisterStorage f1 { get { return arch.fpuRegs[1]; } }
+        private RegisterStorage f12 { get { return arch.fpuRegs[12]; } }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -118,6 +118,12 @@ namespace Reko.UnitTests.Arch.Mips
             var opReg = op as AddressOperand;
             Assert.AreEqual(type, opReg.Width);
             Assert.AreEqual(addr, opReg.Address);
+        }
+
+        private void AssertCode(string sExp, uint wInstr)
+        {
+            var instr = DisassembleWord(wInstr);
+            Assert.AreEqual(sExp, instr.ToString());
         }
 
         [Test]
@@ -741,7 +747,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         [Test]
         public void MipsDis_lld()
-        { 
+        {
             var instr = DisassembleBits("110100 01001 00011 1111111111001000");
             Assert.AreEqual("illegal", instr.ToString());
 
@@ -975,7 +981,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
         }
 
- 
+
 
         [Test]
         public void MipsDis_xor()
@@ -1123,7 +1129,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_bc1f()
         {
-            var instr = DisassembleWord(0x45000012); 
+            var instr = DisassembleWord(0x45000012);
             Assert.AreEqual("bc1f\tcc0,0010004C", instr.ToString());
             Assert.AreEqual(Opcode.bc1f, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Bool);
@@ -1164,6 +1170,82 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             var instr = DisassembleWord(0xFFBF0020);
             Assert.AreEqual("sd\tra,0020(sp)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_movt()
+        {
+            AssertCode("movt\tr1,r0,fcc0", 0x00010101); // 00
+        }
+
+        [Test]
+        public void MipsDis_movf()
+        {
+            AssertCode("movf\tr4,r0,fcc1", 0x00040101); // 00
+        }
+
+        [Test]
+        public void MipsDis_tgeiu()
+        {
+            AssertCode("tgeiu\tr0,+00000000", 0x04090000); // 01
+        }
+
+        [Test]
+        public void MipsDis_jalx()
+        {
+            AssertCode("jalx	0x01bdc881", 0x746f7220);
+        }
+
+        [Test]
+        public void MipsDis_cache()
+        {
+            AssertCode("cache	0x2,0(k0)", 0xbf420000);
+        }
+
+        [Test]
+        public void MipsDis_mul()
+        {
+            AssertCode("mul a0, a0, a1", 0x70852002);
+        }
+
+        [Test]
+        public void MipsDis_lwxc1()
+        {
+
+            AssertCode("lwxc1	$f0,at(t2)", 0x4d410000);
+        }
+
+        [Test]
+        public void MipsDis_cache_3()
+        {
+            AssertCode("cache	0x1,-29256(t8)", 0xbf018db8);
+        }
+
+        [Test]
+        public void MipsDis_cache_1()
+        {
+            AssertCode("cache	0x1,-29416(t8)", 0xbf018d18);
+        }
+
+        [Test]
+        public void MipsDis_swc2()
+        {
+            AssertCode("swc2	$0,-10884(t4)", 0xe980d57c);
+        }
+
+        [Test]
+        public void MipsDis_sdc2()
+        {
+
+            AssertCode("sdc2	$6,-13325(s8)", 0xfbc6cbf3);
+        }
+
+
+        [Test]
+        public void MipsDis_ldc2()
+        {
+
+            AssertCode("ldc2	$12,13343(s8)", 0xdbcc341f);
         }
     }
 }

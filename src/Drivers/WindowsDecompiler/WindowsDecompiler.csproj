@@ -194,6 +194,10 @@
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
+      <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
+      <Name>Mips</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
