@@ -28,6 +28,7 @@ namespace Reko.Arch.Tms7000
             this.GpRegs[0] = a;
             this.GpRegs[1] = b;
             this.StackRegister = sp;
+            this.FramePointerType = sp.DataType;
         }
 
         public RegisterStorage a;
@@ -79,12 +80,12 @@ namespace Reko.Arch.Tms7000
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Tms7000State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Tms7000Rewriter(this, rdr, (Tms7000State) state, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
