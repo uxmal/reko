@@ -60,5 +60,6 @@ namespace Reko.Gui
         IStatusBarService CreateStatusBarService();
         IViewImportsService CreateViewImportService();
         ISymbolLoadingService CreateSymbolLoadingService();
+        ISelectionService CreateSelectionService();
     }
 }

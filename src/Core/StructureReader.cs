@@ -89,6 +89,9 @@ namespace Reko.Core
 				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
 				return Marshal.SizeOf(field.FieldType.GetElementType()) * attr.SizeConst;
 			} else {
+                if (field.FieldType.IsEnum) {
+                    return Marshal.SizeOf( Enum.GetUnderlyingType(field.FieldType) );
+                }
 				return Marshal.SizeOf(field.FieldType);
 			}
 		}

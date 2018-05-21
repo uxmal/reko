@@ -419,7 +419,7 @@ l0000000000400660:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsi:0x00000000004007A8 rdi:<invalid> eax:<invalid> rax:<invalid> rsp:rsp + 0x0000000000000088 rbp:<invalid> -48(fp):fp - 0x0000000000000028 -40(fp):<invalid> -32(fp):<invalid> -24(fp):rsi -16(fp):edi -12(fp):0x00000000 -8(fp):rbp
+// SymbolicIn: rsp:fp rsi:0x00000000004007A8 rdi:<invalid> eax:<invalid> rax:<invalid> rbp:rbp -48(fp):fp - 0x0000000000000028 -40(fp):<invalid> -32(fp):<invalid> -24(fp):rsi -16(fp):edi -12(fp):0x00000000 -8(fp):rbp
 
 
 

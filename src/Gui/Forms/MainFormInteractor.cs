@@ -198,6 +198,9 @@ namespace Reko.Gui.Forms
 
             var symLdrSvc = svcFactory.CreateSymbolLoadingService();
             sc.AddService<ISymbolLoadingService>(symLdrSvc);
+
+            var selSvc = svcFactory.CreateSelectionService();
+            sc.AddService<ISelectionService>(selSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)

@@ -451,6 +451,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x5729103a, "rlwinm\tr9,r25,02,00,1D");
             AssertCode(0x57202036, "rlwinm\tr0,r25,04,00,1B");
+            AssertCode(0x556A06F7, "rlwinm.\tr10,r11,00,1B,1B");
         }
 
         [Test]
@@ -575,6 +576,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x5120f042, "rlwimi\tr0,r9,1E,01,01");
         }
+
+
 
         [Test]
         public void PPCDis_cror_2()
@@ -814,8 +817,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCDis_regression6()
         {
             AssertCode(0x7C6000A6, "mfmsr\tr3");
-            AssertCode(0x7C7A03A6, "mtspr\t00000340,r3");
-            AssertCode(0x7C600124, "mtmsr\tr3");
+            AssertCode(0x7C7A03A6, "mtspr\t0000001A,r3");
+            AssertCode(0x7C600124, "mtmsr\tr3,00");
             AssertCode(0x4C00012C, "isync");
         }
 
@@ -844,6 +847,200 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7C3DF52E, "stfsx\tf1,r29,r30");
             AssertCode(0x7DAB4D6E, "stfsux\tf13,r11,r9");
             AssertCode(0x7C00186C, "dcbst\tr0,r3");
+        }
+
+        [Test]
+        public void PPCDis_regression8()
+        {
+            AssertCode(0x13E058C7, "lvx128\tv63,r0,r11"); 
+            AssertCode(0x11400484, "vor\tv10,v0,v0");
+
+            AssertCode(0x11A91D03, "stvlx128\tv13,r9,r3");
+            AssertCode(0x1001350B, "stvlx128\tv64,r1,r6");
+            AssertCode(0x7C6BF82A, "ldx\tr3,r11,r31");
+            AssertCode(0x7D0018A8, "ldarx\tr8,r0,r3");
+            AssertCode(0x7D40592D, "stwcx.\tr10,r0,r11");
+            AssertCode(0x7DA10164, "mtmsrd\tr13,01");
+            AssertCode(0x7D4019AD, "stdcx.\tr10,r0,r3");
+            AssertCode(0x7D6B5238, "eqv\tr11,r11,r10");
+            AssertCode(0x7C8B22AA, "lwax\tr4,r11,r4");
+            AssertCode(0x7D6B5392, "divdu\tr11,r11,r10");
+            AssertCode(0x7D2943D2, "divd\tr9,r9,r8");
+            AssertCode(0x7C0A5C6E, "lfsux\tf0,r10,r11");
+            AssertCode(0x7DAA44EE, "lfdux\tf13,r10,r8");
+            AssertCode(0x7D2B5E34, "srad\tr11,r9,r11");
+            AssertCode(0x7C23F7EC, "dcbz\tr3,r30");
+
+            AssertCode(0x13040000, "vaddubm\tv24,v4,v0");
+            AssertCode(0x10011002, "vmaxub\tv0,v1,v2");
+            AssertCode(0x10000022, "vmladduhm\tv0,v0,v0,v0");
+            AssertCode(0x10000042, "vmaxuh\tv0,v0,v0");
+            AssertCode(0x11b268e2, "vmladduhm\tv13,v18,v13,v3");
+            AssertCode(0x12020100, "vadduqm\tv16,v2,v0");
+            AssertCode(0x1003c200, "vaddubs\tv0,v3,v24");
+            AssertCode(0x10010401, "bcdadd.\tv0,v1,v0,00");
+            AssertCode(0x117d9406, "vcmpequb.\tv11,v29,v18");
+            AssertCode(0x7c0019ec, "dcbtst\tr0,r3");
+
+
+            // The following instructions were found in an
+            // XBox 360 binary, but no PowerPC documentation
+            // seems to exist for them.
+            /*
+            AssertCode(0x12a0f9c7, ".long 0x12a0f9c7");
+            AssertCode(0x10030001, ".long 0x10030001");
+            AssertCode(0x10011003, ".long 0x10011003");
+            AssertCode(0x111110b0, ".long 0x111110b0");
+            AssertCode(0x100050c3, ".long 0x100050c3");
+            AssertCode(0x100130cb, ".long 0x100130cb");
+            AssertCode(0x13fff935, ".long 0x13fff935");
+            AssertCode(0x136a2987, ".long 0x136a2987");
+            AssertCode(0x13D29A35, ".long 0x13d29a35");
+            AssertCode(0x13e95187, ".long 0x13e95187");
+            AssertCode(0x100059c3, ".long 0x100059c3");
+            AssertCode(0x100b61cb, ".long 0x100b61cb");
+            AssertCode(0x13d29a35, ".long 0x13d29a35");
+            AssertCode(0x4d48c976, ".long 0x4d48c976");
+            AssertCode(0x4f8e1ae5, ".long 0x4f8e1ae5");
+            AssertCode(0x4c4d4e4f, ".long 0x4c4d4e4f");
+            AssertCode(0x7c53b17e, ".long 0x7c53b17e");
+            AssertCode(0x7dc2dec0, ".long 0x7dc2dec0");
+            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
+            AssertCode(0x7f7f7f7f, ".long 0x7f7f7f7f");
+            AssertCode(0x7fefffff, ".long 0x7fefffff");
+
+
+
+            AssertCode(0x102038C3, ".long 0x102038c3");
+            AssertCode(0x102020CB, ".long 0x102020cb");
+            AssertCode(0x13CA1987, ".long 0x13ca1987");
+            AssertCode(0x100059C3, ".long 0x100059c3");
+            AssertCode(0x13E051C7, ".long 0x13e051c7");
+            AssertCode(0x116021C3, ".long 0x116021c3");
+            AssertCode(0x126B61CB, ".long 0x126b61cb");
+
+
+            AssertCode(0x100b60cf, "psq_stux\tf0,r11,r12,0,1");
+            AssertCode(0x100b61cf, "psq_stux\tf0,r11,r12,0,3");
+            AssertCode(0x1000001a, "ps_muls1\tf0,f0,f0");
+            AssertCode(0xf3d4a7eb, "psq_st\tf30,2027(r20),1,2");
+            AssertCode(0xf3f895aa, "psq_st\tf31,1450(r24),1,1");
+            AssertCode(0x13C100CF, "psq_stux\tf30,r1,r0,0,1");
+            AssertCode(0x13A05C07, "udi0fcm\t29,0,11");
+            AssertCode(0x13C55C47, "udi1fcm\t30,5,11");
+            AssertCode(0x13E03507, "udi4fcm 31,0,6");
+            AssertCode(0x13E85D47, "udi5fcm 31,8,11");
+            AssertCode(0xf0a65dff, "xxsel\tvs37,vs38,vs43,vs55");
+            */
+        }
+
+        [Test]
+        public void PPCDis_VMX128()
+        {
+            AssertCode(0x102038C3, "lvx128\tv1,r0,r7");         // 04 - 0C3(195)
+            AssertCode(0x102338CB, "lvx128\tv65,r3,r7");        // 04 - 0CB(203)
+            AssertCode(0x13C100CF, "lvx128\tv126,r1,r0");       // 04 - 0CF(207)
+            //AssertCode(0x13A05187, "@@@"); // 04 - 187(391)
+            AssertCode(0x116021C3, "stvx128\tv11,r0,r4");       // 04 - 1C3(451)
+            AssertCode(0x13C031C7, "stvx128\tv62,r0,r6");       // 04 - 1C7(455)
+            AssertCode(0x100B61CB, "stvx128\tv64,r11,r12");     // 04 - 1CB(459)
+            AssertCode(0x13C161CF, "stvx128\tv126,r1,r12");     // 04 - 1CF(463)
+            //AssertCode(0x13D29A35, "@@@"); // 04 - 235(565)
+            AssertCode(0x13C55C47, "lvrx128\tv62,r5,r11");      // 04 - 447(1095)
+            AssertCode(0x13A05C07, "lvlx128\tv61,r0,r11");      // 04 - 407(1031)
+            AssertCode(0x13E04507, "stvlx128\tv63,r0,r8");      // 04 - 507(1287)
+            AssertCode(0x13E85D47, "stvrx128\tv63,r8,r11");     // 04 - 547(1351)
+
+            AssertCode(0x1497B0B1, "vmulfp128\tv4,v55,v54");    // 05 - 009(9)
+            AssertCode(0x1400E851, "vsubfp128\tv0,v0,v61");     // 05 - 005(5)
+            AssertCode(0x14020100, "vperm128\tv0,v2,v0,v4");    // 05 - 010(16)
+            AssertCode(0x177B011C, "vmaddcfp128\tv123,v27,v0"); // 05 - 011(17)
+            AssertCode(0x173FE1B5, "vmsub3fp128\tv57,v63,v60"); // 05 - 019(25)
+            AssertCode(0x157FA9F1, "vmsub4fp128\tv11,v63,v53"); // 05 - 01D(29)
+            AssertCode(0x16D6BA35, "vand128\tv54,v54,v55");     // 05 - 021(33)
+            //AssertCode(0x15BAAA71, "@@@"); // 05 - 025(37)
+            AssertCode(0x15B8C2F1, "vor128\tv13,v56,v56");      // 05 - 02D(45)
+            AssertCode(0x145AE331, "vxor128\tv2,v58,v60");      // 05 - 031(49)
+
+            AssertCode(0x18000000, "vcmpeqfp128\tv0,v0,v0");    // 06 - 000(0)
+            AssertCode(0x187EF823, "vcmpeqfp128\tv3,v62,v127"); // 06 - 002(2)
+            AssertCode(0x1B5FF8F5, "vslw128\tv58,v63,v63");     // 06 - 00F(15)
+            AssertCode(0x18F7E121, "vcmpgtfp128\tv7,v55,v60");  // 06 - 012(18)
+            AssertCode(0x18280186, "vcmpbfp128\tv33,v8,v64");   // 06 - 018(24)
+            AssertCode(0x195CB9F1, "vsrw128\tv10,v60,v55");     // 06 - 01F(31)
+            //AssertCode(0x1BA5AA15, "@@@");    // 06 - 021(33)  - permutation odd encoding
+            AssertCode(0x1AC0FA35, "vcfpsxws128\tv54,v63,+00"); // 06 - 023(35)
+            //AssertCode(0x1918F251, "@@@");    // 06 - 025(37)
+            //AssertCode(0x180EB291, "@@@");    // 06 - 029(41)
+            AssertCode(0x1BDEE2A5, "vmaxfp128\tv62,v62,v60");   // 06 - 02A(42)
+            AssertCode(0x1801F2B1, "vcsxwfp128\tv0,v62,01");    // 06 - 02B(43)
+            //AssertCode(0x1AE1D2D5, "@@@");    // 06 - 02D(45)
+            AssertCode(0x1BFFF2E5, "vminfp128\tv63,v63,v62");   // 06 - 02E(46)
+            //AssertCode(0x1B04AB15, "@@@");    // 06 - 031(49)
+            AssertCode(0x1B1FF325, "vmrghw128\tv56,v63,v62");   // 06 - 032(50)
+            //AssertCode(0x1BA0AB35, "@@@");      // 06 - 033(51)
+            //AssertCode(0x1B1BD355, "@@@");    // 06 - 035(53)
+            AssertCode(0x1BFFF365, "vmrglw128\tv63,v63,v62");   // 06 - 036(54)
+            AssertCode(0x1BC0DB75, "vrfin128\tv62,v59");        // 06 - 037(55)
+            //AssertCode(0x1B4CD395, "@@@");    // 06 - 039(57)
+            //AssertCode(0x18ADA3D1, "@@@");    // 06 - 03D(61)
+
+
+            AssertCode(0x18A0DBF1, "vrfiz128\tv5,v59");         // 06 - 03F(63)
+            AssertCode(0x1BCECCED, "vcmpgefp128.\tv126,v110,v57"); // 06 - 04E(78)
+            AssertCode(0x1A013E1A, "vpkd3d128\tv80,v71,00,01,00"); // 06 - 061(97)
+            AssertCode(0x1800F631, "vrefp128\tv0,v62");         // 06 - 063(99)
+            AssertCode(0x19000640, "vcmpequw128\tv8,v64,v0"); // 06 - 064(100)
+            AssertCode(0x1800F671, "vrsqrtefp128\tv0,v62"); // 06 - 067(103)
+            AssertCode(0x1BA0EEB5, "vexptefp128\tv61,v61"); // 06 - 06B(107)
+            AssertCode(0x1BEDFED7, "vpkd3d128\tv63,v127,03,01,03"); // 06 - 06D(109)
+            AssertCode(0x1AA0EEF5, "vlogefp128\tv53,v61");      // 06 - 06F(111)
+            AssertCode(0x19C49F15, "vrlimi128\tv46,v51,04,02"); // 06 - 071(113)
+            AssertCode(0x1923CF31, "vspltw128\tv9,v57,03");     // 06 - 073(115)
+            AssertCode(0x18019F51, "vrlimi128\tv0,v51,01,02");  // 06 - 075(117)
+            AssertCode(0x1B600774, "vspltisw128\tv59,v0,+20");  // 06 - 077(119)
+            AssertCode(0x19ACFF91, "vrlimi128\tv13,v63,0C,03"); // 06 - 079(121)
+            AssertCode(0x18099FD1, "vrlimi128\tv0,v51,09,02");  // 06 - 07D(125)
+            AssertCode(0x1B24DFF5, "vupkd3d128\tv57,v59,04");   // 06 - 07F(127)
+        }
+
+        [Test]
+        public void PPCDis_vaddfp128()
+        {
+            //| 0 0 0 1 0 1 | VD128 | VA128 | VB128 | A | 0 0 0 0 | a | 1 | VDh | VBh |
+            // 000101 01010 11111 10101 1 0000 1 1 10 01
+            // 0001 0101 0101 1111 1010 1100 0011 1001
+            AssertCode(0x155FAC39, "vaddfp128\tv74,v127,v53");
+        }
+
+        [Test]
+        public void PPCDis_regression9()
+        {
+            AssertCode(0x08030000, "tdi\t00,r3,+0000");
+            AssertCode(0x085888dc, "tdi\t02,r24,-7724");
+            AssertCode(0x0bcc0000, "tdi\t1E,r12,+0000");
+        }
+
+        [Test]
+        public void PPCDis_lfdp()
+        {
+            AssertCode(0xe4a1ac7d, "illegal"); // lfdp\tf5,-2137D(r1)") -- can't have odd offset or register
+            AssertCode(0xe481ac7e, "illegal"); // lfdp\tf5,-2137E(r1)") -- can't have odd offset or register
+            AssertCode(0xe481ac80, "lfdp\tf4,-21376(r1)");
+        }
+
+        [Test]
+        public void PPCDis_stfdp()
+        {
+            AssertCode(0xf7Ad3927, "illegal"); // stfdp\tf28,14628(r13) odd floating point register
+            AssertCode(0xf78d392E, "illegal"); // "stfdp\tf28,14628(r13) odd offset
+            AssertCode(0xf78d3928, "stfdp\tf28,14632(r13)");
+        }
+
+        [Test]
+        public void PPCDis_mfspr()
+        {
+            AssertCode(0x7FF94AA6, "mfspr\t00000139,r31");
         }
     }
 }

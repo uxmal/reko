@@ -79,6 +79,23 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        public void StrAnls_DoNoCleanProcedureCall()
+        {
+            m.Label("head");
+            m.BranchIf(m.Fn("someCheck"), "failed");
+            m.Goto("exit");
+            m.Label("failed");
+            m.Label("exit");
+            m.Return();
+
+            var sExp =
+@"    someCheck();
+    return;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_IfThen()
         {
             var r1 = m.Reg32("r1", 1);

@@ -168,8 +168,6 @@ Eq_434: (fn Eq_184 (Eq_184, Eq_10))
 Eq_466: (fn word32 ((ptr code), word32))
 	T_466 (in fn0001152C : ptr32)
 	T_467 (in signature of fn0001152C : void)
-Eq_473: (struct "Eq_473" (FFFFFFF0 int32 dwFFFFFFF0) (FFFFFFF4 int32 dwFFFFFFF4))
-	T_473 (in fp : ptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -2055,66 +2053,6 @@ T_471: (in fn0001152C(r2, dwLoc20) == 0x00000000 : bool)
   Class: Eq_471
   DataType: bool
   OrigDataType: bool
-T_472: (in -1 : int32)
-  Class: Eq_472
-  DataType: int32
-  OrigDataType: int32
-T_473: (in fp : ptr32)
-  Class: Eq_473
-  DataType: (ptr Eq_473)
-  OrigDataType: (ptr (struct (FFFFFFF0 T_486 tFFFFFFF0) (FFFFFFF4 T_472 tFFFFFFF4)))
-T_474: (in 0xFFFFFFF4 : word32)
-  Class: Eq_474
-  DataType: word32
-  OrigDataType: word32
-T_475: (in fp + 0xFFFFFFF4 : word32)
-  Class: Eq_475
-  DataType: ptr32
-  OrigDataType: ptr32
-T_476: (in Mem19[fp + 0xFFFFFFF4:word32] : word32)
-  Class: Eq_472
-  DataType: int32
-  OrigDataType: word32
-T_477: (in 0x00000000 : word32)
-  Class: Eq_472
-  DataType: int32
-  OrigDataType: word32
-T_478: (in 0xFFFFFFF4 : word32)
-  Class: Eq_478
-  DataType: word32
-  OrigDataType: word32
-T_479: (in fp + 0xFFFFFFF4 : word32)
-  Class: Eq_479
-  DataType: (ptr word32)
-  OrigDataType: (ptr word32)
-T_480: (in Mem17[fp + 0xFFFFFFF4:word32] : word32)
-  Class: Eq_472
-  DataType: int32
-  OrigDataType: word32
-T_481: (in 0xFFFFFFF4 : word32)
-  Class: Eq_481
-  DataType: word32
-  OrigDataType: word32
-T_482: (in fp + 0xFFFFFFF4 : word32)
-  Class: Eq_482
-  DataType: (ptr int32)
-  OrigDataType: (ptr int32)
-T_483: (in Mem0[fp + 0xFFFFFFF4:word32] : word32)
-  Class: Eq_472
-  DataType: int32
-  OrigDataType: int32
-T_484: (in 0xFFFFFFF0 : word32)
-  Class: Eq_484
-  DataType: word32
-  OrigDataType: word32
-T_485: (in fp + 0xFFFFFFF0 : word32)
-  Class: Eq_485
-  DataType: ptr32
-  OrigDataType: ptr32
-T_486: (in Mem13[fp + 0xFFFFFFF0:word32] : word32)
-  Class: Eq_472
-  DataType: int32
-  OrigDataType: word32
 */
 typedef struct Globals {
 	word32 dw12000;	// 12000
@@ -2218,9 +2156,4 @@ typedef union Eq_404 {
 typedef Eq_184 (Eq_434)(Eq_184, Eq_10);
 
 typedef word32 (Eq_466)(code *, word32);
-
-typedef struct Eq_473 {
-	int32 dwFFFFFFF0;	// FFFFFFF0
-	int32 dwFFFFFFF4;	// FFFFFFF4
-} Eq_473;
 

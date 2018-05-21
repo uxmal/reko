@@ -578,7 +578,16 @@ namespace Reko.Analysis
 			base.VisitConditionOf (cof);
 		}
 
-		public override void VisitIdentifier(Identifier id)
+        public override void VisitDepositBits(DepositBits d)
+        {
+            // Only use the inserted bits; the source bits are 
+            // not strictly used by a DPB instruction.
+            bitUseOffset = 0;
+            cbitsUse = 0;
+            d.InsertedBits.Accept(this);
+        }
+
+        public override void VisitIdentifier(Identifier id)
 		{
 			Use(id);
 		}

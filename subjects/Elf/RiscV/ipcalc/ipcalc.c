@@ -491,9 +491,10 @@ l0000000000015458:
 			Eq_292 a0_862 = fn00000000000166F4(ra, gp, &fp->dwFFFFFE5C, s10_45, 0x01, out a1_861);
 			if (a0_862 < 0x00)
 			{
-				if ((word64) gp->dwFFFFF814 == 0x00)
-					goto l0000000000015B8C;
-				goto l00000000000153D8;
+				if ((word64) gp->dwFFFFF814 != 0x00)
+					goto l00000000000153D8;
+				(word64) fp->dwFFFFFE5C != 0x00;
+				goto l0000000000015B8C;
 			}
 			fp->tFFFFFE48 = a0_862;
 			word64 s1_867 = (word64) fp->dwFFFFFE5C;
@@ -618,6 +619,7 @@ l00000000000155E4:
 					goto l00000000000155FC;
 				if ((word64) gp->dwFFFFF814 == 0x00)
 				{
+					(word64) *((word64) sp_132 + 0x001C) != 0x00;
 l0000000000015B8C:
 					__fprintf_chk();
 				}

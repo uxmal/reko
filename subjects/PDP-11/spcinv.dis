@@ -529,7 +529,7 @@ word16 fn04A0(word16 r1, word16 r4, word16 pc, ptr16 & r4Out, ptr16 & r5Out)
 
 // MayUse:  pc r1 r4
 // LiveOut: r1 r4 r5
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn04A0_entry:
 	*r4Out = r4
@@ -599,7 +599,7 @@ l04D8:
 l04DE:
 	Mem133[r5_100 + 0x0EF3:byte] = r0_92 - 0x0001
 	branch 0x0016 - (r0_92 - 0x0001) <u 0x0000 l04EE
-// DataOut: pc r0 r3 r4 r5
+// DataOut: pc r0 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r2:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 // LocalsOut: v17(8) v54(16) v72(8) v79(16) v83(16) v87(8) v94(8)
@@ -614,14 +614,14 @@ l04E8:
 l04EE:
 	r1 = r0_105 + 0x0001
 	branch 0x0003 - r0_105 != 0x0000 l0504
-// DataOut: pc r0 r1 r3 r4 r5
+// DataOut: pc r0 r1 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r2:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 // LocalsOut: v17(8) v54(16) v72(8) v79(16) v83(16) v87(8) v94(8)
 
 l04F8:
 	branch false l0504
-// DataOut: pc r0 r1 r3 r4 r5
+// DataOut: pc r0 r1 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r2:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 // LocalsOut: v17(8) v54(16) v72(8) v79(16) v83(16) v87(8) v94(8)
@@ -855,7 +855,7 @@ l04A8:
 fn04A0_exit:
 // DataOut: r1 r4 r5
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r5:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r2:<invalid> -1(fp):<invalid> 0(fp):<invalid>
+// SymbolicIn: sp:fp r5:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r2:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 
 
 
@@ -864,7 +864,7 @@ bool fn05D4(word16 r0, word16 r1, word16 r3, word16 r4, word16 r5, word16 pc, by
 
 // MayUse:  pc r0 r1 r3 r4 r5
 // LiveOut: Z r0 r1 r3 r4 r5
-// Trashed: NZVC r0 r1 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r3 r4 r5
 // Preserved: sp
 fn05D4_entry:
 	*r3Out = r3
@@ -955,7 +955,7 @@ l0648:
 fn05D4_exit:
 // DataOut: r0 r1 r3 r4 r5
 // DataOut (flags): Z
-// SymbolicIn: sp:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -2(fp):<invalid> -1(fp):<invalid> 0(fp):r0
+// SymbolicIn: sp:fp r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -2(fp):<invalid> -1(fp):<invalid> 0(fp):r0
 
 
 
@@ -964,7 +964,7 @@ bool fn064A(word16 r0, word16 r1, word16 r3, word16 r4, word16 r5, ptr16 & r0Out
 
 // MayUse:  r0 r1 r3 r4 r5
 // LiveOut: Z r0 r4 r5
-// Trashed: NZVC r0 r2 r4 r5 sp
+// Trashed: NZVC r0 r2 r4 r5
 // Preserved: sp
 fn064A_entry:
 	*r5Out = r5
@@ -1042,7 +1042,7 @@ l067A:
 fn064A_exit:
 // DataOut: r0 r4 r5
 // DataOut (flags): Z
-// SymbolicIn: sp:<invalid> r2:<invalid> r5:<invalid> r0:<invalid> r4:<invalid>
+// SymbolicIn: sp:fp r2:<invalid> r5:<invalid> r0:<invalid> r4:<invalid>
 
 
 
@@ -1050,9 +1050,9 @@ bool fn067C(word16 r0, word16 r3, word16 r4, word16 r5, byte bArg00, ptr16 & r0O
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0 r3 r4 r5
-// LiveOut: Z r0 r1 r3 r4 r5 sp
-// Trashed: NZVC r0 r1 r3 r4 r5 sp
-// Preserved:
+// LiveOut: Z r0 r1 r3 r4 r5
+// Trashed: NZVC r0 r1 r3 r4 r5
+// Preserved: sp
 fn067C_entry:
 	*r3Out = r3
 	*r0Out = r0
@@ -1069,7 +1069,7 @@ l067C:
 	byte v11_9 = Mem0[r1_7 + 0x0E2A:byte]
 	bool Z_12 = cond(v11_9)
 	branch v11_9 == 0x00 l06A0
-// DataOut: pc r0 r1 r2 r3 r4 r5 sp
+// DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): Z
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) v18(8)
@@ -1087,20 +1087,20 @@ l068A:
 	word16 r4_51
 	*r4Out = r4_46 + 0x0001
 	Z_12 = cond(v23_49) (alias)
-// DataOut: pc r0 r1 r2 r3 r4 r5 sp
+// DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r1:(r3 - 0x0001 << 1) + r0
 
 l06A0:
 	return Z_12
-// DataOut: pc r0 r1 r2 r3 r4 r5 sp
+// DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): Z
 // SymbolicIn: sp:<invalid> r1:<invalid> r4:<invalid> r3:<invalid> r0:<invalid> r5:<invalid> -1(fp):r3 0(fp):r0
 
 fn067C_exit:
-// DataOut: r0 r1 r3 r4 r5 sp
+// DataOut: r0 r1 r3 r4 r5
 // DataOut (flags): Z
-// SymbolicIn: sp:<invalid> r1:<invalid> r4:<invalid> r3:<invalid> r0:<invalid> r5:<invalid> -1(fp):r3 0(fp):r0
+// SymbolicIn: sp:fp r1:<invalid> r4:<invalid> r3:<invalid> r0:<invalid> r5:<invalid> -1(fp):r3 0(fp):r0
 
 
 
@@ -1174,7 +1174,7 @@ word16 fn06D6(word16 r1, word16 r4, word16 r5, word16 pc)
 
 // MayUse:  pc r1 r4 r5
 // LiveOut: r4
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn06D6_entry:
 // DataOut: pc r1 r4 r5
@@ -1318,7 +1318,7 @@ l075A:
 
 l0736:
 	branch 0x0016 - (r0_57 + 0x0001) <u 0x0000 l078A
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r0 r1 r2 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 // LocalsOut: v27(8) v46(16) v56(8) v62(16) v64(16) v68(8)
@@ -1379,7 +1379,7 @@ l07A4:
 fn06D6_exit:
 // DataOut: r4
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -1(fp):<invalid> 0(fp):<invalid>
+// SymbolicIn: sp:fp r2:<invalid> r3:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 
 
 
@@ -1388,7 +1388,7 @@ word16 fn07A6(word16 r4, word16 pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out,
 
 // MayUse:  pc r4
 // LiveOut: r0 r1 r3 r4 r5
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn07A6_entry:
 	*r4Out = r4
@@ -1839,7 +1839,7 @@ l08CE:
 fn07A6_exit:
 // DataOut: r0 r1 r3 r4 r5
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r2:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r4:<invalid> -1(fp):<invalid> 0(fp):<invalid>
+// SymbolicIn: sp:fp r2:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r4:<invalid> -1(fp):<invalid> 0(fp):<invalid>
 
 
 
@@ -1966,7 +1966,7 @@ word16 fn0998(word16 r0, word16 r1, word16 r3, word16 r4, word16 r5, word16 pc, 
 
 // MayUse:  pc r0 r1 r3 r4 r5
 // LiveOut: r0 r1 r2 r3 r4 r5
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn0998_entry:
 	*r1Out = r1
@@ -2156,7 +2156,7 @@ l0A18:
 fn0998_exit:
 // DataOut: r0 r1 r2 r3 r4 r5
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -1(fp):<invalid> 0(fp):0x03
+// SymbolicIn: sp:fp r2:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -1(fp):<invalid> 0(fp):0x03
 
 
 

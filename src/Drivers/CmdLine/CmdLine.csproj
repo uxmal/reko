@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
   <Import Project="$(SolutionDir)Drivers\Common.items" />
@@ -141,11 +141,19 @@
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
       <Name>SysV</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
+      <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
+      <Name>Xbox360</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
+      <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
+      <Name>Xex</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Python\Python.csproj">
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Name>Python</Name>
       <Name>Dol</Name>
-      <Name>Dol</Name>
+      <Name>Python</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>

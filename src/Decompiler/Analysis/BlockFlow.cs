@@ -29,6 +29,7 @@ using SymbolicEvaluationContext = Reko.Evaluation.SymbolicEvaluationContext;
 using TextWriter = System.IO.TextWriter;
 using System;
 using System.Collections.Generic;
+using Reko.Core;
 
 namespace Reko.Analysis
 {
@@ -41,6 +42,12 @@ namespace Reko.Analysis
 		public HashSet<RegisterStorage> DataOut;		// each bit corresponds to a register that is live at the end of the
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
+        /// <summary>
+        /// Stack pointer backpropagated from procedure return.
+        /// Assume that stack pointer at the end of procedure has the same
+        /// value as at the start
+        /// </summary>
+        public Dictionary<Statement, Expression> FallbackStack;
 		public uint grfTrashedIn;					    // each bit corresponds to a condition code register that is trashed on entrance (fwd analysis)
         public SymbolicEvaluationContext SymbolicIn { get; private set; }    // Symbolic context at block entry (fwd analysis)
         public bool TerminatesProcess;                  // True if entering this block means the process/thread will be terminated.
@@ -50,6 +57,7 @@ namespace Reko.Analysis
 			this.Block = block;
 			this.DataOut = dataOut;
 			this.StackVarsOut = new Dictionary<Storage,int>();
+            this.FallbackStack = new Dictionary<Statement, Expression>();
             this.SymbolicIn = ctx;
 		}
 

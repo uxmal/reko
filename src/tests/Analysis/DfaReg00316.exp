@@ -2,8 +2,8 @@
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: SZO ah al ax ch cl cx eax ecx esp rax rcx rsp sp spl
-// Preserved:
+// Trashed: SZO ah al ax ch cl cx eax ecx rax rcx
+// Preserved: esp
 // Stack args: Stack +0004(32)
 // r316
 // Return size: 4

@@ -134,9 +134,9 @@ word32 bazulate(Eq_161 r0, Eq_161 r1)
 {
 	struct Eq_176 * fp_23;
 	word32 r0_28 = __divsi3(r0 + r1, frobulate(r0, r1, out fp_23));
-	word32 * fp_33;
-	__divsi3(r0_28, frobulate(fp_23->tFFFFFFE8, dwArg00, out fp_33));
-	return *fp_33;
+	word32 * fp_32;
+	__divsi3(r0_28, frobulate(fp_23->tFFFFFFE8, r1, out fp_32));
+	return *fp_32;
 }
 
 // 000084D4: Register word32 switcheroo(Register Eq_161 r0)
@@ -266,7 +266,7 @@ void __div0(Eq_161 r0)
 void __libc_csu_init()
 {
 	<anonymous> *** r10_17;
-	Eq_335 r4_18 = _init(out r10_17);
+	Eq_334 r4_18 = _init(out r10_17);
 	<anonymous> ** r1_21 = *r10_17;
 	int32 r3_23 = *r10_17 - r1_21;
 	if (r4_18 >= r3_23 >> 0x02)

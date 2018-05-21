@@ -50,10 +50,9 @@ namespace Reko.Arch.Mips
         public override MipsInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return null; 
+                return null;
             this.addr = rdr.Address;
-            uint wInstr;
-            if (!rdr.TryReadUInt32(out wInstr))
+            if (!rdr.TryReadUInt32(out uint wInstr))
             {
                 return null;
             }
@@ -73,10 +72,37 @@ namespace Reko.Arch.Mips
             {
                 instrCur = new MipsInstruction { opcode = Opcode.illegal };
             }
+            EmitUnitTest(wInstr, instrCur);
             instrCur.Address = this.addr;
             instrCur.Length = 4;
             return instrCur;
         }
+
+        [Conditional("DEBUG")]
+        public void EmitUnitTest(uint wInstr, MipsInstruction instr)
+        {
+#if DEBUG
+            if (instr.opcode != Opcode.illegal)
+                return;
+            if (seen.Contains(wInstr))
+                return;
+            var op = (wInstr >> 26);
+            if (op == 0 || op == 1)
+                return;
+            seen.Add(wInstr);
+            Debug.Print(
+@"        [Test]
+        public void MipsDis_{0:X8}()
+        {{
+            AssertCode(""@@@"", 0x{0:X8}); // {1:X2}
+        }}
+",
+            wInstr, op);
+#endif
+        }
+#if DEBUG
+        private static HashSet<uint> seen = new HashSet<uint>();
+#endif
 
         private static OpRec[] opRecs;
 
@@ -386,6 +412,15 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""));
 
+            var cop0_C0_decoder = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, OpRec>
+            {
+                { 0x01, new AOpRec(Opcode.tlbr , "") },
+                { 0x02, new AOpRec(Opcode.tlbwi, "") },
+                { 0x06, new AOpRec(Opcode.tlbwr, "") },
+                { 0x08, new AOpRec(Opcode.tlbp , "") },
+                { 0x18, new AOpRec(Opcode.eret , "") },
+                { 0x20, new AOpRec(Opcode.wait , "") },
+            });
             var cop1 = new CoprocessorOpRec(
                 new AOpRec(Opcode.mfc1, "R2,F3"),
                 new A64OpRec(Opcode.dmfc1, "R2,F3"),
@@ -446,20 +481,11 @@ namespace Reko.Arch.Mips
                 // 10
                 new CoprocessorOpRec(
                     new AOpRec(Opcode.mfc0, "R2,R3"),
-                    new AOpRec(Opcode.illegal, ""),
+                    new AOpRec(Opcode.dmfc0, "R2,R3"),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.mtc0, "R2,R3"),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                    new AOpRec(Opcode.dmtc0, "R2,R3"),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
 
@@ -472,14 +498,23 @@ namespace Reko.Arch.Mips
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, "")),
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder),
                 // 11: COP1 encodings
                 cop1,
 
@@ -582,9 +617,7 @@ namespace Reko.Arch.Mips
                     new AOpRec(Opcode.illegal, "")),
                 new A64OpRec(Opcode.sdc1, "F2,El"),
                 null,
-                new Version6OpRec(
-                    new A64OpRec(Opcode.sd, "R2,El"),
-                    new AOpRec(Opcode.illegal, ""))
+                new A64OpRec(Opcode.sd, "R2,El")
             };
         }
 
@@ -663,6 +696,9 @@ namespace Reko.Arch.Mips
                 case 'c':   // condition code
                     op = CCodeFlag(wInstr, opFmt, ref i);
                     break;
+                case 'C': // FPU condition code
+                    op = FpuCCodeFlag(wInstr, opFmt, ref i);
+                    break;
                 case 'H':   // hardware register, see instruction rdhwr
                     op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1f));
                     break;
@@ -714,6 +750,20 @@ namespace Reko.Arch.Mips
             }
             var regNo = (wInstr >> pos) & 0x7;
             return new RegisterOperand(arch.ccRegs[regNo]);
+        }
+
+        private RegisterOperand FpuCCodeFlag(uint wInstr, string fmt, ref int i)
+        {
+            int pos = 0;
+            ++i;
+            while (i < fmt.Length && Char.IsDigit(fmt[i]))
+            {
+                pos = pos * 10 + fmt[i] - '0';
+                ++i;
+            }
+            var regNo = (wInstr >> pos) & 0x7;
+            --i;
+            return new RegisterOperand(arch.fpuCcRegs[regNo]);
         }
 
         private AddressOperand RelativeBranch(uint wInstr)

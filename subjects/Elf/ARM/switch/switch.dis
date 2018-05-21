@@ -398,8 +398,8 @@ word32 frobulate(word32 r0, word32 dwArg00, ptr32 & fpOut)
 
 // MayUse:  r0
 // LiveOut: fp r0
-// Trashed: NZCV fp ip r0 r1 r2 r3 sp
-// Preserved:
+// Trashed: NZCV fp ip r0 r1 r2 r3
+// Preserved: sp
 // Stack args: Stack +0000(32)
 frobulate_entry:
 // DataOut: r0 r4
@@ -418,7 +418,7 @@ l00008434:
 frobulate_exit:
 // DataOut: fp r0
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:fp ip:<invalid> fp:<invalid> r2:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 
@@ -427,8 +427,8 @@ word32 bazulate(word32 r0, word32 r1)
 
 // MayUse:  r0 r1
 // LiveOut: fp
-// Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
-// Preserved:
+// Trashed: NZCV fp ip r0 r1 r2 r3 r4
+// Preserved: sp
 bazulate_entry:
 // DataOut: r0 r1
 // DataOut (flags): 
@@ -438,9 +438,9 @@ bazulate_entry:
 l00008470:
 	word32 fp_23
 	word32 r0_28 = __divsi3(r0 + r1, frobulate(r0, r1, out fp_23))
-	word32 fp_33
-	__divsi3(r0_28, frobulate(Mem0[fp_23 + -24:word32], dwArg00, out fp_33))
-	return Mem0[fp_33:word32]
+	word32 fp_32
+	__divsi3(r0_28, frobulate(Mem0[fp_23 + -24:word32], r1, out fp_32))
+	return Mem0[fp_32:word32]
 // DataOut: fp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -448,7 +448,7 @@ l00008470:
 bazulate_exit:
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> -28(fp):r1 -24(fp):r0 -20(fp):r4 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:fp ip:<invalid> fp:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> -28(fp):r1 -24(fp):r0 -20(fp):r4 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 
@@ -457,8 +457,8 @@ word32 switcheroo(word32 r0)
 
 // MayUse:  r0
 // LiveOut: fp
-// Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
-// Preserved:
+// Trashed: NZCV fp ip r0 r1 r2 r3 r4
+// Preserved: sp
 switcheroo_entry:
 // DataOut: r0
 // DataOut (flags): 
@@ -501,18 +501,18 @@ l00008540:
 	fp_19 = bazulate(0x00000000, 0x00000000)
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:fp - 0x00000014 ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 l0000854C:
 	return Mem0[fp_19 - -4:word32]
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:fp - 0x00000014 ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 switcheroo_exit:
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:fp ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 l000084F0_1:
 // DataOut:
@@ -526,8 +526,8 @@ void main(word32 r0)
 
 // MayUse:  r0
 // LiveOut:
-// Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
-// Preserved:
+// Trashed: NZCV fp ip r0 r1 r2 r3 r4
+// Preserved: sp
 main_entry:
 // DataOut: r0
 // DataOut (flags): 
@@ -544,7 +544,7 @@ l0000855C:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r0:0x00000000 r3:0x00000000 r2:<invalid> r1:<invalid> r4:<invalid> -24(fp):r1 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:fp ip:<invalid> fp:<invalid> r0:0x00000000 r3:0x00000000 r2:<invalid> r1:<invalid> r4:<invalid> -24(fp):r1 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 

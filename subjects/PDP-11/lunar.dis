@@ -360,7 +360,7 @@ l0440_thunk_fn0242:
 fn03CE_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -1030,7 +1030,7 @@ l0666:
 fn053A_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// SymbolicIn: sp:fp r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
 
 
 
@@ -2163,7 +2163,7 @@ l0C70:
 fn0C36_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: r3:r3 - 0x0001 r4:<invalid> r1:<invalid>
+// SymbolicIn: r3:r3 - 0x0001 sp:fp r4:<invalid> r1:<invalid>
 
 
 
@@ -2998,7 +2998,7 @@ void fn103C(word16 r0, word16 r3, word16 r5, word16 wArg00)
 
 // MayUse:  r0 r3 r5
 // LiveOut:
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 // Stack args: Stack +0000(16)
 fn103C_entry:
@@ -3072,7 +3072,7 @@ l10B6:
 fn103C_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r5:r5 - 0x0006 r0:<invalid> r4:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
+// SymbolicIn: sp:fp r5:r5 - 0x0006 r0:<invalid> r4:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
 
 
 

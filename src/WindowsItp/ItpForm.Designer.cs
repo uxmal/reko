@@ -45,10 +45,11 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assumeRegistesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.procedureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.symbolSourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.symbolSourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visualizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertyOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -76,7 +77,8 @@
             this.disassemblyControlToolStripMenuItem,
             this.textViewToolStripMenuItem,
             this.codeViewToolStripMenuItem,
-            this.byteMapViewToolStripMenuItem});
+            this.byteMapViewToolStripMenuItem,
+            this.visualizerToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "&Controls";
@@ -205,6 +207,13 @@
             this.procedureToolStripMenuItem.Text = "P&rocedure...";
             this.procedureToolStripMenuItem.Click += new System.EventHandler(this.procedureToolStripMenuItem_Click);
             // 
+            // symbolSourcesToolStripMenuItem
+            // 
+            this.symbolSourcesToolStripMenuItem.Name = "symbolSourcesToolStripMenuItem";
+            this.symbolSourcesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.symbolSourcesToolStripMenuItem.Text = "S&ymbol sources...";
+            this.symbolSourcesToolStripMenuItem.Click += new System.EventHandler(this.symbolSourcesToolStripMenuItem_Click);
+            // 
             // procedureToolStripMenuItem
             // 
             this.procedureToolStripMenuItem.Name = "procedureToolStripMenuItem";
@@ -224,24 +233,24 @@
             // emulatorToolStripMenuItem
             // 
             this.emulatorToolStripMenuItem.Name = "emulatorToolStripMenuItem";
-            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.emulatorToolStripMenuItem.Text = "X86 &Emulator";
             this.emulatorToolStripMenuItem.Click += new System.EventHandler(this.emulatorToolStripMenuItem_Click);
             // 
             // ollyScriptToolStripMenuItem
             // 
             this.ollyScriptToolStripMenuItem.Name = "ollyScriptToolStripMenuItem";
-            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
-            // symbolSourcesToolStripMenuItem
+            // visualizerToolStripMenuItem
             // propertyOptionsToolStripMenuItem
             // 
-            this.symbolSourcesToolStripMenuItem.Name = "symbolSourcesToolStripMenuItem";
-            this.symbolSourcesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.symbolSourcesToolStripMenuItem.Text = "S&ymbol sources...";
-            this.symbolSourcesToolStripMenuItem.Click += new System.EventHandler(this.symbolSourcesToolStripMenuItem_Click);
+            this.visualizerToolStripMenuItem.Name = "visualizerToolStripMenuItem";
+            this.visualizerToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.visualizerToolStripMenuItem.Text = "&Visualizer";
+
             this.propertyOptionsToolStripMenuItem.Name = "propertyOptionsToolStripMenuItem";
             this.propertyOptionsToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.propertyOptionsToolStripMenuItem.Text = "Property &Options...";
@@ -285,6 +294,7 @@
         private System.Windows.Forms.ToolStripMenuItem byteMapViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem procedureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem symbolSourcesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem visualizerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertyOptionsToolStripMenuItem;
     }
 }
