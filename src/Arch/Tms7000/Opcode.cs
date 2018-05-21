@@ -45,6 +45,7 @@ namespace Reko.Arch.Tms7000
         mov,
         movd,
         movp,
+        mpy,
         nop,
         or,
         orp,

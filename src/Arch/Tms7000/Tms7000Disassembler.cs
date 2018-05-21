@@ -97,6 +97,11 @@ namespace Reko.Arch.Tms7000
                         return Invalid();
                     op = ImmediateOperand.Byte(b);
                     break;
+                case 'I':
+                    if (!rdr.TryReadBeUInt16(out w))
+                        return Invalid();
+                    op = ImmediateOperand.Word16(w);
+                    break;
                 case 'j':   // short PC-relative jump
                     if (!rdr.TryReadByte(out b))
                         return Invalid();
@@ -354,13 +359,13 @@ namespace Reko.Arch.Tms7000
             { 0x80, new Decoder(Opcode.movp, Decoder.F_Pn_A) },
             { 0x91, new Decoder(Opcode.movp, Decoder.F_Pn_B) },
 
-            { 0x6c, new Decoder(Opcode.mov, Decoder.F_B_A) },
-            { 0x1c, new Decoder(Opcode.mov, Decoder.F_Rn_A) },
-            { 0x3c, new Decoder(Opcode.mov, Decoder.F_Rn_B) },
-            { 0x4c, new Decoder(Opcode.mov, Decoder.F_Rn_Rn) },
-            { 0x2c, new Decoder(Opcode.mov, Decoder.F_iop_A) },
-            { 0x5c, new Decoder(Opcode.mov, Decoder.F_iop_B) },
-            { 0x7c, new Decoder(Opcode.mov, Decoder.F_iop_Rn) },
+            { 0x6c, new Decoder(Opcode.mpy, Decoder.F_B_A) },
+            { 0x1c, new Decoder(Opcode.mpy, Decoder.F_Rn_A) },
+            { 0x3c, new Decoder(Opcode.mpy, Decoder.F_Rn_B) },
+            { 0x4c, new Decoder(Opcode.mpy, Decoder.F_Rn_Rn) },
+            { 0x2c, new Decoder(Opcode.mpy, Decoder.F_iop_A) },
+            { 0x5c, new Decoder(Opcode.mpy, Decoder.F_iop_B) },
+            { 0x7c, new Decoder(Opcode.mpy, Decoder.F_iop_Rn) },
 
             { 0x00, new Decoder(Opcode.nop, Decoder.F_None) },
 
