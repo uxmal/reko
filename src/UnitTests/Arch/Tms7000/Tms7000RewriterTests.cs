@@ -77,5 +77,15 @@ namespace Reko.UnitTests.Arch.Tms7000
                 "2|L--|NZ = cond(a)",
                 "3|L--|C = false");
         }
+
+        [Test]
+        public void Tms7000rw_add()
+        {
+            RewriteBytes(0x58, 0x32);
+            AssertCode(
+                "0|L--|0100(0): 2 instructions",
+                "1|L--|b = b + 0x32",
+                "2|L--|CNZ = cond(b)");
+        }
     }
 }

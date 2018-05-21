@@ -65,6 +65,7 @@ namespace Reko.Arch.Tms7000
                     host.Error(instr.Address, "Rewriting x86 opcode '{0}' is not supported yet.", instr);
                     rtlc = RtlClass.Invalid;
                     break;
+                case Opcode.add: RewriteArithmetic(m.IAdd); break;
                 case Opcode.and: RewriteLogical(m.And); break;
                 case Opcode.nop: m.Nop(); break;
                 }
@@ -86,6 +87,8 @@ namespace Reko.Arch.Tms7000
             {
             case RegisterOperand rop:
                 return binder.EnsureRegister(rop.Register);
+            case ImmediateOperand imm:
+                return imm.Value;
             default:
                 throw new NotImplementedException(op.GetType().Name);
             }
@@ -103,6 +106,14 @@ namespace Reko.Arch.Tms7000
             m.Assign(nz, m.Cond(e));
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             m.Assign(c, Constant.False());
+        }
+
+        private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
+        {
+            var src = Operand(instr.op1);
+            var dst = Operand(instr.op2);
+            m.Assign(dst, fn(dst, src));
+            CNZ(dst);
         }
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
