@@ -1207,7 +1207,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mul()
         {
-            AssertCode("mul a0, a0, a1", 0x70852002);
+            AssertCode("mul\tr4,r4,r5", 0x70852002);
         }
 
         [Test]

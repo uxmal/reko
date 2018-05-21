@@ -130,6 +130,7 @@ namespace Reko.Arch.Mips
         movz,
         mov_d,
         mov_s,
+        mul,
         mult,
         multu,
         mul_d,
