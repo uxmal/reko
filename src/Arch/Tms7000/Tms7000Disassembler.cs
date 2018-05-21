@@ -54,6 +54,7 @@ namespace Reko.Arch.Tms7000
                 instr = Decode(instrDecoder.name, instrDecoder.amode);
             }
             instr.Address = addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 

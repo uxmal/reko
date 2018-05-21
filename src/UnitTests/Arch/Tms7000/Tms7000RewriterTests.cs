@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         {
             RewriteBytes(0x00);
             AssertCode(
-                "0|L--|0100(0): 1 instructions",
+                "0|L--|0100(1): 1 instructions",
                 "1|L--|nop");
         }
 
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Tms7000
         {
             RewriteBytes(0x63);
             AssertCode(
-                "0|L--|0100(0): 3 instructions",
+                "0|L--|0100(1): 3 instructions",
                 "1|L--|a = a & b",
                 "2|L--|NZ = cond(a)",
                 "3|L--|C = false");
@@ -83,9 +83,58 @@ namespace Reko.UnitTests.Arch.Tms7000
         {
             RewriteBytes(0x58, 0x32);
             AssertCode(
-                "0|L--|0100(0): 2 instructions",
+                "0|L--|0100(2): 2 instructions",
                 "1|L--|b = b + 0x32",
                 "2|L--|CNZ = cond(b)");
+        }
+
+        [Test]
+        public void Tms7000rw_andp()
+        {
+            RewriteBytes(0xA3, 0x03, 0x44);
+            AssertCode(
+                "0|L--|0100(3): 3 instructions",
+                "1|L--|p68 = p68 & 0x03",
+                "2|L--|NZ = cond(p68)",
+                "3|L--|C = false");
+        }
+
+        [Test]
+        public void Tms7000rw_btjz()
+        {
+            RewriteBytes(0x27, 0x0F, 0x44);
+            AssertCode(
+                "0|T--|0100(3): 3 instructions",
+                "1|L--|NZ = cond(a & ~0x0F)",
+                "2|L--|C = false",
+                "3|T--|if (Test(NE,Z)) branch 0147");
+        }
+
+        [Test]
+        public void Tms7000rw_br_direct()
+        {
+            RewriteBytes(0x8C, 0x12, 0x34);
+            AssertCode(
+                "0|T--|0100(3): 1 instructions",
+                "1|T--|goto 1234");
+        }
+
+        [Test]
+        public void Tms7000rw_br_indexed()
+        {
+            RewriteBytes(0xAC, 0x12, 0x34);
+            AssertCode(
+                "0|T--|0100(3): 1 instructions",
+                "1|T--|goto 0x1234 + (uint16) b");
+        }
+
+        [Test]
+        public void Tms7000rw_br_indirect()
+        {
+            RewriteBytes(0x9C, 0x12);
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|goto r18_r17");
         }
     }
 }

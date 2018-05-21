@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,6 +68,12 @@ namespace Reko.Arch.Tms7000
                     break;
                 case Opcode.add: RewriteArithmetic(m.IAdd); break;
                 case Opcode.and: RewriteLogical(m.And); break;
+                case Opcode.andp: RewriteLogical(m.And); break;
+                case Opcode.btjo: RewriteBtj(a => a); break;
+                case Opcode.btjop: RewriteBtj(a => a); break;
+                case Opcode.btjz: RewriteBtj(m.Comp); break;
+                case Opcode.btjzp: RewriteBtj(m.Comp); break;
+                case Opcode.br: RewriteBr(); break;
                 case Opcode.nop: m.Nop(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
@@ -89,6 +96,29 @@ namespace Reko.Arch.Tms7000
                 return binder.EnsureRegister(rop.Register);
             case ImmediateOperand imm:
                 return imm.Value;
+            case MemoryOperand mem:
+                Expression ea;
+                if (mem.Address != null)
+                {
+                    if (mem.Register != null)
+                    {
+                        ea = m.IAdd(
+                            mem.Address,
+                            m.Cast(PrimitiveType.UInt16, binder.EnsureRegister(mem.Register)));
+                    }
+                    else
+                    {
+                        ea = mem.Address;
+                    }
+                }
+                else
+                {
+                    ea = binder.EnsureSequence(
+                        mem.Register,
+                        arch.GpRegs[mem.Register.Number - 1],
+                        PrimitiveType.Word32);
+                }
+                return m.Mem(mem.Width, ea);
             default:
                 throw new NotImplementedException(op.GetType().Name);
             }
@@ -114,6 +144,27 @@ namespace Reko.Arch.Tms7000
             var dst = Operand(instr.op2);
             m.Assign(dst, fn(dst, src));
             CNZ(dst);
+        }
+
+        private void RewriteBtj(Func<Expression, Expression> fn)
+        {
+            this.rtlc = RtlClass.ConditionalTransfer;
+            var opLeft = Operand(instr.op2);
+            var opRight = Operand(instr.op1);
+            NZ0(m.And(opLeft, fn(opRight)));
+            var z = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.ZF));
+            m.Branch(
+                m.Test(ConditionCode.NE, z),
+                ((AddressOperand)instr.op3).Address,
+                RtlClass.ConditionalTransfer);
+        }
+
+        private void RewriteBr()
+        {
+            rtlc = RtlClass.Transfer;
+            var dst = Operand(instr.op1);
+            var ea = ((MemoryAccess)dst).EffectiveAddress;
+            m.Goto(ea);
         }
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
