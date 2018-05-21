@@ -66,5 +66,16 @@ namespace Reko.UnitTests.Arch.Tms7000
                 "0|L--|0100(0): 1 instructions",
                 "1|L--|nop");
         }
+
+        [Test]
+        public void Tms7000rw_and()
+        {
+            RewriteBytes(0x63);
+            AssertCode(
+                "0|L--|0100(0): 3 instructions",
+                "1|L--|a = a & b",
+                "2|L--|NZ = cond(a)",
+                "3|L--|C = false");
+        }
     }
 }

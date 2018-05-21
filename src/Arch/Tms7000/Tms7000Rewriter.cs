@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using System;
 using System.Collections;
@@ -63,6 +65,7 @@ namespace Reko.Arch.Tms7000
                     host.Error(instr.Address, "Rewriting x86 opcode '{0}' is not supported yet.", instr);
                     rtlc = RtlClass.Invalid;
                     break;
+                case Opcode.and: RewriteLogical(m.And); break;
                 case Opcode.nop: m.Nop(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
@@ -75,6 +78,40 @@ namespace Reko.Arch.Tms7000
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+        
+        private Expression Operand(MachineOperand op)
+        {
+            switch (op)
+            {
+            case RegisterOperand rop:
+                return binder.EnsureRegister(rop.Register);
+            default:
+                throw new NotImplementedException(op.GetType().Name);
+            }
+        }
+
+        private void CNZ(Expression e)
+        {
+            var cnz = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CNZ));
+            m.Assign(cnz, m.Cond(e));
+        }
+
+        private void NZ0(Expression e)
+        {
+            var nz = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.NZ));
+            m.Assign(nz, m.Cond(e));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            m.Assign(c, Constant.False());
+        }
+
+        private void RewriteLogical(Func<Expression, Expression, Expression> fn)
+        {
+            var src = Operand(instr.op1);
+            var dst = Operand(instr.op2);
+
+            m.Assign(dst, fn(dst, src));
+            NZ0(dst);
         }
     }
 }

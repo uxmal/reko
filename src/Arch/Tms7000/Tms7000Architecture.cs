@@ -1,5 +1,6 @@
 ﻿using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -13,6 +14,8 @@ namespace Reko.Arch.Tms7000
 {
     public class Tms7000Architecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
+        
         public Tms7000Architecture(string archId) : base(archId)
         {
             this.GpRegs = Enumerable.Range(0, 256)
@@ -95,7 +98,12 @@ namespace Reko.Arch.Tms7000
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var flagGroup))
+                return flagGroup;
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(this.st, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -130,7 +138,12 @@ namespace Reko.Arch.Tms7000
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.IF) != 0) s.Append('I');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -157,5 +170,17 @@ namespace Reko.Arch.Tms7000
         {
             throw new NotImplementedException();
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        CF = 0x08,
+        NF = 0x04,
+        ZF = 0x02,
+        IF = 0x01,
+
+        CNZ = CF|NF|ZF,
+        NZ = NF|ZF,
     }
 }
