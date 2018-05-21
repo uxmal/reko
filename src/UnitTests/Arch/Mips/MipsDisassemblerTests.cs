@@ -1191,12 +1191,14 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_jalx()
         {
             AssertCode("jalx	0x01bdc881", 0x746f7220);
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_cache()
         {
             AssertCode("cache	0x2,0(k0)", 0xbf420000);
@@ -1205,10 +1207,11 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_mul()
         {
-            AssertCode("mul a0, a0, a1", 0x70852002);
+            AssertCode("mul\tr4,r4,r5", 0x70852002);
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_lwxc1()
         {
 
@@ -1216,32 +1219,36 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_cache_3()
         {
             AssertCode("cache	0x1,-29256(t8)", 0xbf018db8);
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_cache_1()
         {
             AssertCode("cache	0x1,-29416(t8)", 0xbf018d18);
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_swc2()
         {
             AssertCode("swc2	$0,-10884(t4)", 0xe980d57c);
         }
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_sdc2()
         {
-
             AssertCode("sdc2	$6,-13325(s8)", 0xfbc6cbf3);
         }
 
 
         [Test]
+        [Ignore("Requires MIPS processor option support")]
         public void MipsDis_ldc2()
         {
 

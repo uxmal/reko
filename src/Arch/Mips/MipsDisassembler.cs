@@ -458,6 +458,13 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""));
 
+            var special2 = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, OpRec>
+            {
+                { 0x2, new Version6OpRec(
+                    new AOpRec(Opcode.mul, "R3,R1,R2"),
+                    new AOpRec(Opcode.illegal, ""))
+                }
+            });
             opRecs = new OpRec[]
             {
                 new SpecialOpRec(),
@@ -515,10 +522,10 @@ namespace Reko.Arch.Mips
                     cop0_C0_decoder,
                     cop0_C0_decoder,
                     cop0_C0_decoder),
-                // 11: COP1 encodings
+               // 11: COP1 encodings
                 cop1,
 
-               new CoprocessorOpRec(
+               new CoprocessorOpRec(  // 12: COP2 
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
@@ -554,7 +561,7 @@ namespace Reko.Arch.Mips
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, "")),
-                null,
+                null,   // COP1X
                 new AOpRec(Opcode.beql, "R1,R2,j"),
                 new AOpRec(Opcode.bnel, "R1,R2,j"),
                 new AOpRec(Opcode.blezl, "R1,j"),
@@ -564,7 +571,8 @@ namespace Reko.Arch.Mips
                 new A64OpRec(Opcode.daddiu, "R2,R1,I"),
                 new A64OpRec(Opcode.ldl, "R2,El"),
                 new A64OpRec(Opcode.ldr, "R2,El"),
-                null,
+
+                special2,
                 null,
                 null,
                 new Special3OpRec(), 
