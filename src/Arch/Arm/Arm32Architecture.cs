@@ -51,6 +51,7 @@ namespace Reko.Arch.Arm
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
+#if NATIVE
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
             var unk = CreateNativeArchitecture("arm");
@@ -58,6 +59,7 @@ namespace Reko.Arch.Arm
 
             GetRegistersFromNative();
             StackRegister = regsByName["sp"];
+#endif
         }
 
         private void GetRegistersFromNative()
@@ -95,6 +97,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new A32Disassembler(this, rdr);
+#if NATIVE
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -123,6 +127,7 @@ namespace Reko.Arch.Arm
                      hBytes.Free();
                 }
             }
+#endif
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
