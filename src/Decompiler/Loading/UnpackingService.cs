@@ -99,8 +99,7 @@ namespace Reko.Loading
             var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
             if (signature == null)
                 return null;
-            var loaders = Services.RequireService<IConfigurationService>().GetImageLoaders();
-            var le = loaders.Cast<LoaderConfiguration>().Where(l => l.Label == signature.Name).FirstOrDefault();  //$REVIEW: all of themn?
+            var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
             if (le == null)
                 return null;
             var loader = Loader.CreateImageLoader<ImageLoader>(Services, le.TypeName, filename, image);

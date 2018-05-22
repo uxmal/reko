@@ -81,6 +81,11 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
+        public LoaderConfiguration GetImageLoader(string loaderName)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetInstallationRelativePath(params string[] pathComponents)
         {
             throw new NotImplementedException();

@@ -235,10 +235,10 @@ namespace Reko.Core.Serialization
             var sUser = sInput.User;
             var address = LoadAddress(sUser, this.arch);
             Program program;
-            if (address != null && 
-                sUser.Processor != null &&
-                (sUser.PlatformOptions == null || sUser.PlatformOptions.Name != null))
+            if (!string.IsNullOrEmpty(sUser.Loader))
             {
+                // The presence of an explicit loader name prompts us to
+                // use the LoadRawImage path.
                 var arch = sUser.Processor.Name;
                 var platform = sUser.PlatformOptions?.Name;
                 program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
