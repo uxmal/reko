@@ -264,6 +264,7 @@
     <Compile Include="Configuration\ArchitectureElement.cs" />
     <Compile Include="Configuration\AssemblerElement.cs" />
     <Compile Include="Configuration\PlatformArchitectureElement.cs" />
+    <Compile Include="Configuration\PropertyOption.cs" />
     <Compile Include="Configuration\RekoConfigurationService.cs" />
     <Compile Include="Configuration\LoaderElement.cs" />
     <Compile Include="Configuration\OperatingEnvironmentElement.cs" />

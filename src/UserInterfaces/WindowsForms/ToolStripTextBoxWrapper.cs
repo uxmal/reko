@@ -60,6 +60,11 @@ namespace Reko.UserInterfaces.WindowsForms
             remove { textbox.TextChanged -= value; }
         }
 
+        public event EventHandler GotFocus
+        {
+            add { textbox.GotFocus += value; }
+            remove { textbox.GotFocus -= value; }
+        }
         public event EventHandler LostFocus
         {
             add { textbox.LostFocus += value; }

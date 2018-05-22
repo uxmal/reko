@@ -29,8 +29,10 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class ComboBoxWrapper : IComboBox
+    public class ComboBoxWrapper : ControlWrapper, IComboBox
     {
+        private ComboBox ddl;
+
         public event EventHandler TextChanged 
         {
             add { this.ddl.TextChanged += value; } 
@@ -43,14 +45,9 @@ namespace Reko.UserInterfaces.WindowsForms
             remove { this.ddl.SelectedIndexChanged -= value; }
         }
 
-        private ComboBox ddl;
+        public ComboBoxWrapper(ComboBox ddl) : base(ddl) { this.ddl = ddl; }
 
-        public ComboBoxWrapper(ComboBox ddl) { this.ddl = ddl; }
-
-        public Color BackColor { get { return ddl.BackColor; } set { ddl.ForeColor = value;  } }
         public object DataSource { get { return ddl.DataSource; } set { ddl.DataSource = value; } }
-        public bool Enabled {  get { return ddl.Enabled; } set { ddl.Enabled = value; } }
-        public Color ForeColor { get { return ddl.ForeColor; } set { ddl.ForeColor = value;  } }
         public IList Items { get { return ddl.Items; } }
         public int SelectedIndex { get { return ddl.SelectedIndex; } set { ddl.SelectedIndex = value; } }
         public object SelectedItem { get { return ddl.SelectedItem; } set { ddl.SelectedItem = value; } }

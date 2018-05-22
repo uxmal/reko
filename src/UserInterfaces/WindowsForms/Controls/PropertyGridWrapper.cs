@@ -23,34 +23,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-    public class ControlWrapper : IControl
+    public class PropertyGridWrapper : ControlWrapper, IPropertyGrid
     {
-        private Control ctrl;
+        private PropertyGrid grid;
 
-        public ControlWrapper(Control ctrl)
+        public PropertyGridWrapper(PropertyGrid grid) : base(grid)
         {
-            this.ctrl = ctrl;
+            this.grid = grid;
         }
 
-        public event EventHandler GotFocus
+        public object SelectedObject
         {
-            add { this.ctrl.GotFocus += value; }
-            remove { this.ctrl.GotFocus -= value; }
+            get { return grid.SelectedObject; }
+            set { grid.SelectedObject = value; }
         }
-
-        public event EventHandler LostFocus
-        {
-            add { this.ctrl.LostFocus += value; }
-            remove { this.ctrl.LostFocus -= value; }
-        }
-
-        public Color BackColor { get { return ctrl.BackColor; } set { ctrl.BackColor = value; } }
-        public Color ForeColor { get { return ctrl.ForeColor; } set { ctrl.ForeColor = value; } }
-        public bool Enabled { get { return ctrl.Enabled; } set { ctrl.Enabled = value; } }
     }
 }

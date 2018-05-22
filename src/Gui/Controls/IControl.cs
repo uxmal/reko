@@ -18,12 +18,16 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace Reko.Gui.Controls
 {
     public interface IControl
     {
+        event EventHandler GotFocus;
+        event EventHandler LostFocus;
+
         Color ForeColor { get; set; }
         Color BackColor { get; set; }
         bool Enabled { get; set; }

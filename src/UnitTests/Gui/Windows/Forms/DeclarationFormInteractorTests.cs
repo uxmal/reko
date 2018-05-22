@@ -342,5 +342,5 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
         }
-    }
+            }
 }

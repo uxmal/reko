@@ -59,6 +59,7 @@ namespace Reko.Core.Configuration
          /// <param name="path"></param>
          /// <returns></returns>
          string GetInstallationRelativePath(params string [] pathComponents);
+        LoaderConfiguration GetImageLoader(string loader);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -118,7 +119,21 @@ namespace Reko.Core.Configuration
             {
                 Description = sArch.Description,
                 Name = sArch.Name,
-                TypeName = sArch.Type
+                TypeName = sArch.Type,
+                Options = LoadCollection(sArch.Options, LoadPropertyOption),
+            };
+        }
+
+        private PropertyOption LoadPropertyOption(PropertyOption_v1 sOption)
+        {
+            return new PropertyOption
+            {
+                Name = sOption.Name,
+                Text = sOption.Text,
+                Description = sOption.Description,
+                Required = sOption.Required,
+                TypeName = sOption.TypeName,
+                Choices = sOption.Choices
             };
         }
 
@@ -349,6 +364,11 @@ namespace Reko.Core.Configuration
             {
                 TypeName = typeof(DefaultPlatform).FullName,
             };
+        }
+
+        public virtual LoaderConfiguration GetImageLoader(string loaderName)
+        {
+            return loaders.FirstOrDefault(ldr => ldr.Label == loaderName);
         }
 
         public virtual RawFileElement GetRawFile(string rawFileFormat)

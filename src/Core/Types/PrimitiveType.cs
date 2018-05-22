@@ -288,7 +288,7 @@ namespace Reko.Core.Types
                     case 8: return "qw";
                     case 16: return "ow";
                     case 32: return "hw";
-					default: throw new ArgumentOutOfRangeException();
+					default: return "n";
 					}
 				}
 			}

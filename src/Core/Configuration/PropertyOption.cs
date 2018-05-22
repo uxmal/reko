@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,42 +20,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Core.Configuration
 {
-    public interface Architecture
+    public class PropertyOption
     {
-        string Name { get ; }
-
-        string Description { get; }
-
-        string TypeName { get; }
-
-        List<PropertyOption> Options { get; set; }
-    }
-
-    public class ArchitectureElement : Architecture
-    {
-        /// <summary>
-        /// Short abbreviation for the architecture.
-        /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Human-readable description of the processor architecture
-        /// </summary>
+        public string Text { get; set; }
         public string Description { get; set; }
-
-        /// <summary>
-        /// .NET type name for the architecture.
-        /// </summary>
+        public bool Required { get; set; }
         public string TypeName { get; set; }
-
-        /// <summary>
-        /// Available property options.
-        /// </summary>
-        public List<PropertyOption> Options{ get; set; }
+        public ListOption_v1[] Choices { get; set; }
     }
 }
