@@ -62,16 +62,13 @@ namespace Reko.Arch.MicrochipPIC.Common
                                     ibit += adj.Offset;
                                     break;
                                 case DCRFieldDef dcrfieldddef:
+                                    dcrfieldddef.BitAddr = ibit; // Force the bit address as 'genPICdb' does not set it.
+                                    ibit += dcrfieldddef.NzWidth;
                                     if (dcrfieldddef.IsHidden || dcrfieldddef.IsLangHidden)
                                         continue;
-                                    dcrfieldddef.BitAddr = ibit; // Force the bit address as 'genPICdb' does not set it.
                                     var dcrfdef = new DevConfigField(dcrfieldddef, dcreg.Address);
-                                    ibit += dcrfieldddef.NzWidth;
+                                    dcrfieldddef.DCRFieldSemantics.ForEach((dcsem) => dcrfdef.AddSemantic(new DevConfigSemantic(dcsem)));
                                     dcreg.AddField(dcrfdef);
-                                    foreach (var dcsem in dcrfieldddef.DCRFieldSemantics)
-                                    {
-                                        dcrfdef.AddSemantic(new DevConfigSemantic(dcsem));
-                                    }
                                     break;
                             }
                         }
