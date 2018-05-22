@@ -1,3 +1,29 @@
+void Win32CrtStartup()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  d0 d1
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+Win32CrtStartup_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+Win32CrtStartup_entry:
+// DataOut: d0 d1
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+
+l00001004:
+	__btst(d0, d1)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+
+
+
 void fn00001498()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

@@ -533,9 +533,9 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn000000000040BD70: error: An error occurred during data flow analysis.
     Case PE not handled.
-       at Reko.Analysis.ConditionCodeEliminator.ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, Boolean isNegated) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 452
+       at Reko.Analysis.ConditionCodeEliminator.ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, Boolean isNegated) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 448
    at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 181
-   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 411
+   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 407
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
    at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 193
    at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
@@ -2284,4 +2284,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 33.79 seconds ---
+Decompiled 51 binaries in 47.33 seconds ---
