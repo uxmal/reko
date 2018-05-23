@@ -224,6 +224,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
             case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
+            case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
@@ -824,6 +825,7 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (machine)
             {
+            case ElfMachine.EM_AARCH64: return new Arm64Relocator(this, symbols);
             case ElfMachine.EM_X86_64: return new x86_64Relocator(this, symbols);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this, symbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator64(this, symbols);
