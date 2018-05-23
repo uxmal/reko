@@ -107,6 +107,9 @@ namespace Reko.Arch.Arm
                         op = DecodeMemoryAccess(wInstr, memType, dt, instr);
                     }
                     break;
+                case 'M': // Multiple registers
+                    op = new MultiRegisterOperand(PrimitiveType.Word16, (ushort)wInstr);
+                    break;
                 case 's':   // use bit 20 to determine 
                     instr.UpdateFlags = ((wInstr >> 20) & 1) != 0;
                     continue;
@@ -253,7 +256,8 @@ namespace Reko.Arch.Arm
                 break;
             case 'x':   // wide shift amt.
                 shiftAmt = (int)bitmask(wInstr, 7, 0x1F);
-                shiftType = ArmShiftType.LSL; //$TODO exotic types
+                shiftType = shiftAmt > 0 ? ArmShiftType.LSL : ArmShiftType.None;
+                //$TODO exotic shifts rotates etc
                 break;
             }
             bool add = bit(wInstr, 23);
@@ -520,16 +524,16 @@ namespace Reko.Arch.Arm
                 LoadStoreExclusive);
 
 
-            var Mul = new InstrDecoder(Opcode.mul, null);
-            var Mla = new InstrDecoder(Opcode.mla, null);
-            var Umaal = new InstrDecoder(Opcode.umaal, null);
-            var Mls = new InstrDecoder(Opcode.mls, null);
-            var Umull = new InstrDecoder(Opcode.umull, null);
-            var Umlal = new InstrDecoder(Opcode.umlal, null);
-            var Smull = new InstrDecoder(Opcode.smull, null);
-            var Smlal = new InstrDecoder(Opcode.smlal, null);
+            var Mul = new InstrDecoder(Opcode.mul, "sr4,r0,r2");
+            var Mla = new InstrDecoder(Opcode.mla, "sr4,r0,r2,r3");
+            var Umaal = new InstrDecoder(Opcode.umaal, "sr3,r4,r0,r2");
+            var Mls = new InstrDecoder(Opcode.mls, "sr4,r0,r2,r3");
+            var Umull = new InstrDecoder(Opcode.umull, "sr3,r4,r0,r2");
+            var Umlal = new InstrDecoder(Opcode.umlal, "sr4,r0,r2,r3");
+            var Smull = new InstrDecoder(Opcode.smull, "sr4,r0,r2,r3");
+            var Smlal = new InstrDecoder(Opcode.smlal, "sr4,r0,r2,r3");
 
-            var MultiplyAndAccumulate = new MaskDecoder(20, 4,
+            var MultiplyAndAccumulate = new MaskDecoder(20, 0xF,
                Mul,
                Mul,
                Mla,
@@ -1175,39 +1179,42 @@ namespace Reko.Arch.Arm
                 nyi("media2"),
                 nyi("media3"));
 
-var StmdaStmed = nyi("StmdaStmed");
-var LdmdaLdmfa = nyi("LdmdaLdmfa");
-var Ldm =        nyi("ldm");
-var StmStmia =   nyi("StmStmia");
-var LdmLdmia =   nyi("LdmLdmia");
-var StmdbStmfd = nyi("StmdbStmfd");
-var LdmdbLDmea = nyi("LdmdbLDmea");
+            var StmdaStmed = new InstrDecoder(Opcode.stmda, "r4,M");
+            var LdmdaLdmfa = new InstrDecoder(Opcode.ldmda, "r4,M");
+            var Stm =        new InstrDecoder(Opcode.stm, "r4,M");
+            var Ldm =        new InstrDecoder(Opcode.ldm, "r4,M");
+            var StmStmia =   new InstrDecoder(Opcode.stm, "r4,M");
+            var LdmLdmia =   new InstrDecoder(Opcode.ldm, "r4,M");
+            var StmdbStmfd = new InstrDecoder(Opcode.stmdb, "r4,M");
+            var LdmdbLDmea = new InstrDecoder(Opcode.ldmdb, "r4,M");
+            var StmibStmfa = new InstrDecoder(Opcode.stmib, "r4,M");
+            var LdmibLdmed = new InstrDecoder(Opcode.ldmib, "r4,M");
 
             var LoadStoreMultiple = new MaskDecoder(22, 7, // PUop
                 new MaskDecoder(20, 1, // L
                     StmdaStmed,
                     LdmdaLdmfa),
                 new MaskDecoder(20, 1, // L
-                    invalid,
+                    Stm,
                     Ldm),
                 new MaskDecoder(20, 1, // L
                     StmStmia,
                     LdmLdmia),
                 new MaskDecoder(20, 1, // L
-                    invalid,
+                    Stm,
                     Ldm),
 
                 new MaskDecoder(20, 1, // L
                     StmdbStmfd,
                     LdmdbLDmea),
                 new MaskDecoder(20, 1, // L
-                    invalid,
+                    Stm,
                     Ldm),
                 new MaskDecoder(20, 1, // L
-                    StmdbStmfd,
-                    LdmdbLDmea),
+                    StmibStmfa,
+                    LdmibLdmed),
                 new MaskDecoder(20, 1, // L
-                    invalid,
+                    Stm,
                     Ldm));
 
             var RfeRfeda = nyi("RfeRefda");

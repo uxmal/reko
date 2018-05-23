@@ -26,11 +26,20 @@ namespace Reko.Arch.Arm
 {
     public class Arm32InstructionNew : MachineInstruction
     {
-        #region Specially rendered opcodes
+        #region Special cases
+
+        // Specially rendered opcodes
         private static readonly Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
         {
             { Opcode.pop_w, "pop.w" },
             { Opcode.push_w, "push.w" }
+        };
+
+        // Block data transfer opcodes that affect the rendering of the first operand.
+        private static readonly HashSet<Opcode> blockDataXferOpcodes = new HashSet<Opcode>
+        {
+            Opcode.ldm, Opcode.ldmda, Opcode.ldmdb, Opcode.ldmib,
+            Opcode.stm, Opcode.stmda, Opcode.stmdb, Opcode.stmib,
         };
         #endregion
 
@@ -92,7 +101,8 @@ namespace Reko.Arch.Arm
             {
                 writer.Tab();
                 RenderOperand(op1, writer, options);
-
+                if (blockDataXferOpcodes.Contains(opcode))
+                    writer.WriteChar('!');
                 if (op2 != null)
                 {
                     writer.WriteChar(',');

@@ -39,15 +39,30 @@ namespace Reko.Arch.Arm
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var sep = '{';
+            var sep = "{";
             int mask = 1;
-            for (int i = 0; i < 16; ++i, mask <<= 1)
+            int iStart = -1;
+            for (int i = 0; i < 17; ++i, mask <<= 1)
             {
                 if ((bitmask & mask) != 0)
                 {
-                    writer.WriteChar(sep);
-                    sep = ',';
-                    writer.WriteString(Registers.GpRegs[i].Name);
+                    if (iStart < 0)
+                    {
+                        // Start a range
+                        writer.WriteString(sep);
+                        sep = ",";
+                        iStart = i;
+                        writer.WriteString(Registers.GpRegs[i].Name);
+                    }
+                }
+                else
+                {
+                    if (0 <= iStart && iStart < i - 1)
+                    {
+                        writer.WriteChar('-');
+                        writer.WriteString(Registers.GpRegs[i-1].Name);
+                    }
+                    iStart = -1;
                 }
             }
             writer.WriteChar('}');

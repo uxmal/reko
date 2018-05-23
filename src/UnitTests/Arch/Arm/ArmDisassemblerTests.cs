@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldm()
         {
             var instr = Disassemble32(0xE89B000F);
-            Assert.AreEqual("ldm\tfp,{r0-r3}", instr.ToString());
+            Assert.AreEqual("ldm\tfp!,{r0-r3}", instr.ToString());
         }
 
         [Test]
