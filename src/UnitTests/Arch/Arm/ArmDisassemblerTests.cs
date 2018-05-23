@@ -30,6 +30,7 @@ using System.Text;
 
 namespace Reko.UnitTests.Arch.Arm
 {
+    [TestFixture]
     public abstract class ArmTestBase
     {
         protected static MachineInstruction Disassemble(byte[] bytes)
@@ -99,6 +100,7 @@ namespace Reko.UnitTests.Arch.Arm
     [Category(Categories.Capstone)]
     public class ArmDisassemblerTests : ArmTestBase
     {
+        private const string ArmObsolete = "Obsolete instrction? can't find it in ARM Architecture Reference Manual - ARMv8, for ARMv8";
         protected override IProcessorArchitecture CreateArchitecture()
         {
             return new Arm32Architecture("arm32");
@@ -125,15 +127,7 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("blgt\t$000FFEB0", instr.ToString());
         }
 
-        [Test]
-        public void ArmDasm_cdp()
-        {
-            var instr = Disassemble32(0xfeced300);
-            Assert.AreEqual("cdp2\tp3,#&C,c13,c14", instr.ToString());
 
-            instr = Disassemble32(0x4ec4ec4f);
-            Assert.AreEqual("cdpmi\tp12,#&C,c14,c4", instr.ToString());
-        }
 
         [Test]
         public void ArmDasm_Andne_rr()
@@ -264,10 +258,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore(ArmObsolete)]
         public void ArmDasm_swpb()
         {
             var instr = DisassembleBits("1110 00010 100 0001 0010 00001001 0011");
             Assert.AreEqual("swpb\tr2,r3,[r1]", instr.ToString());
+        }
+
+
+        [Test]
+        public void ArmDasm_cdp()
+        {
+            var instr = Disassemble32(0xfeced300);
+            Assert.AreEqual("cdp2\tp3,#&C,c13,c14", instr.ToString());
+
+            instr = Disassemble32(0x4ec4ec4f);
+            Assert.AreEqual("cdpmi\tp12,#&C,c14,c4", instr.ToString());
         }
 
         [Test]

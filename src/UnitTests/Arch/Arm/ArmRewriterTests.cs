@@ -504,7 +504,7 @@ means
         {
             BuildTest(0xE0A22002); // adc r2,r2,r2
             AssertCode(
-               "0|L--|00100000(4): 2 instructions",
+               "0|L--|00100000(4): 1 instructions",
                "1|L--|r2 = r2 + r2 + C");
         }
 

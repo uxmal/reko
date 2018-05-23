@@ -47,7 +47,7 @@ namespace Reko.Arch.Arm
         protected RtlClass rtlClass;
         protected RtlEmitter m;
 
-        public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, null)
+        public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, new A32Disassembler(arch, rdr).GetEnumerator())
         {
         }
 
@@ -709,7 +709,6 @@ void RewriteB(bool link)
             dt = dt ?? PrimitiveType.Word32;
             switch (op)
             {
-
             case RegisterOperand rOp:
                 {
                     if (!write && rOp.Register == Registers.pc)
@@ -779,9 +778,9 @@ case ARM_OP_SYSREG:
                     if (mop.Offset != null && !mop.Offset.IsZero && op == instr.op3)
                     {
                         var offset = mop.Offset;
-                        ea = mop.Scale < 0
-                            ? m.ISub(ea, offset)
-                            : m.IAdd(ea, offset);
+                        ea = mop.Add
+                            ? m.IAdd(ea, offset)
+                            : m.ISub(ea, offset);
                     }
                     if (op == instr.op3 && instr.Writeback)
                     {

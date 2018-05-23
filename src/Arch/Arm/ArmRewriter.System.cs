@@ -142,7 +142,7 @@ namespace Reko.Arch.Arm
         {
             this.rtlClass = RtlClass.Transfer | RtlClass.Call;
             var intrinsic = host.PseudoProcedure("__syscall", VoidType.Instance, Operand(Dst()));
-            m.SideEffect(m.Fn(intrinsic));
+            m.SideEffect(intrinsic);
         }
 
         private void RewriteTrap()

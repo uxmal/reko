@@ -35,6 +35,7 @@ namespace Reko.Arch.Arm
     public class A32Disassembler : DisassemblerBase<Arm32InstructionNew>
     {
         private static readonly Decoder rootDecoder;
+        private static readonly Decoder invalid; 
 
         private Arm32Architecture arch;
         private EndianImageReader rdr;
@@ -52,6 +53,8 @@ namespace Reko.Arch.Arm
             if (!rdr.TryReadUInt32(out uint wInstr))
                 return null;
             var instr = rootDecoder.Decode(wInstr, this);
+            instr.Address = addr;
+            instr.Length = 4;
             return instr;
         }
 
@@ -78,6 +81,10 @@ namespace Reko.Arch.Arm
                 case 'J':   // 24-bits at offset 0.
                     offset = 8 + (((int)wInstr << 8) >> 6);
                     op = AddressOperand.Create(addr + offset);
+                    break;
+                case 'V':   // 24-bits at offset 0.
+                    imm = wInstr & 0x00FFFFFF;
+                    op = ImmediateOperand.Word32(imm);
                     break;
                 case 'X':   // 24-bits + extra H bit
                     offset = 8 + (((int)wInstr << 8) >> 6);
@@ -109,6 +116,16 @@ namespace Reko.Arch.Arm
                     break;
                 case 'M': // Multiple registers
                     op = new MultiRegisterOperand(PrimitiveType.Word16, (ushort)wInstr);
+                    break;
+                case 'S':   // 'SR' = special register
+                    if (i < format.Length - 1 && format[i+1] == 'R')
+                    {
+                        ++i;
+                        var sr = bit(wInstr, 22) ? Registers.spsr : Registers.cpsr;
+                        op = new RegisterOperand(sr);
+                    }
+                    else 
+                        goto default;
                     break;
                 case 's':   // use bit 20 to determine 
                     instr.UpdateFlags = ((wInstr >> 20) & 1) != 0;
@@ -373,6 +390,30 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private class SparseMaskDecoder : Decoder
+        {
+            private int shift;
+            private uint mask;
+            private Dictionary<uint, Decoder> decoders;
+            private Decoder @default;
+
+            public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default = null)
+            {
+                this.shift = shift;
+                this.mask = mask;
+                this.decoders = decoders;
+                this.@default = @default ?? invalid;
+            }
+
+            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            {
+                var op = (wInstr >> shift) & mask;
+                if (!decoders.TryGetValue(op, out Decoder decoder))
+                    decoder = @default;
+                return decoder.Decode(wInstr, dasm);
+            }
+        }
+
         // Special decoder for when a 4-bit field has the bit pattern 1111 or not.
         private class PcDecoder : Decoder
         {
@@ -450,7 +491,7 @@ namespace Reko.Arch.Arm
 
         static A32Disassembler()
         {
-            var invalid = new InstrDecoder(Opcode.Invalid, "");
+            invalid = new InstrDecoder(Opcode.Invalid, "");
 
             var LoadStoreExclusive = nyi("LoadStoreExclusive");
 
@@ -696,7 +737,7 @@ namespace Reko.Arch.Arm
                 LoadStoreDualHalfSbyteRegister,
                 LoadStoreDualHalfSbyteImmediate);
 
-            var Mrs = new InstrDecoder(Opcode.mrs, null);
+            var Mrs = new InstrDecoder(Opcode.mrs, "r3,SR");
             var Msr = new InstrDecoder(Opcode.msr, null);
             var MrsBanked = new InstrDecoder(Opcode.mrs, null);
             var MsrBanked = new InstrDecoder(Opcode.msr, null);
@@ -1258,7 +1299,40 @@ namespace Reko.Arch.Arm
                     ExceptionSaveRestore),
                 BranchImmediate);
 
-            var SystemRegister_AdvancedSimd_FloatingPoint = nyi("SystemRegister_AdvancedSimd_FloatingPoint");
+            var SystemRegister_LdSt_64bitMove = nyi("SystemRegister_LdSt_64bitMove");
+
+            var FloatingPointDataProcessing = nyi("FloatingPointDataProcessing");
+
+            var AdvancedSIMDandFloatingPoint32bitMove = nyi("AdvancedSIMDandFloatingPoint32bitMove");
+
+            Decoder SystemRegister_AdvancedSimd_FloatingPoint = new MaskDecoder(24, 3,
+                new SparseMaskDecoder(9, 0x7, new Dictionary<uint, Decoder>
+                {
+                    { 4, SystemRegister_LdSt_64bitMove },
+                    { 5, SystemRegister_LdSt_64bitMove },
+                    { 7, SystemRegister_LdSt_64bitMove },
+                }),
+                new SparseMaskDecoder(9, 0x7, new Dictionary<uint, Decoder>
+                {
+                    { 4, SystemRegister_LdSt_64bitMove },
+                    { 5, SystemRegister_LdSt_64bitMove },
+                    { 7, SystemRegister_LdSt_64bitMove },
+                }),
+                new SparseMaskDecoder(9, 0x7, new Dictionary<uint, Decoder>
+                {
+                    //$TODO cond fields.
+                    { 4, new MaskDecoder(4, 1,
+                        FloatingPointDataProcessing,
+                        AdvancedSIMDandFloatingPoint32bitMove)
+                    },
+                    { 5, new MaskDecoder(4, 1,
+                        FloatingPointDataProcessing,
+                        AdvancedSIMDandFloatingPoint32bitMove)
+                    },
+                }),
+                new InstrDecoder(Opcode.svc, "V"));
+
+            //}nyi("SystemRegister_AdvancedSimd_FloatingPoint");
 
 
             var ConditionalDecoder = new CondMaskDecoder(25, 0x7,
