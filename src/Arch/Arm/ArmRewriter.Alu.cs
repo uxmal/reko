@@ -716,9 +716,9 @@ namespace Reko.Arch.Arm
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression src = Reg(((RegisterOperand)Src2()).Register);
-            if (instr.ShiftType == ArmShiftType.ROR)
+            if (instr.ShiftType == Opcode.ror)
             {
-                src = m.Shr(src, m.Int32(instr.ShiftValue));
+                src = m.Shr(src, Operand(instr.ShiftValue));
             }
             src = m.Cast(dt, src);
             m.Assign(dst, m.IAdd(this.Operand(Src1()), src));
@@ -728,9 +728,9 @@ namespace Reko.Arch.Arm
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             Expression src = Reg(((RegisterOperand)Src1()).Register);
-            if (instr.ShiftType == ArmShiftType.ROR)
+            if (instr.ShiftType == Opcode.ror)
             {
-                src = m.Shr(src, m.Int32(instr.ShiftValue));
+                src = m.Shr(src,Operand(instr.ShiftValue));
             }
             src = m.Cast(dtSrc, src);
             src = m.Cast(dtDst, src);

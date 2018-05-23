@@ -34,6 +34,11 @@ namespace Reko.Arch.Arm
         };
         #endregion
 
+        public Arm32InstructionNew()
+        {
+            this.condition = ArmCondition.AL;
+        }
+
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand op1 { get; set; }
@@ -80,22 +85,39 @@ namespace Reko.Arch.Arm
             {
                 sOpcode = opcode.ToString();
             }
-            writer.WriteOpcode(sOpcode);
-            if (op1 == null) return;
-            writer.Tab();
-            RenderOperand(op1, writer, options);
+            var sUpdate = UpdateFlags ? "s" : "";
+            var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
+            writer.WriteOpcode($"{sOpcode}{sUpdate}{sCond}");
+            if (op1 != null)
+            {
+                writer.Tab();
+                RenderOperand(op1, writer, options);
 
-            if (op2 == null) return;
-            writer.WriteChar(',');
-            RenderOperand(op2, writer, options);
+                if (op2 != null)
+                {
+                    writer.WriteChar(',');
+                    RenderOperand(op2, writer, options);
 
-            if (op3 == null) return;
-            writer.WriteChar(',');
-            RenderOperand(op3, writer, options);
+                    if (op3 != null)
+                    {
+                        writer.WriteChar(',');
+                        RenderOperand(op3, writer, options);
 
-            if (op4 == null) return;
-            writer.WriteChar(',');
-            RenderOperand(op4, writer, options);
+                        if (op4 != null)
+                        {
+                            writer.WriteChar(',');
+                            RenderOperand(op4, writer, options);
+                        }
+                    }
+                }
+            }
+            if (ShiftType != Opcode.Invalid)
+            {
+                writer.WriteChar(',');
+                writer.WriteOpcode(ShiftType.ToString());
+                writer.WriteChar(' ');
+                RenderOperand(ShiftValue, writer, options);
+            }
         }
 
         private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -132,8 +154,8 @@ namespace Reko.Arch.Arm
 
         public bool Writeback;
         public bool UpdateFlags;
-        public ArmShiftType ShiftType;
-        public uint ShiftValue;
+        public Opcode ShiftType;
+        public ImmediateOperand ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;
         public byte itmask;

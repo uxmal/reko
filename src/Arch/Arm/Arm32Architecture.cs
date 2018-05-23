@@ -186,7 +186,10 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
+            return new ArmRewriter(this, rdr, host, binder);
+#if NATIVE
             return new ArmRewriterRetired(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
+#endif
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)

@@ -76,5 +76,10 @@ namespace Reko.Core.Lib
             u = (u & 0x00000000FFFFFFFFUL) + ((u >> 32) & 0x0000000FFFFFFFFUL);
             return (int)u;
         }
+
+        public static uint RotateR32(uint u, int s)
+        {
+            return (u << (32 - s)) | (u >> s);
+        }
     }
 }

@@ -296,8 +296,15 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_lsl()
         {
-            var instr = Disassemble32(0xE1a00200);
-            Assert.AreEqual("lsl\tr0,r0,lsl #4", instr.ToString());
+            var instr = Disassemble32(0xE1a03205);
+            Assert.AreEqual("lsl\tr3,r5,lsl #4", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mov_2()
+        {
+            var instr = Disassemble32(0xE1a03000);
+            Assert.AreEqual("mov\tr3,r0", instr.ToString());
         }
 
         [Test]

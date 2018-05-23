@@ -47,7 +47,7 @@ namespace Reko.Arch.Arm
         protected RtlClass rtlClass;
         protected RtlEmitter m;
 
-        public ArmRewriter(Dictionary<int, RegisterStorage> regsByNumber, Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, null)
+        public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, null)
         {
         }
 

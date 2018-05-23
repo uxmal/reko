@@ -28,7 +28,11 @@ namespace Reko.Arch.Arm
 {
     public enum ArmShiftType
     {
+        None = -1,
         LSL,
-        ROR
+        LSR,
+        ASR,
+        ROR,
+        RRX,
     }
 }

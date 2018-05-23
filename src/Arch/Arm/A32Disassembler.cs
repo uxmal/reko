@@ -25,6 +25,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
 
 namespace Reko.Arch.Arm
 {
@@ -34,6 +36,7 @@ namespace Reko.Arch.Arm
 
         private Arm32Architecture arch;
         private EndianImageReader rdr;
+        private Address addr;
 
         public A32Disassembler(Arm32Architecture arch, EndianImageReader rdr)
         {
@@ -43,11 +46,113 @@ namespace Reko.Arch.Arm
 
         public override Arm32InstructionNew DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
                 return null;
-            var instrs = rootDecoder.Decode(wInstr, this);
+            var instr = rootDecoder.Decode(wInstr, this);
+            return instr;
+        }
+
+        private Arm32InstructionNew Decode(uint wInstr, Opcode opcode, string format)
+        {
+            int iOp = 0;
+            var instr = new Arm32InstructionNew
+            {
+                opcode = opcode,
+            };
+
+            for (int i = 0; i < format.Length; ++i)
+            {
+                MachineOperand op;
+                int offset;
+                switch (format[i])
+                {
+                case ',':
+                    continue;
+                case 'I':   // 12-bit encoded immediate at offset 0;
+                    op = DecodeImm12(wInstr);
+                    break;
+                case 'J':   // 24-bits at offset 0.
+                    offset = 8 + (((int)wInstr << 8) >> 6);
+                    op = AddressOperand.Create(addr + offset);
+                    break;
+                case 'X':   // 24-bits + extra H bit
+                    offset = 8 + (((int)wInstr << 8) >> 6);
+                    offset |= ((int)wInstr >> 23) & 2;
+                    op = AddressOperand.Create(addr + offset);
+                    break;
+                case 'r':   // register at a 4-bit multiple offset
+                    offset = (format[++i] - '0') * 4;
+                    op = new RegisterOperand(Registers.GpRegs[bitmask(wInstr, offset, 0xF)]);
+                    break;
+                case 's':   // use bit 20 to determine 
+                    instr.UpdateFlags = ((wInstr >> 20) & 1) != 0;
+                    continue;
+                case '>':   // shift
+                    ++i;
+                    if (format[i] == 'i')
+                        DecodeImmShift(wInstr, instr);
+                    else
+                        DecodeRegShift(wInstr, instr);
+                    continue;
+                default:
+                    throw new NotImplementedException($"Format character '{format[i]}' is unknown.");
+                }
+                switch (iOp++)
+                {
+                case 0: instr.op1 = op; break;
+                case 1: instr.op2 = op; break;
+                case 2: instr.op3 = op; break;
+                case 3: instr.op4 = op; break;
+                }
+            }
+            return instr;
+        }
+
+        private void DecodeImmShift(uint wInstr, Arm32InstructionNew instr)
+        {
+            uint type = bitmask(wInstr, 5, 0x3);
+            int shift_n = (int)bitmask(wInstr, 7, 0x1F);
+            Opcode shift_t;
+            switch (type)
+            {
+            case 0:
+                shift_t = shift_n > 0 ? Opcode.lsl : Opcode.Invalid;
+                break;
+            case 1:
+                shift_t = Opcode.lsr;
+                shift_n = shift_n == 0 ? 32 : shift_n;
+                break;
+            case 2:
+                shift_t = Opcode.asr;
+                shift_n = shift_n == 0 ? 32 : shift_n;
+                break;
+            case 3:
+                shift_t = shift_n > 0 ? Opcode.ror : Opcode.rrx;
+                shift_n = shift_n == 0 ? 1 : shift_n;
+                break;
+            default:
+                throw new InvalidOperationException("impossiburu");
+            }
+            instr.ShiftType = shift_t;
+            if (shift_t != Opcode.Invalid)
+            {
+                instr.ShiftValue = ImmediateOperand.Int32(shift_n);
+            }
+        }
+
+        private void DecodeRegShift(uint wInstr, Arm32InstructionNew instr)
+        {
             throw new NotImplementedException();
+        }
+
+
+        private ImmediateOperand DecodeImm12(uint wInstr)
+        {
+            var imm12 = bitmask(wInstr, 0, 0xFFF);
+            var unrotated_value = imm12 & 0xF;
+            var n = Bits.RotateR32(unrotated_value, 2 * (int)bitmask(wInstr, 8, 0xF));
+            return ImmediateOperand.Word32(n);
         }
 
         private static uint bitmask(uint u, int shift, uint mask)
@@ -65,7 +170,7 @@ namespace Reko.Arch.Arm
             private Opcode opcode;
             private string format;
 
-            public  InstrDecoder(Opcode opcode, string format)
+            public InstrDecoder(Opcode opcode, string format)
             {
                 this.opcode = opcode;
                 this.format = format;
@@ -73,7 +178,9 @@ namespace Reko.Arch.Arm
 
             public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
             {
-                throw new NotImplementedException();
+                if (format == null)
+                    throw new NotImplementedException($"Format missing for ARM instruction {opcode}.");
+                return dasm.Decode(wInstr, opcode, format);
             }
         }
 
@@ -120,6 +227,20 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private class CondMaskDecoder : MaskDecoder
+        {
+            public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)
+                : base(shift, mask, decoders)
+            { }
+
+            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            {
+                var instr = base.Decode(wInstr, dasm);
+                instr.condition = (ArmCondition)(wInstr >> 28);
+                return instr;
+            }
+        }
+
         // Special decoder for when a 4-bit field has the bit pattern 1111 or not.
         private class PcDecoder : Decoder
         {
@@ -159,6 +280,21 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private class MovDecoder : InstrDecoder
+        {
+            public MovDecoder(Opcode opcode, string format) : base(opcode, format) { }
+
+            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            {
+                var instr = base.Decode(wInstr, dasm);
+                if (instr.ShiftType != Opcode.Invalid)
+                {
+                    instr.opcode = instr.ShiftType;
+                }
+                return instr;
+            }
+        }
+
         private class NyiDecoder : Decoder
         {
             private string message;
@@ -170,7 +306,7 @@ namespace Reko.Arch.Arm
 
             public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
             {
-                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
+                throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
             }
         }
 
@@ -182,32 +318,32 @@ namespace Reko.Arch.Arm
 
         static A32Disassembler()
         {
-            var invalid = new InstrDecoder(Opcode.Invalid, "");
+            var invalid = new InstrDecoder(Opcode.Invalid, null);
 
             var LoadStoreExclusive = nyi("LoadStoreExclusive");
 
-            var Stl = new InstrDecoder(Opcode.stl, "");
-            var Stlex = new InstrDecoder(Opcode.stlex, "");
-            var Strex = new InstrDecoder(Opcode.strex, "");
-            var Lda = new InstrDecoder(Opcode.lda, "");
-            var Ldaex = new InstrDecoder(Opcode.ldaex, "");
-            var Ldrex = new InstrDecoder(Opcode.ldrex, "");
-            var Stlexd = new InstrDecoder(Opcode.stlexd, "");
-            var Strexd = new InstrDecoder(Opcode.strexd, "");
-            var Ldaexd = new InstrDecoder(Opcode.ldaexd, "");
-            var Ldrexd = new InstrDecoder(Opcode.ldrexd, "");
-            var Stlb = new InstrDecoder(Opcode.stlb, "");
-            var Stlexb = new InstrDecoder(Opcode.stlexb, "");
-            var Strexb = new InstrDecoder(Opcode.strexb, "");
-            var Ldab = new InstrDecoder(Opcode.ldab, "");
-            var Ldaexb = new InstrDecoder(Opcode.ldrexb, "");
-            var Ldrexb = new InstrDecoder(Opcode.ldaexb, "");
-            var Stlh = new InstrDecoder(Opcode.stlh, "");
-            var Stlexh = new InstrDecoder(Opcode.stlexh, "");
-            var Strexh = new InstrDecoder(Opcode.strexh, "");
-            var Ldah = new InstrDecoder(Opcode.ldah, "");
-            var Ldaexh = new InstrDecoder(Opcode.ldrexh, "");
-            var Ldrexh = new InstrDecoder(Opcode.ldaexh, "");
+            var Stl = new InstrDecoder(Opcode.stl, null);
+            var Stlex = new InstrDecoder(Opcode.stlex, null);
+            var Strex = new InstrDecoder(Opcode.strex, null);
+            var Lda = new InstrDecoder(Opcode.lda, null);
+            var Ldaex = new InstrDecoder(Opcode.ldaex, null);
+            var Ldrex = new InstrDecoder(Opcode.ldrex, null);
+            var Stlexd = new InstrDecoder(Opcode.stlexd, null);
+            var Strexd = new InstrDecoder(Opcode.strexd, null);
+            var Ldaexd = new InstrDecoder(Opcode.ldaexd, null);
+            var Ldrexd = new InstrDecoder(Opcode.ldrexd, null);
+            var Stlb = new InstrDecoder(Opcode.stlb, null);
+            var Stlexb = new InstrDecoder(Opcode.stlexb, null);
+            var Strexb = new InstrDecoder(Opcode.strexb, null);
+            var Ldab = new InstrDecoder(Opcode.ldab, null);
+            var Ldaexb = new InstrDecoder(Opcode.ldrexb, null);
+            var Ldrexb = new InstrDecoder(Opcode.ldaexb, null);
+            var Stlh = new InstrDecoder(Opcode.stlh, null);
+            var Stlexh = new InstrDecoder(Opcode.stlexh, null);
+            var Strexh = new InstrDecoder(Opcode.strexh, null);
+            var Ldah = new InstrDecoder(Opcode.ldah, null);
+            var Ldaexh = new InstrDecoder(Opcode.ldrexh, null);
+            var Ldrexh = new InstrDecoder(Opcode.ldaexh, null);
 
             var SynchronizationPrimitives = new MaskDecoder(23, 1,
             invalid,
@@ -256,14 +392,14 @@ namespace Reko.Arch.Arm
                 LoadStoreExclusive);
 
 
-            var Mul = new InstrDecoder(Opcode.mul, "");
-            var Mla = new InstrDecoder(Opcode.mla, "");
-            var Umaal = new InstrDecoder(Opcode.umaal, "");
-            var Mls = new InstrDecoder(Opcode.mls, "");
-            var Umull = new InstrDecoder(Opcode.umull, "");
-            var Umlal = new InstrDecoder(Opcode.umlal, "");
-            var Smull = new InstrDecoder(Opcode.smull, "");
-            var Smlal = new InstrDecoder(Opcode.smlal, "");
+            var Mul = new InstrDecoder(Opcode.mul, null);
+            var Mla = new InstrDecoder(Opcode.mla, null);
+            var Umaal = new InstrDecoder(Opcode.umaal, null);
+            var Mls = new InstrDecoder(Opcode.mls, null);
+            var Umull = new InstrDecoder(Opcode.umull, null);
+            var Umlal = new InstrDecoder(Opcode.umlal, null);
+            var Smull = new InstrDecoder(Opcode.smull, null);
+            var Smlal = new InstrDecoder(Opcode.smlal, null);
 
             var MultiplyAndAccumulate = new MaskDecoder(20, 4,
                Mul,
@@ -285,16 +421,16 @@ namespace Reko.Arch.Arm
                Smlal);
 
             // --
-            var LdrdRegister = new InstrDecoder(Opcode.ldrd, "");
-            var LdrhRegister = new InstrDecoder(Opcode.ldrh, "");
-            var LdrsbRegister = new InstrDecoder(Opcode.ldrsb, "");
-            var LdrshRegister = new InstrDecoder(Opcode.ldrsh, "");
-            var Ldrht = new InstrDecoder(Opcode.ldrht, "");
-            var Ldrsbt = new InstrDecoder(Opcode.ldrsbt, "");
-            var Ldrsht = new InstrDecoder(Opcode.ldrsht, "");
-            var StrdRegister = new InstrDecoder(Opcode.strd, "");
-            var StrhRegister = new InstrDecoder(Opcode.strh, "");
-            var Strht = new InstrDecoder(Opcode.strht, "");
+            var LdrdRegister = new InstrDecoder(Opcode.ldrd, null);
+            var LdrhRegister = new InstrDecoder(Opcode.ldrh, null);
+            var LdrsbRegister = new InstrDecoder(Opcode.ldrsb, null);
+            var LdrshRegister = new InstrDecoder(Opcode.ldrsh, null);
+            var Ldrht = new InstrDecoder(Opcode.ldrht, null);
+            var Ldrsbt = new InstrDecoder(Opcode.ldrsbt, null);
+            var Ldrsht = new InstrDecoder(Opcode.ldrsht, null);
+            var StrdRegister = new InstrDecoder(Opcode.strd, null);
+            var StrhRegister = new InstrDecoder(Opcode.strh, null);
+            var Strht = new InstrDecoder(Opcode.strht, null);
 
             var LoadStoreDualHalfSbyteRegister = new MaskDecoder(24, 1,
                 new MaskDecoder(20, 0x3,
@@ -330,16 +466,16 @@ namespace Reko.Arch.Arm
                         LdrsbRegister,
                         LdrshRegister)));
 
-            var LdrdLiteral = new InstrDecoder(Opcode.ldrd, "");
-            var LdrhLiteral = new InstrDecoder(Opcode.ldrh, "");
-            var LdrsbLiteral = new InstrDecoder(Opcode.ldrsb, "");
-            var LdrshLiteral = new InstrDecoder(Opcode.ldrsh, "");
-            var StrhImmediate = new InstrDecoder(Opcode.strh, "");
-            var LdrdImmediate = new InstrDecoder(Opcode.ldrd, "");
-            var StrdImmediate = new InstrDecoder(Opcode.strd, "");
-            var LdrhImmediate = new InstrDecoder(Opcode.ldrh, "");
-            var LdrsbImmediate = new InstrDecoder(Opcode.ldrsb, "");
-            var LdrshImmediate = new InstrDecoder(Opcode.ldrsh, "");
+            var LdrdLiteral = new InstrDecoder(Opcode.ldrd, null);
+            var LdrhLiteral = new InstrDecoder(Opcode.ldrh, null);
+            var LdrsbLiteral = new InstrDecoder(Opcode.ldrsb, null);
+            var LdrshLiteral = new InstrDecoder(Opcode.ldrsh, null);
+            var StrhImmediate = new InstrDecoder(Opcode.strh, null);
+            var LdrdImmediate = new InstrDecoder(Opcode.ldrd, null);
+            var StrdImmediate = new InstrDecoder(Opcode.strd, null);
+            var LdrhImmediate = new InstrDecoder(Opcode.ldrh, null);
+            var LdrsbImmediate = new InstrDecoder(Opcode.ldrsb, null);
+            var LdrshImmediate = new InstrDecoder(Opcode.ldrsh, null);
 
             var LoadStoreDualHalfSbyteImmediate = new CustomDecoder((wInstr, dasm) =>
             {
@@ -428,10 +564,10 @@ namespace Reko.Arch.Arm
                 LoadStoreDualHalfSbyteRegister,
                 LoadStoreDualHalfSbyteImmediate);
 
-            var Mrs = new InstrDecoder(Opcode.mrs, "");
-            var Msr = new InstrDecoder(Opcode.msr, "");
-            var MrsBanked = new InstrDecoder(Opcode.mrs, "");
-            var MsrBanked = new InstrDecoder(Opcode.msr, "");
+            var Mrs = new InstrDecoder(Opcode.mrs, null);
+            var Msr = new InstrDecoder(Opcode.msr, null);
+            var MrsBanked = new InstrDecoder(Opcode.mrs, null);
+            var MsrBanked = new InstrDecoder(Opcode.msr, null);
             var MoveSpecialRegister = new MaskDecoder(21, 1,
                 new MaskDecoder(9, 1,
                     Mrs,
@@ -440,8 +576,8 @@ namespace Reko.Arch.Arm
                     Msr,
                     MsrBanked));
 
-            var Crc32 = new InstrDecoder(Opcode.crc32w, "");
-            var Crc32C = new InstrDecoder(Opcode.crc32cw, "");
+            var Crc32 = new InstrDecoder(Opcode.crc32w, null);
+            var Crc32C = new InstrDecoder(Opcode.crc32cw, null);
 
             var CyclicRedundancyCheck = new MaskDecoder(21, 3,
                 new MaskDecoder(9, 1,
@@ -457,10 +593,10 @@ namespace Reko.Arch.Arm
                     Crc32,
                     Crc32C));
 
-            var Qadd = new InstrDecoder(Opcode.qadd, "");
-            var Qsub = new InstrDecoder(Opcode.qsub, "");
-            var Qdadd = new InstrDecoder(Opcode.qdadd, "");
-            var Qdsub = new InstrDecoder(Opcode.qdsub, "");
+            var Qadd = new InstrDecoder(Opcode.qadd, null);
+            var Qsub = new InstrDecoder(Opcode.qsub, null);
+            var Qdadd = new InstrDecoder(Opcode.qdadd, null);
+            var Qdsub = new InstrDecoder(Opcode.qdsub, null);
             var IntegerSaturatingArithmetic = new MaskDecoder(21, 3,
                 Qadd,
                 Qsub,
@@ -468,21 +604,21 @@ namespace Reko.Arch.Arm
                 Qsub);
 
 
-            var Hlt = new InstrDecoder(Opcode.hlt, "");
-            var Bkpt = new InstrDecoder(Opcode.bkpt, "");
-            var Hvc = new InstrDecoder(Opcode.hvc, "");
-            var Smc = new InstrDecoder(Opcode.smc, "");
+            var Hlt = new InstrDecoder(Opcode.hlt, null);
+            var Bkpt = new InstrDecoder(Opcode.bkpt, null);
+            var Hvc = new InstrDecoder(Opcode.hvc, null);
+            var Smc = new InstrDecoder(Opcode.smc, null);
             var ExceptionGeneration = new MaskDecoder(21, 3,
                 Hlt,
                 Bkpt,
                 Hvc,
                 Smc);
 
-            var Bx = new InstrDecoder(Opcode.bx, "");
-            var Bxj = new InstrDecoder(Opcode.bxj, "");
-            var Blx = new InstrDecoder(Opcode.blx, "");
-            var Clz = new InstrDecoder(Opcode.blx, "");
-            var Eret = new InstrDecoder(Opcode.eret, "");
+            var Bx = new InstrDecoder(Opcode.bx, null);
+            var Bxj = new InstrDecoder(Opcode.bxj, null);
+            var Blx = new InstrDecoder(Opcode.blx, null);
+            var Clz = new InstrDecoder(Opcode.blx, null);
+            var Eret = new InstrDecoder(Opcode.eret, null);
             var Miscellaneous = new MaskDecoder(21, 3,   // op0
                 new MaskDecoder(4, 3, // op1
                     MoveSpecialRegister,
@@ -536,54 +672,54 @@ namespace Reko.Arch.Arm
                 nyi("SmulbbSmulbt"));
 
             var IntegerDataProcessingImmShift = new MaskDecoder(21, 7,
-                new InstrDecoder(Opcode.and, ""),
-                new InstrDecoder(Opcode.eor, ""),
-                new InstrDecoder(Opcode.sub, ""),
-                new InstrDecoder(Opcode.rsb, ""),
-                new InstrDecoder(Opcode.add, ""),
-                new InstrDecoder(Opcode.adc, ""),
-                new InstrDecoder(Opcode.sbc, ""),
-                new InstrDecoder(Opcode.rsc, ""));
+                new InstrDecoder(Opcode.and, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.eor, null),
+                new InstrDecoder(Opcode.sub, null),
+                new InstrDecoder(Opcode.rsb, null),
+                new InstrDecoder(Opcode.add, null),
+                new InstrDecoder(Opcode.adc, null),
+                new InstrDecoder(Opcode.sbc, null),
+                new InstrDecoder(Opcode.rsc, null));
 
             var IntegerTestAndCompareImmShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.tst, ""),
-                new InstrDecoder(Opcode.teq, ""),
-                new InstrDecoder(Opcode.cmp, ""),
-                new InstrDecoder(Opcode.cmn, ""));
+                new InstrDecoder(Opcode.tst, null),
+                new InstrDecoder(Opcode.teq, null),
+                new InstrDecoder(Opcode.cmp, null),
+                new InstrDecoder(Opcode.cmn, null));
 
             var LogicalArithmeticImmShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.orr, ""),
-                new InstrDecoder(Opcode.mov, ""),
-                new InstrDecoder(Opcode.bic, ""),
-                new InstrDecoder(Opcode.mvn, ""));
+                new InstrDecoder(Opcode.orr, null),
+                new MovDecoder(Opcode.mov, "sr3,r0,>i"),
+                new InstrDecoder(Opcode.bic, null),
+                new InstrDecoder(Opcode.mvn, null));
 
-            var DataProcessingImmediateShift = new MaskDecoder(23, 2,
+            var DataProcessingImmediateShift = new MaskDecoder(23, 3,
                 IntegerDataProcessingImmShift, // 3 reg, imm shift
                 IntegerDataProcessingImmShift,
                 IntegerTestAndCompareImmShift,
                 LogicalArithmeticImmShift);
 
             var IntegerDataProcessingRegShift = new MaskDecoder(21, 7,
-               new InstrDecoder(Opcode.and, ""),
-               new InstrDecoder(Opcode.eor, ""),
-               new InstrDecoder(Opcode.sub, ""),
-               new InstrDecoder(Opcode.rsb, ""),
-               new InstrDecoder(Opcode.add, ""),
-               new InstrDecoder(Opcode.adc, ""),
-               new InstrDecoder(Opcode.sbc, ""),
-               new InstrDecoder(Opcode.rsc, ""));
+               new InstrDecoder(Opcode.and, "sr4,r3,r2,r0"),
+               new InstrDecoder(Opcode.eor, null),
+               new InstrDecoder(Opcode.sub, null),
+               new InstrDecoder(Opcode.rsb, null),
+               new InstrDecoder(Opcode.add, null),
+               new InstrDecoder(Opcode.adc, null),
+               new InstrDecoder(Opcode.sbc, null),
+               new InstrDecoder(Opcode.rsc, null));
 
             var IntegerTestAndCompareRegShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.tst, ""),
-                new InstrDecoder(Opcode.teq, ""),
-                new InstrDecoder(Opcode.cmp, ""),
-                new InstrDecoder(Opcode.cmn, ""));
+                new InstrDecoder(Opcode.tst, null),
+                new InstrDecoder(Opcode.teq, null),
+                new InstrDecoder(Opcode.cmp, null),
+                new InstrDecoder(Opcode.cmn, null));
 
             var LogicalArithmeticRegShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.orr, ""),
-                new InstrDecoder(Opcode.mov, ""),
-                new InstrDecoder(Opcode.bic, ""),
-                new InstrDecoder(Opcode.mvn, ""));
+                new InstrDecoder(Opcode.orr, null),
+                new InstrDecoder(Opcode.mov, "@"),
+                new InstrDecoder(Opcode.bic, null),
+                new InstrDecoder(Opcode.mvn, null));
 
             var DataProcessingRegisterShift = new MaskDecoder(23, 3,
                 IntegerDataProcessingRegShift,
@@ -592,35 +728,35 @@ namespace Reko.Arch.Arm
                 LogicalArithmeticRegShift);
 
             var IntegerDataProcessingTwoRegImm = new MaskDecoder(21, 7,
-               new InstrDecoder(Opcode.and, ""),
-               new InstrDecoder(Opcode.eor, ""),
-               new InstrDecoder(Opcode.sub, ""),
-               new InstrDecoder(Opcode.rsb, ""),
-               new InstrDecoder(Opcode.add, ""),
-               new InstrDecoder(Opcode.adc, ""),
-               new InstrDecoder(Opcode.sbc, ""),
-               new InstrDecoder(Opcode.rsc, ""));
+               new InstrDecoder(Opcode.and, null),
+               new InstrDecoder(Opcode.eor, null),
+               new InstrDecoder(Opcode.sub, null),
+               new InstrDecoder(Opcode.rsb, null),
+               new InstrDecoder(Opcode.add, null),
+               new InstrDecoder(Opcode.adc, null),
+               new InstrDecoder(Opcode.sbc, null),
+               new InstrDecoder(Opcode.rsc, null));
 
             var MoveHalfwordImm = new MaskDecoder(22, 1,
-               new InstrDecoder(Opcode.movs, ""),
-               new InstrDecoder(Opcode.movt, ""));
+               new InstrDecoder(Opcode.movs, null),
+               new InstrDecoder(Opcode.movt, null));
 
             var IntegerTestAndCompareOneRegImm = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.orr, ""),
-                new InstrDecoder(Opcode.mov, ""),
-                new InstrDecoder(Opcode.bic, ""),
-                new InstrDecoder(Opcode.mvn, ""));
+                new InstrDecoder(Opcode.tst, null),
+                new InstrDecoder(Opcode.teq, null),
+                new InstrDecoder(Opcode.cmp, null),
+                new InstrDecoder(Opcode.cmn, "r4,I"));
 
-            var MsrImmediate = new InstrDecoder(Opcode.msr, "");
-            var Nop = new InstrDecoder(Opcode.nop, "");
-            var Yield = new InstrDecoder(Opcode.yield, "");
-            var Wfe = new InstrDecoder(Opcode.wfe, "");
-            var Wfi = new InstrDecoder(Opcode.wfi, "");
-            var Sev = new InstrDecoder(Opcode.sevl, "");
-            var Sevl = new InstrDecoder(Opcode.sevl, "");
-            var ReservedNop = new InstrDecoder(Opcode.nop, "");
-            var Esb = new InstrDecoder(Opcode.esb, "");
-            var Dbg = new InstrDecoder(Opcode.dbg, "");
+            var MsrImmediate = new InstrDecoder(Opcode.msr, null);
+            var Nop = new InstrDecoder(Opcode.nop, null);
+            var Yield = new InstrDecoder(Opcode.yield, null);
+            var Wfe = new InstrDecoder(Opcode.wfe, null);
+            var Wfi = new InstrDecoder(Opcode.wfi, null);
+            var Sev = new InstrDecoder(Opcode.sevl, null);
+            var Sevl = new InstrDecoder(Opcode.sevl, null);
+            var ReservedNop = new InstrDecoder(Opcode.nop, null);
+            var Esb = new InstrDecoder(Opcode.esb, null);
+            var Dbg = new InstrDecoder(Opcode.dbg, null);
 
             var MoveSpecialRegisterAndHints = new CustomDecoder((wInstr, dasm) =>
             {
@@ -670,7 +806,7 @@ namespace Reko.Arch.Arm
                     var op1 = bitmask(wInstr, 20, 0x1F);
                     var op2 = bitmask(wInstr, 7, 1);
                     var op3 = bitmask(wInstr, 5, 3);
-                    var op4 = bitmask(wInstr, 6, 1);
+                    var op4 = bitmask(wInstr, 4, 1);
                     if (op2 == 1 && op4 == 1)
                     {
                         if (op3 == 0)
@@ -710,17 +846,17 @@ namespace Reko.Arch.Arm
                 }
             });
 
-            var LdrLiteral = new InstrDecoder(Opcode.ldr, "");
-            var LdrbLiteral = new InstrDecoder(Opcode.ldrb, "");
-            var StrImm = new InstrDecoder(Opcode.str, "");
-            var LdrImm = new InstrDecoder(Opcode.ldr, "");
-            var StrbImm = new InstrDecoder(Opcode.strb, "");
-            var LdrbImm = new InstrDecoder(Opcode.ldrb, "");
+            var LdrLiteral = new InstrDecoder(Opcode.ldr, null);
+            var LdrbLiteral = new InstrDecoder(Opcode.ldrb, null);
+            var StrImm = new InstrDecoder(Opcode.str, null);
+            var LdrImm = new InstrDecoder(Opcode.ldr, null);
+            var StrbImm = new InstrDecoder(Opcode.strb, null);
+            var LdrbImm = new InstrDecoder(Opcode.ldrb, null);
             
-            var Strt = new InstrDecoder(Opcode.strt, "");
-            var Ldrt = new InstrDecoder(Opcode.ldrt, "");
-            var Strbt = new InstrDecoder(Opcode.strbt, "");
-            var Ldrbt = new InstrDecoder(Opcode.ldrbt, "");
+            var Strt = new InstrDecoder(Opcode.strt, null);
+            var Ldrt = new InstrDecoder(Opcode.ldrt, null);
+            var Strbt = new InstrDecoder(Opcode.strbt, null);
+            var Ldrbt = new InstrDecoder(Opcode.ldrbt, null);
 
             var LoadStoreWordUnsignedByteImmLit = new CustomDecoder((wInstr, dasm) => {
                 var rn = bitmask(wInstr, 16, 0xF);
@@ -767,10 +903,10 @@ namespace Reko.Arch.Arm
 
 
 
-            var StrReg = new InstrDecoder(Opcode.str, "");
-            var LdrReg = new InstrDecoder(Opcode.ldr, "");
-            var StrbReg = new InstrDecoder(Opcode.strb, "");
-            var LdrbReg = new InstrDecoder(Opcode.ldrb, "");
+            var StrReg = new InstrDecoder(Opcode.str, null);
+            var LdrReg = new InstrDecoder(Opcode.ldr, null);
+            var StrbReg = new InstrDecoder(Opcode.strb, null);
+            var LdrbReg = new InstrDecoder(Opcode.ldrb, null);
 
             var LoadStoreWordUnsignedByteRegister = new CustomDecoder((wInstr, dasm) =>
             {
@@ -800,42 +936,42 @@ namespace Reko.Arch.Arm
                 throw new InvalidOperationException();
             });
 
-            var Sadd16 = new InstrDecoder(Opcode.sadd16, "");
-            var Sasx = new InstrDecoder(Opcode.sasx, "");
-            var Ssax = new InstrDecoder(Opcode.ssax, "");
-            var Ssub16 = new InstrDecoder(Opcode.ssub16, "");
-            var Sadd8 = new InstrDecoder(Opcode.sadd8, "");
-            var Ssub8 = new InstrDecoder(Opcode.ssub8, "");
-            var Qadd16 = new InstrDecoder(Opcode.qadd16, "");
-            var Qasx = new InstrDecoder(Opcode.qasx, "");
-            var Qsax = new InstrDecoder(Opcode.qsax, "");
-            var Qsub16 = new InstrDecoder(Opcode.qsub16, "");
-            var Qadd8 = new InstrDecoder(Opcode.qadd8, "");
-            var QSub8 = new InstrDecoder(Opcode.qsub8, "");
-            var Shadd16 = new InstrDecoder(Opcode.shadd16, "");
-            var Shasx = new InstrDecoder(Opcode.shasx, "");
-            var Shsax = new InstrDecoder(Opcode.shsax, "");
-            var Shsub16 = new InstrDecoder(Opcode.shsub16, "");
-            var Shadd8 = new InstrDecoder(Opcode.shadd8, "");
-            var Shsub8 = new InstrDecoder(Opcode.shsub8, "");
-            var Uadd16 = new InstrDecoder(Opcode.uadd16, "");
-            var Uasx = new InstrDecoder(Opcode.uasx, "");
-            var Usax = new InstrDecoder(Opcode.usax, "");
-            var Usub16 = new InstrDecoder(Opcode.usub16, "");
-            var Uadd8 = new InstrDecoder(Opcode.uadd8, "");
-            var Usub8 = new InstrDecoder(Opcode.usub8, "");
-            var Uqadd16 = new InstrDecoder(Opcode.uqadd16, "");
-            var Uqasx = new InstrDecoder(Opcode.uqasx, "");
-            var Uqsax = new InstrDecoder(Opcode.uqsax, "");
-            var Uqsub16 = new InstrDecoder(Opcode.uqsub16, "");
-            var Uqadd8 = new InstrDecoder(Opcode.uqadd8, "");
-            var Uqsub8 = new InstrDecoder(Opcode.uqsub8, "");
-            var Uhadd16 = new InstrDecoder(Opcode.uhadd16, "");
-            var Uhasx = new InstrDecoder(Opcode.uhasx, "");
-            var Uhsax = new InstrDecoder(Opcode.uhsax, "");
-            var Uhsub16 = new InstrDecoder(Opcode.uhsub16, "");
-            var Uhadd8 = new InstrDecoder(Opcode.uhadd8, "");
-            var Uhsub8 = new InstrDecoder(Opcode.uhsub8, "");
+            var Sadd16 = new InstrDecoder(Opcode.sadd16, null);
+            var Sasx = new InstrDecoder(Opcode.sasx, null);
+            var Ssax = new InstrDecoder(Opcode.ssax, null);
+            var Ssub16 = new InstrDecoder(Opcode.ssub16, null);
+            var Sadd8 = new InstrDecoder(Opcode.sadd8, null);
+            var Ssub8 = new InstrDecoder(Opcode.ssub8, null);
+            var Qadd16 = new InstrDecoder(Opcode.qadd16, null);
+            var Qasx = new InstrDecoder(Opcode.qasx, null);
+            var Qsax = new InstrDecoder(Opcode.qsax, null);
+            var Qsub16 = new InstrDecoder(Opcode.qsub16, null);
+            var Qadd8 = new InstrDecoder(Opcode.qadd8, null);
+            var QSub8 = new InstrDecoder(Opcode.qsub8, null);
+            var Shadd16 = new InstrDecoder(Opcode.shadd16, null);
+            var Shasx = new InstrDecoder(Opcode.shasx, null);
+            var Shsax = new InstrDecoder(Opcode.shsax, null);
+            var Shsub16 = new InstrDecoder(Opcode.shsub16, null);
+            var Shadd8 = new InstrDecoder(Opcode.shadd8, null);
+            var Shsub8 = new InstrDecoder(Opcode.shsub8, null);
+            var Uadd16 = new InstrDecoder(Opcode.uadd16, null);
+            var Uasx = new InstrDecoder(Opcode.uasx, null);
+            var Usax = new InstrDecoder(Opcode.usax, null);
+            var Usub16 = new InstrDecoder(Opcode.usub16, null);
+            var Uadd8 = new InstrDecoder(Opcode.uadd8, null);
+            var Usub8 = new InstrDecoder(Opcode.usub8, null);
+            var Uqadd16 = new InstrDecoder(Opcode.uqadd16, null);
+            var Uqasx = new InstrDecoder(Opcode.uqasx, null);
+            var Uqsax = new InstrDecoder(Opcode.uqsax, null);
+            var Uqsub16 = new InstrDecoder(Opcode.uqsub16, null);
+            var Uqadd8 = new InstrDecoder(Opcode.uqadd8, null);
+            var Uqsub8 = new InstrDecoder(Opcode.uqsub8, null);
+            var Uhadd16 = new InstrDecoder(Opcode.uhadd16, null);
+            var Uhasx = new InstrDecoder(Opcode.uhasx, null);
+            var Uhsax = new InstrDecoder(Opcode.uhsax, null);
+            var Uhsub16 = new InstrDecoder(Opcode.uhsub16, null);
+            var Uhadd8 = new InstrDecoder(Opcode.uhadd8, null);
+            var Uhsub8 = new InstrDecoder(Opcode.uhsub8, null);
 
             var ParallelArithmetic = new MaskDecoder(20, 3,
                 invalid,
@@ -971,14 +1107,11 @@ var LdmdbLDmea = nyi("LdmdbLDmea");
                     SrcSrsda,
                     invalid));
 
-            var B_Imm = new InstrDecoder(Opcode.b, "");
-            var BlBlx_A1 = nyi("BlBlx_A1");
-            var BlBlx_A2 = nyi("BlBlx_A2");
             var BranchImmediate = new PcDecoder(28,
                 new MaskDecoder(24, 1,
-                    B_Imm,
-                    BlBlx_A1),
-                BlBlx_A2);
+                    new InstrDecoder(Opcode.b, "J"),
+                    new InstrDecoder(Opcode.bl, "J")),
+                new InstrDecoder(Opcode.blx, "X"));
 
             var Branch_BranchLink_BlockDataTransfer = new MaskDecoder(25, 1,
                 new PcDecoder(28,
@@ -989,7 +1122,7 @@ var LdmdbLDmea = nyi("LdmdbLDmea");
             var SystemRegister_AdvancedSimd_FloatingPoint = nyi("SystemRegister_AdvancedSimd_FloatingPoint");
 
 
-            var ConditionalDecoder = new MaskDecoder(25, 0x7,
+            var ConditionalDecoder = new CondMaskDecoder(25, 0x7,
                 DataProcessingAndMisc,
                 DataProcessingAndMisc,
                 LoadStoreWordUnsignedByteImmLit,
@@ -1000,7 +1133,6 @@ var LdmdbLDmea = nyi("LdmdbLDmea");
                 Branch_BranchLink_BlockDataTransfer,
                 SystemRegister_AdvancedSimd_FloatingPoint,
                 SystemRegister_AdvancedSimd_FloatingPoint);
-
 
             var AdvancedSimd = nyi("AdvancedSimd");
             var AdvancedSimdElementLoadStore = nyi("AdvancedSimdElementLoadStore");
