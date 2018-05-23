@@ -32,12 +32,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Registers64 = Reko.Arch.Arm.AArch64.Registers;
 
 namespace Reko.Arch.Arm
 {
     public class Arm64Architecture : ProcessorArchitecture
     {
+#if NATIVE
         private INativeArchitecture native;
+#endif
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
@@ -50,13 +53,15 @@ namespace Reko.Arch.Arm
             this.WordWidth = PrimitiveType.Word64;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
             this.CarryFlagMask = 0;
+#if NATIVE
             var unk = CreateNativeArchitecture("arm-64");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
-
             GetRegistersFromNative();
-            StackRegister = regsByName["sp"];
+#endif
+            StackRegister = Registers.sp;
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             int cRegs;
@@ -119,6 +124,11 @@ namespace Reko.Arch.Arm
                     hBytes.Free();
                 }
             }*/
+        }
+#endif
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+        {
+            return new AArch64Disassembler(this, rdr);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
@@ -183,7 +193,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            if (regsByName.TryGetValue(name, out var reg))
+            if (Registers64.ByName.TryGetValue(name, out var reg))
                 return reg;
             else
                 return null;

@@ -29,6 +29,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using static Reko.Arch.Arm.A32Disassembler.Decoder;
 
 namespace Reko.Arch.Arm
 {
@@ -290,50 +291,25 @@ namespace Reko.Arch.Arm
                 PreIndex = preIndex,
                 ShiftType = shiftType,
                 Shift = shiftAmt,
-        };
-            //InstrDecoder.
-            //offset = Shift(R[m], shift_t, shift_n, PSTATE.C);
-            //offset_addr = if add then(R[n] + offset) else (R[n] - offset);
-            //address = if index then offset_addr else R[n];
-            //R[t] = SignExtend(MemU[address, 1], 32);
-            //if wback then R[n] = offset_addr;
-
-        }
-        private static uint bitmask(uint u, int shift, uint mask)
-        {
-            return (u >> shift) & mask;
+            };
         }
 
-        private static bool bit(uint u, int shift)
-        {
-            return ((u >> shift) & 1) != 0;
-        }
-
-        private abstract class Decoder
+        public abstract class Decoder
         {
             public abstract Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm);
-        }
 
-        private class InstrDecoder : Decoder
-        {
-            private Opcode opcode;
-            private string format;
-
-            public InstrDecoder(Opcode opcode, string format)
+            public static uint bitmask(uint u, int shift, uint mask)
             {
-                this.opcode = opcode;
-                this.format = format;
+                return (u >> shift) & mask;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public static bool bit(uint u, int shift)
             {
-                if (format == null)
-                    throw new NotImplementedException($"Format missing for ARM instruction {opcode}.");
-                return dasm.Decode(wInstr, opcode, format);
+                return ((u >> shift) & 1) != 0;
             }
         }
 
-        private class MaskDecoder : Decoder
+        public class MaskDecoder : Decoder
         {
             private int shift;
             private uint mask;
@@ -343,6 +319,7 @@ namespace Reko.Arch.Arm
             {
                 this.shift = shift;
                 this.mask = mask;
+                Debug.Assert(decoders.Length == mask + 1);
                 this.decoders = decoders;
             }
 
@@ -376,6 +353,64 @@ namespace Reko.Arch.Arm
             }
         }
 
+        public class SparseMaskDecoder : Decoder
+        {
+            private int shift;
+            private uint mask;
+            private Dictionary<uint, Decoder> decoders;
+            private Decoder @default;
+
+            public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
+            {
+                this.shift = shift;
+                this.mask = mask;
+                this.decoders = decoders;
+                this.@default = @default;
+            }
+
+            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            {
+                var op = (wInstr >> shift) & mask;
+                if (!decoders.TryGetValue(op, out Decoder decoder))
+                    decoder = @default;
+                return decoder.Decode(wInstr, dasm);
+            }
+        }
+
+        public class NyiDecoder : Decoder
+        {
+            private string message;
+
+            public NyiDecoder(string message)
+            {
+                this.message = message;
+            }
+
+            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            {
+                throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
+            }
+        }
+
+        private class InstrDecoder : Decoder
+        {
+            private Opcode opcode;
+            private string format;
+
+            public InstrDecoder(Opcode opcode, string format)
+            {
+                this.opcode = opcode;
+                this.format = format;
+            }
+
+            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            {
+                if (format == null)
+                    throw new NotImplementedException($"Format missing for ARM instruction {opcode}.");
+                return dasm.Decode(wInstr, opcode, format);
+            }
+        }
+
         private class CondMaskDecoder : MaskDecoder
         {
             public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)
@@ -387,30 +422,6 @@ namespace Reko.Arch.Arm
                 var instr = base.Decode(wInstr, dasm);
                 instr.condition = (ArmCondition)(wInstr >> 28);
                 return instr;
-            }
-        }
-
-        private class SparseMaskDecoder : Decoder
-        {
-            private int shift;
-            private uint mask;
-            private Dictionary<uint, Decoder> decoders;
-            private Decoder @default;
-
-            public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default = null)
-            {
-                this.shift = shift;
-                this.mask = mask;
-                this.decoders = decoders;
-                this.@default = @default ?? invalid;
-            }
-
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
-            {
-                var op = (wInstr >> shift) & mask;
-                if (!decoders.TryGetValue(op, out Decoder decoder))
-                    decoder = @default;
-                return decoder.Decode(wInstr, dasm);
             }
         }
 
@@ -468,26 +479,21 @@ namespace Reko.Arch.Arm
             }
         }
 
-        private class NyiDecoder : Decoder
-        {
-            private string message;
-
-            public NyiDecoder(string message)
-            {
-                this.message = message;
-            }
-
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
-            {
-                throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
-            }
-        }
 
         private static NyiDecoder nyi(string str)
         {
             return new NyiDecoder(str);
         }
 
+        private static Decoder SparseMask(int shift, uint mask, Dictionary<uint, Decoder> decoders)
+        {
+            return new SparseMaskDecoder(shift, mask, decoders, invalid);
+        }
+
+        private static Decoder SparseMask(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
+        {
+            return new SparseMaskDecoder(shift, mask, decoders, @default);
+        }
 
         static A32Disassembler()
         {
@@ -1306,19 +1312,19 @@ namespace Reko.Arch.Arm
             var AdvancedSIMDandFloatingPoint32bitMove = nyi("AdvancedSIMDandFloatingPoint32bitMove");
 
             Decoder SystemRegister_AdvancedSimd_FloatingPoint = new MaskDecoder(24, 3,
-                new SparseMaskDecoder(9, 0x7, new Dictionary<uint, Decoder>
+                SparseMask(9, 0x7, new Dictionary<uint, Decoder>
                 {
                     { 4, SystemRegister_LdSt_64bitMove },
                     { 5, SystemRegister_LdSt_64bitMove },
                     { 7, SystemRegister_LdSt_64bitMove },
                 }),
-                new SparseMaskDecoder(9, 0x7, new Dictionary<uint, Decoder>
+                SparseMask(9, 0x7, new Dictionary<uint, Decoder>
                 {
                     { 4, SystemRegister_LdSt_64bitMove },
                     { 5, SystemRegister_LdSt_64bitMove },
                     { 7, SystemRegister_LdSt_64bitMove },
                 }),
-                new SparseMaskDecoder(9, 0x7, new Dictionary<uint, Decoder>
+                SparseMask(9, 0x7, new Dictionary<uint, Decoder>
                 {
                     //$TODO cond fields.
                     { 4, new MaskDecoder(4, 1,
