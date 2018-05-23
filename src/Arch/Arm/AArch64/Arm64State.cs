@@ -24,7 +24,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch64
 {
     public class Arm64State : ProcessorState
     {

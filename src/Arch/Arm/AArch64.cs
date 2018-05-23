@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -36,7 +37,6 @@ namespace Reko.Arch.Arm
 {
     public class Arm64Architecture : ProcessorArchitecture
     {
-
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;

@@ -18,13 +18,10 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Arch.Arm;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch64;
+using Reko.Core;
 
 namespace Reko.UnitTests.Arch.Arm
 {

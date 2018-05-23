@@ -28,7 +28,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch64
 {
     public class Arm64Instruction : MachineInstruction
     {

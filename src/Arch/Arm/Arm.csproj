@@ -71,12 +71,12 @@
   <ItemGroup>
     <Compile Include="A32Disassembler.cs" />
     <Compile Include="AArch64.cs" />
-    <Compile Include="AArch64Disassembler.cs" />
-    <Compile Include="AArch64Instruction.cs" />
+    <Compile Include="AArch64\AArch64Disassembler.cs" />
+    <Compile Include="AArch64\AArch64Instruction.cs" />
+    <Compile Include="AArch64\Arm64State.cs" />
     <Compile Include="Arm32Architecture.cs" />
     <Compile Include="Arm32InstructionNew.cs" />
     <Compile Include="Arm32Operand.cs" />
-    <Compile Include="Arm64State.cs" />
     <Compile Include="ArmCondition.cs" />
     <Compile Include="ArmNativeRewriterHost.cs" />
     <Compile Include="ArmRewriter.Alu.cs" />
