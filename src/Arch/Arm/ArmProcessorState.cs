@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm
         {
             this.arch = arch;
             this.regData = new Dictionary<int, ulong>();
-            this.pc = arch.GetRegister("pc");
+            this.pc = Registers.pc;
         }
 
         public ArmProcessorState(ArmProcessorState that): base(that)

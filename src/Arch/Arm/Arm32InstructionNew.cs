@@ -115,8 +115,11 @@ namespace Reko.Arch.Arm
             {
                 writer.WriteChar(',');
                 writer.WriteOpcode(ShiftType.ToString());
-                writer.WriteChar(' ');
-                RenderOperand(ShiftValue, writer, options);
+                if (ShiftType != Opcode.rrx)
+                {
+                    writer.WriteChar(' ');
+                    RenderOperand(ShiftValue, writer, options);
+                }
             }
         }
 
@@ -125,21 +128,68 @@ namespace Reko.Arch.Arm
             switch (op)
             {
             case ImmediateOperand imm:
-                writer.WriteFormat($"#{imm.Value.ToInt32():X}");
+                int v = imm.Value.ToInt32();
+                if (0 <= v && v <= 9)
+                    writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                else 
+                    writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                break;
+            case AddressOperand aop:
+                writer.WriteAddress($"${aop.Address}", aop.Address);
                 break;
             case MemoryOperand mem:
                 writer.WriteChar('[');
                 writer.WriteString(mem.BaseRegister.Name);
-                if (mem.Offset != null && !(mem.Offset.IsIntegerZero))
+                if (this.Writeback && !mem.PreIndex)
                 {
-                    writer.WriteChar(',');
-                    writer.WriteChar('#');
-                    writer.WriteUInt32(mem.Offset.ToUInt32());
+                    // Post-indexed
+                    writer.WriteString("],");
+                    if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+                    {
+                        if (!mem.Add)
+                            writer.WriteChar('-');
+                        writer.WriteString("#&");
+                        writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
+                    }
+                    else if (mem.Index != null)
+                    {
+                        if (!mem.Add)
+                            writer.WriteChar('-');
+                        writer.WriteString(mem.Index.Name);
+                    }
                 }
-                writer.WriteChar(']');
-                break;
-            case AddressOperand aop:
-                writer.WriteAddress($"${aop.Address}", aop.Address);
+                else
+                {
+                    if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+                    {
+                        writer.WriteString(",");
+                        if (!mem.Add)
+                            writer.WriteChar('-');
+                        writer.WriteString("#&");
+                        writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
+                    }
+                    else if (mem.Index != null)
+                    {
+                        writer.WriteChar(',');
+                        if (!mem.Add)
+                            writer.WriteChar('-');
+                        writer.WriteString(mem.Index.Name);
+                        if (mem.ShiftType != ArmShiftType.None)
+                        {
+                            writer.WriteChar(',');
+                            writer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());
+                            if (this.ShiftType != Opcode.rrx)
+                            {
+                                writer.WriteFormat(" #{0}", mem.Shift);
+                            }
+                        }
+                    }
+                    writer.WriteChar(']');
+                    if (this.Writeback)
+                    {
+                        writer.WriteChar('!');
+                    }
+                }
                 break;
             default:
                 op.Write(writer, options);
@@ -155,7 +205,7 @@ namespace Reko.Arch.Arm
         public bool Writeback;
         public bool UpdateFlags;
         public Opcode ShiftType;
-        public ImmediateOperand ShiftValue;
+        public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;
         public byte itmask;

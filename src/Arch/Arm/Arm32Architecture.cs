@@ -89,7 +89,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
-        }
+                }
                 aRegs += cb;
                 --cRegs;
             }

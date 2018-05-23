@@ -671,7 +671,7 @@ void RewriteB(bool link)
             }
             else if (mem.Index != null)
             {
-                ea = m.IAdd(ea, Reg(mem.Index.Register));
+                ea = m.IAdd(ea, Reg(mem.Index));
             }
             return ea;
         }
@@ -763,7 +763,7 @@ case ARM_OP_SYSREG:
 
                         if (mop.Index != null)
                         {
-                            var ireg = Reg(mop.Index.Register);
+                            var ireg = Reg(mop.Index);
                             if (mop.ShiftType == ArmShiftType.LSL)
                             {
                                 ea = m.IAdd(ea, m.IMul(ireg, Constant.Int32(1 << mop.Shift)));
@@ -771,6 +771,7 @@ case ARM_OP_SYSREG:
                             else
                             {
                                 //$TODO: handle these (unlikely) cases!
+                                throw new NotImplementedException();
                             }
                         }
                         return m.Mem(dt, ea);

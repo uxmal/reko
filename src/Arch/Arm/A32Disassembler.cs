@@ -25,8 +25,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Arm
 {
@@ -65,6 +67,7 @@ namespace Reko.Arch.Arm
             {
                 MachineOperand op;
                 int offset;
+                uint imm;
                 switch (format[i])
                 {
                 case ',':
@@ -81,9 +84,28 @@ namespace Reko.Arch.Arm
                     offset |= ((int)wInstr >> 23) & 2;
                     op = AddressOperand.Create(addr + offset);
                     break;
+                case 'Y':   // immediate low 12 bits + extra 4 bits
+                    imm = (wInstr & 0xFFF) | ((wInstr >> 4) & 0xF000);
+                    op = ImmediateOperand.Word32(imm);
+                    break;
                 case 'r':   // register at a 4-bit multiple offset
                     offset = (format[++i] - '0') * 4;
                     op = new RegisterOperand(Registers.GpRegs[bitmask(wInstr, offset, 0xF)]);
+                    break;
+                case '[':
+                    {
+                        ++i;
+                        var memType = format[i];
+                        ++i;
+                        Debug.Assert(format[i] == ':');
+                        ++i;
+                        var dom = format[i];
+                        ++i;
+                        var size = format[i] - '0';
+                        ++i;
+                        var dt = GetDataType(dom, size);
+                        op = DecodeMemoryAccess(wInstr, memType, dt, instr);
+                    }
                     break;
                 case 's':   // use bit 20 to determine 
                     instr.UpdateFlags = ((wInstr >> 20) & 1) != 0;
@@ -107,6 +129,41 @@ namespace Reko.Arch.Arm
                 }
             }
             return instr;
+        }
+
+        private PrimitiveType GetDataType(char dom, int size)
+        {
+            switch (dom)
+            {
+            case 'w':
+                switch (size)
+                {
+                case 1: return PrimitiveType.Byte;
+                case 2: return PrimitiveType.Word16;
+                case 4: return PrimitiveType.Word32;
+                case 8: return PrimitiveType.Word64;
+                }
+                break;
+            case 's':
+                switch (size)
+                {
+                case 1: return PrimitiveType.SByte;
+                case 2: return PrimitiveType.Int16;
+                case 4: return PrimitiveType.Int32;
+                case 8: return PrimitiveType.Int64;
+                }
+                break;
+            case 'u':
+                switch (size)
+                {
+                case 1: return PrimitiveType.UInt8;
+                case 2: return PrimitiveType.UInt16;
+                case 4: return PrimitiveType.UInt32;
+                case 8: return PrimitiveType.UInt64;
+                }
+                break;
+            }
+            throw new InvalidOperationException($"Unknown size specifier {dom}{size}.");
         }
 
         private void DecodeImmShift(uint wInstr, Arm32InstructionNew instr)
@@ -143,7 +200,28 @@ namespace Reko.Arch.Arm
 
         private void DecodeRegShift(uint wInstr, Arm32InstructionNew instr)
         {
-            throw new NotImplementedException();
+            uint type = bitmask(wInstr, 5, 0x3);
+            var shift_n = Registers.GpRegs[(int)bitmask(wInstr, 8, 0xF)];
+            Opcode shift_t;
+            switch (type)
+            {
+            case 0:
+                shift_t = Opcode.lsl;
+                break;
+            case 1:
+                shift_t = Opcode.lsr;
+                break;
+            case 2:
+                shift_t = Opcode.asr;
+                break;
+            case 3:
+                shift_t = Opcode.ror;
+                break;
+            default:
+                throw new InvalidOperationException("impossiburu");
+            }
+            instr.ShiftType = shift_t;
+            instr.ShiftValue = new RegisterOperand(shift_n);
         }
 
 
@@ -155,9 +233,59 @@ namespace Reko.Arch.Arm
             return ImmediateOperand.Word32(n);
         }
 
+        private MemoryOperand DecodeMemoryAccess(uint wInstr, char memType, PrimitiveType dtAccess, Arm32InstructionNew instr)
+        {
+            var n = Registers.GpRegs[bitmask(wInstr, 16, 0xF)];
+            var m = Registers.GpRegs[bitmask(wInstr, 0, 0x0F)];
+            Constant offset = null;
+            int shiftAmt = 0;
+            ArmShiftType shiftType = ArmShiftType.None;
+            switch (memType)
+            {
+            case 'o':   // offset
+                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFFF));
+                m = null;
+                break;
+            case 'h':   // offset split in hi-lo nybbles.
+                offset = Constant.Int32(
+                    (int)(((wInstr >> 4) & 0xF0) | (wInstr & 0x0F)));
+                m = null;
+                break;
+            case 'x':   // wide shift amt.
+                shiftAmt = (int)bitmask(wInstr, 7, 0x1F);
+                shiftType = ArmShiftType.LSL; //$TODO exotic types
+                break;
+            }
+            bool add = bit(wInstr, 23);
+            bool preIndex = bit(wInstr, 24);
+            bool wback = bit(wInstr, 21);
+            instr.Writeback = !preIndex | wback;
+            return new MemoryOperand(dtAccess)
+            {
+                BaseRegister = n,
+                Offset = offset,
+                Index = m,
+                Add = add,
+                PreIndex = preIndex,
+                ShiftType = shiftType,
+                Shift = shiftAmt,
+        };
+            //InstrDecoder.
+            //offset = Shift(R[m], shift_t, shift_n, PSTATE.C);
+            //offset_addr = if add then(R[n] + offset) else (R[n] - offset);
+            //address = if index then offset_addr else R[n];
+            //R[t] = SignExtend(MemU[address, 1], 32);
+            //if wback then R[n] = offset_addr;
+
+        }
         private static uint bitmask(uint u, int shift, uint mask)
         {
             return (u >> shift) & mask;
+        }
+
+        private static bool bit(uint u, int shift)
+        {
+            return ((u >> shift) & 1) != 0;
         }
 
         private abstract class Decoder
@@ -318,7 +446,7 @@ namespace Reko.Arch.Arm
 
         static A32Disassembler()
         {
-            var invalid = new InstrDecoder(Opcode.Invalid, null);
+            var invalid = new InstrDecoder(Opcode.Invalid, "");
 
             var LoadStoreExclusive = nyi("LoadStoreExclusive");
 
@@ -421,10 +549,10 @@ namespace Reko.Arch.Arm
                Smlal);
 
             // --
-            var LdrdRegister = new InstrDecoder(Opcode.ldrd, null);
-            var LdrhRegister = new InstrDecoder(Opcode.ldrh, null);
-            var LdrsbRegister = new InstrDecoder(Opcode.ldrsb, null);
-            var LdrshRegister = new InstrDecoder(Opcode.ldrsh, null);
+            var LdrdRegister = new InstrDecoder(Opcode.ldrd, "r3,[_:w8]");
+            var LdrhRegister = new InstrDecoder(Opcode.ldrh, "r3,[_:u2]");
+            var LdrsbRegister = new InstrDecoder(Opcode.ldrsb, "r3,[_:s1]");
+            var LdrshRegister = new InstrDecoder(Opcode.ldrsh, "r3,[_:s2]");
             var Ldrht = new InstrDecoder(Opcode.ldrht, null);
             var Ldrsbt = new InstrDecoder(Opcode.ldrsbt, null);
             var Ldrsht = new InstrDecoder(Opcode.ldrsht, null);
@@ -474,13 +602,13 @@ namespace Reko.Arch.Arm
             var LdrdImmediate = new InstrDecoder(Opcode.ldrd, null);
             var StrdImmediate = new InstrDecoder(Opcode.strd, null);
             var LdrhImmediate = new InstrDecoder(Opcode.ldrh, null);
-            var LdrsbImmediate = new InstrDecoder(Opcode.ldrsb, null);
+            var LdrsbImmediate = new InstrDecoder(Opcode.ldrsb, "r3,[h:s1]");
             var LdrshImmediate = new InstrDecoder(Opcode.ldrsh, null);
 
             var LoadStoreDualHalfSbyteImmediate = new CustomDecoder((wInstr, dasm) =>
             {
                 var rn = bitmask(wInstr, 16, 0xF);
-                var pw = bitmask(wInstr, 23, 0x10) | bitmask(wInstr, 21, 1);
+                var pw = bitmask(wInstr, 23, 2) | bitmask(wInstr, 21, 1);
                 var o1 = bitmask(wInstr, 20, 1);
                 var op2 = bitmask(wInstr, 5, 3);
                 if (rn == 0xF)
@@ -673,13 +801,13 @@ namespace Reko.Arch.Arm
 
             var IntegerDataProcessingImmShift = new MaskDecoder(21, 7,
                 new InstrDecoder(Opcode.and, "sr3,r4,r0,>i"),
-                new InstrDecoder(Opcode.eor, null),
-                new InstrDecoder(Opcode.sub, null),
-                new InstrDecoder(Opcode.rsb, null),
-                new InstrDecoder(Opcode.add, null),
-                new InstrDecoder(Opcode.adc, null),
-                new InstrDecoder(Opcode.sbc, null),
-                new InstrDecoder(Opcode.rsc, null));
+                new InstrDecoder(Opcode.eor, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.sub, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.rsb, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.add, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.adc, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.sbc, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.rsc, "sr3,r4,r0,>i"));
 
             var IntegerTestAndCompareImmShift = new MaskDecoder(21, 3,
                 new InstrDecoder(Opcode.tst, null),
@@ -700,14 +828,14 @@ namespace Reko.Arch.Arm
                 LogicalArithmeticImmShift);
 
             var IntegerDataProcessingRegShift = new MaskDecoder(21, 7,
-               new InstrDecoder(Opcode.and, "sr4,r3,r2,r0"),
-               new InstrDecoder(Opcode.eor, null),
-               new InstrDecoder(Opcode.sub, null),
-               new InstrDecoder(Opcode.rsb, null),
-               new InstrDecoder(Opcode.add, null),
-               new InstrDecoder(Opcode.adc, null),
-               new InstrDecoder(Opcode.sbc, null),
-               new InstrDecoder(Opcode.rsc, null));
+               new InstrDecoder(Opcode.and, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.eor, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.sub, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.rsb, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.add, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.adc, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.sbc, "sr3,r4,r0,>r"),
+               new InstrDecoder(Opcode.rsc, "sr3,r4,r0,>r"));
 
             var IntegerTestAndCompareRegShift = new MaskDecoder(21, 3,
                 new InstrDecoder(Opcode.tst, null),
@@ -728,33 +856,39 @@ namespace Reko.Arch.Arm
                 LogicalArithmeticRegShift);
 
             var IntegerDataProcessingTwoRegImm = new MaskDecoder(21, 7,
-               new InstrDecoder(Opcode.and, null),
-               new InstrDecoder(Opcode.eor, null),
-               new InstrDecoder(Opcode.sub, null),
-               new InstrDecoder(Opcode.rsb, null),
-               new InstrDecoder(Opcode.add, null),
-               new InstrDecoder(Opcode.adc, null),
-               new InstrDecoder(Opcode.sbc, null),
-               new InstrDecoder(Opcode.rsc, null));
+               new InstrDecoder(Opcode.and, "sr3,r4,I"),
+               new InstrDecoder(Opcode.eor, "sr3,r4,I"),
+               new InstrDecoder(Opcode.sub, "sr3,r4,I"),
+               new InstrDecoder(Opcode.rsb, "sr3,r4,I"),
+               new InstrDecoder(Opcode.add, "sr3,r4,I"),
+               new InstrDecoder(Opcode.adc, "sr3,r4,I"),
+               new InstrDecoder(Opcode.sbc, "sr3,r4,I"),
+               new InstrDecoder(Opcode.rsc, "sr3,r4,I"));
+
+            var LogicalArithmeticTwoRegImm = new MaskDecoder(21, 3,
+                new InstrDecoder(Opcode.orr, "sr3,r4,I"),
+                new InstrDecoder(Opcode.mov, "sr3,I"),
+                new InstrDecoder(Opcode.bic, "sr3,r4,I"),
+                new InstrDecoder(Opcode.mvn, "sr3,I"));
 
             var MoveHalfwordImm = new MaskDecoder(22, 1,
-               new InstrDecoder(Opcode.movs, null),
+               new InstrDecoder(Opcode.mov, "r3,Y"),
                new InstrDecoder(Opcode.movt, null));
 
             var IntegerTestAndCompareOneRegImm = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.tst, null),
-                new InstrDecoder(Opcode.teq, null),
-                new InstrDecoder(Opcode.cmp, null),
+                new InstrDecoder(Opcode.tst, "r4,I"),
+                new InstrDecoder(Opcode.teq, "r4,I"),
+                new InstrDecoder(Opcode.cmp, "r4,I"),
                 new InstrDecoder(Opcode.cmn, "r4,I"));
 
             var MsrImmediate = new InstrDecoder(Opcode.msr, null);
-            var Nop = new InstrDecoder(Opcode.nop, null);
+            var Nop = new InstrDecoder(Opcode.nop, "");
             var Yield = new InstrDecoder(Opcode.yield, null);
             var Wfe = new InstrDecoder(Opcode.wfe, null);
             var Wfi = new InstrDecoder(Opcode.wfi, null);
             var Sev = new InstrDecoder(Opcode.sevl, null);
             var Sevl = new InstrDecoder(Opcode.sevl, null);
-            var ReservedNop = new InstrDecoder(Opcode.nop, null);
+            var ReservedNop = new InstrDecoder(Opcode.nop, "");
             var Esb = new InstrDecoder(Opcode.esb, null);
             var Dbg = new InstrDecoder(Opcode.dbg, null);
 
@@ -797,7 +931,7 @@ namespace Reko.Arch.Arm
                     IntegerTestAndCompareOneRegImm,
                     MoveSpecialRegisterAndHints,
                     IntegerTestAndCompareOneRegImm),
-                nyi("LogicalArithmeticTwoRegImm"));
+                LogicalArithmeticTwoRegImm);
 
             var DataProcessingAndMisc = new CustomDecoder((wInstr, dasm) =>
             {
@@ -848,10 +982,10 @@ namespace Reko.Arch.Arm
 
             var LdrLiteral = new InstrDecoder(Opcode.ldr, null);
             var LdrbLiteral = new InstrDecoder(Opcode.ldrb, null);
-            var StrImm = new InstrDecoder(Opcode.str, null);
-            var LdrImm = new InstrDecoder(Opcode.ldr, null);
+            var StrImm = new InstrDecoder(Opcode.str, "r3,[o:w4]");
+            var LdrImm = new InstrDecoder(Opcode.ldr, "r3,[o:w4]");
             var StrbImm = new InstrDecoder(Opcode.strb, null);
-            var LdrbImm = new InstrDecoder(Opcode.ldrb, null);
+            var LdrbImm = new InstrDecoder(Opcode.ldrb, "r3,[o:w1]");
             
             var Strt = new InstrDecoder(Opcode.strt, null);
             var Ldrt = new InstrDecoder(Opcode.ldrt, null);
@@ -901,12 +1035,10 @@ namespace Reko.Arch.Arm
                 throw new InvalidOperationException("impossible");
             });
 
-
-
-            var StrReg = new InstrDecoder(Opcode.str, null);
-            var LdrReg = new InstrDecoder(Opcode.ldr, null);
-            var StrbReg = new InstrDecoder(Opcode.strb, null);
-            var LdrbReg = new InstrDecoder(Opcode.ldrb, null);
+            var StrReg = new InstrDecoder(Opcode.str, "r3,[x:w4]");
+            var LdrReg = new InstrDecoder(Opcode.ldr, "r3,[x:w4]");
+            var StrbReg = new InstrDecoder(Opcode.strb, "r3,[x:w1]");
+            var LdrbReg = new InstrDecoder(Opcode.ldrb, "r3,[x:w1]");
 
             var LoadStoreWordUnsignedByteRegister = new CustomDecoder((wInstr, dasm) =>
             {

@@ -1396,5 +1396,23 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|lr = 0x00100008 + lr");
         }
+
+        [Test]
+        public void ArmRw_ldrsb_positive_indexed()
+        {
+            BuildTest(0xE19120D3);  // ldrsb\tr2,[r1,-r3]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ArmRw_ldrsb_negative_indexed()
+        {
+            BuildTest(0xE11120D3); // ldrsb\tr2,[r1, r3]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
     }
 }

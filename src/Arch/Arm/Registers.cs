@@ -34,6 +34,7 @@ namespace Reko.Arch.Arm
                 Registers.r8, Registers.r9, Registers.r10, Registers.fp,
                 Registers.ip, Registers.sp, Registers.lr, Registers.pc,
         };
+
         public static readonly RegisterStorage cpsr = new RegisterStorage("cpsr", 16, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage fpscr = new RegisterStorage("fpscr", 17, 0, PrimitiveType.Word32);
     }

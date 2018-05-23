@@ -34,26 +34,20 @@ namespace Reko.Arch.Arm
     {
         public RegisterStorage BaseRegister;
         public Constant Offset;
-        public RegisterOperand Index;
-        internal ArmShiftType ShiftType;
-        internal int Shift;
+        public RegisterStorage Index;
+        public ArmShiftType ShiftType;
+        public int Shift;
+        public bool Add;
+        public int Scale;
+        public bool PreIndex;
+
 
         public MemoryOperand(PrimitiveType dataType) : base(dataType)
         {
         }
 
-        public int Scale { get; internal set; }
-
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteChar('[');
-            writer.WriteString(BaseRegister.Name);
-            if (Offset != null && !Offset.IsIntegerZero)
-            {
-                writer.WriteChar('+');
-                writer.WriteUInt32(Offset.ToUInt32());
-            }
-            writer.WriteChar(']');
         }
     }
 }
