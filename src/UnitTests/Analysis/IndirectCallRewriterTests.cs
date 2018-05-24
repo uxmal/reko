@@ -61,6 +61,10 @@ namespace Reko.UnitTests.Analysis
             types = new Dictionary<string, DataType>();
         }
 
+        /// <summary>
+        /// Models a call to an indirect function pointed to by
+        /// ecx, with no arguments.
+        /// </summary>
         private void indirect_call_no_arguments(ProcedureBuilder m)
         {
             var esp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
@@ -74,6 +78,10 @@ namespace Reko.UnitTests.Analysis
             m.Return();
         }
 
+        /// <summary>
+        /// Models a call to an indirect function pointed to by
+        /// ecx, with one stack argument.
+        /// </summary>
         private void indirect_call_one_argument(ProcedureBuilder m)
         {
             var esp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
@@ -97,12 +105,14 @@ namespace Reko.UnitTests.Analysis
             var ecx = m.Frame.EnsureIdentifier(this.ecx.Storage);
 
             m.Assign(esp, m.Frame.FramePointer);
-            m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
+            m.Assign(eax, m.Mem32(m.IAdd(esp, 4))); // get argument to this fn.
             m.Assign(ecx, m.Mem32(eax));
-            m.Assign(esp, m.ISub(esp, 4));
+            m.Assign(esp, m.ISub(esp, 4));          // push arg2
             m.MStore(esp, m.Word32(0x000B));
-            m.Assign(esp, m.ISub(esp, 4));
+            m.Assign(esp, m.ISub(esp, 4));          // push arg1
             m.MStore(esp, m.Word32(0x000A));
+            // We expect the following call to be resolved as
+            // (Mem0[ecx + 8:ptr32])(arg1, arg2)
             var c = m.Call(m.Mem32(m.IAdd(ecx, 8)), 4);
             c.CallSite.StackDepthOnEntry = 12;
             m.Return();

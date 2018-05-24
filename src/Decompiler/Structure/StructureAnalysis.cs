@@ -934,14 +934,14 @@ doing future pattern matches.
                 };
                 from.Statements.Add(ifStm);
                 from.Expression = null;
-            Probe();
+                Probe();
                 from.Type = RegionType.Linear;
             }
             else if (from.Type == RegionType.Linear)
             {
                 from.Statements.Add(stm);
                 from.Type = RegionType.Tail;
-            Probe();
+                Probe();
             }
             else
                 throw new NotImplementedException(string.Format("Can't collapse {0} ({1}) => {2}", from.Block.Name, from.Type, to.Block.Name));

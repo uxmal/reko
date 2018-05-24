@@ -35,6 +35,7 @@ namespace Reko.Analysis
     public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
         private IProcessorArchitecture arch;
+        private int stackDepthOnEntry;
         private Dictionary<StorageDomain, CallBinding> defs;
         private Dictionary<StorageDomain, CallBinding> uses;
         private Dictionary<StorageDomain, CallBinding> map;
@@ -49,6 +50,7 @@ namespace Reko.Analysis
                 uses.Add(u.Storage.Domain, u);
             }
             this.uses = call.Uses.ToDictionary(u => u.Storage.Domain);
+            this.stackDepthOnEntry = site.StackDepthOnEntry;
         }
 
         public override Expression Bind(Identifier id)
@@ -103,9 +105,8 @@ namespace Reko.Analysis
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-            CallBinding cb;
-            return map.TryGetValue(reg.Domain, out cb)
-                ? cb.Expression 
+            return map.TryGetValue(reg.Domain, out CallBinding cb)
+                ? cb.Expression
                 : null;
         }
 
@@ -116,7 +117,7 @@ namespace Reko.Analysis
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
         {
-            int localOff = stack.StackOffset - site.StackDepthOnEntry;
+            int localOff = stack.StackOffset - stackDepthOnEntry;
             foreach (var de in this.map
                 .Where(d => d.Value.Storage is StackStorage))
             {
