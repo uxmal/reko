@@ -139,7 +139,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// </returns>
             public bool GetTrait(MemorySubDomain subdom, out MemTrait trait)
             {
-                return GetTrait(PICArch.GetDomain(subdom), subdom, out trait);
+                return GetTrait(PICArch.GetDomainOf(subdom), subdom, out trait);
             }
 
             #endregion

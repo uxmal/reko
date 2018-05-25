@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public const string PIC16EnhancedName = "PIC16F1454";
         public const string PIC16FullFeaturedName = "PIC16F15313";
         public const string PIC18LegacyName = "PIC18F1220";
-        public const string PIC18EggName = "PIC18F25K50";
+        public const string PIC18EggName = "PIC18F1230";
         public const string PIC18EnhancedName = "PIC18F25K42";
     }
 
