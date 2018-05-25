@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -197,6 +197,38 @@ namespace Reko.UnitTests.Analysis
                 Debug.Print(sActual);
             }
             Assert.AreEqual(sExp, sActual);
+        }
+
+        private void Given_Procedure(string name, Action<ProcedureBuilder> builder)
+        {
+            pb.Add(name, builder);
+        }
+
+        private void RunSsaTransform()
+        {
+            this.programFlow = new ProgramDataFlow();
+            var proc = this.pb.Program.Procedures.Values.First();
+            var sst = new SsaTransform(
+                this.pb.Program,
+                proc,
+                new HashSet<Procedure>(),
+                importResolver,
+                programFlow);
+            sst.Transform();
+            sst.SsaState.Validate(s => Assert.Fail(s));
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            var proc = this.pb.Program.Procedures.Values.First();
+            var writer = new StringWriter();
+            proc.WriteBody(false, writer);
+            var actual = writer.ToString();
+            if (actual != expected)
+            {
+                Debug.Print(actual);
+            }
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -3036,6 +3068,66 @@ proc1_exit:
                 m.Assign(al, 0);
                 m.Return();
             });
+        }
+
+        [Test]
+        public void SsaUsesAfterTrivialPhiRemoving()
+        {
+            Given_Procedure("proc", m =>
+            {
+                var a = m.Reg32("a", 0);
+                var b = m.Reg32("b", 1);
+
+                m.Label("init");
+                m.Assign(a, m.Mem32(m.Word32(0x1234)));
+                m.Assign(b, 0);
+                m.BranchIf(m.Le(a, 10), "head");
+
+                m.Label("check_failed");
+                m.Assign(a, m.IAdd(a, 1));
+                m.Goto("done");
+
+                m.Label("head");
+                m.BranchIf(m.Ge(b, a), "done");
+
+                m.Label("loop");
+                m.Assign(b, m.IAdd(b, 1));
+                m.Goto("head");
+
+                m.Label("done");
+                m.MStore(m.Word32(0x5678), a);
+                m.Return();
+            });
+
+            RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def Mem0
+	goto init
+check_failed:
+	a_7 = a_2 + 0x00000001
+done:
+	a_8 = PHI(a_7, a_2)
+	Mem9[0x00005678:word32] = a_8
+	return
+head:
+	b_4 = PHI(b_3, b_6)
+	branch b_4 >= a_2 done
+	goto loop
+init:
+	a_2 = Mem0[0x00001234:word32]
+	b_3 = 0x00000000
+	branch a_2 <= 0x0000000A head
+	goto check_failed
+loop:
+	b_6 = b_4 + 0x00000001
+	goto head
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
         }
     }
 }
