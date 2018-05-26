@@ -38,11 +38,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
 
             private const string accessRAMRegionID = "accessram";
-            private const string extendRAMRegionID = "gpre";
             private const string accessSFRRegionID = "accesssfr";
+            private const string extendGPRERegionID = "gpre";
 
-            internal IMemoryRegion AccessRAMLow;
-            internal IMemoryRegion AccessRAMHigh;
+            internal IMemoryRegion AccessRAM;
+            internal IMemoryRegion AccessSFR;
+            internal IMemoryRegion ExtendedGPRE;
             internal static Address topAccessRAM = Address.Ptr32(0x100);
 
 
@@ -57,16 +58,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// <param name="thePIC">the PIC descriptor.</param>
             protected PIC18MemoryMap(PIC thePIC) : base(thePIC)
             {
-                AccessRAMHigh = GetDataRegion(accessSFRRegionID);
-                if (AccessRAMHigh is null)
-                    throw new InvalidOperationException($"Missing '{accessSFRRegionID}' data memory region.");
-                AccessRAMLow = GetDataRegion(accessRAMRegionID);
-                if (AccessRAMLow is null)
-                {
-                    AccessRAMLow = GetDataRegion(extendRAMRegionID);
-                    if (AccessRAMLow is null)
-                        throw new InvalidOperationException($"Missing either '{accessRAMRegionID}' or '{extendRAMRegionID}' data memory region.");
-                }
+                AccessSFR = GetDataRegion(accessSFRRegionID) ?? throw new InvalidOperationException($"Missing '{accessSFRRegionID}' data memory region.");
+                AccessRAM = GetDataRegion(accessRAMRegionID) ?? throw new InvalidOperationException($"Missing '{accessRAMRegionID}' data memory region.");
+                ExtendedGPRE = GetDataRegion(extendGPRERegionID);
             }
 
             /// <summary>
@@ -118,8 +112,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 if (!IsAccessRAMHigh(lAddr))
                     return lAddr;
                 ulong uaddr = lAddr.ToLinear();
-                uaddr -= AccessRAMLow.LogicalByteAddrRange.End.ToLinear();
-                uaddr += AccessRAMHigh.LogicalByteAddrRange.Begin.ToLinear();
+                uaddr -= AccessRAM.LogicalByteAddrRange.End.ToLinear();
+                uaddr += AccessSFR.LogicalByteAddrRange.Begin.ToLinear();
                 return PICDataAddress.Ptr((uint)uaddr);
             }
 
@@ -143,15 +137,15 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                         switch (execMode)
                         {
                             case PICExecMode.Traditional:
-                                AccessRAMLow = GetDataRegion(accessRAMRegionID);
+                                AccessRAM = GetDataRegion(accessRAMRegionID) ?? throw new InvalidOperationException($"Missing '{accessRAMRegionID}' data memory region.");
+                                ExtendedGPRE = null;
                                 break;
 
                             case PICExecMode.Extended:
-                                AccessRAMLow = GetDataRegion(extendRAMRegionID);
+                                AccessRAM = GetDataRegion(accessRAMRegionID);
+                                ExtendedGPRE = GetDataRegion(extendGPRERegionID) ?? throw new InvalidOperationException($"Missing '{extendGPRERegionID}' data memory region.");
                                 break;
                         }
-                        if (AccessRAMLow is null)
-                            throw new InvalidOperationException($"Missing either '{accessRAMRegionID}' or '{extendRAMRegionID}' data memory region.");
                     }
                 }
             }
@@ -164,7 +158,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// <returns>
             /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
             /// </returns>
-            public override bool IsAccessRAMLow(PICDataAddress cAddr) => AccessRAMLow.Contains(cAddr);
+            public override bool IsAccessRAMLow(PICDataAddress cAddr) => AccessRAM.Contains(cAddr);
 
             /// <summary>
             /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
@@ -176,7 +170,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             public override bool IsAccessRAMHigh(PICDataAddress uAddr)
             {
                 var addr = Address.Ptr32(uAddr.ToUInt32());
-                return (addr >= AccessRAMLow.LogicalByteAddrRange.End && addr < topAccessRAM);
+                return (addr >= AccessRAM.LogicalByteAddrRange.End && addr < topAccessRAM);
             }
 
             /// <summary>

@@ -4119,7 +4119,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"SFR sector";
+            => $"SFR sector '{RegionID}' bank{Bank}[{BeginAddr:X3}-{EndAddr:X3}]";
 
     }
 
@@ -4190,7 +4190,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"GPR sector";
+            => $"GPR sector '{RegionID}' bank{Bank}[{BeginAddr:X3}-{EndAddr:X3}]";
 
     }
 
@@ -4269,7 +4269,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"DPR sector";
+            => $"DPR sector '{RegionID}' bank{Bank}[{BeginAddr:X3}-{EndAddr:X3}]";
 
     }
 
@@ -4521,15 +4521,13 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlArray("TraditionalModeOnly", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("GPRDataSector", typeof(GPRDataSector), IsNullable = false, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<GPRDataSector> TraditionalModeOnly { get; set; }
 
         /// <summary>
         /// Gets the list of GPR data memory regions when PIC is in extended execution mode.
         /// </summary>
         [XmlArray("ExtendedModeOnly", Form = XmlSchemaForm.None, Namespace = "")]
-        [XmlArrayItem("GPRDataSector", typeof(GPRDataSector), IsNullable = false)]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        [XmlArrayItem("GPRDataSector", typeof(GPRDataSector), IsNullable = false, Namespace = "")]
         public List<GPRDataSector> ExtendedModeOnly { get; set; }
 
         /// <summary>
