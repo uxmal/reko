@@ -1248,7 +1248,13 @@ namespace Reko.Analysis
                 var sids = preds.Select(p => ReadVariable(blockstates[p])).ToArray();
                 GeneratePhiFunction(phi, sids);
 
-                return TryRemoveTrivial(phi);
+                if (!TryRemoveTrivial(phi, out var newSid))
+                {
+                    // A real phi; use all its arguments.
+                    UsePhiArguments(phi);
+                    return phi;
+                }
+                return newSid;
             }
 
             private static void GeneratePhiFunction(SsaIdentifier phi, SsaIdentifier[] sids)
@@ -1262,9 +1268,13 @@ namespace Reko.Analysis
             /// <summary>
             /// If the phi function is trivial, remove it.
             /// </summary>
-            /// <param name="phi"></param>
-            /// <returns></returns>
-            private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi)
+            /// <param name="phi">SSA identifier of phi function</param>
+            /// <param name="sid">
+            /// Returns SSA identifier for simplified phi function if it was
+            /// trivial, otherwise returns null
+            /// </param>
+            /// <returns>true if the phi function was trivial</returns>
+            private bool TryRemoveTrivial(SsaIdentifier phi, out SsaIdentifier sid)
             {
                 Identifier same = null;
                 var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
@@ -1275,13 +1285,11 @@ namespace Reko.Analysis
                         continue;
                     if (same != null)
                     {
-                        // A real phi; use all its arguments.
-                        UsePhiArguments(phi, phiFunc);
-                        return phi;
+                        sid = null;
+                        return false;
                     }
                     same = op;
                 }
-                SsaIdentifier sid;
                 if (same == null)
                 {
                     DebugEx.PrintIf(trace.TraceVerbose, "  {0} is a def", phi.Identifier);
@@ -1308,8 +1316,8 @@ namespace Reko.Analysis
                     if (use.Instruction is PhiAssignment phiAss)
                     {
                         var sidU = ssaIds[phiAss.Dst];
-                        var sidNew = TryRemoveTrivial(sidU);
-                        if (sidU == sid)
+                        if (TryRemoveTrivial(sidU, out var sidNew) &&
+                            sidU == sid)
                         {
                             same = sidNew.Identifier;
                             sid = sidNew;
@@ -1322,11 +1330,12 @@ namespace Reko.Analysis
                 }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 this.outer.sidsToRemove.Add(phi);
-                return sid;
+                return true;
             }
 
-            private void UsePhiArguments(SsaIdentifier phi, PhiFunction phiFunc)
+            private void UsePhiArguments(SsaIdentifier phi)
             {
+                var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
                 foreach (Identifier id in phiFunc.Arguments)
                 {
                     ssaIds[id].Uses.Add(phi.DefStatement);
