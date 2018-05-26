@@ -483,7 +483,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     writer.WriteString($"[0x{bankmemacc.Offset:X2}]");
                     return;
                 }
-            var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmemacc.Offset);
+                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmemacc.Offset);
                 if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
                 {
                     writer.WriteString($"{areg.Name},ACCESS");

@@ -29,10 +29,10 @@ using System.Diagnostics;
 namespace Reko.Arch.MicrochipPIC.Common
 {
 
-    [DebuggerDisplay("RegTrait={_debugDisplay()}")]
     /// <summary>
     /// PIC register traits.
     /// </summary>
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public class PICRegisterTraits :
         IComparable<PICRegisterTraits>, IComparer<PICRegisterTraits>,
         IEquatable<PICRegisterTraits>, IEqualityComparer<PICRegisterTraits>,
@@ -223,7 +223,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             return s;
         }
 
-        private string _debugDisplay() => (RegAddress.Addr is null ? $"'ID{RegAddress.NMMRID}'" : $"{RegAddress.Addr}") + $"[b{BitWidth}]";
+        private string _debugDisplay
+            => "RegTrait=" + (RegAddress.Addr is null ? $"'ID{RegAddress.NMMRID}'" : $"{RegAddress.Addr}") + $"[b{BitWidth}]";
 
     }
 

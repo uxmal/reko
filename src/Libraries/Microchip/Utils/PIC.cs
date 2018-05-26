@@ -1182,56 +1182,31 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class Interrupt
     {
-
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
         public Interrupt() { }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Used to serialize <see cref="IRQ" /> property from/to hexadecimal string.
         /// </summary>
-        /// <value>
-        /// The IRQ content as an hexadecimal string.
-        /// </value>
         [XmlAttribute(AttributeName = "irq", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string IRQFormatted { get => $"{IRQ}"; set => IRQ = value.ToUInt32Ex(); } 
+        public string IRQFormatted { get => $"{IRQ}"; set => IRQ = value.ToUInt32Ex(); }
 
         /// <summary>
         /// Gets the IRQ number.
         /// </summary>
-        /// <value>
-        /// The IRQ number as an integer.
-        /// </value>
-        [XmlIgnore]
-        public uint IRQ { get; private set; }
+        [XmlIgnore] public uint IRQ { get; private set; }
 
         /// <summary>
         /// Gets the name of the interrupt request.
         /// </summary>
-        /// <value>
-        /// The interrupt request name.
-        /// </value>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
         public string CName { get; set; }
 
         /// <summary>
         /// Gets the description of the interrupt request.
         /// </summary>
-        /// <value>
-        /// The description as a string.
-        /// </value>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
         public string Desc { get; set; }
-
-        #endregion
 
     }
 
@@ -3255,7 +3230,7 @@ namespace Reko.Libraries.Microchip
     /// SFR bits-field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("SFRBitField = {CName}")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class SFRFieldDef : MemDataSymbolAcceptorBase
     {
         public SFRFieldDef() { }
@@ -3378,13 +3353,15 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"SFRBitField={CName} @{BitPos}[{NzWidth}]";
     }
 
     /// <summary>
     /// SFR Fields definitions for a given mode.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("SFRMode = {ID}")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class SFRMode : MemDataSymbolAcceptorBase
     {
         public SFRMode() { }
@@ -3395,6 +3372,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlElement(ElementName = "SFRFieldDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRFieldDef))]
         [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DataBitAdjustPoint))]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<object> Fields { get; set; }
 
         /// <summary>
@@ -3445,6 +3423,8 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"SFRMode={ID}";
     }
 
     /// <summary>
@@ -3460,6 +3440,7 @@ namespace Reko.Libraries.Microchip
         /// Gets the list of SFR modes.
         /// </summary>
         [XmlElement(ElementName = "SFRMode", Form = XmlSchemaForm.None, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRMode> SFRModes { get; set; }
 
 
@@ -3504,7 +3485,7 @@ namespace Reko.Libraries.Microchip
     /// Special Function Register (SFR) definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("SFR {CName}")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class SFRDef : MemDataSymbolAcceptorBase
     {
         public SFRDef() { }
@@ -3514,6 +3495,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlArray("SFRModeList", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("SFRMode", typeof(SFRMode), Form = XmlSchemaForm.None, Namespace = "", IsNullable = false)]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRMode> SFRModes { get; set; }
 
         /// <summary>
@@ -3690,12 +3672,15 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"SFR '{CName}' @{(IsNMMR ? $"NMMRID({NMMRID})" : $"0x{Addr:X}")}";
     }
 
     /// <summary>
     /// Mirrored registers area.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class Mirror : MemDataSymbolAcceptorBase
     {
         public Mirror() { }
@@ -3767,23 +3752,25 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"Mirror '{RegionIDRef}' @0x{Addr:X}[{NzSize}]";
     }
 
     /// <summary>
     /// Joined SFR (e.g. FSR2 register composed of FSR2H:FSR2L registers).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class JoinedSFRDef : MemDataSymbolAcceptorBase
     {
-        public JoinedSFRDef()
-        {
-        }
+        public JoinedSFRDef() { }
 
 
         /// <summary>
         /// Gets the list of adjacent SFRs composing the join.
         /// </summary>
         [XmlElement("SFRDef", Form = XmlSchemaForm.None, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRDef> SFRs { get; set; }
 
         /// <summary>
@@ -3858,12 +3845,15 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"Joined SFR '{CName}' @0x{Addr:X}[{NzWidth}]";
     }
 
     /// <summary>
     /// Selection of a SFR.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class SelectSFR : MemDataSymbolAcceptorBase
     {
         public SelectSFR() { }
@@ -3917,12 +3907,16 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"Select '{SFR.CName}' when '{When}'";
+
     }
 
     /// <summary>
     /// Multiplexed SFRs definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class MuxedSFRDef : MemDataSymbolAcceptorBase
     {
         public MuxedSFRDef() { }
@@ -3932,6 +3926,7 @@ namespace Reko.Libraries.Microchip
         /// Gets the list of selections of SFRs.
         /// </summary>
         [XmlElement(ElementName = "SelectSFR", Form = XmlSchemaForm.None, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SelectSFR> SelectSFRs { get; set; }
 
         /// <summary>
@@ -3999,6 +3994,9 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"Muxed SFR @0x{Addr:X}[{NzWidth}]";
+
     }
 
     /// <summary>
@@ -4064,7 +4062,7 @@ namespace Reko.Libraries.Microchip
     /// Special Function Registers data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("{MemorySubDomain} sector")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class SFRDataSector : DataMemoryBankedRegion
     {
         public SFRDataSector() { }
@@ -4081,6 +4079,7 @@ namespace Reko.Libraries.Microchip
         [XmlElement(ElementName = "MuxedSFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(MuxedSFRDef))]
         [XmlElement(ElementName = "Mirror", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(Mirror))]
         [XmlElement(ElementName = "RegisterMirror", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DMARegisterMirror))]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<object> SFRs { get; set; }
 
 
@@ -4119,13 +4118,16 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"SFR sector";
+
     }
 
     /// <summary>
     /// General Purpose Registers (GPR) data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("{MemorySubDomain} sector")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class GPRDataSector : DataMemoryBankedRegion
     {
         public GPRDataSector() { }
@@ -4187,13 +4189,16 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"GPR sector";
+
     }
 
     /// <summary>
     /// Dual Port Registers data memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("{MemorySubDomain} sector")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class DPRDataSector : DataMemoryBankedRegion
     {
         public DPRDataSector() { }
@@ -4206,6 +4211,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRDef))]
         [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DataByteAdjustPoint))]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<object> SFRs { get; set; }
 
         /// <summary>
@@ -4262,13 +4268,16 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"DPR sector";
+
     }
 
     /// <summary>
     /// Emulator memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("{MemorySubDomain} sector")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class EmulatorZone : DataMemoryRegion
     {
         public EmulatorZone() { }
@@ -4311,12 +4320,16 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"Emulator zone";
+
     }
 
     /// <summary>
     /// Non-Memory-Mapped-Register (NMMR) definitions.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class NMMRPlace : MemDataRegionAcceptorBase
     {
         public NMMRPlace() { }
@@ -4326,6 +4339,7 @@ namespace Reko.Libraries.Microchip
         /// Gets the list of SFR definitions.
         /// </summary>
         [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRDef> SFRDefs { get; set; }
 
         /// <summary>
@@ -4370,13 +4384,16 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"NMMR '{RegionID}'";
+
     }
 
     /// <summary>
     /// Linear data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("{MemorySubDomain} sector")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class LinearDataSector : DataMemoryRange, IMemDataRegionAcceptor
     {
         public LinearDataSector() { }
@@ -4456,6 +4473,9 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        private string _debugDisplay
+            => $"Linear Data sector [0x{BlockBeginAddr:X}-0x{BlockEndAddr:X}]";
+
     }
 
     /// <summary>
@@ -4475,6 +4495,7 @@ namespace Reko.Libraries.Microchip
         [XmlElement(ElementName = "GPRDataSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(GPRDataSector))]
         [XmlElement(ElementName = "EmulatorZone", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(EmulatorZone))]
         [XmlElement(ElementName = "NMMRPlace", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(NMMRPlace))]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<object> Regions { get; set; }
 
     }
@@ -4483,6 +4504,7 @@ namespace Reko.Libraries.Microchip
     /// Data memory space.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class DataSpace
     {
         public DataSpace() { }
@@ -4499,6 +4521,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlArray("TraditionalModeOnly", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("GPRDataSector", typeof(GPRDataSector), IsNullable = false, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<GPRDataSector> TraditionalModeOnly { get; set; }
 
         /// <summary>
@@ -4506,6 +4529,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlArray("ExtendedModeOnly", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("GPRDataSector", typeof(GPRDataSector), IsNullable = false)]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<GPRDataSector> ExtendedModeOnly { get; set; }
 
         /// <summary>
@@ -4520,6 +4544,9 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlIgnore] public uint EndAddr { get; private set; }
 
+        private string _debugDisplay
+            => $"Data Space [0x0-0x{EndAddr:X}]";
+
     }
 
     #endregion
@@ -4530,7 +4557,7 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [XmlRoot(Namespace = "", IsNullable = false)]
-    [DebuggerDisplay("{Name} - {Desc}")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class PIC
     {
 
@@ -4564,6 +4591,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlArray("InterruptList", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("Interrupt", typeof(Interrupt), Form = XmlSchemaForm.None, IsNullable = false, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<Interrupt> Interrupts { get; set; }
 
         /// <summary>
@@ -4583,6 +4611,7 @@ namespace Reko.Libraries.Microchip
         /// </summary>
         [XmlArray("DMASpace", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("SFRDataSector", typeof(SFRDataSector), IsNullable = false, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRDataSector> DMASpace { get; set; }
 
         /// <summary>
@@ -4693,6 +4722,9 @@ namespace Reko.Libraries.Microchip
         /// Gets a value indicating whether this PIC is belonging to the PIC18 family.
         /// </summary>
         [XmlIgnore] public bool IsPIC18 => GetInstructionSetID >= InstructionSetID.PIC18;
+
+        private string _debugDisplay
+            => $"PIC '{Name}' ({Arch}, {GetInstructionSetID}) ";
 
     }
 

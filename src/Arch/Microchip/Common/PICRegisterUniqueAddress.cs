@@ -26,7 +26,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
-    [DebuggerDisplay("RegAddr={_debugDisplay()}")]
+    [DebuggerDisplay("{_debugDisplay,nq}")]
     public class PICRegisterUniqueAddress :
         IComparable<PICRegisterUniqueAddress>, IComparer<PICRegisterUniqueAddress>,
         IEquatable<PICRegisterUniqueAddress>, IEqualityComparer<PICRegisterUniqueAddress>,
@@ -98,7 +98,8 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override int GetHashCode() => ((Addr?.GetHashCode() ?? NMMRID.GetHashCode()) * 512137) ^ base.GetHashCode();
 
-        private string _debugDisplay() => (Addr is null ? $"NMMRID({NMMRID})" : $"{Addr}");
+        private string _debugDisplay
+            => "RegAddr=" + (Addr is null ? $"NMMRID({NMMRID})" : $"{Addr}");
 
     }
 

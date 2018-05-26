@@ -513,9 +513,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void PIC18EggExtd_Disasm_MOVWF()
         {
+            VerifyDisasm("MOVWF\tFSR0L,ACCESS", "", 0x6EE9);
             VerifyDisasm("MOVWF\t[0x12]", "", 0x6E12);
             VerifyDisasm("MOVWF\t[0x5A]", "", 0x6E5A);
-            VerifyDisasm("MOVWF\tFSR0L,ACCESS", "", 0x6EE9);
             VerifyDisasm("MOVWF\tTBLPTRL,ACCESS", "", 0x6EF6);
             VerifyDisasm("MOVWF\t0x00", "", 0x6F00);
             VerifyDisasm("MOVWF\t0x5A", "", 0x6F5A);
