@@ -22,6 +22,7 @@
 
 using Reko.Libraries.Microchip;
 using Reko.Core;
+using Reko.Core.Expressions;
 using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.Common
@@ -77,22 +78,59 @@ namespace Reko.Arch.MicrochipPIC.Common
         (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom);
 
         /// <summary>
+        /// Gets a program memory region given its name ID.
+        /// </summary>
+        /// <param name="sregionName">Name ID of the memory region.</param>
+        /// <returns>
+        /// The program memory region.
+        /// </returns>
+        IMemoryRegion GetProgramRegionByName(string sregionName);
+
+        /// <summary>
+        /// Gets a program memory region given a memory virtual byte address.
+        /// </summary>
+        /// <param name="absByteAddr">The memory byte address.</param>
+        /// <returns>
+        /// The program memory region.
+        /// </returns>
+        IMemoryRegion GetProgramRegionByAddress(Address absByteAddr);
+
+        /// <summary>
         /// Gets a data memory region given its name ID.
         /// </summary>
         /// <param name="sregionName">Name ID of the memory region.</param>
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        IMemoryRegion GetDataRegion(string sregionName);
+        IMemoryRegion GetDataRegionByName(string sregionName);
 
         /// <summary>
         /// Gets a data memory region given a memory byte address.
         /// </summary>
-        /// <param name="aByteAddr">The data memory byte address.</param>
+        /// <param name="absByteAddr">The data memory byte address.</param>
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        IMemoryRegion GetDataRegion(Address aByteAddr);
+        IMemoryRegion GetDataRegionByAddress(Address absByteAddr);
+
+        /// <summary>
+        /// Gets a data memory region given a bank selector.
+        /// </summary>
+        /// <param name="bankSel">The data memory bank selector.</param>
+        /// <returns>
+        /// The data memory region or null.
+        /// </returns>
+        IMemoryRegion GetDataRegionBySelector(Constant bankSel);
+
+        /// <summary>
+        /// Gets a list of program regions.
+        /// </summary>
+        IReadOnlyList<IMemoryRegion> ProgramRegionsList { get; }
+
+        /// <summary>
+        /// Enumerates the program regions.
+        /// </summary>
+        IEnumerable<IMemoryRegion> ProgramRegions { get; }
 
         /// <summary>
         /// Get a list of data regions.
@@ -123,74 +161,40 @@ namespace Reko.Arch.MicrochipPIC.Common
         ILinearRegion LinearSector { get; }
 
         /// <summary>
-        /// Remap a data memory address.
+        /// Remap an absolute data memory address.
         /// </summary>
-        /// <param name="lAddr">The logical memory address.</param>
+        /// <param name="absAddr">The absolute data memory address.</param>
         /// <returns>
-        /// The physical memory address.
+        /// The actual physical memory address.
         /// </returns>
-        PICDataAddress RemapDataAddress(PICDataAddress lAddr);
+        PICDataAddress RemapDataAddress(PICDataAddress absAddr);
 
         /// <summary>
-        /// Gets a program memory region given its name ID.
+        /// Try to translate a data memory banked address to an absolute data meory address.
         /// </summary>
-        /// <param name="sregionName">Name ID of the memory region.</param>
+        /// <param name="bAddr">The memory banked address to translate.</param>
+        /// <param name="absAddr">[out] The resulting absolute data memory address.</param>
         /// <returns>
-        /// The program memory region.
+        /// True if successfully translated banked address to absolute address.
         /// </returns>
-        IMemoryRegion GetProgramRegion(string sregionName);
+        bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr);
 
         /// <summary>
-        /// Gets a program memory region given a memory virtual byte address.
+        /// Query if memory banked address <paramref name="bAddr"/> can be a FSR2 index
         /// </summary>
-        /// <param name="aVirtByteAddr">The memory byte address.</param>
+        /// <param name="bAddr">The memory banked address to check.</param>
+        bool CanBeFSR2IndexAddress(PICBankedAddress bAddr);
+
+        /// <summary>
+        /// Creates data memory banked address.
+        /// </summary>
+        /// <param name="bankSel">The data memory bank selector.</param>
+        /// <param name="offset">The offset in the bank.</param>
+        /// <param name="access">True if Access Mode adressing.</param>
         /// <returns>
-        /// The program memory region.
+        /// The new banked address.
         /// </returns>
-        IMemoryRegion GetProgramRegion(Address aVirtByteAddr);
-
-        /// <summary>
-        /// Gets a list of program regions.
-        /// </summary>
-        IReadOnlyList<IMemoryRegion> ProgramRegionsList { get; }
-
-        /// <summary>
-        /// Enumerates the program regions.
-        /// </summary>
-        IEnumerable<IMemoryRegion> ProgramRegions { get; }
-
-        /// <summary>
-        /// Remap a program memory address.
-        /// </summary>
-        /// <param name="lAddr">The logical memory address.</param>
-        /// <returns>
-        /// The physical memory address.
-        /// </returns>
-        PICProgAddress RemapProgramAddress(PICProgAddress lAddr);
-
-        /// <summary>
-        /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
-        /// </summary>
-        /// <param name="cAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
-        /// </returns>
-        bool IsAccessRAMLow(PICDataAddress cAddr);
-
-        /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
-        /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
-        /// </returns>
-        bool IsAccessRAMHigh(PICDataAddress uAddr);
-
-        /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
-        /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        bool CanBeFSR2IndexAddress(ushort uAddr);
+        PICBankedAddress CreateBankedAddr(Constant bankSel, Constant offset, bool access);
 
     }
 

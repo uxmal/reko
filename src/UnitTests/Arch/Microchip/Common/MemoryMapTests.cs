@@ -51,13 +51,13 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             foreach (var rgn in PICMemoryDescriptor.DataRegions)
             {
                 Assert.AreEqual(MemoryDomain.Data, rgn.TypeOfMemory);
-                Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion(rgn.RegionName));
+                Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName(rgn.RegionName));
                 if (rgn.SubtypeOfMemory != MemorySubDomain.NNMR)
                 {
                     Assert.IsTrue(rgn.Size > 0, $"Invalid size for '{rgn.RegionName}' = {rgn.Size}");
                     AddressRange virtualrange = rgn.LogicalByteAddrRange;
-                    Assert.AreEqual(rgn, PICMemoryDescriptor.GetDataRegion(virtualrange.Begin), $"Mismatch begin address for data region '{rgn.RegionName}'");
-                    Assert.AreEqual(rgn, PICMemoryDescriptor.GetDataRegion(virtualrange.End - 1), $"Mismatch end address for data region '{rgn.RegionName}'");
+                    Assert.AreEqual(rgn, PICMemoryDescriptor.GetDataRegionByAddress(virtualrange.Begin), $"Mismatch begin address for data region '{rgn.RegionName}'");
+                    Assert.AreEqual(rgn, PICMemoryDescriptor.GetDataRegionByAddress(virtualrange.End - 1), $"Mismatch end address for data region '{rgn.RegionName}'");
                 }
             }
         }
@@ -105,9 +105,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             CheckProgMap();
             CheckDataMap();
 
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegionByName("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
@@ -120,9 +120,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
             CheckProgMap();
             CheckDataMap();
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegionByName("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
@@ -134,9 +134,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
             CheckProgMap();
             CheckDataMap();
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegionByName("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
@@ -149,9 +149,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
             CheckProgMap();
             CheckDataMap();
-            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Missing 'gpre' data memory region for PIC18.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("gpre"), "Missing 'gpre' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
         }
 
         [Test]
@@ -163,9 +162,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
             CheckProgMap();
             CheckDataMap();
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegionByName("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
@@ -178,9 +177,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
             CheckProgMap();
             CheckDataMap();
-            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Missing 'gpre' data memory region for PIC18.");
-            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegionByName("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("gpre"), "Missing 'gpre' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
         }
 
     }

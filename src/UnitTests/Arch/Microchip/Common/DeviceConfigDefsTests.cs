@@ -116,14 +116,14 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
 
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFF);
-            Assert.AreEqual("nPWRTEN=OFF, BOREN=SBORDIS, BORV=190, nLPBOR=OFF", s);
+            Assert.AreEqual("PWRT=OFF, BOR=BOHW, BORV=3", s);
 
-            var dcf = PICMemoryDescriptor.GetDCRField("WDTEN");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDT");
             Assert.IsNotNull(dcf);
-            Assert.AreEqual("WDTEN", dcf.Name);
+            Assert.AreEqual("WDT", dcf.Name);
             Assert.AreEqual(Address.Ptr32(0x300003), dcf.RegAddress);
             Assert.AreEqual(0, dcf.BitPos);
-            Assert.AreEqual(2, dcf.BitWidth);
+            Assert.AreEqual(1, dcf.BitWidth);
 
             dcf = PICMemoryDescriptor.GetDCRField("XINST");
             Assert.IsNotNull(dcf);

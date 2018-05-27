@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Linq;
 
+
 namespace Reko.Arch.MicrochipPIC.Common
 {
 
@@ -223,25 +224,57 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
 
         /// <summary>
-        /// Instantiates a banked data memory address operand.
+        /// Instantiates a banked data memory address operand for an unknown bank.
         /// </summary>
-        /// <param name="off">The offset in the memory bank.</param>
+        /// <param name="off">The offset in the unknown memory bank.</param>
         public PICOperandBankedMemory(ushort off) : base(PrimitiveType.Byte)
         {
+            BankSelector = Constant.Invalid;
             Offset = (byte)off;
             IsAccess = false;
         }
 
         /// <summary>
-        /// Instantiates a banked data memory address operand with access RAM capability.
+        /// Instantiates a banked data memory address operand for a known bank.
         /// </summary>
+        /// <param name="banksel">The data memory bank selector.</param>
         /// <param name="off">The offset in the memory bank.</param>
+        public PICOperandBankedMemory(Constant banksel, ushort off) : base(PrimitiveType.Byte)
+        {
+            BankSelector = banksel;
+            Offset = (byte)off;
+            IsAccess = false;
+        }
+
+        /// <summary>
+        /// Instantiates an unknown banked data memory address operand with access RAM capability.
+        /// </summary>
+        /// <param name="off">The offset in an unknown memory bank.</param>
         /// <param name="access">The Access RAM indicator.</param>
         public PICOperandBankedMemory(ushort off, ushort access) : base(PrimitiveType.Byte)
         {
+            BankSelector = Constant.Invalid;
             Offset = (byte)off;
             IsAccess = (access == 0);
         }
+
+        /// <summary>
+        /// Instantiates a banked data memory address operand with access RAM capability.
+        /// </summary>
+        /// <param name="banksel">The data memory bank selector.</param>
+        /// <param name="off">The offset in an unknown memory bank.</param>
+        /// <param name="access">The Access RAM indicator.</param>
+        public PICOperandBankedMemory(Constant banksel, ushort off, ushort access) : base(PrimitiveType.Byte)
+        {
+            BankSelector = banksel;
+            Offset = (byte)off;
+            IsAccess = (access == 0);
+        }
+
+        /// <summary>
+        /// Gets the data memory bank selector.
+        /// </summary>
+        public Constant BankSelector { get; }
 
         /// <summary>
         /// Gets the bank offset.
@@ -364,7 +397,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="fsr">The index register.</param>
         /// <param name="off">The offset relative to the FSR register content.</param>
         /// <param name="mode">The indexation mode with the FSR.</param>
-        public PICOperandFSRIndexation(ushort fsrnum, ushort off, FSRIndexedMode mode) : base(PrimitiveType.Byte)
+        public PICOperandFSRIndexation(ushort fsrnum, Constant off, FSRIndexedMode mode) : base(PrimitiveType.Byte)
         {
             FSRNum = (byte)fsrnum;
             Offset = off;
@@ -375,7 +408,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Instantiates an implicit FSR2 indexation mode operand.
         /// </summary>
         /// <param name="off">The offset relative to the FSR register content.</param>
-        public PICOperandFSRIndexation(ushort off) : base(PrimitiveType.Byte)
+        public PICOperandFSRIndexation(Constant off) : base(PrimitiveType.Byte)
         {
             FSRNum = 255;
             Offset = off;
@@ -390,7 +423,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the offset to the index register.
         /// </summary>
-        public ushort Offset { get; }
+        public Constant Offset { get; }
 
         /// <summary>
         /// Gets the indexation mode.
@@ -408,14 +441,18 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case FSRIndexedMode.None:
                     if (FSRNum == 255)
                     {
-                        writer.WriteString($"[0x{Offset:X2}]");
+                        writer.WriteString($"[{Offset:X2}]");
                         return;
                     }
-                    writer.WriteString($"FSR{FSRNum},0x{Offset:X2}");
+                    writer.WriteString($"FSR{FSRNum},{Offset:X2}");
                     return;
 
                 case FSRIndexedMode.FSR2INDEXED:
-                    writer.WriteString($"[0x{Offset:X2}]");
+                    var offs = Offset.ToByte();
+                    if (offs <= 31)
+                        writer.WriteString($"[0x{offs:X2}]");
+                    else
+                        writer.WriteString($"[{Offset:X2}]");
                     return;
                 case FSRIndexedMode.INDEXED:
                     writer.WriteString($"{Offset}[{FSRNum}]");

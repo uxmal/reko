@@ -293,22 +293,25 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         protected override (FSRIndexedMode indMode, Expression memPtr) GetMemFileAccess(MachineOperand opernd)
         {
-            if (opernd is PICOperandBankedMemory bnkmem && bnkmem.IsAccess)
+            if (opernd is PICOperandBankedMemory bankmemop && bankmemop.IsAccess)
             {
-                var offset = bnkmem.Offset;
-                if (PICMemoryDescriptor.ExecMode != PICExecMode.Traditional
-                    &&
-                    PICMemoryDescriptor.CanBeFSR2IndexAddress(offset))
-                    return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
-                var remapAddr = PICMemoryDescriptor.RemapDataAddress(offset);
-                if (PICRegisters.TryGetRegister(remapAddr, out var sfr))
+                var bankmem = PICMemoryDescriptor.CreateBankedAddr(bankmemop);
+                if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
                 {
-                    var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
-                    if (iop != FSRIndexedMode.None)
-                        return (iop, binder.EnsureRegister(fsrreg));
-                    return (iop, binder.EnsureRegister(sfr));
+                    return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, bankmem.BankOffset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
                 }
-                return (FSRIndexedMode.None, DataMem8(remapAddr));
+                if (PICMemoryDescriptor.TryGetAbsDataAddress(bankmem, out var absAddr))
+                {
+                    if (PICRegisters.TryGetRegister(absAddr, out var sfr))
+                    {
+                        var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
+                        if (iop != FSRIndexedMode.None)
+                            return (iop, binder.EnsureRegister(fsrreg));
+                        return (iop, binder.EnsureRegister(sfr));
+                    }
+                    return (FSRIndexedMode.None, DataMem8(absAddr));
+
+                }
             }
             return base.GetMemFileAccess(opernd);
         }

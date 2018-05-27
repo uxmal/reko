@@ -21,12 +21,14 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 using System;
 
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
+    using Reko.Core.Expressions;
 
     /// <summary>
     /// A factory class which implements the PIC18 memory descriptor based on the PIC XML definition.
@@ -34,9 +36,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
     internal class PIC18MemoryDescriptor : PICMemoryDescriptor
     {
 
-        public class PIC18MemoryMap : MemoryMap
+        protected class PIC18MemoryMap : MemoryMap
         {
-
             private const string accessRAMRegionID = "accessram";
             private const string accessSFRRegionID = "accesssfr";
             private const string extendGPRERegionID = "gpre";
@@ -44,7 +45,6 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             internal IMemoryRegion AccessRAM;
             internal IMemoryRegion AccessSFR;
             internal IMemoryRegion ExtendedGPRE;
-            internal static Address topAccessRAM = Address.Ptr32(0x100);
 
 
             /// <summary>
@@ -58,9 +58,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// <param name="thePIC">the PIC descriptor.</param>
             protected PIC18MemoryMap(PIC thePIC) : base(thePIC)
             {
-                AccessSFR = GetDataRegion(accessSFRRegionID) ?? throw new InvalidOperationException($"Missing '{accessSFRRegionID}' data memory region.");
-                AccessRAM = GetDataRegion(accessRAMRegionID) ?? throw new InvalidOperationException($"Missing '{accessRAMRegionID}' data memory region.");
-                ExtendedGPRE = GetDataRegion(extendGPRERegionID);
+                SetMaps();
             }
 
             /// <summary>
@@ -108,14 +106,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// The physical memory address.
             /// </returns>
             public override PICDataAddress RemapDataAddress(PICDataAddress lAddr)
-            {
-                if (!IsAccessRAMHigh(lAddr))
-                    return lAddr;
-                ulong uaddr = lAddr.ToLinear();
-                uaddr -= AccessRAM.LogicalByteAddrRange.End.ToLinear();
-                uaddr += AccessSFR.LogicalByteAddrRange.Begin.ToLinear();
-                return PICDataAddress.Ptr((uint)uaddr);
-            }
+                => throw new NotSupportedException("PIC18 has no remapped data region.");
 
             /// <summary>
             /// Gets or sets the PIC execution mode.
@@ -134,16 +125,16 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     {
                         execMode = value;
                         dataMap = new DataMemoryMap(PIC, this, traits, execMode);
+                        SetMaps();
                         switch (execMode)
                         {
                             case PICExecMode.Traditional:
-                                AccessRAM = GetDataRegion(accessRAMRegionID) ?? throw new InvalidOperationException($"Missing '{accessRAMRegionID}' data memory region.");
-                                ExtendedGPRE = null;
+                                if (AccessRAM == null)
+                                    throw new InvalidOperationException($"Missing '{accessRAMRegionID}' data memory region.");
                                 break;
-
                             case PICExecMode.Extended:
-                                AccessRAM = GetDataRegion(accessRAMRegionID);
-                                ExtendedGPRE = GetDataRegion(extendGPRERegionID) ?? throw new InvalidOperationException($"Missing '{extendGPRERegionID}' data memory region.");
+                                if (ExtendedGPRE == null)
+                                    throw new InvalidOperationException($"Missing '{extendGPRERegionID}' data memory region.");
                                 break;
                         }
                     }
@@ -152,34 +143,60 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             private PICExecMode execMode = PICExecMode.Traditional;
 
             /// <summary>
-            /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+            /// Query if memory banked address <paramref name="bAddr"/> can be a FSR2 index
             /// </summary>
-            /// <param name="cAddr">The memory address to check.</param>
-            /// <returns>
-            /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
-            /// </returns>
-            public override bool IsAccessRAMLow(PICDataAddress cAddr) => AccessRAM.Contains(cAddr);
+            /// <param name="bAddr">The memory banked address to check.</param>
+            public override bool CanBeFSR2IndexAddress(PICBankedAddress bAddr)
+                => (ExecMode == PICExecMode.Extended) && bAddr.IsAccessRAMAddr && ExtendedGPRE.Contains(bAddr.BankOffset);
 
             /// <summary>
-            /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
+            /// Creates a data memory banked address.
             /// </summary>
-            /// <param name="uAddr">The memory address to check.</param>
+            /// <param name="bankSel">The data memory bank selector.</param>
+            /// <param name="offset">The offset in the data memory bank.</param>
+            /// <param name="access">True if Access addressing mode.</param>
             /// <returns>
-            /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
+            /// The new banked address.
             /// </returns>
-            public override bool IsAccessRAMHigh(PICDataAddress uAddr)
+            public override PICBankedAddress CreateBankedAddr(Constant bankSel, Constant offset, bool access)
+                => new PIC18BankedAddress(bankSel, offset, access);
+
+            public override bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr)
             {
-                var addr = Address.Ptr32(uAddr.ToUInt32());
-                return (addr >= AccessRAM.LogicalByteAddrRange.End && addr < topAccessRAM);
+                if (bAddr == null)
+                    throw new ArgumentNullException(nameof(bAddr));
+                absAddr = null;
+                IMemoryRegion regn = null;
+                if (bAddr.IsAccessRAMAddr)
+                {
+                    if (AccessRAM?.Contains(bAddr.ToDataAddress(AccessRAM)) ?? false)
+                    {
+                        regn = AccessRAM;
+                    }
+                    else if (AccessSFR?.Contains(bAddr.ToDataAddress(AccessSFR)) ?? false)
+                    {
+                        regn = AccessSFR;
+                    }
+                }
+                else if (bAddr.BankSelect.IsValid)
+                {
+                    regn = GetDataRegionBySelector(bAddr.BankSelect);
+                }
+                if (regn != null)
+                {
+                    absAddr = bAddr.ToDataAddress(regn);
+                }
+                return absAddr != null;
             }
 
-            /// <summary>
-            /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
-            /// </summary>
-            /// <param name="uAddr">The memory address to check.</param>
-            public override bool CanBeFSR2IndexAddress(ushort uAddr) => IsAccessRAMLow(PICDataAddress.Ptr(uAddr));
-
             #endregion
+
+            private void SetMaps()
+            {
+                AccessSFR = GetDataRegionByName(accessSFRRegionID) ?? throw new InvalidOperationException($"Missing '{accessSFRRegionID}' data memory region.");
+                AccessRAM = GetDataRegionByName(accessRAMRegionID);
+                ExtendedGPRE = GetDataRegionByName(extendGPRERegionID);
+            }
 
         }
 

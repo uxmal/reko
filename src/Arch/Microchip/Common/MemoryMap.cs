@@ -216,13 +216,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected abstract class MemoryRegionBase : IMemoryRegion
         {
 
-            #region Members fields
-
             private readonly MemTraits traits;
 
-            #endregion
-
-            #region Constructor
 
             /// <summary>
             /// Constructor.
@@ -258,7 +253,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             }
 
-            #endregion
 
             #region IMemoryRegion interface implementation
 
@@ -320,8 +314,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             #endregion
 
-            #region Methods
-
             /// <summary>
             /// Checks whether the given memory fragment is contained in this memory region.
             /// </summary>
@@ -362,8 +354,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             public override string ToString()
                 => $"'{RegionName}': {SubtypeOfMemory}[0x{LogicalByteAddrRange.Begin:X}-0x{LogicalByteAddrRange.End:X}]";
 
-            #endregion
-
         }
 
         /// <summary>
@@ -397,10 +387,17 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <param name="sRegion">The region's name.</param>
             /// <param name="regnAddr">The region memory address range.</param>
             /// <param name="memSubDomain">The memory sub-domain code.</param>
-            public DataMemRegion(MemTraits traits, string sRegion, AddressRange regnAddr, MemorySubDomain memSubDomain)
+            /// <param name="bankSel">The memory bank selector.</param>
+            public DataMemRegion(MemTraits traits, string sRegion, AddressRange regnAddr, MemorySubDomain memSubDomain, Constant bankSel)
                 : base(traits, sRegion, regnAddr, MemoryDomain.Data, memSubDomain)
             {
+                BankSelector = bankSel;
             }
+
+            /// <summary>
+            /// Gets the data memory bank selector.
+            /// </summary>
+            public Constant BankSelector { get; }
 
         }
 
@@ -590,8 +587,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// The data memory region.
             /// </returns>
-            public IMemoryRegion GetRegion(string sRegionName)
-                => memRegions.Find((r) => r.RegionName == sRegionName);
+            public IMemoryRegion GetRegionByName(string sRegionName)
+                => memRegions.Find(r => r.RegionName == sRegionName);
 
             /// <summary>
             /// Gets a data memory region given a memory virtual address.
@@ -600,8 +597,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// The data memory region.
             /// </returns>
-            public IMemoryRegion GetRegion(Address virtAddr)
-                => memRegions.Find((regn) => regn.Contains(virtAddr));
+            public IMemoryRegion GetRegionByAddress(Address virtAddr)
+                => memRegions.Find(r => r.Contains(virtAddr));
 
             public virtual void AddRegion(T regn)
             {
@@ -617,6 +614,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         protected sealed class ProgMemoryMap : MemoryMapBase<ProgMemRegion>, IMemProgramRegionVisitor
         {
+
             /// <summary>
             /// Constructor.
             /// </summary>
@@ -725,8 +723,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected sealed class DataMemoryMap : MemoryMapBase<DataMemRegion>, IMemDataRegionVisitor, IMemDataSymbolVisitor
         {
 
-            #region Member fields
-
             public Address[] remapTable;
             internal IMemoryRegion Emulatorzone;
             internal ILinearRegion Linearsector;
@@ -738,9 +734,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private ushort currRelAddr;
 
-            #endregion
-
-            #region Constructors
 
             /// <summary>
             /// Constructor.
@@ -778,7 +771,16 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             }
 
-            #endregion
+            /// <summary>
+            /// Gets a data memory region by its bank selector.
+            /// </summary>
+            /// <param name="bankSel">The memory bank selector.</param>
+            /// <returns>
+            /// The region by selector.
+            /// </returns>
+            public IMemoryRegion GetRegionBySelector(Constant bankSel)
+                => memRegions.Find(r => r.BankSelector == bankSel);
+
 
             #region IMemDataRegionVisitor interface implementation
 
@@ -815,7 +817,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             void IMemDataRegionVisitor.Visit(SFRDataSector xmlRegion)
             {
                 var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.SFR);
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.SFR, Constant.UInt16((ushort)xmlRegion.Bank));
                 AddRegion(regn);
                 ResetAddrs(regn.LogicalByteAddrRange.Begin.ToUInt16());
                 isNMMR = false;
@@ -826,11 +828,11 @@ namespace Reko.Arch.MicrochipPIC.Common
             void IMemDataRegionVisitor.Visit(GPRDataSector xmlRegion)
             {
                 AddressRange memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr);
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.GPR);
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.GPR, Constant.UInt16((ushort)xmlRegion.Bank));
                 var idRef = xmlRegion.ShadowIDRef;
                 if (!string.IsNullOrWhiteSpace(idRef))
                 {
-                    var remap = GetRegion(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
+                    var remap = GetRegionByName(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
                     regn.PhysicalByteAddrRange = remap.PhysicalByteAddrRange;
                 }
                 AddRegion(regn);
@@ -843,11 +845,11 @@ namespace Reko.Arch.MicrochipPIC.Common
             void IMemDataRegionVisitor.Visit(DPRDataSector xmlRegion)
             {
                 AddressRange memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DPR);
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DPR, Constant.UInt16((ushort)xmlRegion.Bank));
                 var idRef = xmlRegion.ShadowIDRef;
                 if (!string.IsNullOrWhiteSpace(idRef))
                 {
-                    var remap = GetRegion(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
+                    var remap = GetRegionByName(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
                     regn.PhysicalByteAddrRange = remap.PhysicalByteAddrRange;
                 }
                 AddRegion(regn);
@@ -860,13 +862,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             void IMemDataRegionVisitor.Visit(EmulatorZone xmlRegion)
             {
                 var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                Emulatorzone = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.Emulator);
+                Emulatorzone = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.Emulator, Constant.Invalid);
                 map.AddSubDomain(MemorySubDomain.Emulator);
             }
 
             void IMemDataRegionVisitor.Visit(NMMRPlace xmlRegion)
             {
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, null, MemorySubDomain.NNMR);
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, null, MemorySubDomain.NNMR, Constant.Invalid);
                 AddRegion(regn);
                 isNMMR = true;
                 foreach (var nmmr in xmlRegion.SFRDefs.OfType<IMemDataSymbolAcceptor>()) nmmr.Accept(this);
@@ -925,7 +927,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             void IMemDataSymbolVisitor.Visit(Mirror xmlSymb)
             {
-                var regn = GetRegion(xmlSymb.RegionIDRef);
+                var regn = GetRegionByName(xmlSymb.RegionIDRef);
                 if (regn != null)
                 {
                     for (int i = 0; i < xmlSymb.NzSize; i++)
@@ -1052,7 +1054,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public IMemoryRegion GetDataRegion(string sRegionName) => dataMap.GetRegion(sRegionName);
+        public IMemoryRegion GetDataRegionByName(string sRegionName) => dataMap.GetRegionByName(sRegionName);
 
         /// <summary>
         /// Gets a data memory region given a memory virtual address.
@@ -1061,7 +1063,16 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public IMemoryRegion GetDataRegion(Address aVirtAddr) => dataMap.GetRegion(aVirtAddr);
+        public IMemoryRegion GetDataRegionByAddress(Address aVirtAddr) => dataMap.GetRegionByAddress(aVirtAddr);
+
+        /// <summary>
+        /// Gets a data memory region given a bank selector.
+        /// </summary>
+        /// <param name="bankSel">The data memory bank selector.</param>
+        /// <returns>
+        /// The data memory region or null.
+        /// </returns>
+        public IMemoryRegion GetDataRegionBySelector(Constant bankSel) => dataMap.GetRegionBySelector(bankSel);
 
         /// <summary>
         /// Gets a list of data regions.
@@ -1098,6 +1109,16 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public abstract PICDataAddress RemapDataAddress(PICDataAddress lAddr);
 
+        /// <summary>
+        /// Try to remap a data memory banked address.
+        /// </summary>
+        /// <param name="bAddr">The memory banked address to check.</param>
+        /// <param name="absAddr">[out] The absolute data memory address.</param>
+        /// <returns>
+        /// True if successfully translated banked address to absolute address.
+        /// </returns>
+        public abstract bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr);
+
         #endregion
 
         #region Program memory related
@@ -1109,8 +1130,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region or null.
         /// </returns>
-        public IMemoryRegion GetProgramRegion(string sRegionName)
-            => progMap.GetRegion(sRegionName);
+        public IMemoryRegion GetProgramRegionByName(string sRegionName)
+            => progMap.GetRegionByName(sRegionName);
 
         /// <summary>
         /// Gets a program memory region given a memory virtual address.
@@ -1119,8 +1140,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        public IMemoryRegion GetProgramRegion(Address aVirtAddr)
-            => progMap.GetRegion(aVirtAddr);
+        public IMemoryRegion GetProgramRegionByAddress(Address aVirtAddr)
+            => progMap.GetRegionByAddress(aVirtAddr);
 
         /// <summary>
         /// Gets a list of program regions.
@@ -1131,11 +1152,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Enumerates the program regions.
         /// </summary>
         public IEnumerable<IMemoryRegion> ProgramRegions => progMap.Regions;
-
-        public virtual PICProgAddress RemapProgramAddress(PICProgAddress lAddr)
-        {
-            return lAddr;
-        }
 
         #endregion
 
@@ -1156,28 +1172,18 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         /// <summary>
-        /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+        /// Query if memory address <paramref name="bAddr"/> can be a FSR2 index.
         /// </summary>
-        /// <param name="cAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
-        /// </returns>
-        public abstract bool IsAccessRAMLow(PICDataAddress cAddr);
+        /// <param name="bAddr">The memory address to check.</param>
+        public abstract bool CanBeFSR2IndexAddress(PICBankedAddress bAddr);
 
         /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
+        /// Creates a data memory banked address.
         /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
-        /// </returns>
-        public abstract bool IsAccessRAMHigh(PICDataAddress uAddr);
-
-        /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
-        /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        public abstract bool CanBeFSR2IndexAddress(ushort uAddr);
+        /// <param name="bankSel">The data memory bank selector.</param>
+        /// <param name="offset">The offset in the data memory bank.</param>
+        /// <param name="access">True if Access addressing mode.</param>
+        public abstract PICBankedAddress CreateBankedAddr(Constant bankSel, Constant offset, bool access);
 
         #endregion
 

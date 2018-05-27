@@ -177,69 +177,40 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC banked data memory address. Bank size depends on PIC family. Class must be inherited.
     /// </summary>
-    public abstract class PICBankedAddress : PICAddress
+    public abstract class PICBankedAddress
     {
 
-        public PICBankedAddress(byte bankSel, ushort bankOff, bool access = false)
-            : base(bankOff, PrimitiveType.Ptr16)
+        public PICBankedAddress(Constant bankSel, Constant bankOff, bool access = false)
         {
             BankSelect = bankSel;
-            IsAccessRAM = access;
+            BankOffset = bankOff;
+            IsAccessRAMAddr = access;
         }
 
         /// <summary>
         /// Gets the data memory bank selector value.
         /// </summary>
-        public byte BankSelect { get; }
+        public Constant BankSelect { get; }
+
+        /// <summary>
+        /// Gets the data memory bank selector value.
+        /// </summary>
+        public Constant BankOffset { get; }
 
         /// <summary>
         /// Gets a value indicating whether this address is an Access RAM address.
         /// </summary>
-        public bool IsAccessRAM { get; }
+        public bool IsAccessRAMAddr { get; }
 
         public abstract int BankWidth { get; }
 
-        // Overridden 'Address' properties/methods
-
-        public override ushort? Selector => BankSelect;
-
-        public override bool IsZero => false;
-
-        public override Constant ToConstant()
-            => Constant.UInt32(ToUInt32());
-
-        public override ushort ToUInt16()
-            => (ushort)(IsAccessRAM ? (ushort)Offset : (BankSelect << BankWidth) + (int)Offset);
-
-        public override uint ToUInt32()
-            => (uint)(IsAccessRAM ? (uint)Offset : (uint)((BankSelect << BankWidth) + (int)Offset));
-
-        public override ulong ToLinear()
-            => (IsAccessRAM ? Offset : (ulong)((BankSelect << BankWidth) + (int)Offset));
-
-        /// <summary>
-        /// Generates a symbolic name with given prefix and suffix.
-        /// </summary>
-        /// <param name="prefix">The prefix to use.</param>
-        /// <param name="suffix">The suffix to use.</param>
-        /// <returns>
-        /// The symbolic name as a string.
-        /// </returns>
-        public override string GenerateName(string prefix, string suffix)
-            => (IsAccessRAM ?
-                    $"{prefix}AccessRAM{Offset:X2}{suffix}" : 
-                    $"{prefix}Bank{BankSelect:X2}_{Offset:X2}{suffix}");
-
-        /// <summary>
-        /// Applies logical (not-bitwise) negation to the expression.
-        /// </summary>
-        public override Expression Invert()
-            => base.Invert();
-
-        public override Expression CloneExpression() => throw new NotImplementedException();
-        public override Address NewOffset(ulong offset) => throw new NotImplementedException();
-        public override Address Add(long offset) => throw new NotImplementedException();
-        public override Address Align(int alignment) => throw new NotImplementedException();
+        public PICDataAddress ToDataAddress(IMemoryRegion region)
+        {
+            if (region == null)
+                throw new ArgumentNullException(nameof(region));
+            var baseaddr = region.PhysicalByteAddrRange.Begin.ToUInt32() & ~((1 << BankWidth) - 1);
+            return new PICDataAddress((uint)(baseaddr + BankOffset.ToUInt32()));
+        }
 
     }
 
@@ -249,26 +220,14 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PIC16BankedAddress : PICBankedAddress
     {
 
-        public PIC16BankedAddress(byte bankSelect, ushort bankOffset)
+        public const int DataBankWidth = 8;
+
+        public PIC16BankedAddress(Constant bankSelect, Constant bankOffset)
             : base(bankSelect, bankOffset)
         {
         }
 
-        public override int BankWidth => 7;
-
-        // Overridden 'Address' methods
-
-        public override Address NewOffset(ulong offset)
-            => new PIC16BankedAddress(BankSelect, (ushort)offset);
-
-        public override Address Add(long offset)
-            => new PIC16BankedAddress(BankSelect, (ushort)((long)Offset + offset));
-
-        public override Expression CloneExpression()
-            => new PIC16BankedAddress(BankSelect, (ushort)Offset);
-
-        public override Address Align(int alignment)
-            => new PIC16BankedAddress(BankSelect, ((ushort)(alignment * (((int)Offset + alignment - 1) / alignment))));
+        public override int BankWidth => DataBankWidth;
 
     }
 
@@ -278,41 +237,22 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PIC18BankedAddress : PICBankedAddress
     {
 
+        public const int DataBankWidth = 8;
+
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="bankSelect">The bank select.</param>
         /// <param name="bankOffset">The bank offset.</param>
         /// <param name="access">(Optional) True if address is to Access RAM.</param>
-        public PIC18BankedAddress(byte bankSelect, ushort bankOffset, bool access = false)
+        public PIC18BankedAddress(Constant bankSelect, Constant bankOffset, bool access = false)
             : base(bankSelect, bankOffset, access)
         {
         }
 
-        /// <summary>
-        /// Constructor for an Access RAM address.
-        /// </summary>
-        /// <param name="bankOffset">The bank offset in the Access RAM bank.</param>
-        public PIC18BankedAddress(ushort bankOffset)
-            : this(0, bankOffset, true)
-        {
-        }
+        public override int BankWidth => DataBankWidth;
 
-        public override int BankWidth => 8;
 
-        // Overridden 'Address' methods
-
-        public override Address NewOffset(ulong offset)
-            => new PIC18BankedAddress(BankSelect, (ushort)offset, IsAccessRAM);
-
-        public override Address Add(long offset)
-            => new PIC18BankedAddress(BankSelect, (ushort)((long)Offset + offset), IsAccessRAM);
-
-        public override Expression CloneExpression()
-            => new PIC18BankedAddress(BankSelect, (ushort)Offset, IsAccessRAM);
-
-        public override Address Align(int alignment)
-            => new PIC18BankedAddress(BankSelect, ((ushort)(alignment * (((int)Offset + alignment - 1) / alignment))), IsAccessRAM);
 
     }
 

@@ -21,9 +21,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 
@@ -295,15 +295,15 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICInstructionMem2Mem(Opcode opcode, byte srcidx, uint dstaddr)
             : base(opcode,
-                   new PICOperandFSRIndexation(srcidx),
+                   new PICOperandFSRIndexation(Constant.Byte(srcidx)),
                    new PICOperandDataMemoryAddress(dstaddr))
         {
         }
 
         public PICInstructionMem2Mem(Opcode opcode, byte srcidx, byte dstidx)
             : base(opcode,
-                   new PICOperandFSRIndexation(srcidx),
-                   new PICOperandFSRIndexation(dstidx))
+                   new PICOperandFSRIndexation(Constant.Byte(srcidx)),
+                   new PICOperandFSRIndexation(Constant.Byte(dstidx)))
         {
         }
 
@@ -315,8 +315,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             switch (op1)
             {
                 case PICOperandDataMemoryAddress srcmem:
-                    var asrcmem = PICMemoryDescriptor.RemapDataAddress(srcmem.DataTarget);
-                    if (PICRegisters.TryGetRegister(asrcmem, out var srcreg))
+                    if (PICRegisters.TryGetRegister(srcmem.DataTarget, out var srcreg))
                     {
                         writer.WriteString($"{srcreg.Name}");
                     }
@@ -329,7 +328,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case PICOperandFSRIndexation srcidx:
                     if (srcidx.Mode != FSRIndexedMode.FSR2INDEXED)
                         throw new InvalidOperationException($"Invalid FSR2 indexing mode: {srcidx.Mode}.");
-                    writer.WriteString($"[0x{srcidx.Offset:X2}]");
+                    writer.WriteString($"[{srcidx.Offset:X2}]");
                     break;
             }
 
@@ -338,8 +337,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             switch (op2)
             {
                 case PICOperandDataMemoryAddress dstmem:
-                    var adstmem = PICMemoryDescriptor.RemapDataAddress(dstmem.DataTarget);
-                    if (PICRegisters.TryGetRegister(adstmem, out var dstreg))
+                    if (PICRegisters.TryGetRegister(dstmem.DataTarget, out var dstreg))
                     {
                         writer.WriteString($"{dstreg.Name}");
                     }
@@ -352,7 +350,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case PICOperandFSRIndexation dstidx:
                     if (dstidx.Mode != FSRIndexedMode.FSR2INDEXED)
                         throw new InvalidOperationException($"Invalid FSR2 indexing mode: {dstidx.Mode}.");
-                    writer.WriteString($"[0x{dstidx.Offset:X2}]");
+                    writer.WriteString($"[{dstidx.Offset:X2}]");
                     break;
             }
 
@@ -372,12 +370,14 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmem = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var memop = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
 
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
 
-            if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset, out var reg))
+            var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
+
+            if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem, out var reg))
             {
                 writer.WriteString($"{reg.Name}");
             }
@@ -471,28 +471,32 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmemacc = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var memop = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
 
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
 
-            if (bankmemacc.IsAccess)
+            var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
+
+            if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
             {
-                if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmemacc.Offset) && PICMemoryDescriptor.ExecMode == PICExecMode.Extended)
-                {
-                    writer.WriteString($"[0x{bankmemacc.Offset:X2}]");
-                    return;
-                }
-                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmemacc.Offset);
-                if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
-                {
-                    writer.WriteString($"{areg.Name},ACCESS");
-                    return;
-                }
-                writer.WriteString($"0x{bankmemacc.Offset:X2},ACCESS");
+                writer.WriteString($"[{bankmem.BankOffset:X2}]");
                 return;
             }
-            writer.WriteString($"0x{bankmemacc.Offset:X2}");
+
+            string sAcc = bankmem.IsAccessRAMAddr ? ",ACCESS" : "";
+            if (PICMemoryDescriptor.TryGetAbsDataAddress(bankmem, out var absaddr))
+            {
+                if (PICRegisters.TryGetRegister(absaddr, out var areg, 8))
+                {
+                    writer.WriteString($"{areg.Name}{sAcc}");
+                    return;
+                }
+                writer.WriteString($"0x{absaddr.Offset:X2}{sAcc}");
+                return;
+            }
+
+            writer.WriteString($"{bankmem.BankOffset:X2}{sAcc}");
         }
 
     }
@@ -509,35 +513,39 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmemacc = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var memop = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
             var bitno = op2 as PICOperandMemBitNo ?? throw new InvalidOperationException($"Invalid bit number operand: {op2}");
 
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
 
-            if (bankmemacc.IsAccess)
+            var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
+
+            if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
             {
-                if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmemacc.Offset) && PICMemoryDescriptor.ExecMode == PICExecMode.Extended)
-                {
-                    writer.WriteString($"[0x{bankmemacc.Offset:X2}],");
-                    bitno.Write(writer, options);
-                    return;
-                }
-                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmemacc.Offset);
-                if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
+                writer.WriteString($"[{bankmem.BankOffset:X2}],");
+                bitno.Write(writer, options);
+                return;
+            }
+
+            string sAcc = bankmem.IsAccessRAMAddr ? ",ACCESS" : "";
+            if (PICMemoryDescriptor.TryGetAbsDataAddress(bankmem, out var absaddr))
+            {
+                if (PICRegisters.TryGetRegister(absaddr, out var areg, 8))
                 {
                     if (PICRegisters.TryGetBitField(areg, out var fld, bitno.BitNo, 1))
                     {
-                        writer.WriteString($"{areg.Name},{fld.Name},ACCESS");
+                        writer.WriteString($"{areg.Name},{fld.Name}{sAcc}");
                         return;
                     }
-                    writer.WriteString($"{areg.Name},{bitno.BitNo},ACCESS");
+                    writer.WriteString($"{areg.Name},{bitno.BitNo}{sAcc}");
                     return;
                 }
-                writer.WriteString($"0x{bankmemacc.Offset:X2},{bitno.BitNo},ACCESS");
+                writer.WriteString($"0x{absaddr.Offset:X2},{bitno.BitNo}{sAcc}");
                 return;
             }
-            writer.WriteString($"0x{bankmemacc.Offset:X2},{bitno.BitNo}");
+
+            writer.WriteString($"{bankmem.BankOffset:X2},{bitno.BitNo}{sAcc}");
         }
 
     }
@@ -554,35 +562,40 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmemacc = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var memop = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
             var wregdest = op2 as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {op2}");
 
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
 
-            if (bankmemacc.IsAccess)
+            var bankmem = PICMemoryDescriptor.CreateBankedAddr(memop);
+
+            if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmem))
             {
-                if (PICMemoryDescriptor.CanBeFSR2IndexAddress(bankmemacc.Offset) && PICMemoryDescriptor.ExecMode == PICExecMode.Extended)
-                {
-                    writer.WriteString($"[0x{bankmemacc.Offset:X2}]");
-                    wregdest.Write(writer, options);
-                    return;
-                }
-                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmemacc.Offset);
-                if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
+                writer.WriteString($"[{bankmem.BankOffset:X2}]");
+                wregdest.Write(writer, options);
+                return;
+            }
+
+            string sAcc = bankmem.IsAccessRAMAddr ? ",ACCESS" : "";
+            if (PICMemoryDescriptor.TryGetAbsDataAddress(bankmem, out var absaddr))
+            {
+                if (PICRegisters.TryGetRegister(absaddr, out var areg, 8))
                 {
                     writer.WriteString($"{areg.Name}");
                     wregdest.Write(writer, options);
-                    writer.WriteString(",ACCESS");
+                    writer.WriteString(sAcc);
                     return;
                 }
-                writer.WriteString($"0x{bankmemacc.Offset:X2}");
+                writer.WriteString($"0x{absaddr.Offset:X2}");
                 wregdest.Write(writer, options);
-                writer.WriteString(",ACCESS");
+                writer.WriteString(sAcc);
                 return;
             }
-            writer.WriteString($"0x{bankmemacc.Offset:X2}");
+
+            writer.WriteString($"{bankmem.BankOffset:X2}");
             wregdest.Write(writer, options);
+            writer.WriteString(sAcc);
         }
 
     }
@@ -754,8 +767,8 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     public class PICInstructionWithFSR : PICInstruction
     {
-        public PICInstructionWithFSR(Opcode opcode, ushort fsrnum, short value, FSRIndexedMode mode)
-            : base(opcode, new PICOperandFSRIndexation(fsrnum, (ushort)value, mode))
+        public PICInstructionWithFSR(Opcode opcode, ushort fsrnum, sbyte value, FSRIndexedMode mode)
+            : base(opcode, new PICOperandFSRIndexation(fsrnum, Constant.SByte(value), mode))
         {
         }
 
@@ -770,15 +783,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             switch (fsridx.Mode)
             {
                 case FSRIndexedMode.INDEXED:
-                    var soff = fsridx.Offset.ExtractSignExtend(0, 6);
-                    if (soff >= 0)
-                    {
-                        writer.WriteString($"0x{soff:X2}[{fsrnum}]");
-                    }
-                    else
-                    {
-                        writer.WriteString($"-0x{-soff:X2}[{fsrnum}]");
-                    }
+                    writer.WriteString($"{fsridx.Offset}[{fsrnum}]");
                     break;
                 case FSRIndexedMode.POSTDEC:
                     writer.WriteString($"FSR{fsrnum}--");

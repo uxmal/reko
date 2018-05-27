@@ -97,8 +97,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             = new SortedList<string, PICRegisterBitFieldStorage>();
         private static SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage> registersByAddressAndWidth
             = new SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage>();
-        private static SortedList<PICAddress, PICRegisterStorage> alwayAccessibleRegisters
-            = new SortedList<PICAddress, PICRegisterStorage>();
+        private static SortedList<ushort, PICRegisterStorage> alwayAccessibleRegisters
+            = new SortedList<ushort, PICRegisterStorage>();
         private static HashSet<PICRegisterStorage> invalidDestRegisters
             = new HashSet<PICRegisterStorage>();
         private static Dictionary<PICRegisterStorage, (FSRIndexedMode iop, PICRegisterStorage fsr)> indirectParentRegisters
@@ -259,22 +259,22 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         /// <summary>
-        /// Attempts to get a register by its data memory address/bit-width.
+        /// Attempts to get a register by its absolute data memory address and bit-width.
         /// </summary>
-        /// <param name="regDataAddr">The data memory address of the register.</param>
+        /// <param name="absDataAddr">The absolute data memory address of the register.</param>
         /// <param name="reg">[out] The PIC register if it exists.</param>
         /// <param name="bitWidth">(Optional) The bit width of the register. If ommitted, look for the
         ///                        narrowest register.</param>
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="regDataAddr"/> is null.</exception>
-        public static bool TryGetRegister(PICDataAddress regDataAddr, out PICRegisterStorage reg, int bitWidth = 0)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="absDataAddr"/> is null.</exception>
+        public static bool TryGetRegister(PICAddress absDataAddr, out PICRegisterStorage reg, int bitWidth = 0)
         {
-            if (regDataAddr is null)
-                throw new ArgumentNullException(nameof(regDataAddr));
+            if (absDataAddr is null)
+                throw new ArgumentNullException(nameof(absDataAddr));
 
-            var key = new PICRegisterSizedUniqueAddress(regDataAddr, (bitWidth <= 0 ? 0 : bitWidth));
+            var key = new PICRegisterSizedUniqueAddress(absDataAddr, (bitWidth <= 0 ? 0 : bitWidth));
             lock (symTabLock)
             {
                 reg = registersByAddressAndWidth.FirstOrDefault(r => r.Key.Equals(key)).Value;
@@ -283,16 +283,16 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         /// <summary>
-        /// Attempts to get a register by its absolute address/bit-width.
+        /// Attempts to get a register by its 12/14 bit absolute address and bit-width.
         /// </summary>
-        /// <param name="regAbsAddr">The absolute address of the register.</param>
+        /// <param name="uDataAddr">The absolute address of the register as a 12/14 bit address.</param>
         /// <param name="bitWidth">(Optional) The bit width of the register. If ommitted, look for the
         ///                        narrowest register.</param>
         /// <returns>
-        /// The PIC register instance.
+        /// True if it succeeds, false if it fails.
         /// </returns>
-        public static bool TryGetRegister(ushort regAbsAddr, out PICRegisterStorage reg, int bitWidth = 0)
-            => TryGetRegister(PICDataAddress.Ptr(regAbsAddr), out reg, bitWidth);
+        public static bool TryGetRegister(ushort uDataAddr, out PICRegisterStorage reg, int bitWidth = 0)
+            => TryGetRegister(PICDataAddress.Ptr(uDataAddr), out reg, bitWidth);
 
         /// <summary>
         /// Gets a PIC register from its name.
@@ -603,12 +603,11 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if it succeeds, false if it fails.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="regAddr"/> is null.</exception>
-        public static bool TryGetAlwaysAccessibleRegister(PICDataAddress regAddr, out PICRegisterStorage reg)
+        public static bool TryGetAlwaysAccessibleRegister(PICBankedAddress regAddr, out PICRegisterStorage reg)
         {
-            if (regAddr is null)
+            if (regAddr == null)
                 throw new ArgumentNullException(nameof(regAddr));
-            var aAddr = PICMemoryDescriptor.RemapDataAddress(regAddr);
-            return alwayAccessibleRegisters.TryGetValue(aAddr, out reg);
+            return TryGetAlwaysAccessibleRegister(regAddr.BankOffset.ToUInt16(), out reg);
         }
 
         /// <summary>
@@ -619,8 +618,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        public static bool TryGetAlwaysAccessibleRegister(ushort regAbsAddr, out PICRegisterStorage reg)
-            => TryGetAlwaysAccessibleRegister(PICDataAddress.Ptr(regAbsAddr), out reg);
+        public static bool TryGetAlwaysAccessibleRegister(ushort regOffset, out PICRegisterStorage reg)
+            => alwayAccessibleRegisters.TryGetValue(regOffset, out reg);
+
 
         /// <summary>
         /// Gets the list of registers' values at Power-On-Reset.
@@ -702,7 +702,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             {
                 foreach (var reg in regs)
                 {
-                    alwayAccessibleRegisters.Add(reg.Traits.Address, reg);
+                    alwayAccessibleRegisters.Add((ushort)reg.Traits.Address.Offset, reg);
                 }
             }
         }

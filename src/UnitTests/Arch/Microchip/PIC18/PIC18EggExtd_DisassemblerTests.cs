@@ -61,11 +61,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void PIC18EggExtd_Disasm_ADDWF()
         {
+            VerifyDisasm("ADDWF\tEEADR,W,ACCESS", "", 0x24A9);
             VerifyDisasm("ADDWF\t[0x12],W", "", 0x2412);
             VerifyDisasm("ADDWF\t[0x5A],W", "", 0x245A);
-            VerifyDisasm("ADDWF\tEEADR,W,ACCESS", "", 0x24A9);
             VerifyDisasm("ADDWF\t[0x23],F", "", 0x2623);
-            VerifyDisasm("ADDWF\tUEP13,F,ACCESS", "", 0x2677);
+            VerifyDisasm("ADDWF\t0x77,F,ACCESS", "", 0x2677);
             VerifyDisasm("ADDWF\tLATB,F,ACCESS", "", 0x268A);
             VerifyDisasm("ADDWF\t0x03,W", "", 0x2503);
             VerifyDisasm("ADDWF\t0x5A,W", "", 0x255A);
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("ADDWFC\t[0x5A],W", "", 0x205A);
             VerifyDisasm("ADDWFC\tEEADR,W,ACCESS", "", 0x20A9);
             VerifyDisasm("ADDWFC\t[0x23],F", "", 0x2223);
-            VerifyDisasm("ADDWFC\tUEP13,F,ACCESS", "", 0x2277);
+            VerifyDisasm("ADDWFC\t0x77,F,ACCESS", "", 0x2277);
             VerifyDisasm("ADDWFC\tLATB,F,ACCESS", "", 0x228A);
             VerifyDisasm("ADDWFC\t0x23,W", "", 0x2123);
             VerifyDisasm("ADDWFC\t0x5A,W", "", 0x215A);
@@ -263,9 +263,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void PIC18EggExtd_Disasm_CLRF()
         {
+            VerifyDisasm("CLRF\tFSR0H,ACCESS", "", 0x6AEA);
             VerifyDisasm("CLRF\t[0x12]", "", 0x6A12);
             VerifyDisasm("CLRF\t[0x5A]", "", 0x6A5A);
-            VerifyDisasm("CLRF\tFSR0H,ACCESS", "", 0x6AEA);
             VerifyDisasm("CLRF\t0x03", "", 0x6B03);
             VerifyDisasm("CLRF\t0x5A", "", 0x6B5A);
             VerifyDisasm("CLRF\t0x8A", "", 0x6B8A);
@@ -284,7 +284,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("COMF\t[0x5A],W", "", 0x1C5A);
             VerifyDisasm("COMF\tLATA,W,ACCESS", "", 0x1C89);
             VerifyDisasm("COMF\t[0x23],F", "", 0x1E23);
-            VerifyDisasm("COMF\tUEP13,F,ACCESS", "", 0x1E77);
+            VerifyDisasm("COMF\t0x77,F,ACCESS", "", 0x1E77);
             VerifyDisasm("COMF\tLATB,F,ACCESS", "", 0x1E8A);
             VerifyDisasm("COMF\t0x23,W", "", 0x1D23);
             VerifyDisasm("COMF\t0x5A,W", "", 0x1D5A);
@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("DCFSNZ\t[0x5A],W", "", 0x4C5A);
             VerifyDisasm("DCFSNZ\tFSR0L,W,ACCESS", "", 0x4CE9);
             VerifyDisasm("DCFSNZ\t[0x23],F", "", 0x4E23);
-            VerifyDisasm("DCFSNZ\tUEP13,F,ACCESS", "", 0x4E77);
+            VerifyDisasm("DCFSNZ\t0x77,F,ACCESS", "", 0x4E77);
             VerifyDisasm("DCFSNZ\tFSR1L,F,ACCESS", "", 0x4EE1);
             VerifyDisasm("DCFSNZ\t0x03,W", "", 0x4D03);
             VerifyDisasm("DCFSNZ\t0x5A,W", "", 0x4D5A);
@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("DECFSZ\t[0x5A],W", "", 0x2C5A);
             VerifyDisasm("DECFSZ\tFSR0H,W,ACCESS", "", 0x2CEA);
             VerifyDisasm("DECFSZ\t[0x23],F", "", 0x2E23);
-            VerifyDisasm("DECFSZ\tUEP13,F,ACCESS", "", 0x2E77);
+            VerifyDisasm("DECFSZ\t0x77,F,ACCESS", "", 0x2E77);
             VerifyDisasm("DECFSZ\tFSR1L,F,ACCESS", "", 0x2EE1);
             VerifyDisasm("DECFSZ\t0x03,W", "", 0x2D03);
             VerifyDisasm("DECFSZ\t0x5A,W", "", 0x2D5A);
@@ -411,7 +411,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("INCFSZ\t[0x5A],W", "", 0x3C5A);
             VerifyDisasm("INCFSZ\tFSR0L,W,ACCESS", "", 0x3CE9);
             VerifyDisasm("INCFSZ\t[0x23],F", "", 0x3E23);
-            VerifyDisasm("INCFSZ\tUEP13,F,ACCESS", "", 0x3E77);
+            VerifyDisasm("INCFSZ\t0x77,F,ACCESS", "", 0x3E77);
             VerifyDisasm("INCFSZ\tFSR1L,F,ACCESS", "", 0x3EE1);
             VerifyDisasm("INCFSZ\t0x03,W", "", 0x3D03);
             VerifyDisasm("INCFSZ\t0x5A,W", "", 0x3D5A);
@@ -428,7 +428,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("INFSNZ\t[0x5A],W", "", 0x485A);
             VerifyDisasm("INFSNZ\tFSR0H,W,ACCESS", "", 0x48EA);
             VerifyDisasm("INFSNZ\t[0x23],F", "", 0x4A23);
-            VerifyDisasm("INFSNZ\tUEP13,F,ACCESS", "", 0x4A77);
+            VerifyDisasm("INFSNZ\t0x77,F,ACCESS", "", 0x4A77);
             VerifyDisasm("INFSNZ\tFSR1L,F,ACCESS", "", 0x4AE1);
             VerifyDisasm("INFSNZ\t0x03,W", "", 0x4903);
             VerifyDisasm("INFSNZ\t0x5A,W", "", 0x495A);
@@ -470,7 +470,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("MOVF\t[0x5A],W", "", 0x505A);
             VerifyDisasm("MOVF\tFSR0L,W,ACCESS", "", 0x50E9);
             VerifyDisasm("MOVF\t[0x23],F", "", 0x5223);
-            VerifyDisasm("MOVF\tUEP13,F,ACCESS", "", 0x5277);
+            VerifyDisasm("MOVF\t0x77,F,ACCESS", "", 0x5277);
             VerifyDisasm("MOVF\tFSR1L,F,ACCESS", "", 0x52E1);
             VerifyDisasm("MOVF\t0x03,W", "", 0x5103);
             VerifyDisasm("MOVF\t0x5A,W", "", 0x515A);
@@ -615,7 +615,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("RLCF\t[0x5A],W", "", 0x345A);
             VerifyDisasm("RLCF\tFSR0H,W,ACCESS", "", 0x34EA);
             VerifyDisasm("RLCF\t[0x23],F", "", 0x3623);
-            VerifyDisasm("RLCF\tUEP13,F,ACCESS", "", 0x3677);
+            VerifyDisasm("RLCF\t0x77,F,ACCESS", "", 0x3677);
             VerifyDisasm("RLCF\tFSR1L,F,ACCESS", "", 0x36E1);
             VerifyDisasm("RLCF\t0x03,W", "", 0x3503);
             VerifyDisasm("RLCF\t0x5A,W", "", 0x355A);
@@ -632,7 +632,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("RLNCF\t[0x5A],W", "", 0x445A);
             VerifyDisasm("RLNCF\tFSR0H,W,ACCESS", "", 0x44EA);
             VerifyDisasm("RLNCF\t[0x23],F", "", 0x4623);
-            VerifyDisasm("RLNCF\tUEP13,F,ACCESS", "", 0x4677);
+            VerifyDisasm("RLNCF\t0x77,F,ACCESS", "", 0x4677);
             VerifyDisasm("RLNCF\tFSR1L,F,ACCESS", "", 0x46E1);
             VerifyDisasm("RLNCF\t0x03,W", "", 0x4503);
             VerifyDisasm("RLNCF\t0x5A,W", "", 0x455A);
@@ -649,7 +649,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("RRCF\t[0x5A],W", "", 0x305A);
             VerifyDisasm("RRCF\tFSR0L,W,ACCESS", "", 0x30E9);
             VerifyDisasm("RRCF\t[0x23],F", "", 0x3223);
-            VerifyDisasm("RRCF\tUEP13,F,ACCESS", "", 0x3277);
+            VerifyDisasm("RRCF\t0x77,F,ACCESS", "", 0x3277);
             VerifyDisasm("RRCF\tFSR1L,F,ACCESS", "", 0x32E1);
             VerifyDisasm("RRCF\t0x03,W", "", 0x3103);
             VerifyDisasm("RRCF\t0x5A,W", "", 0x315A);
@@ -666,7 +666,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("RRNCF\t[0x5A],W", "", 0x405A);
             VerifyDisasm("RRNCF\tFSR0L,W,ACCESS", "", 0x40E9);
             VerifyDisasm("RRNCF\t[0x23],F", "", 0x4223);
-            VerifyDisasm("RRNCF\tUEP13,F,ACCESS", "", 0x4277);
+            VerifyDisasm("RRNCF\t0x77,F,ACCESS", "", 0x4277);
             VerifyDisasm("RRNCF\tFSR1L,F,ACCESS", "", 0x42E1);
             VerifyDisasm("RRNCF\t0x03,W", "", 0x4103);
             VerifyDisasm("RRNCF\t0x5A,W", "", 0x415A);
@@ -701,7 +701,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("SUBFWB\t[0x5A],W", "", 0x545A);
             VerifyDisasm("SUBFWB\tFSR0H,W,ACCESS", "", 0x54EA);
             VerifyDisasm("SUBFWB\t[0x23],F", "", 0x5623);
-            VerifyDisasm("SUBFWB\tUEP13,F,ACCESS", "", 0x5677);
+            VerifyDisasm("SUBFWB\t0x77,F,ACCESS", "", 0x5677);
             VerifyDisasm("SUBFWB\tFSR1L,F,ACCESS", "", 0x56E1);
             VerifyDisasm("SUBFWB\t0x03,W", "", 0x5503);
             VerifyDisasm("SUBFWB\t0x5A,W", "", 0x555A);
@@ -725,7 +725,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("SUBWF\t[0x5A],W", "", 0x5C5A);
             VerifyDisasm("SUBWF\tFSR0L,W,ACCESS", "", 0x5CE9);
             VerifyDisasm("SUBWF\t[0x23],F", "", 0x5E23);
-            VerifyDisasm("SUBWF\tUEP13,F,ACCESS", "", 0x5E77);
+            VerifyDisasm("SUBWF\t0x77,F,ACCESS", "", 0x5E77);
             VerifyDisasm("SUBWF\tFSR1L,F,ACCESS", "", 0x5EE1);
             VerifyDisasm("SUBWF\t0x03,W", "", 0x5D03);
             VerifyDisasm("SUBWF\t0x5A,W", "", 0x5D5A);
@@ -742,7 +742,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("SUBWFB\t[0x5A],W", "", 0x585A);
             VerifyDisasm("SUBWFB\tFSR0H,W,ACCESS", "", 0x58EA);
             VerifyDisasm("SUBWFB\t[0x23],F", "", 0x5A23);
-            VerifyDisasm("SUBWFB\tUEP13,F,ACCESS", "", 0x5A77);
+            VerifyDisasm("SUBWFB\t0x77,F,ACCESS", "", 0x5A77);
             VerifyDisasm("SUBWFB\tFSR1L,F,ACCESS", "", 0x5AE1);
             VerifyDisasm("SUBWFB\t0x03,W", "", 0x5903);
             VerifyDisasm("SUBWFB\t0x5A,W", "", 0x595A);
@@ -759,7 +759,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("SWAPF\t[0x5A],W", "", 0x385A);
             VerifyDisasm("SWAPF\tFSR0L,W,ACCESS", "", 0x38E9);
             VerifyDisasm("SWAPF\t[0x23],F", "", 0x3A23);
-            VerifyDisasm("SWAPF\tUEP13,F,ACCESS", "", 0x3A77);
+            VerifyDisasm("SWAPF\t0x77,F,ACCESS", "", 0x3A77);
             VerifyDisasm("SWAPF\tFSR1L,F,ACCESS", "", 0x3AE1);
             VerifyDisasm("SWAPF\t0x03,W", "", 0x3903);
             VerifyDisasm("SWAPF\t0x5A,W", "", 0x395A);

@@ -20,9 +20,10 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 using System;
-using Reko.Core;
 using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.Common
@@ -60,13 +61,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// A value from the <see cref="InstructionSetID"/> enumeration.
         /// </value>
-        public static InstructionSetID InstructionSetID => memoryMap?.InstructionSetID ?? InstructionSetID.UNDEFINED;
+        public static InstructionSetID InstructionSetID => memoryMap.InstructionSetID;
 
         /// <summary>
         /// Query if the memory mapper has a region of given sub-domain type.
         /// </summary>
         /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/> enumeration.</param>
-        public static bool HasSubDomain(MemorySubDomain subdom) => memoryMap?.HasSubDomain(subdom) ?? false;
+        public static bool HasSubDomain(MemorySubDomain subdom)
+            => memoryMap.HasSubDomain(subdom);
 
         /// <summary>
         /// Memory sub-domain location and word sizes.
@@ -76,7 +78,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A Tuple containing the location size and wordsize. Returns (0,0) if the subdomain does not exist.
         /// </returns>
-        public static (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom) => memoryMap?.SubDomainSizes(subdom)?? (0,0);
+        public static (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom)
+            => memoryMap?.SubDomainSizes(subdom)?? (0,0);
 
         /// <summary>
         /// Gets a data memory region given its name ID.
@@ -85,7 +88,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public static IMemoryRegion GetDataRegion(string sregionName) => memoryMap?.GetDataRegion(sregionName);
+        public static IMemoryRegion GetDataRegionByName(string sregionName)
+            => memoryMap.GetDataRegionByName(sregionName);
 
         /// <summary>
         /// Gets a data memory region given a memory byte address.
@@ -94,35 +98,28 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public static IMemoryRegion GetDataRegion(Address aByteAddr) => memoryMap?.GetDataRegion(aByteAddr);
+        public static IMemoryRegion GetDataRegionByAddress(Address aByteAddr)
+            => memoryMap.GetDataRegionByAddress(aByteAddr);
 
         /// <summary>
-        /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+        /// Gets data region by bank selector.
         /// </summary>
-        /// <param name="cAddr">The memory address to check.</param>
+        /// <param name="bankSel">The data memory bank selector.</param>
         /// <returns>
-        /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
+        /// The data region by selector.
         /// </returns>
-        public static bool IsAccessRAMLow(PICDataAddress cAddr) => memoryMap?.IsAccessRAMLow(cAddr) ?? false;
-
-        /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
-        /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
-        /// </returns>
-        static bool IsAccessRAMHigh(PICDataAddress uAddr) => memoryMap?.IsAccessRAMHigh(uAddr) ?? false;
+        public static IMemoryRegion GetDataRegionBySelector(Constant bankSel)
+            => memoryMap.GetDataRegionBySelector(bankSel);
 
         /// <summary>
         /// Get a list of data regions.
         /// </summary>
-        public static IReadOnlyList<IMemoryRegion> DataRegionsList => memoryMap?.DataRegionsList;
+        public static IReadOnlyList<IMemoryRegion> DataRegionsList => memoryMap.DataRegionsList;
 
         /// <summary>
         /// Enumerates the data regions.
         /// </summary>
-        public static IEnumerable<IMemoryRegion> DataRegions => memoryMap?.DataRegions;
+        public static IEnumerable<IMemoryRegion> DataRegions => memoryMap.DataRegions;
 
         /// <summary>
         /// Gets the data memory Emulator zone.
@@ -131,7 +128,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The emulator zone/region.
         /// </value>
-        public static IMemoryRegion EmulatorZone => memoryMap?.EmulatorZone;
+        public static IMemoryRegion EmulatorZone => memoryMap.EmulatorZone;
 
         /// <summary>
         /// Gets the Linear Data Memory definition.
@@ -140,7 +137,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The Linear Data Memory region.
         /// </value>
-        public static ILinearRegion LinearSector => memoryMap?.LinearSector;
+        public static ILinearRegion LinearSector => memoryMap.LinearSector;
 
         /// <summary>
         /// Translates an Access Bank address to actual data memory address.
@@ -150,7 +147,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static PICDataAddress RemapDataAddress(PICDataAddress addr) => memoryMap?.RemapDataAddress(addr);
+        public static PICDataAddress RemapDataAddress(PICDataAddress addr)
+            => memoryMap.RemapDataAddress(addr);
 
         /// <summary>
         /// Translates an Access Bank address to actual data memory address.
@@ -160,13 +158,42 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static PICDataAddress RemapDataAddress(uint uAddr) => RemapDataAddress(PICDataAddress.Ptr(uAddr));
+        public static PICDataAddress RemapDataAddress(uint uAddr)
+            => RemapDataAddress(PICDataAddress.Ptr(uAddr));
 
         /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
+        /// Query if memory banked address <paramref name="bAddr"/> can be a FSR2 index
         /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        public static bool CanBeFSR2IndexAddress(ushort uAddr) => memoryMap?.CanBeFSR2IndexAddress(uAddr) ?? false;
+        /// <param name="bAddr">The memory banked address to check.</param>
+        public static bool CanBeFSR2IndexAddress(PICBankedAddress bAddr)
+            => memoryMap.CanBeFSR2IndexAddress(bAddr);
+
+        /// <summary>
+        /// Try to remap a data memory banked address.
+        /// </summary>
+        /// <param name="bAddr">The memory banked address to check.</param>
+        /// <param name="absAddr">[out] The absolute data memory address.</param>
+        /// <returns>
+        /// True if successfully translated banked address to absolute address.
+        /// </returns>
+        public static bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr)
+            => memoryMap.TryGetAbsDataAddress(bAddr, out absAddr);
+
+        /// <summary>
+        /// Creates a data memory banked address.
+        /// </summary>
+        /// <param name="bankSel">The data memory bank selector.</param>
+        /// <param name="offset">The offset in the data memory bank.</param>
+        /// <param name="access">True if Access addressing mode.</param>
+        public static PICBankedAddress CreateBankedAddr(Constant bankSel, Constant offset, bool access)
+            => memoryMap.CreateBankedAddr(bankSel, offset, access);
+
+        /// <summary>
+        /// Creates a data memory banked address.
+        /// </summary>
+        /// <param name="memop">The data memory banked operand.</param>
+        public static PICBankedAddress CreateBankedAddr(PICOperandBankedMemory memop)
+            => memoryMap.CreateBankedAddr(memop.BankSelector, Constant.Byte(memop.Offset), memop.IsAccess);
 
         /// <summary>
         /// Gets a program memory region given its name ID.
@@ -175,7 +202,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        public static IMemoryRegion GetProgramRegion(string sregionName) => memoryMap?.GetProgramRegion(sregionName);
+        public static IMemoryRegion GetProgramRegion(string sregionName)
+            => memoryMap.GetProgramRegionByName(sregionName);
 
         /// <summary>
         /// Gets a program memory region given a memory virtual byte address.
@@ -184,26 +212,18 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        public static IMemoryRegion GetProgramRegion(Address aVirtByteAddr) => memoryMap?.GetProgramRegion(aVirtByteAddr);
+        public static IMemoryRegion GetProgramRegion(Address aVirtByteAddr)
+            => memoryMap.GetProgramRegionByAddress(aVirtByteAddr);
 
         /// <summary>
         /// Gets a list of program regions.
         /// </summary>
-        public static IReadOnlyList<IMemoryRegion> ProgramRegionsList => memoryMap?.ProgramRegionsList;
+        public static IReadOnlyList<IMemoryRegion> ProgramRegionsList => memoryMap.ProgramRegionsList;
 
         /// <summary>
         /// Enumerates the program regions.
         /// </summary>
-        public static IEnumerable<IMemoryRegion> ProgramRegions => memoryMap?.ProgramRegions;
-
-        /// <summary>
-        /// Remap a program memory address.
-        /// </summary>
-        /// <param name="lAddr">The logical memory address.</param>
-        /// <returns>
-        /// The physical memory address.
-        /// </returns>
-        public static PICProgAddress RemapProgramAddress(PICProgAddress lAddr) => memoryMap?.RemapProgramAddress(lAddr);
+        public static IEnumerable<IMemoryRegion> ProgramRegions => memoryMap.ProgramRegions;
 
         /// <summary>
         /// Gets a Device Configuration Register by its name.
@@ -212,7 +232,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public static PICDevConfigRegister GetDCR(string name) => deviceConfigDefinitions?.GetDCR(name);
+        public static PICDevConfigRegister GetDCR(string name)
+            => deviceConfigDefinitions.GetDCR(name);
 
         /// <summary>
         /// Gets a Device Configuration Register by its memory address.
@@ -221,7 +242,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public static PICDevConfigRegister GetDCR(Address addr) => deviceConfigDefinitions?.GetDCR(addr);
+        public static PICDevConfigRegister GetDCR(Address addr)
+            => deviceConfigDefinitions.GetDCR(addr);
 
         /// <summary>
         /// Gets a Device Configuration Field by its name.
@@ -230,7 +252,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="DevConfigField"/> instance or null.
         /// </returns>
-        public static DevConfigField GetDCRField(string name) => deviceConfigDefinitions?.GetDCRField(name);
+        public static DevConfigField GetDCRField(string name)
+            => deviceConfigDefinitions.GetDCRField(name);
 
         /// <summary>
         /// Renders the Device Configuration Register state given its value.
@@ -240,7 +263,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public static string RenderDeviceConfigRegister(PICDevConfigRegister dcr, uint value) => deviceConfigDefinitions.Render(dcr, value);
+        public static string RenderDeviceConfigRegister(PICDevConfigRegister dcr, uint value)
+            => deviceConfigDefinitions.Render(dcr, value);
 
         /// <summary>
         /// Renders the Device Configuration Register state at given address for given value.
@@ -250,7 +274,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public static string RenderDeviceConfigRegister(Address addr, uint value) => deviceConfigDefinitions?.Render(addr, value);
+        public static string RenderDeviceConfigRegister(Address addr, uint value)
+            => deviceConfigDefinitions.Render(addr, value);
 
 
         protected void Reset()

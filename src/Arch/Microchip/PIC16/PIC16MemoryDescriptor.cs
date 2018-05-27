@@ -26,6 +26,7 @@ using System;
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
+    using Reko.Core.Expressions;
 
     internal class PIC16MemoryDescriptor : PICMemoryDescriptor
     {
@@ -98,9 +99,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
             public override PICDataAddress RemapDataAddress(PICDataAddress lAddr)
             {
-                if (lAddr == null)
-                    throw new ArgumentNullException(nameof(lAddr));
-                ushort uAddr = lAddr.ToUInt16();
+                ushort uAddr = lAddr?.ToUInt16() ?? throw new ArgumentNullException(nameof(lAddr));
                 if (uAddr >= dataMap.remapTable.Length)
                     return lAddr;
                 var mAddr = dataMap.remapTable[uAddr];
@@ -108,28 +107,43 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             }
 
             /// <summary>
-            /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+            /// Query if memory banked address <paramref name="bAddr"/> can be a FSR2 index.
             /// </summary>
-            /// <param name="cAddr">The memory address to check.</param>
-            /// <returns>
-            /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
-            /// </returns>
-            public override bool IsAccessRAMLow(PICDataAddress cAddr) => false;
+            /// <param name="bAddr">The memory banked address to check.</param>
+            public override bool CanBeFSR2IndexAddress(PICBankedAddress bAddr) => false;
 
             /// <summary>
-            /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
+            /// Creates a data memory banked address.
             /// </summary>
-            /// <param name="uAddr">The memory address to check.</param>
+            /// <param name="bankSel">The data memory bank selector.</param>
+            /// <param name="offset">The offset in the data memory bank.</param>
+            /// <param name="access">Ignored.</param>
             /// <returns>
-            /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
+            /// The new banked address.
             /// </returns>
-            public override bool IsAccessRAMHigh(PICDataAddress uAddr) => false;
+            public override PICBankedAddress CreateBankedAddr(Constant bankSel, Constant offset, bool access)
+                => new PIC16BankedAddress(bankSel, offset);
 
-            /// <summary>
-            /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
-            /// </summary>
-            /// <param name="uAddr">The memory address to check.</param>
-            public override bool CanBeFSR2IndexAddress(ushort uAddr) => false;
+            public override bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr)
+            {
+                if (bAddr == null)
+                    throw new ArgumentNullException(nameof(bAddr));
+                absAddr = null;
+                IMemoryRegion regn = null;
+                if (PICRegisters.TryGetAlwaysAccessibleRegister(bAddr, out var reg))
+                {
+                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg.Traits.RegAddress.Addr);
+                }
+                else if (bAddr.BankSelect.IsValid)
+                {
+                    regn = GetDataRegionBySelector(bAddr.BankSelect);
+                }
+                if (regn != null)
+                {
+                    absAddr = bAddr.ToDataAddress(regn);
+                }
+                return absAddr != null;
+            }
 
             #endregion
 

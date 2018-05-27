@@ -223,7 +223,14 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                     m.Assign(Wreg, DataMem8(fsrreg));
                     break;
                 case FSRIndexedMode.INDEXED:
-                    m.Assign(Wreg, DataMem8(m.IAdd(fsrreg, fsridx.Offset)));
+                    if (fsridx.Offset.IsNegative)
+                    {
+                        m.Assign(Wreg, DataMem8(m.ISub(fsrreg, fsridx.Offset.Negate())));
+                    }
+                    else
+                    {
+                        m.Assign(Wreg, DataMem8(m.IAdd(fsrreg, fsridx.Offset)));
+                    }
                     break;
                 default:
                     throw new InvalidOperationException($"Invalid FSR-indexed mode: {fsridx.Mode}");
@@ -280,7 +287,14 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                     m.Assign(DataMem8(fsrreg), Wreg);
                     break;
                 case FSRIndexedMode.INDEXED:
-                    m.Assign(DataMem8(m.IAdd(fsrreg, fsridx.Offset)), Wreg);
+                    if (fsridx.Offset.IsNegative)
+                    {
+                        m.Assign(DataMem8(m.ISub(fsrreg, fsridx.Offset.Negate())), Wreg);
+                    }
+                    else
+                    {
+                        m.Assign(DataMem8(m.IAdd(fsrreg, fsridx.Offset)), Wreg);
+                    }
                     break;
                 default:
                     throw new InvalidOperationException($"Invalid FSR-indexed mode: {fsridx.Mode}");

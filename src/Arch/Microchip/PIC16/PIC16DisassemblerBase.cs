@@ -313,7 +313,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         }
 
         /// <summary>
-        /// Instruction in the form <code>'....-....-.nkk-kkkk'</code> (MOVIW k[n], MOVWI k[n])
+        /// Instruction in the form <code>'....-....-.nkk-kkkk'</code> (MOVIW k[n], MOVWI k[n]) with -32 <= k <= 31
         /// </summary>
         protected class FSRIndexedOpRec : Decoder
         {
