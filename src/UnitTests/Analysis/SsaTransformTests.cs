@@ -3129,5 +3129,72 @@ proc_exit:
             #endregion
             AssertProcedureCode(expected);
         }
+
+        [Test]
+        public void SsaFPUBlockStateAfterTrivialPhiRemoving()
+        {
+            Given_Procedure("proc", m =>
+            {
+                var rLocal = m.Frame.EnsureFpuStackVariable(
+                    -8,
+                    PrimitiveType.Real32);
+                var a = m.Reg32("a", 0);
+
+                m.Label("init");
+                m.Assign(rLocal, a);
+                m.Assign(a, m.Mem32(m.Word32(0x100)));
+                m.Goto("looptest");
+
+                m.Label("again");
+                m.BranchIf(m.Ne(a, 0), "looptest");
+
+                m.Label("failed");
+                m.Assign(a, 0xFF);
+                m.Goto("exit");
+
+                m.Label("looptest");
+                m.Assign(a, m.IAdd(a, m.Mem32(a)));
+                m.BranchIf(m.Ne(a, 0x20), "again");
+
+                m.Label("done");
+                m.Assign(a, rLocal);
+
+                m.Label("exit");
+                m.MStore(m.Word32(0x300), rLocal);
+                m.Return();
+            });
+
+            RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def a
+	def Mem0
+	goto init
+again:
+	branch a_7 != 0x00000000 looptest
+	goto failed
+done:
+	a_10 = rLoc8_2
+exit:
+	Mem12[0x00000300:real32] = rLoc8_2
+	return
+failed:
+	a_8 = 0x000000FF
+	goto exit
+init:
+	rLoc8_2 = a
+	a_4 = Mem0[0x00000100:word32]
+looptest:
+	a_5 = PHI(a_4, a_7)
+	a_7 = a_5 + Mem0[a_5:word32]
+	branch a_7 != 0x00000020 again
+	goto done
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
     }
 }
