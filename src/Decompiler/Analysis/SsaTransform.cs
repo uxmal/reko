@@ -1372,6 +1372,13 @@ namespace Reko.Analysis
                             de.Value.SsaId = idNew;
                         }
                     }
+                    foreach (var de in bs.currentFpuDef.ToList())
+                    {
+                        if (de.Value == sidOld)
+                        {
+                            bs.currentFpuDef[de.Key] = idNew;
+                        }
+                    }
                 }
             }
         }
