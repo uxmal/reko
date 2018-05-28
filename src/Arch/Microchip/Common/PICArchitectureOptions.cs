@@ -34,13 +34,14 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICArchitectureOptions() { }
 
-        public PICArchitectureOptions(IPICProcessorModel processorMode, PICExecMode execMode)
+        public PICArchitectureOptions(IPICProcessorModel processorMode, PICExecMode execMode, string binary)
         {
             ProcessorModel = processorMode ?? throw new ArgumentNullException(nameof(processorMode));
             PICExecutionMode = execMode;
+            BinaryLoadFormat = binary;
         }
 
-        public PICArchitectureOptions(string picName, PICExecMode execMode) : this(PICProcessorModel.GetModel(picName), execMode)
+        public PICArchitectureOptions(string picName, PICExecMode execMode, string binary = "raw") : this(PICProcessorModel.GetModel(picName), execMode, binary)
         {
         }
 
@@ -50,6 +51,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new ArgumentNullException(nameof(picker));
             ProcessorModel = PICProcessorModel.GetModel(picker.PICName);
             PICExecutionMode = (picker.AllowExtended ? PICExecMode.Extended : PICExecMode.Traditional);
+            BinaryLoadFormat = picker.BinaryFormat;
         }
 
         /// <summary>
@@ -61,6 +63,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Gets or sets the PIC instruction set execution mode.
         /// </summary>
         public PICExecMode PICExecutionMode { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the binary file format used for loading the image.
+        /// </summary>
+        public string BinaryLoadFormat { get; set; }
 
         public override string ToString() => $"{ProcessorModel.PICName},{PICExecutionMode}";
 
@@ -92,6 +100,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// This is a hint in case the configuration fuses are not part of the binary image.
         /// </summary>
         public bool AllowExtended { get; set; }
+
+        public string BinaryFormat { get; set; } = "raw";
 
         public override string ToString() => $"{PICName}{(AllowExtended ? ",Extended" : "")}";
 

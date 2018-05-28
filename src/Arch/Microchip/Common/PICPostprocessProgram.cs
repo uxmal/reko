@@ -35,7 +35,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         private readonly PIC pic;
         private readonly SegmentMap newMap;
 
-        private Dictionary<IMemoryRegion, int> regionsCounter;
+        private Dictionary<string, int> renamingCounter;
 
         private PICPostprocessProgram(Program prog, PICArchitecture arch)
         {
@@ -55,8 +55,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             var user = program.User;
             user.Processor = pic.Name;
             user.TextEncoding = Encoding.ASCII;
+            bool renameSection = architecture.Options.BinaryLoadFormat == "raw";
 
-            // Re-assign memory segments according to PIC memory program space definition.
+            // Re-assign memory segments according to PIC program memory space definition. Rename segments, as-needed (raw file, segment larger than PIC memory region).
             
             foreach (var segt in program.SegmentMap.Segments.Values)
             {
@@ -73,7 +74,8 @@ namespace Reko.Arch.MicrochipPIC.Common
                     var rd = segt.MemoryArea.CreateLeReader(curAddr);
                     var b = rd.ReadBytes((int)fitSize);
                     var splitMem = new MemoryArea(curAddr, b);
-                    var newsegt = new ImageSegment(GetRegionSequentialName(regn), splitMem, GetAccessMode(regn));
+                    string segmentName = (renameSection ? GetRegionSequentialName(regn) : GetSegmentSequentialName(segt));
+                    var newsegt = new ImageSegment(segmentName, splitMem, GetAccessMode(regn));
                     newMap.AddSegment(newsegt);
                     curSize -= (uint)fitSize;
                     curAddr += fitSize;
@@ -93,17 +95,36 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="regn">The PIC program memory region descriptor.</param>
         private string GetRegionSequentialName(IMemoryRegion regn)
         {
-            if (regionsCounter == null)
+            if (renamingCounter == null)
             {
-                regionsCounter = new Dictionary<IMemoryRegion, int>();
+                renamingCounter = new Dictionary<string, int>();
             }
-            if (regionsCounter.TryGetValue(regn, out var counter))
+            if (renamingCounter.TryGetValue(regn.RegionName, out var counter))
             {
-                regionsCounter[regn] = counter+1;
+                renamingCounter[regn.RegionName] = counter + 1;
                 return $"{regn.RegionName}_{counter}";
             }
-            regionsCounter[regn] = 2;
+            renamingCounter[regn.RegionName] = 2;
             return $"{regn.RegionName}_1";
+        }
+
+        /// <summary>
+        /// Gets a unique segment's name.
+        /// </summary>
+        /// <param name="regn">The binary file image segment.</param>
+        private string GetSegmentSequentialName(ImageSegment segt)
+        {
+            if (renamingCounter == null)
+            {
+                renamingCounter = new Dictionary<string, int>();
+            }
+            if (renamingCounter.TryGetValue(segt.Name, out var counter))
+            {
+                renamingCounter[segt.Name] = counter + 1;
+                return $"{segt.Name}_{counter}";
+            }
+            renamingCounter[segt.Name] = 1;
+            return $"{segt.Name}";
         }
 
         /// <summary>
