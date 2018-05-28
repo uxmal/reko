@@ -3114,7 +3114,7 @@ l0800_0ECF:
 l0800_0EDC:
 	word16 bx_298 = Mem155[ds_149:0x2A23:word16]
 	branch bx_298 <=u 0x0005 l0800_0EE8
-// DataOut: bl bp bx ds si sp ss
+// DataOut: bp bx ds si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bx:<invalid> ax:<invalid> es:<invalid> al:<invalid> cx:<invalid> si:<invalid> ah:<invalid> ds:<invalid> dx:<invalid> di:<invalid> cl:<invalid> bp:<invalid> ch:<invalid> bl:<invalid> dl:<invalid> dh:<invalid> bh:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):si
 // LocalsOut: Local -0002(16)

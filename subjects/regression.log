@@ -2284,4 +2284,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 36.80 seconds ---
+Decompiled 51 binaries in 35.53 seconds ---
