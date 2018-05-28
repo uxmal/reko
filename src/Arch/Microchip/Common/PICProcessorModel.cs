@@ -25,7 +25,6 @@ using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {

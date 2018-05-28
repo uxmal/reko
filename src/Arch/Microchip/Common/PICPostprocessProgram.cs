@@ -68,14 +68,13 @@ namespace Reko.Arch.MicrochipPIC.Common
                     if (regn == null)
                         throw new InvalidOperationException("Attempt to load a binary image which is not compatible with the selected PIC's program memory space.");
                     var fitSize = Math.Min(regn.PhysicalByteAddrRange.End - curAddr, curSize);
+                    if (fitSize <= 0)
+                        throw new InvalidOperationException("Attempt to load a binary image which is not compatible with the selected PIC's program memory space.");
                     var rd = segt.MemoryArea.CreateLeReader(curAddr);
                     var b = rd.ReadBytes((int)fitSize);
                     var splitMem = new MemoryArea(curAddr, b);
-                    if (regn.Contains(curAddr, curSize))
-                    {
-                        var newsegt = new ImageSegment(GetRegionSequentialName(regn), splitMem, GetAccessMode(regn));
-                        newMap.AddSegment(newsegt);
-                    }
+                    var newsegt = new ImageSegment(GetRegionSequentialName(regn), splitMem, GetAccessMode(regn));
+                    newMap.AddSegment(newsegt);
                     curSize -= (uint)fitSize;
                     curAddr += fitSize;
                 } while (curSize > 0);
