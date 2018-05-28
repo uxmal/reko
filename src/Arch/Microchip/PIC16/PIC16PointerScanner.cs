@@ -21,13 +21,16 @@
 #endregion
 
 using Reko.Core;
-using System;
+using Reko.Libraries.Microchip;
 using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
 
+    /// <summary>
+    /// Scans an image looking for uses of pointer values.
+    /// </summary>
     public class PIC16PointerScanner : PICPointerScanner
     {
         public PIC16PointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
@@ -35,13 +38,55 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
         }
 
-        public override uint GetLinearAddress(Address address) => throw new NotImplementedException();
+        public override uint GetLinearAddress(Address address) =>  address.ToUInt32();
 
-        public override int PointerAlignment => throw new NotImplementedException();
+        public override int PointerAlignment => 2;
 
-        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode) => throw new NotImplementedException();
-        public override bool TryPeekPointer(EndianImageReader rdr, out uint target) => throw new NotImplementedException();
-        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target) => throw new NotImplementedException();
-        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target) => throw new NotImplementedException();
+        public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
+        {
+            bool ret = rdr.TryReadUInt16(out ushort bOpcode);
+            opcode = bOpcode;
+            return ret;
+        }
+
+        public override bool TryPeekPointer(EndianImageReader rdr, out uint target)
+        {
+            target = 0;
+            if (rdr.IsValidOffset(rdr.Offset + 2 - 1))
+            {
+                target = rdr.PeekLeUInt16(0);
+                return true;
+            }
+            return false;
+        }
+
+        public override bool MatchCall(EndianImageReader rdr, uint opcode, out uint target)
+        {
+            target = 0;
+            ushort sopcode = (ushort)opcode;
+            var offset = rdr.Offset;
+            if ((sopcode & 0x3800) == 0x2000) // CALL k
+            {
+                target = sopcode.Extract(0, 11);
+                return true;
+            }
+            rdr.Offset = offset;
+            return false;
+        }
+
+        public override bool MatchJump(EndianImageReader rdr, uint opcode, out uint target)
+        {
+            target = 0;
+            ushort sopcode = (ushort)opcode;
+            var offset = rdr.Offset;
+            if ((sopcode & 0x3800) == 0x2800) // GOTO k
+            {
+                target = sopcode.Extract(0, 11);
+                return true;
+            }
+            rdr.Offset = offset;
+            return false;
+        }
+
     }
 }
