@@ -220,7 +220,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PIC16BankedAddress : PICBankedAddress
     {
 
-        public const int DataBankWidth = 8;
+        public const int DataBankWidth = 7;
 
         public PIC16BankedAddress(Constant bankSelect, Constant bankOffset)
             : base(bankSelect, bankOffset)
