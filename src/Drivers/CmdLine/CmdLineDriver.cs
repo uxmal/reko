@@ -106,8 +106,7 @@ namespace Reko.CmdLine
 
         private void StartTimer(Dictionary<string, object> pArgs)
         {
-            object oLimit;
-            if (pArgs.TryGetValue("time-limit", out oLimit))
+            if (pArgs.TryGetValue("time-limit", out object oLimit))
             {
                 int msecLimit = 1000 * (int)oLimit;
                 this.timer = new Timer(TimeLimitExpired, null, msecLimit, Timeout.Infinite);
@@ -148,8 +147,7 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
 
-            object loader;
-            pArgs.TryGetValue("--loader", out loader);
+            pArgs.TryGetValue("--loader", out  object loader);
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
@@ -183,9 +181,12 @@ namespace Reko.CmdLine
                 var arch = config.GetArchitecture((string)pArgs["--arch"]);
                 if (arch == null)
                     throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
-
-                object sEnv;
-                pArgs.TryGetValue("--env", out sEnv);
+                if (pArgs.TryGetValue("--arch-options", out var oArchOptions))
+                {
+                    var archOptions = (Dictionary<string, object>)oArchOptions;
+                    arch.LoadUserOptions(archOptions);
+                }
+                pArgs.TryGetValue("--env", out object sEnv);
 
                 Address addrBase;
                 object oAddrEntry;
@@ -265,6 +266,11 @@ namespace Reko.CmdLine
                 {
                     if (i < args.Length - 1)
                         parsedArgs["--arch"] = args[++i];
+                }
+                else if (args[i] == "--arch-option")
+                {
+                    if (i < args.Length - 1)
+                        ParseArchitectureOption(args[++i], parsedArgs);
                 }
                 else if (args[i] == "--env")
                 {
@@ -350,6 +356,35 @@ namespace Reko.CmdLine
             return parsedArgs;
         }
 
+        /// <summary>
+        /// Parses an architecture specific option and adds it 
+        /// to the "--arch-options" dictionary.
+        /// </summary>
+        /// <remarks>
+        /// Architecture options are written as follows
+        /// --arch-option {name}={value}
+        /// </remarks>
+        /// <param name="nameValue">String containing the name of the option 
+        /// and its value.</param>
+        /// <param name="parsedArgs">The dictionary of values parsed so far.
+        /// </param>
+        private void ParseArchitectureOption(string nameValue, Dictionary<string, object> parsedArgs)
+        {
+            Dictionary<string, object> archOptions;
+            if (parsedArgs.TryGetValue("--arch-options", out object oArchOptions))
+            {
+                archOptions = (Dictionary<string, object>)oArchOptions;
+            }
+            else
+            {
+                archOptions = new Dictionary<string, object>();
+                parsedArgs["--arch-options"] = archOptions;
+            }
+            var name_value = nameValue.Split('=');
+            archOptions[name_value[0]] =
+                string.Join("=", name_value.Skip(1));
+        }
+
         private static void ShowVersion(TextWriter w)
         {
             var attrs = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyFileVersionAttribute), true);
@@ -372,6 +407,8 @@ namespace Reko.CmdLine
             w.WriteLine("                          of the loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --arch-option <name>=<value>  Set the value of the architecture-specific");
+            w.WriteLine("                          option <name> to <value>.");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program");
