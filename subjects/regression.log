@@ -684,7 +684,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002F9E.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4283 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4279 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -703,7 +703,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000326E: error: An error occurred while processing the statement branch d0 - d5_2510 >=u 0x00000000 l00003226.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4810 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4806 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -722,7 +722,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000300A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002FC2.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4271 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4268 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -741,7 +741,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000184A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00001802.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_790 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_787 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -2284,4 +2284,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 47.33 seconds ---
+Decompiled 51 binaries in 36.80 seconds ---

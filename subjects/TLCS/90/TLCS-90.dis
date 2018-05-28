@@ -3442,7 +3442,7 @@ fn0DFC_entry:
 // DataOut: af b c d de e h ix l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0DFC:
 	Mem3[ix + -30:byte] = c
@@ -3455,7 +3455,7 @@ l0DFC:
 // DataOut: a af b c d de e h ix l
 // DataOut (flags): C
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0E0F_thunk_fn060E:
 	byte c_101
@@ -3474,7 +3474,7 @@ l0E13:
 // DataOut: af b bc c d de e h hl ix l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:h | l | b | c
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0E1B:
 	Mem59[de:byte] = Mem10[hl_46:byte]
@@ -3485,7 +3485,7 @@ l0E1B:
 // DataOut: af b bc c d de e h hl ix l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:h | l | b | c hl:<invalid> bc:<invalid> de:<invalid>
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0E1D:
 	word16 de_73 = wArg20
@@ -5194,7 +5194,7 @@ fn22A6_entry:
 // DataOut: bc ix
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
+// LocalsOut: fp(16) Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
 
 l22A6:
 	Mem6[ix + -4:byte] = Mem0[ix + -9:byte]
@@ -5652,7 +5652,7 @@ fn3EC2_entry:
 // DataOut: a b ix
 // DataOut (flags): C
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0003(16) Stack +0005(16) Stack +0007(16)
+// LocalsOut: fp(16) Stack +0003(16) Stack +0005(16) Stack +0007(16)
 
 l3EC2:
 	byte v16_21 = Mem0[wArg05:byte]

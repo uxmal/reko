@@ -17,7 +17,6 @@ l0000000000400AE8:
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
 
 l0000000000400AF8:
 	word64 rsp_15
@@ -32,7 +31,6 @@ l0000000000400AF8:
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
-// LocalsOut: fp(64)
 
 l0000000000400AFD:
 	return
@@ -308,7 +306,7 @@ frame_dummy_exit:
 word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d, word64 r13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ecx edi edx esi r13 r8d rdi
+// MayUse:  ecx edx esi r13 r8d rdi
 // LiveOut: eax
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: rbp rsp
@@ -391,15 +389,15 @@ l0000000000400EC1:
 
 
 
-void print_pixel(word32 ecx, word32 edx, word32 edi, word64 r13, selector fs)
+void print_pixel(word32 ecx, word64 rdx, word32 edi, word64 r13, selector fs)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  dil ecx edi edx fs r13
+// MayUse:  dil ecx edi fs r13 rdx
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil
 // Preserved: r12 r13 rbp rbx rsp
 print_pixel_entry:
-// DataOut: ecx edi edx fs r13
+// DataOut: ecx edi fs r13 rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
@@ -476,14 +474,14 @@ l0000000000400EE9:
 // DataOut: eax fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64) Local -0030(64) Local -0048(32) Local -0060(32) Local -0070(32) Local -0074(64)
+// LocalsOut: fp(64) Local -0030(64) Local -0048(32) Local -0060(32) Local -0070(64) Local -0074(64)
 
 l0000000000400F4C:
 	switch ((word32) Mem0[(uint64) eax_102 * 0x0000000000000008 + 0x00401958:word64]) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000078 rbp:fp - 0x0000000000000008 rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:(word32) al -116(fp):ecx -112(fp):rdx -104(fp):rsi -96(fp):rdi -72(fp):(word32) al -48(fp):<invalid> -32(fp):rbx -24(fp):r12 -16(fp):r13 -8(fp):rbp
-// LocalsOut: fp(64) Local -0030(64) Local -0048(32) Local -0060(32) Local -0070(32) Local -0074(64)
+// LocalsOut: fp(64) Local -0030(64) Local -0048(32) Local -0060(32) Local -0070(64) Local -0074(64)
 
 l000000000040122A:
 	word64 r13_535 = (uint64) component((word32) (uint64) (word32) (uint64) eax_66, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004, r13_75)
@@ -989,35 +987,35 @@ l00000000004013E4:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):0x0000000000000000 -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004016AF:
-	word64 rsp_901
-	word64 rbp_902
-	byte SCZO_903
-	word32 edi_904
-	word64 rsi_905
-	word64 rax_906
-	selector fs_907
-	word32 eax_908
-	byte SZO_909
-	byte C_910
-	byte Z_911
-	word64 rdi_912
-	word32 esi_913
-	word32 ecx_914
-	word64 rcx_915
-	word32 edx_916
-	word64 rdx_917
-	word64 r13_918
-	word64 r9_919
-	word64 r8_920
-	byte SO_921
-	byte cl_922
-	byte al_923
+	word64 rsp_900
+	word64 rbp_901
+	byte SCZO_902
+	word32 edi_903
+	word64 rsi_904
+	word64 rax_905
+	selector fs_906
+	word32 eax_907
+	byte SZO_908
+	byte C_909
+	byte Z_910
+	word64 rdi_911
+	word32 esi_912
+	word32 ecx_913
+	word64 rcx_914
+	word32 edx_915
+	word64 rdx_916
+	word64 r13_917
+	word64 r9_918
+	word64 r8_919
+	byte SO_920
+	byte cl_921
+	byte al_922
 	call png_error (retsize: 8; depth: 176)
-		uses: al_399,C_403,cl_398,dwLoc4C,dwLoc50,dwLoc54,dwLoc58,dwLoc5C,dwLoc60,dwLoc64,dwLoc68,dwLoc6C,dwLoc78,dwLoc84,dwLoc88,dwLoc8C_16,dwLoc9C_8,eax_384,ecx_390,edi_380,edx_392,esi_389,fs_383,qwLoc08_4,qwLoc10_14,qwLoc18_357,qwLoc20_87,qwLoc28_78,qwLoc30_71,qwLoc38_173,qwLoc40_143,qwLoc48_355,qwLocA8_10,qwLocB8_369,qwLocC0_372,qwLocC8_375,r13_394,r8_396,r9_395,rax_898,rbp_378,rcx_391,rdi_900,rdx_393,rsi_899,rsp_400,SCZO_379,SO_397,SZO_401,Z_402
-		defs: al_923,C_910,cl_922,eax_908,ecx_914,edi_904,edx_916,esi_913,fs_907,r13_918,r8_920,r9_919,rax_906,rbp_902,rcx_915,rdi_912,rdx_917,rsi_905,rsp_901,SCZO_903,SO_921,SZO_909,Z_911
+		uses: al_399,C_403,cl_398,dwLoc4C,dwLoc50,dwLoc54,dwLoc58,dwLoc5C,dwLoc60,dwLoc64,dwLoc68,dwLoc6C,dwLoc78,dwLoc84,dwLoc88,dwLoc8C_16,dwLoc9C_8,eax_384,ecx_390,edi_380,edx_392,esi_389,fs_383,qwLoc08_4,qwLoc10_14,qwLoc18_357,qwLoc20_87,qwLoc28_78,qwLoc30_71,qwLoc38_173,qwLoc40_143,qwLoc48_355,qwLocA8_10,qwLocB8_369,qwLocC0_372,qwLocC8_375,r13_394,r8_396,r9_395,rax_897,rbp_378,rcx_391,rdi_899,rdx_393,rsi_898,rsp_400,SCZO_379,SO_397,SZO_401,Z_402
+		defs: al_922,C_909,cl_921,eax_907,ecx_913,edi_903,edx_915,esi_912,fs_906,r13_917,r8_919,r9_918,rax_905,rbp_901,rcx_914,rdi_911,rdx_916,rsi_904,rsp_900,SCZO_902,SO_920,SZO_908,Z_910
 // DataOut: fs
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
@@ -1036,66 +1034,66 @@ l000000000040147A:
 // DataOut: eax fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401488:
 	dwLoc6C = 0x00000001
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401481:
 	branch eax_406 == 0x00000001 l0000000000401491
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401491:
 	dwLoc6C = 0x00000007
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401486:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040149A:
-	word64 rsp_873
-	word64 rbp_874
-	byte SCZO_875
-	word32 edi_876
-	word64 rsi_877
-	word64 rax_878
-	selector fs_879
-	word32 eax_880
-	byte SZO_881
-	byte C_882
-	byte Z_883
-	word64 rdi_884
-	word32 esi_885
-	word32 ecx_886
-	word64 rcx_887
-	word32 edx_888
-	word64 rdx_889
-	word64 r13_890
-	word64 r9_891
-	word64 r8_892
-	byte SO_893
-	byte cl_894
-	byte al_895
+	word64 rsp_872
+	word64 rbp_873
+	byte SCZO_874
+	word32 edi_875
+	word64 rsi_876
+	word64 rax_877
+	selector fs_878
+	word32 eax_879
+	byte SZO_880
+	byte C_881
+	byte Z_882
+	word64 rdi_883
+	word32 esi_884
+	word32 ecx_885
+	word64 rcx_886
+	word32 edx_887
+	word64 rdx_888
+	word64 r13_889
+	word64 r9_890
+	word64 r8_891
+	byte SO_892
+	byte cl_893
+	byte al_894
 	call png_error (retsize: 8; depth: 176)
-		uses: al_407,C_410,cl_398,dwLoc4C,dwLoc50,dwLoc54,dwLoc58,dwLoc5C,dwLoc60,dwLoc64,dwLoc68,dwLoc6C,dwLoc78,dwLoc84,dwLoc88,dwLoc8C_16,dwLoc9C_8,eax_406,ecx_390,edi_380,edx_392,esi_389,fs_383,qwLoc08_4,qwLoc10_14,qwLoc18_357,qwLoc20_87,qwLoc28_78,qwLoc30_71,qwLoc38_173,qwLoc40_143,qwLoc48_355,qwLocA8_10,qwLocB8_369,qwLocC0_372,qwLocC8_375,r13_394,r8_396,r9_395,rax_870,rbp_378,rcx_391,rdi_872,rdx_393,rsi_871,rsp_400,SCZO_868,SO_397,SZO_408,Z_869
-		defs: al_895,C_882,cl_894,eax_880,ecx_886,edi_876,edx_888,esi_885,fs_879,r13_890,r8_892,r9_891,rax_878,rbp_874,rcx_887,rdi_884,rdx_889,rsi_877,rsp_873,SCZO_875,SO_893,SZO_881,Z_883
+		uses: al_407,C_410,cl_398,dwLoc4C,dwLoc50,dwLoc54,dwLoc58,dwLoc5C,dwLoc60,dwLoc64,dwLoc68,dwLoc6C,dwLoc78,dwLoc84,dwLoc88,dwLoc8C_16,dwLoc9C_8,eax_406,ecx_390,edi_380,edx_392,esi_389,fs_383,qwLoc08_4,qwLoc10_14,qwLoc18_357,qwLoc20_87,qwLoc28_78,qwLoc30_71,qwLoc38_173,qwLoc40_143,qwLoc48_355,qwLocA8_10,qwLocB8_369,qwLocC0_372,qwLocC8_375,r13_394,r8_396,r9_395,rax_869,rbp_378,rcx_391,rdi_871,rdx_393,rsi_870,rsp_400,SCZO_867,SO_397,SZO_408,Z_868
+		defs: al_894,C_881,cl_893,eax_879,ecx_885,edi_875,edx_887,esi_884,fs_878,r13_889,r8_891,r9_890,rax_877,rbp_873,rcx_886,rdi_883,rdx_888,rsi_876,rsp_872,SCZO_874,SO_892,SZO_880,Z_882
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004014AB:
 	word64 rsp_414
@@ -1128,7 +1126,7 @@ l00000000004014AB:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401673:
 	word32 eax_466 = (word32) (uint64) dwLoc68_437
@@ -1136,7 +1134,7 @@ l0000000000401673:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(0) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(0) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004014C3:
 	word32 dwLoc5C_570
@@ -1147,7 +1145,7 @@ l00000000004014C3:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(0) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(0) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004015CE:
 	dwLoc60_567 = 0x00000000
@@ -1157,68 +1155,68 @@ l00000000004015CE:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -005C(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -005C(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004014CF:
-	word32 eax_688
+	word32 eax_687
 	branch dwLoc68_437 <= 0x00000001 l00000000004014EF
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004014EF:
-	eax_688 = 0x00000007 (alias)
+	eax_687 = 0x00000007 (alias)
 // DataOut: eax fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004014D5:
-	eax_688 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_437)) >> 0x00000001))))) - 0x00000001) (alias)
+	eax_687 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_437)) >> 0x00000001))))) - 0x00000001) (alias)
 // DataOut: eax fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004014F4:
-	word32 eax_726
-	word32 edx_722 = (word32) (uint64) (word32) (uint64) ((word32) (uint64) (eax_688 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007))) + dwLoc88)
+	word32 eax_725
+	word32 edx_721 = (word32) (uint64) (word32) (uint64) ((word32) (uint64) (eax_687 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007))) + dwLoc88)
 	branch dwLoc68_437 <= 0x00000001 l0000000000401531
 // DataOut: edx fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401531:
-	eax_726 = 0x00000003 (alias)
+	eax_725 = 0x00000003 (alias)
 // DataOut: al edx fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401525:
-	eax_726 = (word32) (uint64) ((word32) (uint64) (0x00000007 - dwLoc68_437) >> 0x00000001) (alias)
+	eax_725 = (word32) (uint64) ((word32) (uint64) (0x00000007 - dwLoc68_437) >> 0x00000001) (alias)
 // DataOut: al edx fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401536:
-	branch (word32) (uint64) (word32) (uint64) (edx_722 >>u (byte) ((uint64) eax_726)) == 0x00000000 l000000000040166E
+	branch (word32) (uint64) (word32) (uint64) (edx_721 >>u (byte) ((uint64) eax_725)) == 0x00000000 l000000000040166E
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040166E:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401544:
-	word32 eax_811
+	word32 eax_810
 	dwLoc60_567 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_437 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437) + 0x00000001)) >> 0x00000001))))))))) & 0x00000007)
 	dwLoc64_568 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_437 & 0x00000001) == 0x00000000) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_437) >> 0x00000001))))))))) & 0x00000007)
 	dwLoc58_569 = (word32) (uint64) (word32) (uint64) (0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68_437)) >> 0x00000001)))))
@@ -1226,42 +1224,42 @@ l0000000000401544:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -0060(64) Local -0064(32) Local -0068(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -0060(64) Local -0064(32) Local -0068(8) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004015C4:
-	eax_811 = 0x00000008 (alias)
+	eax_810 = 0x00000008 (alias)
 // DataOut: eax fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004015AF:
-	eax_811 = (word32) (uint64) (word32) (uint64) (0x00000008 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437) - 0x00000001)) >> 0x00000001))))) (alias)
+	eax_810 = (word32) (uint64) (word32) (uint64) (0x00000008 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_437) - 0x00000001)) >> 0x00000001))))) (alias)
 // DataOut: eax fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004015C9:
-	dwLoc5C_570 = eax_811
+	dwLoc5C_570 = eax_810
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -005C(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0058(32) Local -005C(32) Local -0060(64) Local -0064(32) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004015E8:
 	word32 dwLoc54_585 = (word32) (uint64) dwLoc64_568
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(0) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(0) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401664:
 	branch dwLoc54_585 <u (word32) ((uint64) dwLoc84) l00000000004015F0
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(64) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(64) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l00000000004015F0:
 	word32 eax_614 = puts(0x00000000004019B6)
@@ -1295,7 +1293,7 @@ l00000000004015F0:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040161B:
 	word32 dwLoc50_657 = (word32) (uint64) dwLoc60_567
@@ -1303,21 +1301,21 @@ l000000000040161B:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(32) Local -0050(0) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(64) Local -0050(0) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401656:
 	branch dwLoc50_657 <u (word32) ((uint64) dwLoc88) l000000000040162A
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(32) Local -0050(64) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(64) Local -0050(64) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040162A:
 	branch (uint64) dwLoc50_657 != rax_70 l000000000040164C
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(32) Local -0050(32) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(64) Local -0050(32) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040164C:
 	dwLoc50_657 = dwLoc50_657 + (word32) ((uint64) dwLoc58_569)
@@ -1325,10 +1323,10 @@ l000000000040164C:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(32) Local -0050(0) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -004C(64) Local -0050(0) Local -0054(32) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l0000000000401633:
-	print_pixel((word32) (uint64) dwLoc4C_658, (word32) rax_337, (word32) rax_125, r13_637, fs_626)
+	print_pixel((word32) (uint64) dwLoc4C_658, rax_337, (word32) rax_125, r13_637, fs_626)
 // DataOut: fs
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
@@ -1339,20 +1337,20 @@ l000000000040165E:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(0) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0054(0) Local -0058(32) Local -005C(32) Local -0060(64) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040166C:
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040166F:
 	dwLoc68_437 = dwLoc68_437 + 0x00000001
 // DataOut: fs r13
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x00000000000000A8 rbp:fp - 0x0000000000000008 rax:<invalid> rdi:<invalid> eax:<invalid> rsi:<invalid> rcx:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-// LocalsOut: fp(64) Local -0010(64) Local -0018(32) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
+// LocalsOut: fp(64) Local -0010(64) Local -0018(64) Local -0028(0) Local -0030(0) Local -0040(8) Local -0068(32) Local -006C(0) Local -0078(32) Local -0084(32) Local -0088(32)
 
 l000000000040167F:
 	word64 rsp_481

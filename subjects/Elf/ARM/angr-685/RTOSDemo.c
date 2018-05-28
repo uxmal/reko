@@ -970,8 +970,8 @@ void xTaskRemoveFromUnorderedEventList()
 {
 }
 
-// 000010D9: void vTaskSwitchContext(Register word32 r0, Register word32 r8, Register word32 r9)
-void vTaskSwitchContext(word32 r0, word32 r8, word32 r9)
+// 000010D9: void vTaskSwitchContext(Register word32 r8, Register word32 r9)
+void vTaskSwitchContext(word32 r8, word32 r9)
 {
 	if (!ZC)
 		__ldcl(0x0D, Mem0[r8 + 0x00:word32]);
@@ -3066,8 +3066,8 @@ void IntUnregister()
 {
 }
 
-// 0000954D: void IntPriorityGroupingSet(Register word32 r0)
-void IntPriorityGroupingSet(word32 r0)
+// 0000954D: void IntPriorityGroupingSet()
+void IntPriorityGroupingSet()
 {
 }
 

@@ -16669,7 +16669,6 @@ word16 fn1483_0C11(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 d
 {
 	if (al != Mem0[ss:si + 0x00:byte])
 	{
-		word16 ax_80 = DPB(ax, al + 0x01, 0);
 		word16 cx_88;
 		word16 dx_89;
 		word16 bx_90;
@@ -16677,7 +16676,7 @@ word16 fn1483_0C11(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 d
 		word16 si_92;
 		word16 di_93;
 		selector es_94;
-		return fn1483_0C55(ax_80, cx, bx, bp, si, di, es, ds, wArg00, wArg02, wArg04, out cx_88, out dx_89, out bx_90, out bp_91, out si_92, out di_93, out es_94);
+		return fn1483_0C55(al + 0x01, cx, bx, bp, si, di, es, ds, wArg00, wArg02, wArg04, out cx_88, out dx_89, out bx_90, out bp_91, out si_92, out di_93, out es_94);
 	}
 	else if (al - 0x8C - (al <u Mem0[ss:si + 0x00:byte]) != 0x00 && cx != 0x01)
 	{
@@ -16693,8 +16692,8 @@ word16 fn1483_0C11(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 d
 		Mem54[es:di + 0x00:word16] = 0x1955;
 }
 
-// 1483:0C55: Register word16 fn1483_0C55(Register word16 ax, Register word16 cx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut)
-word16 fn1483_0C55(word16 ax, word16 cx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
+// 1483:0C55: Register word16 fn1483_0C55(Register byte al, Register word16 cx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut)
+word16 fn1483_0C55(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 {
 	*cxOut = cx;
 	*bxOut = bx;
@@ -16784,7 +16783,7 @@ word16 fn1483_0C91(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16
 		word16 si_168;
 		word16 di_169;
 		selector es_170;
-		return fn1483_0C55(ax_12, cx, bx, bp, si, di, psegArg00, ds, psegArg00, wArg02, wArg04, out cx_164, out dx_165, out bx_166, out bp_167, out si_168, out di_169, out es_170);
+		return fn1483_0C55(al_11, cx, bx, bp, si, di, psegArg00, ds, psegArg00, wArg02, wArg04, out cx_164, out dx_165, out bx_166, out bp_167, out si_168, out di_169, out es_170);
 	}
 	else
 	{
@@ -16841,7 +16840,7 @@ word16 fn1483_0C91(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16
 			word16 bx_70;
 			word16 bp_71;
 			word16 di_72;
-			return fn1483_0CA1(ah, al_11, dl_55, bx, bp, si, di, psegArg00, ds, out cx_68, out dx_69, out bx_70, out bp_71, out di_72);
+			return fn1483_0CA1(al_11, ah, dl_55, bx, bp, si, di, psegArg00, ds, out cx_68, out dx_69, out bx_70, out bp_71, out di_72);
 		}
 	}
 }
@@ -16855,11 +16854,11 @@ word16 fn1483_0CA0(byte al, byte ah, byte dl, word16 bx, word16 bp, word16 si, w
 	word16 bx_19;
 	word16 bp_20;
 	word16 di_21;
-	return fn1483_0CA1(ah, al_5, dl, bx, bp, si, di, es, ds, out cx_17, out dx_18, out bx_19, out bp_20, out di_21);
+	return fn1483_0CA1(al_5, ah, dl, bx, bp, si, di, es, ds, out cx_17, out dx_18, out bx_19, out bp_20, out di_21);
 }
 
-// 1483:0CA1: Register word16 fn1483_0CA1(Register byte ah, Register byte al, Register byte dl, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 diOut)
-word16 fn1483_0CA1(byte ah, byte al, byte dl, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & diOut)
+// 1483:0CA1: Register word16 fn1483_0CA1(Register byte al, Register byte ah, Register byte dl, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 diOut)
+word16 fn1483_0CA1(byte al, byte ah, byte dl, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & diOut)
 {
 	mp16 fp;
 	selector es;

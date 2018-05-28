@@ -89,14 +89,14 @@ l800000C4:
 l800000C6:
 	word32 d0_15 = d0_11 >> 0x00000001
 	branch d0_15 == 0x00000000 l800000E0
-// DataOut: d0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 d0:<invalid> -4(fp):a6
 // LocalsOut: fp(32)
 
 l800000CA:
 	branch null == 0x00000000 l800000E0
-// DataOut: d0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 d0:<invalid> -4(fp):a6
 // LocalsOut: fp(32)
@@ -134,15 +134,15 @@ register_tm_clones_exit:
 
 
 
-void __do_global_dtors_aux(word32 d2)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 d0 d1
 // Preserved: a2 a6 a7 d2
 __do_global_dtors_aux_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
@@ -152,7 +152,7 @@ l800000E4:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l800000F4:
 	word32 d0_100 = Mem0[0x80002726:word32]
@@ -161,7 +161,7 @@ l800000F4:
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l80000114:
 	word32 d0_102 = d0_100 + 0x00000001
@@ -188,7 +188,7 @@ l80000114:
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l8000012C:
 	deregister_tm_clones()
@@ -196,7 +196,7 @@ l8000012C:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l8000013A:
 	word32 a7_85
@@ -219,14 +219,14 @@ l8000013A:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l80000144:
 	Mem81[0x80002724:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -16(fp):8000065C -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l8000014C:
 	return
@@ -310,14 +310,14 @@ l8000016E:
 
 l8000017E:
 	branch Mem0[0x8000271C:word32] != 0x00000000 l8000018E
-// DataOut: a0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 // LocalsOut: fp(32)
 
 l8000018E:
 	branch null == 0x00000000 l80000188
-// DataOut: a0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:8000271C -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 // LocalsOut: fp(32)

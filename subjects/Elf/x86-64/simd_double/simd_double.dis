@@ -17,7 +17,6 @@ l00000000000005A0:
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
 
 l00000000000005B0:
 	word64 rsp_15
@@ -32,7 +31,6 @@ l00000000000005B0:
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
-// LocalsOut: fp(64)
 
 l00000000000005B2:
 	return

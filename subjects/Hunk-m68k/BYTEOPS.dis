@@ -217,12 +217,12 @@ l000011F4:
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l000011CC:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 16 d2:0x000003ED a2:<invalid> a4:0000AB7E a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:000012C8 a5:<invalid> a0:000012C8 -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
 
 l000011CE_thunk_fn0000127C:
-	fn0000127C(20)
+	fn0000127C()
 	return
 // DataOut:
 // DataOut (flags): 
@@ -445,12 +445,12 @@ l00001202:
 	Mem140[0x00002BB0:word32] = a0_132
 	Mem142[0x00002BB4:word32] = fp - 16
 	fn00001354(dwLoc10, dwLoc0C_127)
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 16 d2:<invalid> a2:<invalid> a4:0000AB7E a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):<invalid>
 
 l00001212_thunk_fn0000127C:
-	fn0000127C(0)
+	fn0000127C()
 	return
 // DataOut:
 // DataOut (flags): 
@@ -521,7 +521,7 @@ void fn0000126C(word32 a2)
 // Trashed: a1
 // Preserved: a7
 fn0000126C_entry:
-// DataOut: a2 a5 d2 d5 d7
+// DataOut: a2 a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
@@ -529,7 +529,7 @@ l0000126C:
 	Forbid()
 	ReplyMsg(a2)
 	return
-// DataOut: a5 d2 d5 d7
+// DataOut: a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
@@ -547,20 +547,18 @@ word32 fn00001278(word32 dwArg04)
 // LiveOut: a5
 // Trashed: CVZN a1 a2 a4 a5 a6 d0 d1 d2
 // Preserved: a7
-// Stack args: Stack +0004(32)
 fn00001278_entry:
 // DataOut: d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: Stack +0004(32)
 
 l00001278:
-// DataOut: d2 d5 d7
+// DataOut: d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
 l00001278_thunk_fn0000127C:
-	return fn0000127C(dwArg04)
+	return fn0000127C()
 // DataOut: a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:<invalid>
@@ -572,15 +570,15 @@ fn00001278_exit:
 
 
 
-word32 fn0000127C(word32 d2)
+word32 fn0000127C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut: a5
 // Trashed: CVZN a1 a2 a4 a5 a6 d0 d1
 // Preserved: a7
 fn0000127C_entry:
-// DataOut: d2 d5 d7
+// DataOut: d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
@@ -589,26 +587,26 @@ l0000127C:
 	word32 v8_8 = Mem0[a7_3 - 4:word32]
 	word32 v6_5 = Mem0[a7_3 - 8:word32]
 	branch Mem0[v8_8 + 4:word32] == 0x00000000 l0000129E
-// DataOut: a2 a4 a5 d2 d5 d7
+// DataOut: a2 a4 a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
 l00001296:
 	execPrivate1()
-// DataOut: a2 a4 a5 d2 d5 d7
+// DataOut: a2 a4 a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> a4:0000AB7E a6:<invalid> a2:<invalid> a5:<invalid> d1:<invalid>
 
 l0000129E:
 	CloseLibrary(Mem0[0x00002B90:word32])
 	branch v6_5 == 0x00000000 l000012B0
-// DataOut: a2 a5 d2 d5 d7
+// DataOut: a2 a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> a4:0000AB7E a6:<invalid> a2:<invalid> a5:<invalid> d1:<invalid>
 
 l000012AE:
 	fn0000126C(v6_5)
-// DataOut: a5 d2 d5 d7
+// DataOut: a5 d5 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> a4:0000AB7E a6:<invalid> a2:<invalid> a5:<invalid> d1:<invalid> a1:<invalid> d0:<invalid>
 
@@ -788,12 +786,11 @@ void fn00001354(word32 dwArg04, word32 dwArg08)
 // LiveOut:
 // Trashed: CVZNX a0 a1 a4 a5 a6 d0 d1
 // Preserved: a2 a3 a7
-// Stack args: Stack +0004(32)
 fn00001354_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32)
 
 l00001354:
 	word32 a3_46 = 0x00002CC8
@@ -801,14 +798,14 @@ l00001354:
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32)
 
 l00001366:
 	branch Mem0[0x00002CC8:word32] == 0x00000000 l00001372
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 a3:00002CC8 d0:0x00002CC4 -8(fp):a2 -4(fp):a3
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32)
 
 l0000136A:
 	word32 a7_54
@@ -827,7 +824,7 @@ l0000136A:
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 a3:<invalid> d0:<invalid> a2:<invalid> -8(fp):a2 -4(fp):a3
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32)
 
 l00001372:
 	fn0000131C(fn00001390())
@@ -863,8 +860,7 @@ l00001390:
 	word32 d1_25 = (int32) v9_16
 	word32 d4_30 = __swap(d0_22) *u (word16) d1_25
 	byte v24_39 = (byte) (d0_22 *u (word16) d1_25 + DPB(__swap(DPB(d4_30, (word16) (d4_30 + __swap(d1_25) *u (word16) d0_22), 0)), 0x0000, 0))
-	word32 d2_40 = DPB(d2, v24_39, 0)
-	fn00002A88(d2_40, (int32) (byte) fn00002AC8(d2_40, (int32) v9_16, (int32) v24_39), (int32) v24_39)
+	fn00002A88((int32) (byte) fn00002AC8((int32) v9_16, (int32) v24_39), (int32) v24_39)
 	return fn0000143C((int32) (byte) ((int32) v24_39 << 0x00000005), 0x0000142C)
 // DataOut: d0
 // DataOut (flags): 
@@ -3832,7 +3828,7 @@ l00002510:
 
 l00002516:
 	word32 d1_64
-	d0 = fn00002AFA(d1, d2, d2, out d1_64)
+	d0 = fn00002AFA(d1, d2, out d1_64)
 // DataOut: a2 a3 a5 d0 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 12 d7:d2 d6:d1 d5:d0 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -4124,10 +4120,10 @@ fn00002A44_exit:
 
 
 
-word32 fn00002A88(word32 d2, word32 dwArg04, word32 dwArg08)
+word32 fn00002A88(word32 dwArg04, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut: d0
 // Trashed: CVZNX d0 d1
 // Preserved: a7
@@ -4145,24 +4141,24 @@ l00002A88:
 // SymbolicIn: a7:fp
 
 l00002A9C:
-	word32 d1_39 = -dwArg08
+	word32 d1_38 = -dwArg08
 	branch dwArg04 < 0x00000000 l00002AB2
 // DataOut: d0 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AB2:
-	word32 d1_51
-	fn00002AFA(-dwArg04, d1_39, d2, out d1_51)
-	return -d1_51
+	word32 d1_50
+	fn00002AFA(-dwArg04, d1_38, out d1_50)
+	return -d1_50
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AA2:
-	word32 d1_45
-	fn00002AFA(dwArg04, d1_39, d2, out d1_45)
-	return d1_45
+	word32 d1_44
+	fn00002AFA(dwArg04, d1_38, out d1_44)
+	return d1_44
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
@@ -4174,17 +4170,17 @@ l00002A92:
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AA8:
-	word32 d1_33
-	fn00002AFA(-dwArg04, dwArg08, d2, out d1_33)
-	return -d1_33
+	word32 d1_32
+	fn00002AFA(-dwArg04, dwArg08, out d1_32)
+	return -d1_32
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002A96:
-	word32 d1_26
-	fn00002AFA(dwArg04, dwArg08, d2, out d1_26)
-	return d1_26
+	word32 d1_25
+	fn00002AFA(dwArg04, dwArg08, out d1_25)
+	return d1_25
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
@@ -4196,10 +4192,10 @@ fn00002A88_exit:
 
 
 
-word32 fn00002AC8(word32 d2, word32 dwArg04, word32 dwArg08)
+word32 fn00002AC8(word32 dwArg04, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut: d0
 // Trashed: CVZNX d0 d1
 // Preserved: a7
@@ -4223,15 +4219,15 @@ l00002AE8:
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AEA_thunk_fn00002AFA:
-	word32 d1_48
-	return fn00002AFA(dwArg04, dwArg08, d2, out d1_48)
+	word32 d1_47
+	return fn00002AFA(dwArg04, dwArg08, out d1_47)
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AEC:
-	word32 d1_44
-	return -fn00002AFA(dwArg04, -dwArg08, d2, out d1_44)
+	word32 d1_43
+	return -fn00002AFA(dwArg04, -dwArg08, out d1_43)
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
@@ -4244,15 +4240,15 @@ l00002AD2:
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AE0:
-	word32 d1_33
-	return -fn00002AFA(d0_20, dwArg08, d2, out d1_33)
+	word32 d1_32
+	return -fn00002AFA(d0_20, dwArg08, out d1_32)
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
 
 l00002AD8:
-	word32 d1_29
-	return fn00002AFA(d0_20, -dwArg08, d2, out d1_29)
+	word32 d1_28
+	return fn00002AFA(d0_20, -dwArg08, out d1_28)
 // DataOut: d0 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp d0:<invalid> d1:<invalid>
@@ -4264,15 +4260,15 @@ fn00002AC8_exit:
 
 
 
-word32 fn00002AFA(word32 d0, word32 d1, word32 d2, ptr32 & d1Out)
+word32 fn00002AFA(word32 d0, word32 d1, ptr32 & d1Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d0 d1 d2
+// MayUse:  d0 d1
 // LiveOut: d0 d1
 // Trashed: CVZNX d0 d1
 // Preserved: a7 d2 d3
 fn00002AFA_entry:
-// DataOut: a2 a3 a5 d0 d1 d2
+// DataOut: a2 a3 a5 d0 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
@@ -4285,7 +4281,7 @@ l00002AFA:
 // DataOut: a2 a3 a5 d0 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B20:
 	word32 d3_160 = 16
@@ -4293,7 +4289,7 @@ l00002B20:
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B2A:
 	d1_158 = __rol(d1_158, 0x00000008)
@@ -4301,14 +4297,14 @@ l00002B2A:
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:16 -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B2E:
 	branch (word16) d1_158 >=u 0x0800 l00002B38
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B34:
 	d1_158 = __rol(d1_158, 0x00000004)
@@ -4316,14 +4312,14 @@ l00002B34:
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B38:
 	branch (word16) d1_158 >=u 0x2000 l00002B42
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B3E:
 	d1_158 = __rol(d1_158, 0x00000002)
@@ -4331,14 +4327,14 @@ l00002B3E:
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B42:
 	branch (word16) d1_158 < 0x0000 l00002B4A
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B46:
 	d1_158 = __rol(d1_158, 0x00000001)
@@ -4346,7 +4342,7 @@ l00002B46:
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B4A:
 	word32 d2_103 = DPB(__swap(DPB(d2, (word16) d0, 0)), 0x0000, 0) >>u d3_160
@@ -4360,7 +4356,7 @@ l00002B4A:
 // DataOut: a2 a3 a5 d0 d1 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B66:
 	d3_110 = DPB(d3_104, v39_106 - 0x0001, 0)
@@ -4368,14 +4364,14 @@ l00002B66:
 // DataOut: a2 a3 a5 d0 d3
 // DataOut (flags): C
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> d0:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B6A:
 	branch d0_117 >=u 0x00000000 l00002B6A
 // DataOut: a2 a3 a5 d0 d3
 // DataOut (flags): C
 // SymbolicIn: a7:fp - 8 d1:<invalid> d2:<invalid> d3:<invalid> d0:<invalid> -8(fp):d3 -4(fp):d2
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32)
 
 l00002B6C:
 	word32 d1_138
@@ -4394,7 +4390,6 @@ l00002B02:
 // DataOut: a2 a3 a5 d0 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> -4(fp):d2
-// LocalsOut: Local -0004(32)
 
 l00002B0C:
 	uint16 v15_64 = (uint16) (d2_33 /u (uint16) d1_30)
@@ -4403,7 +4398,6 @@ l00002B0C:
 // DataOut: a2 a3 a5 d0 d1
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 4 d1:<invalid> d2:<invalid> d0:<invalid> -4(fp):d2
-// LocalsOut: Local -0004(32)
 
 l00002B10:
 	word32 d0_38 = __swap(d0_29)

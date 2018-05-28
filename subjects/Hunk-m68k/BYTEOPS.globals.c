@@ -5,7 +5,7 @@
 #include "BYTEOPS.h"
 
 struct Eq_124 * g_ptr0000;
-Eq_793 g_t0001;
+Eq_786 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
 ptr32 g_ptr2B88 = 0x00000000;
@@ -19,13 +19,13 @@ ui32 g_dw2BA4 = 0x05050505;
 word32 g_dw2BB0 = 0x05050505;
 ptr32 g_ptr2BB4 = 0x06060606;
 word32 g_dw2BB8 = 0x06060606;
-struct Eq_2801 * g_ptr2BBC = &g_t6060606;
+struct Eq_2794 * g_ptr2BBC = &g_t6060606;
 word32 g_dw2BC0 = 0x06060606;
-Eq_3282 g_a2BC4[] = 
+Eq_3275 g_a2BC4[] = 
 	{
 	};
 Eq_4 g_t4000;
 Eq_67 g_t10202;
 Eq_67 g_t3030303;
-Eq_2801 g_t6060606;
+Eq_2794 g_t6060606;
 

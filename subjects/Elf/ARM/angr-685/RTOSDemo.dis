@@ -4010,10 +4010,10 @@ l00001081:
 
 
 
-void vTaskSwitchContext(word32 r0, word32 r8, word32 r9)
+void vTaskSwitchContext(word32 r8, word32 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV r0 r8 r9
+// MayUse:  NZCV r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -4024,37 +4024,37 @@ vTaskSwitchContext_exit:
 // SymbolicIn:
 
 vTaskSwitchContext_entry:
-// DataOut: r0 r8 r9
+// DataOut: r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l000010D9:
 	branch ZC l000010DD
-// DataOut: r0 r8 r9
+// DataOut: r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l000010D9_1:
 	__ldcl(0x0D, Mem0[r8:word32])
-// DataOut: r0 r9
+// DataOut: r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l000010DD:
 	branch NZV l000010E1
-// DataOut: r0 r9
+// DataOut: r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:r8 p2:<invalid>
 
 l000010DD_1:
 	NZV = cond(r9 + 0xC0000000 + C) (alias)
-// DataOut: r0
+// DataOut:
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r8:r8 p2:<invalid>
 
 l000010E1:
 	branch NZV l000010E5
-// DataOut: r0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r8:r8 p2:<invalid> ip:<invalid>
 
@@ -13270,10 +13270,10 @@ l0000953D:
 
 
 
-void IntPriorityGroupingSet(word32 r0)
+void IntPriorityGroupingSet()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  N r0
+// MayUse:  N
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -13284,24 +13284,24 @@ IntPriorityGroupingSet_exit:
 // SymbolicIn:
 
 IntPriorityGroupingSet_entry:
-// DataOut: r0
+// DataOut:
 // DataOut (flags): N
 // SymbolicIn: sp:fp
 
 l0000954D:
 	branch N l00009551
-// DataOut: r0
+// DataOut:
 // DataOut (flags): N
 // SymbolicIn: sp:fp
 
 l0000954D_1:
-// DataOut: r0
+// DataOut:
 // DataOut (flags): N
 // SymbolicIn: sp:fp
 
 l00009551:
 	branch N l00009555
-// DataOut: r0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:DPB(r0, 0xA54B, 16)
 
