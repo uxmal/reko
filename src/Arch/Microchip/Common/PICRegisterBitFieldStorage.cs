@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
 
@@ -33,6 +34,9 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICRegisterBitFieldSortKey : IComparable<PICRegisterBitFieldSortKey>, IEquatable<PICRegisterBitFieldSortKey>, IComparable
     {
+        private const int FNV_offset = unchecked((int)2166136261);
+        private const int FNV_prime = 16777619;
+
         public readonly byte BitWidth;
         public readonly byte BitPos;
 
@@ -44,10 +48,14 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override int GetHashCode()
         {
-            var hashCode = -2081872618;
-            hashCode = hashCode * -1521134295 + BitPos.GetHashCode();
-            hashCode = hashCode * -1521134295 + BitWidth.GetHashCode();
-            return hashCode;
+            // FNV-like hash
+            unchecked
+            {
+                int hashCode = FNV_offset;
+                hashCode = (hashCode * FNV_prime) ^ BitPos.GetHashCode();
+                hashCode = (hashCode * FNV_prime) ^ BitWidth.GetHashCode();
+                return hashCode;
+            }
         }
 
         public bool Equals(PICRegisterBitFieldSortKey other) => CompareTo(other) == 0;
@@ -84,7 +92,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="reg">The PIC register containing the bit field.</param>
         /// <param name="sfrfielddef">The bit field definition per PIC XML definition.</param>
         public PICRegisterBitFieldStorage(PICRegisterStorage reg, SFRFieldDef sfrfielddef)
-            : base(reg, (sfrfielddef.Mask << sfrfielddef.BitPos), sfrfielddef.CName, sfrfielddef.NzWidth.Size2PrimitiveType())
+            : base(reg, (sfrfielddef.Mask << sfrfielddef.BitPos), sfrfielddef.CName, PrimitiveType.CreateWordFromBits(sfrfielddef.NzWidth))
         {
             SFRField = sfrfielddef;
             BitFieldSortKey = new PICRegisterBitFieldSortKey(sfrfielddef.BitPos, (byte)sfrfielddef.NzWidth);

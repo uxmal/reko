@@ -37,7 +37,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     public class PICArchitecture : ProcessorArchitecture
     {
-        protected List<FlagGroupStorage> flagGroups;
+        protected Dictionary<uint, FlagGroupStorage> flagGroups;
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
         public PICArchitecture(string archID) : base("pic")
         {
-            flagGroups = new List<FlagGroupStorage>();
+            flagGroups = new Dictionary<uint, FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
             InstructionBitSize = 8;
             PointerType = PrimitiveType.Ptr32;
@@ -110,15 +110,12 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override FlagGroupStorage GetFlagGroup(uint grpFlags)
         {
-            foreach (FlagGroupStorage f in flagGroups)
-            {
-                if (f.FlagGroupBits == grpFlags)
-                    return f;
-            }
+            if (flagGroups.TryGetValue(grpFlags, out var f))
+                return f;
 
             PrimitiveType dt = Bits.IsSingleBitSet(grpFlags) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(PICRegisters.STATUS, grpFlags, GrfToString(grpFlags), dt);
-            flagGroups.Add(fl);
+            flagGroups.Add(grpFlags, fl);
             return fl;
         }
 
@@ -335,9 +332,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             => ProcessorModel.CreateBankedAddress(seg.ToByte(), offset.ToByte());
 
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
-        {
-            throw new NotImplementedException("Microchip PIC has no explicit argument stack");
-        }
+            => throw new NotSupportedException("Microchip PIC has no explicit argument stack.");
 
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
             => PICProgAddress.Ptr(rdr.ReadLeUInt32());

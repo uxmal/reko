@@ -72,7 +72,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="sfr">The SFR definition.</param>
         /// <param name="number">The Reko index number of this register.</param>
         public PICRegisterStorage(SFRDef sfr, int number)
-            : this(sfr.CName, number, 0, sfr.NzWidth.Size2PrimitiveType(), new PICRegisterTraits(sfr))
+            : this(sfr.CName, number, 0, PrimitiveType.CreateWordFromBits(sfr.NzWidth), new PICRegisterTraits(sfr))
         {
         }
 
@@ -83,7 +83,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="number">The Reko index number of this register.</param>
         /// <param name="subregs">The sub-registers of the joint.</param>
         public PICRegisterStorage(JoinedSFRDef jsfr, int number, IList<PICRegisterStorage> subregs)
-            : base(jsfr.CName, number, 0, jsfr.NzWidth.Size2PrimitiveType())
+            : base(jsfr.CName, number, 0, PrimitiveType.CreateWordFromBits(jsfr.NzWidth))
         {
             Traits = new PICRegisterTraits(jsfr, subregs);
             AttachedRegs = subregs.ToList();

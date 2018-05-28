@@ -49,7 +49,7 @@
     <Compile Include="Common\PICArchitectureOptions.cs" />
     <Compile Include="Common\PICMemoryDescriptor.cs" />
     <Compile Include="Common\PICPointerScanner.cs" />
-    <Compile Include="Common\PICPostprocessProgram.cs" />
+    <Compile Include="Common\PICProgramPostprocessor.cs" />
     <Compile Include="Common\PICRegisterAccessMasks.cs" />
     <Compile Include="Common\PICRegisterContent.cs" />
     <Compile Include="Common\PICRegisterBitFieldStorage.cs" />
@@ -67,7 +67,6 @@
     <Compile Include="Common\PICDeviceConfigDefs.cs" />
     <Compile Include="Common\PICArchitecture.cs" />
     <Compile Include="Common\PICInstruction.cs" />
-    <Compile Include="Common\PICRegisterEx.cs" />
     <Compile Include="Common\PICRegisters.cs" />
     <Compile Include="Common\PICRegisterSizedUniqueAddress.cs" />
     <Compile Include="Common\PICRegisterTraits.cs" />

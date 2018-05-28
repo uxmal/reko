@@ -43,7 +43,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICRegisterTraits()
         {
-            RegAddress = new PICRegisterSizedUniqueAddress(PICAddress.Invalid, 8);
+            RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Invalid, 8);
             Name = "None";
             Desc = "";
             Impl = 0xFF;

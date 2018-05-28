@@ -28,7 +28,10 @@ using System.Text;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
-    public class PICPostprocessProgram
+    /// <summary>
+    /// A PIC program loaded image postprocessor. Allows validation of loaded image and customization per the PIC program memory space definition.
+    /// </summary>
+    public class PICProgramPostprocessor
     {
         private readonly Program program;
         private readonly PICArchitecture architecture;
@@ -37,7 +40,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         private Dictionary<string, int> renamingCounter;
 
-        private PICPostprocessProgram(Program prog, PICArchitecture arch)
+        private PICProgramPostprocessor(Program prog, PICArchitecture arch)
         {
             program = prog;
             architecture = arch;
@@ -46,7 +49,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         public static Program Validate(Program prog, PICArchitecture arch)
-            => new PICPostprocessProgram(prog ?? throw new ArgumentNullException(nameof(prog)),
+            => new PICProgramPostprocessor(prog ?? throw new ArgumentNullException(nameof(prog)),
                                          arch ?? throw new ArgumentNullException(nameof(arch)))
                     .PerformValidation();
 

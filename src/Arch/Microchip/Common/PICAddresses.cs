@@ -28,10 +28,9 @@ using System;
 namespace Reko.Arch.MicrochipPIC.Common
 {
 
-    public class PICAddress : Address
+    public abstract class PICAddress : Address
     {
         public readonly Constant Value;
-        public static readonly PICAddress Invalid = new PICAddress(Constant.Invalid);
 
         public PICAddress(uint addr, PrimitiveType dt) : base(dt)
         {
@@ -76,7 +75,9 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICProgAddress : PICAddress
     {
 
-        public const uint MAXPROGBYTADDR = 0x1FFFFFU;
+        public const uint MAXPROGBYTADDR = 0x1FFFFFu;
+
+        public static readonly PICAddress Invalid = new PICProgAddress(Constant.Invalid);
 
         public PICProgAddress(uint addr) : base(addr & MAXPROGBYTADDR, PrimitiveType.Ptr32)
         {
@@ -136,7 +137,10 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICDataAddress : PICAddress
     {
 
-        public const uint MAXDATABYTADDR = 0x3FFF;
+        public const uint MAXDATABYTADDR = 0x3FFFu;
+
+        public static readonly PICAddress Invalid = new PICDataAddress(Constant.Invalid);
+
 
         public PICDataAddress(uint addr) : base(addr & MAXDATABYTADDR, PrimitiveType.Ptr16)
         {

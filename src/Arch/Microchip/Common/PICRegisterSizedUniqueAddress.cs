@@ -26,6 +26,13 @@ using System.Diagnostics;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
+    /// <summary>
+    /// This class permits to define a unique register's address based on the data memory address (or the non-memory-mapped ID) of the register and its bitwidth.
+    /// This permits to distinguish and accept individual and joined registers, those sharing the same memory address (or NMMRID).
+    /// </summary>
+    /// <remarks>
+    /// For example, FSR0 and FSR0L share the same data memory  address but the former is 16-bit wide while the later is 8-bit wide. We need both.
+    /// </remarks>
     [DebuggerDisplay("{_debugDisplay,nq}")]
     public class PICRegisterSizedUniqueAddress : PICRegisterUniqueAddress,
         IComparable<PICRegisterSizedUniqueAddress>, IComparer<PICRegisterSizedUniqueAddress>,

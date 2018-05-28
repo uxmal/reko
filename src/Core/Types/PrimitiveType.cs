@@ -138,6 +138,7 @@ namespace Reko.Core.Types
 			return shared;
 		}
 
+        //$TODO: Make PrimitiveType.CreateWord accept a bit count rather than a byte count
         public static PrimitiveType CreateWord(int byteSize)
         {
             string name;
@@ -155,6 +156,28 @@ namespace Reko.Core.Types
             }
 			return Create(dom, (short) byteSize, name);
 		}
+
+        //$TODO: Remove when PrimitiveType.CreateWord will accept a bit count.
+        public static PrimitiveType CreateWordFromBits(uint bitSize)
+        {
+            if (bitSize == 0)
+                throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
+            if (bitSize == 1)
+                return Bool;
+            if (bitSize <= 8)
+                return Byte;
+            if (bitSize <= 16)
+                return Word16;
+            if (bitSize <= 32)
+                return Word32;
+            if (bitSize <= 64)
+                return Word64;
+            if (bitSize <= 128)
+                return Word128;
+            if (bitSize <= 256)
+                return Word256;
+            throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
+        }
 
         public Domain Domain { get; private set; }
 

@@ -286,7 +286,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             switch (opernd)
             {
                 case PICOperandDataMemoryAddress absmem:
-                    if (absmem.DataTarget == PICAddress.Invalid)
+                    if (absmem.DataTarget == PICDataAddress.Invalid)
                         throw new InvalidOperationException($"Invalid data absolute address operand.");
 
                     if (PICRegisters.TryGetRegister(absmem.DataTarget, out var sfrReg))

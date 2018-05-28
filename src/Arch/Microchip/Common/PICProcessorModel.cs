@@ -166,7 +166,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="arch">The architecture of the processor.</param>
         public virtual void PostprocessProgram(Program program, PICArchitecture arch)
         {
-            PICPostprocessProgram.Validate(program, arch);
+            PICProgramPostprocessor.Validate(program, arch);
         }
 
     }

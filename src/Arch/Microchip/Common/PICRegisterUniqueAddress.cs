@@ -26,6 +26,9 @@ using System.Diagnostics;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
+    /// <summary>
+    /// This class permits to define a unique register's address whether it is an actual data memory address or a non-memory-mapped ID (NMMRID).
+    /// </summary>
     [DebuggerDisplay("{_debugDisplay,nq}")]
     public class PICRegisterUniqueAddress :
         IComparable<PICRegisterUniqueAddress>, IComparer<PICRegisterUniqueAddress>,
