@@ -75,7 +75,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     }
 
     /// <summary>
-    /// Class used to get the architecture optios from the user..
+    /// Class used to get the architecture options from the user.
     /// </summary>
     public class PICArchitectureOptionsPicker
     {
@@ -88,6 +88,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new ArgumentNullException(nameof(opts));
             PICName = opts.ProcessorModel.PICName;
             AllowExtended = opts.PICExecutionMode == PICExecMode.Extended;
+            BinaryFormat = opts.BinaryLoadFormat;
         }
 
         /// <summary>
@@ -101,6 +102,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public bool AllowExtended { get; set; }
 
+        /// <summary>
+        /// Gets or sets the binary file format.
+        /// </summary>
         public string BinaryFormat { get; set; } = "raw";
 
         public override string ToString() => $"{PICName}{(AllowExtended ? ",Extended" : "")}";
