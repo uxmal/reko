@@ -452,7 +452,8 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             if (!rdr.TryReadUInt16(out ushort uConfigWord))
                 return null;
-            instrCur = new PICInstructionPseudo(Opcode.__CONFIG, new PICOperandConfigBits(arch, addrCur, uConfigWord))
+            var cfgAddr = PICProgAddress.Ptr((uint)(addrCur.ToLinear() >> 1));
+            instrCur = new PICInstructionPseudo(Opcode.__CONFIG, new PICOperandConfigBits(arch, cfgAddr, uConfigWord))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)

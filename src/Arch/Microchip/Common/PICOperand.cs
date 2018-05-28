@@ -710,8 +710,8 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICOperandConfigBits : PICOperandPseudo, IOperand
     {
 
-        private PICArchitecture arch;
-        private Address addr;
+        private readonly PICArchitecture arch;
+        private readonly Address addr;
 
         public PICOperandConfigBits(PICArchitecture arch, Address addr, byte config) : base(config)
         {
