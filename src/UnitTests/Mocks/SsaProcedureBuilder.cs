@@ -103,9 +103,20 @@ namespace Reko.UnitTests.Mocks
             case Store store:
                 if (store.Dst is MemoryAccess access)
                 {
-                    AddMemIdToSsa(access);
-                    Ssa.Identifiers[access.MemoryId].DefStatement = stm;
-                    Ssa.Identifiers[access.MemoryId].DefExpression = null;
+                    var memId = AddMemIdToSsa(access.MemoryId);
+                    Ssa.Identifiers[memId].DefStatement = stm;
+                    Ssa.Identifiers[memId].DefExpression = null;
+                    var ea = access.EffectiveAddress;
+                    var dt = access.DataType;
+                    if (store.Dst is SegmentedAccess sa)
+                    {
+                        var basePtr = sa.BasePointer;
+                        store.Dst = new SegmentedAccess(memId, basePtr, ea, dt);
+                    }
+                    else
+                    {
+                        store.Dst = new MemoryAccess(memId, ea, dt);
+                    }
                 }
                 break;
             }
@@ -113,27 +124,33 @@ namespace Reko.UnitTests.Mocks
             return stm;
         }
 
-        private void AddMemIdToSsa(MemoryAccess access)
+        private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)
         {
-            var idOld = access.MemoryId;
             var idNew = new MemoryIdentifier(Ssa.Identifiers.Count, idOld.DataType);
-            access.MemoryId = idNew;
             var sid = new SsaIdentifier(idNew, idOld, null, null, false);
             Ssa.Identifiers.Add(idNew, sid);
+            return idNew;
         }
 
         public override MemoryAccess Mem32(Expression ea)
         {
             var access = base.Mem32(ea);
-            AddMemIdToSsa(access);
-            return access;
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
         }
 
         public override SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
-            AddMemIdToSsa(access);
-            return access;
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new SegmentedAccess(
+                memId,
+                access.BasePointer,
+                access.EffectiveAddress,
+                access.DataType);
         }
     }
 }

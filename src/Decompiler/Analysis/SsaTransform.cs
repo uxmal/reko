@@ -778,14 +778,12 @@ namespace Reko.Analysis
 
                 if (c != null)
                 {
-                    access.EffectiveAddress = c;
                     var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
                     if (e != null)
                         return e;
                 }
-                access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
-                access.EffectiveAddress = ea;
-                return access;
+                var memId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                return new MemoryAccess(memId, ea, access.DataType);
             }
 
             public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -814,11 +812,21 @@ namespace Reko.Analysis
                         var idDst = NewDef(idFrame, store.Src, false);
                         return new Assignment(idDst, store.Src);
                     }
-					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
-                    SegmentedAccess sa = acc as SegmentedAccess;
-					if (sa != null)
-						sa.BasePointer = sa.BasePointer.Accept(this);
-					acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
+                    var memId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
+                    Expression basePtr = null;
+                    if (acc is SegmentedAccess sa)
+                    {
+                        basePtr = sa.BasePointer.Accept(this);
+                    }
+                    var ea = acc.EffectiveAddress.Accept(this);
+                    if (basePtr != null)
+                    {
+                        store.Dst = new SegmentedAccess(memId, basePtr, ea, acc.DataType);
+                    }
+                    else
+                    {
+                        store.Dst = new MemoryAccess(memId, ea, acc.DataType);
+                    }
 				}
 				else
 				{
