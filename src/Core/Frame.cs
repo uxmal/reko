@@ -114,29 +114,26 @@ namespace Reko.Core
 
         public Identifier EnsureIdentifier(Storage stgForeign)
         {
-            var reg = stgForeign as RegisterStorage;
-            if (reg != null)
+            switch (stgForeign)
+            {
+            case RegisterStorage reg:
                 return EnsureRegister(reg);
-            var grf = stgForeign as FlagGroupStorage;
-            if (grf != null)
+            case FlagGroupStorage grf:
                 return EnsureFlagGroup(grf);
-            var seq = stgForeign as SequenceStorage;
-            if (seq != null)
+            case SequenceStorage seq:
                 return EnsureSequence(
                     seq.Name,
-                    seq.Head, 
-                    seq.Tail, 
-                    PrimitiveType.CreateWord(
-                        (int)(seq.Head.BitSize + seq.Tail.BitSize)/DataType.BitsPerByte));
-            var fp = stgForeign as FpuStackStorage;
-            if (fp != null)
+                    seq.Head,
+                    seq.Tail,
+                    PrimitiveType.CreateWordB(
+                        (int)(seq.Head.BitSize + seq.Tail.BitSize)));
+            case FpuStackStorage fp:
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
-            var st = stgForeign as StackStorage;
-            if (st != null)
+            case StackStorage st:
                 return EnsureStackVariable(st.StackOffset, st.DataType);
-            var tmp = stgForeign as TemporaryStorage;
-            if (tmp != null)
+            case TemporaryStorage tmp:
                 return CreateTemporary(tmp.Name, tmp.DataType);
+            }
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
                 stgForeign != null ? stgForeign.ToString() : "(null)"));

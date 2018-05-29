@@ -44,15 +44,15 @@ namespace Reko.Structure
     /// </remarks>
     public class StructureAnalysis : IStructureAnalysis
     {
-        private Program program;
-        private Procedure proc;
+        private readonly Program program;
+        private readonly Procedure proc;
         private DirectedGraph<Region> regionGraph;
         private Region entry;
         private DominatorGraph<Region> doms;
         private DominatorGraph<Region> postDoms;
         private Queue<Tuple<Region, ISet<Region>>> unresolvedCycles;
         private Queue<Region> unresolvedSwitches;
-        private DecompilerEventListener eventListener;
+        private readonly DecompilerEventListener eventListener;
 
         public StructureAnalysis(DecompilerEventListener listener, Program program, Procedure proc)
         {
@@ -571,11 +571,12 @@ all other cases, together they constitute a Switch[].
             if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
                 return immPDom;
 
-            Func<Region, int> incoming = (r) => {
+            int incoming(Region r)
+            {
                 return regionGraph.Predecessors(r)
                     .Where(p => caseNodes.Contains(p))
                     .Count();
-            };
+            }
             var candidates = caseNodes.SelectMany(c => regionGraph.Successors(c))
                 .Where(c => !caseNodes.Contains(c))
                 .ToList();
@@ -677,11 +678,10 @@ all other cases, together they constitute a Switch[].
         {
             //$REVIEW: workaround for when the datatype of n.Expression
             // is non-integral. What causes this?
-            var pt = n.Expression.DataType as PrimitiveType;
-            if (pt == null)
+            if (!(n.Expression.DataType is PrimitiveType pt))
             {
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
-                pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
+                pt = PrimitiveType.CreateWordB(n.Expression.DataType.BitSize);
             }
             var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
@@ -872,7 +872,7 @@ doing future pattern matches.
             {
                 // Goto to a return statement => just a return statement.
                 var ret = (AbsynReturn)vEdge.To.Statements[0];
-                Expression v = ret.Value != null ? ret.Value.CloneExpression() : null;
+                Expression v = ret.Value?.CloneExpression();
                 stm = new AbsynReturn(v);
             }
             else

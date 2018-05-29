@@ -212,11 +212,10 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPointer(Pointer ptr)
         {
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
+            var c = rdr.Read(PrimitiveType.CreateB(Domain.Pointer, ptr.BitSize));
             var addr = Address.FromConstant(c);
             // Check if it is pointer to function
-            Procedure proc;
-            if (program.Procedures.TryGetValue(addr, out proc))
+            if (program.Procedures.TryGetValue(addr, out Procedure proc))
             {
                 codeFormatter.InnerFormatter.WriteHyperlink(proc.Name, proc);
                 return codeFormatter;
@@ -238,8 +237,7 @@ namespace Reko.Core.Output
                     // terminated string is a wild-assed guess of course.
                     // It could be a pascal string, or a raw area of bytes.
                     // Depend on user for this, or possibly platform.
-                    var pt = dt as PrimitiveType;
-                    if (pt != null && pt.Domain == Domain.Character)
+                    if (dt is PrimitiveType pt && pt.Domain == Domain.Character)
                     {
                         dt = StringType.NullTerminated(pt);
                     }

@@ -72,7 +72,7 @@ namespace Reko.Core.Serialization
                 //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
                 // future versions of reko will opt to model multiple values return from functions
                 // explicitly instead of using destructive updates of this kind.
-                idArg = frame.EnsureOutArgument(idArg, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
+                idArg = frame.EnsureOutArgument(idArg, PrimitiveType.CreateB(Domain.Pointer, arch.FramePointerType.BitSize));
             }
             return idArg;
         }
@@ -133,7 +133,7 @@ namespace Reko.Core.Serialization
             if (this.argCur.Type != null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else 
-                dt = PrimitiveType.CreateWord(h.DataType.Size + h.DataType.Size);
+                dt = PrimitiveType.CreateWordB(h.DataType.BitSize + h.DataType.BitSize);
             return frame.EnsureSequence(h, t, dt);
         }
 

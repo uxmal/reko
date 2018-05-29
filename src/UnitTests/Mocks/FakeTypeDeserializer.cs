@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Mocks
 
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
-            return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
+            return PrimitiveType.CreateB(primitive.Domain, primitive.ByteSize * DataType.BitsPerByte);
         }
 
         public DataType VisitSignature(SerializedSignature signature)

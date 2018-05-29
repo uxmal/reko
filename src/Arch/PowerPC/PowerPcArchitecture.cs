@@ -64,7 +64,7 @@ namespace Reko.Arch.PowerPC
         {
             WordWidth = wordWidth;
             SignedWord = signedWord;
-            PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            PointerType = PrimitiveType.CreateB(Domain.Pointer, wordWidth.BitSize);
             FramePointerType = PointerType;
             InstructionBitSize = 32;
 
@@ -205,8 +205,7 @@ namespace Reko.Arch.PowerPC
 
             if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
                 return null;
-            var mem = e.Current.op2 as MemoryOperand;
-            if (mem == null)
+            if (!(e.Current.op2 is MemoryOperand mem))
                 return null;
             if (mem.BaseRegister != reg)
                 return null;

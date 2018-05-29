@@ -67,8 +67,8 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-		private int bitSize;
-        private int byteSize;
+		private readonly int bitSize;
+        private readonly int byteSize;
 		
 		private PrimitiveType(Domain dom, int bitSize, string name)
 		{
@@ -93,25 +93,23 @@ namespace Reko.Core.Types
 			return this;
 		}
 
-		public int Compare(PrimitiveType a)
+		public int Compare(PrimitiveType that)
 		{
-			PrimitiveType p = (PrimitiveType) a;
-			int d = (int) Domain - (int) p.Domain;
+			int d = (int) this.Domain - (int) that.Domain;
 			if (d != 0)
 				return d;
-			return bitSize - p.bitSize;
+			return this.bitSize - that.bitSize;
 		}
 
-		public static PrimitiveType Create(Domain dom, int byteSize)
+		public static PrimitiveType CreateB(Domain dom, int bitSize)
 		{
-			return Create(dom, byteSize, null);
+			return CreateB(dom, bitSize, null);
 		}
 
         public static PrimitiveType CreateBitSlice(int bitlength)
         {
             var p = new PrimitiveType(Domain.Integer, bitlength, null);
-            PrimitiveType shared;
-            if (!cache.TryGetValue(p, out shared))
+            if (!cache.TryGetValue(p, out PrimitiveType shared))
             {
                 shared = p;
                 shared.Name = GenerateName(Domain.Integer, p.BitSize);
@@ -121,49 +119,52 @@ namespace Reko.Core.Types
             return shared;
         }
 
-        private static PrimitiveType Create(Domain dom, int byteSize, string name)
+        private static PrimitiveType CreateB(Domain dom, int bitSize, string name)
 		{
-            if (mpBitWidthToAllowableDomain.TryGetValue(byteSize, out var domainMask))
+            if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
                 dom &= domainMask;
             }
-			PrimitiveType p = new PrimitiveType(dom, byteSize*8, null);
+			PrimitiveType p = new PrimitiveType(dom, bitSize, null);
             if (!cache.TryGetValue(p, out var shared))
             {
                 shared = p;
-                shared.Name = name != null ? name : GenerateName(dom, p.BitSize);
+                shared.Name = name ?? GenerateName(dom, p.BitSize);
                 cache.Add(shared, shared);
                 lookupByName.Add(shared.Name, shared);
             }
 			return shared;
 		}
 
-        public static PrimitiveType CreateWord(int byteSize)
+        public static PrimitiveType CreateWordB(int bitSize)
         {
             string name;
-            if (byteSize == 1)
+            if (bitSize == 1)
+            {
+                name = "bool";
+            }
+            else if (bitSize == 8)
             {
                 name = "byte";
             }
             else
             { 
-                name = $"word{byteSize * 8}";
+                name = $"word{bitSize}";
             }
-            if (!mpBitWidthToAllowableDomain.TryGetValue(byteSize, out var dom))
+            if (!mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var dom))
             {
                 dom = Domain.UnsignedInt | Domain.Integer | Domain.Pointer;
             }
-			return Create(dom, (short) byteSize, name);
+			return CreateB(dom, (short) bitSize, name);
 		}
 
         public Domain Domain { get; private set; }
 
 		public override bool Equals(object obj)
 		{
-			PrimitiveType p = obj as PrimitiveType;
-			if (p == null)
-				return false;
-			return p.Domain == Domain && p.bitSize == bitSize;
+            if (!(obj is PrimitiveType that))
+                return false;
+            return that.Domain == this.Domain && that.bitSize == this.bitSize;
 		}
 	
         /// <summary>
@@ -259,7 +260,7 @@ namespace Reko.Core.Types
             var dom = this.Domain & domainMask;
             if (dom == 0)
                 dom = domainMask;
-            return Create(dom, Size);
+            return CreateB(dom, BitSize);
 		}
 
 		public override string Prefix
@@ -280,14 +281,14 @@ namespace Reko.Core.Types
 				case Domain.Selector:
 					return "pseg";
 				default:
-					switch (byteSize)
+					switch (bitSize)
 					{
-					case 1: return "b";
-					case 2: return "w";
-					case 4: return "dw";
-                    case 8: return "qw";
-                    case 16: return "ow";
-                    case 32: return "hw";
+					case 8: return "b";
+					case 16: return "w";
+					case 32: return "dw";
+                    case 64: return "qw";
+                    case 128: return "ow";
+                    case 256: return "hw";
 					default: return "n";
 					}
 				}
@@ -319,55 +320,56 @@ namespace Reko.Core.Types
             mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
             {
                 { 0, Domain.Any },
-                { 1, Domain.Boolean|Domain.Character|Domain.Integer },
-                { 2, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
-                { 4, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
-                { 8, Domain.Integer | Domain.Pointer | Domain.Real },
-                { 10, Domain.Integer | Domain.Real | Domain.Bcd },
-                { 12, Domain.Integer | Domain.Real },
-                { 16, Domain.Integer | Domain.Real },
-                { 32, Domain.Integer | Domain.Real },
+                { 8, Domain.Boolean|Domain.Character|Domain.Integer },
+                { 16, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
+                { 32, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
+                { 64, Domain.Integer | Domain.Pointer | Domain.Real },
+                { 80, Domain.Integer | Domain.Real | Domain.Bcd },
+                { 96, Domain.Integer | Domain.Real },
+                { 128, Domain.Integer | Domain.Real },
+                { 256, Domain.Integer | Domain.Real },
             };
 
-            Byte = CreateWord(1);
-            Bool = Create(Domain.Boolean, 1);
-            Char = Create(Domain.Character, 1);
-            SByte = Create(Domain.SignedInt, 1);
-            UInt8 = Create(Domain.UnsignedInt, 1);
+            Bool = CreateB(Domain.Boolean, 1);
 
-            Word16 = CreateWord(2);
-            Int16 = Create(Domain.SignedInt, 2);
-            UInt16 = Create(Domain.UnsignedInt, 2);
-            Ptr16 = Create(Domain.Pointer, 2);
-            SegmentSelector = Create(Domain.Selector, 2);
-            WChar = Create(Domain.Character, 2);
-            Offset16 = Create(Domain.Offset, 2);
+            Byte = CreateWordB(8);
+            Char = CreateB(Domain.Character, 8);
+            SByte = CreateB(Domain.SignedInt, 8);
+            UInt8 = CreateB(Domain.UnsignedInt, 8);
 
-            Word32 = CreateWord(4);
-            Int32 = Create(Domain.SignedInt, 4);
-            UInt32 = Create(Domain.UnsignedInt, 4);
-            Ptr32 = Create(Domain.Pointer, 4);
-            SegPtr32 = Create(Domain.SegPointer, 4);
-            Real32 = Create(Domain.Real, 4);
+            Word16 = CreateWordB(16);
+            Int16 = CreateB(Domain.SignedInt, 16);
+            UInt16 = CreateB(Domain.UnsignedInt, 16);
+            Ptr16 = CreateB(Domain.Pointer, 16);
+            SegmentSelector = CreateB(Domain.Selector, 16);
+            WChar = CreateB(Domain.Character, 16);
+            Offset16 = CreateB(Domain.Offset, 16);
 
-            Word64 = CreateWord(8);
-            Int64 = Create(Domain.SignedInt, 8);
-            UInt64 = Create(Domain.UnsignedInt, 8);
-            Ptr64 = Create(Domain.Pointer, 8);
-            Real64 = Create(Domain.Real, 8);
+            Word32 = CreateWordB(32);
+            Int32 = CreateB(Domain.SignedInt, 32);
+            UInt32 = CreateB(Domain.UnsignedInt, 32);
+            Ptr32 = CreateB(Domain.Pointer, 32);
+            SegPtr32 = CreateB(Domain.SegPointer, 32);
+            Real32 = CreateB(Domain.Real, 32);
 
-            Word80 = CreateWord(10);
-            Real80 = Create(Domain.Real, 10);
-            Bcd80 = Create(Domain.Bcd, 10);
+            Word64 = CreateWordB(64);
+            Int64 = CreateB(Domain.SignedInt, 64);
+            UInt64 = CreateB(Domain.UnsignedInt, 64);
+            Ptr64 = CreateB(Domain.Pointer, 64);
+            Real64 = CreateB(Domain.Real, 64);
 
-            Real96 = Create(Domain.Real, 12);
+            Word80 = CreateWordB(80);
+            Real80 = CreateB(Domain.Real, 80);
+            Bcd80 = CreateB(Domain.Bcd, 80);
 
-            Word128 = CreateWord(16);
-            Int128 = Create(Domain.SignedInt, 16);
-            UInt128 = Create(Domain.UnsignedInt, 16);
-            Real128 = Create(Domain.Real, 16);
+            Real96 = CreateB(Domain.Real, 96);
 
-            Word256 = CreateWord(32);
+            Word128 = CreateWordB(128);
+            Int128 = CreateB(Domain.SignedInt, 128);
+            UInt128 = CreateB(Domain.UnsignedInt, 128);
+            Real128 = CreateB(Domain.Real, 128);
+
+            Word256 = CreateWordB(256);
         }
 
 		public static PrimitiveType Bool { get; private set; }

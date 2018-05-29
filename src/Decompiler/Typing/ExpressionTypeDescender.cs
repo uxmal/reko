@@ -232,7 +232,7 @@ namespace Reko.Typing
             else if (binExp.Operator == Operator.And || binExp.Operator == Operator.Or)
             {
                 //$REVIEW: need a push-logical-Data type to push [[a & 3]] = char into its left and right halves.
-                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
+                var dt = PrimitiveType.CreateWordB(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
                 MeetDataType(eLeft, dt);
                 MeetDataType(eRight, dt);
             }
@@ -240,27 +240,27 @@ namespace Reko.Typing
                 binExp.Operator == Operator.IMul ||
                 binExp.Operator == Operator.IMod)
             {
-                var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).Size).MaskDomain(Domain.Boolean | Domain.Integer );
+                var dt = PrimitiveType.CreateWordB(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.Integer );
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(DataTypeOf(eRight).Size).MaskDomain(Domain.Boolean | Domain.Integer);
+                dt = PrimitiveType.CreateWordB(DataTypeOf(eRight).BitSize).MaskDomain(Domain.Boolean | Domain.Integer);
                 MeetDataType(eRight, dt);
             }
             else if (
                 binExp.Operator == Operator.SMul ||
                 binExp.Operator == Operator.SDiv)
             {
-                var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).Size).MaskDomain(Domain.Boolean | Domain.SignedInt);
+                var dt = PrimitiveType.CreateWordB(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(DataTypeOf(eRight).Size).MaskDomain(Domain.Boolean | Domain.SignedInt);
+                dt = PrimitiveType.CreateWordB(DataTypeOf(eRight).BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eRight, dt);
             }
             else if (
                 binExp.Operator == Operator.UMul ||
                 binExp.Operator == Operator.UDiv)
             {
-                var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).Size).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
+                var dt = PrimitiveType.CreateWordB(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(DataTypeOf(eRight).Size).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
+                dt = PrimitiveType.CreateWordB(DataTypeOf(eRight).BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.FAdd ||
@@ -268,22 +268,22 @@ namespace Reko.Typing
                     binExp.Operator == Operator.FMul ||
                     binExp.Operator == Operator.FDiv)
             {
-                var dt = PrimitiveType.Create(Domain.Real, tv.DataType.Size);
+                var dt = PrimitiveType.CreateB(Domain.Real, tv.DataType.BitSize);
                 MeetDataType(eLeft, dt);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator is SignedIntOperator)
             {
-                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.SignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWordB(eRight.TypeVariable.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.SignedInt | Domain.Character);
+                dt = PrimitiveType.CreateWordB(eRight.TypeVariable.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator is UnsignedIntOperator)
             {
-                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWordB(eRight.TypeVariable.DataType.BitSize).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
+                dt = PrimitiveType.CreateWordB(eRight.TypeVariable.DataType.BitSize).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
@@ -296,28 +296,28 @@ namespace Reko.Typing
             else if (binExp.Operator is RealConditionalOperator)
             {
                 // We know leaves must be floats
-                var dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.Size);
+                var dt = PrimitiveType.CreateB(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.Size);
+                dt = PrimitiveType.CreateB(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Shl)
             {
-                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
+                var dt = PrimitiveType.CreateWordB(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
+                dt = PrimitiveType.CreateB(Domain.Integer, DataTypeOf(eRight).BitSize);
             }
             else if (binExp.Operator == Operator.Shr)
             {
-                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.UnsignedInt| Domain.Character);
+                var dt = PrimitiveType.CreateWordB(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt| Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
+                dt = PrimitiveType.CreateB(Domain.Integer, DataTypeOf(eRight).BitSize);
             }
             else if (binExp.Operator == Operator.Sar)
             {
-                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.SignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWordB(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
+                dt = PrimitiveType.CreateB(Domain.Integer, DataTypeOf(eRight).BitSize);
             }
             else
                 throw new NotImplementedException(string.Format("Unhandled binary operator {0} in expression {1}.", binExp.Operator, binExp));
@@ -334,17 +334,17 @@ namespace Reko.Typing
             {
                 if (ptOther != null && ptOther.Domain == Domain.Pointer || dtOther is Pointer)
                 {
-                    return PrimitiveType.Create(Domain.SignedInt, dtSum.Size);
+                    return PrimitiveType.CreateB(Domain.SignedInt, dtSum.BitSize);
                 }
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
                 {
-                    return PrimitiveType.Create(Domain.Pointer, dtSum.Size);
+                    return PrimitiveType.CreateB(Domain.Pointer, dtSum.BitSize);
                 }
             }
             if (dtSum is MemberPointer mpSum)
             {
                 if (dtOther is MemberPointer)
-                    return PrimitiveType.Create(Domain.SignedInt, dtOther.Size);
+                    return PrimitiveType.CreateB(Domain.SignedInt, dtOther.BitSize);
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
                 {
                     return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
@@ -358,7 +358,7 @@ namespace Reko.Typing
             }
             if (ptSum != null && ptSum.Domain == Domain.Pointer || dtSum is Pointer)
             {
-                return PrimitiveType.Create(Domain.SignedInt, dtSum.Size);
+                return PrimitiveType.CreateB(Domain.SignedInt, dtSum.BitSize);
             }
             return dtSum;
         }
@@ -370,7 +370,7 @@ namespace Reko.Typing
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
                 if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
-                    return PrimitiveType.Create(Domain.Pointer, dtDiff.Size);
+                    return PrimitiveType.CreateB(Domain.Pointer, dtDiff.BitSize);
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtSub));
             }
             if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
@@ -389,13 +389,13 @@ namespace Reko.Typing
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
                 if (dtMin is Pointer || ptMin != null && ptMin.Domain == Domain.Pointer)
-                    return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
+                    return PrimitiveType.CreateB(Domain.Integer, dtDiff.BitSize);
                 throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
             {
                 if (dtMin is MemberPointer || ptMin != null && ptMin.Domain == Domain.Offset)
-                    return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
+                    return PrimitiveType.CreateB(Domain.Integer, dtDiff.BitSize);
                 throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             return dtMin;
@@ -556,11 +556,11 @@ namespace Reko.Typing
 
         private bool IsArrayAccess(Expression effectiveAddress)
         {
-            var binEa = effectiveAddress as BinaryExpression;
-            if (binEa == null || binEa.Operator != Operator.IAdd)
+            if (!(effectiveAddress is BinaryExpression binEa) ||
+                binEa.Operator != Operator.IAdd)
                 return false;
-            var ptRight = binEa.Right.TypeVariable.DataType as PrimitiveType;
-            if (ptRight == null || !ptRight.IsIntegral)
+            if (!(binEa.Right.TypeVariable.DataType is PrimitiveType ptRight) ||
+                !ptRight.IsIntegral)
                 return false;
             return true;
         }
@@ -667,16 +667,16 @@ namespace Reko.Typing
 
         private bool IsSelector(Expression e)
         {
-            var pt = DataTypeOf(e) as PrimitiveType;
-            return pt != null && pt.Domain == Domain.Selector;
+            return
+                DataTypeOf(e) is PrimitiveType pt &&
+                pt.Domain == Domain.Selector;
         }
 
         private bool IsPointer(DataType dt)
         {
             if (dt is Pointer)
                 return true;
-            var pt = dt as PrimitiveType;
-            return pt != null && pt.Domain == Domain.Pointer;
+            return dt is PrimitiveType pt && pt.Domain == Domain.Pointer;
         }
 
         public bool VisitMkSequence(MkSequence seq, TypeVariable tv)
@@ -699,10 +699,10 @@ namespace Reko.Typing
             }
             if (tv.DataType is PrimitiveType pt && pt.IsIntegral)
             {
-                MeetDataType(seq.Expressions[0], PrimitiveType.Create(pt.Domain, seq.Expressions[0].DataType.Size));
+                MeetDataType(seq.Expressions[0], PrimitiveType.CreateB(pt.Domain, seq.Expressions[0].DataType.BitSize));
                 foreach (var e in seq.Expressions.Skip(1))
                 {
-                    MeetDataType(e, PrimitiveType.Create(Domain.UnsignedInt, e.DataType.Size));
+                    MeetDataType(e, PrimitiveType.CreateB(Domain.UnsignedInt, e.DataType.BitSize));
                 }
             }
             foreach (var e in seq.Expressions)

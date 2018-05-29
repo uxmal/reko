@@ -206,10 +206,9 @@ namespace Reko.Core.Expressions
 		{
 			get 
 			{
-				PrimitiveType p = DataType as PrimitiveType;
-				if (p == null || p.Domain == Domain.Real)
-					return false; 
-				return ToInt64() == 0;
+                if (!(DataType is PrimitiveType p) || p.Domain == Domain.Real)
+                    return false;
+                return ToInt64() == 0;
 			}
 		}
 
@@ -235,9 +234,8 @@ namespace Reko.Core.Expressions
 		{
 			get 
 			{
-				PrimitiveType p = DataType as PrimitiveType;
-				return p != null && p.Domain == Domain.Real;
-			}
+                return DataType is PrimitiveType p && p.Domain == Domain.Real;
+            }
 		}
 
 		public bool IsValid
@@ -251,7 +249,7 @@ namespace Reko.Core.Expressions
             var c = GetValue();
 			if ((p.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
 			{
-                p = PrimitiveType.Create(Domain.SignedInt, p.Size);
+                p = PrimitiveType.CreateB(Domain.SignedInt, p.BitSize);
 				if (p.BitSize <= 8)				
 					return Constant.Create(p, (sbyte) -Convert.ToInt32(c));
 				if (p.BitSize <= 16)
@@ -408,9 +406,9 @@ namespace Reko.Core.Expressions
             return new ConstantUInt64(PrimitiveType.Word64, n);
         }
 
-        public static Constant Word(int byteSize, long value)
+        public static Constant WordB(int bitSize, long value)
         {
-            return Create(PrimitiveType.CreateWord(byteSize), value);
+            return Create(PrimitiveType.CreateWordB(bitSize), value);
         }
 
         public static Constant Zero(DataType dataType)
@@ -433,7 +431,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantBool : Constant
     {
-        private bool value;
+        private readonly bool value;
 
         public ConstantBool(DataType dt, bool value)
             : base(dt)
@@ -499,7 +497,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantSByte : Constant
     {
-        private sbyte value;
+        private readonly sbyte value;
 
         public ConstantSByte(DataType dt, sbyte value)
             : base(dt)
@@ -555,7 +553,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantChar : Constant
     {
-        private char value;
+        private readonly char value;
 
         public ConstantChar(DataType dt, char value)
             : base(dt)
@@ -611,7 +609,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantByte : Constant
     {
-        private byte value;
+        private readonly byte value;
 
         public ConstantByte(DataType dt, byte value)
             : base(dt)
@@ -667,7 +665,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantInt16 : Constant
     {
-        private short value;
+        private readonly short value;
 
         public ConstantInt16(DataType dt, short value)
             : base(dt)
@@ -723,7 +721,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantUInt16 : Constant
     {
-        private ushort value;
+        private readonly ushort value;
 
         public ConstantUInt16(DataType dt, ushort value)
             : base(dt)
@@ -779,7 +777,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantInt32 : Constant
     {
-        private int value;
+        private readonly int value;
 
         public ConstantInt32(DataType dt, int value)
             : base(dt)
@@ -835,7 +833,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantUInt32 : Constant
     {
-        private uint value;
+        private readonly uint value;
 
         public ConstantUInt32(DataType dt, uint value)
             : base(dt)
@@ -891,7 +889,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantInt64 : Constant
     {
-        private long value;
+        private readonly long value;
 
         public ConstantInt64(DataType dt, long value)
             : base(dt)
@@ -947,7 +945,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantUInt64 : Constant
     {
-        private ulong value;
+        private readonly ulong value;
 
         public ConstantUInt64(DataType dt, ulong value)
             : base(dt)
@@ -1003,7 +1001,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantInt128 : Constant
     {
-        private long value;
+        private readonly long value;
 
         public ConstantInt128(DataType dt, long value)
             : base(dt)
@@ -1059,7 +1057,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantUInt128 : Constant
     {
-        private ulong value;
+        private readonly ulong value;
 
         public ConstantUInt128(DataType dt, ulong value)
             : base(dt)
@@ -1115,7 +1113,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantInt256 : Constant
     {
-        private long value;
+        private readonly long value;
 
         public ConstantInt256(DataType dt, long value)
             : base(dt)
@@ -1171,7 +1169,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantUInt256 : Constant
     {
-        private ulong value;
+        private readonly ulong value;
 
         public ConstantUInt256(DataType dt, ulong value)
             : base(dt)
@@ -1234,7 +1232,7 @@ namespace Reko.Core.Expressions
 
         public static ConstantReal Create(DataType dt, double value)
         {
-            var pt = PrimitiveType.Create(Domain.Real, dt.Size);
+            var pt = PrimitiveType.CreateB(Domain.Real, dt.BitSize);
             switch (dt.BitSize)
             {
             case 32: return new ConstantReal32(pt, (float)value);
@@ -1246,7 +1244,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantReal32 : ConstantReal
     {
-        private float value;
+        private readonly float value;
 
         public ConstantReal32(DataType dt, float value)
             : base(dt)
@@ -1312,7 +1310,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantReal80 : ConstantReal
     {
-        private Float80 value;
+        private readonly Float80 value;
 
         public ConstantReal80(DataType dt, Float80 value)
             : base(dt)
@@ -1373,7 +1371,7 @@ namespace Reko.Core.Expressions
 
     internal class ConstantReal64 : ConstantReal
     {
-        private double value;
+        private readonly double value;
 
         public ConstantReal64(DataType dt, double value)
             : base(dt)

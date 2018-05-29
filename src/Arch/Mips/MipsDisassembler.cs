@@ -32,19 +32,19 @@ namespace Reko.Arch.Mips
 {
     public class MipsDisassembler : DisassemblerBase<MipsInstruction>
     {
-        internal MipsProcessorArchitecture arch;
-        internal bool isVersion6OrLater;
+        internal readonly MipsProcessorArchitecture arch;
+        internal readonly bool isVersion6OrLater;
         private MipsInstruction instrCur;
         private Address addr;
-        private EndianImageReader rdr;
-        private PrimitiveType signedWord;
+        private readonly EndianImageReader rdr;
+        private readonly PrimitiveType signedWord;
 
         public MipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader imageReader, bool isVersion6OrLater)
         {
             this.arch = arch;
             this.rdr = imageReader;
             this.isVersion6OrLater = isVersion6OrLater;
-            this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.Size);
+            this.signedWord = PrimitiveType.CreateB(Domain.SignedInt, arch.WordWidth.BitSize);
         }
 
         public override MipsInstruction DisassembleInstruction()

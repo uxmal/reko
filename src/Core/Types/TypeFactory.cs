@@ -64,9 +64,9 @@ namespace Reko.Core.Types
 			return new FunctionType(returnType, parameters);
 		}
 
-		public PrimitiveType CreatePrimitiveType(Domain dom, int size)
+		public PrimitiveType CreatePrimitiveTypeB(Domain dom, int bitSize)
 		{
-			return PrimitiveType.Create(dom, size);
+			return PrimitiveType.CreateB(dom, bitSize);
 		}
 
         public DataType CreateStructureType()

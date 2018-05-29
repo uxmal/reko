@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TfacCreation()
 		{
-			PrimitiveType it = factory.CreatePrimitiveType(Domain.UnsignedInt, 4);
+			PrimitiveType it = factory.CreatePrimitiveTypeB(Domain.UnsignedInt, 32);
 			Assert.AreEqual(4, it.Size);
 
 			StructureType str = factory.CreateStructureType("niz", 30);
@@ -55,8 +55,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TfacIdenticalPrimitives()
 		{
-			object o1 = factory.CreatePrimitiveType(Domain.SignedInt, 2);
-			object o2 = factory.CreatePrimitiveType(Domain.SignedInt, 2);
+			object o1 = factory.CreatePrimitiveTypeB(Domain.SignedInt, 16);
+			object o2 = factory.CreatePrimitiveTypeB(Domain.SignedInt, 16);
 			Assert.AreSame(o1, o2);
 		}
 	}

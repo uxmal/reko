@@ -61,27 +61,27 @@ namespace Reko.Libraries.Python
             this.ArgumentTypes = new List<DataType>();
             this.format = format;
             var platform = program.Platform;
-            this.pointerSize = platform.PointerType.Size;
+            this.pointerSize = platform.PointerType.BitSize;
 
-            var wordSize = platform.Architecture.WordWidth.Size;
+            var wordSize = platform.Architecture.WordWidth.BitSize;
             var longSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Long);
+                CBasicType.Long) * DataType.BitsPerByte;
             var longLongSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.LongLong);
+                CBasicType.LongLong) * DataType.BitsPerByte;
             var doubleSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Double);
+                CBasicType.Double) * DataType.BitsPerByte;
 
-            dtInt = Integer(wordSize);
-            dtUInt = UInteger(wordSize);
-            dtLong = Integer(longSize);
-            dtULong = UInteger(longSize);
-            dtLongLong = Integer(longLongSize);
-            dtULongLong = UInteger(longLongSize);
+            dtInt = IntegerB(wordSize);
+            dtUInt = UIntegerB(wordSize);
+            dtLong = IntegerB(longSize);
+            dtULong = UIntegerB(longSize);
+            dtLongLong = IntegerB(longLongSize);
+            dtULongLong = UIntegerB(longLongSize);
             dtDouble = Real(doubleSize);
             ptrChar = Ptr(PrimitiveType.Char);
             ptrVoid = Ptr(VoidType.Instance);
 
-            dtPySize = UInteger(pointerSize);
+            dtPySize = UIntegerB(pointerSize);
             ptrPyObject = Ptr(Ref("PyObject"));
             ptrPyUnicode = Ptr(Ref("Py_UNICODE"));
             ptrPyComplex = Ptr(Ref("Py_complex"));
@@ -100,19 +100,19 @@ namespace Reko.Libraries.Python
             return new TypeReference(name, new UnknownType());
         }
 
-        private DataType Integer(int size)
+        private DataType IntegerB(int size)
         {
-            return PrimitiveType.Create(Domain.SignedInt, size);
+            return PrimitiveType.CreateB(Domain.SignedInt, size);
         }
 
-        private DataType UInteger(int size)
+        private DataType UIntegerB(int size)
         {
-            return PrimitiveType.Create(Domain.UnsignedInt, size);
+            return PrimitiveType.CreateB(Domain.UnsignedInt, size);
         }
 
         private DataType Real(int size)
         {
-            return PrimitiveType.Create(Domain.Real, size);
+            return PrimitiveType.CreateB(Domain.Real, size);
         }
 
         public void Parse()

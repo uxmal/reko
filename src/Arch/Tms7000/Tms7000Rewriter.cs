@@ -313,7 +313,7 @@ namespace Reko.Arch.Tms7000
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
         {
             var reg = Operand(instr.op1);
-            m.Assign(reg, fn(reg, Constant.Word(reg.DataType.Size, 1)));
+            m.Assign(reg, fn(reg, Constant.WordB(reg.DataType.BitSize, 1)));
             CNZ(reg);
         }
 
@@ -323,7 +323,7 @@ namespace Reko.Arch.Tms7000
             var hireg = ((RegisterOperand)instr.op1).Register;
             var loreg = arch.GpRegs[(hireg.Number - 1 & 0xFF)];
             var reg = binder.EnsureSequence(hireg, loreg, PrimitiveType.Word16);
-            m.Assign(reg, fn(reg, Constant.Word(reg.DataType.Size, 1)));
+            m.Assign(reg, fn(reg, Constant.WordB(reg.DataType.BitSize, 1)));
             CNZ(reg);
         }
 

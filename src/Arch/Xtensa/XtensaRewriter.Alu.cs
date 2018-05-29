@@ -217,8 +217,8 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            var tmp1 = binder.CreateTemporary(PrimitiveType.Create(dom, 2));
-            var tmp2 = binder.CreateTemporary(PrimitiveType.Create(dom, 2));
+            var tmp1 = binder.CreateTemporary(PrimitiveType.CreateB(dom, 16));
+            var tmp2 = binder.CreateTemporary(PrimitiveType.CreateB(dom, 16));
             m.Assign(tmp1, m.Cast(tmp1.DataType, src1));
             m.Assign(tmp2, m.Cast(tmp2.DataType, src2));
             m.Assign(dst, mul(tmp1, tmp2));
@@ -266,7 +266,7 @@ namespace Reko.Arch.Xtensa
             var cat = binder.EnsureSequence(
                 src1.Storage, 
                 src2.Storage, 
-                PrimitiveType.CreateWord(src1.DataType.Size + src2.DataType.Size));
+                PrimitiveType.CreateWordB(src1.DataType.BitSize + src2.DataType.BitSize));
             m.Assign(
                 dst,
                 m.Cast(dst.DataType, m.Shr(cat, sa)));

@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Analysis
         {
             program.EnvironmentMetadata.Types.Add(
                 "BYTE",
-                PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+                PrimitiveType.CreateB(PrimitiveType.Byte.Domain, 8));
             Given_Procedure(0x1000);
 
             var usb = new UserSignatureBuilder(program);
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Analysis
         public void Usb_ParseFunctionDeclaration_UserDefinedTypes()
         {
             program.EnvironmentMetadata.Types.Add(
-                "BYTE", PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+                "BYTE", PrimitiveType.CreateB(PrimitiveType.Byte.Domain, 8));
          
             Given_Procedure(0x1000);
 
@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Analysis
 
             //should accept user defined type USRDEF1
             program.EnvironmentMetadata.Types.Add(
-                "USRDEF1", PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
+                "USRDEF1", PrimitiveType.CreateB(PrimitiveType.Int16.Domain, 16));
 
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)");
 
@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Analysis
             //define USRDEF2 so parser should accept it
 
             program.EnvironmentMetadata.Types.Add(
-               "USRDEF2", PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
+               "USRDEF2", PrimitiveType.CreateB(PrimitiveType.Int16.Domain, 16));
 
             sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)");
 
@@ -193,10 +193,10 @@ namespace Reko.UnitTests.Analysis
         {
             program.EnvironmentMetadata.Types.Add(
                 "PLATFORMDEF",
-                PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+                PrimitiveType.CreateB(PrimitiveType.Byte.Domain, 8));
             program.EnvironmentMetadata.Types.Add(
                 "USRDEF",
-                PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
+                PrimitiveType.CreateB(PrimitiveType.Int16.Domain, 16));
             Given_Procedure(0x1000);
             Given_UserSignature(0x01000, "int test(PLATFORMDEF a, USRDEF b)");
 

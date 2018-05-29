@@ -165,19 +165,19 @@ Some examples:
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
                     return PrimitiveType.Int32;         // Convenient for 2015... most ints are 32 in C code.
-                return PrimitiveType.Create(Domain.SignedInt, bitSize / 8);
+                return PrimitiveType.CreateB(Domain.SignedInt, bitSize);
             case 'u':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
                 {
                     return PrimitiveType.UInt32;            //$REVIEW: arch word size?
                 }
-                return PrimitiveType.Create(Domain.UnsignedInt, bitSize / 8);
+                return PrimitiveType.CreateB(Domain.UnsignedInt, bitSize);
             case 'r':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
                     return new UnknownType();
-                return PrimitiveType.Create(Domain.Real, bitSize / 8);
+                return PrimitiveType.CreateB(Domain.Real, bitSize);
             case 'f':
                 return PrimitiveType.Bool;
             case 'c':
@@ -276,7 +276,7 @@ Some examples:
                 return new StructureType
                 {
                     Fields = {
-                        new StructureField(0, PrimitiveType.Create(Domain.SignedInt, length / 8), "length"),
+                        new StructureField(0, PrimitiveType.CreateB(Domain.SignedInt, length), "length"),
                         new StructureField(1, new ArrayType(PrimitiveType.Char, 0), "chars"),
                     }
                 };

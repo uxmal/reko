@@ -193,7 +193,7 @@ namespace Reko.Core
             var idHead = h as Identifier;
             var idTail = t as Identifier;
             if (idHead != null && idTail != null)
-                return frame.EnsureSequence(idHead.Storage, idTail.Storage, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
+                return frame.EnsureSequence(idHead.Storage, idTail.Storage, PrimitiveType.CreateWordB(idHead.DataType.BitSize + idTail.DataType.BitSize));
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }
 

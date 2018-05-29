@@ -398,11 +398,11 @@ namespace Reko.Core.Types
         private DataType UnifyPrimitives(PrimitiveType pa, PrimitiveType pb)
         {
             Domain d = pa.Domain & pb.Domain;
-            if (d != 0 && pa.Size == pb.Size)
+            if (d != 0 && pa.BitSize == pb.BitSize)
             {
-                return PrimitiveType.Create(d, pa.Size);
+                return PrimitiveType.CreateB(d, pa.BitSize);
             }
-            if (pa.Domain == Domain.SegPointer && pb.Size == 2)
+            if (pa.Domain == Domain.SegPointer && pb.BitSize == 16)
                 return pa;
             return MakeUnion(pa, pb);
         }

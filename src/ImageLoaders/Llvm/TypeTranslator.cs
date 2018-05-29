@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.LLVM
     /// </summary>
     public class TypeTranslator : LLVMTypeVisitor<DataType>
     {
-        private int ptrByteSize;
+        private readonly int ptrByteSize;
 
         public TypeTranslator(int pointerByteSize)
         {
@@ -56,9 +56,9 @@ namespace Reko.ImageLoaders.LLVM
                 if (b.BitSize == 1)
                     return PrimitiveType.Bool;
                 else 
-                    return PrimitiveType.CreateWord(b.BitSize / 8);
+                    return PrimitiveType.CreateWordB(b.BitSize);
             case Domain.Real:
-                return PrimitiveType.Create(Core.Types.Domain.Real, b.BitSize / 8);
+                return PrimitiveType.CreateB(Core.Types.Domain.Real, b.BitSize);
             case Domain.Void:
                 return VoidType.Instance;
             }
