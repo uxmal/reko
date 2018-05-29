@@ -132,7 +132,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the register memory address or null if not memory-mapped.
         /// </summary>
-        public PICAddress Address => RegAddress.Addr;
+        public PICDataAddress Address => RegAddress.Addr;
 
         /// <summary>
         /// Gets the Non-Memory-Mapped ID of the register or null if memory mapped.

@@ -38,14 +38,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// The register address if memory-mapped.
         /// </summary>
-        public readonly PICAddress Addr;
+        public readonly PICDataAddress Addr;
 
         /// <summary>
         /// The register ID is non-memory-mapped.
         /// </summary>
         public readonly string NMMRID;
 
-        public PICRegisterUniqueAddress(PICAddress addr)
+        public PICRegisterUniqueAddress(PICDataAddress addr)
         {
             Addr = addr ?? throw new ArgumentNullException(nameof(addr));
             NMMRID = string.Empty;

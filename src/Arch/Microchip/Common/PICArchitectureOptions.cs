@@ -34,14 +34,15 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICArchitectureOptions() { }
 
-        public PICArchitectureOptions(IPICProcessorModel processorMode, PICExecMode execMode, string binary)
+        public PICArchitectureOptions(IPICProcessorModel processorMode, PICExecMode execMode, string ldrType)
         {
             ProcessorModel = processorMode ?? throw new ArgumentNullException(nameof(processorMode));
             PICExecutionMode = execMode;
-            BinaryLoadFormat = binary;
+            LoaderType = ldrType;
         }
 
-        public PICArchitectureOptions(string picName, PICExecMode execMode, string binary = "raw") : this(PICProcessorModel.GetModel(picName), execMode, binary)
+        public PICArchitectureOptions(string picName, PICExecMode execMode, string ldrType = "raw")
+            : this(PICProcessorModel.GetModel(picName), execMode, ldrType)
         {
         }
 
@@ -51,7 +52,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new ArgumentNullException(nameof(picker));
             ProcessorModel = PICProcessorModel.GetModel(picker.PICName);
             PICExecutionMode = (picker.AllowExtended ? PICExecMode.Extended : PICExecMode.Traditional);
-            BinaryLoadFormat = picker.BinaryFormat;
+            LoaderType = picker.LoaderType;
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets or sets the binary file format used for loading the image.
         /// </summary>
-        public string BinaryLoadFormat { get; set; }
+        public string LoaderType { get; set; }
 
         public override string ToString() => $"{ProcessorModel.PICName},{PICExecutionMode}";
 
@@ -88,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new ArgumentNullException(nameof(opts));
             PICName = opts.ProcessorModel.PICName;
             AllowExtended = opts.PICExecutionMode == PICExecMode.Extended;
-            BinaryFormat = opts.BinaryLoadFormat;
+            LoaderType = opts.LoaderType;
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets or sets the binary file format.
         /// </summary>
-        public string BinaryFormat { get; set; } = "raw";
+        public string LoaderType { get; set; } = "raw";
 
         public override string ToString() => $"{PICName}{(AllowExtended ? ",Extended" : "")}";
 

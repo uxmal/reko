@@ -60,6 +60,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
 
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
 

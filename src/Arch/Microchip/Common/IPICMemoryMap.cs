@@ -28,9 +28,9 @@ using System.Collections.Generic;
 namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
-    /// Interface for implementing PIC memory map.
+    /// Interface for implementing PIC memory map modelization.
     /// </summary>
-    public interface IMemoryMap
+    public interface IPICMemoryMap
     {
         /// <summary>
         /// Gets the target PIC for this memory map.
@@ -38,7 +38,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The target PIC.
         /// </value>
-        PIC PIC { get; }
+        PIC_v1 PIC { get; }
 
         /// <summary>
         /// Gets the PIC execution mode (set is effective for PIC18 only).

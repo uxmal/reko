@@ -146,7 +146,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         /// <param name="pic">The PIC definition as provided by Microchip.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
-        public static void LoadRegisters(PIC pic)
+        public static void LoadRegisters(PIC_v1 pic)
         {
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
@@ -269,7 +269,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if it succeeds, false if it fails.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="absDataAddr"/> is null.</exception>
-        public static bool TryGetRegister(PICAddress absDataAddr, out PICRegisterStorage reg, int bitWidth = 0)
+        public static bool TryGetRegister(PICDataAddress absDataAddr, out PICRegisterStorage reg, int bitWidth = 0)
         {
             if (absDataAddr is null)
                 throw new ArgumentNullException(nameof(absDataAddr));

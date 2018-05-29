@@ -28,22 +28,28 @@ using System;
 namespace Reko.Arch.MicrochipPIC.Common
 {
 
-    public abstract class PICAddress : Address
+    /// <summary>
+    /// A PIC 21-bit program address.
+    /// </summary>
+    public class PICProgAddress : Address
     {
-        public readonly Constant Value;
 
-        public PICAddress(uint addr, PrimitiveType dt) : base(dt)
+        public const uint MAXPROGBYTADDR = 0x1FFFFFu;
+        public readonly Constant Value;
+        public static readonly PICProgAddress Invalid = new PICProgAddress(Constant.Invalid);
+
+        public PICProgAddress(uint addr) : base(PrimitiveType.Ptr32)
         {
-            Value = Constant.Create(DataType, addr);
+            Value = Constant.Create(DataType, addr & MAXPROGBYTADDR);
         }
 
-        public PICAddress(Constant addr) : base(addr.DataType)
+        public PICProgAddress(Constant addr) : base(addr.DataType)
         {
             Value = addr;
         }
 
-        public bool IsValid => Value.IsValid;
 
+        public bool IsValid => Value.IsValid;
         public override bool IsNull => false;
         public override ulong Offset => Value.ToUInt32();
         public override ushort? Selector => null;
@@ -52,41 +58,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             => Value;
 
         public override ushort ToUInt16()
-            => Value.ToUInt16();
+            => throw new InvalidOperationException("Returning UInt16 would lose precision.");
 
         public override uint ToUInt32()
             => Value.ToUInt32();
 
         public override ulong ToLinear()
             => Value.ToUInt32();
-
-        public override Address Add(long offset) => throw new NotImplementedException();
-        public override Address Align(int alignment) => throw new NotImplementedException();
-        public override Expression CloneExpression() => throw new NotImplementedException();
-        public override string GenerateName(string prefix, string suffix) => throw new NotImplementedException();
-        public override Address NewOffset(ulong offset) => throw new NotImplementedException();
-
-
-    }
-
-    /// <summary>
-    /// A PIC 21-bit program address.
-    /// </summary>
-    public class PICProgAddress : PICAddress
-    {
-
-        public const uint MAXPROGBYTADDR = 0x1FFFFFu;
-
-        public static readonly PICAddress Invalid = new PICProgAddress(Constant.Invalid);
-
-        public PICProgAddress(uint addr) : base(addr & MAXPROGBYTADDR, PrimitiveType.Ptr32)
-        {
-        }
-
-        public PICProgAddress(Constant addr) : base(addr)
-        {
-        }
-
 
         public override Address Add(long offset)
             => new PICProgAddress((uint)(Value.ToUInt32() + offset));
@@ -102,9 +80,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override Address NewOffset(ulong offset)
             => new PICProgAddress((uint)offset);
-
-        public override ushort ToUInt16()
-            => throw new InvalidOperationException("Returning UInt16 would lose precision.");
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.
@@ -127,29 +102,47 @@ namespace Reko.Arch.MicrochipPIC.Common
             => new PICProgAddress(aaddr.ToUInt32());
 
         public override string ToString()
-            => $"{ToLinear():X8}";
+            => $"{ToLinear():X6}";
 
     }
 
     /// <summary>
     /// A PIC 12/14-bit data address.
     /// </summary>
-    public class PICDataAddress : PICAddress
+    public class PICDataAddress : Address
     {
 
         public const uint MAXDATABYTADDR = 0x3FFFu;
+        public readonly Constant Value;
+        public static readonly PICDataAddress Invalid = new PICDataAddress(Constant.Invalid);
 
-        public static readonly PICAddress Invalid = new PICDataAddress(Constant.Invalid);
 
-
-        public PICDataAddress(uint addr) : base(addr & MAXDATABYTADDR, PrimitiveType.Ptr16)
+        public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)
         {
+            Value = Constant.Create(DataType, addr & MAXDATABYTADDR);
         }
 
-        public PICDataAddress(Constant addr) : base(addr)
+        public PICDataAddress(Constant addr) : base(addr.DataType)
         {
+            Value = addr;
         }
 
+        public bool IsValid => Value.IsValid;
+        public override bool IsNull => false;
+        public override ulong Offset => Value.ToUInt16();
+        public override ushort? Selector => null;
+
+        public override Constant ToConstant()
+            => Value;
+
+        public override ushort ToUInt16()
+            => Value.ToUInt16();
+
+        public override uint ToUInt32()
+            => Value.ToUInt16();
+
+        public override ulong ToLinear()
+            => Value.ToUInt16();
 
         public override Address Add(long offset)
             => new PICDataAddress((uint)(Value.ToUInt16() + offset));
@@ -227,7 +220,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public const int DataBankWidth = 7;
 
         public PIC16BankedAddress(Constant bankSelect, Constant bankOffset)
-            : base(bankSelect, bankOffset)
+            : base(bankSelect, bankOffset, false)
         {
         }
 

@@ -36,8 +36,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The PIC descriptor or null.
         /// </returns>
-        public static PIC GetPIC(this PICCrownking db, string sPICName)
-            => db.GetPICAsXML(sPICName)?.ToObject<PIC>();
+        public static PIC_v1 GetPIC(this PICCrownking db, string sPICName)
+            => db.GetPICAsXML(sPICName)?.ToObject<PIC_v1>();
 
         /// <summary>
         /// A PICCrownking extension method that gets a PIC descriptor.
@@ -47,8 +47,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The PIC descriptor or null.
         /// </returns>
-        public static PIC GetPIC(this PICCrownking db, int iProcID)
-            => db.GetPICAsXML(iProcID)?.ToObject<PIC>();
+        public static PIC_v1 GetPIC(this PICCrownking db, int iProcID)
+            => db.GetPICAsXML(iProcID)?.ToObject<PIC_v1>();
 
     }
 

@@ -36,11 +36,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
     {
         static PICCrownking db = PICCrownking.GetDB();
 
-        private IEnumerable<PIC> GetSelectedPIC(InstructionSetID isID)
+        private IEnumerable<PIC_v1> GetSelectedPIC(InstructionSetID isID)
         {
             foreach (var spic in db.EnumPICList((p) => p.StartsWith("PIC16")))
             {
-                var pic = db.GetPICAsXML(spic).ToObject<PIC>();
+                var pic = db.GetPICAsXML(spic).ToObject<PIC_v1>();
                 if (pic.GetInstructionSetID == isID)
                     yield return pic;
             }

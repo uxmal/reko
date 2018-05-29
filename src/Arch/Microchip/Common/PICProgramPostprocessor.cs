@@ -35,7 +35,6 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
         private readonly Program program;
         private readonly PICArchitecture architecture;
-        private readonly PIC pic;
         private readonly SegmentMap newMap;
 
         private Dictionary<string, int> renamingCounter;
@@ -44,7 +43,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             program = prog;
             architecture = arch;
-            pic = arch.PICDescriptor;
             newMap = new SegmentMap(PICProgAddress.Ptr(0));
         }
 
@@ -56,9 +54,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         private Program PerformValidation()
         {
             var user = program.User;
-            user.Processor = pic.Name;
+            user.Processor = architecture.PICDescriptor.Name;
             user.TextEncoding = Encoding.ASCII;
-            bool renameSection = architecture.Options.BinaryLoadFormat == "raw";
+            bool renameSection = architecture.Options.LoaderType == "raw";
 
             // Re-assign memory segments according to PIC program memory space definition. Rename segments, as-needed (raw file, segment larger than PIC memory region).
             

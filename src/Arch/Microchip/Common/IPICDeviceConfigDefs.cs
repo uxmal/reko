@@ -41,7 +41,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets a Device Configuration Register by its memory address.
         /// </summary>
-        /// <param name="addr">The memory address.</param>
+        /// <param name="addr">The program memory address.</param>
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>

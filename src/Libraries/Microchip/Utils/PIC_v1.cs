@@ -4551,12 +4551,12 @@ namespace Reko.Libraries.Microchip
 
 
     /// <summary>
-    /// PIC definition.
+    /// PIC definition. (Version 1)
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [XmlRoot(Namespace = "", IsNullable = false)]
+    [XmlRoot(ElementName ="PIC", Namespace = "", IsNullable = false)]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class PIC
+    public sealed class PIC_v1
     {
 
         // Maps the 'InstructionsetID' identifiers to internal code.
@@ -4569,7 +4569,7 @@ namespace Reko.Libraries.Microchip
                 { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
             };
 
-        public PIC() { }
+        public PIC_v1() { }
 
 
         /// <summary>
@@ -4722,7 +4722,7 @@ namespace Reko.Libraries.Microchip
         [XmlIgnore] public bool IsPIC18 => GetInstructionSetID >= InstructionSetID.PIC18;
 
         private string _debugDisplay
-            => $"PIC '{Name}' ({Arch}, {GetInstructionSetID}) ";
+            => $"PIC (v1) '{Name}' ({Arch}, {GetInstructionSetID}) ";
 
     }
 

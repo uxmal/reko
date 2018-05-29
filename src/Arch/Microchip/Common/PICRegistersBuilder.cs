@@ -39,18 +39,19 @@ namespace Reko.Arch.MicrochipPIC.Common
         private SFRDef currSFRDef = null;
         private PICRegisterStorage currSFRReg = null;
         private IPICRegisterSymTable symTable;
-        private PIC pic;
-
 
         /// <summary>
         /// Loads the PIC registers, as found in the PIC definition, into the registers symbol table.
         /// </summary>
         /// <param name="registersSymTable">The registers symbol table interface.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="registersSymTable"/> is null.</exception>
-        protected void LoadRegistersInTable(IPICRegisterSymTable registersSymTable, PIC thePIC)
+        /// <param name="pic">the PIC definition.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="registersSymTable"/> is
+        ///                                         null.</exception>
+        protected void LoadRegistersInTable(IPICRegisterSymTable registersSymTable, PIC_v1 pic)
         {
+            if (pic == null)
+                throw new ArgumentNullException(nameof(pic));
             symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
-            pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
             regNumber = 0;
 
             pic.DataSpace.RegardlessOfMode.Regions.

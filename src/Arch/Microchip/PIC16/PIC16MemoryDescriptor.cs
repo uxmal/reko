@@ -31,7 +31,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
     internal class PIC16MemoryDescriptor : PICMemoryDescriptor
     {
 
-        public class PIC16MemoryMap : MemoryMap
+        public class PIC16MemoryMap : PICMemoryMap
         {
 
             /// <summary>
@@ -44,42 +44,42 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             /// <summary>
             /// Creates a new instance of PIC16 memory map for specified PIC.
             /// </summary>
-            /// <param name="thePIC">the PIC descriptor.</param>
-            protected PIC16MemoryMap(PIC thePIC) : base(thePIC)
+            /// <param name="pic">the PIC descriptor.</param>
+            protected PIC16MemoryMap(PIC_v1 pic) : base(pic)
             {
             }
 
             /// <summary>
-            /// Creates a new <see cref="IMemoryMap"/> interface for PIC16.
+            /// Creates a new <see cref="IPICMemoryMap"/> interface for PIC16.
             /// </summary>
-            /// <param name="thePIC">the PIC descriptor.</param>
+            /// <param name="pic">the PIC descriptor.</param>
             /// <returns>
-            /// A <see cref="IMemoryMap"/> interface instance.
+            /// A <see cref="IPICMemoryMap"/> interface instance.
             /// </returns>
-            /// <exception cref="ArgumentNullException">Thrown if <paramref name="thePIC"/> is null.</exception>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid
             ///                                               data memory size (less than 12 bytes).</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC definition does not permit to construct the memory map.</exception>
-            public static IMemoryMap Create(PIC thePIC)
+            public static IPICMemoryMap Create(PIC_v1 pic)
             {
-                if (thePIC is null)
-                    throw new ArgumentNullException(nameof(thePIC));
-                uint datasize = thePIC.DataSpace?.EndAddr ?? 0;
+                if (pic is null)
+                    throw new ArgumentNullException(nameof(pic));
+                uint datasize = pic.DataSpace?.EndAddr ?? 0;
                 if (datasize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataMemorySize} bytes). Check PIC definition.");
 
-                switch (thePIC.GetInstructionSetID)
+                switch (pic.GetInstructionSetID)
                 {
                     case InstructionSetID.PIC16:
                     case InstructionSetID.PIC16_ENHANCED:
                     case InstructionSetID.PIC16_FULLFEATURED:
-                        var map = new PIC16MemoryMap(thePIC);
+                        var map = new PIC16MemoryMap(pic);
                         if (!map.IsValid)
-                            throw new InvalidOperationException($"Mapper cannot be constructed for '{thePIC.Name}' device.");
+                            throw new InvalidOperationException($"Mapper cannot be constructed for '{pic.Name}' device.");
                         return map;
 
                     default:
-                        throw new InvalidOperationException($"Invalid PIC16 family: '{thePIC.Name}'.");
+                        throw new InvalidOperationException($"Invalid PIC16 family: '{pic.Name}'.");
                 }
             }
 
@@ -94,7 +94,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             public override PICExecMode ExecMode
             {
                 get => PICExecMode.Traditional;
-                set => dataMap = new DataMemoryMap(PIC, this, traits, PICExecMode.Traditional);
+                set => dataMap = new DataMemoryMap(this, traits, PICExecMode.Traditional);
             }
 
             public override PICDataAddress RemapDataAddress(PICDataAddress lAddr)
@@ -153,18 +153,20 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        private PIC16MemoryDescriptor(PIC pic) : base(pic)
+        private PIC16MemoryDescriptor() : base()
         {
         }
 
-        public static void Create(PIC pic)
+        public static void Create(PIC_v1 pic)
         {
-            var memdesc = new PIC16MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
+            if (pic == null)
+                throw new ArgumentNullException(nameof(pic));
+            var memdesc = new PIC16MemoryDescriptor();
             memdesc.Reset();
-            memdesc.LoadMemDescr();
+            memdesc.LoadMemDescr(pic);
         }
 
-        protected override IMemoryMap CreateMemoryMap()
+        protected override IPICMemoryMap CreateMemoryMap(PIC_v1 pic)
             => PIC16MemoryMap.Create(pic);
 
     }

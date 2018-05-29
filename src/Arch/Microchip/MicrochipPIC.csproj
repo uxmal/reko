@@ -89,10 +89,10 @@
     <Compile Include="PIC16\PIC16State.cs" />
     <Compile Include="PIC16\PIC16Registers.cs" />
     <Compile Include="PIC16\PIC16ProcessorModels.cs" />
-    <Compile Include="Common\IMemoryMap.cs" />
+    <Compile Include="Common\IPICMemoryMap.cs" />
     <Compile Include="Common\IPICMemoryDescriptor.cs" />
     <Compile Include="Common\IPICRegisterSymTable.cs" />
-    <Compile Include="Common\MemoryMap.cs" />
+    <Compile Include="Common\PICMemoryMap.cs" />
     <Compile Include="Common\PICRegistersBuilder.cs" />
     <Compile Include="Common\PICRegisterStorage.cs" />
     <Compile Include="PIC18\Egg\PIC18EggDisasm.cs" />

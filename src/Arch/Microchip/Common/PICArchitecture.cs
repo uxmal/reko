@@ -37,6 +37,10 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     public class PICArchitecture : ProcessorArchitecture
     {
+        private const string opt_model = "model";
+        private const string opt_execmode = "execution_mode";
+        private const string opt_loadertype = "loader_type";
+
         protected Dictionary<uint, FlagGroupStorage> flagGroups;
 
 
@@ -67,12 +71,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC PICDescriptor => ProcessorModel?.PICDescriptor;
-
-        /// <summary>
-        /// Gets the PIC processor state.
-        /// </summary>
-        public PICProcessorState State { get; private set; }
+        public PIC_v1 PICDescriptor => ProcessorModel?.PICDescriptor;
 
         /// <summary>
         /// Creates the PIC processor model.
@@ -85,7 +84,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             Description = Options.ProcessorModel.PICName;
             ProcessorModel.CreateMemoryDescriptor();
             ProcessorModel.CreateRegisters();
-            State = ProcessorModel.CreateProcessorState(this);
             StackRegister = PICRegisters.STKPTR;
         }
 
@@ -261,19 +259,16 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
             if (options == null)
-                throw new InvalidOperationException("Missing PIC model user options.");
+                throw new ArgumentNullException(nameof(options));
 
-            if (options.TryGetValue("Model", out var model))
+            if (options.TryGetValue("Model", out var model) || options.TryGetValue(opt_model, out model))
             {
                 switch (model)
                 {
                     case string spicname:
-                        var eExecMode = PICExecMode.Extended;
-                        if (options.TryGetValue("ExecuteMode", out var execmode) && (execmode is PICExecMode eexecmod))
-                        {
-                            eExecMode = eexecmod;
-                        }
-                        Options = new PICArchitectureOptions(spicname, eExecMode);
+                        PeekOption(options, opt_execmode, out PICExecMode eExecMode, PICExecMode.Traditional);
+                        PeekOption(options, opt_loadertype, out string loaderType, "raw");
+                        Options = new PICArchitectureOptions(spicname, eExecMode, loaderType);
                         break;
 
                     case PICArchitectureOptionsPicker picker:
@@ -295,8 +290,9 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return null;
             var dict = new Dictionary<string, object>
             {
-                ["Model"] = Options.ProcessorModel.PICName,
-                ["ExecuteMode"] = Options.PICExecutionMode.ToString()
+                [opt_model] = Options.ProcessorModel.PICName,
+                [opt_execmode] = Options.PICExecutionMode.ToString(),
+                [opt_loadertype] = Options.LoaderType
             };
             return dict;
         }
@@ -354,6 +350,16 @@ namespace Reko.Arch.MicrochipPIC.Common
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return ProcessorModel.CreatePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
+
+        private void PeekOption<T>(Dictionary<string, object> options, string name, out T optvalue, T defaultValue)
+        {
+            optvalue = defaultValue;
+            if (options.TryGetValue(name.ToLower(), out var obj) && (obj is T tobj))
+            {
+                optvalue = tobj;
+            }
+        }
+
     }
 
 }

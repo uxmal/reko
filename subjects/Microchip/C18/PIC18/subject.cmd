@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle --arch pic18 --cpumodel PIC18F1220 --loader IntelHex32 --base 0000 --entry 0000 PIC18Legacy.hex
+decompile.exe --heuristic shingle --arch pic --arch_option model="PIC18F1220" --loader IntelHex --base 0000 --entry 0000 PIC18Legacy.hex

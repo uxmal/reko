@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             var disasm = picModel.CreateDisassembler(arch, new LeImageReader(image, 0));
-            var rwtr = picModel.CreateRewriter(arch, disasm, arch.State, frame, host);
+            var rwtr = picModel.CreateRewriter(arch, disasm, (PICProcessorState)arch.CreateProcessorState(), frame, host);
             return rwtr;
         }
 

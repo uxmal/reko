@@ -36,7 +36,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
     internal class PIC18MemoryDescriptor : PICMemoryDescriptor
     {
 
-        protected class PIC18MemoryMap : MemoryMap
+        protected class PIC18MemoryMap : PICMemoryMap
         {
             private const string accessRAMRegionID = "accessram";
             private const string accessSFRRegionID = "accesssfr";
@@ -56,42 +56,42 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// Private constructor creating an instance of memory map for specified PIC.
             /// </summary>
             /// <param name="thePIC">the PIC descriptor.</param>
-            protected PIC18MemoryMap(PIC thePIC) : base(thePIC)
+            protected PIC18MemoryMap(PIC_v1 thePIC) : base(thePIC)
             {
                 SetMaps();
             }
 
             /// <summary>
-            /// Creates a new <see cref="IMemoryMap"/> interface for PIC18.
+            /// Creates a new <see cref="IPICMemoryMap"/> interface for PIC18.
             /// </summary>
-            /// <param name="thePIC">the PIC descriptor.</param>
+            /// <param name="pic">the PIC descriptor.</param>
             /// <returns>
-            /// A <see cref="IMemoryMap"/> interface instance.
+            /// A <see cref="IPICMemoryMap"/> interface instance.
             /// </returns>
-            /// <exception cref="ArgumentNullException">Thrown if <paramref name="thePIC"/> is null.</exception>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid
             ///                                               data memory size (less than 12 bytes).</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC definition does not permit to construct the memory map.</exception>
-            public static IMemoryMap Create(PIC thePIC)
+            public static IPICMemoryMap Create(PIC_v1 pic)
             {
-                if (thePIC is null)
-                    throw new ArgumentNullException(nameof(thePIC));
-                uint datasize = thePIC.DataSpace?.EndAddr ?? 0;
+                if (pic is null)
+                    throw new ArgumentNullException(nameof(pic));
+                uint datasize = pic.DataSpace?.EndAddr ?? 0;
                 if (datasize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataMemorySize} bytes). Check PIC definition.");
 
-                switch (thePIC.GetInstructionSetID)
+                switch (pic.GetInstructionSetID)
                 {
                     case InstructionSetID.PIC18:
                     case InstructionSetID.PIC18_EXTENDED:
                     case InstructionSetID.PIC18_ENHANCED:
-                        var map = new PIC18MemoryMap(thePIC);
+                        var map = new PIC18MemoryMap(pic);
                         if (!map.IsValid)
-                            throw new InvalidOperationException($"Mapper cannot be constructed for '{thePIC.Name}' device.");
+                            throw new InvalidOperationException($"Mapper cannot be constructed for '{pic.Name}' device.");
                         return map;
 
                     default:
-                        throw new InvalidOperationException($"Invalid PIC18 family: '{thePIC.Name}'.");
+                        throw new InvalidOperationException($"Invalid PIC18 family: '{pic.Name}'.");
                 }
             }
 
@@ -124,7 +124,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     if (value != execMode)
                     {
                         execMode = value;
-                        dataMap = new DataMemoryMap(PIC, this, traits, execMode);
+                        dataMap = new DataMemoryMap(this, traits, execMode);
                         SetMaps();
                         switch (execMode)
                         {
@@ -204,18 +204,20 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        private PIC18MemoryDescriptor(PIC pic) : base(pic)
+        private PIC18MemoryDescriptor() : base()
         {
         }
 
-        public static void Create(PIC pic)
+        public static void Create(PIC_v1 pic)
         {
-            var memdesc = new PIC18MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
+            if (pic == null)
+                throw new ArgumentNullException(nameof(pic));
+            var memdesc = new PIC18MemoryDescriptor();
             memdesc.Reset();
-            memdesc.LoadMemDescr();
+            memdesc.LoadMemDescr(pic);
         }
 
-        protected override IMemoryMap CreateMemoryMap()
+        protected override IPICMemoryMap CreateMemoryMap(PIC_v1 pic)
             => PIC18MemoryMap.Create(pic);
 
     }

@@ -33,7 +33,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC memory map (definitions of memory regions, translation of addresses).
         /// </summary>
-        IMemoryMap MemoryMap { get; }
+        IPICMemoryMap MemoryMap { get; }
 
         /// <summary>
         /// Gets the PIC Device Configuration Registers definitions.

@@ -47,7 +47,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </summary>
         /// <param name="pic">The PIC definition.</param>
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
-        public static void Create(PIC pic)
+        public static void Create(PIC_v1 pic)
         {
             LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             var regs = new PIC16BasicRegisters();

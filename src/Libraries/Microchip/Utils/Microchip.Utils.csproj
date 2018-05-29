@@ -49,7 +49,7 @@
     <Compile Include="IPICVisitor.cs" />
     <Compile Include="NaturalComparer.cs" />
     <Compile Include="PartInfo.cs" />
-    <Compile Include="PIC.cs" />
+    <Compile Include="PIC_v1.cs" />
     <Compile Include="PICConstants.cs" />
     <Compile Include="PICCrownking.cs" />
     <Compile Include="PICCrownkingCodes.cs" />

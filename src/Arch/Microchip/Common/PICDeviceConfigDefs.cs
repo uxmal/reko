@@ -34,11 +34,9 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICDeviceConfigDefs : IPICDeviceConfigDefs
     {
 
+        private readonly SortedList<Address, PICDevConfigRegister> dcregisters;
 
-        private SortedList<Address, PICDevConfigRegister> dcregisters;
-
-
-        private PICDeviceConfigDefs(PIC thePIC)
+        private PICDeviceConfigDefs(PIC_v1 thePIC)
         {
             PIC = thePIC;
             dcregisters = new SortedList<Address, PICDevConfigRegister>();
@@ -78,13 +76,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        public static IPICDeviceConfigDefs Create(PIC thePIC)
+        public static IPICDeviceConfigDefs Create(PIC_v1 pic)
         {
-            if (thePIC is null)
-                throw new ArgumentNullException(nameof(thePIC));
-            if (thePIC.ProgramSpace is null)
+            if (pic == null)
+                throw new ArgumentNullException(nameof(pic));
+            if (pic.ProgramSpace is null)
                 throw new InvalidOperationException($"Can't create PIC Device Configuration definitions.");
-            var dcrconf = new PICDeviceConfigDefs(thePIC);
+            var dcrconf = new PICDeviceConfigDefs(pic);
             return dcrconf;
         }
 
@@ -95,7 +93,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The target PIC.
         /// </value>
-        public PIC PIC { get; }
+        public PIC_v1 PIC { get; }
 
 
         /// <summary>

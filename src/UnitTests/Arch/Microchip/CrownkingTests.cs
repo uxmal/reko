@@ -69,17 +69,17 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
             }
         }
 
-        private PIC GetPIC(string sPICName)
+        private PIC_v1 GetPIC(string sPICName)
         {
-            PIC pic = db.GetPIC(sPICName);
+            var pic = db.GetPIC(sPICName);
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}.");
             Assert.That(pic.Name, Is.EqualTo(sPICName));
             return pic;
         }
 
-        private PIC GetPIC(int iProcID)
+        private PIC_v1 GetPIC(int iProcID)
         {
-            PIC pic = db.GetPIC(iProcID);
+            var pic = db.GetPIC(iProcID);
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '0x{iProcID:X}' - {PICCrownking.LastErrMsg}.");
             Assert.That(pic.Name, Is.EqualTo(iProcID));
             return pic;
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
             Assert.That(xpic, Is.Not.Null, $"Unable to load '0x{procID:X}' XML - {PICCrownking.LastErrMsg}.");
             Assert.That(xpic.Name.LocalName, Is.EqualTo("PIC"));
 
-            PIC pic = xpic.ToObject<PIC>();
+            var pic = xpic.ToObject<PIC_v1>();
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}..");
             Assert.That(pic.Name, Is.EqualTo(sPICName));
             Assert.That(pic.Arch, Is.EqualTo("16xxxx"));
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
             foreach (var name in db.EnumPICList())
             {
                 Assert.That(name.StartsWith("PIC1"), "Wrong PIC XML");
-                PIC pic = db.GetPIC(name);
+                var pic = db.GetPIC(name);
                 Assert.That(pic, Is.Not.Null, $"Unable to get PIC object: {name}");
                 count++;
             }
@@ -158,8 +158,8 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         {
             foreach (string sPICName in new string[] { "PIC18F25K50", "PIC16F84A", "PIC16F1825",  "PIC16F15313", "PIC18F24K42" })
             {
-                PIC pic = db.GetPICAsXML(sPICName).ToObject<PIC>();
-                XmlSerializer xs = new XmlSerializer(typeof(PIC));
+                var pic = db.GetPICAsXML(sPICName).ToObject<PIC_v1>();
+                XmlSerializer xs = new XmlSerializer(pic.GetType());
                 using (StreamWriter str = new StreamWriter(sPICName + ".XML"))
                 {
                     xs.Serialize(str, pic);
@@ -181,9 +181,9 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
             foreach (var name in db.EnumPICList())
             {
                 Assert.That(name.StartsWith("PIC1"), "Wrong PIC XML");
-                PIC pic = db.GetPIC(name);
+                var pic = db.GetPIC(name);
                 Assert.That(pic, Is.Not.Null, $"Unable to get PIC object: {name}");
-                XmlSerializer xs = new XmlSerializer(typeof(PIC));
+                XmlSerializer xs = new XmlSerializer(pic.GetType());
                 string xmlfpath = Path.Combine(xmlsdir, name + ".XML");
                 using (StreamWriter sw = new StreamWriter(xmlfpath, false))
                 {

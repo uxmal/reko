@@ -711,15 +711,15 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
 
         private readonly PICArchitecture arch;
-        private readonly Address addr;
+        private readonly PICProgAddress addr;
 
-        public PICOperandConfigBits(PICArchitecture arch, Address addr, byte config) : base(config)
+        public PICOperandConfigBits(PICArchitecture arch, PICProgAddress addr, byte config) : base(config)
         {
             this.arch = arch;
             this.addr = addr;
         }
 
-        public PICOperandConfigBits(PICArchitecture arch, Address addr, ushort config) : base(config)
+        public PICOperandConfigBits(PICArchitecture arch, PICProgAddress addr, ushort config) : base(config)
         {
             this.arch = arch;
             this.addr = addr;

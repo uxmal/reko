@@ -32,9 +32,9 @@ namespace Reko.Arch.MicrochipPIC.Common
 {
 
     /// <summary>
-    /// An abstract class which permits to construct the PIC memory map using the individual PIC definition.
+    /// An abstract class which permits to construct the PIC memory map modelization based on the individual PIC definition/descriptor.
     /// </summary>
-    public abstract class MemoryMap : IMemoryMap
+    public abstract class PICMemoryMap : IPICMemoryMap
     {
 
         #region Inner classes
@@ -90,28 +90,23 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             #region Members fields
 
-            private PIC pic;
             private readonly Dictionary<MemoryDomainKey, MemTrait> maptraits = new Dictionary<MemoryDomainKey, MemTrait>(new MemoryDomainKeyEqualityComparer());
             private static readonly MemTrait memtraitdefault = new DefaultMemTrait();
 
             #endregion
 
-            #region Constructors
-
             /// <summary>
             /// Constructor.
             /// </summary>
-            /// <param name="thePIC">the PIC definition.</param>
-            public MemTraits(PIC thePIC)
+            /// <param name="pic">the PIC definition.</param>
+            public MemTraits(PIC_v1 pic)
             {
-                pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
+                if (pic == null)
+                    throw new ArgumentNullException(nameof(pic));
                 foreach (var mt in pic.ArchDef.MemTraits.Traits.OfType<IMemTraitsSymbolAcceptor>())
                     mt.Accept(this);
             }
 
-            #endregion
-
-            #region Methods
 
             /// <summary>
             /// Gets the memory trait corresponding to the specified memory domain and sub-domain.
@@ -142,7 +137,6 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return GetTrait(PICArch.GetDomainOf(subdom), subdom, out trait);
             }
 
-            #endregion
 
             #region IMemTraitsSymbolVisitor interface implementation
 
@@ -536,8 +530,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected abstract class MemoryMapBase<T> where T : MemoryRegionBase
         {
-            protected readonly PIC pic;
-            protected readonly MemoryMap map;
+            protected readonly PICMemoryMap map;
             protected readonly MemTraits traits;
             protected List<T> memRegions;
 
@@ -547,11 +540,10 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <param name="pic">The PIC definition.</param>
             /// <param name="map">The memory map.</param>
             /// <param name="traits">The PIC memory traits.</param>
-            protected MemoryMapBase(PIC pic, MemoryMap map, MemTraits traits)
+            protected MemoryMapBase(PICMemoryMap map, MemTraits traits)
             {
-                this.pic = pic;
-                this.map = map;
-                this.traits = traits;
+                this.map = map ?? throw new ArgumentNullException(nameof(map));
+                this.traits = traits ?? throw new ArgumentNullException(nameof(traits));
                 memRegions = new List<T>();
             }
 
@@ -614,16 +606,21 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         protected sealed class ProgMemoryMap : MemoryMapBase<ProgMemRegion>, IMemProgramRegionVisitor
         {
+            private readonly bool IsPIC18 = false;
 
             /// <summary>
             /// Constructor.
             /// </summary>
-            /// <param name="thePIC">The PIC definition.</param>
+            /// <param name="pic">The PIC definition.</param>
             /// <param name="map">The memory map.</param>
             /// <param name="traits">The PIC memory traits.</param>
-            public ProgMemoryMap(PIC thePIC, MemoryMap map, MemTraits traits) : base(thePIC, map, traits)
+            public ProgMemoryMap(PICMemoryMap map, MemTraits traits) : base(map, traits)
             {
-                foreach (var pmr in thePIC.ProgramSpace.Sectors?.OfType<IMemProgramRegionAcceptor>())
+                var pic = map.PIC;
+
+                IsPIC18 = pic.IsPIC18;                
+
+                foreach (var pmr in pic.ProgramSpace.Sectors?.OfType<IMemProgramRegionAcceptor>())
                 {
                     pmr.Accept(this);
                 }
@@ -634,7 +631,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
             {
-                if (!pic.IsPIC18)
+                if (!IsPIC18)
                 {
                     begAddr <<= 1;
                     endAddr <<= 1;
@@ -738,35 +735,37 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Constructor.
             /// </summary>
-            /// <param name="thePIC">The PIC definition.</param>
+            /// <param name="pic">The PIC definition.</param>
             /// <param name="traits">The PIC memory traits.</param>
             /// <param name="mode">The PIC execution  mode.</param>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC data memory size is invalid.</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC execution mode is invalid.</exception>
-            public DataMemoryMap(PIC thePIC, MemoryMap map, MemTraits traits, PICExecMode mode) : base(thePIC, map, traits)
+            public DataMemoryMap(PICMemoryMap map, MemTraits traits, PICExecMode mode) : base(map, traits)
             {
-                uint datasize = thePIC.DataSpace?.EndAddr ?? 0;
+                var pic = map.PIC;
+
+                uint datasize = pic.DataSpace?.EndAddr ?? 0;
                 if (datasize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException("Too low data memory size. Check PIC definition.");
                 remapTable = new Address[datasize];
                 for (int i = 0; i < remapTable.Length; i++)
                     remapTable[i] = null;
-                foreach (var dmr in thePIC.DataSpace.RegardlessOfMode.Regions?.OfType<IMemDataRegionAcceptor>())
+                foreach (var dmr in pic.DataSpace.RegardlessOfMode.Regions?.OfType<IMemDataRegionAcceptor>())
                     dmr.Accept(this);
                 switch (mode)
                 {
                     case PICExecMode.Traditional:
-                        foreach (var dmr in thePIC.DataSpace.TraditionalModeOnly?.OfType<IMemDataRegionAcceptor>())
+                        foreach (var dmr in pic.DataSpace.TraditionalModeOnly?.OfType<IMemDataRegionAcceptor>())
                             dmr.Accept(this);
                         break;
                     case PICExecMode.Extended:
-                        if (!thePIC.IsExtended)
+                        if (!pic.IsExtended)
                             throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
-                        foreach (var dmr in thePIC.DataSpace.ExtendedModeOnly?.OfType<IMemDataRegionAcceptor>())
+                        foreach (var dmr in pic.DataSpace.ExtendedModeOnly?.OfType<IMemDataRegionAcceptor>())
                             dmr.Accept(this);
                         break;
                 }
-                foreach (var dmr in thePIC.IndirectSpace?.OfType<IMemDataRegionAcceptor>())
+                foreach (var dmr in pic.IndirectSpace?.OfType<IMemDataRegionAcceptor>())
                     dmr.Accept(this);
 
             }
@@ -978,16 +977,16 @@ namespace Reko.Arch.MicrochipPIC.Common
         private HashSet<MemorySubDomain> subdomains = new HashSet<MemorySubDomain>();
 
 
-        protected MemoryMap()
+        protected PICMemoryMap()
         {
         }
 
-        protected MemoryMap(PIC thePIC)
+        protected PICMemoryMap(PIC_v1 thePIC)
         {
             PIC = thePIC;
             traits = new MemTraits(thePIC);
-            progMap = new ProgMemoryMap(thePIC, this, traits);
-            dataMap = new DataMemoryMap(thePIC, this, traits, PICExecMode.Traditional);
+            progMap = new ProgMemoryMap(this, traits);
+            dataMap = new DataMemoryMap(this, traits, PICExecMode.Traditional);
         }
 
         #region Methods
@@ -996,7 +995,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public bool HasSubDomain(MemorySubDomain subdom) => subdomains.Contains(subdom);
 
-        protected static bool IsValidMap(MemoryMap map)
+        protected static bool IsValidMap(PICMemoryMap map)
         {
             if (map.traits == null)
                 return false;
@@ -1027,7 +1026,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The target PIC.
         /// </value>
-        public PIC PIC { get; }
+        public PIC_v1 PIC { get; }
 
         /// <summary>
         /// Gets the instruction set identifier of the target PIC.

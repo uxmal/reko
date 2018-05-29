@@ -172,10 +172,10 @@ namespace Reko.Tools.genPICdb
 
         private void WritePICEntry(XDocument xdoc, string subdir, ZipArchive zout)
         {
-            PIC pic = xdoc.ToObject<PIC>();
+            var pic = xdoc.ToObject<PIC_v1>();
             PICPatch.Patch(pic);
             partsinfo.Parts.Add(new PICPart(pic.Name, pic.ProcID));
-            var xs = new XmlSerializer(typeof(PIC));
+            var xs = new XmlSerializer(pic.GetType());
             string picname = pic.Name;
             string picpath = subdir + "/" + picname + ".PIC";
             ZipArchiveEntry picentry = zout.CreateEntry(picpath);

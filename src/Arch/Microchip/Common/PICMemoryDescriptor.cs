@@ -34,17 +34,12 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICMemoryDescriptor
     {
 
-        protected PIC pic;
         private static IPICDeviceConfigDefs deviceConfigDefinitions = null;
-        private static IMemoryMap memoryMap = null;
+        private static IPICMemoryMap memoryMap = null;
 
-        protected PICMemoryDescriptor(PIC pic)
+        protected PICMemoryDescriptor()
         {
-            this.pic = pic;
         }
-
-        protected virtual IMemoryMap CreateMemoryMap()
-            => throw new NotImplementedException("Missing PIC specific memory map creator.");
 
 
         public static bool IsValid => ((deviceConfigDefinitions != null) && (memoryMap?.IsValid ?? false));
@@ -274,7 +269,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public static string RenderDeviceConfigRegister(Address addr, uint value)
+        public static string RenderDeviceConfigRegister(PICProgAddress addr, uint value)
             => deviceConfigDefinitions.Render(addr, value);
 
 
@@ -284,11 +279,14 @@ namespace Reko.Arch.MicrochipPIC.Common
             memoryMap = null;
         }
 
-        protected void LoadMemDescr()
+        protected void LoadMemDescr(PIC_v1 pic)
         {
             deviceConfigDefinitions = PICDeviceConfigDefs.Create(pic);
-            memoryMap = CreateMemoryMap();
+            memoryMap = CreateMemoryMap(pic);
         }
+
+        protected virtual IPICMemoryMap CreateMemoryMap(PIC_v1 pic)
+            => throw new NotImplementedException("Missing PIC specific memory map creator.");
 
     }
 

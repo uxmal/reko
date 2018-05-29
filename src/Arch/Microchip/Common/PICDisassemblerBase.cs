@@ -36,7 +36,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public readonly EndianImageReader rdr;
 
         protected PICInstruction instrCur;
-        public Address addrCur;
+        public PICProgAddress addrCur;
 
         protected static IMemoryRegion lastusedregion = null;
 
@@ -75,7 +75,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             if (!rdr.IsValid)
                 return null;
-            addrCur = rdr.Address;
+            addrCur = PICProgAddress.Ptr(rdr.Address);
             var regn = GetProgRegion();
             if (regn is null)
                 throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");

@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
-using Reko.Libraries.Microchip;
 using Reko.Loading;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,6 @@ namespace Reko.CmdLine
         private IDiagnosticsService diagnosticSvc;
         private CmdLineListener listener;
         private Timer timer;
-        private PICCrownking picDB;
 
         public static void Main(string[] args)
         {

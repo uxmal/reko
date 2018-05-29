@@ -20,32 +20,27 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Libraries.Microchip;
+using System;
+using System.Linq;
 
 namespace Reko.Tools.genPICdb
 {
     public class PICPatch : IMemDataRegionVisitor, IMemDataSymbolVisitor
     {
-        private PIC pic;
         private int byteAddr = 0;
         private uint bitFieldAddr = 0;
 
-        private PICPatch(PIC pic)
+        private PICPatch()
         {
-            this.pic = pic;
         }
 
-        public static void Patch(PIC pic)
+        public static void Patch(PIC_v1 pic)
         {
-            new PICPatch(pic ?? throw new ArgumentNullException(nameof(pic))).PerformPatch();
+            new PICPatch().PerformPatch(pic ?? throw new ArgumentNullException(nameof(pic)));
         }
 
-        private void PerformPatch()
+        private void PerformPatch(PIC_v1 pic)
         {
             pic.DataSpace.RegardlessOfMode.Regions.
                 OfType<IMemDataRegionAcceptor>().

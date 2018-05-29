@@ -481,6 +481,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Name>Microchip.Utils</Name>
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Name>Python</Name>
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>

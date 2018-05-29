@@ -35,7 +35,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC descriptor as defined by Microchip.
         /// </summary>
-        PIC PICDescriptor { get; }
+        PIC_v1 PICDescriptor { get; }
 
         /// <summary>
         /// Gets the PIC name.
