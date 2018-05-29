@@ -324,7 +324,7 @@ r8:r8
     def:  def r8
     uses: Mem5[r4 + 0x00000028:word32] = r8
 Mem4: orig: Mem0
-Mem5: orig: Mem4
+Mem5: orig: Mem0
     def:  Mem5[r4 + 0x00000028:word32] = r8
 // ProcedureBuilder
 // Return size: 0
@@ -390,30 +390,30 @@ Mem4: orig: Mem0
 r13:r13
     def:  def r13
     uses: Mem15[r8 + 0x00000014:word32] = r13
-Mem6: orig: Mem4
-Mem7: orig: Mem6
-Mem8: orig: Mem7
-Mem9: orig: Mem8
+Mem6: orig: Mem0
+Mem7: orig: Mem0
+Mem8: orig: Mem0
+Mem9: orig: Mem0
 r9:r9
     def:  def r9
     uses: Mem19[r8 + 0x0000002C:word32] = r9
-Mem11: orig: Mem9
-Mem12: orig: Mem11
+Mem11: orig: Mem0
+Mem12: orig: Mem0
 r4_13: orig: r4
     def:  r4_13 = r8 + 0x00000010
-Mem14: orig: Mem12
+Mem14: orig: Mem0
     def:  Mem14[r8 + 0x00000010:word32] = r14
-Mem15: orig: Mem14
+Mem15: orig: Mem0
     def:  Mem15[r8 + 0x00000014:word32] = r13
-Mem16: orig: Mem15
+Mem16: orig: Mem0
     def:  Mem16[r8 + 0x00000018:word32] = 0x00000000
-Mem17: orig: Mem16
+Mem17: orig: Mem0
     def:  Mem17[r8 + 0x0000001C:word32] = 0x00000000
-Mem18: orig: Mem17
+Mem18: orig: Mem0
     def:  Mem18[r8 + 0x00000028:word32] = 0x00000000
-Mem19: orig: Mem18
+Mem19: orig: Mem0
     def:  Mem19[r8 + 0x0000002C:word32] = r9
-Mem20: orig: Mem19
+Mem20: orig: Mem0
     def:  Mem20[r8 + 0x00000030:word32] = 0x00000000
 // ProcedureBuilder
 // Return size: 0
@@ -462,10 +462,10 @@ ProcedureBuilder_exit:
 Mem0:Mem
     def:  def Mem0
 Mem3: orig: Mem0
-Mem4: orig: Mem3
-Mem5: orig: Mem4
+Mem4: orig: Mem0
+Mem5: orig: Mem0
     def:  Mem5[r8 + 0x00000010:word32] = 0x12345678
-Mem6: orig: Mem5
+Mem6: orig: Mem0
     def:  Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
 // ProcedureBuilder
 // Return size: 0
@@ -505,7 +505,7 @@ r8:r8
     def:  def r8
     uses: Mem5[r4:word32] = r8
 Mem4: orig: Mem0
-Mem5: orig: Mem4
+Mem5: orig: Mem0
     def:  Mem5[r4:word32] = r8
 // ProcedureBuilder
 // Return size: 0
