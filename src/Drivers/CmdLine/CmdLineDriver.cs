@@ -188,14 +188,11 @@ namespace Reko.CmdLine
                 }
                 pArgs.TryGetValue("--env", out object sEnv);
 
-                Address addrBase;
-                object oAddrEntry;
-                if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
+                if (!arch.TryParseAddress((string)pArgs["--base"], out Address addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-                pArgs.TryGetValue("--entry", out oAddrEntry);
+                pArgs.TryGetValue("--entry", out object oAddrEntry);
 
-                object sLoader;
-                pArgs.TryGetValue("--loader", out sLoader);
+                pArgs.TryGetValue("--loader", out object sLoader);
                 var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
                 {
                     LoaderName = (string)sLoader,
@@ -205,8 +202,7 @@ namespace Reko.CmdLine
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
                 });
                 var state = CreateInitialState(arch, program.SegmentMap, pArgs);
-                object oHeur;
-                if (pArgs.TryGetValue("heuristics", out oHeur))
+                if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
                 }
@@ -301,9 +297,8 @@ namespace Reko.CmdLine
                 {
                     if (i < args.Length - 1)
                     {
-                        object oRegs;
                         List<string> regs;
-                        if (!parsedArgs.TryGetValue("--reg", out oRegs))
+                        if (!parsedArgs.TryGetValue("--reg", out object oRegs))
                         {
                             regs = new List<string>();
                             parsedArgs["--reg"] = regs;
@@ -334,8 +329,7 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--time-limit")
                 {
-                    int timeLimit;
-                    if (i >= args.Length - 1 || !int.TryParse(args[i + 1], out timeLimit))
+                    if (i >= args.Length - 1 || !int.TryParse(args[i + 1], out int timeLimit))
                     {
                         w.WriteLine("error: time-limit option expects a numerical argument.");
                         return null;
@@ -377,7 +371,7 @@ namespace Reko.CmdLine
             }
             else
             {
-                archOptions = new Dictionary<string, object>();
+                archOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
                 parsedArgs["--arch-options"] = archOptions;
             }
             var name_value = nameValue.Split('=');

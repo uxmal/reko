@@ -322,7 +322,7 @@ namespace Reko.Gui.Forms
             {
                 dlg = dlgFactory.CreateOpenAsDialog();
                 dlg.Services = sc;
-                dlg.ArchitectureOptions = new Dictionary<string, object>();
+                dlg.ArchitectureOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 

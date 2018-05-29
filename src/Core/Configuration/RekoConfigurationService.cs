@@ -152,8 +152,9 @@ namespace Reko.Core.Configuration
                 Options = env.Options != null
                     ? XmlOptions.LoadIntoDictionary(env.Options
                         .SelectMany(o => o.ChildNodes.OfType<XmlElement>())
-                        .ToArray())
-                    : new Dictionary<string, object>()
+                        .ToArray(),
+                        StringComparer.OrdinalIgnoreCase)
+                    : new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
             };
         }
 

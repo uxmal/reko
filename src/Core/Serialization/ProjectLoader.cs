@@ -336,7 +336,7 @@ namespace Reko.Core.Serialization
                 {
                     program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
                 }
-                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options));
+                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.Procedures != null)
             {
@@ -349,7 +349,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.GlobalData != null)
             {
@@ -533,7 +533,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.GlobalData != null)
             {
