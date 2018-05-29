@@ -29,12 +29,12 @@ namespace Reko.Arch.MicrochipPIC.Common
 {
 
     /// <summary>
-    /// A PIC 21-bit program address.
+    /// A PIC 21-bit program address (word-aligned).
     /// </summary>
     public class PICProgAddress : Address
     {
 
-        public const uint MAXPROGBYTADDR = 0x1FFFFFu;
+        public const uint MAXPROGBYTADDR = 0x3FFFFFu;
         public readonly Constant Value;
         public static readonly PICProgAddress Invalid = new PICProgAddress(Constant.Invalid);
 
