@@ -32,11 +32,11 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         private static SFRDef BuildSFRDef(uint uAddr, string cname, uint nZWidth, uint Impl, string sAccess, string sMCLR)
             => new SFRDef() {
-                    AddrFormatted = $"0x{uAddr:x}",
+                    _addrFormatted = $"0x{uAddr:x}",
                     CName = cname,
                     Desc ="",
-                    ImplFormatted = $"0x{Impl:X}",
-                    NzWidthFormatted = $"{nZWidth}",
+                    _implFormatted = $"0x{Impl:X}",
+                    _nzWidthFormatted = $"{nZWidth}",
                     Access = sAccess,
                     MCLR = sMCLR,
                     POR  = sMCLR

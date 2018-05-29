@@ -20,28 +20,12 @@
 
 namespace Reko.Libraries.Microchip
 {
-    /// <summary>
-    /// This interface provides information on PIC memory address range [begin,end) , domain, sub-domain.
-    /// </summary>
-    public interface IMemoryAddrRange
+    public interface IBankedMemoryRegion : IMemoryRegion
     {
-
-        /// <summary> Gets the beginning address of the memory range. </summary>
-        uint BeginAddr { get; }
-
-        /// <summary> Gets the ending (+1) address of the memory range. </summary>
-        uint EndAddr { get; }
-
         /// <summary>
-        /// Gets the memory domain of this memory range, a value from the <see cref="MemoryDomain"/> enumeration.
+        /// Gets the memory bank number.
         /// </summary>
-        MemoryDomain MemoryDomain { get; }
-
-        /// <summary>
-        /// Gets the memory sub-domain of this memory range, a value from the <see cref="MemorySubDomain"/> enumeration.
-        /// </summary>
-        MemorySubDomain MemorySubDomain { get; }
-
+        int Bank { get; }
     }
 
 }

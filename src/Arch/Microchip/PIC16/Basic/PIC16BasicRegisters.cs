@@ -100,11 +100,11 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 CName = "BSR",
                 Desc = $"Pseudo-register BSR",
                 NMMRID = "0xb",
-                AddrFormatted = "0",
+                _addrFormatted = "0",
                 MCLR = "------00",
                 POR = "------00",
                 Access = "------nn",
-                NzWidthFormatted = "8"
+                _nzWidthFormatted = "8"
             };
 
             var reg = new PICRegisterStorage(sfr, 0);

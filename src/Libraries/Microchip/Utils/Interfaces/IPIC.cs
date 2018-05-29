@@ -42,11 +42,6 @@ namespace Reko.Libraries.Microchip
         string Arch { get; }
 
         /// <summary>
-        /// Gets the PIC architecture main characteristics.
-        /// </summary>
-        IArchDef ArchDefinitions { get; }
-
-        /// <summary>
         /// Gets the PIC description.
         /// </summary>
         string Desc { get; }
@@ -55,6 +50,11 @@ namespace Reko.Libraries.Microchip
         /// Gets the unique processor identifier. Used by development tools.
         /// </summary>
         int ProcID { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this PIC is belonging to the PIC18 family.
+        /// </summary>
+        bool IsPIC18 { get; }
 
         /// <summary>
         /// Gets the indicator whether this PIC supports the PIC18 extended execution mode.
@@ -72,9 +72,9 @@ namespace Reko.Libraries.Microchip
         string InstructionSetFamily { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this PIC is belonging to the PIC18 family.
+        /// Gets the PIC architecture main characteristics.
         /// </summary>
-        bool IsPIC18 { get; }
+        IArchDef ArchDefinitions { get; }
 
     }
 

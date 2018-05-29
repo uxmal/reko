@@ -21,12 +21,24 @@
 namespace Reko.Libraries.Microchip
 {
     /// <summary>
-    /// This interface provides traits for a given memory domain/sub-domain.
+    /// This interface provides traits (characteristics) for a given memory domain/sub-domain.
     /// </summary>
     public interface ITrait : IMemTrait
     {
+        /// <summary>
+        /// Gets the memory domain.
+        /// </summary>
+        /// <value>
+        /// A value from the enumeration <seealso cref="MemoryDomain"/> enumeration.
+        /// </value>
         MemoryDomain Domain { get; }
 
+        /// <summary>
+        /// Gets the memory sub-domain.
+        /// </summary>
+        /// <value>
+        /// A value from the enumeration <seealso cref="MemorySubDomain"/> enumeration.
+        /// </value>
         MemorySubDomain SubDomain { get; }
 
     }

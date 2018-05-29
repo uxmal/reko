@@ -21,13 +21,11 @@
 namespace Reko.Libraries.Microchip
 {
     /// <summary>
-    /// This interface provides information for a named memory region.
+    /// This interface provides information for a named memory region range.
     /// </summary>
     public interface IMemoryRegion : IMemoryAddrRange
     {
-        /// <summary>
-        /// Gets the name/identifier of the memory region.
-        /// </summary>
+        /// <summary> Gets the name/identifier of the memory region. </summary>
         string RegionID { get; }
 
     }

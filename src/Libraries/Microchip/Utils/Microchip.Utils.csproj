@@ -48,6 +48,7 @@
     <Compile Include="ConvUtils.cs" />
     <Compile Include="Interfaces\IAdjustPoint.cs" />
     <Compile Include="Interfaces\IArchDef.cs" />
+    <Compile Include="Interfaces\IBankedMemoryRegion.cs" />
     <Compile Include="Interfaces\IMemoryAddrRange.cs" />
     <Compile Include="Interfaces\IMemTrait.cs" />
     <Compile Include="Interfaces\IPIC.cs" />

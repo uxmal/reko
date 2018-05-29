@@ -34,11 +34,11 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         private static SFRDef BuildSFRDef(uint uAddr, string cname, uint nZWidth, uint Impl, string sAccess, string sPOR)
             => new SFRDef()
             {
-                AddrFormatted = $"0x{uAddr:x}",
+                _addrFormatted = $"0x{uAddr:x}",
                 CName = cname,
                 Desc = "",
-                ImplFormatted = $"0x{Impl:X}",
-                NzWidthFormatted = $"{nZWidth}",
+                _implFormatted = $"0x{Impl:X}",
+                _nzWidthFormatted = $"{nZWidth}",
                 Access = sAccess,
                 MCLR = sPOR,
                 POR = sPOR
@@ -47,10 +47,10 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         private static JoinedSFRDef BuildJoinedSFRDef(uint uAddr, string cname, uint nZWidth)
             => new JoinedSFRDef()
             {
-                AddrFormatted = $"0x{uAddr:x}",
+                _addrFormatted = $"0x{uAddr:x}",
                 CName = cname,
                 Desc = "",
-                NzWidthFormatted = $"{nZWidth}"
+                _nzWidthFormatted = $"{nZWidth}"
             };
 
         [Test]
