@@ -587,7 +587,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("RCALL\t0x00000204", "", 0xD801);
             VerifyDisasm("RCALL\t0x00000356", "", 0xD8AA);
             VerifyDisasm("RCALL\t0x00000A00", "", 0xDBFF);
-            VerifyDisasm("RCALL\t0x001FFA02", "", 0xDC00);
+            VerifyDisasm("RCALL\t0x003FFA02", "", 0xDC00);
             VerifyDisasm("RCALL\t0x00000156", "", 0xDFAA);
             VerifyDisasm("RCALL\t0x00000200", "", 0xDFFF);
         }
