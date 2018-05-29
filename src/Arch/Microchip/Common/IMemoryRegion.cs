@@ -80,7 +80,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The characteristics of the memory region.
         /// </value>
-        MemTrait Trait { get; }
+        IMemTrait Trait { get; }
 
         /// <summary>
         /// Checks whether the given memory fragment is contained in this memory region.

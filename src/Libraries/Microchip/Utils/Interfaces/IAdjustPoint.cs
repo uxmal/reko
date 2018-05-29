@@ -20,6 +20,9 @@
 
 namespace Reko.Libraries.Microchip
 {
+    /// <summary>
+    /// This interface represents the relative adjustment offset for byte or bit addresses in the PIC XML elements.
+    /// </summary>
     public interface IAdjustPoint
     {
         /// <summary>

@@ -18,16 +18,12 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Libraries.Microchip
 {
     /// <summary>
-    /// This interface for arch definition.
+    /// This interface provides the generic characteristics of the PIC architecture.
     /// </summary>
     public interface IArchDef
     {
@@ -42,29 +38,24 @@ namespace Reko.Libraries.Microchip
         string Name { get; set; }
 
         /// <summary>
-        /// Gets the program memory traits.
+        /// Gets the memory traits.
         /// </summary>
-        IEnumerable<ITrait> ProgTraits { get; }
-
-        /// <summary>
-        /// Gets the data memory traits.
-        /// </summary>
-        IEnumerable<ITrait> DataTraits { get; }
+        IEnumerable<ITrait> MemoryTraits { get; }
 
         /// <summary>
         /// Gets address magic offset in the binary image for EEPROM content.
         /// </summary>
-        uint? MagicOffset { get; }
+        uint MagicOffset { get; }
 
         /// <summary>
         /// Gets the depth of the hardware stack.
         /// </summary>
-        int? HWStackDepth { get; }
+        int HWStackDepth { get; }
 
         /// <summary>
         /// Gets the number of memory banks.
         /// </summary>
-        int? BankCount { get; }
+        int BankCount { get; }
 
     }
 

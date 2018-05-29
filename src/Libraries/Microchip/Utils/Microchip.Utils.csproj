@@ -46,9 +46,17 @@
   <ItemGroup>
     <Compile Include="BitsUtils.cs" />
     <Compile Include="ConvUtils.cs" />
-    <Compile Include="IPICVisitor.cs" />
+    <Compile Include="Interfaces\IAdjustPoint.cs" />
+    <Compile Include="Interfaces\IArchDef.cs" />
+    <Compile Include="Interfaces\IMemoryAddrRange.cs" />
+    <Compile Include="Interfaces\IMemTrait.cs" />
+    <Compile Include="Interfaces\IPIC.cs" />
+    <Compile Include="Interfaces\IPICVisitor.cs" />
+    <Compile Include="Interfaces\IMemoryRegion.cs" />
+    <Compile Include="Interfaces\ITrait.cs" />
     <Compile Include="NaturalComparer.cs" />
     <Compile Include="PartInfo.cs" />
+    <Compile Include="PICRemapMemDomains.cs" />
     <Compile Include="PIC_v1.cs" />
     <Compile Include="PICConstants.cs" />
     <Compile Include="PICCrownking.cs" />

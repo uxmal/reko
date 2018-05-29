@@ -19,16 +19,17 @@
 #endregion
 
 // summary:	Implements the Microchip PIC XML definition serialization per Microchip Crownking Database.
+// This is version 1.
 //
 namespace Reko.Libraries.Microchip
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Xml.Schema;
     using System.Xml.Serialization;
+    using System.Linq;
 
     #region Base common definitions
 
@@ -188,9 +189,9 @@ namespace Reko.Libraries.Microchip
     /// The abstract class <see cref="MemoryAddrRange"/> represents a PIC memory address range [begin, end) (either in data, program or absolute space).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class MemoryAddrRange :
-        IEquatable<MemoryAddrRange>, IEqualityComparer<MemoryAddrRange>,
-        IComparer<MemoryAddrRange>, IComparable<MemoryAddrRange>
+    public abstract class MemoryAddrRange : IMemoryAddrRange,
+        IEquatable<MemoryAddrRange>, IEquatable<IMemoryAddrRange>, IEqualityComparer<MemoryAddrRange>,
+        IComparable<MemoryAddrRange>, IComparable<IMemoryAddrRange>, IComparer<MemoryAddrRange>
     {
 
         public MemoryAddrRange() { }
@@ -201,9 +202,6 @@ namespace Reko.Libraries.Microchip
         /// <summary>
         /// Used to serialize <see cref="BeginAddr" /> property from/to hexadecimal string.
         /// </summary>
-        /// <value>
-        /// The begin address content as an hexadecimal string.
-        /// </value>
         [XmlAttribute(AttributeName = "beginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _beginaddrformatted { get => $"0x{BeginAddr:X}"; set => BeginAddr = value.ToUInt32Ex(); }
@@ -211,17 +209,11 @@ namespace Reko.Libraries.Microchip
         /// <summary>
         /// Gets the begin address of the memory range.
         /// </summary>
-        /// <value>
-        /// The begin address as an integer.
-        /// </value>
         [XmlIgnore] public uint BeginAddr { get; private set; }
 
         /// <summary>
         /// Used to serialize <see cref="EndAddr" /> property from/to hexadecimal string.
         /// </summary>
-        /// <value>
-        /// The end address as an hexadecimal string.
-        /// </value>
         [XmlAttribute(AttributeName = "endaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _endaddrformatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); }
@@ -229,13 +221,23 @@ namespace Reko.Libraries.Microchip
         /// <summary>
         /// Gets the end address of the memory range.
         /// </summary>
-        /// <value>
-        /// The end address as an integer.
-        /// </value>
         [XmlIgnore] public uint EndAddr { get; private set; }
 
 
-        #region Implementation of the IEquatable<MemoryAddrRange>, IEqualityComparer<MemoryAddrRange>, IComparer<MemoryAddrRange>, IComparable<MemoryAddrRange> interfaces
+        #region Implementation of the equality/comparison interfaces
+
+        public bool Equals(IMemoryAddrRange other)
+        {
+            if (other is null)
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (MemoryDomain != other.MemoryDomain)
+                return false;
+            if (BeginAddr != other.BeginAddr)
+                return false;
+            return (EndAddr == other.EndAddr);
+        }
 
         public bool Equals(MemoryAddrRange other)
         {
@@ -250,22 +252,18 @@ namespace Reko.Libraries.Microchip
             return (EndAddr == other.EndAddr);
         }
 
-        public override bool Equals(object obj) => Equals(obj as MemoryAddrRange);
+        public override bool Equals(object obj) => Equals(obj as IMemoryAddrRange);
 
-        public override int GetHashCode() => (BeginAddr.GetHashCode() + EndAddr.GetHashCode()) ^ MemoryDomain.GetHashCode();
+        public override int GetHashCode() => (BeginAddr.GetHashCode() + 17 * EndAddr.GetHashCode()) ^ MemoryDomain.GetHashCode();
 
         public static bool operator ==(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) == 0;
 
         public static bool operator !=(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) != 0;
 
         public int Compare(MemoryAddrRange x, MemoryAddrRange y)
-        {
-            if (ReferenceEquals(x, y))
-                return 0;
-            return x?.CompareTo(y) ?? -1;
-        }
+            => _Compare(x, y);
 
-        private static int _Compare(MemoryAddrRange x, MemoryAddrRange y)
+        private static int _Compare(MemoryAddrRange x, IMemoryAddrRange y)
         {
             if (ReferenceEquals(x, y))
                 return 0;
@@ -282,6 +280,19 @@ namespace Reko.Libraries.Microchip
         }
 
         public int GetHashCode(MemoryAddrRange obj) => obj?.GetHashCode() ?? 0;
+
+        public int CompareTo(IMemoryAddrRange other)
+        {
+            if (other is null)
+                return 1;
+            if (ReferenceEquals(this, other))
+                return 0;
+            if (MemoryDomain != other.MemoryDomain)
+                return MemoryDomain.CompareTo(other.MemoryDomain);
+            if (BeginAddr == other.BeginAddr)
+                return EndAddr.CompareTo(other.EndAddr);
+            return BeginAddr.CompareTo(other.BeginAddr);
+        }
 
         public int CompareTo(MemoryAddrRange other)
         {
@@ -339,7 +350,7 @@ namespace Reko.Libraries.Microchip
     /// Memory trait (characteristics).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class MemTrait : IMemTraitsSymbolAcceptor
+    public abstract class MemTrait : IMemTrait
     {
 
         public MemTrait() { }
@@ -406,121 +417,42 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "wordsize", Form = XmlSchemaForm.None, Namespace = "")]
         public string WordSizeFormatted { get => $"0x{WordSize:X}"; set => WordSize = value.ToUInt32Ex(); }
 
-
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public abstract void Accept(IMemTraitsSymbolVisitor v);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public abstract T Accept<T>(IMemTraitsSymbolVisitor<T> v);
-
-        /// <summary>
-        /// The <see cref="Accept{T, C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public abstract T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context);
-
-        #endregion
-
     }
 
     /// <summary>
     /// A default memory trait.
     /// </summary>
-    public sealed class DefaultMemTrait : MemTrait
+    public sealed class DefaultMemTrait : IMemTrait, ITrait
     {
-        public DefaultMemTrait() { }
-
 
         /// <summary>
         /// Gets the default size of the memory word.
         /// </summary>
-        [XmlIgnore] public override uint WordSize => 1;
+        public uint WordSize => 1;
 
         /// <summary>
         /// Gets the default memory location access size.
         /// </summary>
-        [XmlIgnore] public override uint LocSize => 1;
+        public uint LocSize => 1;
 
         /// <summary>
         /// Gets the default memory word implementation (bit mask).
         /// </summary>
-        [XmlIgnore] public override uint WordImpl => 0xFF;
+        public uint WordImpl => 0xFF;
 
         /// <summary>
         /// Gets the default initial (erased) memory word value.
         /// </summary>
-        [XmlIgnore] public override uint WordInit => 0xFF;
+        public uint WordInit => 0xFF;
 
         /// <summary>
         /// Gets the default memory word safe value.
         /// </summary>
-        [XmlIgnore] public override uint WordSafe => 0x00;
+        public uint WordSafe => 0x00;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
+        public MemoryDomain Domain => MemoryDomain.Unknown;
 
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this default memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this code memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this code memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Undef;
 
     }
 
@@ -528,45 +460,13 @@ namespace Reko.Libraries.Microchip
     /// Code memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CodeMemTraits : MemTrait
+    public sealed class CodeMemTraits : MemTrait, ITrait
     {
         public CodeMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this code memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this code memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this code memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Code;
 
     }
 
@@ -574,45 +474,13 @@ namespace Reko.Libraries.Microchip
     /// External code memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ExtCodeMemTraits : MemTrait
+    public sealed class ExtCodeMemTraits : MemTrait, ITrait
     {
         public ExtCodeMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this external code memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this external code memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this external code memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.ExtCode;
 
     }
 
@@ -620,45 +488,13 @@ namespace Reko.Libraries.Microchip
     /// Calibration data memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CalDataMemTraits : MemTrait
+    public sealed class CalDataMemTraits : MemTrait, ITrait
     {
         public CalDataMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this calibration memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this calibration memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this calibration memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Calib;
 
     }
 
@@ -670,41 +506,9 @@ namespace Reko.Libraries.Microchip
     {
         public BackgroundDebugMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this debugger memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this debugger memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this debugger memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Debugger;
 
     }
 
@@ -716,41 +520,9 @@ namespace Reko.Libraries.Microchip
     {
         public TestMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this test memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this test memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this test memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Test;
 
     }
 
@@ -758,45 +530,13 @@ namespace Reko.Libraries.Microchip
     /// User IDs memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class UserIDMemTraits : MemTrait
+    public sealed class UserIDMemTraits : MemTrait, ITrait
     {
         public UserIDMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this User ID memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this User ID memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this User ID memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.UserID;
 
     }
 
@@ -804,9 +544,13 @@ namespace Reko.Libraries.Microchip
     /// Configuration fuses memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ConfigFuseMemTraits : MemTrait
+    public sealed class ConfigFuseMemTraits : MemTrait, ITrait
     {
         public ConfigFuseMemTraits() { }
+
+        public MemoryDomain Domain => MemoryDomain.Prog;
+
+        public MemorySubDomain SubDomain => MemorySubDomain.DeviceConfig;
 
 
         [XmlIgnore] public int UnimplVal { get; private set; }
@@ -815,86 +559,19 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "unimplval", Form = XmlSchemaForm.None, Namespace = "")]
         public string UnimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this configuration fuses memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this configuration fuses memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this configuration fuses memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
-
     }
 
     /// <summary>
     /// Configuration Write-Once-Read-Many memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ConfigWORMMemTraits : MemTrait
+    public sealed class ConfigWORMMemTraits : MemTrait, ITrait
     {
         public ConfigWORMMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this configuration words memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this configuration words memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this configuration words memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Other;
 
     }
 
@@ -902,45 +579,13 @@ namespace Reko.Libraries.Microchip
     /// Device IDs memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceIDMemTraits : MemTrait
+    public sealed class DeviceIDMemTraits : MemTrait, ITrait
     {
         public DeviceIDMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Prog;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this Device ID memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this Device ID memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this Device ID memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.DeviceID;
 
     }
 
@@ -948,7 +593,7 @@ namespace Reko.Libraries.Microchip
     /// EEPROM data memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class EEDataMemTraits : MemTrait
+    public sealed class EEDataMemTraits : MemTrait, ITrait
     {
         public EEDataMemTraits() { }
 
@@ -957,6 +602,11 @@ namespace Reko.Libraries.Microchip
         [XmlIgnore] public override uint WordImpl => 0xFF;
         [XmlIgnore] public override uint WordInit => 0xFF;
         [XmlIgnore] public override uint WordSafe => 0xFF;
+
+        public MemoryDomain Domain => MemoryDomain.Prog;
+
+        public MemorySubDomain SubDomain => MemorySubDomain.EEData;
+
 
         /// <summary>
         /// Gets address magic offset in the binary image for EEPROM content.
@@ -967,87 +617,19 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "magicoffset", Form = XmlSchemaForm.None, Namespace = "")]
         public string MagicOffsetFormatted { get => $"0x{MagicOffset:X}"; set => MagicOffset = value.ToUInt32Ex(); } 
 
-
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this Data EEPROM memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this Data EEPROM memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this Data EEPROM memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
-
     }
 
     /// <summary>
     /// Data memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataMemTraits : MemTrait
+    public sealed class DataMemTraits : MemTrait, ITrait
     {
         public DataMemTraits() { }
 
+        public MemoryDomain Domain => MemoryDomain.Data;
 
-        #region IMemTraitsSymbolAcceptor interfaces 
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this data memory trait.
-        /// </summary>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this data memory trait.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" function for this data memory trait with the specified context.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
+        public MemorySubDomain SubDomain => MemorySubDomain.Undef;
 
     }
 
@@ -1079,20 +661,20 @@ namespace Reko.Libraries.Microchip
         /// <summary>
         /// Gets the depth of the hardware stack.
         /// </summary>
-        [XmlIgnore]        public int HWStackDepth { get; private set; }
+        [XmlIgnore] public int HWStackDepth { get; private set; }
 
         /// <summary>
         /// Gets the number of memory banks.
         /// </summary>
-        [XmlIgnore]        public int BankCount { get; private set; }
+        [XmlIgnore] public int BankCount { get; private set; }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "hwstackdepth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string HWStackDepthFormatted { get => $"{HWStackDepth}"; set => HWStackDepth = value.ToInt32Ex(); } 
+        public string HWStackDepthFormatted { get => $"{HWStackDepth}"; set => HWStackDepth = value.ToInt32Ex(); }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "bankcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string BankCountFormatted { get => $"{BankCount}"; set => BankCount = value.ToInt32Ex(); } 
+        public string BankCountFormatted { get => $"{BankCount}"; set => BankCount = value.ToInt32Ex(); }
 
     }
 
@@ -1100,7 +682,7 @@ namespace Reko.Libraries.Microchip
     /// PIC memory architecture definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ArchDef
+    public sealed class ArchDef : IArchDef
     {
         public ArchDef() { }
 
@@ -1115,7 +697,7 @@ namespace Reko.Libraries.Microchip
         /// Gets the description of the PIC architecture.
         /// </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets the name (16xxxx, 16Exxx, 18xxxx) of the PIC architecture.
@@ -1123,35 +705,27 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
         public string Name { get; set; }
 
-    }
+        [XmlIgnore] public int BankCount => MemTraits.BankCount;
 
-    public static class PICArch
-    {
-        private readonly static Hashtable subdom2dom = new Hashtable(20)
+        [XmlIgnore] public int HWStackDepth => MemTraits.HWStackDepth;
+
+        [XmlIgnore]
+        public uint MagicOffset
         {
-            { MemorySubDomain.SFR,      MemoryDomain.Data },
-            { MemorySubDomain.GPR,      MemoryDomain.Data },
-            { MemorySubDomain.DPR,      MemoryDomain.Data },
-            { MemorySubDomain.NNMR,     MemoryDomain.Data },
-            { MemorySubDomain.Emulator, MemoryDomain.Data },
-            { MemorySubDomain.Linear,   MemoryDomain.Data },
-            { MemorySubDomain.DMA,      MemoryDomain.Data },
-            { MemorySubDomain.Code,             MemoryDomain.Prog },
-            { MemorySubDomain.ExtCode,          MemoryDomain.Prog },
-            { MemorySubDomain.EEData,           MemoryDomain.Prog },
-            { MemorySubDomain.DeviceConfig,     MemoryDomain.Prog },
-            { MemorySubDomain.DeviceConfigInfo, MemoryDomain.Prog },
-            { MemorySubDomain.DeviceInfoAry,    MemoryDomain.Prog },
-            { MemorySubDomain.UserID,           MemoryDomain.Prog },
-            { MemorySubDomain.DeviceID,         MemoryDomain.Prog },
-            { MemorySubDomain.RevisionID,       MemoryDomain.Prog },
-            { MemorySubDomain.Debugger,         MemoryDomain.Prog },
-            { MemorySubDomain.Calib,            MemoryDomain.Prog },
-            { MemorySubDomain.Test,             MemoryDomain.Prog },
-        };
+            get
+            {
+                if (!magicOffset.HasValue)
+                {
+                    magicOffset = MemTraits.Traits.OfType<EEDataMemTraits>().Select(t => t.MagicOffset).FirstOrDefault();
+                }
+                return magicOffset ?? 0;
+            }
+        }
+        private uint? magicOffset;
 
-        public static MemoryDomain GetDomainOf(this MemorySubDomain subdom)
-            => (MemoryDomain)(subdom2dom[subdom] ?? MemoryDomain.Unknown);
+        [XmlIgnore]
+        public IEnumerable<ITrait> MemoryTraits
+            => MemTraits.Traits.OfType<ITrait>();
 
     }
 
@@ -1257,7 +831,7 @@ namespace Reko.Libraries.Microchip
     /// <summary>
     /// A program memory addresses [range)
     /// </summary>
-    public abstract class ProgMemoryRange : MemoryAddrRange
+    public abstract class ProgMemoryRange : MemoryAddrRange, IMemoryAddrRange
     {
         public ProgMemoryRange() { }
 
@@ -1269,7 +843,7 @@ namespace Reko.Libraries.Microchip
     /// A Program memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class ProgMemoryRegion : ProgMemoryRange, IMemProgramRegionAcceptor
+    public abstract class ProgMemoryRegion : ProgMemoryRange, IMemoryRegion, IMemProgramRegionAcceptor
     {
         public ProgMemoryRegion() { }
 
@@ -1351,7 +925,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust byte address pointing in program memory spaces.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ProgByteAdjustPoint : MemProgramSymbolAcceptorBase
+    public sealed class ProgByteAdjustPoint : MemProgramSymbolAcceptorBase, IAdjustPoint
     {
         public ProgByteAdjustPoint() { }
 
@@ -1423,7 +997,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust bit address pointing in program memory slots.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ProgBitAdjustPoint : MemProgramSymbolAcceptorBase
+    public sealed class ProgBitAdjustPoint : MemProgramSymbolAcceptorBase, IAdjustPoint
     {
         public ProgBitAdjustPoint() { }
 
@@ -2951,7 +2525,7 @@ namespace Reko.Libraries.Microchip
     /// <summary>
     /// A data memory addresses range.
     /// </summary>
-    public abstract class DataMemoryRange : MemoryAddrRange
+    public abstract class DataMemoryRange : MemoryAddrRange, IMemoryAddrRange
     {
         public DataMemoryRange() { }
 
@@ -2964,7 +2538,7 @@ namespace Reko.Libraries.Microchip
     /// A Data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class DataMemoryRegion : DataMemoryRange, IMemDataRegionAcceptor
+    public abstract class DataMemoryRegion : DataMemoryRange, IMemoryRegion, IMemDataRegionAcceptor
     {
         public DataMemoryRegion() { }
 
@@ -3040,7 +2614,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust byte address pointing in data memory spaces.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataByteAdjustPoint : MemDataSymbolAcceptorBase
+    public sealed class DataByteAdjustPoint : MemDataSymbolAcceptorBase, IAdjustPoint
     {
         public DataByteAdjustPoint() { }
 
@@ -3105,7 +2679,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust bit address pointing in data memory slots.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataBitAdjustPoint : MemDataSymbolAcceptorBase
+    public sealed class DataBitAdjustPoint : MemDataSymbolAcceptorBase, IAdjustPoint
     {
         public DataBitAdjustPoint() { }
 
@@ -4556,7 +4130,7 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [XmlRoot(ElementName ="PIC", Namespace = "", IsNullable = false)]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class PIC_v1
+    public sealed class PIC_v1 : IPIC
     {
 
         // Maps the 'InstructionsetID' identifiers to internal code.
@@ -4573,19 +4147,19 @@ namespace Reko.Libraries.Microchip
 
 
         /// <summary>
-        /// Gets the architecture definition.
+        /// Gets the architecture definition from the XML.
         /// </summary>
         [XmlElement(ElementName = "ArchDef", Form = XmlSchemaForm.None, Namespace = "")]
         public ArchDef ArchDef { get; set; }
 
         /// <summary>
-        /// Gets the instruction set identifier.
+        /// Gets the instruction set identifier from the XML.
         /// </summary>
         [XmlElement(ElementName = "InstructionSet", Form = XmlSchemaForm.None, Namespace = "")]
         public InstructionSet InstructionSet { get; set; }
 
         /// <summary>
-        /// Gets a list of interrupts (IRQ).
+        /// Gets a list of interrupts (IRQ) from the XML.
         /// </summary>
         [XmlArray("InterruptList", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("Interrupt", typeof(Interrupt), Form = XmlSchemaForm.None, IsNullable = false, Namespace = "")]
@@ -4593,19 +4167,19 @@ namespace Reko.Libraries.Microchip
         public List<Interrupt> Interrupts { get; set; }
 
         /// <summary>
-        /// Gets the program memory space.
+        /// Gets the program memory space definitions from the XML.
         /// </summary>
         [XmlElement(ElementName = "ProgramSpace", Form = XmlSchemaForm.None, Namespace = "")]
         public ProgramSpace ProgramSpace { get; set; }
 
         /// <summary>
-        /// Gets the data memory space.
+        /// Gets the data memory space definitions from the XML.
         /// </summary>
         [XmlElement(ElementName = "DataSpace", Form = XmlSchemaForm.None, Namespace = "")]
         public DataSpace DataSpace { get; set; }
 
         /// <summary>
-        /// Gets the list of SFRs in the DMA space.
+        /// Gets the list of SFRs in the DMA space from the XML.
         /// </summary>
         [XmlArray("DMASpace", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("SFRDataSector", typeof(SFRDataSector), IsNullable = false, Namespace = "")]
@@ -4613,26 +4187,26 @@ namespace Reko.Libraries.Microchip
         public List<SFRDataSector> DMASpace { get; set; }
 
         /// <summary>
-        /// Gets the list of linear data memory regions in the indirect space.
+        /// Gets the list of linear data memory regions in the indirect space from the XML.
         /// </summary>
         [XmlArray("IndirectSpace", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("LinearDataSector", typeof(LinearDataSector), Form = XmlSchemaForm.None, IsNullable = false, Namespace = "")]
         public List<LinearDataSector> IndirectSpace { get; set; }
 
         /// <summary>
-        /// Gets the PIC name.
+        /// Gets the PIC name from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets the PIC architecture name (16xxxx, 16Exxx, 18xxxx)
+        /// Gets the PIC architecture name (16xxxx, 16Exxx, 18xxxx) from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "arch", Form = XmlSchemaForm.None, Namespace = "")]
         public string Arch { get; set; }
 
         /// <summary>
-        /// Gets the PIC description.
+        /// Gets the PIC description from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
         public string Desc { get; set; }
@@ -4645,12 +4219,12 @@ namespace Reko.Libraries.Microchip
         public string ProcIDFormatted { get => $"0x{ProcID:X}"; set => ProcID = value.ToInt32Ex(); }
 
         /// <summary>
-        /// Gets the unique processor identifier. Used by development tools.
+        /// Gets the unique processor identifier from the XML. Used by development tools.
         /// </summary>
         [XmlIgnore] public int ProcID { get; private set; }
 
         /// <summary>
-        /// Gets the data sheet identifier of the PIC.
+        /// Gets the data sheet identifier of the PIC from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "dsid", Form = XmlSchemaForm.None, Namespace = "")]
         public string DsID { get; set; }
@@ -4666,13 +4240,13 @@ namespace Reko.Libraries.Microchip
         public bool IsExtended { get => DataSpace?.ExtendedModeOnly?.Count > 0; set { } }
 
         /// <summary>
-        /// Gets a value indicating whether this PIC supports freezing of peripherals.
+        /// Gets a value indicating whether this PIC supports freezing of peripherals from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "hasfreeze", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool HasFreeze { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this PIC supports debugging.
+        /// Gets a value indicating whether this PIC supports debugging from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "isdebuggable", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsDebuggable { get; set; }
@@ -4687,7 +4261,7 @@ namespace Reko.Libraries.Microchip
         public string PsID { get; set; }
 
         /// <summary>
-        /// Gets the name of the PIC this PIC is cloned from.
+        /// Gets the name of the PIC, this PIC is the clone of, from the XML.
         /// </summary>
         [XmlAttribute(AttributeName = "clonedfrom", Form = XmlSchemaForm.None, Namespace = "")]
         public string ClonedFrom { get; set; }
@@ -4720,6 +4294,10 @@ namespace Reko.Libraries.Microchip
         /// Gets a value indicating whether this PIC is belonging to the PIC18 family.
         /// </summary>
         [XmlIgnore] public bool IsPIC18 => GetInstructionSetID >= InstructionSetID.PIC18;
+
+        [XmlIgnore] public IArchDef ArchDefinitions => ArchDef;
+
+        [XmlIgnore] public string InstructionSetFamily => InstructionSet.ID;
 
         private string _debugDisplay
             => $"PIC (v1) '{Name}' ({Arch}, {GetInstructionSetID}) ";

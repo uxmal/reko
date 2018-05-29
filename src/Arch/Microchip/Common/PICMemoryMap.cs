@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 using System.Diagnostics;
 
 namespace Reko.Arch.MicrochipPIC.Common
@@ -42,7 +43,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// This class defines the current PIC memory traits (characteristics).
         /// </summary>
-        protected sealed class MemTraits : IMemTraitsSymbolVisitor
+        protected sealed class MemTraits
         {
             #region Class helpers
 
@@ -68,7 +69,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// </summary>
             class MemoryDomainKeyEqualityComparer : IEqualityComparer<MemoryDomainKey>
             {
-                bool IEqualityComparer<MemoryDomainKey>.Equals(MemoryDomainKey x, MemoryDomainKey y)
+                public bool Equals(MemoryDomainKey x, MemoryDomainKey y)
                 {
                     if (ReferenceEquals(x, y))
                         return true;
@@ -79,32 +80,47 @@ namespace Reko.Arch.MicrochipPIC.Common
                     return false;
                 }
 
-                int IEqualityComparer<MemoryDomainKey>.GetHashCode(MemoryDomainKey key)
+                public int GetHashCode(MemoryDomainKey key)
                 {
                     return ((int)key.Domain << (int)key.SubDomain).GetHashCode();
-                    ;
                 }
+
             }
 
             #endregion
 
-            #region Members fields
-
-            private readonly Dictionary<MemoryDomainKey, MemTrait> maptraits = new Dictionary<MemoryDomainKey, MemTrait>(new MemoryDomainKeyEqualityComparer());
-            private static readonly MemTrait memtraitdefault = new DefaultMemTrait();
-
-            #endregion
+            private static readonly Dictionary<MemoryDomainKey, IMemTrait> maptraits = new Dictionary<MemoryDomainKey, IMemTrait>(new MemoryDomainKeyEqualityComparer());
+            private static readonly ITrait memtraitdefault = new DefaultMemTrait();
 
             /// <summary>
             /// Constructor.
             /// </summary>
-            /// <param name="pic">the PIC definition.</param>
-            public MemTraits(PIC_v1 pic)
+            /// <param name="archDef">The PIC architecture main definitions.</param>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="archDef"/> is null.</exception>
+            public MemTraits(IArchDef archDef)
             {
-                if (pic == null)
-                    throw new ArgumentNullException(nameof(pic));
-                foreach (var mt in pic.ArchDef.MemTraits.Traits.OfType<IMemTraitsSymbolAcceptor>())
-                    mt.Accept(this);
+                if (archDef == null)
+                    throw new ArgumentNullException(nameof(archDef));
+                maptraits.Clear();
+                foreach (var trait in archDef.MemoryTraits)
+                {
+                    if (trait.Domain != MemoryDomain.Data)
+                    {
+                        var key = new MemoryDomainKey(trait.Domain, trait.SubDomain);
+                        if (!maptraits.ContainsKey(key))
+                        {
+                            maptraits.Add(key, trait);
+                        }
+                    }
+                    else
+                    {
+                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.DPR), trait);
+                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.GPR), trait);
+                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.SFR), trait);
+                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.Emulator), trait);
+                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.Linear), trait);
+                    }
+                }
             }
 
 
@@ -117,7 +133,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(MemoryDomain dom, MemorySubDomain subdom, out MemTrait trait)
+            public bool GetTrait(MemoryDomain dom, MemorySubDomain subdom, out IMemTrait trait)
             {
                 if (!maptraits.TryGetValue(new MemoryDomainKey(dom, subdom), out trait))
                     trait = memtraitdefault;
@@ -132,75 +148,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(MemorySubDomain subdom, out MemTrait trait)
-            {
-                return GetTrait(PICArch.GetDomainOf(subdom), subdom, out trait);
-            }
-
-
-            #region IMemTraitsSymbolVisitor interface implementation
-
-            void IMemTraitsSymbolVisitor.Visit(CalDataMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Calib), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(CodeMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Code), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(ConfigFuseMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.DeviceConfig), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(ExtCodeMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.ExtCode), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(EEDataMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.EEData), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(BackgroundDebugMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Debugger), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(ConfigWORMMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Other), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(DataMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.DPR), mTraits);
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.GPR), mTraits);
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.SFR), mTraits);
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.Emulator), mTraits);
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.Linear), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(DeviceIDMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.DeviceID), mTraits);
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.RevisionID), mTraits);
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(TestMemTraits mTraits)
-            {
-                // Not interested in this.
-            }
-
-            void IMemTraitsSymbolVisitor.Visit(UserIDMemTraits mTraits)
-            {
-                maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.UserID), mTraits);
-            }
-
-            #endregion
+            public bool GetTrait(MemorySubDomain subdom, out IMemTrait trait)
+                => GetTrait(subdom.GetDomain(), subdom, out trait);
 
         }
 
@@ -240,7 +189,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 SubtypeOfMemory = memSubDomain;
                 if (SubtypeOfMemory != MemorySubDomain.NNMR)  // Non-Memory-Mapped-Registers have no memory characteristics.
                 {
-                    if (!this.traits.GetTrait(memDomain, memSubDomain, out MemTrait trait))
+                    if (!this.traits.GetTrait(memDomain, memSubDomain, out IMemTrait trait))
                         throw new InvalidOperationException($"Missing characteristics for [{memDomain}/{memSubDomain}] memory region '{RegionName}'");
                     Trait = trait;
                 }
@@ -296,7 +245,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <value>
             /// The characteristics of the memory region.
             /// </value>
-            public MemTrait Trait { get; }
+            public IMemTrait Trait { get; }
 
             /// <summary>
             /// Gets the memory region total size in bytes.
@@ -424,7 +373,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 BankSize = bankSz;
                 FSRByteAddress = regnAddr;
                 BlockByteRange = blockRng;
-                if (!this.traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out MemTrait trait))
+                if (!this.traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out IMemTrait trait))
                     throw new InvalidOperationException($"Missing characteristics for [{TypeOfMemory}/{SubtypeOfMemory}] linear region");
                 Trait = trait;
             }
@@ -476,7 +425,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Gets the memory characteristics of the Linear Access data memory region.
             /// </summary>
-            public MemTrait Trait { get; }
+            public IMemTrait Trait { get; }
 
             /// <summary>
             /// Gets the size, in bytes, of the Linear Access data memory region.
@@ -984,7 +933,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected PICMemoryMap(PIC_v1 thePIC)
         {
             PIC = thePIC;
-            traits = new MemTraits(thePIC);
+            traits = new MemTraits(thePIC.ArchDefinitions);
             progMap = new ProgMemoryMap(this, traits);
             dataMap = new DataMemoryMap(this, traits, PICExecMode.Traditional);
         }
@@ -1165,7 +1114,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom)
         {
-            if (traits.GetTrait(subdom, out MemTrait t))
+            if (traits.GetTrait(subdom, out IMemTrait t))
                 return (t.LocSize, t.WordSize);
             return (0, 0);
         }
