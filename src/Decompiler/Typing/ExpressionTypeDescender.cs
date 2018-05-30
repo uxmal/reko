@@ -366,7 +366,7 @@ namespace Reko.Typing
         private DataType PushMinuendDataType(DataType dtDiff, DataType dtSub)
         {
             var ptDiff = dtDiff as PrimitiveType;
-            var ptSub = dtSub as PrimitiveType;
+            var ptSub = dtSub.ResolveAs<PrimitiveType>();
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
                 if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
