@@ -53,7 +53,6 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual("../reko/foo.c", s);
         }
 
-
         [Test]
         public void Prp_ToRelative3()
         {
