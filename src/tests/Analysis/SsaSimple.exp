@@ -20,9 +20,9 @@ ax_5: orig: ax
           ax_9 = PHI(ax_5, ax_11)
 SZO_6: orig: SZO
     def:  SZO_6 = cond(ax_5)
-    uses: Z_7 = SZO_6 (alias)
+    uses: Z_7 = (bool) SZO_6 (alias)
 Z_7: orig: Z
-    def:  Z_7 = SZO_6 (alias)
+    def:  Z_7 = (bool) SZO_6 (alias)
     uses: branch Test(NE,Z_7) l0C00_000C
 C_8: orig: C
     def:  C_8 = false
@@ -46,7 +46,7 @@ l0C00_0000:
 	ax_4 = wArg06
 	ax_5 = ax_4 | ax_4
 	SZO_6 = cond(ax_5)
-	Z_7 = SZO_6 (alias)
+	Z_7 = (bool) SZO_6 (alias)
 	C_8 = false
 	branch Test(NE,Z_7) l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C

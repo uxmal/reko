@@ -35,7 +35,7 @@ fn0C00_0004_entry:
 l0C00_0004:
 	sp_1 = fp
 	SCZO_3 = cond(dx - 0x001E)
-	Z_4 = SCZO_3 (alias)
+	Z_4 = (bool) SCZO_3 (alias)
 	SZO_5 = SCZO_3 (alias)
 	branch Test(NE,Z_4) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
@@ -47,7 +47,7 @@ l0C00_000F:
 	dx_13 = dx - 0x0001
 	SZO_14 = cond(dx_13)
 	SCZO_15 = SZO_14 (alias)
-	Z_16 = SZO_14 (alias)
+	Z_16 = (bool) SZO_14 (alias)
 	// succ:  l0C00_0010
 l0C00_0010:
 	SZO_6 = PHI(SZO_5, SZO_14)
@@ -69,7 +69,7 @@ fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
 	SCZO_3 = cond(dx - 0x001E)
-	Z_4 = SCZO_3 (alias)
+	Z_4 = (bool) SCZO_3 (alias)
 	branch Test(NE,Z_4) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:

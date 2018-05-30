@@ -559,13 +559,13 @@ bool fn0C00_0267(selector ds)
 fn0C00_0267_entry:
 	// succ:  l0C00_0267
 l0C00_0267:
-	return cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16])
+	return (bool) cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16])
 	// succ:  fn0C00_0267_exit
 fn0C00_0267_exit:
 
 bool fn0C00_0267(selector ds)
 {
-	return cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16]);
+	return (bool) cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16]);
 }
 ===========================
 // fn0C00_0271
@@ -574,13 +574,13 @@ bool fn0C00_0271(selector ds)
 fn0C00_0271_entry:
 	// succ:  l0C00_0271
 l0C00_0271:
-	return cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16])
+	return (bool) cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16])
 	// succ:  fn0C00_0271_exit
 fn0C00_0271_exit:
 
 bool fn0C00_0271(selector ds)
 {
-	return cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16]);
+	return (bool) cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16]);
 }
 ===========================
 // fn0C00_027B

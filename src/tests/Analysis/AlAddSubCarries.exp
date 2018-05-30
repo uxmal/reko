@@ -55,12 +55,12 @@ l0C00_0000:
 	C = false
 	cl = Mem0[ds:0x0220:byte]
 	SCZO = cond(cl - 0x30)
-	C = SCZO (alias)
+	C = (bool) SCZO (alias)
 	ax = 0x0000 + C
 	SCZO = cond(ax)
 	cl = Mem0[ds:0x0221:byte]
 	SCZO = cond(cl - 0x3A)
-	C = SCZO (alias)
+	C = (bool) SCZO (alias)
 	C = !C
 	ax = ax + ax + C
 	SCZO = cond(ax)

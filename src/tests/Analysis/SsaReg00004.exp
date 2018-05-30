@@ -97,13 +97,14 @@ ecx_24: orig: ecx
           ecx_50 = PHI(ecx_24, ecx_132, ecx_132)
 SCZO_25: orig: SCZO
     def:  SCZO_25 = cond(ecx_24)
+    uses: SCZO_30 = DPB(SCZO_25, C_29, 0) (alias)
 SZO_26: orig: SZO
     def:  SZO_26 = cond(ebp_16 & ebp_16)
-    uses: Z_27 = SZO_26 (alias)
+    uses: Z_27 = (bool) SZO_26 (alias)
           SO_28 = SZO_26 (alias)
           SZO_52 = PHI(SZO_26, SZO_134, SZO_134)
 Z_27: orig: Z
-    def:  Z_27 = SZO_26 (alias)
+    def:  Z_27 = (bool) SZO_26 (alias)
     uses: branch Test(EQ,Z_27) l10000107
           Z_53 = PHI(Z_27, Z_135, Z_135)
 SO_28: orig: SO
@@ -111,11 +112,12 @@ SO_28: orig: SO
     uses: SO_54 = PHI(SO_28, SO_136, SO_136)
 C_29: orig: C
     def:  C_29 = false
-    uses: SCZO_30 = C_29 (alias)
+    uses: SCZO_30 = DPB(SCZO_25, C_29, 0) (alias)
           C_55 = PHI(C_29, C_137, C_137)
 SCZO_30: orig: SCZO
-    def:  SCZO_30 = C_29 (alias)
+    def:  SCZO_30 = DPB(SCZO_25, C_29, 0) (alias)
     uses: SCZO_51 = PHI(SCZO_30, SCZO_133, SCZO_133)
+          SCZO_72 = DPB(SCZO_30, C_71, 0) (alias)
 dwArg0C_31: orig: dwArg0C
     def:  dwArg0C_31 = ecx_24
     uses: dwArg0C_45 = PHI(dwArg0C_31, dwArg0C_111, dwArg0C_111)
@@ -218,17 +220,17 @@ esi_67: orig: esi
     uses: esi_80 = PHI(esi_67, esi_83)
 SZO_68: orig: SZO
     def:  SZO_68 = cond(0x00000000)
-    uses: Z_69 = SZO_68 (alias)
+    uses: Z_69 = (bool) SZO_68 (alias)
           SO_70 = SZO_68 (alias)
 Z_69: orig: Z
-    def:  Z_69 = SZO_68 (alias)
+    def:  Z_69 = (bool) SZO_68 (alias)
 SO_70: orig: SO
     def:  SO_70 = SZO_68 (alias)
 C_71: orig: C
     def:  C_71 = false
-    uses: SCZO_72 = C_71 (alias)
+    uses: SCZO_72 = DPB(SCZO_30, C_71, 0) (alias)
 SCZO_72: orig: SCZO
-    def:  SCZO_72 = C_71 (alias)
+    def:  SCZO_72 = DPB(SCZO_30, C_71, 0) (alias)
 edi_73: orig: edi
     def:  edi_73 = 0x000186A0
     uses: edi_79 = PHI(edi_73, edi_122)
@@ -295,17 +297,17 @@ FPUF_90: orig: FPUF
 SCZO_91: orig: SCZO
     def:  SCZO_91 = FPUF_90
     uses: SZO_92 = SCZO_91 (alias)
-          Z_93 = SCZO_91 (alias)
+          Z_93 = (bool) SCZO_91 (alias)
           SO_94 = SCZO_91 (alias)
-          C_95 = SCZO_91 (alias)
+          C_95 = (bool) SCZO_91 (alias)
 SZO_92: orig: SZO
     def:  SZO_92 = SCZO_91 (alias)
 Z_93: orig: Z
-    def:  Z_93 = SCZO_91 (alias)
+    def:  Z_93 = (bool) SCZO_91 (alias)
 SO_94: orig: SO
     def:  SO_94 = SCZO_91 (alias)
 C_95: orig: C
-    def:  C_95 = SCZO_91 (alias)
+    def:  C_95 = (bool) SCZO_91 (alias)
 dwArg04_96: orig: dwArg04
     def:  dwArg04_96 = PHI(dwArg04_172, dwArg04_85)
     uses: rLoc2_114 = (real64) dwArg04_96
@@ -352,17 +354,17 @@ FPUF_105: orig: FPUF
 SCZO_106: orig: SCZO
     def:  SCZO_106 = FPUF_105
     uses: SZO_107 = SCZO_106 (alias)
-          Z_108 = SCZO_106 (alias)
+          Z_108 = (bool) SCZO_106 (alias)
           SO_109 = SCZO_106 (alias)
-          C_110 = SCZO_106 (alias)
+          C_110 = (bool) SCZO_106 (alias)
 SZO_107: orig: SZO
     def:  SZO_107 = SCZO_106 (alias)
 Z_108: orig: Z
-    def:  Z_108 = SCZO_106 (alias)
+    def:  Z_108 = (bool) SCZO_106 (alias)
 SO_109: orig: SO
     def:  SO_109 = SCZO_106 (alias)
 C_110: orig: C
-    def:  C_110 = SCZO_106 (alias)
+    def:  C_110 = (bool) SCZO_106 (alias)
 dwArg0C_111: orig: dwArg0C
     def:  dwArg0C_111 = PHI(dwArg0C_102, dwArg0C_163)
     uses: dwArg0C_45 = PHI(dwArg0C_31, dwArg0C_111, dwArg0C_111)
@@ -387,17 +389,17 @@ FPUF_115: orig: FPUF
 SCZO_116: orig: SCZO
     def:  SCZO_116 = FPUF_115
     uses: SZO_117 = SCZO_116 (alias)
-          Z_118 = SCZO_116 (alias)
+          Z_118 = (bool) SCZO_116 (alias)
           SO_119 = SCZO_116 (alias)
-          C_120 = SCZO_116 (alias)
+          C_120 = (bool) SCZO_116 (alias)
 SZO_117: orig: SZO
     def:  SZO_117 = SCZO_116 (alias)
 Z_118: orig: Z
-    def:  Z_118 = SCZO_116 (alias)
+    def:  Z_118 = (bool) SCZO_116 (alias)
 SO_119: orig: SO
     def:  SO_119 = SCZO_116 (alias)
 C_120: orig: C
-    def:  C_120 = SCZO_116 (alias)
+    def:  C_120 = (bool) SCZO_116 (alias)
 FPUF_121: orig: FPUF
     def:  FPUF_121 = PHI(FPUF_115, FPUF_145, FPUF_145, FPUF_145)
     uses: FPUF_47 = PHI(FPUF, FPUF_121, FPUF_121)
@@ -409,18 +411,18 @@ edi_122: orig: edi
 SCZO_123: orig: SCZO
     def:  SCZO_123 = cond(esi_83 - ebp_16)
     uses: SZO_124 = SCZO_123 (alias)
-          Z_125 = SCZO_123 (alias)
+          Z_125 = (bool) SCZO_123 (alias)
           SO_126 = SCZO_123 (alias)
-          C_127 = SCZO_123 (alias)
+          C_127 = (bool) SCZO_123 (alias)
 SZO_124: orig: SZO
     def:  SZO_124 = SCZO_123 (alias)
 Z_125: orig: Z
-    def:  Z_125 = SCZO_123 (alias)
+    def:  Z_125 = (bool) SCZO_123 (alias)
 SO_126: orig: SO
     def:  SO_126 = SCZO_123 (alias)
     uses: branch Test(LT,SO_126) l10000048
 C_127: orig: C
-    def:  C_127 = SCZO_123 (alias)
+    def:  C_127 = (bool) SCZO_123 (alias)
 rLoc2_128: orig: rLoc2
     def:  rLoc2_128 = (real64) dwArg04_96
     uses: eax_129 = fn1000010A(rLoc2_128)
@@ -445,9 +447,9 @@ ecx_132: orig: ecx
 SCZO_133: orig: SCZO
     def:  SCZO_133 = cond(ebp_16 - edi_122)
     uses: SZO_134 = SCZO_133 (alias)
-          Z_135 = SCZO_133 (alias)
+          Z_135 = (bool) SCZO_133 (alias)
           SO_136 = SCZO_133 (alias)
-          C_137 = SCZO_133 (alias)
+          C_137 = (bool) SCZO_133 (alias)
           SCZO_51 = PHI(SCZO_30, SCZO_133, SCZO_133)
           SCZO_51 = PHI(SCZO_30, SCZO_133, SCZO_133)
 SZO_134: orig: SZO
@@ -456,7 +458,7 @@ SZO_134: orig: SZO
           SZO_52 = PHI(SZO_26, SZO_134, SZO_134)
           SZO_52 = PHI(SZO_26, SZO_134, SZO_134)
 Z_135: orig: Z
-    def:  Z_135 = SCZO_133 (alias)
+    def:  Z_135 = (bool) SCZO_133 (alias)
     uses: Z_53 = PHI(Z_27, Z_135, Z_135)
           Z_53 = PHI(Z_27, Z_135, Z_135)
 SO_136: orig: SO
@@ -464,7 +466,7 @@ SO_136: orig: SO
     uses: SO_54 = PHI(SO_28, SO_136, SO_136)
           SO_54 = PHI(SO_28, SO_136, SO_136)
 C_137: orig: C
-    def:  C_137 = SCZO_133 (alias)
+    def:  C_137 = (bool) SCZO_133 (alias)
     uses: C_55 = PHI(C_29, C_137, C_137)
           C_55 = PHI(C_29, C_137, C_137)
 edi_138: orig: edi
@@ -495,32 +497,32 @@ FPUF_145: orig: FPUF
 SCZO_146: orig: SCZO
     def:  SCZO_146 = FPUF_145
     uses: SZO_147 = SCZO_146 (alias)
-          Z_148 = SCZO_146 (alias)
+          Z_148 = (bool) SCZO_146 (alias)
           SO_149 = SCZO_146 (alias)
-          C_150 = SCZO_146 (alias)
+          C_150 = (bool) SCZO_146 (alias)
 SZO_147: orig: SZO
     def:  SZO_147 = SCZO_146 (alias)
 Z_148: orig: Z
-    def:  Z_148 = SCZO_146 (alias)
+    def:  Z_148 = (bool) SCZO_146 (alias)
 SO_149: orig: SO
     def:  SO_149 = SCZO_146 (alias)
 C_150: orig: C
-    def:  C_150 = SCZO_146 (alias)
+    def:  C_150 = (bool) SCZO_146 (alias)
 SCZO_151: orig: SCZO
     def:  SCZO_151 = cond(edi_79 - 0x000186A0)
     uses: SZO_152 = SCZO_151 (alias)
-          Z_153 = SCZO_151 (alias)
+          Z_153 = (bool) SCZO_151 (alias)
           SO_154 = SCZO_151 (alias)
-          C_155 = SCZO_151 (alias)
+          C_155 = (bool) SCZO_151 (alias)
 SZO_152: orig: SZO
     def:  SZO_152 = SCZO_151 (alias)
 Z_153: orig: Z
-    def:  Z_153 = SCZO_151 (alias)
+    def:  Z_153 = (bool) SCZO_151 (alias)
     uses: branch Test(NE,Z_153) l100000D7
 SO_154: orig: SO
     def:  SO_154 = SCZO_151 (alias)
 C_155: orig: C
-    def:  C_155 = SCZO_151 (alias)
+    def:  C_155 = (bool) SCZO_151 (alias)
 edi_156: orig: edi
     def:  edi_156 = esi_83
     uses: edi_122 = PHI(edi_79, edi_79, edi_79, edi_156)
@@ -532,12 +534,12 @@ ecx_157: orig: ecx
 SZO_158: orig: SZO
     def:  SZO_158 = cond(ecx_157)
     uses: SCZO_159 = SZO_158 (alias)
-          Z_160 = SZO_158 (alias)
+          Z_160 = (bool) SZO_158 (alias)
           SO_161 = SZO_158 (alias)
 SCZO_159: orig: SCZO
     def:  SCZO_159 = SZO_158 (alias)
 Z_160: orig: Z
-    def:  Z_160 = SZO_158 (alias)
+    def:  Z_160 = (bool) SZO_158 (alias)
 SO_161: orig: SO
     def:  SO_161 = SZO_158 (alias)
 rLoc1_162: orig: rLoc1
@@ -556,12 +558,12 @@ ecx_165: orig: ecx
 SZO_166: orig: SZO
     def:  SZO_166 = cond(ecx_165)
     uses: SCZO_167 = SZO_166 (alias)
-          Z_168 = SZO_166 (alias)
+          Z_168 = (bool) SZO_166 (alias)
           SO_169 = SZO_166 (alias)
 SCZO_167: orig: SCZO
     def:  SCZO_167 = SZO_166 (alias)
 Z_168: orig: Z
-    def:  Z_168 = SZO_166 (alias)
+    def:  Z_168 = (bool) SZO_166 (alias)
 SO_169: orig: SO
     def:  SO_169 = SZO_166 (alias)
 dwArg04_170: orig: dwArg04
@@ -615,10 +617,10 @@ l10000000:
 	ecx_24 = ecx_22 - eax_23
 	SCZO_25 = cond(ecx_24)
 	SZO_26 = cond(ebp_16 & ebp_16)
-	Z_27 = SZO_26 (alias)
+	Z_27 = (bool) SZO_26 (alias)
 	SO_28 = SZO_26 (alias)
 	C_29 = false
-	SCZO_30 = C_29 (alias)
+	SCZO_30 = DPB(SCZO_25, C_29, 0) (alias)
 	dwArg0C_31 = ecx_24
 	Mem32[edx_20:word32] = ecx_24
 	branch Test(EQ,Z_27) l10000107
@@ -631,10 +633,10 @@ l10000035:
 	dwLoc10_66 = edi
 	esi_67 = 0x00000000
 	SZO_68 = cond(0x00000000)
-	Z_69 = SZO_68 (alias)
+	Z_69 = (bool) SZO_68 (alias)
 	SO_70 = SZO_68 (alias)
 	C_71 = false
-	SCZO_72 = C_71 (alias)
+	SCZO_72 = DPB(SCZO_30, C_71, 0) (alias)
 	edi_73 = 0x000186A0
 	dwArg04_74 = (real32) rLoc1_62
 	rLoc1_75 = (real64) dwArg0C_31
@@ -657,16 +659,16 @@ l10000048:
 	FPUF_90 = cond(rLoc2_89 - dwArg04_85)
 	SCZO_91 = FPUF_90
 	SZO_92 = SCZO_91 (alias)
-	Z_93 = SCZO_91 (alias)
+	Z_93 = (bool) SCZO_91 (alias)
 	SO_94 = SCZO_91 (alias)
-	C_95 = SCZO_91 (alias)
+	C_95 = (bool) SCZO_91 (alias)
 	branch Test(EQ,FPUF_90) l1000007F
 	// succ:  l10000072 l1000007F
 l10000072:
 	ecx_165 = ecx_87 + 0x00000001
 	SZO_166 = cond(ecx_165)
 	SCZO_167 = SZO_166 (alias)
-	Z_168 = SZO_166 (alias)
+	Z_168 = (bool) SZO_166 (alias)
 	SO_169 = SZO_166 (alias)
 	dwArg04_170 = ecx_165
 	rLoc2_171 = (real64) dwArg04_170
@@ -685,16 +687,16 @@ l1000007F:
 	FPUF_105 = cond(rLoc3_104 - rLoc2_103)
 	SCZO_106 = FPUF_105
 	SZO_107 = SCZO_106 (alias)
-	Z_108 = SCZO_106 (alias)
+	Z_108 = (bool) SCZO_106 (alias)
 	SO_109 = SCZO_106 (alias)
-	C_110 = SCZO_106 (alias)
+	C_110 = (bool) SCZO_106 (alias)
 	branch Test(EQ,FPUF_105) l100000AD
 	// succ:  l100000A2 l100000AD
 l100000A2:
 	ecx_157 = ecx_101 + 0x00000001
 	SZO_158 = cond(ecx_157)
 	SCZO_159 = SZO_158 (alias)
-	Z_160 = SZO_158 (alias)
+	Z_160 = (bool) SZO_158 (alias)
 	SO_161 = SZO_158 (alias)
 	rLoc1_162 = rLoc1_98
 	dwArg0C_163 = ecx_157
@@ -708,26 +710,26 @@ l100000AD:
 	FPUF_115 = cond(rLoc2_114 - Mem32[0x10033298:real64])
 	SCZO_116 = FPUF_115
 	SZO_117 = SCZO_116 (alias)
-	Z_118 = SCZO_116 (alias)
+	Z_118 = (bool) SCZO_116 (alias)
 	SO_119 = SCZO_116 (alias)
-	C_120 = SCZO_116 (alias)
+	C_120 = (bool) SCZO_116 (alias)
 	branch Test(NE,FPUF_115) l100000D7
 	// succ:  l100000BF l100000D7
 l100000BF:
 	FPUF_145 = cond(rLoc1_112 - Mem32[0x10033298:real64])
 	SCZO_146 = FPUF_145
 	SZO_147 = SCZO_146 (alias)
-	Z_148 = SCZO_146 (alias)
+	Z_148 = (bool) SCZO_146 (alias)
 	SO_149 = SCZO_146 (alias)
-	C_150 = SCZO_146 (alias)
+	C_150 = (bool) SCZO_146 (alias)
 	branch Test(NE,FPUF_145) l100000D7
 	// succ:  l100000CD l100000D7
 l100000CD:
 	SCZO_151 = cond(edi_79 - 0x000186A0)
 	SZO_152 = SCZO_151 (alias)
-	Z_153 = SCZO_151 (alias)
+	Z_153 = (bool) SCZO_151 (alias)
 	SO_154 = SCZO_151 (alias)
-	C_155 = SCZO_151 (alias)
+	C_155 = (bool) SCZO_151 (alias)
 	branch Test(NE,Z_153) l100000D7
 	// succ:  l100000D5 l100000D7
 l100000D5:
@@ -738,9 +740,9 @@ l100000D7:
 	edi_122 = PHI(edi_79, edi_79, edi_79, edi_156)
 	SCZO_123 = cond(esi_83 - ebp_16)
 	SZO_124 = SCZO_123 (alias)
-	Z_125 = SCZO_123 (alias)
+	Z_125 = (bool) SCZO_123 (alias)
 	SO_126 = SCZO_123 (alias)
-	C_127 = SCZO_123 (alias)
+	C_127 = (bool) SCZO_123 (alias)
 	branch Test(LT,SO_126) l10000048
 	// succ:  l100000DF l10000048
 l100000DF:
@@ -751,9 +753,9 @@ l100000DF:
 	ecx_132 = dwArg10
 	SCZO_133 = cond(ebp_16 - edi_122)
 	SZO_134 = SCZO_133 (alias)
-	Z_135 = SCZO_133 (alias)
+	Z_135 = (bool) SCZO_133 (alias)
 	SO_136 = SCZO_133 (alias)
-	C_137 = SCZO_133 (alias)
+	C_137 = (bool) SCZO_133 (alias)
 	edi_138 = dwLoc10_66
 	esp_139 = fp - 0x0000000C
 	esi_140 = dwLoc0C_64

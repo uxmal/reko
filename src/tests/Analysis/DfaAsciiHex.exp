@@ -21,7 +21,7 @@ l0C00_0009:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-// FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
+// FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  al
 // LiveOut: C al
@@ -29,7 +29,7 @@ fn0C00_0000_exit:
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0
-byte fn0C00_000A(byte al, ptr16 & alOut)
+bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	*alOut = al
 	// succ:  l0C00_000A
@@ -52,17 +52,17 @@ l0C00_001E:
 	branch al >u 0x66 l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	byte al_16
+	byte al_19
 	*alOut = al - 0x30
 	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	byte al_23
+	byte al_27
 	*alOut = al - 0x37
 	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	byte al_26
+	byte al_30
 	*alOut = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:

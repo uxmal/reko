@@ -29,7 +29,8 @@ Mem10: orig: Mem0
 ax_11: orig: ax
 SZO_12: orig: SZO
 C_13: orig: C
-SCZO_14: orig: SCZO
+SCZO:Flags
+SCZO_15: orig: SCZO
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, selector ds)

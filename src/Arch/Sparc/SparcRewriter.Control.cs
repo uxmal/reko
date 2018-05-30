@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -38,7 +39,7 @@ namespace Reko.Arch.Sparc
                 Registers.psr,
                 (uint) grf, 
                 arch.GrfToString((uint) grf),
-                (grf & (grf - 1)) != 0 ? PrimitiveType.Byte : PrimitiveType.Bool);
+                Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Byte : PrimitiveType.Bool);
         }
 
         private void RewriteBranch(Expression cond)

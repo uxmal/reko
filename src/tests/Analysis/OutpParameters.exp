@@ -94,7 +94,7 @@ l0C00_0027:
 	ax_2 = 0x0000
 	si_4 = si | si
 	SZO_5 = cond(si_4)
-	Z_6 = SZO_5 (alias)
+	Z_6 = (bool) SZO_5 (alias)
 	C_7 = false
 	branch Test(EQ,Z_6) l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
@@ -124,7 +124,7 @@ l0C00_0027:
 	si_4 = si | si
 	*siOut = si_4
 	SZO_5 = cond(si_4)
-	Z_6 = SZO_5 (alias)
+	Z_6 = (bool) SZO_5 (alias)
 	branch Test(EQ,Z_6) l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:

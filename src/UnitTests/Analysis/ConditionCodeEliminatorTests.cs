@@ -591,40 +591,5 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
-
-        [Test]
-        public void CceForksAndCasts()
-        {
-            var sExp =
-            #region Expected
-                "@@@";
-            #endregion
-
-            RunStringTest(sExp, m =>
-            {
-                var r0 = m.Reg32("r0", 0);
-                var r1 = m.Reg32("r1", 1);
-                var SZC = m.Flags("SZC");
-                var Z = m.Flags("Z");
-
-                m.BranchIf(m.Eq0(r1), "m2_eq0");
-
-                m.Label("m1_ne0");
-                m.Assign(r1, m.Mem32(r0));
-                m.Assign(SZC, m.Cast(PrimitiveType.Bool, m.Cond(r1)));
-                m.Goto("m3_done");
-
-                m.Label("m2_eq0");
-                m.Assign(r1, m.Mem32(m.IAdd(r0, 32)));
-                m.Assign(SZC, m.Cast(PrimitiveType.Bool, m.Cond(r1)));
-
-                m.Label("m3_done");
-                m.BranchIf(Z, "m5_skip");
-
-                m.Label("m4_test");
-                m.MStore(m.IAdd(r1, 20), m.Word32(0));
-                m.Return();
-            });
-        }
     }
 }

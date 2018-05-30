@@ -35,6 +35,6 @@ l0C00_0000:
 	ax = DPB(ax, al, 0) (alias)
 	SZO = cond(al)
 	C = false
-	SCZO = C (alias)
+	SCZO = DPB(SCZO, C, 0) (alias)
 	bx = ax
 fn0C00_0000_exit:

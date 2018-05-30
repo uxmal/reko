@@ -43,9 +43,9 @@ ax_8: orig: ax
           Mem13[ds:0x0208:word16] = ax_8
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_8)
-    uses: C_10 = SCZO_9 (alias)
+    uses: C_10 = (bool) SCZO_9 (alias)
 C_10: orig: C
-    def:  C_10 = SCZO_9 (alias)
+    def:  C_10 = (bool) SCZO_9 (alias)
     uses: dx_11 = dx_5 + bx_7 + C_10
 dx_11: orig: dx
     def:  dx_11 = dx_5 + bx_7 + C_10
@@ -87,9 +87,9 @@ ax_21: orig: ax
           Mem24[ds:0x0218:word16] = ax_21
 SCZO_22: orig: SCZO
     def:  SCZO_22 = cond(ax_21)
-    uses: C_23 = SCZO_22 (alias)
+    uses: C_23 = (bool) SCZO_22 (alias)
 C_23: orig: C
-    def:  C_23 = SCZO_22 (alias)
+    def:  C_23 = (bool) SCZO_22 (alias)
     uses: dx_25 = dx_16 - bx_20 - C_23
 Mem24: orig: Mem0
     def:  Mem24[ds:0x0218:word16] = ax_21
@@ -114,9 +114,9 @@ cl_31: orig: cl
     uses: SCZO_32 = cond(cl_31 - 0x30)
 SCZO_32: orig: SCZO
     def:  SCZO_32 = cond(cl_31 - 0x30)
-    uses: C_33 = SCZO_32 (alias)
+    uses: C_33 = (bool) SCZO_32 (alias)
 C_33: orig: C
-    def:  C_33 = SCZO_32 (alias)
+    def:  C_33 = (bool) SCZO_32 (alias)
     uses: ax_34 = 0x0000 + C_33
 ax_34: orig: ax
     def:  ax_34 = 0x0000 + C_33
@@ -136,9 +136,9 @@ es_cx_38: orig: es_cx
     def:  es_cx_38 = DPB(es_cx_17, cl_36, 0) (alias)
 SCZO_39: orig: SCZO
     def:  SCZO_39 = cond(cl_36 - 0x3A)
-    uses: C_40 = SCZO_39 (alias)
+    uses: C_40 = (bool) SCZO_39 (alias)
 C_40: orig: C
-    def:  C_40 = SCZO_39 (alias)
+    def:  C_40 = (bool) SCZO_39 (alias)
     uses: C_41 = !C_40
 C_41: orig: C
     def:  C_41 = !C_40
@@ -150,11 +150,11 @@ ax_42: orig: ax
 SCZO_43: orig: SCZO
     def:  SCZO_43 = cond(ax_42)
     uses: SZO_44 = SCZO_43 (alias)
-          C_45 = SCZO_43 (alias)
+          C_45 = (bool) SCZO_43 (alias)
 SZO_44: orig: SZO
     def:  SZO_44 = SCZO_43 (alias)
 C_45: orig: C
-    def:  C_45 = SCZO_43 (alias)
+    def:  C_45 = (bool) SCZO_43 (alias)
 Mem46: orig: Mem0
     def:  Mem46[ds:0x0222:word16] = ax_42
 // fn0C00_0000
@@ -173,7 +173,7 @@ l0C00_0000:
 	bx_7 = Mem0[ds:0x0206:word16]
 	ax_8 = ax_4 + cx_6
 	SCZO_9 = cond(ax_8)
-	C_10 = SCZO_9 (alias)
+	C_10 = (bool) SCZO_9 (alias)
 	dx_11 = dx_5 + bx_7 + C_10
 	SCZO_12 = cond(dx_11)
 	Mem13[ds:0x0208:word16] = ax_8
@@ -186,7 +186,7 @@ l0C00_0000:
 	bx_20 = es_19
 	ax_21 = ax_15 - cx_18
 	SCZO_22 = cond(ax_21)
-	C_23 = SCZO_22 (alias)
+	C_23 = (bool) SCZO_22 (alias)
 	Mem24[ds:0x0218:word16] = ax_21
 	dx_25 = dx_16 - bx_20 - C_23
 	SCZO_26 = cond(dx_25)
@@ -196,19 +196,19 @@ l0C00_0000:
 	C_30 = false
 	cl_31 = Mem27[ds:0x0220:byte]
 	SCZO_32 = cond(cl_31 - 0x30)
-	C_33 = SCZO_32 (alias)
+	C_33 = (bool) SCZO_32 (alias)
 	ax_34 = 0x0000 + C_33
 	SCZO_35 = cond(ax_34)
 	cl_36 = Mem27[ds:0x0221:byte]
 	cx_37 = DPB(cx_18, cl_36, 0) (alias)
 	es_cx_38 = DPB(es_cx_17, cl_36, 0) (alias)
 	SCZO_39 = cond(cl_36 - 0x3A)
-	C_40 = SCZO_39 (alias)
+	C_40 = (bool) SCZO_39 (alias)
 	C_41 = !C_40
 	ax_42 = ax_34 + ax_34 + C_41
 	SCZO_43 = cond(ax_42)
 	SZO_44 = SCZO_43 (alias)
-	C_45 = SCZO_43 (alias)
+	C_45 = (bool) SCZO_43 (alias)
 	Mem46[ds:0x0222:word16] = ax_42
 	return
 	// succ:  fn0C00_0000_exit
