@@ -101,9 +101,9 @@ namespace Reko.Core.Types
 			return this.bitSize - that.bitSize;
 		}
 
-		public static PrimitiveType CreateB(Domain dom, int bitSize)
+		public static PrimitiveType Create(Domain dom, int bitSize)
 		{
-			return CreateB(dom, bitSize, null);
+			return Create(dom, bitSize, null);
 		}
 
         public static PrimitiveType CreateBitSlice(int bitlength)
@@ -119,7 +119,7 @@ namespace Reko.Core.Types
             return shared;
         }
 
-        private static PrimitiveType CreateB(Domain dom, int bitSize, string name)
+        private static PrimitiveType Create(Domain dom, int bitSize, string name)
 		{
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
@@ -136,7 +136,7 @@ namespace Reko.Core.Types
 			return shared;
 		}
 
-        public static PrimitiveType CreateWordB(int bitSize)
+        public static PrimitiveType CreateWord(int bitSize)
         {
             string name;
             if (bitSize == 1)
@@ -155,7 +155,7 @@ namespace Reko.Core.Types
             {
                 dom = Domain.UnsignedInt | Domain.Integer | Domain.Pointer;
             }
-			return CreateB(dom, (short) bitSize, name);
+			return Create(dom, (short) bitSize, name);
 		}
 
         public Domain Domain { get; private set; }
@@ -260,7 +260,7 @@ namespace Reko.Core.Types
             var dom = this.Domain & domainMask;
             if (dom == 0)
                 dom = domainMask;
-            return CreateB(dom, BitSize);
+            return Create(dom, BitSize);
 		}
 
 		public override string Prefix
@@ -330,46 +330,46 @@ namespace Reko.Core.Types
                 { 256, Domain.Integer | Domain.Real },
             };
 
-            Bool = CreateB(Domain.Boolean, 1);
+            Bool = Create(Domain.Boolean, 1);
 
-            Byte = CreateWordB(8);
-            Char = CreateB(Domain.Character, 8);
-            SByte = CreateB(Domain.SignedInt, 8);
-            UInt8 = CreateB(Domain.UnsignedInt, 8);
+            Byte = CreateWord(8);
+            Char = Create(Domain.Character, 8);
+            SByte = Create(Domain.SignedInt, 8);
+            UInt8 = Create(Domain.UnsignedInt, 8);
 
-            Word16 = CreateWordB(16);
-            Int16 = CreateB(Domain.SignedInt, 16);
-            UInt16 = CreateB(Domain.UnsignedInt, 16);
-            Ptr16 = CreateB(Domain.Pointer, 16);
-            SegmentSelector = CreateB(Domain.Selector, 16);
-            WChar = CreateB(Domain.Character, 16);
-            Offset16 = CreateB(Domain.Offset, 16);
+            Word16 = CreateWord(16);
+            Int16 = Create(Domain.SignedInt, 16);
+            UInt16 = Create(Domain.UnsignedInt, 16);
+            Ptr16 = Create(Domain.Pointer, 16);
+            SegmentSelector = Create(Domain.Selector, 16);
+            WChar = Create(Domain.Character, 16);
+            Offset16 = Create(Domain.Offset, 16);
 
-            Word32 = CreateWordB(32);
-            Int32 = CreateB(Domain.SignedInt, 32);
-            UInt32 = CreateB(Domain.UnsignedInt, 32);
-            Ptr32 = CreateB(Domain.Pointer, 32);
-            SegPtr32 = CreateB(Domain.SegPointer, 32);
-            Real32 = CreateB(Domain.Real, 32);
+            Word32 = CreateWord(32);
+            Int32 = Create(Domain.SignedInt, 32);
+            UInt32 = Create(Domain.UnsignedInt, 32);
+            Ptr32 = Create(Domain.Pointer, 32);
+            SegPtr32 = Create(Domain.SegPointer, 32);
+            Real32 = Create(Domain.Real, 32);
 
-            Word64 = CreateWordB(64);
-            Int64 = CreateB(Domain.SignedInt, 64);
-            UInt64 = CreateB(Domain.UnsignedInt, 64);
-            Ptr64 = CreateB(Domain.Pointer, 64);
-            Real64 = CreateB(Domain.Real, 64);
+            Word64 = CreateWord(64);
+            Int64 = Create(Domain.SignedInt, 64);
+            UInt64 = Create(Domain.UnsignedInt, 64);
+            Ptr64 = Create(Domain.Pointer, 64);
+            Real64 = Create(Domain.Real, 64);
 
-            Word80 = CreateWordB(80);
-            Real80 = CreateB(Domain.Real, 80);
-            Bcd80 = CreateB(Domain.Bcd, 80);
+            Word80 = CreateWord(80);
+            Real80 = Create(Domain.Real, 80);
+            Bcd80 = Create(Domain.Bcd, 80);
 
-            Real96 = CreateB(Domain.Real, 96);
+            Real96 = Create(Domain.Real, 96);
 
-            Word128 = CreateWordB(128);
-            Int128 = CreateB(Domain.SignedInt, 128);
-            UInt128 = CreateB(Domain.UnsignedInt, 128);
-            Real128 = CreateB(Domain.Real, 128);
+            Word128 = CreateWord(128);
+            Int128 = Create(Domain.SignedInt, 128);
+            UInt128 = Create(Domain.UnsignedInt, 128);
+            Real128 = Create(Domain.Real, 128);
 
-            Word256 = CreateWordB(256);
+            Word256 = CreateWord(256);
         }
 
 		public static PrimitiveType Bool { get; private set; }

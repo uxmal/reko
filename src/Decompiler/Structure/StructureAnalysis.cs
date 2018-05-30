@@ -681,7 +681,7 @@ all other cases, together they constitute a Switch[].
             if (!(n.Expression.DataType is PrimitiveType pt))
             {
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
-                pt = PrimitiveType.CreateWordB(n.Expression.DataType.BitSize);
+                pt = PrimitiveType.CreateWord(n.Expression.DataType.BitSize);
             }
             var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();

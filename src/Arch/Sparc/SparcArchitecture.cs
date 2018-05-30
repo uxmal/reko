@@ -39,7 +39,7 @@ namespace Reko.Arch.Sparc
         public SparcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
         {
             this.WordWidth = wordWidth;
-            this.PointerType = PrimitiveType.CreateB(Domain.Pointer, wordWidth.BitSize);
+            this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
             this.InstructionBitSize = 32;

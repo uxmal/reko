@@ -64,7 +64,7 @@ namespace Reko.Arch.PowerPC
         {
             WordWidth = wordWidth;
             SignedWord = signedWord;
-            PointerType = PrimitiveType.CreateB(Domain.Pointer, wordWidth.BitSize);
+            PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             FramePointerType = PointerType;
             InstructionBitSize = 32;
 

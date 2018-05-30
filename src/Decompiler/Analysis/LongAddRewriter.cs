@@ -116,7 +116,7 @@ namespace Reko.Analysis
 
         public Instruction CreateLongInstruction(AddSubCandidate loCandidate, AddSubCandidate hiCandidate)
         {
-            var totalSize = PrimitiveType.CreateB(
+            var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
                 loCandidate.Dst.DataType.BitSize + loCandidate.Dst.DataType.BitSize);
             var left = CreateCandidate(loCandidate.Left, hiCandidate.Left, totalSize);

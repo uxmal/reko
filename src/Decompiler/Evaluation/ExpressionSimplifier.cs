@@ -554,12 +554,12 @@ namespace Reko.Evaluation
                 Changed = true;
                 if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
                 {
-                    t = PrimitiveType.CreateB(Domain.Pointer, tHead.BitSize + tTail.BitSize);
+                    t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
                     return ctx.MakeSegmentedAddress(c1, c2);
                 }
                 else
                 {
-                    t = PrimitiveType.CreateB(tHead.Domain, tHead.BitSize + tTail.BitSize);
+                    t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
                     return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
                 }
             }
@@ -569,9 +569,9 @@ namespace Reko.Evaluation
                 var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
                 return new Cast(
-                    PrimitiveType.CreateB(Domain.UnsignedInt, seq.DataType.BitSize),
+                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize),
                     new Cast(
-                        PrimitiveType.CreateB(Domain.UnsignedInt, tail.DataType.BitSize),
+                        PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.BitSize),
                         tail));
             }
             return new MkSequence(seq.DataType, newSeq);

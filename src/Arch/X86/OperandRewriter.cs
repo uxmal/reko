@@ -254,7 +254,7 @@ namespace Reko.Arch.X86
         public UnaryExpression AddrOf(Expression expr)
         {
             return new UnaryExpression(Operator.AddrOf,
-                PrimitiveType.CreateB(Domain.Pointer, arch.WordWidth.BitSize), expr);
+                PrimitiveType.Create(Domain.Pointer, arch.WordWidth.BitSize), expr);
         }
 
         public abstract Address ImmediateAsAddress(Address address, ImmediateOperand imm);

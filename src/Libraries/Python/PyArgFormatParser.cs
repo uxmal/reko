@@ -82,20 +82,20 @@ namespace Reko.Libraries.Python
             var doubleSize = platform.GetByteSizeFromCBasicType(
                 CBasicType.Double) * DataType.BitsPerByte;
 
-            dtInt = IntegerB(wordSize);
-            dtUInt = UIntegerB(wordSize);
-            dtShort = IntegerB(shortSize);
-            dtUShort = UIntegerB(shortSize);
-            dtLong = IntegerB(longSize);
-            dtULong = UIntegerB(longSize);
-            dtLongLong = IntegerB(longLongSize);
-            dtULongLong = UIntegerB(longLongSize);
-            dtFloat = RealB(floatSize);
-            dtDouble = RealB(doubleSize);
+            dtInt = Integer(wordSize);
+            dtUInt = UInteger(wordSize);
+            dtShort = Integer(shortSize);
+            dtUShort = UInteger(shortSize);
+            dtLong = Integer(longSize);
+            dtULong = UInteger(longSize);
+            dtLongLong = Integer(longLongSize);
+            dtULongLong = UInteger(longLongSize);
+            dtFloat = Real(floatSize);
+            dtDouble = Real(doubleSize);
             ptrChar = Ptr(PrimitiveType.Char);
             ptrVoid = Ptr(VoidType.Instance);
 
-            dtPySize = UIntegerB(pointerSize);
+            dtPySize = UInteger(pointerSize);
             ptrPyObject = Ptr(Ref("PyObject"));
             ptrPyTypeObject = Ptr(Ref("PyTypeObject"));
             ptrPyBuffer = Ptr(Ref("Py_buffer"));
@@ -117,19 +117,19 @@ namespace Reko.Libraries.Python
             return new TypeReference(name, new UnknownType());
         }
 
-        private DataType IntegerB(int bitSize)
+        private DataType Integer(int bitSize)
         {
-            return PrimitiveType.CreateB(Domain.SignedInt, bitSize);
+            return PrimitiveType.Create(Domain.SignedInt, bitSize);
         }
 
-        private DataType UIntegerB(int bitSize)
+        private DataType UInteger(int bitSize)
         {
-            return PrimitiveType.CreateB(Domain.UnsignedInt, bitSize);
+            return PrimitiveType.Create(Domain.UnsignedInt, bitSize);
         }
 
-        private DataType RealB(int bitSize)
+        private DataType Real(int bitSize)
         {
-            return PrimitiveType.CreateB(Domain.Real, bitSize);
+            return PrimitiveType.Create(Domain.Real, bitSize);
         }
 
         public void Parse()

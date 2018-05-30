@@ -180,9 +180,9 @@ namespace Reko.UnitTests.Environments.Windows
         {
             var types = new Dictionary<string, DataType>()
             {
-                { "TESTTYPE1", PrimitiveType.CreateB( PrimitiveType.Byte.Domain, 8 ) },
-                { "TESTTYPE2", PrimitiveType.CreateB( PrimitiveType.Int16.Domain, 16 ) },
-                { "TESTTYPE3", PrimitiveType.CreateB( PrimitiveType.Int32.Domain, 32 ) },
+                { "TESTTYPE1", PrimitiveType.Create( PrimitiveType.Byte.Domain, 8 ) },
+                { "TESTTYPE2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 16 ) },
+                { "TESTTYPE3", PrimitiveType.Create( PrimitiveType.Int32.Domain, 32 ) },
             };
             Given_TypeLibraryLoaderService();
             Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml", types);

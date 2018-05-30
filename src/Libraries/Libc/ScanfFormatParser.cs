@@ -161,7 +161,7 @@ namespace Reko.Libraries.Libc
                 return new UnknownType();
             }
             return program.TypeFactory.CreatePointer(
-                PrimitiveType.CreateB(domain, bitSize),
+                PrimitiveType.Create(domain, bitSize),
                 pointerSize);
         }
 

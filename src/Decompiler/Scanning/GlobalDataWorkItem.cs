@@ -104,7 +104,7 @@ namespace Reko.Scanning
 
         public void VisitPointer(Pointer ptr)
         {
-            var c = rdr.Read(PrimitiveType.CreateB(Domain.Pointer, ptr.BitSize));
+            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
             var addr = Address.FromConstant(c);
 
             if (!program.SegmentMap.IsValidAddress(addr))

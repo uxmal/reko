@@ -317,7 +317,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 opD, 
                 m.Cast(
-                    PrimitiveType.CreateB(Domain.SignedInt, opD.DataType.BitSize),
+                    PrimitiveType.Create(Domain.SignedInt, opD.DataType.BitSize),
                     tmp));
             MaybeEmitCr0(opD);
         }

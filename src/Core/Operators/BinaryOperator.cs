@@ -40,7 +40,7 @@ namespace Reko.Core.Operators
 			PrimitiveType p1 = (PrimitiveType) t1;
 			PrimitiveType p2 = (PrimitiveType) t2;
 			int bitSize = Math.Max(p1.BitSize, p2.BitSize);
-			return Constant.Create(PrimitiveType.CreateB(p1.Domain|p2.Domain, bitSize), val);
+			return Constant.Create(PrimitiveType.Create(p1.Domain|p2.Domain, bitSize), val);
 		}
 
         protected Constant BuildConstant(DataType t1, DataType t2, double val)
@@ -48,7 +48,7 @@ namespace Reko.Core.Operators
             PrimitiveType p1 = (PrimitiveType) t1;
             PrimitiveType p2 = (PrimitiveType) t2;
             int bitSize = Math.Max(p1.BitSize, p2.BitSize);
-            return ConstantReal.Create(PrimitiveType.CreateB(p1.Domain & p2.Domain, bitSize), val);
+            return ConstantReal.Create(PrimitiveType.Create(p1.Domain & p2.Domain, bitSize), val);
         }
 	}
 }

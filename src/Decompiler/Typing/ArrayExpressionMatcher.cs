@@ -123,7 +123,7 @@ namespace Reko.Typing
 
                             this.ArrayPointer = new BinaryExpression(
                                 Operator.IAdd,
-                                PrimitiveType.CreateB(Domain.Pointer, b.Left.DataType.BitSize),
+                                PrimitiveType.Create(Domain.Pointer, b.Left.DataType.BitSize),
                                 b.Left,
                                 bInner.Right);
                             return true;

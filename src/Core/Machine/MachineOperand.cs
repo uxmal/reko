@@ -225,7 +225,7 @@ namespace Reko.Core.Machine
         {
             return new AddressOperand(
                 addr,
-                PrimitiveType.CreateB(Domain.Pointer, addr.DataType.BitSize));
+                PrimitiveType.Create(Domain.Pointer, addr.DataType.BitSize));
         }
 
         public static AddressOperand Ptr16(ushort a)

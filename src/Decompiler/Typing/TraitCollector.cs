@@ -157,7 +157,7 @@ namespace Reko.Typing
 		public PrimitiveType MakeUnsigned(DataType t)
 		{
             if (t is PrimitiveType p)
-                return PrimitiveType.CreateB(Domain.UnsignedInt, p.BitSize);
+                return PrimitiveType.Create(Domain.UnsignedInt, p.BitSize);
             else
                 return null;
         }
@@ -345,8 +345,8 @@ namespace Reko.Typing
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
-				handler.DataTypeTrait(binExp.Left, PrimitiveType.CreateB(DomainOf(binExp.DataType), binExp.Left.DataType.BitSize));
-				handler.DataTypeTrait(binExp.Right, PrimitiveType.CreateB(DomainOf(binExp.DataType), binExp.Right.DataType.BitSize));
+				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.BitSize));
+				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.BitSize));
                 return dt;
 			}
 			else if (binExp.Operator == Operator.UMul ||
@@ -404,8 +404,8 @@ namespace Reko.Typing
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
-				handler.DataTypeTrait(binExp.Left, PrimitiveType.CreateB(Domain.Real, binExp.Left.DataType.BitSize));
-				handler.DataTypeTrait(binExp.Right, PrimitiveType.CreateB(Domain.Real, binExp.Right.DataType.BitSize));
+				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(Domain.Real, binExp.Left.DataType.BitSize));
+				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.BitSize));
                 return dt;
 			}
 			else if (binExp.Operator == Operator.Uge ||
@@ -424,7 +424,7 @@ namespace Reko.Typing
                 binExp.Operator == Operator.FMul ||
                 binExp.Operator == Operator.FDiv)
             {
-                var dt = PrimitiveType.CreateB(Domain.Real, binExp.DataType.BitSize);
+                var dt = PrimitiveType.Create(Domain.Real, binExp.DataType.BitSize);
                 handler.DataTypeTrait(binExp, dt);
 				handler.DataTypeTrait(binExp.Left, dt);
 				handler.DataTypeTrait(binExp.Right, dt);

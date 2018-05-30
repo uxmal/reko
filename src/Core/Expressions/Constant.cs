@@ -249,7 +249,7 @@ namespace Reko.Core.Expressions
             var c = GetValue();
 			if ((p.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
 			{
-                p = PrimitiveType.CreateB(Domain.SignedInt, p.BitSize);
+                p = PrimitiveType.Create(Domain.SignedInt, p.BitSize);
 				if (p.BitSize <= 8)				
 					return Constant.Create(p, (sbyte) -Convert.ToInt32(c));
 				if (p.BitSize <= 16)
@@ -406,9 +406,9 @@ namespace Reko.Core.Expressions
             return new ConstantUInt64(PrimitiveType.Word64, n);
         }
 
-        public static Constant WordB(int bitSize, long value)
+        public static Constant Word(int bitSize, long value)
         {
-            return Create(PrimitiveType.CreateWordB(bitSize), value);
+            return Create(PrimitiveType.CreateWord(bitSize), value);
         }
 
         public static Constant Zero(DataType dataType)
@@ -1232,7 +1232,7 @@ namespace Reko.Core.Expressions
 
         public static ConstantReal Create(DataType dt, double value)
         {
-            var pt = PrimitiveType.CreateB(Domain.Real, dt.BitSize);
+            var pt = PrimitiveType.Create(Domain.Real, dt.BitSize);
             switch (dt.BitSize)
             {
             case 32: return new ConstantReal32(pt, (float)value);

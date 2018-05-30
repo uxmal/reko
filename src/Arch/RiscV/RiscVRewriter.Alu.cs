@@ -110,7 +110,7 @@ namespace Reko.Arch.RiscV
         {
             var dst = RewriteOp(instr.op1);
             var ui = ((ImmediateOperand)instr.op2).Value;
-            m.Assign(dst, Constant.WordB(dst.DataType.BitSize, ui.ToUInt32() << 12));
+            m.Assign(dst, Constant.Word(dst.DataType.BitSize, ui.ToUInt32() << 12));
         }
 
         private void RewriteOr()

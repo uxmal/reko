@@ -400,7 +400,7 @@ namespace Reko.Core.Types
             Domain d = pa.Domain & pb.Domain;
             if (d != 0 && pa.BitSize == pb.BitSize)
             {
-                return PrimitiveType.CreateB(d, pa.BitSize);
+                return PrimitiveType.Create(d, pa.BitSize);
             }
             if (pa.Domain == Domain.SegPointer && pb.BitSize == 16)
                 return pa;

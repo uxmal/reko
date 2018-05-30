@@ -105,7 +105,7 @@ namespace Reko.Typing
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
                 var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();
                 this.c = Constant.Create(
-                    PrimitiveType.CreateWordB(addr.DataType.BitSize - ptrSeg.BitSize),
+                    PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
 
                 var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());

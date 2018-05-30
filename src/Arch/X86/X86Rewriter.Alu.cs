@@ -541,7 +541,7 @@ namespace Reko.Arch.X86
                     product,
                     new BinaryExpression(
                         op, 
-                        PrimitiveType.CreateB(resultDomain, product.DataType.BitSize),
+                        PrimitiveType.Create(resultDomain, product.DataType.BitSize),
                         SrcOp(instrCur.op1),
                         multiplicator));
                 EmitCcInstr(product, X86Instruction.DefCc(instrCur.code));
@@ -668,7 +668,7 @@ namespace Reko.Arch.X86
             m.Assign(
                 SrcOp(instrCur.op1),
                 m.Cast(
-                    PrimitiveType.CreateB(Domain.SignedInt, instrCur.op1.Width.BitSize),
+                    PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize),
                     SrcOp(instrCur.op2)));
         }
 
@@ -713,7 +713,7 @@ namespace Reko.Arch.X86
                 value.DataType.BitSize == 32 ||
                 value.DataType.BitSize == 64,
                 string.Format("Unexpected size {0}", dasm.Current.dataWidth));
-            RewritePush(PrimitiveType.CreateWordB(value.DataType.BitSize), value);
+            RewritePush(PrimitiveType.CreateWord(value.DataType.BitSize), value);
         }
 
         private void RewritePush(RegisterStorage reg)
@@ -1126,7 +1126,7 @@ namespace Reko.Arch.X86
         {
             var al = orw.AluRegister(Registers.al);
             var bx = orw.AluRegister(Registers.rbx, instrCur.addrWidth);
-            var offsetType = PrimitiveType.CreateB(Domain.UnsignedInt, bx.DataType.BitSize); 
+            var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.BitSize); 
             m.Assign(
                 al,
                 Mem(

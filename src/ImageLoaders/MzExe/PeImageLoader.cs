@@ -814,7 +814,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
                 {
                     Type = SymbolType.Data,
-                    DataType = PrimitiveType.CreateWordB(iatEntry.Item2 * DataType.BitsPerByte),
+                    DataType = PrimitiveType.CreateWord(iatEntry.Item2 * DataType.BitsPerByte),
                     Size = (uint)iatEntry.Item2
                 };
             } 

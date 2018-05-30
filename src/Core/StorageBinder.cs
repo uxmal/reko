@@ -200,7 +200,7 @@ namespace Reko.Core
 
         Identifier StorageVisitor<Identifier>.VisitSequenceStorage(SequenceStorage seq)
         {
-            return EnsureSequence(seq.Head, seq.Tail, PrimitiveType.CreateWordB((int)seq.BitSize));
+            return EnsureSequence(seq.Head, seq.Tail, PrimitiveType.CreateWord((int)seq.BitSize));
         }
 
         Identifier StorageVisitor<Identifier>.VisitStackArgumentStorage(StackArgumentStorage stack)

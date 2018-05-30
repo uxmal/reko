@@ -212,7 +212,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPointer(Pointer ptr)
         {
-            var c = rdr.Read(PrimitiveType.CreateB(Domain.Pointer, ptr.BitSize));
+            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
             var addr = Address.FromConstant(c);
             // Check if it is pointer to function
             if (program.Procedures.TryGetValue(addr, out Procedure proc))

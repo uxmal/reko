@@ -174,7 +174,7 @@ namespace Reko.Libraries.Libc
                     "The format specifier '%{0}' passed to *printf is not known.", cDomain);
                 return new UnknownType();
             }
-            return PrimitiveType.CreateB(domain, bitSize);
+            return PrimitiveType.Create(domain, bitSize);
         }
 
         private char CollectDataType()

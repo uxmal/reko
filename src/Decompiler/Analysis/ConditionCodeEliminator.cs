@@ -276,7 +276,7 @@ namespace Reko.Analysis
             sidOrigHi.DefStatement.Instruction = new Assignment(sidTmpHi.Identifier, rolc.Arguments[0]);
 
             var iRolc = block.Statements.IndexOf(sidOrigHi.DefStatement);
-            var dt = PrimitiveType.CreateB(Domain.Integer, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
+            var dt = PrimitiveType.Create(Domain.Integer, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shl(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
             var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
@@ -291,7 +291,7 @@ namespace Reko.Analysis
             ssaIds.Remove(sidCarry);
 
             var expNewLo = m.Cast(
-                PrimitiveType.CreateWordB(tmpHi.DataType.BitSize),
+                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier);
             var stmNewLo = block.Statements.Insert(
                 iRolc + 2,
@@ -302,7 +302,7 @@ namespace Reko.Analysis
             sidOrigLo.DefExpression = expNewLo;
 
             var expNewHi = m.Slice(
-                PrimitiveType.CreateWordB(tmpLo.DataType.BitSize),
+                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 sidTmp.Identifier,
                 tmpHi.DataType.BitSize);
             var stmNewHi = block.Statements.Insert(
@@ -360,7 +360,7 @@ namespace Reko.Analysis
             sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, rorc.Arguments[0]);
 
             var iRorc = block.Statements.IndexOf(sidOrigLo.DefStatement);
-            var dt = PrimitiveType.CreateB(Domain.UnsignedInt, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
+            var dt = PrimitiveType.Create(Domain.UnsignedInt, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shr(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
             var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
@@ -375,7 +375,7 @@ namespace Reko.Analysis
             ssaIds.Remove(sidCarry);
 
             var expNewHi = m.Slice(
-                PrimitiveType.CreateWordB(tmpHi.DataType.BitSize),
+                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier,
                 tmpLo.DataType.BitSize);
             var stmNewHi = block.Statements.Insert(
@@ -387,7 +387,7 @@ namespace Reko.Analysis
             sidOrigHi.DefExpression = expNewHi;
 
             var expNewLo = m.Cast(
-                PrimitiveType.CreateWordB(tmpLo.DataType.BitSize),
+                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 sidTmp.Identifier);
             var stmNewLo = block.Statements.Insert(
                 iRorc + 3,

@@ -190,7 +190,7 @@ namespace Reko.Arch.X86
         private void RewriteFild()
         {
             state.GrowFpuStack(instrCur.Address);
-            var iType = PrimitiveType.CreateB(Domain.SignedInt, instrCur.op1.Width.BitSize);
+            var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             m.Assign(
                 orw.FpuRegister(0, state),
                 m.Cast(PrimitiveType.Real64, SrcOp(instrCur.op1, iType)));
@@ -205,7 +205,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFist(bool pop)
         {
-            instrCur.op1.Width = PrimitiveType.CreateB(Domain.SignedInt, instrCur.op1.Width.BitSize);
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)));
             if (pop)
                 state.ShrinkFpuStack(1);
@@ -213,7 +213,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFistt(bool pop)
         {
-            instrCur.op1.Width = PrimitiveType.CreateB(Domain.SignedInt, instrCur.op1.Width.BitSize);
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             var fpuReg = orw.FpuRegister(0, state);
             var trunc = host.PseudoProcedure("trunc", fpuReg.DataType, fpuReg);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, trunc));
@@ -229,7 +229,7 @@ namespace Reko.Arch.X86
             if (src.DataType.Size != dst.DataType.Size)
             {
                 src = m.Cast(
-                    PrimitiveType.CreateB(Domain.Real, dst.DataType.BitSize),
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
                     src);
             }
             m.Assign(dst, src);
@@ -326,7 +326,7 @@ namespace Reko.Arch.X86
             if (src.DataType.Size != dst.DataType.Size)
             {
                 src = m.Cast(
-                    PrimitiveType.CreateB(Domain.Real, dst.DataType.BitSize),
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
                     src);
             }
             m.Assign(dst, src);

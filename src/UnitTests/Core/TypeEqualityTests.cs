@@ -34,8 +34,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TeqInts()
 		{
-			PrimitiveType p1 = PrimitiveType.CreateB(Domain.SignedInt, 16);
-			PrimitiveType p2 = PrimitiveType.CreateB(Domain.SignedInt, 16);
+			PrimitiveType p1 = PrimitiveType.Create(Domain.SignedInt, 16);
+			PrimitiveType p2 = PrimitiveType.Create(Domain.SignedInt, 16);
 			Assert.IsTrue(Object.Equals(p1, p2));
 		}
 

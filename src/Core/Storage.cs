@@ -444,7 +444,7 @@ namespace Reko.Core
                 Number = -1,
                 Domain = StorageDomain.None,
                 BitAddress = 0,
-                DataType = PrimitiveType.CreateB(Types.Domain.Any, 0)
+                DataType = PrimitiveType.Create(Types.Domain.Any, 0)
             };
             
         public Expression GetSlice(Expression value)

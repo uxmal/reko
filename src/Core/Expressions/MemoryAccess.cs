@@ -99,7 +99,7 @@ namespace Reko.Core.Expressions
                 return new BinaryExpression(Operators.Operator.IAdd,
                     baseRegister.DataType,
                     baseRegister,
-                    Constant.Create(PrimitiveType.CreateB(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
+                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
         }
     }
 

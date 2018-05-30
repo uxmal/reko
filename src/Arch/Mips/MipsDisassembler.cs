@@ -44,7 +44,7 @@ namespace Reko.Arch.Mips
             this.arch = arch;
             this.rdr = imageReader;
             this.isVersion6OrLater = isVersion6OrLater;
-            this.signedWord = PrimitiveType.CreateB(Domain.SignedInt, arch.WordWidth.BitSize);
+            this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.BitSize);
         }
 
         public override MipsInstruction DisassembleInstruction()

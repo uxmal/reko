@@ -56,9 +56,9 @@ namespace Reko.ImageLoaders.LLVM
                 if (b.BitSize == 1)
                     return PrimitiveType.Bool;
                 else 
-                    return PrimitiveType.CreateWordB(b.BitSize);
+                    return PrimitiveType.CreateWord(b.BitSize);
             case Domain.Real:
-                return PrimitiveType.CreateB(Core.Types.Domain.Real, b.BitSize);
+                return PrimitiveType.Create(Core.Types.Domain.Real, b.BitSize);
             case Domain.Void:
                 return VoidType.Instance;
             }

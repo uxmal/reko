@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void Hybrid32()
 		{
-			Assert.AreEqual("uip32", PrimitiveType.CreateB(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32).ToString());
+			Assert.AreEqual("uip32", PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32).ToString());
 		}
 	}
 }

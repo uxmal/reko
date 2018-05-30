@@ -456,7 +456,7 @@ namespace Reko.Scanning
                             Operator.IAdd,
                             stackReg.DataType,
                             stackReg,
-                            Constant.WordB(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
+                            Constant.Word(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
                     }
                     EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
                     if (sig != null && sig.ReturnAddressOnStack != 0)
@@ -467,7 +467,7 @@ namespace Reko.Scanning
                             Operator.ISub,
                             stackReg.DataType,
                             stackReg,
-                            Constant.WordB(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
+                            Constant.Word(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
                     }
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -691,7 +691,7 @@ namespace Reko.Scanning
                         stackReg.DataType,
                         stackReg,
                         Constant.Create(
-                            PrimitiveType.CreateWordB(sizeOfRetAddrOnStack * DataType.BitsPerByte),
+                            PrimitiveType.CreateWord(sizeOfRetAddrOnStack * DataType.BitsPerByte),
                             sizeOfRetAddrOnStack));
                 newVal = newVal.Accept(eval);
                 SetValue(stackReg, newVal);
@@ -726,7 +726,7 @@ namespace Reko.Scanning
                     stackReg.DataType,
                     stackReg,
                     Constant.Create(
-                        PrimitiveType.CreateWordB(stackReg.DataType.BitSize),
+                        PrimitiveType.CreateWord(stackReg.DataType.BitSize),
                         sigCallee.StackDelta));
                 newVal = newVal.Accept(eval);
                 SetValue(stackReg, newVal);

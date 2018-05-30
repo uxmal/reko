@@ -125,7 +125,7 @@ namespace Reko.Core
                     seq.Name,
                     seq.Head,
                     seq.Tail,
-                    PrimitiveType.CreateWordB(
+                    PrimitiveType.CreateWord(
                         (int)(seq.Head.BitSize + seq.Tail.BitSize)));
             case FpuStackStorage fp:
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);

@@ -55,7 +55,7 @@ namespace Reko.Core.Expressions
         public BinaryExpression IAdd(Expression left, Expression right)
         {
             var bitSize = left.DataType.BitSize;
-            var dtResult = bitSize > 0 ? PrimitiveType.CreateWordB(bitSize) : (DataType) new UnknownType();
+            var dtResult = bitSize > 0 ? PrimitiveType.CreateWord(bitSize) : (DataType) new UnknownType();
             return new BinaryExpression(Operator.IAdd, dtResult, left, right);
         }
 
@@ -86,11 +86,11 @@ namespace Reko.Core.Expressions
             }
             else if (c > 0)
             {
-                return IAdd(e, Constant.WordB(size.BitSize, c));
+                return IAdd(e, Constant.Word(size.BitSize, c));
             }
             else
             {
-                return ISub(e, Constant.WordB(size.BitSize, -c));
+                return ISub(e, Constant.Word(size.BitSize, -c));
             }
         }
 
@@ -288,7 +288,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point sum expression.</returns>
         public Expression FAdd(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.CreateB(Domain.Real, a.DataType.BitSize);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FAdd, dtSum, a, b);
         }
 
@@ -300,7 +300,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point division expression.</returns>
         public Expression FDiv(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.CreateB(Domain.Real, a.DataType.BitSize);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FDiv, dtSum, a, b);
         }
 
@@ -312,7 +312,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point multiplication expression.</returns>
         public Expression FMul(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.CreateB(Domain.Real, a.DataType.BitSize);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FMul, dtSum, a, b);
         }
 
@@ -395,7 +395,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point subtraction expression.</returns>
         public BinaryExpression FSub(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.CreateB(Domain.Real, a.DataType.BitSize);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FSub, dtSum, a, b);
         }
 
@@ -844,7 +844,7 @@ namespace Reko.Core.Expressions
             Domain dom = (head.DataType == PrimitiveType.SegmentSelector)
                 ? Domain.Pointer
                 : ((PrimitiveType)head.DataType).Domain;
-            return new MkSequence(PrimitiveType.CreateB(dom, totalBitSize), new[] { head, tail });
+            return new MkSequence(PrimitiveType.Create(dom, totalBitSize), new[] { head, tail });
         }
 
         /// <summary>
@@ -857,7 +857,7 @@ namespace Reko.Core.Expressions
         public MkSequence Seq(params Expression [] exprs)
         {
             int totalBitSize = exprs.Sum(e => e.DataType.BitSize);
-            var dt = PrimitiveType.CreateWordB(totalBitSize);
+            var dt = PrimitiveType.CreateWord(totalBitSize);
             return new MkSequence(dt, exprs);
         }
 
@@ -943,7 +943,7 @@ namespace Reko.Core.Expressions
         {
             return new BinaryExpression(
                 Operator.SMul, 
-                PrimitiveType.CreateB(Domain.SignedInt, left.DataType.BitSize), 
+                PrimitiveType.Create(Domain.SignedInt, left.DataType.BitSize), 
                 left, right);
         }
 
@@ -958,7 +958,7 @@ namespace Reko.Core.Expressions
         {
             return new BinaryExpression(
                 Operator.SMul, 
-                PrimitiveType.CreateB(Domain.SignedInt, left.DataType.BitSize), 
+                PrimitiveType.Create(Domain.SignedInt, left.DataType.BitSize), 
                 left, Constant.Create(left.DataType, c));
         }
 
@@ -985,7 +985,7 @@ namespace Reko.Core.Expressions
         {
             return new BinaryExpression(
                 Operator.UMul, 
-                PrimitiveType.CreateB(Domain.UnsignedInt, left.DataType.BitSize),
+                PrimitiveType.Create(Domain.UnsignedInt, left.DataType.BitSize),
                 left, Constant.Create(left.DataType, c));
         }
 
@@ -1147,7 +1147,7 @@ namespace Reko.Core.Expressions
         /// <returns>An integer subtraction expression.</returns>
         public BinaryExpression ISub(Expression left, int right)
         {
-            return ISub(left, WordB(left.DataType.BitSize, right));
+            return ISub(left, Word(left.DataType.BitSize, right));
         }
 
         /// <summary>
@@ -1272,7 +1272,7 @@ namespace Reko.Core.Expressions
         /// <returns>An unsigned integer point inequality comparison.</returns>
         public Expression Ult(Expression a, int b)
         {
-            return Ult(a, WordB(a.DataType.BitSize, b));
+            return Ult(a, Word(a.DataType.BitSize, b));
         }
 
         /// <summary>
@@ -1341,9 +1341,9 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="b">32 bits</param>
         /// <returns>Bit vector constant</returns>
-        public Constant WordB(int bitSize, long n)
+        public Constant Word(int bitSize, long n)
         {
-            return Constant.WordB(bitSize, n);
+            return Constant.Word(bitSize, n);
         }
 
         /// <summary>

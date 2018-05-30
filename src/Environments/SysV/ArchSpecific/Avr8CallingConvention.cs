@@ -158,11 +158,11 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                         var regNext = argRegs[r - 8];
                         if (seq != null)
                         {
-                            seq = new SequenceStorage(regNext, seq, PrimitiveType.CreateWordB(regNext.DataType.BitSize + seq.DataType.BitSize));
+                            seq = new SequenceStorage(regNext, seq, PrimitiveType.CreateWord(regNext.DataType.BitSize + seq.DataType.BitSize));
                         }
                         else
                         {
-                            seq = new SequenceStorage(regNext, reg, PrimitiveType.CreateWordB(regNext.DataType.BitSize + reg.DataType.BitSize));
+                            seq = new SequenceStorage(regNext, reg, PrimitiveType.CreateWord(regNext.DataType.BitSize + reg.DataType.BitSize));
                         }
                     }
                     ccr.SequenceParam(seq);

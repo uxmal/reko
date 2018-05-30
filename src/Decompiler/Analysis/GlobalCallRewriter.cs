@@ -67,7 +67,7 @@ namespace Reko.Analysis
 					PrimtiveType pt = id.DataType as PrimtiveType;
 					if (pt != null)
 					{
-						id.DataType = PrimtiveType.CreateB(pt.Domain, bitWidth);
+						id.DataType = PrimtiveType.Create(pt.Domain, bitWidth);
 					}
 				}
 			}

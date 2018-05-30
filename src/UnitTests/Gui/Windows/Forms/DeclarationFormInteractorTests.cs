@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             program.EnvironmentMetadata.Types.Add(
                     "BYTE",
-                    PrimitiveType.CreateB(PrimitiveType.Byte.Domain, 8));
+                    PrimitiveType.Create(PrimitiveType.Byte.Domain, 8));
             Given_ProcedureName(0x17, "fnTest");
 
             When_DeclarationFormCreated(0x17);

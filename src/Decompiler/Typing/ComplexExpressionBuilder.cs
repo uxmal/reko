@@ -119,7 +119,7 @@ namespace Reko.Typing
             if (enclosingPtr != null)
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
             else
-                dt = PrimitiveType.CreateWordB(e.DataType.BitSize);
+                dt = PrimitiveType.CreateWord(e.DataType.BitSize);
             e = new Cast(dt, e);
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;

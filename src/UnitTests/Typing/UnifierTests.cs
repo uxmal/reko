@@ -413,7 +413,7 @@ namespace Reko.UnitTests.Typing
 		public void UnifyPtrHybrid()
 		{
 			Pointer p = new Pointer(new StructureType(null, 32), 4);
-			PrimitiveType hybrid = PrimitiveType.CreateB(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32);
+			PrimitiveType hybrid = PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32);
 			DataType dt = un.Unify(p, hybrid);
 			Assert.AreEqual("(ptr (struct 0020))", dt.ToString());
 		}
@@ -542,7 +542,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void Unify_MemberPointer()
         {
-            var t1 = PrimitiveType.CreateB(Domain.Offset, 16);
+            var t1 = PrimitiveType.Create(Domain.Offset, 16);
             var t2 = new MemberPointer(
                 new Pointer(new StructureType { IsSegment = true }, 2),
                 PrimitiveType.Word16,

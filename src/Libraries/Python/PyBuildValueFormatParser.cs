@@ -71,17 +71,17 @@ namespace Reko.Libraries.Python
             var doubleSize = platform.GetByteSizeFromCBasicType(
                 CBasicType.Double) * DataType.BitsPerByte;
 
-            dtInt = IntegerB(wordSize);
-            dtUInt = UIntegerB(wordSize);
-            dtLong = IntegerB(longSize);
-            dtULong = UIntegerB(longSize);
-            dtLongLong = IntegerB(longLongSize);
-            dtULongLong = UIntegerB(longLongSize);
+            dtInt = Integer(wordSize);
+            dtUInt = UInteger(wordSize);
+            dtLong = Integer(longSize);
+            dtULong = UInteger(longSize);
+            dtLongLong = Integer(longLongSize);
+            dtULongLong = UInteger(longLongSize);
             dtDouble = Real(doubleSize);
             ptrChar = Ptr(PrimitiveType.Char);
             ptrVoid = Ptr(VoidType.Instance);
 
-            dtPySize = UIntegerB(pointerSize);
+            dtPySize = UInteger(pointerSize);
             ptrPyObject = Ptr(Ref("PyObject"));
             ptrPyUnicode = Ptr(Ref("Py_UNICODE"));
             ptrPyComplex = Ptr(Ref("Py_complex"));
@@ -100,19 +100,19 @@ namespace Reko.Libraries.Python
             return new TypeReference(name, new UnknownType());
         }
 
-        private DataType IntegerB(int size)
+        private DataType Integer(int size)
         {
-            return PrimitiveType.CreateB(Domain.SignedInt, size);
+            return PrimitiveType.Create(Domain.SignedInt, size);
         }
 
-        private DataType UIntegerB(int size)
+        private DataType UInteger(int size)
         {
-            return PrimitiveType.CreateB(Domain.UnsignedInt, size);
+            return PrimitiveType.Create(Domain.UnsignedInt, size);
         }
 
         private DataType Real(int size)
         {
-            return PrimitiveType.CreateB(Domain.Real, size);
+            return PrimitiveType.Create(Domain.Real, size);
         }
 
         public void Parse()

@@ -54,7 +54,7 @@ namespace Reko.Arch.X86
                 name,
                 element,
                 CreatePackedArrayType(
-                    PrimitiveType.CreateWordB(element.BitSize),
+                    PrimitiveType.CreateWord(element.BitSize),
                     dst.DataType));
         }
 
@@ -86,14 +86,14 @@ namespace Reko.Arch.X86
 
         private void RewriteCvts2si(PrimitiveType floatType)
         {
-            instrCur.op1.Width = PrimitiveType.CreateB(Domain.SignedInt, instrCur.op1.Width.BitSize);
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             var src = SrcOp(instrCur.op3 ?? instrCur.op2);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
         }
 
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
-            instrCur.op1.Width = PrimitiveType.CreateB(Domain.SignedInt, instrCur.op1.Width.BitSize);
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             var src = SrcOp(instrCur.op3 ?? instrCur.op2);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
         }
@@ -223,7 +223,7 @@ namespace Reko.Arch.X86
             var dst = SrcOp(instrCur.op1);
             ArrayType srcType = CreatePackedArrayType(elementType, dst.DataType);
             ArrayType dstType = new ArrayType(
-                PrimitiveType.CreateWordB(srcType.ElementType.BitSize), 
+                PrimitiveType.CreateWord(srcType.ElementType.BitSize), 
                 srcType.Length);
             var src1 = SrcOp(instrCur.op1, srcType);
             var src2 = SrcOp(instrCur.op2, srcType);
