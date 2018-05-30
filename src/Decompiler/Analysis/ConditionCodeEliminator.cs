@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,10 @@ namespace Reko.Analysis
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
 
+                if (ssa.Procedure.Name.Equals("directory_specified_p"))    //$DEBUG
+                {
+                    MockGenerator.Dump(ssa.Procedure);
+                }
                 var uses = new HashSet<Statement>();
                 aliases = new HashSet<SsaIdentifier>();
                 ClosureOfUsingStatements(sidGrf, sidGrf.DefExpression, uses, aliases);
@@ -147,7 +152,9 @@ namespace Reko.Analysis
                 return false;
             Expression e = ass.Src;
             if (e is Cast cast)
+            {
                 e = cast.Expression;
+            }
             return (e == grf);
         }
 
@@ -158,7 +165,7 @@ namespace Reko.Analysis
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)
 		{
-			GrfDefinitionFinder gf = new GrfDefinitionFinder(ssaIds);
+			var gf = new GrfDefinitionFinder(ssaIds);
 			gf.FindDefiningExpression(sid);
 			
 			Expression e = gf.DefiningExpression;
@@ -166,6 +173,9 @@ namespace Reko.Analysis
 			{
 				return sid.Identifier;
 			}
+            if (ssa.Procedure.Name.EndsWith("directory_specified_p"))    //$DEBUG
+                ssa.Procedure.Name.ToString();
+
             switch (e)
             {
             case BinaryExpression binDef:
