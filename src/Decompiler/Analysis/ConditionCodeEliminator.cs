@@ -75,10 +75,6 @@ namespace Reko.Analysis
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
 
-                if (ssa.Procedure.Name.Equals("directory_specified_p"))    //$DEBUG
-                {
-                    MockGenerator.Dump(ssa.Procedure);
-                }
                 var uses = new HashSet<Statement>();
                 aliases = new HashSet<SsaIdentifier>();
                 ClosureOfUsingStatements(sidGrf, sidGrf.DefExpression, uses, aliases);
@@ -173,8 +169,6 @@ namespace Reko.Analysis
 			{
 				return sid.Identifier;
 			}
-            if (ssa.Procedure.Name.EndsWith("directory_specified_p"))    //$DEBUG
-                ssa.Procedure.Name.ToString();
 
             switch (e)
             {
