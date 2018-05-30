@@ -195,6 +195,8 @@ Eq_802: size_t
 Eq_818: (fn Eq_753 ())
 	T_818 (in IsDebuggerPresent : ptr32)
 	T_819 (in signature of IsDebuggerPresent : void)
+Eq_823: (union "Eq_823" (bool u0) (byte u1))
+	T_823 (in 0x00000001 - IsDebuggerPresent() == 0x00000000 : bool)
 Eq_825: (fn Eq_827 (Eq_827))
 	T_825 (in SetUnhandledExceptionFilter : ptr32)
 	T_826 (in signature of SetUnhandledExceptionFilter : void)
@@ -216,6 +218,10 @@ Eq_838: (fn void (word32))
 	T_839 (in signature of __fastfail : void)
 Eq_850: (union "Eq_850" (bool u0) (ui32 u1))
 	T_850 (in -(word32) (bl_90 + 0x01) == 0x00000000 : bool)
+Eq_854: (union "Eq_854" (bool u0) (byte u1))
+	T_854 (in al : Eq_854)
+	T_868 (in 0x00 : byte)
+	T_893 (in eax_42->dw00E8 != 0x00000000 : bool)
 Eq_855: HMODULE
 	T_855 (in eax_4 : Eq_855)
 	T_860 (in GetModuleHandleW(null) : HMODULE)
@@ -361,10 +367,10 @@ T_28: (in SZO_15 : byte)
   Class: Eq_28
   DataType: byte
   OrigDataType: byte
-T_29: (in C_16 : byte)
+T_29: (in C_16 : bool)
   Class: Eq_29
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_30: (in driver.dll!Ordinal_1 : ptr32)
   Class: Eq_30
   DataType: (ptr code)
@@ -397,10 +403,10 @@ T_37: (in SZO_25 : byte)
   Class: Eq_37
   DataType: byte
   OrigDataType: byte
-T_38: (in C_26 : byte)
+T_38: (in C_26 : bool)
   Class: Eq_38
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_39: (in driver.dll!Ordinal_2 : ptr32)
   Class: Eq_39
   DataType: (ptr code)
@@ -433,10 +439,10 @@ T_46: (in SZO_35 : byte)
   Class: Eq_46
   DataType: byte
   OrigDataType: byte
-T_47: (in C_36 : byte)
+T_47: (in C_36 : bool)
   Class: Eq_47
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_48: (in driver.dll!Ordinal_4 : ptr32)
   Class: Eq_48
   DataType: (ptr code)
@@ -469,10 +475,10 @@ T_55: (in SZO_45 : byte)
   Class: Eq_55
   DataType: byte
   OrigDataType: byte
-T_56: (in C_46 : byte)
+T_56: (in C_46 : bool)
   Class: Eq_56
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_57: (in driver.dll!Ordinal_3 : ptr32)
   Class: Eq_57
   DataType: (ptr code)
@@ -1549,14 +1555,14 @@ T_325: (in SZO_260 : byte)
   Class: Eq_325
   DataType: byte
   OrigDataType: byte
-T_326: (in C_261 : byte)
+T_326: (in C_261 : bool)
   Class: Eq_326
-  DataType: byte
-  OrigDataType: byte
-T_327: (in Z_262 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_327: (in Z_262 : bool)
   Class: Eq_327
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_328: (in bl_263 : byte)
   Class: Eq_328
   DataType: byte
@@ -1601,14 +1607,14 @@ T_338: (in SZO_99 : byte)
   Class: Eq_338
   DataType: byte
   OrigDataType: byte
-T_339: (in C_100 : byte)
+T_339: (in C_100 : bool)
   Class: Eq_339
-  DataType: byte
-  OrigDataType: byte
-T_340: (in Z_101 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_340: (in Z_101 : bool)
   Class: Eq_340
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_341: (in bl_102 : byte)
   Class: Eq_341
   DataType: byte
@@ -1669,14 +1675,14 @@ T_355: (in SZO_115 : byte)
   Class: Eq_355
   DataType: byte
   OrigDataType: byte
-T_356: (in C_116 : byte)
+T_356: (in C_116 : bool)
   Class: Eq_356
-  DataType: byte
-  OrigDataType: byte
-T_357: (in Z_117 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_357: (in Z_117 : bool)
   Class: Eq_357
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_358: (in bl_118 : byte)
   Class: Eq_358
   DataType: byte
@@ -1737,14 +1743,14 @@ T_372: (in SZO_131 : byte)
   Class: Eq_372
   DataType: byte
   OrigDataType: byte
-T_373: (in C_132 : byte)
+T_373: (in C_132 : bool)
   Class: Eq_373
-  DataType: byte
-  OrigDataType: byte
-T_374: (in Z_133 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_374: (in Z_133 : bool)
   Class: Eq_374
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_375: (in bl_134 : byte)
   Class: Eq_375
   DataType: byte
@@ -2049,14 +2055,14 @@ T_450: (in SZO_222 : byte)
   Class: Eq_450
   DataType: byte
   OrigDataType: byte
-T_451: (in C_223 : byte)
+T_451: (in C_223 : bool)
   Class: Eq_451
-  DataType: byte
-  OrigDataType: byte
-T_452: (in Z_224 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_452: (in Z_224 : bool)
   Class: Eq_452
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_453: (in bl_225 : byte)
   Class: Eq_453
   DataType: byte
@@ -2273,14 +2279,14 @@ T_506: (in SZO_191 : byte)
   Class: Eq_506
   DataType: byte
   OrigDataType: byte
-T_507: (in C_192 : byte)
+T_507: (in C_192 : bool)
   Class: Eq_507
-  DataType: byte
-  OrigDataType: byte
-T_508: (in Z_193 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_508: (in Z_193 : bool)
   Class: Eq_508
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_509: (in bl_194 : byte)
   Class: Eq_509
   DataType: byte
@@ -3539,8 +3545,8 @@ T_822: (in 0x00000000 : word32)
   OrigDataType: word32
 T_823: (in 0x00000001 - IsDebuggerPresent() == 0x00000000 : bool)
   Class: Eq_823
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_823
+  OrigDataType: (union (bool u0) (byte u1))
 T_824: (in 0x00 - (0x00000001 - IsDebuggerPresent() == 0x00000000) : byte)
   Class: Eq_815
   DataType: byte
@@ -3661,9 +3667,9 @@ T_853: (in Mem118[0x00403368:word32] : word32)
   Class: Eq_795
   DataType: ui32
   OrigDataType: ui32
-T_854: (in al : bool)
+T_854: (in al : Eq_854)
   Class: Eq_854
-  DataType: bool
+  DataType: Eq_854
   OrigDataType: byte
 T_855: (in eax_4 : Eq_855)
   Class: Eq_855
@@ -3719,7 +3725,7 @@ T_867: (in eax_4->unused != 0x5A4D : bool)
   OrigDataType: bool
 T_868: (in 0x00 : byte)
   Class: Eq_854
-  DataType: bool
+  DataType: byte
   OrigDataType: byte
 T_869: (in eax_42 : (ptr Eq_869))
   Class: Eq_869
@@ -3819,7 +3825,7 @@ T_892: (in 0x00000000 : word32)
   OrigDataType: word32
 T_893: (in eax_42->dw00E8 != 0x00000000 : bool)
   Class: Eq_854
-  DataType: bool
+  DataType: Eq_854
   OrigDataType: bool
 T_894: (in esp_3 : word32)
   Class: Eq_894
@@ -4937,6 +4943,11 @@ typedef size_t Eq_802;
 
 typedef BOOL (Eq_818)();
 
+typedef union Eq_823 {
+	bool u0;
+	byte u1;
+} Eq_823;
+
 typedef LPTOP_LEVEL_EXCEPTION_FILTER (Eq_825)(LPTOP_LEVEL_EXCEPTION_FILTER);
 
 typedef LPTOP_LEVEL_EXCEPTION_FILTER Eq_827;
@@ -4956,6 +4967,11 @@ typedef union Eq_850 {
 	bool u0;
 	ui32 u1;
 } Eq_850;
+
+typedef union Eq_854 {
+	bool u0;
+	byte u1;
+} Eq_854;
 
 typedef HMODULE Eq_855;
 

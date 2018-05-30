@@ -275,11 +275,17 @@ Eq_1011: size_t
 Eq_1027: (fn Eq_517 ())
 	T_1027 (in IsDebuggerPresent : ptr32)
 	T_1028 (in signature of IsDebuggerPresent : void)
+Eq_1032: (union "Eq_1032" (bool u0) (byte u1))
+	T_1032 (in 0x00000001 - IsDebuggerPresent() == 0x00000000 : bool)
 Eq_1043: (fn void (word32))
 	T_1043 (in __fastfail : ptr32)
 	T_1044 (in signature of __fastfail : void)
 Eq_1055: (union "Eq_1055" (bool u0) (ui32 u1))
 	T_1055 (in -(word32) (bl_90 + 0x01) == 0x00000000 : bool)
+Eq_1059: (union "Eq_1059" (bool u0) (byte u1))
+	T_1059 (in al : Eq_1059)
+	T_1073 (in 0x00 : byte)
+	T_1098 (in eax_42->dw00E8 != 0x00000000 : bool)
 Eq_1060: HMODULE
 	T_1060 (in eax_4 : Eq_1060)
 	T_1065 (in GetModuleHandleW(null) : HMODULE)
@@ -1537,14 +1543,14 @@ T_306: (in SZO_260 : byte)
   Class: Eq_306
   DataType: byte
   OrigDataType: byte
-T_307: (in C_261 : byte)
+T_307: (in C_261 : bool)
   Class: Eq_307
-  DataType: byte
-  OrigDataType: byte
-T_308: (in Z_262 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_308: (in Z_262 : bool)
   Class: Eq_308
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_309: (in bl_263 : byte)
   Class: Eq_309
   DataType: byte
@@ -1589,14 +1595,14 @@ T_319: (in SZO_99 : byte)
   Class: Eq_319
   DataType: byte
   OrigDataType: byte
-T_320: (in C_100 : byte)
+T_320: (in C_100 : bool)
   Class: Eq_320
-  DataType: byte
-  OrigDataType: byte
-T_321: (in Z_101 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_321: (in Z_101 : bool)
   Class: Eq_321
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_322: (in bl_102 : byte)
   Class: Eq_322
   DataType: byte
@@ -1657,14 +1663,14 @@ T_336: (in SZO_115 : byte)
   Class: Eq_336
   DataType: byte
   OrigDataType: byte
-T_337: (in C_116 : byte)
+T_337: (in C_116 : bool)
   Class: Eq_337
-  DataType: byte
-  OrigDataType: byte
-T_338: (in Z_117 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_338: (in Z_117 : bool)
   Class: Eq_338
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_339: (in bl_118 : byte)
   Class: Eq_339
   DataType: byte
@@ -1725,14 +1731,14 @@ T_353: (in SZO_131 : byte)
   Class: Eq_353
   DataType: byte
   OrigDataType: byte
-T_354: (in C_132 : byte)
+T_354: (in C_132 : bool)
   Class: Eq_354
-  DataType: byte
-  OrigDataType: byte
-T_355: (in Z_133 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_355: (in Z_133 : bool)
   Class: Eq_355
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_356: (in bl_134 : byte)
   Class: Eq_356
   DataType: byte
@@ -2037,14 +2043,14 @@ T_431: (in SZO_222 : byte)
   Class: Eq_431
   DataType: byte
   OrigDataType: byte
-T_432: (in C_223 : byte)
+T_432: (in C_223 : bool)
   Class: Eq_432
-  DataType: byte
-  OrigDataType: byte
-T_433: (in Z_224 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_433: (in Z_224 : bool)
   Class: Eq_433
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_434: (in bl_225 : byte)
   Class: Eq_434
   DataType: byte
@@ -2261,14 +2267,14 @@ T_487: (in SZO_191 : byte)
   Class: Eq_487
   DataType: byte
   OrigDataType: byte
-T_488: (in C_192 : byte)
+T_488: (in C_192 : bool)
   Class: Eq_488
-  DataType: byte
-  OrigDataType: byte
-T_489: (in Z_193 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_489: (in Z_193 : bool)
   Class: Eq_489
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_490: (in bl_194 : byte)
   Class: Eq_490
   DataType: byte
@@ -2997,14 +3003,14 @@ T_671: (in SZO_129 : byte)
   Class: Eq_671
   DataType: byte
   OrigDataType: byte
-T_672: (in C_130 : byte)
+T_672: (in C_130 : bool)
   Class: Eq_672
-  DataType: byte
-  OrigDataType: byte
-T_673: (in Z_131 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_673: (in Z_131 : bool)
   Class: Eq_673
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_674: (in eax_132 : word32)
   Class: Eq_674
   DataType: word32
@@ -3093,14 +3099,14 @@ T_695: (in SZO_152 : byte)
   Class: Eq_695
   DataType: byte
   OrigDataType: byte
-T_696: (in C_153 : byte)
+T_696: (in C_153 : bool)
   Class: Eq_696
-  DataType: byte
-  OrigDataType: byte
-T_697: (in Z_154 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_697: (in Z_154 : bool)
   Class: Eq_697
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_698: (in eax_155 : word32)
   Class: Eq_698
   DataType: word32
@@ -3685,10 +3691,10 @@ T_843: (in SZO_55 : byte)
   Class: Eq_843
   DataType: byte
   OrigDataType: byte
-T_844: (in C_56 : byte)
+T_844: (in C_56 : bool)
   Class: Eq_844
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_845: (in cl_57 : byte)
   Class: Eq_845
   DataType: byte
@@ -3697,10 +3703,10 @@ T_846: (in SCZO_58 : byte)
   Class: Eq_846
   DataType: byte
   OrigDataType: byte
-T_847: (in Z_59 : byte)
+T_847: (in Z_59 : bool)
   Class: Eq_847
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_848: (in register_onexit_function : ptr32)
   Class: Eq_848
   DataType: (ptr code)
@@ -3725,10 +3731,10 @@ T_853: (in SZO_44 : byte)
   Class: Eq_853
   DataType: byte
   OrigDataType: byte
-T_854: (in C_45 : byte)
+T_854: (in C_45 : bool)
   Class: Eq_854
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_855: (in cl_46 : byte)
   Class: Eq_855
   DataType: byte
@@ -3737,10 +3743,10 @@ T_856: (in SCZO_47 : byte)
   Class: Eq_856
   DataType: byte
   OrigDataType: byte
-T_857: (in Z_48 : byte)
+T_857: (in Z_48 : bool)
   Class: Eq_857
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_858: (in crt_atexit : ptr32)
   Class: Eq_858
   DataType: (ptr code)
@@ -4097,14 +4103,14 @@ T_946: (in SZO_11 : byte)
   Class: Eq_946
   DataType: byte
   OrigDataType: byte
-T_947: (in C_12 : byte)
+T_947: (in C_12 : bool)
   Class: Eq_947
-  DataType: byte
-  OrigDataType: byte
-T_948: (in Z_13 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_948: (in Z_13 : bool)
   Class: Eq_948
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_949: (in controlfp_s : ptr32)
   Class: Eq_949
   DataType: (ptr code)
@@ -4439,8 +4445,8 @@ T_1031: (in 0x00000000 : word32)
   OrigDataType: word32
 T_1032: (in 0x00000001 - IsDebuggerPresent() == 0x00000000 : bool)
   Class: Eq_1032
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_1032
+  OrigDataType: (union (bool u0) (byte u1))
 T_1033: (in 0x00 - (0x00000001 - IsDebuggerPresent() == 0x00000000) : byte)
   Class: Eq_1024
   DataType: byte
@@ -4545,9 +4551,9 @@ T_1058: (in Mem118[0x00403368:word32] : word32)
   Class: Eq_1004
   DataType: ui32
   OrigDataType: ui32
-T_1059: (in al : bool)
+T_1059: (in al : Eq_1059)
   Class: Eq_1059
-  DataType: bool
+  DataType: Eq_1059
   OrigDataType: byte
 T_1060: (in eax_4 : Eq_1060)
   Class: Eq_1060
@@ -4603,7 +4609,7 @@ T_1072: (in eax_4->unused != 0x5A4D : bool)
   OrigDataType: bool
 T_1073: (in 0x00 : byte)
   Class: Eq_1059
-  DataType: bool
+  DataType: byte
   OrigDataType: byte
 T_1074: (in eax_42 : (ptr Eq_1074))
   Class: Eq_1074
@@ -4703,7 +4709,7 @@ T_1097: (in 0x00000000 : word32)
   OrigDataType: word32
 T_1098: (in eax_42->dw00E8 != 0x00000000 : bool)
   Class: Eq_1059
-  DataType: bool
+  DataType: Eq_1059
   OrigDataType: bool
 T_1099: (in SetUnhandledExceptionFilter : ptr32)
   Class: Eq_500
@@ -4765,10 +4771,10 @@ T_1113: (in SCZO_57 : byte)
   Class: Eq_1113
   DataType: byte
   OrigDataType: byte
-T_1114: (in C_58 : byte)
+T_1114: (in C_58 : bool)
   Class: Eq_1114
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1115: (in edi_59 : word32)
   Class: Eq_1115
   DataType: word32
@@ -4777,10 +4783,10 @@ T_1116: (in SZO_60 : byte)
   Class: Eq_1116
   DataType: byte
   OrigDataType: byte
-T_1117: (in Z_61 : byte)
+T_1117: (in Z_61 : bool)
   Class: Eq_1117
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1118: (in ecx_62 : word32)
   Class: Eq_1118
   DataType: word32
@@ -5995,12 +6001,22 @@ typedef size_t Eq_1011;
 
 typedef BOOL (Eq_1027)();
 
+typedef union Eq_1032 {
+	bool u0;
+	byte u1;
+} Eq_1032;
+
 typedef void (Eq_1043)(word32);
 
 typedef union Eq_1055 {
 	bool u0;
 	ui32 u1;
 } Eq_1055;
+
+typedef union Eq_1059 {
+	bool u0;
+	byte u1;
+} Eq_1059;
 
 typedef HMODULE Eq_1060;
 

@@ -271,10 +271,10 @@ void fn000012D0(int32 dwArg04)
 				word32 d2_62;
 				word32 d0_63;
 				byte CVZN_64;
-				byte Z_65;
+				bool Z_65;
 				byte ZN_66;
-				byte C_67;
-				byte V_68;
+				bool C_67;
+				bool V_68;
 				byte CVZNX_69;
 				a2_57();
 				d2_49 = d2_62 - 0x01;
@@ -300,9 +300,9 @@ void fn0000131C(int32 dwArg04)
 				struct Eq_563 ** a3_51;
 				word32 a2_52;
 				byte ZN_53;
-				byte C_54;
-				byte V_55;
-				byte Z_56;
+				bool C_54;
+				bool V_55;
+				bool Z_56;
 				word32 d0_57;
 				byte CVZN_58;
 				a2_49();
@@ -325,10 +325,10 @@ void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 			word32 a2_54;
 			word32 d0_55;
 			byte CVZN_56;
-			byte Z_57;
+			bool Z_57;
 			byte ZN_58;
-			byte C_59;
-			byte V_60;
+			bool C_59;
+			bool V_60;
 			(*a3_45)();
 		} while (*a3_45 != null);
 	}

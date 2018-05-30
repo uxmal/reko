@@ -2387,22 +2387,22 @@ T_546: (in CVZN_64 : byte)
   Class: Eq_546
   DataType: byte
   OrigDataType: byte
-T_547: (in Z_65 : byte)
+T_547: (in Z_65 : bool)
   Class: Eq_547
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_548: (in ZN_66 : byte)
   Class: Eq_548
   DataType: byte
   OrigDataType: byte
-T_549: (in C_67 : byte)
+T_549: (in C_67 : bool)
   Class: Eq_549
-  DataType: byte
-  OrigDataType: byte
-T_550: (in V_68 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_550: (in V_68 : bool)
   Class: Eq_550
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_551: (in CVZNX_69 : byte)
   Class: Eq_551
   DataType: byte
@@ -2543,18 +2543,18 @@ T_585: (in ZN_53 : byte)
   Class: Eq_585
   DataType: byte
   OrigDataType: byte
-T_586: (in C_54 : byte)
+T_586: (in C_54 : bool)
   Class: Eq_586
-  DataType: byte
-  OrigDataType: byte
-T_587: (in V_55 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_587: (in V_55 : bool)
   Class: Eq_587
-  DataType: byte
-  OrigDataType: byte
-T_588: (in Z_56 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_588: (in Z_56 : bool)
   Class: Eq_588
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_589: (in d0_57 : word32)
   Class: Eq_589
   DataType: word32
@@ -2671,22 +2671,22 @@ T_617: (in CVZN_56 : byte)
   Class: Eq_617
   DataType: byte
   OrigDataType: byte
-T_618: (in Z_57 : byte)
+T_618: (in Z_57 : bool)
   Class: Eq_618
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_619: (in ZN_58 : byte)
   Class: Eq_619
   DataType: byte
   OrigDataType: byte
-T_620: (in C_59 : byte)
+T_620: (in C_59 : bool)
   Class: Eq_620
-  DataType: byte
-  OrigDataType: byte
-T_621: (in V_60 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_621: (in V_60 : bool)
   Class: Eq_621
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_622: (in 0x00000000 : word32)
   Class: Eq_622
   DataType: word32

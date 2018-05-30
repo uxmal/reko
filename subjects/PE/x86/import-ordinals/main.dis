@@ -88,7 +88,7 @@ l00401040:
 	word32 eax_13
 	byte SCZO_14
 	byte SZO_15
-	byte C_16
+	bool C_16
 	call driver.dll!Ordinal_1 (retsize: 4; depth: 12)
 		uses: dwLoc04_4,dwLoc08_8,ebp_5,ecx_9,esp_6
 		defs: C_16,eax_13,ebp_11,ecx_12,esp_10,SCZO_14,SZO_15
@@ -98,7 +98,7 @@ l00401040:
 	word32 eax_23
 	byte SCZO_24
 	byte SZO_25
-	byte C_26
+	bool C_26
 	call driver.dll!Ordinal_2 (retsize: 4; depth: 16)
 		uses: C_16,dwLoc04_4,dwLoc08_8,dwLoc0C_18,eax_13,ebp_11,ecx_19,esp_17,SCZO_14,SZO_15
 		defs: C_26,eax_23,ebp_21,ecx_22,esp_20,SCZO_24,SZO_25
@@ -108,7 +108,7 @@ l00401040:
 	word32 eax_33
 	byte SCZO_34
 	byte SZO_35
-	byte C_36
+	bool C_36
 	call driver.dll!Ordinal_4 (retsize: 4; depth: 20)
 		uses: C_26,dwLoc04_4,dwLoc08_8,dwLoc0C_18,dwLoc10_28,eax_23,ebp_21,ecx_29,esp_27,SCZO_24,SZO_25
 		defs: C_36,eax_33,ebp_31,ecx_32,esp_30,SCZO_34,SZO_35
@@ -118,7 +118,7 @@ l00401040:
 	word32 eax_43
 	byte SCZO_44
 	byte SZO_45
-	byte C_46
+	bool C_46
 	call driver.dll!Ordinal_3 (retsize: 4; depth: 24)
 		uses: C_36,dwLoc04_4,dwLoc08_8,dwLoc0C_18,dwLoc10_28,dwLoc14_38,eax_33,ebp_31,ecx_39,esp_37,SCZO_34,SZO_35
 		defs: C_46,eax_43,ebp_41,ecx_42,esp_40,SCZO_44,SZO_45
@@ -257,8 +257,8 @@ l00401209:
 	word32 ecx_258
 	byte al_259
 	byte SZO_260
-	byte C_261
-	byte Z_262
+	bool C_261
+	bool Z_262
 	byte bl_263
 	word32 ebp_264
 	word32 eax_265
@@ -303,8 +303,8 @@ l0040122E:
 	word32 ecx_220
 	byte al_221
 	byte SZO_222
-	byte C_223
-	byte Z_224
+	bool C_223
+	bool Z_224
 	byte bl_225
 	word32 ebp_226
 	word32 eax_227
@@ -327,8 +327,8 @@ l00401236:
 	word32 ecx_97
 	byte al_98
 	byte SZO_99
-	byte C_100
-	byte Z_101
+	bool C_100
+	bool Z_101
 	byte bl_102
 	word32 ebp_103
 	word32 eax_104
@@ -345,8 +345,8 @@ l00401236:
 	word32 ecx_113
 	byte al_114
 	byte SZO_115
-	byte C_116
-	byte Z_117
+	bool C_116
+	bool Z_117
 	byte bl_118
 	word32 ebp_119
 	word32 eax_120
@@ -363,8 +363,8 @@ l00401236:
 	word32 ecx_129
 	byte al_130
 	byte SZO_131
-	byte C_132
-	byte Z_133
+	bool C_132
+	bool Z_133
 	byte bl_134
 	word32 eax_136
 	byte SCZO_137
@@ -400,8 +400,8 @@ l0040126B:
 	word32 ecx_189
 	byte al_190
 	byte SZO_191
-	byte C_192
-	byte Z_193
+	bool C_192
+	bool Z_193
 	byte bl_194
 	word32 eax_196
 	byte SCZO_197

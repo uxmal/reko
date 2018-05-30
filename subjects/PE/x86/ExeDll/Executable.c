@@ -107,8 +107,8 @@ l00401177:
 				word32 ecx_258;
 				byte al_259;
 				byte SZO_260;
-				byte C_261;
-				byte Z_262;
+				bool C_261;
+				bool Z_262;
 				byte bl_263;
 				word32 ebp_264;
 				word32 eax_265;
@@ -137,8 +137,8 @@ l00401177:
 				word32 ecx_220;
 				byte al_221;
 				byte SZO_222;
-				byte C_223;
-				byte Z_224;
+				bool C_223;
+				bool Z_224;
 				byte bl_225;
 				word32 ebp_226;
 				word32 eax_227;
@@ -155,8 +155,8 @@ l00401177:
 		word32 ecx_97;
 		byte al_98;
 		byte SZO_99;
-		byte C_100;
-		byte Z_101;
+		bool C_100;
+		bool Z_101;
 		byte bl_102;
 		word32 ebp_103;
 		word32 eax_104;
@@ -171,8 +171,8 @@ l00401177:
 		word32 ecx_113;
 		byte al_114;
 		byte SZO_115;
-		byte C_116;
-		byte Z_117;
+		bool C_116;
+		bool Z_117;
 		byte bl_118;
 		word32 ebp_119;
 		word32 eax_120;
@@ -187,8 +187,8 @@ l00401177:
 		word32 ecx_129;
 		byte al_130;
 		byte SZO_131;
-		byte C_132;
-		byte Z_133;
+		bool C_132;
+		bool Z_133;
 		byte bl_134;
 		word32 eax_136;
 		byte SCZO_137;
@@ -215,8 +215,8 @@ l00401177:
 			word32 ecx_189;
 			byte al_190;
 			byte SZO_191;
-			byte C_192;
-			byte Z_193;
+			bool C_192;
+			bool Z_193;
 			byte bl_194;
 			word32 eax_196;
 			byte SCZO_197;
@@ -319,8 +319,8 @@ void fn004014AD(ptr32 edi, ptr32 dwArg04)
 			byte SCZO_127;
 			word32 esi_128;
 			byte SZO_129;
-			byte C_130;
-			byte Z_131;
+			bool C_130;
+			bool Z_131;
 			word32 eax_132;
 			word32 ecx_133;
 			byte al_134;
@@ -336,8 +336,8 @@ void fn004014AD(ptr32 edi, ptr32 dwArg04)
 				byte SCZO_150;
 				word32 esi_151;
 				byte SZO_152;
-				byte C_153;
-				byte Z_154;
+				bool C_153;
+				bool Z_154;
 				word32 eax_155;
 				word32 ecx_156;
 				byte al_157;
@@ -435,10 +435,10 @@ ui32 fn00401613(ui32 dwArg04)
 		word32 ebp_41;
 		word32 ecx_43;
 		byte SZO_44;
-		byte C_45;
+		bool C_45;
 		byte cl_46;
 		byte SCZO_47;
-		byte Z_48;
+		bool Z_48;
 		crt_atexit();
 	}
 	else
@@ -447,10 +447,10 @@ ui32 fn00401613(ui32 dwArg04)
 		word32 ebp_52;
 		word32 ecx_54;
 		byte SZO_55;
-		byte C_56;
+		bool C_56;
 		byte cl_57;
 		byte SCZO_58;
-		byte Z_59;
+		bool Z_59;
 		register_onexit_function();
 	}
 	return ~(0x00 - (-eax_24 == 0x00)) & dwArg04;
@@ -511,8 +511,8 @@ void fn00401718(word32 eax)
 	byte SCZO_9;
 	word32 eax_10;
 	byte SZO_11;
-	byte C_12;
-	byte Z_13;
+	bool C_12;
+	bool Z_13;
 	controlfp_s();
 	if (eax_10 == 0x00)
 		return;
@@ -573,8 +573,8 @@ void fn00401774(word32 dwArg00, word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188F: Register bool fn0040188F()
-bool fn0040188F()
+// 0040188F: Register Eq_1059 fn0040188F()
+Eq_1059 fn0040188F()
 {
 	Eq_1060 eax_4 = GetModuleHandleW(null);
 	if (eax_4 == null || eax_4->unused != 23117)
@@ -606,10 +606,10 @@ void fn00401920()
 				word32 esp_54;
 				word32 ebx_55;
 				byte SCZO_57;
-				byte C_58;
+				bool C_58;
 				word32 edi_59;
 				byte SZO_60;
-				byte Z_61;
+				bool Z_61;
 				word32 ecx_62;
 				fn00000000();
 			}

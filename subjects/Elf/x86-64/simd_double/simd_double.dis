@@ -23,8 +23,8 @@ l00000000000005B0:
 	byte SCZO_16
 	word64 rax_17
 	byte SZO_18
-	byte C_19
-	byte Z_20
+	bool C_19
+	bool Z_20
 	call __gmon_start__ (retsize: 8; depth: 16)
 		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
 		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
@@ -113,9 +113,9 @@ l0000000000000673:
 	word64 rbp_35
 	word64 rax_36
 	byte SCZO_37
-	byte Z_38
+	bool Z_38
 	byte SZO_39
-	byte C_40
+	bool C_40
 	call rax_27 (retsize: 8; depth: 8)
 		uses: C_30,qwLoc08_5,rax_27,rbp_31,rdi_2,rsp_32,SCZO_7,SZO_28,Z_29
 		defs: C_40,rax_36,rbp_35,rdi_34,rsp_33,SCZO_37,SZO_39,Z_38
@@ -171,9 +171,9 @@ l00000000000006C4:
 	word64 rbp_43
 	byte SCZO_44
 	word64 rax_45
-	byte Z_46
+	bool Z_46
 	byte SZO_47
-	byte C_48
+	bool C_48
 	call rax_34 (retsize: 8; depth: 8)
 		uses: C_37,qwLoc08_6,rax_34,rbp_38,rdi_2,rsi_13,rsp_39,SCZO_14,SZO_35,Z_36
 		defs: C_48,rax_45,rbp_43,rdi_41,rsi_42,rsp_40,SCZO_44,SZO_47,Z_46
@@ -224,7 +224,7 @@ l00000000000006E9:
 l00000000000006F7:
 	word64 rsp_25
 	byte SCZO_26
-	byte Z_27
+	bool Z_27
 	word64 rbp_28
 	word64 rdi_29
 	call __cxa_finalize (retsize: 8; depth: 16)
@@ -328,13 +328,13 @@ l0000000000000765:
 	byte SCZO_46
 	word64 rdi_47
 	word64 rsi_48
-	byte Z_49
+	bool Z_49
 	word64 rax_50
 	word64 rdx_51
 	word64 rcx_52
 	word32 eax_53
 	byte SZO_54
-	byte C_55
+	bool C_55
 	call posix_memalign (retsize: 8; depth: 48)
 		uses: C,eax_41,qwLoc08_4,qwLoc20_8,qwLoc28_37,rax_40,rbp_5,rcx_39,rdi_43,rdx_38,rsi_42,rsp_6,SCZO_35,SZO,Z_36
 		defs: C_55,eax_53,rax_50,rbp_45,rcx_52,rdi_47,rdx_51,rsi_48,rsp_44,SCZO_46,SZO_54,Z_49
@@ -666,8 +666,8 @@ l0000000000000AB0:
 	word64 rdx_82
 	byte SCZO_83
 	byte SZO_84
-	byte C_85
-	byte Z_86
+	bool C_85
+	bool Z_86
 	word32 ebx_87
 	word64 rdi_88
 	call Mem0[0x0000000000200DE8:word64] (retsize: 8; depth: 64)

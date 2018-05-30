@@ -33,7 +33,7 @@ void fn00000001400010D0(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 q
 	byte SCZO_34;
 	word32 ecx_35;
 	byte SZO_36;
-	byte C_37;
+	bool C_37;
 	word64 rax_38;
 	word32 r9d_39;
 	fn00000000000029F4();
@@ -49,7 +49,7 @@ void fn00000001400010D0(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 q
 	byte SCZO_59;
 	word32 ecx_60;
 	byte SZO_61;
-	byte C_62;
+	bool C_62;
 	word64 rax_63;
 	word32 r9d_64;
 	fn0000000000002A20();
@@ -77,7 +77,7 @@ void fn0000000140001140(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 q
 	word64 rax_34;
 	word32 r9d_35;
 	byte SZO_36;
-	byte C_37;
+	bool C_37;
 	fn00000000000029F4();
 	ui64 * rax_39 = fn0000000140001130();
 	word64 rsp_49;
@@ -93,7 +93,7 @@ void fn0000000140001140(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 q
 	word64 rax_59;
 	word32 r9d_60;
 	byte SZO_61;
-	byte C_62;
+	bool C_62;
 	fn0000000000002A06();
 }
 
@@ -121,8 +121,8 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13)
 	word64 rax_14;
 	byte al_15;
 	byte SZO_16;
-	byte C_17;
-	byte Z_18;
+	bool C_17;
+	bool Z_18;
 	ui64 r8_19;
 	ptr64 r13_20;
 	byte bl_21;
@@ -146,8 +146,8 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13)
 		word64 rax_79;
 		byte al_80;
 		byte SZO_81;
-		byte C_82;
-		byte Z_83;
+		bool C_82;
+		bool Z_83;
 		word64 r8_84;
 		word64 r13_85;
 		byte bl_86;
@@ -169,8 +169,8 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13)
 			word64 rax_102;
 			byte al_103;
 			byte SZO_104;
-			byte C_105;
-			byte Z_106;
+			bool C_105;
+			bool Z_106;
 			word64 r8_107;
 			word64 r13_108;
 			byte bl_109;
@@ -187,8 +187,8 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13)
 				word64 rax_135;
 				byte al_136;
 				byte SZO_137;
-				byte C_138;
-				byte Z_139;
+				bool C_138;
+				bool Z_139;
 				word64 r8_140;
 				word64 r13_141;
 				byte bl_142;
@@ -273,8 +273,8 @@ word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, wo
 			word64 rcx_298;
 			byte al_299;
 			byte SZO_300;
-			byte C_301;
-			byte Z_302;
+			bool C_301;
+			bool Z_302;
 			byte sil_303;
 			byte bl_304;
 			word32 ecx_305;
@@ -307,8 +307,8 @@ word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, wo
 			word64 rcx_260;
 			byte al_261;
 			byte SZO_262;
-			byte C_263;
-			byte Z_264;
+			bool C_263;
+			bool Z_264;
 			byte sil_265;
 			byte bl_266;
 			word32 ecx_267;
@@ -334,8 +334,8 @@ word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, wo
 	word64 rcx_117;
 	byte al_118;
 	byte SZO_119;
-	byte C_120;
-	byte Z_121;
+	bool C_120;
+	bool Z_121;
 	byte sil_122;
 	byte bl_123;
 	word32 ecx_124;
@@ -359,8 +359,8 @@ word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, wo
 	word64 rcx_142;
 	byte al_143;
 	byte SZO_144;
-	byte C_145;
-	byte Z_146;
+	bool C_145;
+	bool Z_146;
 	byte sil_147;
 	byte bl_148;
 	word32 ecx_149;
@@ -384,8 +384,8 @@ word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, wo
 	word64 rcx_167;
 	byte al_168;
 	byte SZO_169;
-	byte C_170;
-	byte Z_171;
+	bool C_170;
+	bool Z_171;
 	byte sil_172;
 	byte bl_173;
 	word32 ecx_174;
@@ -415,8 +415,8 @@ word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, wo
 			word64 rcx_228;
 			byte al_229;
 			byte SZO_230;
-			byte C_231;
-			byte Z_232;
+			bool C_231;
+			bool Z_232;
 			byte sil_233;
 			byte bl_234;
 			word32 ecx_235;
@@ -456,7 +456,7 @@ void fn0000000140001448()
 	word64 rcx_15;
 	word32 ecx_16;
 	byte SZO_17;
-	byte C_18;
+	bool C_18;
 	word64 rax_19;
 	word32 edx_20;
 	word64 rdx_21;
@@ -467,7 +467,7 @@ void fn0000000140001448()
 	word64 rcx_26;
 	word32 ecx_27;
 	byte SZO_28;
-	byte C_29;
+	bool C_29;
 	word64 rax_30;
 	word32 edx_31;
 	word64 rdx_32;
@@ -478,7 +478,7 @@ void fn0000000140001448()
 	word64 rcx_36;
 	word32 ecx_37;
 	byte SZO_38;
-	byte C_39;
+	bool C_39;
 	word64 rax_40;
 	word32 edx_41;
 	word64 rdx_42;
@@ -489,7 +489,7 @@ void fn0000000140001448()
 	word64 rcx_53;
 	word32 ecx_54;
 	byte SZO_55;
-	byte C_56;
+	bool C_56;
 	word64 rax_57;
 	word32 edx_58;
 	word64 rdx_59;
@@ -530,12 +530,12 @@ void fn0000000140001550(word64 rax, ptr64 rcx, word64 qwArg08)
 	word64 rcx_20;
 	word32 edi_21;
 	byte SZO_22;
-	byte C_23;
+	bool C_23;
 	word32 r8d_24;
 	word64 r8_25;
 	word64 rdx_26;
 	word64 rax_27;
-	byte Z_28;
+	bool Z_28;
 	word64 r9_29;
 	word32 ecx_30;
 	byte SO_31;
@@ -550,12 +550,12 @@ void fn0000000140001550(word64 rax, ptr64 rcx, word64 qwArg08)
 		word64 rcx_58;
 		word32 edi_59;
 		byte SZO_60;
-		byte C_61;
+		bool C_61;
 		word32 r8d_62;
 		word64 r8_63;
 		word64 rdx_64;
 		word64 rax_65;
-		byte Z_66;
+		bool Z_66;
 		word64 r9_67;
 		word32 ecx_68;
 		byte SO_69;
@@ -570,12 +570,12 @@ void fn0000000140001550(word64 rax, ptr64 rcx, word64 qwArg08)
 		word64 rcx_118;
 		word32 edi_119;
 		byte SZO_120;
-		byte C_121;
+		bool C_121;
 		word32 r8d_122;
 		word64 r8_123;
 		word64 rdx_124;
 		word64 rax_125;
-		byte Z_126;
+		bool Z_126;
 		word64 r9_127;
 		word32 ecx_128;
 		byte SO_129;
@@ -661,8 +661,8 @@ word32 fn000000014000164C(up32 ecx, ui64 r8, ptr64 r13, word64 qwArg08)
 			byte CZ_121;
 			word32 eax_122;
 			byte SZO_123;
-			byte C_124;
-			byte Z_125;
+			bool C_124;
+			bool Z_125;
 			word64 rcx_126;
 			byte al_127;
 			word64 rdx_128;
@@ -688,8 +688,8 @@ word32 fn000000014000164C(up32 ecx, ui64 r8, ptr64 r13, word64 qwArg08)
 				byte CZ_152;
 				word32 eax_153;
 				byte SZO_154;
-				byte C_155;
-				byte Z_156;
+				bool C_155;
+				bool Z_156;
 				word64 rcx_157;
 				byte al_158;
 				word64 rdx_159;
@@ -810,9 +810,9 @@ uint64 fn0000000140001804(word32 eax)
 		word32 ecx_55;
 		word32 edx_56;
 		byte SZO_57;
-		byte C_58;
+		bool C_58;
 		byte cl_59;
-		byte Z_60;
+		bool Z_60;
 		word64 rax_62;
 		crt_atexit();
 	}
@@ -825,9 +825,9 @@ uint64 fn0000000140001804(word32 eax)
 		word32 ecx_70;
 		word32 edx_71;
 		byte SZO_72;
-		byte C_73;
+		bool C_73;
 		byte cl_74;
-		byte Z_75;
+		bool Z_75;
 		word64 rax_77;
 		register_onexit_function();
 	}
@@ -854,9 +854,9 @@ void fn000000014000186C(word64 qwArg08, ui64 qwArg10, word64 qwArg18, word64 qwA
 		word64 rbp_39;
 		byte SCZO_40;
 		byte SZO_41;
-		byte C_42;
+		bool C_42;
 		word64 rax_43;
-		byte Z_44;
+		bool Z_44;
 		word64 rcx_45;
 		word32 eax_46;
 		fn0000000000002D96();
@@ -865,9 +865,9 @@ void fn000000014000186C(word64 qwArg08, ui64 qwArg10, word64 qwArg18, word64 qwA
 		word64 rbp_52;
 		byte SCZO_53;
 		byte SZO_54;
-		byte C_55;
+		bool C_55;
 		word64 rax_56;
-		byte Z_57;
+		bool Z_57;
 		word64 rcx_58;
 		word32 eax_59;
 		fn0000000000002D80();
@@ -877,9 +877,9 @@ void fn000000014000186C(word64 qwArg08, ui64 qwArg10, word64 qwArg18, word64 qwA
 		word64 rbp_68;
 		byte SCZO_69;
 		byte SZO_70;
-		byte C_71;
+		bool C_71;
 		word64 rax_72;
-		byte Z_73;
+		bool Z_73;
 		word64 rcx_74;
 		word32 eax_75;
 		fn0000000000002D6A();
@@ -889,9 +889,9 @@ void fn000000014000186C(word64 qwArg08, ui64 qwArg10, word64 qwArg18, word64 qwA
 		word64 rbp_84;
 		byte SCZO_85;
 		byte SZO_86;
-		byte C_87;
+		bool C_87;
 		word64 rax_88;
-		byte Z_89;
+		bool Z_89;
 		word64 rcx_90;
 		word32 eax_91;
 		fn0000000000002D50();
@@ -974,8 +974,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		word64 rcx_43;
 		word32 eax_44;
 		byte SZO_45;
-		byte C_46;
-		byte Z_47;
+		bool C_46;
+		bool Z_47;
 		word32 edx_48;
 		word64 rdx_49;
 		word32 r8d_50;
@@ -993,8 +993,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		word64 rcx_69;
 		word32 eax_70;
 		byte SZO_71;
-		byte C_72;
-		byte Z_73;
+		bool C_72;
+		bool Z_73;
 		word32 edx_74;
 		word64 rdx_75;
 		word32 r8d_76;
@@ -1014,8 +1014,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 			word64 rcx_230;
 			word32 eax_231;
 			byte SZO_232;
-			byte C_233;
-			byte Z_234;
+			bool C_233;
+			bool Z_234;
 			word32 edx_235;
 			word64 rdx_236;
 			word32 r8d_237;
@@ -1035,8 +1035,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		word64 rcx_114;
 		word32 eax_115;
 		byte SZO_116;
-		byte C_117;
-		byte Z_118;
+		bool C_117;
+		bool Z_118;
 		word32 edx_119;
 		word64 rdx_120;
 		word32 r8d_121;
@@ -1054,8 +1054,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		word64 rcx_146;
 		word32 eax_147;
 		byte SZO_148;
-		byte C_149;
-		byte Z_150;
+		bool C_149;
+		bool Z_150;
 		word32 edx_151;
 		word64 rdx_152;
 		word32 r8d_153;
@@ -1073,8 +1073,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		word64 rcx_166;
 		word32 eax_167;
 		byte SZO_168;
-		byte C_169;
-		byte Z_170;
+		bool C_169;
+		bool Z_170;
 		word32 edx_171;
 		word64 rdx_172;
 		word32 r8d_173;
@@ -1099,18 +1099,18 @@ word32 fn0000000140001ABC()
 	return 0x00;
 }
 
-// 0000000140001AC0: Register bool fn0000000140001AC0(Register word64 rax)
-bool fn0000000140001AC0(word64 rax)
+// 0000000140001AC0: Register Eq_1560 fn0000000140001AC0(Register word64 rax)
+Eq_1560 fn0000000140001AC0(word64 rax)
 {
-	bool al_30;
+	Eq_1560 al_30;
 	word64 rsp_7;
 	byte SCZO_8;
 	word32 ecx_9;
 	word64 rcx_10;
 	byte SZO_11;
-	byte C_12;
+	bool C_12;
 	struct Eq_1568 * rax_13;
-	byte Z_14;
+	bool Z_14;
 	byte al_15;
 	word32 eax_16;
 	word16 ax_17;
@@ -1126,7 +1126,7 @@ bool fn0000000140001AC0(word64 rax)
 			return al_30;
 		}
 	}
-	al_30 = 0x00;
+	al_30.u1 = 0x00;
 	return al_30;
 }
 
@@ -1152,12 +1152,12 @@ void fn0000000140001B24(Eq_1618 * * rcx)
 	byte SCZO_39;
 	word64 rax_40;
 	word64 rcx_41;
-	byte Z_42;
+	bool Z_42;
 	word32 ecx_43;
 	word32 eax_44;
 	byte CZ_45;
 	byte SZO_46;
-	byte C_47;
+	bool C_47;
 	api-ms-win-crt-runtime-l1-1-0.dll!terminate();
 	int3();
 	fn0000000140001B5C(qwLoc28, qwLoc20);
@@ -1177,9 +1177,9 @@ void fn0000000140001B5C(word64 qwArg08, word64 qwArg10)
 			word64 rsp_47;
 			word64 rdi_50;
 			byte SCZO_51;
-			byte C_52;
+			bool C_52;
 			byte SZO_53;
-			byte Z_54;
+			bool Z_54;
 			word64 rcx_55;
 			rdi_32();
 		}
@@ -1201,9 +1201,9 @@ void fn0000000140001BA8(word64 qwArg08, word64 qwArg10)
 			word64 rsp_47;
 			word64 rdi_50;
 			byte SCZO_51;
-			byte C_52;
+			bool C_52;
 			byte SZO_53;
-			byte Z_54;
+			bool Z_54;
 			word64 rcx_55;
 			rdi_32();
 		}

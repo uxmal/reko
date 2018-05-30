@@ -23,8 +23,8 @@ l0000000000400AF8:
 	byte SCZO_16
 	word64 rax_17
 	byte SZO_18
-	byte C_19
-	byte Z_20
+	bool C_19
+	bool Z_20
 	call __gmon_start__ (retsize: 8; depth: 16)
 		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
 		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
@@ -115,8 +115,8 @@ l0000000000400D1F:
 	byte SCZO_47
 	byte CZ_48
 	byte SZO_49
-	byte C_50
-	byte Z_51
+	bool C_50
+	bool Z_51
 	word32 edi_52
 	word64 rdi_53
 	call 0x0000000000000000 (retsize: 8; depth: 8)
@@ -171,9 +171,9 @@ l0000000000400D6D:
 	word64 rbp_42
 	byte SCZO_43
 	word64 rax_44
-	byte Z_45
+	bool Z_45
 	byte SZO_46
-	byte C_47
+	bool C_47
 	word64 rdi_48
 	call 0x0000000000000000 (retsize: 8; depth: 8)
 		uses: C_36,qwLoc08_5,rax_33,rbp_37,rdi_39,rsi_12,rsp_38,SCZO_13,SZO_34,Z_35
@@ -262,11 +262,11 @@ l0000000000400DBA:
 	word32 edi_40
 	word64 rdi_41
 	byte SCZO_42
-	byte Z_43
+	bool Z_43
 	word32 eax_44
 	word64 rax_45
 	byte SZO_46
-	byte C_47
+	bool C_47
 	word64 rbp_48
 	word32 esi_49
 	word64 rsi_50
@@ -417,11 +417,11 @@ l0000000000400EE9:
 	selector fs_48
 	word32 eax_49
 	byte SZO_50
-	byte C_51
+	bool C_51
 	byte al_52
 	byte CZ_53
 	word32 esi_54
-	byte Z_55
+	bool Z_55
 	word32 edx_56
 	word32 r8d_57
 	word64 r8_58
@@ -449,11 +449,11 @@ l0000000000400EE9:
 	word64 rax_83
 	word32 eax_85
 	byte SZO_86
-	byte C_87
+	bool C_87
 	byte al_88
 	byte CZ_89
 	word32 esi_90
-	byte Z_91
+	bool Z_91
 	word32 edx_92
 	word32 r8d_93
 	word64 r8_94
@@ -514,11 +514,11 @@ l0000000000400F8D:
 	word64 rax_290
 	word32 eax_292
 	byte SZO_293
-	byte C_294
+	bool C_294
 	byte al_295
 	byte CZ_296
 	word32 esi_297
-	byte Z_298
+	bool Z_298
 	word32 edx_299
 	word32 r8d_300
 	word64 r8_301
@@ -574,11 +574,11 @@ l0000000000400FF9:
 	word64 rax_349
 	word32 eax_351
 	byte SZO_352
-	byte C_353
+	bool C_353
 	byte al_354
 	byte CZ_355
 	word32 esi_356
-	byte Z_357
+	bool Z_357
 	word32 edx_358
 	word32 r8d_359
 	word64 r8_360
@@ -677,11 +677,11 @@ l00000000004012C9:
 	word64 rax_170
 	word32 eax_172
 	byte SZO_173
-	byte C_174
+	bool C_174
 	byte al_175
 	byte CZ_176
 	word32 esi_177
-	byte Z_178
+	bool Z_178
 	word32 edx_179
 	word32 r8d_180
 	word64 r8_181
@@ -789,8 +789,8 @@ l000000000040139D:
 	word64 rax_125
 	word32 eax_127
 	byte SZO_128
-	byte C_129
-	byte Z_130
+	bool C_129
+	bool Z_130
 	word64 rdi_131
 	word32 esi_132
 	word32 ecx_133
@@ -829,8 +829,8 @@ l00000000004013C7:
 	selector fs_156
 	word32 eax_157
 	byte SZO_158
-	byte C_159
-	byte Z_160
+	bool C_159
+	bool Z_160
 	word64 rdi_161
 	word32 esi_162
 	word32 ecx_163
@@ -862,8 +862,8 @@ l00000000004013E4:
 	selector fs_257
 	word32 eax_258
 	byte SZO_259
-	byte C_260
-	byte Z_261
+	bool C_260
+	bool Z_261
 	word64 rdi_262
 	word32 esi_263
 	word32 ecx_264
@@ -888,8 +888,8 @@ l00000000004013E4:
 	selector fs_284
 	word32 eax_285
 	byte SZO_286
-	byte C_287
-	byte Z_288
+	bool C_287
+	bool Z_288
 	word64 rdi_289
 	word32 esi_290
 	word32 ecx_291
@@ -914,8 +914,8 @@ l00000000004013E4:
 	selector fs_311
 	word32 eax_312
 	byte SZO_313
-	byte C_314
-	byte Z_315
+	bool C_314
+	bool Z_315
 	word64 rdi_316
 	word32 esi_317
 	word32 ecx_318
@@ -940,8 +940,8 @@ l00000000004013E4:
 	selector fs_338
 	word32 eax_339
 	byte SZO_340
-	byte C_341
-	byte Z_342
+	bool C_341
+	bool Z_342
 	word64 rdi_343
 	word32 esi_344
 	word32 ecx_345
@@ -966,8 +966,8 @@ l00000000004013E4:
 	selector fs_383
 	word32 eax_384
 	byte SZO_385
-	byte C_386
-	byte Z_387
+	bool C_386
+	bool Z_387
 	word64 rdi_388
 	word32 esi_389
 	word32 ecx_390
@@ -999,8 +999,8 @@ l00000000004016AF:
 	selector fs_906
 	word32 eax_907
 	byte SZO_908
-	byte C_909
-	byte Z_910
+	bool C_909
+	bool Z_910
 	word64 rdi_911
 	word32 esi_912
 	word32 ecx_913
@@ -1073,8 +1073,8 @@ l000000000040149A:
 	selector fs_878
 	word32 eax_879
 	byte SZO_880
-	byte C_881
-	byte Z_882
+	bool C_881
+	bool Z_882
 	word64 rdi_883
 	word32 esi_884
 	word32 ecx_885
@@ -1105,8 +1105,8 @@ l00000000004014AB:
 	selector fs_420
 	word32 eax_421
 	byte SZO_422
-	byte C_423
-	byte Z_424
+	bool C_423
+	bool Z_424
 	word64 rdi_425
 	word32 esi_426
 	word32 ecx_427
@@ -1272,8 +1272,8 @@ l00000000004015F0:
 	selector fs_626
 	word32 eax_627
 	byte SZO_628
-	byte C_629
-	byte Z_630
+	bool C_629
+	bool Z_630
 	word64 rdi_631
 	word32 esi_632
 	word32 ecx_633
@@ -1362,8 +1362,8 @@ l000000000040167F:
 	selector fs_487
 	word32 eax_488
 	byte SZO_489
-	byte C_490
-	byte Z_491
+	bool C_490
+	bool Z_491
 	word64 rdi_492
 	word32 esi_493
 	word32 ecx_494
@@ -1388,8 +1388,8 @@ l000000000040167F:
 	selector fs_514
 	word32 eax_515
 	byte SZO_516
-	byte C_517
-	byte Z_518
+	bool C_517
+	bool Z_518
 	word64 rdi_519
 	word32 esi_520
 	word32 ecx_521
@@ -1419,8 +1419,8 @@ l00000000004016DE:
 	word64 rax_201
 	word32 eax_203
 	byte SZO_204
-	byte C_205
-	byte Z_206
+	bool C_205
+	bool Z_206
 	word64 rdi_207
 	word32 esi_208
 	word32 ecx_209
@@ -1508,8 +1508,8 @@ l00000000004017C0:
 	word64 rdx_82
 	byte SCZO_83
 	byte SZO_84
-	byte C_85
-	byte Z_86
+	bool C_85
+	bool Z_86
 	word32 ebx_87
 	word64 rdi_88
 	call Mem0[0x0000000000601E00:word64] (retsize: 8; depth: 64)

@@ -38,7 +38,7 @@ word32 fn00401040()
 	word32 eax_13;
 	byte SCZO_14;
 	byte SZO_15;
-	byte C_16;
+	bool C_16;
 	driver.dll!Ordinal_1();
 	word32 esp_20;
 	word32 ebp_21;
@@ -46,7 +46,7 @@ word32 fn00401040()
 	word32 eax_23;
 	byte SCZO_24;
 	byte SZO_25;
-	byte C_26;
+	bool C_26;
 	driver.dll!Ordinal_2();
 	word32 esp_30;
 	word32 ebp_31;
@@ -54,7 +54,7 @@ word32 fn00401040()
 	word32 eax_33;
 	byte SCZO_34;
 	byte SZO_35;
-	byte C_36;
+	bool C_36;
 	driver.dll!Ordinal_4();
 	word32 esp_40;
 	word32 ebp_41;
@@ -62,7 +62,7 @@ word32 fn00401040()
 	word32 eax_43;
 	byte SCZO_44;
 	byte SZO_45;
-	byte C_46;
+	bool C_46;
 	driver.dll!Ordinal_3();
 	fn00401010(0x00402118);
 	return 0x00;
@@ -135,8 +135,8 @@ l00401172:
 				word32 ecx_258;
 				byte al_259;
 				byte SZO_260;
-				byte C_261;
-				byte Z_262;
+				bool C_261;
+				bool Z_262;
 				byte bl_263;
 				word32 ebp_264;
 				word32 eax_265;
@@ -165,8 +165,8 @@ l00401172:
 				word32 ecx_220;
 				byte al_221;
 				byte SZO_222;
-				byte C_223;
-				byte Z_224;
+				bool C_223;
+				bool Z_224;
 				byte bl_225;
 				word32 ebp_226;
 				word32 eax_227;
@@ -183,8 +183,8 @@ l00401172:
 		word32 ecx_97;
 		byte al_98;
 		byte SZO_99;
-		byte C_100;
-		byte Z_101;
+		bool C_100;
+		bool Z_101;
 		byte bl_102;
 		word32 ebp_103;
 		word32 eax_104;
@@ -199,8 +199,8 @@ l00401172:
 		word32 ecx_113;
 		byte al_114;
 		byte SZO_115;
-		byte C_116;
-		byte Z_117;
+		bool C_116;
+		bool Z_117;
 		byte bl_118;
 		word32 ebp_119;
 		word32 eax_120;
@@ -215,8 +215,8 @@ l00401172:
 		word32 ecx_129;
 		byte al_130;
 		byte SZO_131;
-		byte C_132;
-		byte Z_133;
+		bool C_132;
+		bool Z_133;
 		byte bl_134;
 		word32 eax_136;
 		byte SCZO_137;
@@ -243,8 +243,8 @@ l00401172:
 			word32 ecx_189;
 			byte al_190;
 			byte SZO_191;
-			byte C_192;
-			byte Z_193;
+			bool C_192;
+			bool Z_193;
 			byte bl_194;
 			word32 eax_196;
 			byte SCZO_197;
@@ -426,8 +426,8 @@ void fn0040176D(word32 dwArg00, word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188B: Register bool fn0040188B()
-bool fn0040188B()
+// 0040188B: Register Eq_854 fn0040188B()
+Eq_854 fn0040188B()
 {
 	Eq_855 eax_4 = GetModuleHandleW(null);
 	if (eax_4 == null || eax_4->unused != 23117)

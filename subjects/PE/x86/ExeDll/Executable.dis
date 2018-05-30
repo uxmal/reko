@@ -221,8 +221,8 @@ l0040120E:
 	word32 ecx_258
 	byte al_259
 	byte SZO_260
-	byte C_261
-	byte Z_262
+	bool C_261
+	bool Z_262
 	byte bl_263
 	word32 ebp_264
 	word32 eax_265
@@ -267,8 +267,8 @@ l00401233:
 	word32 ecx_220
 	byte al_221
 	byte SZO_222
-	byte C_223
-	byte Z_224
+	bool C_223
+	bool Z_224
 	byte bl_225
 	word32 ebp_226
 	word32 eax_227
@@ -291,8 +291,8 @@ l0040123B:
 	word32 ecx_97
 	byte al_98
 	byte SZO_99
-	byte C_100
-	byte Z_101
+	bool C_100
+	bool Z_101
 	byte bl_102
 	word32 ebp_103
 	word32 eax_104
@@ -309,8 +309,8 @@ l0040123B:
 	word32 ecx_113
 	byte al_114
 	byte SZO_115
-	byte C_116
-	byte Z_117
+	bool C_116
+	bool Z_117
 	byte bl_118
 	word32 ebp_119
 	word32 eax_120
@@ -327,8 +327,8 @@ l0040123B:
 	word32 ecx_129
 	byte al_130
 	byte SZO_131
-	byte C_132
-	byte Z_133
+	bool C_132
+	bool Z_133
 	byte bl_134
 	word32 eax_136
 	byte SCZO_137
@@ -364,8 +364,8 @@ l00401270:
 	word32 ecx_189
 	byte al_190
 	byte SZO_191
-	byte C_192
-	byte Z_193
+	bool C_192
+	bool Z_193
 	byte bl_194
 	word32 eax_196
 	byte SCZO_197
@@ -752,8 +752,8 @@ l004014CD:
 	byte SCZO_127
 	word32 esi_128
 	byte SZO_129
-	byte C_130
-	byte Z_131
+	bool C_130
+	bool Z_131
 	word32 eax_132
 	word32 ecx_133
 	byte al_134
@@ -776,8 +776,8 @@ l004014E0:
 	byte SCZO_150
 	word32 esi_151
 	byte SZO_152
-	byte C_153
-	byte Z_154
+	bool C_153
+	bool Z_154
 	word32 eax_155
 	word32 ecx_156
 	byte al_157
@@ -1025,10 +1025,10 @@ l00401637:
 	word32 ebp_52
 	word32 ecx_54
 	byte SZO_55
-	byte C_56
+	bool C_56
 	byte cl_57
 	byte SCZO_58
-	byte Z_59
+	bool Z_59
 	call register_onexit_function (retsize: 4; depth: 16)
 		uses: C,cl_11,dwLoc04_4,dwLoc08_15,dwLoc0C_50,eax_17,ebp_5,ecx_10,esp_49,SCZO_18,SZO,Z_19
 		defs: C_56,cl_57,eax_53,ebp_52,ecx_54,esp_51,SCZO_58,SZO_55,Z_59
@@ -1042,10 +1042,10 @@ l00401630:
 	word32 ebp_41
 	word32 ecx_43
 	byte SZO_44
-	byte C_45
+	bool C_45
 	byte cl_46
 	byte SCZO_47
-	byte Z_48
+	bool Z_48
 	call crt_atexit (retsize: 4; depth: 12)
 		uses: C,cl_11,dwLoc04_4,dwLoc08_15,dwLoc0C,eax_17,ebp_5,ecx_10,esp_14,SCZO_18,SZO,Z_19
 		defs: C_45,cl_46,eax_42,ebp_41,ecx_43,esp_40,SCZO_47,SZO_44,Z_48
@@ -1303,8 +1303,8 @@ l00401718:
 	byte SCZO_9
 	word32 eax_10
 	byte SZO_11
-	byte C_12
-	byte Z_13
+	bool C_12
+	bool Z_13
 	call controlfp_s (retsize: 4; depth: 16)
 		uses: dwLoc04_3,dwLoc08_5,dwLoc0C_7,esp_6
 		defs: C_12,eax_10,esp_8,SCZO_9,SZO_11,Z_13
@@ -1663,10 +1663,10 @@ l00401937:
 	word32 esp_54
 	word32 ebx_55
 	byte SCZO_57
-	byte C_58
+	bool C_58
 	word32 edi_59
 	byte SZO_60
-	byte Z_61
+	bool Z_61
 	word32 ecx_62
 	call fn00000000 (retsize: 4; depth: 4)
 		uses: C_40,dwLoc04_4,dwLoc08_7,dwLoc0C_31,ebx_35,ecx_53,edi_37,esi_34,esp_36,SCZO_33,SZO_38,Z_39

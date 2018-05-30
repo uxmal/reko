@@ -271,14 +271,14 @@ T_12: (in SZO_18 : byte)
   Class: Eq_12
   DataType: byte
   OrigDataType: byte
-T_13: (in C_19 : byte)
+T_13: (in C_19 : bool)
   Class: Eq_13
-  DataType: byte
-  OrigDataType: byte
-T_14: (in Z_20 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_14: (in Z_20 : bool)
   Class: Eq_14
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_15: (in __gmon_start__ : ptr64)
   Class: Eq_15
   DataType: (ptr code)
@@ -443,14 +443,14 @@ T_55: (in SZO_49 : byte)
   Class: Eq_55
   DataType: byte
   OrigDataType: byte
-T_56: (in C_50 : byte)
+T_56: (in C_50 : bool)
   Class: Eq_56
-  DataType: byte
-  OrigDataType: byte
-T_57: (in Z_51 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_57: (in Z_51 : bool)
   Class: Eq_57
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_58: (in edi_52 : word32)
   Class: Eq_58
   DataType: word32
@@ -507,18 +507,18 @@ T_71: (in rax_44 : word64)
   Class: Eq_71
   DataType: word64
   OrigDataType: word64
-T_72: (in Z_45 : byte)
+T_72: (in Z_45 : bool)
   Class: Eq_72
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_73: (in SZO_46 : byte)
   Class: Eq_73
   DataType: byte
   OrigDataType: byte
-T_74: (in C_47 : byte)
+T_74: (in C_47 : bool)
   Class: Eq_74
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_75: (in rdi_48 : word64)
   Class: Eq_75
   DataType: word64
@@ -631,10 +631,10 @@ T_102: (in SCZO_42 : byte)
   Class: Eq_102
   DataType: byte
   OrigDataType: byte
-T_103: (in Z_43 : byte)
+T_103: (in Z_43 : bool)
   Class: Eq_103
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_104: (in eax_44 : word32)
   Class: Eq_104
   DataType: word32
@@ -647,10 +647,10 @@ T_106: (in SZO_46 : byte)
   Class: Eq_106
   DataType: byte
   OrigDataType: byte
-T_107: (in C_47 : byte)
+T_107: (in C_47 : bool)
   Class: Eq_107
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_108: (in rbp_48 : word64)
   Class: Eq_108
   DataType: word64
@@ -1443,10 +1443,10 @@ T_305: (in SZO_50 : byte)
   Class: Eq_305
   DataType: byte
   OrigDataType: byte
-T_306: (in C_51 : byte)
+T_306: (in C_51 : bool)
   Class: Eq_306
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_307: (in al_52 : byte)
   Class: Eq_307
   DataType: byte
@@ -1459,10 +1459,10 @@ T_309: (in esi_54 : word32)
   Class: Eq_309
   DataType: word32
   OrigDataType: word32
-T_310: (in Z_55 : byte)
+T_310: (in Z_55 : bool)
   Class: Eq_310
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_311: (in edx_56 : word32)
   Class: Eq_311
   DataType: word32
@@ -1571,10 +1571,10 @@ T_337: (in SZO_86 : byte)
   Class: Eq_337
   DataType: byte
   OrigDataType: byte
-T_338: (in C_87 : byte)
+T_338: (in C_87 : bool)
   Class: Eq_338
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_339: (in al_88 : byte)
   Class: Eq_339
   DataType: byte
@@ -1587,10 +1587,10 @@ T_341: (in esi_90 : word32)
   Class: Eq_341
   DataType: word32
   OrigDataType: word32
-T_342: (in Z_91 : byte)
+T_342: (in Z_91 : bool)
   Class: Eq_342
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_343: (in edx_92 : word32)
   Class: Eq_343
   DataType: word32
@@ -1723,10 +1723,10 @@ T_375: (in SZO_173 : byte)
   Class: Eq_375
   DataType: byte
   OrigDataType: byte
-T_376: (in C_174 : byte)
+T_376: (in C_174 : bool)
   Class: Eq_376
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_377: (in al_175 : byte)
   Class: Eq_377
   DataType: byte
@@ -1739,10 +1739,10 @@ T_379: (in esi_177 : word32)
   Class: Eq_379
   DataType: word32
   OrigDataType: word32
-T_380: (in Z_178 : byte)
+T_380: (in Z_178 : bool)
   Class: Eq_380
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_381: (in edx_179 : word32)
   Class: Eq_381
   DataType: word32
@@ -2147,10 +2147,10 @@ T_481: (in SZO_293 : byte)
   Class: Eq_481
   DataType: byte
   OrigDataType: byte
-T_482: (in C_294 : byte)
+T_482: (in C_294 : bool)
   Class: Eq_482
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_483: (in al_295 : byte)
   Class: Eq_483
   DataType: byte
@@ -2163,10 +2163,10 @@ T_485: (in esi_297 : word32)
   Class: Eq_485
   DataType: word32
   OrigDataType: word32
-T_486: (in Z_298 : byte)
+T_486: (in Z_298 : bool)
   Class: Eq_486
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_487: (in edx_299 : word32)
   Class: Eq_487
   DataType: word32
@@ -2747,10 +2747,10 @@ T_631: (in SZO_352 : byte)
   Class: Eq_631
   DataType: byte
   OrigDataType: byte
-T_632: (in C_353 : byte)
+T_632: (in C_353 : bool)
   Class: Eq_632
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_633: (in al_354 : byte)
   Class: Eq_633
   DataType: byte
@@ -2763,10 +2763,10 @@ T_635: (in esi_356 : word32)
   Class: Eq_635
   DataType: word32
   OrigDataType: word32
-T_636: (in Z_357 : byte)
+T_636: (in Z_357 : bool)
   Class: Eq_636
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_637: (in edx_358 : word32)
   Class: Eq_637
   DataType: word32
@@ -3527,14 +3527,14 @@ T_826: (in SZO_128 : byte)
   Class: Eq_826
   DataType: byte
   OrigDataType: byte
-T_827: (in C_129 : byte)
+T_827: (in C_129 : bool)
   Class: Eq_827
-  DataType: byte
-  OrigDataType: byte
-T_828: (in Z_130 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_828: (in Z_130 : bool)
   Class: Eq_828
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_829: (in rdi_131 : word64)
   Class: Eq_829
   DataType: word64
@@ -3671,14 +3671,14 @@ T_862: (in SZO_158 : byte)
   Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_863: (in C_159 : byte)
+T_863: (in C_159 : bool)
   Class: Eq_863
-  DataType: byte
-  OrigDataType: byte
-T_864: (in Z_160 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_864: (in Z_160 : bool)
   Class: Eq_864
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_865: (in rdi_161 : word64)
   Class: Eq_865
   DataType: word64
@@ -3815,14 +3815,14 @@ T_898: (in SZO_259 : byte)
   Class: Eq_898
   DataType: byte
   OrigDataType: byte
-T_899: (in C_260 : byte)
+T_899: (in C_260 : bool)
   Class: Eq_899
-  DataType: byte
-  OrigDataType: byte
-T_900: (in Z_261 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_900: (in Z_261 : bool)
   Class: Eq_900
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_901: (in rdi_262 : word64)
   Class: Eq_901
   DataType: word64
@@ -3915,14 +3915,14 @@ T_923: (in SZO_286 : byte)
   Class: Eq_923
   DataType: byte
   OrigDataType: byte
-T_924: (in C_287 : byte)
+T_924: (in C_287 : bool)
   Class: Eq_924
-  DataType: byte
-  OrigDataType: byte
-T_925: (in Z_288 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_925: (in Z_288 : bool)
   Class: Eq_925
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_926: (in rdi_289 : word64)
   Class: Eq_926
   DataType: word64
@@ -4015,14 +4015,14 @@ T_948: (in SZO_313 : byte)
   Class: Eq_948
   DataType: byte
   OrigDataType: byte
-T_949: (in C_314 : byte)
+T_949: (in C_314 : bool)
   Class: Eq_949
-  DataType: byte
-  OrigDataType: byte
-T_950: (in Z_315 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_950: (in Z_315 : bool)
   Class: Eq_950
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_951: (in rdi_316 : word64)
   Class: Eq_951
   DataType: word64
@@ -4115,14 +4115,14 @@ T_973: (in SZO_340 : byte)
   Class: Eq_973
   DataType: byte
   OrigDataType: byte
-T_974: (in C_341 : byte)
+T_974: (in C_341 : bool)
   Class: Eq_974
-  DataType: byte
-  OrigDataType: byte
-T_975: (in Z_342 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_975: (in Z_342 : bool)
   Class: Eq_975
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_976: (in rdi_343 : word64)
   Class: Eq_976
   DataType: word64
@@ -4215,14 +4215,14 @@ T_998: (in SZO_385 : byte)
   Class: Eq_998
   DataType: byte
   OrigDataType: byte
-T_999: (in C_386 : byte)
+T_999: (in C_386 : bool)
   Class: Eq_999
-  DataType: byte
-  OrigDataType: byte
-T_1000: (in Z_387 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1000: (in Z_387 : bool)
   Class: Eq_1000
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1001: (in rdi_388 : word64)
   Class: Eq_1001
   DataType: word64
@@ -4323,14 +4323,14 @@ T_1025: (in SZO_908 : byte)
   Class: Eq_1025
   DataType: byte
   OrigDataType: byte
-T_1026: (in C_909 : byte)
+T_1026: (in C_909 : bool)
   Class: Eq_1026
-  DataType: byte
-  OrigDataType: byte
-T_1027: (in Z_910 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1027: (in Z_910 : bool)
   Class: Eq_1027
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1028: (in rdi_911 : word64)
   Class: Eq_1028
   DataType: word64
@@ -4467,14 +4467,14 @@ T_1061: (in SZO_880 : byte)
   Class: Eq_1061
   DataType: byte
   OrigDataType: byte
-T_1062: (in C_881 : byte)
+T_1062: (in C_881 : bool)
   Class: Eq_1062
-  DataType: byte
-  OrigDataType: byte
-T_1063: (in Z_882 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1063: (in Z_882 : bool)
   Class: Eq_1063
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1064: (in rdi_883 : word64)
   Class: Eq_1064
   DataType: word64
@@ -4595,14 +4595,14 @@ T_1093: (in SZO_422 : byte)
   Class: Eq_1093
   DataType: byte
   OrigDataType: byte
-T_1094: (in C_423 : byte)
+T_1094: (in C_423 : bool)
   Class: Eq_1094
-  DataType: byte
-  OrigDataType: byte
-T_1095: (in Z_424 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1095: (in Z_424 : bool)
   Class: Eq_1095
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1096: (in rdi_425 : word64)
   Class: Eq_1096
   DataType: word64
@@ -4731,14 +4731,14 @@ T_1127: (in SZO_489 : byte)
   Class: Eq_1127
   DataType: byte
   OrigDataType: byte
-T_1128: (in C_490 : byte)
+T_1128: (in C_490 : bool)
   Class: Eq_1128
-  DataType: byte
-  OrigDataType: byte
-T_1129: (in Z_491 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1129: (in Z_491 : bool)
   Class: Eq_1129
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1130: (in rdi_492 : word64)
   Class: Eq_1130
   DataType: word64
@@ -4831,14 +4831,14 @@ T_1152: (in SZO_516 : byte)
   Class: Eq_1152
   DataType: byte
   OrigDataType: byte
-T_1153: (in C_517 : byte)
+T_1153: (in C_517 : bool)
   Class: Eq_1153
-  DataType: byte
-  OrigDataType: byte
-T_1154: (in Z_518 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1154: (in Z_518 : bool)
   Class: Eq_1154
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1155: (in rdi_519 : word64)
   Class: Eq_1155
   DataType: word64
@@ -4927,14 +4927,14 @@ T_1176: (in SZO_204 : byte)
   Class: Eq_1176
   DataType: byte
   OrigDataType: byte
-T_1177: (in C_205 : byte)
+T_1177: (in C_205 : bool)
   Class: Eq_1177
-  DataType: byte
-  OrigDataType: byte
-T_1178: (in Z_206 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1178: (in Z_206 : bool)
   Class: Eq_1178
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1179: (in rdi_207 : word64)
   Class: Eq_1179
   DataType: word64
@@ -5887,14 +5887,14 @@ T_1416: (in SZO_628 : byte)
   Class: Eq_1416
   DataType: byte
   OrigDataType: byte
-T_1417: (in C_629 : byte)
+T_1417: (in C_629 : bool)
   Class: Eq_1417
-  DataType: byte
-  OrigDataType: byte
-T_1418: (in Z_630 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1418: (in Z_630 : bool)
   Class: Eq_1418
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1419: (in rdi_631 : word64)
   Class: Eq_1419
   DataType: word64
@@ -6167,14 +6167,14 @@ T_1486: (in SZO_84 : byte)
   Class: Eq_1486
   DataType: byte
   OrigDataType: byte
-T_1487: (in C_85 : byte)
+T_1487: (in C_85 : bool)
   Class: Eq_1487
-  DataType: byte
-  OrigDataType: byte
-T_1488: (in Z_86 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_1488: (in Z_86 : bool)
   Class: Eq_1488
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1489: (in ebx_87 : word32)
   Class: Eq_1489
   DataType: word32

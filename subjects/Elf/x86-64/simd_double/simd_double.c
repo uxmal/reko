@@ -14,8 +14,8 @@ void _init()
 		byte SCZO_16;
 		word64 rax_17;
 		byte SZO_18;
-		byte C_19;
-		byte Z_20;
+		bool C_19;
+		bool Z_20;
 		__gmon_start__();
 	}
 }
@@ -41,9 +41,9 @@ void deregister_tm_clones()
 	word64 rbp_35;
 	word64 rax_36;
 	byte SCZO_37;
-	byte Z_38;
+	bool Z_38;
 	byte SZO_39;
-	byte C_40;
+	bool C_40;
 	rax_27();
 }
 
@@ -62,9 +62,9 @@ void register_tm_clones()
 	word64 rbp_43;
 	byte SCZO_44;
 	word64 rax_45;
-	byte Z_46;
+	bool Z_46;
 	byte SZO_47;
-	byte C_48;
+	bool C_48;
 	rax_34();
 }
 
@@ -77,7 +77,7 @@ void __do_global_dtors_aux()
 	{
 		word64 rsp_25;
 		byte SCZO_26;
-		byte Z_27;
+		bool Z_27;
 		word64 rbp_28;
 		word64 rdi_29;
 		__cxa_finalize();
@@ -107,13 +107,13 @@ void(uint64 rsi, Eq_123 rdi)
 		byte SCZO_46;
 		word64 rdi_47;
 		word64 rsi_48;
-		byte Z_49;
+		bool Z_49;
 		word64 rax_50;
 		word64 rdx_51;
 		word64 rcx_52;
 		word32 eax_53;
 		byte SZO_54;
-		byte C_55;
+		bool C_55;
 		posix_memalign();
 		if (eax_53 == 0x00)
 			rax_22 = qwLoc10;
@@ -218,8 +218,8 @@ void __libc_csu_init(word32 edi)
 			word64 rdx_82;
 			byte SCZO_83;
 			byte SZO_84;
-			byte C_85;
-			byte Z_86;
+			bool C_85;
+			bool Z_86;
 			word32 ebx_87;
 			word64 rdi_88;
 			globals->ptr200DE8();

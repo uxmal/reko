@@ -112,9 +112,9 @@ word32 fn100011E9(word32 dwArg08)
 				word32 eax_177;
 				word32 ebp_178;
 				byte SZO_179;
-				byte C_180;
+				bool C_180;
 				byte SCZO_181;
-				byte Z_182;
+				bool Z_182;
 				word32 ecx_183;
 				word32 ebx_184;
 				word32 esi_185;
@@ -149,9 +149,9 @@ word32 fn100011E9(word32 dwArg08)
 					word32 eax_290;
 					word32 ebp_291;
 					byte SZO_292;
-					byte C_293;
+					bool C_293;
 					byte SCZO_294;
-					byte Z_295;
+					bool Z_295;
 					word32 ecx_296;
 					word32 esi_298;
 					struct Eq_331 * fs_300;
@@ -202,9 +202,9 @@ word32 fn10001388(LPVOID ecx, DWORD edx,  * ebx, ptr32 esi, word32 edi)
 			word32 edx_215;
 			word32 eax_218;
 			byte SZO_219;
-			byte C_220;
+			bool C_220;
 			byte SCZO_221;
-			byte Z_222;
+			bool Z_222;
 			fn00000000();
 			*(ebp_10 - 0x1C) = eax_218;
 		}
@@ -256,9 +256,9 @@ l1000147A:
 			word32 edx_163;
 			word32 eax_166;
 			byte SZO_167;
-			byte C_168;
+			bool C_168;
 			byte SCZO_169;
-			byte Z_170;
+			bool Z_170;
 			fn00000000();
 		}
 	}
@@ -287,9 +287,9 @@ l1000147A:
 				word32 ebx_116;
 				word32 eax_118;
 				byte SZO_119;
-				byte C_120;
+				bool C_120;
 				byte SCZO_121;
-				byte Z_122;
+				bool Z_122;
 				fn00000000();
 				*(ebp_10 - 0x1C) = eax_118;
 			}
@@ -329,9 +329,9 @@ _onexit_t fn100015CF( * ebx, ptr32 esi, word32 edi)
 		word32 ecx_63;
 		struct Eq_774 * ebp_64;
 		byte SCZO_65;
-		byte Z_66;
+		bool Z_66;
 		byte SZO_67;
-		byte C_68;
+		bool C_68;
 		word32 ebx_69;
 		word32 edi_70;
 		lock();
@@ -346,9 +346,9 @@ _onexit_t fn100015CF( * ebx, ptr32 esi, word32 edi)
 		word32 ecx_105;
 		word32 ebp_106;
 		byte SCZO_107;
-		byte Z_108;
+		bool Z_108;
 		byte SZO_109;
-		byte C_110;
+		bool C_110;
 		word32 ebx_111;
 		word32 edi_112;
 		encode_pointer();
@@ -358,9 +358,9 @@ _onexit_t fn100015CF( * ebx, ptr32 esi, word32 edi)
 		void * eax_119;
 		word32 ecx_120;
 		byte SCZO_122;
-		byte Z_123;
+		bool Z_123;
 		byte SZO_124;
-		byte C_125;
+		bool C_125;
 		word32 ebx_126;
 		word32 edi_127;
 		encode_pointer();
@@ -402,9 +402,9 @@ void fn10001680()
 				word32 edi_45;
 				word32 eax_46;
 				byte SCZO_47;
-				byte C_48;
+				bool C_48;
 				byte SZO_49;
-				byte Z_50;
+				bool Z_50;
 				fn00000000();
 			}
 			esi_12 = esi_12 + 0x01;
@@ -429,20 +429,20 @@ Eq_945 * fn10001700(Eq_946 * dwArg04, uint32 dwArg08)
 	struct Eq_948 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
 	up32 esi_14 = (word32) ecx_6->w0006;
 	up32 edx_15 = 0x00;
-	struct Eq_945 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
-	if (true)
+	struct Eq_945 * eax_23 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
+	if (!DPB(CZ, false, 0))
 	{
 		do
 		{
-			uint32 ecx_49 = eax_22->dw0000;
-			if (dwArg08 >= ecx_49 && dwArg08 < eax_22->dw0008 + ecx_49)
-				return eax_22;
+			uint32 ecx_50 = eax_23->dw0000;
+			if (dwArg08 >= ecx_50 && dwArg08 < eax_23->dw0008 + ecx_50)
+				return eax_23;
 			edx_15 = edx_15 + 0x01;
-			eax_22 = eax_22 + 0x01;
+			eax_23 = eax_23 + 0x01;
 		} while (edx_15 < esi_14);
 	}
-	eax_22 = null;
-	return eax_22;
+	eax_23 = null;
+	return eax_23;
 }
 
 // 10001742: Register ui32 fn10001742(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
@@ -456,7 +456,7 @@ ui32 fn10001742( * ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 	{
 		Eq_413 eax_50 = ebp_10->t0008;
 		dwLoc0C_18 = eax_50 - 0x10000000;
-		struct Eq_1028 * eax_57 = fn10001700(&globals->t10000000, eax_50 - 0x10000000);
+		struct Eq_1030 * eax_57 = fn10001700(&globals->t10000000, eax_50 - 0x10000000);
 		if (eax_57 != null)
 		{
 			eax_33 = ~(eax_57->dw0024 >> 0x1F) & 0x01;

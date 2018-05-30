@@ -510,7 +510,7 @@ void prvAddCurrentTaskToDelayedList.isra.0(word32 r0, word32 r1, word32 r6, word
 	if (!ZC)
 	{
 		byte NZCV_42 = cond((r6 >> 0x08) - r8 - C);
-		C = NZCV_42;
+		C = (bool) NZCV_42;
 		Z = NZCV_42;
 		V = NZCV_42;
 	}
@@ -530,7 +530,7 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 	{
 		r8 = r0 + (r6 >> 0x08) + C;
 		byte NZCV_147 = cond(r8);
-		C = NZCV_147;
+		C = (bool) NZCV_147;
 		ZC = NZCV_147;
 		Z = NZCV_147;
 		V = NZCV_147;
@@ -1100,7 +1100,7 @@ void prvSVCHandler(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32
 		byte NZCV_52 = cond(r1);
 		r2_r1 = SEQ(r2, r1);
 		r1_r0 = SEQ(r1, r0);
-		C = NZCV_52;
+		C = (bool) NZCV_52;
 		Z = NZCV_52;
 		ZC = NZCV_52;
 		V = NZCV_52;
@@ -1112,7 +1112,7 @@ void prvSVCHandler(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32
 		word32 r0_37 = r3 - 0x00340000 - C;
 		byte NZCV_39 = cond(r0_37);
 		r1_r0 = SEQ(r1, r0_37);
-		C = NZCV_39;
+		C = (bool) NZCV_39;
 		Z = NZCV_39;
 		ZC = NZCV_39;
 		V = NZCV_39;
@@ -1258,7 +1258,7 @@ void xPortGetFreeHeapSize(word32 r0, word32 r2, word32 r5, word32 r7, word32 r8,
 	if (!NZV)
 	{
 		byte NZCV_63 = cond((fp >> 0x06) - r8 - C);
-		C = NZCV_63;
+		C = (bool) NZCV_63;
 		NZV = NZCV_63;
 		V = NZCV_63;
 		Z = NZCV_63;
@@ -1266,7 +1266,7 @@ void xPortGetFreeHeapSize(word32 r0, word32 r2, word32 r5, word32 r7, word32 r8,
 	if (!V)
 	{
 		byte NZC_50 = cond(r0 ^ __ror(r0, 0x08));
-		C = NZC_50;
+		C = (bool) NZC_50;
 		Z = NZC_50;
 	}
 	if (!C)
@@ -1497,7 +1497,7 @@ void vCheckTask(word32 r0, word32 r1, word32 r2, word32 r3, word32 r8, word32 ip
 	if (!Z)
 	{
 		byte NZCV_49 = cond(0x00F00000 - ip - C);
-		C = NZCV_49;
+		C = (bool) NZCV_49;
 		ZC = NZCV_49;
 		N = NZCV_49;
 	}
@@ -1905,7 +1905,7 @@ void xQueueCRReceive(word32 r1, word32 r2, word32 r3, word32 r4, word32 r6, word
 		word32 r2_46 = r9 + __ror(0x3FF0, 0x001A) + C;
 		byte NZCV_48 = cond(r2_46);
 		r2_r1 = SEQ(r2_46, r1);
-		C = NZCV_48;
+		C = (bool) NZCV_48;
 		ZC = NZCV_48;
 		Z = NZCV_48;
 	}
@@ -2576,7 +2576,7 @@ void GPIODirModeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		r0 = r4 ^ 0xF8;
 		Z = NZC_63;
 		ZC = NZC_63;
-		C = NZC_63;
+		C = (bool) NZC_63;
 	}
 	if (!Z)
 		Mem60[0x00009119 + 0x00:word32] = r0;
@@ -2593,7 +2593,7 @@ void GPIODirModeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		fn010CC019();
 	}
 	if (!Z)
-		C = cond((r3 >> 0x0020) - r8 - C);
+		C = (bool) cond((r3 >> 0x0020) - r8 - C);
 }
 
 // 00009135: void GPIODirModeGet()
@@ -2612,7 +2612,7 @@ void GPIOIntTypeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		ZC = NZC_182;
 		NZV = NZC_182;
 		NZV = NZC_182;
-		C = NZC_182;
+		C = (bool) NZC_182;
 		N = NZC_182;
 	}
 	if (!Z)
@@ -3177,7 +3177,7 @@ void IntPriorityGet(word32 pc, word32 r0, word32 r2, word32 r8, word32 r10)
 		Z = NZCV_95;
 		NZV = NZCV_95;
 		V = NZCV_95;
-		C = NZCV_95;
+		C = (bool) NZCV_95;
 		NV = NZCV_95;
 	}
 	if (!Z)
@@ -3197,7 +3197,7 @@ void IntPriorityGet(word32 pc, word32 r0, word32 r2, word32 r8, word32 r10)
 		Z = NZCV_74;
 		NZV = NZCV_74;
 		V = NZCV_74;
-		C = NZCV_74;
+		C = (bool) NZCV_74;
 		NV = NZCV_74;
 	}
 	if (!Z)
@@ -3237,7 +3237,7 @@ void IntDisable(word32 r0, word32 r8)
 void OSRAMDelay(word32 pc, word32 r1, word32 r8)
 {
 	if (!V)
-		C = cond(r1 - (r8 >>u fp) - C);
+		C = (bool) cond(r1 - (r8 >>u fp) - C);
 	if (C)
 		OSRAMWriteFirst();
 	else
@@ -3372,7 +3372,7 @@ void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word3
 	{
 		byte NZCV_34 = cond(r1 ^ r6 >> 0x08);
 		Z = NZCV_34;
-		C = NZCV_34;
+		C = (bool) NZCV_34;
 	}
 	if (!Z)
 		r0 = __ssub8(r8, r3);
@@ -3393,7 +3393,7 @@ void OSRAMInit(word32 pc, word32 r0, word32 r1, word32 r2, word32 r6, word32 r8,
 	if (!Z)
 	{
 		byte NZCV_29 = cond((r6 >> 0x001E) - r0 - C);
-		C = NZCV_29;
+		C = (bool) NZCV_29;
 		Z = NZCV_29;
 	}
 	if (!C)
@@ -3745,7 +3745,7 @@ void SysCtlPeripheralClockGating(word32 pc, word32 r0, word32 r1, word32 r2, wor
 	{
 		r4 = (r7 >> 0x06) - r0 - C;
 		byte NZCV_49 = cond(r4);
-		C = NZCV_49;
+		C = (bool) NZCV_49;
 		Z = NZCV_49;
 		V = NZCV_49;
 	}
@@ -4190,7 +4190,7 @@ void SysCtlPLLVerificationSet(word32 r0, word32 r1, word32 r3, word32 r4, word32
 	if (!ZC)
 	{
 		byte NZCV_44 = cond((r7 >> 0x06) - r4 - C);
-		C = NZCV_44;
+		C = (bool) NZCV_44;
 		Z = NZCV_44;
 		V = NZCV_44;
 	}
@@ -4281,7 +4281,7 @@ void UARTCharsAvail(word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 	if (!Z)
 	{
 		byte NZCV_39 = cond(__ror(r9, 0x00) - r0 - C);
-		C = NZCV_39;
+		C = (bool) NZCV_39;
 		Z = NZCV_39;
 		ZC = NZCV_39;
 	}
@@ -4302,7 +4302,7 @@ void UARTSpaceAvail(word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 	if (!C)
 	{
 		byte NZCV_31 = cond(__ror(r9, 0x00) - r0 - C);
-		C = NZCV_31;
+		C = (bool) NZCV_31;
 		ZC = NZCV_31;
 		N = NZCV_31;
 	}

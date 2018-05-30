@@ -78,10 +78,10 @@ l0040110B:
 l00401114:
 	word32 esp_19
 	byte SCZO_20
-	byte C_21
+	bool C_21
 	word32 eax_22
 	byte SZO_23
-	byte Z_24
+	bool Z_24
 	call __CRTL_TLS_GetValue (retsize: 4; depth: 8)
 		uses: C_4,dwLoc04_18,eax,esp_17,SCZO_3,SZO,Z
 		defs: C_21,eax_22,esp_19,SCZO_20,SZO_23,Z_24
@@ -98,10 +98,10 @@ l00401123:
 	Mem40[esp_19 - 0x00000004:word32] = Mem35[0x0040208B:word32]
 	word32 esp_41
 	byte SCZO_42
-	byte C_43
+	bool C_43
 	word32 eax_44
 	byte SZO_45
-	byte Z_46
+	bool Z_46
 	call __CRTL_TLS_ExitThread (retsize: 4; depth: 4)
 		uses: C_28,dwLoc04_18,eax_36,esp_39,SCZO_20,SZO_26,Z_27
 		defs: C_43,eax_44,esp_41,SCZO_42,SZO_45,Z_46

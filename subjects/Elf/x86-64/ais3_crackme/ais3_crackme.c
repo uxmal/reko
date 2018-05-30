@@ -28,8 +28,8 @@ void call_gmon_start()
 		byte SCZO_16;
 		word64 rax_17;
 		byte SZO_18;
-		byte C_19;
-		byte Z_20;
+		bool C_19;
+		bool Z_20;
 		__gmon_start__();
 	}
 }
@@ -47,8 +47,8 @@ void deregister_tm_clones(word64 r8)
 	byte SCZO_47;
 	byte CZ_48;
 	byte SZO_49;
-	byte C_50;
-	byte Z_51;
+	bool C_50;
+	bool Z_51;
 	word32 edi_52;
 	word64 rdi_53;
 	null();
@@ -65,9 +65,9 @@ void register_tm_clones(word64 r8)
 	word64 r8_48;
 	byte SCZO_49;
 	word64 rdx_50;
-	byte Z_51;
+	bool Z_51;
 	byte SZO_52;
-	byte C_53;
+	bool C_53;
 	word64 rsi_54;
 	word64 rdi_55;
 	null();
@@ -92,11 +92,11 @@ void frame_dummy(word64 r8)
 	{
 		word64 rsp_44;
 		byte SCZO_45;
-		byte Z_46;
+		bool Z_46;
 		word32 eax_47;
 		word64 rax_48;
 		byte SZO_49;
-		byte C_50;
+		bool C_50;
 		word64 rbp_51;
 		word32 edi_52;
 		word64 rdi_53;
@@ -163,8 +163,8 @@ void __libc_csu_init(word32 edi)
 			word64 rsi_70;
 			word64 rdx_71;
 			byte SZO_72;
-			byte C_73;
-			byte Z_74;
+			bool C_73;
+			bool Z_74;
 			word32 ebx_75;
 			word64 rdi_76;
 			globals->ptr600DF8();

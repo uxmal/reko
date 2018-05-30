@@ -93,14 +93,14 @@ T_12: (in SZO_18 : byte)
   Class: Eq_12
   DataType: byte
   OrigDataType: byte
-T_13: (in C_19 : byte)
+T_13: (in C_19 : bool)
   Class: Eq_13
-  DataType: byte
-  OrigDataType: byte
-T_14: (in Z_20 : byte)
+  DataType: bool
+  OrigDataType: bool
+T_14: (in Z_20 : bool)
   Class: Eq_14
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_15: (in __gmon_start__ : ptr64)
   Class: Eq_15
   DataType: (ptr code)
@@ -261,18 +261,18 @@ T_54: (in SCZO_44 : byte)
   Class: Eq_54
   DataType: byte
   OrigDataType: byte
-T_55: (in Z_45 : byte)
+T_55: (in Z_45 : bool)
   Class: Eq_55
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_56: (in SZO_46 : byte)
   Class: Eq_56
   DataType: byte
   OrigDataType: byte
-T_57: (in C_47 : byte)
+T_57: (in C_47 : bool)
   Class: Eq_57
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_58: (in edi_48 : word32)
   Class: Eq_58
   DataType: word32

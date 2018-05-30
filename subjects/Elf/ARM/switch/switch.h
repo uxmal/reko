@@ -23,6 +23,8 @@ Eq_55: (fn void ())
 Eq_58: (fn word32 ())
 	T_58 (in abort : ptr32)
 	T_59 (in signature of abort : void)
+Eq_61: (union "Eq_61" (bool u0) (byte u1))
+	T_61 (in Z : byte)
 Eq_161: (union "Eq_161" (int32 u0) (uint32 u1))
 	T_161 (in r0 : Eq_161)
 	T_162 (in dwArg00 : Eq_161)
@@ -107,6 +109,14 @@ Eq_223: (fn word32 (Eq_161))
 Eq_238: (fn void (Eq_161))
 	T_238 (in __div0 : ptr32)
 	T_239 (in signature of __div0 : void)
+Eq_251: (union "Eq_251" (byte u0) (Eq_429 u1))
+	T_251 (in C_117 : Eq_251)
+	T_254 (in cond(r1_107 - 0x10000000) : byte)
+	T_257 (in cond(r1_107 - r0) : byte)
+Eq_264: (union "Eq_264" (byte u0) (Eq_430 u1))
+	T_264 (in C_111 : Eq_264)
+	T_267 (in cond(r1_107 - 0x80000000) : byte)
+	T_270 (in cond(r1_107 - r0) : byte)
 Eq_287: (union "Eq_287" (int32 u0) (uint32 u1))
 	T_287 (in r1_107 >> 1 : word32)
 Eq_299: (union "Eq_299" (int32 u0) (uint32 u1))
@@ -132,6 +142,10 @@ Eq_408: (struct "Eq_408" (FFFFFFFC (ptr code) ptrFFFFFFFC))
 Eq_426: (fn void ())
 	T_426 (in __do_global_dtors_aux : ptr32)
 	T_427 (in signature of __do_global_dtors_aux : void)
+Eq_429: (union "Eq_429" (bool u0) (byte u1))
+	T_429
+Eq_430: (union "Eq_430" (bool u0) (byte u1))
+	T_430
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -375,8 +389,8 @@ T_60: (in abort() : word32)
   OrigDataType: word32
 T_61: (in Z : byte)
   Class: Eq_61
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_61
+  OrigDataType: (union (bool u1) (byte u0))
 T_62: (in (uint16) r8 : uint16)
   Class: Eq_62
   DataType: uint16
@@ -1133,10 +1147,10 @@ T_250: (in ip_4 >= 0x00000000 : bool)
   Class: Eq_250
   DataType: bool
   OrigDataType: bool
-T_251: (in C_117 : bool)
+T_251: (in C_117 : Eq_251)
   Class: Eq_251
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_251
+  OrigDataType: (union (bool u2) ((union (bool u1) (byte u0)) u1))
 T_252: (in 0x10000000 : word32)
   Class: Eq_161
   DataType: int32
@@ -1147,7 +1161,7 @@ T_253: (in r1_107 - 0x10000000 : word32)
   OrigDataType: up32
 T_254: (in cond(r1_107 - 0x10000000) : byte)
   Class: Eq_251
-  DataType: bool
+  DataType: Eq_251
   OrigDataType: byte
 T_255: (in r1_107 >= 0x10000000 : bool)
   Class: Eq_255
@@ -1159,7 +1173,7 @@ T_256: (in r1_107 - r0 : word32)
   OrigDataType: up32
 T_257: (in cond(r1_107 - r0) : byte)
   Class: Eq_251
-  DataType: bool
+  DataType: Eq_251
   OrigDataType: byte
 T_258: (in 0x00000000 : word32)
   Class: Eq_258
@@ -1185,10 +1199,10 @@ T_263: (in r3_106 << 4 : word32)
   Class: Eq_229
   DataType: uint32
   OrigDataType: ui32
-T_264: (in C_111 : bool)
+T_264: (in C_111 : Eq_264)
   Class: Eq_264
-  DataType: bool
-  OrigDataType: bool
+  DataType: Eq_264
+  OrigDataType: (union (bool u2) ((union (bool u1) (byte u0)) u1))
 T_265: (in 0x80000000 : word32)
   Class: Eq_161
   DataType: uint32
@@ -1199,7 +1213,7 @@ T_266: (in r1_107 - 0x80000000 : word32)
   OrigDataType: uint32
 T_267: (in cond(r1_107 - 0x80000000) : byte)
   Class: Eq_264
-  DataType: bool
+  DataType: Eq_264
   OrigDataType: byte
 T_268: (in r1_107 >= 0x80000000 : bool)
   Class: Eq_268
@@ -1211,7 +1225,7 @@ T_269: (in r1_107 - r0 : word32)
   OrigDataType: uint32
 T_270: (in cond(r1_107 - r0) : byte)
   Class: Eq_264
-  DataType: bool
+  DataType: Eq_264
   OrigDataType: byte
 T_271: (in 1 : int32)
   Class: Eq_271
@@ -1845,6 +1859,14 @@ T_428: (in __do_global_dtors_aux() : void)
   Class: Eq_428
   DataType: void
   OrigDataType: void
+T_429:
+  Class: Eq_429
+  DataType: Eq_429
+  OrigDataType: 
+T_430:
+  Class: Eq_430
+  DataType: Eq_430
+  OrigDataType: 
 */
 typedef struct Globals {
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
@@ -1876,6 +1898,11 @@ typedef void (Eq_55)();
 
 typedef word32 (Eq_58)();
 
+typedef union Eq_61 {
+	bool u0;
+	byte u1;
+} Eq_61;
+
 typedef union Eq_161 {
 	int32 u0;
 	uint32 u1;
@@ -1894,6 +1921,16 @@ typedef ptr32 (Eq_205)(Eq_161, Eq_161);
 typedef word32 (Eq_223)(Eq_161);
 
 typedef void (Eq_238)(Eq_161);
+
+typedef union Eq_251 {
+	byte u0;
+	Eq_429 u1;
+} Eq_251;
+
+typedef union Eq_264 {
+	byte u0;
+	Eq_430 u1;
+} Eq_264;
 
 typedef union Eq_287 {
 	int32 u0;
@@ -1926,4 +1963,14 @@ typedef struct Eq_408 {
 } Eq_408;
 
 typedef void (Eq_426)();
+
+typedef union Eq_429 {
+	bool u0;
+	byte u1;
+} Eq_429;
+
+typedef union Eq_430 {
+	bool u0;
+	byte u1;
+} Eq_430;
 

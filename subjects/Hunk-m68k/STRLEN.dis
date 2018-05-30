@@ -679,10 +679,10 @@ l000012FA:
 	word32 d2_62
 	word32 d0_63
 	byte CVZN_64
-	byte Z_65
+	bool Z_65
 	byte ZN_66
-	byte C_67
-	byte V_68
+	bool C_67
+	bool V_68
 	byte CVZNX_69
 	call a2_57 (retsize: 4; depth: 16)
 		uses: a2_57,a3_53,a7_8,C_45,CVZN_13,CVZNX_56,d0_55,d2_52,dwLoc04_4,dwLoc08_7,dwLoc0C_10,dwLoc10,V_44,Z_51,ZN_46
@@ -744,9 +744,9 @@ l0000133A:
 	word32 a3_51
 	word32 a2_52
 	byte ZN_53
-	byte C_54
-	byte V_55
-	byte Z_56
+	bool C_54
+	bool V_55
+	bool Z_56
 	word32 d0_57
 	byte CVZN_58
 	call a2_49 (retsize: 4; depth: 12)
@@ -812,10 +812,10 @@ l0000136A:
 	word32 a2_54
 	word32 d0_55
 	byte CVZN_56
-	byte Z_57
+	bool Z_57
 	byte ZN_58
-	byte C_59
-	byte V_60
+	bool C_59
+	bool V_60
 	call Mem0[a3_45:word32] (retsize: 4; depth: 12)
 		uses: a2_48,a3_47,a7_5,C_43,CVZN_10,d0_9,dwLoc04_4,dwLoc08_7,dwLoc0C,dwLoc10,dwLoc14,V_44,Z_42,ZN_41
 		defs: a2_54,a3_53,a7_52,C_59,CVZN_56,d0_55,V_60,Z_57,ZN_58

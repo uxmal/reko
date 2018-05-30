@@ -23,8 +23,8 @@ l0000000000400438:
 	byte SCZO_16
 	word64 rax_17
 	byte SZO_18
-	byte C_19
-	byte Z_20
+	bool C_19
+	bool Z_20
 	call __gmon_start__ (retsize: 8; depth: 16)
 		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
 		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
@@ -113,9 +113,9 @@ l00000000004004CB:
 	word64 rax_42
 	word64 r8_43
 	byte SCZO_44
-	byte Z_45
+	bool Z_45
 	byte SZO_46
-	byte C_47
+	bool C_47
 	word32 edi_48
 	word64 rdi_49
 	call 0x0000000000000000 (retsize: 8; depth: 8)
@@ -170,9 +170,9 @@ l000000000040050D:
 	word64 rbp_42
 	byte SCZO_43
 	word64 rax_44
-	byte Z_45
+	bool Z_45
 	byte SZO_46
-	byte C_47
+	bool C_47
 	word64 rdi_48
 	call 0x0000000000000000 (retsize: 8; depth: 8)
 		uses: C_36,qwLoc08_5,rax_33,rbp_37,rdi_39,rsi_12,rsp_38,SCZO_13,SZO_34,Z_35
@@ -519,8 +519,8 @@ l0000000000400750:
 	word64 rdx_82
 	byte SCZO_83
 	byte SZO_84
-	byte C_85
-	byte Z_86
+	bool C_85
+	bool Z_86
 	word32 ebx_87
 	word64 rdi_88
 	call Mem0[0x0000000000600E10:word64] (retsize: 8; depth: 64)

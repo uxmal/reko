@@ -4,7 +4,7 @@
 
 #include "spcinv.h"
 
-Eq_924 g_tFFFFFFFF;
+Eq_934 g_tFFFFFFFF;
 Eq_3 g_t0004 = 
 	{
 		null,
@@ -30,10 +30,10 @@ byte g_b0BC6 = 0x87;
 word16 g_w0BC8 = 0x0020;
 word16 g_w0DA8 = 0x0087;
 word16 g_w0DAA = 0x0000;
-Eq_3023 g_a0DAC[] = 
+Eq_3064 g_a0DAC[] = 
 	{
 	};
-Eq_3024 g_a0DB8[] = 
+Eq_3065 g_a0DB8[] = 
 	{
 	};
 word16 g_a0DC4[] = 
@@ -61,16 +61,16 @@ ptr16 g_a0E30[] =
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_3033 g_a0EE6[] = 
+Eq_3074 g_a0EE6[] = 
 	{
 	};
-Eq_3032 g_a0EE9[] = 
+Eq_3073 g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_3036 g_a0EF0[] = 
+Eq_3077 g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -82,7 +82,7 @@ word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
 word16 g_w0EFC = 0x0000;
 word16 g_w0EFE = 0x0000;
-struct Eq_1639 * g_ptr0F00 = null;
+struct Eq_1661 * g_ptr0F00 = null;
 word16 g_w0F02 = 0x0000;
 struct Eq_3 * g_ptr0F04 = null;
 byte g_b0F05 = 0x00;
@@ -91,7 +91,7 @@ union Eq_14 g_u0F08 =
 	{
 		0x00
 	};
-struct Eq_924 * g_ptr0F0A = &g_tFFFFFFFF;
+struct Eq_934 * g_ptr0F0A = &g_tFFFFFFFF;
 union Eq_14 g_u0F0C = 
 	{
 		0x01

@@ -1894,7 +1894,7 @@ l00000861:
 
 l00000861_1:
 	byte NZCV_42 = cond((r6 >> 8) - r8 - C)
-	C = NZCV_42 (alias)
+	C = (bool) NZCV_42 (alias)
 	Z = NZCV_42 (alias)
 	V = NZCV_42 (alias)
 // DataOut: r0 r6 r8 r9 sp
@@ -1981,7 +1981,7 @@ l000008B9:
 l000008B9_1:
 	r8 = r0 + (r6 >> 8) + C
 	byte NZCV_147 = cond(r8)
-	C = NZCV_147 (alias)
+	C = (bool) NZCV_147 (alias)
 	ZC = NZCV_147 (alias)
 	Z = NZCV_147 (alias)
 	V = NZCV_147 (alias)
@@ -4769,7 +4769,7 @@ l00001335_1:
 	byte NZCV_52 = cond(r1)
 	r2_r1 = SEQ(r2, r1) (alias)
 	r1_r0 = SEQ(r1, r0) (alias)
-	C = NZCV_52 (alias)
+	C = (bool) NZCV_52 (alias)
 	Z = NZCV_52 (alias)
 	ZC = NZCV_52 (alias)
 	V = NZCV_52 (alias)
@@ -4799,7 +4799,7 @@ l0000133D_1:
 	word32 r0_37 = r3 - 0x00340000 - C
 	byte NZCV_39 = cond(r0_37)
 	r1_r0 = SEQ(r1, r0_37) (alias)
-	C = NZCV_39 (alias)
+	C = (bool) NZCV_39 (alias)
 	Z = NZCV_39 (alias)
 	ZC = NZCV_39 (alias)
 	V = NZCV_39 (alias)
@@ -5514,7 +5514,7 @@ l00001795:
 
 l00001795_1:
 	byte NZCV_63 = cond((fp >> 6) - r8 - C)
-	C = NZCV_63 (alias)
+	C = (bool) NZCV_63 (alias)
 	NZV = NZCV_63 (alias)
 	V = NZCV_63 (alias)
 	Z = NZCV_63 (alias)
@@ -5541,7 +5541,7 @@ l0000179D:
 
 l0000179D_1:
 	byte NZC_50 = cond(r0 ^ __ror(r0, 8))
-	C = NZC_50 (alias)
+	C = (bool) NZC_50 (alias)
 	Z = NZC_50 (alias)
 // DataOut: r0 r2 r7
 // DataOut (flags): ZC
@@ -6678,7 +6678,7 @@ l00008071:
 
 l00008071_1:
 	byte NZCV_49 = cond(0x00F00000 - ip - C)
-	C = NZCV_49 (alias)
+	C = (bool) NZCV_49 (alias)
 	ZC = NZCV_49 (alias)
 	N = NZCV_49 (alias)
 // DataOut: r0 r1 r2 r8 sp
@@ -7388,7 +7388,7 @@ l000082A1:
 // SymbolicIn: sp:fp
 
 l000082A1_1:
-	C_13 = cond(r0_6 + (ip_7 >> 6) + C_13) (alias)
+	C_13 = (bool) cond(r0_6 + (ip_7 >> 6) + C_13) (alias)
 // DataOut: r0 r1
 // DataOut (flags): C
 // SymbolicIn: sp:fp
@@ -8094,7 +8094,7 @@ l00008415_1:
 	word32 r2_46 = r9 + __ror(0x00003FF0, 26) + C
 	byte NZCV_48 = cond(r2_46)
 	r2_r1 = SEQ(r2_46, r1) (alias)
-	C = NZCV_48 (alias)
+	C = (bool) NZCV_48 (alias)
 	ZC = NZCV_48 (alias)
 	Z = NZCV_48 (alias)
 // DataOut: r1 r2 r3 r6 r8
@@ -11224,7 +11224,7 @@ l0000910D_1:
 	r0 = r4 ^ 0x000000F8
 	Z = NZC_63 (alias)
 	ZC = NZC_63 (alias)
-	C = NZC_63 (alias)
+	C = (bool) NZC_63 (alias)
 // DataOut: pc r0 r3 r4 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
@@ -11270,7 +11270,7 @@ l00009119:
 // SymbolicIn: sp:fp r0:r4 ^ 0x000000F8 pc:pc - 0x000001F0
 
 l00009119_1:
-	C = cond((r3 >> 32) - r8 - C) (alias)
+	C = (bool) cond((r3 >> 32) - r8 - C) (alias)
 // DataOut: r0 r4 r8
 // DataOut (flags): C
 // SymbolicIn: sp:fp r0:r4 ^ 0x000000F8 pc:pc - 0x000001F0
@@ -11343,7 +11343,7 @@ l0000915D_1:
 	ZC = NZC_182 (alias)
 	NZV = NZC_182 (alias)
 	NZV = NZC_182 (alias)
-	C = NZC_182 (alias)
+	C = (bool) NZC_182 (alias)
 	N = NZC_182 (alias)
 // DataOut: pc r0 r3 r4 r8
 // DataOut (flags): NZCV
@@ -13639,7 +13639,7 @@ l000095BD_1:
 	Z = NZCV_95 (alias)
 	NZV = NZCV_95 (alias)
 	V = NZCV_95 (alias)
-	C = NZCV_95 (alias)
+	C = (bool) NZCV_95 (alias)
 	NV = NZCV_95 (alias)
 // DataOut: pc r0 r10 r2 r8
 // DataOut (flags): NZCV
@@ -13677,7 +13677,7 @@ l000095C5_1:
 	Z = NZCV_74 (alias)
 	NZV = NZCV_74 (alias)
 	V = NZCV_74 (alias)
-	C = NZCV_74 (alias)
+	C = (bool) NZCV_74 (alias)
 	NV = NZCV_74 (alias)
 // DataOut: pc r0 r10 r2 r8
 // DataOut (flags): NZCV
@@ -13930,7 +13930,7 @@ l00009695:
 // LocalsOut: fp(32)
 
 l00009695_1:
-	C = cond(r1 - (r8 >>u fp) - C) (alias)
+	C = (bool) cond(r1 - (r8 >>u fp) - C) (alias)
 // DataOut: pc
 // DataOut (flags): C
 // SymbolicIn: sp:fp
@@ -14491,7 +14491,7 @@ l0000988D:
 l0000988D_1:
 	byte NZCV_34 = cond(r1 ^ r6 >> 8)
 	Z = NZCV_34 (alias)
-	C = NZCV_34 (alias)
+	C = (bool) NZCV_34 (alias)
 // DataOut: r0 r3 r4 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r3:r3 + 1694 r8:<invalid>
@@ -14578,7 +14578,7 @@ l000098F5:
 
 l000098F5_1:
 	byte NZCV_29 = cond((r6 >> 30) - r0 - C)
-	C = NZCV_29 (alias)
+	C = (bool) NZCV_29 (alias)
 	Z = NZCV_29 (alias)
 // DataOut: r1 r2 r8 r9
 // DataOut (flags): ZC
@@ -16170,7 +16170,7 @@ l00009C31:
 l00009C31_1:
 	r4 = (r7 >> 6) - r0 - C
 	byte NZCV_49 = cond(r4)
-	C = NZCV_49 (alias)
+	C = (bool) NZCV_49 (alias)
 	Z = NZCV_49 (alias)
 	V = NZCV_49 (alias)
 // DataOut: fp ip pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9
@@ -17426,7 +17426,7 @@ l00009E95:
 
 l00009E95_1:
 	byte NZCV_59 = cond((r10_18 >> 6) - r4_17 - C_19)
-	C_19 = NZCV_59 (alias)
+	C_19 = (bool) NZCV_59 (alias)
 	Z_14 = NZCV_59 (alias)
 	V_15 = NZCV_59 (alias)
 // DataOut: r0 r4 r8
@@ -17868,7 +17868,7 @@ l00009F19:
 
 l00009F19_1:
 	byte NZCV_44 = cond((r7 >> 6) - r4 - C)
-	C = NZCV_44 (alias)
+	C = (bool) NZCV_44 (alias)
 	Z = NZCV_44 (alias)
 	V = NZCV_44 (alias)
 // DataOut: r0 r3 r7
@@ -18249,7 +18249,7 @@ l0000A00D:
 
 l0000A00D_1:
 	byte NZCV_39 = cond(__ror(r9, 0) - r0 - C)
-	C = NZCV_39 (alias)
+	C = (bool) NZCV_39 (alias)
 	Z = NZCV_39 (alias)
 	ZC = NZCV_39 (alias)
 // DataOut: r0 r3 r6 r7 r9
@@ -18321,7 +18321,7 @@ l0000A019:
 
 l0000A019_1:
 	byte NZCV_31 = cond(__ror(r9, 0) - r0 - C)
-	C = NZCV_31 (alias)
+	C = (bool) NZCV_31 (alias)
 	ZC = NZCV_31 (alias)
 	N = NZCV_31 (alias)
 // DataOut: r0 r3 r6 r7

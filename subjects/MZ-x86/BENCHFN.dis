@@ -24,14 +24,14 @@ l0800_0121:
 	selector ds_6
 	word16 ax_7
 	byte SZO_8
-	byte C_9
+	bool C_9
 	word16 si_10
 	word16 cx_11
-	byte D_12
+	bool D_12
 	byte al_13
 	byte SCZO_14
 	byte ah_15
-	byte Z_16
+	bool Z_16
 	word16 dx_17
 	word16 bp_18
 	selector ss_19
@@ -575,8 +575,8 @@ l0800_0306:
 	selector ss_72
 	word16 ax_73
 	byte SZO_75
-	byte C_76
-	byte Z_77
+	bool C_76
+	bool Z_77
 	word16 cx_78
 	word16 bx_79
 	byte SCZO_80
@@ -595,8 +595,8 @@ l0800_031B:
 	word16 ax_29
 	selector ds_30
 	byte SZO_31
-	byte C_32
-	byte Z_33
+	bool C_32
+	bool Z_33
 	word16 cx_34
 	word16 bx_35
 	byte SCZO_36
@@ -609,8 +609,8 @@ l0800_031B:
 	word16 ax_40
 	selector ds_41
 	byte SZO_42
-	byte C_43
-	byte Z_44
+	bool C_43
+	bool Z_44
 	word16 cx_45
 	word16 bx_46
 	byte SCZO_47
@@ -623,8 +623,8 @@ l0800_031B:
 	word16 ax_51
 	selector ds_52
 	byte SZO_53
-	byte C_54
-	byte Z_55
+	bool C_54
+	bool Z_55
 	word16 cx_56
 	word16 bx_57
 	byte SCZO_58
@@ -828,7 +828,7 @@ l0800_0395:
 
 l0800_03A3:
 	byte CZ_47 = fn0800_03BF(ax_29, cx_27, dx_31, bx_32, si_24, di_19, es, bp, out ax_29, out cx_27, out dx_31, out bx_32, out si_24, out di_19)
-	byte C_48 = CZ_47
+	bool C_48 = (bool) CZ_47
 	branch CZ_47 l0800_03AF
 // DataOut: al ax bx cx di ds dx es si sp ss
 // DataOut (flags): C
@@ -879,16 +879,16 @@ l0800_0409:
 // SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ds:<invalid> si:<invalid> cx:<invalid> bx:<invalid> ax:<invalid> dx:<invalid> bp:<invalid>
 
 l0800_040F:
-	byte al_163 = Mem158[ds_99:si_103:byte]
+	byte al_165 = Mem158[ds_99:si_103:byte]
 	si_103 = si_103 + 0x0001
 	cx_135 = cx_135 - 0x0001
-	branch al_163 != 0x00 && cx_135 != 0x0000 l0800_040F
+	branch al_165 != 0x00 && cx_135 != 0x0000 l0800_040F
 // DataOut: bp cx ds si ss
 // DataOut (flags): Z
 // SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ds:<invalid> si:<invalid> cx:<invalid> bx:<invalid> ax:<invalid> dx:<invalid> bp:<invalid>
 
 l0800_0415:
-	branch al_163 == 0x00 l0800_0407
+	branch al_165 == 0x00 l0800_0407
 // DataOut: bp cx ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ds:<invalid> si:<invalid> cx:<invalid> bx:<invalid> ax:<invalid> dx:<invalid> bp:<invalid>
@@ -903,14 +903,14 @@ l0800_0417:
 	word16 di_146
 	byte al_147
 	byte SZO_148
-	byte C_149
+	bool C_149
 	word16 bp_150
 	word16 dx_151
 	word16 bx_152
 	word16 ax_153
 	byte CZ_154
 	byte SCZO_155
-	byte Z_156
+	bool Z_156
 	selector ss_157
 	call Mem140[0x0800:0x0330:word16] (retsize: 2; depth: 2)
 		uses: al_131,ax_137,bp_136,bx_102,C_139,cx_135,CZ_128,di_82,ds_99,dx_73,es,SCZO_129,si_134,sp_125,ss,SZO_138,Z_130
@@ -927,7 +927,7 @@ fn0800_0393_exit:
 
 l0800_03AA:
 	byte CZ_90 = fn0800_03BF(ax_29, cx_27, dx_31, bx_32, si_24, di_19, es, bp, out ax_29, out cx_27, out dx_31, out bx_32, out si_24, out di_19)
-	C_48 = CZ_90 (alias)
+	C_48 = (bool) CZ_90 (alias)
 	branch CZ_90 l0800_03A8
 // DataOut: al ax bx cx di ds dx es si sp ss
 // DataOut (flags): C
@@ -996,10 +996,10 @@ l0800_03BF:
 // SymbolicIn: sp:fp
 
 l0800_03C3:
-	Mem78[es:di:byte] = al_4
-	word16 dx_77
+	Mem81[es:di:byte] = al_4
+	word16 dx_80
 	*dxOut = dx + 0x0001
-	word16 di_80
+	word16 di_83
 	*diOut = di + 0x0001
 	ax_16 = DPB(ax, al_4, 0) (alias)
 	branch al_4 != 0x00 l0800_03CA
@@ -1008,7 +1008,7 @@ l0800_03C3:
 // SymbolicIn: sp:fp ax:ax
 
 l0800_03C9:
-	word16 bx_86
+	word16 bx_89
 	*bxOut = bx + 0x0001
 // DataOut: ah bx cx di ds dx es si ss
 // DataOut (flags): 
@@ -1017,30 +1017,31 @@ l0800_03C9:
 l0800_03CA:
 	word16 ax_21
 	*axOut = DPB(ax_16, 0x00, 0)
-	byte CZ_26 = true
+	byte CZ_28 = DPB(CZ, true, 0)
 	branch cx == 0x0000 l0800_03E6
 // DataOut: al ax bx cx di ds dx es si ss
 // DataOut (flags): CZ
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:al bx:bx + 0x0001
 
 l0800_03D1:
-	byte al_46 = Mem0[ds:si:byte]
-	word16 si_47 = si + 0x0001
-	*siOut = si_47
-	word16 cx_48 = cx - 0x0001
-	*cxOut = cx_48
-	word16 ax_50
-	*axOut = DPB(ax_16, al_46 - 0x22, 0)
-	CZ_26 = cond(al_46 - 0x22) (alias)
-	branch al_46 == 0x22 l0800_03E6
+	byte al_48 = Mem0[ds:si:byte]
+	byte SCZO_53 = cond(al_48 - 0x22)
+	word16 si_49 = si + 0x0001
+	*siOut = si_49
+	word16 cx_50 = cx - 0x0001
+	*cxOut = cx_50
+	word16 ax_52
+	*axOut = DPB(ax_16, al_48 - 0x22, 0)
+	CZ_28 = SCZO_53 (alias)
+	branch al_48 == 0x22 l0800_03E6
 // DataOut: al ax bx cx di ds dx es si ss
 // DataOut (flags): CZ
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:0x00 ah:ah bx:bx + 0x0001
 
 l0800_03D7:
-	word16 ax_57
-	*axOut = DPB(ax_16, al_46, 0)
-	branch al_46 != 0x5C l0800_03E4
+	word16 ax_59
+	*axOut = DPB(ax_16, al_48, 0)
+	branch al_48 != 0x5C l0800_03E4
 // DataOut: al ax bx cx di ds dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:<invalid> ah:ah si:si + 0x0001 cx:cx - 0x0001 bx:bx + 0x0001
@@ -1052,25 +1053,25 @@ l0800_03DD:
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:<invalid> ah:ah si:si + 0x0001 cx:cx - 0x0001 bx:bx + 0x0001
 
 l0800_03E2:
-	word16 ax_73
+	word16 ax_76
 	*axOut = DPB(ax_16, Mem0[ds:si + 0x0001:byte], 0)
-	si_47 = si + 0x0002
-	word16 cx_75
+	si_49 = si + 0x0002
+	word16 cx_78
 	*cxOut = cx - 0x0002
 // DataOut: al ax bx cx di ds dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:<invalid> ah:ah si:si + 0x0001 cx:cx - 0x0001 bx:bx + 0x0001
 
 l0800_03E4:
-	word16 si_64
-	*siOut = si_47
-	CZ_26 = false (alias)
+	word16 si_67
+	*siOut = si_49
+	CZ_28 = DPB(SCZO_53, false, 0) (alias)
 // DataOut: al ax bx cx di ds dx es si ss
 // DataOut (flags): CZ
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:<invalid> ah:ah si:<invalid> cx:<invalid> bx:bx + 0x0001
 
 l0800_03E6:
-	return CZ_26
+	return CZ_28
 // DataOut: al ax bx cx di ds dx es si ss
 // DataOut (flags): CZ
 // SymbolicIn: sp:fp ax:<invalid> dx:dx + 0x0001 di:di + 0x0001 al:<invalid> ah:ah si:<invalid> cx:<invalid> bx:bx + 0x0001
@@ -2326,6 +2327,7 @@ l0800_0916:
 // LocalsOut: fp(16) Local -000A(16) Stack +0004(16) Stack +0006(16)
 
 l0800_091C:
+	byte SCZO_55 = cond(wArg08 - 0x7FFF)
 	branch wArg08 <=u 0x7FFF l0800_0928
 // DataOut: di ds si
 // DataOut (flags): 
@@ -2414,7 +2416,7 @@ l0800_0974:
 // LocalsOut: fp(16) Local -000A(16) Stack +0004(16) Stack +0006(16)
 
 l0800_098F:
-	branch false l0800_09CE
+	branch DPB(SCZO_55, false, 0) l0800_09CE
 // DataOut: di ds si
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0006 bp:fp - 0x0002 di:<invalid> si:<invalid> ax:<invalid> cx:<invalid> al:<invalid> bx:<invalid> dx:<invalid> ah:<invalid> -14(fp):<invalid> -12(fp):0x0000 -10(fp):0x0000 -8(fp):<invalid> -6(fp):di -4(fp):si -2(fp):bp
@@ -2755,7 +2757,7 @@ l0800_0B91:
 
 l0800_0B9B:
 	word16 di_165 = si_105 - (fp - 0x0084)
-	branch false l0800_0BD7
+	branch DPB(CZ, false, 0) l0800_0BD7
 // DataOut: di ds
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0090 bp:fp - 0x0002 ax:<invalid> bx:<invalid> si:<invalid> al:<invalid> dx:<invalid> di:<invalid> ah:<invalid> cx:<invalid> -150(fp):<invalid> -148(fp):fp - 0x0084 -146(fp):<invalid> -144(fp):di -142(fp):si -140(fp):<invalid> -138(fp):<invalid> -135(fp):<invalid> -134(fp):<invalid> -132(fp):0x0D -2(fp):bp
@@ -3950,7 +3952,7 @@ l0800_1551:
 // LocalsOut: fp(16) Local -0002(16) Local -0057(8) Local -0098(16) Stack +0002(16) Stack +0004(16)
 
 l0800_1389:
-	byte Z_1314
+	bool Z_1314
 	branch (wLoc9A_1039 & 0x0020) != 0x0000 l0800_13A7
 // DataOut: bp di ds sp ss
 // DataOut (flags): 
@@ -3962,7 +3964,7 @@ l0800_13A7:
 	di_1182 = (word16) es_di_1357 (alias)
 	es_1025 = SLICE(es_di_1357, selector, 16) (alias)
 	wArg02 = wArg02 + 0x0004
-	Z_1314 = cond(es_1025 | di_1182) (alias)
+	Z_1314 = (bool) cond(es_1025 | di_1182) (alias)
 // DataOut: bp di ds es sp ss
 // DataOut (flags): Z
 // SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> ch:<invalid> Sequence es:di:<invalid> bh:<invalid> Sequence dx:ax:<invalid> dl:<invalid> -174(fp):ss -172(fp):<invalid> -170(fp):<invalid> -168(fp):<invalid> -166(fp):<invalid> -164(fp):<invalid> -162(fp):<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -150(fp):<invalid> -149(fp):<invalid> -148(fp):<invalid> -146(fp):<invalid> -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -139(fp):cl -137(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -6(fp):<invalid> -4(fp):0x0000 -2(fp):bp 2(fp):<invalid> 4(fp):<invalid>
@@ -3975,7 +3977,7 @@ l0800_139B:
 	wArg02 = wArg02 + 0x0002
 	es_1025 = Mem1346[ss:sp_1345:selector]
 	di_1182 = di_1342
-	Z_1314 = cond(di_1342) (alias)
+	Z_1314 = (bool) cond(di_1342) (alias)
 // DataOut: bp di ds es sp ss
 // DataOut (flags): Z
 // SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> ch:<invalid> Sequence es:di:<invalid> bh:<invalid> Sequence dx:ax:<invalid> dl:<invalid> -174(fp):ss -172(fp):<invalid> -170(fp):<invalid> -168(fp):<invalid> -166(fp):<invalid> -164(fp):<invalid> -162(fp):<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -150(fp):<invalid> -149(fp):<invalid> -148(fp):<invalid> -146(fp):<invalid> -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -139(fp):cl -137(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -6(fp):<invalid> -4(fp):0x0000 -2(fp):bp 2(fp):<invalid> 4(fp):<invalid>
@@ -5129,8 +5131,8 @@ l0800_10A1:
 	word16 di_37
 	byte SCZO_38
 	byte SZO_39
-	byte C_40
-	byte Z_41
+	bool C_40
+	bool Z_41
 	call SEQ(0x0800, Mem0[ss:bp + 0x000A:word16]) (retsize: 2; depth: 16)
 		uses: ax_19,bp,bx,cx,di_17,dx,es,SCZO_18,sp_27,ss,wLoc02_4,wLoc04_7,wLoc06_10,wLoc08_13,wLoc0A_21,wLoc0C_23,wLoc0E_28
 		defs: ax_36,bp_35,bx_30,C_40,cx_32,di_37,dx_33,es_34,SCZO_38,sp_29,ss_31,SZO_39,Z_41
@@ -5809,15 +5811,15 @@ l0800_1A7A:
 	byte SCZO_1033
 	word16 si_1034
 	selector es_1036
-	byte D_1037
+	bool D_1037
 	byte al_1038
 	byte SZO_1040
-	byte C_1041
-	byte Z_1042
+	bool C_1041
+	bool Z_1042
 	word16 ax_1043
 	word16 cx_1044
 	byte SO_1045
-	byte S_1046
+	bool S_1046
 	word16 bx_1047
 	byte bl_1048
 	byte bh_1049
@@ -5936,15 +5938,15 @@ l0800_1AB6:
 	byte SCZO_1101
 	word16 si_1102
 	selector es_1104
-	byte D_1105
+	bool D_1105
 	byte al_1106
 	byte SZO_1108
-	byte C_1109
-	byte Z_1110
+	bool C_1109
+	bool Z_1110
 	word16 ax_1111
 	word16 cx_1112
 	byte SO_1113
-	byte S_1114
+	bool S_1114
 	byte bl_1116
 	byte bh_1117
 	byte CZ_1118
@@ -6370,15 +6372,15 @@ l0800_19DD:
 	word16 si_522
 	word16 di_523
 	selector es_524
-	byte D_525
+	bool D_525
 	byte al_526
 	byte SZO_528
-	byte C_529
-	byte Z_530
+	bool C_529
+	bool Z_530
 	word16 ax_531
 	word16 cx_532
 	byte SO_533
-	byte S_534
+	bool S_534
 	byte bl_536
 	byte bh_537
 	byte CZ_538
@@ -6513,15 +6515,15 @@ l0800_172F:
 	word16 sp_161
 	byte SCZO_164
 	word16 di_166
-	byte D_168
+	bool D_168
 	byte al_169
 	byte SZO_171
-	byte C_172
-	byte Z_173
+	bool C_172
+	bool Z_173
 	word16 ax_174
 	word16 cx_175
 	byte SO_176
-	byte S_177
+	bool S_177
 	byte bl_179
 	byte bh_180
 	byte CZ_181
@@ -6572,16 +6574,16 @@ l0800_1779:
 	word16 si_241
 	word16 di_242
 	selector es_243
-	byte D_244
+	bool D_244
 	byte al_245
 	selector ds_246
 	byte SZO_247
-	byte C_248
-	byte Z_249
+	bool C_248
+	bool Z_249
 	word16 ax_250
 	word16 cx_251
 	byte SO_252
-	byte S_253
+	bool S_253
 	word16 bx_254
 	byte bl_255
 	byte bh_256
@@ -6629,15 +6631,15 @@ l0800_1767:
 	word16 sp_312
 	byte SCZO_315
 	word16 di_317
-	byte D_319
+	bool D_319
 	byte al_320
 	byte SZO_322
-	byte C_323
-	byte Z_324
+	bool C_323
+	bool Z_324
 	word16 ax_325
 	word16 cx_326
 	byte SO_327
-	byte S_328
+	bool S_328
 	byte bl_330
 	byte bh_331
 	byte CZ_332
@@ -6665,15 +6667,15 @@ l0800_1756:
 	word16 si_357
 	word16 di_358
 	selector es_359
-	byte D_360
+	bool D_360
 	byte al_361
 	byte SZO_363
-	byte C_364
-	byte Z_365
+	bool C_364
+	bool Z_365
 	word16 ax_366
 	word16 cx_367
 	byte SO_368
-	byte S_369
+	bool S_369
 	word16 bx_370
 	byte bl_371
 	byte bh_372
@@ -6908,7 +6910,7 @@ l0800_1AEB:
 	word16 ax_14
 	word16 cx_15
 	byte SCZO_16
-	byte C_17
+	bool C_17
 	selector es_18
 	word16 di_19
 	word16 si_20
@@ -6988,13 +6990,13 @@ l0800_1B06:
 	byte SZO_16
 	word16 cx_17
 	word16 ax_18
-	byte C_19
+	bool C_19
 	byte al_20
-	byte S_21
+	bool S_21
 	word16 bx_22
 	selector ds_23
 	byte SCZO_24
-	byte Z_25
+	bool Z_25
 	call SEQ(0x0800, Mem12[ss:bp + 0x0004:word16]) (retsize: 2; depth: 2)
 		uses: bp_2,sp_11,ss_3,SZO_9
 		defs: al_20,ax_18,bp_15,bx_22,C_19,cx_17,ds_23,S_21,SCZO_24,sp_13,ss_14,SZO_16,Z_25
@@ -7045,13 +7047,13 @@ l0800_1B21:
 	byte SZO_56
 	word16 cx_57
 	word16 ax_58
-	byte C_59
+	bool C_59
 	byte al_60
-	byte S_61
+	bool S_61
 	word16 bx_62
 	selector ds_63
 	byte SCZO_64
-	byte Z_65
+	bool Z_65
 	call Mem12[ss:sp_13 + 0x0002:word16] + 0x0003 (retsize: 2; depth: 2)
 		uses: al_29,ax_28,bp_15,bx_22,C_33,cx_51,ds_23,S_32,SCZO_52,sp_50,ss_14,SZO_30,Z_31
 		defs: al_60,ax_58,bp_55,bx_62,C_59,cx_57,ds_63,S_61,SCZO_64,sp_53,ss_54,SZO_56,Z_65
@@ -7115,12 +7117,12 @@ l0800_1B36:
 	byte SZO_101
 	byte SO_102
 	word16 ax_103
-	byte C_104
+	bool C_104
 	byte cl_105
 	byte ch_106
 	byte al_107
 	byte dl_108
-	byte Z_109
+	bool Z_109
 	call SEQ(0x0800, Mem94[ss:bp + 0x0004:word16]) (retsize: 2; depth: 2)
 		uses: al_15,ax_18,bp_20,C_17,ch_22,cl_16,cx_23,dl_24,dx_25,SCZO_26,SO_31,sp_93,ss_19,SZO_91,Z_14
 		defs: al_107,ax_103,bp_99,C_104,ch_106,cl_105,cx_98,dl_108,dx_96,SCZO_97,SO_102,sp_95,ss_100,SZO_101,Z_109
@@ -7213,12 +7215,12 @@ l0800_1B82:
 	byte SZO_72
 	byte SO_73
 	word16 ax_74
-	byte C_75
+	bool C_75
 	byte cl_76
 	byte ch_77
 	byte al_78
 	byte dl_79
-	byte Z_80
+	bool Z_80
 	call Mem29[ss:sp_1:word16] + 0x0003 (retsize: 2; depth: 2)
 		uses: al_32,ax_35,bp_39,C_34,ch_41,cl_33,cx_64,dl_43,dx_44,SCZO_65,SO_36,sp_63,ss_38,SZO_37,Z_46
 		defs: al_78,ax_74,bp_70,C_75,ch_77,cl_76,cx_69,dl_79,dx_67,SCZO_68,SO_73,sp_66,ss_71,SZO_72,Z_80
@@ -7337,7 +7339,7 @@ fn0800_1B9A_exit:
 
 
 
-byte fn0800_1B9E(byte cl, byte bl)
+bool fn0800_1B9E(byte cl, byte bl)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bl cl
@@ -7351,8 +7353,8 @@ fn0800_1B9E_entry:
 // LocalsOut: fp(16)
 
 l0800_1B9E:
-	byte C_13
-	byte bl_26 = bl - 0x30
+	bool C_14
+	byte bl_29 = bl - 0x30
 	branch bl <u 0x30 l0800_1BC7
 // DataOut: bl cl cx di ds si ss
 // DataOut (flags): 
@@ -7371,37 +7373,37 @@ l0800_1BA9:
 // SymbolicIn: sp:fp - 0x0002 bl:bl - 0x30 -2(fp):bx
 
 l0800_1BB3:
-	bl_26 = bl - 0x57
+	bl_29 = bl - 0x57
 // DataOut: bl cl cx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 bl:bl - 0x30 -2(fp):bx
 
 l0800_1BAE:
-	bl_26 = bl - 0x37
+	bl_29 = bl - 0x37
 // DataOut: bl cl cx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 bl:bl - 0x30 -2(fp):bx
 
 l0800_1BB6:
-	branch bl_26 <=u 0x09 l0800_1BC7
+	branch bl_29 <=u 0x09 l0800_1BC7
 // DataOut: bl cl cx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 bl:<invalid> -2(fp):bx
 
 l0800_1BBB:
-	branch bl_26 >=u cl l0800_1BC7
+	branch bl_29 >=u cl l0800_1BC7
 // DataOut: bl cx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 bl:<invalid> -2(fp):bx
 
 l0800_1BC7:
-	C_13 = true
+	C_14 = true
 // DataOut: cx di ds si ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp - 0x0002 bl:<invalid> -2(fp):bx
 
 l0800_1BBF:
-	C_13 = false
+	C_14 = false
 // DataOut: cx di ds si ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp - 0x0002 bl:<invalid> -2(fp):bx
@@ -7412,7 +7414,7 @@ l0800_1BC5:
 // SymbolicIn: sp:fp bl:<invalid> bx:bx bh:0x00 -2(fp):bx
 
 l0800_1BCB:
-	return C_13
+	return C_14
 // DataOut: cx di ds si ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp bl:<invalid> bx:bx bh:0x00 -2(fp):bx
@@ -7464,12 +7466,12 @@ l0800_1BE6:
 	byte SZO_42
 	word16 cx_43
 	word16 ax_44
-	byte C_45
+	bool C_45
 	byte SO_46
 	byte al_47
 	word16 bx_48
 	byte bl_49
-	byte Z_50
+	bool Z_50
 	selector ds_51
 	byte CZ_52
 	byte cl_53
@@ -7558,12 +7560,12 @@ l0800_1C16:
 	byte SZO_825
 	word16 cx_826
 	word16 ax_827
-	byte C_828
+	bool C_828
 	byte SO_829
 	byte al_830
 	word16 bx_831
 	byte bl_832
-	byte Z_833
+	bool Z_833
 	byte CZ_835
 	byte cl_836
 	word16 dx_837
@@ -7626,12 +7628,12 @@ l0800_1C89:
 	selector es_777
 	byte SZO_778
 	word16 cx_779
-	byte C_781
+	bool C_781
 	byte SO_782
 	byte al_783
 	word16 bx_784
 	byte bl_785
-	byte Z_786
+	bool Z_786
 	byte CZ_788
 	byte cl_789
 	word16 dx_790
@@ -7711,12 +7713,12 @@ l0800_1C66:
 	byte SZO_147
 	word16 cx_148
 	word16 ax_149
-	byte C_150
+	bool C_150
 	byte SO_151
 	byte al_152
 	word16 bx_153
 	byte bl_154
-	byte Z_155
+	bool Z_155
 	byte CZ_157
 	byte cl_158
 	word16 dx_159
@@ -7774,12 +7776,12 @@ l0800_1C45:
 	selector es_734
 	byte SZO_735
 	word16 cx_736
-	byte C_738
+	bool C_738
 	byte SO_739
 	byte al_740
 	word16 bx_741
 	byte bl_742
-	byte Z_743
+	bool Z_743
 	byte CZ_745
 	byte cl_746
 	word16 dx_747
@@ -7818,7 +7820,7 @@ l0800_1C57:
 l0800_1CCD:
 	byte cl_438 = (byte) wArg08
 	byte bl_442 = (byte) ax_398
-	byte C_443 = fn0800_1B9E(cl_438, bl_442)
+	bool C_443 = fn0800_1B9E(cl_438, bl_442)
 	word16 ax_445 = ax_398
 	branch C_443 l0800_1CB4
 // DataOut: ax di ds si sp ss
@@ -7860,12 +7862,12 @@ l0800_1CEF:
 	byte SZO_558
 	word16 cx_559
 	word16 ax_560
-	byte C_561
+	bool C_561
 	byte SO_562
 	byte al_563
 	word16 bx_564
 	byte bl_565
-	byte Z_566
+	bool Z_566
 	byte CZ_568
 	byte cl_569
 	word16 dx_570
@@ -7925,12 +7927,12 @@ l0800_1CC3:
 	selector es_395
 	byte SZO_396
 	word16 cx_397
-	byte C_399
+	bool C_399
 	byte SO_400
 	byte al_401
 	word16 bx_402
 	byte bl_403
-	byte Z_404
+	bool Z_404
 	byte CZ_406
 	byte cl_407
 	word16 dx_408
@@ -7963,12 +7965,12 @@ l0800_1D03:
 	byte SZO_473
 	word16 cx_474
 	word16 ax_475
-	byte C_476
+	bool C_476
 	byte SO_477
 	byte al_478
 	word16 bx_479
 	byte bl_480
-	byte Z_481
+	bool Z_481
 	byte CZ_483
 	byte cl_484
 	word16 dx_485
