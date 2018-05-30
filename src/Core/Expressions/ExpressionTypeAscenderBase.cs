@@ -242,7 +242,7 @@ namespace Reko.Core.Expressions
         private DataType PullDiffDataType(DataType dtLeft, DataType dtRight)
         {
             var ptLeft = dtLeft as PrimitiveType;
-            var ptRight = dtRight as PrimitiveType;
+            var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
                 dtLeft is Pointer)
             {
