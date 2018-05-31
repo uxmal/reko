@@ -74,35 +74,6 @@ namespace Reko.UnitTests.Analysis
             return sid.Identifier;
         }
 
-        private Identifier Reg16(string name)
-        {
-            var mr = new RegisterStorage(name, m.Ssa.Identifiers.Count, 0, PrimitiveType.Word16);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            m.Ssa.Identifiers.Add(id, sid);
-            return sid.Identifier;
-        }
-
-        private Identifier Reg8(string name)
-        {
-            var mr = new RegisterStorage(name, m.Ssa.Identifiers.Count, 0, PrimitiveType.Byte);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            m.Ssa.Identifiers.Add(id, sid);
-            return sid.Identifier;
-        }
-
-        private SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
-        {
-            var segMem = m.SegMem(dt, basePtr, ptr);
-            var idOld = segMem.MemoryId;
-            var idNew = new MemoryIdentifier(m.Ssa.Identifiers.Count, idOld.DataType);
-            segMem.MemoryId = idNew;
-            var sid = new SsaIdentifier(idNew, idOld, null, null, false);
-            m.Ssa.Identifiers.Add(idNew, sid);
-            return segMem;
-        }
-
         private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
         {
             var ep = new ExternalProcedure(name, new FunctionType(ret, parameters));
