@@ -59,17 +59,17 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         /// <param name="sfr">The PIC register descriptor.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="sfr"/> is null.</exception>
-        public PICRegisterTraits(SFRDef sfr)
+        public PICRegisterTraits(ISFRRegister sfr)
         {
             if (sfr is null)
                 throw new ArgumentNullException(nameof(sfr));
             if (string.IsNullOrEmpty(sfr.NMMRID))
-                RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(sfr.Addr), (int)sfr.NzWidth);
+                RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(sfr.Addr), (int)sfr.BitWidth);
             else
-                RegAddress = new PICRegisterSizedUniqueAddress(sfr.NMMRID, (int)sfr.NzWidth);
-            Name = sfr.CName;
-            Desc = sfr.Desc;
-            Impl = sfr.Impl;
+                RegAddress = new PICRegisterSizedUniqueAddress(sfr.NMMRID, (int)sfr.BitWidth);
+            Name = sfr.Name;
+            Desc = sfr.Description;
+            Impl = sfr.ImplMask;
             Access = AdjustString(sfr.Access, '-');
             MCLR = AdjustString(sfr.MCLR, 'u');
             POR = AdjustString(sfr.POR, '0');
@@ -78,19 +78,19 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         /// <summary>
-        /// Construct the PIC register's traits based on the given <see cref="JoinedSFRDef"/> descriptor
+        /// Construct the PIC register's traits based on the given <see cref="IJoinedRegister"/> descriptor
         /// and its children PIC registers.
         /// </summary>
         /// <param name="joinedSFR">The joined PIC register descriptor.</param>
         /// <param name="attachedRegs">The attached (children) PIC registers.</param>
         /// <exception cref="ArgumentNullException">Thrown if one of the arguments is null.</exception>
-        public PICRegisterTraits(JoinedSFRDef joinedSFR, IEnumerable<PICRegisterStorage> attachedRegs)
+        public PICRegisterTraits(IJoinedRegister joinedSFR, IEnumerable<PICRegisterStorage> attachedRegs)
             : this(joinedSFR, attachedRegs?.Select(e => e.Traits).ToList())
         {
         }
 
         /// <summary>
-        /// Construct the PIC register's traits based on the given <see cref="JoinedSFRDef"/> descriptor
+        /// Construct the PIC register's traits based on the given <see cref="IJoinedRegister"/> descriptor
         /// and its children PIC registers' traits.
         /// </summary>
         /// <remarks>
@@ -100,15 +100,15 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="joinedSFR">The joined PIC register descriptor.</param>
         /// <param name="attachedRegsTraits">The joined registers' traits.</param>
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-        public PICRegisterTraits(JoinedSFRDef joinedSFR, IEnumerable<PICRegisterTraits> attachedRegsTraits)
+        public PICRegisterTraits(IJoinedRegister joinedSFR, IEnumerable<PICRegisterTraits> attachedRegsTraits)
         {
             if (joinedSFR is null)
                 throw new ArgumentNullException(nameof(joinedSFR));
             if (attachedRegsTraits is null)
                 throw new ArgumentNullException(nameof(attachedRegsTraits));
-            Name = joinedSFR.CName;
-            Desc = joinedSFR.Desc;
-            RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(joinedSFR.Addr), (int)joinedSFR.NzWidth);
+            Name = joinedSFR.Name;
+            Desc = joinedSFR.Description;
+            RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(joinedSFR.Addr), (int)joinedSFR.BitWidth);
             var rev = attachedRegsTraits.Reverse();
             Access = AdjustString(String.Join("", rev.Select(e => e.Access)), '-');
             MCLR = AdjustString(String.Join("", rev.Select(e => e.MCLR)), 'u');

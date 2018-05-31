@@ -53,10 +53,10 @@ namespace Reko.Arch.MicrochipPIC.Common
             class MemoryDomainKey
             {
 
-                public MemoryDomain Domain { get; }
-                public MemorySubDomain SubDomain { get; }
+                public PICMemoryDomain Domain { get; }
+                public PICMemorySubDomain SubDomain { get; }
 
-                public MemoryDomainKey(MemoryDomain dom, MemorySubDomain subdom)
+                public MemoryDomainKey(PICMemoryDomain dom, PICMemorySubDomain subdom)
                 {
                     Domain = dom;
                     SubDomain = subdom;
@@ -104,7 +104,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 maptraits.Clear();
                 foreach (var trait in archDef.MemoryTraits)
                 {
-                    if (trait.Domain != MemoryDomain.Data)
+                    if (trait.Domain != PICMemoryDomain.Data)
                     {
                         var key = new MemoryDomainKey(trait.Domain, trait.SubDomain);
                         if (!maptraits.ContainsKey(key))
@@ -114,11 +114,11 @@ namespace Reko.Arch.MicrochipPIC.Common
                     }
                     else
                     {
-                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.DPR), trait);
-                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.GPR), trait);
-                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.SFR), trait);
-                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.Emulator), trait);
-                        maptraits.Add(new MemoryDomainKey(MemoryDomain.Data, MemorySubDomain.Linear), trait);
+                        maptraits.Add(new MemoryDomainKey(PICMemoryDomain.Data, PICMemorySubDomain.DPR), trait);
+                        maptraits.Add(new MemoryDomainKey(PICMemoryDomain.Data, PICMemorySubDomain.GPR), trait);
+                        maptraits.Add(new MemoryDomainKey(PICMemoryDomain.Data, PICMemorySubDomain.SFR), trait);
+                        maptraits.Add(new MemoryDomainKey(PICMemoryDomain.Data, PICMemorySubDomain.Emulator), trait);
+                        maptraits.Add(new MemoryDomainKey(PICMemoryDomain.Data, PICMemorySubDomain.Linear), trait);
                     }
                 }
             }
@@ -127,13 +127,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Gets the memory trait corresponding to the specified memory domain and sub-domain.
             /// </summary>
-            /// <param name="dom">A memory domain value from the <see cref="MemoryDomain"/> enumeration.</param>
-            /// <param name="subdom">A sub-domain value from the <see cref="MemorySubDomain"/> enumeration.</param>
+            /// <param name="dom">A memory domain value from the <see cref="PICMemoryDomain"/> enumeration.</param>
+            /// <param name="subdom">A sub-domain value from the <see cref="PICMemorySubDomain"/> enumeration.</param>
             /// <param name="trait">[out] The memory trait.</param>
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(MemoryDomain dom, MemorySubDomain subdom, out IMemTrait trait)
+            public bool GetTrait(PICMemoryDomain dom, PICMemorySubDomain subdom, out IMemTrait trait)
             {
                 if (!maptraits.TryGetValue(new MemoryDomainKey(dom, subdom), out trait))
                     trait = memtraitdefault;
@@ -143,12 +143,12 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Gets the memory trait corresponding to the specified memory sub-domain.
             /// </summary>
-            /// <param name="subdom">A sub-domain value from the <see cref="MemorySubDomain"/> enumeration.</param>
+            /// <param name="subdom">A sub-domain value from the <see cref="PICMemorySubDomain"/> enumeration.</param>
             /// <param name="trait">[out] The memory trait.</param>
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(MemorySubDomain subdom, out IMemTrait trait)
+            public bool GetTrait(PICMemorySubDomain subdom, out IMemTrait trait)
                 => GetTrait(subdom.GetDomain(), subdom, out trait);
 
         }
@@ -172,7 +172,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <param name="memSubDomain">The memory sub-domain type.</param>
             /// <exception cref="InvalidOperationException">Thrown if the map can't provide the region's
             ///                                             memory traits.</exception>
-            public MemoryRegionBase(MemTraits traits, string sRegion, AddressRange regnAddr, MemoryDomain memDomain, MemorySubDomain memSubDomain)
+            public MemoryRegionBase(MemTraits traits, string sRegion, AddressRange regnAddr, PICMemoryDomain memDomain, PICMemorySubDomain memSubDomain)
             {
                 this.traits = traits;
                 RegionName = sRegion;
@@ -187,7 +187,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 }
                 TypeOfMemory = memDomain;
                 SubtypeOfMemory = memSubDomain;
-                if (SubtypeOfMemory != MemorySubDomain.NNMR)  // Non-Memory-Mapped-Registers have no memory characteristics.
+                if (SubtypeOfMemory != PICMemorySubDomain.NNMR)  // Non-Memory-Mapped-Registers have no memory characteristics.
                 {
                     if (!this.traits.GetTrait(memDomain, memSubDomain, out IMemTrait trait))
                         throw new InvalidOperationException($"Missing characteristics for [{memDomain}/{memSubDomain}] memory region '{RegionName}'");
@@ -227,17 +227,17 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// Gets the type of the memory region.
             /// </summary>
             /// <value>
-            /// A value from <see cref="MemoryDomain"/> enumeration.
+            /// A value from <see cref="PICMemoryDomain"/> enumeration.
             /// </value>
-            public MemoryDomain TypeOfMemory { get; }
+            public PICMemoryDomain TypeOfMemory { get; }
 
             /// <summary>
             /// Gets the subtype of the memory region.
             /// </summary>
             /// <value>
-            /// A value from <see cref="MemorySubDomain"/> enumeration.
+            /// A value from <see cref="PICMemorySubDomain"/> enumeration.
             /// </value>
-            public MemorySubDomain SubtypeOfMemory { get; }
+            public PICMemorySubDomain SubtypeOfMemory { get; }
 
             /// <summary>
             /// Gets the memory region traits.
@@ -311,8 +311,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <param name="sRegion">The region's name.</param>
             /// <param name="regnAddr">The region memory address range.</param>
             /// <param name="memSubDomain">The memory sub-domain code.</param>
-            public ProgMemRegion(MemTraits traits, string sRegion, AddressRange regnAddr, MemorySubDomain memSubDomain)
-                : base(traits, sRegion, regnAddr, MemoryDomain.Prog, memSubDomain)
+            public ProgMemRegion(MemTraits traits, string sRegion, AddressRange regnAddr, PICMemorySubDomain memSubDomain)
+                : base(traits, sRegion, regnAddr, PICMemoryDomain.Prog, memSubDomain)
             {
             }
 
@@ -331,8 +331,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <param name="regnAddr">The region memory address range.</param>
             /// <param name="memSubDomain">The memory sub-domain code.</param>
             /// <param name="bankSel">The memory bank selector.</param>
-            public DataMemRegion(MemTraits traits, string sRegion, AddressRange regnAddr, MemorySubDomain memSubDomain, Constant bankSel)
-                : base(traits, sRegion, regnAddr, MemoryDomain.Data, memSubDomain)
+            public DataMemRegion(MemTraits traits, string sRegion, AddressRange regnAddr, PICMemorySubDomain memSubDomain, Constant bankSel)
+                : base(traits, sRegion, regnAddr, PICMemoryDomain.Data, memSubDomain)
             {
                 BankSelector = bankSel;
             }
@@ -415,12 +415,12 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Gets the type of the Linear Access memory region.
             /// </summary>
-            public MemoryDomain TypeOfMemory => MemoryDomain.Data;
+            public PICMemoryDomain TypeOfMemory => PICMemoryDomain.Data;
 
             /// <summary>
             /// Gets the subtype of the Linear Access memory region.
             /// </summary>
-            public MemorySubDomain SubtypeOfMemory => MemorySubDomain.Linear;
+            public PICMemorySubDomain SubtypeOfMemory => PICMemorySubDomain.Linear;
 
             /// <summary>
             /// Gets the memory characteristics of the Linear Access data memory region.
@@ -553,9 +553,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// This class defines the program memory map of current PIC.
         /// </summary>
-        protected sealed class ProgMemoryMap : MemoryMapBase<ProgMemRegion>, IMemProgramRegionVisitor
+        protected sealed class ProgMemoryMap : MemoryMapBase<ProgMemRegion>
         {
-            private readonly bool IsPIC18 = false;
+            private readonly bool isPIC18 = false;
 
             /// <summary>
             /// Constructor.
@@ -565,101 +565,28 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <param name="traits">The PIC memory traits.</param>
             public ProgMemoryMap(PICMemoryMap map, MemTraits traits) : base(map, traits)
             {
-                var pic = map.PIC;
+                IPICDescriptor pic = map.PIC;
 
-                IsPIC18 = pic.IsPIC18;                
+                isPIC18 = pic.Family == PICFamily.PIC18;                
 
-                foreach (var pmr in pic.ProgramSpace.Sectors?.OfType<IMemProgramRegionAcceptor>())
+                foreach (var reg in pic.ProgramMemorySpace.MemoryRegions)
                 {
-                    pmr.Accept(this);
+                    if (reg.MemorySubDomain == PICMemorySubDomain.Test)
+                        continue;
+                    var memrng = CreateMemRange(reg.BeginAddr, reg.EndAddr);
+                    AddRegion(new ProgMemRegion(traits, reg.RegionID, memrng, reg.MemorySubDomain));
                 }
             }
 
-
-            #region IMemProgramRegionVisitor interface implementation
-
             protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
             {
-                if (!IsPIC18)
+                if (!isPIC18)
                 {
                     begAddr <<= 1;
                     endAddr <<= 1;
                 }
                 return new AddressRange(Address.Ptr32(begAddr), Address.Ptr32(endAddr));
             }
-
-            void IMemProgramRegionVisitor.Visit(BACKBUGVectorSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.Debugger));
-            }
-
-            void IMemProgramRegionVisitor.Visit(CalDataZone xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.Calib));
-            }
-
-            void IMemProgramRegionVisitor.Visit(CodeSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.Code));
-            }
-
-            void IMemProgramRegionVisitor.Visit(ConfigFuseSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DeviceConfig));
-            }
-
-            void IMemProgramRegionVisitor.Visit(DeviceIDSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DeviceID));
-            }
-
-            void IMemProgramRegionVisitor.Visit(EEDataSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.EEData));
-            }
-
-            void IMemProgramRegionVisitor.Visit(ExtCodeSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.ExtCode));
-            }
-
-            void IMemProgramRegionVisitor.Visit(RevisionIDSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.RevisionID));
-            }
-
-            void IMemProgramRegionVisitor.Visit(TestZone xmlRegion)
-            {
-                // No interest.
-            }
-
-            void IMemProgramRegionVisitor.Visit(UserIDSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.UserID));
-            }
-
-            void IMemProgramRegionVisitor.Visit(DIASector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DeviceInfoAry));
-            }
-
-            void IMemProgramRegionVisitor.Visit(DCISector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                AddRegion(new ProgMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DeviceConfigInfo));
-            }
-
-            #endregion
 
         }
 
@@ -670,7 +597,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
 
             public Address[] remapTable;
-            internal IMemoryRegion Emulatorzone;
             internal ILinearRegion Linearsector;
 
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -691,31 +617,62 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <exception cref="InvalidOperationException">Thrown if the PIC execution mode is invalid.</exception>
             public DataMemoryMap(PICMemoryMap map, MemTraits traits, PICExecMode mode) : base(map, traits)
             {
-                var pic = map.PIC;
+                var pic = map?.PIC ?? throw new ArgumentNullException(nameof(map));
+                if (mode == PICExecMode.Extended && !pic.HasExtendedMode)
+                    throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
+                if (traits == null)
+                    throw new ArgumentNullException(nameof(traits));
 
-                uint datasize = pic.DataSpace?.EndAddr ?? 0;
-                if (datasize < MinDataMemorySize)
+                IDataSpace dataspace = pic.DataMemorySpace;
+                if (dataspace.DataSpaceSize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException("Too low data memory size. Check PIC definition.");
-                remapTable = new Address[datasize];
+                remapTable = new Address[dataspace.DataSpaceSize];
                 for (int i = 0; i < remapTable.Length; i++)
                     remapTable[i] = null;
-                foreach (var dmr in pic.DataSpace.RegardlessOfMode.Regions?.OfType<IMemDataRegionAcceptor>())
-                    dmr.Accept(this);
-                switch (mode)
+
+                foreach (var regn in dataspace.MemoryRegions(mode))
                 {
-                    case PICExecMode.Traditional:
-                        foreach (var dmr in pic.DataSpace.TraditionalModeOnly?.OfType<IMemDataRegionAcceptor>())
-                            dmr.Accept(this);
-                        break;
-                    case PICExecMode.Extended:
-                        if (!pic.IsExtended)
-                            throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
-                        foreach (var dmr in pic.DataSpace.ExtendedModeOnly?.OfType<IMemDataRegionAcceptor>())
-                            dmr.Accept(this);
-                        break;
+                    var memrng = CreateMemRange(regn.BeginAddr, regn.EndAddr);
+                    map.AddSubDomain(regn.MemorySubDomain);
+                    var dregn = new DataMemRegion(traits, regn.RegionID, memrng, regn.MemorySubDomain, Constant.UInt16((ushort)regn.Bank));
+                    var idRef = regn.ShadowIDRef;
+                    if (!string.IsNullOrWhiteSpace(idRef))
+                    {
+                        var remap = GetRegionByName(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
+                        dregn.PhysicalByteAddrRange = remap.PhysicalByteAddrRange;
+                    }
+                    AddRegion(dregn);
+                    switch (regn.MemorySubDomain)
+                    {
+                        case PICMemorySubDomain.GPR:
+                        case PICMemorySubDomain.DPR:
+                            for (int i = 0; i < dregn.Size; i++)
+                            {
+                                remapTable[dregn.LogicalByteAddrRange.Begin.ToUInt16() + i] = dregn.PhysicalByteAddrRange.Begin + i;
+                            }
+                            break;
+                        case PICMemorySubDomain.SFR:
+                            break;
+                    }
+
                 }
-                foreach (var dmr in pic.IndirectSpace?.OfType<IMemDataRegionAcceptor>())
-                    dmr.Accept(this);
+
+                foreach (var mir in dataspace.Mirrors)
+                {
+                    for (int i = 0; i < mir.Size; i++)
+                    {
+                        remapTable[mir.Addr + i] = Address.Ptr16((ushort)(mir.Addr + i));
+                    }
+                }
+
+                foreach (var sfr in pic.PICRegisters.SFRs)
+                {
+                    for (int i = 0; i < sfr.ByteWidth; i++)
+                    {
+                        remapTable[sfr.Addr + i] = Address.Ptr16((ushort)(sfr.Addr + i));
+                    }
+                }
+
 
             }
 
@@ -728,6 +685,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// </returns>
             public IMemoryRegion GetRegionBySelector(Constant bankSel)
                 => memRegions.Find(r => r.BankSelector == bankSel);
+
+            protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
+                => new AddressRange(Address.Ptr16((ushort)begAddr), Address.Ptr16((ushort)endAddr));
 
 
             #region IMemDataRegionVisitor interface implementation
@@ -759,13 +719,10 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             #endregion
 
-            protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
-                => new AddressRange(Address.Ptr16((ushort)begAddr), Address.Ptr16((ushort)endAddr));
-
             void IMemDataRegionVisitor.Visit(SFRDataSector xmlRegion)
             {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.SFR, Constant.UInt16((ushort)xmlRegion.Bank));
+                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr);
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, PICMemorySubDomain.SFR, Constant.UInt16((ushort)xmlRegion.Bank));
                 AddRegion(regn);
                 ResetAddrs(regn.LogicalByteAddrRange.Begin.ToUInt16());
                 isNMMR = false;
@@ -776,7 +733,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             void IMemDataRegionVisitor.Visit(GPRDataSector xmlRegion)
             {
                 AddressRange memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr);
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.GPR, Constant.UInt16((ushort)xmlRegion.Bank));
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, PICMemorySubDomain.GPR, Constant.UInt16((ushort)xmlRegion.Bank));
                 var idRef = xmlRegion.ShadowIDRef;
                 if (!string.IsNullOrWhiteSpace(idRef))
                 {
@@ -793,7 +750,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             void IMemDataRegionVisitor.Visit(DPRDataSector xmlRegion)
             {
                 AddressRange memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.DPR, Constant.UInt16((ushort)xmlRegion.Bank));
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, PICMemorySubDomain.DPR, Constant.UInt16((ushort)xmlRegion.Bank));
                 var idRef = xmlRegion.ShadowIDRef;
                 if (!string.IsNullOrWhiteSpace(idRef))
                 {
@@ -807,16 +764,9 @@ namespace Reko.Arch.MicrochipPIC.Common
                 }
             }
 
-            void IMemDataRegionVisitor.Visit(EmulatorZone xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                Emulatorzone = new DataMemRegion(traits, xmlRegion.RegionID, memrng, MemorySubDomain.Emulator, Constant.Invalid);
-                map.AddSubDomain(MemorySubDomain.Emulator);
-            }
-
             void IMemDataRegionVisitor.Visit(NMMRPlace xmlRegion)
             {
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, null, MemorySubDomain.NNMR, Constant.Invalid);
+                var regn = new DataMemRegion(traits, xmlRegion.RegionID, null, PICMemorySubDomain.NNMR, Constant.Invalid);
                 AddRegion(regn);
                 isNMMR = true;
                 foreach (var nmmr in xmlRegion.SFRDefs.OfType<IMemDataSymbolAcceptor>()) nmmr.Accept(this);
@@ -828,7 +778,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
                 var blkrng = CreateMemRange(xmlRegion.BlockBeginAddr, xmlRegion.BlockEndAddr); ;
                 Linearsector = new LinearRegion(traits, xmlRegion.BankSize, memrng, blkrng);
-                map.AddSubDomain(MemorySubDomain.Linear);
+                map.AddSubDomain(PICMemorySubDomain.Linear);
             }
 
             #endregion
@@ -875,13 +825,13 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             void IMemDataSymbolVisitor.Visit(Mirror xmlSymb)
             {
-                var regn = GetRegionByName(xmlSymb.RegionIDRef);
+                var regn = GetRegionByName(xmlSymb.TargetRegionID);
                 if (regn != null)
                 {
-                    for (int i = 0; i < xmlSymb.NzSize; i++)
+                    for (int i = 0; i < xmlSymb.Size; i++)
                         remapTable[currLoadAddr + i] = regn.PhysicalByteAddrRange.Begin + i;
                 }
-                UpdateAddrs(xmlSymb.NzSize);
+                UpdateAddrs((int)xmlSymb.Size);
             }
 
             void IMemDataSymbolVisitor.Visit(JoinedSFRDef xmlSymb)
@@ -892,7 +842,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             void IMemDataSymbolVisitor.Visit(MuxedSFRDef xmlSymb)
             {
-                for (int i = 0; i < ((xmlSymb.NzWidth + 7) >> 3); i++)
+                for (int i = 0; i < ((xmlSymb.BitWidth + 7) >> 3); i++)
                 {
                     remapTable[currLoadAddr + i] = Address.Ptr16((ushort)(currLoadAddr + i));
                 }
@@ -923,14 +873,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected readonly MemTraits traits;
         protected readonly ProgMemoryMap progMap;
         protected DataMemoryMap dataMap;
-        private HashSet<MemorySubDomain> subdomains = new HashSet<MemorySubDomain>();
+        private HashSet<PICMemorySubDomain> subdomains = new HashSet<PICMemorySubDomain>();
 
 
         protected PICMemoryMap()
         {
         }
 
-        protected PICMemoryMap(PIC_v1 thePIC)
+        protected PICMemoryMap(IPICDescriptor thePIC)
         {
             PIC = thePIC;
             traits = new MemTraits(thePIC.ArchDefinitions);
@@ -940,9 +890,9 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         #region Methods
 
-        protected void AddSubDomain(MemorySubDomain subdom) => subdomains.Add(subdom);
+        protected void AddSubDomain(PICMemorySubDomain subdom) => subdomains.Add(subdom);
 
-        public bool HasSubDomain(MemorySubDomain subdom) => subdomains.Contains(subdom);
+        public bool HasSubDomain(PICMemorySubDomain subdom) => subdomains.Contains(subdom);
 
         protected static bool IsValidMap(PICMemoryMap map)
         {
@@ -950,15 +900,15 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return false;
             if (map.progMap == null)
                 return false;
-            if (!map.HasSubDomain(MemorySubDomain.DeviceConfig))
+            if (!map.HasSubDomain(PICMemorySubDomain.DeviceConfig))
                 return false;
-            if (!map.HasSubDomain(MemorySubDomain.Code) && !map.HasSubDomain(MemorySubDomain.ExtCode))
+            if (!map.HasSubDomain(PICMemorySubDomain.Code) && !map.HasSubDomain(PICMemorySubDomain.ExtCode))
                 return false;
             if (map.dataMap == null)
                 return false;
-            if (!map.HasSubDomain(MemorySubDomain.GPR))
+            if (!map.HasSubDomain(PICMemorySubDomain.GPR))
                 return false;
-            if (!map.HasSubDomain(MemorySubDomain.SFR))
+            if (!map.HasSubDomain(PICMemorySubDomain.SFR))
                 return false;
             return true;
         }
@@ -975,7 +925,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The target PIC.
         /// </value>
-        public PIC_v1 PIC { get; }
+        public IPICDescriptor PIC { get; }
 
         /// <summary>
         /// Gets the instruction set identifier of the target PIC.
@@ -1031,14 +981,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Enumerates the data regions.
         /// </summary>
         public IEnumerable<IMemoryRegion> DataRegions => dataMap.Regions;
-
-        /// <summary>
-        /// Gets the data memory Emulator zone. Valid only if <seealso cref="HasEmulatorZone"/> is true.
-        /// </summary>
-        /// <value>
-        /// The emulator zone/region.
-        /// </value>
-        public IMemoryRegion EmulatorZone => dataMap.Emulatorzone;
 
         /// <summary>
         /// Gets the Linear Data Memory definition. Valid only if <seealso cref="HasLinear"/> is true.
@@ -1106,13 +1048,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Provides a memory sub-domain's location and word sizes.
         /// </summary>
-        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/>
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="PICMemorySubDomain"/>
         ///                      enumeration.</param>
         /// <returns>
         /// A Tuple containing the location size and wordsize. Returns (0,0) if the subdomain does not
         /// exist.
         /// </returns>
-        public (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom)
+        public (uint LocSize, uint WordSize) SubDomainSizes(PICMemorySubDomain subdom)
         {
             if (traits.GetTrait(subdom, out IMemTrait t))
                 return (t.LocSize, t.WordSize);

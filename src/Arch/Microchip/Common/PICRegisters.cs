@@ -146,14 +146,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         /// <param name="pic">The PIC definition as provided by Microchip.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
-        public static void LoadRegisters(PIC_v1 pic)
+        public static void LoadRegisters(IPICDescriptor pic)
         {
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             regs = new PICRegisters();
             regs.Reset();
             regs.LoadRegistersInTable(regs, pic);
-            HWStackDepth = pic.ArchDef.MemTraits.HWStackDepth;
+            HWStackDepth = pic.ArchDefinitions.HWStackDepth;
         }
 
         /// <summary>

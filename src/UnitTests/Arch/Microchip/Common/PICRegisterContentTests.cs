@@ -34,8 +34,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             => new SFRDef()
             {
                 _addrFormatted = $"0x{uAddr:x}",
-                CName = cname,
-                Desc = "",
+                Name = cname,
+                Description = "",
                 _implFormatted = $"0x{Impl:X}",
                 _nzWidthFormatted = $"{nZWidth}",
                 Access = sAccess,

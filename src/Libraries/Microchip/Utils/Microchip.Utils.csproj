@@ -48,15 +48,23 @@
     <Compile Include="ConvUtils.cs" />
     <Compile Include="Interfaces\IAdjustPoint.cs" />
     <Compile Include="Interfaces\IArchDef.cs" />
-    <Compile Include="Interfaces\IBankedMemoryRegion.cs" />
-    <Compile Include="Interfaces\IMemoryAddrRange.cs" />
+    <Compile Include="Interfaces\IDataSpace.cs" />
+    <Compile Include="Interfaces\IDeviceFusesConfig.cs" />
+    <Compile Include="Interfaces\IDeviceInfoSector.cs" />
+    <Compile Include="Interfaces\IInterrupt.cs" />
+    <Compile Include="Interfaces\IMemoryDefs.cs" />
     <Compile Include="Interfaces\IMemTrait.cs" />
-    <Compile Include="Interfaces\IPIC.cs" />
+    <Compile Include="Interfaces\IPICDescriptor.cs" />
     <Compile Include="Interfaces\IPICVisitor.cs" />
-    <Compile Include="Interfaces\IMemoryRegion.cs" />
+    <Compile Include="Interfaces\IProgramSpace.cs" />
+    <Compile Include="Interfaces\IRegisterBitField.cs" />
+    <Compile Include="Interfaces\IRegisterDefs.cs" />
+    <Compile Include="Interfaces\IRegistersDefinitions.cs" />
     <Compile Include="Interfaces\ITrait.cs" />
+    <Compile Include="MemoryAddrRange.cs" />
     <Compile Include="NaturalComparer.cs" />
     <Compile Include="PartInfo.cs" />
+    <Compile Include="PICFamilies.cs" />
     <Compile Include="PICRemapMemDomains.cs" />
     <Compile Include="PIC_v1.cs" />
     <Compile Include="PICConstants.cs" />
@@ -64,9 +72,11 @@
     <Compile Include="PICCrownkingCodes.cs" />
     <Compile Include="PICCrownkingEx.cs" />
     <Compile Include="PICCrownkingException.cs" />
+    <Compile Include="PIC_v1_Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyDictionary.cs" />
     <Compile Include="ReadOnlySortedList.cs" />
+    <Compile Include="SFRBits.cs" />
     <Compile Include="XMLHelpers.cs" />
   </ItemGroup>
   <ItemGroup>

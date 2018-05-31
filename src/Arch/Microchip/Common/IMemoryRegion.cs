@@ -62,17 +62,17 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Gets the type of the memory region.
         /// </summary>
         /// <value>
-        /// A value from <see cref="MemoryDomain"/> enumeration.
+        /// A value from <see cref="PICMemoryDomain"/> enumeration.
         /// </value>
-        MemoryDomain TypeOfMemory { get; }
+        PICMemoryDomain TypeOfMemory { get; }
 
         /// <summary>
         /// Gets the subtype of the memory region.
         /// </summary>
         /// <value>
-        /// A value from <see cref="MemorySubDomain"/> enumeration.
+        /// A value from <see cref="PICMemorySubDomain"/> enumeration.
         /// </value>
-        MemorySubDomain SubtypeOfMemory { get; }
+        PICMemorySubDomain SubtypeOfMemory { get; }
 
         /// <summary>
         /// Gets the memory region traits.

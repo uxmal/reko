@@ -22,6 +22,8 @@ using System.Collections.Generic;
 
 namespace Reko.Libraries.Microchip
 {
+    using V1;
+
     /// <summary>
     /// Various extensions methods to manipulate PIC definitions.
     /// </summary>
@@ -36,8 +38,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The PIC descriptor or null.
         /// </returns>
-        public static PIC_v1 GetPIC(this PICCrownking db, string sPICName)
-            => db.GetPICAsXML(sPICName)?.ToObject<PIC_v1>();
+        public static IPICDescriptor GetPIC(this PICCrownking db, string sPICName)
+            => db.GetPICAsXML(sPICName)?.ToObject<PIC_v1>().PICDescriptorInterface;
 
         /// <summary>
         /// A PICCrownking extension method that gets a PIC descriptor.
@@ -47,8 +49,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>
         /// The PIC descriptor or null.
         /// </returns>
-        public static PIC_v1 GetPIC(this PICCrownking db, int iProcID)
-            => db.GetPICAsXML(iProcID)?.ToObject<PIC_v1>();
+        public static IPICDescriptor GetPIC(this PICCrownking db, int iProcID)
+            => db.GetPICAsXML(iProcID)?.ToObject<PIC_v1>().PICDescriptorInterface;
 
     }
 

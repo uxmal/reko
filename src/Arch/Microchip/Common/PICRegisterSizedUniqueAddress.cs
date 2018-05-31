@@ -98,7 +98,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override int GetHashCode() => BitWidth.GetHashCode() ^ base.GetHashCode();
 
-        private string _debugDisplay => "RegSizedAddr=" + (Addr is null ? $"NMMRID({NMMRID}" : $"0x{Addr:X})" + $"[b{BitWidth}]");
+        private string _debugDisplay => "RegSizedAddr=" + (Addr is null ? $"NMMRID({NMMRID}" : $"0x{Addr:X}" + $"[b{BitWidth}]");
 
     }
 

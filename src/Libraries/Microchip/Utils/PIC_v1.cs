@@ -18,287 +18,19 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 // summary:	Implements the Microchip PIC XML definition serialization per Microchip Crownking Database.
 // This is version 1.
 //
 namespace Reko.Libraries.Microchip
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Xml.Schema;
-    using System.Xml.Serialization;
-    using System.Linq;
-
-    #region Base common definitions
-
-    /// <summary>
-    /// Values that represent PIC memory domains.
-    /// </summary>
-    public enum MemoryDomain : byte
-    {
-        /// <summary> Memory does not belong to any known PIC memory spaces. </summary>
-        Unknown = 0,
-        /// <summary> Memory belongs to the PIC Program memory space. </summary>
-        Prog,
-        /// <summary> Memory belongs to the PIC Data memory space. </summary>
-        Data,
-        /// <summary> Memory is an absolute memory space. </summary>
-        Absolute,
-        /// <summary> Memory belongs to some other PIC memory space. </summary>
-        Other
-    };
-
-    /// <summary>
-    /// Values that represent PIC memory sub-domains.
-    /// </summary>
-    public enum MemorySubDomain
-    {
-        /// <summary>Memory region is undefined (transient value).</summary>
-        Undef = -1,
-        /// <summary>Data region contains Special Function Registers (SFRDataSector).</summary>
-        SFR,
-        /// <summary>Data region contains General Purpose Registers (GPRDataSector).</summary>
-        GPR,
-        /// <summary>Data region contains Dual-Port Registers (DPRDataSector).</summary>
-        DPR,
-        /// <summary>Data region contains Non-Memory-Map Registers (NMMRPlace).</summary>
-        NNMR,
-        /// <summary>Data region is a zone reserved for Emulator (EmulatorZone).</summary>
-        Emulator,
-        /// <summary>Data region is a linear view of data memory (LinearDataSector).</summary>
-        Linear,
-        /// <summary>Data region is a Direct Access Memory space.</summary>
-        DMA,
-        /// <summary>Program region contains code (CodeSector).</summary>
-        Code,
-        /// <summary>Program region contains external code (ExtCodeSector).</summary>
-        ExtCode,
-        /// <summary>Program region contains Data EEPROM (EEDataSector).</summary>
-        EEData,
-        /// <summary>Program region contains Configuration Fuses Words (ConfigFuseSector).</summary>
-        DeviceConfig,
-        /// <summary>Program region contains Device Configuration Information (DCISector).</summary>
-        DeviceConfigInfo,
-        /// <summary>Program region contains Device Information Array (DIASector).</summary>
-        DeviceInfoAry,
-        /// <summary>Program region contains User IDs words (UserIDSector).</summary>
-        UserID,
-        /// <summary>Program region contains Device IDs words (DeviceIDsector).</summary>
-        DeviceID,
-        /// <summary>Program region contains Revision IDs words (RevisionIDSector).</summary>
-        RevisionID,
-        /// <summary>Program region is used for Debugger (BACKBUGVectorSector).</summary>
-        Debugger,
-        /// <summary>Program region contains Calibration words (CalDataZone).</summary>
-        Calib,
-        /// <summary>Program region is reserved for Factory Tests (TestZone).</summary>
-        Test,
-        /// <summary>Program region contains unspecified data.</summary>
-        Other
-    };
-
-    /// <summary>
-    /// Values that represent PIC Execution modes.
-    /// </summary>
-    public enum PICExecMode
-    {
-
-        /// <summary> PIC is executing the traditional/legacy instruction set. </summary>
-        Traditional,
-
-        /// <summary> PIC is executing the extended instruction set with Indexed Literal Offset Addressing mode. </summary>
-        Extended
-    };
-
-    /// <summary>
-    /// Values that represent PIC Instruction-Set identifiers.
-    /// </summary>
-    public enum InstructionSetID
-    {
-        /// <summary> PIC Instruction Set is undefined. </summary>
-        UNDEFINED,
-        /// <summary> PIC Instruction Set is PIC16 like pic16f77 - basic mid-range. Identified as InstructionSet="pic16f77" in XML definition.</summary>
-        PIC16,
-        /// <summary> PIC Instruction Set is PIC16 like pic16f1946 - mid-range enhanced 5-bit BSR. Identified as InstructionSet="cpu_mid_v10" in XML definition.</summary>
-        PIC16_ENHANCED,
-        /// <summary> PIC Instruction Set is PIC16 like pic16f15313 - mid-range enhanced 6-bit BSR. Identified as InstructionSet="cpu_p16f1_v1" in XML definition.</summary>
-        PIC16_FULLFEATURED,
-        /// <summary> PIC Instruction Set is traditional PIC18 like pic18f1220 - without any extended mode. Identified as InstructionSet="pic18" in XML definition.</summary>
-        PIC18,
-        /// <summary> PIC Instruction Set is PIC18 like pic18f1230 - with extended execution mode capabilities. Identified as InstructionSet="egg" in XML definition.</summary>
-        PIC18_EXTENDED,
-        /// <summary> PIC Instruction Set is PIC18 enhanced like pic18f25k42 - same as PIC18_EXTD + some instructions for bigger RAM size. Identified as InstructionSet="cpu_pic18f_v6" in XML definition.</summary>
-        PIC18_ENHANCED,
-    }
-
-    /// <summary>
-    /// SFR bits access modes.
-    /// </summary>
-    public enum SFRBitAccess : byte
-    {
-        /// <summary>Bit is read-write ('n') </summary>
-        RW = 0,
-        /// <summary>Bit is read-write persistent ('N') (no longer used?) </summary>
-        RW_Persistant = 1,
-        /// <summary>Bit is read-only ('r') </summary>
-        ROnly = 2,
-        /// <summary>Bit is write-only ('w') </summary>
-        WOnly = 3,
-        /// <summary>Bit is settable only ('s') </summary>
-        Set = 4,
-        /// <summary>Bit is clear-able only ('c') </summary>
-        Clr = 5,
-        /// <summary>Bit is always 0 ('0') </summary>
-        Zero = 6,
-        /// <summary>Bit is always 1 ('1') </summary>
-        One = 7,
-        /// <summary>Bit is unimplemented ('-') </summary>
-        UnImpl = 8,
-        /// <summary>Bit is undetermined ('x') </summary>
-        UnDef = 9,
-        /// <summary>Bit access mode is unknown ('?') </summary>
-        Unknown = 10
-    }
-
-    /// <summary>
-    /// Values that represent SFR bit state at resets (Master Clear, Power-On, ...).
-    /// </summary>
-    public enum SFRBitReset
-    {
-        /// <summary>Bit is reset to 0 ('0'). </summary>
-        Zero = 0,
-        /// <summary>Bit is reset to 1 ('1'). </summary>
-        One = 1,
-        /// <summary>Bit is unchanged ('u'). </summary>
-        Unchanged = 2,
-        /// <summary>Bit depends on condition ('q'). </summary>
-        Cond = 3,
-        /// <summary>Bit is unknown ('x'). </summary>
-        Unknown = 4,
-        /// <summary>Bit is not implemented ('-'). </summary>
-        UnImpl = 5
-    }
-
-    /// <summary>
-    /// The abstract class <see cref="MemoryAddrRange"/> represents a PIC memory address range [begin, end) (either in data, program or absolute space).
-    /// </summary>
-    [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class MemoryAddrRange : IMemoryAddrRange,
-        IEquatable<MemoryAddrRange>, IEquatable<IMemoryAddrRange>, IEqualityComparer<MemoryAddrRange>,
-        IComparable<MemoryAddrRange>, IComparable<IMemoryAddrRange>, IComparer<MemoryAddrRange>
-    {
-
-        public MemoryAddrRange() { }
-
-        /// <summary> Gets the memory domain. </summary>
-        [XmlIgnore] public abstract MemoryDomain MemoryDomain { get; }
-
-        /// <summary> Gets the memory sub domain. </summary>
-        [XmlIgnore] public abstract MemorySubDomain MemorySubDomain { get; }
-
-        /// <summary> Gets the begin address of the memory range. </summary>
-        [XmlIgnore] public uint BeginAddr { get; private set; }
-
-        /// <summary> Gets the end address of the memory range. </summary>
-        [XmlIgnore] public uint EndAddr { get; private set; }
-
-        [XmlAttribute(AttributeName = "beginaddr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginaddrformatted { get => $"0x{BeginAddr:X}"; set => BeginAddr = value.ToUInt32Ex(); }
-
-        [XmlAttribute(AttributeName = "endaddr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endaddrformatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); }
-
-
-        #region Implementation of the equality/comparison interfaces
-
-        public bool Equals(IMemoryAddrRange other)
-        {
-            if (other is null)
-                return false;
-            if (ReferenceEquals(this, other))
-                return true;
-            if (MemoryDomain != other.MemoryDomain)
-                return false;
-            if (BeginAddr != other.BeginAddr)
-                return false;
-            return (EndAddr == other.EndAddr);
-        }
-
-        public bool Equals(MemoryAddrRange other)
-        {
-            if (other is null)
-                return false;
-            if (ReferenceEquals(this, other))
-                return true;
-            if (MemoryDomain != other.MemoryDomain)
-                return false;
-            if (BeginAddr != other.BeginAddr)
-                return false;
-            return (EndAddr == other.EndAddr);
-        }
-
-        public override bool Equals(object obj) => Equals(obj as IMemoryAddrRange);
-
-        public override int GetHashCode() => (BeginAddr.GetHashCode() + 17 * EndAddr.GetHashCode()) ^ MemoryDomain.GetHashCode();
-
-        public static bool operator ==(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) == 0;
-
-        public static bool operator !=(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) != 0;
-
-        public int Compare(MemoryAddrRange x, MemoryAddrRange y)
-            => _Compare(x, y);
-
-        private static int _Compare(MemoryAddrRange x, IMemoryAddrRange y)
-        {
-            if (ReferenceEquals(x, y))
-                return 0;
-            if ((object)x == null)
-                return -1;
-            return x.CompareTo(y);
-        }
-
-        public bool Equals(MemoryAddrRange x, MemoryAddrRange y)
-        {
-            if (ReferenceEquals(x, y))
-                return true;
-            return x?.Equals(y) ?? false;
-        }
-
-        public int GetHashCode(MemoryAddrRange obj) => obj?.GetHashCode() ?? 0;
-
-        public int CompareTo(IMemoryAddrRange other)
-        {
-            if (other is null)
-                return 1;
-            if (ReferenceEquals(this, other))
-                return 0;
-            if (MemoryDomain != other.MemoryDomain)
-                return MemoryDomain.CompareTo(other.MemoryDomain);
-            if (BeginAddr == other.BeginAddr)
-                return EndAddr.CompareTo(other.EndAddr);
-            return BeginAddr.CompareTo(other.BeginAddr);
-        }
-
-        public int CompareTo(MemoryAddrRange other)
-        {
-            if (other is null)
-                return 1;
-            if (ReferenceEquals(this, other))
-                return 0;
-            if (MemoryDomain != other.MemoryDomain)
-                return MemoryDomain.CompareTo(other.MemoryDomain);
-            if (BeginAddr == other.BeginAddr)
-                return EndAddr.CompareTo(other.EndAddr);
-            return BeginAddr.CompareTo(other.BeginAddr);
-        }
-
-        #endregion
-
-    }
-
-    #endregion
+    using V1;
 
     #region ArchDef XML element
 
@@ -315,7 +47,8 @@ namespace Reko.Libraries.Microchip
         public string RevList { get; set; }
 
         /// <summary> Gets the binary value of the silicon revision. </summary>
-        [XmlIgnore] public int Value { get; private set; }
+        [XmlIgnore]
+        public int Value { get; private set; }
 
         [XmlAttribute(AttributeName = "value", Form = XmlSchemaForm.None, Namespace = "")]
         public string _valueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); }
@@ -329,23 +62,25 @@ namespace Reko.Libraries.Microchip
     public abstract class MemTrait : IMemTrait
     {
 
-        public MemTrait() { }
-
-
         /// <summary> Gets the size of the memory word (in bytes). </summary>
-        [XmlIgnore] public virtual uint WordSize { get; private set; }
+        [XmlIgnore]
+        public virtual uint WordSize { get; private set; }
 
         /// <summary> Gets the memory location access size (in bytes). </summary>
-        [XmlIgnore] public virtual uint LocSize { get; private set; }
+        [XmlIgnore]
+        public virtual uint LocSize { get; private set; }
 
         /// <summary> Gets the memory word implementation (bit mask). </summary>
-        [XmlIgnore] public virtual uint WordImpl { get; private set; }
+        [XmlIgnore]
+        public virtual uint WordImpl { get; private set; }
 
         /// <summary> Gets the initial (erased) memory word value. </summary>
-        [XmlIgnore] public virtual uint WordInit { get; private set; }
+        [XmlIgnore]
+        public virtual uint WordInit { get; private set; }
 
         /// <summary> Gets the memory word 'safe' value. </summary>
-        [XmlIgnore] public virtual uint WordSafe { get; private set; }
+        [XmlIgnore]
+        public virtual uint WordSafe { get; private set; }
 
 
         [XmlAttribute(AttributeName = "locsize", Form = XmlSchemaForm.None, Namespace = "")]
@@ -386,9 +121,9 @@ namespace Reko.Libraries.Microchip
         /// <summary> Gets the default memory word 'safe' value. </summary>
         public uint WordSafe => 0x00;
 
-        public MemoryDomain Domain => MemoryDomain.Unknown;
+        public PICMemoryDomain Domain => PICMemoryDomain.Unknown;
 
-        public MemorySubDomain SubDomain => MemorySubDomain.Undef;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Undef;
 
     }
 
@@ -398,8 +133,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class CodeMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.Code;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Code;
     }
 
     /// <summary>
@@ -408,8 +143,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ExtCodeMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.ExtCode;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.ExtCode;
     }
 
     /// <summary>
@@ -418,8 +153,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class CalDataMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.Calib;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Calib;
     }
 
     /// <summary>
@@ -428,8 +163,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class BackgroundDebugMemTraits : MemTrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.Debugger;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Debugger;
     }
 
     /// <summary>
@@ -438,8 +173,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class TestMemTraits : MemTrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.Test;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Test;
     }
 
     /// <summary>
@@ -448,8 +183,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class UserIDMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.UserID;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.UserID;
     }
 
     /// <summary>
@@ -458,18 +193,14 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ConfigFuseMemTraits : MemTrait, ITrait
     {
-        public ConfigFuseMemTraits() { }
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.DeviceConfig;
 
-        public MemoryDomain Domain => MemoryDomain.Prog;
+        [XmlIgnore]
+        public int UnimplVal { get; private set; }
 
-        public MemorySubDomain SubDomain => MemorySubDomain.DeviceConfig;
-
-
-        [XmlIgnore] public int UnimplVal { get; private set; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "unimplval", Form = XmlSchemaForm.None, Namespace = "")]
-        public string UnimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
+        public string _unimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); }
 
     }
 
@@ -479,8 +210,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ConfigWORMMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.Other;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Other;
     }
 
     /// <summary>
@@ -489,8 +220,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DeviceIDMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.DeviceID;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.DeviceID;
     }
 
     /// <summary>
@@ -499,23 +230,28 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class EEDataMemTraits : MemTrait, ITrait
     {
-        [XmlIgnore] public override uint LocSize => 1;
-        [XmlIgnore] public override uint WordSize => 1;
-        [XmlIgnore] public override uint WordImpl => 0xFF;
-        [XmlIgnore] public override uint WordInit => 0xFF;
-        [XmlIgnore] public override uint WordSafe => 0xFF;
-        public MemoryDomain Domain => MemoryDomain.Prog;
-        public MemorySubDomain SubDomain => MemorySubDomain.EEData;
+        public PICMemoryDomain Domain => PICMemoryDomain.Prog;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.EEData;
 
+        [XmlIgnore]
+        public override uint LocSize => 1;
+        [XmlIgnore]
+        public override uint WordSize => 1;
+        [XmlIgnore]
+        public override uint WordImpl => 0xFF;
+        [XmlIgnore]
+        public override uint WordInit => 0xFF;
+        [XmlIgnore]
+        public override uint WordSafe => 0xFF;
 
         /// <summary>
         /// Gets address magic offset in the binary image for EEPROM content.
         /// </summary>
-        [XmlIgnore] public uint MagicOffset { get; private set; }
+        [XmlIgnore]
+        public uint MagicOffset { get; private set; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "magicoffset", Form = XmlSchemaForm.None, Namespace = "")]
-        public string MagicOffsetFormatted { get => $"0x{MagicOffset:X}"; set => MagicOffset = value.ToUInt32Ex(); } 
+        public string _magicOffsetFormatted { get => $"0x{MagicOffset:X}"; set => MagicOffset = value.ToUInt32Ex(); }
 
     }
 
@@ -525,8 +261,8 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DataMemTraits : MemTrait, ITrait
     {
-        public MemoryDomain Domain => MemoryDomain.Data;
-        public MemorySubDomain SubDomain => MemorySubDomain.Undef;
+        public PICMemoryDomain Domain => PICMemoryDomain.Data;
+        public PICMemorySubDomain SubDomain => PICMemorySubDomain.Undef;
     }
 
     /// <summary>
@@ -535,6 +271,14 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class MemTraits
     {
+        /// <summary> Gets the depth of the hardware stack. </summary>
+        [XmlIgnore]
+        public int HWStackDepth { get; private set; }
+
+        /// <summary> Gets the number of memory banks. </summary>
+        [XmlIgnore]
+        public int BankCount { get; private set; }
+
         /// <summary> Gets the list of memory traits of the various memory regions. </summary>
         [XmlElement(ElementName = "CodeMemTraits", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(CodeMemTraits))]
         [XmlElement(ElementName = "ExtCodeMemTraits", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(ExtCodeMemTraits))]
@@ -549,12 +293,6 @@ namespace Reko.Libraries.Microchip
         [XmlElement(ElementName = "EEDataMemTraits", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(EEDataMemTraits))]
         public List<MemTrait> Traits { get; set; }
 
-        /// <summary> Gets the depth of the hardware stack. </summary>
-        [XmlIgnore] public int HWStackDepth { get; private set; }
-
-        /// <summary> Gets the number of memory banks. </summary>
-        [XmlIgnore] public int BankCount { get; private set; }
-
         [XmlAttribute(AttributeName = "hwstackdepth", Form = XmlSchemaForm.None, Namespace = "")]
         public string _hwStackDepthFormatted { get => $"{HWStackDepth}"; set => HWStackDepth = value.ToInt32Ex(); }
 
@@ -567,8 +305,12 @@ namespace Reko.Libraries.Microchip
     /// PIC memory architecture definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ArchDef : IArchDef
+    public sealed class ArchDef
     {
+
+        /// <summary> Gets the name (16xxxx, 16Exxx, 18xxxx) of the PIC architecture. </summary>
+        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
+        public string Name { get; set; }
 
         /// <summary> Gets the memory traits of the PIC. </summary>
         [XmlElement(ElementName = "MemTraits", Form = XmlSchemaForm.None, Namespace = "")]
@@ -577,32 +319,6 @@ namespace Reko.Libraries.Microchip
         /// <summary> Gets the description of the PIC architecture. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
         public string Description { get; set; }
-
-        /// <summary> Gets the name (16xxxx, 16Exxx, 18xxxx) of the PIC architecture. </summary>
-        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Name { get; set; }
-
-        [XmlIgnore] public int BankCount => MemTraits.BankCount;
-
-        [XmlIgnore] public int HWStackDepth => MemTraits.HWStackDepth;
-
-        [XmlIgnore]
-        public uint MagicOffset
-        {
-            get
-            {
-                if (!magicOffset.HasValue)
-                {
-                    magicOffset = MemTraits.Traits.OfType<EEDataMemTraits>().Select(t => t.MagicOffset).FirstOrDefault();
-                }
-                return magicOffset ?? 0;
-            }
-        }
-        private uint? magicOffset;
-
-        [XmlIgnore]
-        public IEnumerable<ITrait> MemoryTraits
-            => MemTraits.Traits.OfType<ITrait>();
 
     }
 
@@ -615,9 +331,6 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     public sealed class InstructionSet
     {
-        public InstructionSet() { }
-
-
         /// <summary> Gets the instruction set ID. </summary>
         [XmlAttribute(AttributeName = "instructionsetid", Form = XmlSchemaForm.None, Namespace = "")]
         public string ID { get; set; }
@@ -632,18 +345,19 @@ namespace Reko.Libraries.Microchip
     /// Interrupt request.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class Interrupt
+    public sealed class Interrupt : IInterrupt
     {
         /// <summary> Gets the IRQ number. </summary>
-        [XmlIgnore] public uint IRQ { get; private set; }
+        [XmlIgnore]
+        public uint IRQ { get; private set; }
 
         /// <summary> Gets the name of the interrupt request.</summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the description of the interrupt request. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         [XmlAttribute(AttributeName = "irq", Form = XmlSchemaForm.None, Namespace = "")]
         public string _irqFormatted { get => $"{IRQ}"; set => IRQ = value.ToUInt32Ex(); }
@@ -697,22 +411,44 @@ namespace Reko.Libraries.Microchip
     /// <summary>
     /// A program memory addresses [range). Must be inherited.
     /// </summary>
-    public abstract class ProgMemoryRange : MemoryAddrRange, IMemoryAddrRange
+    public abstract class ProgMemoryRange : MemoryAddrRange, IPICMemoryAddrRange
     {
-        public override MemoryDomain MemoryDomain => MemoryDomain.Prog;
+        public override PICMemoryDomain MemoryDomain => PICMemoryDomain.Prog;
     }
 
     /// <summary>
     /// A Program memory region. Must be inherited.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class ProgMemoryRegion : ProgMemoryRange, IMemoryRegion, IMemProgramRegionAcceptor
+    public abstract class ProgMemoryRegion : ProgMemoryRange, IPICMemoryRegion, IMemProgramRegionAcceptor
     {
 
         /// <summary> Gets the identifier of the region. </summary>
         [XmlAttribute(AttributeName = "regionid", Form = XmlSchemaForm.None, Namespace = "")]
         public string RegionID { get; set; }
 
+        /// <summary> Gets a value indicating whether this memory region is a section. </summary>
+        [XmlIgnore]
+        public virtual bool IsSection { get => false; set { } }
+
+        /// <summary> Gets the textual description of the section. </summary>
+        [XmlIgnore]
+        public virtual string SectionDesc { get => string.Empty; set { } }
+
+        /// <summary> Gets the name of the section. </summary>
+        [XmlIgnore]
+        public virtual string SectionName { get => string.Empty; set { } }
+
+        /// <summary> Gets the shadow identifier reference, if any. </summary>
+        [XmlIgnore]
+        public string ShadowIDRef { get => string.Empty; set { } }
+
+        /// <summary> Gets the shadow memory address offset, if any. </summary>
+        [XmlIgnore]
+        public int ShadowOffset { get => 0; set { } }
+
+        [XmlIgnore]
+        public int Bank { get => -1; set { } }
 
         #region IMemProgramRegionAcceptor interfaces
 
@@ -755,19 +491,19 @@ namespace Reko.Libraries.Microchip
     /// Program Memory region seen as a section. Must be inherited.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class ProgMemorySection : ProgMemoryRegion
+    public abstract class ProgMemorySection : ProgMemoryRegion, IPICMemoryRegion
     {
         /// <summary> Gets a value indicating whether this memory region is a section. </summary>
         [XmlAttribute(AttributeName = "issection", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
-        public bool IsSection { get; set; }
+        public override bool IsSection { get; set; }
 
         /// <summary> Gets the textual description of the section. </summary>
         [XmlAttribute(AttributeName = "sectiondesc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string SectionDesc { get; set; }
+        public override string SectionDesc { get; set; }
 
         /// <summary> Gets the name of the section. </summary>
         [XmlAttribute(AttributeName = "sectionname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string SectionName { get; set; }
+        public override string SectionName { get; set; }
 
     }
 
@@ -778,7 +514,8 @@ namespace Reko.Libraries.Microchip
     public sealed class ProgByteAdjustPoint : MemProgramSymbolAcceptorBase, IAdjustPoint
     {
         /// <summary> Gets the relative byte offset to add for adjustment. </summary>
-        [XmlIgnore] public int Offset { get; private set; }
+        [XmlIgnore]
+        public int Offset { get; private set; }
 
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         public string _offsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
@@ -830,7 +567,8 @@ namespace Reko.Libraries.Microchip
     public sealed class ProgBitAdjustPoint : MemProgramSymbolAcceptorBase, IAdjustPoint
     {
         /// <summary> Gets the relative bit offset to add for adjustment. </summary>
-        [XmlIgnore] public int Offset { get; private set; }
+        [XmlIgnore]
+        public int Offset { get; private set; }
 
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         public string _offsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
@@ -879,9 +617,9 @@ namespace Reko.Libraries.Microchip
     /// Code memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CodeSector : ProgMemorySection
+    public sealed class CodeSector : ProgMemorySection, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Code;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.Code;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -924,9 +662,9 @@ namespace Reko.Libraries.Microchip
     /// Calibration data zone memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CalDataZone : ProgMemorySection
+    public sealed class CalDataZone : ProgMemorySection, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Calib;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.Calib;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -969,9 +707,9 @@ namespace Reko.Libraries.Microchip
     /// Test zone memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class TestZone : ProgMemoryRegion
+    public sealed class TestZone : ProgMemoryRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Test;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.Test;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -1014,9 +752,9 @@ namespace Reko.Libraries.Microchip
     /// User IDs memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class UserIDSector : ProgMemorySection
+    public sealed class UserIDSector : ProgMemorySection, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.UserID;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.UserID;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -1059,9 +797,9 @@ namespace Reko.Libraries.Microchip
     /// Revision IDs sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class RevisionIDSector : ProgMemoryRegion
+    public sealed class RevisionIDSector : ProgMemoryRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.RevisionID;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.RevisionID;
 
         /// <summary> Gets the device ID to silicon revision relationship. </summary>
         [XmlElement(ElementName = "DEVIDToRev", Form = XmlSchemaForm.None, Namespace = "")]
@@ -1109,15 +847,17 @@ namespace Reko.Libraries.Microchip
     /// Device IDs sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceIDSector : ProgMemorySection
+    public sealed class DeviceIDSector : ProgMemorySection, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceID;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.DeviceID;
 
         /// <summary> Gets the bit mask to isolate device ID. </summary>
-        [XmlIgnore] public int Mask { get; private set; }
+        [XmlIgnore]
+        public int Mask { get; private set; }
 
         /// <summary> Gets the generic value of device ID </summary>
-        [XmlIgnore] public int Value { get; private set; }
+        [XmlIgnore]
+        public int Value { get; private set; }
 
         /// <summary> Gets the Device IDs to silicon revision level. </summary>
         [XmlElement(ElementName = "DEVIDToRev", Form = XmlSchemaForm.None, Namespace = "")]
@@ -1171,15 +911,15 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register field pattern semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldSemantic : MemProgramSymbolAcceptorBase
+    public sealed class DCRFieldSemantic : MemProgramSymbolAcceptorBase, IDeviceFusesSemantic
     {
         /// <summary> Gets the name of the field. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the textual description of the field value. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets the when condition for the field value. </summary>
         [XmlAttribute(AttributeName = "when", Form = XmlSchemaForm.None, Namespace = "")]
@@ -1194,7 +934,8 @@ namespace Reko.Libraries.Microchip
         public bool IsLangHidden { get; set; }
 
         /// <summary>Gets the oscillator mode identifier reference. </summary>
-        [XmlIgnore] public int OscModeIDRef { get; private set; }
+        [XmlIgnore]
+        public int OscModeIDRef { get; private set; }
 
         [XmlAttribute(AttributeName = "_defeatcoercion", Form = XmlSchemaForm.None, Namespace = "")]
         public string DefeatCoercion { get; set; }
@@ -1203,16 +944,16 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "memmodeidref", Form = XmlSchemaForm.None, Namespace = "")]
         public string MemModeIDRef { get; set; }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsHiddenSpecified { get => IsHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
         [XmlAttribute(AttributeName = "oscmodeidref", Form = XmlSchemaForm.None, Namespace = "")]
         public string _oscModeIDRefFormatted { get => $"{OscModeIDRef}"; set => OscModeIDRef = value.ToInt32Ex(); }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool _oscModeIDRefFormattedSpecified { get => OscModeIDRef != 0; set { } }
 
 
@@ -1257,25 +998,28 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register Field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldDef : MemProgramSymbolAcceptorBase
+    public sealed class DCRFieldDef : MemProgramSymbolAcceptorBase, IDeviceFusesField
     {
 
         /// <summary> Gets the name of the field. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the textual description of the field. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets the bit position of the field. (Not currently populated by Microchip). </summary>
-        [XmlIgnore] public int BitAddr { get; set; }
+        [XmlIgnore]
+        public byte BitPos { get; set; }
 
         /// <summary> Gets the bit width of the field. </summary>
-        [XmlIgnore] public int NzWidth { get; private set; }
+        [XmlIgnore]
+        public byte BitWidth { get; private set; }
 
         /// <summary> Gets the bit mask of the field in the register. </summary>
-        [XmlIgnore] public int Mask { get; private set; }
+        [XmlIgnore]
+        public int BitMask { get; private set; }
 
         /// <summary> Gets a value indicating whether this configuration field is hidden. </summary>
         [XmlAttribute(AttributeName = "ishidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
@@ -1294,20 +1038,32 @@ namespace Reko.Libraries.Microchip
         public List<DCRFieldSemantic> DCRFieldSemantics { get; set; }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
 
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _maskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); }
+        public string _maskFormatted { get => $"0x{BitMask:X}"; set => BitMask = value.ToInt32Ex(); }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsHiddenSpecified { get => IsHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsIDEHiddenSpecified { get => IsIDEHidden; set { } }
 
+        [XmlIgnore]
+        public IEnumerable<IDeviceFusesSemantic> Semantics
+        {
+            get
+            {
+                foreach (var fs in DCRFieldSemantics)
+                {
+                    yield return fs;
+
+                }
+            }
+        }
 
         #region IMemProgramSymbolAcceptor interface
 
@@ -1403,7 +1159,7 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register illegal definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRDefIllegal : MemProgramSymbolAcceptorBase
+    public sealed class DCRDefIllegal : MemProgramSymbolAcceptorBase, IDeviceFusesIllegal
     {
         /// <summary> Gets the "when" pattern of the illegal condition. </summary>
         [XmlAttribute(AttributeName = "when", Form = XmlSchemaForm.None, Namespace = "")]
@@ -1411,7 +1167,7 @@ namespace Reko.Libraries.Microchip
 
         /// <summary> Gets the textual description of the illegal condition. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
 
         #region IMemProgramSymbolAcceptor interface
@@ -1455,67 +1211,115 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRDef : MemProgramSymbolAcceptorBase
+    public sealed class DCRDef : MemProgramSymbolAcceptorBase, IDeviceFusesConfig
     {
         /// <summary> Gets the memory address of the configuration register. </summary>
-        [XmlIgnore] public int Addr { get; private set; }
+        [XmlIgnore]
+        public int Addr { get; private set; }
 
         /// <summary> Gets the name of the configuration register. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the textual description of the configuration register. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets the bit width of the register. </summary>
-        [XmlIgnore] public int NzWidth { get; private set; }
+        [XmlIgnore]
+        public int BitWidth { get; private set; }
 
         /// <summary> Gets the implemented bit mask. </summary>
-        [XmlIgnore] public int Impl { get; private set; }
+        [XmlIgnore]
+        public int ImplMask { get; private set; }
 
         /// <summary> Gets the access modes of the register's bits. </summary>
         [XmlAttribute(AttributeName = "access", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Access { get; set; }
+        public string AccessBits { get; set; }
 
         /// <summary> Gets the default value of the register. </summary>
-        [XmlIgnore] public int Default { get; private set; }
+        [XmlIgnore]
+        public int DefaultValue { get; private set; }
 
         /// <summary> Gets the factory default value of the register. </summary>
-        [XmlIgnore] public int FactoryDefault { get; private set; }
+        [XmlIgnore]
+        public int FactoryDefault { get; private set; }
 
         /// <summary> Gets a value indicating whether this register is hidden to language tools. </summary>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsLangHidden { get; set; }
 
         /// <summary> Gets the unimplemented bitmask value. </summary>
-        [XmlIgnore] public int UnimplVal { get; private set; }
+        [XmlIgnore]
+        public int UnimplVal { get; private set; }
+
+        [XmlIgnore]
+        public int Unused { get; private set; }
+
+        /// <summary> Gets the bit mask to use in checksum computation. </summary>
+        [XmlIgnore]
+        public int UseInChecksum { get; private set; }
 
         /// <summary> Gets the list of illegal configuration values (if any). </summary>
         [XmlElement(ElementName = "Illegal", Form = XmlSchemaForm.None, Namespace = "")]
         public List<DCRDefIllegal> Illegals { get; set; }
 
-        [XmlIgnore] public int Unused { get; private set; }
-
-        /// <summary> Gets the bit mask to use in checksum computation. </summary>
-        [XmlIgnore] public int UseInChecksum { get; private set; }
+        [XmlIgnore]
+        public IEnumerable<IDeviceFusesIllegal> IllegalSettings
+        {
+            get
+            {
+                foreach (var ilg in Illegals)
+                    yield return ilg;
+            }
+        }
 
         /// <summary> Gets a list of Device Configuration Register modes. </summary>
         [XmlArray(ElementName = "DCRModeList", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem(ElementName = "DCRMode", Type = typeof(DCRMode), Form = XmlSchemaForm.None, IsNullable = false)]
         public List<DCRMode> DCRModes { get; set; }
 
+        [XmlIgnore]
+        public IEnumerable<IDeviceFusesField> ConfigFields
+        {
+            get
+            {
+                foreach (var mode in DCRModes)
+                {
+                    int bitpos = 0;
+                    foreach (var fld in mode.Fields)
+                    {
+                        switch (fld)
+                        {
+                            case ProgBitAdjustPoint adj:
+                                bitpos += adj.Offset;
+                                break;
+
+                            case DCRFieldDef fdef:
+                                fdef.BitPos = (byte)bitpos;
+                                bitpos += fdef.BitWidth;
+                                yield return fdef;
+                                break;
+
+                            default:
+                                throw new InvalidOperationException($"Invalid PIC device configuration field in '{Name}' register: {fld.GetType()}");
+                        }
+                    }
+                }
+            }
+        }
+
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToInt32Ex(); }
 
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _implFormatted { get => $"0x{Impl:X}"; set => Impl = value.ToInt32Ex(); }
+        public string _implFormatted { get => $"0x{ImplMask:X}"; set => ImplMask = value.ToInt32Ex(); }
 
         [XmlAttribute(AttributeName = "default", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _defaultFormatted { get => $"0x{Default:X}"; set => Default = value.ToInt32Ex(); }
+        public string _defaultFormatted { get => $"0x{DefaultValue:X}"; set => DefaultValue = value.ToInt32Ex(); }
 
         [XmlAttribute(AttributeName = "factorydefault", Form = XmlSchemaForm.None, Namespace = "")]
         public string _factoryDefaultFormatted { get => $"0x{FactoryDefault:X}"; set => FactoryDefault = value.ToInt32Ex(); }
@@ -1529,7 +1333,7 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "useinchecksum", Form = XmlSchemaForm.None, Namespace = "")]
         public string _useInChecksumFormatted { get => $"0x{UseInChecksum:X}"; set => UseInChecksum = value.ToInt32Ex(); }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
 
@@ -1574,15 +1378,27 @@ namespace Reko.Libraries.Microchip
     /// Configuration Fuses memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ConfigFuseSector : ProgMemoryRegion
+    public sealed class ConfigFuseSector : ProgMemoryRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceConfig;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.DeviceConfig;
 
         /// <summary> Gets the list of configuration registers definitions. </summary>
         [XmlElement(ElementName = "DCRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DCRDef))]
         [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(ProgByteAdjustPoint))]
         public List<object> Defs { get; set; }
 
+        [XmlIgnore]
+        public IEnumerable<IDeviceFusesConfig> Fuses
+        {
+            get
+            {
+                foreach (var f in Defs.OfType<IDeviceFusesConfig>())
+                {
+                    yield return f;
+                }
+            }
+
+        }
         #region IMemProgramRegionAcceptor implementation
 
         /// <summary>
@@ -1624,9 +1440,9 @@ namespace Reko.Libraries.Microchip
     /// Background debugger vector memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class BACKBUGVectorSector : ProgMemoryRegion
+    public sealed class BACKBUGVectorSector : ProgMemoryRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Debugger;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.Debugger;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -1669,9 +1485,9 @@ namespace Reko.Libraries.Microchip
     /// Data EEPROM memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class EEDataSector : ProgMemorySection
+    public sealed class EEDataSector : ProgMemorySection, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.EEData;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.EEData;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -1714,23 +1530,25 @@ namespace Reko.Libraries.Microchip
     /// Device Information Area (DIA) register.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceRegister : MemProgramSymbolAcceptorBase
+    public sealed class DeviceRegister : MemProgramSymbolAcceptorBase, IDeviceInfoRegister
     {
         /// <summary> Gets the address of the register. </summary>
-        [XmlIgnore] public int Addr { get; private set; }
+        [XmlIgnore]
+        public int Addr { get; private set; }
 
         /// <summary> Gets the name of the register. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the bit width of the register. </summary>
-        [XmlIgnore] public int NzWidth { get; private set; }
+        [XmlIgnore]
+        public int BitWidth { get; private set; }
 
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToInt32Ex(); }
 
 
         #region IMemProgramSymbolAcceptor interface
@@ -1778,11 +1596,12 @@ namespace Reko.Libraries.Microchip
     {
 
         /// <summary> Gets the starting memory address of the DIA registers. </summary>
-        [XmlIgnore] public int Addr { get; private set; }
+        [XmlIgnore]
+        public int Addr { get; private set; }
 
         /// <summary> Gets the name of the DIA registers array. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         [XmlElement(ElementName = "Register", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DeviceRegister))]
         [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(ProgByteAdjustPoint))]
@@ -1833,13 +1652,39 @@ namespace Reko.Libraries.Microchip
     /// Device Information Area memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DIASector : ProgMemoryRegion
+    public sealed class DIASector : ProgMemoryRegion, IPICMemoryRegion, IDeviceInfoSector
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceInfoAry;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.DeviceInfoAry;
 
         /// <summary> Gets the list of register arrays. </summary>
         [XmlElement(ElementName = "RegisterArray", Form = XmlSchemaForm.None, Namespace = "")]
         public List<DIARegisterArray> RegisterArrays { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<IDeviceInfoRegister> Registers
+        {
+            get
+            {
+                foreach (var ra in RegisterArrays)
+                {
+                    foreach (var r in ra.Registers)
+                    {
+                        switch (r)
+                        {
+                            case DeviceRegister dreg:
+                                yield return dreg;
+                                break;
+
+                            case ProgByteAdjustPoint adj:
+                                break;
+
+                            default:
+                                throw new InvalidOperationException($"Invalid PIC device info register in '{ra.Name}' : {r.GetType()}");
+                        }
+                    }
+                }
+            }
+        }
 
 
         #region IMemProgramRegionAcceptor implementation
@@ -1883,13 +1728,23 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Information memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCISector : ProgMemoryRegion
+    public sealed class DCISector : ProgMemoryRegion, IPICMemoryRegion, IDeviceInfoSector
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceConfigInfo;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.DeviceConfigInfo;
 
         /// <summary> Gets the list of configuration information registers. </summary>
         [XmlElement(ElementName = "Register", Form = XmlSchemaForm.None, Namespace = "")]
-        public List<DeviceRegister> Registers { get; set; }
+        public List<DeviceRegister> DCIRegisters { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<IDeviceInfoRegister> Registers
+        {
+            get
+            {
+                foreach (var r in DCIRegisters)
+                    yield return r;
+            }
+        }
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -1932,9 +1787,9 @@ namespace Reko.Libraries.Microchip
     /// External Code memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ExtCodeSector : ProgMemoryRegion
+    public sealed class ExtCodeSector : ProgMemoryRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.ExtCode;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.ExtCode;
 
         #region IMemProgramRegionAcceptor implementation
 
@@ -1980,14 +1835,15 @@ namespace Reko.Libraries.Microchip
     public sealed class VectorArea
     {
         /// <summary> Gets the bytes size of the area. </summary>
-        [XmlIgnore] public int NzSize { get; private set; }
+        [XmlIgnore]
+        public int Size { get; private set; }
 
         /// <summary> Gets the identifier of the vector area. </summary>
         [XmlAttribute(AttributeName = "regionid", Form = XmlSchemaForm.None, Namespace = "")]
         public string RegionID { get; set; }
 
         [XmlAttribute(AttributeName = "nzsize", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzsizeformatted { get => $"0x{NzSize:X}"; set => NzSize = value.ToInt32Ex(); }
+        public string _nzsizeformatted { get => $"0x{Size:X}"; set => Size = value.ToInt32Ex(); }
 
     }
 
@@ -1997,23 +1853,23 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ProgramSpace
     {
-        public ProgramSpace() { }
-
-
         /// <summary> Gets the list of program memory sectors. </summary>
         [XmlElement(ElementName = "CodeSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(CodeSector))]
+        [XmlElement(ElementName = "ExtCodeSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(ExtCodeSector))]
         [XmlElement(ElementName = "CalDataZone", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(CalDataZone))]
-        [XmlElement(ElementName = "TestZone", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(TestZone))]
         [XmlElement(ElementName = "UserIDSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(UserIDSector))]
         [XmlElement(ElementName = "RevisionIDSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(RevisionIDSector))]
         [XmlElement(ElementName = "DeviceIDSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DeviceIDSector))]
-        [XmlElement(ElementName = "ConfigFuseSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(ConfigFuseSector))]
         [XmlElement(ElementName = "BACKBUGVectorSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(BACKBUGVectorSector))]
         [XmlElement(ElementName = "EEDataSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(EEDataSector))]
+        public List<ProgMemoryRegion> CodeSectors { get; set; }
+
+        [XmlElement(ElementName = "ConfigFuseSector", Form = XmlSchemaForm.None, Namespace = "")]
+        public ConfigFuseSector FusesSector { get; set; }
+
         [XmlElement(ElementName = "DIASector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DIASector))]
         [XmlElement(ElementName = "DCISector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DCISector))]
-        [XmlElement(ElementName = "ExtCodeSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(ExtCodeSector))]
-        public List<ProgMemoryRegion> Sectors { get; set; }
+        public List<ProgMemoryRegion> InfoSectors { get; set; }
 
         /// <summary> Gets the list of interrupt vector area. </summary>
         [XmlElement(ElementName = "VectorArea", Form = XmlSchemaForm.None, Namespace = "")]
@@ -2108,20 +1964,43 @@ namespace Reko.Libraries.Microchip
     /// <summary>
     /// A data memory addresses range. Must be inherited.
     /// </summary>
-    public abstract class DataMemoryRange : MemoryAddrRange, IMemoryAddrRange
+    public abstract class DataMemoryRange : MemoryAddrRange, IPICMemoryAddrRange
     {
-        public override MemoryDomain MemoryDomain => MemoryDomain.Data;
+        public override PICMemoryDomain MemoryDomain => PICMemoryDomain.Data;
     }
 
     /// <summary>
     /// A Data memory region. Must be inherited.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class DataMemoryRegion : DataMemoryRange, IMemoryRegion, IMemDataRegionAcceptor
+    public abstract class DataMemoryRegion : DataMemoryRange, IPICMemoryRegion, IMemDataRegionAcceptor
     {
         /// <summary> Gets the identifier of the region. </summary>
         [XmlAttribute(AttributeName = "regionid", Form = XmlSchemaForm.None, Namespace = "")]
         public string RegionID { get; set; }
+
+        /// <summary> Gets a value indicating whether this memory region is a section. </summary>
+        [XmlIgnore]
+        public virtual bool IsSection { get => false; set { } }
+
+        /// <summary> Gets the textual description of the section. </summary>
+        [XmlIgnore]
+        public virtual string SectionDesc { get => string.Empty; set { } }
+
+        /// <summary> Gets the name of the section. </summary>
+        [XmlIgnore]
+        public virtual string SectionName { get => string.Empty; set { } }
+
+        /// <summary> Gets the shadow identifier reference, if any. </summary>
+        [XmlIgnore]
+        public virtual string ShadowIDRef { get => string.Empty; set { } }
+
+        /// <summary> Gets the shadow memory address offset, if any. </summary>
+        [XmlIgnore]
+        public virtual int ShadowOffset { get => 0; set { } }
+
+        [XmlIgnore]
+        public virtual int Bank { get => -1; set { } }
 
 
         #region IMemDataRegionAcceptor interface
@@ -2165,10 +2044,11 @@ namespace Reko.Libraries.Microchip
     /// A memory banked region. Must be inherited.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class DataMemoryBankedRegion : DataMemoryRegion, IBankedMemoryRegion
+    public abstract class DataMemoryBankedRegion : DataMemoryRegion, IPICMemoryRegion
     {
         /// <summary> Gets the memory bank number. </summary>
-        [XmlIgnore] public int Bank { get; private set; }
+        [XmlIgnore]
+        public override int Bank { get; set; }
 
         [XmlAttribute(AttributeName = "bank", Form = XmlSchemaForm.None, Namespace = "")]
         public string _bankFormatted { get => $"{Bank}"; set => Bank = value.ToInt32Ex(); }
@@ -2182,7 +2062,8 @@ namespace Reko.Libraries.Microchip
     public sealed class DataByteAdjustPoint : MemDataSymbolAcceptorBase, IAdjustPoint
     {
         /// <summary> Gets the relative byte offset to add for adjustment. </summary>
-        [XmlIgnore] public int Offset { get; private set; }
+        [XmlIgnore]
+        public int Offset { get; private set; }
 
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         public string _offsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
@@ -2236,7 +2117,8 @@ namespace Reko.Libraries.Microchip
     {
 
         /// <summary> Gets the relative bit offset to add for adjustment. </summary>
-        [XmlIgnore] public int Offset { get; private set; }
+        [XmlIgnore]
+        public int Offset { get; private set; }
 
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         public string _offsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
@@ -2285,11 +2167,11 @@ namespace Reko.Libraries.Microchip
     /// SFR Field semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRFieldSemantic : MemDataSymbolAcceptorBase
+    public sealed class SFRFieldSemantic : MemDataSymbolAcceptorBase, ISFRFieldSemantic
     {
         /// <summary> Gets the textual description of the semantic.</summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets the "when" condition of the semantic. </summary>
         [XmlAttribute(AttributeName = "when", Form = XmlSchemaForm.None, Namespace = "")]
@@ -2338,24 +2220,27 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class SFRFieldDef : MemDataSymbolAcceptorBase
+    public sealed class SFRFieldDef : MemDataSymbolAcceptorBase, ISFRBitField
     {
         /// <summary> Gets the bit width of this SFR field. </summary>
-        [XmlIgnore] public uint NzWidth { get; set; }
+        [XmlIgnore]
+        public byte BitWidth { get; set; }
 
         /// <summary> Gets the bit position/address (zero-based) of this SFR field. </summary>
-        [XmlIgnore] public byte BitPos { get; set; }
+        [XmlIgnore]
+        public byte BitPos { get; set; }
 
         /// <summary> Gets the bit mask of this SFR field. </summary>
-        [XmlIgnore] public uint Mask { get; set; }
+        [XmlIgnore]
+        public int BitMask { get; set; }
 
         /// <summary> Gets the name of this SFR Field. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the textual description of this SFR Field. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets a value indicating whether this SFR Field is hidden to language tools. </summary>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
@@ -2374,23 +2259,26 @@ namespace Reko.Libraries.Microchip
         public List<SFRFieldSemantic> SFRFieldSemantics { get; set; }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
 
         [XmlAttribute(AttributeName = "bitpos", Form = XmlSchemaForm.None, Namespace = "")]
         public string _bitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
 
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _maskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToUInt32Ex(); }
+        public string _maskFormatted { get => $"0x{BitMask:X}"; set => BitMask = value.ToInt32Ex(); }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsHiddenSpecified { get => IsHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsIDEHiddenSpecified { get => IsIDEHidden; set { } }
 
+        [XmlIgnore]
+        public IEnumerable<ISFRFieldSemantic> FieldSemantics
+            => SFRFieldSemantics.Select(p => p).Cast<ISFRFieldSemantic>();
 
         #region IMemDataSymbolAcceptor interface
 
@@ -2428,7 +2316,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"SFRBitField={CName} @{BitPos}[{NzWidth}]";
+            => $"SFRBitField={Name} @{BitPos}[{BitWidth}]";
     }
 
     /// <summary>
@@ -2545,27 +2433,35 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class SFRDef : MemDataSymbolAcceptorBase
+    public sealed class SFRDef : MemDataSymbolAcceptorBase, ISFRRegister
     {
         /// <summary> Gets the data memory address of this SFR. </summary>
-        [XmlIgnore] public uint Addr { get; private set; }
+        [XmlIgnore]
+        public uint Addr { get; private set; }
 
         /// <summary> Gets the name of this SFR. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the textual description of this SFR. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets the bit width of this SFR. </summary>
-        [XmlIgnore] public uint NzWidth { get; private set; }
+        [XmlIgnore]
+        public byte BitWidth { get; private set; }
+
+        /// <summary> Gets the bit position of this SFR when under a joined SFR. </summary>
+        [XmlIgnore]
+        public byte BitPos { get; set; } = 0;
 
         /// <summary> Gets the byte width of this SFR. </summary>
-        [XmlIgnore] public uint ByteWidth => (NzWidth + 7) >> 3;
+        [XmlIgnore]
+        public int ByteWidth => (BitWidth + 7) >> 3;
 
         /// <summary> Gets the implemented bits mask of this SFR. </summary>
-        [XmlIgnore] public uint Impl { get; private set; }
+        [XmlIgnore]
+        public uint ImplMask { get; private set; }
 
         /// <summary> Gets the access mode bits descriptor for this SFR. </summary>
         [XmlAttribute(AttributeName = "access", Form = XmlSchemaForm.None, Namespace = "")]
@@ -2608,36 +2504,69 @@ namespace Reko.Libraries.Microchip
         public string NMMRID { get; set; }
 
         /// <summary> Gets a value indicating whether this SFR is Non-Memory-Mapped. </summary>
-        [XmlIgnore] public bool IsNMMR { get => !String.IsNullOrEmpty(NMMRID); set { } }
+        [XmlIgnore]
+        public bool IsNMMR { get => !String.IsNullOrEmpty(NMMRID); set { } }
+
+        [XmlIgnore]
+        public IEnumerable<ISFRBitField> BitFields
+        {
+            get
+            {
+                foreach (var smod in SFRModes)
+                {
+                    int bitPos = 0;
+                    foreach (var bf in smod.Fields)
+                    {
+                        switch (bf)
+                        {
+                            case SFRFieldDef sfd:
+                                sfd.BitPos = (byte)bitPos;
+                                bitPos += sfd.BitWidth;
+                                yield return sfd;
+                                break;
+
+                            case DataBitAdjustPoint badj:
+                                bitPos += badj.Offset;
+                                break;
+
+                            default:
+                                throw new InvalidOperationException($"Invalid SFR field type in '{Name}': {bf.GetType()}");
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary> Gets the list of modes for this SFR. </summary>
         [XmlArray("SFRModeList", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("SFRMode", typeof(SFRMode), Form = XmlSchemaForm.None, Namespace = "", IsNullable = false)]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRMode> SFRModes { get; set; }
 
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
+
+        [XmlAttribute(AttributeName = "bitpos", Form = XmlSchemaForm.None, Namespace = "")]
+        public string _bitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
 
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _implFormatted { get => $"0x{Impl:X}"; set => Impl = value.ToUInt32Ex(); }
+        public string _implFormatted { get => $"0x{ImplMask:X}"; set => ImplMask = value.ToUInt32Ex(); }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsIndirectSpecified { get => IsIndirect; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsVolatileSpecified { get => IsVolatile; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsHiddenSpecified { get => IsHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
-        [XmlIgnore, DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        [XmlIgnore]
         public bool IsIDEHiddenSpecified { get => IsIDEHidden; set { } }
 
 
@@ -2677,7 +2606,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"SFR '{CName}' @{(IsNMMR ? $"NMMRID({NMMRID})" : $"0x{Addr:X}")}";
+            => $"SFR '{Name}' @{(IsNMMR ? $"NMMRID({NMMRID})" : $"0x{Addr:X}")}";
     }
 
     /// <summary>
@@ -2685,23 +2614,25 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class Mirror : MemDataSymbolAcceptorBase
+    public sealed class Mirror : MemDataSymbolAcceptorBase, IPICMirroringRegion
     {
         /// <summary> Gets the memory address of the mirror. </summary>
-        [XmlIgnore] public int Addr { get; private set; }
+        [XmlIgnore]
+        public uint Addr { get; private set; }
 
         /// <summary> Gets the size in bytes of the mirrored area. </summary>
-        [XmlIgnore] public int NzSize { get; private set; }
+        [XmlIgnore]
+        public uint Size { get; private set; }
 
         /// <summary> Gets the region identifier reference of the mirrored memory region. </summary>
         [XmlAttribute(AttributeName = "regionidref", Form = XmlSchemaForm.None, Namespace = "")]
-        public string RegionIDRef { get; set; }
+        public string TargetRegionID { get; set; }
 
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
+        public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
 
         [XmlAttribute(AttributeName = "nzsize", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzSizeFormatted { get => $"0x{NzSize:X}"; set => NzSize = value.ToInt32Ex(); }
+        public string _nzSizeFormatted { get => $"0x{Size:X}"; set => Size = value.ToUInt32Ex(); }
 
 
         #region IMemDataSymbolAcceptor interface
@@ -2740,7 +2671,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"Mirror '{RegionIDRef}' @0x{Addr:X}[{NzSize}]";
+            => $"Mirror '{TargetRegionID}' @0x{Addr:X}[{Size}]";
     }
 
     /// <summary>
@@ -2748,21 +2679,23 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class JoinedSFRDef : MemDataSymbolAcceptorBase
+    public sealed class JoinedSFRDef : MemDataSymbolAcceptorBase, IJoinedRegister
     {
         /// <summary> Gets the memory address of the joined SFRs. </summary>
-        [XmlIgnore] public uint Addr { get; private set; }
+        [XmlIgnore]
+        public uint Addr { get; private set; }
 
         /// <summary> Gets the bit width of the joined SFR. </summary>
-        [XmlIgnore] public uint NzWidth { get; set; }
+        [XmlIgnore]
+        public byte BitWidth { get; set; }
 
         /// <summary> Gets the name of the joined SFR. </summary>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         /// <summary> Gets the textual description of the joined SFR. </summary>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
+        public string Description { get; set; }
 
         /// <summary> Gets the list of adjacent SFRs composing the join. </summary>
         [XmlElement("SFRDef", Form = XmlSchemaForm.None, Namespace = "")]
@@ -2773,8 +2706,18 @@ namespace Reko.Libraries.Microchip
         public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
 
+
+        [XmlIgnore]
+        public IEnumerable<ISFRRegister> ChildSFRs
+        {
+            get
+            {
+                foreach (var sfr in SFRs)
+                    yield return sfr;
+            }
+        }
 
         #region IMemDataSymbolAcceptor interface
 
@@ -2812,7 +2755,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"Joined SFR '{CName}' @0x{Addr:X}[{NzWidth}]";
+            => $"Joined SFR '{Name}' @0x{Addr:X}[{BitWidth}]";
     }
 
     /// <summary>
@@ -2867,7 +2810,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"Select '{SFR.CName}' when '{When}'";
+            => $"Select '{SFR.Name}' when '{When}'";
 
     }
 
@@ -2879,13 +2822,16 @@ namespace Reko.Libraries.Microchip
     public sealed class MuxedSFRDef : MemDataSymbolAcceptorBase
     {
         /// <summary> Gets the memory address of the multiplexed SFRs. </summary>
-        [XmlIgnore] public int Addr { get; private set; }
+        [XmlIgnore]
+        public int Addr { get; private set; }
 
         /// <summary> Gets the bit width of the multiplex. </summary>
-        [XmlIgnore] public int NzWidth { get; private set; }
+        [XmlIgnore]
+        public byte BitWidth { get; private set; }
 
         /// <summary> Gets the byte width of the multiplex. </summary>
-        [XmlIgnore] public int ByteWidth => (NzWidth + 7) >> 3;
+        [XmlIgnore]
+        public int ByteWidth => (BitWidth + 7) >> 3;
 
         /// <summary> Gets the list of selections of SFRs. </summary>
         [XmlElement(ElementName = "SelectSFR", Form = XmlSchemaForm.None, Namespace = "")]
@@ -2895,7 +2841,7 @@ namespace Reko.Libraries.Microchip
         public string _addrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); }
 
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _nzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); }
+        public string _nzWidthFormatted { get => $"{BitWidth}"; set => BitWidth = value.ToByteEx(); }
 
 
         #region IMemDataSymbolAcceptor interface
@@ -2934,7 +2880,7 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         private string _debugDisplay
-            => $"Muxed SFR @0x{Addr:X}[{NzWidth}]";
+            => $"Muxed SFR @0x{Addr:X}[{BitWidth}]";
 
     }
 
@@ -2995,19 +2941,29 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class SFRDataSector : DataMemoryBankedRegion
+    public sealed class SFRDataSector : DataMemoryBankedRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.SFR;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.SFR;
 
-        /// <summary> Gets the list of SFRs (simple, joined, multiplexed, mirrored, DMA, adjusted) defined in this memory region. </summary>
-        [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRDef))]
-        [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DataByteAdjustPoint))]
-        [XmlElement(ElementName = "JoinedSFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(JoinedSFRDef))]
-        [XmlElement(ElementName = "MuxedSFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(MuxedSFRDef))]
-        [XmlElement(ElementName = "Mirror", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(Mirror))]
-        [XmlElement(ElementName = "RegisterMirror", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DMARegisterMirror))]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public List<object> SFRs { get; set; }
+        /// <summary> Gets the list of SFRs. </summary>
+        [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "")]
+        public List<SFRDef> SFRs { get; set; }
+
+        /// <summary> Gets the list of joined SFRs. </summary>
+        [XmlElement(ElementName = "JoinedSFRDef", Form = XmlSchemaForm.None, Namespace = "")]
+        public List<JoinedSFRDef> JoinedSFRs { get; set; }
+
+        /// <summary> Gets the list of multiplexed SFRs. </summary>
+        [XmlElement(ElementName = "MuxedSFRDef", Form = XmlSchemaForm.None, Namespace = "")]
+        public List<MuxedSFRDef> MuxedSFRs { get; set; }
+
+        /// <summary> Gets the list of mirrored SFRs. </summary>
+        [XmlElement(ElementName = "Mirror", Form = XmlSchemaForm.None, Namespace = "")]
+        public List<Mirror> MirrorSFRs { get; set; }
+
+        /// <summary> Gets the list of DMA mirrored SFRs. </summary>
+        [XmlElement(ElementName = "RegisterMirror", Form = XmlSchemaForm.None, Namespace = "")]
+        public List<DMARegisterMirror> DMARegisters { get; set; }
 
 
         #region IMemDataRegionAcceptor interface
@@ -3055,16 +3011,17 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class GPRDataSector : DataMemoryBankedRegion
+    public sealed class GPRDataSector : DataMemoryBankedRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.GPR;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.GPR;
 
-       /// <summary> Gets the shadow identifier reference, if any. </summary>
+        /// <summary> Gets the shadow identifier reference, if any. </summary>
         [XmlAttribute(AttributeName = "shadowidref", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ShadowIDRef { get; set; }
+        public override string ShadowIDRef { get; set; }
 
         /// <summary> Gets the shadow memory address offset. </summary>
-        [XmlIgnore] public int ShadowOffset { get; private set; }
+        [XmlIgnore]
+        public override int ShadowOffset { get; set; }
 
         [XmlAttribute(AttributeName = "shadowoffset", Form = XmlSchemaForm.None, Namespace = "")]
         public string _shadowOffsetFormatted { get => $"0x{ShadowOffset:X}"; set => ShadowOffset = value.ToInt32Ex(); }
@@ -3115,16 +3072,16 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class DPRDataSector : DataMemoryBankedRegion
+    public sealed class DPRDataSector : DataMemoryBankedRegion, IPICMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DPR;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.DPR;
 
         /// <summary> Gets the shadowed memory region identifier reference. </summary>
         [XmlAttribute(AttributeName = "shadowidref", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ShadowIDRef { get; set; }
+        public override string ShadowIDRef { get; set; }
 
         /// <summary> Gets the shadow memory offset. </summary>
-        [XmlIgnore] public int ShadowOffset { get; private set; }
+        [XmlIgnore] public override int ShadowOffset { get; set; }
 
         /// <summary> Gets the list of SFRs as Dual Port registers. </summary>
         [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRDef))]
@@ -3177,68 +3134,20 @@ namespace Reko.Libraries.Microchip
     }
 
     /// <summary>
-    /// Emulator memory region.
-    /// </summary>
-    [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class EmulatorZone : DataMemoryRegion
-    {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Emulator;
-
-        #region IMemDataRegionAcceptor interface
-
-        /// <summary>
-        /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this emulator zone data memory region.
-        /// </summary>
-        /// <param name="v">The data memory region visitor to accept.</param>
-        public override void Accept(IMemDataRegionVisitor v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" function for this emulator zone data memory region.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
-        /// <param name="v">The data memory region visitor to accept.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
-
-        /// <summary>
-        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" function for this emulator zone data memory region.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
-        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
-        /// <param name="v">The data memory region visitor to accept.</param>
-        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
-        /// <returns>
-        /// A result of generic type <typeparamref name="T"/>.
-        /// </returns>
-        public override T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
-
-        #endregion
-
-        private string _debugDisplay
-            => $"Emulator zone";
-
-    }
-
-    /// <summary>
     /// Non-Memory-Mapped-Register (NMMR) definitions.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class NMMRPlace : MemDataRegionAcceptorBase
     {
+        public PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.NNMR;
+
         /// <summary> Gets the identifier of the NMMR region. </summary>
         [XmlAttribute(AttributeName = "regionid", Form = XmlSchemaForm.None, Namespace = "")]
         public string RegionID { get; set; }
 
         /// <summary> Gets the list of SFR definitions. </summary>
         [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRDef> SFRDefs { get; set; }
 
 
@@ -3289,16 +3198,19 @@ namespace Reko.Libraries.Microchip
     [DebuggerDisplay("{_debugDisplay,nq}")]
     public sealed class LinearDataSector : DataMemoryRange, IMemDataRegionAcceptor
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Linear;
+        public override PICMemorySubDomain MemorySubDomain => PICMemorySubDomain.Linear;
 
         /// <summary> Gets the bytes size of the linear memory bank. </summary>
-        [XmlIgnore] public int BankSize { get; private set; }
+        [XmlIgnore]
+        public int BankSize { get; private set; }
 
         /// <summary> Gets the beginning address of the linear memory bank. </summary>
-        [XmlIgnore] public uint BlockBeginAddr { get; private set; }
+        [XmlIgnore]
+        public uint BlockBeginAddr { get; private set; }
 
         /// <summary> Gets the ending address (+1) of the linear memory bank. </summary>
-        [XmlIgnore] public uint BlockEndAddr { get; private set; }
+        [XmlIgnore]
+        public uint BlockEndAddr { get; private set; }
 
         [XmlAttribute(AttributeName = "banksize", Form = XmlSchemaForm.None, Namespace = "")]
         public string _bankSizeFormatted { get => $"0x{BankSize:X}"; set => BankSize = value.ToInt32Ex(); }
@@ -3360,10 +3272,10 @@ namespace Reko.Libraries.Microchip
         [XmlElement(ElementName = "SFRDataSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRDataSector))]
         [XmlElement(ElementName = "DPRDataSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DPRDataSector))]
         [XmlElement(ElementName = "GPRDataSector", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(GPRDataSector))]
-        [XmlElement(ElementName = "EmulatorZone", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(EmulatorZone))]
-        [XmlElement(ElementName = "NMMRPlace", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(NMMRPlace))]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public List<object> Regions { get; set; }
+        public List<DataMemoryBankedRegion> RegistersRegions { get; set; }
+
+        [XmlElement(ElementName = "NMMRPlace", Form = XmlSchemaForm.None, Namespace = "")]
+        public NMMRPlace NMMRPlace { get; set; }
 
     }
 
@@ -3406,20 +3318,16 @@ namespace Reko.Libraries.Microchip
     /// PIC definition. (Version 1)
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [XmlRoot(ElementName ="PIC", Namespace = "", IsNullable = false)]
+    [XmlRoot(ElementName = "PIC", Namespace = "", IsNullable = false)]
     [DebuggerDisplay("{_debugDisplay,nq}")]
-    public sealed class PIC_v1 : IPIC
+    public sealed class PIC_v1
     {
-        // Maps the 'InstructionsetID' identifiers to internal code.
-        private readonly static Dictionary<string, InstructionSetID> mapInstrID = new Dictionary<string, InstructionSetID>() {
-                { "pic16f77", InstructionSetID.PIC16 },
-                { "cpu_mid_v10", InstructionSetID.PIC16_ENHANCED },
-                { "cpu_p16f1_v1", InstructionSetID.PIC16_FULLFEATURED },
-                { "egg", InstructionSetID.PIC18_EXTENDED },
-                { "pic18", InstructionSetID.PIC18 },
-                { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
-            };
+        /// <summary>
+        /// Gets the version number of the interface
+        /// </summary>
+        public int Version { get; set; } = 1;
 
+        // Maps the 'InstructionsetID' identifiers to internal code.
         /// <summary> Gets the PIC name from the XML. </summary>
         [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
         public string Name { get; set; }
@@ -3441,7 +3349,8 @@ namespace Reko.Libraries.Microchip
         public InstructionSet InstructionSet { get; set; }
 
         /// <summary> Gets the unique processor identifier from the XML. Used by development tools. </summary>
-        [XmlIgnore] public int ProcID { get; private set; }
+        [XmlIgnore]
+        public int ProcID { get; private set; }
 
         /// <summary> Gets the data sheet identifier of the PIC from the XML. </summary>
         [XmlAttribute(AttributeName = "dsid", Form = XmlSchemaForm.None, Namespace = "")]
@@ -3455,7 +3364,7 @@ namespace Reko.Libraries.Microchip
         /// Overridden by the data space definition containing non-empty extended-mode-only memory space.
         /// </summary>
         [XmlAttribute(AttributeName = "isextended", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
-        public bool IsExtended { get => DataSpace?.ExtendedModeOnly?.Count > 0; set { } }
+        public bool HasExtendedMode { get => DataSpace?.ExtendedModeOnly?.Count > 0; set { } }
 
         /// <summary> Gets a value indicating whether this PIC supports freezing of peripherals from the XML. </summary>
         [XmlAttribute(AttributeName = "hasfreeze", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
@@ -3481,7 +3390,6 @@ namespace Reko.Libraries.Microchip
         /// <summary> Gets a list of interrupts (IRQ) from the XML. </summary>
         [XmlArray("InterruptList", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("Interrupt", typeof(Interrupt), Form = XmlSchemaForm.None, IsNullable = false, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<Interrupt> Interrupts { get; set; }
 
         /// <summary> Gets the program memory space definitions from the XML. </summary>
@@ -3495,7 +3403,6 @@ namespace Reko.Libraries.Microchip
         /// <summary> Gets the list of SFRs in the DMA space from the XML. </summary>
         [XmlArray("DMASpace", Form = XmlSchemaForm.None, Namespace = "")]
         [XmlArrayItem("SFRDataSector", typeof(SFRDataSector), IsNullable = false, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public List<SFRDataSector> DMASpace { get; set; }
 
         /// <summary> Gets the list of linear data memory regions in the indirect space from the XML. </summary>
@@ -3506,41 +3413,13 @@ namespace Reko.Libraries.Microchip
         [XmlAttribute(AttributeName = "procid", Form = XmlSchemaForm.None, Namespace = "")]
         public string _procIDFormatted { get => $"0x{ProcID:X}"; set => ProcID = value.ToInt32Ex(); }
 
-        /// <summary>
-        /// Gets the instruction set identifier of this PIC as a value from the <see cref="InstructionSetID"/> enumeration.
-        /// </summary>
         [XmlIgnore]
-        public InstructionSetID GetInstructionSetID
-        {
-            get
-            {
-                if (InstructionSet == null)
-                    return InstructionSetID.UNDEFINED;
-                if (!mapInstrID.TryGetValue(InstructionSet.ID, out InstructionSetID id))
-                {
-                    id = InstructionSetID.UNDEFINED;
-                    if (Arch == "16xxxx")
-                        id = InstructionSetID.PIC16;
-                    if (Arch == "16Exxx")
-                        id = InstructionSetID.PIC16_FULLFEATURED;
-                    if (Arch == "18xxxx")
-                        id = (IsExtended ? InstructionSetID.PIC18_EXTENDED : InstructionSetID.PIC18);
-                }
-                return id;
-            }
-        }
+        public IPICDescriptor PICDescriptorInterface
+            => picintf = picintf ?? new PIC_v1_Interface(this);
 
-        /// <summary>
-        /// Gets a value indicating whether this PIC is belonging to the PIC18 family.
-        /// </summary>
-        [XmlIgnore] public bool IsPIC18 => GetInstructionSetID >= InstructionSetID.PIC18;
+        private PIC_v1_Interface picintf = null;
 
-        [XmlIgnore] public IArchDef ArchDefinitions => ArchDef;
-
-        [XmlIgnore] public string InstructionSetFamily => InstructionSet.ID;
-
-        private string _debugDisplay
-            => $"PIC (v1) '{Name}' ({Arch}, {GetInstructionSetID}) ";
+        private string _debugDisplay => $"PIC (v1) '{Name}' ({Arch}) ";
 
     }
 

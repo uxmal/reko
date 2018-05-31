@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         {
             foreach (var rgn in PICMemoryDescriptor.ProgramRegions)
             {
-                Assert.AreEqual(MemoryDomain.Prog, rgn.TypeOfMemory);
+                Assert.AreEqual(PICMemoryDomain.Prog, rgn.TypeOfMemory);
                 Assert.IsNotNull(PICMemoryDescriptor.GetProgramRegion(rgn.RegionName));
                 Assert.IsTrue(rgn.Size > 0, $"Invalid size for '{rgn.RegionName}' = {rgn.Size}");
                 AddressRange virtualrange = rgn.LogicalByteAddrRange;
@@ -50,9 +50,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         {
             foreach (var rgn in PICMemoryDescriptor.DataRegions)
             {
-                Assert.AreEqual(MemoryDomain.Data, rgn.TypeOfMemory);
+                Assert.AreEqual(PICMemoryDomain.Data, rgn.TypeOfMemory);
                 Assert.IsNotNull(PICMemoryDescriptor.GetDataRegionByName(rgn.RegionName));
-                if (rgn.SubtypeOfMemory != MemorySubDomain.NNMR)
+                if (rgn.SubtypeOfMemory != PICMemorySubDomain.NNMR)
                 {
                     Assert.IsTrue(rgn.Size > 0, $"Invalid size for '{rgn.RegionName}' = {rgn.Size}");
                     AddressRange virtualrange = rgn.LogicalByteAddrRange;

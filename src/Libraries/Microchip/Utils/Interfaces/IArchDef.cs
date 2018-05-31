@@ -23,39 +23,27 @@ using System.Collections.Generic;
 namespace Reko.Libraries.Microchip
 {
     /// <summary>
-    /// This interface provides the generic characteristics of the PIC architecture.
+    /// This interface provides access to the generic characteristics of the PIC architecture.
     /// </summary>
     public interface IArchDef
     {
-        /// <summary>
-        /// Gets the description of the PIC architecture.
-        /// </summary>
-        string Description { get; set; }
+        /// <summary> Gets the name (16xxxx, 16Exxx, 18xxxx) of the PIC architecture. </summary>
+        string Name { get; }
 
-        /// <summary>
-        /// Gets the name (16xxxx, 16Exxx, 18xxxx) of the PIC architecture.
-        /// </summary>
-        string Name { get; set; }
+        /// <summary> Gets the description of the PIC architecture. </summary>
+        string Description { get; }
 
-        /// <summary>
-        /// Gets the memory traits.
-        /// </summary>
-        IEnumerable<ITrait> MemoryTraits { get; }
-
-        /// <summary>
-        /// Gets address magic offset in the binary image for EEPROM content.
-        /// </summary>
+        /// <summary> Gets address magic offset in the binary image for EEPROM content. </summary>
         uint MagicOffset { get; }
 
-        /// <summary>
-        /// Gets the depth of the hardware stack.
-        /// </summary>
+        /// <summary> Gets the depth of the hardware stack. </summary>
         int HWStackDepth { get; }
 
-        /// <summary>
-        /// Gets the number of memory banks.
-        /// </summary>
+        /// <summary> Gets the number of memory banks. </summary>
         int BankCount { get; }
+
+        /// <summary> Gets the memory traits. </summary>
+        IEnumerable<ITrait> MemoryTraits { get; }
 
     }
 

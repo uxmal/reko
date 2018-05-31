@@ -31,29 +31,29 @@ namespace Reko.Libraries.Microchip
     {
         private readonly static Hashtable subdom2dom = new Hashtable(20)
         {
-            { MemorySubDomain.SFR,      MemoryDomain.Data },
-            { MemorySubDomain.GPR,      MemoryDomain.Data },
-            { MemorySubDomain.DPR,      MemoryDomain.Data },
-            { MemorySubDomain.NNMR,     MemoryDomain.Data },
-            { MemorySubDomain.Emulator, MemoryDomain.Data },
-            { MemorySubDomain.Linear,   MemoryDomain.Data },
-            { MemorySubDomain.DMA,      MemoryDomain.Data },
-            { MemorySubDomain.Code,             MemoryDomain.Prog },
-            { MemorySubDomain.ExtCode,          MemoryDomain.Prog },
-            { MemorySubDomain.EEData,           MemoryDomain.Prog },
-            { MemorySubDomain.DeviceConfig,     MemoryDomain.Prog },
-            { MemorySubDomain.DeviceConfigInfo, MemoryDomain.Prog },
-            { MemorySubDomain.DeviceInfoAry,    MemoryDomain.Prog },
-            { MemorySubDomain.UserID,           MemoryDomain.Prog },
-            { MemorySubDomain.DeviceID,         MemoryDomain.Prog },
-            { MemorySubDomain.RevisionID,       MemoryDomain.Prog },
-            { MemorySubDomain.Debugger,         MemoryDomain.Prog },
-            { MemorySubDomain.Calib,            MemoryDomain.Prog },
-            { MemorySubDomain.Test,             MemoryDomain.Prog },
+            { PICMemorySubDomain.SFR,      PICMemoryDomain.Data },
+            { PICMemorySubDomain.GPR,      PICMemoryDomain.Data },
+            { PICMemorySubDomain.DPR,      PICMemoryDomain.Data },
+            { PICMemorySubDomain.NNMR,     PICMemoryDomain.Data },
+            { PICMemorySubDomain.Emulator, PICMemoryDomain.Data },
+            { PICMemorySubDomain.Linear,   PICMemoryDomain.Data },
+            { PICMemorySubDomain.DMA,      PICMemoryDomain.Data },
+            { PICMemorySubDomain.Code,             PICMemoryDomain.Prog },
+            { PICMemorySubDomain.ExtCode,          PICMemoryDomain.Prog },
+            { PICMemorySubDomain.EEData,           PICMemoryDomain.Prog },
+            { PICMemorySubDomain.DeviceConfig,     PICMemoryDomain.Prog },
+            { PICMemorySubDomain.DeviceConfigInfo, PICMemoryDomain.Prog },
+            { PICMemorySubDomain.DeviceInfoAry,    PICMemoryDomain.Prog },
+            { PICMemorySubDomain.UserID,           PICMemoryDomain.Prog },
+            { PICMemorySubDomain.DeviceID,         PICMemoryDomain.Prog },
+            { PICMemorySubDomain.RevisionID,       PICMemoryDomain.Prog },
+            { PICMemorySubDomain.Debugger,         PICMemoryDomain.Prog },
+            { PICMemorySubDomain.Calib,            PICMemoryDomain.Prog },
+            { PICMemorySubDomain.Test,             PICMemoryDomain.Prog },
         };
 
-        public static MemoryDomain GetDomain(this MemorySubDomain subdom)
-            => (MemoryDomain)(subdom2dom[subdom] ?? MemoryDomain.Unknown);
+        public static PICMemoryDomain GetDomain(this PICMemorySubDomain subdom)
+            => (PICMemoryDomain)(subdom2dom[subdom] ?? PICMemoryDomain.Unknown);
 
     }
 

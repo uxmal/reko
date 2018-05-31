@@ -61,19 +61,19 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Query if the memory mapper has a region of given sub-domain type.
         /// </summary>
-        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/> enumeration.</param>
-        public static bool HasSubDomain(MemorySubDomain subdom)
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="PICMemorySubDomain"/> enumeration.</param>
+        public static bool HasSubDomain(PICMemorySubDomain subdom)
             => memoryMap.HasSubDomain(subdom);
 
         /// <summary>
         /// Memory sub-domain location and word sizes.
         /// </summary>
-        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/>
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="PICMemorySubDomain"/>
         ///                      enumeration.</param>
         /// <returns>
         /// A Tuple containing the location size and wordsize. Returns (0,0) if the subdomain does not exist.
         /// </returns>
-        public static (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom)
+        public static (uint LocSize, uint WordSize) SubDomainSizes(PICMemorySubDomain subdom)
             => memoryMap?.SubDomainSizes(subdom)?? (0,0);
 
         /// <summary>
@@ -117,17 +117,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static IEnumerable<IMemoryRegion> DataRegions => memoryMap.DataRegions;
 
         /// <summary>
-        /// Gets the data memory Emulator zone.
-        /// Valid only if the mapper contains a sub-domain <seealso cref="MemorySubDomain.Emulator"/>.
-        /// </summary>
-        /// <value>
-        /// The emulator zone/region.
-        /// </value>
-        public static IMemoryRegion EmulatorZone => memoryMap.EmulatorZone;
-
-        /// <summary>
         /// Gets the Linear Data Memory definition.
-        /// Valid only if the mapper contains a sub-domain <seealso cref="MemorySubDomain.Linear"/>.
+        /// Valid only if the mapper contains a sub-domain <seealso cref="PICMemorySubDomain.Linear"/>.
         /// </summary>
         /// <value>
         /// The Linear Data Memory region.
@@ -279,13 +270,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             memoryMap = null;
         }
 
-        protected void LoadMemDescr(PIC_v1 pic)
+        protected void LoadMemDescr(IPICDescriptor pic)
         {
             deviceConfigDefinitions = PICDeviceConfigDefs.Create(pic);
             memoryMap = CreateMemoryMap(pic);
         }
 
-        protected virtual IPICMemoryMap CreateMemoryMap(PIC_v1 pic)
+        protected virtual IPICMemoryMap CreateMemoryMap(IPICDescriptor pic)
             => throw new NotImplementedException("Missing PIC specific memory map creator.");
 
     }

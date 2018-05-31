@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Libraries.Microchip;
+using Reko.Libraries.Microchip.V1;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -173,7 +174,6 @@ namespace Reko.Tools.genPICdb
         private void WritePICEntry(XDocument xdoc, string subdir, ZipArchive zout)
         {
             var pic = xdoc.ToObject<PIC_v1>();
-            PICPatch.Patch(pic);
             partsinfo.Parts.Add(new PICPart(pic.Name, pic.ProcID));
             var xs = new XmlSerializer(pic.GetType());
             string picname = pic.Name;

@@ -29,17 +29,17 @@ namespace Reko.Libraries.Microchip
         /// Gets the memory domain.
         /// </summary>
         /// <value>
-        /// A value from the enumeration <seealso cref="MemoryDomain"/> enumeration.
+        /// A value from the enumeration <seealso cref="PICMemoryDomain"/> enumeration.
         /// </value>
-        MemoryDomain Domain { get; }
+        PICMemoryDomain Domain { get; }
 
         /// <summary>
         /// Gets the memory sub-domain.
         /// </summary>
         /// <value>
-        /// A value from the enumeration <seealso cref="MemorySubDomain"/> enumeration.
+        /// A value from the enumeration <seealso cref="PICMemorySubDomain"/> enumeration.
         /// </value>
-        MemorySubDomain SubDomain { get; }
+        PICMemorySubDomain SubDomain { get; }
 
     }
 

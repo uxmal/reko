@@ -27,20 +27,21 @@ using Reko.Libraries.Microchip;
 using System.Collections.Generic;
 using System;
 
-namespace Reko.UnitTests.Arch.Microchip.PIC16
+namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
 {
+    using Common;
     using static Common.Sample;
 
     [TestFixture]
-    public class PIC16All_RegistersTests
+    public class PIC16All_RegistersTests : PICRegistersTestsBase
     {
         static PICCrownking db = PICCrownking.GetDB();
 
-        private IEnumerable<PIC_v1> GetSelectedPIC(InstructionSetID isID)
+        private IEnumerable<IPICDescriptor> GetSelectedPIC(InstructionSetID isID)
         {
             foreach (var spic in db.EnumPICList((p) => p.StartsWith("PIC16")))
             {
-                var pic = db.GetPICAsXML(spic).ToObject<PIC_v1>();
+                var pic = db.GetPIC(spic);
                 if (pic.GetInstructionSetID == isID)
                     yield return pic;
             }

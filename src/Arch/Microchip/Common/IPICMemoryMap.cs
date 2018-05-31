@@ -38,7 +38,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The target PIC.
         /// </value>
-        PIC_v1 PIC { get; }
+        IPICDescriptor PIC { get; }
 
         /// <summary>
         /// Gets the PIC execution mode (set is effective for PIC18 only).
@@ -64,18 +64,18 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Query if the memory mapper has a region of given sub-domain type.
         /// </summary>
-        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/> enumeration.</param>
-        bool HasSubDomain(MemorySubDomain subdom);
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="PICMemorySubDomain"/> enumeration.</param>
+        bool HasSubDomain(PICMemorySubDomain subdom);
 
         /// <summary>
         /// Memory sub-domain location and word sizes.
         /// </summary>
-        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/>
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="PICMemorySubDomain"/>
         ///                      enumeration.</param>
         /// <returns>
         /// A Tuple containing the location size and wordsize. Returns (0,0) if the subdomain does not exist.
         /// </returns>
-        (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom);
+        (uint LocSize, uint WordSize) SubDomainSizes(PICMemorySubDomain subdom);
 
         /// <summary>
         /// Gets a program memory region given its name ID.
@@ -143,17 +143,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         IEnumerable<IMemoryRegion> DataRegions { get; }
 
         /// <summary>
-        /// Gets the data memory Emulator zone.
-        /// Valid only if the mapper contains a sub-domain <seealso cref="MemorySubDomain.Emulator"/>.
-        /// </summary>
-        /// <value>
-        /// The emulator zone/region.
-        /// </value>
-        IMemoryRegion EmulatorZone { get; }
-
-        /// <summary>
         /// Gets the Linear Data Memory definition.
-        /// Valid only if the mapper contains a sub-domain <seealso cref="MemorySubDomain.Linear"/>.
+        /// Valid only if the mapper contains a sub-domain <seealso cref="PICMemorySubDomain.Linear"/>.
         /// </summary>
         /// <value>
         /// The Linear Data Memory region.

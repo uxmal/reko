@@ -91,17 +91,17 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         /// <param name="reg">The PIC register containing the bit field.</param>
         /// <param name="sfrfielddef">The bit field definition per PIC XML definition.</param>
-        public PICRegisterBitFieldStorage(PICRegisterStorage reg, SFRFieldDef sfrfielddef)
-            : base(reg, (sfrfielddef.Mask << sfrfielddef.BitPos), sfrfielddef.CName, PrimitiveType.CreateWordFromBits(sfrfielddef.NzWidth))
+        public PICRegisterBitFieldStorage(PICRegisterStorage reg, ISFRBitField sfrfielddef)
+            : base(reg, (uint)(sfrfielddef.BitMask << sfrfielddef.BitPos), sfrfielddef.Name, PrimitiveType.CreateWordFromBits(sfrfielddef.BitWidth))
         {
             SFRField = sfrfielddef;
-            BitFieldSortKey = new PICRegisterBitFieldSortKey(sfrfielddef.BitPos, (byte)sfrfielddef.NzWidth);
+            BitFieldSortKey = new PICRegisterBitFieldSortKey(sfrfielddef.BitPos, (byte)sfrfielddef.BitWidth);
         }
 
         /// <summary>
         /// Gets the bit field definition as defined by Microchip (Crownking DB).
         /// </summary>
-        public SFRFieldDef SFRField { get; }
+        public ISFRBitField SFRField { get; }
 
         /// <summary>
         /// Gets the bit field position in the register (LSb number).

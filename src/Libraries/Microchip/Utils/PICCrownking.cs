@@ -29,6 +29,7 @@ using System.Linq;
 
 namespace Reko.Libraries.Microchip
 {
+    using V1;
     using static PICConstants;
 
     /// <summary>

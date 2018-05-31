@@ -25,9 +25,7 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     public interface IAdjustPoint
     {
-        /// <summary>
-        /// Gets the relative bit/byte offset to add for adjustment of address.
-        /// </summary>
+        /// <summary> Gets the relative bit/byte offset to add for adjustment of address. </summary>
         int Offset { get; }
 
     }

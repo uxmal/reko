@@ -49,12 +49,32 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (dcr is null)
                 throw new ArgumentNullException(nameof(dcr));
             Address = Address.Ptr32((uint)dcr.Addr);
-            Name = dcr.CName;
-            Descr = dcr.Desc;
-            BitWidth = dcr.NzWidth;
-            Access = dcr.Access;
-            Impl = dcr.Impl;
-            DefaultValue = dcr.Default;
+            Name = dcr.Name;
+            Descr = dcr.Description;
+            BitWidth = dcr.BitWidth;
+            Access = dcr.AccessBits;
+            Impl = dcr.ImplMask;
+            DefaultValue = dcr.DefaultValue;
+            fields = new HashSet<DevConfigField>();
+            illegals = new List<DevConfigIllegal>();
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="dcr">The <see cref="IDeviceFusesConfig"/> interface instance describing the device configuration register.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcr"/> is null.</exception>
+        public PICDevConfigRegister(IDeviceFusesConfig dcr)
+        {
+            if (dcr is null)
+                throw new ArgumentNullException(nameof(dcr));
+            Address = Address.Ptr32((uint)dcr.Addr);
+            Name = dcr.Name;
+            Descr = dcr.Description;
+            BitWidth = dcr.BitWidth;
+            Access = dcr.AccessBits;
+            Impl = dcr.ImplMask;
+            DefaultValue = dcr.DefaultValue;
             fields = new HashSet<DevConfigField>();
             illegals = new List<DevConfigIllegal>();
         }
@@ -170,12 +190,25 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (dcrfield is null)
                 throw new ArgumentNullException(nameof(dcrfield));
-            Name = dcrfield.CName;
-            Descr = dcrfield.Desc;
+            Name = dcrfield.Name;
+            Descr = dcrfield.Description;
             RegAddress = regAddr;
-            BitPos = dcrfield.BitAddr;
-            BitWidth = dcrfield.NzWidth;
-            BitMask = dcrfield.Mask;
+            BitPos = dcrfield.BitPos;
+            BitWidth = dcrfield.BitWidth;
+            BitMask = dcrfield.BitMask;
+            semantics = new List<DevConfigSemantic>();
+        }
+
+        public DevConfigField(IDeviceFusesField dcrfield, Address regAddr)
+        {
+            if (dcrfield is null)
+                throw new ArgumentNullException(nameof(dcrfield));
+            Name = dcrfield.Name;
+            Descr = dcrfield.Description;
+            RegAddress = regAddr;
+            BitPos = dcrfield.BitPos;
+            BitWidth = dcrfield.BitWidth;
+            BitMask = dcrfield.BitMask;
             semantics = new List<DevConfigSemantic>();
         }
 
@@ -262,7 +295,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The semantic in case the bit-field value does not correspond to a known value.
         /// </summary>
         public static DevConfigSemantic invalid =
-            new DevConfigSemantic(new DCRFieldSemantic() { CName = "<invalid>", Desc = "Invalid fuse value", When = "?" });
+            new DevConfigSemantic(new DCRFieldSemantic() { Name = "<invalid>", Description = "Invalid fuse value", When = "?" });
 
 
         private DevConfigSemantic()
@@ -271,8 +304,15 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public DevConfigSemantic(DCRFieldSemantic dcrsem)
         {
-            State = dcrsem.CName;
-            Descr = dcrsem.Desc;
+            State = dcrsem.Name;
+            Descr = dcrsem.Description;
+            When = dcrsem.When.Trim();
+        }
+
+        public DevConfigSemantic(IDeviceFusesSemantic dcrsem)
+        {
+            State = dcrsem.Name;
+            Descr = dcrsem.Description;
             When = dcrsem.When.Trim();
         }
 
@@ -356,7 +396,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         public DevConfigIllegal(DCRDefIllegal dcrill)
         {
             When = dcrill.When;
-            Descr = dcrill.Desc;
+            Descr = dcrill.Description;
+        }
+
+        public DevConfigIllegal(IDeviceFusesIllegal dcrill)
+        {
+            When = dcrill.When;
+            Descr = dcrill.Description;
         }
 
 

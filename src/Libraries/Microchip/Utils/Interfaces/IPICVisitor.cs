@@ -31,7 +31,6 @@ namespace Reko.Libraries.Microchip
         void Visit(SFRDataSector xmlRegion);
         void Visit(GPRDataSector xmlRegion);
         void Visit(DPRDataSector xmlRegion);
-        void Visit(EmulatorZone xmlRegion);
         void Visit(NMMRPlace xmlRegion);
         void Visit(LinearDataSector xmlRegion);
     }
@@ -46,7 +45,6 @@ namespace Reko.Libraries.Microchip
         T Visit(SFRDataSector xmlRegion);
         T Visit(GPRDataSector xmlRegion);
         T Visit(DPRDataSector xmlRegion);
-        T Visit(EmulatorZone xmlRegion);
         T Visit(NMMRPlace xmlRegion);
         T Visit(LinearDataSector xmlRegion);
     }
@@ -62,7 +60,6 @@ namespace Reko.Libraries.Microchip
         T Visit(SFRDataSector xmlRegion, C context);
         T Visit(GPRDataSector xmlRegion, C context);
         T Visit(DPRDataSector xmlRegion, C context);
-        T Visit(EmulatorZone xmlRegion, C context);
         T Visit(NMMRPlace xmlRegion, C context);
         T Visit(LinearDataSector xmlRegion, C context);
     }

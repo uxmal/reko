@@ -71,7 +71,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC_v1 PICDescriptor => ProcessorModel?.PICDescriptor;
+        public IPICDescriptor PICDescriptor => ProcessorModel?.PICDescriptor;
 
         /// <summary>
         /// Creates the PIC processor model.

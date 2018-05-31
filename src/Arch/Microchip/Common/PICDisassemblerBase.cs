@@ -92,36 +92,36 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             switch (regn.SubtypeOfMemory)
             {
-                case MemorySubDomain.Code:
-                case MemorySubDomain.ExtCode:
-                case MemorySubDomain.Debugger:
+                case PICMemorySubDomain.Code:
+                case PICMemorySubDomain.ExtCode:
+                case PICMemorySubDomain.Debugger:
                     if (!rdr.TryReadUInt16(out ushort uInstr))
                         return null;
                     return DecodePICInstruction(uInstr, PICProgAddress.Ptr(rdr.Address));
 
-                case MemorySubDomain.EEData:
+                case PICMemorySubDomain.EEData:
                     return DecodeEEPROMInstruction();
 
-                case MemorySubDomain.UserID:
+                case PICMemorySubDomain.UserID:
                     return DecodeUserIDInstruction();
 
-                case MemorySubDomain.DeviceConfig:
+                case PICMemorySubDomain.DeviceConfig:
                     return DecodeConfigInstruction();
 
-                case MemorySubDomain.DeviceID:
+                case PICMemorySubDomain.DeviceID:
                     return DecodeDWInstruction();
 
-                case MemorySubDomain.DeviceConfigInfo:  //TODO: Decode DCI
+                case PICMemorySubDomain.DeviceConfigInfo:  //TODO: Decode DCI
                     return DecodeDCIInstruction();
 
-                case MemorySubDomain.DeviceInfoAry:     //TODO: Decode DIA 
+                case PICMemorySubDomain.DeviceInfoAry:     //TODO: Decode DIA 
                     return DecodeDIAInstruction();
 
-                case MemorySubDomain.RevisionID:        //TODO: Decode Revision ID
+                case PICMemorySubDomain.RevisionID:        //TODO: Decode Revision ID
                     return DecodeRevisionIDInstruction();
 
-                case MemorySubDomain.Test:
-                case MemorySubDomain.Other:
+                case PICMemorySubDomain.Test:
+                case PICMemorySubDomain.Other:
                 default:
                     throw new NotImplementedException($"Disassembly of '{regn.SubtypeOfMemory}' memory region is not yet implemented.");
             }

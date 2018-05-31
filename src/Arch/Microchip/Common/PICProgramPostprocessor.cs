@@ -138,15 +138,15 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         private AccessMode GetAccessMode(IMemoryRegion regn)
         {
-            if (regn.TypeOfMemory != MemoryDomain.Prog && regn.TypeOfMemory != MemoryDomain.Other)
+            if (regn.TypeOfMemory != PICMemoryDomain.Prog && regn.TypeOfMemory != PICMemoryDomain.Other)
                 throw new InvalidOperationException($"{nameof(GetAccessMode)}({regn.TypeOfMemory})");
 
             switch (regn.SubtypeOfMemory)
             {
-                case MemorySubDomain.Code:
-                case MemorySubDomain.ExtCode:
-                case MemorySubDomain.Debugger:
-                case MemorySubDomain.Test:
+                case PICMemorySubDomain.Code:
+                case PICMemorySubDomain.ExtCode:
+                case PICMemorySubDomain.Debugger:
+                case PICMemorySubDomain.Test:
                     return AccessMode.ReadExecute;
             }
             return AccessMode.Read;

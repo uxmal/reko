@@ -29,71 +29,47 @@ using System.Linq;
 namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
-    /// A class to provide support for PIC Device Configuration definitions (per ConfigFuseSector content).
+    /// A class to provide support for PIC Device Configuration definitions (per Configuration Fuses Sector content).
     /// </summary>
     public class PICDeviceConfigDefs : IPICDeviceConfigDefs
     {
 
         private readonly SortedList<Address, PICDevConfigRegister> dcregisters;
 
-        private PICDeviceConfigDefs(PIC_v1 thePIC)
+        private PICDeviceConfigDefs(IPICDescriptor thePIC)
         {
-            PIC = thePIC;
             dcregisters = new SortedList<Address, PICDevConfigRegister>();
-            foreach (var cfs in PIC.ProgramSpace.Sectors.OfType<ConfigFuseSector>())
+            foreach (var fuse in thePIC.ProgramMemorySpace.ConfigurationFuses)
             {
-                foreach (var dcrdef in cfs.Defs.OfType<DCRDef>())
+                var dcreg = new PICDevConfigRegister(fuse);
+
+                foreach (var dcilg in fuse.IllegalSettings)
                 {
-                    var dcreg = new PICDevConfigRegister(dcrdef);
-                    foreach (var ilg in dcrdef.Illegals)
-                    {
-                        dcreg.AddIllegal(new DevConfigIllegal(ilg));
-                    }
-                    foreach (var dcrmode in dcrdef.DCRModes)
-                    {
-                        int ibit = 0;
-                        foreach (var dcrfield in dcrmode.Fields)
-                        {
-                            switch (dcrfield)
-                            {
-                                case ProgBitAdjustPoint adj:
-                                    ibit += adj.Offset;
-                                    break;
-                                case DCRFieldDef dcrfieldddef:
-                                    dcrfieldddef.BitAddr = ibit; // Force the bit address as 'genPICdb' does not set it.
-                                    ibit += dcrfieldddef.NzWidth;
-                                    if (dcrfieldddef.IsHidden || dcrfieldddef.IsLangHidden)
-                                        continue;
-                                    var dcrfdef = new DevConfigField(dcrfieldddef, dcreg.Address);
-                                    dcrfieldddef.DCRFieldSemantics.ForEach((dcsem) => dcrfdef.AddSemantic(new DevConfigSemantic(dcsem)));
-                                    dcreg.AddField(dcrfdef);
-                                    break;
-                            }
-                        }
-                    }
-                    dcregisters.Add(dcreg.Address, dcreg);
+                    dcreg.AddIllegal(new DevConfigIllegal(dcilg));
                 }
+                foreach (var dcfld in fuse.ConfigFields.Where(f => !(f.IsHidden || f.IsLangHidden)))
+                {
+                    var dcrfdef = new DevConfigField(dcfld, dcreg.Address);
+                    foreach (var dcsem in dcfld.Semantics)
+                    {
+                        dcrfdef.AddSemantic(new DevConfigSemantic(dcsem));
+                    }
+                    dcreg.AddField(dcrfdef);
+                }
+                dcregisters.Add(dcreg.Address, dcreg);
+
             }
         }
 
-        public static IPICDeviceConfigDefs Create(PIC_v1 pic)
+        public static IPICDeviceConfigDefs Create(IPICDescriptor pic)
         {
             if (pic == null)
                 throw new ArgumentNullException(nameof(pic));
-            if (pic.ProgramSpace is null)
-                throw new InvalidOperationException($"Can't create PIC Device Configuration definitions.");
             var dcrconf = new PICDeviceConfigDefs(pic);
+            if (dcrconf.dcregisters.Count <0)
+                throw new InvalidOperationException($"Can't create PIC Device Configuration definitions.");
             return dcrconf;
         }
-
-
-        /// <summary>
-        /// Gets the target PIC for this Device Configuration Definitions.
-        /// </summary>
-        /// <value>
-        /// The target PIC.
-        /// </value>
-        public PIC_v1 PIC { get; }
 
 
         /// <summary>

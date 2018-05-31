@@ -56,7 +56,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// Private constructor creating an instance of memory map for specified PIC.
             /// </summary>
             /// <param name="thePIC">the PIC descriptor.</param>
-            protected PIC18MemoryMap(PIC_v1 thePIC) : base(thePIC)
+            protected PIC18MemoryMap(IPICDescriptor thePIC) : base(thePIC)
             {
                 SetMaps();
             }
@@ -72,11 +72,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid
             ///                                               data memory size (less than 12 bytes).</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC definition does not permit to construct the memory map.</exception>
-            public static IPICMemoryMap Create(PIC_v1 pic)
+            public static IPICMemoryMap Create(IPICDescriptor pic)
             {
                 if (pic is null)
                     throw new ArgumentNullException(nameof(pic));
-                uint datasize = pic.DataSpace?.EndAddr ?? 0;
+                uint datasize = pic.DataMemorySpace.DataSpaceSize;
                 if (datasize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataMemorySize} bytes). Check PIC definition.");
 
@@ -208,7 +208,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
         }
 
-        public static void Create(PIC_v1 pic)
+        public static void Create(IPICDescriptor pic)
         {
             if (pic == null)
                 throw new ArgumentNullException(nameof(pic));
@@ -217,7 +217,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             memdesc.LoadMemDescr(pic);
         }
 
-        protected override IPICMemoryMap CreateMemoryMap(PIC_v1 pic)
+        protected override IPICMemoryMap CreateMemoryMap(IPICDescriptor pic)
             => PIC18MemoryMap.Create(pic);
 
     }

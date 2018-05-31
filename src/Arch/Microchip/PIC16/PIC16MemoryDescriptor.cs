@@ -45,7 +45,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             /// Creates a new instance of PIC16 memory map for specified PIC.
             /// </summary>
             /// <param name="pic">the PIC descriptor.</param>
-            protected PIC16MemoryMap(PIC_v1 pic) : base(pic)
+            protected PIC16MemoryMap(IPICDescriptor pic) : base(pic)
             {
             }
 
@@ -60,11 +60,11 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid
             ///                                               data memory size (less than 12 bytes).</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC definition does not permit to construct the memory map.</exception>
-            public static IPICMemoryMap Create(PIC_v1 pic)
+            public static IPICMemoryMap Create(IPICDescriptor pic)
             {
                 if (pic is null)
                     throw new ArgumentNullException(nameof(pic));
-                uint datasize = pic.DataSpace?.EndAddr ?? 0;
+                uint datasize = pic.DataMemorySpace.DataSpaceSize;
                 if (datasize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataMemorySize} bytes). Check PIC definition.");
 
@@ -157,7 +157,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
         }
 
-        public static void Create(PIC_v1 pic)
+        public static void Create(IPICDescriptor pic)
         {
             if (pic == null)
                 throw new ArgumentNullException(nameof(pic));
@@ -166,7 +166,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             memdesc.LoadMemDescr(pic);
         }
 
-        protected override IPICMemoryMap CreateMemoryMap(PIC_v1 pic)
+        protected override IPICMemoryMap CreateMemoryMap(IPICDescriptor pic)
             => PIC16MemoryMap.Create(pic);
 
     }
