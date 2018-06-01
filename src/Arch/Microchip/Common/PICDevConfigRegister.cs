@@ -42,29 +42,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="dcr">The <see cref="DCRDef"/> instance describing the device configuration register.</param>
+        /// <param name="dcr">The <see cref="IDeviceFuse"/> interface instance describing the device configuration register.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcr"/> is null.</exception>
-        public PICDevConfigRegister(DCRDef dcr)
-        {
-            if (dcr is null)
-                throw new ArgumentNullException(nameof(dcr));
-            Address = Address.Ptr32((uint)dcr.Addr);
-            Name = dcr.Name;
-            Descr = dcr.Description;
-            BitWidth = dcr.BitWidth;
-            Access = dcr.AccessBits;
-            Impl = dcr.ImplMask;
-            DefaultValue = dcr.DefaultValue;
-            fields = new HashSet<DevConfigField>();
-            illegals = new List<DevConfigIllegal>();
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="dcr">The <see cref="IDeviceFusesConfig"/> interface instance describing the device configuration register.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcr"/> is null.</exception>
-        public PICDevConfigRegister(IDeviceFusesConfig dcr)
+        public PICDevConfigRegister(IDeviceFuse dcr)
         {
             if (dcr is null)
                 throw new ArgumentNullException(nameof(dcr));
@@ -180,25 +160,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         private List<DevConfigSemantic> semantics;
 
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="dcrfield">The <see cref="DCRFieldDef"/> describing the field.</param>
-        /// <param name="bitpos">The bit position of the device configuration bit-field.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcrfield"/> is null.</exception>
-        public DevConfigField(DCRFieldDef dcrfield, Address regAddr)
-        {
-            if (dcrfield is null)
-                throw new ArgumentNullException(nameof(dcrfield));
-            Name = dcrfield.Name;
-            Descr = dcrfield.Description;
-            RegAddress = regAddr;
-            BitPos = dcrfield.BitPos;
-            BitWidth = dcrfield.BitWidth;
-            BitMask = dcrfield.BitMask;
-            semantics = new List<DevConfigSemantic>();
-        }
-
         public DevConfigField(IDeviceFusesField dcrfield, Address regAddr)
         {
             if (dcrfield is null)
@@ -291,22 +252,28 @@ namespace Reko.Arch.MicrochipPIC.Common
         // 
         private const string pattern = @"^\(\s*field\s+([^ ]*)\s+([^ ]*)\s*\)\s+([^ ]*)\s+([^ ]*)$";
 
+        private class InvalidFieldSem : IDeviceFusesSemantic
+        {
+            public string Name { get; set; }
+
+            public string Description { get; set; }
+
+            public string When { get; set; }
+
+            public bool IsHidden => false;
+
+            public bool IsLangHidden => false;
+        }
+
         /// <summary>
         /// The semantic in case the bit-field value does not correspond to a known value.
         /// </summary>
         public static DevConfigSemantic invalid =
-            new DevConfigSemantic(new DCRFieldSemantic() { Name = "<invalid>", Description = "Invalid fuse value", When = "?" });
+            new DevConfigSemantic(new InvalidFieldSem() { Name = "<invalid>", Description = "Invalid fuse value", When = "?" });
 
 
         private DevConfigSemantic()
         {
-        }
-
-        public DevConfigSemantic(DCRFieldSemantic dcrsem)
-        {
-            State = dcrsem.Name;
-            Descr = dcrsem.Description;
-            When = dcrsem.When.Trim();
         }
 
         public DevConfigSemantic(IDeviceFusesSemantic dcrsem)
@@ -392,12 +359,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         // 
         private const string pattern = @"^\(\s*reg\s+([^ ]*)\s+([^ ]*)\s*\)\s+([^ ]*)\s+([^ ]*)$";
 
-
-        public DevConfigIllegal(DCRDefIllegal dcrill)
-        {
-            When = dcrill.When;
-            Descr = dcrill.Description;
-        }
 
         public DevConfigIllegal(IDeviceFusesIllegal dcrill)
         {

@@ -23,32 +23,56 @@
 using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;
 using Reko.Libraries.Microchip;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
     [TestFixture]
     public class PICRegisterAccessTests
     {
+        internal class DummySFRDef : ISFRRegister
+        {
+            public DummySFRDef() { }
 
-        private static SFRDef BuildSFRDef(uint uAddr, string cname, uint nZWidth, uint Impl, string sAccess, string sMCLR)
-            => new SFRDef() {
-                    _addrFormatted = $"0x{uAddr:x}",
+            public int ByteWidth { get; set; }
+            public uint ImplMask { get; set; }
+            public string Access { get; set; }
+            public string MCLR { get; set; }
+            public string POR { get; set; }
+            public bool IsIndirect { get; set; }
+            public bool IsVolatile { get; set; }
+            public bool IsHidden { get; set; }
+            public bool IsLangHidden { get; set; }
+            public bool IsIDEHidden { get; set; }
+            public string NMMRID { get; set; }
+            public bool IsNMMR => throw new System.NotImplementedException();
+            public IEnumerable<ISFRBitField> BitFields => throw new System.NotImplementedException();
+            public uint Addr { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public byte BitWidth { get; set; }
+        }
+
+
+        private static ISFRRegister BuildSFRDef(uint uAddr, string cname, byte nZWidth, uint Impl, string sAccess, string sMCLR)
+            => new DummySFRDef() {
+                    Addr = uAddr,
                     Name = cname,
                     Description ="",
-                    _implFormatted = $"0x{Impl:X}",
-                    _nzWidthFormatted = $"{nZWidth}",
+                    ImplMask = Impl,
+                    BitWidth = nZWidth,
                     Access = sAccess,
                     MCLR = sMCLR,
                     POR  = sMCLR
                 };
 
-        private static PICRegisterTraits GetTraits(SFRDef sfr)
+        private static PICRegisterTraits GetTraits(ISFRRegister sfr)
             => new PICRegisterTraits(sfr);
 
-        private static PICRegisterAccessMasks GetAccessMask(uint nZWidth, uint Impl, string sAccess, string sMCLR)
+        private static PICRegisterAccessMasks GetAccessMask(byte nZWidth, uint Impl, string sAccess, string sMCLR)
             => PICRegisterAccessMasks.Create(new PICRegisterTraits(BuildSFRDef(0, "Reg", nZWidth, Impl, sAccess, sMCLR)));
 
-        private static PICRegisterAccessMasks GetFullMask(uint nzWidth)
+        private static PICRegisterAccessMasks GetFullMask(byte nzWidth)
             => PICRegisterAccessMasks.Create(
                 new PICRegisterTraits(
                     BuildSFRDef(0, "FullReg", nzWidth, (1U << (int)nzWidth) - 1U, new string('n', (int)nzWidth), new string('0', (int)nzWidth))));

@@ -31,26 +31,62 @@ namespace Reko.UnitTests.Arch.Microchip.Common
     public class PICRegisterTraitsTests
     {
 
-        private static SFRDef BuildSFRDef(uint uAddr, string cname, uint nZWidth, uint Impl, string sAccess, string sPOR)
-            => new SFRDef()
+        internal class DummySFRDef : ISFRRegister
+        {
+            public DummySFRDef() { }
+
+            public int ByteWidth { get; set; }
+            public uint ImplMask { get; set; }
+            public string Access { get; set; }
+            public string MCLR { get; set; }
+            public string POR { get; set; }
+            public bool IsIndirect { get; set; }
+            public bool IsVolatile { get; set; }
+            public bool IsHidden { get; set; }
+            public bool IsLangHidden { get; set; }
+            public bool IsIDEHidden { get; set; }
+            public string NMMRID { get; set; }
+            public bool IsNMMR => throw new System.NotImplementedException();
+            public IEnumerable<ISFRBitField> BitFields => throw new System.NotImplementedException();
+            public uint Addr { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public byte BitWidth { get; set; }
+        }
+
+        internal class DummyJoinedSFR : IJoinedRegister
+        {
+            public DummyJoinedSFR() { }
+
+            public IEnumerable<ISFRRegister> ChildSFRs => throw new System.NotImplementedException();
+            public uint Addr { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public byte BitWidth { get; set; }
+        }
+
+        private static ISFRRegister BuildSFRDef(uint uAddr, string cname, byte nZWidth, uint Impl, string sAccess, string sPOR, bool isIndirect, bool isVolatile)
+            => new DummySFRDef()
             {
-                _addrFormatted = $"0x{uAddr:x}",
+                Addr = uAddr,
                 Name = cname,
                 Description = "",
-                _implFormatted = $"0x{Impl:X}",
-                _nzWidthFormatted = $"{nZWidth}",
+                ImplMask = Impl,
+                BitWidth = nZWidth,
                 Access = sAccess,
                 MCLR = sPOR,
-                POR = sPOR
+                POR = sPOR,
+                IsIndirect = isIndirect,
+                IsVolatile = isVolatile
             };
 
-        private static JoinedSFRDef BuildJoinedSFRDef(uint uAddr, string cname, uint nZWidth)
-            => new JoinedSFRDef()
+        private static IJoinedRegister BuildJoinedSFRDef(uint uAddr, string cname, byte nZWidth)
+            => new DummyJoinedSFR()
             {
-                _addrFormatted = $"0x{uAddr:x}",
+                Addr = uAddr,
                 Name = cname,
                 Description = "",
-                _nzWidthFormatted = $"{nZWidth}"
+                BitWidth = nZWidth
             };
 
         [Test]
@@ -71,7 +107,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PICRegisterTraits_Reg8Test()
         {
-            var trait = new PICRegisterTraits(BuildSFRDef(0, "Reg8", 8, 0x7F, "r-rrwnn", "10"));
+            var trait = new PICRegisterTraits(BuildSFRDef(0, "Reg8", 8, 0x7F, "r-rrwnn", "10", false, false));
             Assert.NotNull(trait);
             Assert.AreEqual(8, trait.BitWidth);
             Assert.AreEqual(0x7F, trait.Impl);
@@ -86,8 +122,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PICRegisterTraits_FSRTest()
         {
-            var fsrl = new PICRegisterTraits(BuildSFRDef(0, "FSRL", 8, 0xFF, "nnnnnnnn", "00000000"));
-            var fsrh = new PICRegisterTraits(BuildSFRDef(1, "FSRH", 8, 0x1F, "nnnnn", "00000"));
+            var fsrl = new PICRegisterTraits(BuildSFRDef(0, "FSRL", 8, 0xFF, "nnnnnnnn", "00000000", false, false));
+            var fsrh = new PICRegisterTraits(BuildSFRDef(1, "FSRH", 8, 0x1F, "nnnnn", "00000", false, false));
             var fsr = BuildJoinedSFRDef(0, "FSR", 16);
             var trait = new PICRegisterTraits(fsr, new List<PICRegisterTraits>() { fsrl, fsrh });
             Assert.NotNull(trait);
@@ -103,11 +139,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PICRegisterTraits_FlagsTest()
         {
-            var sfrl = BuildSFRDef(0, "REGL", 8, 0x7F, "-nnnnnnn", "-0000000");
-            sfrl.IsIndirect = true;
+            var sfrl = BuildSFRDef(0, "REGL", 8, 0x7F, "-nnnnnnn", "-0000000", true, false);
             var regl = new PICRegisterTraits(sfrl);
-            var sfrh = BuildSFRDef(1, "REGH", 8, 0x1F, "nnnnn", "00000");
-            sfrh.IsVolatile = true;
+            var sfrh = BuildSFRDef(1, "REGH", 8, 0x1F, "nnnnn", "00000", false, true);
             var regh = new PICRegisterTraits(sfrh);
             var reg = BuildJoinedSFRDef(0, "REG", 16);
             var trait = new PICRegisterTraits(reg, new List<PICRegisterTraits>() { regl, regh });

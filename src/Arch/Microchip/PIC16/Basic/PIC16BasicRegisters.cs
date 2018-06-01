@@ -25,6 +25,7 @@ using System;
 
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
+    using System.Collections.Generic;
     using Common;
 
     /// <summary>
@@ -32,6 +33,43 @@ namespace Reko.Arch.MicrochipPIC.PIC16
     /// </summary>
     public class PIC16BasicRegisters : PIC16Registers
     {
+        private class PseudoSFR : ISFRRegister
+        {
+            public int ByteWidth => (BitWidth + 7) >> 3;
+
+            public uint ImplMask { get; set; }
+
+            public string Access { get; set; }
+
+            public string MCLR { get; set; }
+
+            public string POR { get; set; }
+
+            public bool IsIndirect { get; set; }
+
+            public bool IsVolatile { get; set; }
+
+            public bool IsHidden { get; set; }
+
+            public bool IsLangHidden { get; set; }
+
+            public bool IsIDEHidden { get; set; }
+
+            public string NMMRID { get; set; }
+
+            public bool IsNMMR => !string.IsNullOrWhiteSpace(NMMRID);
+
+            public IEnumerable<ISFRBitField> BitFields { get { yield break; } }
+
+            public uint Addr { get; set; }
+
+            public string Name { get; set; }
+
+            public string Description { get; set; }
+
+            public byte BitWidth { get; set; }
+        }
+
         private PIC16BasicRegisters()
         {
         }
@@ -95,19 +133,19 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void AddPseudoBSR()
         {
-            var sfr = new SFRDef()
+            ISFRRegister bsr = new PseudoSFR()
             {
                 Name = "BSR",
-                Description = $"Pseudo-register BSR",
+                Description = "Pseudo-register BSR",
                 NMMRID = "0xb",
-                _addrFormatted = "0",
+                Addr = 0,
                 MCLR = "------00",
                 POR = "------00",
                 Access = "------nn",
-                _nzWidthFormatted = "8"
+                BitWidth = 8
             };
 
-            var reg = new PICRegisterStorage(sfr, 0);
+            var reg = new PICRegisterStorage(bsr, 0);
             reg.BitFields.Add(new PICRegisterBitFieldSortKey(0, 8), RP0);
             reg.BitFields.Add(new PICRegisterBitFieldSortKey(1, 8), RP1);
 

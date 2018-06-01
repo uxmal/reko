@@ -20,14 +20,13 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Libraries.Microchip;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -593,18 +592,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// This class defines the data memory map of current PIC.
         /// </summary>
-        protected sealed class DataMemoryMap : MemoryMapBase<DataMemRegion>, IMemDataRegionVisitor, IMemDataSymbolVisitor
+        protected sealed class DataMemoryMap : MemoryMapBase<DataMemRegion>
         {
 
             public Address[] remapTable;
-            internal ILinearRegion Linearsector;
-
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private bool isNMMR = false;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private ushort currLoadAddr;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private ushort currRelAddr;
 
 
             /// <summary>
@@ -688,178 +679,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
                 => new AddressRange(Address.Ptr16((ushort)begAddr), Address.Ptr16((ushort)endAddr));
-
-
-            #region IMemDataRegionVisitor interface implementation
-
-            #region Helpers
-
-            private void ResetAddrs(ushort newAddr)
-            {
-                currLoadAddr = newAddr;
-                currRelAddr = 0;
-            }
-
-            private void UpdateAddrs(int incr)
-            {
-                if (incr > 0)
-                {
-                    currLoadAddr += (ushort)incr;
-                    currRelAddr += (ushort)incr;
-
-                }
-                else if (incr < 0)
-                {
-                    currLoadAddr -= (ushort)(-incr);
-                    currRelAddr -= (ushort)(-incr);
-                }
-                else
-                    throw new ArgumentOutOfRangeException(nameof(incr));
-            }
-
-            #endregion
-
-            void IMemDataRegionVisitor.Visit(SFRDataSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr);
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, PICMemorySubDomain.SFR, Constant.UInt16((ushort)xmlRegion.Bank));
-                AddRegion(regn);
-                ResetAddrs(regn.LogicalByteAddrRange.Begin.ToUInt16());
-                isNMMR = false;
-                foreach (var sds in xmlRegion.SFRs.OfType<IMemDataSymbolAcceptor>())
-                    sds.Accept(this);
-            }
-
-            void IMemDataRegionVisitor.Visit(GPRDataSector xmlRegion)
-            {
-                AddressRange memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr);
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, PICMemorySubDomain.GPR, Constant.UInt16((ushort)xmlRegion.Bank));
-                var idRef = xmlRegion.ShadowIDRef;
-                if (!string.IsNullOrWhiteSpace(idRef))
-                {
-                    var remap = GetRegionByName(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
-                    regn.PhysicalByteAddrRange = remap.PhysicalByteAddrRange;
-                }
-                AddRegion(regn);
-                for (int i = 0; i < regn.Size; i++)
-                {
-                    remapTable[regn.LogicalByteAddrRange.Begin.ToUInt16() + i] = regn.PhysicalByteAddrRange.Begin + i;
-                }
-            }
-
-            void IMemDataRegionVisitor.Visit(DPRDataSector xmlRegion)
-            {
-                AddressRange memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, memrng, PICMemorySubDomain.DPR, Constant.UInt16((ushort)xmlRegion.Bank));
-                var idRef = xmlRegion.ShadowIDRef;
-                if (!string.IsNullOrWhiteSpace(idRef))
-                {
-                    var remap = GetRegionByName(idRef) ?? throw new ArgumentOutOfRangeException(nameof(idRef));
-                    regn.PhysicalByteAddrRange = remap.PhysicalByteAddrRange;
-                }
-                AddRegion(regn);
-                for (int i = 0; i < regn.Size; i++)
-                {
-                    remapTable[regn.LogicalByteAddrRange.Begin.ToUInt16() + i] = regn.PhysicalByteAddrRange.Begin + i;
-                }
-            }
-
-            void IMemDataRegionVisitor.Visit(NMMRPlace xmlRegion)
-            {
-                var regn = new DataMemRegion(traits, xmlRegion.RegionID, null, PICMemorySubDomain.NNMR, Constant.Invalid);
-                AddRegion(regn);
-                isNMMR = true;
-                foreach (var nmmr in xmlRegion.SFRDefs.OfType<IMemDataSymbolAcceptor>()) nmmr.Accept(this);
-                isNMMR = false;
-            }
-
-            void IMemDataRegionVisitor.Visit(LinearDataSector xmlRegion)
-            {
-                var memrng = CreateMemRange(xmlRegion.BeginAddr, xmlRegion.EndAddr); ;
-                var blkrng = CreateMemRange(xmlRegion.BlockBeginAddr, xmlRegion.BlockEndAddr); ;
-                Linearsector = new LinearRegion(traits, xmlRegion.BankSize, memrng, blkrng);
-                map.AddSubDomain(PICMemorySubDomain.Linear);
-            }
-
-            #endregion
-
-            #region IMemDataSymbolVisitor<bool> implementation
-
-            void IMemDataSymbolVisitor.Visit(DataBitAdjustPoint xmlSymb)
-            {
-                // Do nothing. We are not interested here in SFR bits definition.
-            }
-
-            void IMemDataSymbolVisitor.Visit(DataByteAdjustPoint xmlSymb)
-            {
-                UpdateAddrs(xmlSymb.Offset);
-            }
-
-            void IMemDataSymbolVisitor.Visit(SFRDef xmlSymb)
-            {
-                if (isNMMR)
-                    return;
-                remapTable[currLoadAddr] = Address.Ptr16(currLoadAddr);
-                UpdateAddrs((int)xmlSymb.ByteWidth);
-            }
-
-            void IMemDataSymbolVisitor.Visit(SFRFieldDef xmlSymb)
-            {
-                // Do nothing. We are not interested here in SFR bits definition.
-            }
-
-            void IMemDataSymbolVisitor.Visit(SFRFieldSemantic xmlSymb)
-            {
-                // Do nothing. We are not interested here in SFR bits definition.
-            }
-
-            void IMemDataSymbolVisitor.Visit(SFRModeList xmlSymb)
-            {
-                // Do nothing. We are not interested here in SFR bits definition.
-            }
-
-            void IMemDataSymbolVisitor.Visit(SFRMode xmlSymb)
-            {
-                // Do nothing. We are not interested here in SFR bits definition.
-            }
-
-            void IMemDataSymbolVisitor.Visit(Mirror xmlSymb)
-            {
-                var regn = GetRegionByName(xmlSymb.TargetRegionID);
-                if (regn != null)
-                {
-                    for (int i = 0; i < xmlSymb.Size; i++)
-                        remapTable[currLoadAddr + i] = regn.PhysicalByteAddrRange.Begin + i;
-                }
-                UpdateAddrs((int)xmlSymb.Size);
-            }
-
-            void IMemDataSymbolVisitor.Visit(JoinedSFRDef xmlSymb)
-            {
-                foreach (var sfr in xmlSymb.SFRs?.OfType<IMemDataSymbolAcceptor>())
-                    sfr.Accept(this);
-            }
-
-            void IMemDataSymbolVisitor.Visit(MuxedSFRDef xmlSymb)
-            {
-                for (int i = 0; i < ((xmlSymb.BitWidth + 7) >> 3); i++)
-                {
-                    remapTable[currLoadAddr + i] = Address.Ptr16((ushort)(currLoadAddr + i));
-                }
-                UpdateAddrs(xmlSymb.ByteWidth);
-            }
-
-            void IMemDataSymbolVisitor.Visit(SelectSFR xmlSymb)
-            {
-                // Do nothing. Address increment is already handled by parent MuxedSFRDef.
-            }
-
-            void IMemDataSymbolVisitor.Visit(DMARegisterMirror xmlSymb)
-            {
-                // Do nothing for now.
-            }
-
-            #endregion
 
         }
 
@@ -982,13 +801,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public IEnumerable<IMemoryRegion> DataRegions => dataMap.Regions;
 
-        /// <summary>
-        /// Gets the Linear Data Memory definition. Valid only if <seealso cref="HasLinear"/> is true.
-        /// </summary>
-        /// <value>
-        /// The Linear Data Memory region.
-        /// </value>
-        public ILinearRegion LinearSector => dataMap.Linearsector;
+        public ILinearRegion LinearSector => throw new NotImplementedException(nameof(ILinearRegion));
 
         /// <summary>
         /// Remap a data memory address.

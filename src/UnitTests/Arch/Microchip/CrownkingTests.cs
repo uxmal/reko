@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Libraries.Microchip;
+using Reko.Libraries.Microchip.V1;
 using NUnit.Framework;
 using System.Globalization;
 using System.IO;
