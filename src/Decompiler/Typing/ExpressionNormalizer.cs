@@ -65,40 +65,42 @@ namespace Reko.Typing
 
 		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
-            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-            if (aem.Match(access.EffectiveAddress))
+            var ea = access.EffectiveAddress.Accept(this);
+            if (aem.Match(ea))
             {
                 if (aem.ArrayPointer == null)
                 {
                     aem.ArrayPointer = Constant.Create(
                         PrimitiveType.Create(
                             Domain.Pointer,
-                            access.EffectiveAddress.DataType.BitSize),
+                            ea.DataType.BitSize),
                         0);
                 }
                 return aem.Transform(null, access.DataType);
             }
-            if (access.EffectiveAddress is BinaryExpression bin && bin.Operator == Operator.IAdd)
-                return access;
-            if (access.EffectiveAddress is Constant)
-                return access;
-            access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
-            return access;
+            if (!(ea is BinaryExpression bin && bin.Operator == Operator.IAdd) &&
+                !(ea is Constant))
+            {
+                ea = AddZeroToEffectiveAddress(ea);
+            }
+            return new MemoryAccess(access.MemoryId, ea, access.DataType);
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
-            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-            if (aem.Match(access.EffectiveAddress))
+            var ea = access.EffectiveAddress.Accept(this);
+            if (aem.Match(ea))
             {
                 return aem.Transform(access.BasePointer, access.DataType);
             }
-            if (access.EffectiveAddress is BinaryExpression bin && bin.Operator == Operator.IAdd)
-                return access;
-            if (access.EffectiveAddress is Constant)
-                return access;
-            access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
-                return access;
+            if (!(ea is BinaryExpression bin && bin.Operator == Operator.IAdd) &&
+                !(ea is Constant))
+            {
+                ea = AddZeroToEffectiveAddress(ea);
+            }
+            var memId = access.MemoryId;
+            var basePtr = access.BasePointer;
+            return new SegmentedAccess(memId, basePtr, ea, access.DataType);
         }
 
 		public void Transform(Program prog)
