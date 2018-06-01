@@ -126,6 +126,8 @@ namespace Reko.UnitTests.Mocks
 
         private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)
         {
+            if (Ssa.Identifiers.Contains(idOld))
+                return idOld;
             var idNew = new MemoryIdentifier(Ssa.Identifiers.Count, idOld.DataType);
             var sid = new SsaIdentifier(idNew, idOld, null, null, false);
             Ssa.Identifiers.Add(idNew, sid);
