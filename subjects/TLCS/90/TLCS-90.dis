@@ -1842,7 +1842,7 @@ void fn0801(word16 af, byte b, byte c, word16 de, word16 hl, word16 ix)
 // MayUse:  a af b c de hl ix
 // LiveOut:
 // Trashed:
-// Preserved:
+// Preserved: sp
 fn0801_entry:
 // DataOut: a af b c de hl ix
 // DataOut (flags): C
@@ -1866,7 +1866,7 @@ l0804_thunk_fn0807:
 fn0801_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -1900,7 +1900,7 @@ l0806_thunk_fn0807:
 fn0805_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -4049,7 +4049,7 @@ l14A0_thunk_fn14A1:
 fn147B_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -5280,7 +5280,7 @@ l294B:
 fn291C_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: af:<invalid> sp:sp + 2 -2(fp):af
+// SymbolicIn: sp:fp af:af -2(fp):af
 
 
 
@@ -5635,7 +5635,7 @@ l3EBF_thunk_fn3EC2:
 fn3E2D_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: 3(fp):<invalid> 5(fp):<invalid>
+// SymbolicIn: sp:fp 3(fp):<invalid> 5(fp):<invalid>
 
 
 

@@ -274,6 +274,7 @@ void main(word32 r5, word32 dwArg00, word32 dwArg04)
 	word32 r3_163;
 	word32 r7_164;
 	__xpg_basename();
+	*globals->ptr10000A28 >= 0x00;
 	<anonymous> * r25_205 = globals->ptr100009EC;
 	word32 sp_206;
 	word32 r28_207;

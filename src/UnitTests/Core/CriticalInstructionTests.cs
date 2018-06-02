@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -27,7 +26,7 @@ using Reko.Core;
 using NUnit.Framework;
 using System;
 
-namespace Reko.UnitTests.Analysis
+namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class CriticalInstructionTests

@@ -1140,7 +1140,7 @@ l000005AD_thunk_uxQueueMessagesWaitingFromISR:
 xQueueIsQueueFullFromISR_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -1188,7 +1188,7 @@ l000005B1_thunk_xQueueGetMutexHolder:
 uxQueueMessagesWaitingFromISR_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -1947,8 +1947,8 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 
 // MayUse:  NZCV ip pc r0 r1 r10 r2 r4 r5 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZCV p0 pc r0 r3 r4 r6 r7 r8 r9 sp
-// Preserved:
+// Trashed: NZCV p0 pc r0 r3 r4 r6 r7 r8 r9
+// Preserved: sp
 // Stack args: Stack +0000(32)
 xTaskCreate_entry:
 // DataOut: ip pc r0 r1 r10 r2 r4 r5 r6 r7 r8 r9
@@ -2221,7 +2221,7 @@ l000008F1_1:
 xTaskCreate_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> pc:<invalid> r8:<invalid> r9:r6 - (r6 >> 20) r3:<invalid> r0:<invalid> p0:<invalid> r7:r7 + 3635 r6:<invalid> r4:DPB(r4, 0x6046, 16) Sequence r4:r0:r2 *u (r7 + -354)
+// SymbolicIn: sp:fp pc:<invalid> r8:<invalid> r9:r6 - (r6 >> 20) r3:<invalid> r0:<invalid> p0:<invalid> r7:r7 + 3635 r6:<invalid> r4:DPB(r4, 0x6046, 16) Sequence r4:r0:r2 *u (r7 + -354)
 
 
 
@@ -4280,7 +4280,7 @@ l00001155_thunk_xTaskCheckForTimeOut:
 vTaskSetTimeOutState_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -5096,7 +5096,7 @@ l00001551_thunk_vPortStoreTaskMPUSettings:
 vPortEndScheduler_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -5454,7 +5454,7 @@ l00001781_thunk_vPortInitialiseBlocks:
 vPortFree_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -5590,7 +5590,7 @@ l000017A5_thunk_xEventGroupCreate:
 xPortGetFreeHeapSize_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -5771,8 +5771,8 @@ void xEventGroupSetBits(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, w
 
 // MayUse:  NZCV fp p0 r0 r1 r2 r3 r4 r5 r6 r7 r8
 // LiveOut:
-// Trashed: fp ip lr r1 r10 r2 r6 r7 r8 r9 sp
-// Preserved:
+// Trashed: fp ip lr r1 r10 r2 r6 r7 r8 r9
+// Preserved: sp
 xEventGroupSetBits_entry:
 // DataOut: fp p0 r0 r1 r2 r3 r4 r5 r6 r7 r8
 // DataOut (flags): NZCV
@@ -5909,7 +5909,7 @@ l00001895_1:
 xEventGroupSetBits_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> fp:<invalid> ip:<invalid> lr:<invalid> r7:r7 + 48
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> r6:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> fp:<invalid> ip:<invalid> lr:<invalid> r7:r7 + 48
 
 l00001891_1:
 // DataOut:
@@ -6092,7 +6092,7 @@ l000019A1_thunk_vEventGroupDelete:
 xEventGroupGetBitsFromISR_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -6166,7 +6166,7 @@ l000019D1_thunk_vEventGroupClearBitsCallback:
 vEventGroupSetBitsCallback_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -6551,7 +6551,7 @@ l00008035_thunk_vPrintTask:
 raise_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -6867,7 +6867,7 @@ l00008189_thunk_prvSetAndCheckRegisters:
 vSetErrorLED_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -7173,8 +7173,8 @@ void vApplicationIdleHook(word32 pc, word32 r0, word32 r1, word32 r2, word32 r7,
 
 // MayUse:  NZCV ip pc r0 r1 r2 r7 r8
 // LiveOut:
-// Trashed: fp ip lr r1 r10 r2 r3 r4 r5 r6 r7 r8 r9 sp
-// Preserved:
+// Trashed: fp ip lr r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: sp
 vApplicationIdleHook_entry:
 // DataOut: ip pc r0 r1 r2 r7 r8
 // DataOut (flags): NZCV
@@ -7258,7 +7258,7 @@ l00008215_1:
 vApplicationIdleHook_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> fp:<invalid> ip:<invalid> lr:<invalid>
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> fp:<invalid> ip:<invalid> lr:<invalid>
 
 
 
@@ -7600,7 +7600,7 @@ l000082ED_thunk_vListInsertEnd:
 vListInitialiseItem_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -8272,7 +8272,7 @@ l00008531_thunk_xTaskNotifyStateClear:
 prvIdleTask_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -8983,7 +8983,7 @@ l000087D9_thunk_MPU_xTaskCreateRestricted:
 xAreFlashCoRoutinesStillRunning_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -9568,7 +9568,7 @@ l00008971_thunk_MPU_vTaskSetTimeOutState:
 fn0000895D_exit:
 // DataOut:
 // DataOut (flags): NZV
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -11555,7 +11555,7 @@ void GPIOPadConfigSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, wor
 // MayUse:  NZCV pc r0 r1 r3 r5 r8
 // LiveOut:
 // Trashed: NZCV ip lr p4 pc r0 r1 r2 r5 r6 r8 sp
-// Preserved:
+// Preserved: sp
 GPIOPadConfigSet_entry:
 // DataOut: pc r0 r1 r3 r5 r8
 // DataOut (flags): NZCV
@@ -11921,7 +11921,7 @@ l000092E9_thunk_GPIOPinIntDisable:
 GPIOPinIntEnable_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -11992,8 +11992,8 @@ void GPIOPinIntStatus(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, wor
 
 // MayUse:  NZCV fp ip pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZCV fp ip lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 sp
-// Preserved:
+// Trashed: NZCV fp ip lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8
+// Preserved: sp
 GPIOPinIntStatus_entry:
 // DataOut: fp ip pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
@@ -12065,7 +12065,7 @@ l00009309_thunk_GPIOPinIntClear:
 GPIOPinIntStatus_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r8:<invalid> r7:<invalid> r4:<invalid> r1:<invalid> pc:<invalid> r0:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> lr:<invalid>
+// SymbolicIn: sp:fp r8:<invalid> r7:<invalid> r4:<invalid> r1:<invalid> pc:<invalid> r0:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> lr:<invalid>
 
 
 
@@ -12074,7 +12074,7 @@ void GPIOPinIntClear(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word
 
 // MayUse:  CV fp ip pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZCV fp ip lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 sp
+// Trashed: NZCV fp ip lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8
 // Preserved: sp
 GPIOPinIntClear_entry:
 // DataOut: fp ip pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
@@ -12123,7 +12123,7 @@ l00009311_thunk_GPIOPortIntRegister:
 GPIOPinIntClear_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r4:<invalid> r1:<invalid> pc:pc + 0x00000047 r0:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> r7:<invalid> r8:<invalid> lr:<invalid>
+// SymbolicIn: sp:fp r4:<invalid> r1:<invalid> pc:pc + 0x00000047 r0:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> r7:<invalid> r8:<invalid> lr:<invalid>
 
 
 
@@ -12132,7 +12132,7 @@ void GPIOPortIntRegister(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, 
 
 // MayUse:  NZCV fp ip r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 r5 r6 r7 r8 sp
+// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 r5 r6 r7 r8
 // Preserved: sp
 GPIOPortIntRegister_entry:
 // DataOut: fp ip r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
@@ -12375,7 +12375,7 @@ l00009325_1:
 GPIOPortIntRegister_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> r4:<invalid> r7:<invalid> r8:r8 + 0x00000080 lr:<invalid>
+// SymbolicIn: sp:fp r0:<invalid> r1:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> r4:<invalid> r7:<invalid> r8:r8 + 0x00000080 lr:<invalid>
 
 
 
@@ -12384,7 +12384,7 @@ void GPIOPortIntUnregister(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4
 
 // MayUse:  NZCV fp ip r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 r5 r6 r7 r9 sp
+// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 r5 r6 r7 r9
 // Preserved: sp
 GPIOPortIntUnregister_entry:
 // DataOut: fp ip r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
@@ -12625,7 +12625,7 @@ l000093C1_1:
 GPIOPortIntUnregister_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> r4:<invalid> r7:<invalid> r9:r9 + 0x00000040 lr:<invalid>
+// SymbolicIn: sp:fp r0:<invalid> r1:<invalid> r3:<invalid> r6:<invalid> ip:<invalid> r5:<invalid> fp:<invalid> r2:<invalid> r4:<invalid> r7:<invalid> r9:r9 + 0x00000040 lr:<invalid>
 
 
 
@@ -12684,7 +12684,7 @@ l00009451_thunk_GPIOPinWrite:
 GPIOPinRead_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -13607,7 +13607,7 @@ l000095B9_thunk_IntPriorityGet:
 IntPrioritySet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 l00009599_1:
 // DataOut:
@@ -13765,7 +13765,7 @@ l000095D9_thunk_IntEnable:
 IntPriorityGet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -13966,7 +13966,7 @@ l00009699_thunk_OSRAMWriteFirst:
 OSRAMDelay_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -14000,7 +14000,7 @@ void OSRAMWriteArray(word32 r0, word32 r1, word32 r5, word32 r6, word32 r7, word
 
 // MayUse:  NZCV fp ip p6 r0 r1 r5 r6 r7 r8
 // LiveOut:
-// Trashed: NZC fp ip lr r10 r2 r3 r4 r5 r6 r7 r8 r9 sp
+// Trashed: NZC fp ip lr r10 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 // Stack args: Stack +0000(32)
 OSRAMWriteArray_entry:
@@ -14190,7 +14190,7 @@ l000096C5_1:
 OSRAMWriteArray_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r5:<invalid> r4:r8 & ip >> 12 r2:r6 - (r1 >>u 32) r7:<invalid> r3:<invalid> r8:<invalid> fp:<invalid> ip:<invalid> lr:<invalid> r6:<invalid> r9:<invalid> r10:<invalid>
+// SymbolicIn: sp:fp r5:<invalid> r4:r8 & ip >> 12 r2:r6 - (r1 >>u 32) r7:<invalid> r3:<invalid> r8:<invalid> fp:<invalid> ip:<invalid> lr:<invalid> r6:<invalid> r9:<invalid> r10:<invalid>
 
 
 
@@ -14199,8 +14199,8 @@ void OSRAMWriteByte(word32 r0, word32 r1, word32 r6, word32 r8, int16 wArg00)
 
 // MayUse:  Z r0 r1 r6 r8
 // LiveOut:
-// Trashed: r0 r5 r6 sp
-// Preserved:
+// Trashed: r0 r5 r6
+// Preserved: sp
 // Stack args: Stack +0000(32)
 OSRAMWriteByte_entry:
 // DataOut: r0 r1 r6 r8
@@ -14279,7 +14279,7 @@ l00009711_1:
 OSRAMWriteByte_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r6:r6 + 0xFFFFFFBB r0:r8 - (r1 >>u 18) r5:<invalid>
+// SymbolicIn: sp:fp r6:r6 + 0xFFFFFFBB r0:r8 - (r1 >>u 18) r5:<invalid>
 
 
 
@@ -14944,7 +14944,7 @@ l00009A49_thunk_SSIIntRegister:
 SSIDisable_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -15140,7 +15140,7 @@ l00009A95_thunk_SSIDataPut:
 SSIIntClear_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -16240,7 +16240,7 @@ l00009C3D_thunk_SysCtlIntRegister:
 SysCtlPeripheralClockGating_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -16428,7 +16428,7 @@ l00009C75_thunk_SysCtlIntDisable:
 SysCtlIntEnable_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -17003,7 +17003,7 @@ l00009CE1_thunk_SysCtlDeepSleep:
 SysCtlSleep_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -17131,7 +17131,7 @@ l00009D0D_thunk_SysCtlResetCauseClear:
 SysCtlResetCauseGet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -17675,7 +17675,7 @@ l00009EED_thunk_SysCtlMOSCVerificationSet:
 SysCtlIOSCVerificationSet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -17803,7 +17803,7 @@ l00009F09_thunk_SysCtlPLLVerificationSet:
 SysCtlMOSCVerificationSet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -17930,7 +17930,7 @@ l00009F25_thunk_SysCtlClkVerificationClear:
 SysCtlPLLVerificationSet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -18029,7 +18029,7 @@ l00009F41_thunk_UARTParityModeGet:
 UARTParityModeSet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -19404,7 +19404,7 @@ l0000A169_thunk_I2CSlaveDisable:
 I2CMasterDisable_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -19575,7 +19575,7 @@ l0000A1B5_thunk_I2CMasterIntDisable:
 I2CSlaveIntEnable_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -19635,7 +19635,7 @@ l0000A1BD_thunk_I2CSlaveIntDisable:
 I2CMasterIntDisable_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -19830,7 +19830,7 @@ l0000A205_thunk_I2CMasterSlaveAddrSet:
 I2CSlaveIntClear_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -19889,7 +19889,7 @@ l0000A20D_thunk_I2CMasterBusy:
 I2CMasterSlaveAddrSet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -19948,7 +19948,7 @@ l0000A215_thunk_I2CMasterBusBusy:
 I2CMasterBusy_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -20033,7 +20033,7 @@ l0000A221_thunk_I2CMasterErr:
 I2CMasterControl_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -20171,7 +20171,7 @@ l0000A23D_thunk_I2CMasterDataGet:
 I2CMasterDataPut_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -20219,7 +20219,7 @@ l0000A241_thunk_I2CSlaveStatus:
 I2CMasterDataGet_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -20292,7 +20292,7 @@ l0000A249_thunk_I2CSlaveDataGet:
 I2CSlaveDataPut_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -20536,8 +20536,8 @@ void memcpy(word32 lr, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, wo
 
 // MayUse:  NZCV lr p12 r1 r10 r2 r3 r4 r5 r7 r8 r9
 // LiveOut:
-// Trashed: p1 r0 r1 r10 r2 r3 r4 r5 r8 r9 sp
-// Preserved: lr
+// Trashed: p1 r0 r1 r10 r2 r3 r4 r5 r8 r9
+// Preserved: lr sp
 memcpy_entry:
 // DataOut: lr p12 r1 r10 r2 r3 r4 r5 r7 r8 r9
 // DataOut (flags): NZCV
@@ -20882,7 +20882,7 @@ l0000A601_1:
 memcpy_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r1:<invalid> r3:<invalid> r0:0x00000C00 lr:lr r5:<invalid> p1:<invalid> r4:<invalid> r9:<invalid> r2:<invalid> r8:<invalid> r10:<invalid>
+// SymbolicIn: sp:fp r1:<invalid> r3:<invalid> r0:0x00000C00 lr:lr r5:<invalid> p1:<invalid> r4:<invalid> r9:<invalid> r2:<invalid> r8:<invalid> r10:<invalid>
 
 
 

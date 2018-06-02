@@ -310,10 +310,8 @@ namespace Reko.Analysis
             sidOrigHi.DefStatement = stmNewHi;
             sidOrigHi.DefStatement = stmNewHi;
 
-            sidGrf.DefExpression = m.Cond(sidTmp.Identifier);
-            sidGrf.DefStatement.Instruction = new Assignment(
-                sidGrf.Identifier, sidGrf.DefExpression);
-            sidTmp.Uses.Add(sidGrf.DefStatement);
+            sidGrf.DefExpression = null;
+            sidGrf.DefStatement = null;
 
             return sidOrigHi.DefStatement.Instruction;
         }
@@ -398,10 +396,8 @@ namespace Reko.Analysis
             sidOrigLo.DefStatement = stmNewLo;
             sidOrigLo.DefStatement = stmNewLo;
 
-            sidGrf.DefExpression = m.Cond(sidTmp.Identifier);
-            sidGrf.DefStatement.Instruction = new Assignment(
-                sidGrf.Identifier, sidGrf.DefExpression);
-            sidTmp.Uses.Add(sidGrf.DefStatement);
+            sidGrf.DefExpression = null;
+            sidGrf.DefStatement = null;
              
             return sidOrigLo.DefStatement.Instruction;
         }

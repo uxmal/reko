@@ -232,10 +232,6 @@ code * fn0001152C(code * r2, word32 dwArg00)
 // 000116FC: void fn000116FC(Register (ptr code) r2, Stack word32 dwArg00)
 void fn000116FC(code * r2, word32 dwArg00)
 {
-	if (fn0001152C(r2, dwLoc20) != 0x00)
-		fp->dwFFFFFFF4 = 0x00;
-	else
-		fp->dwFFFFFFF4 = -0x01;
-	fp->dwFFFFFFF0 = fp->dwFFFFFFF4;
+	fn0001152C(r2, dwLoc20) == 0x00;
 }
 

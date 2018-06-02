@@ -58,6 +58,7 @@ namespace Reko.Analysis
         private ExpressionValueComparer ecomp;
         private Block blockCur;
         private Statement stmCur;
+        private ExpressionEmitter m;
 
         public TrashedRegisterFinder(
             Program program,
@@ -73,6 +74,7 @@ namespace Reko.Analysis
             this.worklist = new WorkList<Block>();
             this.visited = new HashSet<Block>();
             this.ecomp = new ExpressionValueComparer();
+            this.m = new ExpressionEmitter();
         }
 
         public Dictionary<Storage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
@@ -85,6 +87,7 @@ namespace Reko.Analysis
 
         public void Compute()
         {
+            BackpropagateStackPointer();
             FillWorklist();
             ProcessWorkList();
             CompleteWork();
@@ -197,6 +200,7 @@ namespace Reko.Analysis
                 this.stmCur = stm;
                 try
                 {
+                    TrySetFallbackStackPointer(stm);
                     stm.Instruction.Accept(this);
                 }
                 catch (Exception ex)
@@ -493,6 +497,146 @@ namespace Reko.Analysis
                 return true;
             var p = proc as Procedure;
             return (p != null && flow[p].TerminatesProcess);
+        }
+
+        /// <summary>
+        /// Backpropagate stack pointer from procedure return.
+        /// Assume that stack pointer at the end of procedure has the same
+        /// value as at the start
+        /// </summary>
+        /// <example>
+        /// If we have
+        /// <code>
+        ///     call eax; We do not know calling convention of this indirect call
+        ///             ; So we do not know value of stack pointer after it
+        /// cleanup:
+        ///     pop esi
+        ///     pop ebp
+        ///     ret
+        /// </code>
+        /// then we could assume than stack pointer at "cleanup" label is
+        /// "fp - 8"
+        /// </example>
+        // $REVIEW: It is highly unlikely that there is a procedure that
+        // leaves the stack pointer at different values depending on what
+        // path you took through it. Should we encounter such procedures in
+        // a binary we might consider turning this analysis off with a user
+        // switch.
+        private void BackpropagateStackPointer()
+        {
+            foreach (var proc in procedures)
+            {
+                foreach (var block in proc.ExitBlock.Pred)
+                {
+                    BackpropagateStackPointer(block);
+                }
+            }
+        }
+
+        private Expression GetValue(SymbolicEvaluationContext ctx, Storage stg)
+        {
+            if (!ctx.RegisterState.TryGetValue(stg, out var value))
+                return Constant.Invalid;
+            return value;
+        }
+
+        private void SetValue(
+            SymbolicEvaluationContext ctx,
+            Storage stg,
+            Expression value)
+        {
+            ctx.RegisterState[stg] = value;
+        }
+
+        private void CreateEvaluationState(Block block)
+        {
+            this.ctx = new SymbolicEvaluationContext(
+                block.Procedure.Architecture,
+                block.Procedure.Frame);
+            var tes = new TrashedExpressionSimplifier(
+                this.program.SegmentMap, this, ctx);
+            this.se = new SymbolicEvaluator(tes, ctx);
+        }
+
+        private bool GetOffset(Expression e, Identifier id, out int offset)
+        {
+            offset = 0;
+            if (e is BinaryExpression bin)
+            {
+                if (bin.Left != id)
+                    return false;
+                var op = bin.Operator;
+                if (op != Operator.ISub && op != Operator.IAdd)
+                    return false;
+                var o = bin.Right as Constant;
+                if (o == null)
+                    return false;
+                offset = o.ToInt32();
+                if (op == Operator.ISub)
+                    offset = -offset;
+                return true;
+            }
+            else
+            {
+                return e == id;
+            }
+        }
+
+        /// <summary>
+        /// Backpropagate stack pointer from procedure return.
+        /// Assume that stack pointer at the end of procedure has the same
+        /// value as at the start
+        /// </summary>
+        /// <remarks>
+        /// For each statement from block start to end
+        ///     - if stack pointer is trashed (usually after indirect calls)
+        ///     then pass fake 'currSp' identifier as stack pointer value to
+        ///     evaluation context and remember current
+        ///     - evaluate statement
+        /// At the end of block read stack pointer value from evaluation
+        /// context. It should be like 'currSp + offset'. We assume that stack
+        /// pointer at the end is 'fp'. So 'curSp' is 'fp - offset'. So we
+        /// assume that stack pointer at last remembered statement is
+        /// `fp - offset` and store this value to block flow
+        /// </remarks>
+        private void BackpropagateStackPointer(Block block)
+        {
+            Debug.Assert(block.Succ.Any(b => b == block.Procedure.ExitBlock));
+            CreateEvaluationState(block);
+            var stackStorage = block.Procedure.Architecture.StackRegister;
+            var currSp = new Identifier("currSp", stackStorage.DataType, null);
+            Statement fallbackStackStm = null;
+            foreach (var stm in block.Statements)
+            {
+                this.stmCur = stm;
+                if (GetValue(ctx, stackStorage) == Constant.Invalid)
+                {
+                    SetValue(ctx, stackStorage, currSp);
+                    fallbackStackStm = stm;
+                }
+                stm.Instruction.Accept(this);
+            }
+            if (fallbackStackStm == null)
+                return;
+            var stackValue = GetValue(ctx, stackStorage);
+            if (!GetOffset(stackValue, currSp, out var offset))
+                return;
+            var bf = flow[block];
+            var fp = block.Procedure.Frame.FramePointer;
+            bf.FallbackStack[fallbackStackStm] = m.AddConstantWord(
+                fp,
+                fp.DataType,
+                -offset);
+        }
+
+        private void TrySetFallbackStackPointer(Statement stm)
+        {
+            var arch = stm.Block.Procedure.Architecture;
+            if (GetValue(ctx, arch.StackRegister) == Constant.Invalid
+                && bf.FallbackStack.TryGetValue(stm, out var fallbackStack))
+            {
+                SetValue(ctx, arch.StackRegister, fallbackStack);
+            }
         }
 
         public class TrashedExpressionSimplifier : ExpressionSimplifier
