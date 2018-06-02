@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.NotNull(picModel.PICDescriptor);
             var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16, pic.GetInstructionSetID);
-            Assert.AreEqual(PIC16BasicName, pic.Name);
+            Assert.AreEqual(PIC16BasicName, pic.PICName);
 
             var arch = GetArch(PIC16BasicName);
             Assert.NotNull(arch);
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.NotNull(picModel.PICDescriptor);
             var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, pic.GetInstructionSetID);
-            Assert.AreEqual(PIC16EnhancedName, pic.Name);
+            Assert.AreEqual(PIC16EnhancedName, pic.PICName);
 
             var arch = GetArch(PIC16EnhancedName);
             Assert.NotNull(arch.PICDescriptor);
@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.NotNull(picModel.PICDescriptor);
             var pic = picModel.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, pic.GetInstructionSetID);
-            Assert.AreEqual(PIC16FullFeaturedName, pic.Name);
+            Assert.AreEqual(PIC16FullFeaturedName, pic.PICName);
 
             var arch = GetArch(PIC16FullFeaturedName);
             Assert.NotNull(arch.PICDescriptor);

@@ -70,7 +70,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             Name = sfr.Name;
             Desc = sfr.Description;
             Impl = sfr.ImplMask;
-            Access = AdjustString(sfr.Access, '-');
+            Access = AdjustString(sfr.AccessBits, '-');
             MCLR = AdjustString(sfr.MCLR, 'u');
             POR = AdjustString(sfr.POR, '0');
             IsVolatile = sfr.IsVolatile;

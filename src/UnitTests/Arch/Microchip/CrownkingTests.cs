@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         {
             var pic = db.GetPIC(sPICName);
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}.");
-            Assert.That(pic.Name, Is.EqualTo(sPICName));
+            Assert.That(pic.PICName, Is.EqualTo(sPICName));
             return pic;
         }
 
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         {
             var pic = db.GetPIC(iProcID);
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '0x{iProcID:X}' - {PICCrownking.LastErrMsg}.");
-            Assert.That(pic.Name, Is.EqualTo(iProcID));
+            Assert.That(pic.PICName, Is.EqualTo(iProcID));
             return pic;
         }
 

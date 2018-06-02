@@ -39,7 +39,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         private PICDeviceConfigDefs(IPICDescriptor thePIC)
         {
             dcregisters = new SortedList<Address, PICDevConfigRegister>();
-            foreach (var fuse in thePIC.ProgramMemorySpace.ConfigurationFuses)
+            foreach (var fuse in thePIC.ConfigurationFuses)
             {
                 var dcreg = new PICDevConfigRegister(fuse);
 

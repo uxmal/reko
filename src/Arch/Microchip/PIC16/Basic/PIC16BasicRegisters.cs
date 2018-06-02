@@ -39,7 +39,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
             public uint ImplMask { get; set; }
 
-            public string Access { get; set; }
+            public string AccessBits { get; set; }
 
             public string MCLR { get; set; }
 
@@ -141,7 +141,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 Addr = 0,
                 MCLR = "------00",
                 POR = "------00",
-                Access = "------nn",
+                AccessBits = "------nn",
                 BitWidth = 8
             };
 

@@ -54,14 +54,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
             {
                 try
                 {
-                    PICProcessorModel.GetModel(pic.Name).CreateRegisters();
-                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
-                    Assert.IsNotNull(PIC16BasicRegisters.RP0, $"Null RP0 register for '{pic.Name}'");
-                    Assert.IsNotNull(PIC16BasicRegisters.RP1, $"Null RP1 register for '{pic.Name}'");
+                    PICProcessorModel.GetModel(pic.PICName).CreateRegisters();
+                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.PICName}'");
+                    Assert.IsNotNull(PIC16BasicRegisters.RP0, $"Null RP0 register for '{pic.PICName}'");
+                    Assert.IsNotNull(PIC16BasicRegisters.RP1, $"Null RP1 register for '{pic.PICName}'");
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"'{pic.Name}': Wrong registers creation.", ex);
+                    throw new InvalidOperationException($"'{pic.PICName}': Wrong registers creation.", ex);
                 }
             }
         }
@@ -73,13 +73,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
             {
                 try
                 {
-                    PICProcessorModel.GetModel(pic.Name).CreateRegisters();
-                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
-                    Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.Name}'");
+                    PICProcessorModel.GetModel(pic.PICName).CreateRegisters();
+                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.PICName}'");
+                    Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.PICName}'");
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"'{pic.Name}': wrong registers creation.", ex);
+                    throw new InvalidOperationException($"'{pic.PICName}': wrong registers creation.", ex);
                 }
             }
         }
@@ -91,13 +91,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
             {
                 try
                 {
-                    PICProcessorModel.GetModel(pic.Name).CreateRegisters();
-                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
-                    Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.Name}'");
+                    PICProcessorModel.GetModel(pic.PICName).CreateRegisters();
+                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.PICName}'");
+                    Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.PICName}'");
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"'{pic.Name}': wrong registers creation.", ex);
+                    throw new InvalidOperationException($"'{pic.PICName}': wrong registers creation.", ex);
                 }
             }
         }

@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         private string _fmtBinary(string mesg, params ushort[] words)
         {
-            string sPIC = $"{arch.PICDescriptor.Name}/{PICMemoryDescriptor.ExecMode}";
+            string sPIC = $"{arch.PICDescriptor.PICName}/{PICMemoryDescriptor.ExecMode}";
             if (words.Length < 1) return $"{sPIC} {mesg}";
             return sPIC + "[" + string.Join("-", words.Select(w => w.ToString("X4"))) + "] " + mesg;
         }

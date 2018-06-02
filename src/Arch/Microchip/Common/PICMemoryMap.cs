@@ -25,7 +25,6 @@ using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Arch.MicrochipPIC.Common
@@ -88,20 +87,20 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             #endregion
 
-            private static readonly Dictionary<MemoryDomainKey, IMemTrait> maptraits = new Dictionary<MemoryDomainKey, IMemTrait>(new MemoryDomainKeyEqualityComparer());
-            private static readonly ITrait memtraitdefault = new DefaultMemTrait();
+            private static readonly Dictionary<MemoryDomainKey, IPICMemTrait> maptraits = new Dictionary<MemoryDomainKey, IPICMemTrait>(new MemoryDomainKeyEqualityComparer());
+            private static readonly IPICMemTrait memtraitdefault = new DefaultMemTrait();
 
             /// <summary>
             /// Constructor.
             /// </summary>
-            /// <param name="archDef">The PIC architecture main definitions.</param>
-            /// <exception cref="ArgumentNullException">Thrown if <paramref name="archDef"/> is null.</exception>
-            public MemTraits(IArchDef archDef)
+            /// <param name="pic">The PIC architecture main definitions.</param>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
+            public MemTraits(IPICDescriptor pic)
             {
-                if (archDef == null)
-                    throw new ArgumentNullException(nameof(archDef));
+                if (pic == null)
+                    throw new ArgumentNullException(nameof(pic));
                 maptraits.Clear();
-                foreach (var trait in archDef.MemoryTraits)
+                foreach (var trait in pic.PICMemoryTraits)
                 {
                     if (trait.Domain != PICMemoryDomain.Data)
                     {
@@ -132,7 +131,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(PICMemoryDomain dom, PICMemorySubDomain subdom, out IMemTrait trait)
+            public bool GetTrait(PICMemoryDomain dom, PICMemorySubDomain subdom, out IPICMemTrait trait)
             {
                 if (!maptraits.TryGetValue(new MemoryDomainKey(dom, subdom), out trait))
                     trait = memtraitdefault;
@@ -147,7 +146,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(PICMemorySubDomain subdom, out IMemTrait trait)
+            public bool GetTrait(PICMemorySubDomain subdom, out IPICMemTrait trait)
                 => GetTrait(subdom.GetDomain(), subdom, out trait);
 
         }
@@ -188,7 +187,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 SubtypeOfMemory = memSubDomain;
                 if (SubtypeOfMemory != PICMemorySubDomain.NNMR)  // Non-Memory-Mapped-Registers have no memory characteristics.
                 {
-                    if (!this.traits.GetTrait(memDomain, memSubDomain, out IMemTrait trait))
+                    if (!this.traits.GetTrait(memDomain, memSubDomain, out IPICMemTrait trait))
                         throw new InvalidOperationException($"Missing characteristics for [{memDomain}/{memSubDomain}] memory region '{RegionName}'");
                     Trait = trait;
                 }
@@ -244,7 +243,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <value>
             /// The characteristics of the memory region.
             /// </value>
-            public IMemTrait Trait { get; }
+            public IPICMemTrait Trait { get; }
 
             /// <summary>
             /// Gets the memory region total size in bytes.
@@ -372,7 +371,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 BankSize = bankSz;
                 FSRByteAddress = regnAddr;
                 BlockByteRange = blockRng;
-                if (!this.traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out IMemTrait trait))
+                if (!this.traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out IPICMemTrait trait))
                     throw new InvalidOperationException($"Missing characteristics for [{TypeOfMemory}/{SubtypeOfMemory}] linear region");
                 Trait = trait;
             }
@@ -424,7 +423,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Gets the memory characteristics of the Linear Access data memory region.
             /// </summary>
-            public IMemTrait Trait { get; }
+            public IPICMemTrait Trait { get; }
 
             /// <summary>
             /// Gets the size, in bytes, of the Linear Access data memory region.
@@ -559,8 +558,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <summary>
             /// Constructor.
             /// </summary>
-            /// <param name="pic">The PIC definition.</param>
-            /// <param name="map">The memory map.</param>
+            /// <param name="map">The PIC memory map.</param>
             /// <param name="traits">The PIC memory traits.</param>
             public ProgMemoryMap(PICMemoryMap map, MemTraits traits) : base(map, traits)
             {
@@ -568,7 +566,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
                 isPIC18 = pic.Family == PICFamily.PIC18;                
 
-                foreach (var reg in pic.ProgramMemorySpace.MemoryRegions)
+                foreach (var reg in pic.ProgMemoryRegions)
                 {
                     if (reg.MemorySubDomain == PICMemorySubDomain.Test)
                         continue;
@@ -614,14 +612,13 @@ namespace Reko.Arch.MicrochipPIC.Common
                 if (traits == null)
                     throw new ArgumentNullException(nameof(traits));
 
-                IDataSpace dataspace = pic.DataMemorySpace;
-                if (dataspace.DataSpaceSize < MinDataMemorySize)
+                if (pic.DataSpaceSize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException("Too low data memory size. Check PIC definition.");
-                remapTable = new Address[dataspace.DataSpaceSize];
+                remapTable = new Address[pic.DataSpaceSize];
                 for (int i = 0; i < remapTable.Length; i++)
                     remapTable[i] = null;
 
-                foreach (var regn in dataspace.MemoryRegions(mode))
+                foreach (var regn in pic.DataMemoryRegions(mode))
                 {
                     var memrng = CreateMemRange(regn.BeginAddr, regn.EndAddr);
                     map.AddSubDomain(regn.MemorySubDomain);
@@ -648,15 +645,15 @@ namespace Reko.Arch.MicrochipPIC.Common
 
                 }
 
-                foreach (var mir in dataspace.Mirrors)
+                foreach (var mir in pic.MirroringRegions)
                 {
-                    for (int i = 0; i < mir.Size; i++)
+                    for (int i = 0; i < mir.ByteSize; i++)
                     {
                         remapTable[mir.Addr + i] = Address.Ptr16((ushort)(mir.Addr + i));
                     }
                 }
 
-                foreach (var sfr in pic.PICRegisters.SFRs)
+                foreach (var sfr in pic.SFRs)
                 {
                     for (int i = 0; i < sfr.ByteWidth; i++)
                     {
@@ -702,7 +699,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected PICMemoryMap(IPICDescriptor thePIC)
         {
             PIC = thePIC;
-            traits = new MemTraits(thePIC.ArchDefinitions);
+            traits = new MemTraits(thePIC);
             progMap = new ProgMemoryMap(this, traits);
             dataMap = new DataMemoryMap(this, traits, PICExecMode.Traditional);
         }
@@ -869,7 +866,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public (uint LocSize, uint WordSize) SubDomainSizes(PICMemorySubDomain subdom)
         {
-            if (traits.GetTrait(subdom, out IMemTrait t))
+            if (traits.GetTrait(subdom, out IPICMemTrait t))
                 return (t.LocSize, t.WordSize);
             return (0, 0);
         }

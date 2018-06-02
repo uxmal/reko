@@ -54,7 +54,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         private Program PerformValidation()
         {
             var user = program.User;
-            user.Processor = architecture.PICDescriptor.Name;
+            user.Processor = architecture.PICDescriptor.PICName;
             user.TextEncoding = Encoding.ASCII;
             bool renameSection = architecture.Options.LoaderType == "raw";
 

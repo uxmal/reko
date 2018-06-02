@@ -76,7 +76,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <value>
         /// The characteristics.
         /// </value>
-        IMemTrait Trait { get; }
+        IPICMemTrait Trait { get; }
 
         /// <summary>
         /// Gets the size in bytes of the linear data memory region.

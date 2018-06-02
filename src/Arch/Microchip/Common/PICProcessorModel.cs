@@ -84,7 +84,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC name.
         /// </summary>
-        string IPICProcessorModel.PICName => PICDescriptor?.Name;
+        string IPICProcessorModel.PICName => PICDescriptor?.PICName;
 
         /// <summary>
         /// Creates a disassembler for the target processor.

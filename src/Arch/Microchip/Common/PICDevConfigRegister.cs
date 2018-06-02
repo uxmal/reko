@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Libraries.Microchip;
+using Reko.Libraries.Microchip.V1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ using System.Text.RegularExpressions;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
+
     /// <summary>
     /// A PIC device configuration register/fuse.
     /// </summary>
@@ -252,7 +254,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         // 
         private const string pattern = @"^\(\s*field\s+([^ ]*)\s+([^ ]*)\s*\)\s+([^ ]*)\s+([^ ]*)$";
 
-        private class InvalidFieldSem : IDeviceFusesSemantic
+        private sealed class InvalidFieldSem : IDeviceFusesSemantic
         {
             public string Name { get; set; }
 
@@ -263,6 +265,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             public bool IsHidden => false;
 
             public bool IsLangHidden => false;
+
         }
 
         /// <summary>
@@ -284,19 +287,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
 
-        /// <summary>
-        /// Gets the name of the device configuration bit-field state.
-        /// </summary>
+        /// <summary> Gets the name of the device configuration bit-field state. </summary>
         public string State { get; }
 
-        /// <summary>
-        /// Gets the description of the device configuration bit-field state.
-        /// </summary>
+        /// <summary> Gets the description of the device configuration bit-field state. </summary>
         public string Descr { get; }
 
-        /// <summary>
-        /// Gets the 'when' condition corresponding to the device configuration bit-field state.
-        /// </summary>
+        /// <summary> Gets the 'when' condition corresponding to the device configuration bit-field state. </summary>
         public string When { get; }
 
 

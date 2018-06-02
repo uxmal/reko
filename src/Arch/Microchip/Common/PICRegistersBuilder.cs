@@ -33,11 +33,8 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public abstract class PICRegistersBuilder
     {
-        private int byteAddr = 0;
         private ulong bitRegAddr = 0;
         private static int regNumber = 0;
-//        private ISFRRegister currSFRDef = null;
-//        private PICRegisterStorage currSFRReg = null;
         private IPICRegisterSymTable symTable;
 
         /// <summary>
@@ -54,13 +51,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
             regNumber = 0;
 
-            foreach (var sfr in pic.PICRegisters.SFRs)
+            foreach (var sfr in pic.SFRs)
             {
                 var reg = AddSFRRegister(sfr, regNumber);
                 regNumber++;
                 symTable.AddRegister(reg);
             }
-            foreach (var jsfr in pic.PICRegisters.JoinedRegisters)
+            foreach (var jsfr in pic.JoinedRegisters)
             {
                 var subregs = new List<PICRegisterStorage>();
                 bitRegAddr = 0;

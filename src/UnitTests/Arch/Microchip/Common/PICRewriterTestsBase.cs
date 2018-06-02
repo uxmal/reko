@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected string _fmtBinary(uint[] words)
         {
-            string sPIC = $"{arch.PICDescriptor.Name}/{PICMemoryDescriptor.ExecMode}";
+            string sPIC = $"{arch.PICDescriptor.PICName}/{PICMemoryDescriptor.ExecMode}";
             if (words.Length >= 1)
             {
                 sPIC += "[" + string.Join("-", words.Select(w => w.ToString("X4"))) + "] ";

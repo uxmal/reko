@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
             public int ByteWidth { get; set; }
             public uint ImplMask { get; set; }
-            public string Access { get; set; }
+            public string AccessBits { get; set; }
             public string MCLR { get; set; }
             public string POR { get; set; }
             public bool IsIndirect { get; set; }
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
                 Description = "",
                 ImplMask = Impl,
                 BitWidth = nZWidth,
-                Access = sAccess,
+                AccessBits = sAccess,
                 MCLR = sPOR,
                 POR = sPOR,
                 IsIndirect = isIndirect,

@@ -28,15 +28,15 @@ namespace Reko.Libraries.Microchip.V1
 {
 
     /// <summary>
-    /// This class implements the <see cref="IPICDescriptor"/> interface for <see cref="PIC_v1"/>.
+    /// This class implements the <see cref="IPICDescriptor"/> interface for <see cref="PIC_v1"/> class instances.
     /// </summary>
     internal sealed class PIC_v1_Interface : IPICDescriptor
     {
         private readonly PIC_v1 pic;
-        private Arch_v1_Interface archintf = null;
-        private ProgramSpace_v1_Interface progintf = null;
-        private DataSpace_v1_Interface dataintf = null;
-        private PICRegisters_v1_Interface regintf = null;
+        private readonly ArchDef arch;
+        private readonly ProgramSpace progspace;
+        private readonly DataSpace dataspace;
+        private uint? magicOffset;
 
         private readonly static Dictionary<string, InstructionSetID> mapInstrID = new Dictionary<string, InstructionSetID>() {
                 { "pic16f77", InstructionSetID.PIC16 },
@@ -47,33 +47,253 @@ namespace Reko.Libraries.Microchip.V1
                 { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
             };
 
-
         public PIC_v1_Interface(PIC_v1 pic)
         {
             this.pic = pic ?? throw new ArgumentNullException(nameof(pic));
+            arch = pic.ArchDef ?? throw new ArgumentNullException(nameof(pic.ArchDef));
+            progspace = pic.ProgramSpace ?? throw new ArgumentNullException(nameof(pic.ProgramSpace));
+            dataspace = pic.DataSpace ?? throw new ArgumentNullException(nameof(pic.DataSpace));
         }
 
-        public int Version => pic.Version;
+        int IPICDescriptor.Version => pic.Version;
+        string IPICDescriptor.PICName => pic.Name;
+        string IPICDescriptor.Description => pic.Desc;
+        string IPICDescriptor.ArchName => pic.Arch;
+        int IPICDescriptor.ProcID => pic.ProcID;
+        string IPICDescriptor.InstructionSetFamily => pic.InstructionSet.ID;
+        bool IPICDescriptor.IsPIC18 => IsPIC18;
+        bool IPICDescriptor.HasExtendedMode => pic.HasExtendedMode;
+        InstructionSetID IPICDescriptor.GetInstructionSetID => GetInstructionSetID;
+        PICFamily IPICDescriptor.Family => GetInstructionSetID.GetFamily();
+        int IPICDescriptor.BankCount => arch.MemTraits.BankCount;
+        int IPICDescriptor.HWStackDepth => arch.MemTraits.HWStackDepth;
+        IEnumerable<IPICMemTrait> IPICDescriptor.PICMemoryTraits
+        {
+            get
+            {
+                foreach (var t in arch.MemTraits.Traits)
+                    yield return t.V1_Interface;
+            }
+        }
+        uint IPICDescriptor.DataSpaceSize => dataspace.EndAddr;
 
-        public string Name
-            => pic.Name;
+        uint IPICDescriptor.MagicOffset
+        {
+            get
+            {
+                if (!magicOffset.HasValue)
+                {
+                    magicOffset = arch.MemTraits.Traits.OfType<EEDataMemTraits>().Select(t => t.MagicOffset).FirstOrDefault();
+                }
+                return magicOffset.Value;
+            }
+        }
 
-        public string Description
-            => pic.Desc;
+        IEnumerable<IPICMemoryRegion> IPICDescriptor.ProgMemoryRegions
+        {
+            get
+            {
+                if (progspace.CodeSectors != null)
+                {
+                    foreach (var sect in progspace.CodeSectors)
+                        yield return sect.V1_Interface;
+                }
+                if (progspace.FusesSector != null)
+                {
+                    yield return progspace.FusesSector.V1_Interface;
+                }
+                if (progspace.InfoSectors != null)
+                {
+                    foreach (var sect in progspace.InfoSectors)
+                        yield return sect.V1_Interface;
+                }
+            }
+        }
 
-        public string ArchName
-            => pic.Arch;
+        IEnumerable<IDeviceInfoRegister> IPICDescriptor.DeviceHWInfos
+        {
+            get
+            {
+                if (progspace.InfoSectors != null)
+                {
+                    foreach (var r in progspace.InfoSectors.OfType<IDeviceInfoSector>().Select(p => p.Registers).Cast<IDeviceInfoRegister>())
+                    {
+                        yield return r;
+                    }
+                }
+                yield break;
+            }
+        }
 
-        public int ProcID
-            => pic.ProcID;
+        IEnumerable<IDeviceFuse> IPICDescriptor.ConfigurationFuses
+        {
+            get
+            {
+                if (progspace.FusesSector != null)
+                {
+                    foreach (var d in progspace.FusesSector.Defs)
+                    {
+                        switch (d)
+                        {
+                            case DCRDef dcr:
+                                yield return dcr.V1_Interface;
+                                break;
 
-        public string InstructionSetFamily
-            => pic.InstructionSet.ID;
+                            case AdjustPoint adj:
+                                break;
 
-        public bool HasExtendedMode
-            => pic.HasExtendedMode;
+                            default:
+                                throw new InvalidOperationException($"Invalid configuration fuse type: {d.GetType()}");
+                        }
+                    }
+                }
+                yield break;
+            }
+        }
 
-        public InstructionSetID GetInstructionSetID
+        IEnumerable<IPICMemoryRegion> IPICDescriptor.AllDataMemoryRegions
+        {
+            get
+            {
+                if (dataspace.RegardlessOfMode != null)
+                {
+                    foreach (var sect in dataspace.RegardlessOfMode.RegistersRegions)
+                        yield return sect.V1_Interface;
+                }
+                if (dataspace.TraditionalModeOnly != null)
+                {
+                    foreach (var gpr in dataspace.TraditionalModeOnly)
+                    {
+                        yield return gpr.V1_Interface;
+                    }
+                }
+                if (dataspace.ExtendedModeOnly != null)
+                {
+                    foreach (var gpr in dataspace.ExtendedModeOnly)
+                    {
+                        yield return gpr.V1_Interface;
+                    }
+                }
+            }
+        }
+
+        IEnumerable<IPICMirroringRegion> IPICDescriptor.MirroringRegions
+        {
+            get
+            {
+                foreach (var sfrd in dataspace.RegardlessOfMode.RegistersRegions.Where(r => r.MemorySubDomain == PICMemorySubDomain.SFR).Cast<SFRDataSector>())
+                {
+                    foreach (var mir in sfrd.MirrorSFRs)
+                    {
+                        yield return mir.V1_Interface;
+                    }
+                }
+            }
+        }
+
+        IEnumerable<IPICMemoryRegion> IPICDescriptor.DataMemoryRegions(PICExecMode mode)
+        {
+            if (dataspace.RegardlessOfMode != null)
+            {
+                foreach (var sect in dataspace.RegardlessOfMode.RegistersRegions)
+                    yield return sect.V1_Interface;
+            }
+            switch (mode)
+            {
+                case PICExecMode.Traditional:
+                    if (dataspace.TraditionalModeOnly != null)
+                    {
+                        foreach (var gpr in dataspace.TraditionalModeOnly)
+                            yield return gpr.V1_Interface;
+                    }
+                    break;
+                case PICExecMode.Extended:
+                    if (dataspace.ExtendedModeOnly != null)
+                    {
+                        foreach (var gpr in dataspace.ExtendedModeOnly)
+                            yield return gpr.V1_Interface;
+                    }
+                    break;
+            }
+        }
+
+        IEnumerable<ISFRRegister> IPICDescriptor.SFRs
+        {
+            get
+            {
+                foreach (var reg in dataspace.RegardlessOfMode.RegistersRegions.Where(r => r.MemorySubDomain == PICMemorySubDomain.SFR))
+                {
+                    if (reg is SFRDataSector sfrd)
+                    {
+                        foreach (var sfr in sfrd.SFRs)
+                            yield return sfr.V1_Interface;
+                        foreach (var jsfr in sfrd.JoinedSFRs)
+                        {
+                            byte bitPos = 0;
+                            foreach (var sfr in jsfr.SFRs)
+                            {
+                                sfr.BitPos = bitPos;
+                                yield return sfr.V1_Interface;
+                                bitPos += (byte)(sfr.ByteWidth * 8);
+                            }
+                        }
+                        foreach (var mfsr in sfrd.MuxedSFRs)
+                        {
+                            yield return mfsr.SelectSFRs.First().SFR.V1_Interface;
+                        }
+                    }
+                }
+                if (dataspace.RegardlessOfMode.NMMRPlace != null && !IsPIC18)
+                {
+                    foreach (var sfr in dataspace.RegardlessOfMode.NMMRPlace.SFRDefs)
+                        yield return sfr.V1_Interface;
+                }
+            }
+        }
+
+        IEnumerable<IJoinedRegister> IPICDescriptor.JoinedRegisters
+        {
+            get
+            {
+                foreach (var reg in dataspace.RegardlessOfMode.RegistersRegions.Where(r => r.MemorySubDomain == PICMemorySubDomain.SFR))
+                {
+                    if (reg is SFRDataSector sfrd)
+                    {
+                        foreach (var jsfr in sfrd.JoinedSFRs)
+                        {
+                            byte jsize = 0;
+                            byte bitPos = 0;
+                            foreach (var sfr in jsfr.SFRs)
+                            {
+                                jsize += sfr.NzWidth;
+                                sfr.BitPos = bitPos;
+                                bitPos += (byte)(sfr.ByteWidth * 8);
+                            }
+                            jsfr.NzWidth = jsize;
+                            yield return jsfr.V1_Interface;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        IEnumerable<IInterrupt> IPICDescriptor.Interrupts
+        {
+            get
+            {
+                if (pic.Interrupts != null)
+                {
+                    foreach (var it in pic.Interrupts)
+                        yield return it.V1_Interface;
+                }
+                yield break;
+            }
+        }
+
+        private bool IsPIC18 => pic.Arch == "18xxxx";
+
+        private InstructionSetID GetInstructionSetID
         {
             get
             {
@@ -87,392 +307,60 @@ namespace Reko.Libraries.Microchip.V1
                     if (pic.Arch == "16Exxx")
                         id = InstructionSetID.PIC16_FULLFEATURED;
                     if (pic.Arch == "18xxxx")
-                        id = (HasExtendedMode ? InstructionSetID.PIC18_EXTENDED : InstructionSetID.PIC18);
+                        id = (pic.HasExtendedMode ? InstructionSetID.PIC18_EXTENDED : InstructionSetID.PIC18);
                 }
                 return id;
             }
         }
 
-        public PICFamily Family => GetInstructionSetID.GetFamily();
-
-        public IArchDef ArchDefinitions
-            => archintf = archintf ?? new Arch_v1_Interface(pic);
-
-        public IProgramSpace ProgramMemorySpace
-            => progintf = progintf ?? new ProgramSpace_v1_Interface(pic);
-
-        public IDataSpace DataMemorySpace
-            => dataintf = dataintf ?? new DataSpace_v1_Interface(pic);
-
-        public IRegistersDefinitions PICRegisters
-            => regintf = regintf ?? new PICRegisters_v1_Interface(pic);
-
     }
 
-    /// <summary>
-    /// This class implements the <see cref="IArchDef"/> interface for <see cref="PIC_v1"/>.
-    /// </summary>
-    internal sealed class Arch_v1_Interface : IArchDef
+    internal sealed class PICMemTrait_v1_Interface : IPICMemTrait
     {
-        private readonly ArchDef arch;
+        private readonly PICMemTrait picmemtrt;
 
-        public Arch_v1_Interface(PIC_v1 pic)
+        public PICMemTrait_v1_Interface(PICMemTrait picMemTrait)
         {
-            arch = pic.ArchDef;
+            picmemtrt = picMemTrait ?? throw new ArgumentNullException(nameof(picMemTrait));
         }
 
-        public string Name => arch.Name;
-
-        public string Description => arch.Description;
-
-        public IEnumerable<ITrait> MemoryTraits
-            => arch.MemTraits.Traits.OfType<ITrait>();
-
-        public int BankCount => arch.MemTraits.BankCount;
-
-        public int HWStackDepth => arch.MemTraits.HWStackDepth;
-
-        public uint MagicOffset
-        {
-            get
-            {
-                if (!magicOffset.HasValue)
-                {
-                    magicOffset = arch.MemTraits.Traits.OfType<EEDataMemTraits>().Select(t => t.MagicOffset).FirstOrDefault();
-                }
-                return magicOffset.Value;
-            }
-        }
-        private uint? magicOffset;
+        PICMemoryDomain IPICMemTrait.Domain => picmemtrt.Domain;
+        PICMemorySubDomain IPICMemTrait.SubDomain => picmemtrt.SubDomain;
+        uint IPICMemTrait.WordSize => picmemtrt.WordSize;
+        uint IPICMemTrait.LocSize => picmemtrt.LocSize;
+        uint IPICMemTrait.WordImpl => picmemtrt.WordImpl;
+        uint IPICMemTrait.WordInit => picmemtrt.WordInit;
+        uint IPICMemTrait.WordSafe => picmemtrt.WordSafe;
     }
 
-    /// <summary>
-    /// This class implements the <see cref="IProgramSpace"/> interface for <see cref="PIC_v1"/>.
-    /// </summary>
-    internal sealed class ProgramSpace_v1_Interface : IProgramSpace
-    {
-        private readonly ProgramSpace space;
-
-        public ProgramSpace_v1_Interface(PIC_v1 pic)
-        {
-            space = pic.ProgramSpace;
-        }
-
-        public IEnumerable<IPICMemoryRegion> MemoryRegions
-        {
-            get
-            {
-                if (space.CodeSectors != null)
-                {
-                    foreach (var sect in space.CodeSectors)
-                        yield return sect.PICMemoryRegionInterface;
-                }
-                if (space.FusesSector != null)
-                {
-                    yield return space.FusesSector.PICMemoryRegionInterface;
-                }
-                if (space.InfoSectors != null)
-                {
-                    foreach (var sect in space.InfoSectors)
-                        yield return sect.PICMemoryRegionInterface;
-                }
-            }
-        }
-
-        public IEnumerable<IDeviceInfoRegister> DeviceHWInfos
-        {
-            get
-            {
-                if (space.InfoSectors != null)
-                {
-                    foreach (var r in space.InfoSectors.OfType<IDeviceInfoSector>().Select(p => p.Registers).Cast<IDeviceInfoRegister>())
-                    {
-                        yield return r;
-                    }
-                }
-                yield break;
-            }
-        }
-
-        public IEnumerable<IDeviceFuse> ConfigurationFuses
-        {
-            get
-            {
-                if (space.FusesSector != null)
-                {
-                    foreach (var r in space.FusesSector.ConfigFuseSector_Interface.Fuses)
-                    {
-                        yield return r;
-                    }
-                }
-                yield break;
-            }
-        }
-
-    }
-
-    /// <summary>
-    /// This class implements the <see cref="IDataSpace"/> interface for <see cref="PIC_v1"/>.
-    /// </summary>
-    internal sealed class DataSpace_v1_Interface : IDataSpace
-    {
-        private readonly DataSpace space;
-
-        public DataSpace_v1_Interface(PIC_v1 pic)
-        {
-            space = pic.DataSpace;
-        }
-
-        public uint DataSpaceSize => space.EndAddr;
-
-        public IEnumerable<IPICMemoryRegion> AllMemoryRegions
-        {
-            get
-            {
-                if (space.RegardlessOfMode != null)
-                {
-                    foreach (var sect in space.RegardlessOfMode.RegistersRegions)
-                        yield return sect.PICMemoryRegionInterface;
-                }
-                if (space.TraditionalModeOnly != null)
-                {
-                    foreach (var gpr in space.TraditionalModeOnly)
-                    {
-                        yield return gpr.PICMemoryRegionInterface;
-                    }
-                }
-                if (space.ExtendedModeOnly != null)
-                {
-                    foreach (var gpr in space.ExtendedModeOnly)
-                    {
-                        yield return gpr.PICMemoryRegionInterface;
-                    }
-                }
-            }
-        }
-
-        public IEnumerable<IPICMirroringRegion> Mirrors
-        {
-            get
-            {
-                foreach (var sfrd in space.RegardlessOfMode.RegistersRegions.Where(r => r.MemorySubDomain == PICMemorySubDomain.SFR).Cast<SFRDataSector>())
-                {
-                    foreach (var mir in sfrd.MirrorSFRs)
-                    {
-                        yield return mir;
-                    }
-                }
-            }
-        }
-
-        public IEnumerable<IPICMemoryRegion> MemoryRegions(PICExecMode mode)
-        {
-            if (space.RegardlessOfMode != null)
-            {
-                foreach (var sect in space.RegardlessOfMode.RegistersRegions)
-                    yield return sect.PICMemoryRegionInterface;
-            }
-            switch (mode)
-            {
-                case PICExecMode.Traditional:
-                    if (space.TraditionalModeOnly != null)
-                    {
-                        foreach (var gpr in space.TraditionalModeOnly)
-                            yield return gpr.PICMemoryRegionInterface;
-                    }
-                    break;
-                case PICExecMode.Extended:
-                    if (space.ExtendedModeOnly != null)
-                    {
-                        foreach (var gpr in space.ExtendedModeOnly)
-                            yield return gpr.PICMemoryRegionInterface;
-                    }
-                    break;
-            }
-        }
-
-    }
-
-    /// <summary>
-    /// This class implements the <see cref="IRegistersDefinitions"/> interface for <see cref="PIC_v1"/>.
-    /// </summary>
-    internal sealed class PICRegisters_v1_Interface : IRegistersDefinitions
-    {
-        private readonly PIC_v1 pic;
-
-        public PICRegisters_v1_Interface(PIC_v1 pic)
-        {
-            this.pic = pic;
-        }
-
-        public IEnumerable<ISFRRegister> SFRs
-        {
-            get
-            {
-                DataSpace space = pic.DataSpace;
-                foreach (var reg in space.RegardlessOfMode.RegistersRegions.Where(r => r.MemorySubDomain == PICMemorySubDomain.SFR))
-                {
-                    if (reg is SFRDataSector sfrd)
-                    {
-                        foreach (var sfr in sfrd.SFRs)
-                            yield return sfr;
-                        foreach (var jsfr in sfrd.JoinedSFRs)
-                        {
-                            byte bitPos = 0;
-                            foreach (var sfr in jsfr.SFRs)
-                            {
-                                sfr.BitPos = bitPos;
-                                yield return sfr;
-                                bitPos += (byte)(sfr.ByteWidth * 8);
-                            }
-                        }
-                        foreach (var mfsr in sfrd.MuxedSFRs)
-                        {
-                            yield return mfsr.SelectSFRs.First().SFR;
-                        }
-                    }
-                }
-                if (space.RegardlessOfMode.NMMRPlace != null && !IsPIC18)
-                {
-                    foreach (var sfr in space.RegardlessOfMode.NMMRPlace.SFRDefs)
-                        yield return sfr;
-                }
-            }
-        }
-
-        public IEnumerable<IJoinedRegister> JoinedRegisters
-        {
-            get
-            {
-                DataSpace space = pic.DataSpace;
-                foreach (var reg in space.RegardlessOfMode.RegistersRegions.Where(r => r.MemorySubDomain == PICMemorySubDomain.SFR))
-                {
-                    if (reg is SFRDataSector sfrd)
-                    {
-                        foreach (var jsfr in sfrd.JoinedSFRs)
-                        {
-                            byte jsize = 0;
-                            byte bitPos = 0;
-                            foreach (var sfr in jsfr.SFRs)
-                            {
-                                jsize += sfr.BitWidth;
-                                sfr.BitPos = bitPos;
-                                bitPos += (byte)(sfr.ByteWidth * 8);
-                            }
-                            jsfr.BitWidth = jsize;
-                            yield return jsfr;
-                        }
-                    }
-                }
-
-            }
-        }
-
-        private bool IsPIC18 => pic.ArchDef.Name == "18xxxx";
-    }
-
-    internal sealed class PICMemoryRegion_v1_Interface : IPICMemoryRegion
-    {
-        private readonly PICMemoryRegion memReg;
-
-        public PICMemoryRegion_v1_Interface(PICMemoryRegion memRegion)
-        {
-            memReg = memRegion;
-        }
-
-        public string RegionID => memReg.RegionID;
-
-        public bool IsBank => memReg.IsBank;
-
-        public int Bank => memReg.IsBank ? memReg.Bank : -1;
-
-        public string ShadowIDRef => memReg.ShadowIDRef;
-
-        public int ShadowOffset => memReg.ShadowOffset;
-
-        public bool IsSection => memReg.IsSection;
-
-        public string SectionDesc => memReg.IsSection ? memReg.SectionDesc : String.Empty;
-
-        public string SectionName => memReg.IsSection ? memReg.SectionName : String.Empty;
-
-        public uint BeginAddr => memReg.BeginAddr;
-
-        public uint EndAddr => memReg.EndAddr;
-
-        public PICMemoryDomain MemoryDomain => memReg.MemoryDomain;
-
-        public PICMemorySubDomain MemorySubDomain => memReg.MemorySubDomain;
-    }
-
-    internal sealed class ConfigFuseSector_v1_Interface : IConfigFuses
-    {
-        private readonly ConfigFuseSector sector;
-
-        public ConfigFuseSector_v1_Interface(ConfigFuseSector cfgsect)
-        {
-            sector = cfgsect;
-        }
-
-        public IEnumerable<IDeviceFuse> Fuses
-        {
-            get
-            {
-                foreach (var f in sector.Defs)
-                {
-                    switch (f)
-                    {
-                        case DCRDef dcr:
-                            yield return dcr.DeviceFusesConfig_Interface;
-                            break;
-
-                        case AdjustPoint adj:
-                            break;
-
-                        default:
-                            throw new InvalidOperationException($"Invalid configuration register type : {f.GetType()}");
-                    }
-                }
-            }
-        }
-
-    }
-
-    internal sealed class DeviceFusesConfig_v1_Interface : IDeviceFuse
+    internal sealed class DeviceFuse_v1_Interface : IDeviceFuse
     {
         private readonly DCRDef fuse;
 
-        public DeviceFusesConfig_v1_Interface(DCRDef cfgfuse)
+        public DeviceFuse_v1_Interface(DCRDef cfgfuse)
         {
             fuse = cfgfuse;
         }
 
-        public int Addr => fuse.Addr;
+        int IDeviceFuse.Addr => fuse.Addr;
+        string IDeviceFuse.Name => fuse.CName;
+        string IDeviceFuse.Description => fuse.Desc;
+        int IDeviceFuse.BitWidth => fuse.NzWidth;
+        int IDeviceFuse.ImplMask => fuse.ImplMask;
+        string IDeviceFuse.AccessBits => fuse.Access;
+        int IDeviceFuse.DefaultValue => fuse.DefaultValue;
+        bool IDeviceFuse.IsLangHidden => fuse.IsLangHidden;
 
-        public string Name => fuse.CName;
-
-        public string Description => fuse.Desc;
-
-        public int BitWidth => fuse.NzWidth;
-
-        public int ImplMask => fuse.ImplMask;
-
-        public string AccessBits => fuse.Access;
-
-        public int DefaultValue => fuse.DefaultValue;
-
-        public bool IsLangHidden => fuse.IsLangHidden;
-
-        public IEnumerable<IDeviceFusesIllegal> IllegalSettings
+        IEnumerable<IDeviceFusesIllegal> IDeviceFuse.IllegalSettings
         {
             get
             {
                 foreach (var ilg in fuse.Illegals)
-                    yield return ilg;
+                    yield return ilg.V1_Interface;
             }
         }
 
-        public IEnumerable<IDeviceFusesField> ConfigFields
+        IEnumerable<IDeviceFusesField> IDeviceFuse.ConfigFields
         {
             get
             {
@@ -489,17 +377,345 @@ namespace Reko.Libraries.Microchip.V1
 
                             case DCRFieldDef fdef:
                                 fdef.BitPos = (byte)bitpos;
-                                bitpos += fdef.BitWidth;
-                                yield return fdef;
+                                bitpos += fdef.NzWidth;
+                                yield return fdef.V1_Interface;
                                 break;
 
                             default:
-                                throw new InvalidOperationException($"Invalid PIC device configuration field in '{Name}' register: {fld.GetType()}");
+                                throw new InvalidOperationException($"Invalid PIC device configuration field in '{fuse.CName}' register: {fld.GetType()}");
                         }
                     }
                 }
             }
         }
+
+    }
+
+    internal sealed class DeviceFusesIllegal_v1_Interface : IDeviceFusesIllegal
+    {
+        private readonly DCRDefIllegal illg;
+
+        public DeviceFusesIllegal_v1_Interface(DCRDefIllegal dcrIllg)
+        {
+            illg = dcrIllg ?? throw new ArgumentNullException(nameof(dcrIllg));
+        }
+
+        string IDeviceFusesIllegal.When => illg.When;
+        string IDeviceFusesIllegal.Description => illg.Desc;
+
+    }
+
+    internal sealed class DeviceFusesField_v1_Interface : IDeviceFusesField
+    {
+        private readonly DCRFieldDef dcrflddef;
+
+        public DeviceFusesField_v1_Interface(DCRFieldDef dcrFieldDef)
+        {
+            dcrflddef = dcrFieldDef ?? throw new ArgumentNullException(nameof(dcrFieldDef));
+        }
+
+        string IRegisterBitField.Name => dcrflddef.CName;
+        string IRegisterBitField.Description => dcrflddef.Desc;
+        byte IRegisterBitField.BitPos => dcrflddef.BitPos;
+        byte IRegisterBitField.BitWidth => dcrflddef.NzWidth;
+        int IRegisterBitField.BitMask => dcrflddef.Mask;
+        bool IRegisterBitField.IsHidden => dcrflddef.IsHidden;
+        bool IRegisterBitField.IsLangHidden => dcrflddef.IsLangHidden;
+        bool IRegisterBitField.IsIDEHidden => dcrflddef.IsIDEHidden;
+
+        IEnumerable<IDeviceFusesSemantic> IDeviceFusesField.Semantics
+        {
+            get
+            {
+                if (dcrflddef.DCRFieldSemantics != null)
+                {
+                    foreach (var fsem in dcrflddef.DCRFieldSemantics)
+                        yield return fsem.V1_Interface;
+                }
+                yield break;
+            }
+        }
+
+    }
+
+    internal sealed class DeviceFusesSemantic_v1_Interface : IDeviceFusesSemantic
+    {
+        private readonly DCRFieldSemantic dcrfldsem;
+
+        public DeviceFusesSemantic_v1_Interface(DCRFieldSemantic dcrFieldSem)
+        {
+            dcrfldsem = dcrFieldSem ?? throw new ArgumentNullException(nameof(dcrFieldSem));
+        }
+
+        string IDeviceFusesSemantic.Name => dcrfldsem.CName;
+        string IDeviceFusesSemantic.Description => dcrfldsem.Descr;
+        string IDeviceFusesSemantic.When => dcrfldsem.When;
+        bool IDeviceFusesSemantic.IsHidden => dcrfldsem.IsHidden;
+        bool IDeviceFusesSemantic.IsLangHidden => dcrfldsem.IsLangHidden;
+    }
+
+    internal sealed class SFRRegister_v1_Interface : ISFRRegister
+    {
+        private readonly SFRDef sfrreg;
+
+        public SFRRegister_v1_Interface(SFRDef sfrDef)
+        {
+            sfrreg = sfrDef ?? throw new ArgumentNullException(nameof(sfrDef));
+        }
+
+        uint IRegisterBasicInfo.Addr => sfrreg.Addr;
+        string IRegisterBasicInfo.Name => sfrreg.CName;
+        string IRegisterBasicInfo.Description => sfrreg.Desc;
+        byte IRegisterBasicInfo.BitWidth => sfrreg.NzWidth;
+        int ISFRRegister.ByteWidth => sfrreg.ByteWidth;
+        uint ISFRRegister.ImplMask => sfrreg.Impl;
+        string ISFRRegister.AccessBits => sfrreg.Access;
+        string ISFRRegister.MCLR => sfrreg.MCLR;
+        string ISFRRegister.POR => sfrreg.POR;
+        bool ISFRRegister.IsIndirect => sfrreg.IsIndirect;
+        bool ISFRRegister.IsVolatile => sfrreg.IsVolatile;
+        bool ISFRRegister.IsHidden => sfrreg.IsHidden;
+        bool ISFRRegister.IsLangHidden => sfrreg.IsLangHidden;
+        bool ISFRRegister.IsIDEHidden => sfrreg.IsIDEHidden;
+        string ISFRRegister.NMMRID => sfrreg.NMMRID;
+        bool ISFRRegister.IsNMMR => sfrreg.IsNMMR;
+
+        IEnumerable<ISFRBitField> ISFRRegister.BitFields
+        {
+            get
+            {
+                foreach (var smod in sfrreg.SFRModes)
+                {
+                    int bitPos = 0;
+                    foreach (var bf in smod.Fields)
+                    {
+                        switch (bf)
+                        {
+                            case SFRFieldDef sfd:
+                                sfd.BitPos = (byte)bitPos;
+                                bitPos += sfd.NzWidth;
+                                yield return sfd.V1_Interface;
+                                break;
+
+                            case AdjustPoint adj:
+                                bitPos += adj.Offset;
+                                break;
+
+                            default:
+                                throw new InvalidOperationException($"Invalid SFR field type in '{sfrreg.CName}': {bf.GetType()}");
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    internal sealed class JoinedSFRRegister_v1_Interface : IJoinedRegister
+    {
+        private readonly JoinedSFRDef jsfrreg;
+
+        public JoinedSFRRegister_v1_Interface(JoinedSFRDef joinedSFRDef)
+        {
+            jsfrreg = joinedSFRDef;
+        }
+
+        uint IRegisterBasicInfo.Addr => jsfrreg.Addr;
+        string IRegisterBasicInfo.Name => jsfrreg.CName;
+        string IRegisterBasicInfo.Description => jsfrreg.Desc;
+        byte IRegisterBasicInfo.BitWidth => jsfrreg.NzWidth;
+
+        IEnumerable<ISFRRegister> IJoinedRegister.ChildSFRs
+        {
+            get
+            {
+                foreach (var sfr in jsfrreg.SFRs)
+                    yield return sfr.V1_Interface;
+            }
+        }
+
+    }
+
+    internal sealed class SFRBitField_v1_Interface : ISFRBitField
+    {
+        private readonly SFRFieldDef sfbitdef;
+
+        public SFRBitField_v1_Interface(SFRFieldDef sfrFieldDef)
+        {
+            sfbitdef = sfrFieldDef ?? throw new ArgumentNullException(nameof(sfrFieldDef));
+        }
+
+        string IRegisterBitField.Name => sfbitdef.CName;
+        string IRegisterBitField.Description => sfbitdef.Desc;
+        byte IRegisterBitField.BitPos => sfbitdef.BitPos;
+        byte IRegisterBitField.BitWidth => sfbitdef.NzWidth;
+        int IRegisterBitField.BitMask => sfbitdef.Mask;
+        bool IRegisterBitField.IsHidden => sfbitdef.IsHidden;
+        bool IRegisterBitField.IsLangHidden => sfbitdef.IsLangHidden;
+        bool IRegisterBitField.IsIDEHidden => sfbitdef.IsIDEHidden;
+
+        IEnumerable<ISFRFieldSemantic> ISFRBitField.FieldSemantics
+        {
+            get
+            {
+                if (sfbitdef.SFRFieldSemantics != null)
+                {
+                    foreach (var fsem in sfbitdef.SFRFieldSemantics)
+                        yield return fsem.V1_Interface;
+                }
+            }
+        }
+
+    }
+
+    internal sealed class SFRFieldSemantic_v1_Interface : ISFRFieldSemantic
+    {
+        private readonly SFRFieldSemantic fsem;
+
+        public SFRFieldSemantic_v1_Interface(SFRFieldSemantic sfrFieldSemantic)
+        {
+            fsem = sfrFieldSemantic ?? throw new ArgumentNullException(nameof(sfrFieldSemantic));
+        }
+
+        string ISFRFieldSemantic.Description => fsem.Desc;
+        string ISFRFieldSemantic.When => fsem.When;
+
+    }
+
+    internal sealed class PICMemoryRegion_v1_Interface : IPICMemoryRegion
+    {
+        private readonly PICMemoryRegion memReg;
+
+        public PICMemoryRegion_v1_Interface(PICMemoryRegion memRegion)
+        {
+            memReg = memRegion;
+        }
+
+        string IPICMemoryRegion.RegionID => memReg.RegionID;
+        bool IPICMemoryRegion.IsBank => memReg.IsBank;
+        int IPICMemoryRegion.Bank => memReg.IsBank ? memReg.Bank : -1;
+        string IPICMemoryRegion.ShadowIDRef => memReg.ShadowIDRef;
+        int IPICMemoryRegion.ShadowOffset => memReg.ShadowOffset;
+        bool IPICMemoryRegion.IsSection => memReg.IsSection;
+        string IPICMemoryRegion.SectionDesc => memReg.IsSection ? memReg.SectionDesc : String.Empty;
+        string IPICMemoryRegion.SectionName => memReg.IsSection ? memReg.SectionName : String.Empty;
+        uint IPICMemoryAddrRange.BeginAddr => memReg.BeginAddr;
+        uint IPICMemoryAddrRange.EndAddr => memReg.EndAddr;
+        PICMemoryDomain IPICMemoryAddrRange.MemoryDomain => memReg.MemoryDomain;
+        PICMemorySubDomain IPICMemoryAddrRange.MemorySubDomain => memReg.MemorySubDomain;
+    }
+
+    internal sealed class MirroringRegion_v1_Interface : IPICMirroringRegion
+    {
+        private Mirror mir;
+
+        public MirroringRegion_v1_Interface(Mirror mirror)
+        {
+            mir = mirror ?? throw new ArgumentNullException(nameof(mirror));
+        }
+
+        uint IPICMirroringRegion.Addr => mir.Addr;
+        uint IPICMirroringRegion.ByteSize => mir.NzSize;
+        string IPICMirroringRegion.TargetRegionID => mir.RegionIDRef;
+    }
+
+    internal sealed class DeviceInfoSector_v1_Interface : IDeviceInfoSector
+    {
+        private readonly DIASector diasect;
+        private readonly DCISector dcisect;
+        private readonly ProgMemoryRegion memreg;
+
+        public DeviceInfoSector_v1_Interface(DIASector diaSector)
+        {
+            diasect = diaSector ?? throw new ArgumentNullException(nameof(diaSector));
+            memreg = diasect;
+            dcisect = null;
+        }
+
+        public DeviceInfoSector_v1_Interface(DCISector dciSector)
+        {
+            dcisect = dciSector ?? throw new ArgumentNullException(nameof(dciSector));
+            memreg = dcisect;
+            diasect = null;
+        }
+
+        string IPICMemoryRegion.RegionID => memreg.RegionID;
+        bool IPICMemoryRegion.IsBank => memreg.IsBank;
+        int IPICMemoryRegion.Bank => memreg.Bank;
+        string IPICMemoryRegion.ShadowIDRef => memreg.ShadowIDRef;
+        int IPICMemoryRegion.ShadowOffset => memreg.ShadowOffset;
+        bool IPICMemoryRegion.IsSection => memreg.IsSection;
+        string IPICMemoryRegion.SectionDesc => memreg.SectionDesc;
+        string IPICMemoryRegion.SectionName => memreg.SectionName;
+        uint IPICMemoryAddrRange.BeginAddr => memreg.BeginAddr;
+        uint IPICMemoryAddrRange.EndAddr => memreg.EndAddr;
+        PICMemoryDomain IPICMemoryAddrRange.MemoryDomain => memreg.MemoryDomain;
+        PICMemorySubDomain IPICMemoryAddrRange.MemorySubDomain => memreg.MemorySubDomain;
+
+        IEnumerable<IDeviceInfoRegister> IDeviceInfoSector.Registers
+        {
+            get
+            {
+                if (diasect != null)
+                {
+                    foreach (var ra in diasect.RegisterArrays)
+                    {
+                        foreach (var r in ra.Registers)
+                        {
+                            switch (r)
+                            {
+                                case DeviceRegister dreg:
+                                    yield return dreg.V1_Interface;
+                                    break;
+
+                                case AdjustPoint adj:
+                                    break;
+
+                                default:
+                                    throw new InvalidOperationException($"Invalid PIC device info register in '{ra.Name}' : {r.GetType()}");
+                            }
+                        }
+                    }
+                }
+                else if (dcisect != null)
+                {
+                    foreach (var r in dcisect.DCIRegisters)
+                        yield return r.V1_Interface;
+                }
+                else
+                    yield break;
+            }
+        }
+
+    }
+
+    internal sealed class DeviceInfo_v1_Interface : IDeviceInfoRegister
+    {
+        private readonly DeviceRegister dreg;
+
+        public DeviceInfo_v1_Interface(DeviceRegister deviceRegister)
+        {
+            dreg = deviceRegister ?? throw new ArgumentNullException(nameof(deviceRegister));
+        }
+
+        int IDeviceInfoRegister.Addr => dreg.Addr;
+        string IDeviceInfoRegister.Name => dreg.Name;
+        int IDeviceInfoRegister.BitWidth => dreg.NzWidth;
+
+    }
+
+    internal sealed class Interrupt_v1_Interface : IInterrupt
+    {
+        private readonly Interrupt inter;
+
+        public Interrupt_v1_Interface(Interrupt interrupt)
+        {
+            inter = interrupt ?? throw new ArgumentNullException(nameof(interrupt));
+        }
+
+        uint IInterrupt.IRQ => inter.IRQ;
+        string IInterrupt.Name => inter.CName;
+        string IInterrupt.Description => inter.Desc;
 
     }
 

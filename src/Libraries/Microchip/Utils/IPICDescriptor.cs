@@ -22,93 +22,43 @@ using System.Collections.Generic;
 
 namespace Reko.Libraries.Microchip
 {
+
     /// <summary>
-    /// This interface provides access to the PIC definitions (architecture, memory regions, instruction set, etc...).
+    /// This public interface provides access to the PIC definitions (architecture, memory regions, instruction set, etc...).
     /// It permits to dissociate the physical implementation of the Microchip XML definition file from
-    /// the access by consumers of the PIC descriptor.
+    /// the accesses by consumers of the PIC descriptor.
     /// </summary>
     public interface IPICDescriptor
     {
-        /// <summary>
-        /// Gets the version number of the interface
-        /// </summary>
+        /// <summary> Gets the version number of the interface </summary>
         int Version { get; }
 
-        /// <summary>
-        /// Gets the PIC name.
-        /// </summary>
-        string Name { get; }
+        /// <summary> Gets the PIC name. </summary>
+        string PICName { get; }
 
-        /// <summary>
-        /// Gets the PIC architecture name (16xxxx, 16Exxx, 18xxxx)
-        /// </summary>
+        /// <summary> Gets the PIC architecture name (16xxxx, 16Exxx, 18xxxx) </summary>
         string ArchName { get; }
 
-        /// <summary>
-        /// Gets the PIC description.
-        /// </summary>
+        /// <summary> Gets the PIC description. </summary>
         string Description { get; }
 
-        /// <summary>
-        /// Gets the unique processor identifier. Used by development tools.
-        /// </summary>
+        /// <summary> Gets the unique processor identifier. Used by development tools. </summary>
         int ProcID { get; }
 
-        /// <summary>
-        /// Gets a value from <seealso cref="PICFamily"/> enumeration indicating the PIC family, this PIC belongs to.
-        /// </summary>
+        /// <summary> Gets a value from <seealso cref="PICFamily"/> enumeration indicating the PIC family, this PIC belongs to. </summary>
         PICFamily Family { get; }
 
-        /// <summary>
-        /// Gets the indicator whether this PIC supports the PIC18 extended execution mode.
-        /// </summary>
+        /// <summary> Gets the indicator whether this PIC supports the PIC18 instruction set. </summary>
+        bool IsPIC18 { get; }
+
+        /// <summary> Gets the indicator whether this PIC supports the PIC18 extended execution mode. </summary>
         bool HasExtendedMode { get; }
 
-        /// <summary>
-        /// Gets the instruction set identifier of this PIC as a value from the <see cref="InstructionSetID"/> enumeration.
-        /// </summary>
+        /// <summary> Gets the instruction set identifier of this PIC as a value from the <see cref="InstructionSetID"/> enumeration. </summary>
         InstructionSetID GetInstructionSetID { get; }
 
-        /// <summary>
-        /// Gets the instruction set family name.
-        /// </summary>
+        /// <summary> Gets the instruction set family name. </summary>
         string InstructionSetFamily { get; }
-
-        /// <summary>
-        /// Gets the PIC architecture main characteristics thru the <see cref="IArchDef"/> interface.
-        /// </summary>
-        IArchDef ArchDefinitions { get; }
-
-        /// <summary>
-        /// Gets the PIC program memory space definitions.
-        /// </summary>
-        IProgramSpace ProgramMemorySpace { get; }
-
-        /// <summary>
-        /// Gets the PIC data memory space definitions.
-        /// </summary>
-        IDataSpace DataMemorySpace { get; }
-
-        /// <summary>
-        /// Gets the PIC registers definitions.
-        /// </summary>
-        IRegistersDefinitions PICRegisters { get; }
-
-    }
-
-    /// <summary>
-    /// This interface provides access to the generic characteristics of the PIC architecture.
-    /// </summary>
-    public interface IArchDef
-    {
-        /// <summary> Gets the name (16xxxx, 16Exxx, 18xxxx) of the PIC architecture. </summary>
-        string Name { get; }
-
-        /// <summary> Gets the description of the PIC architecture. </summary>
-        string Description { get; }
-
-        /// <summary> Gets address magic offset in the binary image for EEPROM content. </summary>
-        uint MagicOffset { get; }
 
         /// <summary> Gets the depth of the hardware stack. </summary>
         int HWStackDepth { get; }
@@ -116,162 +66,98 @@ namespace Reko.Libraries.Microchip
         /// <summary> Gets the number of memory banks. </summary>
         int BankCount { get; }
 
+        /// <summary> Gets address magic offset in the binary image for EEPROM content. </summary>
+        uint MagicOffset { get; }
+
         /// <summary> Gets the memory traits. </summary>
-        IEnumerable<ITrait> MemoryTraits { get; }
+        IEnumerable<IPICMemTrait> PICMemoryTraits { get; }
+
+        /// <summary> Enumerates the program memory regions with address range and attributes. </summary>
+        IEnumerable<IPICMemoryRegion> ProgMemoryRegions { get; }
+
+        /// <summary> Enumerates the definition of the configuration fuses. </summary>
+        IEnumerable<IDeviceFuse> ConfigurationFuses { get; }
+
+        /// <summary> Enumerates the device hard-coded infos (device config, device information). </summary>
+        IEnumerable<IDeviceInfoRegister> DeviceHWInfos { get; }
+
+        /// <summary> Gets the size of the data space in bytes. </summary>
+        uint DataSpaceSize { get; }
+
+        /// <summary> Enumerates all the data memory regions with address range and attributes. </summary>
+        IEnumerable<IPICMemoryRegion> AllDataMemoryRegions { get; }
+
+        /// <summary> Enumerates the memory regions when running in the specified PIC execution mode. </summary>
+        /// <param name="mode">The PIC execution mode.</param>
+        IEnumerable<IPICMemoryRegion> DataMemoryRegions(PICExecMode mode);
+
+        /// <summary> Enumerates the mirroring regions. </summary>
+        IEnumerable<IPICMirroringRegion> MirroringRegions { get; }
+
+        /// <summary> Enumerates the Special Function Registers. </summary>
+        IEnumerable<ISFRRegister> SFRs { get; }
+
+        /// <summary> Enumerates the Joined Special Function Registers. </summary>
+        IEnumerable<IJoinedRegister> JoinedRegisters { get; }
+
+        /// <summary> Enumerates the Interrupt Requests. </summary>
+        IEnumerable<IInterrupt> Interrupts { get; }
 
     }
 
-    /// <summary>
-    /// This interface provides traits (characteristics) for a given memory domain/sub-domain.
-    /// </summary>
-    public interface ITrait : IMemTrait
+    /// <summary> This interface provides traits (characteristics) for a given PIC memory qualified by domain/sub-domain. </summary>
+    public interface IPICMemTrait
     {
-        /// <summary>
-        /// Gets the memory domain.
-        /// </summary>
-        /// <value>
-        /// A value from the enumeration <seealso cref="PICMemoryDomain"/> enumeration.
-        /// </value>
+        /// <summary> Gets the memory domain as a value from the enumeration <seealso cref="PICMemoryDomain"/> enumeration. </summary>
         PICMemoryDomain Domain { get; }
 
-        /// <summary>
-        /// Gets the memory sub-domain.
-        /// </summary>
-        /// <value>
-        /// A value from the enumeration <seealso cref="PICMemorySubDomain"/> enumeration.
-        /// </value>
+        /// <summary> Gets the memory sub-domain as a value from the enumeration <seealso cref="PICMemorySubDomain"/> enumeration. </summary>
         PICMemorySubDomain SubDomain { get; }
 
-    }
-
-    /// <summary>
-    /// This interface provides information on a memory trait (characteristics).
-    /// </summary>
-    public interface IMemTrait
-    {
-        /// <summary>
-        /// Gets the size of the memory word (in bytes).
-        /// </summary>
+        /// <summary> Gets the size of the memory word (in bytes). </summary>
         uint WordSize { get; }
 
-        /// <summary>
-        /// Gets the memory location access size (in bytes).
-        /// </summary>
+        /// <summary> Gets the memory location access size (in bytes). </summary>
         uint LocSize { get; }
 
-        /// <summary>
-        /// Gets the memory word implementation (bit mask).
-        /// </summary>
+        /// <summary> Gets the memory word implementation (bit mask). </summary>
         uint WordImpl { get; }
 
-        /// <summary>
-        /// Gets the initial (erased) memory word value.
-        /// </summary>
+        /// <summary> Gets the initial (erased) memory word value. </summary>
         uint WordInit { get; }
 
-        /// <summary>
-        /// Gets the memory word 'safe' value. (Probably unused)
-        /// </summary>
+        /// <summary> Gets the memory word 'safe' value. (Probably unused) </summary>
         uint WordSafe { get; }
 
     }
 
-    /// <summary>
-    /// A default memory trait.
-    /// </summary>
-    public sealed class DefaultMemTrait : ITrait
+    /// <summary> A default memory trait. </summary>
+    public sealed class DefaultMemTrait : IPICMemTrait
     {
-
-        /// <summary> Gets the default size of the memory word (in bytes). </summary>
         public uint WordSize => 1;
-
-        /// <summary> Gets the default memory location access size (in bytes). </summary>
         public uint LocSize => 1;
-
-        /// <summary> Gets the default memory word implementation (bit mask). </summary>
         public uint WordImpl => 0xFF;
-
-        /// <summary> Gets the default initial (erased) memory word value. </summary>
         public uint WordInit => 0xFF;
-
-        /// <summary> Gets the default memory word 'safe' value. </summary>
         public uint WordSafe => 0x00;
-
         public PICMemoryDomain Domain => PICMemoryDomain.Unknown;
-
         public PICMemorySubDomain SubDomain => PICMemorySubDomain.Undef;
-
     }
 
-    /// <summary>
-    /// This interface permits to access the description of the PIC program memory space.
-    /// </summary>
-    public interface IProgramSpace
-    {
-        /// <summary>
-        /// Enumerates the program memory regions with address range and attributes.
-        /// </summary>
-        IEnumerable<IPICMemoryRegion> MemoryRegions { get; }
-
-        /// <summary>
-        /// Enumerates the definition of the configuration fuses.
-        /// </summary>
-        IEnumerable<IDeviceFuse> ConfigurationFuses { get; }
-
-        /// <summary>
-        /// Enumerates the device hard-coded infos (device config, device information).
-        /// </summary>
-        IEnumerable<IDeviceInfoRegister> DeviceHWInfos { get; }
-
-    }
-
-    /// <summary>
-    /// This interface permits to access the description of the PIC data memory space.
-    /// </summary>
-    public interface IDataSpace
-    {
-        /// <summary>
-        /// Gets the size of the data space in bytes.
-        /// </summary>
-        uint DataSpaceSize { get; }
-
-        /// <summary>
-        /// Enumerates all the data memory regions with address range and attributes.
-        /// </summary>
-        IEnumerable<IPICMemoryRegion> AllMemoryRegions { get; }
-
-        /// <summary>
-        /// Enumerates the memory regions when running in the specified PIC execution mode.
-        /// </summary>
-        /// <param name="mode">The PIC execution mode.</param>
-        IEnumerable<IPICMemoryRegion> MemoryRegions(PICExecMode mode);
-
-        /// <summary>
-        /// Enumerates the mirroring regions.
-        /// </summary>
-        IEnumerable<IPICMirroringRegion> Mirrors { get; }
-
-    }
-
-    /// <summary>
-    /// This interface permits to retrieve the description of a mirroring memory region.
-    /// </summary>
+    /// <summary> This interface permits to retrieve the description of a mirroring memory region. </summary>
     public interface IPICMirroringRegion
     {
         /// <summary> Gets the starting address of the mirroring region. </summary>
         uint Addr { get; }
 
         /// <summary> Gets the size in bytes of the mirroring region. </summary>
-        uint Size { get; }
+        uint ByteSize { get; }
 
         /// <summary> Gets the identifier of the target mirrored region. </summary>
         string TargetRegionID { get; }
 
     }
 
-    /// <summary>
-    /// This interface provides access to the description of a PIC data memory region.
-    /// </summary>
+    /// <summary> This interface provides access to the description of a PIC memory region. </summary>
     public interface IPICMemoryRegion : IPICMemoryAddrRange
     {
         /// <summary> Gets the name/identifier of the memory region, if any. </summary>
@@ -300,9 +186,7 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides information on PIC memory address range [begin,end) , domain, sub-domain.
-    /// </summary>
+    /// <summary> This interface provides information on PIC memory address range [begin,end) , domain, sub-domain. </summary>
     public interface IPICMemoryAddrRange
     {
 
@@ -324,9 +208,7 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// Values that represent PIC memory domains.
-    /// </summary>
+    /// <summary> Values that represent PIC memory domains. </summary>
     public enum PICMemoryDomain : byte
     {
         /// <summary> Memory does not belong to any known PIC memory spaces. </summary>
@@ -341,9 +223,7 @@ namespace Reko.Libraries.Microchip
         Other
     };
 
-    /// <summary>
-    /// Values that represent PIC memory sub-domains.
-    /// </summary>
+    /// <summary> Values that represent PIC memory sub-domains. </summary>
     public enum PICMemorySubDomain
     {
         /// <summary>Memory region is undefined (transient value).</summary>
@@ -390,54 +270,42 @@ namespace Reko.Libraries.Microchip
         Other
     };
 
-    /// <summary>
-    /// This interface permits to get an enumeration of the PIC configuration fuses.
-    /// </summary>
-    public interface IConfigFuses
-    {
-        IEnumerable<IDeviceFuse> Fuses { get; }
-    }
-
-    /// <summary>
-    /// This interface provides access to a PIC device configuration register (configuration fuses).
-    /// </summary>
+    /// <summary> This interface provides access to a PIC device configuration (fuse) register. </summary>
     public interface IDeviceFuse
     {
-        /// <summary> Gets the memory address of the device configuration register. </summary>
+        /// <summary> Gets the memory address of the device configuration/fuse register. </summary>
         int Addr { get; }
 
-        /// <summary> Gets the name of the device configuration register. </summary>
+        /// <summary> Gets the name of the device configuration/fuse register. </summary>
         string Name { get; }
 
-        /// <summary> Gets the textual description of the device configuration register. </summary>
+        /// <summary> Gets the textual description of the device configuration/fuse register. </summary>
         string Description { get; }
 
-        /// <summary> Gets the bit width of the device configuration register. </summary>
+        /// <summary> Gets the bit width of the device configuration/fuse register. </summary>
         int BitWidth { get; }
 
-        /// <summary> Gets the implemented bit mask of the device configuration register. </summary>
+        /// <summary> Gets the implemented bit mask of the device configuration/fuse register. </summary>
         int ImplMask { get; }
 
-        /// <summary> Gets the access modes of the device configuration register's bits. </summary>
+        /// <summary> Gets the access modes of the device configuration/fuse register's bits. </summary>
         string AccessBits { get; }
 
-        /// <summary> Gets the default value of the device configuration register. </summary>
+        /// <summary> Gets the default value of the device configuration/fuse register. </summary>
         int DefaultValue { get; }
 
-        /// <summary> Gets a value indicating whether this register is hidden to language tools. </summary>
+        /// <summary> Gets a value indicating whether this configuration/fuse register is hidden to language tools. </summary>
         bool IsLangHidden { get; }
 
-        /// <summary> Enumerates the illegal settings for this configuration register. </summary>
+        /// <summary> Enumerates the illegal settings for this configuration/fuse register. </summary>
         IEnumerable<IDeviceFusesIllegal> IllegalSettings { get; }
 
-        /// <summary> Enumerates the bit fields of the configuration register. </summary>
+        /// <summary> Enumerates the bit fields of the configuration/fuse register. </summary>
         IEnumerable<IDeviceFusesField> ConfigFields { get; }
 
     }
 
-    /// <summary>
-    /// This interface provides conditions for illegal device configuration settings.
-    /// </summary>
+    /// <summary> This interface provides conditions for illegal device configuration settings. </summary>
     public interface IDeviceFusesIllegal
     {
         /// <summary> Gets the "when" pattern of the illegal condition. </summary>
@@ -448,9 +316,7 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides access to a PIC device configuration fuses field.
-    /// </summary>
+    /// <summary> This interface provides access to the individual bitfields of a PIC device configuration/fuse register. </summary>
     public interface IDeviceFusesField : IRegisterBitField
     {
         /// <summary> Enumerates the semantics of the settings for this configuration field. </summary>
@@ -458,18 +324,16 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides access to a semantic of a PIC device configuration field (fuses).
-    /// </summary>
+    /// <summary> This interface provides access to a semantic of a PIC device configuration/fuse bitfield. </summary>
     public interface IDeviceFusesSemantic
     {
         /// <summary> Gets the name of the fuses field. </summary>
         string Name { get; }
 
-        /// <summary> Gets the textual description of the field configuration pattern. </summary>
+        /// <summary> Gets the textual description of the fuses field configuration pattern. </summary>
         string Description { get; }
 
-        /// <summary> Gets the 'when' condition for the field value (configuration pattern). </summary>
+        /// <summary> Gets the 'when' condition for the fuses field value (configuration pattern). </summary>
         string When { get; }
 
         /// <summary> Gets a value indicating whether this configuration pattern is hidden. </summary>
@@ -480,18 +344,14 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides access to a device information sector (either DIA or DCI sector)
-    /// </summary>
+    /// <summary> This interface provides access to all device information registers (either from DIA or DCI sector) </summary>
     public interface IDeviceInfoSector : IPICMemoryRegion
     {
         /// <summary> Enumerates the device information registers. </summary>
         IEnumerable<IDeviceInfoRegister> Registers { get; }
     }
 
-    /// <summary>
-    /// This interface provides access to a device information register.
-    /// </summary>
+    /// <summary> This interface provides access to a device information register. </summary>
     public interface IDeviceInfoRegister
     {
         /// <summary> Gets the address of the device information register. </summary>
@@ -502,23 +362,6 @@ namespace Reko.Libraries.Microchip
 
         /// <summary> Gets the bit width of the device information register. </summary>
         int BitWidth { get; }
-    }
-
-    /// <summary>
-    /// This interface provides access to the PIC registers definitions.
-    /// </summary>
-    public interface IRegistersDefinitions
-    {
-        /// <summary>
-        /// Enumerates the Special Function Registers.
-        /// </summary>
-        IEnumerable<ISFRRegister> SFRs { get; }
-
-        /// <summary>
-        /// Enumerates the Joined Special Function Registers.
-        /// </summary>
-        IEnumerable<IJoinedRegister> JoinedRegisters { get; }
-
     }
 
     public interface IRegisterBasicInfo
@@ -537,9 +380,7 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides access to the definition of a Special Function Register (SFR).
-    /// </summary>
+    /// <summary> This interface provides access to the definition of a single Special Function Register (SFR). </summary>
     public interface ISFRRegister : IRegisterBasicInfo
     {
 
@@ -550,7 +391,7 @@ namespace Reko.Libraries.Microchip
         uint ImplMask { get; }
 
         /// <summary> Gets the access mode bits descriptor for this SFR. </summary>
-        string Access { get; }
+        string AccessBits { get; }
 
         /// <summary> Gets the Master Clear (MCLR) bits values (string) of this SFR. </summary>
         string MCLR { get; }
@@ -584,18 +425,14 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides access to a Special Function Register (SFR) bit field.
-    /// </summary>
+    /// <summary> This interface provides access to a single SFR bitfield with its semantics. </summary>
     public interface ISFRBitField : IRegisterBitField
     {
-        /// <summary> Enumerates the list of semantics of this SFR field. </summary>
+        /// <summary> Enumerates all the semantics of this SFR bitfield. </summary>
         IEnumerable<ISFRFieldSemantic> FieldSemantics { get; }
     }
 
-    /// <summary>
-    /// This interface provides access to a SFR field semantic (condition of activation in the PIC).
-    /// </summary>
+    /// <summary> This interface provides access to a SFR field semantic (condition of activation in the PIC). </summary>
     public interface ISFRFieldSemantic
     {
         /// <summary> Gets the textual description of the semantic.</summary>
@@ -605,22 +442,15 @@ namespace Reko.Libraries.Microchip
         string When { get; }
     }
 
-    /// <summary>
-    /// This interface provides access to a Joined SFR register.
-    /// </summary>
+    /// <summary> This interface provides access to a Joined SFR register. </summary>
     public interface IJoinedRegister : IRegisterBasicInfo
     {
-
-        /// <summary>
-        /// Enumerates the child SFRs of this joined SFR register.
-        /// </summary>
+        /// <summary> Enumerates the child SFRs of this joined SFR register. </summary>
         IEnumerable<ISFRRegister> ChildSFRs { get; }
 
     }
 
-    /// <summary>
-    /// This interface provides access to a register bit field definition.
-    /// </summary>
+    /// <summary> This interface provides access to a register bit field definition. </summary>
     public interface IRegisterBitField
     {
         /// <summary> Gets the name of the register's field. </summary>
@@ -649,9 +479,7 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    /// <summary>
-    /// This interface provides IRQ description for a PIC interrupt vector entry.
-    /// </summary>
+    /// <summary> This interface provides IRQ description for a PIC interrupt vector entry. </summary>
     public interface IInterrupt
     {
         /// <summary> Gets the IRQ number. </summary>

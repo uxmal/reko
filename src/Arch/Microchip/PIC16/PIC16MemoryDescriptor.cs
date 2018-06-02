@@ -64,7 +64,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             {
                 if (pic is null)
                     throw new ArgumentNullException(nameof(pic));
-                uint datasize = pic.DataMemorySpace.DataSpaceSize;
+                uint datasize = pic.DataSpaceSize;
                 if (datasize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataMemorySize} bytes). Check PIC definition.");
 
@@ -75,11 +75,11 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                     case InstructionSetID.PIC16_FULLFEATURED:
                         var map = new PIC16MemoryMap(pic);
                         if (!map.IsValid)
-                            throw new InvalidOperationException($"Mapper cannot be constructed for '{pic.Name}' device.");
+                            throw new InvalidOperationException($"Mapper cannot be constructed for '{pic.PICName}' device.");
                         return map;
 
                     default:
-                        throw new InvalidOperationException($"Invalid PIC16 family: '{pic.Name}'.");
+                        throw new InvalidOperationException($"Invalid PIC16 family: '{pic.PICName}'.");
                 }
             }
 

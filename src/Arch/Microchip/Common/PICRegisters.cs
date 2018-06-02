@@ -153,7 +153,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             regs = new PICRegisters();
             regs.Reset();
             regs.LoadRegistersInTable(regs, pic);
-            HWStackDepth = pic.ArchDefinitions.HWStackDepth;
+            HWStackDepth = pic.HWStackDepth;
         }
 
         /// <summary>
