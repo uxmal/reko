@@ -83,7 +83,9 @@ namespace Reko.Scanning
                 return;
             if (IsNoDecompiledProcedure(addr))
                 return;
-            procedures.Add(addr, new ImageSymbol(addr, name, sig) { Type = SymbolType.Procedure });
+            //$BUG: this needs to be fixed. If in an ARM binary, we scan a code 
+            // address that has an odd address, we need to make it Thumb.
+            procedures.Add(addr, new ImageSymbol(null, addr, name, sig) { Type = SymbolType.Procedure });
             sr.KnownProcedures.Add(addr);
             var proc = EnsureProcedure(addr, name);
             proc.Signature = sig;

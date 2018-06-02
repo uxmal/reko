@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Environments.MacOS;
 using System;
@@ -32,11 +33,13 @@ namespace Reko.UnitTests.Environments.MacOS
     class MacsBugSymbolScannerTests
     {
         private BeImageWriter w;
+        private M68kArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
             this.w = new BeImageWriter();
+            this.arch = new M68kArchitecture("m68k");
         }
 
         private void Given_Link(int amount)
@@ -105,7 +108,7 @@ namespace Reko.UnitTests.Environments.MacOS
             Given_ProgramData(0);
 
             var mem = new MemoryArea(Address.Ptr32(0x00100000), w.ToArray());
-            var scan = new MacsBugSymbolScanner(mem);
+            var scan = new MacsBugSymbolScanner(arch, mem);
             var symbols = scan.ScanForSymbols();
 
             Assert.AreEqual(1, symbols.Count);

@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Core
                 {
                     {
                         "bar",
-                        new ImageSymbol
+                        new ImageSymbol(program.Architecture)
                         {
                             Name = "bar",
                             Type = SymbolType.Data,

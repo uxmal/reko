@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Scanning
                 program,
                 new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 sc);
-            scanner.EnqueueImageSymbol(new ImageSymbol(addrBase), true);
+            scanner.EnqueueImageSymbol(new ImageSymbol(arch, addrBase), true);
             scanner.ScanImage();
         }
 

@@ -10,13 +10,14 @@ namespace Reko.Core.NativeInterface
 {
 	public class NativeSymbolSource : ISymbolSource
 	{
+        private IProcessorArchitecture arch;
 		private IntPtr handle;
 		private NativeSymbolSourceProvider prv;
 		private readonly ILibraryLoader loader;
 
 		private const string SYM_NAME = "gSymProvider";
 
-		public NativeSymbolSource(string libPath, ILibraryLoader ldr)
+		public NativeSymbolSource(IProcessorArchitecture arch, string libPath, ILibraryLoader ldr)
 		{
 			loader = ldr;
 			handle = loader.LoadLibrary(libPath);
@@ -50,7 +51,7 @@ namespace Reko.Core.NativeInterface
 				ulong start = prv.GetSymbolStart(sym);
 				ulong end = prv.GetSymbolEnd(sym);
 
-				symbols.Add(new ImageSymbol(new Address32((uint)start)) {
+				symbols.Add(new ImageSymbol(arch, Address.Ptr32((uint)start)) {
 					Size = (uint)(end - start),
 					Name = prv.GetSymbolName(sym)
 				});

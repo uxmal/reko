@@ -182,7 +182,7 @@ namespace Reko.Environments.Trs80
         {
             return new RelocationResults(
                 new List<ImageSymbol> {
-                    new ImageSymbol(addrLoad)
+                    new ImageSymbol(program.Architecture, addrLoad)
                     {
                         Type = SymbolType.Procedure
                     }
@@ -202,7 +202,7 @@ namespace Reko.Environments.Trs80
             var procs = program.Platform.MemoryMap.Segments
                 .SelectMany(s => s.Procedures)
                 .OfType<Procedure_v1>()
-                .Select(p => new ImageSymbol(ParseAddress(p.Address))
+                .Select(p => new ImageSymbol(program.Architecture, ParseAddress(p.Address))
                 {
                     Name = p.Name,
                     Type = SymbolType.Procedure,

@@ -222,7 +222,7 @@ namespace Reko.ImageLoaders.IntelHex
 
             var prog = new Program() { SegmentMap = segs, Architecture = arch, Platform = platform };
             if (addrEp != null)
-                prog.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
+                prog.EntryPoints.Add(addrEp, new Core.ImageSymbol(arch, addrEp) { Type = SymbolType.Procedure });
             return prog;
 
         }

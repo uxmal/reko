@@ -277,7 +277,7 @@ l01C8:
 			state.SetRegister(Registers.si, Constant.Word16(0));
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
-            var sym = new ImageSymbol(Address.SegPtr(pklCs, pklIp))
+            var sym = new ImageSymbol(arch, Address.SegPtr(pklCs, pklIp))
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = state

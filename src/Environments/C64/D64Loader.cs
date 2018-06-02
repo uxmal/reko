@@ -202,7 +202,7 @@ namespace Reko.Environments.C64
                     new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,
                 new C64Platform(Services, null));
-            var sym = new ImageSymbol(image.BaseAddress)
+            var sym = new ImageSymbol(arch, image.BaseAddress)
             {
                 ProcessorState = program.CreateProcessorState(),
             };

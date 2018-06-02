@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Arch.Intel
                 this.program, 
                 new ImportResolver(project, this.program, eventListener),
                 sc);
-            var ep = new ImageSymbol(baseAddress);
+            var ep = new ImageSymbol(this.program.Architecture, baseAddress);
             this.program.EntryPoints.Add(ep.Address, ep);
             var program =  project.Programs[0];
             foreach (Procedure_v1 sp in program.User.Procedures.Values)

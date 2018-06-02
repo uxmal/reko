@@ -175,7 +175,8 @@ namespace Reko.Symbols.LGSymLoader
                 rdr.BaseStream.Seek(sym_names_offset + sym.sym_name_off, SeekOrigin.Begin);
                 string sym_name = rdr.ReadNullTerminatedString();
 
-                symbols.Add(new ImageSymbol(new Address32(sym.addr))
+                //$BUG: how do we get the architecture?
+                symbols.Add(new ImageSymbol(null, Address.Ptr32(sym.addr))
                 {
                     Size = sym.end - sym.addr,
                     Name = sym_name

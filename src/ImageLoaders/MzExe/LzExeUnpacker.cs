@@ -108,7 +108,7 @@ namespace Reko.ImageLoaders.MzExe
 		{
             // Seed the scanner with the start location.
 
-            var sym = new ImageSymbol(Address.SegPtr((ushort)(lzCs + addrLoad.Selector), lzIp))
+            var sym = new ImageSymbol(program.Architecture, Address.SegPtr((ushort)(lzCs + addrLoad.Selector), lzIp))
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = arch.CreateProcessorState()

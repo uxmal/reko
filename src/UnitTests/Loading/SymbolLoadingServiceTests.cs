@@ -82,6 +82,14 @@ namespace Reko.UnitTests.Loading
 
         public class BobLoader : ISymbolSource
         {
+            private IProcessorArchitecture arch;
+
+            public BobLoader()
+            {
+                this.arch = MockRepository.GenerateStub<IProcessorArchitecture>();
+                this.arch.Replay();
+            }
+
             public bool CanLoad(string filename, byte[] fileContents)
             {
                 return true;
@@ -95,7 +103,7 @@ namespace Reko.UnitTests.Loading
             {
                 return new List<ImageSymbol>
                 {
-                    new ImageSymbol(Address.Ptr64(0x12340000))
+                    new ImageSymbol(arch, Address.Ptr64(0x12340000))
                     {
                         Name = "MyFunction",
                         Type = SymbolType.Procedure,

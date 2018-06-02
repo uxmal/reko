@@ -53,7 +53,7 @@ namespace Reko.Environments.RT11
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var uaddrEntry = MemoryArea.ReadLeUInt16(RawImage, 0x20);
-            var entry = new ImageSymbol(Address.Ptr16(uaddrEntry));
+            var entry = new ImageSymbol(program.Architecture, Address.Ptr16(uaddrEntry));
             return new RelocationResults(
                 new List<ImageSymbol> { entry },
                 new SortedList<Address, ImageSymbol>())

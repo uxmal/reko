@@ -191,7 +191,7 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.cs, Constant.Word16(cs));
             state.SetRegister(Registers.ss, Constant.Word16(ss));
             state.SetRegister(Registers.bx, Constant.Word16(0));
-            var ep = new ImageSymbol(Address.SegPtr(cs, ip))
+            var ep = new ImageSymbol(arch, Address.SegPtr(cs, ip))
             {
                 ProcessorState = state
             };

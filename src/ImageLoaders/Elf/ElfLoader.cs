@@ -234,7 +234,7 @@ namespace Reko.ImageLoaders.Elf
 
 
             var dt = GetSymbolDataType(sym);
-            return new ImageSymbol(addr)
+            return new ImageSymbol(this.Architecture, addr)
             {
                 Type = st,
                 Name = sym.Name,
@@ -371,7 +371,7 @@ namespace Reko.ImageLoaders.Elf
         {
             //$TODO: look up function signature.
             int size = Architecture.PointerType.Size;
-            return new ImageSymbol(addrGot, name + "_GOT", new Pointer(new CodeType(), size))
+            return new ImageSymbol(Architecture, addrGot, name + "_GOT", new Pointer(new CodeType(), size))
             {
                 Type = SymbolType.Data,
                 Size = (uint)size,
@@ -462,7 +462,7 @@ namespace Reko.ImageLoaders.Elf
             ImageSymbol ep;
             if (!symbols.TryGetValue(addr, out ep))
             {
-                ep = new ImageSymbol(addr)
+                ep = new ImageSymbol(this.Architecture, addr)
                 {
                     ProcessorState = Architecture.CreateProcessorState()
                 };

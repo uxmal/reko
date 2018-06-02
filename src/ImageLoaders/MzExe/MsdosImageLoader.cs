@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.MzExe
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
 
-            var ep = new ImageSymbol(addrStart)
+            var ep = new ImageSymbol(arch, addrStart)
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = arch.CreateProcessorState()
@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.MzExe
             // We don't want to load every registered symbol provider, though. Perhaps
             // load symbols in a separate AppDomain, marshal all the symbols across,
             // then discard the appdomain?
-            var borsymLdr = new Borland.SymbolLoader(exe, RawImage, addrLoad);
+            var borsymLdr = new Borland.SymbolLoader(arch, exe, RawImage, addrLoad);
             if (borsymLdr.LoadDebugHeader())
             {
                 var syms = borsymLdr.LoadSymbols();

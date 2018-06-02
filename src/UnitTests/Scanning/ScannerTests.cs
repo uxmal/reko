@@ -106,11 +106,12 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
+            var arch = new X86ArchitectureReal("x86-real-16");
+            var m = new X86Assembler(sc, new FakePlatform(null, arch), addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
             this.scan = this.CreateScanner(this.program);
-            var sym = new ImageSymbol(addr);
+            var sym = new ImageSymbol(arch, addr);
             scan.EnqueueImageSymbol(sym, true);
         }
 
@@ -165,7 +166,7 @@ namespace Reko.UnitTests.Scanning
                 this.program,
                 new ImportResolver(project, program, eventListener),
                 this.sc);
-            sc.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x12314)), true);
+            sc.EnqueueImageSymbol(new ImageSymbol(arch, Address.Ptr32(0x12314)), true);
             sc.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);
@@ -348,7 +349,7 @@ namespace Reko.UnitTests.Scanning
                 program, 
                 new ImportResolver(project, program, eventListener),
                 sc);
-            var sym = new ImageSymbol(addr);
+            var sym = new ImageSymbol(arch, addr);
             scan.EnqueueImageSymbol(sym, true);
             scan.ScanImage();
 
@@ -485,8 +486,8 @@ fn0C00_0000_exit:
             });
             fakeArch.Test_IgnoreAllUnkownTraces();
 
-            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(), }, true);
-            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(), }, true);
+            scan.EnqueueImageSymbol(new ImageSymbol(arch, Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(), }, true);
+            scan.EnqueueImageSymbol(new ImageSymbol(arch, Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(), }, true);
             scan.ScanImage();
 
             var sExp =
@@ -541,7 +542,7 @@ fn00001100_exit:
             fakeArch.Test_IgnoreAllUnkownTraces();
 
             scan.EnqueueImageSymbol(
-                new ImageSymbol(Address.Ptr32(0x1000))
+                new ImageSymbol(arch, Address.Ptr32(0x1000))
                 {
                     ProcessorState = arch.CreateProcessorState(),
                 },
@@ -655,10 +656,10 @@ fn00001000_exit:
 
             var sc = CreateScanner(program);
             sc.EnqueueImageSymbol(
-                new ImageSymbol(Address.Ptr32(0x12314)),
+                new ImageSymbol(program.Architecture, Address.Ptr32(0x12314)),
                 true);
             sc.EnqueueImageSymbol(
-                new ImageSymbol(Address.Ptr32(0x12324)),
+                new ImageSymbol(program.Architecture, Address.Ptr32(0x12324)),
                 true);
             sc.ScanImage();
 
@@ -847,7 +848,7 @@ fn00001200_exit:
 
             scanner.ScanImageSymbol(
                 program, 
-                new ImageSymbol(Address.Ptr32(0x1000))
+                new ImageSymbol(arch, Address.Ptr32(0x1000))
                 {
                     Name = "test",
                     ProcessorState = arch.CreateProcessorState()
@@ -1055,7 +1056,7 @@ fn00001200_exit:
                     }
                 }
             };
-            var sym = new ImageSymbol(Address.Ptr32(0x00100000), "data_blob", dt) { Type = SymbolType.Data };
+            var sym = new ImageSymbol(arch, Address.Ptr32(0x00100000), "data_blob", dt) { Type = SymbolType.Data };
             program.ImageSymbols.Add(sym.Address, sym);
 
             var scanner = new Scanner(program, importResolver, sc);

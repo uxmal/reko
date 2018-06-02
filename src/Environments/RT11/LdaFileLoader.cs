@@ -62,7 +62,7 @@ namespace Reko.Environments.RT11
             return new RelocationResults(
                 new List<ImageSymbol>
                 {
-                    new ImageSymbol(addrEntry) { Type = SymbolType.Procedure }
+                    new ImageSymbol(program.Architecture, addrEntry) { Type = SymbolType.Procedure }
                 },
                 new SortedList<Address, ImageSymbol>());
         }

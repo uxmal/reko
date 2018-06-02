@@ -91,7 +91,7 @@ namespace Reko.Environments.AtariTOS
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(
-                new List<ImageSymbol> { new ImageSymbol(addrLoad) },
+                new List<ImageSymbol> { new ImageSymbol(program.Architecture, addrLoad) },
                 new SortedList<Address, ImageSymbol>());
         }
 

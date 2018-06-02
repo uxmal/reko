@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
 
         private static TraceSwitch trace = new TraceSwitch("BorlandDebugSymbols", "Traces the loading of Borland debug symbols");
 
+        private IProcessorArchitecture arch;
         private ExeImageLoader exeLoader;
         private byte[] rawImage;
         private debug_header header;
@@ -47,8 +48,9 @@ namespace Reko.ImageLoaders.MzExe.Borland
         private Dictionary<ushort, BorlandType> types;
         private Dictionary<ImageSymbol, ushort> symbolTypes;
 
-        public SymbolLoader(ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
+        public SymbolLoader(IProcessorArchitecture arch, ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
         {
+            this.arch = arch;
             this.exeLoader = exeLoader;
             this.rawImage = rawImage;
             this.addrLoad = addrLoad;
@@ -783,7 +785,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 sym.symbol_segment += addrLoad.Selector.Value;
                 if (!name.Contains('@'))
                 {
-                    var imgSymbol = new ImageSymbol(Address.SegPtr(sym.symbol_segment, sym.symbol_offset))
+                    var imgSymbol = new ImageSymbol(arch, Address.SegPtr(sym.symbol_segment, sym.symbol_offset))
                     {
                         Name = name,
                     };

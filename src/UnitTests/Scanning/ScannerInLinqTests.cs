@@ -77,8 +77,8 @@ namespace Reko.UnitTests.Scanning
         private void Given_x86_Image(Action<X86Assembler> asm)
         {
             var addrBase = Address.Ptr32(0x100000);
-            var entry = new ImageSymbol(addrBase) { Type = SymbolType.Procedure };
             var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var entry = new ImageSymbol(arch, addrBase) { Type = SymbolType.Procedure };
             var m = new X86Assembler(null, new DefaultPlatform(null, arch), addrBase, new List<ImageSymbol> { entry });
             asm(m);
             this.program = m.GetImage();

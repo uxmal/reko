@@ -42,16 +42,18 @@ namespace Reko.Core
         /// <summary>
         /// Use this ctor when the symbol is imported from another module.
         /// </summary>
-        public ImageSymbol()
+        public ImageSymbol(IProcessorArchitecture arch)
         {
+            this.Architecture = arch;
         }
 
         /// <summary>
         /// Use this ctor when only the address of the symbol is known.
         /// </summary>
         /// <param name="address"></param>
-        public ImageSymbol(Address address)
+        public ImageSymbol(IProcessorArchitecture arch, Address address)
         {
+            this.Architecture = arch;
             this.Address = address;
         }
 
@@ -61,13 +63,19 @@ namespace Reko.Core
         /// <param name="address"></param>
         /// <param name="name"></param>
         /// <param name="dataType"></param>
-        public ImageSymbol(Address address, string name, DataType dataType)
+        public ImageSymbol(IProcessorArchitecture arch, Address address, string name, DataType dataType)
         {
+            this.Architecture = arch;
             this.Address = address;
             this.Name = name;
             this.DataType = dataType;
         }
 
+
+        /// <summary>
+        /// The processor architecture to use when disassembling this symbol.
+        /// </summary>
+        public IProcessorArchitecture Architecture { get; set; }
         public SymbolType Type { get; set; }
 
         /// <summary>

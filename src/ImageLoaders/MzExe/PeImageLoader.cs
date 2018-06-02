@@ -167,7 +167,7 @@ namespace Reko.ImageLoaders.MzExe
                     ;
                 name = Encoding.ASCII.GetString(imgLoaded.Bytes, iNameMin, j - iNameMin);
             }
-            return new ImageSymbol(addrLoad + rvaAddr)
+            return new ImageSymbol(arch, addrLoad + rvaAddr)
             {
                 Name = name,
                 ProcessorState = arch.CreateProcessorState(),
@@ -581,7 +581,7 @@ namespace Reko.ImageLoaders.MzExe
                     ReturnValue = Arg(null, "DWORD")
                 };
             }
-            return new ImageSymbol(addrEp)
+            return new ImageSymbol(arch, addrEp)
             {
                 Name = name,
                 ProcessorState = arch.CreateProcessorState(),
@@ -803,7 +803,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var iatEntry = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
                 if (iatEntry == null)
                     break;
-                ImageSymbols[addrIat] = new ImageSymbol(addrIat)
+                ImageSymbols[addrIat] = new ImageSymbol(arch, addrIat)
                 {
                     Name = "__imp__" + iatEntry.Item1.EntryName,
                     Type = SymbolType.Data,
@@ -811,7 +811,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                     Size = (uint) iatEntry.Item2
                 };
 
-                ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
+                ImageSymbols[addrIlt] = new ImageSymbol(arch, addrIlt)
                 {
                     Type = SymbolType.Data,
                     DataType = PrimitiveType.CreateWord(iatEntry.Item2 * DataType.BitsPerByte),
@@ -1094,7 +1094,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
         {
-            ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
+            ImageSymbol symNew = new ImageSymbol(arch, addr, null, new CodeType())
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = arch.CreateProcessorState()

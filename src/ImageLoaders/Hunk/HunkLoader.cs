@@ -628,7 +628,7 @@ print arg_mem
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var sym = new ImageSymbol(addrLoad)
+            var sym = new ImageSymbol(program.Architecture, addrLoad)
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = arch.CreateProcessorState()
