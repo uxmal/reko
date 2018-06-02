@@ -212,10 +212,9 @@ namespace Reko.ImageLoaders.Elf
 
         protected ImageSymbol CreateImageSymbol(ElfSymbol sym, bool isExecutable)
         {
-            SymbolType st;
             if (sym.SectionIndex >= Sections.Count)
                 return null;
-            if (!mpSymbolType.TryGetValue(sym.Type, out st))
+            if (!mpSymbolType.TryGetValue(sym.Type, out SymbolType st))
                 return null;
             if (sym.SectionIndex == 0)
             {
@@ -349,8 +348,7 @@ namespace Reko.ImageLoaders.Elf
                 var addrSym = ReadAddress(rdr);
                 if (addrSym == null)
                     break;
-                ImageSymbol symbol;
-                if (symbols.TryGetValue(addrSym, out symbol))
+                if (symbols.TryGetValue(addrSym, out ImageSymbol symbol))
                 {
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
@@ -459,8 +457,7 @@ namespace Reko.ImageLoaders.Elf
         {
             if (addr == null)
                 return;
-            ImageSymbol ep;
-            if (!symbols.TryGetValue(addr, out ep))
+            if (!symbols.TryGetValue(addr, out ImageSymbol ep))
             {
                 ep = new ImageSymbol(this.Architecture, addr)
                 {
@@ -487,8 +484,7 @@ namespace Reko.ImageLoaders.Elf
                     break;
                 if (dyn.d_tag == DT_NULL)
                     break;
-                long val;
-                if (!rdr.TryReadInt64(out val))
+                if (!rdr.TryReadInt64(out long val))
                     break;
                 dyn.d_val = val;
                 yield return dyn;
@@ -505,8 +501,7 @@ namespace Reko.ImageLoaders.Elf
                     break;
                 if (dyn.d_tag == DT_NULL)
                     break;
-                int val;
-                if (!rdr.TryReadInt32(out val))
+                if (!rdr.TryReadInt32(out int val))
                     break;
                 dyn.d_val = val;
                 yield return dyn;
@@ -648,7 +643,7 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfLoader64 : ElfLoader
     {
-        private byte osAbi;
+        private readonly byte osAbi;
 
         public ElfLoader64(ElfImageLoader imgLoader, Elf64_EHdr elfHeader, byte[] rawImage, byte osAbi, byte endianness)
             : base(imgLoader, elfHeader.e_machine, endianness)
@@ -659,8 +654,8 @@ namespace Reko.ImageLoaders.Elf
             this.ProgramHeaders64 = new List<Elf64_PHdr>();
         }
 
-        public Elf64_EHdr Header64 { get; set; }
-        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
+        public Elf64_EHdr Header64 { get; }
+        public List<Elf64_PHdr> ProgramHeaders64 { get; }
         public override Address DefaultAddress { get { return Address.Ptr64(0x8048000); } }
 
         public override bool IsExecutableFile { get { return Header64.e_type != ElfImageLoader.ET_REL; } }
@@ -811,8 +806,7 @@ namespace Reko.ImageLoaders.Elf
                 // "function descriptor" consisiting of two 32-bit 
                 // pointers.
                 var rdr = imgLoader.CreateReader(Header64.e_entry - addrBase.ToLinear());
-                uint uAddr;
-                if (rdr.TryReadUInt32(out uAddr))
+                if (rdr.TryReadUInt32(out uint uAddr))
                     addr = Address.Ptr32(uAddr);
             }
             else
@@ -890,8 +884,7 @@ namespace Reko.ImageLoaders.Elf
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr);
-                MemoryArea mem;
-                segMap.TryGetLowerBound(vaddr, out mem);
+                segMap.TryGetLowerBound(vaddr, out MemoryArea mem);
                 if (ph.p_filesz > 0)
                     Array.Copy(
                         rawImage,
@@ -1042,8 +1035,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Address ReadAddress(EndianImageReader rdr)
         {
-            ulong uAddrSym;
-            if (!rdr.TryReadUInt64(out uAddrSym))
+            if (!rdr.TryReadUInt64(out ulong uAddrSym))
                 return null;
 
             var addr = Address.Ptr64(uAddrSym);
@@ -1057,9 +1049,7 @@ namespace Reko.ImageLoaders.Elf
         public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage, byte endianness)
             : base(imgLoader, header32.e_machine, endianness)
         {
-            if (header32 == null)
-                throw new ArgumentNullException("header32");
-            this.Header = header32;
+            this.Header = header32 ?? throw new ArgumentNullException("header32");
             this.ProgramHeaders = new List<Elf32_PHdr>();
             this.rawImage = rawImage;
         }
@@ -1086,7 +1076,7 @@ namespace Reko.ImageLoaders.Elf
             uint strIdx = pSect.sh_link; // sh_link points to the string table
 
             var siPlt = GetSectionInfoByName(".plt");
-            Address addrPlt = siPlt != null ? siPlt.Address : null;
+            Address addrPlt = siPlt?.Address;
             var siRelPlt = GetSectionInfoByName(".rel.plt");
             uint sizeRelPlt = 8; // Size of each entry in the .rel.plt table
             if (siRelPlt == null)
@@ -1107,23 +1097,17 @@ namespace Reko.ImageLoaders.Elf
             var symRdr = imgLoader.CreateReader(offSym);
             for (int i = 1; i < nSyms; i++)
             {
-                uint name;
-                if (!symRdr.TryReadUInt32(out name))
+                if (!symRdr.TryReadUInt32(out uint name))
                     break;
-                uint val;
-                if (!symRdr.TryReadUInt32(out val)) //= (ADDRESS)elfRead4((int)m_pSym[i].st_value);
+                if (!symRdr.TryReadUInt32(out uint val)) //= (ADDRESS)elfRead4((int)m_pSym[i].st_value);
                     break;
-                uint size;
-                if (!symRdr.TryReadUInt32(out size))
+                if (!symRdr.TryReadUInt32(out uint size))
                     break;
-                byte info;
-                if (!symRdr.TryReadByte(out info))
+                if (!symRdr.TryReadByte(out byte info))
                     break;
-                byte other;
-                if (!symRdr.TryReadByte(out other))
+                if (!symRdr.TryReadByte(out byte other))
                     break;
-                ushort shndx;
-                if (!symRdr.TryReadLeUInt16(out shndx))
+                if (!symRdr.TryReadLeUInt16(out ushort shndx))
                     break;
 
                 if (name == 0)
@@ -1290,14 +1274,11 @@ namespace Reko.ImageLoaders.Elf
             var rdr = imgLoader.CreateReader(sh.FileOffset);
             for (ulong i = 0; i < entries; ++i)
             {
-                uint offset;
-                if (!rdr.TryReadUInt32(out offset))
+                if (!rdr.TryReadUInt32(out uint offset))
                     return;
-                uint info;
-                if (!rdr.TryReadUInt32(out info))
+                if (!rdr.TryReadUInt32(out uint info))
                     return;
-                int addend;
-                if (!rdr.TryReadInt32(out addend))
+                if (!rdr.TryReadInt32(out int addend))
                     return;
 
                 uint sym = info >> 8;
@@ -1556,11 +1537,10 @@ namespace Reko.ImageLoaders.Elf
 
         public override Address ReadAddress(EndianImageReader rdr)
         {
-            uint uAddr;
-            if (!rdr.TryReadUInt32(out uAddr))
+            if (!rdr.TryReadUInt32(out uint uAddr))
                 return null;
 
-            var addr = Address.Ptr64(uAddr);
+            var addr = Address.Ptr32(uAddr);
             return addr; 
         }
     }
