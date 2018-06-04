@@ -66,7 +66,6 @@ namespace Reko.Gui.Forms
             bool platformRequired = unknownRawFileFormat;
             bool archRequired= unknownRawFileFormat;
             bool addrRequired = unknownRawFileFormat;
-            bool cpuRequired = arch?.StartsWith("pic") ?? false;
             if (!unknownRawFileFormat)
             {
                 platformRequired = string.IsNullOrEmpty(rawfile.Environment);
