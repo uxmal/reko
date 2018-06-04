@@ -50,6 +50,7 @@ namespace Reko.Core
 
         public Program()
         {
+            this.Architectures = new Dictionary<string, IProcessorArchitecture>();
             this.EntryPoints = new SortedList<Address, ImageSymbol>();
             this.ImageSymbols = new SortedList<Address, ImageSymbol>();
             this.Procedures = new SortedList<Address, Procedure>();
@@ -224,6 +225,15 @@ namespace Reko.Core
         {
             return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
+
+
+        /// The processor architectures that exist in the Program. 
+        /// <remarks>
+        /// Normally there is only one architecture. But there are examples
+        /// of binaries that have two or more processor architectures. E.g.
+        /// "fat binaries" on MacOS, or ELF binaries with both ARM32 and 
+        /// Thumb instructions.</remarks>
+        public Dictionary<string, IProcessorArchitecture> Architectures { get; }
 
         /// <summary>
         /// The entry points to the program.
