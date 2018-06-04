@@ -679,12 +679,18 @@ namespace Reko.Analysis
                 }
                 else
                 {
+                    Expression basePtr = null;
                     if (acc is SegmentedAccess sa)
-                        sa.BasePointer = sa.BasePointer.Accept(this);
-                    acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
+                    {
+                        basePtr = sa.BasePointer.Accept(this);
+                    }
+                    var ea = acc.EffectiveAddress.Accept(this);
+                    var memId = acc.MemoryId;
                     if (!this.RenameFrameAccesses)
-                        UpdateMemoryIdentifier(acc, true);
-                    return acc;
+                        memId = UpdateMemoryIdentifier(memId, true);
+                    if (basePtr != null)
+                        return new SegmentedAccess(memId, basePtr, ea, acc.DataType);
+                    return new MemoryAccess(memId, ea, acc.DataType);
                 }
             }
             else
@@ -848,15 +854,13 @@ namespace Reko.Analysis
 
             if (c != null)
             {
-                access.EffectiveAddress = c;
                 var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
                 if (e != null)
                     return e;
                 ea = c;
             }
-            UpdateMemoryIdentifier(access, false);
-            access.EffectiveAddress = ea;
-            return access;
+            var memId = UpdateMemoryIdentifier(access.MemoryId, false);
+            return new MemoryAccess(memId, ea, access.DataType);
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -872,24 +876,24 @@ namespace Reko.Analysis
             }
             else
             {
-                access.BasePointer = access.BasePointer.Accept(this);
-                access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-                access.MemoryId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
-                return access;
+                var basePtr = access.BasePointer.Accept(this);
+                var ea = access.EffectiveAddress.Accept(this);
+                var memId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
+                return new SegmentedAccess(memId, basePtr, ea, access.DataType);
             }
         }
 
-        private void UpdateMemoryIdentifier(MemoryAccess access, bool storing)
+        private MemoryIdentifier UpdateMemoryIdentifier(MemoryIdentifier memId, bool storing)
         {
             if (storing)
             {
-                var sid = ssa.Identifiers.Add(access.MemoryId, this.stmCur, null, false);
-                var ss = new RegisterTransformer(access.MemoryId, stmCur, this);
-                access.MemoryId = (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
+                var sid = ssa.Identifiers.Add(memId, this.stmCur, null, false);
+                var ss = new RegisterTransformer(memId, stmCur, this);
+                return (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid, false);
             }
             else
             {
-                access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                return (MemoryIdentifier)memId.Accept(this);
             }
         }
 
