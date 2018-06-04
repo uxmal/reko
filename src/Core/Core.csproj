@@ -259,11 +259,13 @@
     <Compile Include="CLanguage\SymbolTable.cs" />
     <Compile Include="CLanguage\TypeSizer.cs" />
     <Compile Include="Code\CodeComment.cs" />
+    <Compile Include="Code\CriticalInstruction.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
     <Compile Include="Configuration\AssemblerElement.cs" />
     <Compile Include="Configuration\PlatformArchitectureElement.cs" />
+    <Compile Include="Configuration\PropertyOption.cs" />
     <Compile Include="Configuration\RekoConfigurationService.cs" />
     <Compile Include="Configuration\LoaderElement.cs" />
     <Compile Include="Configuration\OperatingEnvironmentElement.cs" />

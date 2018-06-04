@@ -52,6 +52,7 @@ namespace Reko.UnitTests.Mocks
         public event EventHandler<KeyEventArgs> KeyUp;
         public event EventHandler TextChanged;
         public event EventHandler LostFocus;
+        public event EventHandler GotFocus;
 
         public void FireLostFocus()
         {

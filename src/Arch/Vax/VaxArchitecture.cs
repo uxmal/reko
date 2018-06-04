@@ -29,6 +29,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System.Globalization;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Vax
 {
@@ -57,12 +58,15 @@ namespace Reko.Arch.Vax
             Registers.pc,
         };
 
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public VaxArchitecture(string name) : base(name)
         {
             InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -122,7 +126,15 @@ namespace Reko.Arch.Vax
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(Registers.psw, "", grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override SortedList<string, int> GetOpcodeNames()

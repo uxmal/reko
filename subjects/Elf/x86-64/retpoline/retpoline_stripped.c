@@ -14,8 +14,8 @@ void fn0000000000400428()
 		byte SCZO_16;
 		word64 rax_17;
 		byte SZO_18;
-		byte C_19;
-		byte Z_20;
+		bool C_19;
+		bool Z_20;
 		__gmon_start__();
 	}
 }
@@ -39,9 +39,9 @@ void fn00000000004004B0(word64 r8)
 	word64 rax_42;
 	word64 r8_43;
 	byte SCZO_44;
-	byte Z_45;
+	bool Z_45;
 	byte SZO_46;
-	byte C_47;
+	bool C_47;
 	word32 edi_48;
 	word64 rdi_49;
 	null();

@@ -149,7 +149,7 @@ namespace Reko.Typing
             var rdr = arch.CreateImageReader(segment.MemoryArea,  (ulong) gOffset - segment.MemoryArea.BaseAddress.ToLinear());
             if (!rdr.IsValid)
                 return null;
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
+            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
             int offset = c.ToInt32();
             Debug.Print("  pointer value: {0:X}", offset);
             if (visited.Contains(offset) || !segment.MemoryArea.IsValidLinearAddress((uint) offset))

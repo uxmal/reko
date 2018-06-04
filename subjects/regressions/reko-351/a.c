@@ -15,11 +15,11 @@ void deregister_tm_clones()
 		byte CVZN_42;
 		byte CVZNX_43;
 		word32 d1_44;
-		byte C_45;
+		bool C_45;
 		word32 a0_46;
 		byte ZN_47;
-		byte V_48;
-		byte Z_49;
+		bool V_48;
+		bool Z_49;
 		null();
 	}
 }
@@ -38,18 +38,18 @@ void register_tm_clones()
 		word32 d0_51;
 		byte CVZN_52;
 		byte CVZNX_53;
-		byte N_54;
-		byte Z_55;
+		bool N_54;
+		bool Z_55;
 		word32 a0_56;
 		byte ZN_57;
-		byte C_58;
-		byte V_59;
+		bool C_58;
+		bool V_59;
 		null();
 	}
 }
 
-// 800000E4: void __do_global_dtors_aux(Register word32 d2)
-void __do_global_dtors_aux(word32 d2)
+// 800000E4: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	if (globals->b80002724 == 0x00)
 	{
@@ -67,9 +67,9 @@ void __do_global_dtors_aux(word32 d2)
 				byte CVZN_111;
 				word32 d2_112;
 				byte ZN_113;
-				byte C_114;
-				byte V_115;
-				byte Z_116;
+				bool C_114;
+				bool V_115;
+				bool Z_116;
 				word32 d0_117;
 				byte CVZNX_118;
 				byte VZ_119;
@@ -88,9 +88,9 @@ void __do_global_dtors_aux(word32 d2)
 			byte CVZN_88;
 			word32 d2_89;
 			byte ZN_90;
-			byte C_91;
-			byte V_92;
-			byte Z_93;
+			bool C_91;
+			bool V_92;
+			bool Z_93;
 			word32 d0_94;
 			byte CVZNX_95;
 			byte VZ_96;
@@ -116,14 +116,14 @@ void frame_dummy()
 		word32 a6_84;
 		word32 a0_85;
 		byte ZN_86;
-		byte C_87;
-		byte V_88;
-		byte Z_89;
+		bool C_87;
+		bool V_88;
+		bool Z_89;
 		word32 a1_90;
 		byte CVZN_91;
 		word32 d0_92;
 		byte CVZNX_93;
-		byte N_94;
+		bool N_94;
 		null();
 	}
 	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
@@ -132,14 +132,14 @@ void frame_dummy()
 		word32 a6_65;
 		word32 a0_66;
 		byte ZN_67;
-		byte C_68;
-		byte V_69;
-		byte Z_70;
+		bool C_68;
+		bool V_69;
+		bool Z_70;
 		word32 a1_71;
 		byte CVZN_72;
 		word32 d0_73;
 		byte CVZNX_74;
-		byte N_75;
+		bool N_75;
 		null();
 		register_tm_clones();
 	}
@@ -202,11 +202,11 @@ void main()
 	_sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 1063818100, 0), fp - 0x08);
 }
 
-// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_220 tArg14)
-void _sin(real64 rArg04, real64 rArg0C, Eq_220 tArg14)
+// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_219 tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_219 tArg14)
 {
-	Eq_231 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_235 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
+	Eq_230 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_234 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
 	int32 dwLoc20_100 = 0x01;
 	while ((real64) ((real80) rLoc0C_23 / rLoc14) >= rArg0C)
 	{
@@ -232,7 +232,7 @@ void __do_global_ctors_aux()
 			byte CVZN_29;
 			word32 a0_30;
 			word32 d0_31;
-			byte Z_32;
+			bool Z_32;
 			a0_12();
 		} while (-0x01 - *(a2_28 - 0x04) != 0x00);
 	}

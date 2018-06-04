@@ -134,6 +134,10 @@ namespace Reko.Loading
                 {
                     program.EntryPoints[ep.Address] = ep;
                 }
+                if (program.Architecture != null)
+                {
+                    program.Architecture.PostprocessProgram(program);
+                }
                 program.ImageMap = program.SegmentMap.CreateImageMap();
             }
             return program;
@@ -149,8 +153,9 @@ namespace Reko.Loading
         /// <param name="details"></param>
         /// <returns></returns>
         public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
-        { 
+        {
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
+            arch.LoadUserOptions(details.ArchitectureOptions);
             var platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
             if (addrLoad == null)
             {
@@ -160,31 +165,22 @@ namespace Reko.Loading
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
                 }
             }
-            Program program;
-            if (!string.IsNullOrEmpty(details.LoaderName))
+
+            var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);
+            var program = imgLoader.Load(addrLoad, arch, platform);
+            if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
             {
-                var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);
-                program = imgLoader.Load(addrLoad, arch, platform);
-            }
-            else
-            {
-                var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, image);
-                program = new Program(
-                    segmentMap,
-                    arch,
-                    platform);
-                Address addrEp;
-                if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out addrEp))
-                {
-                    program.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
-                }
+                program.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
             }
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;
             program.User.LoadAddress = addrLoad;
+
+            program.Architecture.PostprocessProgram(program);
             program.ImageMap = program.SegmentMap.CreateImageMap();
+
             return program;
         }
 
@@ -216,8 +212,7 @@ namespace Reko.Loading
             }
 
             Address entryAddr = null;
-            Address baseAddr;
-            if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
+            if (arch.TryParseAddress(rawFile.BaseAddress, out Address baseAddr))
             {
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
             }
@@ -254,8 +249,7 @@ namespace Reko.Loading
         {
             if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
             {
-                Address entryAddr;
-                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
+                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out Address entryAddr))
                 {
                     if (rawFile.EntryPoint.Follow)
                     {
@@ -354,8 +348,10 @@ namespace Reko.Loading
         {
             if (string.IsNullOrEmpty(sOffset))
                 return 0;
-            int offset;
-            if (Int32.TryParse(sOffset, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out offset))
+            if (Int32.TryParse(
+                sOffset, NumberStyles.HexNumber,
+                CultureInfo.InvariantCulture,
+                out int offset))
                 return offset;
             return 0;
         }
@@ -413,7 +409,7 @@ namespace Reko.Loading
             }
 
             var cfgSvc = services.RequireService<IConfigurationService>();
-            var ldrCfg = cfgSvc.GetImageLoaders().FirstOrDefault(e => e.Label == loader);
+            var ldrCfg = cfgSvc.GetImageLoader(loader);
             if (ldrCfg != null)
             {
                 return CreateImageLoader<ImageLoader>(services, ldrCfg.TypeName, filename, bytes);
@@ -444,18 +440,6 @@ namespace Reko.Loading
             {
                 program.InterceptedCalls.Add(item.Key, item.Value);
             }
-        }
-
-        public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
-        {
-            var segmentMap = platform.CreateAbsoluteMemoryMap();
-            if (segmentMap == null)
-            {
-                segmentMap = new SegmentMap(loadAddr);
-            }
-            var mem = new MemoryArea(loadAddr, rawBytes);
-            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
-            return segmentMap;
         }
     }
 }

@@ -1,3 +1,29 @@
+void Win32CrtStartup()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  d0 d1
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+Win32CrtStartup_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+Win32CrtStartup_entry:
+// DataOut: d0 d1
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+
+l00001004:
+	__btst(d0, d1)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: a7:fp
+
+
+
 void fn00001498()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -167,6 +193,7 @@ l00001556:
 	byte v19_77 = Mem13[a3_122:byte]
 	a3_122 = a3_122 + 1
 	word32 d0_123 = (int32) v19_77
+	byte CVZN_80 = cond(v19_77)
 	branch v19_77 > 0x00 l00001576
 // DataOut: a2 a3 d0 d1 d2
 // DataOut (flags): CZ
@@ -231,7 +258,7 @@ l00001578:
 // LocalsOut: fp(32)
 
 l0000157E:
-	branch false l00001586
+	branch DPB(CVZN_80, false, 0) l00001586
 // DataOut: a2 a3 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 18 a3:<invalid> a2:<invalid> d0:<invalid> a0:<invalid> a1:<invalid> d1:<invalid> d2:SLICE(a3, word32, 16) -16(fp):0x44415441 -8(fp):a2 -4(fp):a3
@@ -259,16 +286,16 @@ l0000158E:
 
 
 
-void fn000015E8(word32 d0, word32 d3, word32 a5, word32 dwArg04)
+void fn000015E8(word32 d0, word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 d0 d3
+// MayUse:  a5 d0
 // LiveOut:
 // Trashed: CVZNX a0 d0 d3
 // Preserved: a2 a6 a7 d3
 // Stack args: Stack +0004(32)
 fn000015E8_entry:
-// DataOut: a5 d0 d3
+// DataOut: a5 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
@@ -280,9 +307,9 @@ l000015E8:
 	byte CVZN_27
 	word32 d0_30
 	byte ZN_31
-	byte C_32
-	byte V_33
-	byte Z_34
+	bool C_32
+	bool V_33
+	bool Z_34
 	word32 a0_35
 	byte CVZNX_36
 	word32 a5_110
@@ -294,7 +321,7 @@ l000015E8:
 // DataOut: a2 a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00001602:
 	word32 d3_113
@@ -302,28 +329,28 @@ l00001602:
 // DataOut: a2 a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00001610:
 	branch a2_112 - (a5_110 + -2624) != 0x00000000 l00001628
 // DataOut: a2 a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:a5 + -2656 -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00001618:
 	d3_113 = 1
 // DataOut: a2 a5 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:a5 + -2624 -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l0000160A:
 	d3_113 = 0
 // DataOut: a2 a5 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:a5 + -2656 -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l0000161A:
 	Mem91[a5_110 + -1368:word32] = Mem0[a5_110 + -1368:word32] + 0x00000001
@@ -331,14 +358,14 @@ l0000161A:
 // DataOut: a2 a5 d0 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:<invalid> d3:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00001634:
 	branch Mem91[a5_110 + -2696 + d3_113 * 4:word32] != 0x00000000 l00001652
 // DataOut: a2 a5 d0 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:<invalid> d3:<invalid> d0:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l0000163E:
 	word32 a7_138
@@ -346,9 +373,9 @@ l0000163E:
 	byte CVZN_141
 	word32 d0_144
 	byte ZN_145
-	byte C_146
-	byte V_147
-	byte Z_148
+	bool C_146
+	bool V_147
+	bool Z_148
 	word32 a0_149
 	byte CVZNX_150
 	call a5_110 + 114 (retsize: 4; depth: 20)
@@ -359,7 +386,7 @@ l0000163E:
 // DataOut: a2 a5 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:a5 + -2696 d3:<invalid> d0:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00001652:
 	word32 d0_115 = Mem91[a5_110 + -2696 + d3_113 * 4:word32]
@@ -377,7 +404,7 @@ l00001628:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:<invalid> a0:<invalid> d3:<invalid> d0:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l0000162A:
 	return
@@ -458,88 +485,90 @@ fn00001680_exit:
 
 
 
-void fn000016D0(word32 d0, word32 d6, word32 a5, word32 dwArg08)
+void fn000016D0(word32 a5, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 d0 d6
+// MayUse:  a5
 // LiveOut:
 // Trashed: CVZNX a0 a2 a3 a4 a6 a7 d0 d2 d3 d4 d5 d6 d7
 // Preserved: a2 a3 a4 a6 a7 d3 d4 d5 d6 d7
 // Stack args: Stack +0008(32)
 fn000016D0_entry:
-// DataOut: a5 d0 d6
+// DataOut: a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0020(32) Stack +0008(32)
+// LocalsOut: fp(32) Stack +0008(32)
 
 l000016D0:
 	byte v17_42 = Mem0[dwArg08:byte]
 	word32 dwLoc0C_121 = 0
-	word32 d6_130 = DPB(d6, v17_42, 0)
+	word32 d6_131 = DPB(d6, v17_42, 0)
 	word32 dwArg08_122 = dwArg08 + 0x00000001
 	branch v17_42 == 0x00 l00001C34
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -000C(32) Local -0020(32) Stack +0008(32)
+// LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l000016FA:
-// DataOut: a2 a3 d0 d6
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:0 a0:<invalid> d6:<invalid> -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):0 -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l0000170E:
-	branch false l00001C34
-// DataOut: a2 a3 d0 d6
+	branch DPB(CZ, false, 0) l00001C34
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001716:
-	word32 d0_138
-	branch (byte) d6_130 < 0x20 l00001734
-// DataOut: a2 a3 d0 d6
+	word32 d0_139
+	byte v25_136 = (byte) d6_131 - 0x20
+	CZ = cond(v25_136) (alias)
+	branch v25_136 < 0x00 l00001734
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l0000171C:
-	branch (byte) d6_130 > 0x78 l00001734
-// DataOut: a2 a3 d0 d6
+	branch (byte) d6_131 > 0x78 l00001734
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001734:
-	d0_138 = 0
-// DataOut: a2 a3 d0 d6
+	d0_139 = 0
+// DataOut: a2 a3 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001722:
-	d0_138 = (int32) (Mem0[a5 + -2072 + (int32) ((byte) d6_130):byte] & 0x0F)
-// DataOut: a2 a3 d0 d6
+	d0_139 = (int32) (Mem0[a5 + -2072 + (int32) ((byte) d6_131):byte] & 0x0F)
+// DataOut: a2 a3 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001736:
-	word32 d0_149 = (int32) (Mem0[a5 + -2040 + ((d0_138 << 0x00000003) + dwLoc0C_121):byte] >> 0x04)
-	dwLoc0C_121 = d0_149
-	branch 7 - d0_149 <u 0x00000000 l00001C24
-// DataOut: a2 a3 d0 d6
+	word32 d0_150 = (int32) (Mem0[a5 + -2040 + ((d0_139 << 0x00000003) + dwLoc0C_121):byte] >> 0x04)
+	dwLoc0C_121 = d0_150
+	branch 7 - d0_150 <u 0x00000000 l00001C24
+// DataOut: a2 a3 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l00001C24:
-	byte v38_182 = Mem0[dwArg08_122:byte]
-	d6_130 = DPB(d6_130, v38_182, 0)
+	byte v38_183 = Mem0[dwArg08_122:byte]
+	d6_131 = DPB(d6_131, v38_183, 0)
 	dwArg08_122 = dwArg08_122 + 0x00000001
-	branch v38_182 != 0x00 l0000170E
-// DataOut: a2 a3 d0 d6
+	branch v38_183 != 0x00 l0000170E
+// DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
@@ -551,31 +580,31 @@ l00001C34:
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
 
 l00001750:
-	word32 a7_159
-	word32 a6_160
-	word32 a4_161
-	word32 a3_162
-	word32 a2_163
-	word32 d7_164
-	word32 d6_165
-	word32 d5_166
-	word32 d4_167
-	word32 d3_168
-	word32 a5_169
-	byte CVZN_170
-	word32 a0_171
-	byte CVZNX_172
-	byte ZN_173
-	byte C_174
-	byte V_175
-	byte Z_176
-	byte CZ_177
-	byte VZN_178
-	word32 d0_179
-	word32 d2_180
-	call 0x00001758 + (int32) Mem0[0x00001758 + (int32) ((int16) d0_149) * 2:word16] (retsize: 4; depth: 584)
-		uses: a0_128,a2_33,a3_32,a4_116,a5,a6_5,a7_28,C_155,CVZN_158,CVZNX_148,CZ_137,d0_157,d2_152,d3_110,d4_112,d5_114,d6_130,d7_118,dwLoc0224_36,dwLoc0228_9,dwLoc022C_12,dwLoc0230_15,dwLoc0234_18,dwLoc0238_21,dwLoc023C_24,dwLoc0240_27,dwLoc0244_30,dwLoc04_4,dwLoc0C_151,dwLoc10,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,V_140,VZN_139,Z_126,ZN_141
-		defs: a0_171,a2_163,a3_162,a4_161,a5_169,a6_160,a7_159,C_174,CVZN_170,CVZNX_172,CZ_177,d0_179,d2_180,d3_168,d4_167,d5_166,d6_165,d7_164,V_175,VZN_178,Z_176,ZN_173
+	word32 a7_160
+	word32 a6_161
+	word32 a4_162
+	word32 a3_163
+	word32 a2_164
+	word32 d7_165
+	word32 d6_166
+	word32 d5_167
+	word32 d4_168
+	word32 d3_169
+	word32 a5_170
+	byte CVZN_171
+	word32 a0_172
+	byte CVZNX_173
+	byte ZN_174
+	bool C_175
+	bool V_176
+	bool Z_177
+	byte CZ_178
+	byte VZN_179
+	word32 d0_180
+	word32 d2_181
+	call 0x00001758 + (int32) Mem0[0x00001758 + (int32) ((int16) d0_150) * 2:word16] (retsize: 4; depth: 584)
+		uses: a0_129,a2_33,a3_32,a4_116,a5,a6_5,a7_28,C_156,CVZN_159,CVZNX_149,CZ_138,d0_158,d2_153,d3_110,d4_112,d5_114,d6_131,d7_118,dwLoc0224_36,dwLoc0228_9,dwLoc022C_12,dwLoc0230_15,dwLoc0234_18,dwLoc0238_21,dwLoc023C_24,dwLoc0240_27,dwLoc0244_30,dwLoc04_4,dwLoc0C_152,dwLoc10,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,V_141,VZN_140,Z_127,ZN_142
+		defs: a0_172,a2_164,a3_163,a4_162,a5_170,a6_161,a7_160,C_175,CVZN_171,CVZNX_173,CZ_178,d0_180,d2_181,d3_169,d4_168,d5_167,d6_166,d7_165,V_176,VZN_179,Z_177,ZN_174
 	return
 // DataOut:
 // DataOut (flags): 
@@ -672,7 +701,8 @@ fn00001C84_entry:
 // LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32) Stack +0010(32)
 
 l00001C84:
-	branch false l00001CBA
+	byte VZN_28 = DPB(VZN, false, 0)
+	branch VZN_28 l00001CBA
 // DataOut: a5 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -686,7 +716,8 @@ l00001C98:
 
 l00001CA4:
 	fn00001C40(a5, dwArg04, SLICE(dwArg04, byte, 24), dwArg0C, dwArg10)
-	branch false l00001CA4
+	VZN_28 = DPB(VZN_28, false, 0) (alias)
+	branch VZN_28 l00001CA4
 // DataOut: a5 d3 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d5:<invalid> d0:<invalid> d3:<invalid> d4:<invalid> d6:<invalid> a1:<invalid> a0:<invalid> d2:-1 d1:<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
@@ -720,25 +751,27 @@ fn00001CC4_entry:
 // LocalsOut: fp(32) Stack +0004(32) Stack +0008(32) Stack +000C(32) Stack +0010(32)
 
 l00001CC4:
-	branch false l00001D02
-// DataOut: a5 d0 d5
+	byte VZN_28 = DPB(VZN, false, 0)
+	branch VZN_28 l00001D02
+// DataOut: a5 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32) Stack +000C(32) Stack +0010(32)
 
 l00001CD8:
-	word32 d3_57 = dwArg04
-// DataOut: a5 d0 d3 d4 d5 d6
+	word32 d3_58 = dwArg04
+// DataOut: a5 d3 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d5:<invalid> d0:<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
 
 l00001CE4:
-	word32 d0_78 = (int32) Mem0[d3_57:byte]
-	fn00001C40(a5, d0_78, SLICE(d0_78, byte, 24), dwArg0C, dwArg10)
-	d3_57 = d3_57 + 0x00000001
-	branch false l00001CE4
-// DataOut: a5 d0 d3 d4 d5 d6
+	word32 d0_80 = (int32) Mem0[d3_58:byte]
+	fn00001C40(a5, d0_80, SLICE(d0_80, byte, 24), dwArg0C, dwArg10)
+	d3_58 = d3_58 + 0x00000001
+	VZN_28 = DPB(VZN_28, false, 0) (alias)
+	branch VZN_28 l00001CE4
+// DataOut: a5 d3 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d5:<invalid> d0:<invalid> d3:<invalid> d4:<invalid> d6:<invalid> a0:<invalid> a1:<invalid> d2:-1 d1:<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
@@ -814,7 +847,7 @@ l00001D44:
 // LocalsOut: fp(32)
 
 l00001D58:
-	byte Z_63 = __btst(Mem0[dwArg04 + 14:byte], 0x0006)
+	bool Z_63 = __btst(Mem0[dwArg04 + 14:byte], 0x0006)
 	branch Z_63 l00001D78
 // DataOut: a2 a5 d0 d3 d4 d5
 // DataOut (flags): 
@@ -833,16 +866,16 @@ l00001D60:
 	word32 a2_71
 	byte CVZN_72
 	word32 d0_73
-	byte Z_74
+	bool Z_74
 	word32 d2_75
 	byte ZN_76
-	byte C_77
-	byte V_78
+	bool C_77
+	bool V_78
 	word32 a5_79
 	call a5 + 138 (retsize: 4; depth: 16)
 		uses: a2_12,a5,a6_5,a7_65,C_52,CVZN_68,d0_48,d2,dwLoc04_4,dwLoc08_10,dwLoc0C_67,V_53,Z_63,ZN_50
 		defs: a2_71,a5_79,a6_70,a7_69,C_77,CVZN_72,d0_73,d2_75,V_78,Z_74,ZN_76
-	return (int32) cond(d0_73)
+	return (int32) (bool) cond(d0_73)
 // DataOut: a5 d0 d3 d4 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a2:<invalid> d0:<invalid> d1:<invalid> d2:2 -12(fp):<invalid> -8(fp):a2 -4(fp):a6
@@ -914,10 +947,10 @@ l00001DAE:
 	word32 d1_94
 	word32 d0_95
 	byte ZN_96
-	byte C_97
-	byte V_98
+	bool C_97
+	bool V_98
 	word32 d2_99
-	byte Z_100
+	bool Z_100
 	byte CVZNX_101
 	byte VZN_102
 	word32 a5_103
@@ -1235,12 +1268,11 @@ l00001F08:
 	byte CVZN_371
 	word32 d1_373
 	byte ZN_374
-	byte C_375
-	byte V_376
-	byte Z_377
+	bool C_375
+	bool V_376
+	bool Z_377
 	word32 a0_378
 	byte CVZNX_380
-	byte VZN_381
 	word32 d2_382
 	call a5 + 130 (retsize: 4; depth: 36)
 		uses: a0_334,a2_26,a3_23,a5,a6_5,a7_360,bLoc05,C_108,CVZN_363,CVZNX,d0_105,d1_30,d2,d3_25,d4_102,d5_99,dwLoc04_4,dwLoc0C_9,dwLoc10_12,dwLoc14_15,dwLoc18_18,dwLoc1C_21,dwLoc20_362,dwLoc24,dwLoc28,V_109,VZN,Z_337,ZN_106
@@ -1276,9 +1308,9 @@ l00001F94:
 	word32 d0_320
 	word32 d1_321
 	byte ZN_322
-	byte C_323
-	byte V_324
-	byte Z_325
+	bool C_323
+	bool V_324
+	bool Z_325
 	word32 a0_326
 	word32 a5_327
 	byte CVZNX_328
@@ -1298,7 +1330,8 @@ l00001F24:
 	d5_148 = Mem101[a3_122:word32] - d0_189
 	Mem195[a3_122:word32] = d0_189 + 1
 	Mem200[a3_122 + 4:word32] = Mem195[a3_122 + 24:word32] - 0x00000001
-	branch false l00001F6C
+	byte VZN_204 = DPB(VZN, false, 0)
+	branch VZN_204 l00001F6C
 // DataOut: a2 a3 a5 d0 d3 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 a3:<invalid> d3:<invalid> a2:<invalid> d0:<invalid> d1:<invalid> d5:0 d4:0 a0:<invalid> d2:0 -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):d5 -16(fp):a2 -12(fp):a3 -4(fp):a6
@@ -1306,9 +1339,9 @@ l00001F24:
 
 l00001F6C:
 	word32 a0_242 = a5 + -1704
-	byte Z_243 = __btst(Mem200[a0_242 + d3_118:byte], 0x0005)
+	bool Z_243 = __btst(Mem200[a0_242 + d3_118:byte], 0x0005)
 	branch Z_243 l00001F8A
-// DataOut: a2 a3 a5 d3 d4 d5 d6
+// DataOut: a2 a3 a5 d4 d5 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 a3:<invalid> d3:<invalid> a2:<invalid> d0:<invalid> d1:<invalid> d5:<invalid> d4:0 a0:<invalid> d2:0 -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):d5 -16(fp):a2 -12(fp):a3 -4(fp):a6
 // LocalsOut: fp(32) Stack +0004(32) Stack +0007(8)
@@ -1321,9 +1354,9 @@ l00001F78:
 	word32 d0_288
 	word32 d1_289
 	byte ZN_290
-	byte C_291
-	byte V_292
-	byte Z_293
+	bool C_291
+	bool V_292
+	bool Z_293
 	word32 a0_294
 	word32 a5_295
 	byte CVZNX_296
@@ -1354,9 +1387,9 @@ l00001F40:
 	word32 d0_224
 	word32 d1_225
 	byte ZN_226
-	byte C_227
-	byte V_228
-	byte Z_229
+	bool C_227
+	bool V_228
+	bool Z_229
 	word32 a0_230
 	word32 a5_231
 	byte CVZNX_232
@@ -1413,24 +1446,23 @@ fn00001FD8_entry:
 // LocalsOut: fp(32)
 
 l00001FD8:
-	word32 d3_21 = 0
 	word32 d4_24 = a5 + -2592
 	branch a5 + -2592 - Mem0[a5 + -2048:word32] >u 0x00000000 l00002008
-// DataOut: a5 d3 d4
+// DataOut: a5 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
 
 l00001FF2:
-	branch fn00002068(d3_21, d4_24, out d3_21) == 0xFFFFFFFF l00002000
+	word32 d3_57
+	branch fn00002068(d4_24, out d3_57) == 0xFFFFFFFF l00002000
 // DataOut: a5 d3 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d6:32 d5:-1 d3:<invalid> a0:a5 + -2592 d4:<invalid> d0:<invalid> d2:0 d1:<invalid> -24(fp):<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
 
 l00001FFE:
-	d3_21 = d3_21 + 0x00000001
-// DataOut: a5 d3 d4
+// DataOut: a5 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d6:32 d5:-1 d3:<invalid> a0:a5 + -2592 d4:<invalid> d0:<invalid> d2:0 d1:<invalid> -24(fp):<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
@@ -1438,7 +1470,7 @@ l00001FFE:
 l00002000:
 	d4_24 = d4_24 + 32
 	branch d4_24 - Mem0[a5 + -2048:word32] <=u 0x00000000 l00001FF2
-// DataOut: a5 d3 d4
+// DataOut: a5 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000014 a6:fp - 0x00000004 d6:32 d5:-1 d3:<invalid> a0:a5 + -2592 d4:<invalid> d0:<invalid> d2:0 d1:<invalid> -24(fp):<invalid> -20(fp):d3 -16(fp):d4 -12(fp):d5 -8(fp):d6 -4(fp):a6
 // LocalsOut: fp(32)
@@ -1479,7 +1511,7 @@ l00002014:
 	word32 a5_24
 	byte CVZNX_25
 	word32 d0_26
-	byte Z_27
+	bool Z_27
 	word32 a0_28
 	word32 d2_29
 	call a5 + 114 (retsize: 4; depth: 16)
@@ -1524,10 +1556,10 @@ fn00002014_exit:
 
 
 
-word32 fn00002068(word32 d3, word32 dwArg04, ptr32 & d3Out)
+word32 fn00002068(word32 dwArg04, ptr32 & d3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d3
+// MayUse: 
 // LiveOut: d0 d3
 // Trashed: CVZNX d0 d1 d2 d3
 // Preserved: a2 a6 a7
@@ -1562,17 +1594,18 @@ l00002096:
 	word32 a6_104
 	byte CVZN_106
 	word32 d0_108
-	byte Z_109
+	bool Z_109
 	byte ZN_110
-	byte C_111
-	byte V_112
+	bool C_111
+	bool V_112
 	word32 a5_113
 	byte VN_114
 	word32 d2_115
 	call a5 + 162 (retsize: 4; depth: 20)
 		uses: a2_17,a5,a6_5,a7_99,C_61,CVZN_102,d0_96,d2,d3_91,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10_101,V_62,VN,Z_60,ZN_59
 		defs: a2_107,a5_113,a6_104,a7_103,C_111,CVZN_106,d0_108,d2_115,d3_105,V_112,VN_114,Z_109,ZN_110
-	branch false l000020BC
+	byte VN_120 = DPB(VN_114, false, 0)
+	branch VN_120 l000020BC
 // DataOut: a2 a5 d3 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d3:-1 a2:<invalid> d0:<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
@@ -1593,10 +1626,10 @@ l000020C2:
 	byte CVZN_133
 	word32 a2_134
 	word32 d0_135
-	byte Z_136
+	bool Z_136
 	byte ZN_137
-	byte C_138
-	byte V_139
+	bool C_138
+	bool V_139
 	word32 a5_140
 	byte VN_141
 	word32 d2_142
@@ -1620,10 +1653,10 @@ l000020D0:
 	word32 a6_154
 	byte CVZN_156
 	word32 d0_158
-	byte Z_159
+	bool Z_159
 	byte ZN_160
-	byte C_161
-	byte V_162
+	bool C_161
+	bool V_162
 	word32 a5_163
 	byte VN_164
 	word32 d2_165
@@ -1687,7 +1720,7 @@ l000020F0:
 // LocalsOut: fp(32)
 
 l00002106:
-	byte Z_41 = __btst((byte) d0_14, 0x0003)
+	bool Z_41 = __btst((byte) d0_14, 0x0003)
 	branch Z_41 l00002128
 // DataOut: a2 a5 d0 d3 d4
 // DataOut (flags): 
@@ -1701,9 +1734,9 @@ l0000210C:
 	byte CVZN_50
 	word32 d1_52
 	byte ZN_53
-	byte C_54
-	byte V_55
-	byte Z_56
+	bool C_54
+	bool V_55
+	bool Z_56
 	word32 a5_57
 	word32 d2_58
 	call a5 + 122 (retsize: 4; depth: 16)
@@ -1821,23 +1854,23 @@ fn000021F0_exit:
 
 
 
-void fn00002264(word32 d1, word32 dwArg04)
+void fn00002264(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d1
+// MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a2 a6 a7
 // Stack args: Stack +0004(32)
 fn00002264_entry:
-// DataOut: d1
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00002264:
 	branch dwArg04 == 0x00000000 l0000228C
-// DataOut: a0 d0 d1
+// DataOut: a0 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
@@ -1855,7 +1888,7 @@ l00002276:
 	word32 d0_46 = (int32) v11_39
 	word32 a1_51 = dwArg04 + 1
 	branch d0_46 == 0x00000000 l0000228A
-// DataOut: a0 a1 a2 d0
+// DataOut: a1 a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> d0:<invalid> d1:<invalid> -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32)
@@ -1866,14 +1899,14 @@ l00002284:
 	a2_43 = a2_43 + 1
 	d0_46 = d0_46 - 0x00000001
 	branch d0_46 != 0x00000000 l00002284
-// DataOut: a0 a1 a2 d0
+// DataOut: a1 a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> d0:<invalid> d1:<invalid> a2:<invalid> a1:<invalid> -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32)
 
 l0000228A:
 	Mem56[a2_43:byte] = 0x00
-// DataOut: a0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> d0:<invalid> d1:<invalid> a2:<invalid> a1:<invalid> -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32)
@@ -1919,15 +1952,15 @@ fn00002294_exit:
 
 
 
-void fn000022C4(word32 a2, word32 a5)
+void fn000022C4(word32 a5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a2 a5
+// MayUse:  a5
 // LiveOut:
 // Trashed: CVZNX a0 a1 a2 d0
 // Preserved: a6 a7
 fn000022C4_entry:
-// DataOut: a2 a5
+// DataOut: a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -0012(32) Local -0013(32) Local -0015(32) Local -0016(32)
@@ -1940,10 +1973,10 @@ l000022C4:
 	word32 a2_36
 	byte CVZN_37
 	word32 a5_38
-	byte Z_39
-	byte C_40
-	byte N_41
-	byte V_42
+	bool Z_39
+	bool C_40
+	bool N_41
+	bool V_42
 	word32 a1_43
 	word32 d0_44
 	word32 a0_45
@@ -1958,10 +1991,10 @@ l000022C4:
 	word32 a2_64
 	byte CVZN_65
 	word32 a5_66
-	byte Z_67
-	byte C_68
-	byte N_69
-	byte V_70
+	bool Z_67
+	bool C_68
+	bool N_69
+	bool V_70
 	word32 a1_71
 	word32 d0_72
 	word32 a0_73
@@ -2074,9 +2107,9 @@ l000023AA:
 	word32 a5_45
 	byte CVZN_46
 	byte ZN_47
-	byte C_48
-	byte V_49
-	byte Z_50
+	bool C_48
+	bool V_49
+	bool Z_50
 	word32 a0_51
 	call a5 + 98 (retsize: 4; depth: 8)
 		uses: a0_22,a5,a6_5,a7_23,C_41,CVZN_17,dwLoc04_4,dwLoc08_19,dwLoc0C_21,V_42,Z_40,ZN_39
@@ -2145,7 +2178,7 @@ l000023D4:
 	byte CVZN_80
 	byte VZ_81
 	word32 d0_83
-	byte Z_84
+	bool Z_84
 	byte CVZNX_85
 	byte CZ_86
 	call d0_54 (retsize: 4; depth: 20)
@@ -2243,7 +2276,7 @@ l0000242E:
 	word32 a0_29
 	word32 d0_30
 	byte CVZN_31
-	byte Z_32
+	bool Z_32
 	call a0_12 (retsize: 4; depth: 8)
 		uses: a0_12,a5,a6_5,a7_10,CVZN_14,d0_13,dwLoc04_4,dwLoc08_8,Z_15
 		defs: a0_29,a5_28,a6_27,a7_26,CVZN_31,d0_30,Z_32
@@ -2339,11 +2372,11 @@ l0000247C:
 	word32 a0_94
 	word32 d2_95
 	word32 d0_96
-	byte Z_97
+	bool Z_97
 	byte CVZNX_98
-	byte C_99
+	bool C_99
 	byte ZN_100
-	byte V_101
+	bool V_101
 	call a5 + 146 (retsize: 4; depth: 24)
 		uses: a0_64,a1_74,a2_66,a5,a6_5,a7_83,C_72,CVZN_86,CVZNX_75,d0_17,d1_33,d2_82,dwLoc04_4,dwLoc08_10,dwLoc0C_78,dwLoc10_81,dwLoc14_85,V_73,Z_71,ZN_70
 		defs: a0_94,a1_91,a2_89,a5_92,a6_88,a7_87,C_99,CVZN_90,CVZNX_98,d0_96,d1_93,d2_95,V_101,Z_97,ZN_100
@@ -2365,22 +2398,22 @@ fn0000243C_exit:
 
 
 
-void fn000024B0(word32 d3, word32 a5, word32 dwArg04)
+void fn000024B0(word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 d3
+// MayUse:  a5
 // LiveOut:
 // Trashed: CVZNX a0 a1 a2 a3 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // Preserved: a6 a7
 // Stack args: Stack +0004(32)
 fn000024B0_entry:
-// DataOut: a5 d3
+// DataOut: a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
 
 l000024B0:
-	fn000024C4(d3, a5, fp - 0x00000004, dwArg04, Mem0[a5 + -1340:word32])
+	fn000024C4(a5, fp - 0x00000004, dwArg04, Mem0[a5 + -1340:word32])
 	return
 // DataOut:
 // DataOut (flags): 
@@ -2393,26 +2426,26 @@ fn000024B0_exit:
 
 
 
-void fn000024C4(word32 d3, word32 a5, word32 a6, word32 dwArg04, word32 dwArg08)
+void fn000024C4(word32 a5, word32 a6, word32 dwArg04, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 a6 d3
+// MayUse:  a5 a6
 // LiveOut:
 // Trashed: CVZNX a0 a1 a2 a3 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // Preserved: a6 a7 d3
-// Stack args: Stack +0004(32) Stack +0008(32)
+// Stack args: Stack +0004(32)
 fn000024C4_entry:
-// DataOut: a5 a6 d3
+// DataOut: a5 a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l000024C4:
 	branch -32 - dwArg04 >=u 0x00000000 l000024E0
 // DataOut: a5 a6 a7 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
+// LocalsOut: fp(32) Local -0004(32)
 
 l000024E0:
 	word32 d3_49 = DPB(dwArg04 + 0x00000003, (word16) (dwArg04 + 0x00000003) & 0xFFFC, 0)
@@ -2490,7 +2523,7 @@ l00002510:
 // LocalsOut: fp(32) Local -0004(32)
 
 l0000252A:
-	branch -1 - fn000028A0(a0_22, d0_23, a5, fp - 0x00000004, dwArg04) == 0x00000000 l000025A8
+	branch -1 - fn000028A0(a0_22, a5, fp - 0x00000004, dwArg04) == 0x00000000 l000025A8
 // DataOut: a5 a6 a7 d3 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d3:<invalid> a2:<invalid> a1:<invalid> d2:<invalid> d0:<invalid> a0:<invalid> d1:<invalid> -16(fp):<invalid> -12(fp):a2 -8(fp):d3 -4(fp):a6
@@ -2658,12 +2691,11 @@ word32 fn00002644(word32 a5, word32 dwArg04)
 // LiveOut: d0
 // Trashed: CVZN a0 d0
 // Preserved: a6 a7
-// Stack args: Stack +0004(32)
 fn00002644_entry:
 // DataOut: a5 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32)
 
 l00002644:
 	word32 a0_9 = Mem0[a5 + -716:word32]
@@ -2671,7 +2703,7 @@ l00002644:
 // DataOut: a5 d0 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32)
 
 l00002650:
 	word32 a7_46
@@ -2680,10 +2712,10 @@ l00002650:
 	word32 a0_49
 	word32 d0_50
 	byte CVZN_51
-	byte Z_52
+	bool Z_52
 	byte ZN_53
-	byte C_54
-	byte V_55
+	bool C_54
+	bool V_55
 	call a0_9 (retsize: 4; depth: 12)
 		uses: a0_9,a5,a6_5,a7_42,C,CVZN_45,d0_10,dwLoc04_4,dwLoc08_44,V,Z_12,ZN
 		defs: a0_49,a5_48,a6_47,a7_46,C_54,CVZN_51,d0_50,V_55,Z_52,ZN_53
@@ -3039,16 +3071,16 @@ l000027FE:
 
 
 
-word32 fn000028A0(word32 a0, word32 a2, word32 a5, word32 a6, word32 dwArg04)
+word32 fn000028A0(word32 a0, word32 a5, word32 a6, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a0 a2 a5 a6
+// MayUse:  a0 a5 a6
 // LiveOut: d0
 // Trashed: CVZNX a0 a1 a2 a3 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // Preserved: a2 a6 a7 d3 d4 d5 d6 d7
 // Stack args: Stack +0004(32)
 fn000028A0_entry:
-// DataOut: a0 a2 a5 a6
+// DataOut: a0 a5 a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
@@ -3133,7 +3165,7 @@ l0000290E:
 
 l00002916:
 	branch Mem0[a5 + -1316:word32] == 0x00000000 l0000292E
-// DataOut: a0 a5 a6 a7 d3 d4
+// DataOut: a0 a5 a6 a7 d3
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> a6:<invalid> a2:<invalid> d6:-1 d5:<invalid> d3:<invalid> d4:<invalid> d7:-1 a0:<invalid> d1:<invalid> d0:<invalid> a1:<invalid> d2:<invalid> a3:<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):d5 -16(fp):d6 -12(fp):d7 -8(fp):a2 -4(fp):a6
 // LocalsOut: Local -0004(32)
@@ -3323,14 +3355,14 @@ l00002A20:
 	Mem96[a1_89 + 4:word32] = 0
 	d0_104 = fn00002A54(a5, dwArg04, dwArg08)
 	branch d0_104 == 0x00000000 l00002A4C
-// DataOut: a2 a5 a6 a7 d0 d3 d5
+// DataOut: a2 a5 a6 a7 d0 d5
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d4:<invalid> d3:<invalid> d0:<invalid> a1:<invalid> d5:<invalid> d1:<invalid> -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):a6
 // LocalsOut: Local -0004(32)
 
 l00002A42:
 	Mem112[fp - 0x00000014:word32] = dwArg04
-	fn00002AE0(dwArg08, a2, a5, dwArg00)
+	fn00002AE0(a2, a5, dwArg00)
 // DataOut: a5 a6 a7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> a6:<invalid> d4:<invalid> d3:<invalid> d0:<invalid> a1:<invalid> d5:<invalid> d1:<invalid> a0:<invalid> d2:<invalid> a2:<invalid> a3:<invalid> -24(fp):<invalid> -20(fp):<invalid> -16(fp):d3 -12(fp):d4 -8(fp):d5 -4(fp):a6
@@ -3432,16 +3464,16 @@ fn00002A54_exit:
 
 
 
-void fn00002AE0(word32 d3, word32 a2, word32 a5, word32 dwArg04)
+void fn00002AE0(word32 a2, word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a2 a5 d3
+// MayUse:  a2 a5
 // LiveOut:
 // Trashed: CVZNX a0 d2
 // Preserved: a6 a7 d3
 // Stack args: Stack +0004(32)
 fn00002AE0_entry:
-// DataOut: a2 a5 d3
+// DataOut: a2 a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(32)
@@ -3451,14 +3483,14 @@ l00002AE0:
 // DataOut: a0 a2 a5 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00002AF8:
 	__syscall(0xA01F)
 // DataOut: a2 a5 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> d3:<invalid> -8(fp):d3 -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32)
+// LocalsOut: fp(32)
 
 l00002AFE:
 	Mem27[a2 + (dwArg04 << 0x00000004):word32] = 0
@@ -3636,7 +3668,7 @@ l00002C32:
 	word32 d1_151
 	__bclr(dwArg04, 0x00000001, out d1_151)
 	word32 d1_153
-	byte Z_154 = __bset(d1_151, 0x0000, out d1_153)
+	bool Z_154 = __bset(d1_151, 0x0000, out d1_153)
 	Mem156[a3_147 + 4:word32] = d1_153
 	Mem158[dwArg04:word32] = a3_147
 	branch 3 - (d0_139 + 0x00000003) <u 0x00000000 l00002C60
@@ -3749,10 +3781,10 @@ l00002C4E:
 	word32 d2_173
 	word32 a0_174
 	word32 d0_175
-	byte Z_176
+	bool Z_176
 	byte ZN_177
-	byte C_178
-	byte V_179
+	bool C_178
+	bool V_179
 	word32 d1_180
 	word32 a5_181
 	byte CVZNX_182
@@ -3965,19 +3997,19 @@ fn00002EA8_exit:
 
 
 
-void fn00003340(word32 d0, word32 d1, word32 a5, word16 wArg06)
+void fn00003340(word32 a5, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a5 d0 d1
+// MayUse:  a5
 // LiveOut:
 // Trashed: CVZNX a0 a1 d0 d1 d2
 // Preserved: a6 a7
-// Stack args: Stack +0006(32)
+// Stack args: Stack +0006(16)
 fn00003340_entry:
-// DataOut: a5 d0 d1
+// DataOut: a5
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0006(32)
+// LocalsOut: fp(32) Stack +0006(16)
 
 l00003340:
 	Mem18[a5 + -1728:word32] = (int32) wArg06

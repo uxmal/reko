@@ -6275,7 +6275,24 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
- 
+        [Test]
+        public void ThumbRw_mla()
+        {
+            RewriteCode("00FB0210");	// mla r0, r0, r2, r1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r1 + r0 * r2");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mls()
+        {
+            RewriteCode("04F910B5");	// mls r5, r4, r0, r9
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = f9 - r4 * r0");
+        }
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6335,23 +6352,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|d22 = __vsub_i16(d2, d16)");
         }
 
-        [Test]
-        public void ThumbRw_mla()
-        {
-            RewriteCode("00FB0210");	// mla r0, r0, r2, r1
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r1 + r0 * r2");
-        }
-
-        [Test]
-        public void ThumbRw_mls()
-        {
-            RewriteCode("04FB10B5");	// mls r5, r4, r0, fp
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = fp - r4 * r0");
-        }
 
         [Test]
         public void ThumbRw_vldr()

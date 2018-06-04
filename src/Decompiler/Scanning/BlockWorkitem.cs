@@ -48,17 +48,17 @@ namespace Reko.Scanning
     /// </list></remarks>
     public class BlockWorkitem : WorkItem, RtlInstructionVisitor<bool>
     {
-        private IScanner scanner;
-        private Program program;
-        private IProcessorArchitecture arch;
-        private Address addrStart;
+        private readonly IScanner scanner;
+        private readonly Program program;
+        private readonly IProcessorArchitecture arch;
+        private readonly Address addrStart;
         private Block blockCur;
         private Frame frame;
         private RtlInstruction ri;
         private RtlInstructionCluster ric;
         private IEnumerator<RtlInstructionCluster> rtlStream;
-        private ProcessorState state;
-        private ExpressionSimplifier eval;
+        private readonly ProcessorState state;
+        private readonly ExpressionSimplifier eval;
         private int extraLabels;
         private Identifier stackReg;
         private VarargsFormatScanner vaScanner;
@@ -228,10 +228,9 @@ namespace Reko.Scanning
         {
             var val = GetValue(a.Src);
             SetValue(a.Dst, val);
-            var idDst = a.Dst as Identifier;
-            var inst = (idDst != null)
+            var inst = (a.Dst is Identifier idDst)
                 ? new Assignment(idDst, a.Src)
-                : (Instruction) new Store(a.Dst, a.Src);
+                : (Instruction)new Store(a.Dst, a.Src);
             Emit(inst);
             return true;
         }
@@ -445,7 +444,7 @@ namespace Reko.Scanning
                             Operator.IAdd,
                             stackReg.DataType,
                             stackReg,
-                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                            Constant.Word(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
                     }
                     EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
                     if (sig != null && sig.ReturnAddressOnStack != 0)
@@ -456,7 +455,7 @@ namespace Reko.Scanning
                             Operator.ISub,
                             stackReg.DataType,
                             stackReg,
-                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                            Constant.Word(stackReg.DataType.BitSize, sig.ReturnAddressOnStack))));
                     }
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -680,7 +679,7 @@ namespace Reko.Scanning
                         stackReg.DataType,
                         stackReg,
                         Constant.Create(
-                            PrimitiveType.CreateWord(sizeOfRetAddrOnStack),
+                            PrimitiveType.CreateWord(sizeOfRetAddrOnStack * DataType.BitsPerByte),
                             sizeOfRetAddrOnStack));
                 newVal = newVal.Accept(eval);
                 SetValue(stackReg, newVal);
@@ -715,7 +714,7 @@ namespace Reko.Scanning
                     stackReg.DataType,
                     stackReg,
                     Constant.Create(
-                        PrimitiveType.CreateWord(stackReg.DataType.Size),
+                        PrimitiveType.CreateWord(stackReg.DataType.BitSize),
                         sigCallee.StackDelta));
                 newVal = newVal.Accept(eval);
                 SetValue(stackReg, newVal);
@@ -880,8 +879,7 @@ namespace Reko.Scanning
             if (impProc.Signature.Parameters.Length != 1)
                 throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
             var target = ab.Bind(impProc.Signature.Parameters[0]);
-            var id = target as Identifier;
-            if (id == null)
+            if (!(target is Identifier id))
                 throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
             if (state.GetValue(id) is Constant c && c.IsValid)
             {
@@ -1170,8 +1168,7 @@ namespace Reko.Scanning
                 visited.Add(block);
                 for (int i = block.Statements.Count - 1; i >= 0; --i)
                 {
-                    var ass = block.Statements[i].Instruction as Assignment;
-                    if (ass == null)
+                    if (!(block.Statements[i].Instruction is Assignment ass))
                         continue;
                     var idAss = ass.Dst ;
                     if (idAss != null && idAss == id)
@@ -1218,16 +1215,14 @@ namespace Reko.Scanning
 
         public ExternalProcedure ImportedProcedureName(Expression callTarget)
         {
-            var mem = callTarget as MemoryAccess;
-            if (mem == null)
+            if (!(callTarget is MemoryAccess mem))
                 return null;
             if (mem.EffectiveAddress.DataType.Size != this.program.Platform.PointerType.Size)
                 return null;
             Address addrTarget = mem.EffectiveAddress as Address;
             if (addrTarget == null)
             {
-                var offset = mem.EffectiveAddress as Constant;
-                if (offset == null)
+                if (!(mem.EffectiveAddress is Constant offset))
                     return null;
                 addrTarget = program.Platform.MakeAddressFromConstant(offset);
             }

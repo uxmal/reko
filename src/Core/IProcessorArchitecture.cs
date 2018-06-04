@@ -213,6 +213,13 @@ namespace Reko.Core
         Address MakeAddressFromConstant(Constant c);
 
         /// <summary>
+        /// After the program has been loaded, the architecture is given a final
+        /// chance to mutate the SegmentMap or any other property.
+        /// </summary>
+        /// <param name="program">The program to postprocess.</param>
+        void PostprocessProgram(Program program);
+        
+        /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is requored.
         /// </summary>
@@ -388,6 +395,7 @@ namespace Reko.Core
         public virtual void LoadUserOptions(Dictionary<string, object> options) { }
         public abstract Address MakeAddressFromConstant(Constant c);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
+        public virtual void PostprocessProgram(Program program) { }
         public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 

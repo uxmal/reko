@@ -106,8 +106,7 @@ namespace Reko.CmdLine
 
         private void StartTimer(Dictionary<string, object> pArgs)
         {
-            object oLimit;
-            if (pArgs.TryGetValue("time-limit", out oLimit))
+            if (pArgs.TryGetValue("time-limit", out object oLimit))
             {
                 int msecLimit = 1000 * (int)oLimit;
                 this.timer = new Timer(TimeLimitExpired, null, msecLimit, Timeout.Infinite);
@@ -148,8 +147,7 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
 
-            object loader;
-            pArgs.TryGetValue("--loader", out loader);
+            pArgs.TryGetValue("--loader", out  object loader);
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
@@ -183,18 +181,18 @@ namespace Reko.CmdLine
                 var arch = config.GetArchitecture((string)pArgs["--arch"]);
                 if (arch == null)
                     throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
+                if (pArgs.TryGetValue("--arch-options", out var oArchOptions))
+                {
+                    var archOptions = (Dictionary<string, object>)oArchOptions;
+                    arch.LoadUserOptions(archOptions);
+                }
+                pArgs.TryGetValue("--env", out object sEnv);
 
-                object sEnv;
-                pArgs.TryGetValue("--env", out sEnv);
-
-                Address addrBase;
-                object oAddrEntry;
-                if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
+                if (!arch.TryParseAddress((string)pArgs["--base"], out Address addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-                pArgs.TryGetValue("--entry", out oAddrEntry);
+                pArgs.TryGetValue("--entry", out object oAddrEntry);
 
-                object sLoader;
-                pArgs.TryGetValue("--loader", out sLoader);
+                pArgs.TryGetValue("--loader", out object sLoader);
                 var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
                 {
                     LoaderName = (string)sLoader,
@@ -204,8 +202,7 @@ namespace Reko.CmdLine
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
                 });
                 var state = CreateInitialState(arch, program.SegmentMap, pArgs);
-                object oHeur;
-                if (pArgs.TryGetValue("heuristics", out oHeur))
+                if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
                 }
@@ -266,6 +263,11 @@ namespace Reko.CmdLine
                     if (i < args.Length - 1)
                         parsedArgs["--arch"] = args[++i];
                 }
+                else if (args[i] == "--arch-option")
+                {
+                    if (i < args.Length - 1)
+                        ParseArchitectureOption(args[++i], parsedArgs);
+                }
                 else if (args[i] == "--env")
                 {
                     if (i < args.Length - 1)
@@ -295,9 +297,8 @@ namespace Reko.CmdLine
                 {
                     if (i < args.Length - 1)
                     {
-                        object oRegs;
                         List<string> regs;
-                        if (!parsedArgs.TryGetValue("--reg", out oRegs))
+                        if (!parsedArgs.TryGetValue("--reg", out object oRegs))
                         {
                             regs = new List<string>();
                             parsedArgs["--reg"] = regs;
@@ -328,8 +329,7 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--time-limit")
                 {
-                    int timeLimit;
-                    if (i >= args.Length - 1 || !int.TryParse(args[i + 1], out timeLimit))
+                    if (i >= args.Length - 1 || !int.TryParse(args[i + 1], out int timeLimit))
                     {
                         w.WriteLine("error: time-limit option expects a numerical argument.");
                         return null;
@@ -348,6 +348,35 @@ namespace Reko.CmdLine
                 }
             }
             return parsedArgs;
+        }
+
+        /// <summary>
+        /// Parses an architecture specific option and adds it 
+        /// to the "--arch-options" dictionary.
+        /// </summary>
+        /// <remarks>
+        /// Architecture options are written as follows
+        /// --arch-option {name}={value}
+        /// </remarks>
+        /// <param name="nameValue">String containing the name of the option 
+        /// and its value.</param>
+        /// <param name="parsedArgs">The dictionary of values parsed so far.
+        /// </param>
+        private void ParseArchitectureOption(string nameValue, Dictionary<string, object> parsedArgs)
+        {
+            Dictionary<string, object> archOptions;
+            if (parsedArgs.TryGetValue("--arch-options", out object oArchOptions))
+            {
+                archOptions = (Dictionary<string, object>)oArchOptions;
+            }
+            else
+            {
+                archOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                parsedArgs["--arch-options"] = archOptions;
+            }
+            var name_value = nameValue.Split('=');
+            archOptions[name_value[0]] =
+                string.Join("=", name_value.Skip(1));
         }
 
         private static void ShowVersion(TextWriter w)
@@ -372,6 +401,8 @@ namespace Reko.CmdLine
             w.WriteLine("                          of the loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --arch-option <name>=<value>  Set the value of the architecture-specific");
+            w.WriteLine("                          option <name> to <value>.");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program");

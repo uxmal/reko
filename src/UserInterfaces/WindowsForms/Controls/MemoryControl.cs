@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
@@ -29,7 +28,6 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
@@ -88,6 +86,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             wordSize = 1;
             cbRow = 16;
             encoding = Encoding.ASCII;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.selSvc != null)
+                {
+                    this.selSvc.SelectionChanged -= SelSvc_SelectionChanged;
+                }
+            }
+            base.Dispose(disposing);
         }
 
         public IServiceProvider Services {
@@ -556,7 +566,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return;
             this.addrAnchor = ar.Begin;
             this.addrSelected = ar.End;
-            if (!IsVisible(addrAnchor))
+            if (mem != null && !IsVisible(addrAnchor))
             {
                 Address newTopAddress = addrAnchor.Align((int)cbRow);
                 if (mem.IsValidAddress(newTopAddress))

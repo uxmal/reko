@@ -57,9 +57,9 @@ namespace Reko.Typing
         {
             BinaryExpression bin = new BinaryExpression(
                 Operator.IAdd,
-                PrimitiveType.CreateWord(ea.DataType.Size),
+                PrimitiveType.CreateWord(ea.DataType.BitSize),
                 ea,
-                Constant.Create(PrimitiveType.CreateWord(ea.DataType.Size), 0));
+                Constant.Create(PrimitiveType.CreateWord(ea.DataType.BitSize), 0));
             return bin;
         }
 
@@ -73,7 +73,7 @@ namespace Reko.Typing
                     aem.ArrayPointer = Constant.Create(
                         PrimitiveType.Create(
                             Domain.Pointer,
-                            access.EffectiveAddress.DataType.Size),
+                            access.EffectiveAddress.DataType.BitSize),
                         0);
                 }
                 return aem.Transform(null, access.DataType);

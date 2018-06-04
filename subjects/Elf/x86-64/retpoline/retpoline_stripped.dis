@@ -17,22 +17,20 @@ l0000000000400428:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
 
 l0000000000400438:
 	word64 rsp_15
 	byte SCZO_16
 	word64 rax_17
 	byte SZO_18
-	byte C_19
-	byte Z_20
+	bool C_19
+	bool Z_20
 	call __gmon_start__ (retsize: 8; depth: 16)
 		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
 		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
-// LocalsOut: fp(64)
 
 l000000000040043A:
 	return
@@ -115,9 +113,9 @@ l00000000004004CB:
 	word64 rax_42
 	word64 r8_43
 	byte SCZO_44
-	byte Z_45
+	bool Z_45
 	byte SZO_46
-	byte C_47
+	bool C_47
 	word32 edi_48
 	word64 rdi_49
 	call 0x0000000000000000 (retsize: 8; depth: 8)

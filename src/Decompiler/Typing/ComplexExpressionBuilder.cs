@@ -119,12 +119,11 @@ namespace Reko.Typing
             if (enclosingPtr != null)
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
             else
-                dt = PrimitiveType.CreateWord(e.DataType.Size);
+                dt = PrimitiveType.CreateWord(e.DataType.BitSize);
             e = new Cast(dt, e);
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;
-            var cOffset = eOffset as Constant;
-            if (cOffset != null && cOffset.IsNegative)
+            if (eOffset is Constant cOffset && cOffset.IsNegative)
             {
                 op = Operator.ISub;
                 eOffset = cOffset.Negate();

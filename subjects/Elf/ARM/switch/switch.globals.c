@@ -15,9 +15,9 @@ byte * g_ptr83F4 = &g_b10870;
 word32 * g_ptr8424 = &g_dw10844;
 word32 g_dw8428 = 0x00000000;
 int32 g_dw8700 = 33152;
-struct Eq_409 * g_ptr8740 = &g_t10838;
+struct Eq_408 * g_ptr8740 = &g_t10838;
 <anonymous> ** g_ptr10764 = &g_ptr10840;
-Eq_409 g_t10838 = 
+Eq_408 g_t10838 = 
 	{
 		&g_tFFFFFFFF,
 	};

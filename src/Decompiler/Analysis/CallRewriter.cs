@@ -58,7 +58,7 @@ namespace Reko.Analysis
 				{
 					if (id.DataType is PrimitiveType pt)
 					{
-						id.DataType = PrimitiveType.Create(pt.Domain, bitWidth/8);
+						id.DataType = PrimitiveType.Create(pt.Domain, bitWidth);
 					}
 				}
 			}
@@ -214,7 +214,7 @@ namespace Reko.Analysis
 					if (externalOffset >= startOffset)
 					{
                         if (!arguments.TryGetValue(externalOffset, out var vOld) ||
-                            vOld.DataType.Size < id.DataType.Size)
+                            vOld.DataType.BitSize < id.DataType.BitSize)
                         {
                             arguments[externalOffset] = id;
                         }
@@ -379,7 +379,7 @@ namespace Reko.Analysis
                 if (stm.Instruction is ReturnInstruction ret)
                 {
                     Expression e = sid.Identifier;
-                    if (idRet.DataType.Size < e.DataType.Size)
+                    if (idRet.DataType.BitSize < e.DataType.BitSize)
                     {
                         e = new Cast(idRet.DataType, e);
                     }

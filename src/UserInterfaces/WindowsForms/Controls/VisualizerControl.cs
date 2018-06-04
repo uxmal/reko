@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Gui.Visualizers;
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -40,6 +41,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </remarks>
     public class VisualizerControl : Control
     {
+        private static TraceSwitch trace = new TraceSwitch("VisualizerControl", "Trace events in VisualizerControl", "Warning");
+
         private Visualizer visualizer;
         private Program program;
         private MemoryArea mem;
@@ -61,6 +64,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.Controls.Add(vscroll);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && selSvc != null)
+            {
+                selSvc.SelectionChanged -= SelSvc_SelectionChanged;
+            }
+            base.Dispose(disposing);
+        }
+
         public IServiceProvider Services
         {
             get { return services; }
@@ -68,7 +80,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 if (selSvc != null)
                 {
-                    selSvc.SelectionChanged += SelSvc_SelectionChanged;
+                    selSvc.SelectionChanged -= SelSvc_SelectionChanged;
                 }
                 services = value;
                 if (value != null)
@@ -277,6 +289,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void SelSvc_SelectionChanged(object sender, EventArgs e)
         {
+            if (program == null)
+                return;
             var ar = selSvc.GetSelectedComponents()
                .Cast<AddressRange>()
                .FirstOrDefault();
@@ -306,9 +320,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             else
             {
                 this.vscroll.Enabled = true;
-                this.vscroll.Maximum = mem.Bytes.Length - bytesOnScreen;
+                this.vscroll.Maximum = mem.Bytes.Length;// - bytesOnScreen;
                 this.vscroll.LargeChange = bytesOnScreen;
                 this.vscroll.SmallChange = LineLength;
+                Debug.WriteLine(trace.TraceVerbose, $"VisCtrl: mem bytes {mem.Bytes.Length}, small = {LineLength}, large = {bytesOnScreen}, max={vscroll.Maximum}");
             }
         }
 

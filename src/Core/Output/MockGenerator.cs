@@ -27,6 +27,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Core.Output
 {
@@ -52,6 +54,7 @@ namespace Reko.Core.Output
             mpopstr.Add(Operator.Cor, "Cor");
 
             mpopstr.Add(Operator.Eq, "Eq");
+            mpopstr.Add(Operator.Ne, "Ne");
             mpopstr.Add(Operator.Ge, "Ge");
             mpopstr.Add(Operator.Gt, "Gt");
             mpopstr.Add(Operator.Le, "Le");
@@ -67,6 +70,14 @@ namespace Reko.Core.Output
             mpopstr.Add(Operator.Ule, "Ule");
             mpopstr.Add(Operator.Ult, "Ult");
             mpopstr.Add(Operator.Xor, "Xor");
+        }
+
+        public static void Dump(Procedure proc)
+        {
+            var sw = new StringWriter();
+            var mg = new MockGenerator(sw);
+            mg.Write(proc);
+            Debug.Print(sw.ToString());
         }
 
         private IEnumerable<Identifier> CollectLocalIdentifiers(Procedure proc)
@@ -103,7 +114,7 @@ namespace Reko.Core.Output
                 writer.WriteLine(", \"{0}\");", id.Name);
             }
         }
-
+        
         private void WriteCode(Procedure proc)
         {
             BlockGraph graph = proc.ControlGraph;
@@ -189,7 +200,10 @@ namespace Reko.Core.Output
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
+            Build("Def");
+            writer.Write("(");
+            def.Identifier.Accept(this);
+            writer.WriteLine(");");
         }
 
         void InstructionVisitor.VisitGotoInstruction(GotoInstruction def)
@@ -200,7 +214,15 @@ namespace Reko.Core.Output
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            Build("Phi");
+            writer.Write("(");
+            phi.Dst.Accept(this);
+            foreach (var arg in phi.Src.Arguments)
+            {
+                writer.Write(", ");
+                arg.Accept(this);
+            }
+            writer.WriteLine(");");
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
@@ -222,10 +244,9 @@ namespace Reko.Core.Output
 
         void InstructionVisitor.VisitStore(Store store)
         {
-            writer.Write("Store(");
-            MemoryAccess access = store.Dst as MemoryAccess;
-            if (access != null)
+            if (store.Dst is MemoryAccess access)
             {
+                writer.Write("MStore(");
                 access.EffectiveAddress.Accept(this);
             }
             else
@@ -284,8 +305,7 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
         {
-            string str;
-            if (!mpopstr.TryGetValue(binExp.Operator, out str))
+            if (!mpopstr.TryGetValue(binExp.Operator, out string str))
                 throw new NotImplementedException(binExp.Operator.ToString());
             writer.Write(str);
             writer.Write("(");
@@ -297,7 +317,12 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitCast(Cast cast)
         {
-            throw new NotImplementedException();
+            Build("Cast");
+            writer.Write("(");
+            cast.DataType.Accept(this);
+            writer.Write(", ");
+            cast.Expression.Accept(this);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitConditionalExpression(ConditionalExpression cond)
@@ -307,7 +332,10 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            Build("Cond");
+            writer.Write("(");
+            cof.Expression.Accept(this);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitConstant(Constant c)
@@ -423,7 +451,12 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            Build("Test");
+            writer.Write("(");
+            writer.Write($"ConditionCode.{tc}");
+            writer.Write(", ");
+            tc.Expression.Accept(this);
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
@@ -473,22 +506,38 @@ namespace Reko.Core.Output
 
         public int VisitPrimitive(PrimitiveType pt)
         {
-            writer.Write("PrimitiveType.");
-            if (pt == PrimitiveType.Word32)
-                writer.Write("Word32");
-            else if (pt == PrimitiveType.Int32)
-                writer.Write("Int32");
-            else if (pt == PrimitiveType.Word16)
-                writer.Write("Word16");
-            else if (pt == PrimitiveType.Byte)
-                writer.Write("Byte");
-            else if (pt == PrimitiveType.SegmentSelector)
-                writer.Write("SegmentSelector");
-            else if (pt == PrimitiveType.Bool)
-                writer.Write("Bool");
-            else
-                throw new NotSupportedException(pt.ToString());
+            writer.Write(StringFromPrimitive(pt));
             return 0;
+        }
+
+        private string StringFromPrimitive(PrimitiveType pt)
+        {
+            var sb = new StringBuilder();
+            sb.Append("PrimitiveType.");
+            if (pt == PrimitiveType.Word32)
+                sb.Append("Word32");
+            else if (pt == PrimitiveType.Int32)
+                sb.Append("Int32");
+            else if (pt == PrimitiveType.Word16)
+                sb.Append("Word16");
+            else if (pt == PrimitiveType.Byte)
+                sb.Append("Byte");
+            else if (pt == PrimitiveType.SegmentSelector)
+                sb.Append("SegmentSelector");
+            else if (pt == PrimitiveType.Bool)
+                sb.Append("Bool");
+            else if (pt == PrimitiveType.Ptr32)
+                sb.Append("Ptr32");
+            else
+            {
+                if (pt.Domain == Domain.SignedInt)
+                {
+                    sb.Append($"Int{pt.BitSize}");
+                }
+                else
+                    throw new NotImplementedException();
+            }
+            return sb.ToString();
         }
 
         public int VisitMemberPointer(MemberPointer memptr)
@@ -547,6 +596,11 @@ namespace Reko.Core.Output
             return 0;
         }
         #endregion
+
+        private void Build(string methodName)
+        {
+            writer.Write(methodName);
+        }
 
         private void QuoteString(string str)
         {

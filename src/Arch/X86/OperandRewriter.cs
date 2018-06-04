@@ -214,7 +214,7 @@ namespace Reko.Arch.X86
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup(Registers.eflags, (uint)flags, arch.GrfToString(Registers.eflags, "", (uint)flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.eflags, (uint)flags)); ;
         }
 
 
@@ -259,7 +259,7 @@ namespace Reko.Arch.X86
         public UnaryExpression AddrOf(Expression expr)
         {
             return new UnaryExpression(Operator.AddrOf,
-                PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
+                PrimitiveType.Create(Domain.Pointer, arch.WordWidth.BitSize), expr);
         }
 
         public abstract Address ImmediateAsAddress(Address address, ImmediateOperand imm);

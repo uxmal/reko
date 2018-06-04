@@ -143,6 +143,9 @@
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
+    <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
+    <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
+    <Compile Include="Core\CriticalInstructionTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -209,6 +212,7 @@
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
+    <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
@@ -228,7 +232,6 @@
     <Compile Include="Analysis\CallRewriterTests.cs" />
     <Compile Include="Analysis\CoalescerTests.cs" />
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
-    <Compile Include="Analysis\CriticalInstructionTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests2.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
@@ -939,6 +942,10 @@
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj">
+      <Project>{E453FF63-48CF-4C94-ACED-D8F836EBE884}</Project>
+      <Name>Tms7000</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
       <Project>{60CC0C65-E629-4923-9112-2A46371C90AF}</Project>

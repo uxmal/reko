@@ -22,6 +22,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(Configuration)\Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(Configuration)\Reko.Arch.SuperH.*" />
     <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(Configuration)\Reko.Arch.Tlcs.*" />
+    <Architectures Include="$(SolutionDir)Arch\Tms7000\bin\$(Configuration)\Reko.Arch.Tms7000.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(Configuration)\Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\bin\$(Configuration)\Reko.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />

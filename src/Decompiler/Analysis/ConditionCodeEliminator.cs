@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -145,8 +146,7 @@ namespace Reko.Analysis
         /// <returns></returns>
         private bool IsCopyWithOptionalCast(Identifier grf, Statement stm)
         {
-            Assignment ass = stm.Instruction as Assignment;
-            if (ass == null)
+            if (!(stm.Instruction is Assignment ass))
                 return false;
             Expression e = ass.Src;
             if (e is Cast cast)
@@ -167,7 +167,7 @@ namespace Reko.Analysis
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)
 		{
-			GrfDefinitionFinder gf = new GrfDefinitionFinder(ssaIds);
+			var gf = new GrfDefinitionFinder(ssaIds);
 			gf.FindDefiningExpression(sid);
 			
 			Expression e = gf.DefiningExpression;
@@ -175,6 +175,7 @@ namespace Reko.Analysis
 			{
 				return sid.Identifier;
 			}
+
             switch (e)
 			{
             case BinaryExpression binDef:
@@ -244,15 +245,12 @@ namespace Reko.Analysis
         {
             var sidOrigHi = ssaIds[a.Dst];
             var sidCarry = ssaIds[(Identifier)rolc.Arguments[2]];
-            var cond = sidCarry.DefExpression as ConditionOf;
-            if (cond == null)
+            if (!(sidCarry.DefExpression is ConditionOf cond))
                 return a;
-            var condId = cond.Expression as Identifier;
-            if (condId == null)
+            if (!(cond.Expression is Identifier condId))
                 return a;
             var sidOrigLo = ssaIds[condId];
-            var shift = sidOrigLo.DefExpression as BinaryExpression;
-            if (shift == null || shift.Operator != Operator.Shl)
+            if (!(sidOrigLo.DefExpression is BinaryExpression shift) || shift.Operator != Operator.Shl)
                 return a;
 
             var block = sidOrigHi.DefStatement.Block;
@@ -273,7 +271,7 @@ namespace Reko.Analysis
             sidOrigHi.DefStatement.Instruction = new Assignment(sidTmpHi.Identifier, rolc.Arguments[0]);
 
             var iRolc = block.Statements.IndexOf(sidOrigHi.DefStatement);
-            var dt = PrimitiveType.Create(Domain.Integer, expShrSrc.DataType.Size + expRorSrc.DataType.Size);
+            var dt = PrimitiveType.Create(Domain.Integer, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shl(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
             var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
@@ -288,7 +286,7 @@ namespace Reko.Analysis
             ssaIds.Remove(sidCarry);
 
             var expNewLo = m.Cast(
-                PrimitiveType.CreateWord(tmpHi.DataType.Size),
+                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier);
             var stmNewLo = block.Statements.Insert(
                 iRolc + 2,
@@ -299,7 +297,7 @@ namespace Reko.Analysis
             sidOrigLo.DefExpression = expNewLo;
 
             var expNewHi = m.Slice(
-                PrimitiveType.CreateWord(tmpLo.DataType.Size),
+                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 sidTmp.Identifier,
                 tmpHi.DataType.BitSize);
             var stmNewHi = block.Statements.Insert(
@@ -310,10 +308,8 @@ namespace Reko.Analysis
             sidOrigHi.DefStatement = stmNewHi;
             sidOrigHi.DefStatement = stmNewHi;
 
-            sidGrf.DefExpression = m.Cond(sidTmp.Identifier);
-            sidGrf.DefStatement.Instruction = new Assignment(
-                sidGrf.Identifier, sidGrf.DefExpression);
-            sidTmp.Uses.Add(sidGrf.DefStatement);
+            sidGrf.DefExpression = null;
+            sidGrf.DefStatement = null;
 
             return sidOrigHi.DefStatement.Instruction;
         }
@@ -333,11 +329,9 @@ namespace Reko.Analysis
         {
             var sidOrigLo = ssaIds[a.Dst];
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
-            var cond = sidCarry.DefExpression as ConditionOf;
-            if (cond == null)
+            if (!(sidCarry.DefExpression is ConditionOf cond))
                 return a;
-            var condId = cond.Expression as Identifier;
-            if (condId == null)
+            if (!(cond.Expression is Identifier condId))
                 return a;
             var sidOrigHi = ssaIds[condId];
             if (!(sidOrigHi.DefExpression is BinaryExpression shift &&
@@ -361,7 +355,7 @@ namespace Reko.Analysis
             sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, rorc.Arguments[0]);
 
             var iRorc = block.Statements.IndexOf(sidOrigLo.DefStatement);
-            var dt = PrimitiveType.Create(Domain.UnsignedInt, expShrSrc.DataType.Size + expRorSrc.DataType.Size);
+            var dt = PrimitiveType.Create(Domain.UnsignedInt, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shr(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
             var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
@@ -376,7 +370,7 @@ namespace Reko.Analysis
             ssaIds.Remove(sidCarry);
 
             var expNewHi = m.Slice(
-                PrimitiveType.CreateWord(tmpHi.DataType.Size),
+                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier,
                 tmpLo.DataType.BitSize);
             var stmNewHi = block.Statements.Insert(
@@ -388,7 +382,7 @@ namespace Reko.Analysis
             sidOrigHi.DefExpression = expNewHi;
 
             var expNewLo = m.Cast(
-                PrimitiveType.CreateWord(tmpLo.DataType.Size),
+                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 sidTmp.Identifier);
             var stmNewLo = block.Statements.Insert(
                 iRorc + 3,
@@ -398,10 +392,8 @@ namespace Reko.Analysis
             sidOrigLo.DefStatement = stmNewLo;
             sidOrigLo.DefStatement = stmNewLo;
 
-            sidGrf.DefExpression = m.Cond(sidTmp.Identifier);
-            sidGrf.DefStatement.Instruction = new Assignment(
-                sidGrf.Identifier, sidGrf.DefExpression);
-            sidTmp.Uses.Add(sidGrf.DefStatement);
+            sidGrf.DefExpression = null;
+            sidGrf.DefStatement = null;
              
             return sidOrigLo.DefStatement.Instruction;
         }
@@ -427,8 +419,7 @@ namespace Reko.Analysis
 			{
 				cc = Negate(cc);
 			}
-			PrimitiveType p = bin.DataType as PrimitiveType;
-			bool isReal = (p != null && p.Domain == Domain.Real);
+            bool isReal = (bin.DataType is PrimitiveType p && p.Domain == Domain.Real);
 			switch (cc)
 			{
 			case ConditionCode.UGT: cmpOp = Operator.Ugt; break;

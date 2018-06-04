@@ -192,15 +192,15 @@ namespace Reko.ImageLoaders.LLVM
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.inttoptr:
-                dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.Size);
+                dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.BitSize);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.sext:
-                dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.Size);
+                dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.BitSize);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.zext:
-                dstType = PrimitiveType.Create(IrDomain.UnsignedInt, dstType.Size);
+                dstType = PrimitiveType.Create(IrDomain.UnsignedInt, dstType.BitSize);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.ptrtoint:
@@ -370,7 +370,7 @@ namespace Reko.ImageLoaders.LLVM
             case Constant c:
                 if (c.Value == null)
                 {
-                    var w = PrimitiveType.CreateWord(dt.Size);
+                    var w = PrimitiveType.CreateWord(dt.BitSize);
                     var v = IrConstant.Create(w, 0);
                     v.DataType = w;
                     return v;

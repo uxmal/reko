@@ -21,7 +21,6 @@ v7_11: orig: v7
     def:  v7_11 = SEQ(r1, r2) >>u 0x01
     uses: r1_2 = SLICE(v7_11, word32, 32)
           r2_5 = (word32) v7_11
-          C_3 = cond(v7_11)
 // main
 // Return size: 0
 define main

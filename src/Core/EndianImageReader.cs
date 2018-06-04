@@ -77,11 +77,11 @@ namespace Reko.Core
         /// <returns></returns>
         public bool ReadNullCharTerminator(DataType charType)
 		{
-			switch (charType.Size)
+			switch (charType.BitSize)
 			{
-			case 1: return (char)ReadByte() == 0;
-			case 2: return (char)ReadUInt16() == 0;
-			default: throw new NotSupportedException(string.Format("Character size {0} not supported.", charType.Size));
+			case 8: return (char)ReadByte() == 0;
+			case 16: return (char)ReadUInt16() == 0;
+			default: throw new NotSupportedException(string.Format("Character bit size {0} not supported.", charType.BitSize));
 			}
 		}
 

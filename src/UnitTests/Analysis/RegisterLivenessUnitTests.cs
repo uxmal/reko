@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Analysis
 			f = proc.Frame;
 			mpprocflow = new ProgramDataFlow();
             terminates = new HashSet<Procedure>();
-			rl = new RegisterLiveness(program, mpprocflow, null);
+			rl = new RegisterLiveness(program, mpprocflow, new FakeDecompilerEventListener());
 			rl.Procedure = proc;
             rl.IdentifierLiveness.Identifiers = new HashSet<RegisterStorage>();
 		}
@@ -349,5 +349,14 @@ namespace Reko.UnitTests.Analysis
 			}
 			return sw.ToString();
 		}	
-	}
+
+        [Test]
+        public void Rl_DepositBytes()
+        {
+            Identifier edx = f.EnsureRegister(Registers.edx);
+            Identifier al = f.EnsureRegister(Registers.al);
+            m.Assign(edx, m.Dpb(edx, al, 0)).Accept(rl);
+            Assert.AreEqual(" al", Dump(rl.IdentifierLiveness));
+        }
+    }
 }

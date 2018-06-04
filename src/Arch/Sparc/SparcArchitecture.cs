@@ -39,7 +39,7 @@ namespace Reko.Arch.Sparc
         public SparcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
         {
             this.WordWidth = wordWidth;
-            this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
             this.InstructionBitSize = 32;
@@ -178,6 +178,7 @@ namespace Reko.Arch.Sparc
             }
             return GetFlagGroup(Registers.psr, (uint)grf);
         }
+
 
         public override Address MakeAddressFromConstant(Constant c)
         {

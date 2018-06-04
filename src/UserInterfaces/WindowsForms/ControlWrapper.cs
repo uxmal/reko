@@ -37,6 +37,18 @@ namespace Reko.UserInterfaces.WindowsForms
             this.ctrl = ctrl;
         }
 
+        public event EventHandler GotFocus
+        {
+            add { this.ctrl.GotFocus += value; }
+            remove { this.ctrl.GotFocus -= value; }
+        }
+
+        public event EventHandler LostFocus
+        {
+            add { this.ctrl.LostFocus += value; }
+            remove { this.ctrl.LostFocus -= value; }
+        }
+
         public Color BackColor { get { return ctrl.BackColor; } set { ctrl.BackColor = value; } }
         public Color ForeColor { get { return ctrl.ForeColor; } set { ctrl.ForeColor = value; } }
         public bool Enabled { get { return ctrl.Enabled; } set { ctrl.Enabled = value; } }

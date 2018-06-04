@@ -298,6 +298,10 @@ namespace Reko.UnitTests.Mocks
             return Address.Ptr32(c.ToUInt32());
         }
 
+        public void PostprocessProgram(Program program)
+        {
+        }
+
         public Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             if (size == 4)

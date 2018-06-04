@@ -685,7 +685,7 @@ namespace Reko.Arch.Vax
 
         private Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString(Registers.psw, "", (uint)flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup( arch.GetFlagGroup(Registers.psw, (uint)flags));
         }
 
         private bool AllFlags(Expression dst)

@@ -67,6 +67,11 @@ namespace Reko.Core
             Emit(new CodeComment(comment));
         }
 
+        public void Def(Identifier id)
+        {
+            Emit(new DefInstruction(id));
+        }
+
         public GotoInstruction Goto(Expression dest)
         {
             var gi = new GotoInstruction(dest);

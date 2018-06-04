@@ -34,7 +34,7 @@ namespace Reko.Core.Operators
             var dom = Domain.Integer;
             if (pt != null)
                 dom = pt.Domain & Domain.Integer;
-            pt = PrimitiveType.Create(dom, c1.DataType.Size);
+            pt = PrimitiveType.Create(dom, c1.DataType.BitSize);
             return Constant.Create(
                 pt, 
                 c1.ToInt64() << c2.ToInt32());

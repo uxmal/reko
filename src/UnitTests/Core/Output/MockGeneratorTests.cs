@@ -41,8 +41,31 @@ namespace Reko.UnitTests.Core.Output
             sb = new StringWriter();
         }
 
+        private void CompileTest(Action<ProcedureBuilder> buildMock)
+        {
+            ProcedureBuilder m = new ProcedureBuilder();
+            buildMock(m);
+            MockGenerator g = new MockGenerator(sb);
+            g.Write(m.Procedure);
+        }
+
+        private void VerifyTest(string sExp)
+        {
+            string s = sb.ToString();
+            try
+            {
+                Assert.AreEqual(sExp, s);
+            }
+            catch
+            {
+                Debug.Print("{0}", s);
+                throw;
+            }
+        }
+
+
         [Test]
-        public void EmptyFunction()
+        public void Mg_EmptyFunction()
         {
             CompileTest(m =>
             {
@@ -60,7 +83,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void Assign()
+        public void Mg_Assign()
         {
             CompileTest(m =>
             {
@@ -83,7 +106,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void AddSubMul()
+        public void Mg_AddSubMul()
         {
             CompileTest(m =>
             {
@@ -107,7 +130,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void LoadStore()
+        public void Mg_LoadStore()
         {
             CompileTest(m =>
             {
@@ -119,7 +142,7 @@ namespace Reko.UnitTests.Core.Output
                 "{" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Store(Word32(0x123456), Mem(PrimitiveType.Byte, Word32(0x12348)));" + nl +
+                "    MStore(Word32(0x123456), Mem(PrimitiveType.Byte, Word32(0x12348)));" + nl +
                 "    Return();" + nl +
                 "}" + nl +
                 "" + nl;
@@ -149,7 +172,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void Application()
+        public void Mg_Application()
         {
             CompileTest(m =>
             {
@@ -175,7 +198,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void SelectorSideEffect()
+        public void Mg_SelectorSideEffect()
         {
             CompileTest(m =>
             {
@@ -196,7 +219,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void Branch()
+        public void Mg_Branch()
         {
             CompileTest(m =>
             {
@@ -217,7 +240,7 @@ namespace Reko.UnitTests.Core.Output
 "    BranchIf(Eq(i, Constant.Create(Primitive.Int32, 0x0)), \"skip\");" + nl + 
 "    " + nl + 
 "    Label(\"fade\");" + nl + 
-"    Store(Word32(0x123456), i);" + nl + 
+"    MStore(Word32(0x123456), i);" + nl + 
 "    " + nl + 
 "    Label(\"skip\");" + nl + 
 "    Return(i);" + nl + 
@@ -228,7 +251,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void ComparisonOperators()
+        public void Mg_ComparisonOperators()
         {
             CompileTest(m =>
             {
@@ -268,7 +291,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void LogicalOperators()
+        public void Mg_LogicalOperators()
         {
             CompileTest(m =>
             {
@@ -293,7 +316,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void BitwiseOperators()
+        public void Mg_BitwiseOperators()
         {
             CompileTest(m =>
             {
@@ -318,7 +341,7 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        public void SliceDpb()
+        public void Mg_SliceDpb()
         {
             CompileTest(m =>
             {
@@ -338,28 +361,6 @@ namespace Reko.UnitTests.Core.Output
                 "}" + nl +
                 "" + nl);
 
-        }
-
-        private void CompileTest(Action<ProcedureBuilder> buildMock)
-        {
-            ProcedureBuilder m = new ProcedureBuilder();
-            buildMock(m);
-            MockGenerator g = new MockGenerator(sb);
-            g.Write(m.Procedure);
-        }
-
-        private void VerifyTest(string sExp)
-        {
-            string s = sb.ToString();
-            try
-            {
-                Assert.AreEqual(sExp, s);
-            }
-            catch
-            {
-                Debug.Print("{0}", s);
-                throw;
-            }
         }
     }
 }

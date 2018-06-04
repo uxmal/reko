@@ -60,8 +60,8 @@ void fn0040110B(word32 eax)
 
 // MayUse:  eax
 // LiveOut:
-// Trashed: SCZO ah al ax eax esp rax rsp sp spl
-// Preserved: eax
+// Trashed: SCZO ah al ax eax rax
+// Preserved: eax esp
 fn0040110B_entry:
 // DataOut: eax
 // DataOut (flags): 
@@ -78,10 +78,10 @@ l0040110B:
 l00401114:
 	word32 esp_19
 	byte SCZO_20
-	byte C_21
+	bool C_21
 	word32 eax_22
 	byte SZO_23
-	byte Z_24
+	bool Z_24
 	call __CRTL_TLS_GetValue (retsize: 4; depth: 8)
 		uses: C_4,dwLoc04_18,eax,esp_17,SCZO_3,SZO,Z
 		defs: C_21,eax_22,esp_19,SCZO_20,SZO_23,Z_24
@@ -98,10 +98,10 @@ l00401123:
 	Mem40[esp_19 - 0x00000004:word32] = Mem35[0x0040208B:word32]
 	word32 esp_41
 	byte SCZO_42
-	byte C_43
+	bool C_43
 	word32 eax_44
 	byte SZO_45
-	byte Z_46
+	bool Z_46
 	call __CRTL_TLS_ExitThread (retsize: 4; depth: 4)
 		uses: C_28,dwLoc04_18,eax_36,esp_39,SCZO_20,SZO_26,Z_27
 		defs: C_43,eax_44,esp_41,SCZO_42,SZO_45,Z_46
@@ -118,7 +118,7 @@ l0040113C:
 fn0040110B_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> eax:<invalid> -4(fp):<invalid>
+// SymbolicIn: esp:fp eax:<invalid> -4(fp):<invalid>
 
 
 
@@ -229,7 +229,7 @@ void fn004011B0(word32 dwArg04)
 
 // MayUse:  fs
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp rax rbp rbx rcx rdx rsp sp spl
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp ebx esp
 // Stack args: Stack +0004(32)
 fn004011B0_entry:
@@ -277,7 +277,7 @@ l004011D7:
 fn004011B0_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:<invalid> ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp ebp:ebp ebx:ebx al:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):0x0000009C -16(fp):ebx -4(fp):ebp
 
 
 
