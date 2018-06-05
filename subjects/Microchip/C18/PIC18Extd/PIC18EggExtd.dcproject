@@ -11,7 +11,7 @@
     <user>
       <address>00000000</address>
       <loader>IntelHex</loader>
-      <processor name="PIC18F1230">
+      <processor name="pic">
         <item key="model">PIC18F1230</item>
         <item key="execution_mode">Extended</item>
         <item key="loader_type">raw</item>
