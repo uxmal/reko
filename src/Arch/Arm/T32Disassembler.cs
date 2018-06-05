@@ -97,12 +97,17 @@ namespace Reko.Arch.Arm
                     size = this.ReadDecimal(format, ref i);
                     op = ImmediateOperand.Int32(SBitfield(wInstr, offset, size));
                     break;
-                case 'i':   // immediate value in bitfield
+                case 'i':   // immediate value in bitfield(s)
                     ++i;
-                    offset = this.ReadDecimal(format, ref i);
-                    Expect(':', format, ref i);
-                    size = this.ReadDecimal(format, ref i);
-                    op = ImmediateOperand.Word32((wInstr >> offset) & ((1u << size) - 1));
+                    var n = 0u;
+                    do
+                    {
+                        offset = this.ReadDecimal(format, ref i);
+                        Expect(':', format, ref i);
+                        size = this.ReadDecimal(format, ref i);
+                        n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
+                    } while (PeekAndDiscard(':', format, ref i));
+                    op = ImmediateOperand.Word32(n);
                     break;
                 case 'I':   // immediate 7-bit value shifted left 2.
                     op = ImmediateOperand.Int32(((int)wInstr & 0x7F) << 2);
@@ -312,6 +317,11 @@ namespace Reko.Arch.Arm
             }
         }
 
+        private static Decoder DecodeBfcBfi(Opcode opcode, string format)
+        {
+            return new BfcBfiDecoder(opcode, format);
+        }
+
         // Factory methods
         private static Instr16Decoder Instr(Opcode opcode, string format)
         {
@@ -483,7 +493,7 @@ namespace Reko.Arch.Arm
         // Decodes Mov/Movs instructions with optional shifts
         private class MovMovsDecoder : Instr16Decoder
         {
-            private string format;
+            private readonly string format;
 
             public MovMovsDecoder(Opcode opcode, string format) : base(opcode, format)
             {
@@ -512,6 +522,38 @@ namespace Reko.Arch.Arm
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte) SBitfield(wInstr, 0, 4)
                 };
+                return instr;
+            }
+        }
+
+        // Decode BFC and BFI instructions, which display their immediate constants
+        // differently from how they are repesented in the word.
+        private class BfcBfiDecoder : Instr16Decoder
+        {
+            public BfcBfiDecoder(Opcode opcode, string format) : base(opcode, format)
+            {
+            }
+
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                // A hack -- we patch up the output of the regular decoder.
+                var instr = base.Decode(dasm, wInstr);
+                ImmediateOperand opLsb;
+                ImmediateOperand opMsb = (ImmediateOperand)instr.op4;
+                if (opMsb != null)
+                {
+                    opLsb = (ImmediateOperand)instr.op3;
+                }
+                else
+                {
+                    opMsb = (ImmediateOperand)instr.op3;
+                    opLsb = (ImmediateOperand)instr.op2;
+                }
+                var opWidth = ImmediateOperand.Word32(opMsb.Value.ToInt32() - opLsb.Value.ToInt32() + 1);
+                if (instr.op4 != null)
+                    instr.op4 = opWidth;
+                else
+                    instr.op3 = opWidth;
                 return instr;
             }
         }
@@ -846,13 +888,30 @@ namespace Reko.Arch.Arm
                             Nyi("SubSubsSpImm"),
                             Nyi("ADR - T2")))));
 
+            var SaturateBitfield = Mask(5 + 16, 0x7,
+                Nyi("SsatLslVariant"),
+                Select(w => SBitfield(w, 12, 3) != 0 || SBitfield(w, 6, 2) != 0,
+                    Nyi("ssatAsrVariant"),
+                    Nyi("ssat16")),
+                Nyi("sfbx"),
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    DecodeBfcBfi(Opcode.bfi, "R8,R16,i12:3:6:2,i0:5"),
+                    DecodeBfcBfi(Opcode.bfc, "R8,i12:3:6:2,i0:5")),
+                // 4
+                Nyi("usatLslVariant"),
+                Select(w => SBitfield(w, 12, 3) != 0 || SBitfield(w, 6, 2) != 0,
+                    Nyi("usatAsrVariant"),
+                    Nyi("usat16")),
+                Nyi("ufbx"),
+                invalid);
+
             var DataProcessingPlainImm = Mask(8 + 16, 1,
                 Mask(5 + 16, 3,
                     DataProcessingSimpleImm,
                     DataProcessingSimpleImm,
                     Nyi("MoveWide16BitImm"),
                     invalid),
-                Nyi("SaturateBitfield"));
+                SaturateBitfield);
 
             var LoadStoreSignedPositiveImm = new  SelectDecoder(w => SBitfield(w, 12, 4) != 0xF,
                 new MaskDecoder(5 + 16, 3,

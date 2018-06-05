@@ -86,8 +86,8 @@ namespace Reko.Arch.Arm
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
-            var lsb = ((ImmediateOperand)instr.op2).Value.ToInt32();
-            var bitsize = ((ImmediateOperand)instr.op3).Value.ToInt32();
+            var lsb = ((ImmediateOperand)instr.op3).Value.ToInt32();
+            var bitsize = ((ImmediateOperand)instr.op4).Value.ToInt32();
             m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
             m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
         }
