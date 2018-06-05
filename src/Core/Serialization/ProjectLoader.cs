@@ -324,6 +324,12 @@ namespace Reko.Core.Serialization
             return addr;
         }
 
+        /// <summary>
+        /// Loads 
+        /// </summary>
+        /// <param name="sUser"></param>
+        /// <param name="program"></param>
+        /// <param name="user"></param>
         public void LoadUserData(UserData_v4 sUser, Program program, UserData user)
         {
             if (sUser == null)
@@ -331,12 +337,17 @@ namespace Reko.Core.Serialization
             user.OnLoadedScript = sUser.OnLoadedScript;
             if (sUser.Processor != null)
             {
-                program.User.Processor = sUser.Processor.Name;
-                if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
+                user.Processor = sUser.Processor.Name;
+                if (program.Architecture == null && !string.IsNullOrEmpty(user.Processor))
                 {
-                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(user.Processor);
                 }
                 program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
+            }
+            if (sUser.PlatformOptions != null)
+            {
+                user.Environment = sUser.PlatformOptions.Name;
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.Procedures != null)
             {
@@ -344,12 +355,6 @@ namespace Reko.Core.Serialization
                     .Select(sup => LoadUserProcedure_v1(program, sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-
-            if (sUser.PlatformOptions != null)
-            {
-                program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.GlobalData != null)
             {
