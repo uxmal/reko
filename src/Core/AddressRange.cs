@@ -23,43 +23,39 @@ using System;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Describes an address range [begin...end)
+	/// Describes a memory address range [begin...end)
 	/// </summary>
 	public class AddressRange
 	{
 		private Address addrBegin;
 		private Address addrEnd;
+        private static AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
 
 		public AddressRange(Address addrBegin, Address addrEnd)
 		{
-			if (addrBegin == null)
-				throw new ArgumentNullException("addrBegin");
-			if (addrEnd == null)
-				throw new ArgumentNullException("addrEnd");
-			this.addrBegin = addrBegin;
-			this.addrEnd = addrEnd;
-		}
-
-		public Address Begin
-		{
-			get { return addrBegin; }
-		}
-
-		public Address End
-		{
-			get { return addrEnd; }
-		}
-
-        public bool IsValid
-        {
-            get { return this != e; }
+            this.addrBegin = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
+            this.addrEnd = addrEnd ?? throw new ArgumentNullException(nameof(addrEnd));
         }
 
-        public static AddressRange Empty
-        {
-            get { return e; }
-        }
+        /// <summary>
+        /// Gets the beginning address (inclusive) of the memory range.
+        /// </summary>
+        public Address Begin => addrBegin; 
 
-        private static AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
+        /// <summary>
+        /// Gets the ending address (exclusive) of the memory range.
+        /// </summary>
+		public Address End => addrEnd; 
+
+        /// <summary>
+        /// Gets a value indicating whether this memory range is valid.
+        /// </summary>
+        public bool IsValid => this != e; 
+
+        /// <summary>
+        /// Gets the empty/null memory range.
+        /// </summary>
+        public static AddressRange Empty => e; 
+
     }
 }

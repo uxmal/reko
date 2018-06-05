@@ -72,7 +72,7 @@ namespace Reko.Core.Machine
         public Address Address { get; set; }
 
         /// <summary>
-        /// This renederer ignores annotations
+        /// This renderer ignores annotations
         /// </summary>
         /// <param name="annotation"></param>
         public void AddAnnotation(string annotation)

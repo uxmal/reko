@@ -50,7 +50,8 @@ namespace Reko.Core.Expressions
 		void VisitProcedureConstant(ProcedureConstant pc);
 		void VisitScopeResolution(ScopeResolution scopeResolution);
 		void VisitSegmentedAccess(SegmentedAccess access);
-		void VisitSlice(Slice slice);
+
+        void VisitSlice(Slice slice);
 		void VisitTestCondition(TestCondition tc);
 		void VisitUnaryExpression(UnaryExpression unary);
     }
@@ -228,14 +229,14 @@ namespace Reko.Core.Expressions
 			tc.Expression.Accept(this);
 		}
 
-		public void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.MemoryId.Accept(this);
-			access.BasePointer.Accept(this);
-			access.EffectiveAddress.Accept(this);
-		}
+        public void VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.MemoryId.Accept(this);
+            access.BasePointer.Accept(this);
+            access.EffectiveAddress.Accept(this);
+        }
 
-		public void VisitScopeResolution(ScopeResolution scope)
+        public void VisitScopeResolution(ScopeResolution scope)
 		{
 		}
 

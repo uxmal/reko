@@ -1,0 +1,217 @@
+-----------------------------------------------------------------------------
+ BootLoader.
+ Copyright (C) 2006 Diolan ( http://www.diolan.com )
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+
+Contents:
+- USB Module
+- XTEA Encoder/Decoder
+- Supported Commands
+- Code Protection
+- Pinout Configuration
+- EEPROM Mark
+
+
+USB Module
+==========
+
+USB Module Configuration
+------------------------
+
+- Product/Vendor ID
+
+File		: usb_desc.asm, usb_desc.inc
+Identifier	: USB_DEV_DESC
+
+Example:
+USB_DEV_DESC_idVendor		dw	BOOTLOADER_VID
+USB_DEV_DESC_idProduct		dw	BOOTLOADER_PID
+	
+BOOTLOADER_VID and BOOTLOADER_PID MUST be defined in file usb_desc.inc with VALID values.
+
+
+Supported Commands
+==================
+
+Read ID
+-------
+Read 8 bytes ID location. 
+
+Write ID
+--------
+Write 8 bytes ID location.
+This command will erase ID location prior to writing.
+If you only need to erase ID location you may write 8 bytes of FF...FF
+
+  
+XTEA Encoder/Decoder
+====================
+
+XTEA Algorithm backgrounds
+---------------------------
+The XTEA encoder/decoder input byte stream is separated into 8 byte chunks
+	[ b0 b1 b2 b3 b4 b5 b6 b7 ], [ b8 b9 ........... ], ...
+Chunk is treated as two 32 bit little endian integers x1 and x2.
+	For chunk0:
+		x1 = (b3<<24) + (b2<<16) + (b1<<8) + b0
+		x2 = (b4<<24) + (b5<<16) + (b6<<8) + b7
+		
+Encoding/Decoding is performed for every single chunk.
+
+KEY is a 16 bytes string treated as key[4], where key[i] is 
+32 bit little endian integer 
+	KEY k0 k1 k2 k3 k4 ..... k15
+		key[0] = (k3<<24) + (k2<<16) + (k1<<8) + k0 
+	
+DELTA is 32 bit integer constant 
+	DELTA = 0x9E3779B9
+	
+Chunk Encoding:
+	sum=0;
+	for( i=0; i<XTEA_ITER; i++ )
+	{
+            x1 += (((x2<<4) ^ (x2>>5)) + x2) ^ (sum + key[sum&0x03]);
+	    sum+= DELTA;
+	    x2 += (((x1<<4) ^ (x1>>5)) + x1) ^ (sum + $KEY[(sum>>11)&0x03]);
+	}
+	
+Chunk Decoding:
+	sum = DELTA* XTEA_ITER;
+        for( i=0; i<XTEA_ITER; i++ )
+	{
+	    x2 -= (((x1<<4) ^ (x1>>5)) + x1) ^ (sum + key[(sum>>11)&0x03]);
+	    sum-= DELTA;
+            x1 -= (((x2<<4) ^ (x2>>5)) + x2) ^ (sum + key[sum&0x03]);
+	}	    
+
+	    
+XTEA Encoder/Decoder configuration
+----------------------------------	
+You can change following parameters to configure XTEA encoder/decoder
+
+- XTEA encoder/decoder KEY
+
+File		: xtea.asm
+Identifier	: XTEA_KEY
+
+- XTEA encoder/decoder number of iterations
+	
+File		: xtea.asm 
+Identifier	: XTEA_ITERATIONS and DELTA_ITER
+
+The number of iterations defines level of security. The 16 iterations are
+quite enough for bootloader. Default value is 64 iterations.
+If you change number of iterations do not forget to change DELTA_ITER,
+that is precalculated value of DELTA*XTEA_ITERATIONS used by decoder 
+
+Example:
+        XTEA_ITERATIONS	equ     0x40            ; Number of iterations on x1,x2
+	DELTA_ITER      db      0x40,0x6e,0xde,0x8d     ; Delta*XTEA_ITERATIONS
+	
+
+Code Protection
+===============
+Following Configuration Registers settings are recomended to secure 
+FW from anauthorised access and protect bootloader section from undesired 
+changes by external or internall agent. This setting will allow proper 
+operation of bootloader but will not let any external access to FW.
+
+Config Register  Value  Description
+0x300006.bit7	1	
+			Background Debug 	    Disabled
+0x300008        0x08
+			Code Protect 0x0800-0x1FFF  Enabled
+			Code Protect 0x2000-0x3FFF  Enabled
+			Code Protect 0x4000-0x5FFF  Enabled
+0x300009	0x80
+			Data EE Read Protect        Disabled
+			Code Protect Boot	    Enabled
+0x30000A	0x0F
+			Table Write Protect 0x0800-0x1FFF  Disabled
+			Table Write Protect 0x2000-0x3FFF  Disabled
+			Table Write Protect 0x4000-0x5FFF  Disabled
+0x30000B	0x80
+			Data EE Write Protect       Disabled
+			Table Write Protect Boot    Enabled
+			Config Write Protect	    Enabled
+0x30000C	0x0F
+			Table Read  Protect 0x0800-0x1FFF  Disabled
+			Table Read  Protect 0x2000-0x3FFF  Disabled
+			Table Read  Protect 0x4000-0x5FFF  Disabled
+0x30000D	0x00
+			Table Read Protect Boot	    Enabled
+
+			
+Pinout Configuration
+====================
+
+Led Usage
+---------
+Led usage can be configured in io_cfg.inc (look for the macro "USE_LED").
+If led usage enabled bootloader will ligh on the led on it's start
+
+Bootloader Enable Jumper
+------------------------
+Bootloader jumper can be configured in io_cfg.inc (look for the macro
+"USE_JP_BOOTLOADER_EN"). Bootloader jumper is used to force FW to run
+in bootloader mode after reset (USB replug). This feature can be used if
+the application FW programming failed or application FW is not working 
+properly. 
+
+To redefine I/O pin connected to jumper redefine the following macro
+JP_BOOTLOADER_TRIS	TRIS register for port with jumper connected to
+JP_BOOTLOADER_PORT	PORT register for port with jumper connected to
+JP_BOOTLOADER_PIN	Bit number on the port with jumper connected to
+
+			
+EEPROM Mark
+===========
+EEPROM Mark is used to ensure correct failsafe application FW programming.
+
+Bootloader will do the following with EEPROM Mark:
+- Check EEPROM Mark. If Mark is set run bootloader (not application FW)
+- Set EEPROM Mark on bootloader start from external entry point or on
+first command received from Host
+- Clear EEPROM Mark on RESET command
+
+It means that while bootloader is running the EEPROM Mark is set. 
+If FW programming was aborted due to power down or any other reason except
+the RESET command from host, EEPROM Mark will stay set. Next time device
+is powered up it will run in bootloader mode because bootloader will 
+detect the Mark set. Only if host SW has successfully terminated FW uploading
+and issued RESET command, bootloader will clear EEPROM Mark and start FW 
+application. On next power up EEPROM Mark will be cleared.
+To configure EEPROM Mark look for USE_EEPROM_MARK in boot.inc file.
+ 
+External Entry Point
+--------------------
+If EEPROM Mark is enabled (USE_EEPROM_MARK != 0), FW application
+can use external entry point at address 0x0016 to force device enter
+the bootloader mode:  
+After
+    goto 0x0016 
+Following will happen:
+- Code at 0x0016 will branch to bootloader_soft_reset procedure
+- Bootloader will set EEPROM Mark
+- Bootloader will reset USB
+- Bootloader will perform reset instruction
+- Execution will continue from 0x0000 Reset vector 
+- Bootloader will detect EEPROM Makr set and will run in bootloader mode
+
+			
+										
+
+

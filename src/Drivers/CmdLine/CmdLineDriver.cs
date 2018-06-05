@@ -29,9 +29,8 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace Reko.CmdLine
 {
@@ -147,7 +146,7 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
 
-            pArgs.TryGetValue("--loader", out  object loader);
+            pArgs.TryGetValue("--loader", out object loader);
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
@@ -197,6 +196,7 @@ namespace Reko.CmdLine
                 {
                     LoaderName = (string)sLoader,
                     ArchitectureName = (string)pArgs["--arch"],
+                    ArchitectureOptions = null, //$TODO: How do we handle options for command line?
                     PlatformName = (string)sEnv,
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
@@ -394,8 +394,8 @@ namespace Reko.CmdLine
             w.WriteLine("    <filename> can be either an executable file or a project file.");
             w.WriteLine();
             w.WriteLine("Options:");
-            w.WriteLine(" --version                Show version number and exit");
-            w.WriteLine(" -h, --help               Show this message and exit");
+            w.WriteLine(" --version                Show version number and exit.");
+            w.WriteLine(" -h, --help               Show this message and exit.");
             w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file");
             w.WriteLine("                          name containing a loader script or the CLR type name");
             w.WriteLine("                          of the loader.");
@@ -405,11 +405,11 @@ namespace Reko.CmdLine
             w.WriteLine("                          option <name> to <value>.");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
             DumpEnvironments(config, w, "    {0,-25} {1}");
-            w.WriteLine(" --base <address>         Use <address> as the base address of the program");
+            w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
             w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");
             w.WriteLine("                          to one of the following formats:");
             DumpRawFiles(config, w, "    {0,-25} {1}");
-            w.WriteLine(" --entry <address>        Use <address> as an entry point to the program");
+            w.WriteLine(" --entry <address>        Use <address> as an entry point to the program.");
             w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
             w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
