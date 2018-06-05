@@ -142,8 +142,8 @@ namespace Reko.Core.Serialization
         // Avoid reflection by using the visitor pattern.
         class Deserializer : ISerializedProjectVisitor<Project>
         {
-            private ProjectLoader outer;
-            private string filename;
+            private readonly ProjectLoader outer;
+            private readonly string filename;
 
             public Deserializer(ProjectLoader outer, string filename)
             {
@@ -232,8 +232,9 @@ namespace Reko.Core.Serialization
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
-            var sUser = sInput.User;
+            var sUser = sInput.User ?? new UserData_v4();
             var address = LoadAddress(sUser, this.arch);
+            var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
             Program program;
             if (!string.IsNullOrEmpty(sUser.Loader))
             {
@@ -245,6 +246,7 @@ namespace Reko.Core.Serialization
                 {
                     LoaderName = sUser.Loader,
                     ArchitectureName = arch,
+                    ArchitectureOptions = archOptions,
                     PlatformName = platform,
                     LoadAddress = sUser.LoadAddress,
                 });
@@ -253,6 +255,7 @@ namespace Reko.Core.Serialization
             {
                 program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address);
             }
+            LoadUserData(sUser, program, program.User);
             program.Filename = binAbsPath;
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
@@ -260,7 +263,6 @@ namespace Reko.Core.Serialization
             program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
             program.EnsureFilenames(program.Filename);
-            LoadUserData(sUser, program, program.User);
             program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
