@@ -481,7 +481,7 @@ namespace Reko.Arch.Arm
         private void RewritePush()
         {
             var dst = Reg(Registers.sp);
-            throw new NotImplementedException();
+            throw new NotImplementedException(instr.ToString());
             /*
 	m.Assign(dst, m.ISub(dst, m.Int32(instr.detail.arm.op_count * 4)));
 

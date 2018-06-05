@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_addw()
         {
-            AssertCode("add\tr3,sp,A48", 0xF60D, 0x2348);
+            AssertCode("add\tr3,sp,#&A48", 0xF60D, 0x2348);
         }
     }
 }
