@@ -6123,9 +6123,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             RewriteCode("49F1FF37");	// adc r7, sb, #-1
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r7 = r9 + 0xFFFFFFFF + C",
-                "2|L--|NZCV = cond(r7)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = r9 + 0xFFFFFFFF + C");
         }
 
         [Test]

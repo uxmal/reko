@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_ldr_displacement()
         {
             var instr = Disassemble16(0x9801);
-            Assert.AreEqual("ldr\tr0,[sp,#4]", instr.ToString());
+            Assert.AreEqual("ldr\tr0,[sp,#&4]", instr.ToString());
         }
 
         [Test]
@@ -144,7 +144,13 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_add_sp_imm()
         {
-            AssertCode("add\tr0,sp,#80", 0xA820);
+            AssertCode("add\tr0,sp,#&80", 0xA820);
+        }
+
+        [Test]
+        public void ThumbDis_addw()
+        {
+            AssertCode("add\tr3,sp,A48", 0xF60D, 0x2348);
         }
     }
 }

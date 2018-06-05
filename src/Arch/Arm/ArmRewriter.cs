@@ -775,7 +775,7 @@ case ARM_OP_SYSREG:
                         }
                         return m.Mem(dt, ea);
                     }
-                    if (mop.Offset != null && !mop.Offset.IsZero && op == instr.op3)
+                    if (mop.Offset != null && !mop.Offset.IsZero)
                     {
                         var offset = mop.Offset;
                         ea = mop.Add
