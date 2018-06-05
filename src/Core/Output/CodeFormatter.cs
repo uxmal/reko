@@ -397,18 +397,18 @@ namespace Reko.Core.Output
 			writer.Write("]");
 		}
 
-		public void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.MemoryId.Accept(this);
-			writer.Write("[");
-			WriteExpression(access.BasePointer);
-			writer.Write(":");
-			WriteExpression(access.EffectiveAddress);
-			writer.Write(":");
-			Debug.Assert(access.DataType != null);
+        public void VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.MemoryId.Accept(this);
+            writer.Write("[");
+            WriteExpression(access.BasePointer);
+            writer.Write(":");
+            WriteExpression(access.EffectiveAddress);
+            writer.Write(":");
+            Debug.Assert(access.DataType != null);
             writer.Write(access.DataType.ToString());
-			writer.Write("]");
-		}
+            writer.Write("]");
+        }
 
         public void VisitOutArgument(OutArgument outArg)
         {

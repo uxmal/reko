@@ -264,7 +264,7 @@ namespace Reko.Core.Code
 			return new SegmentedAccess(memId, basePtr, ea, access.DataType);
 		}
 
-		public virtual Expression VisitScopeResolution(ScopeResolution scope)
+        public virtual Expression VisitScopeResolution(ScopeResolution scope)
 		{
 			return scope;
 		}

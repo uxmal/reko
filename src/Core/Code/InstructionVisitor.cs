@@ -253,14 +253,14 @@ namespace Reko.Core.Code
 			tc.Expression.Accept(this);
 		}
 
-		public virtual void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.MemoryId.Accept(this);
-			access.BasePointer.Accept(this);
-			access.EffectiveAddress.Accept(this);
-		}
+        public virtual void VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.MemoryId.Accept(this);
+            access.BasePointer.Accept(this);
+            access.EffectiveAddress.Accept(this);
+        }
 
-		public virtual void VisitScopeResolution(ScopeResolution scope)
+        public virtual void VisitScopeResolution(ScopeResolution scope)
 		{
 		}
 

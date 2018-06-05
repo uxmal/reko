@@ -1,0 +1,180 @@
+                                ORG 0x0
+000000    EF9D F000             GOTO _startup
+000004    0012                  RETURN
+
+                                ORG 0x8
+000008    EF7E F000             GOTO InterruptHandlerHigh
+00000C    0012                  RETURN
+
+                        _do_cinit:
+00000E    0E06                  MOVLW 0x06
+000010    6EF6                  MOVWF TBLPTRL, ACCESS
+000012    0E00                  MOVLW 0x00
+000014    6EF7                  MOVWF TBLPTRH, ACCESS
+000016    0E00                  MOVLW 0x00
+000018    6EF8                  MOVWF TBLPTRU, ACCESS
+00001A    0100                  MOVLB 0x00
+00001C    0009                  TBLRD *+
+00001E    50F5                  MOVF TABLAT, W, ACCESS
+000020    6FC5                  MOVWF curr_entry
+000022    0009                  TBLRD *+
+000024    50F5                  MOVF TABLAT, W, ACCESS
+000026    6FC6                  MOVWF curr_entry+1
+                        L000028:
+000028    E103                  BNZ L000030
+00002A    67C5                  TSTFSZ curr_entry
+00002C    D001                  BRA L000030
+00002E    D03D                  BRA L0000aa
+                        L000030:
+000030    0009                  TBLRD *+
+000032    50F5                  MOVF TABLAT, W, ACCESS
+000034    6FC0                  MOVWF prom
+000036    0009                  TBLRD *+
+000038    50F5                  MOVF TABLAT, W, ACCESS
+00003A    6FC1                  MOVWF prom+1
+00003C    0009                  TBLRD *+
+00003E    50F5                  MOVF TABLAT, W, ACCESS
+000040    6FC2                  MOVWF prom+2
+000042    0009                  TBLRD *+
+000044    0009                  TBLRD *+
+000046    50F5                  MOVF TABLAT, W, ACCESS
+000048    6EE9                  MOVWF FSR0L, ACCESS
+00004A    0009                  TBLRD *+
+00004C    50F5                  MOVF TABLAT, W, ACCESS
+00004E    6EEA                  MOVWF FSR0H, ACCESS
+000050    0009                  TBLRD *+
+000052    0009                  TBLRD *+
+000054    0009                  TBLRD *+
+000056    50F5                  MOVF TABLAT, W, ACCESS
+000058    6FC3                  MOVWF curr_byte
+00005A    0009                  TBLRD *+
+00005C    50F5                  MOVF TABLAT, W, ACCESS
+00005E    6FC4                  MOVWF curr_byte+1, BANKED
+000060    0009                  TBLRD *+
+000062    0009                  TBLRD *+
+000064    CFF6 F0C7             MOVFF TBLPTRL, data_ptr
+000068    CFF7 F0C8             MOVFF TBLPTRH, data_ptr+1
+00006C    CFF8 F0C9             MOVFF TBLPTRU, data_ptr+2
+000070    C0C0 FFF6             MOVFF prom, TBLPTRL
+000074    C0C1 FFF7             MOVFF prom+1, TBLPTRH
+000078    C0C2 FFF8             MOVFF prom+2, TBLPTRU
+00007C    0100                  MOVLB 0x00
+00007E    53C3                  MOVF curr_byte
+                        L000080:
+000080    E102                  BNZ L000086
+000082    53C4                  MOVF curr_byte+1
+000084    E007                  BZ L000094
+                        L000086:
+000086    0009                  TBLRD *+
+000088    50F5                  MOVF TABLAT, W, ACCESS
+00008A    6EEE                  MOVWF POSTINC0, ACCESS
+00008C    07C3                  DECF curr_byte
+00008E    E2F8                  BC L000080
+000090    07C4                  DECF curr_byte+1
+000092    D7F9                  BRA L000086
+                        L000094:
+000094    C0C7 FFF6             MOVFF data_ptr, TBLPTRL
+000098    C0C8 FFF7             MOVFF data_ptr+1, TBLPTRH
+00009C    C0C9 FFF8             MOVFF data_ptr+2, TBLPTRU
+0000A0    0100                  MOVLB 0x00
+0000A2    07C5                  DECF curr_entry
+0000A4    0E00                  MOVLW 0x00
+0000A6    5BC6                  SUBWFB curr_entry+1
+0000A8    D7BF                  BRA L000028
+                        L0000aa:
+0000AA    0012                  RETURN
+
+                        main:
+0000AC    0100                  MOVLB 0x00
+0000AE    6BCA                  CLRF Flags
+0000B0    0E20                  MOVLW 0x20
+0000B2    6EF2                  MOVWF INTCON, ACCESS
+0000B4    0E84                  MOVLW 0x84
+0000B6    6EF1                  MOVWF INTCON2, ACCESS
+0000B8    8ED0                  BSF RCON, 7, ACCESS
+0000BA    6AD7                  CLRF TMR0H, ACCESS
+0000BC    6AD6                  CLRF TMR0L, ACCESS
+0000BE    0E82                  MOVLW 0x82
+0000C0    6ED5                  MOVWF T0CON, ACCESS
+0000C2    8EF2                  BSF INTCON, 7, ACCESS
+0000C4    6A93                  CLRF TRISB, ACCESS
+0000C6    0E01                  MOVLW 0x01
+0000C8    6EE6                  MOVWF POSTINC1, ACCESS
+0000CA    D802                  RCALL doloop
+0000CC    E941                  SUBFSR FSR1, 0x01
+0000CE    0012                  RETURN
+
+                        doloop:
+0000D0    CFD9 FFE6             MOVFF FSR2L, POSTINC1
+0000D4    CFE1 FFD9             MOVFF FSR1L, FSR2L
+0000D8    E982                  SUBFSR FSR2, 0x02
+                        L0000da:
+0000DA    5000                  MOVF [0x00], W
+0000DC    E00B                  BZ L0000f4
+0000DE    0100                  MOVLB 0x00
+0000E0    A1CA                  BTFSS Flags
+0000E2    D007                  BRA L0000f2
+0000E4    91CA                  BCF Flags, 0
+0000E6    508A                  MOVF LATB, W, ACCESS
+0000E8    0B01                  ANDLW 0x01
+0000EA    E002                  BZ L0000f0
+0000EC    8E8A                  BSF LATB, 7, ACCESS
+0000EE    D001                  BRA L0000f2
+                        L0000f0:
+0000F0    9E8A                  BCF LATB, 7, ACCESS
+                        L0000f2:
+0000F2    D7F3                  BRA L0000da
+                        L0000f4:
+0000F4    E941                  SUBFSR FSR1, 0x01
+0000F6    CFE7 FFD9             MOVFF INDF1, FSR2L
+0000FA    0012                  RETURN
+
+                        InterruptHandlerHigh:
+0000FC    CFDA FFE4             MOVFF FSR2H, PREINC1
+000100    CFE2 FFDA             MOVFF FSR1H, FSR2H
+000104    52E6                  MOVF POSTINC1, ACCESS
+000106    A4F2                  BTFSS INTCON, 2, ACCESS
+000108    D004                  BRA L000112
+00010A    94F2                  BCF INTCON, 2, ACCESS
+00010C    0100                  MOVLB 0x00
+00010E    81CA                  BSF Flags, 0
+000110    708A                  BTG LATB, 0, ACCESS
+                        L000112:
+000112    52E5                  MOVF POSTDEC1, F, ACCESS
+000114    CFE5 FFDA             MOVFF POSTDEC1, FSR2H
+000118    0011                  RETFIE S
+
+                        __zero_memory:
+00011A    0E00                  MOVLW 0x00
+00011C    6EF3                  MOVWF PRODL, ACCESS
+00011E    EE00 F000             LFSR FSR0, 0x0000
+000122    0E01                  MOVLW 0x01
+000124    D801                  RCALL zero_block
+000126    0012                  RETURN
+
+                        zero_block:
+000128    60EA                  CPFSLT FSR0H, ACCESS
+00012A    D002                  BRA compare_l
+00012C    6AEE                  CLRF POSTINC0, ACCESS
+00012E    D7FC                  BRA zero_block
+                        compare_l:
+000130    50F3                  MOVF PRODL, W, ACCESS
+                        loop_l:
+000132    60E9                  CPFSLT FSR0L, ACCESS
+000134    0012                  RETURN
+
+000136    6AEE                  CLRF POSTINC0, ACCESS
+000138    D7FC                  BRA loop_l
+                        _startup:
+00013A    EE10 F080             LFSR FSR1, 0x0080
+00013E    EE20 F080             LFSR FSR2, 0x0080
+000142    6AF8                  CLRF TBLPTRU, ACCESS
+000144    EC07 F000             CALL _do_cinit
+                        L000148:
+000148    ECAA F000             CALL __init
+00014C    EC56 F000             CALL main
+000150    D7FB                  BRA L0000148
+000152    0012                  RETURN
+
+                        _init:
+000154    0012                  RETURN

@@ -14,6 +14,8 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(Configuration)\Reko.Arch.i8051.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(Configuration)\Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.Microchip.*" />
+    <Architectures Include="$(SolutionDir)Arch\Microchip.Design\bin\$(Configuration)\Reko.Arch.Microchip.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\bin\$(Configuration)\Reko.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(Configuration)\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(Configuration)\Reko.Arch.Pdp11.*" />
@@ -59,6 +61,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
 
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
 
@@ -103,6 +106,7 @@ by the PreBuild.targets file.
 
     <Libraries Include="$(SolutionDir)Libraries\Libc\bin\$(Configuration)\Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\bin\$(Configuration)\Reko.Libraries.Python.*" />
+    <Libraries Include="$(SolutionDir)Libraries\Microchip\Utils\bin\$(Configuration)\Reko.Libraries.Microchip.Utils.*" />
 
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>

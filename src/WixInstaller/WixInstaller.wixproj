@@ -73,6 +73,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
+      <Name>MicrochipPIC.Design</Name>
+      <Project>{e75c3be2-0f98-48cd-943d-198159b57dc7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
+      <Name>MicrochipPIC</Name>
+      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Name>Mips</Name>
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
@@ -460,6 +476,14 @@
     <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
       <Name>Libc</Name>
       <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Name>Microchip.Utils</Name>
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

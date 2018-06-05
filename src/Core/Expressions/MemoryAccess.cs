@@ -103,15 +103,15 @@ namespace Reko.Core.Expressions
         }
     }
 
-	/// <summary>
-	/// Segmented memory access that models x86 segmented memory addressing.
-	/// </summary>
-	public class SegmentedAccess : MemoryAccess
-	{
-		public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
-		{
-			this.BasePointer = basePtr;
-		}
+    /// <summary>
+    /// Segmented memory access that models x86 segmented memory addressing.
+    /// </summary>
+    public class SegmentedAccess : MemoryAccess
+    {
+        public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
+        {
+            this.BasePointer = basePtr;
+        }
 
         public readonly Expression BasePointer;         // Segment selector
 
@@ -125,19 +125,20 @@ namespace Reko.Core.Expressions
             return visit.VisitSegmentedAccess(this);
         }
 
-		public override void Accept(IExpressionVisitor visit)
-		{
-			visit.VisitSegmentedAccess(this);
-		}
+        public override void Accept(IExpressionVisitor visit)
+        {
+            visit.VisitSegmentedAccess(this);
+        }
 
-		public override Expression CloneExpression()
-		{
-			return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
-		}
+        public override Expression CloneExpression()
+        {
+            return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
+        }
 
         public static SegmentedAccess Create(Expression segRegister, Expression baseRegister, int offset, DataType dt)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, segRegister, CreateEffectiveAddress(baseRegister, offset), dt);
         }
-	}
+    }
+
 }

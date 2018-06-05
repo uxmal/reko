@@ -152,6 +152,14 @@
     <ProjectReference Include="..\..\Libraries\Python\Python.csproj">
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Name>Python</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Name>Microchip.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
       <Name>Dol</Name>
       <Name>Python</Name>
     </ProjectReference>
