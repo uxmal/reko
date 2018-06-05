@@ -40,7 +40,7 @@ SCZO_12: orig: SCZO
     def:  SCZO_12 = cond(bl_9 - 0x02)
     uses: SZO_13 = SCZO_12 (alias)
           CZ_14 = SCZO_12 (alias)
-          C_15 = SCZO_12 (alias)
+          C_15 = (bool) SCZO_12 (alias)
           SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
 SZO_13: orig: SZO
     def:  SZO_13 = SCZO_12 (alias)
@@ -50,7 +50,7 @@ CZ_14: orig: CZ
     uses: branch Test(UGT,CZ_14) l0C00_0023
           CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
 C_15: orig: C
-    def:  C_15 = SCZO_12 (alias)
+    def:  C_15 = (bool) SCZO_12 (alias)
     uses: C_22 = PHI(C_15, C_34, C_34, C_34)
 bx_16: orig: bx
     def:  bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
@@ -102,7 +102,7 @@ SCZO_31: orig: SCZO
     def:  SCZO_31 = cond(bx_28)
     uses: SZO_32 = SCZO_31 (alias)
           CZ_33 = SCZO_31 (alias)
-          C_34 = SCZO_31 (alias)
+          C_34 = (bool) SCZO_31 (alias)
           SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
           SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
           SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
@@ -117,7 +117,7 @@ CZ_33: orig: CZ
           CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
           CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
 C_34: orig: C
-    def:  C_34 = SCZO_31 (alias)
+    def:  C_34 = (bool) SCZO_31 (alias)
     uses: C_22 = PHI(C_15, C_34, C_34, C_34)
           C_22 = PHI(C_15, C_34, C_34, C_34)
           C_22 = PHI(C_15, C_34, C_34, C_34)
@@ -158,7 +158,7 @@ l0C00_0000:
 	SCZO_12 = cond(bl_9 - 0x02)
 	SZO_13 = SCZO_12 (alias)
 	CZ_14 = SCZO_12 (alias)
-	C_15 = SCZO_12 (alias)
+	C_15 = (bool) SCZO_12 (alias)
 	branch Test(UGT,CZ_14) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
@@ -172,7 +172,7 @@ l0C00_0009:
 	SCZO_31 = cond(bx_28)
 	SZO_32 = SCZO_31 (alias)
 	CZ_33 = SCZO_31 (alias)
-	C_34 = SCZO_31 (alias)
+	C_34 = (bool) SCZO_31 (alias)
 	switch (bl_29) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:

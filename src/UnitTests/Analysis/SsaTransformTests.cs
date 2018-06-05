@@ -486,7 +486,7 @@ l1:
 	SZ_1 = cond(esi)
 	C_2 = false
 	CZ_3 = false (alias)
-	al_4 = Test(ULE,false)
+	al_4 = Test(ULE,CZ_3)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

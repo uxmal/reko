@@ -76,8 +76,7 @@ namespace Reko.Typing
 
         private void BindActualTypesToFormalTypes(Application appl)
         {
-            ProcedureConstant pc = appl.Procedure as ProcedureConstant;
-            if (pc == null)
+            if (!(appl.Procedure is ProcedureConstant pc))
                 throw new NotImplementedException("Indirect call.");
             if (pc.Procedure.Signature == null)
                 return;
@@ -129,44 +128,39 @@ namespace Reko.Typing
 
         private DataType MakeNonPointer(DataType dataType)
         {
-            PrimitiveType p = dataType as PrimitiveType;
-            if (p == null)
+            if (!(dataType is PrimitiveType p))
                 return null;
             return p.MaskDomain(~Domain.Pointer);
         }
 
         private DataType MakeIntegral(DataType dataType)
         {
-            var p = dataType as PrimitiveType;
-            if (p == null)
+            if (!(dataType is PrimitiveType p))
                 return null;
             return p.MaskDomain(Domain.Integer);
         }
 
 		public PrimitiveType MakeNotSigned(DataType t)
 		{
-			PrimitiveType p = t as PrimitiveType;
-			if (p == null)
-				return null;
+            if (!(t is PrimitiveType p))
+                return null;
             return p.MaskDomain(~(Domain.SignedInt | Domain.Real));
 		}
 
 		public PrimitiveType MakeSigned(DataType t)
 		{
-			PrimitiveType p = t as PrimitiveType;
-			if (p == null)
-				return null;
-			return p.MaskDomain(Domain.SignedInt);
+            if (!(t is PrimitiveType p))
+                return null;
+            return p.MaskDomain(Domain.SignedInt);
 		}
 
 		public PrimitiveType MakeUnsigned(DataType t)
 		{
-			PrimitiveType p = t as PrimitiveType;
-			if (p != null)
-				return PrimitiveType.Create(Domain.UnsignedInt, p.Size);
-			else
-				return null;
-		}
+            if (t is PrimitiveType p)
+                return PrimitiveType.Create(Domain.UnsignedInt, p.BitSize);
+            else
+                return null;
+        }
 
 		public LinearInductionVariable MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant c)
 		{
@@ -285,17 +279,15 @@ namespace Reko.Typing
 		{
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
-			BinaryExpression b = acc.Index as BinaryExpression;
-			if (b != null && (b.Operator == Operator.IMul || b.Operator == Operator.SMul || b.Operator == Operator.UMul))
-			{
-				Constant c = b.Right as Constant;
-				if (c != null)
-				{
-					atrco.CollectArray(null, acc, acc.Array, c.ToInt32(), 0);
-					return handler.DataTypeTrait(acc, acc.DataType);
-				}
-			}
-			atrco.CollectArray(null, acc, acc.Array, 1, 0);
+            if (acc.Index is BinaryExpression b && (b.Operator == Operator.IMul || b.Operator == Operator.SMul || b.Operator == Operator.UMul))
+            {
+                if (b.Right is Constant c)
+                {
+                    atrco.CollectArray(null, acc, acc.Array, c.ToInt32(), 0);
+                    return handler.DataTypeTrait(acc, acc.DataType);
+                }
+            }
+            atrco.CollectArray(null, acc, acc.Array, 1, 0);
 			CollectEffectiveAddress(acc, acc.Array);
             return handler.DataTypeTrait(acc, acc.DataType);
 		}
@@ -353,8 +345,8 @@ namespace Reko.Typing
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
-				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.Size));
-				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
+				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.BitSize));
+				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.BitSize));
                 return dt;
 			}
 			else if (binExp.Operator == Operator.UMul ||
@@ -412,8 +404,8 @@ namespace Reko.Typing
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
-				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(Domain.Real, binExp.Left.DataType.Size));
-				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.Size));
+				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(Domain.Real, binExp.Left.DataType.BitSize));
+				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.BitSize));
                 return dt;
 			}
 			else if (binExp.Operator == Operator.Uge ||
@@ -432,7 +424,7 @@ namespace Reko.Typing
                 binExp.Operator == Operator.FMul ||
                 binExp.Operator == Operator.FDiv)
             {
-                var dt = PrimitiveType.Create(Domain.Real, binExp.DataType.Size);
+                var dt = PrimitiveType.Create(Domain.Real, binExp.DataType.BitSize);
                 handler.DataTypeTrait(binExp, dt);
 				handler.DataTypeTrait(binExp.Left, dt);
 				handler.DataTypeTrait(binExp.Right, dt);
@@ -595,16 +587,15 @@ namespace Reko.Typing
 			} 
 			else
 			{
-				var ppp = pc.Procedure as PseudoProcedure;
-				if (ppp != null)
-				{
-					argTypes = new DataType[ppp.Arity];
-					for (int i = 0; i < argTypes.Length; ++i)
-					{
-						argTypes[i] = factory.CreateUnknown();
-					}
-				}
-			}
+                if (pc.Procedure is PseudoProcedure ppp)
+                {
+                    argTypes = new DataType[ppp.Arity];
+                    for (int i = 0; i < argTypes.Length; ++i)
+                    {
+                        argTypes[i] = factory.CreateUnknown();
+                    }
+                }
+            }
             return sig != null && !sig.HasVoidReturn ? sig.ReturnValue.DataType : null;
 		}
 

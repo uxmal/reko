@@ -41,6 +41,8 @@
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ddlRawFileTypes = new System.Windows.Forms.ComboBox();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -59,13 +61,13 @@
             this.textBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.textBox1.Location = new System.Drawing.Point(8, 29);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(352, 20);
+            this.textBox1.Size = new System.Drawing.Size(530, 20);
             this.textBox1.TabIndex = 1;
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(366, 28);
+            this.btnBrowse.Location = new System.Drawing.Point(544, 27);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(24, 23);
             this.btnBrowse.TabIndex = 2;
@@ -75,7 +77,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 145);
+            this.label2.Location = new System.Drawing.Point(8, 154);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 13);
             this.label2.TabIndex = 3;
@@ -84,7 +86,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 97);
+            this.label3.Location = new System.Drawing.Point(8, 114);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(118, 13);
             this.label3.TabIndex = 6;
@@ -92,31 +94,27 @@
             // 
             // ddlEnvironments
             // 
-            this.ddlEnvironments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.ddlEnvironments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlEnvironments.FormattingEnabled = true;
-            this.ddlEnvironments.Location = new System.Drawing.Point(8, 113);
+            this.ddlEnvironments.Location = new System.Drawing.Point(8, 130);
             this.ddlEnvironments.Name = "ddlEnvironments";
-            this.ddlEnvironments.Size = new System.Drawing.Size(382, 21);
+            this.ddlEnvironments.Size = new System.Drawing.Size(284, 21);
             this.ddlEnvironments.TabIndex = 3;
             // 
             // ddlArchitectures
             // 
-            this.ddlArchitectures.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.ddlArchitectures.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlArchitectures.FormattingEnabled = true;
-            this.ddlArchitectures.Location = new System.Drawing.Point(8, 161);
+            this.ddlArchitectures.Location = new System.Drawing.Point(8, 170);
             this.ddlArchitectures.Name = "ddlArchitectures";
-            this.ddlArchitectures.Size = new System.Drawing.Size(382, 21);
+            this.ddlArchitectures.Size = new System.Drawing.Size(284, 21);
             this.ddlArchitectures.TabIndex = 5;
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(234, 296);
+            this.btnOk.Location = new System.Drawing.Point(412, 285);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 7;
@@ -127,7 +125,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(315, 296);
+            this.btnCancel.Location = new System.Drawing.Point(493, 285);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
@@ -137,7 +135,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 190);
+            this.label4.Location = new System.Drawing.Point(8, 194);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 13);
             this.label4.TabIndex = 9;
@@ -145,7 +143,7 @@
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(8, 206);
+            this.txtAddress.Location = new System.Drawing.Point(8, 210);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(166, 20);
             this.txtAddress.TabIndex = 10;
@@ -153,7 +151,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 56);
+            this.label5.Location = new System.Drawing.Point(8, 73);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 11;
@@ -163,10 +161,31 @@
             // 
             this.ddlRawFileTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlRawFileTypes.FormattingEnabled = true;
-            this.ddlRawFileTypes.Location = new System.Drawing.Point(8, 73);
+            this.ddlRawFileTypes.Location = new System.Drawing.Point(8, 90);
             this.ddlRawFileTypes.Name = "ddlRawFileTypes";
-            this.ddlRawFileTypes.Size = new System.Drawing.Size(382, 21);
+            this.ddlRawFileTypes.Size = new System.Drawing.Size(283, 21);
             this.ddlRawFileTypes.TabIndex = 12;
+            // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.propertyGrid.Location = new System.Drawing.Point(314, 89);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.propertyGrid.Size = new System.Drawing.Size(253, 181);
+            this.propertyGrid.TabIndex = 13;
+            this.propertyGrid.ToolbarVisible = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(311, 72);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(46, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Op&tions:";
             // 
             // OpenAsDialog
             // 
@@ -174,7 +193,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(402, 330);
+            this.ClientSize = new System.Drawing.Size(580, 319);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.propertyGrid);
             this.Controls.Add(this.ddlRawFileTypes);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAddress);
@@ -216,5 +237,7 @@
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox ddlRawFileTypes;
+        private System.Windows.Forms.PropertyGrid propertyGrid;
+        private System.Windows.Forms.Label label6;
     }
 }

@@ -204,7 +204,7 @@ namespace Reko.Analysis
 		public void ProcessBlock(BlockFlow item)
 		{
             bool t = trace.TraceInfo;
-			if (t)
+            if (t)
 			{
 				Debug.Write(item.Block.Procedure.Name + ", ");
 				DumpBlock(item.Block);
@@ -434,6 +434,17 @@ namespace Reko.Analysis
             {
                 VisitCopy(a.Dst, idSrc);
             }
+            else if (a.Src is ConditionOf cof)
+            {
+                bool dstIsLive = isLiveHelper.IsLive(a.Dst, varLive);
+                Def(a.Dst);
+                if (dstIsLive)
+                {
+                    bitUseOffset = 0;
+                    cbitsUse = cof.Expression.DataType.BitSize;
+                    cof.Accept(this);
+                }
+            }
             else
             {
                 VisitAssignmentInner(a.Dst, a.Src);
@@ -578,7 +589,16 @@ namespace Reko.Analysis
 			base.VisitConditionOf (cof);
 		}
 
-		public override void VisitIdentifier(Identifier id)
+        public override void VisitDepositBits(DepositBits d)
+        {
+            // Only use the inserted bits; the source bits are 
+            // not strictly used by a DPB instruction.
+            bitUseOffset = 0;
+            cbitsUse = 0;
+            d.InsertedBits.Accept(this);
+        }
+
+        public override void VisitIdentifier(Identifier id)
 		{
 			Use(id);
 		}
@@ -611,7 +631,7 @@ namespace Reko.Analysis
 		}
 
 
-		#endregion // Visitor Methods //////////////////////////////////////
+        #endregion // Visitor Methods //////////////////////////////////////
 
         public State CurrentState
         {

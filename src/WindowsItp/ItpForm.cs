@@ -44,6 +44,7 @@ namespace Reko.WindowsItp
     public partial class ItpForm : Form
     {
         private ProcedurePropertiesDialog procDlg;
+        private Form propOptionsDlg;
 
         public ItpForm()
         {
@@ -176,17 +177,17 @@ namespace Reko.WindowsItp
             var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\demo.exe", FileMode.Open);
             var size = fs.Length;
             var abImage = new byte[size];
-            fs.Read(abImage, 0, (int) size);
+            fs.Read(abImage, 0, (int)size);
             var exe = new ExeImageLoader(sc, "foolexe", abImage);
-            var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); 
+            var peLdr = new PeImageLoader(sc, "foo.exe", abImage, exe.e_lfanew);
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(program, addr);
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
+            var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
-            emu.WriteRegister(Registers.esp, (uint) peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
+            emu.WriteRegister(Registers.esp, (uint)peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
             emu.Start();
         }
 
@@ -279,22 +280,14 @@ namespace Reko.WindowsItp
             dlg.ShowDialog(this);
         }
 
-        private void visualizerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void propertyOptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new Form();
-            var vis = new VisualizerControl();
-            var buf = new byte[30000];
-            new Random().NextBytes(buf);
-            var mem = new MemoryArea(Address.Ptr32(0x00123400), buf);
-            var program = new Reko.Core.Program
+            if (this.propOptionsDlg == null)
             {
-                SegmentMap = new SegmentMap(mem.BaseAddress, new ImageSegment("text", mem, AccessMode.ReadExecute))
-            };
-            vis.Program = program; 
-            vis.Visualizer = new HeatmapVisualizer();
-            vis.Dock = DockStyle.Fill;
-            form.Controls.Add(vis);
-            form.ShowDialog(this);
+                this.propOptionsDlg = new ProcedureOptionsDialog();
+                this.propOptionsDlg.FormClosed += delegate { this.procDlg = null; };
+            }
+            this.propOptionsDlg.Show();
         }
     }
 }

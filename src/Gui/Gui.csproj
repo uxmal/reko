@@ -123,6 +123,7 @@
     <Compile Include="Controls\IListBox.cs" />
     <Compile Include="Controls\IListView.cs" />
     <Compile Include="Controls\INumericUpDownWrapper.cs" />
+    <Compile Include="Controls\IPropertyGrid.cs" />
     <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Controls\KeyEventArgs.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="ProcedureNavigator.cs" />
     <Compile Include="ProcedureSearchResult.cs" />
     <Compile Include="ProjectBrowserService.cs" />
+    <Compile Include="PropertyOptionsGridAdapter.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -272,7 +274,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cmdids.xslt" />
+    <Content Include="cmdids.xslt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="decompiler-menus.xml">
       <SubType>Designer</SubType>
     </Content>

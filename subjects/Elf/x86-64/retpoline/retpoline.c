@@ -14,8 +14,8 @@ void _init()
 		byte SCZO_16;
 		word64 rax_17;
 		byte SZO_18;
-		byte C_19;
-		byte Z_20;
+		bool C_19;
+		bool Z_20;
 		__gmon_start__();
 	}
 }
@@ -39,9 +39,9 @@ void deregister_tm_clones(word64 r8)
 	word64 rax_42;
 	word64 r8_43;
 	byte SCZO_44;
-	byte Z_45;
+	bool Z_45;
 	byte SZO_46;
-	byte C_47;
+	bool C_47;
 	word32 edi_48;
 	word64 rdi_49;
 	null();
@@ -57,9 +57,9 @@ void register_tm_clones()
 	word64 rbp_42;
 	byte SCZO_43;
 	word64 rax_44;
-	byte Z_45;
+	bool Z_45;
 	byte SZO_46;
-	byte C_47;
+	bool C_47;
 	word64 rdi_48;
 	null();
 }
@@ -141,8 +141,8 @@ void __libc_csu_init(word32 edi)
 			word64 rdx_82;
 			byte SCZO_83;
 			byte SZO_84;
-			byte C_85;
-			byte Z_86;
+			bool C_85;
+			bool Z_86;
 			word32 ebx_87;
 			word64 rdi_88;
 			globals->ptr600E10();

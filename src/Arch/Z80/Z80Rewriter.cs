@@ -269,7 +269,7 @@ namespace Reko.Arch.Z80
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup(Registers.f,(uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(arch.GetFlagGroup((uint) flags));
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -309,18 +309,17 @@ namespace Reko.Arch.Z80
         private void RewriteCall(Z80Instruction instr)
         {
             rtlc = RtlClass.Transfer | RtlClass.Call;
-            var cOp = instr.Op1 as ConditionOperand;
-            if (cOp != null)
+            if (instr.Op1 is ConditionOperand cOp)
             {
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(cOp, true),
                     instr.Address + instr.Length,
                     RtlClass.ConditionalTransfer);
-                m.Call(((AddressOperand) instr.Op2).Address, 2);
+                m.Call(((AddressOperand)instr.Op2).Address, 2);
             }
             else
             {
-                m.Call(((AddressOperand) instr.Op1).Address, 2);
+                m.Call(((AddressOperand)instr.Op1).Address, 2);
             }
         }
 
@@ -445,24 +444,18 @@ namespace Reko.Arch.Z80
         private void RewriteJp(Z80Instruction instr)
         {
             rtlc = RtlClass.Transfer;
-            var cOp = instr.Op1 as ConditionOperand;
-            if (cOp != null)
+            switch (instr.Op1)
             {
-                EmitBranch(cOp, ((AddressOperand) instr.Op2).Address);
-            }
-            else
-            {
-                var target = instr.Op1 as AddressOperand;
-                if (target != null)
-                {
-                    rtlc = RtlClass.Transfer;
-                    m.Goto(target.Address);
-                }
-                var mTarget = instr.Op1 as MemoryOperand;
-                if(mTarget != null)
-                {
-                    m.Goto(binder.EnsureRegister(mTarget.Base));
-                }
+            case ConditionOperand cOp:
+                EmitBranch(cOp, ((AddressOperand)instr.Op2).Address);
+                break;
+            case AddressOperand target:
+                rtlc = RtlClass.Transfer;
+                m.Goto(target.Address);
+                break;
+            case MemoryOperand mTarget:
+                m.Goto(binder.EnsureRegister(mTarget.Base));
+                break;
             }
         }
 

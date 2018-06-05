@@ -80,7 +80,7 @@ namespace Reko.Arch.PowerPC
                 host.PseudoProcedure("__read_spr", PrimitiveType.Word32, spr));
         }
 
-        private void RewriteMtmsr()
+        private void RewriteMtmsr(PrimitiveType dt)
         {
             var src = RewriteOperand(instr.op1);
             m.SideEffect(host.PseudoProcedure("__write_msr", VoidType.Instance, src));

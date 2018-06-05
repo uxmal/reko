@@ -29,11 +29,11 @@ using System.Drawing;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class ListboxWrapper : IListBox
+    public class ListboxWrapper : ControlWrapper, IListBox
     {
         private ListBox lbx;
 
-        public ListboxWrapper(ListBox lbx)
+        public ListboxWrapper(ListBox lbx) : base(lbx)
         {
             this.lbx = lbx;
         }

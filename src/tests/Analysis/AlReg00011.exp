@@ -68,7 +68,7 @@ l0C00_000C:
 	bh = SLICE(bx, byte, 8) (alias)
 	bl = (byte) bx (alias)
 	SZO = cond(bx)
-	S = SZO (alias)
+	S = (bool) SZO (alias)
 	branch Test(NS,S) l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:

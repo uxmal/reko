@@ -39,7 +39,7 @@ namespace Reko.Arch.Sparc
         public SparcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
         {
             this.WordWidth = wordWidth;
-            this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
             this.InstructionBitSize = 32;
@@ -181,7 +181,8 @@ namespace Reko.Arch.Sparc
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            var sp = binder.EnsureRegister(Registers.sp);
+            return MemoryAccess.Create(sp, cbOffset, dataType);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

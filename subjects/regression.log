@@ -23,7 +23,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0505: error: An error occurred while processing instruction at address 0505.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -31,7 +31,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0515: error: An error occurred while processing instruction at address 0515.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -39,7 +39,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 051A: error: An error occurred while processing instruction at address 051A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -47,7 +47,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 051D: error: An error occurred while processing instruction at address 051D.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -55,7 +55,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0928: error: An error occurred while processing instruction at address 0928.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -63,7 +63,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 092C: error: An error occurred while processing instruction at address 092C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -71,7 +71,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 092C: error: An error occurred while processing instruction at address 092C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -79,7 +79,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0959: error: An error occurred while processing instruction at address 0959.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -87,7 +87,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0968: error: An error occurred while processing instruction at address 0968.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -95,7 +95,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 098C: error: An error occurred while processing instruction at address 098C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -103,7 +103,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1691: error: An error occurred while processing instruction at address 1691.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -111,7 +111,7 @@
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 fn092A: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -239,7 +239,7 @@ fn092A: error: An error occurred during data flow analysis.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 159
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 : error: Error when reconstructing types.
     Parameter count must match.
        at Reko.Typing.EquivalenceClassBuilder.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 138
@@ -337,7 +337,7 @@ client_read_reply: error: An error occurred during data flow analysis.
    at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 494
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
    at Reko.Evaluation.ExpressionSimplifier.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 456
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 92
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
    at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
@@ -393,9 +393,7 @@ fn0000000000016864: error: An error occurred during data flow analysis.
 00016AD8: warning: Unable to resolve imported reference vfork.
 00016AA8: warning: Unable to resolve imported reference sleep.
 00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016B90: error: The method or operation is not implemented.
 00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00012ED8: error: The method or operation is not implemented.
 00016C30: warning: Unable to resolve imported reference wait.
 00013154: warning: Unable to resolve imported reference stat.
 000131A0: warning: Unable to resolve imported reference stat.
@@ -419,41 +417,9 @@ fn0000000000016864: error: An error occurred during data flow analysis.
 00012350: warning: Unable to resolve imported reference stat.
 00027DDC: warning: Unable to resolve imported reference link.
 00027D40: warning: Unable to resolve imported reference stat.
-00011B80: error: An error occurred while processing the statement branch strcmp(l2_43 - strlen(Mem0[l0_25 + 0x00000000:word32]), Mem0[l0_25 + 0x00000000:word32]) != 0x00000000 l00011B64_ds_t.
-    Pulling difference ptr32 and size_t
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 64
-   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000122C0: error: An error occurred while processing the statement branch o3_129 - l1_122 <=u 0x00000000 l000122B8_ds_t.
     Pulling difference uint32 and (ptr (struct 0001 (0 byte b0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-0001618C: error: An error occurred while processing the statement branch l0_1003 - strlen(Mem26[l1_1018 + 0x00000000:word32]) == 0x00000000 l00016178_ds_t.
-    Pulling difference ptr32 and size_t
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-000166A0: error: An error occurred while processing the statement branch l0_570 - strlen(Mem351[i3_363 + 0x00000000:word32]) == 0x00000000 l0001668C_ds_t.
-    Pulling difference ptr32 and size_t
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
@@ -489,7 +455,7 @@ Parameter name: index
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 000000000040A628: error: An error occurred while processing instruction at address 000000000040A628.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -497,7 +463,7 @@ Parameter name: index
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 fn00000000004061B0: error: An error occurred during data flow analysis.
     Offset must be non-negative.
 Parameter name: bitOffset
@@ -533,13 +499,13 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn000000000040BD70: error: An error occurred during data flow analysis.
     Case PE not handled.
-       at Reko.Analysis.ConditionCodeEliminator.ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, Boolean isNegated) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 452
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 181
-   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 411
+       at Reko.Analysis.ConditionCodeEliminator.ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, Boolean isNegated) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 450
+   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 189
+   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 410
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 193
+   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 201
    at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.ConditionCodeEliminator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 88
+   at Reko.Analysis.ConditionCodeEliminator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 93
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
 fn000000000040D450: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
@@ -562,8 +528,8 @@ Parameter name: bitOffset
    at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-000000000040401D: error: An error occurred while processing the statement word64 rax_1651 = Mem1649[rax_1628 - 0x0000000000000008 + 0x0000000000000000:word64].
-    Not handling (ptr (struct (0 T_2930 t0000))) and (union (int64 u0) (ptr64 u1)) yet
+000000000040401D: error: An error occurred while processing the statement word64 rax_1605 = Mem1603[rax_1582 - 0x0000000000000008 + 0x0000000000000000:word64].
+    Not handling (ptr (struct (0 T_2873 t0000))) and (union (int64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -574,7 +540,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406158: error: An error occurred while processing the statement branch Mem0[rax_142 - 0x0000000000000018 + 0x0000000000000000:byte] != 0x00 l0000000000406164.
-    Not handling (ptr (struct (0 T_6863 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_6797 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -587,15 +553,15 @@ Parameter name: bitOffset
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406D12: error: An error occurred while processing the statement rbp = rbp - (fp - 0x0000000000000E88).
-    Pulling difference (union ((ptr (struct (0 T_7932 t0000) (9 T_7940 t0009) (A0 T_7914 t00A0) (B0 T_7905 t00B0) (413728 T_7929 t413728))) u1) ((ptr char) u0)) and ptr64
+    Pulling difference (union ((ptr (struct (0 T_7871 t0000) (9 T_7879 t0009) (A0 T_7853 t00A0) (B0 T_7843 t00B0) (413728 T_7868 t413728))) u1) ((ptr char) u0)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 126
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-0000000000406FC3: error: An error occurred while processing the statement r13 = r13 - r12.
-    Pulling difference (union (bool u0) ((ptr char) u2) ((ptr (struct (0 T_7932 t0000) (9 T_7940 t0009) (A0 T_7914 t00A0) (B0 T_7905 t00B0) (413728 T_7929 t413728))) u1)) and ptr64
+0000000000406FC3: error: An error occurred while processing the statement r13 = r13 - (fp - 0x0000000000000E88).
+    Pulling difference (union (bool u0) ((ptr char) u2) ((ptr (struct (0 T_7871 t0000) (9 T_7879 t0009) (A0 T_7853 t00A0) (B0 T_7843 t00B0) (413728 T_7868 t413728))) u1) ((union (bool u1) (byte u0)) u3)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -603,7 +569,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000407FC2: error: An error occurred while processing the statement r15 = (uint64) Mem0[r13 - 0x0000000000000384 + 0x0000000000000000:word32].
-    Not handling (ptr (struct (0 T_10372 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_10227 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -616,7 +582,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00000000004086E0: error: An error occurred while processing the statement Mem0[r8 - 0x0000000000000001 + 0x0000000000000000:byte] = r15b.
-    Not handling (ptr (struct (0 T_11826 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_11680 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -627,7 +593,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr (struct (0 T_12762 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr (struct (0 T_12596 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -684,7 +650,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002F9E.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4525 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4290 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -698,29 +664,12 @@ l0000000000400E2D: warning: Non-integral switch expression
 0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHLNG
-*** Hunk-m68k\BENCHLNG
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001444: error: An error occurred while processing the statement branch d2_107 - Mem163[fp + 0xFFFFFFF0:word32] < 0x00000000 l0000144A.
-    Pulling difference int32 and ptr32
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-000028C5: warning: Expected sizes of arrays to have been determined by now
-00003E5C: warning: Expected sizes of arrays to have been determined by now
-000028C5: warning: Expected sizes of arrays to have been determined by now
-00003E5C: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHMUL
 *** Hunk-m68k\BENCHMUL
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000326E: error: An error occurred while processing the statement branch d0 - d5_2510 >=u 0x00000000 l00003226.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_5198 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4817 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -739,7 +688,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000300A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002FC2.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4534 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4279 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -758,7 +707,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000184A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00001802.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_889 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_787 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -802,7 +751,7 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:01F8: error: An error occurred while processing instruction at address 0800:01F8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -810,7 +759,7 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:0BA1: error: An error occurred while processing the statement word16 di_165 = si_105 - (fp - 0x0084).
     Not handling mp16 and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
@@ -833,7 +782,7 @@ l0800_112E: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0B6C: error: An error occurred while processing instruction at address 0B6C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -841,7 +790,7 @@ l0800_112E: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0B78: error: An error occurred while processing instruction at address 0B78.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -849,7 +798,7 @@ l0800_112E: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0B70: error: An error occurred while processing instruction at address 0B70.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -857,7 +806,7 @@ l0800_112E: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 fn0AF6: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -918,7 +867,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0AF6: error: An error occurred while processing instruction at address 0AF6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -926,7 +875,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0FC8: error: An error occurred while processing instruction at address 0FC8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -934,7 +883,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0FC8: error: An error occurred while processing instruction at address 0FC8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -942,7 +891,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1F10: error: An error occurred while processing instruction at address 1F10.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -950,7 +899,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1F42: error: An error occurred while processing instruction at address 1F42.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -958,7 +907,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1F4E: error: An error occurred while processing instruction at address 1F4E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -966,7 +915,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1F5A: error: An error occurred while processing instruction at address 1F5A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -974,7 +923,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1F66: error: An error occurred while processing instruction at address 1F66.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -982,7 +931,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 238C: error: An error occurred while processing instruction at address 238C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -990,7 +939,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2134: error: An error occurred while processing instruction at address 2134.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -998,7 +947,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 215A: error: An error occurred while processing instruction at address 215A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1006,7 +955,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2174: error: An error occurred while processing instruction at address 2174.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1014,7 +963,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 218E: error: An error occurred while processing instruction at address 218E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1022,7 +971,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2208: error: An error occurred while processing instruction at address 2208.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1030,7 +979,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2216: error: An error occurred while processing instruction at address 2216.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1038,7 +987,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 222E: error: An error occurred while processing instruction at address 222E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1046,7 +995,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 223A: error: An error occurred while processing instruction at address 223A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1054,7 +1003,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2246: error: An error occurred while processing instruction at address 2246.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1062,7 +1011,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2252: error: An error occurred while processing instruction at address 2252.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1070,7 +1019,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 225E: error: An error occurred while processing instruction at address 225E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1078,7 +1027,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 226A: error: An error occurred while processing instruction at address 226A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1086,7 +1035,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2284: error: An error occurred while processing instruction at address 2284.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1094,7 +1043,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2290: error: An error occurred while processing instruction at address 2290.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1102,7 +1051,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 22DC: error: An error occurred while processing instruction at address 22DC.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1110,7 +1059,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 22A4: error: An error occurred while processing instruction at address 22A4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1118,7 +1067,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 22B0: error: An error occurred while processing instruction at address 22B0.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1126,7 +1075,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 21B0: error: An error occurred while processing instruction at address 21B0.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1134,7 +1083,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 21CA: error: An error occurred while processing instruction at address 21CA.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1142,7 +1091,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 21E4: error: An error occurred while processing instruction at address 21E4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1150,7 +1099,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2BDE: error: An error occurred while processing instruction at address 2BDE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1158,7 +1107,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2BEA: error: An error occurred while processing instruction at address 2BEA.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1166,7 +1115,7 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2D0A: error: An error occurred while processing instruction at address 2D0A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1174,7 +1123,31 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+2D22: error: An error occurred while processing instruction at address 2D22.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+2D30: error: An error occurred while processing instruction at address 2D30.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+2D3C: error: An error occurred while processing instruction at address 2D3C.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 2DCE: error: An error occurred while processing instruction at address 2DCE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1182,7 +1155,23 @@ l0888: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+2E96: error: An error occurred while processing instruction at address 2E96.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+2EB4: error: An error occurred while processing instruction at address 2EB4.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 fn0AE6: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1320,7 +1309,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 033E: error: An error occurred while processing instruction at address 033E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1328,7 +1317,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0348: error: An error occurred while processing instruction at address 0348.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1336,7 +1325,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 036C: error: An error occurred while processing instruction at address 036C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1344,7 +1333,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0370: error: An error occurred while processing instruction at address 0370.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1352,7 +1341,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0374: error: An error occurred while processing instruction at address 0374.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1360,7 +1349,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0378: error: An error occurred while processing instruction at address 0378.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1368,7 +1357,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 037C: error: An error occurred while processing instruction at address 037C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1376,7 +1365,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 038E: error: An error occurred while processing instruction at address 038E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1384,7 +1373,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 040A: error: An error occurred while processing instruction at address 040A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1392,7 +1381,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 00000DAC: warning: Expected sizes of arrays to have been determined by now
 00000DB8: warning: Expected sizes of arrays to have been determined by now
 00000DC4: warning: Expected sizes of arrays to have been determined by now
@@ -1429,54 +1418,64 @@ fn0FB2: error: An error occurred during data flow analysis.
 === PE\PPC\hello_ppc.exe
 *** PE\PPC\hello_ppc.exe
 hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
-00401FCC: error: An error occurred while processing the statement branch Test(NE,cond(r11_106 - (r7_4 + 12))) l00401F68.
-    Pulling difference (ptr (struct (0 T_2684 t0000))) and (union ((ptr (struct (4 T_242 t0004))) u1) (ptr32 u0))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+fn004020BC: error: An error occurred during data flow analysis.
+    Can't add types of disjoint domains int32 and ptr32
+       at Reko.Evaluation.ExpressionSimplifier.SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 129
+   at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 300
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
-   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-00402BCC: error: An error occurred while processing the statement branch Test(EQ,cond((Mem14[r31_49 + 4:word32] & -4) - (r3 + -8))) l00402BD8.
-    Pulling difference ui32 and (ptr word32)
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Analysis.ValuePropagator.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 99
+   at Reko.Core.Code.Branch.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 50
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
+fn004026B8: error: An error occurred during data flow analysis.
+    Can't add types of disjoint domains int32 and ptr32
+       at Reko.Evaluation.ExpressionSimplifier.SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 129
+   at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 300
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
-   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-00402FC8: error: An error occurred while processing the statement branch Test(LE,cond((Mem167[Mem167[r31_175 + 4:word32] + 4:word32] & -4) - r3)) l00402FFC.
-    Pulling difference ui32 and (ptr (struct (0 T_4315 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Analysis.ValuePropagator.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 99
+   at Reko.Core.Code.Branch.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 50
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
+fn00402A24: error: An error occurred during data flow analysis.
+    Can't add types of disjoint domains int32 and ptr32
+       at Reko.Evaluation.ExpressionSimplifier.SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 129
+   at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 300
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
-   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
-00403C4C: error: An error occurred while processing the statement branch Test(GT,cond(r10_9 - r11_10)) l00403C38.
-    Pulling difference ui32 and (ptr (struct 000C (4 word32 dw0004)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Analysis.ValuePropagator.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 99
+   at Reko.Core.Code.Branch.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 50
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
+fn00403744: error: An error occurred during data flow analysis.
+    Can't add types of disjoint domains int32 and ptr32
+       at Reko.Evaluation.ExpressionSimplifier.SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 129
+   at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 300
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
-   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 446
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 138
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
+   at Reko.Analysis.ValuePropagator.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 99
+   at Reko.Core.Code.Branch.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 50
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
+fn00403898: error: An error occurred during data flow analysis.
+    Can't add types of disjoint domains int32 and ptr32
+       at Reko.Evaluation.ExpressionSimplifier.SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 129
+   at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 300
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Analysis.ValuePropagator.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 99
+   at Reko.Core.Code.Branch.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 50
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
+: error: Error when reconstructing types.
+    Specified argument was out of the range of valid values.
+Parameter name: Linear address 00000000 is not in known segment.
+       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 184
+   at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 51
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 88
+   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 308
 === PE\m68k\hello_m68k.dcproject
 === PE\x86-64\varargs_test\varargs_test.exe
 *** PE\x86-64\varargs_test\varargs_test.exe
@@ -1556,7 +1555,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 080A: error: An error occurred while processing instruction at address 080A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1564,7 +1563,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0B51: error: An error occurred while processing instruction at address 0B51.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1572,7 +1571,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0000: error: An error occurred while processing instruction at address 0000.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1580,7 +1579,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 03B0: error: An error occurred while processing instruction at address 03B0.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1588,7 +1587,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0000: error: An error occurred while processing instruction at address 0000.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1596,7 +1595,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0B5A: error: An error occurred while processing instruction at address 0B5A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1604,7 +1603,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 13B2: error: An error occurred while processing instruction at address 13B2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1612,7 +1611,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 13C6: error: An error occurred while processing instruction at address 13C6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1620,7 +1619,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 13C6: error: An error occurred while processing instruction at address 13C6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1628,7 +1627,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 13C6: error: An error occurred while processing instruction at address 13C6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1636,7 +1635,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 13C6: error: An error occurred while processing instruction at address 13C6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1644,7 +1643,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 14A1: error: An error occurred while processing instruction at address 14A1.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1652,7 +1651,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 14AF: error: An error occurred while processing instruction at address 14AF.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1660,7 +1659,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 14AF: error: An error occurred while processing instruction at address 14AF.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1668,7 +1667,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 fn0273: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1823,11 +1822,11 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 348
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 343
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 347
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 342
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 313
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
@@ -1838,11 +1837,11 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 348
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 343
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 347
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 342
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 313
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
@@ -1853,11 +1852,11 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 348
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 343
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 347
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 342
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 313
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
@@ -1973,11 +1972,11 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 348
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 343
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 347
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 342
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 313
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
@@ -1988,11 +1987,11 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 348
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 343
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 347
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 342
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 313
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
@@ -2003,12 +2002,58 @@ fn14A1: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 348
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 343
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 347
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 342
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 314
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 313
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 164
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
+137A: error: An error occurred while processing the statement word16 bc_50 = DPB(bc, 0x00 - SLICE(hl_37, byte, 8) - (0x00 - (byte) hl_37 <u 0x00), 8).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitDepositBits(DepositBits d, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 468
+   at Reko.Core.Expressions.DepositBits.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 63
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
+1445: error: An error occurred while processing the statement word16 bc_47 = DPB(bc, 0x00 - SLICE(hl_34, byte, 8) - (0x00 - (byte) hl_34 <u 0x00), 8).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitDepositBits(DepositBits d, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 468
+   at Reko.Core.Expressions.DepositBits.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 63
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
+148E: error: An error occurred while processing the statement byte a_32 = SLICE(de_18, byte, 8) - SLICE(v4_3, byte, 8) - (a_27 <u 0x00).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
+1510: error: An error occurred while processing the statement word16 de_98 = DPB(hl_58, 0x00 - SLICE(hl_85, byte, 8) - (0x00 - (byte) hl_85 <u 0x00), 8).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitDepositBits(DepositBits d, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 468
+   at Reko.Core.Expressions.DepositBits.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 63
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 166
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 fn03B2: error: An error occurred while rewriting procedure to high-level language.
@@ -2074,7 +2119,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:906C: error: An error occurred while processing instruction at address 0800:906C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2082,7 +2127,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:9F9D: error: An error occurred while processing instruction at address 0800:9F9D.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2090,7 +2135,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:9F9D: error: An error occurred while processing instruction at address 0800:9F9D.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2098,7 +2143,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:0CA6: error: An error occurred while processing instruction at address 1483:0CA6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2106,7 +2151,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:0CD2: error: An error occurred while processing instruction at address 1483:0CD2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2114,7 +2159,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:0D02: error: An error occurred while processing instruction at address 1483:0D02.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2122,7 +2167,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:0D04: error: An error occurred while processing instruction at address 1483:0D04.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2130,7 +2175,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:1BBC: error: An error occurred while processing instruction at address 1483:1BBC.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2138,7 +2183,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:1BBC: error: An error occurred while processing instruction at address 1483:1BBC.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2146,7 +2191,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 1483:1BB9: error: An error occurred while processing instruction at address 1483:1BB9.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2154,7 +2199,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 fn0800_8F97: error: An error occurred during data flow analysis.
     Dominator graph calculation timed out.
        at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 237
@@ -2231,6 +2276,23 @@ fn1483_1BB9: error: An error occurred during data flow analysis.
    at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 163
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+0800:878D: error: An error occurred while processing the statement bx_115 = DPB(bx_115, C_161 * 0x02 + C_221 | 0x04, 8) (alias).
+    An item with the same key has already been added.
+       at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at Reko.Core.Types.PrimitiveType.CreateB(Domain dom, Int32 bitSize, String name) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 134
+   at Reko.Core.Types.PrimitiveType.CreateWordB(Int32 bitSize) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 158
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 243
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitDepositBits(DepositBits d, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 468
+   at Reko.Core.Expressions.DepositBits.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 63
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 128
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 : error: Error when reconstructing types.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
@@ -2239,6 +2301,22 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 88
    at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 308
+fn0800_A215: error: An error occurred while rewriting procedure to high-level language.
+    Expression of type Cast doesn't support Invert.
+       at Reko.Core.Expressions.Expression.Invert() in C:\dev\uxmal\reko\master\src\Core\Expressions\Expression.cs:line 79
+   at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 361
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn0800_B0A1: error: An error occurred while rewriting procedure to high-level language.
+    Expression of type Cast doesn't support Invert.
+       at Reko.Core.Expressions.Expression.Invert() in C:\dev\uxmal\reko\master\src\Core\Expressions\Expression.cs:line 79
+   at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 391
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 fn1483_1BB9: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2251,4 +2329,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 42.18 seconds ---
+Decompiled 51 binaries in 37.80 seconds ---

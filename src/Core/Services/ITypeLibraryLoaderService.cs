@@ -88,10 +88,7 @@ namespace Reko.Core.Services
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
                 var diagSvc = services.RequireService<IDiagnosticsService>();
-                var ldrElement = cfgSvc.GetImageLoaders()
-                    .OfType<LoaderConfiguration>()
-                    .Where(le => le.Label == tlElement.Loader)
-                    .FirstOrDefault();
+                var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
                     loaderType = Type.GetType(ldrElement.TypeName, false);

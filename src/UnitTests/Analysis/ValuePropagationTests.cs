@@ -507,7 +507,7 @@ namespace Reko.UnitTests.Analysis
             var bx_4 = m.Reg16("bx_4");
             var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.Store(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
@@ -934,7 +934,7 @@ ProcedureBuilder_exit:
             var bx_4 = m.Reg16("bx_4");
             var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.Store(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));

@@ -31,7 +31,7 @@ l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
+FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // MayUse:  ds
 // LiveOut: C ax
 // Trashed: SCZO ah al ax eax esi rax rsi si sil
@@ -50,7 +50,7 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // C:Flags
 // axOut:Out:ax
 // return address size: 2
-byte fn0C00_000A(selector ds, ptr16 & axOut)
+bool fn0C00_000A(selector ds, ptr16 & axOut)
 fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:

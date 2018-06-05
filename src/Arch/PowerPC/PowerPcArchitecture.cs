@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -35,11 +36,16 @@ namespace Reko.Arch.PowerPC
 {
     public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
+        public const int CcFieldMin = 0x40;
+        public const int CcFieldMax = 0x48;
+
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
         private ReadOnlyCollection<RegisterStorage> vregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
         private Dictionary<int, RegisterStorage> spregs;
+        private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
+        private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -47,44 +53,62 @@ namespace Reko.Arch.PowerPC
         public RegisterStorage fpscr { get; private set; }
         public RegisterStorage cr { get; private set; }
 
+
+        public RegisterStorage acc { get; private set; }
+
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
-        public PowerPcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
+        public PowerPcArchitecture(string archId, PrimitiveType wordWidth, PrimitiveType signedWord) : base(archId)
         {
             WordWidth = wordWidth;
-            PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            SignedWord = signedWord;
+            PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             FramePointerType = PointerType;
             InstructionBitSize = 32;
 
-            this.lr = new RegisterStorage("lr", 0x68, 0, wordWidth);
-            this.ctr = new RegisterStorage("ctr", 0x6A, 0, wordWidth);
-            this.xer = new RegisterStorage("xer", 0x6B, 0, wordWidth);
-            this.fpscr = new RegisterStorage("fpscr", 0x6C, 0, wordWidth);
+            this.lr = new RegisterStorage("lr", 0x48, 0, wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x49, 0, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x4A, 0, wordWidth);
+            this.fpscr = new RegisterStorage("fpscr", 0x4B, 0, wordWidth);
 
-            this.cr = new RegisterStorage("cr", 0x80, 0, wordWidth);
+            this.cr = new RegisterStorage("cr", 0x4C, 0, wordWidth);
+            this.acc = new RegisterStorage("acc", 0x4D, 0, PrimitiveType.Word64);
+
+            // gp regs  0..1F
+            // fpu regs 20..3F
+            // CR regs  40..47
+            // vectors  80..FF
+            fpregs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("f" + n, n + 0x20, 0, PrimitiveType.Word64))
+                    .ToList());
+            cregs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 8)
+                    .Select(n => new RegisterStorage("cr" + n, n + CcFieldMin, 0, PrimitiveType.Byte))
+                    .ToList());
+
+            vregs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 128)        // VMX128 extension has 128 regs
+                    .Select(n => new RegisterStorage("v" + n, n + 0x80, 0, PrimitiveType.Word128))
+                    .ToList());
+
+            ccFlagGroups = Enumerable.Range(0, 8)
+                .Select(n => new FlagGroupStorage(cr, 0xFu << (n * 4), $"cr{n}", PrimitiveType.Byte))
+                .ToDictionary(f => f.FlagGroupBits);
+            ccFlagGroupsByName = ccFlagGroups.Values
+                .ToDictionary(f => f.Name);
+
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
                     .Select(n => new RegisterStorage("r" + n, n, 0, wordWidth))
-                .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("f" + n, n + 0x20, 0, PrimitiveType.Word64)))
-                .Concat(Enumerable.Range(0, 0x20)
-                    .Select(n => new RegisterStorage("v" + n, n + 0x40, 0, PrimitiveType.Word128)))
-                .Concat(Enumerable.Range(0, 8)
-                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, 0, PrimitiveType.Byte)))
+                .Concat(fpregs)
+                .Concat(cregs)
                 .Concat(new[] { lr, ctr, xer })
+                .Concat(vregs)
                 .ToList());
-
-            fpregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x20).Take(0x20).ToList());
-
-            vregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x40).Take(0x20).ToList());
-
-            cregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x60).Take(0x8).ToList());
 
             spregs = new Dictionary<int, RegisterStorage>
             {
@@ -119,6 +143,8 @@ namespace Reko.Arch.PowerPC
         {
             get { return spregs; }
         }
+
+        public PrimitiveType SignedWord { get; }
 
         #region IProcessorArchitecture Members
 
@@ -179,8 +205,7 @@ namespace Reko.Arch.PowerPC
 
             if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
                 return null;
-            var mem = e.Current.op2 as MemoryOperand;
-            if (mem == null)
+            if (!(e.Current.op2 is MemoryOperand mem))
                 return null;
             if (mem.BaseRegister != reg)
                 return null;
@@ -246,9 +271,26 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
+        public FlagGroupStorage GetCcFieldAsFlagGroup(RegisterStorage reg)
+        {
+            if (IsCcField(reg))
+            {
+                var field = reg.Number - CcFieldMin;
+                var grf = 0xFu << (4 *field);
+                if (this.ccFlagGroups.TryGetValue(grf, out var f))
+                    return f;
+            }
+            return null;
+        }
+
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            foreach (var f in ccFlagGroups)
+            {
+                if ((grf & f.Key) != 0)
+                    return f.Value;
+            }
+            throw new NotImplementedException("This shouldn't happen.");
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -269,6 +311,11 @@ namespace Reko.Arch.PowerPC
             //$BUG: this needs to be better conceved. There are 
             // 32 (!) condition codes in the PowerPC architecture
             return "crX";
+        }
+
+        public bool IsCcField(RegisterStorage reg)
+        {
+            return CcFieldMin <= reg.Number && reg.Number < CcFieldMax;
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
@@ -300,7 +347,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
-        public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32)
+        public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -354,7 +401,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
     {
-        public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32)
+        public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
         {
 
         }
@@ -403,7 +450,7 @@ namespace Reko.Arch.PowerPC
     public class PowerPcBe64Architecture : PowerPcArchitecture
     {
         public PowerPcBe64Architecture(string archId)
-            : base(archId, PrimitiveType.Word64)
+            : base(archId, PrimitiveType.Word64, PrimitiveType.Int64)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(

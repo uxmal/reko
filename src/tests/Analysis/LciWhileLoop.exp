@@ -14,24 +14,24 @@ l0C00_0000:
 	branch ax_11 <= 0x0000 l0C00_0015
 	// succ:  l0C00_000C l0C00_0015
 l0C00_000C:
-	cx_26 = ax_11
+	cx_27 = ax_11
 	// succ:  l0C00_000E
 l0C00_000E:
-	bx_27 = PHI(bx_8, bx_29)
-	cx_28 = PHI(cx_26, cx_33)
-	bx_29 = bx_27 + cx_28
-	cx_33 = cx_28 - 0x0001
-	branch cx_33 != 0x0000 l0C00_000E
+	bx_28 = PHI(bx_8, bx_30)
+	cx_29 = PHI(cx_27, cx_34)
+	bx_30 = bx_28 + cx_29
+	cx_34 = cx_29 - 0x0001
+	branch cx_34 != 0x0000 l0C00_000E
 	// succ:  l0C00_0012 l0C00_000E
 l0C00_0012:
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0015:
-	bx_39 = -ax_11
+	bx_40 = -ax_11
 	// succ:  l0C00_0019
 l0C00_0019:
-	bx_17 = PHI(bx_29, bx_39)
-	Mem22[ds:0x0300:word16] = bx_17
+	bx_18 = PHI(bx_30, bx_40)
+	Mem23[ds:0x0300:word16] = bx_18
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

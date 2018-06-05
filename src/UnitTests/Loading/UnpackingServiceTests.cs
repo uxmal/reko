@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Loading
             var le = mr.Stub<LoaderConfiguration>();
             le.Label = "LoaderKey";
             le.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;
-            cfgSvc.Stub(c => c.GetImageLoaders()).Return(new List<LoaderConfiguration> { le });
+            cfgSvc.Stub(c => c.GetImageLoader("LoaderKey")).Return(le);
             sc.AddService(typeof(IConfigurationService), cfgSvc);
             mr.ReplayAll();
 

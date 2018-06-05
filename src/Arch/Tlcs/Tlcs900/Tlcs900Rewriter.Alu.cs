@@ -195,7 +195,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     a,
                     m.Comp(
                         m.Shl(m.Const(
-                            PrimitiveType.Create(Domain.SignedInt, op1.DataType.Size),
+                            PrimitiveType.Create(Domain.SignedInt, op1.DataType.BitSize),
                             1), b))));
         }
 
@@ -218,7 +218,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 (a, b) => m.Or(
                     a,
                     m.Shl(m.Const(
-                        PrimitiveType.Create(Domain.SignedInt, op1.DataType.Size),
+                        PrimitiveType.Create(Domain.SignedInt, op1.DataType.BitSize),
                         1), b)));
         }
 

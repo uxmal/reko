@@ -48,7 +48,7 @@ fn026D_entry:
 // LocalsOut: fp(16)
 
 l026D:
-	byte b_7 = __rcl(b, 0x01, cond(c << 1))
+	byte b_7 = __rcl(b, 0x01, (bool) cond(c << 1))
 	word16 hl_11 = hl * 0x0002 + (b_7 <u 0x00)
 // DataOut: a af b c de h hl ix l
 // DataOut (flags): 
@@ -88,7 +88,7 @@ l0273:
 	af = DPB(af, a, 8) (alias)
 	N = false
 	SZHXV = cond(a)
-	Z = SZHXV (alias)
+	Z = (bool) SZHXV (alias)
 	branch Test(NE,Z) l026D
 // DataOut: a af b c de h hl ix l
 // DataOut (flags): 
@@ -107,19 +107,19 @@ l0276:
 	v9 = Mem0[ix + -26:byte]
 	a = a + v9
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -6:byte] = a
 	a = b
 	v12 = Mem0[ix + -25:byte]
 	a = a + v12 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -5:byte] = a
 	a = l
 	v15 = Mem0[ix + -24:byte]
 	a = a + v15 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -4:byte] = a
 	a = h
 	v17 = Mem0[ix + -23:byte]
@@ -130,21 +130,21 @@ l0276:
 	v19 = Mem0[ix + -18:byte]
 	a = a + v19
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	c = a
 	v20 = Mem0[ix + -13:byte]
 	a = v20
 	v21 = Mem0[ix + -17:byte]
 	a = a + v21 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	v22 = Mem0[ix + -12:byte]
 	a = v22
 	v23 = Mem0[ix + -16:byte]
 	a = a + v23 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	v24 = Mem0[ix + -11:byte]
 	a = v24
@@ -289,11 +289,11 @@ fn02DE_entry:
 
 l02DE:
 	h = h >>u 1
-	l = __rcr(l, 0x01, cond(h))
-	b = __rcr(b, 0x01, cond(l))
+	l = __rcr(l, 0x01, (bool) cond(h))
+	b = __rcr(b, 0x01, (bool) cond(l))
 	a = a - 1
 	hl = DPB(hl, l, 0) (alias)
-	c = __rcr(c, 0x01, cond(b))
+	c = __rcr(c, 0x01, (bool) cond(b))
 	af = DPB(af_123, a, 8) (alias)
 	word16 af_123 = af
 	branch a != 0x00 l02DE
@@ -505,7 +505,7 @@ fn0341_entry:
 
 l0341:
 	c = c << 1
-	b = __rcl(b, 0x01, cond(c))
+	b = __rcl(b, 0x01, (bool) cond(c))
 	hl = hl * 0x0002 + (b <u 0x00)
 	byte l_22 = (byte) hl
 	byte h_23 = SLICE(hl, byte, 8)
@@ -670,13 +670,13 @@ l0351:
 	v35 = Mem0[ix + -33:byte]
 	a = a + v35 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -5:byte] = a
 	a = l
 	v36 = Mem0[ix + -32:byte]
 	a = a + v36 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -4:byte] = a
 	a = h
 	v37 = Mem0[ix + -31:byte]
@@ -687,21 +687,21 @@ l0351:
 	v39 = Mem0[ix + -18:byte]
 	a = a + v39
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	c = a
 	v40 = Mem0[ix + -9:byte]
 	a = v40
 	v41 = Mem0[ix + -17:byte]
 	a = a + v41 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	v42 = Mem0[ix + -8:byte]
 	a = v42
 	v43 = Mem0[ix + -16:byte]
 	a = a + v43 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	v44 = Mem0[ix + -7:byte]
 	a = v44
@@ -752,7 +752,7 @@ l0351:
 
 l03B0_thunk_fn03B2:
 	C = fn03B2(a, c, b, de, l, h, ix, out af, out bc, out de, out hl, out ix)
-	SZHXVC = C (alias)
+	SZHXVC = DPB(SZHXVC, C, 0) (alias)
 	return C
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
@@ -786,13 +786,13 @@ l0351:
 	v6_6 = Mem0[ix + -33:byte]
 	a_8 = a_3 + v6_6 + C
 	SZHXVC_9 = cond(a_8)
-	C_10 = SZHXVC_9 (alias)
+	C_10 = (bool) SZHXVC_9 (alias)
 	Mem11[ix + -5:byte] = a_8
 	a_13 = l
 	v11_14 = Mem11[ix + -32:byte]
 	a_15 = a_13 + v11_14 + (a_8 <u 0x00)
 	SZHXVC_16 = cond(a_15)
-	C_17 = SZHXVC_16 (alias)
+	C_17 = (bool) SZHXVC_16 (alias)
 	Mem18[ix + -4:byte] = a_15
 	a_20 = h
 	v13_21 = Mem18[ix + -31:byte]
@@ -803,21 +803,21 @@ l0351:
 	v15_26 = Mem23[ix + -18:byte]
 	a_27 = a_25 + v15_26
 	SZHXVC_28 = cond(a_27)
-	C_29 = SZHXVC_28 (alias)
+	C_29 = (bool) SZHXVC_28 (alias)
 	c_30 = a_27
 	v17_31 = Mem23[ix + -9:byte]
 	a_32 = v17_31
 	v18_33 = Mem23[ix + -17:byte]
 	a_34 = a_32 + v18_33 + (a_27 <u 0x00)
 	SZHXVC_35 = cond(a_34)
-	C_36 = SZHXVC_35 (alias)
+	C_36 = (bool) SZHXVC_35 (alias)
 	b_37 = a_34
 	v19_38 = Mem23[ix + -8:byte]
 	a_39 = v19_38
 	v20_40 = Mem23[ix + -16:byte]
 	a_41 = a_39 + v20_40 + (a_34 <u 0x00)
 	SZHXVC_42 = cond(a_41)
-	C_43 = SZHXVC_42 (alias)
+	C_43 = (bool) SZHXVC_42 (alias)
 	l_44 = a_41
 	v21_45 = Mem23[ix + -7:byte]
 	a_46 = v21_45
@@ -868,7 +868,7 @@ l0351:
 
 l03B0_thunk_fn03B2:
 	C_97 = fn03B2(a_89, c_76, b_78, de, l_82, h_84, ix, out af_92, out bc_93, out de_94, out hl_95, out ix_96)
-	SZHXVC_98 = C_97 (alias)
+	SZHXVC_98 = DPB(SZHXVC_42, C_97, 0) (alias)
 	return C_97
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
@@ -1016,14 +1016,14 @@ l03B2:
 	sp = v3
 	h = h >>u 1
 	SZXC = cond(h)
-	C = SZXC (alias)
+	C = (bool) SZXC (alias)
 	l = __rcr(l, 0x01, C)
 	hl = DPB(hl, l, 0) (alias)
 	SZXC = cond(l)
-	C = SZXC (alias)
+	C = (bool) SZXC (alias)
 	b = __rcr(b, 0x01, C)
 	SZXC = cond(b)
-	C = SZXC (alias)
+	C = (bool) SZXC (alias)
 	c = __rcr(c, 0x01, C)
 	bc = DPB(bc, c, 0) (alias)
 	SZXC = cond(c)
@@ -1031,7 +1031,7 @@ l03B2:
 	af = DPB(af, a, 8) (alias)
 	N = false
 	SZHXV = cond(a)
-	Z = SZHXV (alias)
+	Z = (bool) SZHXV (alias)
 	branch Test(NE,Z) l03B2
 // DataOut: a af b c de h ix l
 // DataOut (flags): 
@@ -1042,19 +1042,19 @@ l03BD:
 	v16 = Mem0[ix + -38:byte]
 	a = a + v16
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	c = a
 	a = b
 	v18 = Mem0[ix + -37:byte]
 	a = a + v18 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	a = l
 	v19 = Mem0[ix + -36:byte]
 	a = a + v19 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	a = h
 	v20 = Mem0[ix + -35:byte]
@@ -1080,19 +1080,19 @@ l03BD:
 	a = v27
 	a = a + c
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -14:byte] = a
 	v28 = Mem0[ix + -13:byte]
 	a = v28
 	a = a + b + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -13:byte] = a
 	v29 = Mem0[ix + -12:byte]
 	a = v29
 	a = a + l + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -12:byte] = a
 	v30 = Mem0[ix + -11:byte]
 	a = v30
@@ -1102,20 +1102,20 @@ l03BD:
 	a = v31
 	a = a + 0xFF
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	c = a
 	v32 = Mem0[ix + -21:byte]
 	a = v32
 	a = a + 0xFF + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	bc = DPB(bc, b, 8) (alias)
 	v33 = Mem0[ix + -20:byte]
 	a = v33
 	a = a + 0xFF + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	v34 = Mem0[ix + -19:byte]
 	a = v34
@@ -1139,8 +1139,8 @@ l03BD:
 	SZHXV = SZV (alias)
 	SZHXVC = SZV (alias)
 	SZXC = SZV (alias)
-	Z = SZV (alias)
-	V = SZV (alias)
+	Z = (bool) SZV (alias)
+	V = (bool) SZV (alias)
 	branch Test(NE,Z) l0350
 // DataOut: af b c de h ix l
 // DataOut (flags): C
@@ -1148,8 +1148,8 @@ l03BD:
 
 l0350:
 	C = fn0351(b, de, l, h, ix, out af, out bc, out de, out hl, out ix)
-	SZXC = C (alias)
-	SZHXVC = C (alias)
+	SZXC = DPB(SZXC, C, 0) (alias)
+	SZHXVC = DPB(SZHXVC, C, 0) (alias)
 	return C
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
@@ -1160,13 +1160,13 @@ l0351:
 	v35 = Mem0[ix + -33:byte]
 	a = a + v35 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -5:byte] = a
 	a = l
 	v36 = Mem0[ix + -32:byte]
 	a = a + v36 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -4:byte] = a
 	a = h
 	v37 = Mem0[ix + -31:byte]
@@ -1177,21 +1177,21 @@ l0351:
 	v39 = Mem0[ix + -18:byte]
 	a = a + v39
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	c = a
 	v40 = Mem0[ix + -9:byte]
 	a = v40
 	v41 = Mem0[ix + -17:byte]
 	a = a + v41 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	v42 = Mem0[ix + -8:byte]
 	a = v42
 	v43 = Mem0[ix + -16:byte]
 	a = a + v43 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	v44 = Mem0[ix + -7:byte]
 	a = v44
@@ -1242,7 +1242,7 @@ l0351:
 
 l03B0_thunk_fn03B2:
 	C = fn03B2(a, c, b, de, l, h, ix, out af, out bc, out de, out hl, out ix)
-	SZHXVC = C (alias)
+	SZHXVC = DPB(SZHXVC, C, 0) (alias)
 	return C
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
@@ -1267,8 +1267,8 @@ fn0351_exit:
 
 l0430_thunk_fn0434:
 	C = fn0434(de, ix, out bc, out de, out hl, out ix)
-	SZXC = C (alias)
-	SZHXVC = C (alias)
+	SZXC = DPB(SZXC, C, 0) (alias)
+	SZHXVC = DPB(SZHXVC, C, 0) (alias)
 	return C
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
@@ -1419,7 +1419,7 @@ l043C:
 l043E:
 	word16 de_22 = Mem13[v3 + 36:word16]
 	word16 hl_24 = v3 + 0x0018
-	byte SZHXVC_26 = cond(v3 + 0x0018)
+	bool C_29 = (bool) cond(v3 + 0x0018)
 	word16 bc_30 = 0x0004
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
@@ -1441,7 +1441,7 @@ l044B:
 l044D:
 	word16 ix_45
 	*ixOut = Mem35[ix:word16]
-	return SZHXVC_26
+	return C_29
 // DataOut: af b bc c de h hl ix l
 // DataOut (flags): C
 // SymbolicIn: sp:v3 hl:<invalid> bc:<invalid> de:<invalid>
@@ -1482,7 +1482,7 @@ l04EE:
 
 l050B:
 	c_13 = c_13 << 1
-	b_15 = __rcl(b_15, 0x01, cond(c_13))
+	b_15 = __rcl(b_15, 0x01, (bool) cond(c_13))
 	hl_21 = hl_21 * 0x0002 + (b_15 <u 0x00)
 	a_24 = a_24 - 1
 	byte h_38 = SLICE(hl_21, byte, 8)
@@ -1526,11 +1526,11 @@ l0514:
 
 l057C:
 	h_125 = h_125 >>u 1
-	l_123 = __rcr(l_123, 0x01, cond(h_125))
-	b_121 = __rcr(b_121, 0x01, cond(l_123))
+	l_123 = __rcr(l_123, 0x01, (bool) cond(h_125))
+	b_121 = __rcr(b_121, 0x01, (bool) cond(l_123))
 	a_129 = a_129 - 1
 	hl_126 = DPB(hl_126, l_123, 0) (alias)
-	c_119 = __rcr(c_119, 0x01, cond(b_121))
+	c_119 = __rcr(c_119, 0x01, (bool) cond(b_121))
 	af_130 = DPB(af_282, a_129, 8) (alias)
 	word16 af_282 = af_130
 	branch a_129 != 0x00 l057C
@@ -1564,7 +1564,7 @@ l0587:
 
 l05DF:
 	c_221 = c_221 << 1
-	b_223 = __rcl(b_223, 0x01, cond(c_221))
+	b_223 = __rcl(b_223, 0x01, (bool) cond(c_221))
 	hl_228 = hl_228 * 0x0002 + (b_223 <u 0x00)
 	a_231 = a_231 - 1
 	byte h_245 = SLICE(hl_228, byte, 8)
@@ -1677,10 +1677,10 @@ l060E:
 
 l0650:
 	h_73 = h_73 >>u 1
-	l_71 = __rcr(l_71, 0x01, cond(h_73))
-	b_68 = __rcr(b_68, 0x01, cond(l_71))
+	l_71 = __rcr(l_71, 0x01, (bool) cond(h_73))
+	b_68 = __rcr(b_68, 0x01, (bool) cond(l_71))
 	a_100 = a_100 - 1
-	c_66 = __rcr(c_66, 0x01, cond(b_68))
+	c_66 = __rcr(c_66, 0x01, (bool) cond(b_68))
 	af_101 = DPB(af_299, a_100, 8) (alias)
 	word16 af_299 = af_101
 	branch a_100 != 0x00 l0650
@@ -1842,7 +1842,7 @@ void fn0801(word16 af, byte b, byte c, word16 de, word16 hl, word16 ix)
 // MayUse:  a af b c de hl ix
 // LiveOut:
 // Trashed:
-// Preserved:
+// Preserved: sp
 fn0801_entry:
 // DataOut: a af b c de hl ix
 // DataOut (flags): C
@@ -1866,7 +1866,7 @@ l0804_thunk_fn0807:
 fn0801_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -1900,7 +1900,7 @@ l0806_thunk_fn0807:
 fn0805_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -2101,7 +2101,7 @@ l0940:
 
 l098E:
 	c_132 = c_132 << 1
-	b_134 = __rcl(b_134, 0x01, cond(c_132))
+	b_134 = __rcl(b_134, 0x01, (bool) cond(c_132))
 	hl_140 = hl_140 * 0x0002 + (b_134 <u 0x00)
 	a_143 = a_143 - 1
 	byte l_159 = (byte) hl_140
@@ -2144,11 +2144,11 @@ l0997:
 
 l09FF:
 	h_247 = h_247 >>u 1
-	l_245 = __rcr(l_245, 0x01, cond(h_247))
-	b_242 = __rcr(b_242, 0x01, cond(l_245))
+	l_245 = __rcr(l_245, 0x01, (bool) cond(h_247))
+	b_242 = __rcr(b_242, 0x01, (bool) cond(l_245))
 	a_251 = a_251 - 1
 	hl_248 = DPB(hl_248, l_245, 0) (alias)
-	c_240 = __rcr(c_240, 0x01, cond(b_242))
+	c_240 = __rcr(c_240, 0x01, (bool) cond(b_242))
 	af_252 = DPB(af_328, a_251, 8) (alias)
 	word16 af_328 = af_252
 	branch a_251 != 0x00 l09FF
@@ -2220,7 +2220,7 @@ l0A3F:
 
 l0A62:
 	c_41 = c_41 << 1
-	b_43 = __rcl(b_43, 0x01, cond(c_41))
+	b_43 = __rcl(b_43, 0x01, (bool) cond(c_41))
 	hl_49 = hl_49 * 0x0002 + (b_43 <u 0x00)
 	a_52 = a_52 - 1
 	byte h_66 = SLICE(hl_49, byte, 8)
@@ -2294,15 +2294,15 @@ l0AA6:
 
 l0AD3:
 	h_38 = h_38 >>u 1
-	byte SZXC_52 = cond(h_38)
+	bool C_53 = (bool) cond(h_38)
 // DataOut: a b c de h ix l
 // DataOut (flags): C
 // SymbolicIn: sp:v3 a:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid> af:<invalid>
 
 l0AD5:
-	l_36 = __rcr(l_36, 0x01, SZXC_52)
-	b_34 = __rcr(b_34, 0x01, cond(l_36))
-	c_32 = __rcr(c_32, 0x01, cond(b_34))
+	l_36 = __rcr(l_36, 0x01, C_53)
+	b_34 = __rcr(b_34, 0x01, (bool) cond(l_36))
+	c_32 = __rcr(c_32, 0x01, (bool) cond(b_34))
 	a_41 = a_41 - 1
 	branch a_41 != 0x00 l0AD3
 // DataOut: a b c de h ix l
@@ -2371,14 +2371,14 @@ l0B2C:
 	a = v58
 	a = a + 0xFF + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	bc = DPB(bc, b, 8) (alias)
 	v59 = Mem0[ix + -20:byte]
 	a = v59
 	a = a + 0xFF + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	v60 = Mem0[ix + -19:byte]
 	a = v60
@@ -2399,7 +2399,7 @@ l0B2C:
 	C = false
 	SZV = cond(a)
 	SZHXVC = SZV (alias)
-	Z = SZV (alias)
+	Z = (bool) SZV (alias)
 	branch Test(NE,Z) l0350_in_fn5A49
 // DataOut: b de h ix l
 // DataOut (flags): C
@@ -2408,7 +2408,7 @@ l0B2C:
 
 l0350_in_fn5A49:
 	C = fn0351(b, de, l, h, ix, out af, out bc, out de, out hl, out ix)
-	SZHXVC = C (alias)
+	SZHXVC = DPB(SZHXVC, C, 0) (alias)
 	return
 // DataOut: af b de h ix l sp
 // DataOut (flags): C
@@ -2420,13 +2420,13 @@ l0351_in_fn5A49:
 	v61 = Mem0[ix + -33:byte]
 	a = a + v62 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -5:byte] = a
 	a = l
 	v63 = Mem0[ix + -32:byte]
 	a = a + v64 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	Mem0[ix + -4:byte] = a
 	a = h
 	v65 = Mem0[ix + -31:byte]
@@ -2437,21 +2437,21 @@ l0351_in_fn5A49:
 	v69 = Mem0[ix + -18:byte]
 	a = a + v70
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	c = a
 	v71 = Mem0[ix + -9:byte]
 	a = v72
 	v73 = Mem0[ix + -17:byte]
 	a = a + v74 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	b = a
 	v75 = Mem0[ix + -8:byte]
 	a = v76
 	v77 = Mem0[ix + -16:byte]
 	a = a + v78 + C
 	SZHXVC = cond(a)
-	C = SZHXVC (alias)
+	C = (bool) SZHXVC (alias)
 	l = a
 	v79 = Mem0[ix + -7:byte]
 	a = v80
@@ -2555,14 +2555,14 @@ l0B2C:
 	a_5 = v4_4
 	a_7 = a_5 + 0xFF + C
 	SZHXVC_8 = cond(a_7)
-	C_9 = SZHXVC_8 (alias)
+	C_9 = (bool) SZHXVC_8 (alias)
 	b_10 = a_7
 	bc_12 = DPB(bc, b_10, 8) (alias)
 	v10_13 = Mem0[ix + -20:byte]
 	a_14 = v10_13
 	a_15 = a_14 + 0xFF + (a_7 <u 0x00)
 	SZHXVC_16 = cond(a_15)
-	C_17 = SZHXVC_16 (alias)
+	C_17 = (bool) SZHXVC_16 (alias)
 	l_18 = a_15
 	v12_19 = Mem0[ix + -19:byte]
 	a_20 = v12_19
@@ -2583,7 +2583,7 @@ l0B2C:
 	C_37 = false
 	SZV_38 = cond(a_33)
 	SZHXVC_39 = SZV_38 (alias)
-	Z_40 = SZV_38 (alias)
+	Z_40 = (bool) SZV_38 (alias)
 	branch a_33 != 0x00 l0350_in_fn0B2C
 // DataOut: b de h ix l
 // DataOut (flags): C
@@ -2592,7 +2592,7 @@ l0B2C:
 
 l0350_in_fn0B2C:
 	C_65 = fn0351(b_10, de, l_18, h_22, ix, out af_60, out bc_61, out de_62, out hl_63, out ix_64)
-	SZHXVC_66 = C_65 (alias)
+	SZHXVC_66 = DPB(SZHXVC_39, C_65, 0) (alias)
 	return
 // DataOut: af b de h ix l sp
 // DataOut (flags): C
@@ -2604,13 +2604,13 @@ l0351_in_fn0B2C:
 	v35_69 = Mem0[ix_64 + -33:byte]
 	a_71 = a_67 + v35 + C_65
 	SZHXVC_72 = cond(a_71)
-	C_73 = SZHXVC_72 (alias)
+	C_73 = (bool) SZHXVC_72 (alias)
 	Mem74[ix_64 + -5:byte] = a_71
 	a_75 = l_18
 	v36_76 = Mem74[ix_64 + -32:byte]
 	a_78 = a_75 + v36 + (a_71 <u 0x00)
 	SZHXVC_79 = cond(a_78)
-	C_80 = SZHXVC_79 (alias)
+	C_80 = (bool) SZHXVC_79 (alias)
 	Mem81[ix_64 + -4:byte] = a_78
 	a_82 = h_22
 	v37_83 = Mem81[ix_64 + -31:byte]
@@ -2621,21 +2621,21 @@ l0351_in_fn0B2C:
 	v39_90 = Mem86[ix_64 + -18:byte]
 	a_92 = a_89 + v39
 	SZHXVC_93 = cond(a_92)
-	C_94 = SZHXVC_93 (alias)
+	C_94 = (bool) SZHXVC_93 (alias)
 	c_95 = a_92
 	v40_96 = Mem86[ix_64 + -9:byte]
 	a_98 = v40
 	v41_99 = Mem86[ix_64 + -17:byte]
 	a_101 = a_98 + v41 + (a_92 <u 0x00)
 	SZHXVC_102 = cond(a_101)
-	C_103 = SZHXVC_102 (alias)
+	C_103 = (bool) SZHXVC_102 (alias)
 	b_104 = a_101
 	v42_105 = Mem86[ix_64 + -8:byte]
 	a_107 = v42
 	v43_108 = Mem86[ix_64 + -16:byte]
 	a_110 = a_107 + v43 + (a_101 <u 0x00)
 	SZHXVC_111 = cond(a_110)
-	C_112 = SZHXVC_111 (alias)
+	C_112 = (bool) SZHXVC_111 (alias)
 	l_113 = a_110
 	v44_114 = Mem86[ix_64 + -7:byte]
 	a_116 = v44
@@ -3043,7 +3043,7 @@ l0C1D:
 
 l0C2C:
 	c_19 = c_19 << 1
-	b_20 = __rcl(b_20, 0x01, cond(c_19))
+	b_20 = __rcl(b_20, 0x01, (bool) cond(c_19))
 	a_17 = a_17 - 1
 	hl_13 = hl_13 * 0x0002 + (b_20 <u 0x00)
 	af_18 = DPB(af_18, a_17, 8) (alias)
@@ -3215,11 +3215,11 @@ fn0C9D_entry:
 
 l0C9D:
 	h = h >>u 1
-	l = __rcr(l, 0x01, cond(h))
-	b = __rcr(b, 0x01, cond(l))
+	l = __rcr(l, 0x01, (bool) cond(h))
+	b = __rcr(b, 0x01, (bool) cond(l))
 	a = a - 1
 	hl = DPB(hl, l, 0) (alias)
-	c = __rcr(c, 0x01, cond(b))
+	c = __rcr(c, 0x01, (bool) cond(b))
 	af = DPB(af_114, a, 8) (alias)
 	word16 af_114 = af
 	branch a != 0x00 l0C9D
@@ -3327,7 +3327,7 @@ fn0D00_entry:
 
 l0D00:
 	c = c << 1
-	b = __rcl(b, 0x01, cond(c))
+	b = __rcl(b, 0x01, (bool) cond(c))
 	hl = hl * 0x0002 + (b <u 0x00)
 	a = a - 1
 	byte l_19 = (byte) hl
@@ -3370,10 +3370,10 @@ l0D09:
 
 l0D71:
 	h_108 = h_108 >>u 1
-	l_106 = __rcr(l_106, 0x01, cond(h_108))
-	b_104 = __rcr(b_104, 0x01, cond(l_106))
+	l_106 = __rcr(l_106, 0x01, (bool) cond(h_108))
+	b_104 = __rcr(b_104, 0x01, (bool) cond(l_106))
 	a_112 = a_112 - 1
-	c_102 = __rcr(c_102, 0x01, cond(b_104))
+	c_102 = __rcr(c_102, 0x01, (bool) cond(b_104))
 	af_113 = DPB(af_255, a_112, 8) (alias)
 	word16 af_255 = af_113
 	branch a_112 != 0x00 l0D71
@@ -3442,7 +3442,7 @@ fn0DFC_entry:
 // DataOut: af b c d de e h ix l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0DFC:
 	Mem3[ix + -30:byte] = c
@@ -3455,7 +3455,7 @@ l0DFC:
 // DataOut: a af b c d de e h ix l
 // DataOut (flags): C
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0E0F_thunk_fn060E:
 	byte c_101
@@ -3474,7 +3474,7 @@ l0E13:
 // DataOut: af b bc c d de e h hl ix l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:h | l | b | c
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0E1B:
 	Mem59[de:byte] = Mem10[hl_46:byte]
@@ -3485,7 +3485,7 @@ l0E1B:
 // DataOut: af b bc c d de e h hl ix l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:h | l | b | c hl:<invalid> bc:<invalid> de:<invalid>
-// LocalsOut: fp(32) Stack +0020(16)
+// LocalsOut: fp(16) Stack +0020(16)
 
 l0E1D:
 	word16 de_73 = wArg20
@@ -3703,7 +3703,7 @@ l13B5:
 	C = false
 	SZV = cond(a)
 	SZHXVC = SZV (alias)
-	Z = SZV (alias)
+	Z = (bool) SZV (alias)
 	branch Test(NE,Z) l0738
 // DataOut: a af bc c de h hl ix l
 // DataOut (flags): C
@@ -3786,7 +3786,7 @@ l13C2:
 	N = false
 	C = false
 	SZV = cond(a)
-	Z = SZV (alias)
+	Z = (bool) SZV (alias)
 	branch Test(NE,Z) l13C6_thunk_fn0738
 // DataOut: a af bc c de h hl ix l
 // DataOut (flags): C
@@ -3832,7 +3832,7 @@ l13C2:
 	N_12 = false
 	C_13 = false
 	SZV_14 = cond(a_7)
-	Z_15 = SZV_14 (alias)
+	Z_15 = (bool) SZV_14 (alias)
 	branch a_7 != 0x00 l13C6_thunk_fn0738
 // DataOut: a af bc c de h hl ix l
 // DataOut (flags): C
@@ -4049,7 +4049,7 @@ l14A0_thunk_fn14A1:
 fn147B_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -4082,7 +4082,7 @@ l14A1:
 	N = false
 	C = false
 	SZV = cond(a)
-	Z = SZV (alias)
+	Z = (bool) SZV (alias)
 	branch Test(NE,Z) l14C9
 // DataOut: af b bc c d de e hl ix
 // DataOut (flags): 
@@ -4144,7 +4144,7 @@ l14A1:
 	N_29 = false
 	C_30 = false
 	SZV_31 = cond(a_24)
-	Z_32 = SZV_31 (alias)
+	Z_32 = (bool) SZV_31 (alias)
 	branch a_24 != 0x00 l14AF_thunk_fn14C9
 // DataOut: af b bc c d de e hl ix
 // DataOut (flags): 
@@ -5194,7 +5194,7 @@ fn22A6_entry:
 // DataOut: bc ix
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
+// LocalsOut: fp(16) Stack +0005(16) Stack +0007(16) Stack +000D(16) Stack +0010(16)
 
 l22A6:
 	Mem6[ix + -4:byte] = Mem0[ix + -9:byte]
@@ -5248,7 +5248,7 @@ fn291C_entry:
 l291C:
 	byte a_13 = 0x00 - (__ror(Mem0[hl - 1:byte], 0x01) <u 0x00)
 	byte a_20 = 0x00 - (__ror(a, 0x01) <u 0x00)
-	branch __rcl(a_13, 0x01, cond(__rcl(a_13 ^ a_20, 0x01, false))) >=u 0x00 l293D
+	branch __rcl(a_13, 0x01, (bool) cond(__rcl(a_13 ^ a_20, 0x01, false))) >=u 0x00 l293D
 // DataOut: d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -5280,7 +5280,7 @@ l294B:
 fn291C_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: af:<invalid> sp:sp + 2 -2(fp):af
+// SymbolicIn: sp:fp af:af -2(fp):af
 
 
 
@@ -5635,7 +5635,7 @@ l3EBF_thunk_fn3EC2:
 fn3E2D_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: 3(fp):<invalid> 5(fp):<invalid>
+// SymbolicIn: sp:fp 3(fp):<invalid> 5(fp):<invalid>
 
 
 
@@ -5652,7 +5652,7 @@ fn3EC2_entry:
 // DataOut: a b ix
 // DataOut (flags): C
 // SymbolicIn: sp:fp
-// LocalsOut: fp(32) Stack +0003(16) Stack +0005(16) Stack +0007(16)
+// LocalsOut: fp(16) Stack +0003(16) Stack +0005(16) Stack +0007(16)
 
 l3EC2:
 	byte v16_21 = Mem0[wArg05:byte]

@@ -218,16 +218,14 @@ namespace Reko.Core.Machine
         protected AddressOperand(Address a, PrimitiveType type)
             : base(type)
         {
-            if (a == null)
-                throw new ArgumentNullException("a");
-            Address = a;
+            Address = a ?? throw new ArgumentNullException("a");
         }
 
         public static AddressOperand Create(Address addr)
         {
             return new AddressOperand(
                 addr,
-                PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
+                PrimitiveType.Create(Domain.Pointer, addr.DataType.BitSize));
         }
 
         public static AddressOperand Ptr16(ushort a)
@@ -256,7 +254,7 @@ namespace Reko.Core.Machine
     /// </summary>
 	public class FpuOperand : MachineOperand
 	{
-		private int fpuReg;
+		private readonly int fpuReg;
 
 		public FpuOperand(int f) : base(PrimitiveType.Real64)
 		{

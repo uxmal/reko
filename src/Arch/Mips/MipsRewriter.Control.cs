@@ -113,6 +113,14 @@ namespace Reko.Arch.Mips
             m.Branch(cond, addr, rtlc);
         }
 
+        private void RewriteEret(MipsInstruction instr)
+        {
+            // Return from exception doesn't seem to modify any 
+            // GPRs (as well it shouldn't).
+            // MIPS manual says it does _not_ have a delay slot.
+            m.Return(0, 0);
+        }
+
         private void RewriteJal(MipsInstruction instr)
         {
             //$TODO: if we want explicit representation of the continuation of call

@@ -5,6 +5,11 @@
 #include "pySample.h"
 
 word32 g_dwFFFFFFFF;
+Eq_922 g_t10000000 = 
+	{
+		0x5A4D,
+		0x000000F0,
+	};
 Eq_283 g_t10002098 = null;
 Eq_284 g_t1000209C = null;
 Eq_228 g_t100020A0 = null;
@@ -27,6 +32,10 @@ char g_str10002168[] = "f";
 char g_str1000216C[] = ":unused";
 char g_str10002174[] = "pySample";
 word32 g_dw100021D8 = 0x00000000;
+struct HINSTANCE__ g_t10002230 = 
+	{
+		-2,
+	};
 ui32 g_dw10003000 = 0xBB40E64E;
 ui32 g_dw10003004 = 0x44BF19B1;
 Eq_197 g_t10003008 = 0xFFFFFFFF;

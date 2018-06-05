@@ -140,11 +140,16 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void NavigateToToolbarAddress()
         {
-            Address addr;
-            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
+            var txtAddr = Control.ToolBarAddressTextbox.Text;
+            if (txtAddr[0] == 0xFEFF)
+            {
+                // Get rid of UTF-16 BOM Windows insists on prepending
+                 txtAddr = txtAddr.Substring(1);
+            }
+            txtAddr = txtAddr.Trim();
             if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
                 txtAddr = txtAddr.Substring(2);
-            if (!program.Architecture.TryParseAddress(txtAddr, out addr))
+            if (!program.Architecture.TryParseAddress(txtAddr, out Address addr))
                 return;
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
         }

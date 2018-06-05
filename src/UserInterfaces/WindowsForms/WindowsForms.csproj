@@ -117,6 +117,7 @@
     <Compile Include="Controls\MixedCodeDataModel.SpanGenerator.cs" />
     <Compile Include="Controls\NestedTextModel.cs" />
     <Compile Include="Controls\ProcedureCodeModel.cs" />
+    <Compile Include="Controls\PropertyGridWrapper.cs" />
     <Compile Include="Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -311,6 +312,7 @@
     <Compile Include="PreviewInteractor.cs" />
     <Compile Include="ProgressbarWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyGridWrapper.cs" />
     <Compile Include="RadioButtonWrapper.cs" />
     <Compile Include="ResourceEditorInteractor.cs" />
     <Compile Include="ResourceEditorService.cs" />

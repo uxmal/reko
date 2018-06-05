@@ -84,7 +84,7 @@ namespace Reko.Arch.Arm
                     var i = nReg.Number;
                     var b = nReg.BitSize;
                     var a = (uint)nReg.BitOffset;
-                    var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b / 8));
+                    var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
         }
