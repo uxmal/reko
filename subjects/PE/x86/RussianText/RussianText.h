@@ -107,10 +107,10 @@ T_13: (in SCZO_20 : byte)
   Class: Eq_13
   DataType: byte
   OrigDataType: byte
-T_14: (in C_21 : byte)
+T_14: (in C_21 : bool)
   Class: Eq_14
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_15: (in eax_22 : word32)
   Class: Eq_15
   DataType: word32
@@ -119,10 +119,10 @@ T_16: (in SZO_23 : byte)
   Class: Eq_16
   DataType: byte
   OrigDataType: byte
-T_17: (in Z_24 : byte)
+T_17: (in Z_24 : bool)
   Class: Eq_17
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_18: (in __CRTL_TLS_GetValue : ptr32)
   Class: Eq_18
   DataType: (ptr code)
@@ -335,10 +335,10 @@ T_70: (in SCZO_42 : byte)
   Class: Eq_70
   DataType: byte
   OrigDataType: byte
-T_71: (in C_43 : byte)
+T_71: (in C_43 : bool)
   Class: Eq_71
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_72: (in eax_44 : word32)
   Class: Eq_72
   DataType: word32
@@ -347,10 +347,10 @@ T_73: (in SZO_45 : byte)
   Class: Eq_73
   DataType: byte
   OrigDataType: byte
-T_74: (in Z_46 : byte)
+T_74: (in Z_46 : bool)
   Class: Eq_74
-  DataType: byte
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_75: (in __CRTL_TLS_ExitThread : ptr32)
   Class: Eq_75
   DataType: (ptr code)

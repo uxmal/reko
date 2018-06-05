@@ -22,10 +22,10 @@ void fn0040110B(word32 eax)
 	{
 		ptr32 esp_19;
 		byte SCZO_20;
-		byte C_21;
+		bool C_21;
 		word32 eax_22;
 		byte SZO_23;
-		byte Z_24;
+		bool Z_24;
 		__CRTL_TLS_GetValue();
 		if (eax_22 != 0x00)
 		{
@@ -36,10 +36,10 @@ void fn0040110B(word32 eax)
 			*(esp_19 - 0x04) = globals->dw40208B;
 			word32 esp_41;
 			byte SCZO_42;
-			byte C_43;
+			bool C_43;
 			word32 eax_44;
 			byte SZO_45;
-			byte Z_46;
+			bool Z_46;
 			__CRTL_TLS_ExitThread();
 		}
 	}

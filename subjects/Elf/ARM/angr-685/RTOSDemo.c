@@ -510,7 +510,7 @@ void prvAddCurrentTaskToDelayedList.isra.0(word32 r0, word32 r1, word32 r6, word
 	if (!ZC)
 	{
 		byte NZCV_42 = cond((r6 >> 0x08) - r8 - C);
-		C = NZCV_42;
+		C = (bool) NZCV_42;
 		Z = NZCV_42;
 		V = NZCV_42;
 	}
@@ -524,36 +524,36 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 	word32 sp_1 = fp;
 	if (!ZC)
 	{
-		word32 pc_159 = r7 - __ror(r9, 0x01);
+		word32 pc_155 = r7 - __ror(r9, 0x01);
 	}
 	if (!ZC)
 	{
 		r8 = r0 + (r6 >> 0x08) + C;
-		byte NZCV_151 = cond(r8);
-		C = NZCV_151;
-		ZC = NZCV_151;
-		Z = NZCV_151;
-		V = NZCV_151;
-		NZV = NZCV_151;
-		N = NZCV_151;
+		byte NZCV_147 = cond(r8);
+		C = (bool) NZCV_147;
+		ZC = NZCV_147;
+		Z = NZCV_147;
+		V = NZCV_147;
+		NZV = NZCV_147;
+		N = NZCV_147;
 	}
 	if (!ZC)
 	{
-		Mem147[r6 - 0x04 + 0x00:word32] = r9;
-		Mem148[r6 - 0x08 + 0x00:word32] = r10;
-		Mem149[r6 - 0x0C + 0x00:word32] = ip;
+		Mem143[r6 - 0x04 + 0x00:word32] = r9;
+		Mem144[r6 - 0x08 + 0x00:word32] = r10;
+		Mem145[r6 - 0x0C + 0x00:word32] = ip;
 	}
 	if (!Z)
 		r9 = r6 - (r6 >> 0x0014);
 	word32 v16_25 = (word32) Mem0[0x000008CD + 0x00:int16];
 	if (!V)
 	{
-		Mem140[r6 + 0x00:word32] = r0;
-		Mem141[r6 - 0x04 + 0x00:word32] = r4;
-		Mem142[r6 - 0x08 + 0x00:word32] = r5;
-		Mem143[r6 - 0x0C + 0x00:word32] = r7;
-		Mem144[r6 - 0x0010 + 0x00:word32] = r8;
-		Mem145[r6 - 0x0014 + 0x00:word32] = r10;
+		Mem136[r6 + 0x00:word32] = r0;
+		Mem137[r6 - 0x04 + 0x00:word32] = r4;
+		Mem138[r6 - 0x08 + 0x00:word32] = r5;
+		Mem139[r6 - 0x0C + 0x00:word32] = r7;
+		Mem140[r6 - 0x0010 + 0x00:word32] = r8;
+		Mem141[r6 - 0x0014 + 0x00:word32] = r10;
 	}
 	if (!C)
 	{
@@ -562,19 +562,19 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 	}
 	if (!NZV)
 	{
-		Mem125[r6 + 0x00:word32] = r0;
-		Mem126[r6 - 0x04 + 0x00:word32] = r1;
-		Mem127[r6 - 0x08 + 0x00:word32] = r2;
-		Mem128[r6 - 0x0C + 0x00:word32] = v16_25;
-		Mem129[r6 - 0x0010 + 0x00:word32] = r4;
-		Mem131[r6 - 0x0014 + 0x00:word32] = r5;
-		Mem132[r6 - 0x0018 + 0x00:word32] = r6;
-		Mem133[r6 - 0x001C + 0x00:word32] = r7;
-		Mem135[r6 - 0x0020 + 0x00:word32] = r10;
+		Mem121[r6 + 0x00:word32] = r0;
+		Mem122[r6 - 0x04 + 0x00:word32] = r1;
+		Mem123[r6 - 0x08 + 0x00:word32] = r2;
+		Mem124[r6 - 0x0C + 0x00:word32] = v16_25;
+		Mem125[r6 - 0x0010 + 0x00:word32] = r4;
+		Mem127[r6 - 0x0014 + 0x00:word32] = r5;
+		Mem128[r6 - 0x0018 + 0x00:word32] = r6;
+		Mem129[r6 - 0x001C + 0x00:word32] = r7;
+		Mem131[r6 - 0x0020 + 0x00:word32] = r10;
 	}
 	if (!Z)
 	{
-		Mem124[r7 + -177:word32] = r0;
+		Mem120[r7 + -177:word32] = r0;
 		r7 = r7 + -177;
 	}
 	if (!ZC)
@@ -586,48 +586,48 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 		r6 = (word32) Mem0[r0 - 88 + 0x00:int16];
 	if (!N)
 	{
-		byte NZC_108 = cond(sp_1 | 0x9500);
-		N = NZC_108;
-		Z = NZC_108;
+		byte NZC_105 = cond(sp_1 | 0x9500);
+		N = NZC_105;
+		Z = NZC_105;
 	}
 	if (!N)
 	{
-		Mem99[r6 - 0x04 + 0x00:word32] = r1;
-		Mem100[r6 - 0x08 + 0x00:word32] = r2;
-		Mem101[r6 - 0x0C + 0x00:word32] = r6;
-		Mem102[r6 - 0x0010 + 0x00:word32] = r9;
-		Mem104[r6 - 0x0014 + 0x00:word32] = ip;
-		Mem105[r6 - 0x0018 + 0x00:word32] = sp_1;
+		Mem97[r6 - 0x04 + 0x00:word32] = r1;
+		Mem98[r6 - 0x08 + 0x00:word32] = r2;
+		Mem99[r6 - 0x0C + 0x00:word32] = r6;
+		Mem100[r6 - 0x0010 + 0x00:word32] = r9;
+		Mem102[r6 - 0x0014 + 0x00:word32] = ip;
+		Mem103[r6 - 0x0018 + 0x00:word32] = sp_1;
 	}
 	if (!Z)
 		Z = cond(r2 *u r7);
 	if (!Z)
 	{
-		word32 r7_63 = r7 + 3989;
-		word32 sp_64;
-		byte ZC_65;
-		word32 pc_66;
-		word32 r7_67;
-		word32 r9_68;
-		word32 r8_69;
-		word32 r0_70;
-		word32 r6_71;
-		bool C_72;
-		byte NZCV_73;
-		word32 r10_74;
-		word32 ip_75;
-		byte Z_76;
-		word32 r3_77;
-		byte V_78;
-		word32 r4_79;
-		word32 r5_80;
-		word32 p0_81;
-		byte NZV_82;
-		word32 r1_83;
-		word32 r2_84;
-		byte N_85;
-		byte NZC_86;
-		((word32) Mem0[r7_63 + 0x00:byte])();
+		word32 r7_61 = r7 + 3989;
+		word32 sp_62;
+		byte ZC_63;
+		word32 pc_64;
+		word32 r7_65;
+		word32 r9_66;
+		word32 r8_67;
+		word32 r0_68;
+		word32 r6_69;
+		bool C_70;
+		byte NZCV_71;
+		word32 r10_72;
+		word32 ip_73;
+		byte Z_74;
+		word32 r3_75;
+		byte V_76;
+		word32 r4_77;
+		word32 r5_78;
+		word32 p0_79;
+		byte NZV_80;
+		word32 r1_81;
+		word32 r2_82;
+		byte N_83;
+		byte NZC_84;
+		((word32) Mem0[r7_61 + 0x00:byte])();
 	}
 }
 
@@ -803,8 +803,8 @@ void xTaskIncrementTick(word32 r0, word32 r7, word32 r8, word32 p0)
 	}
 }
 
-// 00000E6D: void xTaskResumeAll(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6, Register word32 r8, Register word32 fp, Register word32 ip, Register word32 p8)
-void xTaskResumeAll(word32 lr, word32 pc, word32 r0, word32 r1, word32 r6, word32 r8, word32 fp, word32 ip, word32 p8)
+// 00000E6D: void xTaskResumeAll(Register word32 lr, Register word32 r0, Register word32 r1, Register word32 r6, Register word32 r8, Register word32 fp, Register word32 ip, Register word32 p8)
+void xTaskResumeAll(word32 lr, word32 r0, word32 r1, word32 r6, word32 r8, word32 fp, word32 ip, word32 p8)
 {
 	if (!ZC)
 	{
@@ -892,8 +892,8 @@ void vTaskDelay(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r4
 		__ldcl(0x0C, Mem0[r8 + 0x00:word32]);
 }
 
-// 00000F81: void vTaskDelayUntil(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 s4, Register word32 s8)
-void vTaskDelayUntil(word32 pc, word32 r0, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 s4, word32 s8)
+// 00000F81: void vTaskDelayUntil(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 s4, Register word32 s8)
+void vTaskDelayUntil(word32 pc, word32 r0, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 s4, word32 s8)
 {
 	if (!NZV)
 	{
@@ -970,8 +970,8 @@ void xTaskRemoveFromUnorderedEventList()
 {
 }
 
-// 000010D9: void vTaskSwitchContext(Register word32 r0, Register word32 r8, Register word32 r9)
-void vTaskSwitchContext(word32 r0, word32 r8, word32 r9)
+// 000010D9: void vTaskSwitchContext(Register word32 r8, Register word32 r9)
+void vTaskSwitchContext(word32 r8, word32 r9)
 {
 	if (!ZC)
 		__ldcl(0x0D, Mem0[r8 + 0x00:word32]);
@@ -1033,8 +1033,8 @@ void xTaskCheckForTimeOut(word32 r0, word32 r1, word32 r2, word32 r8, word32 fp,
 		ZC = cond(__ror(r8, 0x06) - r8 - C);
 }
 
-// 000011AD: void vTaskMissedYield(Register word32 r0)
-void vTaskMissedYield(word32 r0)
+// 000011AD: void vTaskMissedYield()
+void vTaskMissedYield()
 {
 }
 
@@ -1100,7 +1100,7 @@ void prvSVCHandler(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32
 		byte NZCV_52 = cond(r1);
 		r2_r1 = SEQ(r2, r1);
 		r1_r0 = SEQ(r1, r0);
-		C = NZCV_52;
+		C = (bool) NZCV_52;
 		Z = NZCV_52;
 		ZC = NZCV_52;
 		V = NZCV_52;
@@ -1112,7 +1112,7 @@ void prvSVCHandler(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32
 		word32 r0_37 = r3 - 0x00340000 - C;
 		byte NZCV_39 = cond(r0_37);
 		r1_r0 = SEQ(r1, r0_37);
-		C = NZCV_39;
+		C = (bool) NZCV_39;
 		Z = NZCV_39;
 		ZC = NZCV_39;
 		V = NZCV_39;
@@ -1221,8 +1221,8 @@ void vPortSVCHandler()
 {
 }
 
-// 0000172D: void pvPortMalloc(Register word32 r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10)
-void pvPortMalloc(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10)
+// 0000172D: void pvPortMalloc(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10)
+void pvPortMalloc(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10)
 {
 	if (!C)
 		Z = cond(0x00001739 + (r7 << 0x0018) + C);
@@ -1238,20 +1238,17 @@ void pvPortMalloc(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 
 	}
 }
 
-// 00001781: void vPortFree(Register word32 r0, Register word32 r7)
-void vPortFree(word32 r0, word32 r7)
+// 00001781: void vPortFree(Register word32 r7)
+void vPortFree(word32 r7)
 {
 	if (Z)
-		vPortInitialiseBlocks(r0);
+		vPortInitialiseBlocks();
 	else
-	{
-		word32 r0_9 = 0x00001789 + (r7 >> 0x0020) + C;
-		vPortInitialiseBlocks(r0_9);
-	}
+		vPortInitialiseBlocks();
 }
 
-// 00001785: void vPortInitialiseBlocks(Register word32 r0)
-void vPortInitialiseBlocks(word32 r0)
+// 00001785: void vPortInitialiseBlocks()
+void vPortInitialiseBlocks()
 {
 }
 
@@ -1261,7 +1258,7 @@ void xPortGetFreeHeapSize(word32 r0, word32 r2, word32 r5, word32 r7, word32 r8,
 	if (!NZV)
 	{
 		byte NZCV_63 = cond((fp >> 0x06) - r8 - C);
-		C = NZCV_63;
+		C = (bool) NZCV_63;
 		NZV = NZCV_63;
 		V = NZCV_63;
 		Z = NZCV_63;
@@ -1269,7 +1266,7 @@ void xPortGetFreeHeapSize(word32 r0, word32 r2, word32 r5, word32 r7, word32 r8,
 	if (!V)
 	{
 		byte NZC_50 = cond(r0 ^ __ror(r0, 0x08));
-		C = NZC_50;
+		C = (bool) NZC_50;
 		Z = NZC_50;
 	}
 	if (!C)
@@ -1500,7 +1497,7 @@ void vCheckTask(word32 r0, word32 r1, word32 r2, word32 r3, word32 r8, word32 ip
 	if (!Z)
 	{
 		byte NZCV_49 = cond(0x00F00000 - ip - C);
-		C = NZCV_49;
+		C = (bool) NZCV_49;
 		ZC = NZCV_49;
 		N = NZCV_49;
 	}
@@ -1908,7 +1905,7 @@ void xQueueCRReceive(word32 r1, word32 r2, word32 r3, word32 r4, word32 r6, word
 		word32 r2_46 = r9 + __ror(0x3FF0, 0x001A) + C;
 		byte NZCV_48 = cond(r2_46);
 		r2_r1 = SEQ(r2_46, r1);
-		C = NZCV_48;
+		C = (bool) NZCV_48;
 		ZC = NZCV_48;
 		Z = NZCV_48;
 	}
@@ -2579,7 +2576,7 @@ void GPIODirModeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		r0 = r4 ^ 0xF8;
 		Z = NZC_63;
 		ZC = NZC_63;
-		C = NZC_63;
+		C = (bool) NZC_63;
 	}
 	if (!Z)
 		Mem60[0x00009119 + 0x00:word32] = r0;
@@ -2596,7 +2593,7 @@ void GPIODirModeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		fn010CC019();
 	}
 	if (!Z)
-		C = cond((r3 >> 0x0020) - r8 - C);
+		C = (bool) cond((r3 >> 0x0020) - r8 - C);
 }
 
 // 00009135: void GPIODirModeGet()
@@ -2615,7 +2612,7 @@ void GPIOIntTypeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		ZC = NZC_182;
 		NZV = NZC_182;
 		NZV = NZC_182;
-		C = NZC_182;
+		C = (bool) NZC_182;
 		N = NZC_182;
 	}
 	if (!Z)
@@ -3064,13 +3061,13 @@ void IntRegister(word32 r0, word32 r1, word32 r8, word32 fp)
 		Z = cond(fp & 0x5000);
 }
 
-// 00009539: void IntUnregister(Register word32 r0)
-void IntUnregister(word32 r0)
+// 00009539: void IntUnregister()
+void IntUnregister()
 {
 }
 
-// 0000954D: void IntPriorityGroupingSet(Register word32 r0)
-void IntPriorityGroupingSet(word32 r0)
+// 0000954D: void IntPriorityGroupingSet()
+void IntPriorityGroupingSet()
 {
 }
 
@@ -3180,7 +3177,7 @@ void IntPriorityGet(word32 pc, word32 r0, word32 r2, word32 r8, word32 r10)
 		Z = NZCV_95;
 		NZV = NZCV_95;
 		V = NZCV_95;
-		C = NZCV_95;
+		C = (bool) NZCV_95;
 		NV = NZCV_95;
 	}
 	if (!Z)
@@ -3200,7 +3197,7 @@ void IntPriorityGet(word32 pc, word32 r0, word32 r2, word32 r8, word32 r10)
 		Z = NZCV_74;
 		NZV = NZCV_74;
 		V = NZCV_74;
-		C = NZCV_74;
+		C = (bool) NZCV_74;
 		NV = NZCV_74;
 	}
 	if (!Z)
@@ -3240,7 +3237,7 @@ void IntDisable(word32 r0, word32 r8)
 void OSRAMDelay(word32 pc, word32 r1, word32 r8)
 {
 	if (!V)
-		C = cond(r1 - (r8 >>u fp) - C);
+		C = (bool) cond(r1 - (r8 >>u fp) - C);
 	if (C)
 		OSRAMWriteFirst();
 	else
@@ -3375,7 +3372,7 @@ void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word3
 	{
 		byte NZCV_34 = cond(r1 ^ r6 >> 0x08);
 		Z = NZCV_34;
-		C = NZCV_34;
+		C = (bool) NZCV_34;
 	}
 	if (!Z)
 		r0 = __ssub8(r8, r3);
@@ -3396,7 +3393,7 @@ void OSRAMInit(word32 pc, word32 r0, word32 r1, word32 r2, word32 r6, word32 r8,
 	if (!Z)
 	{
 		byte NZCV_29 = cond((r6 >> 0x001E) - r0 - C);
-		C = NZCV_29;
+		C = (bool) NZCV_29;
 		Z = NZCV_29;
 	}
 	if (!C)
@@ -3748,7 +3745,7 @@ void SysCtlPeripheralClockGating(word32 pc, word32 r0, word32 r1, word32 r2, wor
 	{
 		r4 = (r7 >> 0x06) - r0 - C;
 		byte NZCV_49 = cond(r4);
-		C = NZCV_49;
+		C = (bool) NZCV_49;
 		Z = NZCV_49;
 		V = NZCV_49;
 	}
@@ -4193,7 +4190,7 @@ void SysCtlPLLVerificationSet(word32 r0, word32 r1, word32 r3, word32 r4, word32
 	if (!ZC)
 	{
 		byte NZCV_44 = cond((r7 >> 0x06) - r4 - C);
-		C = NZCV_44;
+		C = (bool) NZCV_44;
 		Z = NZCV_44;
 		V = NZCV_44;
 	}
@@ -4284,7 +4281,7 @@ void UARTCharsAvail(word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 	if (!Z)
 	{
 		byte NZCV_39 = cond(__ror(r9, 0x00) - r0 - C);
-		C = NZCV_39;
+		C = (bool) NZCV_39;
 		Z = NZCV_39;
 		ZC = NZCV_39;
 	}
@@ -4305,7 +4302,7 @@ void UARTSpaceAvail(word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 	if (!C)
 	{
 		byte NZCV_31 = cond(__ror(r9, 0x00) - r0 - C);
-		C = NZCV_31;
+		C = (bool) NZCV_31;
 		ZC = NZCV_31;
 		N = NZCV_31;
 	}

@@ -4,35 +4,35 @@
 
 #include "BENCHLNG.h"
 
-struct Eq_128 * g_ptr0000;
-Eq_1281 g_t0001;
+struct Eq_126 * g_ptr0000;
+Eq_1099 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
-union Eq_32 g_u12BC = 
+union Eq_31 g_u12BC = 
 	{
 		0x64
 	};
-Eq_4715 g_a28C5[] = 
+Eq_4397 g_a28C5[] = 
 	{
 	};
 ptr32 g_ptr3E20 = 0x00000000;
-struct Eq_5 * g_ptr3E24 = &g_t4000;
-union Eq_32 * g_ptr3E28 = null;
-struct Eq_70 * g_ptr3E2C = &g_t10202;
-struct Eq_70 * g_ptr3E30 = &g_t3030303;
+struct Eq_4 * g_ptr3E24 = &g_t4000;
+union Eq_31 * g_ptr3E28 = null;
+struct Eq_69 * g_ptr3E2C = &g_t10202;
+struct Eq_69 * g_ptr3E30 = &g_t3030303;
 int32 g_dw3E34 = 67372036;
 int32 g_dw3E38 = 67372036;
 ui32 g_dw3E3C = 0x05050505;
 word32 g_dw3E48 = 0x05050505;
 ptr32 g_ptr3E4C = 0x06060606;
 word32 g_dw3E50 = 0x06060606;
-struct Eq_3450 * g_ptr3E54 = &g_t6060606;
+struct Eq_3178 * g_ptr3E54 = &g_t6060606;
 word32 g_dw3E58 = 0x06060606;
-Eq_3995 g_a3E5C[] = 
+Eq_3694 g_a3E5C[] = 
 	{
 	};
-Eq_5 g_t4000;
-Eq_70 g_t10202;
-Eq_70 g_t3030303;
-Eq_3450 g_t6060606;
+Eq_4 g_t4000;
+Eq_69 g_t10202;
+Eq_69 g_t3030303;
+Eq_3178 g_t6060606;
 
