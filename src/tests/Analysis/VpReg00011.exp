@@ -129,11 +129,11 @@ bl_28: orig: bl
 SZO_29: orig: SZO
     def:  SZO_29 = cond(bx_26)
     uses: SCZO_30 = SZO_29 (alias)
-          S_31 = SZO_29 (alias)
+          S_31 = (bool) SZO_29 (alias)
 SCZO_30: orig: SCZO
     def:  SCZO_30 = SZO_29 (alias)
 S_31: orig: S
-    def:  S_31 = SZO_29 (alias)
+    def:  S_31 = (bool) SZO_29 (alias)
 // fn0C00_0004
 // Return size: 0
 void fn0C00_0004()
@@ -173,7 +173,7 @@ l0C00_000C:
 	bl_28 = (byte) bx_26 (alias)
 	SZO_29 = cond(bx_26)
 	SCZO_30 = SZO_29 (alias)
-	S_31 = SZO_29 (alias)
+	S_31 = (bool) SZO_29 (alias)
 	branch bx_26 >= 0x0000 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
@@ -271,11 +271,11 @@ bl_28: orig: bl
 SZO_29: orig: SZO
     def:  SZO_29 = cond(bx_26)
     uses: SCZO_30 = SZO_29 (alias)
-          S_31 = SZO_29 (alias)
+          S_31 = (bool) SZO_29 (alias)
 SCZO_30: orig: SCZO
     def:  SCZO_30 = SZO_29 (alias)
 S_31: orig: S
-    def:  S_31 = SZO_29 (alias)
+    def:  S_31 = (bool) SZO_29 (alias)
 // fn0C00_0004
 // Return size: 0
 void fn0C00_0004()
@@ -315,7 +315,7 @@ l0C00_000C:
 	bl_28 = (byte) bx_26 (alias)
 	SZO_29 = cond(bx_26)
 	SCZO_30 = SZO_29 (alias)
-	S_31 = SZO_29 (alias)
+	S_31 = (bool) SZO_29 (alias)
 	branch bx_26 >= 0x0000 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:

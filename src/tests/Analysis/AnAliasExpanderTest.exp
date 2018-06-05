@@ -25,19 +25,19 @@ l0C00_0000:
 	ax = ax ^ ax
 	al = (byte) ax (alias)
 	SZO = cond(ax)
-	Z = SZO (alias)
+	Z = (bool) SZO (alias)
 	C = false
-	SCZO = C (alias)
+	SCZO = DPB(SCZO, C, 0) (alias)
 	// succ:  l0C00_0005
 l0C00_0005:
 	al = al + cl
 	ax = DPB(ax, al, 0) (alias)
 	SCZO = cond(al)
-	C = SCZO (alias)
+	C = (bool) SCZO (alias)
 	cl = cl - 0x01
 	cx = DPB(cx, cl, 0) (alias)
 	SZO = cond(cl)
-	Z = SZO (alias)
+	Z = (bool) SZO (alias)
 	SCZO = SZO (alias)
 	branch Test(NE,Z) l0C00_0005
 	// succ:  l0C00_000B l0C00_0005

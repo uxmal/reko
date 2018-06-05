@@ -86,5 +86,33 @@ namespace Reko.UnitTests.Drivers.CmdLine
 
             mr.VerifyAll();
         }
+
+        // Verify that architecture options are being passed correctly.
+        [Test]
+        public void CmdLine_ArchOptions()
+        {
+            var arch = mr.Stub<IProcessorArchitecture>();
+            configSvc.Stub(c => c.GetArchitecture("test")).Return(arch);
+            arch.Expect(a => a.LoadUserOptions(
+                Arg<Dictionary<string, object>>.Matches(d =>
+                    (string)d["option1"] == "value1" && 
+                    (string)d["option2"] == "value2")));
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("0000"),
+                out Arg<Address>.Out(Address.Ptr32(0x0000)).Dummy))
+                .Return(true);
+            mr.ReplayAll();
+
+            var cmdline = new CmdLineDriver(sc, ldr, decompiler, null);
+            cmdline.Execute(new[]
+            {
+                "--arch", "test",
+                "--arch-option", "option1=value1",
+                "--arch-option", "option2=value2",
+                "--base", "0000",
+                "foo.bin"
+            });
+            mr.VerifyAll();
+        }
     }
 }

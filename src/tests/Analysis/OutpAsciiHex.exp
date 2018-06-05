@@ -40,7 +40,7 @@ fn0C00_0000_exit:
 ====================
 // fn0C00_000A
 // Return size: 0
-byte fn0C00_000A(byte al, ptr16 & alOut)
+bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	def fp
 	def al
@@ -49,83 +49,87 @@ fn0C00_000A_entry:
 l0C00_000A:
 	sp_1 = fp
 	SCZO_3 = cond(al - 0x30)
-	C_4 = SCZO_3 (alias)
+	C_4 = (bool) SCZO_3 (alias)
 	CZ_5 = SCZO_3 (alias)
 	branch Test(ULT,C_4) l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
 l0C00_000E:
-	SCZO_14 = cond(al - 0x39)
-	C_15 = SCZO_14 (alias)
-	CZ_16 = SCZO_14 (alias)
-	branch Test(ULE,CZ_16) l0C00_0022
+	SCZO_16 = cond(al - 0x39)
+	C_17 = (bool) SCZO_16 (alias)
+	CZ_18 = SCZO_16 (alias)
+	branch Test(ULE,CZ_18) l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	SCZO_33 = cond(al - 0x41)
-	C_34 = SCZO_33 (alias)
-	CZ_35 = SCZO_33 (alias)
-	branch Test(ULT,C_34) l0C00_0032
+	SCZO_37 = cond(al - 0x41)
+	C_38 = (bool) SCZO_37 (alias)
+	CZ_39 = SCZO_37 (alias)
+	branch Test(ULT,C_38) l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
-	SCZO_36 = cond(al - 0x46)
-	C_37 = SCZO_36 (alias)
-	CZ_38 = SCZO_36 (alias)
-	branch Test(ULE,CZ_38) l0C00_0022
+	SCZO_40 = cond(al - 0x46)
+	C_41 = (bool) SCZO_40 (alias)
+	CZ_42 = SCZO_40 (alias)
+	branch Test(ULE,CZ_42) l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	SCZO_39 = cond(al - 0x61)
-	C_40 = SCZO_39 (alias)
-	CZ_41 = SCZO_39 (alias)
-	branch Test(ULT,C_40) l0C00_0032
+	SCZO_43 = cond(al - 0x61)
+	C_44 = (bool) SCZO_43 (alias)
+	CZ_45 = SCZO_43 (alias)
+	branch Test(ULT,C_44) l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	SCZO_42 = cond(al - 0x66)
-	C_43 = SCZO_42 (alias)
-	CZ_44 = SCZO_42 (alias)
-	branch Test(UGT,CZ_44) l0C00_0032
+	SCZO_46 = cond(al - 0x66)
+	C_47 = (bool) SCZO_46 (alias)
+	CZ_48 = SCZO_46 (alias)
+	branch Test(UGT,CZ_48) l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	al_17 = al - 0x30
-	SCZO_18 = cond(al_17 - 0x0A)
-	C_19 = SCZO_18 (alias)
-	CZ_20 = SCZO_18 (alias)
-	branch Test(ULT,C_19) l0C00_0030
+	al_19 = al - 0x30
+	SCZO_20 = cond(al_19 - 0x0A)
+	C_21 = (bool) SCZO_20 (alias)
+	CZ_22 = SCZO_20 (alias)
+	branch Test(ULT,C_21) l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_25 = al_17 - 0x07
-	SCZO_26 = cond(al_25 - 0x10)
-	C_27 = SCZO_26 (alias)
-	CZ_28 = SCZO_26 (alias)
-	branch Test(ULT,C_27) l0C00_0030
+	al_29 = al_19 - 0x07
+	SCZO_30 = cond(al_29 - 0x10)
+	C_31 = (bool) SCZO_30 (alias)
+	CZ_32 = SCZO_30 (alias)
+	branch Test(ULT,C_31) l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_29 = al_25 - 0x20
-	SCZO_30 = cond(al_29)
-	C_31 = SCZO_30 (alias)
-	CZ_32 = SCZO_30 (alias)
+	al_33 = al_29 - 0x20
+	SCZO_34 = cond(al_33)
+	C_35 = (bool) SCZO_34 (alias)
+	CZ_36 = SCZO_34 (alias)
 	// succ:  l0C00_0030
 l0C00_0030:
-	al_21 = PHI(al_17, al_25, al_29)
-	C_22 = false
-	SCZO_23 = C_22 (alias)
-	CZ_24 = C_22 (alias)
-	return C_22
+	al_23 = PHI(al_19, al_29, al_33)
+	SCZO_24 = PHI(SCZO_20, SCZO_30, SCZO_34)
+	CZ_25 = PHI(CZ_22, CZ_32, CZ_36)
+	C_26 = false
+	SCZO_27 = DPB(SCZO_24, C_26, 0) (alias)
+	CZ_28 = DPB(CZ_25, C_26, 0) (alias)
+	return C_26
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	C_11 = true
-	SCZO_12 = C_11 (alias)
-	CZ_13 = C_11 (alias)
-	return C_11
+	SCZO_11 = PHI(SCZO_3, SCZO_37, SCZO_43, SCZO_46)
+	CZ_12 = PHI(CZ_5, CZ_39, CZ_45, CZ_48)
+	C_13 = true
+	SCZO_14 = DPB(SCZO_11, C_13, 0) (alias)
+	CZ_15 = DPB(CZ_12, C_13, 0) (alias)
+	return C_13
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	al_6 = PHI(al, al_21)
-	C_7 = PHI(C_11, C_22)
-	SCZO_8 = PHI(SCZO_12, SCZO_23)
-	CZ_9 = PHI(CZ_13, CZ_24)
+	al_6 = PHI(al, al_23)
+	C_7 = PHI(C_13, C_26)
+	SCZO_8 = PHI(SCZO_14, SCZO_27)
+	CZ_9 = PHI(CZ_15, CZ_28)
 	use al_6 (=> alOut)
 
 // fn0C00_000A
 // Return size: 0
-byte fn0C00_000A(byte al, ptr16 & alOut)
+bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	def al
 	*alOut = al
@@ -133,59 +137,59 @@ fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:
 	SCZO_3 = cond(al - 0x30)
-	C_4 = SCZO_3 (alias)
+	C_4 = (bool) SCZO_3 (alias)
 	branch Test(ULT,C_4) l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
 l0C00_000E:
-	SCZO_14 = cond(al - 0x39)
-	CZ_16 = SCZO_14 (alias)
-	branch Test(ULE,CZ_16) l0C00_0022
+	SCZO_16 = cond(al - 0x39)
+	CZ_18 = SCZO_16 (alias)
+	branch Test(ULE,CZ_18) l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	SCZO_33 = cond(al - 0x41)
-	C_34 = SCZO_33 (alias)
-	branch Test(ULT,C_34) l0C00_0032
+	SCZO_37 = cond(al - 0x41)
+	C_38 = (bool) SCZO_37 (alias)
+	branch Test(ULT,C_38) l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
-	SCZO_36 = cond(al - 0x46)
-	CZ_38 = SCZO_36 (alias)
-	branch Test(ULE,CZ_38) l0C00_0022
+	SCZO_40 = cond(al - 0x46)
+	CZ_42 = SCZO_40 (alias)
+	branch Test(ULE,CZ_42) l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	SCZO_39 = cond(al - 0x61)
-	C_40 = SCZO_39 (alias)
-	branch Test(ULT,C_40) l0C00_0032
+	SCZO_43 = cond(al - 0x61)
+	C_44 = (bool) SCZO_43 (alias)
+	branch Test(ULT,C_44) l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	SCZO_42 = cond(al - 0x66)
-	CZ_44 = SCZO_42 (alias)
-	branch Test(UGT,CZ_44) l0C00_0032
+	SCZO_46 = cond(al - 0x66)
+	CZ_48 = SCZO_46 (alias)
+	branch Test(UGT,CZ_48) l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	al_17 = al - 0x30
-	*alOut = al_17
-	SCZO_18 = cond(al_17 - 0x0A)
-	C_19 = SCZO_18 (alias)
-	branch Test(ULT,C_19) l0C00_0030
+	al_19 = al - 0x30
+	*alOut = al_19
+	SCZO_20 = cond(al_19 - 0x0A)
+	C_21 = (bool) SCZO_20 (alias)
+	branch Test(ULT,C_21) l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_25 = al_17 - 0x07
-	*alOut = al_25
-	SCZO_26 = cond(al_25 - 0x10)
-	C_27 = SCZO_26 (alias)
-	branch Test(ULT,C_27) l0C00_0030
+	al_29 = al_19 - 0x07
+	*alOut = al_29
+	SCZO_30 = cond(al_29 - 0x10)
+	C_31 = (bool) SCZO_30 (alias)
+	branch Test(ULT,C_31) l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_29 = al_25 - 0x20
-	*alOut = al_29
+	al_33 = al_29 - 0x20
+	*alOut = al_33
 	// succ:  l0C00_0030
 l0C00_0030:
-	C_22 = false
-	return C_22
+	C_26 = false
+	return C_26
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	C_11 = true
-	return C_11
+	C_13 = true
+	return C_13
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
 ====================

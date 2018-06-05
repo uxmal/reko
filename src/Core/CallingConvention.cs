@@ -182,7 +182,7 @@ namespace Reko.Core
             this.Parameters.Add(new SequenceStorage(
                 stgHi,
                 stgLo,
-                PrimitiveType.CreateWord(stgHi.DataType.Size + stgLo.DataType.Size)));
+                PrimitiveType.CreateWord(stgHi.DataType.BitSize + stgLo.DataType.BitSize)));
         }
 
         public void SequenceParam(SequenceStorage seq)
@@ -195,7 +195,7 @@ namespace Reko.Core
             this.Return = new SequenceStorage(
                 stgHi, 
                 stgLo,
-                PrimitiveType.CreateWord(stgHi.DataType.Size + stgLo.DataType.Size));
+                PrimitiveType.CreateWord(stgHi.DataType.BitSize + stgLo.DataType.BitSize));
         }
 
         public void SequenceReturn(SequenceStorage seq)

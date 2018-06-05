@@ -218,9 +218,9 @@ namespace Reko.Core.Code
 		
 		public virtual Expression VisitMemoryAccess(MemoryAccess access)
 		{
-			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-			access.MemoryId = (MemoryIdentifier) access.MemoryId.Accept(this);
-			return access;
+			var ea = access.EffectiveAddress.Accept(this);
+			var memId = (MemoryIdentifier) access.MemoryId.Accept(this);
+			return new MemoryAccess(memId, ea, access.DataType);
 		}
 
 		public virtual Expression VisitMkSequence(MkSequence seq)
@@ -256,13 +256,13 @@ namespace Reko.Core.Code
 			return pc;
 		}
 
-        public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
-        {
-            access.BasePointer = access.BasePointer.Accept(this);
-            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-            access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
-            return access;
-        }
+		public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
+		{
+			var basePtr = access.BasePointer.Accept(this);
+			var ea = access.EffectiveAddress.Accept(this);
+			var memId = (MemoryIdentifier) access.MemoryId.Accept(this);
+			return new SegmentedAccess(memId, basePtr, ea, access.DataType);
+		}
 
         public virtual Expression VisitScopeResolution(ScopeResolution scope)
 		{

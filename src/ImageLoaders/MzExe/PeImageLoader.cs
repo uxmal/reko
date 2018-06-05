@@ -58,6 +58,7 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort MACHINE_POWERPC = 0x01f0;      // Power PC little endian
         private const ushort MACHINE_POWERPCFP = 0x01f1;    // Power PC with floating point support
         private const ushort MACHINE_POWERPC_BE = (ushort) 0x0601;       // Big-endian PC: intended for PowerMac (!)
+        private const ushort MACHINE_XBOX360 = 0x01F2;         // Xbox 360
         private const ushort MACHINE_R4000 = 0x0166;        // MIPS little endian
         private const ushort MACHINE_RISCV32 = 0x5032;      // RISC-V 32-bit address space
         private const ushort MACHINE_RISCV64 = 0x5064;      // RISC-V 64-bit address space
@@ -188,6 +189,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000: arch = "mips-le-32"; break;
             case MACHINE_POWERPC: arch = "ppc-le-32"; break;
             case MACHINE_POWERPC_BE: arch = "ppc-be-32"; break;
+            case MACHINE_XBOX360: arch = "ppc-be-64"; break;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
             return cfgSvc.GetArchitecture(arch);
@@ -206,6 +208,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000: env = "winMips"; break;
             case MACHINE_POWERPC: env = "winPpc32"; break;
             case MACHINE_POWERPC_BE: env = "winPpc32"; break;   //$REVIEW: this probably should be macOS-ppc
+            case MACHINE_XBOX360: env = "xbox360"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
             return Services.RequireService<IConfigurationService>()
@@ -224,6 +227,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000:
             case MACHINE_POWERPC:
             case MACHINE_POWERPC_BE:
+            case MACHINE_XBOX360:
                 return new Pe32Loader(this);
             case MACHINE_x86_64:
                 return new Pe64Loader(this);
@@ -243,6 +247,7 @@ namespace Reko.ImageLoaders.MzExe
 			case MACHINE_m68k: return new M68kRelocator(Services, program);
             case MACHINE_POWERPC: return new PowerPcRelocator(Services, program);
             case MACHINE_POWERPC_BE: return new PowerPcRelocator(Services, program);    //$REVIEW do we need a big-endian version of this?
+            case MACHINE_XBOX360: return new PowerPcRelocator(Services, program);       //$REVIEW do we need a big-endian version of this?
 
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
@@ -259,6 +264,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000:
             case MACHINE_POWERPC:
             case MACHINE_POWERPC_BE:
+            case MACHINE_XBOX360:
                 return 0x010B;
             case MACHINE_x86_64:
                 return 0x020B;
@@ -808,7 +814,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
                 {
                     Type = SymbolType.Data,
-                    DataType = PrimitiveType.CreateWord(iatEntry.Item2),
+                    DataType = PrimitiveType.CreateWord(iatEntry.Item2 * DataType.BitsPerByte),
                     Size = (uint)iatEntry.Item2
                 };
             } 

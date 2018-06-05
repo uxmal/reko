@@ -206,7 +206,7 @@ namespace Reko.Core
 
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
-            return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
+            return PrimitiveType.Create(primitive.Domain, (DataType.BitsPerByte * primitive.ByteSize));
         }
 
         public DataType VisitPointer(PointerType_v1 pointer)

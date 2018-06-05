@@ -36,6 +36,12 @@ namespace Reko.UnitTests.Mocks
             return imageLoaders;
         }
 
+        public LoaderConfiguration GetImageLoader(string loaderName)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public ICollection<Architecture> GetArchitectures()
         {
             throw new NotImplementedException();

@@ -89,11 +89,11 @@ dx_ax_10: orig: dx_ax
     def:  dx_ax_10 = SEQ(dx, ax_8) (alias)
 SZO_11: orig: SZO
     def:  SZO_11 = cond(ax_8)
-    uses: Z_12 = SZO_11 (alias)
+    uses: Z_12 = (bool) SZO_11 (alias)
           SCZO_13 = SZO_11 (alias)
           SZO_19 = PHI(SZO_35, SZO_11)
 Z_12: orig: Z
-    def:  Z_12 = SZO_11 (alias)
+    def:  Z_12 = (bool) SZO_11 (alias)
     uses: branch Test(EQ,Z_12) l0C00_0026
           Z_20 = PHI(Z_36, Z_12)
 SCZO_13: orig: SCZO
@@ -153,13 +153,13 @@ dx_33: orig: dx
 SCZO_34: orig: SCZO
     def:  SCZO_34 = cond(dx_ax_31)
     uses: SZO_35 = SCZO_34 (alias)
-          Z_36 = SCZO_34 (alias)
+          Z_36 = (bool) SCZO_34 (alias)
           SCZO_18 = PHI(SCZO_34, SCZO_13)
 SZO_35: orig: SZO
     def:  SZO_35 = SCZO_34 (alias)
     uses: SZO_19 = PHI(SZO_35, SZO_11)
 Z_36: orig: Z
-    def:  Z_36 = SCZO_34 (alias)
+    def:  Z_36 = (bool) SCZO_34 (alias)
     uses: Z_20 = PHI(Z_36, Z_12)
 ax_37: orig: ax
     def:  ax_37 = 0x0001
@@ -190,7 +190,7 @@ l0C00_000F:
 	ax_8 = ax_7 - 0x0001
 	dx_ax_10 = SEQ(dx, ax_8) (alias)
 	SZO_11 = cond(ax_8)
-	Z_12 = SZO_11 (alias)
+	Z_12 = (bool) SZO_11 (alias)
 	SCZO_13 = SZO_11 (alias)
 	branch Test(EQ,Z_12) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
@@ -208,7 +208,7 @@ l0C00_0018:
 	dx_33 = SLICE(dx_ax_31, word16, 16) (alias)
 	SCZO_34 = cond(dx_ax_31)
 	SZO_35 = SCZO_34 (alias)
-	Z_36 = SCZO_34 (alias)
+	Z_36 = (bool) SCZO_34 (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:

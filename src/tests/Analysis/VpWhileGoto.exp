@@ -39,15 +39,16 @@ si_8: orig: si
           si_4 = PHI(si, si_8, si_8)
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_7 - 0x0020)
-    uses: Z_10 = SCZO_9 (alias)
+    uses: Z_10 = (bool) SCZO_9 (alias)
           SZO_11 = SCZO_9 (alias)
-          C_12 = SCZO_9 (alias)
+          C_12 = (bool) SCZO_9 (alias)
+          SCZO_31 = DPB(SCZO_9, C_30, 0) (alias)
 Z_10: orig: Z
-    def:  Z_10 = SCZO_9 (alias)
+    def:  Z_10 = (bool) SCZO_9 (alias)
 SZO_11: orig: SZO
     def:  SZO_11 = SCZO_9 (alias)
 C_12: orig: C
-    def:  C_12 = SCZO_9 (alias)
+    def:  C_12 = (bool) SCZO_9 (alias)
 ax_13: orig: ax
     def:  ax_13 = PHI(ax_20, ax_32)
     uses: Mem18[ds:0x0300:word16] = ax_13
@@ -70,18 +71,18 @@ ax_20: orig: ax
           ax_13 = PHI(ax_20, ax_32)
 SCZO_21: orig: SCZO
     def:  SCZO_21 = cond(ax_20)
-    uses: Z_22 = SCZO_21 (alias)
+    uses: Z_22 = (bool) SCZO_21 (alias)
           SZO_23 = SCZO_21 (alias)
-          C_24 = SCZO_21 (alias)
+          C_24 = (bool) SCZO_21 (alias)
           SCZO_14 = PHI(SCZO_21, SCZO_31)
 Z_22: orig: Z
-    def:  Z_22 = SCZO_21 (alias)
+    def:  Z_22 = (bool) SCZO_21 (alias)
     uses: Z_15 = PHI(Z_22, Z_29)
 SZO_23: orig: SZO
     def:  SZO_23 = SCZO_21 (alias)
     uses: SZO_16 = PHI(SZO_23, SZO_28)
 C_24: orig: C
-    def:  C_24 = SCZO_21 (alias)
+    def:  C_24 = (bool) SCZO_21 (alias)
     uses: C_17 = PHI(C_24, C_30)
 Mem25: orig: Mem0
     def:  Mem25[ds:di:word16] = ax_7
@@ -97,32 +98,32 @@ ax_27: orig: ax
           branch ax_27 != 0x000D l0C00_001A
 SZO_28: orig: SZO
     def:  SZO_28 = cond(ax_27)
-    uses: Z_29 = SZO_28 (alias)
+    uses: Z_29 = (bool) SZO_28 (alias)
           SZO_16 = PHI(SZO_23, SZO_28)
 Z_29: orig: Z
-    def:  Z_29 = SZO_28 (alias)
+    def:  Z_29 = (bool) SZO_28 (alias)
     uses: Z_15 = PHI(Z_22, Z_29)
 C_30: orig: C
     def:  C_30 = false
-    uses: SCZO_31 = C_30 (alias)
+    uses: SCZO_31 = DPB(SCZO_9, C_30, 0) (alias)
           C_17 = PHI(C_24, C_30)
 SCZO_31: orig: SCZO
-    def:  SCZO_31 = C_30 (alias)
+    def:  SCZO_31 = DPB(SCZO_9, C_30, 0) (alias)
     uses: SCZO_14 = PHI(SCZO_21, SCZO_31)
 ax_32: orig: ax
     def:  ax_32 = 0xFFFF
     uses: ax_13 = PHI(ax_20, ax_32)
 SCZO_33: orig: SCZO
     def:  SCZO_33 = cond(ax_27 - 0x000D)
-    uses: Z_34 = SCZO_33 (alias)
+    uses: Z_34 = (bool) SCZO_33 (alias)
           SZO_35 = SCZO_33 (alias)
-          C_36 = SCZO_33 (alias)
+          C_36 = (bool) SCZO_33 (alias)
 Z_34: orig: Z
-    def:  Z_34 = SCZO_33 (alias)
+    def:  Z_34 = (bool) SCZO_33 (alias)
 SZO_35: orig: SZO
     def:  SZO_35 = SCZO_33 (alias)
 C_36: orig: C
-    def:  C_36 = SCZO_33 (alias)
+    def:  C_36 = (bool) SCZO_33 (alias)
 v12_37: orig: v12
     def:  v12_37 = Mem25[ds:0x0302:word16] + 0x0001
     uses: Mem38[ds:0x0302:word16] = v12_37
@@ -132,11 +133,11 @@ Mem38: orig: Mem0
 SZO_39: orig: SZO
     def:  SZO_39 = cond(v12_37)
     uses: SCZO_40 = SZO_39 (alias)
-          Z_41 = SZO_39 (alias)
+          Z_41 = (bool) SZO_39 (alias)
 SCZO_40: orig: SCZO
     def:  SCZO_40 = SZO_39 (alias)
 Z_41: orig: Z
-    def:  Z_41 = SZO_39 (alias)
+    def:  Z_41 = (bool) SZO_39 (alias)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
@@ -156,9 +157,9 @@ l0C00_0005:
 	Mem25[ds:di:word16] = ax_7
 	ax_27 = ax_7 | ax_7
 	SZO_28 = cond(ax_27)
-	Z_29 = SZO_28 (alias)
+	Z_29 = (bool) SZO_28 (alias)
 	C_30 = false
-	SCZO_31 = C_30 (alias)
+	SCZO_31 = DPB(SCZO_9, C_30, 0) (alias)
 	branch ax_27 != 0x0000 l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
@@ -167,9 +168,9 @@ l0C00_000B:
 	// succ:  l0C00_0024
 l0C00_0011:
 	SCZO_33 = cond(ax_27 - 0x000D)
-	Z_34 = SCZO_33 (alias)
+	Z_34 = (bool) SCZO_33 (alias)
 	SZO_35 = SCZO_33 (alias)
-	C_36 = SCZO_33 (alias)
+	C_36 = (bool) SCZO_33 (alias)
 	branch ax_27 != 0x000D l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
@@ -177,25 +178,25 @@ l0C00_0016:
 	Mem38[ds:0x0302:word16] = v12_37
 	SZO_39 = cond(v12_37)
 	SCZO_40 = SZO_39 (alias)
-	Z_41 = SZO_39 (alias)
+	Z_41 = (bool) SZO_39 (alias)
 	// succ:  l0C00_001A
 l0C00_001A:
 	si_4 = PHI(si, si_8, si_8)
 	ax_7 = Mem0[ds:si_4:word16]
 	si_8 = si_4 + 0x0002
 	SCZO_9 = cond(ax_7 - 0x0020)
-	Z_10 = SCZO_9 (alias)
+	Z_10 = (bool) SCZO_9 (alias)
 	SZO_11 = SCZO_9 (alias)
-	C_12 = SCZO_9 (alias)
+	C_12 = (bool) SCZO_9 (alias)
 	branch ax_7 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
 	ax_19 = si_8
 	ax_20 = ax_19 - bx_3
 	SCZO_21 = cond(ax_20)
-	Z_22 = SCZO_21 (alias)
+	Z_22 = (bool) SCZO_21 (alias)
 	SZO_23 = SCZO_21 (alias)
-	C_24 = SCZO_21 (alias)
+	C_24 = (bool) SCZO_21 (alias)
 	// succ:  l0C00_0024
 l0C00_0024:
 	ax_13 = PHI(ax_20, ax_32)
@@ -252,15 +253,16 @@ si_8: orig: si
           si_4 = PHI(si, si_8, si_8)
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_7 - 0x0020)
-    uses: Z_10 = SCZO_9 (alias)
+    uses: Z_10 = (bool) SCZO_9 (alias)
           SZO_11 = SCZO_9 (alias)
-          C_12 = SCZO_9 (alias)
+          C_12 = (bool) SCZO_9 (alias)
+          SCZO_31 = DPB(SCZO_9, false, 0) (alias)
 Z_10: orig: Z
-    def:  Z_10 = SCZO_9 (alias)
+    def:  Z_10 = (bool) SCZO_9 (alias)
 SZO_11: orig: SZO
     def:  SZO_11 = SCZO_9 (alias)
 C_12: orig: C
-    def:  C_12 = SCZO_9 (alias)
+    def:  C_12 = (bool) SCZO_9 (alias)
 ax_13: orig: ax
     def:  ax_13 = PHI(ax_20, ax_32)
     uses: Mem18[ds:0x0300:word16] = ax_13
@@ -282,18 +284,18 @@ ax_20: orig: ax
           ax_13 = PHI(ax_20, ax_32)
 SCZO_21: orig: SCZO
     def:  SCZO_21 = cond(ax_20)
-    uses: Z_22 = SCZO_21 (alias)
+    uses: Z_22 = (bool) SCZO_21 (alias)
           SZO_23 = SCZO_21 (alias)
-          C_24 = SCZO_21 (alias)
+          C_24 = (bool) SCZO_21 (alias)
           SCZO_14 = PHI(SCZO_21, SCZO_31)
 Z_22: orig: Z
-    def:  Z_22 = SCZO_21 (alias)
+    def:  Z_22 = (bool) SCZO_21 (alias)
     uses: Z_15 = PHI(Z_22, Z_29)
 SZO_23: orig: SZO
     def:  SZO_23 = SCZO_21 (alias)
     uses: SZO_16 = PHI(SZO_23, SZO_28)
 C_24: orig: C
-    def:  C_24 = SCZO_21 (alias)
+    def:  C_24 = (bool) SCZO_21 (alias)
     uses: C_17 = PHI(C_24, C_30)
 Mem25: orig: Mem0
     def:  Mem25[ds:di:word16] = ax_7
@@ -305,31 +307,31 @@ ax_27: orig: ax
     def:  ax_27 = ax_7
 SZO_28: orig: SZO
     def:  SZO_28 = cond(ax_7)
-    uses: Z_29 = SZO_28 (alias)
+    uses: Z_29 = (bool) SZO_28 (alias)
           SZO_16 = PHI(SZO_23, SZO_28)
 Z_29: orig: Z
-    def:  Z_29 = SZO_28 (alias)
+    def:  Z_29 = (bool) SZO_28 (alias)
     uses: Z_15 = PHI(Z_22, Z_29)
 C_30: orig: C
     def:  C_30 = false
     uses: C_17 = PHI(C_24, C_30)
 SCZO_31: orig: SCZO
-    def:  SCZO_31 = false (alias)
+    def:  SCZO_31 = DPB(SCZO_9, false, 0) (alias)
     uses: SCZO_14 = PHI(SCZO_21, SCZO_31)
 ax_32: orig: ax
     def:  ax_32 = 0xFFFF
     uses: ax_13 = PHI(ax_20, ax_32)
 SCZO_33: orig: SCZO
     def:  SCZO_33 = cond(ax_7 - 0x000D)
-    uses: Z_34 = SCZO_33 (alias)
+    uses: Z_34 = (bool) SCZO_33 (alias)
           SZO_35 = SCZO_33 (alias)
-          C_36 = SCZO_33 (alias)
+          C_36 = (bool) SCZO_33 (alias)
 Z_34: orig: Z
-    def:  Z_34 = SCZO_33 (alias)
+    def:  Z_34 = (bool) SCZO_33 (alias)
 SZO_35: orig: SZO
     def:  SZO_35 = SCZO_33 (alias)
 C_36: orig: C
-    def:  C_36 = SCZO_33 (alias)
+    def:  C_36 = (bool) SCZO_33 (alias)
 v12_37: orig: v12
     def:  v12_37 = Mem25[ds:0x0302:word16] + 0x0001
     uses: Mem38[ds:0x0302:word16] = v12_37
@@ -339,11 +341,11 @@ Mem38: orig: Mem0
 SZO_39: orig: SZO
     def:  SZO_39 = cond(v12_37)
     uses: SCZO_40 = SZO_39 (alias)
-          Z_41 = SZO_39 (alias)
+          Z_41 = (bool) SZO_39 (alias)
 SCZO_40: orig: SCZO
     def:  SCZO_40 = SZO_39 (alias)
 Z_41: orig: Z
-    def:  Z_41 = SZO_39 (alias)
+    def:  Z_41 = (bool) SZO_39 (alias)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
@@ -363,9 +365,9 @@ l0C00_0005:
 	Mem25[ds:di:word16] = ax_7
 	ax_27 = ax_7
 	SZO_28 = cond(ax_7)
-	Z_29 = SZO_28 (alias)
+	Z_29 = (bool) SZO_28 (alias)
 	C_30 = false
-	SCZO_31 = false (alias)
+	SCZO_31 = DPB(SCZO_9, false, 0) (alias)
 	branch ax_7 != 0x0000 l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
@@ -374,9 +376,9 @@ l0C00_000B:
 	// succ:  l0C00_0024
 l0C00_0011:
 	SCZO_33 = cond(ax_7 - 0x000D)
-	Z_34 = SCZO_33 (alias)
+	Z_34 = (bool) SCZO_33 (alias)
 	SZO_35 = SCZO_33 (alias)
-	C_36 = SCZO_33 (alias)
+	C_36 = (bool) SCZO_33 (alias)
 	branch ax_7 != 0x000D l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
@@ -384,25 +386,25 @@ l0C00_0016:
 	Mem38[ds:0x0302:word16] = v12_37
 	SZO_39 = cond(v12_37)
 	SCZO_40 = SZO_39 (alias)
-	Z_41 = SZO_39 (alias)
+	Z_41 = (bool) SZO_39 (alias)
 	// succ:  l0C00_001A
 l0C00_001A:
 	si_4 = PHI(si, si_8, si_8)
 	ax_7 = Mem0[ds:si_4:word16]
 	si_8 = si_4 + 0x0002
 	SCZO_9 = cond(ax_7 - 0x0020)
-	Z_10 = SCZO_9 (alias)
+	Z_10 = (bool) SCZO_9 (alias)
 	SZO_11 = SCZO_9 (alias)
-	C_12 = SCZO_9 (alias)
+	C_12 = (bool) SCZO_9 (alias)
 	branch ax_7 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
 	ax_19 = si_8
 	ax_20 = si_8 - si
 	SCZO_21 = cond(ax_20)
-	Z_22 = SCZO_21 (alias)
+	Z_22 = (bool) SCZO_21 (alias)
 	SZO_23 = SCZO_21 (alias)
-	C_24 = SCZO_21 (alias)
+	C_24 = (bool) SCZO_21 (alias)
 	// succ:  l0C00_0024
 l0C00_0024:
 	ax_13 = PHI(ax_20, ax_32)

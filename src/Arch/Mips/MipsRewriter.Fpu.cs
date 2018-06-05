@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -43,12 +44,33 @@ namespace Reko.Arch.Mips
             return seq;
         }
 
+        private void RewriteFpuBinopS(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src1 = RewriteOperand(instr.op2);
+            var src2 = RewriteOperand(instr.op3);
+            m.Assign(dst, ctor(src1, src2));
+        }
+
         private void RewriteFpuBinopD(MipsInstruction instr, Func<Expression,Expression,Expression> ctor)
         {
             var dst = GetFpuRegPair(instr.op1);
             var src1 = GetFpuRegPair(instr.op2);
             var src2 = GetFpuRegPair(instr.op3);
             m.Assign(dst, ctor(src1, src2));
+        }
+
+        private void RewriteMovft(MipsInstruction instr, bool checkIfClear)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            var cc = RewriteOperand(instr.op3);
+            m.BranchInMiddleOfInstruction(checkIfClear
+                ? cc.Invert()
+                : cc,
+                instr.Address + instr.Length,
+                RtlClass.ConditionalTransfer);
+            m.Assign(dst, src);
         }
 
         private void RewriteMulD(MipsInstruction instr)

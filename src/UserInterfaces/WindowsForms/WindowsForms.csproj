@@ -135,6 +135,9 @@
     <Compile Include="Controls\TextViewPainter.cs" />
     <Compile Include="Controls\TreeViewWrapper.cs" />
     <Compile Include="Controls\TypeMarker.cs" />
+    <Compile Include="Controls\VisualizerControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ControlWrapper.cs" />
     <Compile Include="DecompilerShellUiService.cs" />
     <Compile Include="DecompilerUiService.cs" />

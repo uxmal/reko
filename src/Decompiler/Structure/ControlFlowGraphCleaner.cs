@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using System;
 using System.Diagnostics;
@@ -72,7 +73,16 @@ namespace Reko.Structure
 
 		private void ReplaceBranchWithJump(Block block)
 		{
-			block.Statements.RemoveAt(block.Statements.Count - 1);
+            Debug.Assert(block.Statements.Count >= 1);
+            Debug.Assert(block.Statements.Last.Instruction is Branch);
+            var branch = block.Statements.Last;
+            var condition = ((Branch)branch.Instruction).Condition;
+            block.Statements.Remove(branch);
+            if (IsCritical(condition))
+            {
+                var linearAddr = branch.LinearAddress;
+                block.Statements.Add(linearAddr, new SideEffect(condition));
+            }
             proc.ControlGraph.RemoveEdge(block, block.Succ[0]);
 			dirty = true;
 		}
@@ -148,5 +158,11 @@ namespace Reko.Structure
 
 			proc.Dump(true);
 		}
+
+        private bool IsCritical(Expression e)
+        {
+            var ci = new CriticalInstruction();
+            return ci.IsCritical(e);
+        }
 	}
 }

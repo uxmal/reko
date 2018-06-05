@@ -196,6 +196,10 @@
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
+      <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
+      <Name>Mips</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
       <Project>{e75c3be2-0f98-48cd-943d-198159b57dc7}</Project>
       <Name>MicrochipPIC.Design</Name>
@@ -212,6 +216,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
+      <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
+      <Name>Xbox360</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Gui\Gui.csproj">
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
@@ -227,6 +235,10 @@
     <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj">
       <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
       <Name>Omf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
+      <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
+      <Name>Xex</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>

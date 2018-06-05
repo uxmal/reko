@@ -75,6 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ICodeViewerService cvSvc;
         private ImageSegmentService imgSegSvc;
         private ISymbolLoadingService symLoadSvc;
+        private ISelectionService selSvc;
 
         [SetUp]
         public void Setup()
@@ -604,6 +605,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             cvSvc = mr.StrictMock<ICodeViewerService>();
             imgSegSvc = mr.StrictMock<ImageSegmentService>();
             symLoadSvc = mr.StrictMock<ISymbolLoadingService>();
+            selSvc = mr.StrictMock<ISelectionService>();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateCodeViewerService()).Return(cvSvc);
@@ -628,6 +630,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateCallGraphViewService()).Return(cgvSvc);
             svcFactory.Stub(s => s.CreateViewImportService()).Return(vimpSvc);
             svcFactory.Stub(s => s.CreateSymbolLoadingService()).Return(symLoadSvc);
+            svcFactory.Stub(s => s.CreateSelectionService()).Return(selSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             brSvc.Stub(b => b.Clear());

@@ -276,11 +276,11 @@ es:es
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-    uses: Z_20 = SCZO_19 (alias)
+    uses: Z_20 = (bool) SCZO_19 (alias)
           SCZO_13 = PHI(SCZO_9, SCZO_19)
           SCZO_9 = PHI(SCZO, SCZO_19)
 Z_20: orig: Z
-    def:  Z_20 = SCZO_19 (alias)
+    def:  Z_20 = (bool) SCZO_19 (alias)
     uses: Z_14 = PHI(Z_10, Z_20)
           Z_10 = PHI(Z, Z_20)
 di_21: orig: di
@@ -317,7 +317,7 @@ l0C00_0030:
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-	Z_20 = SCZO_19 (alias)
+	Z_20 = (bool) SCZO_19 (alias)
 	di_21 = di_11 + 0x0001
 	cx_22 = cx_12 - 0x0001
 	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
@@ -396,11 +396,11 @@ es:es
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-    uses: Z_20 = SCZO_19 (alias)
+    uses: Z_20 = (bool) SCZO_19 (alias)
           SCZO_13 = PHI(SCZO_9, SCZO_19)
           SCZO_9 = PHI(SCZO, SCZO_19)
 Z_20: orig: Z
-    def:  Z_20 = SCZO_19 (alias)
+    def:  Z_20 = (bool) SCZO_19 (alias)
     uses: Z_14 = PHI(Z_10, Z_20)
           Z_10 = PHI(Z, Z_20)
 di_21: orig: di
@@ -437,7 +437,7 @@ l0C00_0030:
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-	Z_20 = SCZO_19 (alias)
+	Z_20 = (bool) SCZO_19 (alias)
 	di_21 = di_11 + 0x0001
 	cx_22 = cx_12 - 0x0001
 	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030

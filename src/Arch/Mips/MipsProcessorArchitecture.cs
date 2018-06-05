@@ -44,6 +44,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage[] GeneralRegs;
         public RegisterStorage[] fpuRegs;
         public RegisterStorage[] ccRegs;
+        public RegisterStorage[] fpuCcRegs;
         public RegisterStorage LinkRegister;
         public RegisterStorage hi;
         public RegisterStorage lo;
@@ -64,6 +65,7 @@ namespace Reko.Arch.Mips
             this.fpuRegs = CreateFpuRegisters();
             this.FCSR = RegisterStorage.Reg32("FCSR", 0x201F);
             this.ccRegs = CreateCcRegs();
+            this.fpuCcRegs = CreateFpuCcRegs();
             this.fpuCtrlRegs = new Dictionary<uint, RegisterStorage>
             {
                 { 0x1F, FCSR }
@@ -108,6 +110,7 @@ namespace Reko.Arch.Mips
         {
             return new MipsRewriter(
                 this,
+                rdr,
                 new MipsDisassembler(this, rdr, IsVersion6OrLater),
                 binder,
                 host);
@@ -231,6 +234,17 @@ namespace Reko.Arch.Mips
             return Enumerable.Range(0, 8)
                 .Select(i => new RegisterStorage(
                     string.Format("cc{0}", i),
+                    0x3000,
+                    0,
+                    PrimitiveType.Bool))
+                .ToArray();
+        }
+
+        private RegisterStorage[] CreateFpuCcRegs()
+        {
+            return Enumerable.Range(0, 8)
+                .Select(i => new RegisterStorage(
+                    string.Format("fcc{0}", i),
                     0x3000,
                     0,
                     PrimitiveType.Bool))

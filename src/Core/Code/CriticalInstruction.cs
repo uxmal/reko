@@ -18,11 +18,10 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
 
-namespace Reko.Analysis
+namespace Reko.Core.Code
 {
 	/// <summary>
 	/// Determines whether an instruction is critical or not. Non-critical

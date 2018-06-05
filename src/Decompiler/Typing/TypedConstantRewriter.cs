@@ -105,7 +105,7 @@ namespace Reko.Typing
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
                 var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();
                 this.c = Constant.Create(
-                    PrimitiveType.CreateWord(addr.DataType.Size - ptrSeg.Size),
+                    PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
 
                 var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());
@@ -137,8 +137,7 @@ namespace Reko.Typing
             {
                 if (globals != null && globals.TypeVariable != null)
                 {
-                    var pGlob = globals.TypeVariable.DataType as Pointer;
-                    if (pGlob != null)
+                    if (globals.TypeVariable.DataType is Pointer pGlob)
                     {
                         return pGlob.Pointee.ResolveAs<StructureType>();
                     }

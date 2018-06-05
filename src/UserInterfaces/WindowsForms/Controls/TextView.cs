@@ -599,7 +599,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var frac = model.GetPositionAsFraction();
             this.ignoreScroll = true;
-            vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
+            if(frac.Item2 != 0)
+                vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
             this.ignoreScroll = false;
         }
 

@@ -98,18 +98,11 @@ namespace Reko.Gui.Forms
 
         private void PopulateRawFiles(IConfigurationService dcCfg)
         {
-            var unknownOption = new ListOption
-            {
-                Text = "(Unknown)",
-                Value = null,
-            };
-            var rawFiles = new ListOption[] { unknownOption }
-                .Concat(
-                    dcCfg.GetRawFiles()
+            var rawFiles = dcCfg.GetRawFiles()
                     .OfType<RawFileElement>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption { Text = p.Description, Value = p }));
+                    .Select(p => new ListOption { Text = p.Description, Value = p });
             dlg.RawFileTypes.DataSource = new ArrayList(rawFiles.ToArray());
         }
 

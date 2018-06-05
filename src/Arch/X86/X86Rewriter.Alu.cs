@@ -305,8 +305,7 @@ namespace Reko.Arch.X86
 
         public void EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right, CopyFlags flags)
         {
-            Constant c = right as Constant;
-            if (c != null)
+            if (right is Constant c)
             {
                 if (c.DataType == PrimitiveType.Byte && left.DataType != c.DataType)
                 {
@@ -542,7 +541,7 @@ namespace Reko.Arch.X86
                     product,
                     new BinaryExpression(
                         op, 
-                        PrimitiveType.Create(resultDomain, product.DataType.Size),
+                        PrimitiveType.Create(resultDomain, product.DataType.BitSize),
                         SrcOp(instrCur.op1),
                         multiplicator));
                 EmitCcInstr(product, X86Instruction.DefCc(instrCur.code));
@@ -596,8 +595,7 @@ namespace Reko.Arch.X86
             else
             {
                 src = SrcOp(instrCur.op2);
-                MemoryAccess load = src as MemoryAccess;
-                if (load != null)
+                if (src is MemoryAccess load)
                 {
                     src = load.EffectiveAddress;
                 }
@@ -637,8 +635,7 @@ namespace Reko.Arch.X86
         {
             var dst = SrcOp(instrCur.op1);
             var src = SrcOp(instrCur.op2, instrCur.op1.Width);
-            var idDst = dst as Identifier;
-            if (idDst != null)
+            if (dst is Identifier idDst)
             {
                 this.AssignToRegister(idDst, src);
             }
@@ -670,7 +667,9 @@ namespace Reko.Arch.X86
         {
             m.Assign(
                 SrcOp(instrCur.op1),
-                m.Cast(PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size), SrcOp(instrCur.op2)));
+                m.Cast(
+                    PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize),
+                    SrcOp(instrCur.op2)));
         }
 
         private void RewriteMovzx()
@@ -682,8 +681,7 @@ namespace Reko.Arch.X86
 
         private void RewritePush()
         {
-            RegisterOperand reg = instrCur.op1 as RegisterOperand;
-            if (reg != null && reg.Register == Registers.cs)
+            if (instrCur.op1 is RegisterOperand reg && reg.Register == Registers.cs)
             {
                 if (dasm.Peek(1).code == Opcode.call &&
                     dasm.Peek(1).op1.Width == PrimitiveType.Word16)
@@ -691,7 +689,7 @@ namespace Reko.Arch.X86
                     dasm.MoveNext();
                     m.Assign(StackPointer(), m.ISub(StackPointer(), reg.Register.DataType.Size));
                     RewriteCall(dasm.Current.op1, dasm.Current.op1.Width);
-                    this.len = (byte) (this.len + dasm.Current.Length);
+                    this.len = (byte)(this.len + dasm.Current.Length);
                     return;
                 }
 
@@ -711,11 +709,11 @@ namespace Reko.Arch.X86
             var imm = instrCur.op1 as ImmediateOperand;
             var value = SrcOp(dasm.Current.op1, arch.StackRegister.DataType);
             Debug.Assert(
-                value.DataType.Size == 2 ||
-                value.DataType.Size == 4 ||
-                value.DataType.Size == 8,
+                value.DataType.BitSize == 16 ||
+                value.DataType.BitSize == 32 ||
+                value.DataType.BitSize == 64,
                 string.Format("Unexpected size {0}", dasm.Current.dataWidth));
-            RewritePush(PrimitiveType.CreateWord(value.DataType.Size), value);
+            RewritePush(PrimitiveType.CreateWord(value.DataType.BitSize), value);
         }
 
         private void RewritePush(RegisterStorage reg)
@@ -852,8 +850,7 @@ namespace Reko.Arch.X86
 
         private void RewritePush(DataType dataWidth, Expression expr)
         {
-            Constant c = expr as Constant;
-            if (c != null && c.DataType != dataWidth)
+            if (expr is Constant c && c.DataType != dataWidth)
             {
                 expr = Constant.Create(dataWidth, c.ToInt64());
             }
@@ -1129,7 +1126,7 @@ namespace Reko.Arch.X86
         {
             var al = orw.AluRegister(Registers.al);
             var bx = orw.AluRegister(Registers.rbx, instrCur.addrWidth);
-            var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.Size); 
+            var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.BitSize); 
             m.Assign(
                 al,
                 Mem(

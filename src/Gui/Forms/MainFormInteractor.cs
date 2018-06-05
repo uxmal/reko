@@ -198,6 +198,9 @@ namespace Reko.Gui.Forms
 
             var symLdrSvc = svcFactory.CreateSymbolLoadingService();
             sc.AddService<ISymbolLoadingService>(symLdrSvc);
+
+            var selSvc = svcFactory.CreateSelectionService();
+            sc.AddService<ISelectionService>(selSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -331,8 +334,7 @@ namespace Reko.Gui.Forms
                 EntryPointElement entry = null;
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
-                    RawFileElement raw = null;
-                    raw = (RawFileElement)rawFileOption.Value;
+                    var raw = (RawFileElement)rawFileOption.Value;
                     loader = raw.Loader;
                     archName = raw.Architecture;
                     envName = raw.Environment;
