@@ -49,7 +49,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         {
             var picModel = PICProcessorModel.GetModel("PICUnknown");
             Assert.IsNull(picModel);
-            Assert.Throws<ArgumentNullException>(() => picModel = PICProcessorModel.GetModel(""));
+            picModel = PICProcessorModel.GetModel("");
+            Assert.IsNotNull(picModel);
+            Assert.AreEqual(PICProcessorModel.DefaultPICName, picModel.PICName);
         }
 
         [Test]
