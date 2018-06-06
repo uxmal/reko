@@ -27,14 +27,17 @@
         NE,
         HS,
         LO,
+
         MI,
         PL,
         VS,
         VC,
+
         HI,
         LS,
         GE,
         LT,
+
         GT,
         LE,
         AL = 0xE,

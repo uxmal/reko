@@ -34,6 +34,8 @@ namespace Reko.UnitTests.Arch.Arm
     [Category(Categories.Capstone)]
     public class ThumbDisassemblerTests : ArmTestBase
     {
+        private IEnumerator<MachineInstruction> dasm;
+
         protected override IProcessorArchitecture CreateArchitecture()
         {
             return new ThumbArchitecture("arm-thumb");
@@ -41,23 +43,39 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)
         {
-            var image = new MemoryArea(Address.Ptr32(0x00100000), new byte[4]);
-            LeImageWriter w = new LeImageWriter(image.Bytes);
-            foreach (var instr in instrs)
-            {
-                w.WriteLeUInt16(instr);
-            }
-            var arch = CreateArchitecture();
-            var dasm = CreateDisassembler(arch, image.CreateLeReader(0));
+            Given_Instructions(instrs);
             Assert.IsTrue(dasm.MoveNext());
             var armInstr = dasm.Current;
             dasm.Dispose();
             return armInstr;
         }
 
+        /// <summary>
+        /// Establishes a disassembler instance for further tests.
+        /// </summary>
+        /// <param name="instrs"></param>
+        private void Given_Instructions(params ushort [] instrs)
+        {
+            var w = new LeImageWriter();
+            foreach (var instr in instrs)
+            {
+                w.WriteLeUInt16(instr);
+            }
+            var image = new MemoryArea(Address.Ptr32(0x00100000), w.ToArray());
+            var arch = CreateArchitecture();
+            this.dasm = CreateDisassembler(arch, image.CreateLeReader(0));
+        }
+
         private void AssertCode(string sExp, params ushort[] instrs)
         {
             var instr = Disassemble16(instrs);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
+        private void Expect_Code(string sExp)
+        {
+            Assert.IsTrue(dasm.MoveNext());
+            var instr = dasm.Current;
             Assert.AreEqual(sExp, instr.ToString());
         }
 
@@ -152,6 +170,48 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("add\tr3,sp,#&A48", 0xF60D, 0x2348);
         }
+
+        [Test]
+        public void ThumbDis_it_ne()
+        {
+            Given_Instructions(0xBF18, 0x4630, 0x4631);
+            Expect_Code("it\tne");
+            Expect_Code("movne\tr0,r6");
+            Expect_Code("mov\tr1,r6");
+        }
+
+        [Test]
+        public void ThumbDis_ite_eq()
+        {
+            Given_Instructions(0xBF0C, 0x4630, 0x4631, 0x4632);
+            Expect_Code("ite\teq");
+            Expect_Code("moveq\tr0,r6");
+            Expect_Code("movne\tr1,r6");
+            Expect_Code("mov\tr2,r6");
+        }
+
+        [Test]
+        public void ThumbDis_itt_eq()
+        {
+            Given_Instructions(0xBF04, 0x4630, 0x4631, 0x4632);
+            Expect_Code("itt\teq");
+            Expect_Code("moveq\tr0,r6");
+            Expect_Code("moveq\tr1,r6");
+            Expect_Code("mov\tr2,r6");
+        }
+
+        [Test]
+        public void ThumbDis_itttt_ne()
+        {
+            Given_Instructions(0xBF1F, 0x4630, 0x4631, 0x4632, 0x4633, 0x4634);
+            Expect_Code("itttt\tne");
+            Expect_Code("movne\tr0,r6");
+            Expect_Code("movne\tr1,r6");
+            Expect_Code("movne\tr2,r6");
+            Expect_Code("movne\tr3,r6");
+            Expect_Code("mov\tr0,r6");
+        }
+
     }
 }
 

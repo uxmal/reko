@@ -21,6 +21,7 @@
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Arch.Arm
 {
@@ -90,7 +91,15 @@ namespace Reko.Arch.Arm
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (!opcodes.TryGetValue(opcode, out var sOpcode))
+            if (opcode == Opcode.it)
+            {
+                var itOpcode = RenderIt();
+                writer.WriteOpcode(itOpcode);
+                writer.Tab();
+                writer.WriteString(condition.ToString().ToLowerInvariant());
+                return;
+            }
+            if (!opcodes.TryGetValue(opcode, out string sOpcode))
             {
                 sOpcode = opcode.ToString();
             }
@@ -131,6 +140,21 @@ namespace Reko.Arch.Arm
                     RenderOperand(ShiftValue, writer, options);
                 }
             }
+        }
+
+        private string RenderIt()
+        {
+            var sb = new StringBuilder();
+            sb.Append("it");
+            int mask = this.itmask;
+            var bit = (~(int)this.condition & 1) << 3;
+
+            while ((mask & 0xF) != 8)
+            {
+                sb.Append(((mask ^ bit) & 0x8) != 0 ? 't' : 'e');
+                mask <<= 1;
+            }
+            return sb.ToString();
         }
 
         private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

@@ -38,17 +38,21 @@ namespace Reko.Arch.Arm
     /// </summary>
     public class T32Disassembler : DisassemblerBase<Arm32InstructionNew>
     {
-        private static Decoder[] decoders;
-        private static Decoder invalid;
+        private static readonly Decoder[] decoders;
+        private static readonly Decoder invalid;
 
-        private ImageReader rdr;
-        private ThumbArchitecture arch;
+        private readonly ImageReader rdr;
+        private readonly ThumbArchitecture arch;
         private Address addr;
+        private int itState;
+        private ArmCondition itCondition;
 
         public T32Disassembler(ThumbArchitecture arch, ImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.itState = 0;
+            this.itCondition = ArmCondition.AL;
         }
 
         public override Arm32InstructionNew DisassembleInstruction()
@@ -59,6 +63,19 @@ namespace Reko.Arch.Arm
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
+            if ((itState & 0x1F) == 0x10)
+            {
+                // No more IT bits, reset condition back to normal.
+                itCondition = ArmCondition.AL;
+                itState = 0;
+            }
+            else if (itState != 0 && instr.opcode != Opcode.it)
+            {
+                // We're still under the influence of the IT instruction.
+                var bit = ((itState >> 4) ^ ((int)this.itCondition)) & 1;
+                instr.condition = (ArmCondition) ((int)this.itCondition ^ bit );
+                itState <<= 1;
+            }
             return instr;
         }
 
@@ -216,6 +233,8 @@ namespace Reko.Arch.Arm
                     cc = (ArmCondition) SBitfield(wInstr, offset, 4);
                     --i;
                     continue;
+                default:
+                    throw new NotImplementedException($"Unknown format character {format[i]} when decoding {opcode}.");
                 }
                 ops.Add(op);
             }
@@ -549,6 +568,9 @@ namespace Reko.Arch.Arm
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte) SBitfield(wInstr, 0, 4)
                 };
+                // Add an extra bit for the 't' in 'it'.
+                dasm.itState = instr.itmask | (SBitfield(wInstr, 4, 1) << 4);
+                dasm.itCondition = instr.condition;
                 return instr;
             }
         }
@@ -1081,6 +1103,52 @@ namespace Reko.Arch.Arm
                     AdvancedSimdDataProcessing) // op1 = 0b11
                 );
 
+            var DataProcessing2srcRegs = Mask(4 + 16, 7,
+                Mask(4, 3,
+                    Instr(Opcode.qadd, "*"),
+                    Instr(Opcode.qdadd, "*"),
+                    Instr(Opcode.qsub, "*"),
+                    Instr(Opcode.qdsub, "*")),
+                Mask(4, 3,
+                    Instr(Opcode.rev, "*"),
+                    Instr(Opcode.rev16, "*"),
+                    Instr(Opcode.rbit, "*"),
+                    Instr(Opcode.revsh, "*")),
+                Mask(4, 3,
+                    Instr(Opcode.sel, "*"),
+                    invalid,
+                    invalid,
+                    invalid),
+                Mask(4, 3,
+                    Instr(Opcode.clz, "R8,R0"),
+                    invalid,
+                    invalid,
+                    invalid),
+                Mask(4, 3,
+                    Nyi("crc32-crc32b"),
+                    Nyi("crc32-crc32h"),
+                    Nyi("crc32-crc32w"),
+                    invalid),
+                Mask(4, 3,
+                    Nyi("crc32c-crc32cb"),
+                    Nyi("crc32c-crc32ch"),
+                    Nyi("crc32c-crc32cw"),
+                    invalid),
+                invalid,
+                invalid);
+
+            var DataProcessingRegister = Mask(7 + 16, 1,
+                Mask(7, 1,
+                    Select(w => SBitfield(w, 4, 4) == 0,
+                        Nyi("MovMovsRegisterShiftedRegister"),
+                        invalid),
+                    Nyi("RegisterExtends")),
+                Mask(6, 3,
+                    Nyi("ParallelAddSub"),
+                    Nyi("ParallelAddSub"),
+                    DataProcessing2srcRegs,
+                    invalid));
+
             return new LongDecoder(new Decoder[16]
             {
                 invalid,
@@ -1108,8 +1176,8 @@ namespace Reko.Arch.Arm
 
                 LoadStoreSingle,
                 Mask(7 + 16, 3,
-                    Nyi("Data-processing (register)"),
-                    Nyi("Data-processing (register)"),
+                    DataProcessingRegister,
+                    DataProcessingRegister,
                     Nyi("Multiply, multiply accumulate (register)"),
                     Nyi("Long multiply and divide")),
                 SystemRegisterAccessAdvSimdFpu,
