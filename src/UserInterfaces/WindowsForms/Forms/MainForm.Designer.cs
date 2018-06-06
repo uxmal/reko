@@ -127,7 +127,7 @@
             this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
             this.tabDiagnostics.Size = new System.Drawing.Size(776, 142);
             this.tabDiagnostics.TabIndex = 1;
-            this.tabDiagnostics.Text = "Diagostics";
+            this.tabDiagnostics.Text = "Diagnostics";
             this.tabDiagnostics.UseVisualStyleBackColor = true;
             // 
             // listDiagnostics
