@@ -84,6 +84,7 @@ namespace Reko.Arch.Arm
             var ops = new List<MachineOperand>();
             ArmCondition cc = ArmCondition.AL;
             bool updateFlags = false;
+            uint n;
             for (int i = 0; i < format.Length; ++i)
             {
                 int offset;
@@ -116,7 +117,7 @@ namespace Reko.Arch.Arm
                     break;
                 case 'i':   // immediate value in bitfield(s)
                     ++i;
-                    var n = 0u;
+                    n = 0u;
                     do
                     {
                         offset = this.ReadDecimal(format, ref i);
@@ -126,8 +127,17 @@ namespace Reko.Arch.Arm
                     } while (PeekAndDiscard(':', format, ref i));
                     op = ImmediateOperand.Word32(n);
                     break;
-                case 'I':   // immediate 7-bit value shifted left 2.
-                    op = ImmediateOperand.Int32(((int)wInstr & 0x7F) << 2);
+                case 'I':   // immediate value shifted left 2.
+                    ++i;
+                    n = 0u;
+                    do
+                    {
+                        offset = this.ReadDecimal(format, ref i);
+                        Expect(':', format, ref i);
+                        size = this.ReadDecimal(format, ref i);
+                        n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
+                    } while (PeekAndDiscard(':', format, ref i));
+                    op = ImmediateOperand.Word32(n << 2);
                     break;
                 case 'M':
                     op = ModifiedImmediate(wInstr);
@@ -796,8 +806,8 @@ namespace Reko.Arch.Arm
                 Instr(Opcode.cbnz, "r0,x"));
             return Mask(8, 0xF,
                 Mask(7, 1,  // Adjust SP
-                    Instr(Opcode.add, "sp,I"),
-                    Instr(Opcode.sub, "sp,I")),
+                    Instr(Opcode.add, "sp,I0:7"),
+                    Instr(Opcode.sub, "sp,I0:7")),
 
                 cbnzCbz,
                 Nyi("Extend"),
