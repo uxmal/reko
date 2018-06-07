@@ -2,20 +2,32 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
   <arch>pic</arch>
   <input>
-    <filename>PIC18EggExtd.hex</filename>
-    <disassembly>PIC18EggExtd.asm</disassembly>
-    <intermediate-code>PIC18EggExtd.dis</intermediate-code>
-    <output>PIC18EggExtd.c</output>
-    <types-file>PIC18EggExtd.h</types-file>
-    <global-vars>PIC18EggExtd.globals.c</global-vars>
+    <filename>..\PIC18\PIC18Legacy.hex</filename>
+    <disassembly>..\PIC18\PIC18Legacy.asm</disassembly>
+    <intermediate-code>..\PIC18\PIC18Legacy.dis</intermediate-code>
+    <output>..\PIC18\PIC18Legacy.c</output>
+    <types-file>..\PIC18\PIC18Legacy.h</types-file>
+    <global-vars>..\PIC18\PIC18Legacy.globals.c</global-vars>
     <user>
       <address>00000000</address>
       <loader>IntelHex</loader>
       <processor name="pic">
-        <item key="model">PIC18F1230</item>
-        <item key="execution_mode">Extended</item>
+        <item key="model">PIC18F1220</item>
+        <item key="execution_mode">Traditional</item>
         <item key="loader_type">raw</item>
       </processor>
+      <procedure name="fn000000AC">
+        <address>000000AC</address>
+      </procedure>
+      <procedure name="fn000000FC">
+        <address>000000FC</address>
+      </procedure>
+      <procedure name="fn0000011A">
+        <address>0000011A</address>
+      </procedure>
+      <procedure name="fn0000013A">
+        <address>0000013A</address>
+      </procedure>
       <registerValues>
         <assume addr="000000" reg="STATUS" value="00" />
         <assume addr="000000" reg="PCL" value="00" />
