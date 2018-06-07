@@ -259,7 +259,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
             if (options == null)
-                throw new ArgumentNullException(nameof(options));
+            {
+                options = new Dictionary<string, object>()
+                {
+                    { opt_model, PICProcessorModel.DefaultPICName },
+                    { opt_execmode, PICExecMode.Traditional },
+                    { opt_loadertype, "raw" }
+                };
+            }
 
             if (options.TryGetValue(opt_model, out var model))
             {
