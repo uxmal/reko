@@ -5869,7 +5869,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(4): 3 instructions",
                 "1|L--|v4 = Mem0[sp:word32]",
-                "2|L--|sp = sp + 0x0000000C",
+                "2|L--|sp = sp + 12",
                 "3|T--|goto v4");
         }
 

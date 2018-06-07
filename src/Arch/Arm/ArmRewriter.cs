@@ -775,14 +775,14 @@ case ARM_OP_SYSREG:
                         }
                         return m.Mem(dt, ea);
                     }
-                    if (mop.Offset != null && !mop.Offset.IsZero)
+                    if ((mop.PreIndex || !instr.Writeback) && mop.Offset != null && !mop.Offset.IsZero)
                     {
                         var offset = mop.Offset;
                         ea = mop.Add
                             ? m.IAdd(ea, offset)
                             : m.ISub(ea, offset);
                     }
-                    if (instr.ops.Length > 2 && instr.Writeback)
+                    if (mop.PreIndex && instr.Writeback)
                     {
                         m.Assign(baseReg, ea);
                         ea = baseReg;

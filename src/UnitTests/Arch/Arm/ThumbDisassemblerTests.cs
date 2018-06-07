@@ -242,13 +242,28 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_ldrsb_pos_offset()
         {
             Given_Instructions(0xF914, 0x3B44);
-            Expect_Code("ldrsb\tr3,[r4],44");
+            Expect_Code("ldrsb\tr3,[r4],#&44");
         }
 
+        [Test]
         public void ThumbDis_ldrsb_neg_offset()
         {
             Given_Instructions(0xF914, 0x3944);
-            Expect_Code("ldrsb\tr3,[r4],-44");
+            Expect_Code("ldrsb\tr3,[r4],-#&44");
+        }
+
+        [Test]
+        public void ThumbDis_ldrsb()
+        {
+            Given_Instructions(0xF991, 0x3000);  // ldrsb       r3,[r1]
+            Expect_Code("ldrsb\tr3,[r1]");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_postindex()
+        {
+            Given_Instructions(0xF85D, 0xFB0C);  // ldr         pc,[sp],#0xC
+            Expect_Code("ldr\tpc,[sp],#&C");
         }
     }
 }

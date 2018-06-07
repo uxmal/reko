@@ -84,6 +84,8 @@ namespace Reko.Arch.Arm
             var ops = new List<MachineOperand>();
             ArmCondition cc = ArmCondition.AL;
             bool updateFlags = false;
+            bool writeback = false;
+
             uint n;
             for (int i = 0; i < format.Length; ++i)
             {
@@ -180,6 +182,7 @@ namespace Reko.Arch.Arm
                     {
                         if (PeekAndDiscard('I', format, ref i))
                         {
+                            // Offset, shifted by 2
                             offset = ReadDecimal(format, ref i);
                             Expect(':', format, ref i);
                             size = ReadDecimal(format, ref i);
@@ -188,6 +191,7 @@ namespace Reko.Arch.Arm
                         }
                         else
                         {
+                            // Unshifted offset.
                             Expect('i', format, ref i);
                             offset = ReadDecimal(format, ref i);
                             Expect(':', format, ref i);
@@ -197,12 +201,22 @@ namespace Reko.Arch.Arm
                         }
                         Expect(':', format, ref i);
                         var dt = DataType(format, ref i);
+                        var preindex = false;
+                        if (PeekAndDiscard('x', format, ref i))
+                        {
+                            // Indexing bits in P=10, W=8
+                            // Negative bit in U=9
+                            preindex = SBitfield(wInstr, 10, 1) != 0;
+                            add = (SBitfield(wInstr, 9, 1) != 0);
+                            writeback = SBitfield(wInstr, 8, 1) != 0;
+                        }
                         Expect(']', format, ref i);
                         op = new MemoryOperand(dt)
                         {
                             BaseRegister = baseReg,
+                            Offset = Constant.Int32(offset),
+                            PreIndex = preindex,
                             Add = add,
-                            Offset = Constant.Int32(offset)
                         };
                     }
                     break;
@@ -256,6 +270,7 @@ namespace Reko.Arch.Arm
                 condition = cc,
                 UpdateFlags = updateFlags,
                 ops = ops.ToArray(),
+                Writeback = writeback,
             };
         }
 
@@ -1014,8 +1029,8 @@ namespace Reko.Arch.Arm
 
             var LoadStoreSignedPositiveImm = Select(w => SBitfield(w, 12, 4) != 0xF,
                 Mask(5 + 16, 3,
-                    Instr(Opcode.ldrsb, "R12,[R16,i0:12:B]"),
-                    Instr(Opcode.ldrsh, "R12,[R16,i0:12:H]"),
+                    Instr(Opcode.ldrsb, "R12,[R16,i0:12:Bx]"),
+                    Instr(Opcode.ldrsh, "R12,[R16,i0:12:Hx]"),
                     invalid,
                     invalid),
                 Mask(5 + 16, 3,
@@ -1023,6 +1038,37 @@ namespace Reko.Arch.Arm
                     Instr(Opcode.nop, ""),
                     invalid,
                     invalid));   // reserved hint
+
+            var LoadStoreSignedImmediatePostIndexed = Mask(5 + 16, 3,
+                Instr(Opcode.ldrsb, "R12,[R16,i0:8:Bx]"),
+                Instr(Opcode.ldrsh, "R12,[R16,i0:8:Hx]"),
+                invalid,
+                invalid);
+
+            var LoadStoreUnsignedImmediatePostIndexed = Mask(4 + 16, 7,
+                Instr(Opcode.strb, "R12,[R16,i0:8:bx]"),
+                Instr(Opcode.ldrb, "R12,[R16,i0:8:bx]"),
+                Instr(Opcode.strh, "R12,[R16,i0:8:hx]"),
+                Instr(Opcode.ldrh, "R12,[R16,i0:8:hx]"),
+                Instr(Opcode.str, "R12,[R16,i0:8:wx]"),
+                Instr(Opcode.ldr, "R12,[R16,i0:8:wx]"),
+                invalid,
+                invalid);
+
+            var LoadStoreUnsignedPositiveImm = Mask(4 + 16, 7,
+                Instr(Opcode.strb, "R12,[R16,i0:12:b]"),
+                Select(w => SBitfield(w, 12, 4) != 0xF,
+                    Instr(Opcode.ldrb, "*immediate"),
+                    Nyi("PLD,PLDW immediate preloadread")),
+                Instr(Opcode.strh, "*immediate"),
+                Select(w => SBitfield(w, 12, 4) != 0xF,
+                    Instr(Opcode.ldrh, "*immediate"),
+                    Nyi("PLD,PLDW immediate preloadwrite")),
+                // 4
+                Instr(Opcode.str, "R12,[R16,i0:12:w]"),
+                Instr(Opcode.ldr, "R12,[R16,i0:12:w]"),
+                invalid,
+                invalid);
 
             var LoadStoreSingle = Mask(7 + 16, 3,
                 Select(w => SBitfield(w, 16, 4) != 0xF,
@@ -1033,7 +1079,7 @@ namespace Reko.Arch.Arm
                         invalid,
                         Select(w => SBitfield(w, 8, 1) == 0,
                             invalid,
-                            Nyi("LoadStoreUnsignedImmediatePostIndexed")),
+                            LoadStoreUnsignedImmediatePostIndexed),
                         Mask(8, 3,
                             Nyi("LoadStoreUnsignedNegativeImm"),
                             Nyi("LoadStoreUnsignedImmediatePreIndexed"),
@@ -1041,7 +1087,7 @@ namespace Reko.Arch.Arm
                             Nyi("LoadStoreUnsignedImmediatePreIndexed"))),
                     Nyi("LoadUnsignedLiteral")),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
-                    Nyi("LoadStoreUnsignedPositiveImm"),
+                    LoadStoreUnsignedPositiveImm,
                     Nyi("LoadUnsignedLiteral")),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     Mask(10, 3,
@@ -1051,7 +1097,7 @@ namespace Reko.Arch.Arm
                         invalid,
                         Select(w => SBitfield(w, 8, 1) == 0,
                             invalid,
-                            Nyi("LoadStoreSignedImmediatePostIndexed")),
+                            LoadStoreSignedImmediatePostIndexed),
                         Mask(8, 3,
                             Nyi("LoadStoreSignedNegativeImm"),
                             Nyi("LoadStoreSignedImmediatePreIndexed"),

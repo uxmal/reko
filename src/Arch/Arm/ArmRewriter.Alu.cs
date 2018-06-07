@@ -223,7 +223,7 @@ namespace Reko.Arch.Arm
 
             Expression dst = Operand(rDst, PrimitiveType.Word32, true);
             Expression src;
-            if (instr.ops.Length == 2 && instr.Writeback)
+            if (mem.PreIndex && instr.Writeback)
             {
                 // Pre-index operand.
                 Expression baseReg = Reg(mem.BaseRegister);
@@ -239,13 +239,13 @@ namespace Reko.Arch.Arm
             {
                 src = m.Cast(dtDst, src);
             }
-            if (instr.ops.Length > 2)
+            if (!mem.PreIndex && instr.Writeback)
             {
                 // Post-index operand.
                 var tmp = binder.CreateTemporary(dtDst);
-                var baseReg = Reg(((MemoryOperand)instr.ops[1]).BaseRegister);
                 m.Assign(tmp, src);
-                m.Assign(baseReg, m.IAdd(baseReg, Operand(instr.ops[2])));
+                var baseReg = binder.EnsureRegister(mem.BaseRegister);
+                m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
                 src = tmp;
             }
             if (isJump)
