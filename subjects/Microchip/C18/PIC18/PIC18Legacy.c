@@ -4,8 +4,16 @@
 
 #include "PIC18Legacy.h"
 
-// 00000E: void fn00000E(Register Eq_2 FSR0, Register word32 TBLPTR)
-void fn00000E(Eq_2 FSR0, word32 TBLPTR)
+// 00000000: void fn00000000()
+void fn00000000()
+{
+	globals->b0001 = globals->b0001 & 191;
+	Stack[0x01].ptr0000 = 330;
+	fn00000E(0x00, 0x00);
+}
+
+// 00000E: void fn00000E(Register Eq_17 FSR0, Register word32 TBLPTR)
+void fn00000E(Eq_17 FSR0, word32 TBLPTR)
 {
 	__tblrd(TBLPTR, 0x01);
 	0x00->b00C5 = TABLAT;
@@ -14,7 +22,7 @@ void fn00000E(Eq_2 FSR0, word32 TBLPTR)
 	byte TBLPTRL_24 = 0x06;
 	byte TBLPTRH_25 = 0x00;
 	byte TBLPTRU_26 = 0x00;
-	Eq_26 Z_15 = cond(TABLAT);
+	Eq_44 Z_15 = cond(TABLAT);
 	while (true)
 	{
 		if (!Z_15 && 0x00->b00C5 == 0x00)
@@ -40,7 +48,7 @@ void fn00000E(Eq_2 FSR0, word32 TBLPTR)
 		globals->b00C8 = TBLPTRH_25;
 		globals->b00C9 = TBLPTRU_26;
 		0x00->b00C3 = 0x00->b00C3;
-		Eq_96 Z_57 = cond(0x00->b00C3);
+		Eq_114 Z_57 = cond(0x00->b00C3);
 l000080:
 		if (Z_57)
 			break;
@@ -68,11 +76,36 @@ l000080:
 	goto l000080;
 }
 
-// 0000013A: void fn0000013A(Register Eq_2 FSR0, Register word32 TBLPTR)
-void fn0000013A(Eq_2 FSR0, word32 TBLPTR)
+// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register (ptr Eq_194) FSR2, Register (ptr Eq_195) FSR1)
+void fn0000D0(byte LATB, byte FSR2L, Eq_194 * FSR2, Eq_195 * FSR1)
 {
-	globals->b0001 = globals->b0001 & 191;
-	Stack[fp + 0x01].ptr0000 = 330;
-	fn00000E(FSR0, TBLPTR);
+	FSR1->b0000 = FSR2L;
+	while (FSR2->b00FE != 0x00)
+	{
+		if ((0x00->b00CA & 0x01) != 0x00)
+		{
+			0x00->b00CA = 0x00->b00CA & ~0x01;
+			if ((LATB & 0x01) != 0x00)
+				LATB = LATB | 0x80;
+			else
+				LATB = LATB & 0x7F;
+		}
+	}
+	FSR1->b0001 = FSR1->b0001;
+}
+
+// 000128: void fn000128(Register cu8 WREG, Register cu8 FSR0L, Register cu8 FSR0H, Register Eq_234 FSR0)
+void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, Eq_234 FSR0)
+{
+	while (FSR0H < WREG)
+	{
+		*FSR0 = 0x00;
+		FSR0 = (word32) FSR0 + 0x01;
+	}
+	while (FSR0L < PRODL)
+	{
+		*FSR0 = 0x00;
+		FSR0 = (word32) FSR0 + 0x01;
+	}
 }
 

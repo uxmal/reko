@@ -1,3 +1,36 @@
+void fn00000000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00000000_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00000000_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp
+
+l00000000:
+// DataOut: FSR0 TBLPTR
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp
+
+l00013A:
+	Mem18[0x0001:byte] = Data[0x0001:byte] & 0xBF
+	Stack[0x01] = 0x00014A
+	fn00000E(0x0000, 0x00000000)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: STKPTR:0x00 STATUS:0x00 PCL:0x00 PCLATH:0x00 WREG:0x00 BSR:0x00 FSR0:0x0000 FSR1:0x0000 FSR2:0x0000 PROD:0x0000 PCLAT:0x00000000 TOS:0x00000000 TBLPTR:0x00000000
+
+
+
 void fn00000E(word16 FSR0, word32 TBLPTR)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -138,32 +171,153 @@ l000090:
 
 
 
-void fn0000013A(word16 FSR0, word32 TBLPTR)
+void fn0000D0(byte LATB, byte FSR2L, word16 FSR2, word16 FSR1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  FSR0 TBLPTR
+// MayUse:  FSR1 FSR2 FSR2L LATB
 // LiveOut:
-// Trashed:
+// Trashed: ZN BSR FSR1 FSR2L LATB STKPTR TOS WREG
 // Preserved:
-// Terminates process
-fn0000013A_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0000013A_entry:
-// DataOut: FSR0 TBLPTR
+fn0000D0_entry:
+// DataOut: FSR1 FSR2 FSR2L LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp
 // LocalsOut: fp(32)
 
-l0000013A:
-	Mem7[0x0001:byte] = Data[0x0001:byte] & 0xBF
-	Stack[fp + 0x01] = 0x00014A
-	fn00000E(FSR0, TBLPTR)
-// DataOut:
+l0000D0:
+	Mem3[FSR1:byte] = FSR2L
+// DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp
+// LocalsOut: fp(32)
+
+l0000D8:
+	branch Mem3[FSR2 + 0xFE:byte] == 0x00 l0000F4
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+l0000F4:
+	Mem29[FSR1 + 0x0001:byte] = Mem3[FSR1 + 0x0001:byte]
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+
+fn0000D0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp - 0x01 FSR1:FSR1 + 0x0001 FSR2L:<invalid> WREG:<invalid> TOS:Stack[fp - 0x01] BSR:0x00 LATB:<invalid>
+
+l0000DE:
+	branch (Mem3[0x00:0xCA:byte] & 0x01) != 0x00 l0000E4
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+l0000E4:
+	Mem22[0x00:0xCA:byte] = Mem3[0x00:0xCA:byte] & 0xFE
+	branch (LATB & 0x01) == 0x00 l0000F0
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+l0000F0:
+	LATB = LATB & 0x7F
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+l0000EC:
+	LATB = LATB | 0x80
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+l0000E2:
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+l0000F2:
+// DataOut: FSR1 FSR2 LATB
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
+// LocalsOut: fp(32)
+
+
+
+void fn000128(byte WREG, byte FSR0L, byte FSR0H, word16 FSR0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  FSR0 FSR0H FSR0L WREG
+// LiveOut:
+// Trashed: ZN FSR0 STKPTR TOS WREG
+// Preserved:
+fn000128_entry:
+// DataOut: FSR0 FSR0H FSR0L WREG
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp
+// LocalsOut: fp(32)
+
+l000128:
+	branch FSR0H <u WREG l00012C
+// DataOut: FSR0 FSR0H FSR0L WREG
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR0:<invalid>
+// LocalsOut: fp(32)
+
+l00012C:
+	Mem20[FSR0:byte] = 0x00
+	FSR0 = FSR0 + 0x0001
+// DataOut: FSR0 FSR0H FSR0L WREG
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR0:<invalid>
+// LocalsOut: fp(32)
+
+l00012A:
+// DataOut: FSR0 FSR0L
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR0:<invalid>
+// LocalsOut: fp(32)
+
+l000130:
+// DataOut: FSR0 FSR0L WREG
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp FSR0:<invalid>
+// LocalsOut: fp(32)
+
+l000132:
+	branch FSR0L <u PRODL l000136
+// DataOut: FSR0 FSR0L WREG
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
+// LocalsOut: fp(32)
+
+l000136:
+	Mem17[FSR0:byte] = 0x00
+	FSR0 = FSR0 + 0x0001
+// DataOut: FSR0 FSR0L WREG
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
+// LocalsOut: fp(32)
+
+l000134:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
+
+fn000128_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: STKPTR:fp - 0x01 WREG:PRODL TOS:Stack[fp - 0x01] FSR0:<invalid>
 
 
 
