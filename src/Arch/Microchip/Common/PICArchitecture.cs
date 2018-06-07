@@ -47,8 +47,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
-        /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        public PICArchitecture(string archID) : base("pic")
+        public PICArchitecture(string archId) : base(archId)
         {
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
@@ -57,6 +56,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             WordWidth = PrimitiveType.Byte;
         }
 
+        public PICArchitecture() : this("pic") { }
 
         /// <summary>
         /// Gets or sets the PIC architecture options.
@@ -261,7 +261,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
-            if (options.TryGetValue("Model", out var model) || options.TryGetValue(opt_model, out model))
+            if (options.TryGetValue(opt_model, out var model))
             {
                 switch (model)
                 {
