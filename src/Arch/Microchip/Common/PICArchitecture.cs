@@ -258,6 +258,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
+            //TODO: throw exception instead of tinkering the options, when dcproject loading will be effective.
             if (options == null)
             {
                 options = new Dictionary<string, object>()
