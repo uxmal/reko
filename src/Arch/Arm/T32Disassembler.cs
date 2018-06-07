@@ -572,8 +572,30 @@ namespace Reko.Arch.Arm
             }
         }
 
-        // Decodes LDM* STM* instructions
-        private class LdmStmDecoder : Decoder
+        // Decodes 16-bit LDM* STM* instructions
+        private class LdmStmDecoder16 : Decoder
+        {
+            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            {
+                var rn = Registers.GpRegs[SBitfield(wInstr, 8, 3)];
+                var registers = (byte)wInstr;
+                var st = SBitfield(wInstr, 11, 1) == 0;
+                var w = st || (registers & (1 << rn.Number)) == 0;
+                return new Arm32InstructionNew
+                {
+                    opcode = st
+                        ? Opcode.stm
+                        : Opcode.ldm,
+                    Writeback = w,
+                    ops = new MachineOperand[] {
+                            new RegisterOperand(rn),
+                            new MultiRegisterOperand(PrimitiveType.Word16, (registers)) }
+                };
+            }
+        }
+
+        // Decodes 32-bit LDM* STM* instructions
+        private class LdmStmDecoder32 : Decoder
         {
             public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
             {
@@ -581,19 +603,29 @@ namespace Reko.Arch.Arm
                 var registers = (ushort)wInstr;
                 var w = SBitfield(wInstr, 16 + 5, 1) != 0;
                 var l = SBitfield(wInstr, 16 + 4, 1);
-                if (w)
+                // writeback
+                if (rn == Registers.sp)
                 {
-                    // writeback
-                    if (rn == Registers.sp)
+                    return new Arm32InstructionNew
                     {
-                        return new Arm32InstructionNew
-                        {
-                            opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
-                            ops = new MachineOperand[] { new MultiRegisterOperand(PrimitiveType.Word16, (registers)) }
-                        };
-                    }
+                        opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
+                        Writeback = w,
+                        ops = new MachineOperand[] { new MultiRegisterOperand(PrimitiveType.Word16, (registers)) }
+                    };
                 }
-                throw new NotImplementedException();
+                else
+                {
+                    return new Arm32InstructionNew
+                    {
+                        opcode = l != 0 ? Opcode.stm : Opcode.stm,
+                        Writeback = w,
+                        ops = new MachineOperand[] {
+                            new RegisterOperand(rn),
+                            new MultiRegisterOperand(PrimitiveType.Word16, (registers))
+                        }
+                    };
+
+                }
             }
         }
 
@@ -729,7 +761,7 @@ namespace Reko.Arch.Arm
                 Instr(Opcode.adr, "r8,P0:8"),
                 Instr(Opcode.add, "r8,sp,s0:8<2"));
             var decMisc16Bit = CreateMisc16bitDecoder();
-            var decLdmStm = Nyi("LdmStm");
+            var decLdmStm = new LdmStmDecoder16();
             var decCondBranch = Mask(8, 0xF, // "CondBranch"
                 Instr(Opcode.b, "c8p0:8"),
                 Instr(Opcode.b, "c8p0:8"),
@@ -1070,6 +1102,16 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid);
 
+            var LoadStoreUnsignedImmediatePreIndexed = Mask(4 + 16, 7,
+                Instr(Opcode.strb, "R12,[R16,i0:8:bx]"),
+                Instr(Opcode.ldrb, "R12,[R16,i0:8:bx]"),
+                Instr(Opcode.strh, "R12,[R16,i0:8:hx]"),
+                Instr(Opcode.ldrh, "R12,[R16,i0:8:hx]"),
+                Instr(Opcode.str, "R12,[R16,i0:8:bx]"),
+                Instr(Opcode.str, "R12,[R16,i0:8:bx]"),
+                invalid,
+                invalid);
+
             var LoadStoreSingle = Mask(7 + 16, 3,
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     Mask(10, 3,
@@ -1082,9 +1124,9 @@ namespace Reko.Arch.Arm
                             LoadStoreUnsignedImmediatePostIndexed),
                         Mask(8, 3,
                             Nyi("LoadStoreUnsignedNegativeImm"),
-                            Nyi("LoadStoreUnsignedImmediatePreIndexed"),
+                            LoadStoreUnsignedImmediatePreIndexed,
                             Nyi("LoadStoreUnsignedUnprivileged"),
-                            Nyi("LoadStoreUnsignedImmediatePreIndexed"))),
+                            LoadStoreUnsignedImmediatePreIndexed)),
                     Nyi("LoadUnsignedLiteral")),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     LoadStoreUnsignedPositiveImm,
@@ -1246,6 +1288,80 @@ namespace Reko.Arch.Arm
                     DataProcessing2srcRegs,
                     invalid));
 
+            var MultiplyAbsDifference = Mask(4 + 16, 7,
+                Mask(4, 3,
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.mla, "R8,R16,R0,R12"),
+                        Instr(Opcode.mul, "R8,R16,R0")),
+                    Instr(Opcode.mls, "R8,R16,R0,R12"),
+                    invalid,
+                    invalid),
+                Mask(4, 3,      // op1 = 0b001
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlabb, "*"),
+                        Instr(Opcode.smulbb, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlabt, "*"),
+                        Instr(Opcode.smulbt, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlatb, "*"),
+                        Instr(Opcode.smultb, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlatt, "*"),
+                        Instr(Opcode.smultt, "*"))),
+                Mask(4, 3,      // op1 = 0b010
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlad, "*"),
+                        Instr(Opcode.smuad, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smladx, "*"),
+                        Instr(Opcode.smuadx, "*")),
+                    invalid,
+                    invalid),
+                Mask(4, 3,      // op1 = 0b011
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlawb, "*"),
+                        Instr(Opcode.smulwb, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlawt, "*"),
+                        Instr(Opcode.smulwt, "*")),
+                    invalid,
+                    invalid),
+                Mask(4, 3,      // op1 = 0b100
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlsd, "*"),
+                        Instr(Opcode.smusd, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smlsdx, "*"),
+                        Instr(Opcode.smusdx, "*")),
+                    invalid,
+                    invalid),
+                Mask(4, 3,      // op1 = 0b101
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smmla, "*"),
+                        Instr(Opcode.smmul, "*")),
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.smmlar, "*"),
+                        Instr(Opcode.smmulr, "*")),
+                    invalid,
+                    invalid),
+                Mask(4, 3,      // op1 = 0b110
+                    Instr(Opcode.smmls, "*"),
+                    Instr(Opcode.smmlsr, "*"),
+                    invalid,
+                    invalid),
+                Mask(4, 3,      // op1 = 0b111
+                    Select(w => SBitfield(w, 12, 4) != 0xF,
+                        Instr(Opcode.usada8, "*"),
+                        Instr(Opcode.usad8, "*")),
+                    invalid,
+                    invalid,
+                    invalid));
+
+            var MultiplyRegister = Select(w => SBitfield(w, 6, 2) == 0,
+                MultiplyAbsDifference,
+                invalid);
+
             return new LongDecoder(new Decoder[16]
             {
                 invalid,
@@ -1275,7 +1391,7 @@ namespace Reko.Arch.Arm
                 Mask(7 + 16, 3,
                     DataProcessingRegister,
                     DataProcessingRegister,
-                    Nyi("Multiply, multiply accumulate (register)"),
+                    MultiplyRegister,
                     Nyi("Long multiply and divide")),
                 SystemRegisterAccessAdvSimdFpu,
                 SystemRegisterAccessAdvSimdFpu
@@ -1284,29 +1400,29 @@ namespace Reko.Arch.Arm
 
         private static MaskDecoder CreateLoadStoreMultipleBranchDecoder()
         {
-            var ldmStm = new LdmStmDecoder();
+            var ldmStm32 = new LdmStmDecoder32();
             var ldStExclusive = Nyi("Load/store exclusive, load-acquire/store-release, table branch");
             var ldStDual = Nyi("Load/store dual (post-indexed)");
             var ldStDualImm = Nyi("Load/store dual (literal and immediate)");
             var ldStDualPre = Nyi("Load/store dual (literal and immediate)");
             return Mask(5 + 16, 0xF, // Load/store (multiple, dual, exclusive) table branch");
-                ldmStm,
-                ldmStm,
+                ldmStm32,
+                ldmStm32,
                 ldStExclusive,
                 ldStDual,
 
-                ldmStm,
-                ldmStm,
+                ldmStm32,
+                ldmStm32,
                 ldStExclusive,
                 ldStDual,
 
-                ldmStm,
-                ldmStm,
+                ldmStm32,
+                ldmStm32,
                 ldStDualImm,
                 ldStDualPre,
 
-                ldmStm,
-                ldmStm,
+                ldmStm32,
+                ldmStm32,
                 ldStDualImm,
                 ldStDualPre);
         }

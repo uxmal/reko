@@ -328,12 +328,8 @@ namespace Reko.Arch.Arm
 
         private void RewriteLdm(int initialOffset, Func<Expression, Expression, Expression> op)
         {
-            throw new NotImplementedException();
-            //var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            //var ops = &instr.detail.arm.operands[0];
-            //var begin = ops + 1;
-            //var end = ops + instr.detail.arm.op_count;
-            //RewriteLdm(dst, 1, initialOffset, op, instr.detail.arm.writeback);
+            var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            RewriteLdm(dst, 1, initialOffset, op, instr.Writeback);
         }
 
         private void RewriteLdm(Expression dst, int skip, int offset, Func<Expression, Expression, Expression> op, bool writeback)
@@ -610,37 +606,32 @@ namespace Reko.Arch.Arm
 
         private void RewriteStm(int offset, bool inc)
         {
-            throw new NotImplementedException();
-            /*
-	var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-	var begin = &instr.detail.arm.operands[1];	// Skip the dst register
-	var end = begin + instr.detail.arm.op_count - 1;
-	var increment = inc ? 4 : -4;
-	for (var r = begin; r != end; ++r)
-	{
-		var ea = offset > 0
-			? m.IAdd(dst, m.Int32(offset))
-			: offset < 0
-			? m.ISub(dst, m.Int32(abs(offset)))
-			: dst;
-		var srcReg = Reg(r.reg);
-		m.Assign(m.Mem32(ea), srcReg);
-		offset += increment;
-	}
-	if (instr.detail.arm.writeback)
-	{
-		if (offset > 0)
-		{
-			m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
-		}
-		else if (offset < 0)
-		{
-			m.Assign(dst, m.ISub(dst, m.Int32(abs(offset))));
-		}
-	}
-    */
+            var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var mul = (MultiRegisterOperand)Src1();
+            var increment = inc ? 4 : -4;
+            foreach (var r in mul.GetRegisters())
+            {
+                var ea = offset > 0
+                    ? m.IAdd(dst, m.Int32(offset))
+                    : offset < 0
+                    ? m.ISub(dst, m.Int32(Math.Abs(offset)))
+                    : dst;
+                var srcReg = Reg(r);
+                m.Assign(m.Mem32(ea), srcReg);
+                offset += increment;
+            }
+            if (instr.Writeback)
+            {
+                if (offset > 0)
+                {
+                    m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
+                }
+                else if (offset < 0)
+                {
+                    m.Assign(dst, m.ISub(dst, m.Int32(Math.Abs(offset))));
+                }
+            }
         }
-
 
         private void RewriteStmib()
         {

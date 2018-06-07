@@ -449,5 +449,7 @@
         wfi,
         sev,
         sevl,
+        smlad,
+        smladx,
     }
 }

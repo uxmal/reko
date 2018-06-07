@@ -5513,12 +5513,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_sub()
+        public void ThumbRw_sub_sp()
         {
             BuildTest(0xB082); // sub\tsp,#8
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|sp = sp - 0x00000008");
+                "1|L--|sp = sp - 8");
         }
 
         [Test]
@@ -5918,7 +5918,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r2:byte] = (byte) r3",
-                "2|L--|r2 = r2 + 0x00000001");
+                "2|L--|r2 = r2 + 1");
         }
 
         [Test]
