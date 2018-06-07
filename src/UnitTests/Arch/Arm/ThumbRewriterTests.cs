@@ -5730,7 +5730,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = ~0x00000000");
         }
 
-
         [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_dmbc()
@@ -5987,7 +5986,16 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("01EE100F");	// mcr p15, #0, r0, c1, c0, #0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mcr(p15, 0x00000000, r0, 0x01, 0x00, 0x00000000)");
+                "1|L--|__mcr(p15, 0x00000000, r0, c1, c0, 0x00000000)");
+        }
+
+        [Test]
+        public void ThumbRw_mrc()
+        {
+            BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __mrc(p15, 0x00000000, c13, c0, 0x00000002)");
         }
 
         [Test]
@@ -6714,14 +6722,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ThumbRw_mrc()
-        {
-            BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = __mrc(p15, 0x00000000, 0x0D, 0x00, 0x00000002)");
-        }
 
         [Test]
         [Ignore(Categories.FailedTests)]

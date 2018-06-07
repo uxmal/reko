@@ -38,5 +38,14 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage cpsr = new RegisterStorage("cpsr", 16, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage fpscr = new RegisterStorage("fpscr", 17, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage spsr = new RegisterStorage("spsr", 18, 0, PrimitiveType.Word32);
+
+        // We need to provide the coprocessors as named register storages even though
+        // they more appropriately should be treated as symbols.
+        public static readonly RegisterStorage[] Coprocessors = Enumerable.Range(0, 16)
+            .Select(n => new RegisterStorage($"p{n}", 128 + n, 0, PrimitiveType.Byte))
+            .ToArray();
+        public static readonly RegisterStorage[] CoprocessorRegisters = Enumerable.Range(0, 16)
+            .Select(n => new RegisterStorage($"c{n}", 144 + n, 0, PrimitiveType.Word32))
+            .ToArray();
     }
 }

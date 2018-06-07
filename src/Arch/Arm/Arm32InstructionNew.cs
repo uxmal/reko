@@ -51,10 +51,13 @@ namespace Reko.Arch.Arm
 
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
-        public MachineOperand op1 { get; set; }
-        public MachineOperand op2 { get; set; }
-        public MachineOperand op3 { get; set; }
-        public MachineOperand op4 { get; set; }
+        public MachineOperand[] ops { get; set; }
+        /*
+        public MachineOperand op1 => ops[0];
+        public MachineOperand op2 => ops[1];
+        public MachineOperand op3 => ops[2];
+        public MachineOperand op4 => ops[3];
+        */
 
         public override InstructionClass InstructionClass
         {
@@ -106,28 +109,16 @@ namespace Reko.Arch.Arm
             var sUpdate = UpdateFlags ? "s" : "";
             var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
             writer.WriteOpcode($"{sOpcode}{sUpdate}{sCond}");
-            if (op1 != null)
+            if (ops.Length > 0)
             {
                 writer.Tab();
-                RenderOperand(op1, writer, options);
+                RenderOperand(ops[0], writer, options);
                 if (blockDataXferOpcodes.Contains(opcode))
                     writer.WriteChar('!');
-                if (op2 != null)
+                for (int iOp = 1; iOp < ops.Length; ++iOp)
                 {
                     writer.WriteChar(',');
-                    RenderOperand(op2, writer, options);
-
-                    if (op3 != null)
-                    {
-                        writer.WriteChar(',');
-                        RenderOperand(op3, writer, options);
-
-                        if (op4 != null)
-                        {
-                            writer.WriteChar(',');
-                            RenderOperand(op4, writer, options);
-                        }
-                    }
+                    RenderOperand(ops[iOp], writer, options);
                 }
             }
             if (ShiftType != Opcode.Invalid)

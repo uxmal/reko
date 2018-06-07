@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.Arm
         /// Establishes a disassembler instance for further tests.
         /// </summary>
         /// <param name="instrs"></param>
-        private void Given_Instructions(params ushort [] instrs)
+        private void Given_Instructions(params ushort[] instrs)
         {
             var w = new LeImageWriter();
             foreach (var instr in instrs)
@@ -212,6 +212,43 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("mov\tr0,r6");
         }
 
+        [Test]
+        public void ThumbDis_iteee_xx()
+        {
+            Given_Instructions(0xBF31, 0x4630, 0x4631, 0x4632, 0x4633, 0x4634);
+            Expect_Code("iteee\tlo");
+            Expect_Code("movlo\tr0,r6");
+            Expect_Code("movhs\tr1,r6");
+            Expect_Code("movhs\tr2,r6");
+            Expect_Code("movhs\tr3,r6");
+            Expect_Code("mov\tr0,r6");
+        }
+
+        [Test]
+        public void ThumbDis_mrc()
+        {
+            Given_Instructions(0xEE1D, 0x3F50);
+            Expect_Code("mrc\tp15,#0,r3,c13,c0,#2");
+        }
+
+        [Test]
+        public void ThumbDis_mcr()
+        {
+            Given_Instructions(0xEE01, 0x3F10);
+            Expect_Code("mcr\tp15,#0,r3,c1,c0,#0");
+        }
+
+        [Test]
+        public void ThumbDis_ldrsb_pos_offset()
+        {
+            Given_Instructions(0xF914, 0x3B44);
+            Expect_Code("ldrsb\tr3,[r4],44");
+        }
+
+        public void ThumbDis_ldrsb_neg_offset()
+        {
+            Given_Instructions(0xF914, 0x3944);
+            Expect_Code("ldrsb\tr3,[r4],-44");
+        }
     }
 }
-

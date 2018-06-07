@@ -61,12 +61,11 @@ namespace Reko.Arch.Arm
 
         private Arm32InstructionNew Decode(uint wInstr, Opcode opcode, string format)
         {
-            int iOp = 0;
-            var instr = new Arm32InstructionNew
-            {
-                opcode = opcode,
-            };
-
+            var ops = new List<MachineOperand>();
+            bool updateFlags = false;
+            bool writeback = false;
+            Opcode shiftOp = Opcode.Invalid;
+            MachineOperand shiftValue = null;
             for (int i = 0; i < format.Length; ++i)
             {
                 MachineOperand op;
@@ -112,7 +111,7 @@ namespace Reko.Arch.Arm
                         var size = format[i] - '0';
                         ++i;
                         var dt = GetDataType(dom, size);
-                        op = DecodeMemoryAccess(wInstr, memType, dt, instr);
+                        (op, writeback) = DecodeMemoryAccess(wInstr, memType, dt);
                     }
                     break;
                 case 'M': // Multiple registers
@@ -129,26 +128,29 @@ namespace Reko.Arch.Arm
                         goto default;
                     break;
                 case 's':   // use bit 20 to determine 
-                    instr.UpdateFlags = ((wInstr >> 20) & 1) != 0;
+                    updateFlags = ((wInstr >> 20) & 1) != 0;
                     continue;
                 case '>':   // shift
                     ++i;
                     if (format[i] == 'i')
-                        DecodeImmShift(wInstr, instr);
+                        (shiftOp, shiftValue) = DecodeImmShift(wInstr);
                     else
-                        DecodeRegShift(wInstr, instr);
+                        (shiftOp, shiftValue) = DecodeRegShift(wInstr);
                     continue;
                 default:
                     throw new NotImplementedException($"Format character '{format[i]}' is unknown.");
                 }
-                switch (iOp++)
-                {
-                case 0: instr.op1 = op; break;
-                case 1: instr.op2 = op; break;
-                case 2: instr.op3 = op; break;
-                case 3: instr.op4 = op; break;
-                }
+                ops.Add(op);
             }
+            var instr = new Arm32InstructionNew
+            {
+                opcode = opcode,
+                ops = ops.ToArray(),
+                ShiftType = shiftOp,
+                ShiftValue = shiftValue,
+                UpdateFlags = updateFlags,
+                Writeback = writeback,
+            };
             return instr;
         }
 
@@ -187,7 +189,7 @@ namespace Reko.Arch.Arm
             throw new InvalidOperationException($"Unknown size specifier {dom}{size}.");
         }
 
-        private void DecodeImmShift(uint wInstr, Arm32InstructionNew instr)
+        private (Opcode, MachineOperand) DecodeImmShift(uint wInstr)
         {
             uint type = bitmask(wInstr, 5, 0x3);
             int shift_n = (int)bitmask(wInstr, 7, 0x1F);
@@ -212,14 +214,12 @@ namespace Reko.Arch.Arm
             default:
                 throw new InvalidOperationException("impossiburu");
             }
-            instr.ShiftType = shift_t;
-            if (shift_t != Opcode.Invalid)
-            {
-                instr.ShiftValue = ImmediateOperand.Int32(shift_n);
-            }
+            return (shift_t != Opcode.Invalid)
+                ? (shift_t, ImmediateOperand.Int32(shift_n))
+                : (shift_t, null);
         }
 
-        private void DecodeRegShift(uint wInstr, Arm32InstructionNew instr)
+        private (Opcode,MachineOperand) DecodeRegShift(uint wInstr)
         {
             uint type = bitmask(wInstr, 5, 0x3);
             var shift_n = Registers.GpRegs[(int)bitmask(wInstr, 8, 0xF)];
@@ -241,8 +241,7 @@ namespace Reko.Arch.Arm
             default:
                 throw new InvalidOperationException("impossiburu");
             }
-            instr.ShiftType = shift_t;
-            instr.ShiftValue = new RegisterOperand(shift_n);
+            return (shift_t, new RegisterOperand(shift_n));
         }
 
 
@@ -254,7 +253,7 @@ namespace Reko.Arch.Arm
             return ImmediateOperand.Word32(n);
         }
 
-        private MemoryOperand DecodeMemoryAccess(uint wInstr, char memType, PrimitiveType dtAccess, Arm32InstructionNew instr)
+        private (MemoryOperand, bool) DecodeMemoryAccess(uint wInstr, char memType, PrimitiveType dtAccess)
         {
             var n = Registers.GpRegs[bitmask(wInstr, 16, 0xF)];
             var m = Registers.GpRegs[bitmask(wInstr, 0, 0x0F)];
@@ -281,17 +280,19 @@ namespace Reko.Arch.Arm
             bool add = bit(wInstr, 23);
             bool preIndex = bit(wInstr, 24);
             bool wback = bit(wInstr, 21);
-            instr.Writeback = !preIndex | wback;
-            return new MemoryOperand(dtAccess)
-            {
-                BaseRegister = n,
-                Offset = offset,
-                Index = m,
-                Add = add,
-                PreIndex = preIndex,
-                ShiftType = shiftType,
-                Shift = shiftAmt,
-            };
+            bool writeback = !preIndex | wback;
+            return
+                (new MemoryOperand(dtAccess)
+                {
+                    BaseRegister = n,
+                    Offset = offset,
+                    Index = m,
+                    Add = add,
+                    PreIndex = preIndex,
+                    ShiftType = shiftType,
+                    Shift = shiftAmt,
+                },
+                writeback);
         }
 
         public abstract class Decoder

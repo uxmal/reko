@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -35,6 +36,16 @@ namespace Reko.Arch.Arm
         public MultiRegisterOperand(PrimitiveType width, ushort bitmask) : base(width)
         {
             this.bitmask = bitmask;
+        }
+
+        public IEnumerable<RegisterStorage> GetRegisters()
+        {
+            int mask = 1;
+            for (int i = 0; i < 16; ++i, mask <<= 1)
+            {
+                if ((bitmask & mask) != 0)
+                    yield return Registers.GpRegs[i];
+            }
         }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

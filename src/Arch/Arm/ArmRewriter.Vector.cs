@@ -120,7 +120,7 @@ namespace Reko.Arch.Arm
                     m.Assign(dst, m.Seq(
                         arrSrc,
                         Enumerable.Range(0, celemSrc)
-                            .Select(n => Operand(instr.op2))
+                            .Select(n => Operand(instr.ops[1]))
                             .ToArray()));
                     return;
                 }

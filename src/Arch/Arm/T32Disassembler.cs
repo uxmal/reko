@@ -103,9 +103,11 @@ namespace Reko.Arch.Arm
                     if (Peek('p',format,i))
                     {
                         op = new RegisterOperand(arch.StackRegister);
-                    } else
+                    }
+                    else // Signed immediate (in bitfields)
                     {
-                        throw new NotImplementedException(format);
+                        n = ReadBitfields(wInstr, format, ref i);
+                        op = ImmediateOperand.Int32((int)n);
                     }
                     break;
                 case 'S':   // shift amount in bitfield.
@@ -117,27 +119,8 @@ namespace Reko.Arch.Arm
                     break;
                 case 'i':   // immediate value in bitfield(s)
                     ++i;
-                    n = 0u;
-                    do
-                    {
-                        offset = this.ReadDecimal(format, ref i);
-                        Expect(':', format, ref i);
-                        size = this.ReadDecimal(format, ref i);
-                        n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
-                    } while (PeekAndDiscard(':', format, ref i));
+                    n = ReadBitfields(wInstr, format, ref i);
                     op = ImmediateOperand.Word32(n);
-                    break;
-                case 'I':   // immediate value shifted left 2.
-                    ++i;
-                    n = 0u;
-                    do
-                    {
-                        offset = this.ReadDecimal(format, ref i);
-                        Expect(':', format, ref i);
-                        size = this.ReadDecimal(format, ref i);
-                        n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
-                    } while (PeekAndDiscard(':', format, ref i));
-                    op = ImmediateOperand.Word32(n << 2);
                     break;
                 case 'M':
                     op = ModifiedImmediate(wInstr);
@@ -237,14 +220,32 @@ namespace Reko.Arch.Arm
                     size = ReadDecimal(format, ref i);
                     op = AddressOperand.Create(addr + (SBitfield(wInstr, offset, size) << 1));
                     break;
-                case 'c':
+                case 'c':  // Condition code
                     ++i;
                     offset = ReadDecimal(format, ref i);
                     cc = (ArmCondition) SBitfield(wInstr, offset, 4);
                     --i;
                     continue;
+                case 'C':   // Coprocessor
+                    ++i;
+                    switch (format[i])
+                    {
+                    case 'P':   // Coprocessor #
+                        ++i;
+                        offset = ReadDecimal(format, ref i);
+                        op = Coprocessor(wInstr, offset);
+                        break;
+                    case 'R':   // Coprocessor register
+                        ++i;
+                        offset = ReadDecimal(format, ref i);
+                        op = CoprocessorRegister(wInstr, offset);
+                        break;
+                    default:
+                        throw new NotImplementedException($"Unknown format specifier C{format[i]} when decoding {opcode}.");
+                    }
+                    break;
                 default:
-                    throw new NotImplementedException($"Unknown format character {format[i]} when decoding {opcode}.");
+                    throw new NotImplementedException($"Unknown format specifier {format[i]} when decoding {opcode}.");
                 }
                 ops.Add(op);
             }
@@ -254,11 +255,34 @@ namespace Reko.Arch.Arm
                 opcode = opcode,
                 condition = cc,
                 UpdateFlags = updateFlags,
-                op1 = ops.Count > 0 ? ops[0] : null,
-                op2 = ops.Count > 1 ? ops[1] : null,
-                op3 = ops.Count > 2 ? ops[2] : null,
-                op4 = ops.Count > 3 ? ops[3] : null,
+                ops = ops.ToArray(),
             };
+        }
+
+        /// <summary>
+        /// Concatenate the value in 1 or more bit fields and then optionally
+        /// shift it to the left by a given amount.
+        /// </summary>
+        /// <param name="wInstr"></param>
+        /// <param name="format"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private uint ReadBitfields(uint wInstr, string format, ref int i)
+        {
+            uint n = 0u;
+            do
+            {
+                var offset = this.ReadDecimal(format, ref i);
+                Expect(':', format, ref i);
+                var size = this.ReadDecimal(format, ref i);
+                n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
+            } while (PeekAndDiscard(':', format, ref i));
+            if (PeekAndDiscard('<', format, ref i))
+            {
+                var shift = this.ReadDecimal(format, ref i);
+                n <<= shift;
+            }
+            return n;
         }
 
         private static ImmediateOperand ModifiedImmediate(uint wInstr)
@@ -289,6 +313,18 @@ namespace Reko.Arch.Arm
                 abcdefgh |= 0x80;
                 return ImmediateOperand.Word32(abcdefgh << (0x20 - i_imm3_a));
             }
+        }
+
+        private RegisterOperand Coprocessor(uint wInstr, int bitPos)
+        {
+            var cp = Registers.Coprocessors[SBitfield(wInstr, bitPos, 4)];
+            return new RegisterOperand(cp);
+        }
+
+        private RegisterOperand CoprocessorRegister(uint wInstr, int bitPos)
+        {
+            var cr = Registers.CoprocessorRegisters[SBitfield(wInstr, bitPos, 4)];
+            return new RegisterOperand(cr);
         }
 
         private static int SBitfield(uint word, int offset, int size)
@@ -516,7 +552,7 @@ namespace Reko.Arch.Arm
                 return new Arm32InstructionNew
                 {
                     opcode = Opcode.bl,
-                    op1 = AddressOperand.Create(dasm.addr + off)
+                    ops = new MachineOperand[] { AddressOperand.Create(dasm.addr + off) }
                 };
             }
         }
@@ -538,7 +574,7 @@ namespace Reko.Arch.Arm
                         return new Arm32InstructionNew
                         {
                             opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
-                            op1 = new MultiRegisterOperand(PrimitiveType.Word16, (registers))
+                            ops = new MachineOperand[] { new MultiRegisterOperand(PrimitiveType.Word16, (registers)) }
                         };
                     }
                 }
@@ -559,7 +595,7 @@ namespace Reko.Arch.Arm
             public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
             {
                 var instr = base.Decode(dasm, wInstr);
-                if (instr.op3 is ImmediateOperand imm && imm.Value.IsIntegerZero)
+                if (instr.ops[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 {
                     instr.opcode = Opcode.movs;
                 }
@@ -598,21 +634,22 @@ namespace Reko.Arch.Arm
                 // A hack -- we patch up the output of the regular decoder.
                 var instr = base.Decode(dasm, wInstr);
                 ImmediateOperand opLsb;
-                ImmediateOperand opMsb = (ImmediateOperand)instr.op4;
-                if (opMsb != null)
+                ImmediateOperand opMsb;
+                if (instr.ops.Length > 3)
                 {
-                    opLsb = (ImmediateOperand)instr.op3;
+                    opMsb = (ImmediateOperand)instr.ops[3];
+                    opLsb = (ImmediateOperand)instr.ops[2];
                 }
                 else
                 {
-                    opMsb = (ImmediateOperand)instr.op3;
-                    opLsb = (ImmediateOperand)instr.op2;
+                    opMsb = (ImmediateOperand)instr.ops[2];
+                    opLsb = (ImmediateOperand)instr.ops[1];
                 }
                 var opWidth = ImmediateOperand.Word32(opMsb.Value.ToInt32() - opLsb.Value.ToInt32() + 1);
-                if (instr.op4 != null)
-                    instr.op4 = opWidth;
+                if (instr.ops.Length > 3)
+                    instr.ops[3] = opWidth;
                 else
-                    instr.op3 = opWidth;
+                    instr.ops[2] = opWidth;
                 return instr;
             }
         }
@@ -675,7 +712,7 @@ namespace Reko.Arch.Arm
             var decLdStSpRelative = Nyi("LdStSpRelative");
             var decAddPcSp = Mask(11, 1,
                 Instr(Opcode.adr, "r8,P0:8"),
-                Instr(Opcode.add, "r8,sp,I0:8"));
+                Instr(Opcode.add, "r8,sp,s0:8<2"));
             var decMisc16Bit = CreateMisc16bitDecoder();
             var decLdmStm = Nyi("LdmStm");
             var decCondBranch = Mask(8, 0xF, // "CondBranch"
@@ -793,7 +830,7 @@ namespace Reko.Arch.Arm
                 Instr(Opcode.cmp, ".r0,r3"),
                 Instr(Opcode.cmn, ".r0,r3"),
 
-                invalid,
+                Instr(Opcode.orr, ".r0,r3"),
                 invalid,
                 invalid,
                 invalid);
@@ -806,8 +843,8 @@ namespace Reko.Arch.Arm
                 Instr(Opcode.cbnz, "r0,x"));
             return Mask(8, 0xF,
                 Mask(7, 1,  // Adjust SP
-                    Instr(Opcode.add, "sp,I0:7"),
-                    Instr(Opcode.sub, "sp,I0:7")),
+                    Instr(Opcode.add, "sp,s0:7<2"),
+                    Instr(Opcode.sub, "sp,s0:7<2")),
 
                 cbnzCbz,
                 Nyi("Extend"),
@@ -879,21 +916,21 @@ namespace Reko.Arch.Arm
                 // 4
                 Select(wInstr => SBitfield(wInstr, 16, 4) != 0xF,
                     Instr(Opcode.orr, "R8,R16,M"),
-                    Instr(Opcode.mov, "R16,M")),
+                    Instr(Opcode.mov, "R8,M")),
                 Select(wInstr => SBitfield(wInstr, 16, 4) != 0xF,
                     Instr(Opcode.orr, ".R8,R16,M"),
-                    Instr(Opcode.mov, ".R16,M")),
+                    Instr(Opcode.mov, ".R8,M")),
                 Select(wInstr => SBitfield(wInstr, 16, 4) != 0xF,
                     Instr(Opcode.orn, "R8,R16,M"),
-                    Instr(Opcode.mvn, "R16,M")),
+                    Instr(Opcode.mvn, "R8,M")),
                 Select(wInstr => SBitfield(wInstr, 16, 4) != 0xF,
                     Instr(Opcode.orn, ".R8,R16,M"),
-                    Instr(Opcode.mvn, ".R16,M")),
+                    Instr(Opcode.mvn, ".R8,M")),
                 // 8
                 Instr(Opcode.eor, "R8,R16,M"),
                 Select(wInstr => SBitfield(wInstr, 8, 4) != 0xF,
                     Instr(Opcode.eor, ".R8,R16,M"),
-                    Instr(Opcode.teq, ".R16,M")),
+                    Instr(Opcode.teq, ".R8,M")),
                 invalid,
                 invalid,
                 // C
@@ -1030,7 +1067,11 @@ namespace Reko.Arch.Arm
             var AvancedSimdLdStAnd64bitMove = Nyi("AvancedSimdLdStAnd64bitMove");
             var FloatingPointDataProcessing = Nyi("FloatingPointDataProcessing");
             var AdvancedSimdAndFloatingPoint32bitMove = Nyi("AdvancedSimdAndFloatingPoint32bitMove");
-            var SystemRegister32bitMove = Nyi("SystemRegister32bitMove");
+            var SystemRegister32bitMove = Mask(12 + 16, 1, 
+                Mask(4 + 16, 1,
+                    Instr(Opcode.mcr, "CP8,i21:3,R12,CR16,CR0,i5:3"),
+                    Instr(Opcode.mrc, "CP8,i21:3,R12,CR16,CR0,i5:3")),
+                invalid);
             var AdvancedSimdDataProcessing = Nyi("AdvancedSimdDataProcessing");
             var AdvancedSimd3RegistersSameLength = Nyi("AdvancedSimd3RegistersSameLength");
             var AdvancedSimdTwoScalarsAndExtension = Nyi("AdvancedSimdTwoScalarsAndExtension");

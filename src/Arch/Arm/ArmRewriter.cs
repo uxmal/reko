@@ -65,10 +65,10 @@ namespace Reko.Arch.Arm
 
         //HExpr Operand(const cs_arm_op & op, BaseType dt = PrimitiveType.Word32, bool write = false);
 
-        MachineOperand Dst() { return instr.op1; }
-        MachineOperand Src1() { return instr.op2; }
-        MachineOperand Src2() { return instr.op3; }
-        MachineOperand Src3() { return instr.op4; }
+        MachineOperand Dst() => instr.ops[0];
+        MachineOperand Src1() => instr.ops[1];
+        MachineOperand Src2() => instr.ops[2]; 
+        MachineOperand Src3() => instr.ops[3];
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -782,7 +782,7 @@ case ARM_OP_SYSREG:
                             ? m.IAdd(ea, offset)
                             : m.ISub(ea, offset);
                     }
-                    if (op == instr.op3 && instr.Writeback)
+                    if (instr.ops.Length > 2 && instr.Writeback)
                     {
                         m.Assign(baseReg, ea);
                         ea = baseReg;
@@ -856,34 +856,19 @@ case ARM_OP_SYSREG:
         }
 
         void MaybePostOperand(MachineOperand op)
-{
-    if (op != instr.op3)
-        return;
-    if (!(op is MemoryOperand mop))
-        return;
-            throw new NotImplementedException();
-            /*
-    var lastOp = instr->detail->arm.operands[instr->detail->arm.op_count - 1];
-    var baseReg = Reg(mop.BaseRegister);
-    var offset = Operand(lastOp);
-    var ea = lastOp.subtracted
-        ? m.ISub(baseReg, offset)
-        : m.IAdd(baseReg, offset);
-    m.Assign(baseReg, ea);
-    */
-#if NYI
-	if (memOp == null || memOp.Offset == null)
-		return;
-	if (memOp.Preindexed)
-		return;
-	Expression baseReg = host->EnsureRegister(memOp.Base);
-	auto offset = Operand(memOp.Offset);
-	auto ea = memOp.Subtract
-		? emitter.ISub(baseReg, offset)
-		: emitter.IAdd(baseReg, offset);
-	emitter.Assign(baseReg, ea);
-#endif
-}
+        {
+            if (!(op is MemoryOperand mop))
+                return;
+            if (!instr.Writeback || mop.PreIndex)
+                return;
+            var baseReg = Reg(mop.BaseRegister);
+
+            var offset = mop.Offset;
+            var ea = false
+                ? m.ISub(baseReg, offset)
+                : m.IAdd(baseReg, offset);
+            m.Assign(baseReg, ea);
+        }
 
         protected Expression TestCond(ArmCondition cond)
         {

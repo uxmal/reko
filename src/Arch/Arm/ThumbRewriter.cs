@@ -34,9 +34,6 @@ namespace Reko.Arch.Arm
 {
     public class ThumbRewriter : ArmRewriter
     {
-        private int itState;
-        private ArmCondition itStateCondition;
-
         public ThumbRewriter(
             ThumbArchitecture arch,
             EndianImageReader rdr,
@@ -44,50 +41,17 @@ namespace Reko.Arch.Arm
             IStorageBinder binder) :
             base(arch, rdr, host, binder, new T32Disassembler(arch, rdr).GetEnumerator())
         {
-
-
-            this.itState = 0;
-            this.itStateCondition = ArmCondition.AL;
-        }
-
-
-        protected override void PostRewrite()
-        {
-            itState = (itState << 1);
-            if ((itState & 0x0F) == 0)
-            {
-                itStateCondition = ArmCondition.AL;
-            }
         }
 
         protected override void ConditionalSkip(bool force)
         {
-            if (this.itStateCondition != ArmCondition.AL)
-            {
-                rtlClass |= RtlClass.Conditional;
-                var cc = itStateCondition;
-                if ((itState & 0x10) != 0)
-                    cc = Invert(cc);
-                m.BranchInMiddleOfInstruction(
-                    TestCond(cc),
-                    instr.Address + instr.Length,
-                    RtlClass.ConditionalTransfer);
-            }
+            if (instr.opcode == Opcode.it)
+                return;
+            base.ConditionalSkip(force);
         }
 
         protected override void RewriteIt()
         {
-            int i;
-            itState = 0;
-            var mnemonic = instr.opcode.ToString();
-            for (i = 1; i < mnemonic.Length; ++i)
-            {
-                itState = (itState << 1) | (mnemonic[i] == 't' ? 1 : 0);
-            }
-            int sh = 5 - i;
-            itState = ((itState << 1) | 1) << sh;
-
-            itStateCondition = instr.condition;
             m.Nop();
         }
     }

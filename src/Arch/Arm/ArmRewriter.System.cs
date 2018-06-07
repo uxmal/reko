@@ -16,10 +16,12 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Arm
 {
@@ -77,44 +79,35 @@ namespace Reko.Arch.Arm
 
         private void RewriteMcr()
         {
-            throw new NotImplementedException();
-            /*
-            auto begin = &instr->detail->arm.operands[0];
-            auto end = begin + instr->detail->arm.op_count;
-            int cArgs = 0;
-            for (auto op = begin; op != end; ++op)
+            var args = new List<Expression>();
+            foreach (var op in instr.ops)
             {
-                m.AddArg(Operand(*op));
-                ++cArgs;
+                args.Add(Operand(op));
             }
-            auto ppp = host.PseudoProcedure("__mcr", VoidType.Instance, cArgs);
-            m.SideEffect(m.Fn(ppp));*/
+            var intrinsicCall = host.PseudoProcedure("__mcr", VoidType.Instance, args.ToArray());
+            m.SideEffect(intrinsicCall);
         }
 
         private void RewriteMrc()
         {
-            throw new NotImplementedException();
-            /*
-	auto begin = &instr->detail->arm.operands[0];
-	auto end = begin + instr->detail->arm.op_count;
-	int cArgs = 0;
-	HExpr regDst = HExpr(-1);
-	for (auto op = begin; op != end; ++op)
-	{
-		auto a = Operand(*op);
-		if (cArgs == 2)
-		{
-			regDst = a;
-		}
-		else
-		{
-			m.AddArg(a);
-		}
-		++cArgs;
-	}
-	auto ppp = host.PseudoProcedure("__mrc", VoidType.Instance, cArgs-1);
-	m.Assign(regDst, m.Fn(ppp));
-    */
+            int cArgs = 0;
+            Expression dst = null;
+            var args = new List<Expression>();
+            foreach (var op in instr.ops)
+            {
+                var a = Operand(op);
+                if (cArgs == 2)
+                {
+                    dst = a;
+                }
+                else
+                {
+                    args.Add(a);
+                }
+                ++cArgs;
+            }
+            var intrinsicCall = host.PseudoProcedure("__mrc", VoidType.Instance, args.ToArray());
+            m.Assign(dst, intrinsicCall);
         }
 
         private void RewriteMrs()
@@ -158,7 +151,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteUdf()
         {
-            var trapNo = ((ImmediateOperand)instr.op1).Value;
+            var trapNo = ((ImmediateOperand)instr.ops[0]).Value;
             var ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, trapNo);
             m.SideEffect(ppp);
         }
