@@ -85,7 +85,8 @@ namespace Reko.Arch.Arm
             ArmCondition cc = ArmCondition.AL;
             bool updateFlags = false;
             bool writeback = false;
-
+            Opcode shiftType = Opcode.Invalid;
+            MachineOperand shiftValue = null;
             uint n;
             for (int i = 0; i < format.Length; ++i)
             {
@@ -114,15 +115,33 @@ namespace Reko.Arch.Arm
                     break;
                 case 'S':   // shift amount in bitfield.
                     ++i;
-                    offset = this.ReadDecimal(format, ref i);
-                    Expect(':', format, ref i);
-                    size = this.ReadDecimal(format, ref i);
-                    op = ImmediateOperand.Int32(SBitfield(wInstr, offset, size));
+                    if (PeekAndDiscard('r', format, ref i))
+                    {
+                        // 'Sr' = rotate
+                        n = ReadBitfields(wInstr, format, ref i);
+                        shiftType = Opcode.ror;
+                        shiftValue = ImmediateOperand.Int32((int)n);
+                        continue;
+                    }
+                    else
+                    {
+                        offset = this.ReadDecimal(format, ref i);
+                        Expect(':', format, ref i);
+                        size = this.ReadDecimal(format, ref i);
+                        op = ImmediateOperand.Int32(SBitfield(wInstr, offset, size));
+                    }
                     break;
                 case 'i':   // immediate value in bitfield(s)
                     ++i;
                     n = ReadBitfields(wInstr, format, ref i);
-                    op = ImmediateOperand.Word32(n);
+                    if (PeekAndDiscard('h', format, ref i))
+                    {
+                        op = ImmediateOperand.Word16((ushort)n);
+                    }
+                    else
+                    {
+                        op = ImmediateOperand.Word32(n);
+                    }
                     break;
                 case 'M':
                     op = ModifiedImmediate(wInstr);
@@ -166,6 +185,7 @@ namespace Reko.Arch.Arm
                     }
                     else if (PeekAndDiscard('r', format, ref i))
                     {
+                        // Only 3 bits for register
                         var reg = ReadDecimal(format, ref i);
                         baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
                     }
@@ -210,6 +230,13 @@ namespace Reko.Arch.Arm
                             add = (SBitfield(wInstr, 9, 1) != 0);
                             writeback = SBitfield(wInstr, 8, 1) != 0;
                         }
+                        else if (PeekAndDiscard('X', format, ref i))
+                        {
+                            preindex = SBitfield(wInstr, 24, 1) != 0;
+                            add = SBitfield(wInstr, 23, 1) != 0;
+                            writeback = SBitfield(wInstr, 21, 1) != 0;
+                        }
+
                         Expect(']', format, ref i);
                         op = new MemoryOperand(dt)
                         {
@@ -271,6 +298,8 @@ namespace Reko.Arch.Arm
                 UpdateFlags = updateFlags,
                 ops = ops.ToArray(),
                 Writeback = writeback,
+                ShiftType = shiftType,
+                ShiftValue = shiftValue,
             };
         }
 
@@ -388,6 +417,7 @@ namespace Reko.Arch.Arm
         {
             switch (format[i++])
             {
+            case 'd': return PrimitiveType.Word64;
             case 'w': return PrimitiveType.Word32;
             case 'h': return PrimitiveType.Word16;
             case 'H': return PrimitiveType.Int16;
@@ -894,7 +924,11 @@ namespace Reko.Arch.Arm
                     Instr(Opcode.sub, "sp,s0:7<2")),
 
                 cbnzCbz,
-                Nyi("Extend"),
+                Mask(6, 3,
+                    Instr(Opcode.sxth, "r0,r3"),
+                    Instr(Opcode.sxtb, "r0,r3"),
+                    Instr(Opcode.uxth, "r0,r3"),
+                    Instr(Opcode.uxtb, "r0,r3")),
                 cbnzCbz,
 
                 invalid,
@@ -1051,11 +1085,15 @@ namespace Reko.Arch.Arm
                 Nyi("ufbx"),
                 invalid);
 
+            var MoveWide16BitImm = Mask(7 + 16, 1,
+                Instr(Opcode.mov, "*"),
+                Instr(Opcode.movt, "R8,i16:4:26:1:12:3:0:8h"));
+
             var DataProcessingPlainImm = Mask(8 + 16, 1,
                 Mask(5 + 16, 3,
                     DataProcessingSimpleImm,
                     DataProcessingSimpleImm,
-                    Nyi("MoveWide16BitImm"),
+                    MoveWide16BitImm,
                     invalid),
                 SaturateBitfield);
 
@@ -1276,12 +1314,35 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid);
 
+            var RegisterExtends = Mask(4 + 16, 7,
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    Instr(Opcode.sxtah, "R8,R16,R0,Sr4:2<3"),
+                    Instr(Opcode.sxth, "R8,R0,Sr4:2<3")),
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    Instr(Opcode.uxtah, "R8,R16,R0,Sr4:2<3"),
+                    Instr(Opcode.uxth, "R8,R0,Sr4:2<3")),
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    Instr(Opcode.sxtab16, "R8,R16,R0,Sr4:2<3"),
+                    Instr(Opcode.sxtb16, "R8,R0,Sr4:2<3")),
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    Instr(Opcode.uxtab16, "R8,R16,R0,Sr4:2<3"),
+                    Instr(Opcode.uxtb16, "R8,R0,Sr4:2<3")),
+
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    Instr(Opcode.sxtab, "R8,R16,R0,Sr4:2<3"),
+                    Instr(Opcode.sxtb, "R8,R0,Sr4:2<3")),
+                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    Instr(Opcode.uxtab, "R8,R16,R0,Sr4:2<3"),
+                    Instr(Opcode.uxtb, "R8,R0,Sr4:2<3")),
+                invalid,
+                invalid);
+
             var DataProcessingRegister = Mask(7 + 16, 1,
                 Mask(7, 1,
                     Select(w => SBitfield(w, 4, 4) == 0,
                         Nyi("MovMovsRegisterShiftedRegister"),
                         invalid),
-                    Nyi("RegisterExtends")),
+                    RegisterExtends),
                 Mask(6, 3,
                     Nyi("ParallelAddSub"),
                     Nyi("ParallelAddSub"),
@@ -1362,6 +1423,82 @@ namespace Reko.Arch.Arm
                 MultiplyAbsDifference,
                 invalid);
 
+            var LongMultiplyDivide = Mask(4 + 16, 7,
+                Select(w => SBitfield(w, 4, 4) != 0,
+                    invalid,
+                    Instr(Opcode.smull, "R12,R8,R16,R0")),
+                Select(w => SBitfield(w, 4, 4) != 0xF,
+                    invalid,
+                    Instr(Opcode.sdiv, "R8,R16,R0")),
+                Select(w => SBitfield(w, 4, 4) != 0,
+                    invalid,
+                    Instr(Opcode.umull, "R12,R8,R16,R0")),
+                Select(w => SBitfield(w, 4, 4) != 0xF,
+                    invalid,
+                    Instr(Opcode.udiv, "R8,R16,R0")),
+                // 4
+                Mask(4, 0xF,
+                    Instr(Opcode.smlal, "R12,R8,R16,R0"),
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    Instr(Opcode.smlalbb, "R12,R8,R16,R0"),
+                    Instr(Opcode.smlalbt, "R12,R8,R16,R0"),
+                    Instr(Opcode.smlaltb, "R12,R8,R16,R0"),
+                    Instr(Opcode.smlaltt, "R12,R8,R16,R0"),
+
+                    Instr(Opcode.smlald, "R12,R8,R16,R0"),
+                    Instr(Opcode.smlaldx, "R12,R8,R16,R0"),
+                    invalid,
+                    invalid),
+                Mask(4, 0x0F,
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    Instr(Opcode.smlsld, "R12,R8,R16,R0"),
+                    Instr(Opcode.smlsldx, "R12,R8,R16,R0"),
+                    invalid,
+                    invalid),
+                Mask(4, 0x0F,   // op1 = 0b110
+                    Instr(Opcode.umlal, "R12,R8,R16,R0"),
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    Instr(Opcode.umaal, "*"),
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid),
+                invalid);   // op1 = 0b111
+
             return new LongDecoder(new Decoder[16]
             {
                 invalid,
@@ -1392,7 +1529,7 @@ namespace Reko.Arch.Arm
                     DataProcessingRegister,
                     DataProcessingRegister,
                     MultiplyRegister,
-                    Nyi("Long multiply and divide")),
+                    LongMultiplyDivide),
                 SystemRegisterAccessAdvSimdFpu,
                 SystemRegisterAccessAdvSimdFpu
             });
@@ -1403,8 +1540,10 @@ namespace Reko.Arch.Arm
             var ldmStm32 = new LdmStmDecoder32();
             var ldStExclusive = Nyi("Load/store exclusive, load-acquire/store-release, table branch");
             var ldStDual = Nyi("Load/store dual (post-indexed)");
-            var ldStDualImm = Nyi("Load/store dual (literal and immediate)");
-            var ldStDualPre = Nyi("Load/store dual (literal and immediate)");
+            var ldStDualImm = Mask(4 + 16, 1,
+                Instr(Opcode.strd, "R12,R8,[R16,I0:8:dX]"),
+                Instr(Opcode.ldrd, "R12,R8,[R16,I0:8:dX]"));
+            var ldStDualPre = Nyi("Load/store dual (immediate pre-indexed)");
             return Mask(5 + 16, 0xF, // Load/store (multiple, dual, exclusive) table branch");
                 ldmStm32,
                 ldmStm32,

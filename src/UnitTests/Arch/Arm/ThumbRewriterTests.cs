@@ -6706,10 +6706,10 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_smull()
         {
-            RewriteCode("8FFB0028");	// smull r2, r8, pc, r0
+            RewriteCode("8AFB0028");	// smull r2, r8, r10, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8_r2 = r0 *s 0x00100008");
+                "1|L--|r8_r2 = r0 *s r10");
         }
 
         [Test]
