@@ -6077,6 +6077,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Does ARM T32 contain this?")]
         public void ThumbRw_cdp()
         {
 	        RewriteCode("11EE4000");    // cdp p0, #1, c0, c1, c0, #2
@@ -6086,6 +6087,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Does ARM T32 contain this?")]
         public void ThumbRw_cdp2()
         {
             RewriteCode("7BFE0DF0");    // cdp2 p0, #7, c15, c11, c13, #0
@@ -6805,17 +6807,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smlad()
         {
             RewriteCode("2AFB049A");	// smlad sl, sl, r4, sb
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r10 = r10 + ((int16) r10 *s (int16) r4 + (r10 >> 16) *s (r4 >> 16))");
         }
-
-
-    
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6834,17 +6832,16 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("2BFADBF8");	// sxtab16 r8, fp, fp, ror #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r8 = __sxtab16(fp, __ror(fp, 8))");
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_shsub8()
         {
             RewriteCode("C7FA26F4");	// shsub8 r4, r7, r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r4 = __shsub_s8(r7, r6)");
         }
 
         [Test]

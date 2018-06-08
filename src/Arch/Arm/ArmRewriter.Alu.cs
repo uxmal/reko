@@ -137,8 +137,8 @@ namespace Reko.Arch.Arm
         private void RewriteRev()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var ppp = host.PseudoProcedure("__rev", PrimitiveType.Word32, this.Operand(Src1()));
-            m.Assign(opDst, m.Fn(ppp));
+            var intrinsic = host.PseudoProcedure("__rev", PrimitiveType.Word32, this.Operand(Src1()));
+            m.Assign(opDst, intrinsic);
         }
 
         private void RewriteRevBinOp(Func<Expression, Expression, Expression> op, bool setflags)
@@ -566,6 +566,22 @@ namespace Reko.Arch.Arm
 
             var left = Operand(Src2());
             var right = Operand(Src3());
+
+            var product1 = mul(
+                m.Cast(dt, left),
+                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Cast(dt, right));
+            var product2 = mul(
+                m.Sar(left, m.Int32(16)),
+                swap ? m.Cast(dt, right) : (Expression)m.Sar(right, m.Int32(16)));
+
+            m.Assign(dst, m.IAdd(dst, addSub(product1, product2)));
+        }
+
+        private void RewriteMxd(bool swap, PrimitiveType dt, Func<Expression, Expression, Expression> mul, Func<Expression, Expression, Expression> addSub)
+        {
+            var dst = Operand(instr.ops[0]);
+            var left = Operand(Src1());
+            var right = Operand(Src2());
 
             var product1 = mul(
                 m.Cast(dt, left),

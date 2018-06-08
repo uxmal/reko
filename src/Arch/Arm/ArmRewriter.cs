@@ -156,11 +156,7 @@ namespace Reko.Arch.Arm
                 case Opcode.shadd8:
                 case Opcode.shasx:
                 case Opcode.shsax:
-                case Opcode.shsub16:
-                case Opcode.shsub8:
                 case Opcode.smc:
-                case Opcode.smlsd:
-                case Opcode.smlsdx:
                 case Opcode.smmla:
                 case Opcode.smmlar:
                 case Opcode.smmls:
@@ -412,8 +408,12 @@ namespace Reko.Arch.Arm
                 case Opcode.sbc: RewriteAdcSbc(m.ISub, false); break;
                 case Opcode.sbfx: RewriteSbfx(); break;
                 case Opcode.sdiv: RewriteDiv(m.SDiv); break;
+                case Opcode.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
+                case Opcode.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
                 case Opcode.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
+                case Opcode.smlad:  RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Opcode.smladx:  RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
                 case Opcode.smlalbb: RewriteMlal(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlalbt: RewriteMlal(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlald: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
@@ -425,6 +425,8 @@ namespace Reko.Arch.Arm
                 case Opcode.smlatt: RewriteMla(true, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlawb: RewriteSmlaw(false); break;
                 case Opcode.smlawt: RewriteSmlaw(true); break;
+                case Opcode.smlsd: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
+                case Opcode.smlsdx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Opcode.smlsld: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Opcode.smlsldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Opcode.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;

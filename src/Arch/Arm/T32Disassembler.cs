@@ -948,10 +948,10 @@ namespace Reko.Arch.Arm
                 invalid,
                 cbnzCbz,
                 Mask(6, 0x3,
-                    Nyi("Reverse bytes"),        // reverse bytes
-                    Nyi("Reverse bytes"),        // reverse bytes
+                    Instr(Opcode.rev, "r0,r3"),
+                    Instr(Opcode.rev, "r0,r3"),
                     Instr(Opcode.hlt, ""),
-                    Nyi("Reverse bytes")),        // reverse bytes),
+                    Instr(Opcode.rev, "r0,r3")),
                 cbnzCbz,
 
                 invalid,
@@ -1154,6 +1154,16 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid);
 
+            var LoadStoreUnsignedUnprivileged = Mask(4 + 16, 7,
+                Instr(Opcode.strbt, "R12,[R16,i0:8:b]"),
+                Instr(Opcode.ldrbt, "R12,[R16,i0:8:b]"),
+                Instr(Opcode.strht, "R12,[R16,i0:8:h]"),
+                Instr(Opcode.ldrht, "R12,[R16,i0:8:h]"),
+                Instr(Opcode.strt, "R12,[R16,i0:8:w]"),
+                Instr(Opcode.ldrt, "R12,[R16,i0:8:w]"),
+                invalid,
+                invalid);
+
             var LoadStoreSingle = Mask(7 + 16, 3,
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     Mask(10, 3,
@@ -1167,7 +1177,7 @@ namespace Reko.Arch.Arm
                         Mask(8, 3,
                             Nyi("LoadStoreUnsignedNegativeImm"),
                             LoadStoreUnsignedImmediatePreIndexed,
-                            Nyi("LoadStoreUnsignedUnprivileged"),
+                            LoadStoreUnsignedUnprivileged,
                             LoadStoreUnsignedImmediatePreIndexed)),
                     Nyi("LoadUnsignedLiteral")),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
