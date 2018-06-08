@@ -282,7 +282,7 @@ namespace Reko.Arch.Arm
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = string.Format(fnNameFormat, VectorElementType(elemType));
             var intrinsic = host.PseudoProcedure(fnName, arrDst, src1);
-            m.Assign(dst, m.Fn(intrinsic));
+            m.Assign(dst, intrinsic);
         }
 
         private void RewriteVectorBinOp(string fnNameFormat)
