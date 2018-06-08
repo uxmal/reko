@@ -109,7 +109,12 @@ namespace Reko.Arch.Arm
                     case 'i':
                         ++i;
                         n = ReadBitfields(wInstr, format, ref i);
-                        vectorData = VectorIntData(n);
+                        vectorData = VectorIntUIntData(0, n);
+                        continue;
+                    case 'u':
+                        ++i;
+                        n = ReadBitfields(wInstr, format, ref i);
+                        vectorData = VectorIntUIntData(wInstr, n);
                         continue;
                     case 'r':
                         n = ReadBitfields(wInstr, format, ref i);
@@ -327,14 +332,27 @@ namespace Reko.Arch.Arm
             };
         }
 
-        private ArmVectorData VectorIntData(uint n)
+        private ArmVectorData VectorIntUIntData(uint wInstr, uint n)
         {
-            switch (n)
+            if (SBitfield(wInstr, 28, 1) == 0)
             {
-            case 0: return ArmVectorData.I8;
-            case 1: return ArmVectorData.I16;
-            case 2: return ArmVectorData.I32;
-            default: throw new NotImplementedException();
+                switch (n)
+                {
+                case 0: return ArmVectorData.I8;
+                case 1: return ArmVectorData.I16;
+                case 2: return ArmVectorData.I32;
+                default: throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                switch (n)
+                {
+                case 0: return ArmVectorData.U8;
+                case 1: return ArmVectorData.U16;
+                case 2: return ArmVectorData.U32;
+                default: throw new NotImplementedException();
+                }
             }
         }
 
@@ -1299,7 +1317,13 @@ namespace Reko.Arch.Arm
 
                 Nyi("AdvancedSimd3RegistersSameLength_opc5"),
                 Nyi("AdvancedSimd3RegistersSameLength_opc5"),
-                Nyi("AdvancedSimd3RegistersSameLength_opc6"),
+                Mask(4, 1,
+                    Mask(6, 1, // Q
+                        Instr(Opcode.vmax, "vu20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vmax, "vu20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                    Mask(6, 1, // Q
+                        Instr(Opcode.vmin, "vu20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vmin, "vu20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"))),
                 Nyi("AdvancedSimd3RegistersSameLength_opc7"),
 
                 Mask(12+16, 1,  // U
