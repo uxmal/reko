@@ -103,19 +103,22 @@ namespace Reko.Arch.Arm
                     updateFlags = true;
                     continue;
                 case 'v': // vector element size
-                    if (format[++i] == 'i')
+                    ++i;
+                    switch (format[i])
                     {
+                    case 'i':
                         ++i;
                         n = ReadBitfields(wInstr, format, ref i);
                         vectorData = VectorIntData(n);
                         continue;
-                    }
-                    else if (format[++i] == 'r')
-                    {
+                    case 'r':
                         n = ReadBitfields(wInstr, format, ref i);
                         throw new NotImplementedException();
+                    case 'c':       // conversion 
+                        vectorData = VectorConvertData(wInstr);
+                        continue;
                     }
-                    throw new NotImplementedException();
+                    throw new InvalidOperationException();
                 case 's':
                     ++i;
                     if (Peek('p',format,i))
@@ -333,6 +336,33 @@ namespace Reko.Arch.Arm
             case 2: return ArmVectorData.I32;
             default: throw new NotImplementedException();
             }
+        }
+
+        private ArmVectorData VectorConvertData(uint wInstr)
+        {
+            var op = SBitfield(wInstr, 7, 2);
+            switch (SBitfield(wInstr, 18, 2))
+            {
+            case 1:
+                switch (op)
+                {
+                case 0: return ArmVectorData.F16S16;
+                case 1: return ArmVectorData.F16U16;
+                case 2: return ArmVectorData.S16F16;
+                case 3: return ArmVectorData.U16F16;
+                }
+                break;
+            case 2:
+                switch (op)
+                {
+                case 0: return ArmVectorData.F32S32;
+                case 1: return ArmVectorData.F32U32;
+                case 2: return ArmVectorData.S32F32;
+                case 3: return ArmVectorData.U32F32;
+                }
+                break;
+            }
+            return ArmVectorData.INVALID;
         }
 
         /// <summary>
@@ -1293,8 +1323,8 @@ namespace Reko.Arch.Arm
                 Nyi("AdvancedSimd3RegistersSameLength_opcE"),
                 Nyi("AdvancedSimd3RegistersSameLength_opcF"));
 
-            var AdvancedSimd2RegsMisc = Mask(16,3,
-                Mask(7,0xF,
+            var AdvancedSimd2RegsMisc = Mask(16, 3,
+                Mask(7, 0xF,
                     Instr(Opcode.vrev64, "*"),
                     Instr(Opcode.vrev32, "*"),
                     Instr(Opcode.vrev16, "*"),
@@ -1328,7 +1358,7 @@ namespace Reko.Arch.Arm
                     Mask(6, 1,
                         invalid,
                         Instr(Opcode.sha1h, "*")),
-                    Mask(6,1,
+                    Mask(6, 1,
                         Mask(10, 1,
                             Instr(Opcode.vabs, "vi18:2,D22:1:12:4,D5:1:0:4"),
                             Instr(Opcode.vabs, "vr18:2,D22:1:12:4,D5:1:0:4")),
@@ -1358,7 +1388,7 @@ namespace Reko.Arch.Arm
                     Instr(Opcode.vuzp, "*"),
                     Instr(Opcode.vzip, "*"),
 
-                    Mask(6,1,
+                    Mask(6, 1,
                         Instr(Opcode.vmovn, "*"),
                         Instr(Opcode.vqmovn, "*unsigned")),
                     Instr(Opcode.vqmovn, "*signed"),
@@ -1375,11 +1405,11 @@ namespace Reko.Arch.Arm
                     Instr(Opcode.vrintz, "*"),
 
                     Mask(6, 1,
-                        Instr(Opcode.vcvt, "*A"),
+                        Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
                         invalid),
                     Instr(Opcode.vrintm, "*"),
                     Mask(6, 1,
-                        Instr(Opcode.vcvt, "*B"),
+                        Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4"),
                         invalid),
                     Instr(Opcode.vrintp, "*")),
                 Mask(4 + 16, 0xF,
@@ -1398,10 +1428,18 @@ namespace Reko.Arch.Arm
                     Instr(Opcode.vrecpe, "*"),
                     Instr(Opcode.vrsqrte, "*"),
 
-                    Instr(Opcode.vcvt, "*real"),
-                    Instr(Opcode.vcvt, "*real"),
-                    Instr(Opcode.vcvt, "*real"),
-                    Instr(Opcode.vcvt, "*real")));
+                    Mask(6, 1,
+                        Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
+                        Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4")),
+                    Mask(6, 1,
+                        Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
+                        Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4")),
+                    Mask(6, 1,
+                        Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
+                        Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4")),
+                    Mask(6, 1,
+                        Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
+                        Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4"))));
 
             var AdvancedSimdDuplicateScalar = Nyi("AdvancedSimdDuplicateScalar");
 
