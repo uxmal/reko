@@ -116,7 +116,6 @@ namespace Reko.Arch.Arm
                         throw new NotImplementedException();
                     }
                     throw new NotImplementedException();
-                    continue;
                 case 's':
                     ++i;
                     if (Peek('p',format,i))
@@ -195,7 +194,7 @@ namespace Reko.Arch.Arm
                 case 'Q':   // Qn register
                     ++i;
                     n = ReadBitfields(wInstr, format, ref i);
-                    op = new RegisterOperand(Registers.QRegs[n]);
+                    op = new RegisterOperand(Registers.QRegs[n >> 1]);
                     break;
                 case '[':   // Memory access
                     ++i;
@@ -1248,7 +1247,23 @@ namespace Reko.Arch.Arm
 
             var AdvancedSimd3RegistersSameLength = Mask(8, 0xF, // opc
                 Nyi("AdvancedSimd3RegistersSameLength_opc0"),
-                Nyi("AdvancedSimd3RegistersSameLength_opc1"),
+                Mask(12 + 16, 1,  // U
+                    Mask(4, 1,      // o1
+                        Instr(Opcode.vrhadd, "*"),
+                        Mask(4 + 16, 3, // size
+                            Instr(Opcode.vand, "*register"),
+                            Instr(Opcode.vbic, "*register"),
+                            Instr(Opcode.vorr, "*register"),
+                            Instr(Opcode.vorn, "*register"))),
+                    Mask(4, 1,      // o1),
+                        Instr(Opcode.vrhadd, "*"),
+                        Mask(4 + 16, 3, // size
+                            Mask(6, 1, // Q
+                                Instr(Opcode.veor, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.veor, "Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                            Instr(Opcode.vbsl, "*register"),
+                            Instr(Opcode.vbit, "*register"),
+                            Instr(Opcode.vbif, "*register")))),
                 Nyi("AdvancedSimd3RegistersSameLength_opc2"),
                 Nyi("AdvancedSimd3RegistersSameLength_opc3"),
 
@@ -1257,13 +1272,17 @@ namespace Reko.Arch.Arm
                 Nyi("AdvancedSimd3RegistersSameLength_opc6"),
                 Nyi("AdvancedSimd3RegistersSameLength_opc7"),
 
-                Mask(12+16, 1,
+                Mask(12+16, 1,  // U
                     Mask(4, 1, // op1
                         Mask(6, 1, // Q
                             Instr(Opcode.vadd, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
                             Instr(Opcode.vadd, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                         Instr(Opcode.vtst, "*")),
-                    Nyi("AdvancedSimd3RegistersSameLength_opc8")),
+                    Mask(4, 1, // op1
+                        Mask(6, 1, // Q
+                            Instr(Opcode.vsub, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                            Instr(Opcode.vsub, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                        Instr(Opcode.vceq, "*"))),
 
                 Nyi("AdvancedSimd3RegistersSameLength_opc9"),
                 Nyi("AdvancedSimd3RegistersSameLength_opcA"),

@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("movne\tr1,r6");
             Expect_Code("movne\tr2,r6");
             Expect_Code("movne\tr3,r6");
-            Expect_Code("mov\tr0,r6");
+            Expect_Code("mov\tr4,r6");
         }
 
         [Test]
@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("movhs\tr1,r6");
             Expect_Code("movhs\tr2,r6");
             Expect_Code("movhs\tr3,r6");
-            Expect_Code("mov\tr0,r6");
+            Expect_Code("mov\tr4,r6");
         }
 
         [Test]
