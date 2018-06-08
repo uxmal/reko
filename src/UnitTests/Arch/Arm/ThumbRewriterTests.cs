@@ -6375,7 +6375,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("84FA4FF0");	// uadd8 r0, r4, pc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __uadd8(r4, 0x00100008)");
+                "1|L--|r0 = __uadd_i8(r4, 0x00100004)");
         }
 
         [Test]
@@ -7583,7 +7583,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("8AFA00F0");	// sadd8 r0, r10, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __sadd8(r10, r0)");
+                "1|L--|r0 = __sadd_s8(r10, r0)");
         }
 
         [Test]
@@ -7871,7 +7871,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("C6FA43F0");	// usub8 r0, r6, r3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __usub8(r6, r3)");
+                "1|L--|r0 = __usub_i8(r6, r3)");
         }
 
         [Test]
@@ -7880,7 +7880,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("D7FA40F6");	// usub16 r6, r7, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __usub16(r7, r0)");
+                "1|L--|r6 = __usub_i16(r7, r0)");
         }
 
         [Test]

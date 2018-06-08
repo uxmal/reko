@@ -396,19 +396,19 @@ namespace Reko.Arch.Arm
                 case Opcode.orn: RewriteLogical((a, b) => m.Or(a, m.Comp(b))); break;
                 case Opcode.orr: RewriteLogical(m.Or); break;
                 case Opcode.qadd: RewriteQAddSub(m.IAdd); break;
-                case Opcode.qadd16: RewriteVectorBinOp("__qadd_%s", ArmVectorData.S16); break;
-                case Opcode.qadd8: RewriteVectorBinOp("__qadd_%s", ArmVectorData.S8); break;
+                case Opcode.qadd16: RewriteVectorBinOp("__qadd_{0}", ArmVectorData.S16); break;
+                case Opcode.qadd8: RewriteVectorBinOp("__qadd_{0}", ArmVectorData.S8); break;
                 case Opcode.qdadd: RewriteQDAddSub(m.IAdd); break;
                 case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
                 case Opcode.qsub: RewriteQAddSub(m.ISub); break;
-                case Opcode.qsub16: RewriteVectorBinOp("__qsub_%s", ArmVectorData.S16); break;
+                case Opcode.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
                 case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
                 case Opcode.push: case Opcode.push_w: RewritePush(); break;
                 case Opcode.rev: RewriteRev(); break;
                 case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.UpdateFlags); break;
                 case Opcode.rsc: RewriteAdcSbc(m.ISub, true); break;
-                case Opcode.sadd16: RewriteVectorBinOp("__sadd16", ArmVectorData.S16); break;
-                case Opcode.sadd8: RewriteVectorBinOp("__sadd8", ArmVectorData.S8); break;
+                case Opcode.sadd16: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S16); break;
+                case Opcode.sadd8: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S8); break;
                 case Opcode.sbc: RewriteAdcSbc(m.ISub, false); break;
                 case Opcode.sbfx: RewriteSbfx(); break;
                 case Opcode.sdiv: RewriteDiv(m.SDiv); break;
@@ -464,16 +464,16 @@ namespace Reko.Arch.Arm
                 case Opcode.teq: RewriteTeq(); break;
                 case Opcode.trap: RewriteTrap(); break;
                 case Opcode.tst: RewriteTst(); break;
-                case Opcode.uadd16: RewriteVectorBinOp("__uadd16", ArmVectorData.I16); break;
-                case Opcode.uadd8: RewriteVectorBinOp("__uadd8", ArmVectorData.I8); break;
+                case Opcode.uadd16: RewriteVectorBinOp("__uadd_{0}", ArmVectorData.I16); break;
+                case Opcode.uadd8: RewriteVectorBinOp("__uadd_{0}", ArmVectorData.I8); break;
                 case Opcode.ubfx: RewriteUbfx(); break;
                 case Opcode.udf: RewriteUdf(); break;
                 case Opcode.udiv: RewriteDiv(m.UDiv); break;
                 case Opcode.umaal: RewriteUmaal(); break;
                 case Opcode.umlal: RewriteUmlal(); break;
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
-                case Opcode.usub16: RewriteVectorBinOp("__usub16", ArmVectorData.I16); break;
-                case Opcode.usub8: RewriteVectorBinOp("__usub8", ArmVectorData.I8); break;
+                case Opcode.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
+                case Opcode.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
                 case Opcode.uxtab: RewriteXtab(PrimitiveType.Byte); break;
                 case Opcode.uxtah: RewriteXtab(PrimitiveType.UInt16); break;
                 case Opcode.uxtb: RewriteXtb(PrimitiveType.Byte, PrimitiveType.UInt32); break;
@@ -713,10 +713,7 @@ void RewriteB(bool link)
                 {
                     if (!write && rOp.Register == Registers.pc)
                     {
-                        //$TODO: look at Thumb manual to see if the + 8 also applies.
-                        //var dst = instr.address + mop.disp) + 8u;
-                        //auto ea = m.Ptr32(dst);
-                        throw new NotImplementedException();
+                        return instr.Address + 4;
                     }
                     var reg = Reg(rOp.Register);
                     return MaybeShiftOperand(reg, op);
