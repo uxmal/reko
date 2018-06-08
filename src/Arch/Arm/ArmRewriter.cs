@@ -484,8 +484,8 @@ namespace Reko.Arch.Arm
 
 
 
-                case Opcode.vabs: RewriteVectorUnaryOp("__vabs_%s"); break;
-                case Opcode.vadd: RewriteVectorBinOp("__vadd_%s"); break;
+                case Opcode.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
+                case Opcode.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;
@@ -494,38 +494,38 @@ namespace Reko.Arch.Arm
                 case Opcode.vdup: RewriteVdup(); break;
                 case Opcode.veor: RewriteVecBinOp(m.Xor); break;
                 case Opcode.vext: RewriteVext(); break;
-                case Opcode.vhadd: RewriteVectorBinOp("__vhadd_%s"); break;
-                case Opcode.vhsub: RewriteVectorBinOp("__vhsub_%s"); break;
+                case Opcode.vhadd: RewriteVectorBinOp("__vhadd_{0}"); break;
+                case Opcode.vhsub: RewriteVectorBinOp("__vhsub_{0}"); break;
                 case Opcode.vldmia: RewriteVldmia(); break;
                 case Opcode.vldr: RewriteVldr(); break;
-                case Opcode.vmax: RewriteVectorBinOp("__vmax_%s"); break;
-                case Opcode.vmin: RewriteVectorBinOp("__vmin_%s"); break;
+                case Opcode.vmax: RewriteVectorBinOp("__vmax_{0}"); break;
+                case Opcode.vmin: RewriteVectorBinOp("__vmin_{0}"); break;
                 case Opcode.vmov: RewriteVmov(); break;
-                case Opcode.vmla: RewriteVectorBinOp("__vmla_%s"); break;
-                case Opcode.vmls: RewriteVectorBinOp("__vmls_%s"); break;
+                case Opcode.vmla: RewriteVectorBinOp("__vmla_{0}"); break;
+                case Opcode.vmls: RewriteVectorBinOp("__vmls_{0}"); break;
                 case Opcode.vmrs: RewriteVmrs(); break;
                 case Opcode.vmvn: RewriteVmvn(); break;
-                case Opcode.vmul: RewriteVectorBinOp("__vmul_%s"); break;
+                case Opcode.vmul: RewriteVectorBinOp("__vmul_{0}"); break;
                 case Opcode.vorr: RewriteVecBinOp(m.Or); break;
-                case Opcode.vneg: RewriteVectorUnaryOp("__vneg_%s"); break;
-                case Opcode.vnmla: RewriteVectorBinOp("__vnmla_%s"); break;
-                case Opcode.vnmls: RewriteVectorBinOp("__vnmls_%s"); break;
-                case Opcode.vnmul: RewriteVectorBinOp("__vnmul_%s"); break;
-                case Opcode.vpadd: RewriteVectorBinOp("__vpadd_%s"); break;
-                case Opcode.vpmax: RewriteVectorBinOp("__vpmax_%s"); break;
-                case Opcode.vpmin: RewriteVectorBinOp("__vpmin_%s"); break;
+                case Opcode.vneg: RewriteVectorUnaryOp("__vneg_{0}"); break;
+                case Opcode.vnmla: RewriteVectorBinOp("__vnmla_{0}"); break;
+                case Opcode.vnmls: RewriteVectorBinOp("__vnmls_{0}"); break;
+                case Opcode.vnmul: RewriteVectorBinOp("__vnmul_{0}"); break;
+                case Opcode.vpadd: RewriteVectorBinOp("__vpadd_{0}"); break;
+                case Opcode.vpmax: RewriteVectorBinOp("__vpmax_{0}"); break;
+                case Opcode.vpmin: RewriteVectorBinOp("__vpmin_{0}"); break;
                 case Opcode.vpop: RewriteVpop(); break;
                 case Opcode.vpush: RewriteVpush(); break;
-                case Opcode.vqabs: RewriteVectorBinOp("__vqabs_%s"); break;
-                case Opcode.vqadd: RewriteVectorBinOp("__vqadd_%s"); break;
-                case Opcode.vqshl: RewriteVectorBinOp("__vqshl_%s"); break;
-                case Opcode.vrshl: RewriteVectorBinOp("__vrshl_%s"); break;
-                case Opcode.vrshr: RewriteVectorBinOp("__vrshr_%s"); break;
+                case Opcode.vqabs: RewriteVectorBinOp("__vqabs_{0}"); break;
+                case Opcode.vqadd: RewriteVectorBinOp("__vqadd_{0}"); break;
+                case Opcode.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
+                case Opcode.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
+                case Opcode.vrshr: RewriteVectorBinOp("__vrshr_{0}"); break;
                 case Opcode.vstmia: RewriteVstmia(); break;
                 case Opcode.vsqrt: RewriteVsqrt(); break;
-                case Opcode.vshl: RewriteVectorBinOp("__vshl_%s"); break;
+                case Opcode.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
                 case Opcode.vstr: RewriteVstr(); break;
-                case Opcode.vsub: RewriteVectorBinOp("__vsub_%s"); break;
+                case Opcode.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
                 {

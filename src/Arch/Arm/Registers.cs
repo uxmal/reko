@@ -47,5 +47,17 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage[] CoprocessorRegisters = Enumerable.Range(0, 16)
             .Select(n => new RegisterStorage($"c{n}", 144 + n, 0, PrimitiveType.Word32))
             .ToArray();
+
+        // The 'S..' floating point registers alias the 'D..' double floating point registers
+        // which in turn alias the  128-bit 'Q..' registers 
+        public static readonly RegisterStorage[] QRegs = Enumerable.Range(0, 16)
+            .Select(n => new RegisterStorage($"q{n}", 160, 0, PrimitiveType.Word128))
+            .ToArray();
+        public static readonly RegisterStorage[] DRegs = Enumerable.Range(0, 32)
+            .Select(n => new RegisterStorage($"d{n}", QRegs[n / 2].Number, (uint)(n & 1) * 64, PrimitiveType.Word64))
+            .ToArray();
+        public static readonly RegisterStorage[] SRegs = Enumerable.Range(0, 32)
+            .Select(n => new RegisterStorage($"s{n}", QRegs[n / 4].Number, (uint)(n & 3) * 32, PrimitiveType.Word32))
+            .ToArray();
     }
 }

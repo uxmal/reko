@@ -87,6 +87,7 @@ namespace Reko.Arch.Arm
             bool writeback = false;
             Opcode shiftType = Opcode.Invalid;
             MachineOperand shiftValue = null;
+            ArmVectorData vectorData = ArmVectorData.INVALID;
             uint n;
             for (int i = 0; i < format.Length; ++i)
             {
@@ -100,6 +101,21 @@ namespace Reko.Arch.Arm
                     continue;
                 case '.':
                     updateFlags = true;
+                    continue;
+                case 'v': // vector element size
+                    if (format[++i] == 'i')
+                    {
+                        ++i;
+                        n = ReadBitfields(wInstr, format, ref i);
+                        vectorData = VectorIntData(n);
+                        continue;
+                    }
+                    else if (format[++i] == 'r')
+                    {
+                        n = ReadBitfields(wInstr, format, ref i);
+                        throw new NotImplementedException();
+                    }
+                    throw new NotImplementedException();
                     continue;
                 case 's':
                     ++i;
@@ -161,11 +177,6 @@ namespace Reko.Arch.Arm
                     offset = format[++i] - '0';
                     op = new RegisterOperand(Registers.GpRegs[SBitfield(wInstr, offset, 3)]);
                     break;
-                case 'Q':   // register specified by 7:2..0:
-                    op = new RegisterOperand(Registers.GpRegs[
-                        ((((int)wInstr >> 7) & 1) << 3) |
-                        ((int)wInstr & 0x03)]);
-                    break;
                 case 'R':   // 4-bit register.
                     ++i;
                     offset = ReadDecimal(format, ref i);
@@ -175,6 +186,16 @@ namespace Reko.Arch.Arm
                 case 'T':   // 4-bit register, specified by bits 7 || 2..0
                     var tReg = ((wInstr & 0x80) >> 4) | (wInstr & 7);
                     op = new RegisterOperand(Registers.GpRegs[tReg]);
+                    break;
+                case 'D':   // Dn register
+                    ++i;
+                    n = ReadBitfields(wInstr, format, ref i);
+                    op = new RegisterOperand(Registers.DRegs[n]);
+                    break;
+                case 'Q':   // Qn register
+                    ++i;
+                    n = ReadBitfields(wInstr, format, ref i);
+                    op = new RegisterOperand(Registers.QRegs[n]);
                     break;
                 case '[':   // Memory access
                     ++i;
@@ -300,7 +321,19 @@ namespace Reko.Arch.Arm
                 Writeback = writeback,
                 ShiftType = shiftType,
                 ShiftValue = shiftValue,
+                vector_data = vectorData,
             };
+        }
+
+        private ArmVectorData VectorIntData(uint n)
+        {
+            switch (n)
+            {
+            case 0: return ArmVectorData.I8;
+            case 1: return ArmVectorData.I16;
+            case 2: return ArmVectorData.I32;
+            default: throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -780,7 +813,7 @@ namespace Reko.Arch.Arm
             var decDataHiRegisters = Mask(8, 0x03, // Add, subtract, compare, move (two high registers)
                 Nyi("add, adds"), // add, adds (register);
                 Instr(Opcode.cmp, ".T,R3"),
-                Instr(Opcode.mov, "Q,R3"), // mov,movs
+                Instr(Opcode.mov, "T,R3"), // mov,movs
                 invalid);
             var decLdrLiteral = Nyi("Ldr literal");
             var decLdStRegOffset = Nyi("LdStRegOffset");
@@ -1212,9 +1245,43 @@ namespace Reko.Arch.Arm
                     Instr(Opcode.mcr, "CP8,i21:3,R12,CR16,CR0,i5:3"),
                     Instr(Opcode.mrc, "CP8,i21:3,R12,CR16,CR0,i5:3")),
                 invalid);
-            var AdvancedSimdDataProcessing = Nyi("AdvancedSimdDataProcessing");
-            var AdvancedSimd3RegistersSameLength = Nyi("AdvancedSimd3RegistersSameLength");
+
+            var AdvancedSimd3RegistersSameLength = Mask(8, 0xF, // opc
+                Nyi("AdvancedSimd3RegistersSameLength_opc0"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc1"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc2"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc3"),
+
+                Nyi("AdvancedSimd3RegistersSameLength_opc5"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc5"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc6"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc7"),
+
+                Mask(12+16, 1,
+                    Mask(4, 1, // op1
+                        Mask(6, 1, // Q
+                            Instr(Opcode.vadd, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                            Instr(Opcode.vadd, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                        Instr(Opcode.vtst, "*")),
+                    Nyi("AdvancedSimd3RegistersSameLength_opc8")),
+
+                Nyi("AdvancedSimd3RegistersSameLength_opc9"),
+                Nyi("AdvancedSimd3RegistersSameLength_opcA"),
+                Nyi("AdvancedSimd3RegistersSameLength_opcB"),
+
+                Nyi("AdvancedSimd3RegistersSameLength_opcC"),
+                Nyi("AdvancedSimd3RegistersSameLength_opcD"),
+                Nyi("AdvancedSimd3RegistersSameLength_opcE"),
+                Nyi("AdvancedSimd3RegistersSameLength_opcF"));
+
             var AdvancedSimdTwoScalarsAndExtension = Nyi("AdvancedSimdTwoScalarsAndExtension");
+
+            var AdvancedSimdDataProcessing = Mask(7 + 16, 1,
+                AdvancedSimd3RegistersSameLength,
+                Mask(4, 1,
+                    Nyi("AdvancedSimd2RegsOr3RegsDiffLength"),
+                    Nyi("AdvancedSimdShiftImm")));
+
             var SystemRegisterAccessAdvSimdFpu = Mask(12 + 16, 1,
                 Mask(8 + 16, 3, // op0 = 0
                     Mask(9, 7,  // op1 = 0b00
