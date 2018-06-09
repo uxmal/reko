@@ -260,7 +260,7 @@ namespace Reko.Arch.Arm
                 case Opcode.vqmovun:
                 case Opcode.vqmovn:
                 case Opcode.vqneg:
-                case Opcode.vqrdmulh:
+                case Opcode.vqrdmlah:
                 case Opcode.vqrshl:
                 case Opcode.vqrshrn:
                 case Opcode.vqrshrun:

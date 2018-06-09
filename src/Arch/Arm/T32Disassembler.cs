@@ -1099,8 +1099,8 @@ namespace Reko.Arch.Arm
                     Nyi("SRS,SRSDA,SRSDB,SRSIA,SRSIB - T1"),
                     Nyi("RFE,RFEDA,RFEDB,RFEIA,RFEIB - T1")),
                 Mask(4 + 16, 1,
-                    Nyi("STM, STMIA, STMEA"),
-                    Nyi("LDM, LDMIA, LDMFD")),
+                    new LdmStmDecoder32(Opcode.stm, "R16,M"),
+                    new LdmStmDecoder32(Opcode.ldm, "R16,M")),
                 Mask(4 + 16, 1,
                     new LdmStmDecoder32(Opcode.stmdb, "R16,M"),
                     new LdmStmDecoder32(Opcode.ldmdb, "R16,M")),
@@ -1407,7 +1407,9 @@ namespace Reko.Arch.Arm
                 invalid);
 
             var AdvancedSimd3RegistersSameLength = Mask(8, 0xF, // opc
-                Nyi("AdvancedSimd3RegistersSameLength_opc0"),
+                Mask(4, 1, // o1
+                    Instr(Opcode.vhadd, "*"),
+                    Instr(Opcode.vqadd, "*")),
                 Mask(12 + 16, 1,  // U
                     Mask(4, 1,      // o1
                         Instr(Opcode.vrhadd, "*"),
@@ -1425,7 +1427,9 @@ namespace Reko.Arch.Arm
                             Instr(Opcode.vbsl, "*register"),
                             Instr(Opcode.vbit, "*register"),
                             Instr(Opcode.vbif, "*register")))),
-                Nyi("AdvancedSimd3RegistersSameLength_opc2"),
+                Mask(4, 1, // o1
+                    Instr(Opcode.vhsub, "*"),
+                    Instr(Opcode.vqsub, "*")),
                 Nyi("AdvancedSimd3RegistersSameLength_opc3"),
 
                 Nyi("AdvancedSimd3RegistersSameLength_opc5"),
@@ -1578,30 +1582,57 @@ namespace Reko.Arch.Arm
                         Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
                         Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4"))));
 
+            var AdvancedSimd2RegsScalar = Mask(8, 0xF, // opc
+                Instr(Opcode.vmla, "*scalar"),
+                Instr(Opcode.vmla, "*scalar"),
+                Instr(Opcode.vmlal, "*scalar"),
+                Mask(12 + 16, 1, // Q
+                    Instr(Opcode.vqdmlal, "*"),
+                    invalid),
+
+                Instr(Opcode.vmls, "*scalar"),
+                Instr(Opcode.vmls, "*scalar"),
+                Instr(Opcode.vmlsl, "*scalar"),
+                Mask(12 + 16, 1, // Q
+                    Instr(Opcode.vqdmlsl, "*"),
+                    invalid),
+
+                Instr(Opcode.vmul, "*scalar"),
+                Instr(Opcode.vmul, "*scalar"),
+                Instr(Opcode.vmull, "*"),
+                Mask(12 + 16, 1, // Q
+                    Instr(Opcode.vqdmull, "*"),
+                    invalid),
+
+                Instr(Opcode.vqdmulh, "*"),
+                Instr(Opcode.vqrdmlah, "*"),
+                Instr(Opcode.vqrdmlah, "*"),
+                Instr(Opcode.vqrdmlsh, "*"));
+
             var AdvancedSimdDuplicateScalar = Nyi("AdvancedSimdDuplicateScalar");
 
             var AdvancedSimd2RegsOr3RegsDiffLength = Mask(12 + 16, 1,
                 Mask(4 + 16, 3,
                     Mask(6, 1,
                         Nyi("AdvancedSimd3DiffLength"),
-                        Nyi("AdvancedSimd2RegsScalar")),
+                        AdvancedSimd2RegsScalar),
                     Mask(6, 1,
                         Nyi("AdvancedSimd3DiffLength"),
-                        Nyi("AdvancedSimd2RegsScalar")),
+                        AdvancedSimd2RegsScalar),
                     Mask(6, 1,
                         Nyi("AdvancedSimd3DiffLength"),
-                        Nyi("AdvancedSimd2RegsScalar")),
+                        AdvancedSimd2RegsScalar),
                     Instr(Opcode.vext, "*")),
                 Mask(4 + 16, 3,
                     Mask(6, 1,
                         Nyi("AdvancedSimd3DiffLength"),
-                        Nyi("AdvancedSimd2RegsScalar")),
+                        AdvancedSimd2RegsScalar),
                     Mask(6, 1,
                         Nyi("AdvancedSimd3DiffLength"),
-                        Nyi("AdvancedSimd2RegsScalar")),
+                        AdvancedSimd2RegsScalar),
                     Mask(6, 1,
                         Nyi("AdvancedSimd3DiffLength"),
-                        Nyi("AdvancedSimd2RegsScalar")),
+                        AdvancedSimd2RegsScalar),
 
                     Mask(10, 3,
                         AdvancedSimd2RegsMisc,

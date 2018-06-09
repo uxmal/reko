@@ -526,50 +526,50 @@ namespace Reko.Arch.Arm
             var Ldrexh = new InstrDecoder(Opcode.ldaexh, null);
 
             var SynchronizationPrimitives = new MaskDecoder(23, 1,
-            invalid,
-            new MaskDecoder(20, 7,  // type || L
-                new MaskDecoder(8, 3,   // ex ord
-                    Stl,
-                    invalid,
-                    Stlex,
-                    Strex),
-                new MaskDecoder(8, 3,   // ex ord
-                    Lda,
-                    invalid,
-                    Ldaex,
-                    Ldrex),
-                new MaskDecoder(8, 3,   // ex ord
-                    invalid,
-                    invalid,
-                    Stlexd,
-                    Strexd),
-                new MaskDecoder(8, 3,   // ex ord
-                    invalid,
-                    invalid,
-                    Ldaexd,
-                    Ldrexd),
+                invalid,
+                new MaskDecoder(20, 7,  // type || L
+                    new MaskDecoder(8, 3,   // ex ord
+                        Stl,
+                        invalid,
+                        Stlex,
+                        Strex),
+                    new MaskDecoder(8, 3,   // ex ord
+                        Lda,
+                        invalid,
+                        Ldaex,
+                        Ldrex),
+                    new MaskDecoder(8, 3,   // ex ord
+                        invalid,
+                        invalid,
+                        Stlexd,
+                        Strexd),
+                    new MaskDecoder(8, 3,   // ex ord
+                        invalid,
+                        invalid,
+                        Ldaexd,
+                        Ldrexd),
 
-                new MaskDecoder(8, 3,   // ex ord
-                    Stlb,
-                    invalid,
-                    Stlexb,
-                    Strexb),
-                new MaskDecoder(8, 3,   // ex ord
-                    Ldab,
-                    invalid,
-                    Ldaexb,
-                    Ldrexb),
-                new MaskDecoder(8, 3,   // ex ord
-                    Stlh,
-                    invalid,
-                    Stlexh,
-                    Strexh),
-                new MaskDecoder(8, 3,   // ex ord
-                    Ldah,
-                    invalid,
-                    Ldaexh,
-                    Ldrexh)),
-                LoadStoreExclusive);
+                    new MaskDecoder(8, 3,   // ex ord
+                        Stlb,
+                        invalid,
+                        Stlexb,
+                        Strexb),
+                    new MaskDecoder(8, 3,   // ex ord
+                        Ldab,
+                        invalid,
+                        Ldaexb,
+                        Ldrexb),
+                    new MaskDecoder(8, 3,   // ex ord
+                        Stlh,
+                        invalid,
+                        Stlexh,
+                        Strexh),
+                    new MaskDecoder(8, 3,   // ex ord
+                        Ldah,
+                        invalid,
+                        Ldaexh,
+                        Ldrexh)),
+                    LoadStoreExclusive);
 
 
             var Mul = new InstrDecoder(Opcode.mul, "sr4,r0,r2");
