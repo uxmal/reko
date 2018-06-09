@@ -6349,7 +6349,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("44ED204A");	// vstr s9, [r4, #-0x80]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r4 + -128:word32] = s9");
+                "1|L--|Mem0[r4 - 128:word32] = s9");
         }
 
         [Test]
@@ -6368,7 +6368,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("5AED114B");	// vldr d20, [sl, #-0x44]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d20 = Mem0[r10 + -68:word64]");
+                "1|L--|d20 = Mem0[r10 - 68:word64]");
         }
 
         [Test]

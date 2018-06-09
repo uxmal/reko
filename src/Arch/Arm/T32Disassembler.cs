@@ -98,7 +98,10 @@ namespace Reko.Arch.Arm
                 switch (format[i])
                 {
                 case ',':
+                case ' ':
                     continue;
+                    // The following case are modifiers, they don't generate operands.
+                    // The cases should end with a 'continue' rather than a 'break'.
                 case '.':
                     updateFlags = true;
                     continue;
@@ -124,10 +127,18 @@ namespace Reko.Arch.Arm
                         continue;
                     }
                     throw new InvalidOperationException();
+                case 'w':   // Writeback bit.
+                    ++i;
+                    offset = ReadDecimal(format, ref i);
+                    writeback = SBitfield(wInstr, offset, 1) != 0;
+                    continue;
+                    // The following cases generate operands of different types.
+                    // They should generate a value in 'op'.
                 case 's':
                     ++i;
                     if (Peek('p',format,i))
                     {
+                        // 'sp': explict stack register reference.
                         op = new RegisterOperand(arch.StackRegister);
                     }
                     else // Signed immediate (in bitfields)
@@ -193,6 +204,11 @@ namespace Reko.Arch.Arm
                 case 'T':   // 4-bit register, specified by bits 7 || 2..0
                     var tReg = ((wInstr & 0x80) >> 4) | (wInstr & 7);
                     op = new RegisterOperand(Registers.GpRegs[tReg]);
+                    break;
+                case 'F':   // Sn register
+                    ++i;
+                    n = ReadBitfields(wInstr, format, ref i);
+                    op = new RegisterOperand(Registers.SRegs[n]);
                     break;
                 case 'D':   // Dn register
                     ++i;
@@ -503,7 +519,10 @@ namespace Reko.Arch.Arm
             case 'H': return PrimitiveType.Int16;
             case 'b': return PrimitiveType.Byte;
             case 'B': return PrimitiveType.SByte;
-            default: throw new InvalidOperationException($"{format[i]}");
+            case 'r':
+                var n = ReadDecimal(format, ref i);
+                return PrimitiveType.Create(Domain.Real, n);
+            default: throw new InvalidOperationException($"{format[i-1]}");
             }
         }
 
@@ -707,6 +726,15 @@ namespace Reko.Arch.Arm
         // Decodes 32-bit LDM* STM* instructions
         private class LdmStmDecoder32 : Decoder
         {
+            private readonly Opcode opcode;
+            private readonly string format;
+
+            public LdmStmDecoder32(Opcode opcode, string format)
+            {
+                this.opcode = opcode;
+                this.format = format;
+            }
+
             public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
             {
                 var rn = Registers.GpRegs[SBitfield(wInstr, 16, 4)];
@@ -727,7 +755,7 @@ namespace Reko.Arch.Arm
                 {
                     return new Arm32InstructionNew
                     {
-                        opcode = l != 0 ? Opcode.stm : Opcode.stm,
+                        opcode = opcode,
                         Writeback = w,
                         ops = new MachineOperand[] {
                             new RegisterOperand(rn),
@@ -1059,13 +1087,26 @@ namespace Reko.Arch.Arm
                         Instr(Opcode.nop, ""),
                         Instr(Opcode.nop, "")),
                     new ItDecoder()));
-
         }
 
         private static LongDecoder CreateLongDecoder()
         {
             var branchesMiscControl = CreateBranchesMiscControl();
-            var loadStoreMultipleTableBranch = CreateLoadStoreMultipleBranchDecoder();
+            var loadStoreMultipleTableBranch = CreateLoadStoreDualMultipleBranchDecoder();
+
+            var LdStMultiple = Mask(7 + 16, 3,
+                Mask(4 + 16, 1,
+                    Nyi("SRS,SRSDA,SRSDB,SRSIA,SRSIB - T1"),
+                    Nyi("RFE,RFEDA,RFEDB,RFEIA,RFEIB - T1")),
+                Mask(4 + 16, 1,
+                    Nyi("STM, STMIA, STMEA"),
+                    Nyi("LDM, LDMIA, LDMFD")),
+                Mask(4 + 16, 1,
+                    new LdmStmDecoder32(Opcode.stmdb, "R16,M"),
+                    new LdmStmDecoder32(Opcode.ldmdb, "R16,M")),
+                Mask(4 + 16, 1,
+                    Nyi("SRS,SRSDA,SRSDB,SRSIA,SRSIB - T2"),
+                    Nyi("RFE,RFEDA,RFEDB,RFEIA,RFEIB - T2")));
 
             var DataProcessingModifiedImmediate = Mask(4 + 16, 0x1F,
                 Instr(Opcode.and, "R8,R16,M"),
@@ -1282,9 +1323,81 @@ namespace Reko.Arch.Arm
                     LoadStoreSignedPositiveImm,
                     Nyi("LoadSignedLiteral")));
 
-
             var SystemRegisterLdStAnd64bitMove = Nyi("SystemRegisterLdStAnd64bitMove");
-            var AvancedSimdLdStAnd64bitMove = Nyi("AvancedSimdLdStAnd64bitMove");
+
+            var vstmia = Mask(8, 0x3, // size
+                    invalid,
+                    invalid,
+                    Instr(Opcode.vstmia, "*"),
+                    Mask(0, 1,
+                        Instr(Opcode.vstmia, "*"),
+                        Instr(Opcode.fstmiax, "*")));
+
+            var vldmia = Mask(8, 0x3, // size
+                    invalid,
+                    invalid,
+                    Instr(Opcode.vldmia, "*"),
+                    Mask(0, 1,
+                        Instr(Opcode.vldmia, "*"),
+                        Instr(Opcode.fldmiax, "*")));
+            var vstr = Mask(8, 3,  // size
+                invalid,
+                Instr(Opcode.vstr, "F12:4:22:1,[R16,I0:8:r16X]"),
+                Instr(Opcode.vstr, "F12:4:22:1,[R16,I0:8:r32X]"),
+                Instr(Opcode.vstr, "F22:1:12:4,[R16,I0:8:r64X]"));
+            var vldr = Select(w => SBitfield(w, 16, 4) != 0xF,
+                Mask(8, 3,
+                    invalid,
+                    Instr(Opcode.vldr, "F12:4:22:1,[R16,I0:8:r16X]"),
+                    Instr(Opcode.vldr, "F12:4:22:1,[R16,I0:8:r32X]"),
+                    Instr(Opcode.vldr, "D22:1:12:4,[R16,I0:8:r64X]")),
+                Instr(Opcode.vldr, "*lit"));
+            var AdvancedSimdAndFpLdSt = Mask(4 + 16, 0x1F,
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                vstmia,
+                vldmia,
+                vstmia,
+                vldmia,
+
+                vstmia,
+                vldmia,
+                vstmia,
+                vldmia,
+                // 0x10
+                vstr,
+                vldr,
+                invalid,
+                invalid,
+
+                vstr,
+                vldr,
+                invalid,
+                invalid,
+
+                vstr,
+                vldr,
+                invalid,
+                invalid,
+
+                vstr,
+                vldr,
+                invalid,
+                invalid);
+
+
+            var AvancedSimdLdStAnd64bitMove = Select(w => (SBitfield(w, 5 + 16, 4) & 0b1101) == 0,
+                Nyi("AdvancedSimdAndFp64bitMove"),
+                AdvancedSimdAndFpLdSt);
+
             var FloatingPointDataProcessing = Nyi("FloatingPointDataProcessing");
             var AdvancedSimdAndFloatingPoint32bitMove = Nyi("AdvancedSimdAndFloatingPoint32bitMove");
             var SystemRegister32bitMove = Mask(12 + 16, 1, 
@@ -1861,6 +1974,7 @@ namespace Reko.Arch.Arm
                     invalid),
                 invalid);   // op1 = 0b111
 
+
             return new LongDecoder(new Decoder[16]
             {
                 invalid,
@@ -1868,7 +1982,9 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid,
 
-                loadStoreMultipleTableBranch,
+                Mask(6+16, 1,
+                    LdStMultiple,
+                    loadStoreMultipleTableBranch),
                 Nyi("Data processing (shifted register)"),
                 SystemRegisterAccessAdvSimdFpu,
                 SystemRegisterAccessAdvSimdFpu,
@@ -1897,9 +2013,8 @@ namespace Reko.Arch.Arm
             });
         }
 
-        private static MaskDecoder CreateLoadStoreMultipleBranchDecoder()
+        private static MaskDecoder CreateLoadStoreDualMultipleBranchDecoder()
         {
-            var ldmStm32 = new LdmStmDecoder32();
             var ldStExclusive = Nyi("Load/store exclusive, load-acquire/store-release, table branch");
             var ldStDual = Nyi("Load/store dual (post-indexed)");
             var ldStDualImm = Mask(4 + 16, 1,
@@ -1907,23 +2022,23 @@ namespace Reko.Arch.Arm
                 Instr(Opcode.ldrd, "R12,R8,[R16,I0:8:dX]"));
             var ldStDualPre = Nyi("Load/store dual (immediate pre-indexed)");
             return Mask(5 + 16, 0xF, // Load/store (multiple, dual, exclusive) table branch");
-                ldmStm32,
-                ldmStm32,
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 0000"),
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 0001"),
                 ldStExclusive,
                 ldStDual,
 
-                ldmStm32,
-                ldmStm32,
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 0100"),
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 0101"),
                 ldStExclusive,
                 ldStDual,
 
-                ldmStm32,
-                ldmStm32,
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 1010"),
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 1011"),
                 ldStDualImm,
                 ldStDualPre,
 
-                ldmStm32,
-                ldmStm32,
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 1100"),
+                Nyi("Load/store dual, load/store exclusive, load-acquire/store-release, and table branch - 1101"),
                 ldStDualImm,
                 ldStDualPre);
         }
