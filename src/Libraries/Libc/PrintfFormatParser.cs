@@ -166,7 +166,7 @@ namespace Reko.Libraries.Libc
             case 's':
                 return program.TypeFactory.CreatePointer(
                     size == PrintfSize.Long ? PrimitiveType.WChar : PrimitiveType.Char,
-                    this.pointerSize / DataType.BitsPerByte);
+                    this.pointerSize);
             default:
                 var el = this.services.RequireService<DecompilerEventListener>();
                 el.Warn(

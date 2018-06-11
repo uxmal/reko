@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Typing
 			StructureType mem = factory.CreateStructureType(null, 0);
 			mem.Fields.Add(0, tv1);
 			mem.Fields.Add(4, tv2);
-			tv3.Class.DataType = factory.CreatePointer(mem, 4);
+			tv3.Class.DataType = factory.CreatePointer(mem, 32);
 
 			store.CopyClassDataTypesToTypeVariables();
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);

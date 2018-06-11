@@ -49,7 +49,7 @@ namespace Reko.Environments.Windows
             {
                 return program.TypeFactory.CreatePointer(
                     PrimitiveType.WChar,
-                    base.pointerSize / DataType.BitsPerByte);
+                    base.pointerSize);
             }
             return base.MakeDataType(size, cDomain);
         }

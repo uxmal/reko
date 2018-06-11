@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void UnifyPtrWord()
 		{
-			Pointer ptr = factory.CreatePointer(PrimitiveType.Word32, 4);
+			Pointer ptr = factory.CreatePointer(PrimitiveType.Word32, 32);
 			DataType dt = un.Unify(ptr, PrimitiveType.Word32);
 			Assert.AreEqual("(ptr32 word32)", dt.ToString());
 			Assert.IsFalse(Object.ReferenceEquals(ptr, dt), "Should be different");

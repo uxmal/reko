@@ -62,7 +62,7 @@ namespace Reko.Typing
         {
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
-                program.Platform.PointerType.Size));
+                program.Platform.PointerType.BitSize));
             CollectSegmentTypes();
             int cProc = program.Procedures.Count;
             int i = 0;
@@ -98,7 +98,7 @@ namespace Reko.Typing
                 if (seg.Identifier != null)
                     desc.MeetDataType(seg.Identifier, factory.CreatePointer(
                         factory.CreateStructureType(),
-                        seg.Identifier.DataType.Size));
+                        seg.Identifier.DataType.BitSize));
             }
         }
 

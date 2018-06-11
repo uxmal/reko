@@ -280,7 +280,7 @@ namespace Reko.Typing
                     {
                         e.DataType = program.TypeFactory.CreatePointer(
                             array.ElementType, 
-                            platform.PointerType.Size);
+                            platform.PointerType.BitSize);
                     }
                     else
                     {

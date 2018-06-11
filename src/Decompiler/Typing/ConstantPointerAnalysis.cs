@@ -56,7 +56,7 @@ namespace Reko.Typing
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
-				program.Platform.PointerType.Size);
+				program.Platform.PointerType.BitSize);
 		}
 
 		public void FollowConstantPointers()
