@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = cc.Generate(ssig, arch.CreateFrame());
             var sExp =
-@"void memfn(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
+@"void memfn(Register (ptr32 (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
 // stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));

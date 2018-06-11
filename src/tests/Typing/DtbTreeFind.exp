@@ -26,9 +26,9 @@ l5_found:
 TreeFindMock_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct "Globals"))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (ptr (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+Eq_1: (ptr32 (struct "Globals"))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
 	T_2 (in t : word32)
 	T_3 (in 0x00000000 : word32)
 	T_14 (in Mem0[t + 0x00000004:word32] : word32)
@@ -56,17 +56,17 @@ Eq_15: word32
 Eq_16: ptr32
 	T_16 (in t + 0x00000008 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct "Globals"))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in t : word32)
   Class: Eq_2
-  DataType: (ptr (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
-  OrigDataType: (ptr (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  OrigDataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
 T_3: (in 0x00000000 : word32)
   Class: Eq_2
-  DataType: (ptr (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
   OrigDataType: word32
 T_4: (in t == 0x00000000 : bool)
   Class: Eq_4
@@ -110,7 +110,7 @@ T_13: (in t + 0x00000004 : word32)
   OrigDataType: ptr32
 T_14: (in Mem0[t + 0x00000004:word32] : word32)
   Class: Eq_2
-  DataType: (ptr (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
   OrigDataType: word32
 T_15: (in 0x00000008 : word32)
   Class: Eq_15
@@ -122,5 +122,5 @@ T_16: (in t + 0x00000008 : word32)
   OrigDataType: ptr32
 T_17: (in Mem0[t + 0x00000008:word32] : word32)
   Class: Eq_2
-  DataType: (ptr (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
   OrigDataType: word32

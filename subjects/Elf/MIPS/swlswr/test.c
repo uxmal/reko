@@ -4,7 +4,7 @@
 
 #include "test.h"
 
-// 00000588: void _init(Register (ptr Eq_2) ra)
+// 00000588: void _init(Register (ptr32 Eq_2) ra)
 void _init(Eq_2 * ra)
 {
 	<anonymous> * r2_11 = globals->ptr10AE0;
@@ -35,7 +35,7 @@ void _init(Eq_2 * ra)
 	}
 }
 
-// 00000610: void __start(Register (ptr Eq_38) ra, Stack word32 dwArg00)
+// 00000610: void __start(Register (ptr32 Eq_38) ra, Stack word32 dwArg00)
 void __start(Eq_38 * ra, word32 dwArg00)
 {
 	<anonymous> * r25_23 = ra->ptr104C0;
@@ -166,7 +166,7 @@ void main(word32 dwArg00, word32 dwArg04)
 	struct Eq_219 * r2_62 = r2_45;
 }
 
-// 000008C0: void __libc_csu_init(Register (ptr Eq_2) ra)
+// 000008C0: void __libc_csu_init(Register (ptr32 Eq_2) ra)
 void __libc_csu_init(Eq_2 * ra)
 {
 	if (true)
@@ -228,7 +228,7 @@ void __do_global_ctors_aux()
 	}
 }
 
-// 00000A10: void _fini(Register (ptr Eq_297) ra)
+// 00000A10: void _fini(Register (ptr32 Eq_297) ra)
 void _fini(Eq_297 * ra)
 {
 	word32 sp_16;

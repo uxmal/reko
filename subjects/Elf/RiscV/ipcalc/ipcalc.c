@@ -364,7 +364,7 @@ void freeaddrinfo()
 	t3_4();
 }
 
-// 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register word64 a1)
+// 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 a0, Register word64 a1)
 void fn0000000000015180(word64 ra, Eq_291 * gp, Eq_292 a0, word64 a1)
 {
 	Eq_294 sp_132 = &fp->tFFFFFE40;
@@ -879,7 +879,7 @@ void fn0000000000015F24()
 	null();
 }
 
-// 0000000000015F64: void fn0000000000015F64(Register (ptr Eq_1228) gp)
+// 0000000000015F64: void fn0000000000015F64(Register (ptr64 Eq_1228) gp)
 void fn0000000000015F64(Eq_1228 * gp)
 {
 	if ((word64) gp->bFFFFF894 == 0x00)
@@ -907,7 +907,7 @@ void fn0000000000015F94()
 		fn0000000000015F24();
 }
 
-// 0000000000015FCC: void fn0000000000015FCC(Register (ptr Eq_291) gp, Register Eq_741 a0)
+// 0000000000015FCC: void fn0000000000015FCC(Register (ptr64 Eq_291) gp, Register Eq_741 a0)
 void fn0000000000015FCC(Eq_291 * gp, Eq_741 a0)
 {
 	if (a0 != 0x00)
@@ -959,7 +959,7 @@ void fn0000000000015FCC(Eq_291 * gp, Eq_741 a0)
 	}
 }
 
-// 00000000000163B0: Register Eq_1346 fn00000000000163B0(Register (ptr Eq_291) gp, Register Eq_1346 a0)
+// 00000000000163B0: Register Eq_1346 fn00000000000163B0(Register (ptr64 Eq_291) gp, Register Eq_1346 a0)
 Eq_1346 fn00000000000163B0(Eq_291 * gp, Eq_1346 a0)
 {
 	word64 a5_27 = gp->qwFFFFF870;
@@ -1019,7 +1019,7 @@ Eq_1346 fn00000000000163B0(Eq_291 * gp, Eq_1346 a0)
 	}
 }
 
-// 00000000000164D0: Register word64 fn00000000000164D0(Register Eq_638 a1, Register out (ptr Eq_639) spOut, Register out Eq_640 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out)
+// 00000000000164D0: Register word64 fn00000000000164D0(Register Eq_638 a1, Register out (ptr64 Eq_639) spOut, Register out Eq_640 s0Out, Register out ptr64 s1Out, Register out ptr64 a0Out)
 word64 fn00000000000164D0(Eq_638 a1, Eq_639 * & spOut, Eq_640 & s0Out, ptr64 & s1Out, ptr64 & a0Out)
 {
 	open();
@@ -1067,7 +1067,7 @@ word64 fn0000000000016544(ptr64 & spOut, ptr64 & s0Out, ptr64 & s1Out, ptr64 & a
 	return v3->qw0018;
 }
 
-// 000000000001654C: Register word64 fn000000000001654C(Register word64 ra, Register (ptr Eq_291) gp)
+// 000000000001654C: Register word64 fn000000000001654C(Register word64 ra, Register (ptr64 Eq_291) gp)
 word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 {
 	word64 t3_7 = gp->qwFFFFF870;
@@ -1098,7 +1098,7 @@ word64 fn000000000001654C(word64 ra, Eq_291 * gp)
 	return s4_61;
 }
 
-// 0000000000016630: Register Eq_292 fn0000000000016630(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register Eq_1517 a1, Register out ptr64 a1Out, Register out ptr64 s4Out)
+// 0000000000016630: Register Eq_292 fn0000000000016630(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 a0, Register Eq_1517 a1, Register out ptr64 a1Out, Register out ptr64 s4Out)
 Eq_292 fn0000000000016630(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_1517 a1, ptr64 & a1Out, ptr64 & s4Out)
 {
 	*s4Out = s4;
@@ -1137,7 +1137,7 @@ l0000000000016698:
 	return fn00000000000166F4(ra, gp, a5_28, (word64) fp - 0x0040, a2_24, out a1_49);
 }
 
-// 00000000000166F4: Register Eq_292 fn00000000000166F4(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1, Register Eq_534 a2, Register out ptr64 a1Out)
+// 00000000000166F4: Register Eq_292 fn00000000000166F4(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1, Register Eq_534 a2, Register out ptr64 a1Out)
 Eq_292 fn00000000000166F4(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1, Eq_534 a2, ptr64 & a1Out)
 {
 	Eq_292 a1_102;
@@ -1246,7 +1246,7 @@ l00000000000167F4:
 	goto l0000000000016794;
 }
 
-// 0000000000016830: Register word64 fn0000000000016830(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out (ptr Eq_1814) spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
+// 0000000000016830: Register word64 fn0000000000016830(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out (ptr64 Eq_1814) spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, Eq_1814 * & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	if (a0 == 0x00)
@@ -1265,7 +1265,7 @@ word64 fn0000000000016830(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a
 	}
 }
 
-// 000000000001684C: Register word64 fn000000000001684C(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
+// 000000000001684C: Register word64 fn000000000001684C(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 s0, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn000000000001684C(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	*v3 = (union Eq_1673 *) fn00000000000182B4((int64) (int32) (-0x01 << (int64) (0x0020 - a0)));
@@ -1275,7 +1275,7 @@ word64 fn000000000001684C(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a0, Eq_292 a
 	return fn0000000000016864(ra, gp, s0, a1, out sp_13, out s0_14, out a0_15);
 }
 
-// 0000000000016864: Register word64 fn0000000000016864(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
+// 0000000000016864: Register word64 fn0000000000016864(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 s0, Register Eq_292 a1, Register out ptr64 spOut, Register out ptr64 s0Out, Register out ptr64 a0Out)
 word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & spOut, ptr64 & s0Out, ptr64 & a0Out)
 {
 	sp = v3;
@@ -1307,7 +1307,7 @@ word64 fn0000000000016864(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_292 a1, ptr64 & 
 	}
 }
 
-// 00000000000168B8: void fn00000000000168B8(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1)
+// 00000000000168B8: void fn00000000000168B8(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1)
 void fn00000000000168B8(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1)
 {
 	word64 sp_12;
@@ -1316,7 +1316,7 @@ void fn00000000000168B8(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1)
 	fn0000000000016830(ra, gp, a0, a1, a1, out sp_12, out s0_13, out a0_14);
 }
 
-// 00000000000168E4: Register Eq_310 fn00000000000168E4(Register (ptr Eq_291) gp, Register Eq_310 a0, Register Eq_304 a1)
+// 00000000000168E4: Register Eq_310 fn00000000000168E4(Register (ptr64 Eq_291) gp, Register Eq_310 a0, Register Eq_304 a1)
 Eq_310 fn00000000000168E4(Eq_291 * gp, Eq_310 a0, Eq_304 a1)
 {
 	ptr64 a0_130;
@@ -1352,7 +1352,7 @@ l0000000000016910:
 	goto l0000000000016914;
 }
 
-// 00000000000169D8: Register Eq_1964 fn00000000000169D8(Register (ptr Eq_291) gp, Register Eq_304 a1)
+// 00000000000169D8: Register Eq_1964 fn00000000000169D8(Register (ptr64 Eq_291) gp, Register Eq_304 a1)
 Eq_1964 fn00000000000169D8(Eq_291 * gp, Eq_304 a1)
 {
 	Eq_1964 a0_111;
@@ -1561,7 +1561,7 @@ l0000000000016CB8:
 	goto l0000000000016CB8;
 }
 
-// 0000000000016D74: Register Eq_310 fn0000000000016D74(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 s0, Register Eq_310 a0, Register Eq_292 a1, Register (ptr Eq_562) a2, Register Eq_292 a3)
+// 0000000000016D74: Register Eq_310 fn0000000000016D74(Register word64 ra, Register (ptr64 Eq_291) gp, Register Eq_292 s0, Register Eq_310 a0, Register Eq_292 a1, Register (ptr64 Eq_562) a2, Register Eq_292 a3)
 Eq_310 fn0000000000016D74(word64 ra, Eq_291 * gp, Eq_292 s0, Eq_310 a0, Eq_292 a1, Eq_562 * a2, Eq_292 a3)
 {
 	Eq_310 a0_132;
@@ -1805,7 +1805,7 @@ l0000000000017074:
 	goto l0000000000016E20;
 }
 
-// 000000000001730C: Register Eq_292 fn000000000001730C(Register (ptr Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 s3Out)
+// 000000000001730C: Register Eq_292 fn000000000001730C(Register (ptr64 Eq_291) gp, Register Eq_292 a0, Register Eq_292 a1, Register out ptr64 s3Out)
 Eq_292 fn000000000001730C(Eq_291 * gp, Eq_292 a0, Eq_292 a1, ptr64 & s3Out)
 {
 	*s3Out = s3;
@@ -2029,7 +2029,7 @@ ptr64 fn00000000000174DC(Eq_292 s0, Eq_292 a0, Eq_2802 s2, ui64 s3, ptr64 & s0Ou
 	}
 }
 
-// 00000000000175BC: Register Eq_430 fn00000000000175BC(Register (ptr Eq_291) gp)
+// 00000000000175BC: Register Eq_430 fn00000000000175BC(Register (ptr64 Eq_291) gp)
 Eq_430 fn00000000000175BC(Eq_291 * gp)
 {
 	Eq_430 a0_127;
@@ -2167,7 +2167,7 @@ l0000000000017774:
 	}
 }
 
-// 0000000000017924: Register Eq_3377 fn0000000000017924(Register (ptr Eq_291) gp)
+// 0000000000017924: Register Eq_3377 fn0000000000017924(Register (ptr64 Eq_291) gp)
 Eq_3377 fn0000000000017924(Eq_291 * gp)
 {
 	Eq_3377 s0_120;
@@ -2232,7 +2232,7 @@ Eq_3377 fn0000000000017924(Eq_291 * gp)
 	return s0_120;
 }
 
-// 0000000000017B40: void fn0000000000017B40(Register (ptr Eq_291) gp, Register Eq_1673 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
+// 0000000000017B40: void fn0000000000017B40(Register (ptr64 Eq_291) gp, Register Eq_1673 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
 void fn0000000000017B40(Eq_291 * gp, Eq_1673 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
 	if (fn0000000000017924(gp) != 0x00)
@@ -2505,7 +2505,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1673 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 	t1_197();
 }
 
-// 0000000000017D10: void fn0000000000017D10(Register (ptr Eq_291) gp, Register ptr64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
+// 0000000000017D10: void fn0000000000017D10(Register (ptr64 Eq_291) gp, Register ptr64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
 void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 {
 	Eq_430 a0_32 = fn0000000000017924(gp);
@@ -2788,7 +2788,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 	t1_207();
 }
 
-// 0000000000017F04: Register Eq_1673 fn0000000000017F04(Register (ptr Eq_291) gp, Register Eq_1673 a0, Register Eq_292 a1, Register Eq_1673 a2, Register Eq_1673 a3)
+// 0000000000017F04: Register Eq_1673 fn0000000000017F04(Register (ptr64 Eq_291) gp, Register Eq_1673 a0, Register Eq_292 a1, Register Eq_1673 a2, Register Eq_1673 a3)
 Eq_1673 fn0000000000017F04(Eq_291 * gp, Eq_1673 a0, Eq_292 a1, Eq_1673 a2, Eq_1673 a3)
 {
 	Eq_292 a1_104;
@@ -2870,7 +2870,7 @@ l0000000000017F84:
 	goto l0000000000017F88;
 }
 
-// 0000000000018118: Register Eq_1673 fn0000000000018118(Register (ptr Eq_291) gp, Register Eq_1673 a0, Register Eq_292 a1)
+// 0000000000018118: Register Eq_1673 fn0000000000018118(Register (ptr64 Eq_291) gp, Register Eq_1673 a0, Register Eq_292 a1)
 Eq_1673 fn0000000000018118(Eq_291 * gp, Eq_1673 a0, Eq_292 a1)
 {
 	Eq_1673 a0_144;

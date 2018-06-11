@@ -510,9 +510,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 @"00102000 0004 Data word32
 00102004 0004 Data word32
 00102008 0004 Data word32
-0010202A 0004 Data (ptr code)
-0010202E 0004 Data (ptr code)
-00102032 0004 Data (ptr code)
+0010202A 0004 Data (ptr32 code)
+0010202E 0004 Data (ptr32 code)
+00102032 0004 Data (ptr32 code)
 ";
             AssertImageSymbols(sExp);
         }

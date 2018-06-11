@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Typing
 			StructureType mem = factory.CreateStructureType(null, 0);
 			mem.Fields.Add(0, tv1);
 			mem.Fields.Add(4, tv2);
-			tv3.Class.DataType = factory.CreatePointer(mem, 4);
+			tv3.Class.DataType = factory.CreatePointer(mem, 32);
 
 			store.CopyClassDataTypesToTypeVariables();
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Typing
 
             var ppr = new PtrPrimitiveReplacer(factory, store, program);
 
-            var sExp = "(struct (0 (ptr (struct (0 (ptr (struct)) ptr0000))) ptr0000))";
+            var sExp = "(struct (0 (ptr32 (struct (0 (ptr32 (struct)) ptr0000))) ptr0000))";
 
             Assert.AreEqual(sExp, ppr.Replace(s1).ToString());
             Assert.AreEqual(sExp, ppr.Replace(s2).ToString());

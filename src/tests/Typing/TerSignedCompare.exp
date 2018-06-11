@@ -24,26 +24,26 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 ci16 w5404))
 	T_2 (in ds : selector)
 	T_3 (in ds2 : selector)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (segment (5400 T_9 t5400) (5404 T_5 t5404)))
+  DataType: (ptr16 Eq_2)
+  OrigDataType: (ptr16 (segment (5400 T_9 t5400) (5404 T_5 t5404)))
 T_3: (in ds2 : selector)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (segment (5404 T_12 t5404)))
+  DataType: (ptr16 Eq_2)
+  OrigDataType: (ptr16 (segment (5404 T_12 t5404)))
 T_4: (in 0x5404 : word16)
   Class: Eq_4
-  DataType: (memptr (ptr Eq_2) ci16)
+  DataType: (memptr (ptr16 Eq_2) ci16)
   OrigDataType: (memptr T_2 (struct (0 T_5 t0000)))
 T_5: (in Mem0[ds:0x5404:word16] : word16)
   Class: Eq_5
@@ -59,7 +59,7 @@ T_7: (in ds->w5404 < 0x0014 : bool)
   OrigDataType: bool
 T_8: (in 0x5400 : word16)
   Class: Eq_8
-  DataType: (memptr (ptr Eq_2) bool)
+  DataType: (memptr (ptr16 Eq_2) bool)
   OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
 T_9: (in Mem0[ds:0x5400:bool] : bool)
   Class: Eq_7
@@ -71,7 +71,7 @@ T_10: (in 0x0000 : word16)
   OrigDataType: word16
 T_11: (in 0x5404 : word16)
   Class: Eq_11
-  DataType: (memptr (ptr Eq_2) ci16)
+  DataType: (memptr (ptr16 Eq_2) ci16)
   OrigDataType: (memptr T_3 (struct (0 T_12 t0000)))
 T_12: (in Mem0[ds2:0x5404:word16] : word16)
   Class: Eq_5

@@ -267,7 +267,7 @@ l004011D7:
 	Mem31[esp_30:word32] = 0x0000009C
 	Mem33[esp_30 - 0x00000004:word32] = ebx_11
 	Mem37[esp_30 - 0x00000008:word32] = fn00401158()
-	memcpy(Mem37[esp_30 - 0x00000008:(ptr void)], Mem37[esp_30 - 0x00000004:(ptr void)], Mem37[esp_30:size_t])
+	memcpy(Mem37[esp_30 - 0x00000008:(ptr32 void)], Mem37[esp_30 - 0x00000004:(ptr32 void)], Mem37[esp_30:size_t])
 	_InitTermAndUnexPtrs()
 	return
 // DataOut:

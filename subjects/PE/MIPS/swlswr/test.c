@@ -29,7 +29,7 @@ void fn000110E8(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 	fn00011278(0x00, r4);
 }
 
-// 0001116C: void fn0001116C(Register (ptr Eq_76) r2, Register (ptr (ptr word32)) r4)
+// 0001116C: void fn0001116C(Register (ptr32 Eq_76) r2, Register (ptr32 (ptr32 word32)) r4)
 void fn0001116C(Eq_76 * r2, word32 * * r4)
 {
 	r2->ptrFFFFFFEC = r4;
@@ -143,7 +143,7 @@ void fn00011460()
 {
 }
 
-// 0001147C: void fn0001147C(Register (ptr word32) r4, Register (ptr word32) r5, Stack Eq_71 dwArg00, Stack int32 dwArg04)
+// 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5, Stack Eq_71 dwArg00, Stack int32 dwArg04)
 void fn0001147C(word32 * r4, word32 * r5, UINT dwArg00, int32 dwArg04)
 {
 	word32 * dwArg00_26 = r4;
@@ -170,7 +170,7 @@ void fn000114E4()
 	fn0001147C(&globals->dw12000, &globals->dw12004, dwLoc18, dwLoc14);
 }
 
-// 0001152C: Register (ptr code) fn0001152C(Register (ptr code) r2, Stack word32 dwArg00)
+// 0001152C: Register (ptr32 code) fn0001152C(Register (ptr32 code) r2, Stack word32 dwArg00)
 code * fn0001152C(code * r2, word32 dwArg00)
 {
 	Eq_184 r8_10 = globals->t13040;
@@ -229,7 +229,7 @@ code * fn0001152C(code * r2, word32 dwArg00)
 	return sp_111->ptr002C;
 }
 
-// 000116FC: void fn000116FC(Register (ptr code) r2, Stack word32 dwArg00)
+// 000116FC: void fn000116FC(Register (ptr32 code) r2, Stack word32 dwArg00)
 void fn000116FC(code * r2, word32 dwArg00)
 {
 	fn0001152C(r2, dwLoc20) == 0x00;

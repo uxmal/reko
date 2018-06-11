@@ -20,7 +20,7 @@ void _init()
 	}
 }
 
-// 0000000000400480: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+// 0000000000400480: void _start(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
 void _start( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);
@@ -79,13 +79,13 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 0000000000400560: Register (ptr void) my1(Register word32 esi, Register word32 edi)
+// 0000000000400560: Register (ptr64 void) my1(Register word32 esi, Register word32 edi)
 void(word32 esi, word32 edi)
 {
 	return calloc((int64) edi, (int64) esi);
 }
 
-// 0000000000400590: void my2(Register byte sil, Register (ptr byte) rdi)
+// 0000000000400590: void my2(Register byte sil, Register (ptr64 byte) rdi)
 void my2(byte sil, byte * rdi)
 {
 	*rdi = sil;

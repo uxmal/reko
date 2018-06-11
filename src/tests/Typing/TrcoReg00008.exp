@@ -20,8 +20,8 @@ l0C00_0023:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem(T_12, 5CE10)
 T_2 (in ds : selector)
 	trait_primitive(selector)

@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Typing
             u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
-            Assert.AreEqual("(ptr real32)", dt.ToString());
+            Assert.AreEqual("(ptr32 real32)", dt.ToString());
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Typing
             u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
-            Assert.AreEqual("(ptr real32)", dt.ToString());
+            Assert.AreEqual("(ptr32 real32)", dt.ToString());
         }
 
         [Test]
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Typing
             var trans = new TypeTransformer(factory, null, null);
             var dt = ut.Accept(trans);
             Assert.AreEqual(
-                "(union \"foo\" ((ptr Eq_1) u0) ((ptr Eq_2) u1))",
+                "(union \"foo\" ((ptr32 Eq_1) u0) ((ptr32 Eq_2) u1))",
                 dt.ToString());
         }
 

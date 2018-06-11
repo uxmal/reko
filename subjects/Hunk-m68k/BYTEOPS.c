@@ -4,7 +4,7 @@
 
 #include "BYTEOPS.h"
 
-// 00001000: void fn00001000(Register int32 d0, Register (ptr byte) a0)
+// 00001000: void fn00001000(Register int32 d0, Register (ptr32 byte) a0)
 void fn00001000(int32 d0, byte * a0)
 {
 	struct Eq_4 * a6_8 = *(struct Eq_4 **) 0x04;
@@ -212,14 +212,14 @@ l00001202:
 	}
 }
 
-// 00001214: void fn00001214(Register (ptr Eq_25) a3)
+// 00001214: void fn00001214(Register (ptr32 Eq_25) a3)
 void fn00001214(Eq_25 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
 }
 
-// 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
+// 0000126C: void fn0000126C(Register (ptr32 Eq_31) a2)
 void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
@@ -232,7 +232,7 @@ word32 fn00001278(ptr32 dwArg04)
 	return fn0000127C();
 }
 
-// 0000127C: Register (ptr Eq_464) fn0000127C()
+// 0000127C: Register (ptr32 Eq_464) fn0000127C()
 Eq_464 * fn0000127C()
 {
 	ptr32 a7_3 = globals->ptr2B88;
@@ -317,7 +317,7 @@ word32 fn0000131C(ptr32 dwArg04)
 	return a5;
 }
 
-// 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr Eq_67) dwArg08)
+// 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr32 Eq_67) dwArg08)
 void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 {
 	<anonymous> ** a3_46 = (<anonymous> **) 11464;
@@ -1291,7 +1291,7 @@ void fn00002060(ptr32 dwArg04)
 		fn00002128(globals->dw2BC0, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
 }
 
-// 00002128: void fn00002128(Stack (ptr Eq_2854) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
+// 00002128: void fn00002128(Stack (ptr32 Eq_2854) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
 void fn00002128(Eq_2854 * dwArg04, up32 dwArg08, up32 dwArg0C)
 {
 	if (globals->ptr2B8C->w0014 < 0x27)
@@ -1321,7 +1321,7 @@ void fn00002128(Eq_2854 * dwArg04, up32 dwArg08, up32 dwArg0C)
 		FreePooled(dwArg08, dwArg04);
 }
 
-// 000021C4: Register (ptr Eq_31) fn000021C4(Stack (ptr Eq_2825) dwArg04, Stack up32 dwArg08)
+// 000021C4: Register (ptr32 Eq_31) fn000021C4(Stack (ptr32 Eq_2825) dwArg04, Stack up32 dwArg08)
 Eq_31 * fn000021C4(Eq_2825 * dwArg04, up32 dwArg08)
 {
 	struct Eq_31 * d0_45;
@@ -1396,7 +1396,7 @@ l00002296:
 	return d0_45;
 }
 
-// 000022E8: Register (ptr Eq_31) fn000022E8(Stack Eq_114 dwArg04, Stack (ptr Eq_2804) dwArg08, Stack (ptr Eq_2804) dwArg0C)
+// 000022E8: Register (ptr32 Eq_31) fn000022E8(Stack Eq_114 dwArg04, Stack (ptr32 Eq_2804) dwArg08, Stack (ptr32 Eq_2804) dwArg0C)
 Eq_31 * fn000022E8(Eq_114 dwArg04, Eq_2804 * dwArg08, Eq_2804 * dwArg0C)
 {
 	struct Eq_31 * d0_30;
@@ -1424,7 +1424,7 @@ Eq_31 * fn000022E8(Eq_114 dwArg04, Eq_2804 * dwArg08, Eq_2804 * dwArg0C)
 	return d0_30;
 }
 
-// 00002358: void fn00002358(Register int32 d0, Stack (ptr Eq_464) dwArg04)
+// 00002358: void fn00002358(Register int32 d0, Stack (ptr32 Eq_464) dwArg04)
 void fn00002358(int32 d0, Eq_464 * dwArg04)
 {
 	if (globals->ptr2B8C->w0014 >= 0x27)

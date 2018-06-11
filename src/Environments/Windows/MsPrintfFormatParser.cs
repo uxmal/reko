@@ -47,7 +47,9 @@ namespace Reko.Environments.Windows
         {
             if (cDomain == 'S')
             {
-                return program.TypeFactory.CreatePointer(PrimitiveType.WChar, base.pointerSize);
+                return program.TypeFactory.CreatePointer(
+                    PrimitiveType.WChar,
+                    base.pointerSize);
             }
             return base.MakeDataType(size, cDomain);
         }

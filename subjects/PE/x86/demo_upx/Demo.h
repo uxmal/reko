@@ -5,7 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (403000 CHAR t403000) (403007 CHAR t403007))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (fn void (Eq_4))
 	T_2 (in ExitProcess : ptr32)
 	T_3 (in signature of ExitProcess : void)
@@ -26,17 +26,17 @@ Eq_8: LPCSTR
 	T_12 (in 0x00403000 : word32)
 	T_13 (in 0x00403007 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ExitProcess : ptr32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (fn T_16 (T_15)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_16 (T_15)))
 T_3: (in signature of ExitProcess : void)
   Class: Eq_2
-  DataType: (ptr Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: 
 T_4: (in uExitCode : UINT)
   Class: Eq_4
@@ -44,11 +44,11 @@ T_4: (in uExitCode : UINT)
   OrigDataType: 
 T_5: (in MessageBoxA : ptr32)
   Class: Eq_5
-  DataType: (ptr Eq_5)
-  OrigDataType: (ptr (fn T_15 (T_11, T_12, T_13, T_14)))
+  DataType: (ptr32 Eq_5)
+  OrigDataType: (ptr32 (fn T_15 (T_11, T_12, T_13, T_14)))
 T_6: (in signature of MessageBoxA : void)
   Class: Eq_5
-  DataType: (ptr Eq_5)
+  DataType: (ptr32 Eq_5)
   OrigDataType: 
 T_7: (in hWnd : HWND)
   Class: Eq_7

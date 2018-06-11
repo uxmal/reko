@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core
             Assert.AreNotSame(clonedStr, str);
             Assert.AreSame(clonedStr, nestedStr);
             Assert.AreEqual(
-                "(struct \"str\" 000C (0 int32 i) (4 (ptr (struct \"str\" 000C)) ptr) (8 real32 f))",
+                "(struct \"str\" 000C (0 int32 i) (4 (ptr32 (struct \"str\" 000C)) ptr) (8 real32 f))",
                 clonedStr.ToString());
         }
     }

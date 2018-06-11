@@ -10,5 +10,5 @@ T_2: (in p : real64)
   OrigDataType: real64
 T_3: (in &p : ptr32)
   Class: Eq_3
-  DataType: (ptr real64)
-  OrigDataType: (ptr real64)
+  DataType: (ptr32 real64)
+  OrigDataType: (ptr32 real64)

@@ -20,7 +20,7 @@ void fn0000000000400428()
 	}
 }
 
-// 0000000000400480: void fn0000000000400480(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
 void fn0000000000400480( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);

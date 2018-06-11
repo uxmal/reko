@@ -16,8 +16,8 @@ skip:
 	// succ:  CmpMock_exit
 CmpMock_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem(T_9, 10003000)
 T_2 (in r0 : word32)
 	trait_primitive(word32)

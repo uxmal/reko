@@ -4,7 +4,7 @@
 
 #include "simd_double.h"
 
-int32 g_t0898(int32 rdi, char ** rsi, char ** rdx) = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+int32 g_t0898(int32 rdi, char ** rsi, char ** rdx) = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 void g_t0A70() = Unexpected function type (fn void ())
 ;

@@ -25,8 +25,8 @@ l5_found:
 	// succ:  TreeFindMock_exit
 TreeFindMock_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 T_2 (in t : word32)
 	trait_primitive(word32)
 	trait_equal(T_3)

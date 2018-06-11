@@ -4,7 +4,7 @@
 
 #include "ais3_crackme.h"
 
-Eq_16 g_t4005C5 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+Eq_16 g_t4005C5 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 Eq_19 g_t400620 = Unexpected function type (fn void ())
 ;

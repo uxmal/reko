@@ -17,7 +17,7 @@ void fn0128(Eq_2 r4, word16 pc)
 	}
 }
 
-// 0242: void fn0242(Register word16 r0, Register (ptr word16) r1)
+// 0242: void fn0242(Register word16 r0, Register (ptr16 word16) r1)
 void fn0242(word16 r0, word16 * r1)
 {
 	globals->w0080 = 0x00;
@@ -54,7 +54,7 @@ void fn0242(word16 r0, word16 * r1)
 	}
 }
 
-// 02C8: Register word16 fn02C8(Register (ptr Eq_118) r4, Register out Eq_119 r3Out, Register out ptr16 r4Out)
+// 02C8: Register word16 fn02C8(Register (ptr16 Eq_118) r4, Register out Eq_119 r3Out, Register out ptr16 r4Out)
 word16 fn02C8(Eq_118 * r4, Eq_119 & r3Out, ptr16 & r4Out)
 {
 	word16 r2_10;
@@ -139,7 +139,7 @@ void fn0300(Eq_2 r4)
 	}
 }
 
-// 03CE: void fn03CE(Register (ptr word16) r0)
+// 03CE: void fn03CE(Register (ptr16 word16) r0)
 void fn03CE(word16 * r0)
 {
 	int16 r2_9 = (int16) (globals->u0064 >> 0x03)->b2766;
@@ -448,7 +448,7 @@ void fn0790()
 {
 }
 
-// 0856: void fn0856(Register int16 r3, Register word16 pc, Stack (ptr word16) wArg00)
+// 0856: void fn0856(Register int16 r3, Register word16 pc, Stack (ptr16 word16) wArg00)
 void fn0856(int16 r3, word16 pc, word16 * wArg00)
 {
 l0856:
@@ -705,7 +705,7 @@ ci16 fn0A0A()
 	}
 }
 
-// 0A94: Register Eq_2 fn0A94(Register int16 r3, Register Eq_2 r4, Register (ptr word16) r5)
+// 0A94: Register Eq_2 fn0A94(Register int16 r3, Register Eq_2 r4, Register (ptr16 word16) r5)
 Eq_2 fn0A94(int16 r3, Eq_2 r4, word16 * r5)
 {
 	if (r3 >> 0x01 == 0x00)
@@ -742,7 +742,7 @@ Eq_2 fn0A94(int16 r3, Eq_2 r4, word16 * r5)
 	}
 }
 
-// 0AF6: void fn0AF6(Stack (ptr word16) wArg00)
+// 0AF6: void fn0AF6(Stack (ptr16 word16) wArg00)
 void fn0AF6(word16 * wArg00)
 {
 	ptr16 fp;
@@ -761,7 +761,7 @@ void fn0AF6(word16 * wArg00)
 	V_13 = false;
 }
 
-// 0B06: Register word16 fn0B06(Register int16 r3, Register (ptr word16) r5, Register word16 pc)
+// 0B06: Register word16 fn0B06(Register int16 r3, Register (ptr16 word16) r5, Register word16 pc)
 word16 fn0B06(int16 r3, word16 * r5, word16 pc)
 {
 	Eq_2 r4_4 = fn13AA(pc, ptrLoc02);
@@ -919,7 +919,7 @@ void fn0C76(word16 pc)
 	fn1578(pc, out r4_16);
 }
 
-// 0C90: void fn0C90(Stack (ptr word16) wArg00, Stack (ptr word16) wArg02, Stack (ptr word16) wArg04)
+// 0C90: void fn0C90(Stack (ptr16 word16) wArg00, Stack (ptr16 word16) wArg02, Stack (ptr16 word16) wArg04)
 void fn0C90(word16 * wArg00, word16 * wArg02, word16 * wArg04)
 {
 	if (wArg02 >> 0x01 < 0x00)
@@ -932,7 +932,7 @@ void fn0C90(word16 * wArg00, word16 * wArg02, word16 * wArg04)
 	(wArg02 >> 0x01)->w3013 = (wArg02 >> 0x01)->w3013 | wArg04;
 }
 
-// 0CCA: void fn0CCA(Stack (ptr word16) wArg02)
+// 0CCA: void fn0CCA(Stack (ptr16 word16) wArg02)
 void fn0CCA(word16 * wArg02)
 {
 }
@@ -954,7 +954,7 @@ void fn0CEC()
 	}
 }
 
-// 0D3C: void fn0D3C(Stack (ptr code) ptrArg00)
+// 0D3C: void fn0D3C(Stack (ptr16 code) ptrArg00)
 void fn0D3C(code * ptrArg00)
 {
 	globals->w00A0 = 225;
@@ -983,7 +983,7 @@ void fn0D66(word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 w
 {
 }
 
-// 0D78: Register (ptr cui16) fn0D78(Register Eq_2665 r4, Register (ptr cui16) r5, Stack (ptr code) wArg00)
+// 0D78: Register (ptr16 cui16) fn0D78(Register Eq_2665 r4, Register (ptr16 cui16) r5, Stack (ptr16 code) wArg00)
 cui16 * fn0D78(Eq_2665 r4, cui16 * r5, code * wArg00)
 {
 	cui16 wLoc02_11 = 0x0200;
@@ -1094,7 +1094,7 @@ word16 fn0E32(word16 pc, ptr16 & r3Out, ptr16 & r4Out, Eq_1118 & r5Out)
 	return fn0E98(&r5_35->w0002, out r3_53, out r4_54, out r5_55);
 }
 
-// 0E98: Register (ptr Eq_145) fn0E98(Register (ptr Eq_3019) r5, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out ptr16 r5Out)
+// 0E98: Register (ptr16 Eq_145) fn0E98(Register (ptr16 Eq_3019) r5, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out ptr16 r5Out)
 Eq_145 * fn0E98(Eq_3019 * r5, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out)
 {
 	*r3Out = r3;
@@ -1198,7 +1198,7 @@ int16 fn100C(int16 r4)
 	return (r4 * 0x03 >> 0x03) + 0x17;
 }
 
-// 103C: void fn103C(Register word16 r0, Register (ptr Eq_3395) r3, Register (ptr Eq_3396) r5, Stack (ptr Eq_3397) wArg00)
+// 103C: void fn103C(Register word16 r0, Register (ptr16 Eq_3395) r3, Register (ptr16 Eq_3396) r5, Stack (ptr16 Eq_3397) wArg00)
 void fn103C(word16 r0, Eq_3395 * r3, Eq_3396 * r5, Eq_3397 * wArg00)
 {
 	if (8086 - r5 <= 0x00)
@@ -1769,7 +1769,7 @@ l1304:
 	goto l1304;
 }
 
-// 13AA: Register Eq_2 fn13AA(Register word16 pc, Stack (ptr word16) ptrArg00)
+// 13AA: Register Eq_2 fn13AA(Register word16 pc, Stack (ptr16 word16) ptrArg00)
 Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 {
 	ci16 r0_11;
@@ -1858,7 +1858,7 @@ word16 fn1578(word16 pc, ptr16 & r4Out)
 	return r1;
 }
 
-// 15F2: Register (ptr Eq_4239) fn15F2(Register Eq_2 r0, Register (ptr Eq_4239) r1, Register word16 pc)
+// 15F2: Register (ptr16 Eq_4239) fn15F2(Register Eq_2 r0, Register (ptr16 Eq_4239) r1, Register word16 pc)
 Eq_4239 * fn15F2(Eq_2 r0, Eq_4239 * r1, word16 pc)
 {
 	word16 wLoc02_14;
@@ -1900,7 +1900,7 @@ Eq_4239 * fn15F2(Eq_2 r0, Eq_4239 * r1, word16 pc)
 	return fn1658(r1_35, r3_34, pc, out r3_41);
 }
 
-// 1658: Register (ptr Eq_4239) fn1658(Register (ptr Eq_4239) r1, Register (ptr Eq_4289) r3, Stack word16 wArg02, Register out ptr16 r3Out)
+// 1658: Register (ptr16 Eq_4239) fn1658(Register (ptr16 Eq_4239) r1, Register (ptr16 Eq_4289) r3, Stack word16 wArg02, Register out ptr16 r3Out)
 Eq_4239 * fn1658(Eq_4239 * r1, Eq_4289 * r3, word16 wArg02, ptr16 & r3Out)
 {
 	if (wArg02 != 0x00 || 0x30 - *r3 != 0x00)
@@ -1915,7 +1915,7 @@ Eq_4239 * fn1658(Eq_4239 * r1, Eq_4289 * r3, word16 wArg02, ptr16 & r3Out)
 	}
 }
 
-// 1674: void fn1674(Register Eq_2 r0, Register (ptr Eq_4239) r1, Register word16 pc)
+// 1674: void fn1674(Register Eq_2 r0, Register (ptr16 Eq_4239) r1, Register word16 pc)
 void fn1674(Eq_2 r0, Eq_4239 * r1, word16 pc)
 {
 	if (r0 > 0x00)

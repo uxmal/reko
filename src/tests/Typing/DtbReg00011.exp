@@ -32,9 +32,9 @@ l0C00_0029:
 fn0C00_0004_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct "Globals"))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (ptr (fn T_4 ()))
+Eq_1: (ptr32 (struct "Globals"))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (ptr32 (fn T_4 ()))
 	T_2 (in fn0C00_0004 : segptr32)
 	T_3 (in signature of fn0C00_0004 : void)
 Eq_4: void
@@ -79,7 +79,7 @@ Eq_22: byte
 Eq_23: byte
 	T_23 (in bl_25 & 0xF0 | SLICE((bl_25 & 0x0F) *u (bh_24 + 0x01) << 0x0004, byte, 8) & 0x0F : byte)
 	T_27 (in Mem22[0x4DE1:bx_23 + 0x0000:byte] : byte)
-Eq_24: (ptr (segment (0 (arr T_34 4096) a0000)))
+Eq_24: (ptr16 (segment (0 (arr T_34 4096) a0000)))
 	T_24 (in 0x4DE1 : selector)
 Eq_25: word16
 	T_25 (in 0x0000 : word16)
@@ -92,17 +92,17 @@ Eq_33: bool
 Eq_34: (struct 0001 (0 T_27 t0000))
 	T_34
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct "Globals"))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in fn0C00_0004 : segptr32)
   Class: Eq_2
-  DataType: (ptr (fn T_4 ()))
-  OrigDataType: (ptr (fn T_4 ()))
+  DataType: (ptr32 (fn T_4 ()))
+  OrigDataType: (ptr32 (fn T_4 ()))
 T_3: (in signature of fn0C00_0004 : void)
   Class: Eq_2
-  DataType: (ptr (fn T_4 ()))
+  DataType: (ptr32 (fn T_4 ()))
   OrigDataType: 
 T_4: (in fn0C00_0004() : void)
   Class: Eq_4
@@ -186,8 +186,8 @@ T_23: (in bl_25 & 0xF0 | SLICE((bl_25 & 0x0F) *u (bh_24 + 0x01) << 0x0004, byte,
   OrigDataType: byte
 T_24: (in 0x4DE1 : selector)
   Class: Eq_24
-  DataType: (ptr (segment (0 (arr T_34 4096) a0000)))
-  OrigDataType: (ptr (segment (0 (arr T_34 4096) a0000)))
+  DataType: (ptr16 (segment (0 (arr T_34 4096) a0000)))
+  OrigDataType: (ptr16 (segment (0 (arr T_34 4096) a0000)))
 T_25: (in 0x0000 : word16)
   Class: Eq_25
   DataType: word16

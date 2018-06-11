@@ -10,7 +10,7 @@ void _init()
 	call_gmon_start();
 }
 
-// 0000000000400410: void _start(Register (ptr Eq_5) rdx, Stack Eq_6 qwArg00)
+// 0000000000400410: void _start(Register (ptr64 Eq_5) rdx, Stack Eq_6 qwArg00)
 void _start( * rdx, Eq_6 qwArg00)
 {
 	__align((char *) fp + 0x08);
@@ -131,7 +131,7 @@ word32 verify(Eq_136 rdi[])
 	return eax_122;
 }
 
-// 00000000004005C5: void main(Register (ptr Eq_221) rsi, Register word32 edi)
+// 00000000004005C5: void main(Register (ptr64 Eq_221) rsi, Register word32 edi)
 void main(Eq_221 * rsi, word32 edi)
 {
 	if (edi != 0x02)

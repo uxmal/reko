@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%08s");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]

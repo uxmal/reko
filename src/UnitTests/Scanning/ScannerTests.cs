@@ -1030,7 +1030,7 @@ fn00001200_exit:
                 fakeArch.CreateProcessorState());
 
             Assert.AreEqual("foo", proc.Name);
-            Assert.AreEqual("Register int32 foo(Stack (ptr char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("Register int32 foo(Stack (ptr32 char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));
         }
 
         [Test(Description = "Should discover pointer to function and record it in ScanResults.")]
