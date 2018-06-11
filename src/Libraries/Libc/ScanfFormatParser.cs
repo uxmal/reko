@@ -114,7 +114,7 @@ namespace Reko.Libraries.Libc
             case 's':
                 return program.TypeFactory.CreatePointer(
                     size == PrintfSize.Long ? PrimitiveType.WChar : PrimitiveType.Char,
-                    pointerSize);
+                    pointerSize / DataType.BitsPerByte);
             case 'o':
             case 'u':
             case 'x':
@@ -162,7 +162,7 @@ namespace Reko.Libraries.Libc
             }
             return program.TypeFactory.CreatePointer(
                 PrimitiveType.Create(domain, bitSize),
-                pointerSize);
+                pointerSize / DataType.BitsPerByte);
         }
 
         private char CollectDataType()

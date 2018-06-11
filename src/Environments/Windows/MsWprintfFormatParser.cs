@@ -51,8 +51,12 @@ namespace Reko.Environments.Windows
             {
             case 'c': return PrimitiveType.WChar;
             case 'C': return PrimitiveType.Char;
-            case 's': return program.TypeFactory.CreatePointer(PrimitiveType.WChar, base.pointerSize);
-            case 'S': return program.TypeFactory.CreatePointer(PrimitiveType.Char, base.pointerSize);
+            case 's': return program.TypeFactory.CreatePointer(
+                PrimitiveType.WChar,
+                base.pointerSize / DataType.BitsPerByte);
+            case 'S': return program.TypeFactory.CreatePointer(
+                PrimitiveType.Char,
+                base.pointerSize / DataType.BitsPerByte);
             }
             return base.MakeDataType(size, cDomain);
         }

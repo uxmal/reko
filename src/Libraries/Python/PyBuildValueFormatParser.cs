@@ -92,7 +92,7 @@ namespace Reko.Libraries.Python
 
         private DataType Ptr(DataType pointee)
         {
-            return new Pointer(pointee, pointerSize);
+            return new Pointer(pointee, pointerSize / DataType.BitsPerByte);
         }
 
         private DataType Ref(string name)
