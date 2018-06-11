@@ -120,7 +120,7 @@ namespace Reko.ImageLoaders.Elf
         protected Address m_uPltMax;
         protected IPlatform platform;
         protected byte[] rawImage;
-        protected SegmentMap segmentMap;
+        private SegmentMap segmentMap;
 
         protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
         {
@@ -129,6 +129,7 @@ namespace Reko.ImageLoaders.Elf
             this.Architecture = CreateArchitecture(machine, endianness);
             this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
             this.Sections = new List<ElfSection>();
+            this.Segments = new List<ElfSegment>();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
@@ -136,6 +137,7 @@ namespace Reko.ImageLoaders.Elf
         public abstract Address DefaultAddress { get; }
         public abstract bool IsExecutableFile { get; }
         public List<ElfSection> Sections { get; private set; }
+        public List<ElfSegment> Segments { get; private set; }
         public Dictionary<ulong, Dictionary<int, ElfSymbol>> Symbols { get; private set; }
 
         public static AccessMode AccessModeOf(ulong sh_flags)
@@ -146,6 +148,11 @@ namespace Reko.ImageLoaders.Elf
             if ((sh_flags & SHF_EXECINSTR) != 0)
                 mode |= AccessMode.Execute;
             return mode;
+        }
+
+        public ElfSegment GetSegmentByAddress(ulong uAddr)
+        {
+            return Segments.FirstOrDefault(s => s.IsValidAddress(uAddr));
         }
 
         public abstract ulong AddressToFileOffset(ulong addr);
@@ -297,15 +304,16 @@ namespace Reko.ImageLoaders.Elf
         /// The ELF format sadly is missing a DT_SYMSZ, whi
         /// </remarks>
         /// <param name="addrStart"></param>
-        /// <param name=""></param>
+        /// <param name="dynSeg">The dynamic segment.</param>
         /// <returns></returns>
-        public ulong GuessAreaEnd(ulong addrStart, ImageSegment seg, ulong offsetDyn)
+        public ulong GuessAreaEnd(ulong addrStart, ElfSegment dynSeg)
         {
-            if (!seg.IsInRange(addrStart))
+            var seg = GetSegmentByAddress(addrStart);
+            if (seg == null)
                 return 0;
 
             var addrEnd = 0ul;
-            foreach (var de in GetDynamicEntries(offsetDyn))
+            foreach (var de in GetDynamicEntries(dynSeg.p_offset))
             {
                 if (de.UValue <= addrStart)
                     continue;
@@ -395,7 +403,7 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public abstract Address ComputeBaseAddress(IPlatform platform);
-        public abstract int LoadProgramHeaderTable();
+        public abstract int LoadSegments();
         public abstract void LoadSectionHeaders();
         public abstract Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection);
         /// <summary>
@@ -728,18 +736,16 @@ namespace Reko.ImageLoaders.Elf
             this.Header64 = elfHeader;
             this.osAbi = osAbi;
             base.rawImage = rawImage;
-            this.ProgramHeaders64 = new List<Elf64_PHdr>();
         }
 
         public Elf64_EHdr Header64 { get; set; }
-        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr64(0x8048000); } }
 
         public override bool IsExecutableFile { get { return Header64.e_type != ElfImageLoader.ET_REL; } }
 
         public override ulong AddressToFileOffset(ulong addr)
         {
-            foreach (var ph in ProgramHeaders64)
+            foreach (var ph in Segments)
             {
                 if (ph.p_vaddr <= addr && addr < ph.p_vaddr + ph.p_filesz)
                     return addr - ph.p_vaddr;
@@ -750,7 +756,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Address ComputeBaseAddress(IPlatform platform)
         {
-            ulong uBaseAddr = ProgramHeaders64
+            ulong uBaseAddr = Segments
                 .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
                 .Min(ph => ph.p_vaddr);
             return platform.MakeAddressFromLinear(uBaseAddr);
@@ -838,7 +844,7 @@ namespace Reko.ImageLoaders.Elf
             }
             writer.WriteLine();
             writer.WriteLine("Program headers:");
-            foreach (var ph in ProgramHeaders64)
+            foreach (var ph in Segments)
             {
                 writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
                     ph.p_type,
@@ -979,12 +985,12 @@ namespace Reko.ImageLoaders.Elf
         public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
-                ProgramHeaders64
+                Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .Select(p => Tuple.Create(
                         platform.MakeAddressFromLinear(p.p_vaddr),
                         (uint)p.p_pmemsz)));
-            foreach (var ph in ProgramHeaders64)
+            foreach (var ph in Segments)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
@@ -1043,14 +1049,25 @@ namespace Reko.ImageLoaders.Elf
             return segmentMap;
         }
 
-        public override int LoadProgramHeaderTable()
+        public override int LoadSegments()
         {
             var rdr = imgLoader.CreateReader(Header64.e_phoff);
             for (int i = 0; i < Header64.e_phnum; ++i)
             {
-                ProgramHeaders64.Add(Elf64_PHdr.Load(rdr));
+                var sSeg = Elf64_PHdr.Load(rdr);
+                Segments.Add(new ElfSegment
+                {
+                    p_type = sSeg.p_type,
+                    p_offset = sSeg.p_offset,
+                    p_vaddr = sSeg.p_vaddr,
+                    p_paddr = sSeg.p_paddr,
+                    p_filesz = sSeg.p_filesz,
+                    p_pmemsz = sSeg.p_pmemsz,
+                    p_flags = sSeg.p_flags,
+                    p_align = sSeg.p_align,
+                });
             }
-            return ProgramHeaders64.Count;
+            return Segments.Count;
         }
 
         public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
@@ -1190,12 +1207,10 @@ namespace Reko.ImageLoaders.Elf
             : base(imgLoader, header32.e_machine, endianness)
         {
             this.Header = header32 ?? throw new ArgumentNullException("header32");
-            this.ProgramHeaders = new List<Elf32_PHdr>();
             this.rawImage = rawImage;
         }
 
         public Elf32_EHdr Header { get; private set; }
-        public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
 
         public override bool IsExecutableFile { get { return Header.e_type != ElfImageLoader.ET_REL; } }
@@ -1207,7 +1222,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override ulong AddressToFileOffset(ulong addr)
         {
-            foreach (var ph in ProgramHeaders)
+            foreach (var ph in Segments)
             {
                 if (ph.p_vaddr <= addr && addr < ph.p_vaddr + ph.p_filesz)
                     return addr - ph.p_vaddr;
@@ -1321,13 +1336,13 @@ namespace Reko.ImageLoaders.Elf
 
         public override Address ComputeBaseAddress(IPlatform platform)
         {
-            if (ProgramHeaders.Count == 0)
+            if (Segments.Count == 0)
                 return Address.Ptr32(0);
 
             return Address.Ptr32(
-                ProgramHeaders
+                Segments
                 .Where(ph => ph.p_filesz > 0)
-                .Min(ph => ph.p_vaddr));
+                .Min(ph => (uint)ph.p_vaddr));
         }
 
         public override ElfObjectLinker CreateLinker()
@@ -1389,7 +1404,7 @@ namespace Reko.ImageLoaders.Elf
             }
             writer.WriteLine();
             writer.WriteLine("Program headers:");
-            foreach (var ph in ProgramHeaders)
+            foreach (var ph in Segments)
             {
                 writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
                     ph.p_type,
@@ -1539,18 +1554,18 @@ namespace Reko.ImageLoaders.Elf
         public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
-                ProgramHeaders
+                Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .Select(p => Tuple.Create(
-                        Address.Ptr32(p.p_vaddr),
-                        p.p_pmemsz)));
+                        Address.Ptr32((uint)p.p_vaddr),
+                        (uint)p.p_pmemsz)));
 
-            foreach (var ph in ProgramHeaders)
+            foreach (var ph in Segments)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
-                var vaddr = Address.Ptr32(ph.p_vaddr);
+                var vaddr = Address.Ptr32((uint)ph.p_vaddr);
                 segMap.TryGetLowerBound(vaddr, out var mem);
                 if (ph.p_filesz > 0)
                 {
@@ -1607,14 +1622,25 @@ namespace Reko.ImageLoaders.Elf
             return segmentMap;
         }
 
-        public override int LoadProgramHeaderTable()
+        public override int LoadSegments()
         {
             var rdr = imgLoader.CreateReader(Header.e_phoff);
             for (int i = 0; i < Header.e_phnum; ++i)
             {
-                ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
+                var sSeg = Elf32_PHdr.Load(rdr);
+                Segments.Add(new ElfSegment
+                {
+                    p_type = sSeg.p_type,
+                    p_offset = sSeg.p_offset,
+                    p_vaddr = sSeg.p_vaddr,
+                    p_paddr = sSeg.p_paddr,
+                    p_filesz = sSeg.p_filesz,
+                    p_pmemsz = sSeg.p_pmemsz,
+                    p_flags = sSeg.p_flags,
+                    p_align = sSeg.p_align,
+                });
             }
-            return ProgramHeaders.Count;
+            return Segments.Count;
         }
 
 
