@@ -418,7 +418,7 @@ fn0000000000016864: error: An error occurred during data flow analysis.
 00027DDC: warning: Unable to resolve imported reference link.
 00027D40: warning: Unable to resolve imported reference stat.
 000122C0: error: An error occurred while processing the statement branch o3_129 - l1_122 <=u 0x00000000 l000122B8_ds_t.
-    Pulling difference uint32 and (ptr (struct 0001 (0 byte b0000)))
+    Pulling difference uint32 and (ptr32 (struct 0001 (0 byte b0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -529,7 +529,7 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 000000000040401D: error: An error occurred while processing the statement word64 rax_1605 = Mem1603[rax_1582 - 0x0000000000000008 + 0x0000000000000000:word64].
-    Not handling (ptr (struct (0 T_2873 t0000))) and (union (int64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_2873 t0000))) and (union (int64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -540,7 +540,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406158: error: An error occurred while processing the statement branch Mem0[rax_142 - 0x0000000000000018 + 0x0000000000000000:byte] != 0x00 l0000000000406164.
-    Not handling (ptr (struct (0 T_6797 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_6797 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -553,7 +553,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406D12: error: An error occurred while processing the statement rbp = rbp - (fp - 0x0000000000000E88).
-    Pulling difference (union ((ptr (struct (0 T_7871 t0000) (9 T_7879 t0009) (A0 T_7853 t00A0) (B0 T_7843 t00B0) (413728 T_7868 t413728))) u1) ((ptr char) u0)) and ptr64
+    Pulling difference (union ((ptr64 (struct (0 T_7871 t0000) (9 T_7879 t0009) (A0 T_7853 t00A0) (B0 T_7843 t00B0) (413728 T_7868 t413728))) u1) ((ptr64 char) u0)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -561,7 +561,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000406FC3: error: An error occurred while processing the statement r13 = r13 - (fp - 0x0000000000000E88).
-    Pulling difference (union (bool u0) ((ptr char) u2) ((ptr (struct (0 T_7871 t0000) (9 T_7879 t0009) (A0 T_7853 t00A0) (B0 T_7843 t00B0) (413728 T_7868 t413728))) u1) ((union (bool u1) (byte u0)) u3)) and ptr64
+    Pulling difference (union (bool u0) ((ptr64 char) u2) ((ptr64 (struct (0 T_7871 t0000) (9 T_7879 t0009) (A0 T_7853 t00A0) (B0 T_7843 t00B0) (413728 T_7868 t413728))) u1) ((union (bool u1) (byte u0)) u3)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -569,7 +569,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 0000000000407FC2: error: An error occurred while processing the statement r15 = (uint64) Mem0[r13 - 0x0000000000000384 + 0x0000000000000000:word32].
-    Not handling (ptr (struct (0 T_10227 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_10227 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -582,7 +582,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 00000000004086E0: error: An error occurred while processing the statement Mem0[r8 - 0x0000000000000001 + 0x0000000000000000:byte] = r15b.
-    Not handling (ptr (struct (0 T_11680 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_11680 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -593,7 +593,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr (struct (0 T_12596 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_12596 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -650,7 +650,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002F9E.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4290 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4290 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -669,7 +669,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000326E: error: An error occurred while processing the statement branch d0 - d5_2510 >=u 0x00000000 l00003226.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4817 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4817 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -688,7 +688,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000300A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002FC2.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4279 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4279 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -707,7 +707,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000184A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00001802.
-    Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_787 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_787 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -770,33 +770,12 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 l0800_112E: warning: Non-integral switch expression
 === MachO\const.o
-=== Microchip\C18\PIC18Extd\PIC18EggExtd.dcproject
-*** Microchip\C18\PIC18Extd\PIC18EggExtd.dcproject
-error: An error occurred during decompilation. System.IO.FileNotFoundException: Could not load file or assembly 'Reko.Arch.MicrochipPIC' or one of its dependencies. The system cannot find the file specified.
-File name: 'Reko.Arch.MicrochipPIC'
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
-   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
-   at System.Type.GetType(String typeName, Boolean throwOnError)
-   at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel) in C:\dev\uxmal\reko\master\src\Core\Configuration\RekoConfigurationService.cs:line 339
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Project_v4 sp) in C:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 166
-   at Reko.Core.Serialization.ProjectLoader.Deserializer.VisitProject_v4(Project_v4 sProject) in C:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 154
-   at Reko.Core.Serialization.Project_v4.Accept[T](ISerializedProjectVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Serialization\Project_v4.cs:line 61
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Stream stm) in C:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 136
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String fileName, Byte[] image) in C:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 81
-   at Reko.DecompilerDriver.Load(String fileName, String loaderName) in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 199
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 152
-
-WRN: Assembly binding logging is turned OFF.
-To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
-Note: There is some performance penalty associated with assembly bind failure logging.
-To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
-
 === Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 *** Microchip\C18\PIC18Extd\PIC18EggExtd.hex
-error: unrecognized option --arch_option
+00013A: error: PIC Hardware stack underflow.
 === Microchip\C18\PIC18\PIC18Legacy.hex
 *** Microchip\C18\PIC18\PIC18Legacy.hex
-error: unrecognized option --arch_option
+00013A: error: PIC Hardware stack underflow.
 === PDP-11\lunar.lda
 *** PDP-11\lunar.lda
 0B70: warning: Procedure fn0B06 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -1228,7 +1207,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 02DC: error: An error occurred while processing the statement branch r4_100 - 0x0038 - r2_114 >u 0x0000 l02D8.
-    Pulling difference cu16 and (ptr (struct 0002 (0 word16 w0000)))
+    Pulling difference cu16 and (ptr16 (struct 0002 (0 word16 w0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1238,7 +1217,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 02DE: error: An error occurred while processing the statement Mem122[r4_61 - 0x003E + 0x0000:byte] = 0x0000.
-    Not handling (ptr (struct (0 T_212 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
+    Not handling (ptr16 (struct (0 T_212 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2308,7 +2287,7 @@ fn1483_1BB9: error: An error occurred during data flow analysis.
        at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
    at Reko.Core.Types.PrimitiveType.Create(Domain dom, Int32 bitSize, String name) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 134
-   at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 158
+   at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 160
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 243
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
@@ -2356,4 +2335,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 38.54 seconds ---
+Decompiled 53 binaries in 40.68 seconds ---
