@@ -30,7 +30,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public abstract class ElfRelocator
     {
+        private SortedList<Address, ImageSymbol> imageSymbols;
+
+        public ElfRelocator(SortedList<Address, ImageSymbol> syms)
+        {
+            this.imageSymbols = syms;
+        }
+
         public abstract ElfLoader Loader { get; }
+
+        public abstract IEnumerable<ulong> EnumerateDynamicSegmentOffsets();
+        
+
 
         public abstract void Relocate(Program program);
 
@@ -75,42 +86,30 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             return new StartPattern[0];
         }
-    }
 
-    public abstract class ElfRelocator32 : ElfRelocator
-    {
-        protected ElfLoader32 loader;
-        protected SortedList<Address, ImageSymbol> imageSymbols;
-
-        public ElfRelocator32(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) 
+        /// <summary>
+        /// Relocates all relocations found in the DT_DYNAMIC segment.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <returns></returns>
+        public List<ElfSymbol> RelocateDynamicSymbols(Program program)
         {
-            this.loader = loader;
-            this.imageSymbols = imageSymbols;
-        }
+            // 
 
-        public override ElfLoader Loader => loader;
-
-        public override void Relocate(Program program)
-        {
-            DumpRel32(loader);
-            DumpRela32(loader);
-
-            // Get all relocations from PT_DYNAMIC segments first; these are the relocations actually
-            // carried out by the operating system.
             var symbols = new List<ElfSymbol>();
-            foreach (var ph in loader.ProgramHeaders.Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC))
+            foreach (var ph_offset in EnumerateDynamicSegmentOffsets())
             {
-                var str = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_STRTAB);
-                var symtab = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_SYMTAB);
-                var rela = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELA);
-                var relasz = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELASZ);
-                var relaent = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELAENT);
+                var str = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_STRTAB);
+                var symtab = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_SYMTAB);
+                var rela = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELA);
+                var relasz = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELASZ);
+                var relaent = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELAENT);
 
-                var rel = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_REL);
-                var relsz = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELSZ);
-                var relent = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELENT);
+                var rel = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_REL);
+                var relsz = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELSZ);
+                var relent = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELENT);
 
-                var syment = loader.GetDynEntries(ph.p_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_SYMENT);
+                var syment = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_SYMENT);
                 if (symtab == null || (rela == null && rel == null))
                     continue;
                 if (str == null)
@@ -136,16 +135,111 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     relTable = new RelTable(this, rel.d_ptr, relsz.d_ptr);
                 }
 
-                var offStrtab = loader.AddressToFileOffset(str.d_ptr);
-                var offSymtab = loader.AddressToFileOffset(symtab.d_ptr);
+                var offStrtab = Loader.AddressToFileOffset(str.d_ptr);
+                var offSymtab = Loader.AddressToFileOffset(symtab.d_ptr);
 
-                // Iterate through all the relocations 
+                // Generate a symbol for reach relocation.
                 foreach (var symbol in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.d_ptr))
                 {
-                    symbols.Add(symbol);
+                    var imgSym = Loader.CreateImageSymbol(symbol, true);
+                    if (imgSym == null || imgSym.Address.ToLinear() == 0)
+                        continue;
+                    imageSymbols[imgSym.Address] = imgSym;
                 }
             }
+            return symbols;
+        }
 
+
+        private abstract class RelocationTable
+        {
+            protected ElfRelocator relocator;
+
+            public RelocationTable(ElfRelocator relocator, ulong virtualAddress, ulong tableByteSize)
+            {
+                this.relocator = relocator;
+                this.VirtualAddress = virtualAddress;
+                this.TableSize = tableByteSize;
+            }
+
+            public ulong VirtualAddress { get; }
+            public ulong TableSize { get; }
+
+            public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
+            {
+                var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
+                var rdrRela = relocator.Loader.CreateReader(offRela);
+                var offRelaEnd = (long)(offRela + TableSize);
+
+                var symbols = new List<ElfSymbol>();
+                while (rdrRela.Offset < offRelaEnd)
+                {
+                    var relocation = ReadRelocation(rdrRela);
+                    var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
+                    relocator.RelocateEntry(program, elfSym, null, relocation);
+                    symbols.Add(elfSym);
+                }
+                return symbols;
+            }
+
+            public abstract ElfRelocation ReadRelocation(EndianImageReader rdr);
+        }
+
+        private class RelaTable : RelocationTable
+        {
+            public RelaTable(ElfRelocator relocator, ulong virtualAddress, ulong tableByteSize) : base(relocator, virtualAddress, tableByteSize)
+            {
+            }
+
+            public override ElfRelocation ReadRelocation(EndianImageReader rdr)
+            {
+                return relocator.Loader.LoadRelaEntry(rdr);
+            }
+        }
+
+        private class RelTable : RelocationTable
+        {
+            public RelTable(ElfRelocator relocator, ulong virtualAddress, ulong tableByteSize) : base(relocator, virtualAddress, tableByteSize)
+            {
+            }
+
+            public override ElfRelocation ReadRelocation(EndianImageReader rdr)
+            {
+                return relocator.Loader.LoadRelEntry(rdr);
+            }
+        }
+    }
+
+    public abstract class ElfRelocator32 : ElfRelocator
+    {
+        protected ElfLoader32 loader;
+        protected SortedList<Address, ImageSymbol> imageSymbols;
+
+        public ElfRelocator32(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(imageSymbols)
+        {
+            this.loader = loader;
+            this.imageSymbols = imageSymbols;
+        }
+
+        public override ElfLoader Loader => loader;
+
+        public override IEnumerable<ulong> EnumerateDynamicSegmentOffsets()
+        {
+            return loader.ProgramHeaders
+                .Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC)
+                .Select(p => (ulong)p.p_offset);
+        }
+
+        public override void Relocate(Program program)
+        {
+            // Get all relocations from PT_DYNAMIC segments first; these are the relocations actually
+            // carried out by the operating system.
+            var symbols = RelocateDynamicSymbols(program);
+            if (symbols.Count > 0)
+                return;
+
+            DumpRel32(loader);
+            DumpRela32(loader);
             foreach (var relSection in loader.Sections)
             {
                 if (relSection.Type == SectionHeaderType.SHT_REL)
@@ -172,83 +266,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         RelocateEntry(program, sym, referringSection, rela);
                     }
                 }
-            }
-        }
-
-        private abstract class RelocationTable
-        {
-            protected ElfRelocator relocator;
-
-            public RelocationTable(ElfRelocator relocator, ulong virtualAddress, ulong tableByteSize)
-            {
-                this.relocator = relocator;
-                this.VirtualAddress = virtualAddress;
-                this.TableSize = tableByteSize;
-            }
-
-            public ulong VirtualAddress { get; }
-            public ulong TableSize { get; }
-
-            public abstract List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize);
-
-            public abstract void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection);
-
-            public abstract ElfRelocation ReadRelocation(EndianImageReader rdr);
-        }
-
-        private class RelaTable : RelocationTable
-        {
-            public RelaTable(ElfRelocator32 relocator, ulong virtualAddress, ulong tableByteSize) : base(relocator, virtualAddress, tableByteSize)
-            {
-            }
-
-            public override ElfRelocation ReadRelocation(EndianImageReader rdr)
-            {
-                return relocator.Loader.LoadRelaEntry(rdr);
-            }
-
-            public override List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
-            {
-                var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
-                var rdrRela = relocator.Loader.CreateReader(offRela);
-                var offRelaEnd = (long)(offRela + TableSize);
-
-                var symbols = new List<ElfSymbol>();
-                while (rdrRela.Offset < offRelaEnd)
-                {
-                    var relocation = ReadRelocation(rdrRela);
-                    var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    relocator.RelocateEntry(program, elfSym, null, relocation);
-                    symbols.Add(elfSym);
-                }
-                return symbols;
-            }
-
-            public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private class RelTable : RelocationTable
-        {
-            public RelTable(ElfRelocator relocator, ulong virtualAddress, ulong tableByteSize) : base(relocator, virtualAddress, tableByteSize)
-            {
-            }
-
-            public override ElfRelocation ReadRelocation(EndianImageReader rdr)
-            {
-                return relocator.Loader.LoadRelEntry(rdr);
-            }
-
-            public override List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection)
-            {
-                throw new NotImplementedException();
             }
         }
 
@@ -307,13 +324,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
         protected ElfLoader64 loader;
         protected SortedList<Address, ImageSymbol> imageSymbols;
 
-        public ElfRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols)
+        public ElfRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(imageSymbols)
         {
             this.loader = loader;
             this.imageSymbols = imageSymbols;
         }
 
         public override ElfLoader Loader => loader;
+
+        public override IEnumerable<ulong> EnumerateDynamicSegmentOffsets()
+        {
+            return loader.ProgramHeaders64
+                .Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC)
+                .Select(p => (ulong)p.p_offset);
+        }
 
         public override void Relocate(Program program)
         {

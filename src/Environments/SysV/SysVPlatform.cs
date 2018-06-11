@@ -147,8 +147,6 @@ namespace Reko.Environments.SysV
         public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rw, IRewriterHost host)
         {
             var rtlc = rw.FirstOrDefault();
-            if (rtlc != null && rtlc.Address.ToLinear() == 0xB3DC)  //$DEBUG
-                rtlc.ToString();
             if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
 

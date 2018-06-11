@@ -75,6 +75,7 @@
     <Compile Include="Elf32_EHdr.cs" />
     <Compile Include="Elf32_PHdr.cs" />
     <Compile Include="Elf32_Rel.cs" />
+    <Compile Include="ElfDynamicEntry.cs" />
     <Compile Include="ElfLoader.cs" />
     <Compile Include="ElfRelocation.cs" />
     <Compile Include="ElfSection.cs" />

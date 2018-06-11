@@ -66,17 +66,42 @@ namespace Reko.ImageLoaders.Elf
         public const uint SHF_EXECINSTR = 0x4;
         public const uint SHF_REKOCOMMON = 0x08000000;  // A hack until we determine what should happen with SHN_COMMON symbols
 
+        // Dynamic entry tags
         public const int DT_NULL = 0;
         public const int DT_NEEDED = 1;
+        public const int DT_PLTRELSZ = 2;
+        public const int DT_PLTGOT = 3;
+        public const int DT_HASH = 4;
         public const int DT_STRTAB = 5;
         public const int DT_SYMTAB = 6;
         public const int DT_RELA = 7;
         public const int DT_RELASZ = 8;
         public const int DT_RELAENT = 9;
+        public const int DT_STRSZ = 10;
         public const int DT_SYMENT = 11;
+        public const int DT_INIT = 12;
+        public const int DT_FINI = 13;
+        public const int DT_SONAME = 14;
+        public const int DT_RPATH = 15;
+        public const int DT_SYMBOLIC = 16;
         public const int DT_REL = 17;
         public const int DT_RELSZ = 18;
         public const int DT_RELENT = 19;
+        public const int DT_PLTREL = 20;
+        public const int DT_DEBUG = 21;
+        public const int DT_TEXTREL = 22;
+        public const int DT_JMPREL = 23;
+        public const int DT_BIND_NOW = 24;
+        public const int DT_INIT_ARRAY = 25;
+        public const int DT_FINI_ARRAY = 26;
+        public const int DT_INIT_ARRAYSZ = 27;
+        public const int DT_FINI_ARRAYSZ = 28;
+        public const int DT_RUNPATH = 29;
+        public const int DT_FLAGS = 30;
+        public const int DT_ENCODING = 32;
+        public const int DT_PREINIT_ARRAY = 32;
+        public const int DT_PREINIT_ARRAYSZ = 33;
+        public const int DT_MAXPOSTAGS = 34;
 
         public const int STT_NOTYPE = 0;			// Symbol table type: none
         public const int STT_FUNC = 2;				// Symbol table type: function
@@ -102,7 +127,7 @@ namespace Reko.ImageLoaders.Elf
             this.imgLoader = imgLoader;
             this.machine = (ElfMachine) machine;
             this.Architecture = CreateArchitecture(machine, endianness);
-            this.Symbols = new Dictionary<ulong, List<ElfSymbol>>();
+            this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
             this.Sections = new List<ElfSection>();
         }
 
@@ -111,7 +136,7 @@ namespace Reko.ImageLoaders.Elf
         public abstract Address DefaultAddress { get; }
         public abstract bool IsExecutableFile { get; }
         public List<ElfSection> Sections { get; private set; }
-        public Dictionary<ulong, List<ElfSymbol>> Symbols { get; private set; }
+        public Dictionary<ulong, Dictionary<int, ElfSymbol>> Symbols { get; private set; }
 
         public static AccessMode AccessModeOf(ulong sh_flags)
         {
@@ -223,9 +248,9 @@ namespace Reko.ImageLoaders.Elf
             { ElfSymbolType.STT_OBJECT, SymbolType.Data },
         };
 
-        protected ImageSymbol CreateImageSymbol(ElfSymbol sym, bool isExecutable)
+        public ImageSymbol CreateImageSymbol(ElfSymbol sym, bool isExecutable)
         {
-            if (sym.SectionIndex >= Sections.Count)
+            if (!isExecutable && sym.SectionIndex > 0 && sym.SectionIndex >= Sections.Count)
                 return null;
             if (!mpSymbolType.TryGetValue(sym.Type, out SymbolType st))
                 return null;
@@ -235,14 +260,13 @@ namespace Reko.ImageLoaders.Elf
                     return null;
                 st = SymbolType.ExternalProcedure;
             }
-            var symSection = Sections[(int)sym.SectionIndex];
             // If this is a relocatable file, the symbol value is 
             // an offset from the section's virtual address. 
             // If this is an executable file, the symbol value is
             // the virtual address.
             var addr = isExecutable
                 ? platform.MakeAddressFromLinear(sym.Value)
-                : symSection.Address + sym.Value;
+                : Sections[(int)sym.SectionIndex].Address + sym.Value;
 
 
             var dt = GetSymbolDataType(sym);
@@ -261,8 +285,59 @@ namespace Reko.ImageLoaders.Elf
             if (sym.Type == ElfSymbolType.STT_FUNC)
                 return new FunctionType();
             else
-                return new UnknownType();
+                return new UnknownType((int)sym.Size);
         }
+
+        /// <summary>
+        /// Guess the size of an area by scanning the dynamic records and using the ones that
+        /// look like pointers. This is not 100% safe, but the worst that can happen is that
+        /// we don't get all the area.
+        /// </summary>
+        /// <remarks>
+        /// The ELF format sadly is missing a DT_SYMSZ, whi
+        /// </remarks>
+        /// <param name="addrStart"></param>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public ulong GuessAreaEnd(ulong addrStart, ImageSegment seg, ulong offsetDyn)
+        {
+            if (!seg.IsInRange(addrStart))
+                return 0;
+
+            var addrEnd = 0ul;
+
+            foreach (var de in GetDynEntries64(offsetDyn))
+            {
+                if (de.d_ptr <= addrStart)
+                    continue;
+                switch (de.d_tag)
+                {
+                case DT_NULL:
+                case DT_NEEDED:
+                case DT_PLTRELSZ:
+                case DT_RELASZ:
+                case DT_RELAENT:
+                case DT_STRSZ:
+                case DT_SYMENT:
+                case DT_SONAME:
+                case DT_RPATH:
+                case DT_RELSZ:
+                case DT_RELENT:
+                case DT_INIT_ARRAYSZ:
+                case DT_FINI_ARRAYSZ:
+                case DT_RUNPATH:
+                case DT_PREINIT_ARRAYSZ:
+                    // These are not going to be relevant.
+                    break;
+                default:
+                    // This might be a pointer.
+                    addrEnd = addrEnd == 0 ? de.d_ptr : Math.Min(addrEnd, de.d_ptr);
+                    break;
+                }
+            }
+            return addrEnd;
+        }
+
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
         {
@@ -318,7 +393,7 @@ namespace Reko.ImageLoaders.Elf
         public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(bool isExecutable)
         {
             var imgSymbols = new SortedList<Address, ImageSymbol>();
-            foreach (var sym in Symbols.Values.SelectMany(seg => seg))
+            foreach (var sym in Symbols.Values.SelectMany(seg => seg.Values).OrderBy(s => s.Value))
             {
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
@@ -341,7 +416,7 @@ namespace Reko.ImageLoaders.Elf
         public abstract Address ComputeBaseAddress(IPlatform platform);
         public abstract int LoadProgramHeaderTable();
         public abstract void LoadSectionHeaders();
-        public abstract List<ElfSymbol> LoadSymbolsSection(ElfSection symSection);
+        public abstract Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection);
         /// <summary>
         /// The GOT table contains an array of pointers. Some of these
         /// pointers may be pointing to the symbols in the symbol table(s).
@@ -393,7 +468,7 @@ namespace Reko.ImageLoaders.Elf
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
         {
-            return Symbols.Values.SelectMany(s => s);
+            return Symbols.Values.SelectMany(s => s.Values);
         }
 
         public ElfSection GetSectionByIndex(uint shidx)
@@ -500,13 +575,14 @@ namespace Reko.ImageLoaders.Elf
         {
             if (!Symbols.TryGetValue(offSymtab, out var symList))
             {
-                symList = new List<ElfSymbol>();
+                symList = new Dictionary<int, ElfSymbol>();
                 Symbols.Add(offSymtab, symList);
             }
-            if (i < symList.Count)
-                return symList[i];
-            var sym = LoadSymbol(offSymtab, (ulong)i, symentrysize, offStrtab);
-            symList.Add(sym);
+            if (!symList.TryGetValue(i, out var sym))
+            {
+                sym = LoadSymbol(offSymtab, (ulong)i, symentrysize, offStrtab);
+                symList.Add(i, sym);
+            }
             return sym;
         }
 
@@ -1023,6 +1099,7 @@ namespace Reko.ImageLoaders.Elf
                 Offset = rela.r_offset,
                 Info = rela.r_offset,
                 Addend = rela.r_addend,
+                SymbolIndex = (int)(rela.r_info >> 32),
             };
         }
 
@@ -1098,12 +1175,12 @@ namespace Reko.ImageLoaders.Elf
             };
         }
 
-        public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
+        public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
             //Debug.Print("Symbols");
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
-            var symbols = new List<ElfSymbol>();
+            var symbols = new Dictionary<int,ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf64_Sym.Load(rdr);
@@ -1115,14 +1192,16 @@ namespace Reko.ImageLoaders.Elf
                 //    GetSectionName(sym.st_shndx),
                 //    sym.st_value,
                 //    sym.st_size);
-                symbols.Add(new ElfSymbol
-                {
-                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                    Type = (ElfSymbolType)(sym.st_info & 0xF),
-                    SectionIndex = sym.st_shndx,
-                    Value = sym.st_value,
-                    Size = sym.st_size,
-                });
+                symbols.Add(
+                    (int)i,
+                    new ElfSymbol
+                    {
+                        Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                        Type = (ElfSymbolType)(sym.st_info & 0xF),
+                        SectionIndex = sym.st_shndx,
+                        Value = sym.st_value,
+                        Size = sym.st_size,
+                    });
             }
             return symbols;
         }
@@ -1560,7 +1639,8 @@ namespace Reko.ImageLoaders.Elf
             return new ElfRelocation
             {
                 Offset = rela.r_offset,
-                Info = rela.r_offset,
+                Info = rela.r_info,
+                SymbolIndex = (int)(rela.r_info >> 8)
             };
         }
 
@@ -1570,8 +1650,9 @@ namespace Reko.ImageLoaders.Elf
             return new ElfRelocation
             {
                 Offset = rela.r_offset,
-                Info = rela.r_offset,
+                Info = rela.r_info,
                 Addend = rela.r_addend,
+                SymbolIndex = (int)(rela.r_info >> 8)
             };
         }
 
@@ -1646,12 +1727,12 @@ namespace Reko.ImageLoaders.Elf
             };
         }
 
-        public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
+        public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
             Debug.Print("== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
-            var symbols = new List<ElfSymbol>();
+            var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
@@ -1663,7 +1744,7 @@ namespace Reko.ImageLoaders.Elf
                     GetSectionName(sym.st_shndx),
                     sym.st_value,
                     sym.st_size);
-                symbols.Add(new ElfSymbol
+                symbols.Add((int) i, new ElfSymbol
                 {
                     Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     Type = (ElfSymbolType)(sym.st_info & 0xF),
