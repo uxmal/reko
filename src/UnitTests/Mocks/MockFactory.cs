@@ -51,9 +51,9 @@ namespace Reko.UnitTests.Mocks
         /// Create a deserializer that doesn't depend on TypeLibrary.
         /// </summary>
         /// <returns></returns>
-        public ISerializedTypeVisitor<DataType> CreateDeserializer(int ptrSize)
+        public ISerializedTypeVisitor<DataType> CreateDeserializer(int ptrBitSize)
         {
-            return new FakeTypeDeserializer(ptrSize);
+            return new FakeTypeDeserializer(ptrBitSize);
         }
 
         public IPlatform CreatePlatform()

@@ -152,8 +152,8 @@ namespace Reko.UnitTests.Typing
         {
             StructureType s1 = new StructureType(null, 0, true);
             StructureType s2 = new StructureType(null, 0, true);
-            s1.Fields.Add(0, new Pointer(s2, 4));
-            s2.Fields.Add(0, new Pointer(s1, 4));
+            s1.Fields.Add(0, new Pointer(s2, 32));
+            s2.Fields.Add(0, new Pointer(s1, 32));
 
             var program = new Program();
             var factory = new TypeFactory();

@@ -35,11 +35,11 @@ namespace Reko.ImageLoaders.LLVM
     /// </summary>
     public class TypeTranslator : LLVMTypeVisitor<DataType>
     {
-        private readonly int ptrByteSize;
+        private readonly int ptrBitSize;
 
-        public TypeTranslator(int pointerByteSize)
+        public TypeTranslator(int pointerBitSize)
         {
-            this.ptrByteSize = pointerByteSize;
+            this.ptrBitSize = pointerBitSize;
         }
 
         public DataType VisitArray(LLVMArrayType a)
@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.LLVM
         public DataType VisitPointer(LLVMPointer p)
         {
             var pointee = p.Pointee.Accept(this);
-            return new Pointer(pointee, ptrByteSize);
+            return new Pointer(pointee, ptrBitSize);
         }
 
         public DataType VisitStructure(StructureType s)

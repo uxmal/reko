@@ -147,7 +147,7 @@ namespace Reko.Typing
                           call.Callee,
                           new Pointer(
                               new CodeType(),
-                              program.Platform.PointerType.Size));
+                              program.Platform.PointerType.BitSize));
             call.Callee.Accept(desc, call.Callee.TypeVariable);
         }
 

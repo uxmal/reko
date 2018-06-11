@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Idc_ConstantReferencePointerToInt()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new SymbolicEvaluationContext(null, null);
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Idc_ConstantAddress()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new SymbolicEvaluationContext(null, null);

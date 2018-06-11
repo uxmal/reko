@@ -132,12 +132,12 @@ namespace Reko.UnitTests.Scanning
 
         private DataType CStringType32()
         {
-            return new Pointer(PrimitiveType.Char, 4);
+            return new Pointer(PrimitiveType.Char, 32);
         }
 
         private DataType CStringType64()
         {
-            return new Pointer(PrimitiveType.Char, 8);
+            return new Pointer(PrimitiveType.Char, 64);
         }
 
         private Identifier StackId(string name, int offset, DataType dt)
@@ -302,7 +302,7 @@ namespace Reko.UnitTests.Scanning
             var newSig = VarargsFormatScanner.ReplaceVarargs(
                 platform,
                 x86PrintfSig, 
-                new DataType[] { PrimitiveType.Int16, new Pointer(PrimitiveType.Char, 4) });
+                new DataType[] { PrimitiveType.Int16, new Pointer(PrimitiveType.Char, 32) });
             System.Diagnostics.Debug.Print("{0}", DumpSignature("test", newSig));
             Assert.AreEqual(
                 "void test(Stack +0004 (ptr32 char), Stack +0008 int16, Stack +000C (ptr32 char))",

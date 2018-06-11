@@ -371,7 +371,8 @@ namespace Reko.ImageLoaders.Elf
         {
             //$TODO: look up function signature.
             int size = Architecture.PointerType.Size;
-            return new ImageSymbol(addrGot, name + "_GOT", new Pointer(new CodeType(), size))
+            int bitSize = Architecture.PointerType.BitSize;
+            return new ImageSymbol(addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize))
             {
                 Type = SymbolType.Data,
                 Size = (uint)size,

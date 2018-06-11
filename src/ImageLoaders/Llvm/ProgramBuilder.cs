@@ -137,7 +137,7 @@ namespace Reko.ImageLoaders.LLVM
                 var proc = RegisterFunction(fn);
                 program.Procedures.Add(addr, proc);
                 this.Globals[fn.FunctionName] = new Core.Expressions.ProcedureConstant(
-                    new Pointer(proc.Signature, program.Platform.PointerType.Size),
+                    new Pointer(proc.Signature, program.Platform.PointerType.BitSize),
                     proc);
                 return addr + 1;
             }
@@ -181,7 +181,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public void RegisterTypeDefinition(TypeDefinition tydef)
         {
-            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(program.Platform.PointerType.Size)));
+            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(program.Platform.PointerType.BitSize)));
         }
 
         public void TranslateEntry(ModuleEntry entry)
@@ -231,7 +231,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public DataType TranslateType(LLVMType type)
         {
-            var xlat = new TypeTranslator(program.Platform.PointerType.Size);
+            var xlat = new TypeTranslator(program.Platform.PointerType.BitSize);
             return type.Accept(xlat);
         }
 

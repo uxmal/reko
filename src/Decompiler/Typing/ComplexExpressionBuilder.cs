@@ -117,7 +117,7 @@ namespace Reko.Typing
             var e = CreateAddressOf(expComplex);
             DataType dt;
             if (enclosingPtr != null)
-                dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
+                dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
             else
                 dt = PrimitiveType.CreateWord(e.DataType.BitSize);
             e = new Cast(dt, e);
@@ -415,7 +415,7 @@ namespace Reko.Typing
                 }
                 return new UnaryExpression(
                     Operator.AddrOf,
-                    new Pointer(dt, 4),         //$BUG: hardwired '4'.
+                    new Pointer(dt, 32),         //$BUG: hardwired '4'.
                     mps);
             }
             else if (e != null)
