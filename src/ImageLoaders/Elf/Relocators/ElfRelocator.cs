@@ -19,10 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Output;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -100,6 +102,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var symbols = new List<ElfSymbol>();
             foreach (var dynSeg in EnumerateDynamicSegments())
             {
+                DumpDynamicSegment(dynSeg);
+
                 var str = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_STRTAB);
                 var symtab = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_SYMTAB);
                 var rela = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELA);
@@ -169,6 +173,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return symbols;
         }
 
+        [Conditional("DEBUG")]
+        private void DumpDynamicSegment(ElfSegment dynSeg)
+        {
+            var renderer = new DynamicSectionRenderer32(Loader, null, ElfMachine.EM_NONE);
+            var sw = new StringWriter();
+            renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
+            Debug.WriteLine(sw.ToString());
+        }
 
         private abstract class RelocationTable
         {

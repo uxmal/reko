@@ -75,6 +75,7 @@ namespace Reko.ImageLoaders.Elf
             { ElfLoader.DT_RELSZ,   new TagInfo { Name="DT_RELSZ", Format = DtFormat.Decimal } },
             { ElfLoader.DT_RELENT,  new TagInfo { Name="DT_RELENT", Format = DtFormat.Decimal } },
 
+            { ElfLoader.DT_RPATH,   new TagInfo { Name="DT_RPATH", Format = DtFormat.Hexadecimal } },
             { ElfLoader.DT_JMPREL,  new TagInfo { Name = "DT_JMPREL", Format = DtFormat.Address} },
             { ElfLoader.DT_NEEDED,  new TagInfo { Name ="DT_NEEDED",  Format = DtFormat.String } },
             { ElfLoader.DT_STRSZ,   new TagInfo { Name = "DT_STRSZ", Format= DtFormat.Hexadecimal } },
