@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.Elf
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
             int cHeaders = innerLoader.LoadProgramHeaderTable();
             innerLoader.LoadSectionHeaders();
-            innerLoader.LoadSymbols();
+            innerLoader.LoadSymbolsFromSections();
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             if (cHeaders > 0)
             {

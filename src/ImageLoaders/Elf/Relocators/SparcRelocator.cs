@@ -42,17 +42,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return;
-            var rt = (SparcRt)(rela.r_info & 0xFF);
+            var rt = (SparcRt)(rela.Info & 0xFF);
             if (sym.SectionIndex == 0)
             {
                 if (rt == SparcRt.R_SPARC_GLOBDAT ||
                     rt == SparcRt.R_SPARC_JMPSLOT)
                 {
-                    var addrPfn = Address.Ptr32(rela.r_offset);
+                    var addrPfn = Address.Ptr32((uint)rela.Offset);
 
                     importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name));
                     return;
@@ -64,16 +64,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
             int A = 0;
             int sh = 0;
             uint mask = ~0u;
-            var addr = referringSection.Address + rela.r_offset;
+            var addr = referringSection.Address + rela.Offset;
             uint P = (uint)addr.ToLinear();
             uint PP = P;
 
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
-                rela.r_offset,
-                (SparcRt)(rela.r_info & 0xFF),
+                rela.Offset,
+                (SparcRt)(rela.Info & 0xFF),
                 sym.Name,
-                rela.r_addend,
-                (int)(rela.r_info >> 8),
+                rela.Addend,
+                (int)(rela.Info >> 8),
                 symSection.Name);
 
             switch (rt)
@@ -81,17 +81,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case 0:
                 return;
             case SparcRt.R_SPARC_HI22:
-                A = rela.r_addend;
+                A = (int)rela.Addend;
                 sh = 10;
                 P = 0;
                 break;
             case SparcRt.R_SPARC_LO10:
-                A = rela.r_addend;
+                A = (int)rela.Addend;
                 mask = 0x3FF;
                 P = 0;
                 break;
             case SparcRt.R_SPARC_WDISP30:
-                A = rela.r_addend;
+                A = (int)rela.Addend;
                 P = ~P + 1;
                 sh = 2;
                 break;

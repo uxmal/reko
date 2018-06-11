@@ -81,9 +81,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            switch ((PpcRt)(rela.r_info & 0xFF))
+            switch ((PpcRt)(rela.Info & 0xFF))
             {
             case PpcRt.R_PPC_GLOB_DAT:
             case PpcRt.R_PPC_COPY:
@@ -107,7 +107,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.loader = loader;
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             throw new NotImplementedException();
         }

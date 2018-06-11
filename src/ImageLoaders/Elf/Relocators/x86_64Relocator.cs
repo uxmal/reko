@@ -65,7 +65,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var rela = Elf64_Rela.Read(relaRdr);
 
                 ulong sym = rela.r_info >> 32;
-                var symStr = loader.Symbols[rela_plt.LinkedSection][(int)sym];
+                var symStr = loader.Symbols[rela_plt.LinkedSection.FileOffset][(int)sym];
 
                 var addr = plt.Address + (uint)(i + 1) * plt.EntrySize;
                 importReferences.Add(
@@ -74,15 +74,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf64_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
-            var rt = (x86_64Rt)(rela.r_info & 0xFF);
+            var rt = (x86_64Rt)(rela.Info & 0xFF);
             if (loader.Sections.Count <= sym.SectionIndex)
                 return;
             if (rt == x86_64Rt.R_X86_64_GLOB_DAT ||
                 rt == x86_64Rt.R_X86_64_JUMP_SLOT)
             {
-                var addrPfn = Address.Ptr64(rela.r_offset);
+                var addrPfn = Address.Ptr64(rela.Offset);
 
                 importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name));
                 var gotSym = loader.CreateGotSymbol(addrPfn, sym.Name);
@@ -102,7 +102,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             ImageWriter relW;
             if (referringSection.Address != null)
             {
-                addr = referringSection.Address + rela.r_offset;
+                addr = referringSection.Address + rela.Offset;
                 P = addr.ToLinear();
                 relR = program.CreateImageReader(addr);
                 relW = program.CreateImageWriter(addr);

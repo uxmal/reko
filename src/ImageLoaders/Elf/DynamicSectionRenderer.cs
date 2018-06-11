@@ -179,7 +179,7 @@ namespace Reko.ImageLoaders.Elf
     {
         private ElfLoader32 loader;
         private ElfSection shdr;
-        private ElfSection strtabSection;
+
         private Dictionary<long, Entry> machineSpecific;
 
         public DynamicSectionRenderer32(ElfLoader32 loader, ElfSection shdr, ElfMachine machine)
@@ -194,12 +194,18 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
+            ulong fileOffset = shdr.FileOffset;
+            Render(fileOffset, formatter);
+        }
+
+        public void Render(ulong fileOffset, Formatter formatter)
+        {
             // Get the entry that has the segment# for the string table.
-            var dynStrtab = loader.GetDynEntries(shdr.FileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = loader.GetDynEntries(fileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return;
-            this.strtabSection = loader.GetSectionInfoByAddr(dynStrtab.d_ptr);
-            foreach (var entry in loader.GetDynEntries(shdr.FileOffset))
+            var offStrtab = loader.AddressToFileOffset(dynStrtab.d_ptr);
+            foreach (var entry in loader.GetDynEntries(fileOffset))
             {
                 DtFormat fmt;
                 string entryName;
@@ -214,12 +220,12 @@ namespace Reko.ImageLoaders.Elf
                     entryName = dser.Name;
                     fmt = dser.Format;
                 }
-                RenderEntry(entryName, fmt, entry, formatter);
+                RenderEntry(entryName, fmt, entry, offStrtab, formatter);
                 formatter.WriteLine();
             }
         }
 
-        protected virtual void RenderEntry(string name, DtFormat format, Elf32_Dyn entry, Formatter formatter)
+        protected virtual void RenderEntry(string name, DtFormat format, Elf32_Dyn entry, ulong fileOffset, Formatter formatter)
         {
             formatter.Write("{0,-20} ", name);
             switch (format)
@@ -235,7 +241,7 @@ namespace Reko.ImageLoaders.Elf
                 formatter.WriteHyperlink(string.Format("{0:X8}", entry.d_ptr), Address.Ptr32(entry.d_ptr));
                 break;
             case DtFormat.String:
-                formatter.Write(loader.ReadAsciiString(strtabSection.FileOffset + entry.d_ptr));
+                formatter.Write(loader.ReadAsciiString(fileOffset + entry.d_ptr));
                 break;
             }
         }
@@ -284,17 +290,23 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
+            Render(shdr.FileOffset, formatter);
+        }
+
+        public void Render(ulong fileOffset, Formatter formatter)
+        { 
             // Get the entry that has the segment# for the string table.
-            var dynStrtab = loader.GetDynEntries64(shdr.FileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = loader.GetDynEntries(fileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return;
+            var offStrtab = loader.AddressToFileOffset(dynStrtab.d_ptr);
+
             this.strtabSection = loader.GetSectionInfoByAddr64(dynStrtab.d_ptr);
             foreach (var entry in loader.GetDynEntries64(shdr.FileOffset))
             {
                 DtFormat fmt;
                 string entryName;
-                Entry dser;
-                if (!entries.TryGetValue(entry.d_tag, out dser))
+                if (!entries.TryGetValue(entry.d_tag, out Entry dser))
                 {
                     entryName = string.Format("{0:X8}    ", entry.d_tag);
                     fmt = DtFormat.Hexadecimal;

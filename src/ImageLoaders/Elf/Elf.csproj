@@ -76,6 +76,7 @@
     <Compile Include="Elf32_PHdr.cs" />
     <Compile Include="Elf32_Rel.cs" />
     <Compile Include="ElfLoader.cs" />
+    <Compile Include="ElfRelocation.cs" />
     <Compile Include="ElfSection.cs" />
     <Compile Include="Elf32_Sym.cs" />
     <Compile Include="ElfHeaderRenderer.cs" />
