@@ -194,25 +194,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
-
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
-
-
-                var fakeRelSection = new ElfSection
-                {
-                    FileOffset = offRela,
-                    Address = this.relocator.Loader.CreateAddress(VirtualAddress),
-                };
-
 
                 var symbols = new List<ElfSymbol>();
                 while (rdrRela.Offset < offRelaEnd)
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    relocator.RelocateEntry(program, elfSym, fakeRelSection, relocation);
+                    relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
                 }
                 return symbols;
@@ -381,7 +372,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public override void Relocate(Program program)
         {
             DumpRela64(loader);
-            RelocateDynamicSymbols(program);
+            var syms = RelocateDynamicSymbols(program);
+            if (syms != null)
+                return;
             foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
                 var symbols = loader.Symbols[relSection.LinkedSection.FileOffset];

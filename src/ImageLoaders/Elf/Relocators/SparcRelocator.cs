@@ -64,7 +64,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
             int A = 0;
             int sh = 0;
             uint mask = ~0u;
-            var addr = referringSection.Address + rela.Offset;
+            Address addr;
+            if (referringSection != null)
+            {
+                addr = referringSection.Address + rela.Offset;
+            }
+            else
+            {
+                addr = Address.Ptr32((uint)rela.Offset);
+            }
             uint P = (uint)addr.ToLinear();
             uint PP = P;
 

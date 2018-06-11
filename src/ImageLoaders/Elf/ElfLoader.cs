@@ -752,7 +752,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var ph in Segments)
             {
                 if (ph.p_vaddr <= addr && addr < ph.p_vaddr + ph.p_filesz)
-                    return addr - ph.p_vaddr;
+                    return (addr - ph.p_vaddr) + ph.p_offset;
             }
             return ~0ul;
         }
@@ -1090,7 +1090,7 @@ namespace Reko.ImageLoaders.Elf
             return new ElfRelocation
             {
                 Offset = rela.r_offset,
-                Info = rela.r_offset,
+                Info = rela.r_info,
                 Addend = rela.r_addend,
                 SymbolIndex = (int)(rela.r_info >> 32),
             };

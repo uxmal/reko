@@ -98,22 +98,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint mask = ~0u;
             Address addr;
             ulong P;
-            EndianImageReader relR;
-            ImageWriter relW;
-            if (referringSection.Address != null)
+            if (referringSection?.Address != null)
             {
                 addr = referringSection.Address + rela.Offset;
                 P = addr.ToLinear();
-                relR = program.CreateImageReader(addr);
-                relW = program.CreateImageWriter(addr);
             }
             else
             {
-                addr = null;
+                addr = Address.Ptr64(rela.Offset);
                 P = 0;
-                relR = null;
-                relW = null;
             }
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
             ulong PP = P;
             switch (rt)
             {
