@@ -20,7 +20,7 @@ void _init()
 	}
 }
 
-// 0000000000400CD0: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+// 0000000000400CD0: void _start(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
 void _start( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);
@@ -144,7 +144,7 @@ l0000000000400EC1:
 	return eax_113;
 }
 
-// 0000000000400EE9: void print_pixel(Register word32 ecx, Register word64 rdx, Register word32 edi, Register word64 r13, Register (ptr Eq_291) fs)
+// 0000000000400EE9: void print_pixel(Register word32 ecx, Register word64 rdx, Register word32 edi, Register word64 r13, Register (ptr32 Eq_291) fs)
 void print_pixel(word32 ecx, word64 rdx, word32 edi, word64 r13, Eq_291 * fs)
 {
 	word64 rsp_37;
@@ -349,7 +349,7 @@ l00000000004012C9:
 	__stack_chk_fail();
 }
 
-// 00000000004012F9: void main(Register (ptr Eq_754) rsi, Register word32 edi, Register word64 r13, Register (ptr Eq_757) fs)
+// 00000000004012F9: void main(Register (ptr64 Eq_754) rsi, Register word32 edi, Register word64 r13, Register (ptr32 Eq_757) fs)
 void main(Eq_754 * rsi, word32 edi, word64 r13, Eq_757 * fs)
 {
 	word64 rax_13 = fs->qw0028;

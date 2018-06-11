@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Typing
 		{
 			Pointer ptr = factory.CreatePointer(PrimitiveType.Word32, 4);
 			DataType dt = un.Unify(ptr, PrimitiveType.Word32);
-			Assert.AreEqual("(ptr word32)", dt.ToString());
+			Assert.AreEqual("(ptr32 word32)", dt.ToString());
 			Assert.IsFalse(Object.ReferenceEquals(ptr, dt), "Should be different");
 		}
 
@@ -390,7 +390,7 @@ namespace Reko.UnitTests.Typing
 		{
 			Pointer p = new Pointer(new StructureType{ Fields = { { 4, PrimitiveType.UInt32} } }, 2);
 			DataType dt = un.Unify(p, PrimitiveType.SegmentSelector);
-			Assert.AreEqual("(ptr (struct (4 uint32 dw0004)))", dt.ToString());
+			Assert.AreEqual("(ptr16 (struct (4 uint32 dw0004)))", dt.ToString());
 		}
 
 		[Test]
@@ -415,7 +415,7 @@ namespace Reko.UnitTests.Typing
 			Pointer p = new Pointer(new StructureType(null, 32), 4);
 			PrimitiveType hybrid = PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32);
 			DataType dt = un.Unify(p, hybrid);
-			Assert.AreEqual("(ptr (struct 0020))", dt.ToString());
+			Assert.AreEqual("(ptr32 (struct 0020))", dt.ToString());
 		}
 
 		[Test]
@@ -548,7 +548,7 @@ namespace Reko.UnitTests.Typing
                 PrimitiveType.Word16,
                 2);
             Assert.IsTrue(un.AreCompatible(t1, t2));
-            Assert.AreEqual("(memptr (ptr (segment)) word16)", un.Unify(t1, t2).ToString());
+            Assert.AreEqual("(memptr (ptr16 (segment)) word16)", un.Unify(t1, t2).ToString());
         }
 
         [Test]
@@ -557,7 +557,7 @@ namespace Reko.UnitTests.Typing
             var t1 = new Pointer(new CodeType(), 4);
             var t2 = new Pointer(new FunctionType(Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 4);
             Assert.IsTrue(un.AreCompatible(t1, t2));
-            Assert.AreEqual("(ptr (fn word32 (word32, word32)))", un.Unify(t1, t2).ToString());
+            Assert.AreEqual("(ptr32 (fn word32 (word32, word32)))", un.Unify(t1, t2).ToString());
         }
     }
 }

@@ -30,7 +30,7 @@ UnionIntRealMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_2 (in i : int32)
 	T_3 (in x : word32)
@@ -40,10 +40,10 @@ Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 Eq_5: (struct "Eq_5" (0 Eq_2 t0000) (4 Eq_2 t0004))
 	T_5 (in ptr : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in i : int32)
   Class: Eq_2
   DataType: Eq_2
@@ -58,8 +58,8 @@ T_4: (in r : real32)
   OrigDataType: real32
 T_5: (in ptr : word32)
   Class: Eq_5
-  DataType: (ptr Eq_5)
-  OrigDataType: (ptr (struct (0 T_8 t0000) (4 T_11 t0004)))
+  DataType: (ptr32 Eq_5)
+  OrigDataType: (ptr32 (struct (0 T_8 t0000) (4 T_11 t0004)))
 T_6: (in 0x00000000 : word32)
   Class: Eq_6
   DataType: word32

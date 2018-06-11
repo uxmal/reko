@@ -5,10 +5,10 @@
 /*
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: 
-  OrigDataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in r0 : word32)
   Class: Eq_2
   DataType: 

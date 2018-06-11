@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core
             var id = new Identifier("id", ptr, null);
             var emitter = new CodeEmitterImpl();
             var sub = emitter.ISub(id, 3);
-            Assert.AreEqual("(ptr (struct \"tmp\" 0010))", sub.DataType.ToString());
+            Assert.AreEqual("(ptr32 (struct \"tmp\" 0010))", sub.DataType.ToString());
             Assert.AreEqual(PrimitiveType.Word32, sub.Right.DataType);
             Assert.AreEqual("id - 0x00000003", sub.ToString());
         }

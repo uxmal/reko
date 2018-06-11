@@ -11,8 +11,8 @@ l1:
 	// succ:  FnPointerFragment_exit
 FnPointerFragment_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem(T_5, 10000000)
 	trait_mem(T_7, 10000000)
 T_2 (in 0x01213130 : word32)
@@ -32,5 +32,5 @@ T_6 (in 0x10000000 : word32)
 	trait_primitive(word32)
 	trait_mem(T_7, 0)
 T_7 (in Mem0[0x10000000:word32] : word32)
-	trait_primitive((ptr code))
+	trait_primitive((ptr32 code))
 	trait_primitive(word32)

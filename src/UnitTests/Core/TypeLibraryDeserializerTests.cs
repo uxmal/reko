@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Core
             };
             var lib = tlLdr.Load(slib);
 
-            Assert.AreEqual("(ptr int32)", lib.LookupType("pint").ToString());
+            Assert.AreEqual("(ptr32 int32)", lib.LookupType("pint").ToString());
         }
 
         [Test]

@@ -57,14 +57,14 @@ fn00100057_exit:
 
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in fn0010002B : ptr32)
   Class: Eq_2
-  DataType: (ptr (fn T_6 (T_5)))
-  OrigDataType: (ptr (fn T_6 (T_5)))
+  DataType: (ptr32 (fn T_6 (T_5)))
+  OrigDataType: (ptr32 (fn T_6 (T_5)))
 T_3: (in signature of fn0010002B : void)
   Class: Eq_2
   DataType: 
@@ -83,8 +83,8 @@ T_6: (in fn0010002B(0x00000009) : word32)
   OrigDataType: word32
 T_7: (in fn0010002B : ptr32)
   Class: Eq_2
-  DataType: (ptr (fn T_9 (T_8)))
-  OrigDataType: (ptr (fn T_9 (T_8)))
+  DataType: (ptr32 (fn T_9 (T_8)))
+  OrigDataType: (ptr32 (fn T_9 (T_8)))
 T_8: (in 0x00000008 : word32)
   Class: Eq_4
   DataType: word32
@@ -95,8 +95,8 @@ T_9: (in fn0010002B(0x00000008) : word32)
   OrigDataType: word32
 T_10: (in fn00100057 : ptr32)
   Class: Eq_10
-  DataType: (ptr (fn T_18 (T_16, T_17)))
-  OrigDataType: (ptr (fn T_18 (T_16, T_17)))
+  DataType: (ptr32 (fn T_18 (T_16, T_17)))
+  OrigDataType: (ptr32 (fn T_18 (T_16, T_17)))
 T_11: (in signature of fn00100057 : void)
   Class: Eq_10
   DataType: 
@@ -143,8 +143,8 @@ T_21: (in dwArg04 >= 0x00000001 : bool)
   OrigDataType: bool
 T_22: (in fn0010002B : ptr32)
   Class: Eq_2
-  DataType: (ptr (fn T_25 (T_24)))
-  OrigDataType: (ptr (fn T_25 (T_24)))
+  DataType: (ptr32 (fn T_25 (T_24)))
+  OrigDataType: (ptr32 (fn T_25 (T_24)))
 T_23: (in 0x00000001 : word32)
   Class: Eq_23
   DataType: int32
@@ -159,8 +159,8 @@ T_25: (in fn0010002B(dwArg04 - 0x00000001) : word32)
   OrigDataType: word32
 T_26: (in fn0010002B : ptr32)
   Class: Eq_2
-  DataType: (ptr (fn T_29 (T_28)))
-  OrigDataType: (ptr (fn T_29 (T_28)))
+  DataType: (ptr32 (fn T_29 (T_28)))
+  OrigDataType: (ptr32 (fn T_29 (T_28)))
 T_27: (in 0x00000002 : word32)
   Class: Eq_27
   DataType: int32
@@ -183,8 +183,8 @@ T_31: (in 0x00000001 : word32)
   OrigDataType: word32
 T_32: (in ecx_25 : word32)
   Class: Eq_12
-  DataType: (ptr (struct 0001 (0 byte b0000)))
-  OrigDataType: (ptr (struct 0001 (0 byte b0000)))
+  DataType: (ptr32 (struct 0001 (0 byte b0000)))
+  OrigDataType: (ptr32 (struct 0001 (0 byte b0000)))
 T_33: (in edi_9 : word32)
   Class: Eq_12
   DataType: up32
@@ -299,8 +299,8 @@ T_60: (in 0x00000000 : word32)
   OrigDataType: word32
 T_61: (in ecx_25 + 0x00000000 : word32)
   Class: Eq_61
-  DataType: (ptr byte)
-  OrigDataType: (ptr byte)
+  DataType: (ptr32 byte)
+  OrigDataType: (ptr32 byte)
 T_62: (in Mem52[ecx_25 + 0x00000000:byte] : byte)
   Class: Eq_59
   DataType: byte

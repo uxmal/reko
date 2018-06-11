@@ -4,7 +4,7 @@
 
 #include "test.h"
 
-Eq_28 g_t40053D = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+Eq_28 g_t40053D = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 Eq_31 g_t400550 = Unexpected function type (fn void ())
 ;

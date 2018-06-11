@@ -166,7 +166,7 @@ namespace Reko.Core.Types
 
         public Formatter VisitPointer(Pointer ptr)
         {
-			writer.Write("(ptr ");
+			writer.Write($"(ptr{ptr.BitSize} ");
 			WriteReference(ptr.Pointee);
 			writer.Write(")");
             return writer;

@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00000567", e.ToString());
-            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00123400", e.ToString());
-            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
     }
 }

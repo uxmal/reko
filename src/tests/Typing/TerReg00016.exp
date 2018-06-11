@@ -47,23 +47,23 @@ l00001346:
 fn0000131C_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (13F8 word32 dw13F8) (140C (ptr Eq_6) ptr140C))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_6: (struct "Eq_6" (0 (ptr Eq_6) ptr0000) (4 (ptr (ptr code)) ptr0004))
-	T_6 (in a3_31 : (ptr Eq_6))
+Eq_1: (struct "Eq_1" (13F8 word32 dw13F8) (140C (ptr32 Eq_6) ptr140C))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_6: (struct "Eq_6" (0 (ptr32 Eq_6) ptr0000) (4 (ptr32 (ptr32 code)) ptr0004))
+	T_6 (in a3_31 : (ptr32 Eq_6))
 	T_8 (in Mem0[0x0000140C:word32] : word32)
 	T_12 (in 0x00000000 : word32)
 	T_23 (in Mem34[a3_31 + 0x00000000:word32] : word32)
 	T_24 (in 0x00000000 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct))
 T_2: (in 000013F8 : ptr32)
   Class: Eq_2
-  DataType: (ptr word32)
-  OrigDataType: (ptr (struct (0 T_3 t0000)))
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 (struct (0 T_3 t0000)))
 T_3: (in Mem0[0x000013F8:word32] : word32)
   Class: Eq_3
   DataType: word32
@@ -76,17 +76,17 @@ T_5: (in globals->dw13F8 != 0x00000000 : bool)
   Class: Eq_5
   DataType: bool
   OrigDataType: bool
-T_6: (in a3_31 : (ptr Eq_6))
+T_6: (in a3_31 : (ptr32 Eq_6))
   Class: Eq_6
-  DataType: (ptr Eq_6)
-  OrigDataType: (ptr (struct (0 T_23 t0000) (4 T_17 t0004)))
+  DataType: (ptr32 Eq_6)
+  OrigDataType: (ptr32 (struct (0 T_23 t0000) (4 T_17 t0004)))
 T_7: (in 0000140C : ptr32)
   Class: Eq_7
-  DataType: (ptr (ptr Eq_6))
-  OrigDataType: (ptr (struct (0 T_8 t0000)))
+  DataType: (ptr32 (ptr32 Eq_6))
+  OrigDataType: (ptr32 (struct (0 T_8 t0000)))
 T_8: (in Mem0[0x0000140C:word32] : word32)
   Class: Eq_6
-  DataType: (ptr Eq_6)
+  DataType: (ptr32 Eq_6)
   OrigDataType: word32
 T_9: (in 1 : int32)
   Class: Eq_9
@@ -94,24 +94,24 @@ T_9: (in 1 : int32)
   OrigDataType: int32
 T_10: (in 000013F8 : ptr32)
   Class: Eq_10
-  DataType: (ptr int32)
-  OrigDataType: (ptr (struct (0 T_11 t0000)))
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 T_11 t0000)))
 T_11: (in Mem34[0x000013F8:word32] : word32)
   Class: Eq_9
   DataType: int32
   OrigDataType: word32
 T_12: (in 0x00000000 : word32)
   Class: Eq_6
-  DataType: (ptr Eq_6)
+  DataType: (ptr32 Eq_6)
   OrigDataType: word32
 T_13: (in a3_31 == null : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_14: (in a2_39 : (ptr (ptr code)))
+T_14: (in a2_39 : (ptr32 (ptr32 code)))
   Class: Eq_14
-  DataType: (ptr (ptr code))
-  OrigDataType: (ptr (struct (0 T_20 t0000)))
+  DataType: (ptr32 (ptr32 code))
+  OrigDataType: (ptr32 (struct (0 T_20 t0000)))
 T_15: (in 4 : int32)
   Class: Eq_15
   DataType: int32
@@ -122,7 +122,7 @@ T_16: (in a3_31 + 4 : word32)
   OrigDataType: word32
 T_17: (in Mem34[a3_31 + 4:word32] : word32)
   Class: Eq_14
-  DataType: (ptr (ptr code))
+  DataType: (ptr32 (ptr32 code))
   OrigDataType: word32
 T_18: (in 0x00000000 : word32)
   Class: Eq_18
@@ -134,8 +134,8 @@ T_19: (in a2_39 + 0x00000000 : word32)
   OrigDataType: word32
 T_20: (in Mem34[a2_39 + 0x00000000:word32] : word32)
   Class: Eq_20
-  DataType: (ptr code)
-  OrigDataType: (ptr code)
+  DataType: (ptr32 code)
+  OrigDataType: (ptr32 code)
 T_21: (in 0x00000000 : word32)
   Class: Eq_21
   DataType: word32
@@ -146,11 +146,11 @@ T_22: (in a3_31 + 0x00000000 : word32)
   OrigDataType: word32
 T_23: (in Mem34[a3_31 + 0x00000000:word32] : word32)
   Class: Eq_6
-  DataType: (ptr Eq_6)
+  DataType: (ptr32 Eq_6)
   OrigDataType: word32
 T_24: (in 0x00000000 : word32)
   Class: Eq_6
-  DataType: (ptr Eq_6)
+  DataType: (ptr32 Eq_6)
   OrigDataType: word32
 T_25: (in a3_31 != null : bool)
   Class: Eq_25
