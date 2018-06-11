@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             this.ser = new ProcedureSerializer(platform, deserializer, cConvention);
         }
 

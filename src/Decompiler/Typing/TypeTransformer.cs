@@ -430,7 +430,7 @@ namespace Reko.Typing
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
 				sm.Merge();
 				Changed = true;
-				return new Pointer(sm.MergedClass, upsm.PointerSize);
+				return new Pointer(sm.MergedClass, upsm.PointerBitSize);
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);

@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Typing
 
         private Pointer PointerTo(DataType dt)
         {
-            return new Pointer(dt, 4);
+            return new Pointer(dt, 32);
         }
 
         private static Identifier Id(string name, DataType dt)
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(
                 m.IAdd(
-                    Id("p", new Pointer(PrimitiveType.Word32, 4)),
+                    Id("p", new Pointer(PrimitiveType.Word32, 32)),
                     Constant.Int32(4)));
         }
 
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Typing
         [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
         public void ExaTypeReferenceToPointer()
         {
-            var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 4)));
+            var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 32)));
             RunTest(
                 m.Mem8(m.IAdd(psz, Constant.Word32(0))));
         }

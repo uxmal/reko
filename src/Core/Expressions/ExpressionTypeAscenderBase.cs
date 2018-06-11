@@ -403,7 +403,7 @@ namespace Reko.Core.Expressions
 
         private DataType OutPointerTo(TypeVariable tv)
         {
-            return new Pointer(tv, platform.FramePointerType.Size);
+            return new Pointer(tv, platform.FramePointerType.BitSize);
         }
 
         public DataType VisitPhiFunction(PhiFunction phi)

@@ -154,13 +154,13 @@ Some examples:
                 if (i + 2 <= str.Length && str[i] == 'f' && str[i + 1] == 'n')
                 {
                     i += 2;
-                    return new Pointer(new CodeType(), 4);
+                    return new Pointer(new CodeType(), 32);
                 }
                 var pointee = Parse(PrimitiveType.Char);
                 if (pointee is UnknownType)
                     return PrimitiveType.Ptr32;     //$ARch-dependent?
                 else
-                    return new Pointer(pointee, 4);     //$ARCH-dependent!
+                    return new Pointer(pointee, 32);     //$ARCH-dependent!
             case 'i':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)

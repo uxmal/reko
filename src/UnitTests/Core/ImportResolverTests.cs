@@ -219,7 +219,7 @@ namespace Reko.UnitTests.Core
                             {
                                 Fields =
                                 {
-                                    { 0, new Pointer(PrimitiveType.Char, 4), "name" },
+                                    { 0, new Pointer(PrimitiveType.Char, 32), "name" },
                                     { 4, PrimitiveType.Int32, "age" }
                                 }
                             }

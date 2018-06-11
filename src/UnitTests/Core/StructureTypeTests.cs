@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Core
         {
             var str = new StructureType("str", 12, true);
             str.Fields.Add(0, PrimitiveType.Int32, "i");
-            str.Fields.Add(4, new Pointer(str, 4), "ptr");
+            str.Fields.Add(4, new Pointer(str, 32), "ptr");
             str.Fields.Add(8, PrimitiveType.Real32, "f");
 
             var clonedStr = (StructureType)str.Clone();
