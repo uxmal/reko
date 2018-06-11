@@ -97,18 +97,18 @@ namespace Reko.ImageLoaders.Elf
         public void Render(ulong fileOffset, Formatter formatter)
         {
             // Get the entry that has the segment# for the string table.
-            var dynStrtab = loader.GetDynEntries(fileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = loader.GetDynamicEntries(fileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return;
-            var offStrtab = loader.AddressToFileOffset(dynStrtab.d_ptr);
-            foreach (var entry in loader.GetDynEntries(fileOffset))
+            var offStrtab = loader.AddressToFileOffset(dynStrtab.UValue);
+            foreach (var entry in loader.GetDynamicEntries(fileOffset))
             {
                 DtFormat fmt;
                 string entryName;
-                if (!machineSpecific.TryGetValue(entry.d_tag, out var dser) &&
-                    !ElfDynamicEntry.TagInfos.TryGetValue(entry.d_tag, out dser))
+                if (!machineSpecific.TryGetValue(entry.Tag, out var dser) &&
+                    !ElfDynamicEntry.TagInfos.TryGetValue(entry.Tag, out dser))
                 {
-                    entryName = string.Format("{0:X8}    ", entry.d_tag);
+                    entryName = string.Format("{0:X8}    ", entry.Tag);
                     fmt = DtFormat.Hexadecimal;
                 }
                 else
@@ -121,23 +121,23 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        protected virtual void RenderEntry(string name, DtFormat format, Elf32_Dyn entry, ulong fileOffset, Formatter formatter)
+        protected virtual void RenderEntry(string name, DtFormat format, ElfDynamicEntry entry, ulong fileOffset, Formatter formatter)
         {
             formatter.Write("{0,-20} ", name);
             switch (format)
             {
             default:
             case DtFormat.Hexadecimal:
-                formatter.Write("{0:X8}", entry.d_val);
+                formatter.Write("{0:X8}", entry.UValue);
                 break;
             case DtFormat.Decimal:
-                formatter.Write("{0,8}", entry.d_val);
+                formatter.Write("{0,8}", entry.SValue);
                 break;
             case DtFormat.Address:
-                formatter.WriteHyperlink(string.Format("{0:X8}", entry.d_ptr), Address.Ptr32(entry.d_ptr));
+                formatter.WriteHyperlink(string.Format("{0:X8}", entry.UValue), Address.Ptr32((uint)entry.UValue));
                 break;
             case DtFormat.String:
-                formatter.Write(loader.ReadAsciiString(fileOffset + entry.d_ptr));
+                formatter.Write(loader.ReadAsciiString(fileOffset + entry.UValue));
                 break;
             }
         }
@@ -192,19 +192,19 @@ namespace Reko.ImageLoaders.Elf
         public void Render(ulong fileOffset, Formatter formatter)
         { 
             // Get the entry that has the segment# for the string table.
-            var dynStrtab = loader.GetDynEntries(fileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = loader.GetDynamicEntries(fileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return;
-            var offStrtab = loader.AddressToFileOffset(dynStrtab.d_ptr);
+            var offStrtab = loader.AddressToFileOffset(dynStrtab.UValue);
 
-            this.strtabSection = loader.GetSectionInfoByAddr64(dynStrtab.d_ptr);
-            foreach (var entry in loader.GetDynEntries64(shdr.FileOffset))
+            this.strtabSection = loader.GetSectionInfoByAddr64(dynStrtab.UValue);
+            foreach (var entry in loader.GetDynamicEntries(shdr.FileOffset))
             {
                 DtFormat fmt;
                 string entryName;
-                if (!ElfDynamicEntry.TagInfos.TryGetValue(entry.d_tag, out var dser))
+                if (!ElfDynamicEntry.TagInfos.TryGetValue(entry.Tag, out var dser))
                 {
-                    entryName = string.Format("{0:X8}    ", entry.d_tag);
+                    entryName = string.Format("{0:X8}    ", entry.Tag);
                     fmt = DtFormat.Hexadecimal;
                 }
                 else
@@ -245,23 +245,23 @@ namespace Reko.ImageLoaders.Elf
         //6F FF FF F0 10 00 1E 3C  ?
 
 
-        protected virtual void RenderEntry(string name, DtFormat format, Elf64_Dyn entry, Formatter formatter)
+        protected virtual void RenderEntry(string name, DtFormat format, ElfDynamicEntry entry, Formatter formatter)
         {
             formatter.Write("{0,-15} ", name);
             switch (format)
             {
             default:
             case DtFormat.Hexadecimal:
-                formatter.Write("{0:X16}", entry.d_val);
+                formatter.Write("{0:X16}", entry.UValue);
                 break;
             case DtFormat.Decimal:
-                formatter.Write("{0,16}", entry.d_val);
+                formatter.Write("{0,16}", entry.SValue);
                 break;
             case DtFormat.Address:
-                formatter.WriteHyperlink(string.Format("{0:X16}", entry.d_ptr), Address.Ptr64(entry.d_ptr));
+                formatter.WriteHyperlink(string.Format("{0:X16}", entry.UValue), Address.Ptr64(entry.UValue));
                 break;
             case DtFormat.String:
-                formatter.Write(loader.ReadAsciiString(strtabSection.FileOffset + entry.d_ptr));
+                formatter.Write(loader.ReadAsciiString(strtabSection.FileOffset + entry.UValue));
                 break;
             }
         }

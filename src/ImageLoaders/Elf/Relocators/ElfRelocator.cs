@@ -94,22 +94,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// <returns></returns>
         public List<ElfSymbol> RelocateDynamicSymbols(Program program)
         {
-            // 
-
             var symbols = new List<ElfSymbol>();
             foreach (var ph_offset in EnumerateDynamicSegmentOffsets())
             {
-                var str = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_STRTAB);
-                var symtab = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_SYMTAB);
-                var rela = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELA);
-                var relasz = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELASZ);
-                var relaent = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELAENT);
+                var str = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_STRTAB);
+                var symtab = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_SYMTAB);
+                var rela = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELA);
+                var relasz = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELASZ);
+                var relaent = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELAENT);
 
-                var rel = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_REL);
-                var relsz = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELSZ);
-                var relent = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_RELENT);
+                var rel = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_REL);
+                var relsz = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELSZ);
+                var relent = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELENT);
 
-                var syment = Loader.GetDynEntries(ph_offset).SingleOrDefault(de => de.d_tag == ElfLoader.DT_SYMENT);
+                var syment = Loader.GetDynamicEntries(ph_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_SYMENT);
                 if (symtab == null || (rela == null && rel == null))
                     continue;
                 if (str == null)
@@ -123,7 +121,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
                     if (relaent == null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
-                    relTable = new RelaTable(this, rela.d_ptr, relasz.d_ptr);
+                    relTable = new RelaTable(this, rela.UValue, relasz.UValue);
                 }
                 else
                 {
@@ -132,14 +130,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
                     if (relent == null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
-                    relTable = new RelTable(this, rel.d_ptr, relsz.d_ptr);
+                    relTable = new RelTable(this, rel.UValue, relsz.UValue);
                 }
 
-                var offStrtab = Loader.AddressToFileOffset(str.d_ptr);
-                var offSymtab = Loader.AddressToFileOffset(symtab.d_ptr);
+                var offStrtab = Loader.AddressToFileOffset(str.UValue);
+                var offSymtab = Loader.AddressToFileOffset(symtab.UValue);
 
                 // Generate a symbol for reach relocation.
-                foreach (var symbol in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.d_ptr))
+                foreach (var symbol in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                 {
                     var imgSym = Loader.CreateImageSymbol(symbol, true);
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)

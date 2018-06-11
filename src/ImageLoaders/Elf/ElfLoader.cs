@@ -305,34 +305,15 @@ namespace Reko.ImageLoaders.Elf
                 return 0;
 
             var addrEnd = 0ul;
-
-            foreach (var de in GetDynEntries64(offsetDyn))
+            foreach (var de in GetDynamicEntries(offsetDyn))
             {
-                if (de.d_ptr <= addrStart)
+                if (de.UValue <= addrStart)
                     continue;
-                switch (de.d_tag)
+                var tagInfo = de.GetTagInfo(machine);
+                if (tagInfo?.Format == DtFormat.Address)
                 {
-                case DT_NULL:
-                case DT_NEEDED:
-                case DT_PLTRELSZ:
-                case DT_RELASZ:
-                case DT_RELAENT:
-                case DT_STRSZ:
-                case DT_SYMENT:
-                case DT_SONAME:
-                case DT_RPATH:
-                case DT_RELSZ:
-                case DT_RELENT:
-                case DT_INIT_ARRAYSZ:
-                case DT_FINI_ARRAYSZ:
-                case DT_RUNPATH:
-                case DT_PREINIT_ARRAYSZ:
-                    // These are not going to be relevant.
-                    break;
-                default:
                     // This might be a pointer.
-                    addrEnd = addrEnd == 0 ? de.d_ptr : Math.Min(addrEnd, de.d_ptr);
-                    break;
+                    addrEnd = addrEnd == 0 ? de.UValue : Math.Min(addrEnd, de.UValue);
                 }
             }
             return addrEnd;
@@ -594,39 +575,7 @@ namespace Reko.ImageLoaders.Elf
             //m_SymTab[uNative] = pName;
         }
 
-        public IEnumerable<Elf64_Dyn> GetDynEntries64(ulong offset)
-        {
-            var rdr = imgLoader.CreateReader(offset);
-            for (;;)
-            {
-                var dyn = new Elf64_Dyn();
-                if (!rdr.TryReadInt64(out dyn.d_tag))
-                    break;
-                if (dyn.d_tag == DT_NULL)
-                    break;
-                if (!rdr.TryReadInt64(out long val))
-                    break;
-                dyn.d_val = val;
-                yield return dyn;
-            }
-        }
-
-        public IEnumerable<Elf32_Dyn> GetDynEntries(ulong offset)
-        {
-            var rdr = imgLoader.CreateReader(offset);
-            for (;;)
-            {
-                var dyn = new Elf32_Dyn();
-                if (!rdr.TryReadInt32(out dyn.d_tag))
-                    break;
-                if (dyn.d_tag == DT_NULL)
-                    break;
-                if (!rdr.TryReadInt32(out int val))
-                    break;
-                dyn.d_val = val;
-                yield return dyn;
-            }
-        }
+        public abstract IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic);
 
         /// <summary>
         /// Find the names of all shared objects this image depends on.
@@ -924,16 +873,34 @@ namespace Reko.ImageLoaders.Elf
             if (dynsect == null)
                 return result; // no dynamic section = statically linked 
 
-            var dynStrtab = GetDynEntries64(dynsect.FileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return result;
-            var section = GetSectionInfoByAddr64(dynStrtab.d_ptr);
-            foreach (var dynEntry in GetDynEntries64(dynsect.FileOffset).Where(d => d.d_tag == DT_NEEDED))
+            var section = GetSectionInfoByAddr64(dynStrtab.UValue);
+            foreach (var dynEntry in GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_NEEDED))
             {
-                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.d_ptr));
+                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.UValue));
             }
             return result;
         }
+
+        public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
+        {
+            var rdr = imgLoader.CreateReader(offsetDynamic);
+            for (; ; )
+            {
+                var dyn = new Elf64_Dyn();
+                if (!rdr.TryReadInt64(out dyn.d_tag))
+                    break;
+                if (dyn.d_tag == DT_NULL)
+                    break;
+                if (!rdr.TryReadInt64(out long val))
+                    break;
+                dyn.d_val = val;
+                yield return new ElfDynamicEntry(dyn.d_tag, dyn.d_ptr); ;
+            }
+        }
+
 
         public override Address GetEntryPointAddress(Address addrBase)
         {
@@ -1477,16 +1444,34 @@ namespace Reko.ImageLoaders.Elf
             if (dynsect == null)
                 return result; // no dynamic section = statically linked 
 
-            var dynStrtab = GetDynEntries(dynsect.FileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return result;
-            var section = GetSectionInfoByAddr(dynStrtab.d_ptr);
-            foreach (var dynEntry in GetDynEntries(dynsect.FileOffset).Where(d => d.d_tag == DT_NEEDED))
+            var section = GetSectionInfoByAddr((uint)dynStrtab.UValue);
+            foreach (var dynEntry in GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_NEEDED))
             {
-                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.d_ptr));
+                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.UValue));
             }
             return result;
         }
+
+        public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
+        {
+            var rdr = imgLoader.CreateReader(offsetDynamic);
+            for (; ; )
+            {
+                var dyn = new Elf32_Dyn();
+                if (!rdr.TryReadInt32(out dyn.d_tag))
+                    break;
+                if (dyn.d_tag == DT_NULL)
+                    break;
+                if (!rdr.TryReadInt32(out int val))
+                    break;
+                dyn.d_val = val;
+                yield return new ElfDynamicEntry(dyn.d_tag, dyn.d_ptr);
+            }
+        }
+
 
         public override Address GetEntryPointAddress(Address addrBase)
         {

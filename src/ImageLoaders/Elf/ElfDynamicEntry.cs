@@ -28,7 +28,7 @@ namespace Reko.ImageLoaders.Elf
 {
     public class ElfDynamicEntry
     {
-        public ElfDynamicEntry(ulong tag, ulong value)
+        public ElfDynamicEntry(long tag, ulong value)
         {
             this.Tag = (int)tag;
             this.UValue = value;
