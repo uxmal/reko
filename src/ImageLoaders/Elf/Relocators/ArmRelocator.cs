@@ -60,11 +60,16 @@ namespace Reko.ImageLoaders.Elf.Relocators
             8   R_ARM_ABS8      Static      Data            S + A
             9   R_ARM_SBREL32   Static      Data            ((S + A) | T) – B(S)
             20  R_ARM_COPY                                  S
+            21  R_ARM_GLOB_DAT Dynamic      Data            (S + A) | T 
+            22  R_ARM_JUMP_SLOT Dynamic     Data            (S + A) | T 
             */
             var rt = (Arm32Rt)(rela.Info & 0xFF);
             switch (rt)
             {
             case Arm32Rt.R_ARM_COPY:
+                break;
+            case Arm32Rt.R_ARM_GLOB_DAT:
+            case Arm32Rt.R_ARM_JUMP_SLOT:
                 break;
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
@@ -91,6 +96,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_ARM_ABS8 = 8,
         R_ARM_SBREL32 = 9,
 
-        R_ARM_COPY = 20
+        R_ARM_COPY = 20,
+        R_ARM_GLOB_DAT = 21,
+        R_ARM_JUMP_SLOT = 22,
     }
 }

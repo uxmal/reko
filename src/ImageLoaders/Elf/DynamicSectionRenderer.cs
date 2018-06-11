@@ -174,11 +174,11 @@ namespace Reko.ImageLoaders.Elf
 
     public class DynamicSectionRenderer64 : DynamicSectionRenderer
     {
-        private ElfLoader64 loader;
+        private ElfLoader loader;
         private ElfSection shdr;
         private ElfSection strtabSection;
 
-        public DynamicSectionRenderer64(ElfLoader64 loader, ElfSection shdr)
+        public DynamicSectionRenderer64(ElfLoader loader, ElfSection shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -197,8 +197,8 @@ namespace Reko.ImageLoaders.Elf
                 return;
             var offStrtab = loader.AddressToFileOffset(dynStrtab.UValue);
 
-            this.strtabSection = loader.GetSectionInfoByAddr64(dynStrtab.UValue);
-            foreach (var entry in loader.GetDynamicEntries(shdr.FileOffset))
+            this.strtabSection = ((ElfLoader64)loader).GetSectionInfoByAddr64(dynStrtab.UValue);
+            foreach (var entry in loader.GetDynamicEntries(fileOffset))
             {
                 DtFormat fmt;
                 string entryName;

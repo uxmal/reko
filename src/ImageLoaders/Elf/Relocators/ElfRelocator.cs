@@ -161,9 +161,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     }
                 }
 
-                // Generate a symbol for reach relocation.
+                // Generate a symbol for each relocation.
                 foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                 {
+                    symbols.Add(elfSym);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)
                         continue;
@@ -174,14 +175,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         }
 
         [Conditional("DEBUG")]
-        private void DumpDynamicSegment(ElfSegment dynSeg)
-        {
-            var renderer = new DynamicSectionRenderer32(Loader, null, ElfMachine.EM_NONE);
-            var sw = new StringWriter();
-            renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
-            Debug.WriteLine(sw.ToString());
-        }
-
+        protected abstract void DumpDynamicSegment(ElfSegment dynSeg);
+        
         private abstract class RelocationTable
         {
             protected ElfRelocator relocator;
@@ -193,21 +188,31 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 this.TableSize = tableByteSize;
             }
 
+
             public ulong VirtualAddress { get; }
             public ulong TableSize { get; }
 
             public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
+
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
+
+
+                var fakeRelSection = new ElfSection
+                {
+                    FileOffset = offRela,
+                    Address = this.relocator.Loader.CreateAddress(VirtualAddress),
+                };
+
 
                 var symbols = new List<ElfSymbol>();
                 while (rdrRela.Offset < offRelaEnd)
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    relocator.RelocateEntry(program, elfSym, null, relocation);
+                    relocator.RelocateEntry(program, elfSym, fakeRelSection, relocation);
                     symbols.Add(elfSym);
                 }
                 return symbols;
@@ -254,7 +259,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ElfLoader Loader => loader;
 
-    
+        protected override void DumpDynamicSegment(ElfSegment dynSeg)
+        {
+            var renderer = new DynamicSectionRenderer32(Loader, null, ElfMachine.EM_NONE);
+            var sw = new StringWriter();
+            renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
+            Debug.WriteLine(sw.ToString());
+        }
+
         public override void Relocate(Program program)
         {
             // Get all relocations from PT_DYNAMIC segments first; these are the relocations actually
@@ -357,9 +369,19 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ElfLoader Loader => loader;
 
+        protected override void DumpDynamicSegment(ElfSegment dynSeg)
+        {
+            var renderer = new DynamicSectionRenderer64(Loader, null);
+            var sw = new StringWriter();
+            renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
+            Debug.WriteLine(sw.ToString());
+        }
+
+
         public override void Relocate(Program program)
         {
             DumpRela64(loader);
+            RelocateDynamicSymbols(program);
             foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
                 var symbols = loader.Symbols[relSection.LinkedSection.FileOffset];

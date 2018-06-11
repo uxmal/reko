@@ -190,6 +190,8 @@ namespace Reko.ImageLoaders.Elf
             return mems;
         }
 
+        public abstract Address CreateAddress(ulong uAddr);
+
         protected virtual IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -248,6 +250,8 @@ namespace Reko.ImageLoaders.Elf
             }
             return a;
         }
+
+ 
 
         private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>
         {
@@ -426,7 +430,7 @@ namespace Reko.ImageLoaders.Elf
                 var addrSym = ReadAddress(rdr);
                 if (addrSym == null)
                     break;
-                if (symbols.TryGetValue(addrSym, out  ImageSymbol symbol))
+                if (symbols.TryGetValue(addrSym, out ImageSymbol symbol))
                 {
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
@@ -760,6 +764,11 @@ namespace Reko.ImageLoaders.Elf
                 .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
                 .Min(ph => ph.p_vaddr);
             return platform.MakeAddressFromLinear(uBaseAddr);
+        }
+
+        public override Address CreateAddress(ulong uAddr)
+        {
+            return Address.Ptr64(uAddr);
         }
 
         protected override IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
@@ -1344,6 +1353,12 @@ namespace Reko.ImageLoaders.Elf
                 .Where(ph => ph.p_filesz > 0)
                 .Min(ph => (uint)ph.p_vaddr));
         }
+
+        public override Address CreateAddress(ulong uAddr)
+        {
+            return Address.Ptr32((uint)uAddr);
+        }
+
 
         public override ElfObjectLinker CreateLinker()
         {
