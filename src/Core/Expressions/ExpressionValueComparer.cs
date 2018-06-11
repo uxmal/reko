@@ -282,6 +282,23 @@ namespace Reko.Core.Expressions
                         GetHashCodeImpl(m.BasePointer);
                 });
 
+            Add(typeof(ArrayAccess),
+                (ea, eb) =>
+                {
+                    ArrayAccess a = (ArrayAccess)ea, b = (ArrayAccess)eb;
+                    return
+                        EqualsImpl(a.Array, b.Array) &&
+                        EqualsImpl(a.Index, b.Index) &&
+                        a.DataType == b.DataType;
+                },
+                obj =>
+                {
+                    ArrayAccess m = (ArrayAccess)obj;
+                    return GetHashCodeImpl(m.Array) ^
+                        m.DataType.GetHashCode() ^
+                        47 * GetHashCodeImpl(m.Index);
+                });
+
             Add(typeof(Slice),
                 (ea, eb) =>
                 {

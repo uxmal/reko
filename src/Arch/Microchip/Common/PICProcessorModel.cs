@@ -33,6 +33,8 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     public abstract class PICProcessorModel : IPICProcessorModel
     {
+        public const string DefaultPICName = "PIC18F4620";
+
         private static SortedList<InstructionSetID, PICProcessorModel> modes = new SortedList<InstructionSetID, PICProcessorModel>()
             {
                 { InstructionSetID.PIC16, new PIC16BasicModel() },
@@ -61,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static IPICProcessorModel GetModel(string procName)
         {
             if (string.IsNullOrEmpty(procName))
-                throw new ArgumentNullException(nameof(procName));
+                procName = DefaultPICName;
             var db = PICCrownking.GetDB();
             if (db is null)
                 throw new InvalidOperationException("Can't get the PIC database.");

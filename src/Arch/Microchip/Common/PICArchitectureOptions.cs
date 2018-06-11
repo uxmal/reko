@@ -31,12 +31,11 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICArchitectureOptions
     {
-
         public PICArchitectureOptions() { }
 
-        public PICArchitectureOptions(IPICProcessorModel processorMode, PICExecMode execMode, string ldrType)
+        public PICArchitectureOptions(IPICProcessorModel processorModel, PICExecMode execMode, string ldrType)
         {
-            ProcessorModel = processorMode ?? throw new ArgumentNullException(nameof(processorMode));
+            ProcessorModel = processorModel ?? throw new ArgumentNullException(nameof(processorModel));
             PICExecutionMode = execMode;
             LoaderType = ldrType;
         }
