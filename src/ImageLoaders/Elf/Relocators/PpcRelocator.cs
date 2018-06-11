@@ -109,7 +109,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            throw new NotImplementedException();
+            //$TODO: implement me :)
         }
 
         public override string RelocationTypeToString(uint type)
