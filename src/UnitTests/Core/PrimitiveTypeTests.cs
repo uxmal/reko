@@ -62,11 +62,21 @@ namespace Reko.UnitTests.Core
 		}
 
         [Test]
-        public void CreateWordTest()
+        public void CreateWord_NBitsTest()
         {
-            var d1 = PrimitiveType.CreateWord(1);
-            var d2 = PrimitiveType.CreateWord(1);
-            Assert.AreSame(d1, d2);
+            for (int i = 64; i > 0; i--)
+            {
+                try
+                {
+                    var d1 = PrimitiveType.CreateWord(i);
+                    var d2 = PrimitiveType.CreateWord(i);
+                    Assert.AreSame(d1, d2, $"Not same for {i} bits");
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsTrue(false, $"CreateWord({i}) failed. Exception={ex.Message}");
+                }
+            }
         }
 
     }
