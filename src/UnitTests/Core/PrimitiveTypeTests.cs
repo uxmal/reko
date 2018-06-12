@@ -60,5 +60,14 @@ namespace Reko.UnitTests.Core
 		{
 			Assert.AreEqual("uip32", PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32).ToString());
 		}
-	}
+
+        [Test]
+        public void CreateWordTest()
+        {
+            var d1 = PrimitiveType.CreateWord(1);
+            var d2 = PrimitiveType.CreateWord(1);
+            Assert.AreSame(d1, d2);
+        }
+
+    }
 }
