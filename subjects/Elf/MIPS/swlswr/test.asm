@@ -506,7 +506,8 @@ l00000A30:
 	jr	ra
 	addiu	sp,sp,+00000020
 ;;; Segment .rodata (00000A58)
-00000A58                         00 02 00 01                     ....   
+_IO_stdin_used		; 00000A58
+	dd	0x00020001
 ;;; Segment .eh_frame (00000A5C)
 00000A5C                                     00 00 00 00             ....
 ;;; Segment .ctors (00010A60)
@@ -542,7 +543,9 @@ __libc_start_main_GOT		; 00010ADC
 ;;; Segment .sdata (00010AEC)
 00010AEC                                     00 01 0A EC             ....
 ;;; Segment .bss (00010AF0)
-00010AF0 00                                              .              
+completed.6256		; 00010AF0
+	db	0x00
 00010AF1    00 00 00                                      ...           
-00010AF4             00 00 00 00                             ....       
+dtor_idx.6258		; 00010AF4
+	dd	0x00000000
 00010AF8                         00 00 00 00 00 00 00 00         ........
