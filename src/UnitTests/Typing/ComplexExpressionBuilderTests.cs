@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Typing
                 DataType = point
             };
 			tvPoint.DataType = eq;
-			ptrPoint = new Pointer(eq, 4);
+			ptrPoint = new Pointer(eq, 32);
 
             UnionType u = new UnionType("RealInt", null)
             {
@@ -73,27 +73,27 @@ namespace Reko.UnitTests.Typing
                 DataType = u
             };
 			tvUnion.DataType = eq;
-			ptrUnion = new Pointer(eq, 4);
+			ptrUnion = new Pointer(eq, 32);
 
-            ptrInt = new Pointer(PrimitiveType.Int32, 4);
-            ptrWord = new Pointer(PrimitiveType.Word32, 4);
+            ptrInt = new Pointer(PrimitiveType.Int32, 32);
+            ptrWord = new Pointer(PrimitiveType.Word32, 32);
             m = new ExpressionEmitter();
 		}
 
         private Pointer Ptr32(DataType dataType)
         {
-            return new Pointer(dataType, 4);
+            return new Pointer(dataType, 32);
         }
 
         private Pointer Ptr16(DataType dataType)
         {
-            return new Pointer(dataType, 2);
+            return new Pointer(dataType, 16);
         }
 
         private MemberPointer MemPtr(DataType baseType, DataType fieldType)
         {
             return new MemberPointer(
-                new Pointer(baseType, 2),
+                new Pointer(baseType, 16),
                 fieldType, 2);
         }
 

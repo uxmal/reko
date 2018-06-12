@@ -24,19 +24,19 @@ GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (10000000 real32 r10000000) (10000004 real32 r10000004))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
-T_2: (in ptr : (ptr real32))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in ptr : (ptr32 real32))
   Class: Eq_2
-  DataType: (ptr real32)
-  OrigDataType: (ptr (struct (0 T_7 t0000)))
+  DataType: (ptr32 real32)
+  OrigDataType: (ptr32 (struct (0 T_7 t0000)))
 T_3: (in 0x10000004 : word32)
   Class: Eq_2
-  DataType: (ptr real32)
+  DataType: (ptr32 real32)
   OrigDataType: word32
 T_4: (in 0.75F : real32)
   Class: Eq_4
@@ -60,8 +60,8 @@ T_8: (in 0.5F : real32)
   OrigDataType: real32
 T_9: (in 0x10000000 : word32)
   Class: Eq_9
-  DataType: (ptr real32)
-  OrigDataType: (ptr (struct (0 T_10 t0000)))
+  DataType: (ptr32 real32)
+  OrigDataType: (ptr32 (struct (0 T_10 t0000)))
 T_10: (in Mem0[0x10000000:real32] : real32)
   Class: Eq_8
   DataType: real32

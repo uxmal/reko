@@ -800,22 +800,22 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var addrIat = rdrIat.Address;
                 var addrIlt = rdrIlt.Address;
 
-                var iatEntry = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
-                if (iatEntry == null)
+                var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
+                if (impRef == null)
                     break;
                 ImageSymbols[addrIat] = new ImageSymbol(arch, addrIat)
                 {
-                    Name = "__imp__" + iatEntry.Item1.EntryName,
+                    Name = "__imp__" + impRef.EntryName,
                     Type = SymbolType.Data,
-                    DataType = new Pointer(new CodeType(), iatEntry.Item2),
-                    Size = (uint) iatEntry.Item2
+                    DataType = new Pointer(new CodeType(), bitSize),
+                    Size = (uint) (bitSize + (DataType.BitsPerByte - 1)) / DataType.BitsPerByte
                 };
 
                 ImageSymbols[addrIlt] = new ImageSymbol(arch, addrIlt)
                 {
                     Type = SymbolType.Data,
-                    DataType = PrimitiveType.CreateWord(iatEntry.Item2 * DataType.BitsPerByte),
-                    Size = (uint)iatEntry.Item2
+                    DataType = PrimitiveType.CreateWord(bitSize),
+                    Size = (uint) (bitSize + (DataType.BitsPerByte - 1)) / DataType.BitsPerByte
                 };
             } 
             return true;
@@ -830,7 +830,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 this.outer = outer;
             }
 
-            public abstract Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
+            public abstract (ImportReference, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
 
             public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
 
@@ -873,18 +873,18 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return rdr.ReadInt32();
             }
 
-            public override Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
+            public override (ImportReference, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 uint iatEntry = rdrIat.ReadLeUInt32();
                 uint iltEntry = rdrIlt.ReadLeUInt32();
                 if (iltEntry == 0)
-                    return null;
+                    return (null, 0);
 
                 var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
                 outer.importReferences.Add(addrThunk, impRef);
 
-                return Tuple.Create(impRef, 4);
+                return (impRef, 32);
             }
         }
 
@@ -907,16 +907,16 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return rdr.ReadInt64();
             }
 
-            public override Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
+            public override (ImportReference, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 ulong iatEntry = rdrIat.ReadLeUInt64();
                 ulong iltEntry = rdrIlt.ReadLeUInt64();
                 if (iltEntry == 0)
-                    return null;
+                    return (null, 0);
                 var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
                 outer.importReferences.Add(addrThunk, impRef);
-                return Tuple.Create(impRef, 8);
+                return (impRef, 64);
             }
         }
 

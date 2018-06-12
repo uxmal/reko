@@ -38,7 +38,7 @@ using System.Xml;
 namespace Reko.Gui.Forms
 {
     /// <summary>
-    /// Provices a component Container implementation, and specifically handles interactions 
+    /// Provides a component Container implementation, and specifically handles interactions 
     /// with the MainForm. This decouples platform-specific code from the user interaction 
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
@@ -352,7 +352,6 @@ namespace Reko.Gui.Forms
                 arch.LoadUserOptions(dlg.ArchitectureOptions);
                 if (!arch.TryParseAddress(sAddr, out var addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-
                 var details = new LoadDetails
                 {
                     LoaderName = loader,

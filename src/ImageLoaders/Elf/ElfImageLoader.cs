@@ -77,9 +77,9 @@ namespace Reko.ImageLoaders.Elf
             if (addrLoad == null)
                 addrLoad = innerLoader.DefaultAddress;
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
-            int cHeaders = innerLoader.LoadProgramHeaderTable();
+            int cHeaders = innerLoader.LoadSegments();
             innerLoader.LoadSectionHeaders();
-            innerLoader.LoadSymbols();
+            innerLoader.LoadSymbolsFromSections();
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             if (cHeaders > 0)
             {
@@ -87,6 +87,8 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
+                // The file we're loading is an object file, and needs to be 
+                // linked before we can load it.
                 var linker = innerLoader.CreateLinker();
                 return linker.LinkObject(platform, addrLoad, RawImage);
             }

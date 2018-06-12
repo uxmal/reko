@@ -242,7 +242,7 @@ l004012C8:
 	goto l00401177;
 }
 
-// 004012D8: void fn004012D8(Stack (ptr Eq_499) dwArg04)
+// 004012D8: void fn004012D8(Stack (ptr32 Eq_499) dwArg04)
 void fn004012D8(_EXCEPTION_POINTERS * dwArg04)
 {
 	SetUnhandledExceptionFilter(null);
@@ -250,7 +250,7 @@ void fn004012D8(_EXCEPTION_POINTERS * dwArg04)
 	TerminateProcess(GetCurrentProcess(), 0xC0000409);
 }
 
-// 004013FB: Register (ptr Eq_518) fn004013FB(Stack (ptr Eq_519) dwArg04, Stack uint32 dwArg08)
+// 004013FB: Register (ptr32 Eq_518) fn004013FB(Stack (ptr32 Eq_519) dwArg04, Stack uint32 dwArg08)
 Eq_518 * fn004013FB(Eq_519 * dwArg04, uint32 dwArg08)
 {
 	struct Eq_518 * eax_26;
@@ -371,7 +371,7 @@ void fn004014AD(ptr32 edi, ptr32 dwArg04)
 	}
 }
 
-// 00401544: Register (ptr Eq_717) fn00401544(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// 00401544: Register (ptr32 Eq_717) fn00401544(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
 Eq_717 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	struct Eq_717 * eax_34;
@@ -638,7 +638,7 @@ ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, ui32 dwArg00, word32 dwArg04,
 	return fp + 0x08;
 }
 
-// 004019C6: Register word32 fn004019C6(Register (ptr Eq_49) ebp, Stack ui32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+// 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_49) ebp, Stack ui32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
 word32 fn004019C6(Eq_49 * ebp, ui32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = *(ebp - 0x10);

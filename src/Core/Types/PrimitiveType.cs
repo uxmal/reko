@@ -125,7 +125,7 @@ namespace Reko.Core.Types
             {
                 dom &= domainMask;
             }
-			PrimitiveType p = new PrimitiveType(dom, bitSize, null);
+			var p = new PrimitiveType(dom, bitSize, null);
             if (!cache.TryGetValue(p, out var shared))
             {
                 shared = p;
@@ -138,6 +138,8 @@ namespace Reko.Core.Types
 
         public static PrimitiveType CreateWord(int bitSize)
         {
+            if (bitSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(bitSize));
             string name;
             if (bitSize == 1)
             {
@@ -157,6 +159,32 @@ namespace Reko.Core.Types
             }
 			return Create(dom, (short) bitSize, name);
 		}
+
+        public static PrimitiveType CreateWord(uint bitSize)
+            => CreateWord((int)bitSize);
+
+        //$TODO: Shall remove when Constant.Create will accept any bit-wide PrimitiveType.
+        // As of today only accepts multiple of 1, 2, 4, 8, 16 bytes. See issue #643.
+        public static PrimitiveType CreateWordFromBits(uint bitSize)
+        {
+            if (bitSize == 0)
+                throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
+            if (bitSize == 1)
+                return Bool;
+            if (bitSize <= 8)
+                return Byte;
+            if (bitSize <= 16)
+                return Word16;
+            if (bitSize <= 32)
+                return Word32;
+            if (bitSize <= 64)
+                return Word64;
+            if (bitSize <= 128)
+                return Word128;
+            if (bitSize <= 256)
+                return Word256;
+            throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
+        }
 
         public Domain Domain { get; private set; }
 
@@ -244,9 +272,7 @@ namespace Reko.Core.Types
         /// True if the type can only be some kind of integral numeric type
         /// </summary>
 		public bool IsIntegral
-		{
-			get { return (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0; }
-		}
+		    => (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0; 
 
         /// <summary>
         /// Creates a new primitive type, whose domain is the original domain ANDed 
@@ -296,17 +322,15 @@ namespace Reko.Core.Types
 		}
 
         public override int BitSize
-        {
-            get { return this.bitSize; }
-        }
+            => this.bitSize;
 
         /// <summary>
         /// Size of this primitive type in bytes.
         /// </summary>
         public override int Size
 		{
-			get { return byteSize; }
-			set { throw new InvalidOperationException("Size of a primitive type cannot be changed."); }
+			get => byteSize; 
+			set => throw new InvalidOperationException("Size of a primitive type cannot be changed."); 
 		}
 
 		private static Dictionary<PrimitiveType,PrimitiveType> cache;

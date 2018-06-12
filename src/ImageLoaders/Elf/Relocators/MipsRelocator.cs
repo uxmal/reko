@@ -55,13 +55,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             */
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
-        {
-            //$TODO: need a ELF PIC MIPS image to do this.
-            return;
-        }
-
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rel rel)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
         {
             if (loader.Sections.Count <= symbol.SectionIndex)
                 return;
@@ -69,7 +63,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return;
             var symSection = loader.Sections[(int)symbol.SectionIndex];
 
-            var addr = referringSection.Address + rel.r_offset;
+            var addr = referringSection.Address + rel.Offset;
             var S = symbol.Value;
             uint P = (uint)addr.ToLinear();
             uint PP = P;
@@ -79,7 +73,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint mask = 0;
             uint A = 0;
 
-            switch ((MIPSrt)(rel.r_info & 0xFF))
+            switch ((MIPSrt)(rel.Info & 0xFF))
             {
             case MIPSrt.R_MIPS_NONE: return;
             case MIPSrt.R_MIPS_REL32:
@@ -188,7 +182,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.elfLoader = elfLoader;
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             throw new NotImplementedException();
         }

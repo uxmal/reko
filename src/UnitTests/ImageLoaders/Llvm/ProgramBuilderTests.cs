@@ -229,7 +229,7 @@ next_char_exit:
         public void LLPB_GetElementPtr()
         {
             Global("puts", PrimitiveType.Ptr32);
-            Global("msg", new Pointer(new ArrayType(PrimitiveType.Char, 13), 4));
+            Global("msg", new Pointer(new ArrayType(PrimitiveType.Char, 13), 32));
             var proc = RunFuncTest( 
 @"define i32 @foo() { 
   ; Convert [13 x i8]* to i8  *...

@@ -177,7 +177,7 @@ namespace Reko.Typing
             {
                 changed = true;
                 DataType pointee = eq;
-                return factory.CreatePointer(pointee, ptr.Size);
+                return factory.CreatePointer(pointee, ptr.BitSize);
             }
             MemberPointer mp = dt as MemberPointer;
             if (mp != null)

@@ -20,7 +20,7 @@ void _init()
 	}
 }
 
-// 0000000000400440: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+// 0000000000400440: void _start(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
 void _start( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);

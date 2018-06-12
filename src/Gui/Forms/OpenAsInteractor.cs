@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
+
 namespace Reko.Gui.Forms
 {
     public class OpenAsInteractor
@@ -60,6 +61,7 @@ namespace Reko.Gui.Forms
         private void EnableControls()
         {
             var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileElement;
+            var arch = ((ListOption)dlg.Architectures.SelectedValue)?.Value as string;
             var unknownRawFileFormat = rawfile == null;
             bool platformRequired = unknownRawFileFormat;
             bool archRequired= unknownRawFileFormat;

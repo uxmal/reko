@@ -367,7 +367,7 @@ l1000134E:
 l10001357:
 	word32 esp_278 = esp_263 - 0x00000004
 	Mem279[esp_278:word32] = ebx_233
-	free(Mem279[esp_278:(ptr void)])
+	free(Mem279[esp_278:(ptr32 void)])
 	word32 eax_282 = _encoded_null()
 	Mem283[0x100033B0:word32] = eax_282
 	Mem284[0x100033B4:word32] = eax_282
@@ -381,7 +381,7 @@ l1000136F:
 	Mem252[esp_251:word32] = 0x00000000
 	Mem254[esp_251 - 0x00000004:word32] = 0x100033AC
 	Mem255[0x100033A8:word32] = 0x00000000
-	InterlockedExchange(Mem255[esp_251 - 0x00000004:(ptr LONG)], Mem255[esp_251:LONG])
+	InterlockedExchange(Mem255[esp_251 - 0x00000004:(ptr32 LONG)], Mem255[esp_251:LONG])
 // DataOut: esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp

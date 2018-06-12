@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using NUnit.Framework;
 using System;
+using Reko.Core.Operators;
 
 namespace Reko.UnitTests.Core
 {
@@ -75,7 +76,7 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void Negate()
+		public void ConNegate16bit()
 		{
 			Constant c1 = Constant.Word16(0xFFFF);
             Constant c2 = c1.Negate();
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void ToInt32()
+		public void ConToInt32()
 		{
 			Constant c2 = Constant.Create(PrimitiveType.Word16, 0xFFFF);
 			Assert.AreEqual(-1, c2.ToInt32());
@@ -93,19 +94,37 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void SignExtendSignedByte()
+		public void ConSignExtendSignedByte()
 		{
 			Constant c = Constant.SByte((sbyte)-2);
 			Assert.AreEqual(-2, c.ToInt32());
 		}
 
         [Test]
-        public void ConstantByte_ToInt64()
+        public void ConByte_ToInt64()
         {
             Constant c2 = Constant.Byte(0xFF);
             object o = c2.ToInt64();
             Assert.AreSame(typeof(long), o.GetType());
             Assert.AreEqual(-1L, o);
+        }
+
+        [Test]
+        public void Con_23_bit()
+        {
+            var dt = PrimitiveType.CreateWord(23);
+            var c = Constant.Create(dt, 23);
+            Assert.AreEqual("word23", c.DataType.ToString());
+        }
+
+        [Test]
+        public void Con_Add_5_bit()
+        {
+            var dt = PrimitiveType.Create(Domain.UnsignedInt,5);
+            var c1 = Constant.Create(dt, 16);
+            var c2 = Constant.Create(dt, 19);
+            var sum = Operator.IAdd.ApplyConstants(c1, c2);
+            Assert.AreEqual("0x03", sum.ToString(), "Silent overflow is not working.");
         }
 	}
 }

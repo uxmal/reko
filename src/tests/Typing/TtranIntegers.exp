@@ -30,7 +30,7 @@ fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct (0 ui32 dw0000) (4 ui32 dw0004) (8 cu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
 	T_2 (in bx : word16)
 Eq_4: (segment)
@@ -48,22 +48,22 @@ Eq_43: (struct (0 ui32 dw0000) (4 ui32 dw0004) (8 cu8 b0008) (9 byte b0009) (A i
 Eq_47: (struct (0 ui32 dw0000) (4 ui32 dw0004) (8 cu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E))
 	T_47 (in bx + 0x0010 : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in bx : word16)
   Class: Eq_2
-  DataType: (memptr (ptr Eq_4) Eq_2)
+  DataType: (memptr (ptr16 Eq_4) Eq_2)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004) (8 T_23 t0008) (9 T_32 t0009) (A T_39 t000A) (C T_36 t000C) (E T_44 t000E) (10 T_48 t0010)))
 T_3: (in si : word16)
   Class: Eq_3
-  DataType: (memptr (ptr Eq_4) ui32)
+  DataType: (memptr (ptr16 Eq_4) ui32)
   OrigDataType: (memptr T_4 (struct (0 T_13 t0000)))
 T_4: (in ds : selector)
   Class: Eq_4
-  DataType: (ptr Eq_4)
-  OrigDataType: (ptr (segment))
+  DataType: (ptr16 Eq_4)
+  OrigDataType: (ptr16 (segment))
 T_5: (in al_22 : byte)
   Class: Eq_5
   DataType: byte
@@ -118,7 +118,7 @@ T_17: (in 0x0004 : word16)
   OrigDataType: word16
 T_18: (in bx + 0x0004 : word16)
   Class: Eq_18
-  DataType: (memptr (ptr Eq_4) ui32)
+  DataType: (memptr (ptr16 Eq_4) ui32)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000)))
 T_19: (in Mem11[ds:bx + 0x0004:word32] : word32)
   Class: Eq_16
@@ -134,7 +134,7 @@ T_21: (in 0x0008 : word16)
   OrigDataType: word16
 T_22: (in bx + 0x0008 : word16)
   Class: Eq_22
-  DataType: (memptr (ptr Eq_4) Eq_22)
+  DataType: (memptr (ptr16 Eq_4) Eq_22)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004)))
 T_23: (in Mem11[ds:bx + 0x0008:byte] : byte)
   Class: Eq_20
@@ -170,7 +170,7 @@ T_30: (in 0x0009 : word16)
   OrigDataType: word16
 T_31: (in bx + 0x0009 : word16)
   Class: Eq_31
-  DataType: (memptr (ptr Eq_4) Eq_31)
+  DataType: (memptr (ptr16 Eq_4) Eq_31)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004) (8 T_23 t0008)))
 T_32: (in Mem24[ds:bx + 0x0009:byte] : byte)
   Class: Eq_5
@@ -186,7 +186,7 @@ T_34: (in 0x000C : word16)
   OrigDataType: word16
 T_35: (in bx + 0x000C : word16)
   Class: Eq_35
-  DataType: (memptr (ptr Eq_4) Eq_35)
+  DataType: (memptr (ptr16 Eq_4) Eq_35)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004) (8 T_23 t0008) (9 T_32 t0009)))
 T_36: (in Mem24[ds:bx + 0x000C:word16] : word16)
   Class: Eq_36
@@ -198,7 +198,7 @@ T_37: (in 0x000A : word16)
   OrigDataType: word16
 T_38: (in bx + 0x000A : word16)
   Class: Eq_38
-  DataType: (memptr (ptr Eq_4) Eq_38)
+  DataType: (memptr (ptr16 Eq_4) Eq_38)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004) (8 T_23 t0008) (9 T_32 t0009)))
 T_39: (in Mem24[ds:bx + 0x000A:word16] : word16)
   Class: Eq_39
@@ -218,7 +218,7 @@ T_42: (in 0x000E : word16)
   OrigDataType: word16
 T_43: (in bx + 0x000E : word16)
   Class: Eq_43
-  DataType: (memptr (ptr Eq_4) Eq_43)
+  DataType: (memptr (ptr16 Eq_4) Eq_43)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004) (8 T_23 t0008) (9 T_32 t0009) (A T_39 t000A) (C T_36 t000C)))
 T_44: (in Mem30[ds:bx + 0x000E:word16] : word16)
   Class: Eq_41
@@ -234,7 +234,7 @@ T_46: (in 0x0010 : word16)
   OrigDataType: word16
 T_47: (in bx + 0x0010 : word16)
   Class: Eq_47
-  DataType: (memptr (ptr Eq_4) Eq_47)
+  DataType: (memptr (ptr16 Eq_4) Eq_47)
   OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (4 T_19 t0004) (8 T_23 t0008) (9 T_32 t0009) (A T_39 t000A) (C T_36 t000C) (E T_44 t000E)))
 T_48: (in Mem31[ds:bx + 0x0010:word16] : word16)
   Class: Eq_45

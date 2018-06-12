@@ -56,7 +56,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
             var el = new ElfLoader32(eil, eh, rawBytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             el.LoadSectionHeaders();
-            el.LoadSymbols();
+            el.LoadSymbolsFromSections();
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
 

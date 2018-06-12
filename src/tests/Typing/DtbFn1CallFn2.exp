@@ -21,9 +21,9 @@ l1:
 Fn2_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct "Globals"))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (ptr (fn T_6 (T_5)))
+Eq_1: (ptr32 (struct "Globals"))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (ptr32 (fn T_6 (T_5)))
 	T_2 (in Fn2 : ptr32)
 	T_3 (in signature of Fn2 : void)
 Eq_4: word32
@@ -38,17 +38,17 @@ Eq_8: word32
 Eq_9: word32
 	T_9 (in 0x00000001 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct "Globals"))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in Fn2 : ptr32)
   Class: Eq_2
-  DataType: (ptr (fn T_6 (T_5)))
-  OrigDataType: (ptr (fn T_6 (T_5)))
+  DataType: (ptr32 (fn T_6 (T_5)))
+  OrigDataType: (ptr32 (fn T_6 (T_5)))
 T_3: (in signature of Fn2 : void)
   Class: Eq_2
-  DataType: (ptr (fn T_6 (T_5)))
+  DataType: (ptr32 (fn T_6 (T_5)))
   OrigDataType: 
 T_4: (in arg1 : word32)
   Class: Eq_4

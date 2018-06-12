@@ -1,23 +1,23 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (10000000 real32 r10000000) (10000004 (struct (0 real32 r0000)) t10000004))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct (0 real32 r0000))
 	T_2 (in ptr : word32)
 	T_3 (in 0x10000004 : word32)
 Eq_7: (struct (0 real32 r0000))
 	T_7 (in 0x10000000 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct "Globals"))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ptr : word32)
   Class: Eq_2
-  DataType: (ptr (struct (0 real32 r0000)))
-  OrigDataType: (ptr (struct (0 T_5 t0000)))
+  DataType: (ptr32 (struct (0 real32 r0000)))
+  OrigDataType: (ptr32 (struct (0 T_5 t0000)))
 T_3: (in 0x10000004 : word32)
   Class: Eq_2
-  DataType: (ptr (struct (0 real32 r0000)))
+  DataType: (ptr32 (struct (0 real32 r0000)))
   OrigDataType: word32
 T_4: (in 0.75F : real32)
   Class: Eq_4
@@ -33,8 +33,8 @@ T_6: (in 0.5F : real32)
   OrigDataType: real32
 T_7: (in 0x10000000 : word32)
   Class: Eq_7
-  DataType: (ptr (struct (0 real32 r0000)))
-  OrigDataType: (ptr (struct (0 T_8 t0000)))
+  DataType: (ptr32 (struct (0 real32 r0000)))
+  OrigDataType: (ptr32 (struct (0 T_8 t0000)))
 T_8: (in Mem0[0x10000000:real32] : real32)
   Class: Eq_6
   DataType: real32

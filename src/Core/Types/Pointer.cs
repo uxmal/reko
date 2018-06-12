@@ -30,14 +30,14 @@ namespace Reko.Core.Types
 	public class Pointer : DataType
 	{
 		private DataType pointee;
-		private int byteSize;
+		private int bitSize;
 
-		public Pointer(DataType pointee, int byteSize)
+		public Pointer(DataType pointee, int bitSize)
 		{
-            if (byteSize <= 0)
-                throw new ArgumentOutOfRangeException("byteSize", "Invalid pointer size.");
+            if (bitSize <= 0)
+                throw new ArgumentOutOfRangeException("bitSize", "Invalid pointer size.");
 			this.Pointee = pointee;
-			this.byteSize = byteSize;
+			this.bitSize = bitSize;
 		}
 
         public override void Accept(IDataTypeVisitor v)
@@ -52,7 +52,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			return new Pointer(Pointee.Clone(clonedTypes), byteSize);
+			return new Pointer(Pointee.Clone(clonedTypes), bitSize);
 		}
 
 		public override bool IsComplex
@@ -75,9 +75,14 @@ namespace Reko.Core.Types
 			get { return "ptr"; }
 		}
 
-		public override int Size
+        public override int BitSize
+        {
+            get { return this.bitSize; }
+        }
+
+        public override int Size
 		{
-			get { return byteSize; }
+			get { return (bitSize + (BitsPerByte - 1)) / BitsPerByte; }
 			set { ThrowBadSize(); }
 		}
 	}

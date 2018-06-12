@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("i:integer");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int32)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 int32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("I");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr uint32)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 uint32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("b|B");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[1].ToString());
         }
 
         [Test]
@@ -109,8 +109,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("H|h");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr uint16)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr int16)", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 uint16)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 int16)", parser.ArgumentTypes[1].ToString());
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("f");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr real32)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 real32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("d");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr real64)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 real64)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("c;char");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -142,8 +142,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("cs");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr (ptr char))", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 (ptr32 char))", parser.ArgumentTypes[1].ToString());
 
         }
 
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("O");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr (ptr PyObject))", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 (ptr32 PyObject))", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -160,8 +160,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("O&");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr code)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr void)", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 code)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 void)", parser.ArgumentTypes[1].ToString());
         }
 
         [Test]
@@ -169,8 +169,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("(LK)");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int64)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr uint64)", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 int64)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 uint64)", parser.ArgumentTypes[1].ToString());
         }
 
         [Test]
@@ -185,8 +185,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("s#");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr (ptr char))", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr int32)", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 (ptr32 char))", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 int32)", parser.ArgumentTypes[1].ToString());
         }
     }
 }

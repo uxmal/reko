@@ -68,7 +68,7 @@ namespace Reko.Libraries.Python
             this.ArgumentTypes = new List<DataType>();
             this.format = format;
             var platform = program.Platform;
-            this.pointerSize = platform.PointerType.Size;
+            this.pointerSize = platform.PointerType.BitSize;
 
             var wordSize = platform.Architecture.WordWidth.BitSize;
             var shortSize = platform.GetByteSizeFromCBasicType(

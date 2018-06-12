@@ -203,7 +203,7 @@ namespace Reko.Core.Expressions
             // However doing so causes a regression in hello_ppc.exe
             if (offset >= field.Offset + dtField.Size)
                 return null;
-            return factory.CreatePointer(dtField, dtLeft.Size);
+            return factory.CreatePointer(dtField, dtLeft.BitSize);
         }
 
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
@@ -304,7 +304,7 @@ namespace Reko.Core.Expressions
         {
             if (!(c.DataType is PrimitiveType pt) || (pt.Domain & Domain.Pointer) == 0)
                 return null;
-            var global = factory.CreatePointer(globalFields, pt.Size);
+            var global = factory.CreatePointer(globalFields, pt.BitSize);
             return GetPossibleFieldType(global, PrimitiveType.Int32, c);
         }
 
@@ -403,7 +403,7 @@ namespace Reko.Core.Expressions
 
         private DataType OutPointerTo(TypeVariable tv)
         {
-            return new Pointer(tv, platform.FramePointerType.Size);
+            return new Pointer(tv, platform.FramePointerType.BitSize);
         }
 
         public DataType VisitPhiFunction(PhiFunction phi)
@@ -449,7 +449,7 @@ namespace Reko.Core.Expressions
             var dt = unary.Expression.Accept(this);
             if (unary.Operator == Operator.AddrOf)
             {
-                dt = factory.CreatePointer(dt, unary.DataType.Size);
+                dt = factory.CreatePointer(dt, unary.DataType.BitSize);
             }
             return RecordDataType(dt, unary);
         }

@@ -113,14 +113,14 @@ namespace Reko.UnitTests.Gui
         public void Parse_Pointer_To_Integer()
         {
             var dt = parser.Parse("pi16");
-            Assert.AreEqual("(ptr int16)", dt.ToString());
+            Assert.AreEqual("(ptr32 int16)", dt.ToString());
         }
 
         [Test]
         public void Array_Pointers_To_Functions()
         {
             var dt = parser.Parse("apfn");
-            Assert.AreEqual("(arr (ptr code))", dt.ToString());
+            Assert.AreEqual("(arr (ptr32 code))", dt.ToString());
         }
 
         [Test]

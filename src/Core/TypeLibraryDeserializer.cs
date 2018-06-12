@@ -227,7 +227,7 @@ namespace Reko.Core
                     dt = new UnknownType(platform.PointerType.Size);
                 }
             }
-            return new Pointer(dt, platform.PointerType.Size);
+            return new Pointer(dt, platform.PointerType.BitSize);
         }
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)

@@ -31,8 +31,8 @@ l0C00_0029:
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem(T_24, 4DE10)
 T_2 (in fn0C00_0004 : segptr32)
 	trait_func( -> T_4)

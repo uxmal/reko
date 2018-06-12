@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Core
         {
             var str = new StructureType("str", 12, true);
             str.Fields.Add(0, PrimitiveType.Int32, "i");
-            str.Fields.Add(4, new Pointer(str, 4), "ptr");
+            str.Fields.Add(4, new Pointer(str, 32), "ptr");
             str.Fields.Add(8, PrimitiveType.Real32, "f");
 
             var clonedStr = (StructureType)str.Clone();
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core
             Assert.AreNotSame(clonedStr, str);
             Assert.AreSame(clonedStr, nestedStr);
             Assert.AreEqual(
-                "(struct \"str\" 000C (0 int32 i) (4 (ptr (struct \"str\" 000C)) ptr) (8 real32 f))",
+                "(struct \"str\" 000C (0 int32 i) (4 (ptr32 (struct \"str\" 000C)) ptr) (8 real32 f))",
                 clonedStr.ToString());
         }
     }

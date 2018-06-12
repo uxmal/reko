@@ -209,15 +209,15 @@ namespace Reko.UnitTests.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
+                            new Identifier("", new Pointer(VoidType.Instance, 32), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                             new [] {
                                 new Identifier("arg",
                                     new TypeReference(
                                         "HWND",
-                                        new Pointer(VoidType.Instance, 4)),
+                                        new Pointer(VoidType.Instance, 32)),
                                     new StackArgumentStorage(4, new TypeReference(
                                         "HWND",
-                                        new Pointer(VoidType.Instance, 4))))
+                                        new Pointer(VoidType.Instance, 32))))
                             })
                         {
                             StackDelta = 4,

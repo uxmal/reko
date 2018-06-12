@@ -1656,7 +1656,7 @@ void fn1081(word16 af, byte b, byte d, Eq_364 e, Eq_434 l, byte h)
 	}
 }
 
-// 1229: Register Eq_3268 fn1229(Register Eq_3268 c, Register Eq_3268 b, Register Eq_364 e, Register byte d, Register Eq_434 l, Register byte h, Register out Eq_3589 lOut, Register out Eq_3590 hOut, Register out (ptr word16) spOut)
+// 1229: Register Eq_3268 fn1229(Register Eq_3268 c, Register Eq_3268 b, Register Eq_364 e, Register byte d, Register Eq_434 l, Register byte h, Register out Eq_3589 lOut, Register out Eq_3590 hOut, Register out (ptr16 word16) spOut)
 Eq_3268 fn1229(Eq_3268 c, Eq_3268 b, Eq_364 e, byte d, Eq_434 l, byte h, Eq_3589 & lOut, Eq_3590 & hOut, word16 * & spOut)
 {
 	globals->b14F3 = 0x02;
@@ -1776,7 +1776,7 @@ bui8 fn1279(word16 af, Eq_3268 b, Eq_3268 c, Eq_364 e, byte d, Eq_434 l, byte h,
 	return globals->b16AA;
 }
 
-// 12D8: Register byte fn12D8(Register word16 af, Register Eq_3268 b, Register Eq_3268 c, Register Eq_364 e, Register byte d, Register Eq_434 l, Register byte h, Register out Eq_3373 bOut, Register out Eq_3374 lOut, Register out Eq_3375 hOut, Register out (ptr word16) spOut)
+// 12D8: Register byte fn12D8(Register word16 af, Register Eq_3268 b, Register Eq_3268 c, Register Eq_364 e, Register byte d, Register Eq_434 l, Register byte h, Register out Eq_3373 bOut, Register out Eq_3374 lOut, Register out Eq_3375 hOut, Register out (ptr16 word16) spOut)
 byte fn12D8(word16 af, Eq_3268 b, Eq_3268 c, Eq_364 e, byte d, Eq_434 l, byte h, Eq_3373 & bOut, Eq_3374 & lOut, Eq_3375 & hOut, word16 * & spOut)
 {
 	globals->t16A8 = fn045B();
@@ -1877,7 +1877,7 @@ void fn133C(byte a, byte d, byte e)
 {
 }
 
-// 1346: Register byte fn1346(Register (ptr Eq_846) de, Register ptr16 hl, Register out Eq_2682 hOut)
+// 1346: Register byte fn1346(Register (ptr16 Eq_846) de, Register ptr16 hl, Register out Eq_2682 hOut)
 byte fn1346(Eq_846 * de, ptr16 hl, Eq_2682 & hOut)
 {
 	struct Eq_832 * hl_7 = DPB(hl, b, 8);
@@ -1888,7 +1888,7 @@ byte fn1346(Eq_846 * de, ptr16 hl, Eq_2682 & hOut)
 	return l_10;
 }
 
-// 1348: FlagGroup bool fn1348(Register (ptr Eq_846) de, Register (ptr Eq_832) hl, Register out ptr16 deOut, Register out Eq_849 lOut, Register out Eq_850 hOut)
+// 1348: FlagGroup bool fn1348(Register (ptr16 Eq_846) de, Register (ptr16 Eq_832) hl, Register out ptr16 deOut, Register out Eq_849 lOut, Register out Eq_850 hOut)
 bool fn1348(Eq_846 * de, Eq_832 * hl, ptr16 & deOut, Eq_849 & lOut, Eq_850 & hOut)
 {
 	uint8 c_4 = hl->b0000;
@@ -1903,7 +1903,7 @@ bool fn1348(Eq_846 * de, Eq_832 * hl, ptr16 & deOut, Eq_849 & lOut, Eq_850 & hOu
 	return (bool) cond(a_a_16);
 }
 
-// 1353: Register byte fn1353(Register byte a, Register (ptr Eq_1132) de, Register out ptr16 deOut, Register out Eq_1134 lOut, Register out Eq_1135 hOut)
+// 1353: Register byte fn1353(Register byte a, Register (ptr16 Eq_1132) de, Register out ptr16 deOut, Register out Eq_1134 lOut, Register out Eq_1135 hOut)
 byte fn1353(byte a, Eq_1132 * de, ptr16 & deOut, Eq_1134 & lOut, Eq_1135 & hOut)
 {
 	cu8 a_8 = de->b0000 - a;

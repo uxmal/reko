@@ -27,24 +27,24 @@ TreeFindMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (struct (0 int32 dw0000) (4 (ptr Eq_2) ptr0004) (8 (ptr Eq_2) ptr0008))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (struct (0 int32 dw0000) (4 (ptr32 Eq_2) ptr0004) (8 (ptr32 Eq_2) ptr0008))
 	T_2 (in t : word32)
 	T_3 (in 0x00000000 : word32)
 	T_14 (in Mem0[t + 0x00000004:word32] : word32)
 	T_17 (in Mem0[t + 0x00000008:word32] : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in t : word32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct (0 T_7 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (struct (0 T_7 t0000) (4 T_14 t0004) (8 T_17 t0008)))
 T_3: (in 0x00000000 : word32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: word32
 T_4: (in t == 0x00000000 : bool)
   Class: Eq_4
@@ -88,7 +88,7 @@ T_13: (in t + 0x00000004 : word32)
   OrigDataType: ptr32
 T_14: (in Mem0[t + 0x00000004:word32] : word32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: word32
 T_15: (in 0x00000008 : word32)
   Class: Eq_15
@@ -100,5 +100,5 @@ T_16: (in t + 0x00000008 : word32)
   OrigDataType: ptr32
 T_17: (in Mem0[t + 0x00000008:word32] : word32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: word32

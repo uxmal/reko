@@ -4,14 +4,14 @@
 
 #include "VCExeSample.h"
 
-// 00401000: Register int32 main(Stack int32 argc, Stack (ptr (ptr char)) argv)
+// 00401000: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char * * argv)
 {
 	test1(*argv, argc, "test123", 1.0F);
 	return 0x00;
 }
 
-// 00401030: void test1(Stack (ptr char) arg1, Stack int32 arg2, Stack (ptr char) arg3, Stack real32 arg4)
+// 00401030: void test1(Stack (ptr32 char) arg1, Stack int32 arg2, Stack (ptr32 char) arg3, Stack real32 arg4)
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 {
 	printf("%s %d %s %f", arg1, arg2, arg3, (real64) arg4);
@@ -25,7 +25,7 @@ void test2(word32 dwArg04)
 		test1("5", 0x06, "7", globals->r4020E4);
 }
 
-// 004010B0: void indirect_call_test3(Stack (ptr Eq_51) c)
+// 004010B0: void indirect_call_test3(Stack (ptr32 Eq_51) c)
 void indirect_call_test3(cdecl_class * c)
 {
 	c->vtbl->method04(c, 1000);
@@ -108,7 +108,7 @@ void loop_test11(real64 rArg04)
 	}
 }
 
-// 00401330: void nested_structs_test12(Stack (ptr Eq_243) dwArg04)
+// 00401330: void nested_structs_test12(Stack (ptr32 Eq_243) dwArg04)
 void nested_structs_test12(nested_structs_type * dwArg04)
 {
 	dwArg04->a = 0x01;
@@ -117,7 +117,7 @@ void nested_structs_test12(nested_structs_type * dwArg04)
 	dwArg04->d = 0x04;
 }
 
-// 00401360: void nested_structs_test13(Stack (ptr Eq_260) str)
+// 00401360: void nested_structs_test13(Stack (ptr32 Eq_260) str)
 void nested_structs_test13(nested_structs_type * str)
 {
 	nested_structs_test12(str);

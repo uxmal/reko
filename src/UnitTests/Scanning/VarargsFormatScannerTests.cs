@@ -132,12 +132,12 @@ namespace Reko.UnitTests.Scanning
 
         private DataType CStringType32()
         {
-            return new Pointer(PrimitiveType.Char, 4);
+            return new Pointer(PrimitiveType.Char, 32);
         }
 
         private DataType CStringType64()
         {
-            return new Pointer(PrimitiveType.Char, 8);
+            return new Pointer(PrimitiveType.Char, 64);
         }
 
         private Identifier StackId(string name, int offset, DataType dt)
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
             Assert.AreEqual(
-                "0x0000029A(Mem0[esp:(ptr char)], Mem0[esp + 4:int32], " +
+                "0x0000029A(Mem0[esp:(ptr32 char)], Mem0[esp + 4:int32], " +
                            "Mem0[esp + 8:real64])",
                 instr.ToString());
         }
@@ -255,13 +255,13 @@ namespace Reko.UnitTests.Scanning
             var pc = new ProcedureConstant(new CodeType(), ep);
             var instr = vafs.BuildInstruction(pc, new CallSite(4, 0));
             Assert.AreEqual(
-                "sprintf(Mem0[esp:(ptr char)], Mem0[esp + 4:(ptr char)], " +
+                "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4:(ptr32 char)], " +
                         "Mem0[esp + 8:char])",
                 instr.ToString());
             var appl = (Application)((SideEffect)instr).Expression;
             var sig = ((ProcedureConstant)appl.Procedure).Procedure.Signature;
             Assert.AreEqual(
-                "(fn void ((ptr char), (ptr char), char))",
+                "(fn void ((ptr32 char), (ptr32 char), char))",
                 sig.ToString());
         }
 
@@ -302,10 +302,10 @@ namespace Reko.UnitTests.Scanning
             var newSig = VarargsFormatScanner.ReplaceVarargs(
                 platform,
                 x86PrintfSig, 
-                new DataType[] { PrimitiveType.Int16, new Pointer(PrimitiveType.Char, 4) });
+                new DataType[] { PrimitiveType.Int16, new Pointer(PrimitiveType.Char, 32) });
             System.Diagnostics.Debug.Print("{0}", DumpSignature("test", newSig));
             Assert.AreEqual(
-                "void test(Stack +0004 (ptr char), Stack +0008 int16, Stack +000C (ptr char))",
+                "void test(Stack +0004 (ptr32 char), Stack +0008 int16, Stack +000C (ptr32 char))",
                 DumpSignature("test", newSig));
         }
 

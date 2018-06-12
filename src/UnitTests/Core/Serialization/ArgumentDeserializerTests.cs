@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var id = argser.Deserialize(arg);
             Assert.AreEqual("eax", id.Name);
-            Assert.AreEqual("(ptr char)", id.DataType.ToString());
+            Assert.AreEqual("(ptr32 char)", id.DataType.ToString());
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var id = argser.Deserialize(arg);
             Assert.AreEqual("ptrArg0D", id.Name);
-            Assert.AreEqual("(ptr char)", id.DataType.ToString());
+            Assert.AreEqual("(ptr32 char)", id.DataType.ToString());
             Assert.AreEqual("Stack +000D", id.Storage.ToString());
         }
 

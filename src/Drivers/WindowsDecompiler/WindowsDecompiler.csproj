@@ -23,6 +23,11 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseMSBuildEngine>True</UseMSBuildEngine>
+    <TargetFrameworkProfile />
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -35,13 +40,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <UseMSBuildEngine>True</UseMSBuildEngine>
-    <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -162,9 +162,11 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
@@ -198,6 +200,14 @@
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
       <Name>Mips</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
+      <Project>{e75c3be2-0f98-48cd-943d-198159b57dc7}</Project>
+      <Name>MicrochipPIC.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj">
+      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
+      <Name>MicrochipPIC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
@@ -217,6 +227,10 @@
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
       <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
       <Name>Dol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
+      <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
+      <Name>Elf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
       <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>

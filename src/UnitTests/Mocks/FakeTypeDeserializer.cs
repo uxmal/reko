@@ -29,11 +29,11 @@ namespace Reko.UnitTests.Mocks
 {
     public class FakeTypeDeserializer : ISerializedTypeVisitor<DataType>
     {
-        private int ptrSize;
+        private int ptrBitSize;
 
-        public FakeTypeDeserializer(int ptrSize)
+        public FakeTypeDeserializer(int ptrBitSize)
         {
-            this.ptrSize = ptrSize;
+            this.ptrBitSize = ptrBitSize;
         }
 
         public DataType VisitArray(ArrayType_v1 array)
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Mocks
 
         public DataType VisitPointer(PointerType_v1 pointer)
         {
-            return new Pointer(pointer.DataType.Accept(this), ptrSize);
+            return new Pointer(pointer.DataType.Accept(this), ptrBitSize);
         }
 
         public DataType VisitReference(ReferenceType_v1 refTo)

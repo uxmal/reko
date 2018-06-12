@@ -193,7 +193,7 @@ namespace Reko.Core
         {
             if (Platform == null)
                 throw new InvalidOperationException("The program's Platform property must be set before accessing the Globals property.");
-            var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.Size);
+            var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.BitSize);
             globals = new Identifier("globals", ptrGlobals, new MemoryStorage());
         }
 

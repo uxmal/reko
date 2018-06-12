@@ -51,7 +51,7 @@ word32 fn00401158()
 	return fs->ptr002C[globals->dw40208B];
 }
 
-// 00401168: Register int32 main(Stack int32 argc, Stack (ptr (ptr char)) argv)
+// 00401168: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char * * argv)
 {
 	printf(&globals->b4020A4);
@@ -87,7 +87,7 @@ void fn004011B0(word32 dwArg04)
 	_InitTermAndUnexPtrs();
 }
 
-// 004011FC: void fn004011FC(Stack (ptr Eq_4) dwArg04)
+// 004011FC: void fn004011FC(Stack (ptr32 Eq_4) dwArg04)
 void fn004011FC(Eq_4 * dwArg04)
 {
 	globals->dw4020F8 = fn00401158() + 0x1C;
