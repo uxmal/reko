@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,9 +50,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public DisassemblyTextModel(Program program, ImageSegment segment)
         {
-            if (program == null)
-                throw new ArgumentNullException("program");
-            this.program = program;
+            this.program = program ?? throw new ArgumentNullException("program");
             if (segment == null)
                 throw new ArgumentNullException("segment");
             if (segment.MemoryArea == null)
@@ -130,11 +129,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private static string BuildBytes(Program program, MachineInstruction instr)
         {
+            //$REVIEW: these computations will be done a lot, but we need some place to store 
+            // them.
+            var bitSize = program.Architecture.InstructionBitSize;
+            var byteSize = (bitSize + 7) / 8;
+            var instrByteFormat = $"{{0:X{byteSize * 2}}} ";      // 2 characters for each byte
+            var instrByteSize = PrimitiveType.CreateWord(bitSize);
+
             var sb = new StringBuilder();
             var rdr = program.CreateImageReader(instr.Address);
-            for (int i = 0; i < instr.Length; ++i)
+            for (int i = 0; i < instr.Length; i += byteSize)
             {
-                sb.AppendFormat("{0:X2} ", rdr.ReadByte());
+                var v = rdr.Read(instrByteSize);
+                sb.AppendFormat(instrByteFormat, v.ToUInt64());
             }
             return sb.ToString();
         }
@@ -195,7 +202,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             public InertTextSpan(string text, string style)
             {
                 this.text = text;
-                base.Style = style ;
+                base.Style = style;
             }
 
             public override string GetText()

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Output;
 using Reko.Core.Types;
@@ -37,11 +38,16 @@ namespace Reko.Core
 	{
         private Program program;
         private IProcessorArchitecture arch;
+        private string instrByteFormat;
+        private PrimitiveType instrByteSize;
 
-		public Dumper(Program program)
+        public Dumper(Program program)
 		{
             this.program = program;
             this.arch = program.Architecture;
+            var byteSize = (7 + this.arch.InstructionBitSize) / 8;
+            this.instrByteFormat = $"{{X{byteSize}}}";
+            this.instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 		}
 
         public bool ShowAddresses { get; set; }
@@ -292,9 +298,12 @@ namespace Reko.Core
         public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
+
 			while (rdr.Address < addrEnd)
 			{
-				writer.WriteString(string.Format("{0:X2} ", rdr.ReadByte()));
+                var v = rdr.Read(this.instrByteSize);
+                writer.WriteFormat(this.instrByteFormat, v.ToUInt64());
+                writer.WriteChar(' ');
 			}
 		}
 
