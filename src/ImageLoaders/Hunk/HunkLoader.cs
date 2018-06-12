@@ -628,12 +628,7 @@ print arg_mem
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var sym = new ImageSymbol(program.Architecture, addrLoad)
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
-            };
-
+            var sym = ImageSymbol.Procedure(program.Architecture, addrLoad, state: arch.CreateProcessorState());
             var entries = new List<ImageSymbol>
             {
                 //$TODO: what are the registers on entry?

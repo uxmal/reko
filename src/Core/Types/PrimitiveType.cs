@@ -155,7 +155,7 @@ namespace Reko.Core.Types
             }
             if (!mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var dom))
             {
-                dom = Domain.UnsignedInt | Domain.Integer | Domain.Pointer;
+                dom = Domain.Integer | Domain.Pointer;
             }
 			return Create(dom, (short) bitSize, name);
 		}

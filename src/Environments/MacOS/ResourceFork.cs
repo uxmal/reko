@@ -519,7 +519,7 @@ namespace Reko.Environments.MacOS
                 var addrDst = targetSeg.Address + entry.RoutineOffsetFromSegmentStart;
                 if (!symbols.ContainsKey(addrDst))
                 {
-                    symbols.Add(addrDst, new ImageSymbol(arch, addrDst) { Type = SymbolType.Procedure });
+                    symbols.Add(addrDst, ImageSymbol.Procedure(arch, addrDst));
                 }
                 w.WriteBeUInt16(0x4EF9);            // jmp (xxxxxxxxx).L
                 w.WriteBeUInt32(addrDst.ToUInt32());

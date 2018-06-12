@@ -100,14 +100,14 @@ namespace Reko.UnitTests.Gui.Design
             slSvc.Expect(s => s.GetSymbolSource("foo.h")).Return(symSrc);
             symSrc.Expect(s => s.GetAllSymbols()).Return(new List<ImageSymbol>
             {
-                new ImageSymbol(program.Architecture, Address.Ptr32(0x00112240))
-                {
-                    Name = "my_procedure",
-                    Signature = new SerializedSignature
+                ImageSymbol.Procedure(
+                    program.Architecture, 
+                    Address.Ptr32(0x00112240),
+                    "my_procedure",
+                    signature:new SerializedSignature
                     {
                         // let's not worry about this yet.
-                    }
-                }
+                    })
             });
         }
 

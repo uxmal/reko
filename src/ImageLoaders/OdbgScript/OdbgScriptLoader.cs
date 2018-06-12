@@ -114,10 +114,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var syms = new SortedList<Address, ImageSymbol>();
             if (OriginalEntryPoint != null)
             {
-                var sym = new ImageSymbol(program.Architecture, OriginalEntryPoint)
-                {
-                    ProcessorState = Architecture.CreateProcessorState()
-                };
+                var sym = ImageSymbol.Procedure(program.Architecture, OriginalEntryPoint, state:Architecture.CreateProcessorState());
                 syms.Add(sym.Address, sym);
                 eps.Add(sym);
             }

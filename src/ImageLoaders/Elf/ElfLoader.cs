@@ -279,24 +279,31 @@ namespace Reko.ImageLoaders.Elf
                 ? platform.MakeAddressFromLinear(sym.Value)
                 : Sections[(int)sym.SectionIndex].Address + sym.Value;
 
-
             var dt = GetSymbolDataType(sym);
-            return new ImageSymbol(this.Architecture, addr)
-            {
-                Type = st,
-                Name = sym.Name,
-                Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
-                DataType = dt,
-                ProcessorState = Architecture.CreateProcessorState()
-            };
+            var imgSym = ImageSymbol.Create(
+                st,
+                this.Architecture,
+                addr,
+                sym.Name,
+                dt);
+            imgSym.ProcessorState = Architecture.CreateProcessorState();
+            return imgSym;
         }
 
         private DataType GetSymbolDataType(ElfSymbol sym)
         {
             if (sym.Type == ElfSymbolType.STT_FUNC)
+            {
                 return new FunctionType();
+            }
+            else if (sym.Size == 0)
+            {
+                return new UnknownType();
+            }
             else
-                return new UnknownType((int)sym.Size);
+            {
+                return PrimitiveType.CreateWord(DataType.BitsPerByte * (int)sym.Size);
+            }
         }
 
         /// <summary>
@@ -452,11 +459,7 @@ namespace Reko.ImageLoaders.Elf
             //$TODO: look up function signature.
             int size = Architecture.PointerType.Size;
             int bitSize = Architecture.PointerType.BitSize;
-            return new ImageSymbol(Architecture, addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize))
-            {
-                Type = SymbolType.Data,
-                Size = (uint)size,
-            };
+            return ImageSymbol.DataObject(Architecture, addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize));
         }
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
@@ -542,10 +545,8 @@ namespace Reko.ImageLoaders.Elf
                 return;
             if (!symbols.TryGetValue(addr, out ImageSymbol ep))
             {
-                ep = new ImageSymbol(this.Architecture, addr)
-                {
-                    ProcessorState = Architecture.CreateProcessorState()
-                };
+                ep = ImageSymbol.Procedure(this.Architecture, addr);
+                ep.ProcessorState = Architecture.CreateProcessorState();
             }
             entryPoints.Add(ep);
         }

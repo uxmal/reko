@@ -182,10 +182,7 @@ namespace Reko.Environments.Trs80
         {
             return new RelocationResults(
                 new List<ImageSymbol> {
-                    new ImageSymbol(program.Architecture, addrLoad)
-                    {
-                        Type = SymbolType.Procedure
-                    }
+                    ImageSymbol.Procedure(program.Architecture, addrLoad)
                 },
                 BuildSymbols(program));
         }
@@ -202,12 +199,12 @@ namespace Reko.Environments.Trs80
             var procs = program.Platform.MemoryMap.Segments
                 .SelectMany(s => s.Procedures)
                 .OfType<Procedure_v1>()
-                .Select(p => new ImageSymbol(program.Architecture, ParseAddress(p.Address))
-                {
-                    Name = p.Name,
-                    Type = SymbolType.Procedure,
-                    NoDecompile = !p.Decompile
-                });
+                .Select(p => ImageSymbol.Create(
+                    SymbolType.Procedure,
+                    program.Architecture,
+                    ParseAddress(p.Address),
+                    p.Name,
+                    decompile: p.Decompile));
             return procs.ToSortedList(k => k.Address, k => k);
         }
     }

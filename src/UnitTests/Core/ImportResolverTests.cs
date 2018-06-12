@@ -211,19 +211,18 @@ namespace Reko.UnitTests.Core
                 {
                     {
                         "bar",
-                        new ImageSymbol(program.Architecture)
-                        {
-                            Name = "bar",
-                            Type = SymbolType.Data,
-                            DataType = new StructureType
+                        ImageSymbol.DataObject(
+                            program.Architecture,
+                            null,
+                            "bar",
+                            new StructureType
                             {
                                 Fields =
                                 {
                                     { 0, new Pointer(PrimitiveType.Char, 32), "name" },
                                     { 4, PrimitiveType.Int32, "age" }
                                 }
-                            }
-                        }
+                            })
                     }
                 }
             };

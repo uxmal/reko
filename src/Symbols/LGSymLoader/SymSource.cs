@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -176,11 +177,12 @@ namespace Reko.Symbols.LGSymLoader
                 string sym_name = rdr.ReadNullTerminatedString();
 
                 //$BUG: how do we get the architecture?
-                symbols.Add(new ImageSymbol(null, Address.Ptr32(sym.addr))
-                {
-                    Size = sym.end - sym.addr,
-                    Name = sym_name
-                });
+                symbols.Add(ImageSymbol.Create(
+                    SymbolType.Unknown,
+                    null,
+                    Address.Ptr32(sym.addr),
+                    sym_name,
+                    new UnknownType((int)(sym.end - sym.addr))));
             }
 
 			return symbols;

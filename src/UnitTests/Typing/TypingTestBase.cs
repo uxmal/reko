@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Typing
                 new X86TextAssembler(sc, arch),
                 addrBase);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
-            var ep = new ImageSymbol(arch, program.SegmentMap.BaseAddress);
+            var ep = ImageSymbol.Procedure(arch, program.SegmentMap.BaseAddress);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Typing
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var program = imgLoader.Load(null);
             var project = new Project { Programs = { program } };
-            var ep = new ImageSymbol(program.Architecture, program.ImageMap.BaseAddress);
+            var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
             var importResolver = new ImportResolver(project, program, eventListener);
             var scan = new Scanner(program, importResolver, svc);
             scan.EnqueueImageSymbol(ep, true);

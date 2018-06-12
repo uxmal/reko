@@ -154,7 +154,7 @@ namespace Reko.ImageLoaders.Dol
 
 			var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
 
-			var entryPoint = new ImageSymbol(arch, this.hdr.entrypoint) { Type = SymbolType.Procedure };
+            var entryPoint = ImageSymbol.Procedure(arch, this.hdr.entrypoint);
 			var program = new Program(
 				segmentMap,
 				arch,

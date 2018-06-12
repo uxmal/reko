@@ -121,11 +121,7 @@ namespace Reko.ImageLoaders.MzExe
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
 
-            var ep = new ImageSymbol(arch, addrStart)
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
-            };
+            var ep = ImageSymbol.Procedure(arch, addrStart, state: arch.CreateProcessorState());
             var sym = platform.FindMainProcedure(program, addrStart);
             var results = new RelocationResults(
                 new List<ImageSymbol> { ep },

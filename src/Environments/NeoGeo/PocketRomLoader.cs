@@ -69,7 +69,7 @@ namespace Reko.Environments.NeoGeo
         {
             return new RelocationResults(
                 new List<ImageSymbol> {
-                    new ImageSymbol(program.Architecture, entryPoint ) { Type = SymbolType.Procedure }
+                    ImageSymbol.Procedure(program.Architecture, entryPoint)
                 },
                 new SortedList<Address, ImageSymbol>());
         }

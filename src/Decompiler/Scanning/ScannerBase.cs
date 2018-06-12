@@ -46,11 +46,14 @@ namespace Reko.Scanning
         public Program Program { get; private set; }
 
         /// <summary>
-        /// 
+        /// Ensure that there is a procedure named <paramref name="procedureName"/> at 
+        /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr"></param>
         /// <param name="procedureName"></param>
-        /// <returns></returns>
+        /// <returns>Existing procedure if one already existed, or a new one if 
+        /// there didn't exist one before.
+        /// </returns>
         protected Procedure EnsureProcedure(Address addr, string procedureName)
         {
             if (Program.Procedures.TryGetValue(addr, out Procedure proc))
@@ -105,8 +108,7 @@ namespace Reko.Scanning
 
         private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
         {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledProcedure(addr, out sProc))
+            if (!TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc))
             {
                 parsedProc = null;
                 return false;

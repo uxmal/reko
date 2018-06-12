@@ -785,10 +785,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 sym.symbol_segment += addrLoad.Selector.Value;
                 if (!name.Contains('@'))
                 {
-                    var imgSymbol = new ImageSymbol(arch, Address.SegPtr(sym.symbol_segment, sym.symbol_offset))
-                    {
-                        Name = name,
-                    };
+                    var imgSymbol = ImageSymbol.Create(
+                        SymbolType.Unknown,
+                        arch,
+                        Address.SegPtr(sym.symbol_segment, sym.symbol_offset),
+                        name);
                     this.imgSymbols[imgSymbol.Address] = imgSymbol;
                     this.symbolTypes[imgSymbol] = sym.symbol_type;
                 }

@@ -191,10 +191,7 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.cs, Constant.Word16(cs));
             state.SetRegister(Registers.ss, Constant.Word16(ss));
             state.SetRegister(Registers.bx, Constant.Word16(0));
-            var ep = new ImageSymbol(arch, Address.SegPtr(cs, ip))
-            {
-                ProcessorState = state
-            };
+            var ep = ImageSymbol.Procedure(arch, Address.SegPtr(cs, ip), state: state);
             var entryPoints = new List<ImageSymbol> { ep };
             var imageSymbols = entryPoints.ToSortedList(e => e.Address, e => e);
             return new RelocationResults(entryPoints, imageSymbols);

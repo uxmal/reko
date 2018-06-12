@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Analysis
                 new ImportResolver(project, program, eventListener),
                 sc);
 
-            scan.EnqueueImageSymbol(new ImageSymbol(program.Architecture, asm.StartAddress), true);
+            scan.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, asm.StartAddress), true);
             foreach (var f in project.Programs)
             {
                 foreach (var sp in f.User.Procedures.Values)

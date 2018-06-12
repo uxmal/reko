@@ -85,7 +85,7 @@ namespace Reko.Scanning
                 return;
             //$BUG: this needs to be fixed. If in an ARM binary, we scan a code 
             // address that has an odd address, we need to make it Thumb.
-            procedures.Add(addr, new ImageSymbol(null, addr, name, sig) { Type = SymbolType.Procedure });
+            procedures.Add(addr, ImageSymbol.Procedure(null, addr, name, sig));
             sr.KnownProcedures.Add(addr);
             var proc = EnsureProcedure(addr, name);
             proc.Signature = sig;

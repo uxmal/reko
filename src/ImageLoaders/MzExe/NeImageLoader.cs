@@ -425,7 +425,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames();
             var entryPoints = LoadEntryPoints(entryNames);
-            entryPoints.Add(new ImageSymbol(program.Architecture, addrEntry));
+            entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             return new RelocationResults(
                 entryPoints,
                 imageSymbols);
@@ -463,16 +463,11 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     var flags = rdr.ReadByte();
                     var offset = rdr.ReadUInt16();
-                    string name;
                     var addr = seg.Address + offset;
                     var state = arch.CreateProcessorState();
 
-                    ImageSymbol ep = new ImageSymbol(arch, addr);
-                    if (names.TryGetValue(entries.Count + 1, out name))
-                    {
-                        ep.Name = name;
-                    }
-                    ep.Type = SymbolType.Procedure;
+                    names.TryGetValue(entries.Count + 1, out string name);
+                    ImageSymbol ep = ImageSymbol.Procedure(arch, addr, name, state: state);
                     ep.ProcessorState = state;
                     imageSymbols[ep.Address] = ep;
                     entries.Add(ep);

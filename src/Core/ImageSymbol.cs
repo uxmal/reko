@@ -22,6 +22,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -39,10 +40,7 @@ namespace Reko.Core
     /// </remarks>
     public class ImageSymbol
     {
-        /// <summary>
-        /// Use this ctor when the symbol is imported from another module.
-        /// </summary>
-        public ImageSymbol(IProcessorArchitecture arch)
+        private ImageSymbol(IProcessorArchitecture arch)
         {
             this.Architecture = arch;
         }
@@ -51,31 +49,112 @@ namespace Reko.Core
         /// Use this ctor when only the address of the symbol is known.
         /// </summary>
         /// <param name="address"></param>
-        public ImageSymbol(IProcessorArchitecture arch, Address address)
+        public static ImageSymbol Location(IProcessorArchitecture arch, Address address)
         {
-            this.Architecture = arch;
-            this.Address = address;
+            return new ImageSymbol(arch)
+            {
+                Type = SymbolType.Unknown,
+                Address = address,
+                Architecture = arch,
+                DataType = new UnknownType(),
+            };
+        }
+
+        /// <summary>
+        /// Creates a symbol describing the location of a callable procedure.
+        /// </summary>
+        /// <param name="arch">Processor architecture of the procedure.</param>
+        /// <param name="address">Address of the procedure.</param>
+        /// <param name="name">Optional name of the procedure.</param>
+        /// <param name="dataType">Optional data type of the procedure.</param>
+        /// <param name="signature">Optional serialized signature.</param>
+        /// <param name="state">Optional processor state.</param>
+        /// <returns>A symbol</returns>
+        public static ImageSymbol Procedure(
+            IProcessorArchitecture arch,
+            Address address, 
+            string name=null, 
+            DataType dataType=null,
+            SerializedSignature signature=null,
+            ProcessorState state=null)
+        {
+            return new ImageSymbol(arch)
+            {
+                Type = SymbolType.Procedure,
+                Architecture = arch,
+                Address = address,
+                Name = name,
+                DataType = dataType ?? new FunctionType(),
+                Signature = signature,
+                ProcessorState = state,
+            };
+        }
+
+        /// <summary>
+        /// A reference to an external procedure
+        /// </summary>
+        /// <param name="arch">Processor architecture of the procedure.</param>
+        /// <param name="address">Address of stub to the procedure.</param>
+        /// <param name="name">Name of the external procedure</param>
+        public static ImageSymbol ExternalProcedure(
+            IProcessorArchitecture arch,
+            Address address,
+            string name)
+        {
+            return new ImageSymbol(arch)
+            {
+                Type = SymbolType.ExternalProcedure,
+                Address = address,
+                Name = name
+            };
         }
 
         /// <summary>
         /// Use this ctor when symbolic data is available.
         /// </summary>
-        /// <param name="address"></param>
-        /// <param name="name"></param>
-        /// <param name="dataType"></param>
-        public ImageSymbol(IProcessorArchitecture arch, Address address, string name, DataType dataType)
+        /// <param name="arch">Architecture to use when interpreting the data object.</param>
+        /// <param name="address">Address of data object</param>
+        /// <param name="name">Optional name of the object.</param>
+        /// <param name="dataType">Optional size of the object.</param>
+        public static ImageSymbol DataObject(IProcessorArchitecture arch, Address address, string name = null, DataType dataType = null)
         {
-            this.Architecture = arch;
-            this.Address = address;
-            this.Name = name;
-            this.DataType = dataType;
+            return new ImageSymbol(arch)
+            {
+                Type = SymbolType.Data,
+                Architecture = arch,
+                Address = address,
+                Name = name,
+                DataType = dataType,
+            };
         }
 
+        public static ImageSymbol Create(
+            SymbolType type,
+            IProcessorArchitecture arch,
+            Address address,
+            string name = null,
+            DataType dataType = null,
+            bool decompile = true)
+        {
+            return new ImageSymbol(arch)
+            {
+                Type = type,
+                Architecture = arch,
+                Address = address,
+                Name = name,
+                DataType = dataType ?? new UnknownType(),
+                NoDecompile = !decompile,
+            };
+        }
 
         /// <summary>
         /// The processor architecture to use when disassembling this symbol.
         /// </summary>
         public IProcessorArchitecture Architecture { get; set; }
+
+        /// <summary>
+        /// The kind of symbol.
+        /// </summary>
         public SymbolType Type { get; set; }
 
         /// <summary>
@@ -87,11 +166,6 @@ namespace Reko.Core
         /// The name of the symbol if known, null or blank if unknown.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// The data type of the symbol if it known.
-        /// </summary>
-        public uint Size { get; set; }
 
         /// <summary>
         /// If set, Reko should just make note of the symbol and not 

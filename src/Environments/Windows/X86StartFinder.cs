@@ -178,12 +178,7 @@ namespace Reko.Environments.Windows
                         segMainInfo.MemoryArea.ReadLeUInt32(addrMainInfo + 0x18));
                     if (program.SegmentMap.IsExecutableAddress(addrMain))
                     {
-                        return new ImageSymbol(program.Architecture, addrMain)
-                        {
-                            Type = SymbolType.Procedure,
-                            Name = "main",
-                            Signature = mainSignature,
-                        };
+                        return ImageSymbol.Procedure(program.Architecture, addrMain, "main", signature: mainSignature);
                     }
                 }
             }
@@ -200,12 +195,7 @@ namespace Reko.Environments.Windows
                 var addrMain = seg.MemoryArea.BaseAddress + idx + 5 + offset;
                 if (program.SegmentMap.IsExecutableAddress(addrMain))
                 {
-                    return new ImageSymbol(program.Architecture, addrMain)
-                    {
-                        Type = SymbolType.Procedure,
-                        Name = "WinMain",
-                        Signature = winmainSignature,
-                    };
+                    return ImageSymbol.Procedure(program.Architecture, addrMain, "WinMain", signature: winmainSignature);
                 }
             }
             return null;

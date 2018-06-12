@@ -32,7 +32,10 @@ namespace Reko.ImageLoaders.Elf
         public ulong Value;
         public byte Info;
         public uint SectionIndex;
-        public ulong Size;
+        /// <summary>
+        /// Size in bytes
+        /// </summary>
+        public ulong Size; 
 
         public override string ToString()
         {

@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new ImageSymbol(program.Architecture,addrBase));
+                ImageSymbol.Procedure(program.Architecture,addrBase));
             return RewriteProgram();
         }
 
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new ImageSymbol(arch, addrBase));
+                ImageSymbol.Procedure(arch, addrBase));
             return RewriteProgram();
         }
 

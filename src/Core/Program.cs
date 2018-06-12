@@ -405,7 +405,7 @@ namespace Reko.Core
                 return;
             this.ImageMap = SegmentMap.CreateImageMap();
             foreach (var sym in this.ImageSymbols.Values.Where(
-                s => s.Type == SymbolType.Data && s.Size != 0))
+                s => s.Type == SymbolType.Data && s.DataType.BitSize != 0))
             {
                 this.ImageMap.AddItemWithSize(
                     sym.Address,
@@ -413,7 +413,7 @@ namespace Reko.Core
                     {
                         Address = sym.Address,
                         DataType = sym.DataType,
-                        Size = sym.Size,
+                        Size = (uint) sym.DataType.Size,
                     });
             }
             var tlDeser = CreateTypeLibraryDeserializer();

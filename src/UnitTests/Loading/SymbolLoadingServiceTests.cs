@@ -103,11 +103,11 @@ namespace Reko.UnitTests.Loading
             {
                 return new List<ImageSymbol>
                 {
-                    new ImageSymbol(arch, Address.Ptr64(0x12340000))
-                    {
-                        Name = "MyFunction",
-                        Type = SymbolType.Procedure,
-                        Signature = new SerializedSignature
+                    ImageSymbol.Procedure(
+                        arch, 
+                        Address.Ptr64(0x12340000),
+                        "MyFunction",
+                        signature: new SerializedSignature
                         {
                             Arguments = new Argument_v1[]
                             {
@@ -118,8 +118,7 @@ namespace Reko.UnitTests.Loading
                             {
                                 Type = PrimitiveType_v1.Int32()
                             }
-                        }
-                    }
+                        })
                 };
             }
         }

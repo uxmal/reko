@@ -177,7 +177,7 @@ namespace Reko.Environments.MacOS
                     continue;
                 }
                 
-                sym = new ImageSymbol(arch, addrStart) { Type = SymbolType.Procedure, Name = symbol };
+                sym = ImageSymbol.Procedure(arch, addrStart, symbol);
                 return true;
             }
             return false;

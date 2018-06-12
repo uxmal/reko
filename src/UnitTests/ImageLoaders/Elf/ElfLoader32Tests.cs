@@ -232,8 +232,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var syms = new ImageSymbol[]
             {
-                new ImageSymbol(arch, Address.Ptr32(0x04000000)) { Name = "strcpy", Type = SymbolType.ExternalProcedure },
-                new ImageSymbol(arch, Address.Ptr32(0x04000010)) { Name = "strcmp", Type = SymbolType.ExternalProcedure },
+                ImageSymbol.ExternalProcedure(arch, Address.Ptr32(0x04000000), "strcpy"),
+                ImageSymbol.ExternalProcedure(arch, Address.Ptr32(0x04000010), "strcmp"),
             }.ToSortedList(k => k.Address);
             Given_ImageHeader(ElfMachine.EM_MIPS);
             Given_Program();

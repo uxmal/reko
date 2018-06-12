@@ -260,12 +260,7 @@ namespace Reko.Environments.Msdos
             //        chVersion, /* Add version */
             //        chModel); /* Add model */
             //Debug.Print("Signature file: {0}", sSigName);
-            return new ImageSymbol(arch, addrEntry)
-            { 
-                Name ="main",
-                ProcessorState = this.state,
-                Type = SymbolType.Procedure,
-            };
+            return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
         }
 
         private Address ReadSegPtr(MemoryArea mem, uint offset)

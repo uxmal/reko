@@ -33,11 +33,11 @@ namespace Reko.Scanning
     /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
-        private IScannerQueue scanner;
-        private Program program;
-        private DataType dt;
-        private EndianImageReader rdr;
-        private string name;
+        private readonly IScannerQueue scanner;
+        private readonly Program program;
+        private readonly DataType dt;
+        private readonly EndianImageReader rdr;
+        private readonly string name;
 
         public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string name) : base(addr)
         {
@@ -94,7 +94,7 @@ namespace Reko.Scanning
 
         public void VisitPrimitive(PrimitiveType pt)
         {
-            rdr.Read(pt);
+            rdr.Offset += pt.Size;
         }
 
         public void VisitMemberPointer(MemberPointer memptr)
