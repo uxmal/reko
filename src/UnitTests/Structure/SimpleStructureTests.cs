@@ -347,5 +347,11 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 ";
             RunTest(sExp, pm.Program);
         }
+
+        [Test]
+        public void StrReg00568()
+        {
+            RunTest("Fragments/regressions/r00568.asm", "Structure/StrReg00568.txt");
+        }
     }
 }
