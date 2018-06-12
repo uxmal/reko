@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,6 +68,7 @@ namespace Reko.Core.Expressions
                 case Domain.Character: return new ConstantChar(p,(char) (byte) value);
                 default: return new ConstantByte(p, (byte) value);
                 }
+            case 9:
             case 10:
             case 11:
             case 12:
