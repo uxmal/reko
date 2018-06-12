@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Core.Output
             trf.WriteDeclaration(
                 new Pointer(
                         FunctionType.Action(new [] { Arg("arg0", 0) }), 
-                        4),
+                        32),
                 "pfn");
             Assert.AreEqual("void (* pfn)(word32 arg0)", sw.ToString());
         }
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Core.Output
                     new EquivalenceClass(
                         new TypeVariable(3),
                         FunctionType.Action(new[] { Arg("arg0", 0) })),
-                        4),
+                        32),
                 "pfn");
             Assert.AreEqual("void (* pfn)(word32 arg0)", sw.ToString());
         }
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core.Output
             var trf = new TypeReferenceFormatter(new TextFormatter(sw));
             trf.WriteDeclaration(
                 new Pointer(
-                    new TypeReference("LONG", PrimitiveType.Int32), 4),
+                    new TypeReference("LONG", PrimitiveType.Int32), 32),
                 "l0");
             Assert.AreEqual("LONG * l0", sw.ToString());
         }

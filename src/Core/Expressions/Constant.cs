@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Core.Expressions
 {
@@ -44,10 +45,22 @@ namespace Reko.Core.Expressions
 
         public static Constant Create(DataType dt, long value)
         {
+            Debug.Assert(dt.BitSize > 0, "Bad constant size; this should never happen.");
             PrimitiveType p = (PrimitiveType)dt;
-            switch (p.Size)
+            int bitSize = p.BitSize;
+            switch (bitSize)
             {
             case 1:
+                return new ConstantBool(p, value != 0);
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                value &= (long)Bits.Mask(0, bitSize);
+                goto case 8;
+            case 8:
                 switch (p.Domain)
                 {
                 case Domain.Boolean: return new ConstantBool(p, value != 0);
@@ -55,39 +68,71 @@ namespace Reko.Core.Expressions
                 case Domain.Character: return new ConstantChar(p,(char) (byte) value);
                 default: return new ConstantByte(p, (byte) value);
                 }
-            case 2:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                value &= (long)Bits.Mask(0, bitSize);
+                goto case 16;
+            case 16:
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt16(p, (short) value);
                 case Domain.Character: return new ConstantChar(p, (char) value);
                 default: return new ConstantUInt16(p, (ushort) value);
                 }
-            case 4:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+            case 31:
+                value &= (long)Bits.Mask(0, bitSize);
+                goto case 32;
+            case 32:
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt32(p, (int) value);
                 case Domain.Real: return new ConstantUInt32(p,  (uint) value);
                 default: return new ConstantUInt32(p, (uint) value);
                 }
-            case 8:
+            case 36:        // PDP-10 <3
+                value &= (long)Bits.Mask(0, bitSize);
+                goto case 64;
+            case 64:
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt64(p, (long) value);
                 case Domain.Real: return new ConstantUInt64(p, (ulong) value);
                 default: return new ConstantUInt64(p, (ulong) value);
                 }
-            case 16:
+            case 128:
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt128(p, (long)value);
                 default: return new ConstantUInt128(p, (ulong)value);
                 }
-            case 32:
+            case 256:
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt256(p, (long)value);
                 default: return new ConstantUInt256(p, (ulong)value);
                 }
+            default:
+                //$TODO: if we encounter less common bit sizes, do them in a cascading if statement.
+                break;
             }
             throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
         }

@@ -149,6 +149,10 @@
       <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
       <Name>Xbox360</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
+      <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
+      <Name>Elf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
       <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
       <Name>Xex</Name>

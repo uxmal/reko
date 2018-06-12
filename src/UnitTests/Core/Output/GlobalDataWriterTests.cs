@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Core.Output
             {
                 DataType = globalStruct
             };
-            var ptr = new Pointer(globalStruct, 4);
+            var ptr = new Pointer(globalStruct, 32);
             program.Globals.TypeVariable.DataType = ptr;
         }
 
@@ -170,7 +170,7 @@ char g_b1004 = 'H';
                 .WriteLeUInt32(0)
                 .WriteLeUInt32(1234);
             Given_Globals(
-                Given_Field(0x1000, new Pointer(PrimitiveType.Int32, 4)),
+                Given_Field(0x1000, new Pointer(PrimitiveType.Int32, 32)),
                 Given_Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
@@ -221,14 +221,14 @@ int32 g_dw1008 = 1234;
                 Name = "Eq_2",
                 Fields = {
                     { 0, PrimitiveType.Int32 },
-                    { 4, new Pointer(eqLink, 4) }
+                    { 4, new Pointer(eqLink, 32) }
                 }
             };
             eqLink.DataType = link;
             Given_Globals(
                 Given_Field(0x1000, eqLink),
                 Given_Field(0x1008, eqLink),
-                Given_Field(0x1010, new Pointer(eqLink, 4)));
+                Given_Field(0x1010, new Pointer(eqLink, 32)));
             RunTest(
 @"Eq_2 g_t1000 = 
 {
@@ -300,7 +300,7 @@ struct Eq_2 * g_ptr1010 = &g_t1000;
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
                     }
-                }, 4)));
+                }, 32)));
             RunTest(
 @"struct test * g_ptr1000 = &g_t1004;
 struct test g_t1004 = 
@@ -326,7 +326,7 @@ struct test g_t1004 =
                     {
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
-                        { 8, new Pointer(FunctionType.Action(new Identifier[0]), 4) }
+                        { 8, new Pointer(FunctionType.Action(new Identifier[0]), 32) }
                     }
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");

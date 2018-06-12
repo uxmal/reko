@@ -652,7 +652,7 @@ namespace Reko.Typing
 
         private Pointer PointerTo(DataType dt)
         {
-            return new Pointer(dt, platform.PointerType.Size);
+            return new Pointer(dt, platform.PointerType.BitSize);
         }
 
         private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int size)
@@ -687,7 +687,7 @@ namespace Reko.Typing
                 {
                     var seg = seq.Expressions[0];
                     var off = seq.Expressions[1];
-                    MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).Size));
+                    MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).BitSize));
                     if (DataTypeOf(seq) is Pointer ptr)
                     {
                         MeetDataType(off, MemberPointerTo(seg.TypeVariable, ptr.Pointee, DataTypeOf(off).Size));

@@ -388,7 +388,7 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void UnifyPointerStructSegment()
 		{
-			Pointer p = new Pointer(new StructureType{ Fields = { { 4, PrimitiveType.UInt32} } }, 2);
+			Pointer p = new Pointer(new StructureType{ Fields = { { 4, PrimitiveType.UInt32} } }, 16);
 			DataType dt = un.Unify(p, PrimitiveType.SegmentSelector);
 			Assert.AreEqual("(ptr16 (struct (4 uint32 dw0004)))", dt.ToString());
 		}
@@ -412,7 +412,7 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void UnifyPtrHybrid()
 		{
-			Pointer p = new Pointer(new StructureType(null, 32), 4);
+			Pointer p = new Pointer(new StructureType(null, 32), 32);
 			PrimitiveType hybrid = PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 32);
 			DataType dt = un.Unify(p, hybrid);
 			Assert.AreEqual("(ptr32 (struct 0020))", dt.ToString());
@@ -458,8 +458,8 @@ namespace Reko.UnitTests.Typing
 		public void CompatiblePointers()
 		{
 			TypeVariable tv1 = new TypeVariable(1);
-			Pointer p1 = new Pointer(tv1, 4);
-			Pointer p2 = new Pointer(tv1, 4);
+			Pointer p1 = new Pointer(tv1, 32);
+			Pointer p2 = new Pointer(tv1, 32);
 			Assert.IsTrue(un.AreCompatible(p1, p2));
 		}
 
@@ -468,7 +468,7 @@ namespace Reko.UnitTests.Typing
 		{
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
-			Assert.IsFalse(un.AreCompatible(new Pointer(tv1, 4), new Pointer(tv2, 4)));
+			Assert.IsFalse(un.AreCompatible(new Pointer(tv1, 32), new Pointer(tv2, 32)));
 		}
 
 		[Test]
@@ -500,8 +500,8 @@ namespace Reko.UnitTests.Typing
         {
             var eq = new EquivalenceClass(new TypeVariable(3));
             var a = new ArrayType(eq, 0);
-            var p1 = new Pointer(eq, 4);
-            var p2 = new Pointer(a, 4);
+            var p1 = new Pointer(eq, 32);
+            var p2 = new Pointer(a, 32);
             Assert.IsTrue(un.AreCompatible(p1, p2));
         }
 
@@ -509,8 +509,8 @@ namespace Reko.UnitTests.Typing
         public void CompatiblePtrToCode()
         {
             var code = new CodeType();
-            var p1 = new Pointer(code, 4);
-            var p2 = new Pointer(code, 4);
+            var p1 = new Pointer(code, 32);
+            var p2 = new Pointer(code, 32);
             Assert.IsTrue(un.AreCompatible(p1, p2));
         }
 
@@ -544,7 +544,7 @@ namespace Reko.UnitTests.Typing
         {
             var t1 = PrimitiveType.Create(Domain.Offset, 16);
             var t2 = new MemberPointer(
-                new Pointer(new StructureType { IsSegment = true }, 2),
+                new Pointer(new StructureType { IsSegment = true }, 16),
                 PrimitiveType.Word16,
                 2);
             Assert.IsTrue(un.AreCompatible(t1, t2));
@@ -554,8 +554,8 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void Unify_CodeFn()
         {
-            var t1 = new Pointer(new CodeType(), 4);
-            var t2 = new Pointer(new FunctionType(Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 4);
+            var t1 = new Pointer(new CodeType(), 32);
+            var t2 = new Pointer(new FunctionType(Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 32);
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(ptr32 (fn word32 (word32, word32)))", un.Unify(t1, t2).ToString());
         }

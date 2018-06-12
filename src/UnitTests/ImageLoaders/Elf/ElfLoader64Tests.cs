@@ -37,7 +37,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
     {
         private MockRepository mr;
         private byte[] bytes;
-        private List<Elf64_PHdr> programHeaders;
+        private List<ElfSegment> programHeaders;
         private List<ElfSection> sections;
         private IPlatform platform;
         private ElfLoader64 el64;
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         public void Setup()
         {
             mr = new MockRepository();
-            programHeaders = new List<Elf64_PHdr>();
+            programHeaders = new List<ElfSegment>();
             sections = new List<ElfSection>();
             platform = mr.Stub<IPlatform>();
             this.sc = new ServiceContainer();
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             uint fileSize,
             uint loadedSize)
         {
-            programHeaders.Add(new Elf64_PHdr
+            programHeaders.Add(new ElfSegment
             {
                 p_type = type,
                 p_offset = imageOffset,
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             this.eil = new ElfImageLoader(sc, "foo", this.bytes);
             this.el64 = new ElfLoader64(eil, eih, this.bytes, 0, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
-            el64.ProgramHeaders64.AddRange(programHeaders);
+            el64.Segments.AddRange(programHeaders);
             el64.Sections.AddRange(sections);
         }
 

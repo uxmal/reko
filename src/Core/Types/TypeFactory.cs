@@ -91,7 +91,7 @@ namespace Reko.Core.Types
 
 		public Pointer CreatePointer(DataType pointee, int bitSize)
 		{
-			return new Pointer(pointee, bitSize / DataType.BitsPerByte);
+			return new Pointer(pointee, bitSize);
 		}
 
 		public TypeVariable CreateTypeVariable()

@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Typing
 
         private Pointer PointerTo(DataType dt)
         {
-            return new Pointer(dt, arch.PointerType.Size);
+            return new Pointer(dt, arch.PointerType.BitSize);
         }
 
         private static Identifier Id(string name, DataType dt)

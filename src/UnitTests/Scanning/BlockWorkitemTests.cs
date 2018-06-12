@@ -726,7 +726,7 @@ testProc_exit:
                 Signature = new FunctionType(
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
                     new[] {
-                        new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
+                        new Identifier("str", new Pointer(PrimitiveType.Char, 32), r0.Storage),
                         new Identifier("f", PrimitiveType.Real32, r1.Storage)
                     })
             };

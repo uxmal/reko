@@ -290,7 +290,7 @@ namespace Reko.Core.Types
 			if (ptrA != null && ptrB != null)
 			{
 				DataType dt = UnifyInternal(ptrA.Pointee, ptrB.Pointee);
-				return new Pointer(dt, Math.Max(ptrA.Size, ptrB.Size));
+				return new Pointer(dt, Math.Max(ptrA.BitSize, ptrB.BitSize));
 			}
             if (ptrA != null)
             {

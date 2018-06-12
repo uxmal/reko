@@ -129,7 +129,7 @@ namespace Reko.Environments.MacOS
                 return this.ptrA5World;
 
             var a5world_t = new StructureType("A5World_t", 0, true);
-            var ptr = new Pointer(a5world_t, PointerType.Size);
+            var ptr = new Pointer(a5world_t, PointerType.BitSize);
             this.ptrA5World = new Identifier("a5world", ptr, new MemoryStorage());
             return this.ptrA5World;
         }

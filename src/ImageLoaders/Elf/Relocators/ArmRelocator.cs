@@ -32,9 +32,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            throw new NotImplementedException();
             /*
             S (when used on its own) is the address of the symbol
             A is the addend for the relocation.
@@ -60,8 +59,21 @@ namespace Reko.ImageLoaders.Elf.Relocators
             7   R_ARM_THM_ABS5  Static      Thumb16         S + A
             8   R_ARM_ABS8      Static      Data            S + A
             9   R_ARM_SBREL32   Static      Data            ((S + A) | T) – B(S)
+            20  R_ARM_COPY                                  S
+            21  R_ARM_GLOB_DAT Dynamic      Data            (S + A) | T 
+            22  R_ARM_JUMP_SLOT Dynamic     Data            (S + A) | T 
             */
-
+            var rt = (Arm32Rt)(rela.Info & 0xFF);
+            switch (rt)
+            {
+            case Arm32Rt.R_ARM_COPY:
+                break;
+            case Arm32Rt.R_ARM_GLOB_DAT:
+            case Arm32Rt.R_ARM_JUMP_SLOT:
+                break;
+            default:
+                throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
+            }
         }
 
         public override string RelocationTypeToString(uint type)
@@ -70,6 +82,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         }
     }
 
+    // http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044f/IHI0044F_aaelf.pdf
     public enum Arm32Rt
     {
         R_ARM_NONE = 0,
@@ -82,5 +95,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_ARM_THM_ABS5 = 7,
         R_ARM_ABS8 = 8,
         R_ARM_SBREL32 = 9,
-    }                                               
+
+        R_ARM_COPY = 20,
+        R_ARM_GLOB_DAT = 21,
+        R_ARM_JUMP_SLOT = 22,
+    }
 }

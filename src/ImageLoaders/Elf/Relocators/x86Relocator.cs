@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return;
@@ -77,19 +77,19 @@ namespace Reko.ImageLoaders.Elf.Relocators
             int A = 0;
             int sh = 0;
             uint mask = ~0u;
-            var addr = referringSection.Address + rela.r_offset;
+            var addr = referringSection.Address + rela.Offset;
             uint P = (uint)addr.ToLinear();
             uint PP = P;
             var relR = program.CreateImageReader(addr);
             var relW = program.CreateImageWriter(addr);
-            var rt = (i386Rt)(rela.r_info & 0xFF);
+            var rt = (i386Rt)(rela.Info & 0xFF);
             switch (rt)
             {
             case i386Rt.R_386_NONE: //  just ignore (common)
                 break;
             case i386Rt.R_386_32: // S + A
                                   // Read the symTabIndex'th symbol.
-                A = rela.r_addend;
+                A = (int)rela.Addend;
                 P = 0;
                 break;
             case i386Rt.R_386_PC32: // S + A - P
@@ -105,7 +105,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     //loader.AddSymbol(S, sym.Name);
                     //}
                 }
-                A = rela.r_addend;
+                A = (int)rela.Addend;
                 P = ~P + 1;
                 break;
             case i386Rt.R_386_GLOB_DAT:
