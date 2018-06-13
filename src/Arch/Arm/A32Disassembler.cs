@@ -480,7 +480,6 @@ namespace Reko.Arch.Arm
             }
         }
 
-
         private static NyiDecoder nyi(string str)
         {
             return new NyiDecoder(str);
@@ -568,9 +567,7 @@ namespace Reko.Arch.Arm
                         Ldah,
                         invalid,
                         Ldaexh,
-                        Ldrexh)),
-                    LoadStoreExclusive);
-
+                        Ldrexh)));
 
             var Mul = new InstrDecoder(Opcode.mul, "sr4,r0,r2");
             var Mla = new InstrDecoder(Opcode.mla, "sr4,r0,r2,r3");
@@ -598,6 +595,8 @@ namespace Reko.Arch.Arm
                Umlal,
 
                Smull,
+               Smull,
+               Smlal,
                Smlal);
 
             // --
@@ -800,7 +799,7 @@ namespace Reko.Arch.Arm
             var Clz = new InstrDecoder(Opcode.blx, null);
             var Eret = new InstrDecoder(Opcode.eret, null);
             var Miscellaneous = new MaskDecoder(21, 3,   // op0
-                new MaskDecoder(4, 3, // op1
+                new MaskDecoder(4, 7, // op1
                     MoveSpecialRegister,
                     invalid,
                     invalid,
@@ -810,7 +809,7 @@ namespace Reko.Arch.Arm
                     IntegerSaturatingArithmetic,
                     invalid,
                     ExceptionGeneration),
-                new MaskDecoder(4, 3, // op1
+                new MaskDecoder(4, 7, // op1
                     MoveSpecialRegister,
                     Bx,
                     Bxj,
@@ -820,7 +819,7 @@ namespace Reko.Arch.Arm
                     IntegerSaturatingArithmetic,
                     invalid,
                     ExceptionGeneration),
-                new MaskDecoder(4, 3, // op1
+                new MaskDecoder(4, 7, // op1
                     MoveSpecialRegister,
                     invalid,
                     invalid,
@@ -830,7 +829,7 @@ namespace Reko.Arch.Arm
                     IntegerSaturatingArithmetic,
                     invalid,
                     ExceptionGeneration),
-                new MaskDecoder(4, 3, // op1
+                new MaskDecoder(4, 7, // op1
                     MoveSpecialRegister,
                     Clz,
                     invalid,
@@ -843,7 +842,7 @@ namespace Reko.Arch.Arm
 
             var HalfwordMultiplyAndAccumulate = new MaskDecoder(21, 0x3,
                 nyi("SmlabbSmlabtSmlatbSmlatt"),
-                new MaskDecoder(5, 2,
+                new MaskDecoder(5, 3,
                     nyi("SmlawbSmlawt"),
                     nyi("SmulwbSmulwt"),
                     nyi("SmlawbSmlawt"),
@@ -1157,7 +1156,7 @@ namespace Reko.Arch.Arm
             var Uhadd8 = new InstrDecoder(Opcode.uhadd8, null);
             var Uhsub8 = new InstrDecoder(Opcode.uhsub8, null);
 
-            var ParallelArithmetic = new MaskDecoder(20, 3,
+            var ParallelArithmetic = new MaskDecoder(20, 7,
                 invalid,
                 new MaskDecoder(5, 7,
                     Sadd16,
