@@ -51,8 +51,8 @@ namespace Reko.Arch.Arm
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
-#if NATIVE
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+#if NATIVE
 
             var unk = CreateNativeArchitecture("arm");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
@@ -202,16 +202,13 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            if (regsByNumber.TryGetValue(i, out var reg))
-                return reg;
-            else 
-                return null;
+            throw new NotImplementedException();
         }
 
         public override RegisterStorage GetRegister(string name)
         {
-            if (regsByName.TryGetValue(name, out var reg))
-            return reg;
+            if (Registers.RegistersByName.TryGetValue(name, out var reg))
+                return reg;
             else
                 return null;
         }
@@ -224,8 +221,9 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-            //$TOD: write a dictionary mapping ARM instructions to ARM_INS_xxx.
-            return null; 
+            if (!Enum.TryParse(name, true, out Opcode result))
+                return null;
+            return (int)result;
         }
 
         public override SortedList<string, int> GetOpcodeNames()

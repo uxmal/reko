@@ -59,5 +59,18 @@ namespace Reko.Arch.Arm
         public static readonly RegisterStorage[] SRegs = Enumerable.Range(0, 32)
             .Select(n => new RegisterStorage($"s{n}", QRegs[n / 4].Number, (uint)(n & 3) * 32, PrimitiveType.Word32))
             .ToArray();
+
+        public static readonly Dictionary<string, RegisterStorage> RegistersByName;
+
+        static Registers()
+        {
+            RegistersByName = GpRegs
+                .Concat(new[] { cpsr, fpscr, spsr })
+                .Concat(CoprocessorRegisters)
+                .Concat(QRegs)
+                .Concat(DRegs)
+                .Concat(SRegs)
+                .ToDictionary(r => r.Name);
+        }
     }
 }
