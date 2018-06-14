@@ -69,35 +69,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="A32Disassembler.cs" />
+    <Compile Include="AArch32\A32Disassembler.cs" />
     <Compile Include="AArch64.cs" />
     <Compile Include="AArch64\AArch64Disassembler.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />
     <Compile Include="AArch64\Arm64State.cs" />
     <Compile Include="AArch64\Opcode.cs" />
     <Compile Include="AArch64\Registers.cs" />
-    <Compile Include="Arm32Architecture.cs" />
-    <Compile Include="Arm32InstructionNew.cs" />
-    <Compile Include="Arm32Operand.cs" />
+    <Compile Include="AArch32\Arm32Architecture.cs" />
+    <Compile Include="AArch32\Arm32InstructionNew.cs" />
+    <Compile Include="AArch32\Arm32Operand.cs" />
     <Compile Include="ArmCondition.cs" />
     <Compile Include="ArmNativeRewriterHost.cs" />
-    <Compile Include="ArmRewriter.Alu.cs" />
-    <Compile Include="ArmRewriter.cs" />
-    <Compile Include="Arm32Instruction.cs" />
-    <Compile Include="Arm32InstructionComparer.cs" />
-    <Compile Include="ArmProcessorState.cs" />
-    <Compile Include="ArmRewriter.System.cs" />
-    <Compile Include="ArmRewriter.Vector.cs" />
-    <Compile Include="ArmShiftType.cs" />
-    <Compile Include="ArmVectorData.cs" />
-    <Compile Include="FlagM.cs" />
-    <Compile Include="MultiRegisterOperand.cs" />
-    <Compile Include="Opcode.cs" />
+    <Compile Include="AArch32\ArmRewriter.Alu.cs" />
+    <Compile Include="AArch32\ArmRewriter.cs" />
+    <Compile Include="AArch32\Arm32Instruction.cs" />
+    <Compile Include="AArch32\Arm32InstructionComparer.cs" />
+    <Compile Include="AArch32\ArmProcessorState.cs" />
+    <Compile Include="AArch32\ArmRewriter.System.cs" />
+    <Compile Include="AArch32\ArmRewriter.Vector.cs" />
+    <Compile Include="AArch32\ArmShiftType.cs" />
+    <Compile Include="AArch32\ArmVectorData.cs" />
+    <Compile Include="AArch32\FlagM.cs" />
+    <Compile Include="AArch32\MultiRegisterOperand.cs" />
+    <Compile Include="AArch32\Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registers.cs" />
-    <Compile Include="T32Disassembler.cs" />
+    <Compile Include="AArch32\Registers.cs" />
+    <Compile Include="AArch32\T32Disassembler.cs" />
     <Compile Include="ThumbProcessorArchitecture.cs" />
-    <Compile Include="ThumbRewriter.cs" />
+    <Compile Include="AArch32\ThumbRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
