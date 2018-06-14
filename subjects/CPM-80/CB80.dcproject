@@ -11,7 +11,7 @@
     <global-vars>CB80.globals.c</global-vars>
     <user>
       <address>0100</address>
-      <loader>unknown.format</loader>
+      <loader>raw</loader>
       <processor name="z80" />
       <platform name="cpm" />
       <heuristic name="shingle" />

@@ -10,7 +10,7 @@
     <global-vars>rtl8188efw.globals.c</global-vars>
     <user>
       <address>0000</address>
-      <loader>unknown.format</loader>
+      <loader>raw</loader>
       <processor name="8051" />
       <procedure name="fn0000">
         <address>0000</address>
