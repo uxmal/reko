@@ -49,13 +49,13 @@
 ; DT_SYMTAB            00000348
 ; DT_STRSZ             000000DD
 ; DT_SYMENT                  16
-; 70000035             00010844
+; DT_MIPS_RLD_MAP_REL  00010844
 ; DT_DEBUG             00000000
 ; DT_PLTGOT            00010A90
 ; DT_REL               00000578
 ; DT_RELSZ                   16
 ; DT_RELENT                   8
-; DT_MIPS_RLD_VERSION         1
+; DT_MIPS_RLD_VERSION  00000001
 ; DT_MIPS_FLAGS        00000002
 ; DT_MIPS_BASE_ADDRESS 00000000
 ; DT_MIPS_LOCAL_GOTNO        16
