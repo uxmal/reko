@@ -29,11 +29,11 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using static Reko.Arch.Arm.A32Disassembler.Decoder;
+using static Reko.Arch.Arm.AArch32.A32Disassembler.Decoder;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
-    public class A32Disassembler : DisassemblerBase<Arm32InstructionNew>
+    public class A32Disassembler : DisassemblerBase<AArch32Instruction>
     {
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid; 
@@ -48,7 +48,7 @@ namespace Reko.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override Arm32InstructionNew DisassembleInstruction()
+        public override AArch32Instruction DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
@@ -59,7 +59,7 @@ namespace Reko.Arch.Arm
             return instr;
         }
 
-        private Arm32InstructionNew Decode(uint wInstr, Opcode opcode, string format)
+        private AArch32Instruction Decode(uint wInstr, Opcode opcode, string format)
         {
             var ops = new List<MachineOperand>();
             bool updateFlags = false;
@@ -142,7 +142,7 @@ namespace Reko.Arch.Arm
                 }
                 ops.Add(op);
             }
-            var instr = new Arm32InstructionNew
+            var instr = new AArch32Instruction
             {
                 opcode = opcode,
                 ops = ops.ToArray(),
@@ -297,7 +297,7 @@ namespace Reko.Arch.Arm
 
         public abstract class Decoder
         {
-            public abstract Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm);
+            public abstract AArch32Instruction Decode(uint wInstr, A32Disassembler dasm);
 
             public static uint bitmask(uint u, int shift, uint mask)
             {
@@ -324,7 +324,7 @@ namespace Reko.Arch.Arm
                 this.decoders = decoders;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 TraceDecoder(wInstr);
                 uint op = (wInstr >> shift) & mask;
@@ -369,7 +369,7 @@ namespace Reko.Arch.Arm
                 this.@default = @default;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 var op = (wInstr >> shift) & mask;
                 if (!decoders.TryGetValue(op, out Decoder decoder))
@@ -387,7 +387,7 @@ namespace Reko.Arch.Arm
                 this.message = message;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
             }
@@ -404,7 +404,7 @@ namespace Reko.Arch.Arm
                 this.format = format;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 if (format == null)
                     throw new NotImplementedException($"Format missing for ARM instruction {opcode}.");
@@ -418,7 +418,7 @@ namespace Reko.Arch.Arm
                 : base(shift, mask, decoders)
             { }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 var instr = base.Decode(wInstr, dasm);
                 instr.condition = (ArmCondition)(wInstr >> 28);
@@ -440,7 +440,7 @@ namespace Reko.Arch.Arm
                 this.is1111 = is1111;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 var op = (wInstr >> shift) & 0xF;
                 if (op == 0xF)
@@ -459,7 +459,7 @@ namespace Reko.Arch.Arm
                 this.decode = decode;
             }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 return decode(wInstr, dasm).Decode(wInstr, dasm);
             }
@@ -469,7 +469,7 @@ namespace Reko.Arch.Arm
         {
             public MovDecoder(Opcode opcode, string format) : base(opcode, format) { }
 
-            public override Arm32InstructionNew Decode(uint wInstr, A32Disassembler dasm)
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 var instr = base.Decode(wInstr, dasm);
                 if (instr.ShiftType != Opcode.Invalid)

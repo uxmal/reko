@@ -30,7 +30,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     public class ThumbRewriter : ArmRewriter
     {
@@ -64,7 +64,7 @@ namespace Reko.Arch.Arm
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ThumbRewriterRetired(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public ThumbRewriterRetired(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, AArch32ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.nArch = nArch;

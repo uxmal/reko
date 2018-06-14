@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            ArmProcessorState state = new ArmProcessorState(arch);
+            AArch32ProcessorState state = new AArch32ProcessorState(arch);
             return arch.CreateRewriter(new LeImageReader(image, 0), state, binder, host);
         }
 
@@ -5468,7 +5468,7 @@ namespace Reko.UnitTests.Arch.Arm
 				})
                 .ToArray();
             var image = new MemoryArea(Address.Ptr32(0x00401000), code);
-            var rw = arch.CreateRewriter(image.CreateLeReader(0), new ArmProcessorState(arch), arch.CreateFrame(), new FakeRewriterHost());
+            var rw = arch.CreateRewriter(image.CreateLeReader(0), new AArch32ProcessorState(arch), arch.CreateFrame(), new FakeRewriterHost());
             {
                 foreach (var rtc in rw)
                 {

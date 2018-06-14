@@ -30,13 +30,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     /// <summary>
     /// Disassembles machine code in the ARM T32 encoding into 
     /// ARM32 instructions.
     /// </summary>
-    public class T32Disassembler : DisassemblerBase<Arm32InstructionNew>
+    public class T32Disassembler : DisassemblerBase<AArch32Instruction>
     {
         private static readonly Decoder[] decoders;
         private static readonly Decoder invalid;
@@ -55,7 +55,7 @@ namespace Reko.Arch.Arm
             this.itCondition = ArmCondition.AL;
         }
 
-        public override Arm32InstructionNew DisassembleInstruction()
+        public override AArch32Instruction DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out var wInstr))
@@ -79,7 +79,7 @@ namespace Reko.Arch.Arm
             return instr;
         }
 
-        private Arm32InstructionNew DecodeFormat16(uint wInstr, Opcode opcode, string format)
+        private AArch32Instruction DecodeFormat16(uint wInstr, Opcode opcode, string format)
         {
             var ops = new List<MachineOperand>();
             ArmCondition cc = ArmCondition.AL;
@@ -333,7 +333,7 @@ namespace Reko.Arch.Arm
                 ops.Add(op);
             }
 
-            return new Arm32InstructionNew
+            return new AArch32Instruction
             {
                 opcode = opcode,
                 condition = cc,
@@ -571,7 +571,7 @@ namespace Reko.Arch.Arm
         /// </summary>
         private abstract class Decoder
         {
-            public abstract Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr);
+            public abstract AArch32Instruction Decode(T32Disassembler dasm, uint wInstr);
 
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, int shift, uint mask)
@@ -615,7 +615,7 @@ namespace Reko.Arch.Arm
                 this.decoders = decoders;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 TraceDecoder(wInstr, shift, mask);
                 var op = (wInstr >> shift) & mask;
@@ -641,7 +641,7 @@ namespace Reko.Arch.Arm
                 this.falseDecoder = falseDecoder;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 return (predicate(wInstr) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
             }
@@ -687,7 +687,7 @@ namespace Reko.Arch.Arm
                 this.decoders = decoders;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
@@ -713,7 +713,7 @@ namespace Reko.Arch.Arm
                 this.format = format;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 return dasm.DecodeFormat16(wInstr, opcode, format);
             }
@@ -722,7 +722,7 @@ namespace Reko.Arch.Arm
         // Decodes the T1 BL instruction
         private class BlDecoder : Decoder
         {
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 var s = SBitfield(wInstr, 10 + 16, 1);
                 var i1 = 1 & ~(SBitfield(wInstr, 13, 1) ^ s);
@@ -732,7 +732,7 @@ namespace Reko.Arch.Arm
                 off = (off << 10) | SBitfield(wInstr, 16, 10);
                 off = (off << 11) | SBitfield(wInstr, 0, 11);
                 off <<= 1;
-                return new Arm32InstructionNew
+                return new AArch32Instruction
                 {
                     opcode = Opcode.bl,
                     ops = new MachineOperand[] { AddressOperand.Create(dasm.addr + off) }
@@ -743,13 +743,13 @@ namespace Reko.Arch.Arm
         // Decodes 16-bit LDM* STM* instructions
         private class LdmStmDecoder16 : Decoder
         {
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 var rn = Registers.GpRegs[SBitfield(wInstr, 8, 3)];
                 var registers = (byte)wInstr;
                 var st = SBitfield(wInstr, 11, 1) == 0;
                 var w = st || (registers & (1 << rn.Number)) == 0;
-                return new Arm32InstructionNew
+                return new AArch32Instruction
                 {
                     opcode = st
                         ? Opcode.stm
@@ -774,7 +774,7 @@ namespace Reko.Arch.Arm
                 this.format = format;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 var rn = Registers.GpRegs[SBitfield(wInstr, 16, 4)];
                 var registers = (ushort)wInstr;
@@ -783,7 +783,7 @@ namespace Reko.Arch.Arm
                 // writeback
                 if (rn == Registers.sp)
                 {
-                    return new Arm32InstructionNew
+                    return new AArch32Instruction
                     {
                         opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
                         Writeback = w,
@@ -792,7 +792,7 @@ namespace Reko.Arch.Arm
                 }
                 else
                 {
-                    return new Arm32InstructionNew
+                    return new AArch32Instruction
                     {
                         opcode = opcode,
                         Writeback = w,
@@ -816,7 +816,7 @@ namespace Reko.Arch.Arm
                 this.format = format;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 var instr = base.Decode(dasm, wInstr);
                 if (instr.ops[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
@@ -830,9 +830,9 @@ namespace Reko.Arch.Arm
         // Decodes IT instructions
         private class ItDecoder : Decoder
         {
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                var instr = new Arm32InstructionNew
+                var instr = new AArch32Instruction
                 {
                     opcode = Opcode.it,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
@@ -853,7 +853,7 @@ namespace Reko.Arch.Arm
             {
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 // A hack -- we patch up the output of the regular decoder.
                 var instr = base.Decode(dasm, wInstr);
@@ -887,7 +887,7 @@ namespace Reko.Arch.Arm
                 this.message = message;
             }
 
-            public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
             }

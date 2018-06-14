@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     [Flags]
     public enum FlagM

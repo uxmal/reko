@@ -22,12 +22,10 @@ using Reko.Core.Types;
 using System;
 using System.Linq;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
-
-
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
             var src1 = Operand(Src1());

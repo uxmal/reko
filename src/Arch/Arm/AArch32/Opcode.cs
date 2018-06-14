@@ -1,4 +1,4 @@
-﻿namespace Reko.Arch.Arm
+﻿namespace Reko.Arch.Arm.AArch32
 {
     public enum Opcode
     {

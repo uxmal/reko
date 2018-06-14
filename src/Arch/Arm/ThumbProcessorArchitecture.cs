@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -166,7 +167,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this);
+            return new AArch32ProcessorState(this);
         }
  
 

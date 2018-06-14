@@ -23,7 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {

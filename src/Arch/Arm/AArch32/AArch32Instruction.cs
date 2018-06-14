@@ -23,9 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
-    public class Arm32InstructionNew : MachineInstruction
+    public class AArch32Instruction : MachineInstruction
     {
         #region Special cases
 
@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm
         };
         #endregion
 
-        public Arm32InstructionNew()
+        public AArch32Instruction()
         {
             this.condition = ArmCondition.AL;
         }

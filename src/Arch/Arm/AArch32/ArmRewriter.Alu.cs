@@ -24,7 +24,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {

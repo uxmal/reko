@@ -34,7 +34,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CallingConvention = System.Runtime.InteropServices.CallingConvention;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -42,8 +42,8 @@ namespace Reko.Arch.Arm
         private EndianImageReader rdr;
         private IRewriterHost host;
         private IStorageBinder binder;
-        private IEnumerator<Arm32InstructionNew> dasm;
-        protected Arm32InstructionNew instr;
+        private IEnumerator<AArch32Instruction> dasm;
+        protected AArch32Instruction instr;
         protected RtlClass rtlClass;
         protected RtlEmitter m;
 
@@ -51,7 +51,7 @@ namespace Reko.Arch.Arm
         {
         }
 
-        protected ArmRewriter(IProcessorArchitecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder, IEnumerator<Arm32InstructionNew> dasm)
+        protected ArmRewriter(IProcessorArchitecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder, IEnumerator<AArch32Instruction> dasm)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -992,7 +992,7 @@ void EmitUnitTest()
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        internal ArmRewriterRetired(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        internal ArmRewriterRetired(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, AArch32ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.rdr = rdr;

@@ -34,6 +34,7 @@ using System.Diagnostics;
 using System.Collections;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
+using Reko.Arch.Arm.AArch32;
 
 namespace Reko.Arch.Arm
 {
@@ -162,7 +163,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this);
+            return new AArch32ProcessorState(this);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

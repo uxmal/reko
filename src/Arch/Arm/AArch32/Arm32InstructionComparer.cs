@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
     public class Arm32InstructionComparer : InstructionComparer
     {

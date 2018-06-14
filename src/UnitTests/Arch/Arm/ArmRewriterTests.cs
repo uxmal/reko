@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Arch.Arm.AArch32;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return arch.CreateRewriter(new LeImageReader(image, 0), new ArmProcessorState(arch), binder, host);
+            return arch.CreateRewriter(new LeImageReader(image, 0), new AArch32ProcessorState(arch), binder, host);
         }
 
         private void BuildTest(params string[] bitStrings)
