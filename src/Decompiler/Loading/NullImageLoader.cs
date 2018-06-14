@@ -68,6 +68,13 @@ namespace Reko.Loading
             return program;
         }
 
+        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        {
+            this.Architecture = arch;
+            this.Platform = platform;
+            return this.Load(addrLoad);
+        }
+
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(EntryPoints, new SortedList<Address, ImageSymbol>());
