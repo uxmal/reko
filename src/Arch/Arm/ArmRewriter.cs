@@ -541,7 +541,16 @@ namespace Reko.Arch.Arm
 
         void NotImplementedYet()
         {
-            host.Error(instr.Address, "Rewriting ARM opcode '{0}' is not supported yet.", instr.opcode);
+            uint wInstr;
+            if (instr.Length == 4)
+            {
+                wInstr = rdr.PeekLeUInt32(-4);
+            }
+            else
+            {
+                wInstr = rdr.PeekLeUInt16(-2);
+            }
+            host.Error(instr.Address, "Rewriting ARM opcode '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
             EmitUnitTest();
             m.Invalid();
         }
@@ -933,7 +942,7 @@ case ARM_OP_SYSREG:
 
 void EmitUnitTest()
 {
-#if !DEBUG
+#if NOT_YET
 
     if (opcode_seen.Contains(instr.opcode))
         return;

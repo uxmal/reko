@@ -18,7 +18,9 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Machine;
 using NUnit.Framework;
@@ -278,6 +280,69 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instructions(0xF6CF, 0x7AFF);  // movt r10,#&FFFF
             Expect_Code("movt\tr10,#&FFFF");
+        }
+
+        [Test]
+        public void ThumbDis_mov_imm()
+        {
+            Given_Instructions(0x2004);
+            Expect_Code("mov\tr0,#4");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_imm()
+        {
+            Given_Instructions(0xF895, 0x4045);
+            Expect_Code("ldrb\tr4,[r5,-#&45]");
+        }
+
+        [Test]
+        public void ThumbDis_b_T2_variant()
+        {
+            Given_Instructions(0xE005);
+            Expect_Code("b\t$0010000A");
+        }
+
+        [Test]
+        public void ThumbDis_b_T2_variant_backward()
+        {
+            Given_Instructions(0xE7FF);
+            Expect_Code("b\t$000FFFFE");
+        }
+
+        [Test]
+        public void ThumbDis_vmlal()
+        {
+            Given_Instructions(0xFFCB, 0x2800);
+            Expect_Code("vmlal\tq9,d11,d0");
+        }
+
+        [Test]
+        public void ThumbDis_b_T4_variant()
+        {
+            Given_Instructions(0xF008, 0xBA62);
+            Expect_Code("b\t$00D084C4");
+        }
+
+        [Test]
+        public void ThumbDis_b_T4_variant_negative()
+        {
+            Given_Instructions(0xF7FF, 0xBFFF);
+            Expect_Code("b\t$000FFFFE");
+        }
+
+        [Test]
+        public void ThumbDis_add_hireg()
+        {
+            Given_Instructions(0x440B);
+            Expect_Code("adds\tr3,r1");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_literal()
+        {
+            Given_Instructions(0xF8DF, 0x90FC);
+            Expect_Code("ldr\tr9,[pc,#&FC]");
         }
     }
 }

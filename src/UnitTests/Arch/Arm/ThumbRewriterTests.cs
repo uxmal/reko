@@ -18,18 +18,18 @@
  */
 #endregion
 
-using Reko.Arch.Arm;
-using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
 using NUnit.Framework;
+using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch32;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Core.Expressions;
-using Reko.Core.Serialization;
-using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -7933,6 +7933,15 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbRw_vmls()
         {
             RewriteCode("1CFF2469");	// vmls.i16 d6, d12, d20
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d6 = __vmls_i16(d12, d20)");
+        }
+
+        [Test]
+        public void ThumbRw_mov_r0_r0()
+        {
+            RewriteCode("0000");	// mov r0,r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|d6 = __vmls_i16(d12, d20)");

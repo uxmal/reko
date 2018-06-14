@@ -144,9 +144,18 @@ namespace Reko.Arch.Arm
         private void RewriteRevBinOp(Func<Expression, Expression, Expression> op, bool setflags)
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var opSrc1 = this.Operand(Src1());
-            var opSrc2 = this.Operand(Src2());
-            m.Assign(opDst, op(opSrc2, opSrc1));
+            if (instr.ops.Length > 2)
+            {
+                var src1 = this.Operand(Src1());
+                var src2 = this.Operand(Src2());
+                m.Assign(opDst, op(src1, src2));
+            }
+            else
+            {
+                var dst = Operand(Dst(), PrimitiveType.Word32, true);
+                var src = Operand(Src1());
+                m.Assign(dst, op(dst, src));
+            }
             if (setflags)
             {
                 m.Assign(NZCV(), m.Cond(opDst));

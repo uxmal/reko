@@ -201,7 +201,7 @@ namespace Reko.Arch.Arm
                     op = new RegisterOperand(Registers.GpRegs[
                         ((int)wInstr >> offset) & 0x0F]);
                     break;
-                case 'T':   // 4-bit register, specified by bits 7 || 2..0
+                case 'T':   // GP register, specified by bits 7 || 2..0
                     var tReg = ((wInstr & 0x80) >> 4) | (wInstr & 7);
                     op = new RegisterOperand(Registers.GpRegs[tReg]);
                     break;
@@ -298,12 +298,10 @@ namespace Reko.Arch.Arm
                     size = ReadDecimal(format, ref i);
                     op = AddressOperand.Create(addr.Align(4) + (SBitfield(wInstr, offset, size) << 2));
                     break;
-                case 'p':   // PC-relative offset, shift by 1 bit.
+                case 'p':   // PC-relative offset.
                     ++i;
-                    offset = ReadDecimal(format, ref i);
-                    Expect(':', format, ref i);
-                    size = ReadDecimal(format, ref i);
-                    op = AddressOperand.Create(addr + (SBitfield(wInstr, offset, size) << 1));
+                    offset = (int)ReadBitfields(wInstr, format, ref i);
+                    op = AddressOperand.Create(addr + offset);
                     break;
                 case 'c':  // Condition code
                     ++i;
@@ -326,11 +324,11 @@ namespace Reko.Arch.Arm
                         op = CoprocessorRegister(wInstr, offset);
                         break;
                     default:
-                        throw new NotImplementedException($"Unknown format specifier C{format[i]} when decoding {opcode}.");
+                        throw new NotImplementedException($"Unknown format specifier C{format[i]} when decoding {opcode} ({wInstr:X4}).");
                     }
                     break;
                 default:
-                    throw new NotImplementedException($"Unknown format specifier {format[i]} when decoding {opcode}.");
+                    throw new NotImplementedException($"Unknown format specifier {format[i]} when decoding {opcode} ({wInstr:X4}).");
                 }
                 ops.Add(op);
             }
@@ -410,17 +408,25 @@ namespace Reko.Arch.Arm
         private uint ReadBitfields(uint wInstr, string format, ref int i)
         {
             uint n = 0u;
+            int bits = 0;
+            bool signExtend = PeekAndDiscard('+', format, ref i);
             do
             {
                 var offset = this.ReadDecimal(format, ref i);
                 Expect(':', format, ref i);
                 var size = this.ReadDecimal(format, ref i);
                 n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
+                bits += size;
             } while (PeekAndDiscard(':', format, ref i));
             if (PeekAndDiscard('<', format, ref i))
             {
                 var shift = this.ReadDecimal(format, ref i);
                 n <<= shift;
+                bits += shift;
+            }
+            if (signExtend)
+            {
+                n = (uint)Bits.SignExtend(n, bits);
             }
             return n;
         }
@@ -547,6 +553,11 @@ namespace Reko.Arch.Arm
             return new SelectDecoder(predicate, decoderTrue, decoderFalse);
         }
 
+        private static SelectFieldDecoder Select(string fieldSpecifier, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
+        {
+            return new SelectFieldDecoder(fieldSpecifier, predicate, decoderTrue, decoderFalse);
+        }
+
         private static NyiDecoder Nyi(string msg)
         {
             return new NyiDecoder(msg);
@@ -632,6 +643,34 @@ namespace Reko.Arch.Arm
 
             public override Arm32InstructionNew Decode(T32Disassembler dasm, uint wInstr)
             {
+                return (predicate(wInstr) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
+            }
+        }
+
+
+        private class SelectFieldDecoder : Decoder
+        {
+            private string fieldSpecifier;
+            private readonly Func<uint, bool> predicate;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
+
+            public SelectFieldDecoder(
+                string fieldSpecifier, 
+                Func<uint, bool> predicate,
+                Decoder trueDecoder,
+                Decoder falseDecoder)
+            {
+                this.fieldSpecifier = fieldSpecifier;
+                this.predicate = predicate;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            {
+                int i = 0;
+                var n = dasm.ReadBitfields(wInstr, fieldSpecifier, ref i);
                 return (predicate(wInstr) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
             }
         }
@@ -862,7 +901,6 @@ namespace Reko.Arch.Arm
 
             // Build the decoder decision tree.
             var dec16bit = Create16bitDecoders();
-            var decB_T32 = Nyi("B-T32 variant");
             var dec32bit = CreateLongDecoder();
             decoders = new Decoder[8] {
                 dec16bit,
@@ -874,7 +912,7 @@ namespace Reko.Arch.Arm
                 dec16bit,
                 dec16bit,
                 Mask(11, 0x03,
-                    decB_T32,
+                    Instr(Opcode.b, "p+0:11<1"),
                     dec32bit,
                     dec32bit,
                     dec32bit)
@@ -883,10 +921,18 @@ namespace Reko.Arch.Arm
 
         private static MaskDecoder Create16bitDecoders()
         {
+            var AddSpRegisterT1 = Instr(Opcode.add, ".T,sp");
+            var AddSpRegisterT2 = Instr(Opcode.add, "sp,T");
             var decAlu = CreateAluDecoder();
             var decDataLowRegisters = CreateDataLowRegisters();
             var decDataHiRegisters = Mask(8, 0x03, // Add, subtract, compare, move (two high registers)
-                Nyi("add, adds"), // add, adds (register);
+                Select("7:1:0:3", n => n != 13, 
+                    Select("3:4", n => n != 13,
+                        Instr(Opcode.add, ".T,R3"),
+                        AddSpRegisterT1),
+                    Select("3:4", n => n != 13,
+                        AddSpRegisterT2, 
+                        AddSpRegisterT1)),
                 Instr(Opcode.cmp, ".T,R3"),
                 Instr(Opcode.mov, "T,R3"), // mov,movs
                 invalid);
@@ -901,20 +947,20 @@ namespace Reko.Arch.Arm
             var decMisc16Bit = CreateMisc16bitDecoder();
             var decLdmStm = new LdmStmDecoder16();
             var decCondBranch = Mask(8, 0xF, // "CondBranch"
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
 
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
 
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p0:8<1"),
 
                 Instr(Opcode.b, "c8p0:8"),
                 Instr(Opcode.b, "c8p0:8"),
@@ -971,7 +1017,11 @@ namespace Reko.Arch.Arm
                 new MovMovsDecoder(Opcode.lsrs, ".r0,r3,S6:5"),
                 Instr(Opcode.asrs, ".r0,r3,S6:5"),
                 invalid);
-            var decAddSub = Nyi("AddSub");
+            var decAddSub = Mask(11, 3,
+                Instr(Opcode.mov, "r8,i0:8"),
+                Instr(Opcode.cmp, ".r8,i0:8"),
+                Instr(Opcode.add, ".r8,i0:8"),
+                Instr(Opcode.sub, ".r8,i0:8"));
             return Mask(10, 0xF,
                 decMovMovs,
                 decMovMovs,
@@ -1253,7 +1303,7 @@ namespace Reko.Arch.Arm
             var LoadStoreUnsignedPositiveImm = Mask(4 + 16, 7,
                 Instr(Opcode.strb, "R12,[R16,i0:12:b]"),
                 Select(w => SBitfield(w, 12, 4) != 0xF,
-                    Instr(Opcode.ldrb, "*immediate"),
+                    Instr(Opcode.ldrb, "R12,[R16,i0:8:bx]"),
                     Nyi("PLD,PLDW immediate preloadread")),
                 Instr(Opcode.strh, "*immediate"),
                 Select(w => SBitfield(w, 12, 4) != 0xF,
@@ -1285,8 +1335,32 @@ namespace Reko.Arch.Arm
                 invalid,
                 invalid);
 
+            var LoadUnsignedLiteral = Select("12:4", n => n != 0xF,
+                Mask(5 + 16, 3,
+                    Instr(Opcode.ldrb, "* literal"),
+                    Instr(Opcode.ldrh, "* literal"),
+                    Instr(Opcode.ldr, "* literal"),
+                    invalid),
+                Mask(5 + 16, 3,
+                    Instr(Opcode.pld, "* literal"),
+                    Instr(Opcode.pld, "* literal"),
+                    invalid,
+                    invalid));
+
+            var LoadSignedLiteral = Select("12:4", n => n != 0xF,
+                Mask(5 + 16, 3,
+                    Instr(Opcode.ldrsb, "* literal"),
+                    Instr(Opcode.ldrsh, "* literal"),
+                    invalid,
+                    invalid),
+                Mask(5 + 16, 3,
+                    Instr(Opcode.pli, "* literal"),
+                    Instr(Opcode.nop, ""),
+                    invalid,
+                    invalid));
+
             var LoadStoreSingle = Mask(7 + 16, 3,
-                Select(w => SBitfield(w, 16, 4) != 0xF,
+                Select("16:4", n => n != 0xF,
                     Mask(10, 3,
                         Select(w => SBitfield(w, 6, 6) == 0,
                             Nyi("LoadStoreUnsignedRegisterOffset"),
@@ -1300,10 +1374,10 @@ namespace Reko.Arch.Arm
                             LoadStoreUnsignedImmediatePreIndexed,
                             LoadStoreUnsignedUnprivileged,
                             LoadStoreUnsignedImmediatePreIndexed)),
-                    Nyi("LoadUnsignedLiteral")),
-                Select(w => SBitfield(w, 16, 4) != 0xF,
+                    LoadUnsignedLiteral),
+                Select("16:4", n => n != 0xF,
                     LoadStoreUnsignedPositiveImm,
-                    Nyi("LoadUnsignedLiteral")),
+                    LoadUnsignedLiteral),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     Mask(10, 3,
                         Select(w => SBitfield(w, 6, 6) == 0,
@@ -1318,10 +1392,10 @@ namespace Reko.Arch.Arm
                             Nyi("LoadStoreSignedImmediatePreIndexed"),
                             Nyi("LoadStoreSignedUnprivileged"),
                             Nyi("LoadStoreSignedImmediatePreIndexed"))),
-                    Nyi("LoadSignedLiteral")),
+                    LoadSignedLiteral),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     LoadStoreSignedPositiveImm,
-                    Nyi("LoadSignedLiteral")));
+                    LoadSignedLiteral));
 
             var SystemRegisterLdStAnd64bitMove = Nyi("SystemRegisterLdStAnd64bitMove");
 
@@ -1582,6 +1656,37 @@ namespace Reko.Arch.Arm
                         Instr(Opcode.vcvt, "vc,D22:1:12:4,D5:1:0:4"),
                         Instr(Opcode.vcvt, "vc,Q22:1:12:4,Q5:1:0:4"))));
 
+            var AdvancedSimd3DiffLength = Mask(8, 0xF,  // opc
+                Instr(Opcode.vaddl, "*"),
+                Instr(Opcode.vaddw, "*"),
+                Instr(Opcode.vsubl, "*"),
+                Instr(Opcode.vsubw, "*"),
+
+                Mask(12 + 16, 1,
+                    Instr(Opcode.vaddhn, "*"),
+                    Instr(Opcode.vraddhn, "*")),
+                Instr(Opcode.vabal, "*"),
+                Mask(12 + 16, 1,
+                    Instr(Opcode.vsubhn, "*"),
+                    Instr(Opcode.vrsubhn, "*")),
+                Instr(Opcode.vabdl, "*integer"),
+
+                Instr(Opcode.vmlal, "vi20:2 Q22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                Mask(12 + 16, 1,
+                    Instr(Opcode.vqdmlal, "*integer"),
+                    invalid),
+                Instr(Opcode.vmlsl, "*integer"),
+                Mask(12 + 16, 1,
+                    Instr(Opcode.vqdmlsl, "*integer"),
+                    invalid),
+
+                Instr(Opcode.vmull, "*integer and polynomial"),
+                Mask(12 + 16, 1,
+                    Instr(Opcode.vqdmull, "*integer"),
+                    invalid),
+                invalid,
+                invalid);
+
             var AdvancedSimd2RegsScalar = Mask(8, 0xF, // opc
                 Instr(Opcode.vmla, "*scalar"),
                 Instr(Opcode.vmla, "*scalar"),
@@ -1614,24 +1719,24 @@ namespace Reko.Arch.Arm
             var AdvancedSimd2RegsOr3RegsDiffLength = Mask(12 + 16, 1,
                 Mask(4 + 16, 3,
                     Mask(6, 1,
-                        Nyi("AdvancedSimd3DiffLength"),
+                        AdvancedSimd3DiffLength,
                         AdvancedSimd2RegsScalar),
                     Mask(6, 1,
-                        Nyi("AdvancedSimd3DiffLength"),
+                        AdvancedSimd3DiffLength,
                         AdvancedSimd2RegsScalar),
                     Mask(6, 1,
-                        Nyi("AdvancedSimd3DiffLength"),
+                        AdvancedSimd3DiffLength,
                         AdvancedSimd2RegsScalar),
                     Instr(Opcode.vext, "*")),
                 Mask(4 + 16, 3,
                     Mask(6, 1,
-                        Nyi("AdvancedSimd3DiffLength"),
+                        AdvancedSimd3DiffLength,
                         AdvancedSimd2RegsScalar),
                     Mask(6, 1,
-                        Nyi("AdvancedSimd3DiffLength"),
+                        AdvancedSimd3DiffLength,
                         AdvancedSimd2RegsScalar),
                     Mask(6, 1,
-                        Nyi("AdvancedSimd3DiffLength"),
+                        AdvancedSimd3DiffLength,
                         AdvancedSimd2RegsScalar),
 
                     Mask(10, 3,
@@ -1730,9 +1835,9 @@ namespace Reko.Arch.Arm
             var DataProcessing2srcRegs = Mask(4 + 16, 7,
                 Mask(4, 3,
                     Instr(Opcode.qadd, "*"),
-                    Instr(Opcode.qdadd, "*"),
+                    Instr(Opcode.qdadd, "R8,R0,R16"),
                     Instr(Opcode.qsub, "*"),
-                    Instr(Opcode.qdsub, "*")),
+                    Instr(Opcode.qdsub, "R8,R0,R16")),
                 Mask(4, 3,
                     Instr(Opcode.rev, "*"),
                     Instr(Opcode.rev16, "*"),
@@ -2077,7 +2182,7 @@ namespace Reko.Arch.Arm
         private static Decoder CreateBranchesMiscControl()
         {
             var branch_T3_variant = Nyi("B - T3 variant");
-            var branch_T4_variant = Nyi("B - T4 variant");
+            var branch_T4_variant = Instr(Opcode.b, "p+26:1:13:1:11:1:16:10:0:11<1");
             var branch = Nyi("Branch");
             var nonbranch = Nyi("nonbranch");
             var mixedDecoders = Mask(7 + 16, 0xF,

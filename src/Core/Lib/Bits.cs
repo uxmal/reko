@@ -56,6 +56,15 @@ namespace Reko.Core.Lib
             return r;
         }
 
+        public static uint SignExtend(uint w, int b)
+        {
+            uint r;      // resulting sign-extended number
+            uint m = 1u << (b - 1); // mask can be pre-computed if b is fixed
+            w = w & ((1u << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+            r = (w ^ m) - m;
+            return r;
+        }
+
         public static ulong ZeroExtend(ulong w, int b)
         {
             ulong m = (1Lu << b) - 1;
