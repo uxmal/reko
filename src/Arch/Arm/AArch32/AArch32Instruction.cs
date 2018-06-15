@@ -199,7 +199,7 @@ namespace Reko.Arch.Arm.AArch32
                         if (!mem.Add)
                             writer.WriteChar('-');
                         writer.WriteString(mem.Index.Name);
-                        if (mem.ShiftType != ArmShiftType.None)
+                        if (mem.ShiftType != Opcode.Invalid)
                         {
                             writer.WriteChar(',');
                             writer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());

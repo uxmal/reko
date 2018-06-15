@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -30,24 +28,34 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    public class MemoryOperand : MachineOperand
+    public class BarrierOperand : MachineOperand
     {
-        public RegisterStorage BaseRegister;
-        public Constant Offset;
-        public RegisterStorage Index;
-        public Opcode ShiftType;
-        public int Shift;
-        public bool Add;
-        public int Scale;
-        public bool PreIndex;
-
-
-        public MemoryOperand(PrimitiveType dataType) : base(dataType)
+        public BarrierOperand(BarrierOption barrierOption) : base(PrimitiveType.Byte)
         {
+            this.Option = barrierOption;
         }
+
+        public BarrierOption Option { get; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            writer.WriteString(Option.ToString().ToLower());
         }
+    }
+
+    public enum BarrierOption
+    {
+        OSHLD = 0b0001,
+        OSHST = 0b0010,
+        OSH = 0b0011,
+        NSHLD = 0b0101,
+        NSHST = 0b0110,
+        NSH = 0b0111,
+        ISHLD = 0b1001,
+        ISHST = 0b1010,
+        ISH = 0b1011,
+        LD = 0b1101,
+        ST = 0b1110,
+        SY = 0b1111,
     }
 }

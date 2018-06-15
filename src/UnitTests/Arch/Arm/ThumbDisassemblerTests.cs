@@ -341,6 +341,14 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_ldr_literal()
         {
+            Given_Instructions(0x4B11);
+            Expect_Code("ldr\t q@@@");
+        }
+
+
+        [Test]
+        public void ThumbDis_ldr_literal_long()
+        {
             Given_Instructions(0xF8DF, 0x90FC);
             Expect_Code("ldr\tr9,[pc,#&FC]");
         }
@@ -365,5 +373,74 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xFF23, 0xF000);
             Expect_Code("vhadd\td15,d3,d0");
         }
+
+        [Test]
+        public void ThumbDis_vseleq()
+        {
+            Given_Instructions(0xFE1E, 0x2800);
+            Expect_Code("vselvs\td2,d14,d0");
+        }
+
+        [Test]
+        public void ThumbDis_strh_idx()
+        {
+            Given_Instructions(0x5380);
+            Expect_Code("strh\tr0,[r0,r6]");
+        }
+
+        [Test]
+        public void ThumbDis_dsb()
+        {
+            Given_Instructions(0xF3BF, 0x8F4F);
+            Expect_Code("dsb\tsy");
+        }
+
+
+        [Test]
+        public void ThumbDis_isb()
+        {
+            Given_Instructions(0xF3BF, 0x8F6F);
+            Expect_Code("isb\tsy");
+        }
+
+
+
+        [Test]
+        public void ThumbDis_xb()
+        {
+            Given_Instructions(0xFEC2, 0x2800);
+            Expect_Code("@@@");
+        }
+
+
+        [Test]
+        public void ThumbDis_xx()
+        {
+            Given_Instructions(0xF3EF, 0x8511);
+            Expect_Code("@@@");
+        }
+
+
+        [Test]
+        public void ThumbDis_xxxy()
+        {
+            Given_Instructions(0xF383, 0x8811);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ThumbDis_x2()
+        {
+            Given_Instructions(0xF385, 0x8811);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ThumbDis_x3()
+        {
+            Given_Instructions(0xF947, 0xF000);
+            Expect_Code("@@@");
+        }
+
     }
 }

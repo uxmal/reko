@@ -771,7 +771,7 @@ case ARM_OP_SYSREG:
                         if (mop.Index != null)
                         {
                             var ireg = Reg(mop.Index);
-                            if (mop.ShiftType == ArmShiftType.LSL)
+                            if (mop.ShiftType == Opcode.lsl)
                             {
                                 ea = m.IAdd(ea, m.IMul(ireg, Constant.Int32(1 << mop.Shift)));
                             }

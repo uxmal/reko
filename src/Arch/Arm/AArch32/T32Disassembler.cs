@@ -127,6 +127,12 @@ namespace Reko.Arch.Arm.AArch32
                     case 'c':       // conversion 
                         vectorData = VectorConvertData(wInstr);
                         continue;
+                    case 'f':       // floating point vector
+                        ++i;
+                        vectorData = VectorFloatData(format, ref i);
+                        if (vectorData == ArmVectorData.INVALID)
+                            return Invalid();
+                        continue;
                     }
                     throw new InvalidOperationException();
                 case 'w':   // Writeback bit.
@@ -225,6 +231,7 @@ namespace Reko.Arch.Arm.AArch32
                 case '[':   // Memory access
                     ++i;
                     bool add = true;
+                    RegisterStorage index = null;
                     if (PeekAndDiscard('s', format, ref i))
                     {
                         baseReg = arch.StackRegister;
@@ -254,6 +261,13 @@ namespace Reko.Arch.Arm.AArch32
                             size = ReadDecimal(format, ref i);
                             offset = SBitfield(wInstr, offset, size) << 2;
                             add = true;
+                        }
+                        else if (PeekAndDiscard('r', format, ref i))
+                        {
+                            // Only 3 bits for register
+                            var reg = ReadDecimal(format, ref i);
+                            index = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
+                            offset = 0;
                         }
                         else
                         {
@@ -288,7 +302,9 @@ namespace Reko.Arch.Arm.AArch32
                         {
                             BaseRegister = baseReg,
                             Offset = Constant.Int32(offset),
+                            Index = index,
                             PreIndex = preindex,
+                            ShiftType = shiftType,
                             Add = add,
                         };
                     }
@@ -329,6 +345,13 @@ namespace Reko.Arch.Arm.AArch32
                         throw new NotImplementedException($"Unknown format specifier C{format[i]} when decoding {opcode} ({wInstr:X4}).");
                     }
                     break;
+                case 'B':   // barrier operation
+                    ++i;
+                    n = ReadBitfields(wInstr, format, ref i);
+                    op = MakeBarrierOperand(n);
+                    if (op == null)
+                        return Invalid();
+                    break;
                 default:
                     throw new NotImplementedException($"Unknown format specifier {format[i]} when decoding {opcode} ({wInstr:X4}).");
                 }
@@ -346,6 +369,29 @@ namespace Reko.Arch.Arm.AArch32
                 ShiftValue = shiftValue,
                 vector_data = vectorData,
             };
+        }
+
+        private MachineOperand MakeBarrierOperand(uint n)
+        {
+            var bo = (BarrierOption)n;
+            switch (bo)
+            {
+            case BarrierOption.OSHLD:
+            case BarrierOption.OSHST:
+            case BarrierOption.OSH:
+            case BarrierOption.NSHLD:
+            case BarrierOption.NSHST:
+            case BarrierOption.NSH:
+            case BarrierOption.ISHLD:
+            case BarrierOption.ISHST:
+            case BarrierOption.ISH:
+            case BarrierOption.LD:
+            case BarrierOption.ST:
+            case BarrierOption.SY:
+                return new BarrierOperand(bo);
+
+            }
+            return null;
         }
 
         private AArch32Instruction Invalid()
@@ -381,6 +427,16 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private ArmVectorData VectorFloatData(string format, ref int i)
+        {
+            switch (format[i++])
+            {
+            case 'h': return ArmVectorData.F16;
+            case 's': return ArmVectorData.F32;
+            case 'd': return ArmVectorData.F64;
+            default: return ArmVectorData.INVALID;
+            }
+        }
         private ArmVectorData VectorConvertData(uint wInstr)
         {
             var op = SBitfield(wInstr, 7, 2);
@@ -900,13 +956,32 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
+#if DEBUG
+                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+#else
                 Console.WriteLine($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-                return new AArch32Instruction { opcode = Opcode.Invalid };
-                //throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+                Console.WriteLine("[Test]");
+                Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
+                Console.WriteLine("{");
+                if (wInstr > 0xFFFF)
+                {
+                    Console.WriteLine($"    Give_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
+                }
+                else
+                {
+                    Console.WriteLine($"    Give_Instructions(0x{wInstr:X4});");
+                }
+                Console.WriteLine("    Expect_Code(\"@@@\");");
+
+                Console.WriteLine("}");
+                Console.WriteLine();
+
+                return dasm.Invalid();
+#endif
             }
         }
 
-        #endregion
+#endregion
 
         static T32Disassembler()
         {
@@ -949,8 +1024,20 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.cmp, ".T,R3"),
                 Instr(Opcode.mov, "T,R3"), // mov,movs
                 invalid);
-            var decLdrLiteral = Nyi("Ldr literal");
-            var decLdStRegOffset = Nyi("LdStRegOffset");
+
+            var LdrLiteral = Nyi("Ldr literal");
+
+            var LdStRegOffset = Mask(9, 7,
+                Instr(Opcode.str, "r0,[r3,r6:w]"),
+                Instr(Opcode.strh, "r0,[r3,r6:h]"),
+                Instr(Opcode.strb, "r0,[r3,r6:b]"),
+                Instr(Opcode.ldrsb, "r0,[r3,r6:B]"),
+
+                Instr(Opcode.ldr, "r0,[r3,r6:w]"),
+                Instr(Opcode.ldrh, "r0,[r3,r6:h]"),
+                Instr(Opcode.ldrb, "r0,[r3,r6:b]"),
+                Instr(Opcode.ldrsh, "r0,[r3,r6:H]"));
+
             var decLdStWB = Nyi("LdStWB");
             var decLdStHalfword = Nyi("LdStHalfWord");
             var decLdStSpRelative = Nyi("LdStSpRelative");
@@ -992,13 +1079,13 @@ namespace Reko.Arch.Arm.AArch32
                         Mask(7,1,
                             Instr(Opcode.bx, "R3"),
                             Instr(Opcode.blx, "R3"))),
-                    decLdrLiteral,
-                    decLdrLiteral,
+                    LdrLiteral,
+                    LdrLiteral,
 
-                    decLdStRegOffset,
-                    decLdStRegOffset,
-                    decLdStRegOffset,
-                    decLdStRegOffset),
+                    LdStRegOffset,
+                    LdStRegOffset,
+                    LdStRegOffset,
+                    LdStRegOffset),
                 Mask(11, 0x03,   // decLdStWB,
                     Instr(Opcode.str, "r0,[r3,I6:5:w]"),
                     Instr(Opcode.ldr, "r0,[r3,I6:5:w]"),
@@ -1487,7 +1574,82 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("AdvancedSimdAndFp64bitMove"),
                 AdvancedSimdAndFpLdSt);
 
-            var FloatingPointDataProcessing = Nyi("FloatingPointDataProcessing");
+            var FloatingPointDataProcessing3Regs = Nyi("FloatingPointDataProcessing3Regs");
+            var FloatingPointMoveImm= Nyi("FloatingPointMoveImm");
+
+            var FloatingPointConditionalSelect = Select("8:2", n => n == 1,
+                invalid,
+                Mask(20, 3,
+                    Instr(Opcode.vseleq, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                    Instr(Opcode.vselvs, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                    Instr(Opcode.vselge, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                    Instr(Opcode.vselgt, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4")));
+
+            var FloatingPointMinNumMaxNum = Nyi("FloatingPointMinNumMaxNum");
+            var FloatingPointExtIns = Nyi("FloatingPointExtIns");
+            var FloatingPointDirectedCvt2Int = Nyi("FloatingPointDirectedCvt2Int");
+
+            var FloatingPointDataProcessing = Mask(12 + 16, 1, // op0
+                Mask(4 + 16, 0xF, // op1
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    Mask(6, 1,
+                        FloatingPointMoveImm,
+                        FloatingPointDataProcessing3Regs),
+
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    FloatingPointDataProcessing3Regs,
+                    Mask(6, 1,
+                        FloatingPointMoveImm,
+                        FloatingPointDataProcessing3Regs)),
+                Select("8:2", n => n != 0,
+                    Mask(4 + 16, 0xF, // op1
+                        FloatingPointConditionalSelect,
+                        FloatingPointConditionalSelect,
+                        FloatingPointConditionalSelect,
+                        FloatingPointConditionalSelect,
+
+                        FloatingPointConditionalSelect,
+                        FloatingPointConditionalSelect,
+                        FloatingPointConditionalSelect,
+                        FloatingPointConditionalSelect,
+
+                        FloatingPointMinNumMaxNum,
+                        invalid,
+                        invalid,
+                        Mask(6, 1,
+                            invalid,
+                            Select("16:4", n => n == 0,
+                                FloatingPointExtIns,
+                                Mask(19, 1,
+                                    invalid,
+                                    FloatingPointDirectedCvt2Int))),
+
+
+                        FloatingPointMinNumMaxNum,
+                        invalid,
+                        invalid,
+                        Mask(6, 1,
+                            invalid,
+                            Select("16:4", n => n == 0,
+                                FloatingPointExtIns,
+                                Mask(19, 1,
+                                    invalid,
+                                    FloatingPointDirectedCvt2Int)))),
+                    invalid));
+
             var AdvancedSimdAndFloatingPoint32bitMove = Nyi("AdvancedSimdAndFloatingPoint32bitMove");
             var SystemRegister32bitMove = Mask(12 + 16, 1, 
                 Mask(4 + 16, 1,
@@ -1547,7 +1709,11 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vceq, "*"))),
 
                 Nyi("AdvancedSimd3RegistersSameLength_opc9"),
-                Nyi("AdvancedSimd3RegistersSameLength_opcA"),
+                Mask(6, 1, // Q
+                    Mask(4, 1, // op1
+                        Instr(Opcode.vpmax, "*integer"),
+                        Instr(Opcode.vpmin, "*integer")),
+                    invalid),
                 Nyi("AdvancedSimd3RegistersSameLength_opcB"),
 
                 Nyi("AdvancedSimd3RegistersSameLength_opcC"),
@@ -2213,8 +2379,29 @@ namespace Reko.Arch.Arm.AArch32
             var branch_T3_variant = Nyi("B - T3 variant");
             var branch_T4_variant = Instr(Opcode.b, "p+26:1:13:1:11:1:16:10:0:11<1");
             var branch = Nyi("Branch");
-            var nonbranch = Nyi("nonbranch");
-            var mixedDecoders = Mask(7 + 16, 0xF,
+
+            var MiscellaneousSystem = Mask(4, 0xF,
+                invalid,
+                invalid,
+                Instr(Opcode.clrex, "*"),
+                invalid,
+
+                Instr(Opcode.dsb, "B0:4"),
+                Instr(Opcode.dmb, "B0:4"),
+                Instr(Opcode.isb, "B0:4"),
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid);
+
+            var mixedDecoders = Mask(6 + 16, 0xF,
                 branch_T3_variant,
                 branch_T3_variant,
                 branch_T3_variant,
@@ -2223,17 +2410,48 @@ namespace Reko.Arch.Arm.AArch32
                 branch_T3_variant,
                 branch_T3_variant,
                 branch_T3_variant,
-                nonbranch,
-
-                branch_T3_variant,
-                branch_T3_variant,
-                branch_T3_variant,
                 branch_T3_variant,
 
                 branch_T3_variant,
                 branch_T3_variant,
                 branch_T3_variant,
-                nonbranch);
+                branch_T3_variant,
+
+                branch_T3_variant,
+                branch_T3_variant,
+                Mask(26, 1,     // op0
+                    Mask(20, 3,     // op2
+                        Mask(5, 1,  // op5
+                            Instr(Opcode.msr, "*register"),
+                            Instr(Opcode.msr, "*banked register")),
+                        Mask(5, 1,  // op5
+                            Instr(Opcode.msr, "*register"),
+                            Instr(Opcode.msr, "*banked register")),
+                        Select("8:3", n => n == 0,
+                            Nyi("CreateBranchesMiscControl - hints"),
+                            Nyi("ChangeProcessorState")),
+                        MiscellaneousSystem),
+                    Mask(20, 3,     // op2
+                        Select("12:7", n => n == 0,
+                            Nyi("Dcps"),
+                            invalid),
+                        invalid,
+                        invalid,
+                        invalid)),
+                Mask(26, 1,         // op0
+                    Mask(20, 3,     // op2
+                        Instr(Opcode.bxj, "*"),
+                        Nyi("ExceptionReturn"),
+                        Mask(5, 1,  // op5
+                            Instr(Opcode.mrs, "*register"),
+                            Instr(Opcode.mrs, "*banked register")),
+                        Mask(5, 1,  // op5
+                            Instr(Opcode.mrs, "*register"),
+                            Instr(Opcode.mrs, "*banked register"))),
+                    Mask(21, 1,
+                        invalid,
+                        Nyi("ExceptionGeneration"))));
+
             var bl = new BlDecoder();
             return Mask(12, 7,
                 mixedDecoders,

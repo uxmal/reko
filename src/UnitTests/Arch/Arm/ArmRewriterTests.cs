@@ -248,7 +248,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v4 = (word32) Mem0[r4:byte]",
-                "2|L--|r4 = r4 + 0x00000001",
+                "2|L--|r4 = r4 + 1",
                 "3|L--|r3 = v4");
         }
 

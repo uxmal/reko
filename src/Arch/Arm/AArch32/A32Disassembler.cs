@@ -259,7 +259,7 @@ namespace Reko.Arch.Arm.AArch32
             var m = Registers.GpRegs[bitmask(wInstr, 0, 0x0F)];
             Constant offset = null;
             int shiftAmt = 0;
-            ArmShiftType shiftType = ArmShiftType.None;
+            Opcode shiftType = Opcode.Invalid;
             switch (memType)
             {
             case 'o':   // offset
@@ -273,7 +273,7 @@ namespace Reko.Arch.Arm.AArch32
                 break;
             case 'x':   // wide shift amt.
                 shiftAmt = (int)bitmask(wInstr, 7, 0x1F);
-                shiftType = shiftAmt > 0 ? ArmShiftType.LSL : ArmShiftType.None;
+                shiftType = shiftAmt > 0 ? Opcode.lsl : Opcode.Invalid;
                 //$TODO exotic shifts rotates etc
                 break;
             }
