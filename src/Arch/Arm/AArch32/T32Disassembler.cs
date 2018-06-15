@@ -113,6 +113,8 @@ namespace Reko.Arch.Arm.AArch32
                         ++i;
                         n = ReadBitfields(wInstr, format, ref i);
                         vectorData = VectorIntUIntData(0, n);
+                        if (vectorData == ArmVectorData.INVALID)
+                            return Invalid();
                         continue;
                     case 'u':
                         ++i;
@@ -157,7 +159,7 @@ namespace Reko.Arch.Arm.AArch32
                         shiftValue = ImmediateOperand.Int32((int)n);
                         continue;
                     }
-                    else
+                    else 
                     {
                         offset = this.ReadDecimal(format, ref i);
                         Expect(':', format, ref i);
@@ -346,6 +348,15 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        private AArch32Instruction Invalid()
+        {
+            return new AArch32Instruction
+            {
+                opcode = Opcode.Invalid,
+                ops = new MachineOperand[0]
+            };
+        }
+
         private ArmVectorData VectorIntUIntData(uint wInstr, uint n)
         {
             if (SBitfield(wInstr, 28, 1) == 0)
@@ -355,7 +366,7 @@ namespace Reko.Arch.Arm.AArch32
                 case 0: return ArmVectorData.I8;
                 case 1: return ArmVectorData.I16;
                 case 2: return ArmVectorData.I32;
-                default: throw new NotImplementedException();
+                default: return ArmVectorData.INVALID;
                 }
             }
             else
@@ -365,7 +376,7 @@ namespace Reko.Arch.Arm.AArch32
                 case 0: return ArmVectorData.U8;
                 case 1: return ArmVectorData.U16;
                 case 2: return ArmVectorData.U32;
-                default: throw new NotImplementedException();
+                default: return ArmVectorData.INVALID;
                 }
             }
         }
@@ -821,7 +832,7 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = base.Decode(dasm, wInstr);
                 if (instr.ops[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 {
-                    instr.opcode = Opcode.movs;
+                    instr.opcode = Opcode.mov;
                 }
                 return instr;
             }
@@ -889,7 +900,9 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+                Console.WriteLine($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+                return new AArch32Instruction { opcode = Opcode.Invalid };
+                //throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
             }
         }
 
@@ -1013,7 +1026,9 @@ namespace Reko.Arch.Arm.AArch32
             var decAddSub3 = Nyi("addsub3");
             var decAddSub3Imm = Nyi("AddSub3Imm");
             var decMovMovs = Mask(11, 3,
-                new MovMovsDecoder(Opcode.lsls, ".r0,r3,S6:5"),
+                Select("6:5", n => n != 0,
+                    new MovMovsDecoder(Opcode.lsls, ".r0,r3,S6:5"),
+                    Instr(Opcode.mov, "r0,r3")),
                 new MovMovsDecoder(Opcode.lsrs, ".r0,r3,S6:5"),
                 Instr(Opcode.asrs, ".r0,r3,S6:5"),
                 invalid);
@@ -1482,7 +1497,9 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimd3RegistersSameLength = Mask(8, 0xF, // opc
                 Mask(4, 1, // o1
-                    Instr(Opcode.vhadd, "*"),
+                    Mask(6, 1,
+                        Instr(Opcode.vhadd, "vi20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vhadd, "vi20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                     Instr(Opcode.vqadd, "*")),
                 Mask(12 + 16, 1,  // U
                     Mask(4, 1,      // o1
@@ -1948,10 +1965,22 @@ namespace Reko.Arch.Arm.AArch32
                     invalid),
                 invalid);
 
+            var MovMovsRegisterShiftedRegister = Mask(20, 1,
+                Mask(5 + 16, 3,
+                    Instr(Opcode.lsl, "R8,R16,R0"),
+                    Instr(Opcode.lsr, "R8,R16,R0"),
+                    Instr(Opcode.asr, "R8,R16,R0"),
+                    Instr(Opcode.ror, "R8,R16,R0")),
+                Mask(5 + 16, 3,
+                    Instr(Opcode.lsl, ".R8,R16,R0"),
+                    Instr(Opcode.lsr, ".R8,R16,R0"),
+                    Instr(Opcode.asr, ".R8,R16,R0"),
+                    Instr(Opcode.ror, ".R8,R16,R0")));
+
             var DataProcessingRegister = Mask(7 + 16, 1,
                 Mask(7, 1,
                     Select(w => SBitfield(w, 4, 4) == 0,
-                        Nyi("MovMovsRegisterShiftedRegister"),
+                        MovMovsRegisterShiftedRegister,
                         invalid),
                     RegisterExtends),
                 Mask(6, 3,

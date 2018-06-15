@@ -5667,6 +5667,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_lsls_long()
+        {
+            RewriteCode("12FA00F0");    // lsl r0,r2,r0
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r0 = r2 << r0",
+                "2|L--|NZC = cond(r0)");
+        }
+
+
+
+        [Test]
         public void ThumbRw_trap()
         {
             BuildTest(0xDEFE);  // __debugbreak
@@ -7943,8 +7955,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             RewriteCode("0000");	// mov r0,r0
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|d6 = __vmls_i16(d12, d20)");
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r0");
         }
+
     }
 }

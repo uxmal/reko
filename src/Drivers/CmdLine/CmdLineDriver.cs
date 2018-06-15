@@ -31,7 +31,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-
 namespace Reko.CmdLine
 {
     public class CmdLineDriver

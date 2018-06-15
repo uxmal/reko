@@ -344,5 +344,26 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xF8DF, 0x90FC);
             Expect_Code("ldr\tr9,[pc,#&FC]");
         }
+
+        [Test]
+        public void ThumbDis_mov_r0_r0()
+        {
+            Given_Instructions(0x0000);
+            Expect_Code("mov\tr0,r0");
+        }
+
+        [Test]
+        public void ThumbDis_lsls()
+        {
+            Given_Instructions(0xFA12, 0xF000);
+            Expect_Code("lsls\tr0,r2,r0");
+        }
+
+        [Test]
+        public void ThumbDis_vhadd()
+        {
+            Given_Instructions(0xFF23, 0xF000);
+            Expect_Code("vhadd\td15,d3,d0");
+        }
     }
 }
