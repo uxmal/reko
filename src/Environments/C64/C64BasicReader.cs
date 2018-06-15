@@ -30,7 +30,7 @@ using System.Text;
 namespace Reko.Environments.C64
 {
     /// <summary>
-    /// Parses a stream of bytes into Commoder BASIC instructions.
+    /// Parses a stream of bytes into Commodore BASIC instructions.
     /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {

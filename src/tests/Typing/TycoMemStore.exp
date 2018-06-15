@@ -13,10 +13,10 @@ proc1_exit:
 
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct (3120 T_4 t3120)))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct (3120 T_4 t3120)))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in fp : ptr32)
   Class: Eq_2
   DataType: ptr32
@@ -31,16 +31,16 @@ T_4: (in 0x00000000 : word32)
   OrigDataType: word32
 T_5: (in 0x00003120 : word32)
   Class: Eq_5
-  DataType: (ptr (struct (0 T_6 t0000)))
-  OrigDataType: (ptr (struct (0 T_6 t0000)))
+  DataType: (ptr32 (struct (0 T_6 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_6 t0000)))
 T_6: (in Mem0[0x00003120:word32] : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
 T_7: (in 0x00003120 : word32)
   Class: Eq_7
-  DataType: (ptr (struct (0 T_8 t0000)))
-  OrigDataType: (ptr (struct (0 T_8 t0000)))
+  DataType: (ptr32 (struct (0 T_8 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_8 t0000)))
 T_8: (in Mem0[0x00003120:word32] : word32)
   Class: Eq_4
   DataType: word32
@@ -55,8 +55,8 @@ T_10: (in Mem0[0x00003120:word32] + 0x00000001 : word32)
   OrigDataType: word32
 T_11: (in 0x00003120 : word32)
   Class: Eq_11
-  DataType: (ptr (struct (0 T_12 t0000)))
-  OrigDataType: (ptr (struct (0 T_12 t0000)))
+  DataType: (ptr32 (struct (0 T_12 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_12 t0000)))
 T_12: (in Mem0[0x00003120:word32] : word32)
   Class: Eq_4
   DataType: word32

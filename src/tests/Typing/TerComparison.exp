@@ -5,7 +5,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	f = Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] < 0x00001028
+	f = Mem0[p + 0x00000004:(ptr32 (struct "foo" 0008))] < 0x00001028
 proc1_exit:
 
 // After ///////
@@ -20,21 +20,21 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (1028 Eq_5 t1028))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (struct "Eq_2" (4 (ptr Eq_5) ptr0004))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (struct "Eq_2" (4 (ptr32 Eq_5) ptr0004))
 	T_2 (in p : word32)
 Eq_5: (struct "foo" 0008)
-	T_5 (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] : (ptr (struct "foo" 0008)))
+	T_5 (in Mem0[p + 0x00000004:(ptr32 (struct "foo" 0008))] : (ptr32 (struct "foo" 0008)))
 	T_6 (in 0x00001028 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in p : word32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct (4 T_5 t0004)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (struct (4 T_5 t0004)))
 T_3: (in 0x00000004 : word32)
   Class: Eq_3
   DataType: word32
@@ -43,13 +43,13 @@ T_4: (in p + 0x00000004 : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
-T_5: (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] : (ptr (struct "foo" 0008)))
+T_5: (in Mem0[p + 0x00000004:(ptr32 (struct "foo" 0008))] : (ptr32 (struct "foo" 0008)))
   Class: Eq_5
-  DataType: (ptr Eq_5)
-  OrigDataType: (ptr (struct "foo" 0008))
+  DataType: (ptr32 Eq_5)
+  OrigDataType: (ptr32 (struct "foo" 0008))
 T_6: (in 0x00001028 : word32)
   Class: Eq_5
-  DataType: (ptr Eq_5)
+  DataType: (ptr32 Eq_5)
   OrigDataType: int32
 T_7: (in p->ptr0004 < &globals->t1028 : bool)
   Class: Eq_7

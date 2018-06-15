@@ -893,9 +893,9 @@ fn00001200_exit:
             });
             var str = new StructureType();
             var fields = new StructureField[] {
-                new StructureField(0, new Pointer(ft1, 4), "A"),
+                new StructureField(0, new Pointer(ft1, 32), "A"),
                 new StructureField(4, PrimitiveType.Int32, "B"),
-                new StructureField(8, new Pointer(ft2, 4), "C"),
+                new StructureField(8, new Pointer(ft2, 32), "C"),
             };
             str.Fields.AddRange(fields);
             var elementType = new TypeReference("test", str);
@@ -954,8 +954,8 @@ fn00001200_exit:
             });
             var str = new StructureType();
             var fields = new StructureField[] {
-                new StructureField(0, new Pointer(ft,  4), "func"),
-                new StructureField(4, new Pointer(str, 4), "next"),
+                new StructureField(0, new Pointer(ft,  32), "func"),
+                new StructureField(4, new Pointer(str, 32), "next"),
             };
             str.Fields.AddRange(fields);
 
@@ -993,7 +993,7 @@ fn00001200_exit:
             {
                 new StructureField(0, PrimitiveType.Word16, "typeField"),
                 // two-byte gap here.
-                new StructureField(4, new Pointer(ft, 4), "pfn")
+                new StructureField(4, new Pointer(ft, 32), "pfn")
             });
 
             var scanner = new Scanner(
@@ -1030,7 +1030,7 @@ fn00001200_exit:
                 fakeArch.CreateProcessorState());
 
             Assert.AreEqual("foo", proc.Name);
-            Assert.AreEqual("Register int32 foo(Stack (ptr char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("Register int32 foo(Stack (ptr32 char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));
         }
 
         [Test(Description = "Should discover pointer to function and record it in ScanResults.")]
@@ -1051,7 +1051,7 @@ fn00001200_exit:
                     { 0,  PrimitiveType.Int32, "data" },
                     { 4,  new Pointer(FunctionType.Action(
                             new Identifier("arg", PrimitiveType.Int32, null)),
-                            4)
+                            32)
                     }
                 }
             };

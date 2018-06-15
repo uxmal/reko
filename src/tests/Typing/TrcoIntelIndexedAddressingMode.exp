@@ -9,8 +9,8 @@ l1:
 	// succ:  IntelIndexedAddressingMode_exit
 IntelIndexedAddressingMode_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 T_2 (in 0xF8 : byte)
 	trait_primitive(byte)
 T_3 (in ds : word16)

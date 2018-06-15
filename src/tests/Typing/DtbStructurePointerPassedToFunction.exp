@@ -22,19 +22,19 @@ l1:
 Fn2_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct "Globals"))
-	globals_t (in globals : (ptr (struct "Globals")))
+Eq_1: (ptr32 (struct "Globals"))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: word32
 	T_2 (in 0x00000042 : word32)
 	T_6 (in Mem0[p + 0x00000004:word32] : word32)
-Eq_3: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
+Eq_3: (ptr32 (struct (4 T_6 t0004) (8 T_14 t0008)))
 	T_3 (in p : word32)
 	T_9 (in arg1 : word32)
 Eq_4: word32
 	T_4 (in 0x00000004 : word32)
 Eq_5: word32
 	T_5 (in p + 0x00000004 : word32)
-Eq_7: (ptr (fn T_10 (T_3)))
+Eq_7: (ptr32 (fn T_10 (T_3)))
 	T_7 (in Fn2 : ptr32)
 	T_8 (in signature of Fn2 : void)
 Eq_10: word32
@@ -47,18 +47,18 @@ Eq_12: word32
 Eq_13: word32
 	T_13 (in arg1 + 0x00000008 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct "Globals"))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in 0x00000042 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
 T_3: (in p : word32)
   Class: Eq_3
-  DataType: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
-  OrigDataType: (ptr (struct (4 T_6 t0004)))
+  DataType: (ptr32 (struct (4 T_6 t0004) (8 T_14 t0008)))
+  OrigDataType: (ptr32 (struct (4 T_6 t0004)))
 T_4: (in 0x00000004 : word32)
   Class: Eq_4
   DataType: word32
@@ -73,16 +73,16 @@ T_6: (in Mem0[p + 0x00000004:word32] : word32)
   OrigDataType: word32
 T_7: (in Fn2 : ptr32)
   Class: Eq_7
-  DataType: (ptr (fn T_10 (T_3)))
-  OrigDataType: (ptr (fn T_10 (T_3)))
+  DataType: (ptr32 (fn T_10 (T_3)))
+  OrigDataType: (ptr32 (fn T_10 (T_3)))
 T_8: (in signature of Fn2 : void)
   Class: Eq_7
-  DataType: (ptr (fn T_10 (T_3)))
+  DataType: (ptr32 (fn T_10 (T_3)))
   OrigDataType: 
 T_9: (in arg1 : word32)
   Class: Eq_3
-  DataType: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
-  OrigDataType: (ptr (struct (8 T_14 t0008)))
+  DataType: (ptr32 (struct (4 T_6 t0004) (8 T_14 t0008)))
+  OrigDataType: (ptr32 (struct (8 T_14 t0008)))
 T_10: (in Fn2(p) : word32)
   Class: Eq_10
   DataType: word32

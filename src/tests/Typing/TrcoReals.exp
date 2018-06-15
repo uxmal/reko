@@ -37,8 +37,8 @@ l0C00_0037:
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 T_2 (in ds : selector)
 	trait_primitive(selector)
 	trait_equal(T_5)

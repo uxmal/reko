@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private Pointer Ptr(DataType dt)
         {
-            return new Pointer(dt, 4);
+            return new Pointer(dt, 32);
         }
 
         private void Given_CallingConvention()

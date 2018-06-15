@@ -32,18 +32,18 @@ fn0C00_000F_exit:
 
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr (segment (64 T_9 t0064)))
-  OrigDataType: (ptr (segment (64 T_9 t0064)))
+  DataType: (ptr16 (segment (64 T_9 t0064)))
+  OrigDataType: (ptr16 (segment (64 T_9 t0064)))
 T_3: (in fn0C00_000F : segptr32)
   Class: Eq_3
-  DataType: (ptr (fn T_7 (T_6)))
-  OrigDataType: (ptr (fn T_7 (T_6)))
+  DataType: (ptr32 (fn T_7 (T_6)))
+  OrigDataType: (ptr32 (fn T_7 (T_6)))
 T_4: (in signature of fn0C00_000F : void)
   Class: Eq_3
   DataType: 
@@ -90,8 +90,8 @@ T_14: (in 0x0001 : word16)
   OrigDataType: word16
 T_15: (in fn0C00_000F : segptr32)
   Class: Eq_3
-  DataType: (ptr (fn T_17 (T_16)))
-  OrigDataType: (ptr (fn T_17 (T_16)))
+  DataType: (ptr32 (fn T_17 (T_16)))
+  OrigDataType: (ptr32 (fn T_17 (T_16)))
 T_16: (in wArg02 - 0x0001 : word16)
   Class: Eq_5
   DataType: word16

@@ -10,14 +10,14 @@ proc1_exit:
 
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr (segment (C00 T_4 t0C00)))
-  OrigDataType: (ptr (segment (C00 T_4 t0C00)))
+  DataType: (ptr16 (segment (C00 T_4 t0C00)))
+  OrigDataType: (ptr16 (segment (C00 T_4 t0C00)))
 T_3: (in 0x0C00 : word16)
   Class: Eq_3
   DataType: (memptr T_2 (struct (0 T_4 t0000)))

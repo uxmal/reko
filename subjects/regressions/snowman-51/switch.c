@@ -4,7 +4,7 @@
 
 #include "switch.h"
 
-// 10071000: Register (ptr char) get(Stack uint32 n)
+// 10071000: Register (ptr32 char) get(Stack uint32 n)
 char * get(uint32 n)
 {
 	if (n > ~0x01)

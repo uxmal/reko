@@ -140,11 +140,11 @@ namespace Reko.UnitTests.Typing
                 var str = new StructureType("str", 8, true)
                 {
                     Fields = {
-                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 0, new Pointer(strInner, 32), "strAttr00" },
                         { 4, PrimitiveType.Int32, "strAttr04" },
                     }
                 };
-                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
                 m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");

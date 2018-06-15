@@ -24,22 +24,22 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (1300 int16 w1300))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (fn int16 ())
 	T_2 (in rand : ptr32)
 	T_3 (in signature of rand : void)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in rand : ptr32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (fn T_4 ()))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_4 ()))
 T_3: (in signature of rand : void)
   Class: Eq_2
-  DataType: (ptr Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: 
 T_4: (in rand() : int16)
   Class: Eq_4
@@ -47,8 +47,8 @@ T_4: (in rand() : int16)
   OrigDataType: int16
 T_5: (in 0x1300 : word16)
   Class: Eq_5
-  DataType: (ptr int16)
-  OrigDataType: (ptr (struct (0 T_6 t0000)))
+  DataType: (ptr16 int16)
+  OrigDataType: (ptr16 (struct (0 T_6 t0000)))
 T_6: (in Mem4[0x1300:word16] : word16)
   Class: Eq_4
   DataType: int16

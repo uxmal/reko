@@ -239,7 +239,7 @@ word16 fn00200532(byte a, byte w, word16 bc, word16 de, word16 hl)
 	return de_34;
 }
 
-// 00200557: Register word16 fn00200557(Register word16 wa, Register word16 bc, Register byte d, Register (ptr byte) xhl)
+// 00200557: Register word16 fn00200557(Register word16 wa, Register word16 bc, Register byte d, Register (ptr32 byte) xhl)
 word16 fn00200557(word16 wa, word16 bc, byte d, byte * xhl)
 {
 	*(ui8 *) 0x4002 = d << 0x01;

@@ -4,7 +4,7 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-// 00011498: void _start(Register (ptr Eq_2) g1, Register word32 o7, Stack word32 dwArg40)
+// 00011498: void _start(Register (ptr32 Eq_2) g1, Register word32 o7, Stack word32 dwArg40)
 void _start( * g1, word32 o7, word32 dwArg40)
 {
 	if (g1 == null)
@@ -132,7 +132,7 @@ void init_dummy()
 {
 }
 
-// 0001162C: Register word32 notice(Register int32 o0, Stack Eq_31 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg50, Stack word32 dwArg54, Stack word32 dwArg58, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out (ptr Eq_192) i6Out)
+// 0001162C: Register word32 notice(Register int32 o0, Stack Eq_31 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg50, Stack word32 dwArg54, Stack word32 dwArg58, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out (ptr32 Eq_192) i6Out)
 word32 notice(int32 o0, Eq_31 dwArg48, word32 dwArg4C, word32 dwArg50, word32 dwArg54, word32 dwArg58, ptr32 & i1Out, ptr32 & i2Out, Eq_192 * & i6Out)
 {
 	word32 sp_28;
@@ -155,13 +155,13 @@ word32 notice(int32 o0, Eq_31 dwArg48, word32 dwArg4C, word32 dwArg50, word32 dw
 	return i0_29;
 }
 
-// 00011660: Register (ptr char) xstrerror(Register (ptr char) o0)
+// 00011660: Register (ptr32 char) xstrerror(Register (ptr32 char) o0)
 char * xstrerror(char * o0)
 {
 	return strerror(o0);
 }
 
-// 00011674: Register Eq_216 xmalloc(Register Eq_216 o0, Register out (ptr int8) i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// 00011674: Register Eq_216 xmalloc(Register Eq_216 o0, Register out (ptr32 int8) i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
 Eq_216 xmalloc(Eq_216 o0, int8 * & i0Out, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 {
 	word32 i0_4;
@@ -182,7 +182,7 @@ Eq_216 xmalloc(Eq_216 o0, int8 * & i0Out, ptr32 & i1Out, ptr32 & i2Out, ptr32 & 
 	exit(33);
 }
 
-// 000116B0: Register Eq_216 xrealloc(Register Eq_216 o0, Register Eq_216 o1, Register out (ptr Eq_259) i0Out, Register out Eq_260 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// 000116B0: Register Eq_216 xrealloc(Register Eq_216 o0, Register Eq_216 o1, Register out (ptr32 Eq_259) i0Out, Register out Eq_260 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
 Eq_216 xrealloc(Eq_216 o0, Eq_216 o1, Eq_259 * & i0Out, Eq_260 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 {
 	Eq_216 o0_27;
@@ -261,7 +261,7 @@ void fancy_abort()
 	exit(33);
 }
 
-// 000117A0: Register Eq_216 dupnstr(Register Eq_216 o0, Register Eq_380 o1, Register out ptr32 l0Out, Register out (ptr int8) i0Out, Register out ptr32 i6Out)
+// 000117A0: Register Eq_216 dupnstr(Register Eq_216 o0, Register Eq_380 o1, Register out ptr32 l0Out, Register out (ptr32 int8) i0Out, Register out ptr32 i6Out)
 Eq_216 dupnstr(Eq_216 o0, Eq_380 o1, ptr32 & l0Out, int8 * & i0Out, ptr32 & i6Out)
 {
 	word32 i0_21;
@@ -278,7 +278,7 @@ Eq_216 dupnstr(Eq_216 o0, Eq_380 o1, ptr32 & l0Out, int8 * & i0Out, ptr32 & i6Ou
 	return o0_25;
 }
 
-// 000117CC: Register Eq_410 substr(Register Eq_410 o0, Register (ptr int8) o1)
+// 000117CC: Register Eq_410 substr(Register Eq_410 o0, Register (ptr32 int8) o1)
 Eq_410 substr(Eq_410 o0, int8 * o1)
 {
 	int32 g2_4 = (int32) *o0;
@@ -360,7 +360,7 @@ l00011880:
 safe_read_exit:
 }
 
-// 00011888: void safe_write(Register int32 o0, Register (ptr void) o1, Register Eq_216 o2, Register Eq_216 o3)
+// 00011888: void safe_write(Register int32 o0, Register (ptr32 void) o1, Register Eq_216 o2, Register Eq_216 o3)
 void safe_write(int32 o0, void, Eq_216 o2, Eq_216 o3)
 {
 	void * i1_110 = o1;
@@ -474,7 +474,7 @@ Eq_216 in_system_include_dir(Eq_216 o0)
 		abort();
 }
 
-// 00011A4C: Register (ptr Eq_673) needs_to_be_converted(Register (ptr Eq_673) o0)
+// 00011A4C: Register (ptr32 Eq_673) needs_to_be_converted(Register (ptr32 Eq_673) o0)
 Eq_673 * needs_to_be_converted(Eq_673 * o0)
 {
 	struct Eq_673 * o0_13;
@@ -595,7 +595,7 @@ Eq_216 string_list_cons(ptr32 & i6Out)
 	return o0_24;
 }
 
-// 00011BE4: Register (ptr Eq_851) visit_each_hash_node(Register (ptr Eq_852) o0)
+// 00011BE4: Register (ptr32 Eq_851) visit_each_hash_node(Register (ptr32 Eq_852) o0)
 Eq_851 * visit_each_hash_node(Eq_852 * o0)
 {
 	struct Eq_851 * i0_4 = &o0->dw0004 + 0x02;
@@ -696,7 +696,7 @@ l00011D1C:
 	goto l00011D34;
 }
 
-// 00011D3C: void free_def_dec(Register (ptr Eq_1009) o0)
+// 00011D3C: void free_def_dec(Register (ptr32 Eq_1009) o0)
 void free_def_dec(Eq_1009 * o0)
 {
 	xfree(xfree(o0->t000C));
@@ -821,7 +821,7 @@ l00011EC8:
 	goto l00011DA0;
 }
 
-// 00011F34: Register Eq_216 abspath(Register Eq_216 o0, Register Eq_216 o1, Register out ptr32 spOut, Register out ptr32 l0Out, Register out ptr32 i1Out, Register out (ptr Eq_1264) i6Out)
+// 00011F34: Register Eq_216 abspath(Register Eq_216 o0, Register Eq_216 o1, Register out ptr32 spOut, Register out ptr32 l0Out, Register out ptr32 i1Out, Register out (ptr32 Eq_1264) i6Out)
 Eq_216 abspath(Eq_216 o0, Eq_216 o1, ptr32 & spOut, ptr32 & l0Out, ptr32 & i1Out, Eq_1264 * & i6Out)
 {
 	Eq_216 i0_22 = o0;
@@ -980,7 +980,7 @@ l00012120:
 	return savestring(&sp_33->b0060, o2_104 - &sp_33->b0060, out l0_70, out i0_71, out i1_72, out i6_73);
 }
 
-// 0001214C: Register Eq_216 shortpath(Register Eq_216 o0, Register Eq_216 o1, Register out Eq_519 l0Out, Register out ptr32 l1Out, Register out (ptr Eq_521) l2Out, Register out ptr32 l3Out, Register out (ptr Eq_523) l4Out, Register out ptr32 i0Out, Register out ptr32 i1Out)
+// 0001214C: Register Eq_216 shortpath(Register Eq_216 o0, Register Eq_216 o1, Register out Eq_519 l0Out, Register out ptr32 l1Out, Register out (ptr32 Eq_521) l2Out, Register out ptr32 l3Out, Register out (ptr32 Eq_523) l4Out, Register out ptr32 i0Out, Register out ptr32 i1Out)
 Eq_216 shortpath(Eq_216 o0, Eq_216 o1, Eq_519 & l0Out, ptr32 & l1Out, Eq_521 * & l2Out, ptr32 & l3Out, Eq_523 * & l4Out, ptr32 & i0Out, ptr32 & i1Out)
 {
 	Eq_216 o0_24 = strlen(o1);
@@ -1230,7 +1230,7 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 	aux_info_corrupted();
 }
 
-// 00012418: Register (ptr Eq_1961) find_corresponding_lparen(Register (ptr Eq_1961) o0)
+// 00012418: Register (ptr32 Eq_1961) find_corresponding_lparen(Register (ptr32 Eq_1961) o0)
 Eq_1961 * find_corresponding_lparen(Eq_1961 * o0)
 {
 	int8 * o0_14 = &o0->bFFFFFFFF.bFFFFFFFF;
@@ -1257,7 +1257,7 @@ l00012448:
 	goto l00012448;
 }
 
-// 0001245C: void referenced_file_is_newer(Register (ptr int8) o0)
+// 0001245C: void referenced_file_is_newer(Register (ptr32 int8) o0)
 void referenced_file_is_newer(int8 * o0)
 {
 	int8 * l1_101;
@@ -1567,7 +1567,7 @@ l00012AB4:
 	goto l00012648;
 }
 
-// 00012B64: Register (ptr Eq_2983) munge_compile_params(Register Eq_216 o0, Register out ptr32 i0Out, Register out ptr32 i6Out)
+// 00012B64: Register (ptr32 Eq_2983) munge_compile_params(Register Eq_216 o0, Register out ptr32 i0Out, Register out ptr32 i6Out)
 Eq_2983 * munge_compile_params(Eq_216 o0, ptr32 & i0Out, ptr32 & i6Out)
 {
 	struct Eq_2983 * sp_25 = fp + ~0x73 - ((strlen(o0) << 0x02) + 0x27 & ~0x07);
@@ -1916,7 +1916,7 @@ l000131F0:
 	notice(o0_181, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58, out i1_102, out i2_103, out i6_104);
 }
 
-// 000135C0: void reverse_def_dec_list(Register (ptr Eq_851) o0)
+// 000135C0: void reverse_def_dec_list(Register (ptr32 Eq_851) o0)
 void reverse_def_dec_list(Eq_851 * o0)
 {
 	struct Eq_3741 * o1_4 = o0->ptr0008;
@@ -2031,7 +2031,7 @@ void declare_source_confusing(Eq_216 o0)
 	longjmp();
 }
 
-// 000136E0: Register Eq_3899 check_source(Register Eq_3899 o0, Register Eq_216 o1, Register out ptr32 i1Out, Register out (ptr Eq_3903) i2Out, Register out (ptr Eq_3904) i6Out)
+// 000136E0: Register Eq_3899 check_source(Register Eq_3899 o0, Register Eq_216 o1, Register out ptr32 i1Out, Register out (ptr32 Eq_3903) i2Out, Register out (ptr32 Eq_3904) i6Out)
 Eq_3899 check_source(Eq_3899 o0, Eq_216 o1, ptr32 & i1Out, Eq_3903 * & i2Out, Eq_3904 * & i6Out)
 {
 	word32 i1_6;
@@ -2161,7 +2161,7 @@ word32 output_string(Eq_216 o0, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr
 	return l1_24;
 }
 
-// 000138AC: Register word32 output_up_to(Register (ptr Eq_4144) o0, Register out ptr32 l2Out, Register out ptr32 i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
+// 000138AC: Register word32 output_up_to(Register (ptr32 Eq_4144) o0, Register out ptr32 l2Out, Register out ptr32 i0Out, Register out ptr32 i1Out, Register out ptr32 i2Out, Register out ptr32 i6Out)
 word32 output_up_to(Eq_4144 * o0, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 {
 	*l2Out = l2;
@@ -2199,7 +2199,7 @@ Eq_410 other_variable_style_function(Eq_410 o0, ptr32 & i1Out, ptr32 & i6Out)
 	return 0x00 - substr(o0, &globals->b17468) < 0x00;
 }
 
-// 00013914: void edit_fn_declaration(Register (ptr Eq_4213) o0, Stack word32 dwArg44, Stack word32 dwArg48)
+// 00013914: void edit_fn_declaration(Register (ptr32 Eq_4213) o0, Stack word32 dwArg44, Stack word32 dwArg48)
 void edit_fn_declaration(Eq_4213 * o0, word32 dwArg44, word32 dwArg48)
 {
 	strlen(o0->ptr0010->t0004);
@@ -2559,7 +2559,7 @@ void edit_fn_definition(word32 o0, Eq_31 o1, word32 dwArg44, word32 dwArg48)
 	}
 }
 
-// 000140B4: void do_cleaning(Register (ptr byte) o0, Register up32 o1)
+// 000140B4: void do_cleaning(Register (ptr32 byte) o0, Register up32 o1)
 void do_cleaning(byte * o0, up32 o1)
 {
 	byte * i0_4 = o0;
@@ -2575,7 +2575,7 @@ void do_cleaning(byte * o0, up32 o1)
 	}
 }
 
-// 00014518: Register Eq_3779 careful_find_l_paren(Register Eq_3779 o0, Register out ptr32 spOut, Register out (ptr Eq_4984) i6Out)
+// 00014518: Register Eq_3779 careful_find_l_paren(Register Eq_3779 o0, Register out ptr32 spOut, Register out (ptr32 Eq_4984) i6Out)
 Eq_3779 careful_find_l_paren(Eq_3779 o0, ptr32 & spOut, Eq_4984 * & i6Out)
 {
 	Eq_31 i0_19 = (word32) o0 - 0x01;
@@ -2796,7 +2796,7 @@ l00014854:
 	goto l000145B4;
 }
 
-// 00014878: void edit_file(Register (ptr Eq_5446) o0)
+// 00014878: void edit_file(Register (ptr32 Eq_5446) o0)
 void edit_file(Eq_5446 * o0)
 {
 	struct Eq_673 * i0_20 = o0->ptr0008;
@@ -3107,7 +3107,7 @@ Eq_216 getpwd()
 	}
 }
 
-// 000153C4: void _obstack_begin(Register (ptr Eq_6018) o0, Register word32 o1, Register word32 o2, Register (ptr code) o3, Register word32 o4)
+// 000153C4: void _obstack_begin(Register (ptr32 Eq_6018) o0, Register word32 o1, Register word32 o2, Register (ptr32 code) o3, Register word32 o4)
 void _obstack_begin(Eq_6018 * o0, word32 o1, word32 o2, code * o3, word32 o4)
 {
 	word32 i1_156 = o1;
@@ -3215,7 +3215,7 @@ void _obstack_begin(Eq_6018 * o0, word32 o1, word32 o2, code * o3, word32 o4)
 	}
 }
 
-// 00015488: void _obstack_begin_1(Register (ptr Eq_6167) o0, Register word32 o1, Register word32 o2, Register (ptr code) o3, Register word32 o4, Register word32 o5)
+// 00015488: void _obstack_begin_1(Register (ptr32 Eq_6167) o0, Register word32 o1, Register word32 o2, Register (ptr32 code) o3, Register word32 o4, Register word32 o5)
 void _obstack_begin_1(Eq_6167 * o0, word32 o1, word32 o2, code * o3, word32 o4, word32 o5)
 {
 	word32 i1_157 = o1;
@@ -3324,7 +3324,7 @@ void _obstack_begin_1(Eq_6167 * o0, word32 o1, word32 o2, code * o3, word32 o4, 
 	}
 }
 
-// 00015550: void _obstack_newchunk(Register (ptr Eq_6321) o0, Register word32 o1)
+// 00015550: void _obstack_newchunk(Register (ptr32 Eq_6321) o0, Register word32 o1)
 void _obstack_newchunk(Eq_6321 * o0, word32 o1)
 {
 	int32 l2_22 = o0->dw000C - o0->dw0008;
@@ -3547,7 +3547,7 @@ void _obstack_newchunk(Eq_6321 * o0, word32 o1)
 	i0_130->ptr0008 = i1_129;
 }
 
-// 000156F0: void _obstack_allocated_p(Register (ptr Eq_6629) o0, Register up32 o1)
+// 000156F0: void _obstack_allocated_p(Register (ptr32 Eq_6629) o0, Register up32 o1)
 void _obstack_allocated_p(Eq_6629 * o0, up32 o1)
 {
 	struct Eq_6631 * g3_28 = o0->ptr0004;
@@ -3565,7 +3565,7 @@ void _obstack_allocated_p(Eq_6629 * o0, up32 o1)
 	}
 }
 
-// 00015724: void _obstack_free(Register (ptr Eq_6653) o0, Register up32 o1)
+// 00015724: void _obstack_free(Register (ptr32 Eq_6653) o0, Register up32 o1)
 void _obstack_free(Eq_6653 * o0, up32 o1)
 {
 	struct Eq_6653 * i0_117 = o0;
@@ -3654,7 +3654,7 @@ void _obstack_free(Eq_6653 * o0, up32 o1)
 	}
 }
 
-// 000157D4: void obstack_free(Register (ptr Eq_6763) o0, Register up32 o1)
+// 000157D4: void obstack_free(Register (ptr32 Eq_6763) o0, Register up32 o1)
 void obstack_free(Eq_6763 * o0, up32 o1)
 {
 	struct Eq_6763 * i0_117 = o0;
@@ -3743,7 +3743,7 @@ void obstack_free(Eq_6763 * o0, up32 o1)
 	}
 }
 
-// 00015884: void _obstack_memory_used(Register (ptr Eq_6873) o0)
+// 00015884: void _obstack_memory_used(Register (ptr32 Eq_6873) o0)
 void _obstack_memory_used(Eq_6873 * o0)
 {
 	struct Eq_6874 * g3_15 = o0->ptr0004;
@@ -3899,7 +3899,7 @@ void make_temp_file(word32 o0)
 	}
 }
 
-// 00015C24: Register (ptr int8) my_index(Register (ptr int8) o0, Register Eq_7238 o1)
+// 00015C24: Register (ptr32 int8) my_index(Register (ptr32 int8) o0, Register Eq_7238 o1)
 int8 * my_index(int8 * o0, Eq_7238 o1)
 {
 	int32 g2_28 = (int32) *o0;
@@ -3915,7 +3915,7 @@ int8 * my_index(int8 * o0, Eq_7238 o1)
 	return o0;
 }
 
-// 00015C60: Register (ptr (arr Eq_7338)) exchange(Register (arr Eq_7338) o0, Register out (ptr int8) i2Out, Register out (ptr word32) i4Out, Register out ptr32 i5Out, Register out (ptr Eq_7270) i6Out)
+// 00015C60: Register (ptr32 (arr Eq_7338)) exchange(Register (arr Eq_7338) o0, Register out (ptr32 int8) i2Out, Register out (ptr32 word32) i4Out, Register out ptr32 i5Out, Register out (ptr32 Eq_7270) i6Out)
 Eq_7338 * exchange[](Eq_7338 o0[], int8 * & i2Out, word32 * & i4Out, ptr32 & i5Out, Eq_7270 * & i6Out)
 {
 	int32 g2_179;
@@ -4011,7 +4011,7 @@ l00015D30:
 	goto l00015D30;
 }
 
-// 00015D64: Register (ptr int8) _getopt_initialize(Register (ptr int8) o2, Register out ptr32 i1Out, Register out ptr32 i4Out, Register out ptr32 i5Out, Register out ptr32 i6Out)
+// 00015D64: Register (ptr32 int8) _getopt_initialize(Register (ptr32 int8) o2, Register out ptr32 i1Out, Register out ptr32 i4Out, Register out ptr32 i5Out, Register out ptr32 i6Out)
 int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 {
 	int32 o2_19 = globals->dw28068;
@@ -4047,7 +4047,7 @@ int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 	return i0_25;
 }
 
-// 00015E04: Register Eq_7238 _getopt_internal(Register (ptr (arr Eq_7338)) o1, Register (ptr int8) o2, Register (ptr word32) o4, Register word32 o5, Stack word32 dwArg44, Stack word32 dwArg50, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
+// 00015E04: Register Eq_7238 _getopt_internal(Register (ptr32 (arr Eq_7338)) o1, Register (ptr32 int8) o2, Register (ptr32 word32) o4, Register word32 o5, Stack word32 dwArg44, Stack word32 dwArg50, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
 Eq_7238 _getopt_internal(Eq_7338 * o1[], int8 * o2, word32 * o4, word32 o5, word32 dwArg44, word32 dwArg50, ptr32 & l0Out, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 {
 	*l7Out = l7;
@@ -4688,7 +4688,7 @@ l00015F24:
 	goto l00015F78;
 }
 
-// 00016980: void getopt(Register word32 o0, Register (ptr (arr Eq_7338)) o1, Register (ptr int8) o2)
+// 00016980: void getopt(Register word32 o0, Register (ptr32 (arr Eq_7338)) o1, Register (ptr32 int8) o2)
 void getopt(word32 o0, Eq_7338 * o1[], int8 * o2)
 {
 	word32 l0_27;
@@ -4698,7 +4698,7 @@ void getopt(word32 o0, Eq_7338 * o1[], int8 * o2)
 	_getopt_internal(o1, o2, null, 0x00, dwLoc2C, dwLoc20, out l0_27, out l6_28, out l7_29, out i6_30);
 }
 
-// 000169A8: Register word32 getopt_long(Register word32 o0, Register (ptr (arr Eq_7338)) o1, Register (ptr int8) o2, Register word32 o3, Register (ptr word32) o4, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
+// 000169A8: Register word32 getopt_long(Register word32 o0, Register (ptr32 (arr Eq_7338)) o1, Register (ptr32 int8) o2, Register word32 o3, Register (ptr32 word32) o4, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
 word32 getopt_long(word32 o0, Eq_7338 * o1[], int8 * o2, word32 o3, word32 * o4, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 {
 	word32 l0_27;
@@ -4709,7 +4709,7 @@ word32 getopt_long(word32 o0, Eq_7338 * o1[], int8 * o2, word32 o3, word32 * o4,
 	return l0_27;
 }
 
-// 000169D0: void getopt_long_only(Register word32 o0, Register (ptr (arr Eq_7338)) o1, Register (ptr int8) o2, Register word32 o3, Register (ptr word32) o4)
+// 000169D0: void getopt_long_only(Register word32 o0, Register (ptr32 (arr Eq_7338)) o1, Register (ptr32 int8) o2, Register word32 o3, Register (ptr32 word32) o4)
 void getopt_long_only(word32 o0, Eq_7338 * o1[], int8 * o2, word32 o3, word32 * o4)
 {
 	word32 l0_27;
@@ -4719,7 +4719,7 @@ void getopt_long_only(word32 o0, Eq_7338 * o1[], int8 * o2, word32 o3, word32 * 
 	_getopt_internal(o1, o2, o4, 0x01, dwLoc2C, dwLoc20, out l0_27, out l6_28, out l7_29, out i6_30);
 }
 
-// 000169F8: Register int32 pexecute(Register (ptr char) o2, Register (ptr word32) o4, Register (ptr word32) o5, Register int32 l1, Stack word32 dwArg44, Stack Eq_31 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack ui32 dwArg5C, Register out ptr32 l0Out, Register out ptr32 i6Out)
+// 000169F8: Register int32 pexecute(Register (ptr32 char) o2, Register (ptr32 word32) o4, Register (ptr32 word32) o5, Register int32 l1, Stack word32 dwArg44, Stack Eq_31 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack ui32 dwArg5C, Register out ptr32 l0Out, Register out ptr32 i6Out)
 int32 pexecute(char * o2, word32 * o4, word32 * o5, int32 l1, word32 dwArg44, Eq_31 dwArg48, word32 dwArg4C, word32 dwArg54, word32 dwArg58, ui32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 {
 	<anonymous> * o0_29;
@@ -5358,7 +5358,7 @@ word32 fn00016E64(word32 o7, word32 l7)
 	return o7 + l7;
 }
 
-// 00016E6C: Register (ptr word32) __do_global_ctors_aux(Register word32 o7)
+// 00016E6C: Register (ptr32 word32) __do_global_ctors_aux(Register word32 o7)
 word32 * __do_global_ctors_aux(word32 o7)
 {
 	word32 * l0_30;

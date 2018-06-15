@@ -10,8 +10,8 @@ l1:
 	// succ:  SegmentedCallFragment_exit
 SegmentedCallFragment_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem(T_6, 27000)
 T_2 (in ds : selector)
 	trait_primitive(selector)
@@ -29,5 +29,5 @@ T_5 (in bx : word16)
 T_6 (in 0x2700 : selector)
 	trait_primitive(selector)
 T_7 (in SEQ(0x2700, bx) : ptr32)
-	trait_primitive((ptr code))
+	trait_primitive((ptr32 code))
 	trait_primitive(ptr32)

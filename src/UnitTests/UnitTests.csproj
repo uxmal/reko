@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -146,6 +146,49 @@
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
     <Compile Include="Core\CriticalInstructionTests.cs" />
+    <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
+    <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
+    <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
+    <Compile Include="Arch\Microchip\Common\DeviceConfigDefsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterAccessTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterContentTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegistersTestsBase.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterTraitsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\SamplePICNames.cs" />
+    <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
+    <Compile Include="Arch\Microchip\CrownkingTests.cs" />
+    <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16ArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Basic_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16All_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Basic_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\Common\DisassemblerTestsBase.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Basic_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggExtd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyExtd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggExtd_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyExtd_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRewriterTestsBase.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggExtd_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_RewriterTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -731,6 +774,10 @@
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
+      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
+      <Name>MicrochipPIC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
       <Name>Mips</Name>
@@ -939,6 +986,10 @@
       <Project>{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}</Project>
       <Name>Libc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Name>Microchip.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
@@ -1001,6 +1052,7 @@
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
@@ -1010,17 +1062,23 @@
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
   <!-- TODO: Duplicated in Common.items -->
-  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' AND '$(Platform)' != 'AnyCPU' ">
+
+  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
+  </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
   </ItemGroup>
+    
   <Target Name="AfterBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
-    <Message Importance="high" Text="External components @(ExternalComponents)" />
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

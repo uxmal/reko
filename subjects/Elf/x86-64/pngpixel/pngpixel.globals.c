@@ -5,7 +5,7 @@
 #include "pngpixel.h"
 
 Eq_1500 g_a0001[];
-Eq_28 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+Eq_28 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 Eq_31 g_t401780 = Unexpected function type (fn void ())
 ;
@@ -31,6 +31,7 @@ void g_v401A70 = ??void??;
 <anonymous> * g_ptr601E00 = frame_dummy;
 word64 g_qw601E10 = 0x0000000000000000;
 word64 g_qw601FF8 = 0x0000000000000000;
-FILE * g_ptr602100 = null;
+FILE * g_ptr602100 = &g_tC04200;
 byte g_b602108 = 0x00;
+Eq_178 g_tC04200;
 

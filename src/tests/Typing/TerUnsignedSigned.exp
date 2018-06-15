@@ -42,16 +42,16 @@ register_tm_clones_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (2A int64 qw002A))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_10: (union "Eq_10" (int64 u0) (uint64 u1))
 	T_10 (in rsi >> 0x0000000000000003 : word64)
 Eq_12: (union "Eq_12" (int64 u0) (uint64 u1))
 	T_12 (in rsi >> 0x0000000000000003 >> 0x3F : word64)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr64 Eq_1)
+  OrigDataType: (ptr64 (struct "Globals"))
 T_2: (in 0x0000000000201028 : word64)
   Class: Eq_2
   DataType: word64
@@ -118,8 +118,8 @@ T_17: (in (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >
   OrigDataType: bool
 T_18: (in 0x000000000000002A : word64)
   Class: Eq_18
-  DataType: (ptr int64)
-  OrigDataType: (ptr (struct (0 T_19 t0000)))
+  DataType: (ptr64 int64)
+  OrigDataType: (ptr64 (struct (0 T_19 t0000)))
 T_19: (in Mem0[0x000000000000002A:word64] : word64)
   Class: Eq_4
   DataType: int64

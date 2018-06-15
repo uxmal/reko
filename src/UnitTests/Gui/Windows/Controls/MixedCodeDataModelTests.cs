@@ -63,6 +63,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                     Instr(rdr.Address.ToUInt32()+2),
                     Instr(rdr.Address.ToUInt32()+4)
                 }));
+            this.arch.Stub(a => a.InstructionBitSize).Return(8);
             this.writer = new StringWriter();
         }
 

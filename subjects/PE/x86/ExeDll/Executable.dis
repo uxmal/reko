@@ -170,7 +170,7 @@ l0040119F:
 	word32 esp_273 = esp_16 - 0x00000004
 	Mem274[esp_273:word32] = 0x004020EC
 	Mem276[esp_273 - 0x00000004:word32] = 0x004020E0
-	branch _initterm_e(Mem276[esp_273 - 0x00000004:(ptr PVFV)], Mem276[esp_273:(ptr PVFV)]) == 0x00000000 l004011CB
+	branch _initterm_e(Mem276[esp_273 - 0x00000004:(ptr32 PVFV)], Mem276[esp_273:(ptr32 PVFV)]) == 0x00000000 l004011CB
 // DataOut: bl ebp ebx esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> ebp:<invalid> al:<invalid> edx:<invalid> -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
@@ -179,7 +179,7 @@ l0040119F:
 l004011CB:
 	Mem289[esp_273:word32] = 0x004020DC
 	Mem291[esp_273 - 0x00000004:word32] = 0x004020D4
-	_initterm(Mem291[esp_273 - 0x00000004:(ptr PVFV)], Mem291[esp_273:(ptr PVFV)])
+	_initterm(Mem291[esp_273 - 0x00000004:(ptr32 PVFV)], Mem291[esp_273:(ptr32 PVFV)])
 	Mem296[0x00403334:word32] = 0x00000002
 // DataOut: bl ebp ebx esp fs
 // DataOut (flags): 

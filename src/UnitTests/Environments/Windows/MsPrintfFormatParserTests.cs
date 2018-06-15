@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             ParseChar32("%S");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr wchar_t)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 wchar_t)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]

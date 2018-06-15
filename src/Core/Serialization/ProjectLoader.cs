@@ -142,8 +142,8 @@ namespace Reko.Core.Serialization
         // Avoid reflection by using the visitor pattern.
         class Deserializer : ISerializedProjectVisitor<Project>
         {
-            private ProjectLoader outer;
-            private string filename;
+            private readonly ProjectLoader outer;
+            private readonly string filename;
 
             public Deserializer(ProjectLoader outer, string filename)
             {
@@ -233,8 +233,9 @@ namespace Reko.Core.Serialization
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
-            var sUser = sInput.User;
+            var sUser = sInput.User ?? new UserData_v4();
             var address = LoadAddress(sUser, this.arch);
+            var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
             Program program;
             if (!string.IsNullOrEmpty(sUser.Loader))
             {
@@ -246,6 +247,7 @@ namespace Reko.Core.Serialization
                 {
                     LoaderName = sUser.Loader,
                     ArchitectureName = arch,
+                    ArchitectureOptions = archOptions,
                     PlatformName = platform,
                     LoadAddress = sUser.LoadAddress,
                 });
@@ -254,6 +256,7 @@ namespace Reko.Core.Serialization
             {
                 program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address);
             }
+            LoadUserData(sUser, program, program.User);
             program.Filename = binAbsPath;
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
@@ -261,7 +264,6 @@ namespace Reko.Core.Serialization
             program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
             program.EnsureFilenames(program.Filename);
-            LoadUserData(sUser, program, program.User);
             program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
@@ -325,6 +327,12 @@ namespace Reko.Core.Serialization
             return addr;
         }
 
+        /// <summary>
+        /// Loads 
+        /// </summary>
+        /// <param name="sUser"></param>
+        /// <param name="program"></param>
+        /// <param name="user"></param>
         public void LoadUserData(UserData_v4 sUser, Program program, UserData user)
         {
             if (sUser == null)
@@ -332,12 +340,17 @@ namespace Reko.Core.Serialization
             user.OnLoadedScript = sUser.OnLoadedScript;
             if (sUser.Processor != null)
             {
-                program.User.Processor = sUser.Processor.Name;
-                if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
+                user.Processor = sUser.Processor.Name;
+                if (program.Architecture == null && !string.IsNullOrEmpty(user.Processor))
                 {
-                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(user.Processor);
                 }
                 program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
+            }
+            if (sUser.PlatformOptions != null)
+            {
+                user.Environment = sUser.PlatformOptions.Name;
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.Procedures != null)
             {
@@ -345,12 +358,6 @@ namespace Reko.Core.Serialization
                     .Select(sup => LoadUserProcedure_v1(program, sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-
-            if (sUser.PlatformOptions != null)
-            {
-                program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.GlobalData != null)
             {

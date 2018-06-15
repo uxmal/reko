@@ -84,7 +84,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Reko.Core
         /// <summary>
         /// Creates a comparer that compares instructions for equality. 
         /// Normalization means some attributes of the instruction are 
-        /// trated as wildcards.
+        /// treated as wildcards.
         /// </summary>
         /// <param name="norm"></param>
         /// <returns></returns>
@@ -152,7 +152,7 @@ namespace Reko.Core
         void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
 
         /// <summary>
-        /// Find the widest subregister that covers the register reg.
+        /// Find the widest sub-register that covers the register reg.
         /// </summary>
         /// <param name="reg"></param>
         /// <param name="bits"></param>
@@ -366,14 +366,14 @@ namespace Reko.Core
         public abstract SortedList<string, int> GetOpcodeNames();
 
         /// <summary>
-        /// Get the improper subregister of <paramref name="reg"/> that starts
+        /// Get the improper sub-register of <paramref name="reg"/> that starts
         /// at offset <paramref name="offset"/> and is of size 
         /// <paramref name="width"/>.
         /// </summary>
         /// <remarks>
-        /// Most architectures not have subregisters, and will use this 
+        /// Most architectures not have sub-registers, and will use this 
         /// default implementation. This method is overridden for 
-        /// architectures like x86 and Z80, where subregisters (ah al etc)
+        /// architectures like x86 and Z80, where sub-registers <code>(ah, al, etc)</code>
         /// do exist.
         /// </remarks>
         /// <param name="reg"></param>
@@ -402,4 +402,5 @@ namespace Reko.Core
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
         public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
     }
+
 }

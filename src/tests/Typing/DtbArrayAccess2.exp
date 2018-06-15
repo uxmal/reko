@@ -3,7 +3,7 @@
 T_1: (in ds : selector)
   Class: Eq_1
   DataType: 
-  OrigDataType: (ptr (segment (300 (arr T_8) a0300)))
+  OrigDataType: (ptr32 (segment (300 (arr T_8) a0300)))
 T_2: (in 0x0300 : word16)
   Class: Eq_2
   DataType: 

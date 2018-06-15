@@ -38,13 +38,13 @@ l0C00_0037:
 fn0C00_0037_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct "Globals"))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (ptr (segment (400 T_44 t0400) (408 T_48 t0408)))
+Eq_1: (ptr32 (struct "Globals"))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (ptr16 (segment (400 T_44 t0400) (408 T_48 t0408)))
 	T_2 (in ds : selector)
 	T_5 (in ds : selector)
 	T_13 (in ds : selector)
-Eq_3: (ptr (fn T_10 (T_2, T_8, T_9)))
+Eq_3: (ptr32 (fn T_10 (T_2, T_8, T_9)))
 	T_3 (in fn0C00_0010 : segptr32)
 	T_4 (in signature of fn0C00_0010 : void)
 Eq_6: (memptr T_5 (struct (0 T_18 t0000) (8 T_22 t0008) (10 T_26 t0010)))
@@ -55,7 +55,7 @@ Eq_7: (memptr T_5 (struct (0 T_34 t0000) (20 T_37 t0020) (28 T_41 t0028)))
 	T_9 (in 0x0320 : word16)
 Eq_10: void
 	T_10 (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
-Eq_11: (ptr (fn T_14 (T_2)))
+Eq_11: (ptr32 (fn T_14 (T_2)))
 	T_11 (in fn0C00_0037 : segptr32)
 	T_12 (in signature of fn0C00_0037 : void)
 Eq_14: void
@@ -122,26 +122,26 @@ Eq_46: int32
 Eq_47: (memptr T_13 (struct (0 T_48 t0000)))
 	T_47 (in 0x0408 : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct "Globals"))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr (segment (400 T_44 t0400) (408 T_48 t0408)))
-  OrigDataType: (ptr (segment))
+  DataType: (ptr16 (segment (400 T_44 t0400) (408 T_48 t0408)))
+  OrigDataType: (ptr16 (segment))
 T_3: (in fn0C00_0010 : segptr32)
   Class: Eq_3
-  DataType: (ptr (fn T_10 (T_2, T_8, T_9)))
-  OrigDataType: (ptr (fn T_10 (T_2, T_8, T_9)))
+  DataType: (ptr32 (fn T_10 (T_2, T_8, T_9)))
+  OrigDataType: (ptr32 (fn T_10 (T_2, T_8, T_9)))
 T_4: (in signature of fn0C00_0010 : void)
   Class: Eq_3
-  DataType: (ptr (fn T_10 (T_2, T_8, T_9)))
+  DataType: (ptr32 (fn T_10 (T_2, T_8, T_9)))
   OrigDataType: 
 T_5: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr (segment (400 T_44 t0400) (408 T_48 t0408)))
-  OrigDataType: (ptr (segment))
+  DataType: (ptr16 (segment (400 T_44 t0400) (408 T_48 t0408)))
+  OrigDataType: (ptr16 (segment))
 T_6: (in wArg02 : word16)
   Class: Eq_6
   DataType: (memptr T_5 (struct (0 T_18 t0000) (8 T_22 t0008) (10 T_26 t0010)))
@@ -164,16 +164,16 @@ T_10: (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
   OrigDataType: void
 T_11: (in fn0C00_0037 : segptr32)
   Class: Eq_11
-  DataType: (ptr (fn T_14 (T_2)))
-  OrigDataType: (ptr (fn T_14 (T_2)))
+  DataType: (ptr32 (fn T_14 (T_2)))
+  OrigDataType: (ptr32 (fn T_14 (T_2)))
 T_12: (in signature of fn0C00_0037 : void)
   Class: Eq_11
-  DataType: (ptr (fn T_14 (T_2)))
+  DataType: (ptr32 (fn T_14 (T_2)))
   OrigDataType: 
 T_13: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr (segment (400 T_44 t0400) (408 T_48 t0408)))
-  OrigDataType: (ptr (segment (400 T_44 t0400) (408 T_48 t0408)))
+  DataType: (ptr16 (segment (400 T_44 t0400) (408 T_48 t0408)))
+  OrigDataType: (ptr16 (segment (400 T_44 t0400) (408 T_48 t0408)))
 T_14: (in fn0C00_0037(ds) : void)
   Class: Eq_14
   DataType: void

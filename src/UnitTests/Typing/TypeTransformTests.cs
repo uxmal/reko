@@ -205,11 +205,11 @@ namespace Reko.UnitTests.Typing
         public void TtranSimplify()
         {
             UnionType u = new UnionType(null, null);
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
+            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
+            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
-            Assert.AreEqual("(ptr real32)", dt.ToString());
+            Assert.AreEqual("(ptr32 real32)", dt.ToString());
         }
 
         [Test]
@@ -217,10 +217,10 @@ namespace Reko.UnitTests.Typing
         {
             UnionType u = new UnionType(null, null);
             u.Alternatives.Add(PrimitiveType.Word32);
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
+            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
-            Assert.AreEqual("(ptr real32)", dt.ToString());
+            Assert.AreEqual("(ptr32 real32)", dt.ToString());
         }
 
         [Test]
@@ -263,8 +263,8 @@ namespace Reko.UnitTests.Typing
             };
             var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
             var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
-            ut.AddAlternative(new Pointer(eq1, 4));
-            ut.AddAlternative(new Pointer(eq2, 4));
+            ut.AddAlternative(new Pointer(eq1, 32));
+            ut.AddAlternative(new Pointer(eq2, 32));
             var trans = new TypeTransformer(factory, null, null);
             var ptr = (Pointer)ut.Accept(trans);
             var eq = (EquivalenceClass)ptr.Pointee;
@@ -295,12 +295,12 @@ namespace Reko.UnitTests.Typing
             };
             var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
             var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
-            ut.AddAlternative(new Pointer(eq1, 4));
-            ut.AddAlternative(new Pointer(eq2, 4));
+            ut.AddAlternative(new Pointer(eq1, 32));
+            ut.AddAlternative(new Pointer(eq2, 32));
             var trans = new TypeTransformer(factory, null, null);
             var dt = ut.Accept(trans);
             Assert.AreEqual(
-                "(union \"foo\" ((ptr Eq_1) u0) ((ptr Eq_2) u1))",
+                "(union \"foo\" ((ptr32 Eq_1) u0) ((ptr32 Eq_2) u1))",
                 dt.ToString());
         }
 

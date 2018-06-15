@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
 
         private DataType Ptr32(DataType pointee)
         {
-            return new Pointer(pointee, 4);
+            return new Pointer(pointee, 32);
         }
 
         private DataType Int32()

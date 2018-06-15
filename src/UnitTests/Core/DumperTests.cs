@@ -52,6 +52,7 @@ namespace Reko.UnitTests.Core
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
+            this.arch.Stub(a => a.InstructionBitSize).Return(8);
             this.platform = mr.Stub<IPlatform>();
             this.program = new Program(
                 new SegmentMap(
@@ -91,6 +92,7 @@ namespace Reko.UnitTests.Core
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
+            this.arch.Stub(a => a.InstructionBitSize).Return(8);
             this.platform = mr.Stub<IPlatform>();
             this.program = new Program(
                 new SegmentMap(

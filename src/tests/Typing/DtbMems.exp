@@ -1,5 +1,5 @@
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (4 T_4 t0004) (6 T_8 t0006)))
+Eq_1: (ptr32 (struct (4 T_4 t0004) (6 T_8 t0006)))
 	T_1 (in foo : word32)
 Eq_2: word32
 	T_2 (in 0x00000004 : word32)
@@ -12,7 +12,7 @@ Eq_6: word32
 	T_6 (in 0x00000006 : word32)
 Eq_7: word32
 	T_7 (in foo + 0x00000006 : word32)
-Eq_8: (ptr (struct (0 T_12 t0000)))
+Eq_8: (ptr32 (struct (0 T_12 t0000)))
 	T_8 (in Mem0[foo + 0x00000006:word32] : word32)
 	T_9 (in baz : word32)
 Eq_10: word32
@@ -25,8 +25,8 @@ Eq_12: word32
 // Type Variables ////////////
 T_1: (in foo : word32)
   Class: Eq_1
-  DataType: (ptr (struct (4 T_4 t0004) (6 T_8 t0006)))
-  OrigDataType: (ptr (struct (4 T_4 t0004) (6 T_8 t0006)))
+  DataType: (ptr32 (struct (4 T_4 t0004) (6 T_8 t0006)))
+  OrigDataType: (ptr32 (struct (4 T_4 t0004) (6 T_8 t0006)))
 T_2: (in 0x00000004 : word32)
   Class: Eq_2
   DataType: word32
@@ -53,12 +53,12 @@ T_7: (in foo + 0x00000006 : word32)
   OrigDataType: word32
 T_8: (in Mem0[foo + 0x00000006:word32] : word32)
   Class: Eq_8
-  DataType: (ptr (struct (0 T_12 t0000)))
+  DataType: (ptr32 (struct (0 T_12 t0000)))
   OrigDataType: word32
 T_9: (in baz : word32)
   Class: Eq_8
-  DataType: (ptr (struct (0 T_12 t0000)))
-  OrigDataType: (ptr (struct (0 T_12 t0000)))
+  DataType: (ptr32 (struct (0 T_12 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_12 t0000)))
 T_10: (in 0x00000000 : word32)
   Class: Eq_10
   DataType: word32

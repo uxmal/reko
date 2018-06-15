@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Gui.Windows
             ImageMapItem item;
             Assert.IsTrue(imageMap.TryFindItemExact(addrBase, out item));
             Assert.AreEqual(addrBase, item.Address);
-            Assert.AreEqual("(arr (ptr code) 3)", item.DataType.ToString());
+            Assert.AreEqual("(arr (ptr32 code) 3)", item.DataType.ToString());
         }
 
         private void Given_Image()

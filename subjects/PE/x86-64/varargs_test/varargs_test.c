@@ -230,7 +230,7 @@ void fn00000001400012A0()
 	set_new_mode();
 }
 
-// 00000001400012BC: Register word32 fn00000001400012BC(Register word32 edx, Register ptr64 r13, Register (ptr Eq_333) gs, Stack word64 qwArg08, Stack word64 qwArg10)
+// 00000001400012BC: Register word32 fn00000001400012BC(Register word32 edx, Register ptr64 r13, Register (ptr32 Eq_333) gs, Stack word64 qwArg08, Stack word64 qwArg10)
 word32 fn00000001400012BC(word32 edx, ptr64 r13, Eq_333 * gs, word64 qwArg08, word64 qwArg10)
 {
 	if (fn0000000140001600(0x01, edx, r13) == 0x00)
@@ -583,7 +583,7 @@ void fn0000000140001550(word64 rax, ptr64 rcx, word64 qwArg08)
 	} while ((word32) (uint64) (edi_119 + 0x01) < 0x02);
 }
 
-// 00000001400015C4: Register byte fn00000001400015C4(Register (ptr Eq_333) gs)
+// 00000001400015C4: Register byte fn00000001400015C4(Register (ptr32 Eq_333) gs)
 byte fn00000001400015C4(Eq_333 * gs)
 {
 	byte al_12;
@@ -726,7 +726,7 @@ word32 fn000000014000164C(up32 ecx, ui64 r8, ptr64 r13, word64 qwArg08)
 	}
 }
 
-// 0000000140001718: Register (ptr Eq_1069) fn0000000140001718(Register (ptr (ptr code)) rcx)
+// 0000000140001718: Register (ptr64 Eq_1069) fn0000000140001718(Register (ptr64 (ptr64 code)) rcx)
 Eq_1069 * fn0000000140001718(code * * rcx)
 {
 	struct Eq_1069 * rax_101;
@@ -1138,7 +1138,7 @@ void fn0000000140001B14()
 	globals->ptr40002068();
 }
 
-// 0000000140001B24: void fn0000000140001B24(Register (ptr (ptr Eq_1618)) rcx)
+// 0000000140001B24: void fn0000000140001B24(Register (ptr64 (ptr64 Eq_1618)) rcx)
 void fn0000000140001B24(Eq_1618 * * rcx)
 {
 	struct Eq_1618 * rax_5 = *rcx;
@@ -1307,13 +1307,13 @@ void fn0000000140001DD0()
 {
 }
 
-// 0000000140001E7C: void fn0000000140001E7C(Register (ptr Eq_2004) rax, Register int64 rdx, Register (ptr Eq_2006) r9)
+// 0000000140001E7C: void fn0000000140001E7C(Register (ptr64 Eq_2004) rax, Register int64 rdx, Register (ptr64 Eq_2006) r9)
 void fn0000000140001E7C(Eq_2004 * rax, int64 rdx, Eq_2006 * r9)
 {
 	fn0000000140001E9C(rax, rdx, r9, r9->ptr0038);
 }
 
-// 0000000140001E9C: void fn0000000140001E9C(Register (ptr Eq_2004) rax, Register int64 rcx, Register (ptr Eq_2006) rdx, Register (ptr Eq_2012) r8)
+// 0000000140001E9C: void fn0000000140001E9C(Register (ptr64 Eq_2004) rax, Register int64 rcx, Register (ptr64 Eq_2006) rdx, Register (ptr64 Eq_2012) r8)
 void fn0000000140001E9C(Eq_2004 * rax, int64 rcx, Eq_2006 * rdx, Eq_2012 * r8)
 {
 	word32 r11d_12 = (word32) (uint64) ((word32) (uint64) r8->dw0000 & ~0x07);

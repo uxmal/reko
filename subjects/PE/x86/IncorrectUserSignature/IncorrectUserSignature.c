@@ -4,7 +4,7 @@
 
 #include "IncorrectUserSignature.h"
 
-// 00401120: void test6(Stack (ptr Eq_2) c, Stack int32 a, Stack int32 b)
+// 00401120: void test6(Stack (ptr32 Eq_2) c, Stack int32 a, Stack int32 b)
 void test6(cdecl_class * c, int32 a, int32 b)
 {
 	// Incorrect user-defined signature

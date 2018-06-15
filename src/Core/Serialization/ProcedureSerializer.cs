@@ -141,7 +141,7 @@ namespace Reko.Core.Serialization
                     ? ss.ReturnValue.Type.Accept(TypeLoader)
                     : null;
                 var dtThis = ss.EnclosingType != null
-                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.Size)
+                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.BitSize)
                     : null;
                 var dtParameters = ss.Arguments != null
                     ? ss.Arguments

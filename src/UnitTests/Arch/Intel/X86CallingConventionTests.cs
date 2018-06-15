@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_32bit_CallingConvention(string cConvention)
         {
             this.ccr = new CallingConventionEmitter();
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             X86CallingConvention cc;
             switch (cConvention)
             {
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_16bit_CallingConvention(string cConvention)
         {
             this.ccr = new CallingConventionEmitter();
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             X86CallingConvention cc;
             switch (cConvention)
             {
@@ -160,6 +160,43 @@ namespace Reko.UnitTests.Arch.Intel
             Given_32bit_CallingConvention("pascal");
             cc.Generate(ccr, null, null, new List<DataType> { i16, i32 });
             Assert.AreEqual("Stk: 12 void (Stack +0008, Stack +0004)", ccr.ToString());
+        }
+
+        [Test]
+        [Ignore("Rethink __thiscall")]
+        public void X86Cc_Load_thiscall()
+        {
+            throw new NotImplementedException();
+            /*
+            var ssig = new SerializedSignature
+            {
+                EnclosingType = new StructType_v1 { Name="CWindow" },
+                Convention = "__thiscall",
+                Arguments = new Argument_v1[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "XX",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 4 },
+                    },
+                    new Argument_v1
+                    {
+                        Name = "arg1",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize= 2 },
+                    },
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+
+            var sig = cc.Generate(ssig, arch.CreateFrame());
+            var sExp =
+@"void memfn(Register (ptr32 (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
+// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+            Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[2].Storage).StackOffset);
+            */
         }
 
         [Test(Description = "Ensure FPU stack effects are accounted for when returning floats")]

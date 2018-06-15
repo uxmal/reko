@@ -561,7 +561,12 @@ ProcedureBuilder_exit:
             m.Label("yay");
             m.Return(m.Word32(1));
 
-            var ssa = new SsaTransform(new Program { Architecture = m.Architecture }, m.Procedure, new HashSet<Procedure> { m.Procedure }, null, new ProgramDataFlow());
+            var ssa = new SsaTransform(
+                new Program { Architecture = m.Architecture }, 
+                m.Procedure,
+                new HashSet<Procedure> { m.Procedure }, 
+                null, 
+                new ProgramDataFlow());
             this.ssaState = ssa.Transform();
             var vp = new ValuePropagator(segmentMap, ssaState, new FakeDecompilerEventListener());
             vp.Transform();

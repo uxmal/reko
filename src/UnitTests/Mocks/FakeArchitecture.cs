@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -180,7 +181,10 @@ namespace Reko.UnitTests.Mocks
                 }
             }
             if (grf != 0)
-                return new FlagGroupStorage(flags, grf, s, PrimitiveType.Byte);
+                return new FlagGroupStorage(flags, grf, s,
+                    Bits.IsSingleBitSet(grf)
+                        ? PrimitiveType.Bool
+                        : PrimitiveType.Byte);
             return null;
 		}
 

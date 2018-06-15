@@ -11,10 +11,10 @@
     <global-vars>CB80.globals.c</global-vars>
     <user>
       <address>0100</address>
+      <loader>raw</loader>
       <processor name="z80" />
       <platform name="cpm" />
       <heuristic name="shingle" />
-      <loader>unknown.format</loader>
       <onLoad Enabled="false" />
       <registerValues />
     </user>

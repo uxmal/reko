@@ -142,6 +142,8 @@
         <File Source="$(var.Avr.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />
+        <File Source="$(var.MicrochipPIC.TargetPath)" />
+        <File Source="$(var.MicrochipPIC.Design.TargetPath)" />
         <File Source="$(var.Mips.TargetPath)" />
         <File Source="$(var.Mos6502.TargetPath)" />
         <File Source="$(var.Pdp11.TargetPath)" />
@@ -163,6 +165,7 @@
         <!-- Libraries -->
         <File Source="$(var.Libc.TargetPath)" />
         <File Source="$(var.Python.TargetPath)" />
+        <File Source="$(var.Microchip.Utils.TargetPath)" />
 
         <!-- Assemblers -->
         <File Source="$(var.M68kAssembler.TargetPath)" />
@@ -193,6 +196,10 @@
 
         <!-- License files -->
         <File Source="$(var.SolutionDir)..\COPYING" Id="F_License" />
+        
+        <!-- PIC definition files -->
+        <File Source="$(var.SolutionDir)tools\genPICdb\picdb.zip" />
+        
       </Component>
     </ComponentGroup>
 

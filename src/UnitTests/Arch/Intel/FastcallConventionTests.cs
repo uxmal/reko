@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_32bit_CallingConvention()
         {
             this.ccr = new CallingConventionEmitter();
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             FastcallConvention fcc = new FastcallConvention(
                 Registers.ecx, Registers.edx, 4, 4);
             this.fcc = fcc;
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_16bit_CallingConvention(string cConvention)
         {
             this.ccr = new CallingConventionEmitter();
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             FastcallConvention fcc = new FastcallConvention(
                 Registers.cx, Registers.dx, 4, 4);
             this.fcc = fcc;

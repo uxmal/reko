@@ -36,9 +36,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            var rt = (RiscV64Rt)(rela.r_info & 0xFF);
+            var rt = (RiscV64Rt)(rela.Info & 0xFF);
 
             switch (rt)
             {

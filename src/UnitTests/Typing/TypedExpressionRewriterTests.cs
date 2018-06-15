@@ -450,7 +450,7 @@ namespace Reko.UnitTests.Typing
             pb.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
-                Expression fetch = m.Mem(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
+                Expression fetch = m.Mem(new Pointer(new StructureType("foo", 8), 32), m.IAdd(p, 4));
                 m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00001028)));
             });
             RunTest(pb.BuildProgram(), "Typing/TerComparison.txt");
@@ -1005,7 +1005,7 @@ test_exit:
             #endregion
 
             var sBlob = new StructureType("blob_t", 16);
-            var func = Given_Procedure("func", new Pointer(sBlob, 4));
+            var func = Given_Procedure("func", new Pointer(sBlob, 32));
             Given_GlobalVariable(
                 0x0001000,
                 "arrayBlobs",
@@ -1081,11 +1081,11 @@ test_exit:
                 var str = new StructureType("str", 8, true)
                 {
                     Fields = {
-                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 0, new Pointer(strInner, 32), "strAttr00" },
                         { 4, PrimitiveType.Int32, "strAttr04" },
                     }
                 };
-                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
                 m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
             });

@@ -71,9 +71,9 @@ namespace Reko.Environments.C64
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
+        public override EndianImageReader CreateImageReader(MemoryArea mem, ulong off)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(mem, off);
         }
 
         public override ImageWriter CreateImageWriter()

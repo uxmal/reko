@@ -267,7 +267,7 @@ namespace Reko.Typing
                     return ReadNullTerminatedString(c, dt);
                 }
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
-                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);
+                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.BitSize);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f);
                 if (dereferenced)
                 {
@@ -280,7 +280,7 @@ namespace Reko.Typing
                     {
                         e.DataType = program.TypeFactory.CreatePointer(
                             array.ElementType, 
-                            platform.PointerType.Size);
+                            platform.PointerType.BitSize);
                     }
                     else
                     {

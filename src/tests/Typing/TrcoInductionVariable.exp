@@ -1,5 +1,5 @@
-T_1 (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+T_1 (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem_array(0, 1, 10, T_3)
 	trait_mem_array(10000, 4, 16, T_5)
 T_2 (in i : word32)

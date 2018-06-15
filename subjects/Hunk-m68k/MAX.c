@@ -4,7 +4,7 @@
 
 #include "MAX.h"
 
-// 00001000: void fn00001000(Register int32 d0, Register (ptr byte) a0)
+// 00001000: void fn00001000(Register int32 d0, Register (ptr32 byte) a0)
 void fn00001000(int32 d0, byte * a0)
 {
 	struct Eq_4 * a6_8 = *(struct Eq_4 **) 0x04;
@@ -216,14 +216,14 @@ l00001202:
 	}
 }
 
-// 00001214: void fn00001214(Register (ptr Eq_25) a3)
+// 00001214: void fn00001214(Register (ptr32 Eq_25) a3)
 void fn00001214(Eq_25 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
 }
 
-// 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
+// 0000126C: void fn0000126C(Register (ptr32 Eq_31) a2)
 void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
@@ -338,7 +338,7 @@ word32 fn0000131C(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 	return d1;
 }
 
-// 00001354: void fn00001354(Register (ptr Eq_31) a5, Stack int32 dwArg04, Stack (ptr Eq_67) dwArg08)
+// 00001354: void fn00001354(Register (ptr32 Eq_31) a5, Stack int32 dwArg04, Stack (ptr32 Eq_67) dwArg08)
 void fn00001354(Eq_31 * a5, int32 dwArg04, Eq_67 * dwArg08)
 {
 	<anonymous> ** a3_51 = (<anonymous> **) 0x3ED0;
@@ -364,7 +364,7 @@ void fn00001354(Eq_31 * a5, int32 dwArg04, Eq_67 * dwArg08)
 	fn0000131C(fn00001390(d0_20, a5), out a1_38, out a5_39);
 }
 
-// 00001390: Register Eq_646 fn00001390(Register Eq_646 d0, Register (ptr Eq_31) a5)
+// 00001390: Register Eq_646 fn00001390(Register Eq_646 d0, Register (ptr32 Eq_31) a5)
 Eq_646 fn00001390(Eq_646 d0, Eq_31 * a5)
 {
 	Eq_686 d1_6;
@@ -390,7 +390,7 @@ Eq_646 fn00001408(Eq_646 dwArg04, Eq_646 dwArg08)
 	return d0_11;
 }
 
-// 0000141C: void fn0000141C(Register Eq_686 d1, Register (ptr (ptr byte)) a1, Register (ptr Eq_31) a5, Stack Eq_686 dwArg04)
+// 0000141C: void fn0000141C(Register Eq_686 d1, Register (ptr32 (ptr32 byte)) a1, Register (ptr32 Eq_31) a5, Stack Eq_686 dwArg04)
 void fn0000141C(Eq_686 d1, byte * * a1, Eq_31 * a5, Eq_686 dwArg04)
 {
 	fn00001468(d1, a1, a5, *(union Eq_686 *) 16116, dwArg04, fp + 0x08);
@@ -411,7 +411,7 @@ Eq_686 fn00001438(byte bArg07, Eq_686 dwArg08)
 	return d0_13;
 }
 
-// 00001468: void fn00001468(Register Eq_686 d1, Register (ptr (ptr byte)) a1, Register (ptr Eq_31) a5, Stack Eq_686 dwArg04, Stack Eq_686 dwArg08, Stack Eq_686 dwArg0C)
+// 00001468: void fn00001468(Register Eq_686 d1, Register (ptr32 (ptr32 byte)) a1, Register (ptr32 Eq_31) a5, Stack Eq_686 dwArg04, Stack Eq_686 dwArg08, Stack Eq_686 dwArg0C)
 void fn00001468(Eq_686 d1, byte * * a1, Eq_31 * a5, Eq_686 dwArg04, Eq_686 dwArg08, Eq_686 dwArg0C)
 {
 	struct Eq_780 * a7_149 = fp + -0x0078;
@@ -1762,7 +1762,7 @@ Eq_686 fn0000257E(Eq_686 d0, Eq_686 d1, ptr32 & d1Out)
 	}
 }
 
-// 00002604: Register int32 fn00002604(Stack Eq_686 dwArg04, Register out (ptr (ptr Eq_787)) d1Out, Register out (ptr (ptr byte)) a1Out, Register out (ptr byte) a5Out)
+// 00002604: Register int32 fn00002604(Stack Eq_686 dwArg04, Register out (ptr32 (ptr32 Eq_787)) d1Out, Register out (ptr32 (ptr32 byte)) a1Out, Register out (ptr32 byte) a5Out)
 int32 fn00002604(Eq_686 dwArg04, Eq_787 * * & d1Out, byte * * & a1Out, byte * & a5Out)
 {
 	int32 d0_141;
@@ -1897,7 +1897,7 @@ void fn00002784(ptr32 dwArg04)
 		fn0000284C(globals->dw3DC8, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
 }
 
-// 0000284C: void fn0000284C(Stack (ptr Eq_4686) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
+// 0000284C: void fn0000284C(Stack (ptr32 Eq_4686) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
 void fn0000284C(Eq_4686 * dwArg04, up32 dwArg08, up32 dwArg0C)
 {
 	if (globals->ptr3D94->w0014 < 0x27)
@@ -1927,7 +1927,7 @@ void fn0000284C(Eq_4686 * dwArg04, up32 dwArg08, up32 dwArg0C)
 		FreePooled(dwArg08, dwArg04);
 }
 
-// 000028E8: Register (ptr Eq_31) fn000028E8(Stack (ptr Eq_4653) dwArg04, Stack up32 dwArg08, Register out ptr32 d1Out)
+// 000028E8: Register (ptr32 Eq_31) fn000028E8(Stack (ptr32 Eq_4653) dwArg04, Stack up32 dwArg08, Register out ptr32 d1Out)
 Eq_31 * fn000028E8(Eq_4653 * dwArg04, up32 dwArg08, ptr32 & d1Out)
 {
 	*d1Out = d1;
@@ -2007,7 +2007,7 @@ l000029BA:
 	return d0_45;
 }
 
-// 00002A0C: Register word32 fn00002A0C(Stack Eq_114 dwArg04, Stack (ptr Eq_4625) dwArg08, Stack (ptr Eq_4625) dwArg0C, Register out ptr32 d1Out, Register out ptr32 a1Out)
+// 00002A0C: Register word32 fn00002A0C(Stack Eq_114 dwArg04, Stack (ptr32 Eq_4625) dwArg08, Stack (ptr32 Eq_4625) dwArg0C, Register out ptr32 d1Out, Register out ptr32 a1Out)
 word32 fn00002A0C(Eq_114 dwArg04, Eq_4625 * dwArg08, Eq_4625 * dwArg0C, ptr32 & d1Out, ptr32 & a1Out)
 {
 	*a1Out = a1;
@@ -2044,7 +2044,7 @@ word32 fn00002A0C(Eq_114 dwArg04, Eq_4625 * dwArg08, Eq_4625 * dwArg0C, ptr32 & 
 	return d0_30;
 }
 
-// 00002A7C: void fn00002A7C(Register int32 d0, Stack (ptr Eq_487) dwArg04)
+// 00002A7C: void fn00002A7C(Register int32 d0, Stack (ptr32 Eq_487) dwArg04)
 void fn00002A7C(int32 d0, Eq_487 * dwArg04)
 {
 	if (globals->ptr3D94->w0014 >= 0x27)

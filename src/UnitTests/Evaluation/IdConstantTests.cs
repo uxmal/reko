@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Idc_ConstantReferencePointerToInt()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new SymbolicEvaluationContext(null, null);
@@ -96,13 +96,13 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00000567", e.ToString());
-            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
 
         [Test]
         public void Idc_ConstantAddress()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new SymbolicEvaluationContext(null, null);
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00123400", e.ToString());
-            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
     }
 }

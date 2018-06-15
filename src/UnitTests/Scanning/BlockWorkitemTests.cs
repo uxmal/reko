@@ -727,7 +727,7 @@ testProc_exit:
                 Name = "testFn",
                 Signature = FunctionType.Func(
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
-                    new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
+                        new Identifier("str", new Pointer(PrimitiveType.Char, 32), r0.Storage),
                     new Identifier("f", PrimitiveType.Real32, r1.Storage))
             };
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);

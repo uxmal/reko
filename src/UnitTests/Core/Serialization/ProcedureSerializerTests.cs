@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             this.ser = new ProcedureSerializer(platform, deserializer, cConvention);
         }
 
@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void foo(Register (ptr int32) self, Stack (ptr int32) arg1)
+@"void foo(Register (ptr32 int32) self, Stack (ptr32 int32) arg1)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void foo(Register (ptr bob) this, Stack (ptr int32) arg0, Stack (ptr int32) arg1)
+@"void foo(Register (ptr32 bob) this, Stack (ptr32 int32) arg0, Stack (ptr32 int32) arg1)
 // stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
@@ -324,7 +324,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void foo(Register (ptr bob) this)
+@"void foo(Register (ptr32 bob) this)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));

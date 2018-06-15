@@ -11,8 +11,8 @@ l1:
 	Mem0[ds:0x0102:word16] = Mem0[ds:si2 + 0x0004:word16]
 SegmentedDoubleReferenceMock_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 T_2 (in fp : ptr32)
 	trait_primitive(ptr32)
 T_3 (in r63 : word32)

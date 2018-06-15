@@ -55,11 +55,11 @@ namespace Reko.UnitTests.Core
         [Test]
         public void SubPointer()
         {
-            var ptr = new Pointer(new StructureType("tmp", 16), 4);
+            var ptr = new Pointer(new StructureType("tmp", 16), 32);
             var id = new Identifier("id", ptr, null);
             var emitter = new CodeEmitterImpl();
             var sub = emitter.ISub(id, 3);
-            Assert.AreEqual("(ptr (struct \"tmp\" 0010))", sub.DataType.ToString());
+            Assert.AreEqual("(ptr32 (struct \"tmp\" 0010))", sub.DataType.ToString());
             Assert.AreEqual(PrimitiveType.Word32, sub.Right.DataType);
             Assert.AreEqual("id - 0x00000003", sub.ToString());
         }

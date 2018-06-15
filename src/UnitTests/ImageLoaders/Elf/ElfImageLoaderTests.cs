@@ -429,7 +429,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
-            el.LoadProgramHeaderTable();
+            el.LoadSegments();
             el.LoadSectionHeaders();
             //el.Dump(Console.Out);
 

@@ -9,10 +9,10 @@ Fn_exit:
 
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr (struct))
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 (struct))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in a : int32)
   Class: Eq_2
   DataType: int32

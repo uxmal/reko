@@ -20,7 +20,7 @@ void _init()
 	}
 }
 
-// 0000000000000620: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+// 0000000000000620: void _start(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
 void _start( * rdx, Eq_18 qwArg00)
 {
 	__align((char *) fp + 0x08);
@@ -92,7 +92,7 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000000000000072A: Register (ptr void) _mm_malloc(Register uint64 rsi, Register Eq_123 rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_123 rdi)
 void(uint64 rsi, Eq_123 rdi)
 {
 	void * rax_22;
@@ -123,13 +123,13 @@ void(uint64 rsi, Eq_123 rdi)
 	return rax_22;
 }
 
-// 000000000000078D: void _mm_free(Register (ptr (arr real64)) rdi)
+// 000000000000078D: void _mm_free(Register (ptr64 (arr real64)) rdi)
 void _mm_free(real64 * rdi[])
 {
 	free(rdi);
 }
 
-// 00000000000007A8: Register uint64 vec_add(Register (ptr (arr real64)) rcx, Register (ptr (arr real64)) rdx, Register (ptr (arr real64)) rsi, Register word64 rdi)
+// 00000000000007A8: Register uint64 vec_add(Register (ptr64 (arr real64)) rcx, Register (ptr64 (arr real64)) rdx, Register (ptr64 (arr real64)) rsi, Register word64 rdi)
 uint64 vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi)
 {
 	__align(fp);

@@ -20,16 +20,16 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (1234 int32 dw1234))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in dwArg04 : (arr int16))
   Class: Eq_2
-  DataType: (ptr (arr int16))
-  OrigDataType: (ptr (struct (0 (arr T_10) a0000)))
+  DataType: (ptr32 (arr int16))
+  OrigDataType: (ptr32 (struct (0 (arr T_10) a0000)))
 T_3: (in dwArg08 : ui32)
   Class: Eq_3
   DataType: ui32
@@ -52,8 +52,8 @@ T_7: (in (int32) dwArg04[dwArg08] : int32)
   OrigDataType: int32
 T_8: (in 0x00001234 : word32)
   Class: Eq_8
-  DataType: (ptr int32)
-  OrigDataType: (ptr (struct (0 T_9 t0000)))
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 T_9 t0000)))
 T_9: (in Mem8[0x00001234:word32] : word32)
   Class: Eq_7
   DataType: int32
