@@ -60,7 +60,11 @@ namespace Reko.Core.Expressions
 
         public Expression VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(appl, original))
+                return replacement;
+            var args = appl.Arguments.Select(a => a.Accept(this)).ToArray();
+            var fn = appl.Procedure;
+            return new Application(fn, appl.DataType, args);
         }
 
         public Expression VisitArrayAccess(ArrayAccess acc)
