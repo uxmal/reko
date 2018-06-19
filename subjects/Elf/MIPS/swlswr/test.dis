@@ -751,6 +751,117 @@ __do_global_ctors_aux_exit:
 
 
 
+void __libc_start_main(word32 r28)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r28
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+__libc_start_main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+__libc_start_main_entry:
+// DataOut: r28
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000009D0:
+	word32 r25_4 = Mem0[r28 - 0x00007FF0:word32]
+	word32 sp_8
+	word32 r28_9
+	word32 r25_10
+	word32 ra_11
+	word32 r15_12
+	word32 r24_13
+	call r25_4 (retsize: 0;)
+		uses: r15_6,r24_7,r25_4,r28,ra,sp_1
+		defs: r15_12,r24_13,r25_10,r28_9,ra_11,sp_8
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void memset(word32 r28)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r28
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+memset_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+memset_entry:
+// DataOut: r28
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000009E0:
+	word32 r25_4 = Mem0[r28 - 0x00007FF0:word32]
+	word32 sp_8
+	word32 r28_9
+	word32 r25_10
+	word32 ra_11
+	word32 r15_12
+	word32 r24_13
+	call r25_4 (retsize: 0;)
+		uses: r15_6,r24_7,r25_4,r28,ra,sp_1
+		defs: r15_12,r24_13,r25_10,r28_9,ra_11,sp_8
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void calloc(word32 r28, word32 ra)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r28 ra
+// LiveOut:
+// Trashed: r15 r24 r25 r28
+// Preserved: sp
+calloc_entry:
+// DataOut: r28 ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l000009F0:
+	word32 r25_4 = Mem0[r28 - 0x00007FF0:word32]
+	word32 sp_8
+	word32 r28_9
+	word32 r25_10
+	word32 ra_11
+	word32 r15_12
+	word32 r24_13
+	call r25_4 (retsize: 0;)
+		uses: r15_6,r24_7,r25_4,r28,ra,sp_1
+		defs: r15_12,r24_13,r25_10,r28_9,ra_11,sp_8
+// DataOut: ra
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000A0C_thunk__fini:
+	_fini(ra_11)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r15:<invalid> r24:<invalid>
+
+calloc_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r25:<invalid> r15:<invalid> r24:<invalid> r28:<invalid>
+
+
+
 void _fini(word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

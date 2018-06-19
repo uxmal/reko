@@ -20,6 +20,16 @@ void _init()
 	}
 }
 
+// 00000000004021F0: void free()
+void free()
+{
+}
+
+// 0000000000402640: void malloc()
+void malloc()
+{
+}
+
 // 00000000004028C0: void fn00000000004028C0(Register word64 rsi, Register word32 edi, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r13, Register word64 r14, Register word64 r15, Register selector fs)
 void fn00000000004028C0(word64 rsi, word32 edi, word64 r9, word64 r10, word64 r11, word64 r13, word64 r14, word64 r15, selector fs)
 {

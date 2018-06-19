@@ -8,9 +8,9 @@ int8 g_aFFFFFFEC[];
 <anonymous> g_tFFFFFFFF;
 byte g_b0002;
 int32 g_dw01C4;
-Eq_220 g_t0695;
+Eq_3071 g_t0695;
 <anonymous> g_t811F260;
-Eq_34 g_t10000000 = 
+Eq_2885 g_t10000000 = 
 	{
 		&g_ptr10000860,
 		0,
@@ -21,7 +21,7 @@ int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
 int32 g_dw1000001C = 204800;
 int32 g_dw10000020 = 0;
-Eq_220 g_t10000024 = 
+Eq_3071 g_t10000024 = 
 	{
 		
 		{
@@ -36,7 +36,7 @@ word32 g_a100007E0[] =
 	{
 	};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_34 * g_ptr10000878 = &g_t10000000;
+struct Eq_2885 * g_ptr10000878 = &g_t10000000;
 ptr32 g_ptr1000087C = 0x00400000;
 ptr32 g_ptr10000880 = 0x00410000;
 <anonymous> * g_ptr10000894 = __pack_d;
@@ -95,7 +95,7 @@ word32 g_dw100009D0 = 0x004021A0;
 int32 * g_ptr10000A20 = &g_dw10000AA8;
 int32 * g_ptr10000A28 = &g_dw1000001C;
 <anonymous> * g_ptr10000A38 = request_make_url;
-struct Eq_220 * g_ptr10000A40 = &g_t10000024;
+struct Eq_3071 * g_ptr10000A40 = &g_t10000024;
 <anonymous> * g_ptr10000A44 = clist_remove;
 <anonymous> * g_ptr10000A50 = client_read_reply;
 <anonymous> * g_ptr10000A58 = client_prepare_connect;

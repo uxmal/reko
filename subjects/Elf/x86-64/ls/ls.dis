@@ -45,6 +45,46 @@ _init_exit:
 
 
 
+void free()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+free_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+free_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+
+
+void malloc()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+malloc_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+malloc_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+
+
 void fn00000000004028C0(word64 rsi, word32 edi, word64 r9, word64 r10, word64 r11, word64 r13, word64 r14, word64 r15, selector fs)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

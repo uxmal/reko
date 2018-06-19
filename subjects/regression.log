@@ -422,6 +422,15 @@ client_read_reply: error: An error occurred during data flow analysis.
 0000000000017C28: warning: Unable to resolve imported reference __strdup.
 00000000000165A0: warning: Unable to resolve imported reference __vasprintf_chk.
 0000000000015CA4: warning: Unable to resolve imported reference inet_ntop.
+0000000000014F70: warning: Unable to resolve imported reference inet_ntop.
+0000000000015170: warning: Unable to resolve imported reference freeaddrinfo.
+0000000000015040: warning: Unable to resolve imported reference inet_pton.
+0000000000015020: warning: Unable to resolve imported reference getnameinfo.
+0000000000015000: warning: Unable to resolve imported reference __vasprintf_chk.
+0000000000014F90: warning: Unable to resolve imported reference getaddrinfo.
+0000000000014F80: warning: Unable to resolve imported reference snprintf.
+0000000000014F30: warning: Unable to resolve imported reference __strdup.
+0000000000014F20: warning: Unable to resolve imported reference herror.
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
@@ -438,6 +447,22 @@ client_read_reply: error: An error occurred during data flow analysis.
 00016C30: warning: Unable to resolve imported reference wait.
 00013154: warning: Unable to resolve imported reference stat.
 000131A0: warning: Unable to resolve imported reference stat.
+00027E48: warning: Unable to resolve imported reference execv.
+00027EB4: warning: Unable to resolve imported reference __udiv64.
+00027EA8: warning: Unable to resolve imported reference __urem64.
+00027E9C: warning: Unable to resolve imported reference getpid.
+00027E84: warning: Unable to resolve imported reference wait.
+00027E6C: warning: Unable to resolve imported reference vfork.
+00027E60: warning: Unable to resolve imported reference sleep.
+00027E54: warning: Unable to resolve imported reference pipe.
+00027E3C: warning: Unable to resolve imported reference execvp.
+00027E30: warning: Unable to resolve imported reference mktemp.
+00027E18: warning: Unable to resolve imported reference getcwd.
+00027DDC: warning: Unable to resolve imported reference link.
+00027DC4: warning: Unable to resolve imported reference setjmp.
+00027DB8: warning: Unable to resolve imported reference longjmp.
+00027D40: warning: Unable to resolve imported reference stat.
+00027CA4: warning: Unable to resolve imported reference vfprintf.
 000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
 00016C9C: warning: Unable to resolve imported reference getpid.
 00016D1C: warning: Unable to resolve imported reference __urem64.
@@ -456,7 +481,21 @@ client_read_reply: error: An error occurred during data flow analysis.
 00013EFC: warning: Unable to resolve imported reference setjmp.
 0001393C: warning: Unable to resolve imported reference setjmp.
 00012350: warning: Unable to resolve imported reference stat.
+00027CA4: warning: Unable to resolve imported reference vfprintf.
+00027EB4: warning: Unable to resolve imported reference __udiv64.
+00027EA8: warning: Unable to resolve imported reference __urem64.
+00027E9C: warning: Unable to resolve imported reference getpid.
+00027E84: warning: Unable to resolve imported reference wait.
+00027E6C: warning: Unable to resolve imported reference vfork.
+00027E60: warning: Unable to resolve imported reference sleep.
+00027E54: warning: Unable to resolve imported reference pipe.
+00027E48: warning: Unable to resolve imported reference execv.
+00027E3C: warning: Unable to resolve imported reference execvp.
+00027E30: warning: Unable to resolve imported reference mktemp.
+00027E18: warning: Unable to resolve imported reference getcwd.
 00027DDC: warning: Unable to resolve imported reference link.
+00027DC4: warning: Unable to resolve imported reference setjmp.
+00027DB8: warning: Unable to resolve imported reference longjmp.
 00027D40: warning: Unable to resolve imported reference stat.
 000122C0: error: An error occurred while processing the statement branch o3_129 - l1_122 <=u 0x00000000 l000122B8_ds_t.
     Pulling difference uint32 and (ptr32 (struct 0001 (0 byte b0000)))
@@ -2376,4 +2415,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 53 binaries in 38.34 seconds ---
+Decompiled 53 binaries in 40.25 seconds ---
