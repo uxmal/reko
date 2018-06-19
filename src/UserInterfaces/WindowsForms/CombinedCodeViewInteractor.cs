@@ -511,6 +511,9 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataView_TopAddressChanged()
         {
+            if (!(combinedCodeView.MixedCodeDataView.Model is MixedCodeDataModel mixedCodeDataModel))
+                return;
+
             var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
             MixedCodeDataModel.DataItemNode dataItemNode = null;
             if (nodeByAddress == null ||
@@ -521,7 +524,6 @@ namespace Reko.UserInterfaces.WindowsForms
             int denom;
             if (topAddress < dataItemNode.EndAddress)
             {
-                var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
                 var startAddr = dataItemNode.StartAddress;
                 var endAddr = topAddress;
                 var startPos = MixedCodeDataModel.Position(startAddr, 0);

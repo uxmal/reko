@@ -27,6 +27,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Operators;
 
 namespace Reko.Arch.RiscV
 {
@@ -126,7 +127,17 @@ namespace Reko.Arch.RiscV
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            var sp = binder.EnsureRegister(StackRegister);
+            Expression ea = sp;
+            if (cbOffset < 0)
+            {
+                ea = new BinaryExpression(Operator.ISub, sp.DataType, ea, Constant.Word(ea.DataType.BitSize, -cbOffset));
+            }
+            else if (cbOffset > 0)
+            {
+                ea = new BinaryExpression(Operator.IAdd, sp.DataType, ea, Constant.Word(ea.DataType.BitSize, -cbOffset));
+            }
+            return new MemoryAccess(ea, dataType);
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
