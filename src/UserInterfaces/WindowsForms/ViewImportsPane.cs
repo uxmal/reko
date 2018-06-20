@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Gui;
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -175,7 +176,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     cmp = importX.ReferenceAddress.CompareTo(importY.ReferenceAddress);
                     break;
                 case 1:
-                    cmp = importX.ModuleName.CompareTo(importY.ModuleName);
+                    cmp = CompareModuleNames(importX, importY);
                     break;
                 case 2:
                     cmp = importX.CompareTo(importY);
@@ -187,6 +188,23 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (Order == SortOrder.Descending)
                     cmp = -cmp;
                 return cmp;
+            }
+
+            private static int CompareModuleNames(ImportReference importX, ImportReference importY)
+            {
+                if (importX.ModuleName == null)
+                {
+                    return (importY.ModuleName == null) ? 0 : -1;
+                }
+                else if (importY.ModuleName == null)
+                {
+                    Debug.Assert(importX.ModuleName != null);
+                    return 1;
+                }
+                else
+                {
+                    return importX.ModuleName.CompareTo(importY.ModuleName);
+                }
             }
         }
     }
