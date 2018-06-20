@@ -158,7 +158,9 @@ namespace Reko.Analysis
                 idCur = ass.Dst;
                 var n = Classify(ssa.Identifiers[ass.Dst]);
                 idCur = idOld;
-                n &= new BitRange(0, dpb.InsertedBits.DataType.BitSize);
+                n -= new BitRange(
+                    dpb.BitPosition,
+                    dpb.InsertedBits.DataType.BitSize + dpb.BitPosition);
                 return n;
             }
             return ass.Src.Accept(this);

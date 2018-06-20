@@ -1,8 +1,8 @@
-// void fn0C00_0000(Register word16 ax, Register word16 bp, Register word16 si, Register selector ds)
+// void fn0C00_0000(Register word16 bp, Register word16 si, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bp:[0..15] ds:[0..15] si:[0..15]
 // LiveOut:
-// Trashed: ax bp bx C cx dx O S si Top Z
+// Trashed: SCZO ax bp bx cx dx si Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,7 +10,7 @@ void fn0C00_0000(word16 bp, word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	fn0C00_0004(ax, bp, si, ds)
+	fn0C00_0004(bp, si, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -19,32 +19,33 @@ fn0C00_0000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bp:[0..15] ds:[0..15] si:[0..15]
 // LiveOut:
-// Trashed: ax bp bx C cx dx O S si Top Z
-// Preserved: ds sp
+// Trashed: SCZO ax bp bx cx dx si Top
+// Preserved: sp
 // fn0C00_0004
 // Return size: 0
-void fn0C00_0004(word16 ax, word16 bp, word16 si, selector ds)
+void fn0C00_0004(word16 bp, word16 si, selector ds)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	byte al_16 = (Mem6[ds:si:byte] >>u 0x04) + 0x30
-	word32 ds_dx_48 = SEQ(ds, 0x5427)
-	branch al_16 <= 0x39 l0C00_0016
+	byte al_12 = (Mem6[ds:si:byte] >>u 0x04) + 0x30
+	word32 ds_dx_40 = SEQ(ds, 0x5427)
+	word16 ax_28 = DPB(ax, al_12, 0)
+	branch al_12 <= 0x39 l0C00_0016
 	// succ:  l0C00_0014 l0C00_0016
 l0C00_0014:
-	ax_36 = DPB(ax, al_16 + 0x07, 0) (alias)
+	ax_28 = DPB(ax, al_12 + 0x07, 0) (alias)
 	// succ:  l0C00_0016
 l0C00_0016:
-	byte ah_29 = (Mem6[ds:si:byte] & 0x0F) + 0x30
-	word16 ax_35 = SEQ(ah_29, al_16)
-	branch ah_29 <= 0x39 l0C00_0026
+	byte ah_22 = (Mem6[ds:si:byte] & 0x0F) + 0x30
+	word16 ax_27 = DPB(ax_28, ah_22, 8)
+	branch ah_22 <= 0x39 l0C00_0026
 	// succ:  l0C00_0023 l0C00_0026
 l0C00_0023:
-	ax_35 = DPB(ax_36, ah_29 + 0x07, 8) (alias)
+	ax_27 = DPB(ax_28, ah_22 + 0x07, 8) (alias)
 	// succ:  l0C00_0026
 l0C00_0026:
-	Mem43[ds:0x5427:word16] = ax_35
-	msdos_write_file(Mem43[ds:0x5424:word16], 0x0004, ds_dx_48, out ax)
+	Mem35[ds:0x5427:word16] = ax_27
+	msdos_write_file(Mem35[ds:0x5424:word16], 0x0004, ds_dx_40, out ax)
 	si = si + 0x0001
 	bp = bp - 0x0001
 	branch bp != 0x0000 l0C00_0004

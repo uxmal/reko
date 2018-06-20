@@ -272,5 +272,54 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
         }
+
+        [Test]
+        public void UrfDpb()
+        {
+            var sExp = "Used: [bx, [0..15]]";
+            RunTest(sExp, m =>
+            {
+                var _bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
+                var _cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
+                var _cl = new RegisterStorage("cl", 1, 0, PrimitiveType.Byte);
+                var _ch = new RegisterStorage("ch", 1, 8, PrimitiveType.Byte);
+                var bx = m.Frame.EnsureRegister(_bx);
+                var cx = m.Frame.EnsureRegister(_cx);
+                var cl = m.Frame.EnsureRegister(_cl);
+                var ch = m.Frame.EnsureRegister(_ch);
+                m.Label("m1Loop");
+                m.Assign(cl, m.Mem8(bx));
+                m.Assign(ch, m.Mem8(m.IAdd(bx, 1)));
+                m.MStore(m.IAdd(bx, 40), cx);
+                m.Assign(bx, m.ISub(bx, 1));
+                m.BranchIf(m.Ne0(bx), "m1Loop");
+                m.Label("m2Done");
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfDpb2()
+        {
+            var sExp = "Used: [bx, [0..15]],[cx, [0..7]]";
+            RunTest(sExp, m =>
+            {
+                var _bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
+                var _cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
+                var _cl = new RegisterStorage("cl", 1, 0, PrimitiveType.Byte);
+                var _ch = new RegisterStorage("ch", 1, 8, PrimitiveType.Byte);
+                var bx = m.Frame.EnsureRegister(_bx);
+                var cx = m.Frame.EnsureRegister(_cx);
+                var cl = m.Frame.EnsureRegister(_cl);
+                var ch = m.Frame.EnsureRegister(_ch);
+                m.Label("m1Loop");
+                m.Assign(ch, m.Mem8(bx));
+                m.MStore(m.IAdd(bx, 40), cx);
+                m.Assign(bx, m.ISub(bx, 1));
+                m.BranchIf(m.Ne0(bx), "m1Loop");
+                m.Label("m2Done");
+                m.Return();
+            });
+        }
     }
 }

@@ -26,5 +26,6 @@ recurse_done:
 stomp_esi proc
 	mov esi,0x1234
 	mov [0x4321],esi
+	ret
 	endp
 	
