@@ -99,13 +99,13 @@ Register word16 membar(Register word16 ax)
 // return address size: 2
 word16 membar(word16 ax)
 membar_entry:
-	def ax
 	def fp
+	def ax
 	def ds
 	// succ:  l0C00_0040
 l0C00_0040:
-	sp_4 = fp
-	Top_5 = 0
+	sp_2 = fp
+	Top_3 = 0
 	Mem7[ds:0x0500:word16] = ax
 	bx_8 = Mem7[ds:0x1000:word16]
 	ax_9 = Mem7[ds:bx_8:word16]

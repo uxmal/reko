@@ -105,25 +105,6 @@ namespace Reko.UnitTests.Analysis
                 sProc.Signature.ToString());
         }
 
-        [Test(Description = "Verifies that data type of register was not overwritten.")]
-        public void Usb_BuildSignature_KeepRegisterType()
-        {
-            Given_Procedure(0x1000);
-            Given_UserSignature(0x01000, "void test([[reko::arg(register,\"ecx\")]] float f)");
-
-            var usb = new UserSignatureBuilder(program);
-            usb.BuildSignature(Address.Ptr32(0x1000), proc);
-
-            var ass = proc.Statements
-                .Select(stm => stm.Instruction as Assignment)
-                .Where(instr => instr != null)
-                .Single();
-            Assert.AreEqual("ecx = f", ass.ToString());
-            // verify that data type of register was not overwritten
-            Assert.AreEqual("word32", ass.Dst.DataType.ToString());
-            Assert.AreEqual("real32", ass.Src.DataType.ToString());
-        }
-
         [Test(Description = "Verifies stack delta of stdcall function.")]
         public void Usb_BuildSignature_Stdcall()
         {
@@ -215,45 +196,6 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual("byte", (proc.Signature.Parameters[0].DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("b", proc.Signature.Parameters[1].Name);
             Assert.AreEqual("int16", (proc.Signature.Parameters[1].DataType as TypeReference).Referent.ToString());
-        }
-
-        [Test(Description ="Verifies that the user can override register names.")]
-        public void Usb_ParseFunctionDeclaration_WithRegisterArgs()
-        {
-            var arch = new FakeArchitecture();
-            var m = new ProcedureBuilder(arch, "test");
-            var r1 = m.Reg32("r1", 1);
-            var r2 = m.Reg32("r2", 2);
-            m.MStore(m.Word32(0x123400), m.Cast(PrimitiveType.Byte, r1));
-            m.MStore(m.Word32(0x123404), m.Cast(PrimitiveType.Real32, r2));
-            m.Return();
-
-            var usb = new UserSignatureBuilder(program);
-            usb.ApplySignatureToProcedure(
-                Address.Create(PrimitiveType.Ptr32, 0x1000),
-                FunctionType.Action(
-                    new Identifier[] {
-                        new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
-                        new Identifier("r1", PrimitiveType.Real32, r2.Storage)
-                    }),
-                m.Procedure);
-            var sExp = @"// test
-// Return size: 0
-void test(char r2, real32 r1)
-test_entry:
-	// succ:  l1
-l1:
-	r1 = r2
-	r2 = r1
-	Mem0[0x00123400:byte] = (byte) r1
-	Mem0[0x00123404:real32] = (real32) r2
-	return
-	// succ:  test_exit
-test_exit:
-";
-            var sb = new StringWriter();
-            m.Procedure.Write(false, sb);
-            Assert.AreEqual(sExp, sb.ToString());
         }
 
         [Test]

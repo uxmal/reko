@@ -10,12 +10,12 @@ int32 r316(int32 a)
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
-	word32 ecx_7 = Mem3[a:word32]
-	word32 eax_11
-	call Mem9[ecx_7 + 0x00000004:word32] (retsize: 4;)
-		uses: eax:a,ecx:ecx_7,esp:fp - 0x00000004,Local -0004:0x0000000A,Stack +0004:a,Top:0
-		defs: eax:eax_11
-	return eax_11 + 0x00000001
+	word32 ecx_6 = Mem0[a:word32]
+	word32 eax_10
+	call Mem8[ecx_6 + 0x00000004:word32] (retsize: 4;)
+		uses: eax:a,ecx:ecx_6,esp:fp - 0x00000004,Stack +0004:0x0000000A,Stack +000C:a,Top:0
+		defs: eax:eax_10
+	return eax_10 + 0x00000001
 	// succ:  fn10000000_exit
 fn10000000_exit:
 

@@ -1,46 +1,48 @@
-a:Stack +0004
-    def:  def a
-    uses: a_10 = a
 fp:fp
     def:  def fp
-    uses: r63_4 = fp
-          r63_7 = fp
-Mem3: orig: Mem0
-    uses: ecx_6 = Mem3[eax_5:word32]
-          Mem3[ecx_6:word32]()
-r63_4: orig: r63
-    def:  r63_4 = fp
-eax_5: orig: eax
-    def:  eax_5 = a_10
-    uses: ecx_6 = Mem3[eax_5:word32]
-ecx_6: orig: ecx
-    def:  ecx_6 = Mem3[eax_5:word32]
-    uses: Mem3[ecx_6:word32]()
-r63_7: orig: r63
-    def:  r63_7 = fp
-eax_8: orig: eax
-    def:  eax_8 = <invalid>
-ecx_9: orig: ecx
-    def:  ecx_9 = <invalid>
-a_10: orig: a
-    def:  a_10 = a
-    uses: eax_5 = a_10
+    uses: r63_2 = fp
+          r63_6 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp
+Mem0:Mem
+    def:  def Mem0
+    uses: ecx_5 = Mem0[eax_4:word32]
+          Mem0[ecx_5:word32]()
+eax_4: orig: eax
+    def:  eax_4 = dwArg04_10
+    uses: ecx_5 = Mem0[eax_4:word32]
+ecx_5: orig: ecx
+    def:  ecx_5 = Mem0[eax_4:word32]
+    uses: Mem0[ecx_5:word32]()
+r63_6: orig: r63
+    def:  r63_6 = fp
+eax_7: orig: eax
+    def:  eax_7 = <invalid>
+ecx_8: orig: ecx
+    def:  ecx_8 = <invalid>
+a:Stack +0004
+    def:  def a
+    uses: dwArg04_10 = a
+dwArg04_10: orig: dwArg04
+    def:  dwArg04_10 = a
+    uses: eax_4 = dwArg04_10
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder(struct <anonymous> * a)
 ProcedureBuilder_entry:
-	def a
 	def fp
+	def Mem0
+	def a
+	dwArg04_10 = a
 	// succ:  l1
 l1:
-	a_10 = a
-	r63_4 = fp
-	eax_5 = a_10
-	ecx_6 = Mem3[eax_5:word32]
-	Mem3[ecx_6:word32]()
-	ecx_9 = <invalid>
-	eax_8 = <invalid>
-	r63_7 = fp
+	r63_2 = fp
+	eax_4 = dwArg04_10
+	ecx_5 = Mem0[eax_4:word32]
+	Mem0[ecx_5:word32]()
+	ecx_8 = <invalid>
+	eax_7 = <invalid>
+	r63_6 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

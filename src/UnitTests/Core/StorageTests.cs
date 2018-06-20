@@ -100,5 +100,15 @@ namespace Reko.UnitTests.Core
             Assert.IsFalse(c.Covers(sz));
             Assert.IsFalse(sz.Covers(c));
         }
+
+        [Test]
+        public void Stg_StackStorageCover()
+        {
+            // Mimic a big endian copy of the low 8 bits of a stack word.
+            var argLarge = new StackArgumentStorage(4, PrimitiveType.Word32);
+            var argSmall = new StackArgumentStorage(7, PrimitiveType.Byte);
+            Assert.IsTrue(argLarge.Covers(argSmall), $"{argLarge} should cover {argSmall}.");
+            Assert.False(argSmall.Covers(argLarge), $"{argSmall} shouldn't cover {argLarge}.");
+        }
     }
 }

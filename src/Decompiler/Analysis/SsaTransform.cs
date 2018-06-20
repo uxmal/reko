@@ -1386,8 +1386,41 @@ namespace Reko.Analysis
                 }
             }
 
-            private SsaIdentifier NewDefInstruction(Identifier id, Block b)
+            /// <summary>
+            /// Generate a 'def' instruction for identifiers that are used
+            /// without any previous definitions inside the current procedure.
+            /// </summary>
+            /// <remarks>
+            /// The generated def statements show us what identifiers are live-in
+            /// to the procedure. Some of the generated def statements are later
+            /// eliminated. Typically this is because the identifiers are copied
+            /// to the stack and the restored on exit.
+            /// </remarks>
+            /// <param name="id">Identifier whose definition we wish to generate.</param>
+            /// <param name="b">The entry block of the procedure.</param>
+            /// <returns></returns>
+            public SsaIdentifier NewDefInstruction(Identifier id, Block b)
             {
+                var sig = outer.ssa.Procedure.Signature;
+                if (sig.ParametersValid)
+                {
+                    var param = sig.Parameters.FirstOrDefault(p => p.Storage.Covers(id.Storage));
+                    if (param != null)
+                    {
+                        var sidParam = ssaIds.Add(param, null, null, false);
+                        sidParam.DefStatement = new Statement(0, new DefInstruction(param), b);
+                        b.Statements.Add(sidParam.DefStatement);
+
+                        var copy = new Assignment(id, sidParam.Identifier);
+                        var stmCopy = b.Statements.Add(0, copy); 
+                        var sidCopy = ssaIds.Add(id, stmCopy, null, false);
+                        copy.Dst = sidCopy.Identifier;
+                        sidCopy.DefExpression = sidParam.Identifier;
+
+                        sidParam.Uses.Add(stmCopy);
+                        return sidCopy;
+                    }
+                }
                 var sid = ssaIds.Add(id, null, null, false);
                 sid.DefStatement = new Statement(0, new DefInstruction(id), b);
                 b.Statements.Add(sid.DefStatement);

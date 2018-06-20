@@ -118,7 +118,6 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaFibonacci()
 		{
 			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");

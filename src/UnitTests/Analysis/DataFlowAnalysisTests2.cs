@@ -274,7 +274,7 @@ void test(int32 a, int32 b)
 test_entry:
 	// succ:  l1
 l1:
-	Mem9[0x00010008:word32] = a + b
+	Mem6[0x00010008:word32] = a + b
 	return
 	// succ:  test_exit
 test_exit:

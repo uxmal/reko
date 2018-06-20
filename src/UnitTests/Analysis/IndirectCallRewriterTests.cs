@@ -278,8 +278,6 @@ namespace Reko.UnitTests.Analysis
             var programFlow = new ProgramDataFlow();
             var addr = program.Procedures.Keys[0];
             var proc = program.Procedures.Values[0];
-            var usb = new UserSignatureBuilder(program);
-            usb.ApplySignatureToProcedure(addr, proc.Signature, proc);
             var sst = new SsaTransform(
                 program, 
                 proc,

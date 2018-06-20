@@ -115,7 +115,7 @@ namespace Reko.Analysis
         {
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);
-
+                
             IntraBlockDeadRegisters.Apply(program, eventListener);
 
             var ssts = RewriteProceduresToSsa();

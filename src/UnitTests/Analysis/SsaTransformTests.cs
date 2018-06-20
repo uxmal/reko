@@ -198,9 +198,9 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sActual);
         }
 
-        private void Given_Procedure(string name, Action<ProcedureBuilder> builder)
+        private Procedure Given_Procedure(string name, Action<ProcedureBuilder> builder)
         {
-            pb.Add(name, builder);
+            return pb.Add(name, builder);
         }
 
         private void RunSsaTransform()
@@ -3270,6 +3270,65 @@ proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
+        }
+
+        [Test(Description = "Verifies that the data type of a register parameter was not overwritten.")]
+        public void Ssa_KeepSignatureRegisterType()
+        {
+            var proc = Given_Procedure(nameof(Ssa_KeepSignatureRegisterType), m => {
+                var r2 = m.Reg32("r2", 2);
+                m.MStore(m.Word32(0x00123400), r2);
+                m.Return();
+            });
+            proc.Signature = FunctionType.Action(
+                new Identifier("r2", PrimitiveType.Real32, proc.Architecture.GetRegister("r2")));
+
+            RunSsaTransform();
+
+            var ass = proc.Statements
+                .Select(stm => stm.Instruction as Assignment)
+                .Where(instr => instr != null)
+                .Single();
+            Assert.AreEqual("r2_2 = r2", ass.ToString());
+            // verify that data type of register was not overwritten
+            Assert.AreEqual("word32", ass.Dst.DataType.ToString());
+            Assert.AreEqual("real32", ass.Src.DataType.ToString());
+        }
+
+        [Test(Description = "Verifies that the user can override register names.")]
+        public void SsaUserSignatureWithRegisterArgs()
+        {
+            var proc = Given_Procedure("test", m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.MStore(m.Word32(0x123400), m.Cast(PrimitiveType.Byte, r1));
+                m.MStore(m.Word32(0x123404), m.Cast(PrimitiveType.Real32, r2));
+                m.Return();
+            });
+            proc.Signature = FunctionType.Action(
+                    new Identifier[] {
+                        new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
+                        new Identifier("r1", PrimitiveType.Real32, r2.Storage)
+                    });
+            var sExp =
+            #region Expected
+@"test_entry:
+	def r2
+	r1_2 = r2
+	def r1
+	r2_5 = r1
+l1:
+	Mem3[0x00123400:byte] = (byte) r1_2
+	Mem6[0x00123404:real32] = (real32) r2_5
+	return
+test_exit:
+";
+            #endregion
+
+            RunSsaTransform();
+
+            AssertProcedureCode(sExp);
         }
     }
 }

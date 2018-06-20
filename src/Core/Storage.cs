@@ -755,6 +755,7 @@ namespace Reko.Core
         {
             this.StackOffset = cbOffset;
             this.DataType = dt;
+            this.BitSize = (uint)dt.BitSize;
             this.Domain = StorageDomain.Stack + cbOffset;
         }
 
@@ -772,15 +773,26 @@ namespace Reko.Core
         /// </remarks>
         public int StackOffset { get; private set; }
 
-        public override bool OverlapsWith(Storage that)
+        public override bool OverlapsWith(Storage other)
         {
-            if (this.Domain != that.Domain || this.Number != that.Number)
+            if (!(other is StackStorage that))
                 return false;
-            var thisStart = this.BitAddress;
-            var thisEnd = this.BitAddress + this.BitSize;
-            var thatStart = that.BitAddress;
-            var thatEnd = that.BitAddress + that.BitSize;
+            var thisStart = this.StackOffset * DataType.BitsPerByte;
+            var thisEnd = thisStart + (int)this.BitSize;
+            var thatStart = that.StackOffset * DataType.BitsPerByte;
+            var thatEnd = thatStart + (int) that.BitSize;
             return thisStart < thatEnd && thatStart < thisEnd;
+        }
+
+        public override bool Covers(Storage other)
+        {
+            if (!(other is StackStorage that))
+                return false;
+            var thisStart = this.StackOffset * DataType.BitsPerByte;
+            var thisEnd = thisStart + (int)this.BitSize;
+            var thatStart = that.StackOffset * DataType.BitsPerByte;
+            var thatEnd = thatStart + (int) that.BitSize;
+            return thisStart <= thatStart && thatEnd <= thisEnd;
         }
     }
 
@@ -788,7 +800,6 @@ namespace Reko.Core
     {
         public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", cbOffset, dataType)
         {
-            this.BitSize = (uint) dataType.BitSize;
         }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -799,11 +810,6 @@ namespace Reko.Core
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitStackArgumentStorage(this, context);
-        }
-
-        public override bool Covers(Storage that)
-        {
-            throw new NotImplementedException();
         }
 
         public override bool Equals(object obj)
@@ -855,11 +861,6 @@ namespace Reko.Core
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitStackLocalStorage(this, context);
-        }
-
-        public override bool Covers(Storage that)
-        {
-            throw new NotImplementedException();
         }
 
         public override bool Equals(object obj)

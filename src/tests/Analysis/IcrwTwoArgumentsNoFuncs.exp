@@ -1,66 +1,68 @@
-a:Stack +0004
-    def:  def a
-    uses: a_14 = a
-          call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
 fp:fp
     def:  def fp
-    uses: r63_4 = fp
-          r63_7 = fp - 0x00000004
-          r63_9 = fp - 0x00000008
-          call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-Mem3: orig: Mem0
-    uses: ecx_6 = Mem3[eax_5:word32]
-r63_4: orig: r63
-    def:  r63_4 = fp
-eax_5: orig: eax
-    def:  eax_5 = a_14
-    uses: ecx_6 = Mem3[eax_5:word32]
-          call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-ecx_6: orig: ecx
-    def:  ecx_6 = Mem3[eax_5:word32]
-    uses: call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-          call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-r63_7: orig: r63
-    def:  r63_7 = fp - 0x00000004
-Mem8: orig: Mem0
-r63_9: orig: r63
-    def:  r63_9 = fp - 0x00000008
-Mem10: orig: Mem0
-    uses: call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-r63_11: orig: r63
-    def:  call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-eax_12: orig: eax
-    def:  call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-ecx_13: orig: ecx
-    def:  call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
-a_14: orig: a
-    def:  a_14 = a
-    uses: eax_5 = a_14
+    uses: r63_2 = fp
+          r63_6 = fp - 0x00000004
+          r63_8 = fp - 0x00000008
+          call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+r63_2: orig: r63
+    def:  r63_2 = fp
+Mem0:Mem
+    def:  def Mem0
+    uses: ecx_5 = Mem0[eax_4:word32]
+eax_4: orig: eax
+    def:  eax_4 = dwArg04_14
+    uses: ecx_5 = Mem0[eax_4:word32]
+          call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+ecx_5: orig: ecx
+    def:  ecx_5 = Mem0[eax_4:word32]
+    uses: call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+          call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+r63_6: orig: r63
+    def:  r63_6 = fp - 0x00000004
+Mem7: orig: Mem0
+r63_8: orig: r63
+    def:  r63_8 = fp - 0x00000008
+Mem9: orig: Mem0
+    uses: call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+r63_10: orig: r63
+    def:  call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+eax_11: orig: eax
+    def:  call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+ecx_12: orig: ecx
+    def:  call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
+a:Stack +0004
+    def:  def a
+    uses: dwArg04_14 = a
+dwArg04_14: orig: dwArg04
+    def:  dwArg04_14 = a
+    uses: eax_4 = dwArg04_14
+          call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
 dwLoc04_15: orig: dwLoc04
     def:  dwLoc04_15 = 0x0000000B
-    uses: call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
+    uses: call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
 dwLoc08_16: orig: dwLoc08
     def:  dwLoc08_16 = 0x0000000A
-    uses: call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a	defs: eax:eax_12,ecx:ecx_13,r63:r63_11
+    uses: call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14	defs: eax:eax_11,ecx:ecx_12,r63:r63_10
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder(struct <anonymous> * a)
 ProcedureBuilder_entry:
-	def a
 	def fp
+	def Mem0
+	def a
+	dwArg04_14 = a
 	// succ:  l1
 l1:
-	a_14 = a
-	r63_4 = fp
-	eax_5 = a_14
-	ecx_6 = Mem3[eax_5:word32]
-	r63_7 = fp - 0x00000004
+	r63_2 = fp
+	eax_4 = dwArg04_14
+	ecx_5 = Mem0[eax_4:word32]
+	r63_6 = fp - 0x00000004
 	dwLoc04_15 = 0x0000000B
-	r63_9 = fp - 0x00000008
+	r63_8 = fp - 0x00000008
 	dwLoc08_16 = 0x0000000A
-	call Mem10[ecx_6 + 0x00000008:word32] (retsize: 4; depth: 12)
-		uses: eax:eax_5,ecx:ecx_6,Local -0004:dwLoc04_15,Local -0008:dwLoc08_16,r63:fp - 0x00000008,Stack +0004:a
-		defs: eax:eax_12,ecx:ecx_13,r63:r63_11
+	call Mem9[ecx_5 + 0x00000008:word32] (retsize: 4; depth: 12)
+		uses: eax:eax_4,ecx:ecx_5,r63:fp - 0x00000008,Stack +0004:dwLoc08_16,Stack +0008:dwLoc04_15,Stack +0010:dwArg04_14
+		defs: eax:eax_11,ecx:ecx_12,r63:r63_10
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
