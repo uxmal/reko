@@ -76,7 +76,7 @@ l000080:
 	goto l000080;
 }
 
-// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register (ptr16 Eq_194) FSR2, Register (ptr16 Eq_195) FSR1)
+// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register (ptr Eq_194) FSR2, Register (ptr Eq_195) FSR1)
 void fn0000D0(byte LATB, byte FSR2L, Eq_194 * FSR2, Eq_195 * FSR1)
 {
 	FSR1->b0000 = FSR2L;
