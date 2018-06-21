@@ -72,7 +72,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="sfr">The SFR definition.</param>
         /// <param name="number">The Reko index number of this register.</param>
         public PICRegisterStorage(ISFRRegister sfr, int number)
-            : this(sfr.Name, number, 0, PrimitiveType.CreateWordFromBits((uint)sfr.BitWidth), new PICRegisterTraits(sfr))
+            : this(sfr.Name, number, 0, PrimitiveType.CreateWord(sfr.BitWidth), new PICRegisterTraits(sfr))
         {
         }
 
@@ -83,7 +83,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="number">The Reko index number of this register.</param>
         /// <param name="subregs">The sub-registers of the joint.</param>
         public PICRegisterStorage(IJoinedRegister jsfr, int number, IList<PICRegisterStorage> subregs)
-            : base(jsfr.Name, number, 0, PrimitiveType.CreateWordFromBits(jsfr.BitWidth))
+            : base(jsfr.Name, number, 0, PrimitiveType.CreateWord(jsfr.BitWidth))
         {
             Traits = new PICRegisterTraits(jsfr, subregs);
             AttachedRegs = subregs.ToList();
@@ -113,7 +113,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public bool HasAttachedRegs => ((AttachedRegs?.Count() ?? 0) > 0);
 
         /// <summary>
-        /// Gets the bit-fields composing this register. Sorted by width then position.
+        /// Gets the bit-fields composing this register. Sorted by increasing width then bit position.
         /// </summary>
         public SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage> BitFields { get; }
 
