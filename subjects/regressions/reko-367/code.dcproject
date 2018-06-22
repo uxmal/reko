@@ -10,7 +10,7 @@
     <global-vars>code.globals.c</global-vars>
     <user>
       <address>80000000</address>
-      <loader>unknown.format</loader>
+      <loader>raw</loader>
       <processor name="m68k" />
       <procedure name="fn80000000">
         <address>80000000</address>

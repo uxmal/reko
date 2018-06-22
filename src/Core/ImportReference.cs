@@ -68,14 +68,26 @@ namespace Reko.Core
             {
                 return this.GetType().FullName.CompareTo(this.GetType().FullName);
             }
-            int cmp = this.ModuleName.CompareTo(that.ModuleName);
-            if (cmp != 0)
-                return cmp;
-            cmp = string.Compare(
+            if (this.ModuleName == null)
+            {
+                if (that.ModuleName != null)
+                    return -1;
+            }
+            else if (this.ModuleName == null)
+            {
+                if (that.ModuleName != null)
+                    return 1;
+            }
+            else
+            {
+                int cmp = this.ModuleName.CompareTo(that.ModuleName);
+                if (cmp != 0)
+                    return cmp;
+            }
+            return string.Compare(
                 this.ImportName,
                 ((NamedImportReference)that).ImportName,
                 StringComparison.InvariantCulture);
-            return cmp;
         }
 
         public override Expression ResolveImport(

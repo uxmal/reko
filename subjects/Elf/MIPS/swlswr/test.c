@@ -228,8 +228,48 @@ void __do_global_ctors_aux()
 	}
 }
 
-// 00000A10: void _fini(Register (ptr32 Eq_297) ra)
-void _fini(Eq_297 * ra)
+// 000009D0: void __libc_start_main(Register ptr32 r28)
+void __libc_start_main(ptr32 r28)
+{
+	<anonymous> * r25_4 = *(r28 - 0x7FF0);
+	word32 sp_8;
+	word32 r28_9;
+	word32 r25_10;
+	word32 ra_11;
+	word32 r15_12;
+	word32 r24_13;
+	r25_4();
+}
+
+// 000009E0: void memset(Register ptr32 r28)
+void memset(ptr32 r28)
+{
+	<anonymous> * r25_4 = *(r28 - 0x7FF0);
+	word32 sp_8;
+	word32 r28_9;
+	word32 r25_10;
+	word32 ra_11;
+	word32 r15_12;
+	word32 r24_13;
+	r25_4();
+}
+
+// 000009F0: void calloc(Register ptr32 r28, Register word32 ra)
+void calloc(ptr32 r28, word32 ra)
+{
+	<anonymous> * r25_4 = *(r28 - 0x7FF0);
+	word32 sp_8;
+	word32 r28_9;
+	word32 r25_10;
+	struct Eq_334 * ra_11;
+	word32 r15_12;
+	word32 r24_13;
+	r25_4();
+	_fini(ra_11);
+}
+
+// 00000A10: void _fini(Register (ptr32 Eq_334) ra)
+void _fini(Eq_334 * ra)
 {
 	word32 sp_16;
 	word32 r28_17;

@@ -283,7 +283,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             switch (e.KeyChar)
             {
-            case '+':
+            case '+': 
                 Zoom(ZoomInFactor);
                 e.Handled = true;
                 break;

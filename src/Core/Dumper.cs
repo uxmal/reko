@@ -46,7 +46,7 @@ namespace Reko.Core
             this.program = program;
             this.arch = program.Architecture;
             var byteSize = (7 + this.arch.InstructionBitSize) / 8;
-            this.instrByteFormat = $"{{X{byteSize}}}";
+            this.instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
             this.instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 		}
 
@@ -303,7 +303,6 @@ namespace Reko.Core
 			{
                 var v = rdr.Read(this.instrByteSize);
                 writer.WriteFormat(this.instrByteFormat, v.ToUInt64());
-                writer.WriteChar(' ');
 			}
 		}
 

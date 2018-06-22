@@ -32,5 +32,19 @@ namespace Reko.ImageLoaders.Elf
         public ulong Info;
         public long Addend;
         public int SymbolIndex;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("offs: {0:X}", Offset);
+            sb.AppendFormat(" info: {0:X}", Info);
+            if (Addend != 0)
+            {
+                sb.AppendFormat(" info: {0:X}", Addend);
+            };
+            sb.AppendFormat(" symbol index: {0}", SymbolIndex);
+            return sb.ToString();
+        }
     }
+
 }

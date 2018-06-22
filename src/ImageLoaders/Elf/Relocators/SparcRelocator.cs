@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var addrPfn = Address.Ptr32((uint)rela.Offset);
                     Debug.Print("Import reference {0} - {1}", addrPfn, sym.Name);
-                    importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name));
+                    importReferences[addrPfn]= new NamedImportReference(addrPfn, null, sym.Name);
                     return;
                 }
             }

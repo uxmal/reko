@@ -130,6 +130,8 @@ namespace Reko.ImageLoaders.Elf
             this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
             this.Sections = new List<ElfSection>();
             this.Segments = new List<ElfSegment>();
+            this.DynamicEntries = new Dictionary<long, ElfDynamicEntry>();
+            this.Dependencies = new List<string>();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
@@ -139,6 +141,8 @@ namespace Reko.ImageLoaders.Elf
         public List<ElfSection> Sections { get; private set; }
         public List<ElfSegment> Segments { get; private set; }
         public Dictionary<ulong, Dictionary<int, ElfSymbol>> Symbols { get; private set; }
+        public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
+        public List<string> Dependencies { get; private set; }
 
         public static AccessMode AccessModeOf(ulong sh_flags)
         {
@@ -317,7 +321,7 @@ namespace Reko.ImageLoaders.Elf
                 return 0;
 
             var addrEnd = 0ul;
-            foreach (var de in GetDynamicEntries(dynSeg.p_offset))
+            foreach (var de in DynamicEntries.Values)
             {
                 if (de.UValue <= addrStart)
                     continue;
@@ -363,6 +367,7 @@ namespace Reko.ImageLoaders.Elf
                 machine));
         }
 
+
         public Program LoadImage(IPlatform platform, byte[] rawImage)
         {
             Debug.Assert(platform != null);
@@ -372,9 +377,42 @@ namespace Reko.ImageLoaders.Elf
             var addrPreferred = ComputeBaseAddress(platform);
             Dump();
             this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
-            //$TODO: LoadDynamicSegment
+            LoadDynamicSegment();
             var program = new Program(segmentMap, platform.Architecture, platform);
             return program;
+        }
+
+        /// <summary>
+        /// Loads the dynamic segment of the executable.
+        /// </summary>
+        /// <remarks>
+        /// The ELF standard specifies that there will be at most 1 dynamic segment
+        /// in an executable binary.
+        /// </remarks>
+        public void LoadDynamicSegment()
+        {
+            var dynSeg = Segments.FirstOrDefault(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
+            if (dynSeg == null)
+                return;
+            var dynEntries = GetDynamicEntries(dynSeg.p_offset).ToList();
+            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == DT_STRTAB);
+            if (deStrTab == null)
+            {
+                //$REVIEW: is missing a string table worth a warning?
+                return;
+            }
+            var offStrtab = AddressToFileOffset(deStrTab.UValue);
+            foreach (var de in dynEntries)
+            {
+                if (de.Tag == DT_NEEDED)
+                {
+                    Dependencies.Add(imgLoader.ReadAsciiString(offStrtab + de.UValue));
+                }
+                else
+                {
+                    DynamicEntries[de.Tag] = de;
+                }
+            }
         }
 
         public abstract ElfObjectLinker CreateLinker();
@@ -883,20 +921,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override List<string> GetDependencyList(byte[] rawImage)
         {
-            var result = new List<string>();
-            var dynsect = GetSectionInfoByName(".dynamic");
-            if (dynsect == null)
-                return result; // no dynamic section = statically linked 
-
-            var dynStrtab = GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
-            if (dynStrtab == null)
-                return result;
-            var section = GetSectionInfoByAddr64(dynStrtab.UValue);
-            foreach (var dynEntry in GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_NEEDED))
-            {
-                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.UValue));
-            }
-            return result;
+            return Dependencies;
         }
 
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
@@ -970,7 +995,7 @@ namespace Reko.ImageLoaders.Elf
             if (idx < 0)
             {
                 // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
+                throw new ArgumentException($"GetStrPtr passed index of {idx}.");
             }
             // Get a pointer to the start of the string table and add the offset
             return imgLoader.ReadAsciiString(Sections[idx].FileOffset + offset);
@@ -1162,6 +1187,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
                 Type = (ElfSymbolType)(sym.st_info & 0xF),
+                Bind = sym.st_info >> 4,
                 SectionIndex = sym.st_shndx,
                 Value = sym.st_value,
                 Size = sym.st_size,
@@ -1469,20 +1495,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override List<string> GetDependencyList(byte[] rawImage)
         {
-            var result = new List<string>();
-            var dynsect = GetSectionInfoByName(".dynamic");
-            if (dynsect == null)
-                return result; // no dynamic section = statically linked 
-
-            var dynStrtab = GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
-            if (dynStrtab == null)
-                return result;
-            var section = GetSectionInfoByAddr((uint)dynStrtab.UValue);
-            foreach (var dynEntry in GetDynamicEntries(dynsect.FileOffset).Where(d => d.Tag == DT_NEEDED))
-            {
-                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.UValue));
-            }
-            return result;
+            return Dependencies;
         }
 
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
@@ -1747,6 +1760,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
                 Type = (ElfSymbolType)(sym.st_info & 0xF),
+                Bind = sym.st_info >> 4,
                 SectionIndex = sym.st_shndx,
                 Value = sym.st_value,
                 Size = sym.st_size,

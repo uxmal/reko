@@ -347,5 +347,14 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 ";
             RunTest(sExp, pm.Program);
         }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void StrReg00568()
+        {
+            // We are generating a redundant check in the complex instruction.
+            // It will probably need value set analysis to be properly resolved.
+            RunTest("Fragments/regressions/r00568.asm", "Structure/StrReg00568.txt");
+        }
     }
 }

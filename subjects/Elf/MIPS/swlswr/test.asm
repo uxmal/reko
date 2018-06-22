@@ -49,13 +49,13 @@
 ; DT_SYMTAB            00000348
 ; DT_STRSZ             000000DD
 ; DT_SYMENT                  16
-; 70000035             00010844
+; DT_MIPS_RLD_MAP_REL  00010844
 ; DT_DEBUG             00000000
 ; DT_PLTGOT            00010A90
 ; DT_REL               00000578
 ; DT_RELSZ                   16
 ; DT_RELENT                   8
-; DT_MIPS_RLD_VERSION         1
+; DT_MIPS_RLD_VERSION  00000001
 ; DT_MIPS_FLAGS        00000002
 ; DT_MIPS_BASE_ADDRESS 00000000
 ; DT_MIPS_LOCAL_GOTNO        16
@@ -477,10 +477,31 @@ l000009BC:
 	jr	ra
 	addiu	sp,sp,+00000028
 ;;; Segment .MIPS.stubs (000009D0)
-000009D0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 0C ......x%. ..$...
-000009E0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 0B ......x%. ..$...
-000009F0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 09 ......x%. ..$...
-00000A00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+;; __libc_start_main: 000009D0
+__libc_start_main proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000000C
+
+;; memset: 000009E0
+memset proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000000B
+
+;; calloc: 000009F0
+calloc proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000009
+	nop
+	nop
+	nop
+	nop
 ;;; Segment .fini (00000A10)
 
 ;; _fini: 00000A10

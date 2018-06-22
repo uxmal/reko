@@ -1,0 +1,90 @@
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(byte al, selector ds)
+fn0C00_0000_entry:
+	Mem6[ds:0x0049:word16] = fn0C00_000B(al, 0x0045, ds)
+	return
+	// succ:  fn0C00_0000_exit
+l0C00_0000:
+fn0C00_0000_exit:
+
+void fn0C00_0000(byte al, selector ds)
+{
+	Mem6[ds:0x0049:word16] = fn0C00_000B(al, 0x0045, ds);
+}
+===========================
+// fn0C00_000B
+// Return size: 0
+word16 fn0C00_000B(byte al, word16 si, selector ds)
+fn0C00_000B_entry:
+	// succ:  l0C00_000B
+l0C00_000B:
+	word16 dx_17 = 0x0000
+	word16 cx_12 = 0x0000
+	branch Mem0[ds:si:byte] != 0x2D l0C00_001B
+	// succ:  l0C00_0016 l0C00_001B
+l0C00_0016:
+	si = si + 0x0001
+	cx_12 = 0xFFFF
+	goto l0C00_0021
+	// succ:  l0C00_0021
+l0C00_001B:
+	branch Mem0[ds:si:byte] != 0x2B l0C00_0021
+	// succ:  l0C00_0020 l0C00_0021
+l0C00_0020:
+	si = si + 0x0001
+	// succ:  l0C00_0021
+l0C00_0021:
+	byte al_18 = Mem0[ds:si:byte]
+	si = si + 0x0001
+	branch al_18 == 0x00 l0C00_003C
+	// succ:  l0C00_0026 l0C00_003C
+l0C00_0026:
+	ax = DPB(ax, al_18 - 0x30, 0) (alias)
+	branch al_18 <u 0x30 l0C00_003C
+	// succ:  l0C00_002A l0C00_003C
+l0C00_002A:
+	branch al_18 >u 0x39 || al_18 <u 0x30 l0C00_003C
+	// succ:  l0C00_002E l0C00_003C
+l0C00_002E:
+	dx_17 = dx_17 * 0x000A + ax
+	goto l0C00_0021
+	// succ:  l0C00_0021
+l0C00_003C:
+	branch cx_12 >= 0x0000 l0C00_0042
+	// succ:  l0C00_0040 l0C00_0042
+l0C00_0040:
+	dx_17 = -dx_17
+	// succ:  l0C00_0042
+l0C00_0042:
+	return dx_17
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:
+
+word16 fn0C00_000B(byte al, word16 si, selector ds)
+{
+	word16 dx_17 = 0x0000;
+	word16 cx_12 = 0x0000;
+	if (Mem0[ds:si:byte] == 0x2D)
+	{
+		si = si + 0x0001;
+		cx_12 = 0xFFFF;
+	}
+	else if (Mem0[ds:si:byte] == 0x2B)
+		si = si + 0x0001;
+	while (true)
+	{
+		byte al_18 = Mem0[ds:si:byte];
+		si = si + 0x0001;
+		if (al_18 == 0x00)
+			break;
+		ax = DPB(ax, al_18 - 0x30, 0);
+		if (al_18 <u 0x30 || (al_18 >u 0x39 || al_18 <u 0x30))
+			break;
+		dx_17 = dx_17 * 0x000A + ax;
+	}
+	if (cx_12 < 0x0000)
+		dx_17 = -dx_17;
+	return dx_17;
+}
+===========================
