@@ -132,7 +132,7 @@ namespace Reko.Core.Output
                 typeof(AbsynSideEffect)
             };
 
-            unsignedConstantFormatStrings = Enumerable.Range(0, 33)
+            unsignedConstantFormatStrings = Enumerable.Range(0, 17)
                 .Select(n => $"0x{{0:X{n}}}")
                 .ToArray();
         }
@@ -777,10 +777,10 @@ namespace Reko.Core.Output
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
             var nybbles = Nybbles(type.BitSize);
-            if (0 < nybbles && nybbles < unsignedConstantFormatStrings.Length)
+            if (nybbles < unsignedConstantFormatStrings.Length)
                 return unsignedConstantFormatStrings[nybbles];
-            else 
-                throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bits are not supported.", type.BitSize));
+            else
+                return "0x{0:X16}";
         }
 
         private static int Nybbles(int bitSize)

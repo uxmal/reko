@@ -906,7 +906,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x100004c4, ///vxor\tv0,v0,v0");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v0 = 0x0000000000000000");
+                "1|L--|v0 = 0x00000000000000000000000000000000");
             AssertCode(0x100404c4, ///vxor\tv0,v4,v0");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v0 = v4 ^ v0");
