@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-This file contains the definitions of all files required for a 
+This file contains the definitions of all files required for a
 complete Reko distribution. The ItemGroups defined here are consumed
 by the PreBuild.targets file.
 -->
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsMac>$([MSBuild]::IsOSPlatform(OSX))</IsMac>
+    <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
+    <UnixDllExt Condition="!$(IsMac)">so</UnixDllExt>
+  </PropertyGroup>
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
 
@@ -30,7 +35,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\Reko.Arch.Z80.*" />
-    
+
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
@@ -112,7 +117,7 @@ by the PreBuild.targets file.
   </ItemGroup>
 
   <!-- Platform dependent files go here-->
-  
+
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
@@ -124,6 +129,6 @@ by the PreBuild.targets file.
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.$(UnixDllExt)" />
   </ItemGroup>
 </Project>
