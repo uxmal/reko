@@ -424,7 +424,7 @@ namespace Reko.Arch.PowerPC
             case 0x14: op = m.Le; break;
             case 0x18: op = m.Ne; break;
             case 0x1F:
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 m.SideEffect(
                     host.PseudoProcedure(
                         "__trap",
@@ -434,7 +434,7 @@ namespace Reko.Arch.PowerPC
                 host.Error(
                     instr.Address,
                     string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }

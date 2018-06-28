@@ -18,7 +18,7 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Tms7000
@@ -30,7 +30,7 @@ namespace Reko.Arch.Tms7000
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {

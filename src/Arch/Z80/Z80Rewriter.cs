@@ -450,7 +450,7 @@ namespace Reko.Arch.Z80
                 EmitBranch(cOp, ((AddressOperand)instr.Op2).Address);
                 break;
             case AddressOperand target:
-                rtlc = RtlClass.Transfer;
+                rtlc = InstrClass.Transfer;
                 m.Goto(target.Address);
                 break;
             case MemoryOperand mTarget:

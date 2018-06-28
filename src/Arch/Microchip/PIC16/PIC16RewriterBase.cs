@@ -244,7 +244,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_BTFSC()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.op2, false);
             var res = m.And(srcMem, mask);
@@ -253,7 +253,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_BTFSS()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.op2, false);
             var res = m.And(srcMem, mask);
@@ -262,7 +262,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_CALL()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             var target = instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.op1}");
             Address retaddr = instrCurr.Address + instrCurr.Length;
             var dst = PushToHWStackAccess();
@@ -310,7 +310,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_DECFSZ()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.ISub(srcMem, Constant.Byte(1)));
             m.Branch(m.Eq0(dstMem), SkipToAddr(), rtlc);
@@ -318,7 +318,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_GOTO()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var target = instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.op1}");
             m.Goto(target.CodeTarget);
         }
@@ -332,7 +332,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_INCFSZ()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.IAdd(srcMem, Constant.Byte(1)));
             m.Branch(m.Eq0(dstMem), SkipToAddr(), rtlc);
@@ -375,7 +375,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETFIE()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             PICRegisterBitFieldStorage gie = PIC16Registers.GIE;
             byte mask = (byte)(1 << gie.BitPos);
             var intcon = binder.EnsureRegister(PIC16Registers.INTCON);
@@ -386,7 +386,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETLW()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
             m.Assign(Wreg, k.ImmediateValue);
             PopFromHWStackAccess();
@@ -395,7 +395,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETURN()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             PopFromHWStackAccess();
             m.Return(0, 0);
         }
