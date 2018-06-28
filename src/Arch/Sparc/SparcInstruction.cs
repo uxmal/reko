@@ -41,8 +41,6 @@ namespace Reko.Arch.Sparc
         public MachineOperand Op2;
         public MachineOperand Op3;
 
-        public override bool IsValid { get { return Opcode != Opcode.illegal; } }
-
         public override int OpcodeAsInteger { get { return (int)Opcode; } }
 
         public override InstrClass InstructionClass

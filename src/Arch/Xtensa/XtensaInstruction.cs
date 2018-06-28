@@ -51,11 +51,6 @@ namespace Reko.Arch.Xtensa
             get { return InstrClass.Linear; }
         }
 
-        public override bool IsValid
-        {
-            get { return Opcode != Opcodes.invalid;  }
-        }
-
         public Opcodes Opcode { get; set; }
 
         public override int OpcodeAsInteger

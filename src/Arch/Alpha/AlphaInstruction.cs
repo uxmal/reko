@@ -33,8 +33,6 @@ namespace Reko.Arch.Alpha
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override bool IsValid {  get { return Opcode != Opcode.invalid;  } }
-
         public override int OpcodeAsInteger {  get { return (int)Opcode;  } }
 
         public override MachineOperand GetOperand(int i)

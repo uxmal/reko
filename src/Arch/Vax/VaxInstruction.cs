@@ -45,14 +45,6 @@ namespace Reko.Arch.Vax
             }
         }
 
-        public override bool IsValid
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public Opcode Opcode { get; internal set; }
 
         public override int OpcodeAsInteger

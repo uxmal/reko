@@ -76,8 +76,6 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public override bool IsValid { get { return opcode != Opcode.invalid; } }
-
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
         public override MachineOperand GetOperand(int i)

@@ -37,11 +37,6 @@ namespace Reko.Arch.Avr
             }
         }
 
-        public override bool IsValid
-        {
-            get { return opcode != Opcode.invalid; }
-        }
-
         public override int OpcodeAsInteger
         {
             get { return (int)opcode; }

@@ -67,8 +67,6 @@ namespace Reko.Arch.Mips
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override bool IsValid { get { return opcode != Opcode.illegal; } }
-
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
         public override InstrClass InstructionClass

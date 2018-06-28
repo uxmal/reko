@@ -38,14 +38,6 @@ namespace Reko.Arch.Tms7000
             }
         }
 
-        public override bool IsValid
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
         public override int OpcodeAsInteger
         {
             get

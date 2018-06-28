@@ -40,11 +40,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override bool IsValid 
-        {
-            get { return Opcode != Opcode.invalid; }
-        }
-
         public override int OpcodeAsInteger
         {
             get { return (int)Opcode; }

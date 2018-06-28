@@ -55,11 +55,6 @@ namespace Reko.Arch.Arm
             get { return (InstrClass)info.InstructionClass; }
         }
 
-        public override bool IsValid
-        {
-            get { return this.InstructionClass != InstrClass.Invalid; }
-        }
-
         public override int OpcodeAsInteger
         {
             get { return info.Opcode; }

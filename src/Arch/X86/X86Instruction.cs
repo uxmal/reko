@@ -67,8 +67,6 @@ namespace Reko.Arch.X86
 			}
 		}
 
-        public override bool IsValid { get { return code != Opcode.illegal; } }
-
         public override int OpcodeAsInteger { get { return (int) code; } } 
 
 		private bool NeedsExplicitMemorySize()

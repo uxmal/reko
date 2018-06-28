@@ -48,8 +48,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Returns true if the instruction is valid.
         /// </summary>
-        [Obsolete("Use InstructionClass.Invalid for this purpose.")]
-        public abstract bool IsValid { get; }
+        public bool IsValid => InstructionClass != InstrClass.Invalid;
 
         /// <summary>
         /// Returns true if <paramref name="addr"/> is contained

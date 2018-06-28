@@ -34,8 +34,6 @@ namespace Reko.Environments.Trs80.Basic
         internal const int TokenMin = 0x80;
         internal const int TokenMax = 0xCC;
 
-        public override bool IsValid { get { return true; } }
-
         public override int OpcodeAsInteger
         {
             get { throw new NotImplementedException(); }

@@ -17,14 +17,6 @@ namespace Reko.Core.NativeInterface
             }
         }
 
-        public override bool IsValid
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public override int OpcodeAsInteger
         {
             get

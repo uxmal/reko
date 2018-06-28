@@ -127,14 +127,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override int OpcodeAsInteger => (int)Opcode;
 
         /// <summary>
-        /// Returns true if the instruction is valid.
-        /// </summary>
-        /// <value>
-        /// True if this instruction is valid, false if not.
-        /// </value>
-        public override bool IsValid => (Opcode != Opcode.invalid && Opcode != Opcode.unaligned);
-
-        /// <summary>
         /// Gets the number of operands of this instruction.
         /// </summary>
         /// <value>

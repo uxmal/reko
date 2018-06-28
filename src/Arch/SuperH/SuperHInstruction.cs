@@ -32,11 +32,6 @@ namespace Reko.Arch.SuperH
             get { throw new NotImplementedException(); }
         }
 
-        public override bool IsValid
-        {
-            get { return Opcode == Opcode.invalid; }
-        }
-
         public Opcode Opcode { get; set; }
 
         public MachineOperand op1 { get; set; }

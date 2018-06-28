@@ -34,8 +34,6 @@ namespace Reko.Arch.Mos6502
         public Opcode Code;
         public Operand Operand;
 
-        public override bool IsValid { get { return Code != Opcode.illegal; } }
-
         public override InstrClass InstructionClass
         {
             get

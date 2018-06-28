@@ -202,14 +202,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             {
                 get { return InstrClass.Invalid; } 
             }
-
-            public override bool IsValid
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
         }
 
         private void Given_MachineInstructions(int c)

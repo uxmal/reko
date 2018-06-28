@@ -38,14 +38,6 @@ namespace Reko.Arch.i8051
             }
         }
 
-        public override bool IsValid
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public override int OpcodeAsInteger
         {
             get { return (int)Opcode; }

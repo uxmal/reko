@@ -40,11 +40,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             get { return InstrClass.Linear; }
         }
 
-        public override bool IsValid
-        {
-            get { return Opcode == Opcode.invalid; }
-        }
-
         public override int OpcodeAsInteger
         {
             get { return (int)Opcode; }
