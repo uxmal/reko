@@ -11,8 +11,8 @@ void fn00000000()
 	fn00000E(0x00, 0x00);
 }
 
-// 00000E: void fn00000E(Register Eq_8 FSR0, Register word32 TBLPTR)
-void fn00000E(Eq_8 FSR0, word32 TBLPTR)
+// 00000E: void fn00000E(Register Eq_8 FSR0, Register word24 TBLPTR)
+void fn00000E(Eq_8 FSR0, word24 TBLPTR)
 {
 	__tblrd(TBLPTR, 0x01);
 	0x00->b00C5 = TABLAT;
@@ -75,7 +75,7 @@ l000080:
 	goto l000080;
 }
 
-// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register ptr16 FSR2, Register (ptr byte) FSR1)
+// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register ptr16 FSR2, Register (ptr16 byte) FSR1)
 void fn0000D0(byte LATB, byte FSR2L, ptr16 FSR2, byte * FSR1)
 {
 	*FSR1 = FSR2L;

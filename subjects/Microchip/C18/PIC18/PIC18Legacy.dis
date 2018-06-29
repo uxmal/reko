@@ -24,14 +24,14 @@ l00000000:
 l00013A:
 	Mem18[0x0001:byte] = Data[0x0001:byte] & 0xBF
 	Stack[0x01] = 0x00014A
-	fn00000E(0x0000, 0x00000000)
+	fn00000E(0x0000, 0x000000)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: STKPTR:0x00 STATUS:0x00 PCL:0x00 PCLATH:0x00 WREG:0x00 BSR:0x00 FSR0:0x0000 FSR1:0x0000 FSR2:0x0000 PROD:0x0000 PCLAT:0x00000000 TOS:0x00000000 TBLPTR:0x00000000
+// SymbolicIn: STKPTR:0x00 STATUS:0x00 PCL:0x00 PCLATH:0x00 WREG:0x00 BSR:0x00 FSR0:0x0000 FSR1:0x0000 FSR2:0x0000 PROD:0x0000 PCLAT:0x000000 TOS:0x000000 TBLPTR:0x000000
 
 
 
-void fn00000E(word16 FSR0, word32 TBLPTR)
+void fn00000E(word16 FSR0, word24 TBLPTR)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  FSR0 TBLPTR
@@ -42,7 +42,7 @@ fn00000E_entry:
 // DataOut: FSR0 TBLPTR
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l00000E:
 	__tblrd(TBLPTR, 0x01)
@@ -56,27 +56,27 @@ l00000E:
 // DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
 // DataOut (flags): Z
 // SymbolicIn: STKPTR:fp
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000028:
 	branch Z_15 l000030
 // DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l00002A:
 	branch Mem17[0x00:0xC5:byte] == 0x00 l00002E
 // DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l00002E:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000AA:
 	return
@@ -93,7 +93,7 @@ l00002C:
 // DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000030:
 	__tblrd(TBLPTR, 0x01)
@@ -121,14 +121,14 @@ l000030:
 // DataOut: FSR0 TBLPTR
 // DataOut (flags): Z
 // SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000080:
 	branch Z_57 l000086
 // DataOut: FSR0 TBLPTR
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000082:
 	Mem76[0x00:0xC4:byte] = Mem55[0x00:0xC4:byte]
@@ -136,7 +136,7 @@ l000082:
 // DataOut: FSR0 TBLPTR
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000094:
 	TBLPTRL_24 = Mem76[0x00C7:byte]
@@ -148,7 +148,7 @@ l000094:
 // DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
 // DataOut (flags): Z
 // SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000086:
 	__tblrd(TBLPTR, 0x01)
@@ -160,14 +160,14 @@ l000086:
 // DataOut: FSR0 TBLPTR
 // DataOut (flags): Z
 // SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000090:
 	Mem74[0x00:0xC4:byte] = Mem69[0x00:0xC4:byte] - 0x01
 // DataOut: FSR0 TBLPTR
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 
 
@@ -182,21 +182,21 @@ fn0000D0_entry:
 // DataOut: FSR1 FSR2 FSR2L LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000D0:
 	Mem3[FSR1:byte] = FSR2L
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000D8:
 	branch Mem3[FSR2 + 0xFE:byte] == 0x00 l0000F4
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000F4:
 	Mem29[FSR1 + 0x0001:byte] = Mem3[FSR1 + 0x0001:byte]
@@ -215,7 +215,7 @@ l0000DE:
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000E4:
 	Mem22[0x00:0xCA:byte] = Mem3[0x00:0xCA:byte] & 0xFE
@@ -223,33 +223,33 @@ l0000E4:
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000F0:
 	LATB = LATB & 0x7F
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000EC:
 	LATB = LATB | 0x80
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000E2:
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l0000F2:
 // DataOut: FSR1 FSR2 LATB
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 
 
@@ -264,14 +264,14 @@ fn000128_entry:
 // DataOut: FSR0 FSR0H FSR0L WREG
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000128:
 	branch FSR0H <u WREG l00012C
 // DataOut: FSR0 FSR0H FSR0L WREG
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l00012C:
 	Mem20[FSR0:byte] = 0x00
@@ -279,26 +279,26 @@ l00012C:
 // DataOut: FSR0 FSR0H FSR0L WREG
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l00012A:
 // DataOut: FSR0 FSR0L
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000130:
 // DataOut: FSR0 FSR0L WREG
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000132:
 	branch FSR0L <u PRODL l000136
 // DataOut: FSR0 FSR0L WREG
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000136:
 	Mem17[FSR0:byte] = 0x00
@@ -306,7 +306,7 @@ l000136:
 // DataOut: FSR0 FSR0L WREG
 // DataOut (flags): 
 // SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
-// LocalsOut: fp(32)
+// LocalsOut: fp(24)
 
 l000134:
 	return
