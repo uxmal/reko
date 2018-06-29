@@ -113,13 +113,13 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteMrs()
         {
             var ppp = host.PseudoProcedure("__mrs", PrimitiveType.Word32, Operand(Src1()));
-            m.Assign(Operand(Dst()), m.Fn(ppp));
+            m.Assign(Operand(Dst()), ppp);
         }
 
         private void RewriteMsr()
         {
-            var ppp = host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst()), Operand(Src1()));
-            m.SideEffect(m.Fn(ppp));
+            var intrinsic = host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst()), Operand(Src1()));
+            m.SideEffect(intrinsic);
         }
 
         private void RewriteStc(string name)
@@ -128,7 +128,7 @@ namespace Reko.Arch.Arm.AArch32
                 Operand(Dst()),
                 Operand(Src1()),
                 Operand(Src2()));
-            m.SideEffect(m.Fn(intrinsic));
+            m.SideEffect(intrinsic);
         }
 
         private void RewriteSvc()

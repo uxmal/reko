@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="AArch32\A32Disassembler.cs" />
     <Compile Include="AArch32\BarrierOperand.cs" />
+    <Compile Include="AArch32\T32Disassembler.Decoder.cs" />
     <Compile Include="AArch64.cs" />
     <Compile Include="AArch64\AArch64Disassembler.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />

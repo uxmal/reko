@@ -342,7 +342,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_ldr_literal()
         {
             Given_Instructions(0x4B11);
-            Expect_Code("ldr\t q@@@");
+            Expect_Code("ldr\tr3,[pc,#&44]");
         }
 
 
