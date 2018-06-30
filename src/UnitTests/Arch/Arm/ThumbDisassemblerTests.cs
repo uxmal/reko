@@ -403,44 +403,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("isb\tsy");
         }
 
-
-
         [Test]
-        public void ThumbDis_xb()
-        {
-            Given_Instructions(0xFEC2, 0x2800);
-            Expect_Code("@@@");
-        }
-
-
-        [Test]
-        public void ThumbDis_xx()
+        public void ThumbDis_mrs()
         {
             Given_Instructions(0xF3EF, 0x8511);
-            Expect_Code("@@@");
-        }
-
-
-        [Test]
-        public void ThumbDis_xxxy()
-        {
-            Given_Instructions(0xF383, 0x8811);
-            Expect_Code("@@@");
+            Expect_Code("mrs\tr5,cpsr");
         }
 
         [Test]
-        public void ThumbDis_x2()
+        public void ThumbDis_msr()
         {
             Given_Instructions(0xF385, 0x8811);
-            Expect_Code("@@@");
+            Expect_Code("msr\tcpsr,r5");
         }
-
-        [Test]
-        public void ThumbDis_x3()
-        {
-            Given_Instructions(0xF947, 0xF000);
-            Expect_Code("@@@");
-        }
-
     }
 }

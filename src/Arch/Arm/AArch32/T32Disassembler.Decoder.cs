@@ -181,7 +181,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                return dasm.DecodeFormat16(wInstr, opcode, format);
+                return dasm.DecodeFormat(wInstr, opcode, format);
             }
         }
 

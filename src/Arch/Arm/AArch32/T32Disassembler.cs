@@ -26,9 +26,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
@@ -79,7 +76,7 @@ namespace Reko.Arch.Arm.AArch32
             return instr;
         }
 
-        private AArch32Instruction DecodeFormat16(uint wInstr, Opcode opcode, string format)
+        private AArch32Instruction DecodeFormat(uint wInstr, Opcode opcode, string format)
         {
             var ops = new List<MachineOperand>();
             ArmCondition cc = ArmCondition.AL;
@@ -144,10 +141,18 @@ namespace Reko.Arch.Arm.AArch32
                     // They should generate a value in 'op'.
                 case 's':
                     ++i;
-                    if (Peek('p',format,i))
+                    if (PeekAndDiscard('p', format, ref i))
                     {
-                        // 'sp': explict stack register reference.
-                        op = new RegisterOperand(arch.StackRegister);
+                        if (PeekAndDiscard('s', format, ref i))
+                        {
+                            Expect('r', format, ref i);
+                            op = new RegisterOperand(Registers.spsr);
+                        }
+                        else
+                        {
+                            // 'sp': explict stack register reference.
+                            op = new RegisterOperand(arch.StackRegister);
+                        }
                     }
                     else // Signed immediate (in bitfields)
                     {
@@ -327,9 +332,19 @@ namespace Reko.Arch.Arm.AArch32
                     break;
                 case 'c':  // Condition code
                     ++i;
-                    offset = ReadDecimal(format, ref i);
-                    cc = (ArmCondition) SBitfield(wInstr, offset, 4);
-                    --i;
+                    if (PeekAndDiscard('p', format, ref i))
+                    {
+                        Expect('s', format, ref i);
+                        Expect('r', format, ref i);
+                        op = new RegisterOperand(Registers.cpsr);
+                        break;
+                    }
+                    else
+                    {
+                        offset = ReadDecimal(format, ref i);
+                        cc = (ArmCondition)SBitfield(wInstr, offset, 4);
+                        --i;
+                    }
                     continue;
                 case 'C':   // Coprocessor
                     ++i;
@@ -1113,6 +1128,18 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid));
 
+            var LoadStoreSignedRegisterOffset = Select("12:4", n => n != 0xF,
+                Mask(5 + 16, 3,
+                    Instr(Opcode.ldrsb, "*register"),
+                    Instr(Opcode.ldrsh, "*register"),
+                    invalid,
+                    invalid),
+                Mask(5 + 16, 3,
+                    Instr(Opcode.pli, "*register"),
+                    Instr(Opcode.nop, ""),
+                    invalid,
+                    invalid));
+
             var LoadStoreSingle = Mask(7 + 16, 3,
                 Select("16:4", n => n != 0xF,
                     Mask(10, 3,
@@ -1135,7 +1162,7 @@ namespace Reko.Arch.Arm.AArch32
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     Mask(10, 3,
                         Select(w => SBitfield(w, 6, 6) == 0,
-                            Nyi("LoadStoreSignedRegisterOffset"),
+                            LoadStoreSignedRegisterOffset,
                             invalid),
                         invalid,
                         Select(w => SBitfield(w, 8, 1) == 0,
@@ -1237,7 +1264,19 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vselge, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4"),
                     Instr(Opcode.vselgt, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4")));
 
-            var FloatingPointMinNumMaxNum = Nyi("FloatingPointMinNumMaxNum");
+            var FloatingPointMinNumMaxNum =
+                Mask(6, 1,
+                    Mask(8, 3,
+                        invalid,
+                        Instr(Opcode.vmaxnm, "vfh F12:4:22:1,F16:4:7:1,F0:4:5:1"),
+                        Instr(Opcode.vmaxnm, "vfs F12:4:22:1,F16:4:7:1,F0:4:5:1"),
+                        Instr(Opcode.vmaxnm, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Mask(8, 3,
+                        invalid,
+                        Instr(Opcode.vminnm, "vfh F12:4:22:1,F16:4:7:1,F0:4:5:1"),
+                        Instr(Opcode.vminnm, "vfs F12:4:22:1,F16:4:7:1,F0:4:5:1"),
+                        Instr(Opcode.vminnm, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4")));
+
             var FloatingPointExtIns = Nyi("FloatingPointExtIns");
             var FloatingPointDirectedCvt2Int = Nyi("FloatingPointDirectedCvt2Int");
 
@@ -1303,6 +1342,14 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var AdvancedSimdAndFloatingPoint32bitMove = Nyi("AdvancedSimdAndFloatingPoint32bitMove");
+            var AdvancedSimdElementOrStructureLdSt = Mask(7 + 16, 1,
+                Nyi("AdvancedSimdLdStMultipleStructures"),
+                Mask(10, 3,
+                    Nyi("AdvancedSimdLdStSingleStructureOneLane"),
+                    Nyi("AdvancedSimdLdStSingleStructureOneLane"),
+                    Nyi("AdvancedSimdLdStSingleStructureOneLane"),
+                    Nyi("AdvancedSimdLdSingleStructureToAllLanes")));
+
             var SystemRegister32bitMove = Mask(12 + 16, 1, 
                 Mask(4 + 16, 1,
                     Instr(Opcode.mcr, "CP8,i21:3,R12,CR16,CR0,i5:3"),
@@ -1985,7 +2032,9 @@ namespace Reko.Arch.Arm.AArch32
                     DataProcessingPlainImm,
                     branchesMiscControl),
 
-                LoadStoreSingle,
+                Select("24:1:20:1", n => n != 2,
+                    LoadStoreSingle,
+                    AdvancedSimdElementOrStructureLdSt),
                 Mask(7 + 16, 3,
                     DataProcessingRegister,
                     DataProcessingRegister,
@@ -2074,7 +2123,9 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(26, 1,     // op0
                     Mask(20, 3,     // op2
                         Mask(5, 1,  // op5
-                            Instr(Opcode.msr, "*register"),
+                            Mask(20, 1, // write spsr
+                                Instr(Opcode.msr, "cpsr,R16"),
+                                Instr(Opcode.msr, "spsr,R16")),
                             Instr(Opcode.msr, "*banked register")),
                         Mask(5, 1,  // op5
                             Instr(Opcode.msr, "*register"),
@@ -2095,7 +2146,9 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.bxj, "*"),
                         Nyi("ExceptionReturn"),
                         Mask(5, 1,  // op5
-                            Instr(Opcode.mrs, "*register"),
+                            Mask(20, 1, // read spsr
+                                Instr(Opcode.mrs, "R8,cpsr"),
+                                Instr(Opcode.mrs, "R8,spsr")),
                             Instr(Opcode.mrs, "*banked register")),
                         Mask(5, 1,  // op5
                             Instr(Opcode.mrs, "*register"),
