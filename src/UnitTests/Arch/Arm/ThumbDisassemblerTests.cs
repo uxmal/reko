@@ -314,7 +314,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vmlal()
         {
             Given_Instructions(0xFFCB, 0x2800);
-            Expect_Code("vmlal\tq9,d11,d0");
+            Expect_Code("vmlal.i8\tq9,d11,d0");
         }
 
         [Test]
@@ -371,14 +371,29 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_vhadd()
         {
             Given_Instructions(0xFF23, 0xF000);
-            Expect_Code("vhadd\td15,d3,d0");
+            Expect_Code("vhadd.u32\td15,d3,d0");
         }
+
+        [Test]
+        public void ThumbDis_vhadd_unsigned()
+        {
+            Given_Instructions(0xFF41, 0xB002);
+            Expect_Code("vhadd.u8\td27,d1,d2");
+        }
+
+        [Test]
+        public void ThumbDis_vhadd_signed()
+        {
+            Given_Instructions(0xEF41, 0xB002);
+            Expect_Code("vhadd.i8\td27,d1,d2");
+        }
+
 
         [Test]
         public void ThumbDis_vseleq()
         {
             Given_Instructions(0xFE1E, 0x2800);
-            Expect_Code("vselvs\td2,d14,d0");
+            Expect_Code("vselvs.f64\td2,d14,d0");
         }
 
         [Test]
@@ -415,6 +430,20 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instructions(0xF385, 0x8811);
             Expect_Code("msr\tcpsr,r5");
+        }
+
+        [Test]
+        public void ThumbDis_rsb()
+        {
+            Given_Instructions(0xF1C4, 0x01F4);   // rsb         r1,r4,#0xF4
+            Expect_Code("rsb\tr1,r4,#&F4");
+        }
+
+        [Test]
+        public void ThumbDis_vmla_float()
+        {
+            Given_Instructions(0xEFA0, 0x41E5);	// vmla.f32 d4, d16, d5[1]
+            Expect_Code("vmla.f32\td4,d16,d21");
         }
     }
 }

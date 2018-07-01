@@ -7938,7 +7938,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("A0EFE541");	// vmla.f32 d4, d16, d5[1]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d4 = __vmla_f32(d16, d5)");
+                "1|L--|d4 = __vmla_f32(d16, d21)");
         }
 
         [Test]

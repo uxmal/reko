@@ -106,14 +106,14 @@ namespace Reko.Arch.Arm.AArch32
                     ++i;
                     switch (format[i])
                     {
-                    case 'i':
+                    case 'i': // Force  integer
                         ++i;
                         n = ReadBitfields(wInstr, format, ref i);
                         vectorData = VectorIntUIntData(0, n);
                         if (vectorData == ArmVectorData.INVALID)
                             return Invalid();
                         continue;
-                    case 'u':
+                    case 'u':   // signed or unsigned integer
                         ++i;
                         n = ReadBitfields(wInstr, format, ref i);
                         vectorData = VectorIntUIntData(wInstr, n);
@@ -127,6 +127,13 @@ namespace Reko.Arch.Arm.AArch32
                     case 'f':       // floating point vector
                         ++i;
                         vectorData = VectorFloatData(format, ref i);
+                        if (vectorData == ArmVectorData.INVALID)
+                            return Invalid();
+                        continue;
+                    case 'F':       // floating point elements specified by a bitfield
+                        ++i;
+                        n = ReadBitfields(wInstr, format, ref i);
+                        vectorData = VectorFloatElementData(n);
                         if (vectorData == ArmVectorData.INVALID)
                             return Invalid();
                         continue;
@@ -456,6 +463,18 @@ namespace Reko.Arch.Arm.AArch32
             default: return ArmVectorData.INVALID;
             }
         }
+
+        private ArmVectorData VectorFloatElementData(uint n)
+        {
+            switch (n)
+            {
+            case 1: return ArmVectorData.F16;
+            case 2: return ArmVectorData.F32;
+            default: return ArmVectorData.INVALID;
+            }
+        }
+
+
         private ArmVectorData VectorConvertData(uint wInstr)
         {
             var op = SBitfield(wInstr, 7, 2);
@@ -1359,8 +1378,8 @@ namespace Reko.Arch.Arm.AArch32
             var AdvancedSimd3RegistersSameLength = Mask(8, 0xF, // opc
                 Mask(4, 1, // o1
                     Mask(6, 1,
-                        Instr(Opcode.vhadd, "vi20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                        Instr(Opcode.vhadd, "vi20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                        Instr(Opcode.vhadd, "vu20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vhadd, "vu20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                     Instr(Opcode.vqadd, "*")),
                 Mask(12 + 16, 1,  // U
                     Mask(4, 1,      // o1
@@ -1380,11 +1399,13 @@ namespace Reko.Arch.Arm.AArch32
                             Instr(Opcode.vbit, "*register"),
                             Instr(Opcode.vbif, "*register")))),
                 Mask(4, 1, // o1
-                    Instr(Opcode.vhsub, "*"),
+                    Mask(6, 1,
+                        Instr(Opcode.vhsub, "vu20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vhsub, "vu20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                     Instr(Opcode.vqsub, "*")),
                 Nyi("AdvancedSimd3RegistersSameLength_opc3"),
 
-                Nyi("AdvancedSimd3RegistersSameLength_opc5"),
+                Nyi("AdvancedSimd3RegistersSameLength_opc4"),
                 Nyi("AdvancedSimd3RegistersSameLength_opc5"),
                 Mask(4, 1,
                     Mask(6, 1, // Q
@@ -1407,7 +1428,14 @@ namespace Reko.Arch.Arm.AArch32
                             Instr(Opcode.vsub, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                         Instr(Opcode.vceq, "*"))),
 
-                Nyi("AdvancedSimd3RegistersSameLength_opc9"),
+                // opc9
+                Mask(12+16, 1,  // U
+                    Mask(4, 1,      // op1
+                        Nyi("*vmla"),
+                        Nyi("*vmul (integer and polynomial")),
+                    Mask(4, 1,      // op1
+                        Nyi("*vmls (integer)"),
+                        Nyi("*vmul (integer and polynomial"))),
                 Mask(6, 1, // Q
                     Mask(4, 1, // op1
                         Instr(Opcode.vpmax, "*integer"),
@@ -1570,8 +1598,12 @@ namespace Reko.Arch.Arm.AArch32
                 invalid);
 
             var AdvancedSimd2RegsScalar = Mask(8, 0xF, // opc
-                Instr(Opcode.vmla, "*scalar"),
-                Instr(Opcode.vmla, "*scalar"),
+                Mask(12 +16, 1,
+                    Instr(Opcode.vmla, "vi D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                    Instr(Opcode.vmla, "vi Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                Mask(12 + 16, 1,
+                    Instr(Opcode.vmla, "vF20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                    Instr(Opcode.vmla, "vF20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                 Instr(Opcode.vmlal, "*scalar"),
                 Mask(12 + 16, 1, // Q
                     Instr(Opcode.vqdmlal, "*"),

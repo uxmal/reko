@@ -102,13 +102,7 @@ namespace Reko.Arch.Arm.AArch32
                 writer.WriteString(condition.ToString().ToLowerInvariant());
                 return;
             }
-            if (!opcodes.TryGetValue(opcode, out string sOpcode))
-            {
-                sOpcode = opcode.ToString();
-            }
-            var sUpdate = UpdateFlags ? "s" : "";
-            var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
-            writer.WriteOpcode($"{sOpcode}{sUpdate}{sCond}");
+            RenderMnemonic(writer);
             if (ops.Length > 0)
             {
                 writer.Tab();
@@ -131,6 +125,25 @@ namespace Reko.Arch.Arm.AArch32
                     RenderOperand(ShiftValue, writer, options);
                 }
             }
+        }
+
+        private void RenderMnemonic(MachineInstructionWriter writer)
+        {
+            var sb = new StringBuilder();
+            if (!opcodes.TryGetValue(opcode, out string sOpcode))
+            {
+                sOpcode = opcode.ToString();
+            }
+            var sUpdate = UpdateFlags ? "s" : "";
+            var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
+            sb.Append(sOpcode);
+            sb.Append(sUpdate);
+            sb.Append(sCond);
+            if (this.vector_data != ArmVectorData.INVALID)
+            {
+                sb.AppendFormat(".{0}", this.vector_data.ToString().ToLowerInvariant());
+            }
+            writer.WriteOpcode(sb.ToString());
         }
 
         private string RenderIt()

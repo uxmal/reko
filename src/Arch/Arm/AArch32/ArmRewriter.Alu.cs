@@ -148,7 +148,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var src1 = this.Operand(Src1());
                 var src2 = this.Operand(Src2());
-                m.Assign(opDst, op(src1, src2));
+                m.Assign(opDst, op(src2, src1));
             }
             else
             {
