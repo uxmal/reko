@@ -1416,7 +1416,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vmin, "vu20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"))),
                 Nyi("AdvancedSimd3RegistersSameLength_opc7"),
 
-                Mask(12+16, 1,  // U
+                Mask(12 + 16, 1,  // U
                     Mask(4, 1, // op1
                         Mask(6, 1, // Q
                             Instr(Opcode.vadd, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
@@ -1429,12 +1429,14 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vceq, "*"))),
 
                 // opc9
-                Mask(12+16, 1,  // U
+                Mask(12 + 16, 1,  // U
                     Mask(4, 1,      // op1
                         Nyi("*vmla"),
                         Nyi("*vmul (integer and polynomial")),
                     Mask(4, 1,      // op1
-                        Nyi("*vmls (integer)"),
+                        Mask(6, 1, // Q
+                            Instr(Opcode.vmls, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                            Instr(Opcode.vmls, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                         Nyi("*vmul (integer and polynomial"))),
                 Mask(6, 1, // Q
                     Mask(4, 1, // op1
@@ -1444,7 +1446,35 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("AdvancedSimd3RegistersSameLength_opcB"),
 
                 Nyi("AdvancedSimd3RegistersSameLength_opcC"),
-                Nyi("AdvancedSimd3RegistersSameLength_opcD"),
+                // opcD
+                Mask(12 + 16, 1,  // U
+                    Mask(4, 1,      // op1
+                        Mask(6, 1,      // Q
+                            Mask(20, 3,  // size
+                                Instr(Opcode.vadd, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vadd, "vfh D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vsub, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vsub, "vfh D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                            Mask(20, 3,  // size
+                                Instr(Opcode.vadd, "vfs Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"),
+                                Instr(Opcode.vadd, "vfh Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"),
+                                Instr(Opcode.vsub, "vfs Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"),
+                                Instr(Opcode.vsub, "vfh Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"))),
+                        Mask(20, 3,  // high-bit of size
+                            Nyi("*vmla (floating point)"),
+                            Nyi("*vmla (floating point)"),
+                            Nyi("*vmls (floating point)"),
+                            Nyi("*vmls (floating point)"))),
+                    Mask(4, 1,      // op1
+                        Mask(21, 1,  // high-bit of size
+                            Nyi("*vpadd (floating point)"),
+                            Nyi("*vabd (floating point)")),
+                        Mask(21, 1,  // high-bit of size
+                            Mask(6, 1,      // Q
+                                Instr(Opcode.vmul, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vmul, "vfh Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
+                            invalid))),
+
                 Nyi("AdvancedSimd3RegistersSameLength_opcE"),
                 Nyi("AdvancedSimd3RegistersSameLength_opcF"));
 
