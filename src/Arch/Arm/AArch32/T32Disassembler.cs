@@ -108,8 +108,15 @@ namespace Reko.Arch.Arm.AArch32
                     {
                     case 'i': // Force  integer
                         ++i;
-                        n = ReadBitfields(wInstr, format, ref i);
-                        vectorData = VectorIntUIntData(0, n);
+                        if (Char.IsDigit(format[i]))
+                        {
+                            n = ReadBitfields(wInstr, format, ref i);
+                            vectorData = VectorIntUIntData(0, n);
+                        }
+                        else
+                        {
+                            vectorData = VectorIntUIntData(format, ref i);
+                        }
                         if (vectorData == ArmVectorData.INVALID)
                             return Invalid();
                         continue;
@@ -198,7 +205,17 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     break;
                 case 'M':
-                    op = ModifiedImmediate(wInstr);
+                    ++i;
+                    if (PeekAndDiscard('S', format, ref i))
+                    {
+                        n = ReadBitfields(wInstr, format, ref i);
+                        op = ModifiedSimdImmediate(wInstr, n);
+                    }
+                    else
+                    {
+                        --i;
+                        op = ModifiedImmediate(wInstr);
+                    }
                     break;
                 case 'x':   // Jump displacement in bits 9:3..7, shifted left by 1.
                     offset = (SBitfield(wInstr, 9, 1) << 6) |
@@ -368,7 +385,7 @@ namespace Reko.Arch.Arm.AArch32
                         op = CoprocessorRegister(wInstr, offset);
                         break;
                     default:
-                        throw new NotImplementedException($"Unknown format specifier C{format[i]} when decoding {opcode} ({wInstr:X4}).");
+                        throw new NotImplementedException($"Unknown format specifier C{format[i]} in {format} when decoding {opcode} ({wInstr:X4}).");
                     }
                     break;
                 case 'B':   // barrier operation
@@ -379,7 +396,7 @@ namespace Reko.Arch.Arm.AArch32
                         return Invalid();
                     break;
                 default:
-                    throw new NotImplementedException($"Unknown format specifier {format[i]} when decoding {opcode} ({wInstr:X4}).");
+                    throw new NotImplementedException($"Unknown format specifier {format[i]} in {format} when decoding {opcode} ({wInstr:X4}).");
                 }
                 ops.Add(op);
             }
@@ -395,6 +412,84 @@ namespace Reko.Arch.Arm.AArch32
                 ShiftValue = shiftValue,
                 vector_data = vectorData,
             };
+        }
+
+        private ArmVectorData VectorIntUIntData(string format, ref int i)
+        {
+            switch (format[i++])
+            {
+ 
+            case 'w': return ArmVectorData.I32;
+            case 'h': return ArmVectorData.I16;
+            case 'H': return ArmVectorData.S16;
+            case 'b': return ArmVectorData.I8;
+            case 'B': return ArmVectorData.S8;
+            default: throw new InvalidOperationException("");
+            }
+        }
+
+        private MachineOperand ModifiedSimdImmediate(uint wInstr, uint imm8)
+        {
+            ulong Replicate2(uint value)
+            {
+                return (((ulong)value) << 32) | value;
+            }
+
+            ulong Replicate4(uint value)
+            {
+                var v = (ulong)(ushort)value;
+                return (v << 48) | (v << 32) | (v << 16) | v;
+            }
+
+            int op = SBitfield(wInstr, 5, 1);
+            int cmode = SBitfield(wInstr, 8, 4);
+            ulong imm64 = 0;
+            switch (cmode >> 1)
+            {
+            case 0:
+                imm64 = Replicate2(imm8); break;
+            case 1:
+                imm64 = Replicate2(imm8 << 8); break;
+            case 2:
+                imm64 = Replicate2(imm8 << 16); break;
+            case 3:
+                imm64 = Replicate2(imm8 << 24); break;
+            case 4:
+                imm64 = Replicate4(imm8); break;
+            case 5:
+                imm64 = Replicate4(imm8 << 8); break;
+            case 6:
+                if ((cmode & 1) == 0) {
+                    imm64 = Replicate2((imm8 << 8) | 0xFF);
+                } else {
+                    imm64 = Replicate2((imm8 << 16) | 0xFFFF);
+                }
+                break;
+            case 7:
+                throw new NotImplementedException();
+                /*
+                if (cmode < 0 > == '0' && op == '0') {
+                    imm64 = Replicate(imm8, 8);
+                }
+                if (cmode < 0 > == '0' && op == '1') {
+                    imm8a = Replicate(imm8 < 7 >, 8); imm8b = Replicate(imm8 < 6 >, 8);
+                    imm8c = Replicate(imm8 < 5 >, 8); imm8d = Replicate(imm8 < 4 >, 8);
+                    imm8e = Replicate(imm8 < 3 >, 8); imm8f = Replicate(imm8 < 2 >, 8);
+                    imm8g = Replicate(imm8 < 1 >, 8); imm8h = Replicate(imm8 < 0 >, 8);
+                    imm64 = imm8a:imm8b: imm8c: imm8d: imm8e: imm8f: imm8g: imm8h;
+                }
+                if (cmode < 0 > == '1' && op == '0') {
+                    imm32 = imm8 < 7 >:NOT(imm8 < 6 >):Replicate(imm8 < 6 >, 5):imm8 < 5:0 >:Zeros(19);
+                    imm64 = Replicate(imm32, 2);
+                }
+                if (cmode < 0 > == '1' && op == '1') {
+                    if UsingAArch32() then ReservedEncoding();
+                    imm64 = imm8 < 7 >:NOT(imm8 < 6 >):Replicate(imm8 < 6 >, 8):imm8 < 5:0 >:Zeros(48);
+                }
+                break;
+                */
+            }
+            return ImmediateOperand.Word64(imm64);
         }
 
         private MachineOperand MakeBarrierOperand(uint n)
@@ -643,9 +738,9 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Factory methods
-        private static Instr16Decoder Instr(Opcode opcode, string format)
+        private static InstrDecoder Instr(Opcode opcode, string format)
         {
-            return new Instr16Decoder(opcode, format);
+            return new InstrDecoder(opcode, format);
         }
 
         private static MaskDecoder Mask(int shift, uint mask, params Decoder [] decoders)
@@ -1125,9 +1220,9 @@ namespace Reko.Arch.Arm.AArch32
 
             var LoadUnsignedLiteral = Select("12:4", n => n != 0xF,
                 Mask(5 + 16, 3,
-                    Instr(Opcode.ldrb, "* literal"),
-                    Instr(Opcode.ldrh, "* literal"),
-                    Instr(Opcode.ldr, "* literal"),
+                    Instr(Opcode.ldrb, "R12,[P,i0:12:b]"),
+                    Instr(Opcode.ldrh, "R12,[P,i0:12:h]"),
+                    Instr(Opcode.ldr, "R12,[P,i0:12:w]"),
                     invalid),
                 Mask(5 + 16, 3,
                     Instr(Opcode.pld, "* literal"),
@@ -1440,8 +1535,8 @@ namespace Reko.Arch.Arm.AArch32
                         Nyi("*vmul (integer and polynomial"))),
                 Mask(6, 1, // Q
                     Mask(4, 1, // op1
-                        Instr(Opcode.vpmax, "*integer"),
-                        Instr(Opcode.vpmin, "*integer")),
+                        Instr(Opcode.vpmax, "vu20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vpmin, "vu20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4")),
                     invalid),
                 Nyi("AdvancedSimd3RegistersSameLength_opcB"),
 
@@ -1466,8 +1561,10 @@ namespace Reko.Arch.Arm.AArch32
                             Nyi("*vmls (floating point)"),
                             Nyi("*vmls (floating point)"))),
                     Mask(4, 1,      // op1
-                        Mask(21, 1,  // high-bit of size
-                            Nyi("*vpadd (floating point)"),
+                        Mask(20, 3,  // high-bit of size
+                            Instr(Opcode.vpadd, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                            Instr(Opcode.vpadd, "vfh D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                            Nyi("*vabd (floating point)"),
                             Nyi("*vabd (floating point)")),
                         Mask(21, 1,  // high-bit of size
                             Mask(6, 1,      // Q
@@ -1691,11 +1788,74 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimdTwoScalarsAndExtension = Nyi("AdvancedSimdTwoScalarsAndExtension");
 
+            var vmov_t1_d = Instr(Opcode.vmov, "viw D22:1:12:4,MS28:1:16:3:0:4");
+            var vmov_t1_q = Instr(Opcode.vmov, "viw Q22:1:12:4,MS28:1:16:3:0:4");
+            var vmvn_t1_d = Instr(Opcode.vmvn, "viw D22:1:12:4,MS28:1:16:3:0:4");
+            var vmvn_t1_q = Instr(Opcode.vmvn, "viw Q22:1:12:4,MS28:1:16:3:0:4");
+            var AdvancedSimdOneRegisterAndModifiedImmediate = Mask(8, 0xF,
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+                Mask(6, 1, // Q
+                    Mask(5, 1, vmov_t1_d, vmvn_t1_d),
+                    Mask(5, 1, vmov_t1_q, vmvn_t1_q)),
+
+                Mask(5, 1,  // op
+                    Instr(Opcode.vmov, "*immediate - T3"),
+                    Instr(Opcode.vmvn, "*immediate - T2")),
+                Mask(5, 1,  // op
+                    Instr(Opcode.vorr, "*immediate - T2"),
+                    Instr(Opcode.vbic, "*immediate - T2")),
+                Mask(5, 1,  // op
+                    Instr(Opcode.vmov, "*immediate - T3"),
+                    Instr(Opcode.vmvn, "*immediate - T2")),
+                Mask(5, 1,  // op
+                    Instr(Opcode.vorr, "*immediate - T2"),
+                    Instr(Opcode.vbic, "*immediate - T2")),
+
+                Mask(5, 1,  // op
+                    Instr(Opcode.vmov, "*immediate - T4"),
+                    Instr(Opcode.vmvn, "*immediate - T3")),
+                Mask(5, 1,  // op
+                    Instr(Opcode.vmov, "*immediate - T4"),
+                    Instr(Opcode.vmvn, "*immediate - T3")),
+                Mask(5, 1,  // op
+                    Instr(Opcode.vmov, "*immediate - T4"),
+                    Instr(Opcode.vmov, "*immediate - T5")),
+                Mask(5, 1,  // op
+                    Instr(Opcode.vmov, "*immediate - T4"),
+                    invalid));
+
+            var AdvancedSimdTwoRegistersAndShiftAmount = Nyi("AdvancedSimdTwoRegistersAndShiftAmount");
+
+            var AdvancedSimdShiftImm = Select("19:3:7:1", n => n == 0,
+                AdvancedSimdOneRegisterAndModifiedImmediate,
+                AdvancedSimdTwoRegistersAndShiftAmount);
+
             var AdvancedSimdDataProcessing = Mask(7 + 16, 1,
                 AdvancedSimd3RegistersSameLength,
                 Mask(4, 1,
                     AdvancedSimd2RegsOr3RegsDiffLength,
-                    Nyi("AdvancedSimdShiftImm")));
+                    AdvancedSimdShiftImm));
 
             var SystemRegisterAccessAdvSimdFpu = Mask(12 + 16, 1,
                 Mask(8 + 16, 3, // op0 = 0

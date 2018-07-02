@@ -114,12 +114,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 if (Src1() is ImmediateOperand imm)
                 {
-                    var arrSrc = new ArrayType(dt, celemSrc);
-                    m.Assign(dst, m.Seq(
-                        arrSrc,
-                        Enumerable.Range(0, celemSrc)
-                            .Select(n => Operand(instr.ops[1]))
-                            .ToArray()));
+                    m.Assign(dst, Operand(instr.ops[1]));
                     return;
                 }
 

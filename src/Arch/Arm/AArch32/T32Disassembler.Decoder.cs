@@ -137,7 +137,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 int i = 0;
                 var n = dasm.ReadBitfields(wInstr, fieldSpecifier, ref i);
-                return (predicate(wInstr) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
+                return (predicate(n) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
             }
         }
 
@@ -168,12 +168,12 @@ namespace Reko.Arch.Arm.AArch32
         /// deduced opcode and a format string describing the encoding of the 
         /// instruction operands.
         /// </summary>
-        private class Instr16Decoder : Decoder
+        private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
             private readonly string format;
 
-            public Instr16Decoder(Opcode opcode, string format)
+            public InstrDecoder(Opcode opcode, string format)
             {
                 this.opcode = opcode;
                 this.format = format;
@@ -273,7 +273,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Decodes Mov/Movs instructions with optional shifts
-        private class MovMovsDecoder : Instr16Decoder
+        private class MovMovsDecoder : InstrDecoder
         {
             private readonly string format;
 
@@ -313,7 +313,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Decode BFC and BFI instructions, which display their immediate constants
         // differently from how they are repesented in the word.
-        private class BfcBfiDecoder : Instr16Decoder
+        private class BfcBfiDecoder : InstrDecoder
         {
             public BfcBfiDecoder(Opcode opcode, string format) : base(opcode, format)
             {
