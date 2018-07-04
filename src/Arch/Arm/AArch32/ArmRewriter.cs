@@ -844,21 +844,26 @@ case ARM_OP_SYSREG:
 
         Expression MaybeShiftOperand(Expression exp, MachineOperand op)
         {
+            if (op != instr.ops[instr.ops.Length - 1])
+                return exp;
+            if (instr.ShiftType == Opcode.Invalid)
+                return exp;
+
+            Expression sh;
+            if (instr.ShiftValue is RegisterOperand reg)
+                sh = binder.EnsureRegister(reg.Register);
+            else
+                sh = ((ImmediateOperand)instr.ShiftValue).Value;
+
             switch (instr.ShiftType)
             {
-            /*
-    case ArmShift.ASR: return m.Sar(exp, m.Int32(op.shift.value));
-    case ArmShift.LSL: return m.Shl(exp, m.Int32(op.shift.value));
-    case ArmShift.LSR: return m.Shr(exp, m.Int32(op.shift.value));
-    case ArmShift.ROR: return m.Ror(exp, m.Int32(op.shift.value));
-    case ArmShift.RRX: return m.Rrc(exp, m.Int32(op.shift.value));
-    case ArmShift.ASR_REG: return m.Sar(exp, Reg(op.shift.value));
-    case ArmShift.LSL_REG: return m.Shl(exp, Reg(op.shift.value));
-    case ArmShift.LSR_REG: return m.Shr(exp, Reg(op.shift.value));
-    case ArmShift.ROR_REG: return m.Ror(exp, Reg(op.shift.value));
-    case ArmShift.RRX_REG: return m.Rrc(exp, Reg(op.shift.value));
-    */
-            default: return exp;
+            case Opcode.asr: return m.Sar(exp, sh);
+            case Opcode.lsl: return m.Shl(exp, sh);
+            case Opcode.lsr: return m.Sar(exp, sh);
+            case Opcode.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
+            case Opcode.rrx:
+                var c = binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, c);
             }
             throw new NotImplementedException();
         }

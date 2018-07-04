@@ -184,7 +184,13 @@ namespace Reko.Arch.Arm.AArch32
                         shiftValue = ImmediateOperand.Int32((int)n);
                         continue;
                     }
-                    else 
+                    else if (PeekAndDiscard('i', format, ref i))
+                    {
+                        // 'Si' = shift immediate
+                        (shiftType, shiftValue) = DecodeImmShift(wInstr, format, ref i);
+                        continue;
+                    }
+                    else
                     {
                         offset = this.ReadDecimal(format, ref i);
                         Expect(':', format, ref i);
@@ -412,6 +418,25 @@ namespace Reko.Arch.Arm.AArch32
                 ShiftValue = shiftValue,
                 vector_data = vectorData,
             };
+        }
+
+        private (Opcode, MachineOperand) DecodeImmShift(uint wInstr, string format, ref int i)
+        {
+            var type = ReadBitfields(wInstr, format, ref i);
+            Expect(';', format, ref i);
+            var imm = ReadBitfields(wInstr, format, ref i);
+            switch (type)
+            {
+            case 0: return (Opcode.lsl, ImmediateOperand.UInt32(imm));
+            case 1: return (Opcode.lsr, ImmediateOperand.UInt32(imm == 0 ? 32 : imm));
+            case 2: return (Opcode.asr, ImmediateOperand.UInt32(imm == 0 ? 32 : imm));
+            case 3:
+                if (imm == 0)
+                    return (Opcode.rrx, ImmediateOperand.UInt32(1));
+                else
+                    return (Opcode.ror, ImmediateOperand.UInt32(imm));
+            }
+            throw new InvalidOperationException("Type must be [0..3].");
         }
 
         private ArmVectorData VectorIntUIntData(string format, ref int i)
@@ -1442,7 +1467,6 @@ namespace Reko.Arch.Arm.AArch32
                                     invalid,
                                     FloatingPointDirectedCvt2Int))),
 
-
                         FloatingPointMinNumMaxNum,
                         invalid,
                         invalid,
@@ -1475,7 +1499,9 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(6, 1,
                         Instr(Opcode.vhadd, "vu20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
                         Instr(Opcode.vhadd, "vu20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
-                    Instr(Opcode.vqadd, "*")),
+                    Mask(6, 1,
+                        Instr(Opcode.vqadd, "vu20:2 D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                        Instr(Opcode.vqadd, "vu20:2 Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"))),
                 Mask(12 + 16, 1,  // U
                     Mask(4, 1,      // o1
                         Instr(Opcode.vrhadd, "*"),
@@ -1573,7 +1599,18 @@ namespace Reko.Arch.Arm.AArch32
                             invalid))),
 
                 Nyi("AdvancedSimd3RegistersSameLength_opcE"),
-                Nyi("AdvancedSimd3RegistersSameLength_opcF"));
+
+                Mask(12 + 16, 1,  // U
+                    Nyi("AdvancedSimd3RegistersSameLength_opcF U=0"),
+                    Mask(4, 1,      // op1
+                        Mask(6, 1,      // Q
+                            Mask(20, 3,  // size
+                                Instr(Opcode.vpmax, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmax, "vfh D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmin, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmin, "vfh D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                        Nyi("AdvancedSimd3RegistersSameLength_opcF U=0 op1 = 0 Q=1")),
+                    Nyi("AdvancedSimd3RegistersSameLength_opcF U=0 op1 = 1"))));
 
             var AdvancedSimd2RegsMisc = Mask(16, 3,
                 Mask(7, 0xF,
@@ -1845,7 +1882,29 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vmov, "*immediate - T4"),
                     invalid));
 
-            var AdvancedSimdTwoRegistersAndShiftAmount = Nyi("AdvancedSimdTwoRegistersAndShiftAmount");
+            var AdvancedSimdTwoRegistersAndShiftAmount = Mask(8, 0xF, // Opc
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc0"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc1"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc2"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc3"),
+
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc4"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc5"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc6"),
+                Mask(6, 1, // Q
+                    Instr(Opcode.vqshl, "@ vqshlu (immediate)"),
+                    Instr(Opcode.vqshl, "@ vqshlu (immediate)")),
+
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc8"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc9"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcA"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcB"),
+
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcC"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcD"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcE"),
+                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcF"));
+
 
             var AdvancedSimdShiftImm = Select("19:3:7:1", n => n == 0,
                 AdvancedSimdOneRegisterAndModifiedImmediate,
@@ -2226,6 +2285,28 @@ namespace Reko.Arch.Arm.AArch32
                     invalid),
                 invalid);   // op1 = 0b111
 
+            var DataProcessingShiftedRegister = Mask(21, 0xF,
+                Nyi("DataProcessingShiftedRegister_opc0"),
+                Nyi("DataProcessingShiftedRegister_opc1"),
+                Nyi("DataProcessingShiftedRegister_opc2"),
+                Nyi("DataProcessingShiftedRegister_opc3"),
+
+                Nyi("DataProcessingShiftedRegister_opc4"),
+                Nyi("DataProcessingShiftedRegister_opc5"),
+                Nyi("DataProcessingShiftedRegister_opc6"),
+                Nyi("DataProcessingShiftedRegister_opc7"),
+
+                Nyi("DataProcessingShiftedRegister_opc8"),
+                Nyi("DataProcessingShiftedRegister_opc9"),
+                Nyi("DataProcessingShiftedRegister_opcA"),
+                Mask(20, 1,
+                    Instr(Opcode.sbc, "R8,R16,R0,Si4:2;12:3:6:2"),
+                    Instr(Opcode.sbc, ".R8,R16,R0,Si4:2;12:3:6:2")),
+
+                Nyi("DataProcessingShiftedRegister_opcC"),
+                Nyi("DataProcessingShiftedRegister_opcD"),
+                Nyi("DataProcessingShiftedRegister_opcE"),
+                Nyi("DataProcessingShiftedRegister_opcF"));
 
             return new LongDecoder(new Decoder[16]
             {
@@ -2237,7 +2318,7 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(6+16, 1,
                     LdStMultiple,
                     loadStoreMultipleTableBranch),
-                Nyi("Data processing (shifted register)"),
+                DataProcessingShiftedRegister,
                 SystemRegisterAccessAdvSimdFpu,
                 SystemRegisterAccessAdvSimdFpu,
 

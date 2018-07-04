@@ -113,7 +113,6 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-
         private class SelectFieldDecoder : Decoder
         {
             private readonly string fieldSpecifier;

@@ -388,11 +388,10 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vhadd.i8\td27,d1,d2");
         }
 
-
         [Test]
         public void ThumbDis_vseleq()
         {
-            Given_Instructions(0xFE1E, 0x2800);
+            Given_Instructions(0xFE1E, 0x2B00);
             Expect_Code("vselvs.f64\td2,d14,d0");
         }
 
