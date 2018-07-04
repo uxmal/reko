@@ -6551,10 +6551,10 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_stc()
         {
-            RewriteCode("88ED3D68");	// stc p8, c6, [r8, #0xf4]
+            RewriteCode("88ED3D5E");	// stc p14, c5, [r8, #0xf4]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stc(p8, 0x06, Mem0[r8 + 244:word32])");
+                "1|L--|__stc(p14, c5, Mem0[r8 + 244:word32])");
         }
 
         [Test]

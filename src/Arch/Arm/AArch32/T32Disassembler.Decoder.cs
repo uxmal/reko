@@ -22,6 +22,7 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -89,6 +90,41 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private class BitFieldsDecoder : Decoder
+        {
+            private readonly (int, int, uint)[] bitfields;
+            private Decoder[] decoders;
+
+
+
+            public BitFieldsDecoder(string fieldSpecifier, params Decoder[] decoders)
+            {
+                this.decoders = decoders;
+
+                int i = 0;
+                var list = new List<(int, int, uint)>();
+                do
+                {
+                    int pos = ReadDecimal(fieldSpecifier, ref i);
+                    Expect(':', fieldSpecifier, ref i); ;
+                    int size = ReadDecimal(fieldSpecifier, ref i);
+                    var subMask = (1u << size) - 1u;
+                    list.Add((pos, size, subMask));
+                } while (PeekAndDiscard(':', fieldSpecifier, ref i));
+                this.bitfields = list.ToArray();
+            }
+
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            {
+                uint val = 0;
+                foreach (var (pos, size, submask) in bitfields)
+                {
+                    val = (val << size) | ((wInstr >> pos) & submask);
+                }
+                return decoders[val].Decode(dasm, wInstr);
+            }
+        }
+
         /// <summary>
         /// This decoder selected one of two sub-decoders based on the outcome of the predicate.
         /// </summary>
@@ -136,7 +172,8 @@ namespace Reko.Arch.Arm.AArch32
             {
                 int i = 0;
                 var n = dasm.ReadBitfields(wInstr, fieldSpecifier, ref i);
-                return (predicate(n) ? trueDecoder : falseDecoder).Decode(dasm, wInstr);
+                var decoder = (predicate(n) ? trueDecoder : falseDecoder);
+                return decoder.Decode(dasm, wInstr);
             }
         }
 

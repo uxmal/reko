@@ -444,5 +444,12 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xEFA0, 0x41E5);	// vmla.f32 d4, d16, d5[1]
             Expect_Code("vmla.f32\td4,d16,d21");
         }
+
+        [Test]
+        public void ThumbDis_stc()
+        {
+            Given_Instructions(0xED88, 0x5E3D); // stc p14, c6, [r8, #0xf4]
+            Expect_Code("stc\tp14,c5,[r8,#&F4]");
+        }
     }
 }

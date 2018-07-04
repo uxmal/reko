@@ -192,9 +192,9 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     else
                     {
-                        offset = this.ReadDecimal(format, ref i);
+                        offset = ReadDecimal(format, ref i);
                         Expect(':', format, ref i);
-                        size = this.ReadDecimal(format, ref i);
+                        size = ReadDecimal(format, ref i);
                         op = ImmediateOperand.Int32(SBitfield(wInstr, offset, size));
                     }
                     break;
@@ -269,21 +269,25 @@ namespace Reko.Arch.Arm.AArch32
                     RegisterStorage index = null;
                     if (PeekAndDiscard('s', format, ref i))
                     {
+                        // [s = stack register access
                         baseReg = arch.StackRegister;
                     }
                     else if (PeekAndDiscard('r', format, ref i))
                     {
+                        // [r = low 8 register
                         // Only 3 bits for register
                         var reg = ReadDecimal(format, ref i);
                         baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
                     }
                     else if (PeekAndDiscard('R', format, ref i))
                     {
+                        // [R = GP register
                         var reg = ReadDecimal(format, ref i);
                         baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 4)];
                     }
                     else if (PeekAndDiscard('P', format, ref i))
                     {
+                        // [P = PC-relative
                         baseReg = Registers.pc;
                     }
                     else
@@ -382,8 +386,17 @@ namespace Reko.Arch.Arm.AArch32
                     {
                     case 'P':   // Coprocessor #
                         ++i;
-                        offset = ReadDecimal(format, ref i);
-                        op = Coprocessor(wInstr, offset);
+                        if (PeekAndDiscard('#', format, ref i))   // Literal
+                        {
+                            offset = ReadDecimal(format, ref i);
+                            var cp = Registers.Coprocessors[offset];
+                            op = new RegisterOperand(cp);
+                        }
+                        else
+                        {
+                            offset = ReadDecimal(format, ref i);
+                            op = Coprocessor(wInstr, offset);
+                        }
                         break;
                     case 'R':   // Coprocessor register
                         ++i;
@@ -637,15 +650,15 @@ namespace Reko.Arch.Arm.AArch32
             bool signExtend = PeekAndDiscard('+', format, ref i);
             do
             {
-                var offset = this.ReadDecimal(format, ref i);
+                var offset = ReadDecimal(format, ref i);
                 Expect(':', format, ref i);
-                var size = this.ReadDecimal(format, ref i);
+                var size = ReadDecimal(format, ref i);
                 n = (n << size) | ((wInstr >> offset) & ((1u << size) - 1));
                 bits += size;
             } while (PeekAndDiscard(':', format, ref i));
             if (PeekAndDiscard('<', format, ref i))
             {
-                var shift = this.ReadDecimal(format, ref i);
+                var shift = ReadDecimal(format, ref i);
                 n <<= shift;
                 bits += shift;
             }
@@ -710,7 +723,7 @@ namespace Reko.Arch.Arm.AArch32
             return format[i] == c;
         }
 
-        private bool PeekAndDiscard(char c, string format, ref int i)
+        private static bool PeekAndDiscard(char c, string format, ref int i)
         {
             if (i >= format.Length)
                 return false;
@@ -720,13 +733,13 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
-        private void Expect(char c, string format, ref int i)
+        private  static void Expect(char c, string format, ref int i)
         {
             Debug.Assert(format[i] == c);
             ++i;
         }
 
-        private int ReadDecimal(string format, ref int i)
+        private static int ReadDecimal(string format, ref int i)
         {
             int n = 0;
             while (i < format.Length)
@@ -771,6 +784,11 @@ namespace Reko.Arch.Arm.AArch32
         private static MaskDecoder Mask(int shift, uint mask, params Decoder [] decoders)
         {
             return new MaskDecoder(shift, mask, decoders);
+        }
+
+        private static BitFieldsDecoder Bitfields(string fieldSpecifier, params Decoder[] decoders)
+        {
+            return new BitFieldsDecoder(fieldSpecifier, decoders);
         }
 
         private static SelectDecoder Select(Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
@@ -1317,7 +1335,50 @@ namespace Reko.Arch.Arm.AArch32
                     LoadStoreSignedPositiveImm,
                     LoadSignedLiteral));
 
-            var SystemRegisterLdStAnd64bitMove = Nyi("SystemRegisterLdStAnd64bitMove");
+            var ldc_literal = Nyi("LDC (literal)");
+
+            var SystemRegisterLdSt = Select("8:1", n => n != 0,
+                invalid,
+                Select("12:4", n => n != 5,
+                    invalid,
+                    Select("22:1", n => n != 0,
+                        invalid,
+                        Bitfields("23:2:20:2", // PU-WL 
+                            invalid,
+                            invalid,
+                            Instr(Opcode.stc, "*post-indexed"),
+                            Select("16:4", n => n != 15,
+                                Instr(Opcode.ldc, "*imm"),
+                                ldc_literal),
+
+                            Instr(Opcode.stc, "*unindexed variant"),
+                            Select("16:4", n => n != 15,
+                                Instr(Opcode.ldc, "*immediate - unindexed variant"),
+                                ldc_literal),
+                            invalid,
+                            invalid, 
+
+                            Instr(Opcode.stc, "*offset variant"),
+                            Select("16:4", n => n != 15,
+                                Instr(Opcode.ldc, "*offset variant"),
+                                ldc_literal),
+                            Instr(Opcode.stc, "*preindexed variant"),
+                            Select("16:4", n => n != 15,
+                                Instr(Opcode.ldc, "*preindexed variant"),
+                                ldc_literal),
+
+                            Instr(Opcode.stc, "CP#14,CR12,[R16,I0:8:w]"),
+                            Select("16:4", n => n != 15,
+                                Instr(Opcode.ldc, "*offset variant"),
+                                ldc_literal),
+                            Instr(Opcode.stc, "*preindexed variant"),
+                            Select("16:4", n => n != 15,
+                                Instr(Opcode.ldc, "*preindexed variant"),
+                                ldc_literal)))));
+
+            var SystemRegisterLdStAnd64bitMove = Select("23:2:21:1", n => (n & 0xD) == 0,
+                Nyi("SystemRegister64bitMove"),
+                SystemRegisterLdSt);
 
             var vstmia = Mask(8, 0x3, // size
                     invalid,
