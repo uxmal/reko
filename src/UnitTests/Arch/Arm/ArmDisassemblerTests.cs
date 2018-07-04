@@ -391,7 +391,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_mov_pc()
+        public void ArmDasm_ldr_pc_relative()
         {
             var instr = Disassemble32(0xE59F0010);
             Assert.AreEqual("ldr\tr0,[pc,#&10]", instr.ToString());

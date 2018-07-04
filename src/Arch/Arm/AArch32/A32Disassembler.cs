@@ -312,9 +312,9 @@ namespace Reko.Arch.Arm.AArch32
 
         public class MaskDecoder : Decoder
         {
-            private int shift;
-            private uint mask;
-            private Decoder[] decoders;
+            private readonly int shift;
+            private readonly uint mask;
+            private readonly Decoder[] decoders;
 
             public MaskDecoder(int shift, uint mask, params Decoder[] decoders)
             {
@@ -356,10 +356,10 @@ namespace Reko.Arch.Arm.AArch32
 
         public class SparseMaskDecoder : Decoder
         {
-            private int shift;
-            private uint mask;
-            private Dictionary<uint, Decoder> decoders;
-            private Decoder @default;
+            private readonly int shift;
+            private readonly uint mask;
+            private readonly Dictionary<uint, Decoder> decoders;
+            private readonly Decoder @default;
 
             public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
             {
@@ -395,8 +395,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private class InstrDecoder : Decoder
         {
-            private Opcode opcode;
-            private string format;
+            private readonly Opcode opcode;
+            private readonly string format;
 
             public InstrDecoder(Opcode opcode, string format)
             {
@@ -1031,7 +1031,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
             });
 
-            var LdrLiteral = new InstrDecoder(Opcode.ldr, null);
+            var LdrLiteral = new InstrDecoder(Opcode.ldr, "r3,[o:w4]");
             var LdrbLiteral = new InstrDecoder(Opcode.ldrb, null);
             var StrImm = new InstrDecoder(Opcode.str, "r3,[o:w4]");
             var LdrImm = new InstrDecoder(Opcode.ldr, "r3,[o:w4]");
