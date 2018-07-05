@@ -104,20 +104,21 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 DumpDynamicSegment(dynSeg);
 
-                var str = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_STRTAB);
-                var symtab = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_SYMTAB);
-                var rela = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELA);
-                var relasz = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELASZ);
-                var relaent = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELAENT);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_STRTAB, out var strtab);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_SYMTAB, out var symtab);
 
-                var rel = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_REL);
-                var relsz = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELSZ);
-                var relent = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_RELENT);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELA, out var rela);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELASZ, out var relasz);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELAENT, out var relaent);
 
-                var syment = Loader.GetDynamicEntries(dynSeg.p_offset).SingleOrDefault(de => de.Tag == ElfLoader.DT_SYMENT);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_REL, out var rel);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELSZ, out var relsz);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELENT, out var relent);
+
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_SYMENT, out var syment);
                 if (symtab == null || (rela == null && rel == null))
                     continue;
-                if (str == null)
+                if (strtab == null)
                     throw new BadImageFormatException("ELF dynamic segment lacks a string table.");
                 if (syment == null)
                     throw new BadImageFormatException("ELF dynamic segment lacks the size of symbol table entries.");
@@ -140,26 +141,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     relTable = new RelTable(this, rel.UValue, relsz.UValue);
                 }
 
-                var offStrtab = Loader.AddressToFileOffset(str.UValue);
+                var offStrtab = Loader.AddressToFileOffset(strtab.UValue);
                 var offSymtab = Loader.AddressToFileOffset(symtab.UValue);
 
-                // Sadly, the ELF format has no way to locate the end of the symbols in a DT_DYNAMIC segment.
-                // We guess instead...
-                var addrEnd = Loader.GuessAreaEnd(symtab.UValue, dynSeg);
-                if (addrEnd != 0)
-                {
-                    // We have found some symbols to ensure.
-                    int i = 0;
-                    for (ulong uSymAddr = symtab.UValue; uSymAddr < addrEnd; uSymAddr += syment.UValue)
-                    {
-                        var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
-                        ++i;
-                        var imgSym = Loader.CreateImageSymbol(elfSym, true);
-                        if (imgSym == null || imgSym.Address.ToLinear() == 0)
-                            continue;
-                        imageSymbols[imgSym.Address] = imgSym;
-                    }
-                }
+                LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
 
                 // Generate a symbol for each relocation.
                 foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
@@ -170,8 +155,66 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;
                 }
+
+                // Relocate the DT_JMPREL table.
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_JMPREL, out var jmprel);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_PLTRELSZ, out var pltrelsz);
+                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_PLTREL, out var pltrel);
+                if (jmprel != null && pltrelsz != null && pltrel != null)
+                {
+                    if (pltrel.SValue == 7) // entries are in RELA format.
+                    {
+                        relTable = new RelaTable(this, jmprel.UValue, pltrelsz.UValue);
+                    }
+                    else if (pltrel.SValue == 0x11) // entries are in REL format
+                    {
+                        relTable = new RelTable(this, jmprel.UValue, pltrelsz.UValue);
+                    }
+                    else
+                    {
+                        //$REVIEW: bad elf format!
+                        continue;
+                    }
+
+                    foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
+                    {
+                        symbols.Add(elfSym);
+                        var imgSym = Loader.CreateImageSymbol(elfSym, true);
+                        if (imgSym == null || imgSym.Address.ToLinear() == 0)
+                            continue;
+                        imageSymbols[imgSym.Address] = imgSym;
+                        program.ImportReferences[imgSym.Address] =
+                            new NamedImportReference(
+                                imgSym.Address,
+                                null,   // ELF imports don't specify which modile to take the import from
+                                imgSym.Name);
+                    }
+                }
             }
             return symbols;
+        }
+
+        private void LoadSymbolsFromDynamicSegment(ElfSegment dynSeg, ElfDynamicEntry symtab, ElfDynamicEntry syment, ulong offStrtab, ulong offSymtab)
+        {
+            // Sadly, the ELF format has no way to locate the end of the symbols in a DT_DYNAMIC segment.
+            // We guess instead...
+            var addrEnd = Loader.GuessAreaEnd(symtab.UValue, dynSeg);
+            if (addrEnd != 0)
+            {
+                // We have found some symbols to ensure.
+                Debug.Print("Symbols in the DT_DYNAMIC segment");
+                int i = 0;
+                for (ulong uSymAddr = symtab.UValue; uSymAddr < addrEnd; uSymAddr += syment.UValue)
+                {
+                    var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
+                    ++i;
+                    Debug.Print("  {0:X8} {1}", elfSym.Value, elfSym.Name);
+                    var imgSym = Loader.CreateImageSymbol(elfSym, true);
+                    if (imgSym == null || imgSym.Address.ToLinear() == 0)
+                        continue;
+                    imageSymbols[imgSym.Address] = imgSym;
+                }
+            }
         }
 
         [Conditional("DEBUG")]
@@ -194,6 +237,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
+                Debug.Print("Relocating entries:");
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
@@ -203,6 +247,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
+                    Debug.Print("  {0}: symbol {1}", relocation, elfSym);
                     relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
                 }

@@ -58,20 +58,8 @@ _init proc
 	pop	{pc}
 ;;; Segment .plt (00008304)
 00008304             04 E0 2D E5 10 E0 9F E5 0E E0 8F E0     ..-.........
-00008310 08 F0 BE E5                                     ....           
-
-;; abort: 00008314
-abort proc
-	ldr	ip,[pc,#4]                                             ; 00008320
-	add	ip,pc,ip
-	ldr	pc,[ip]
-00008320 34 85 00 00                                     4...           
-
-;; __libc_start_main: 00008324
-__libc_start_main proc
-	ldr	ip,[pc,#4]                                             ; 00008330
-	add	ip,pc,ip
-	ldr	pc,[ip]
+00008310 08 F0 BE E5 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 ................
+00008320 34 85 00 00 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 4...............
 00008330 28 85 00 00                                     (...           
 ;;; Segment .text (00008334)
 
@@ -88,13 +76,7 @@ _start proc
 	str	ip,[sp,-#4]!
 	bl	$00008324
 	bl	$00008314
-	strheq	r8,[r0],-r0
-
-l00008364:
-	andeq	r8,r0,ip,asr r5
-
-l00008368:
-	andeq	r8,r0,r4,asr r6
+00008360 B0 86 00 00 5C 85 00 00 54 86 00 00             ....\...T...   
 
 ;; call_gmon_start: 0000836C
 call_gmon_start proc

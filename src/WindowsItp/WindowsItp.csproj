@@ -156,6 +156,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="RewriterPerformanceDialog.resx">
+      <DependentUpon>RewriterPerformanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RtfDialog.resx">
       <DependentUpon>RtfDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -185,6 +188,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RewriterPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RewriterPerformanceDialog.Designer.cs">
+      <DependentUpon>RewriterPerformanceDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="RtfDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,6 +220,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arch\Arm\Arm.csproj">
+      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Name>Arm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC</Name>
