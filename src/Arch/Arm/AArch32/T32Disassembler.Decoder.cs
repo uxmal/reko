@@ -93,9 +93,7 @@ namespace Reko.Arch.Arm.AArch32
         private class BitFieldsDecoder : Decoder
         {
             private readonly (int, int, uint)[] bitfields;
-            private Decoder[] decoders;
-
-
+            private readonly Decoder[] decoders;
 
             public BitFieldsDecoder(string fieldSpecifier, params Decoder[] decoders)
             {
@@ -391,26 +389,26 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-#if DEBUG
-                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-#else
                 Console.WriteLine($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
                 Console.WriteLine("[Test]");
                 Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
                 Console.WriteLine("{");
                 if (wInstr > 0xFFFF)
                 {
-                    Console.WriteLine($"    Give_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
+                    Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
                 }
                 else
                 {
-                    Console.WriteLine($"    Give_Instructions(0x{wInstr:X4});");
+                    Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
                 }
                 Console.WriteLine("    Expect_Code(\"@@@\");");
 
                 Console.WriteLine("}");
                 Console.WriteLine();
 
+#if !DEBUG
+                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+#else
                 return dasm.Invalid();
 #endif
             }

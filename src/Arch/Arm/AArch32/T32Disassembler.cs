@@ -151,6 +151,7 @@ namespace Reko.Arch.Arm.AArch32
                     offset = ReadDecimal(format, ref i);
                     writeback = SBitfield(wInstr, offset, 1) != 0;
                     continue;
+
                     // The following cases generate operands of different types.
                     // They should generate a value in 'op'.
                 case 's':
@@ -406,7 +407,7 @@ namespace Reko.Arch.Arm.AArch32
                     default:
                         throw new NotImplementedException($"Unknown format specifier C{format[i]} in {format} when decoding {opcode} ({wInstr:X4}).");
                     }
-                    break;
+                     break;
                 case 'B':   // barrier operation
                     ++i;
                     n = ReadBitfields(wInstr, format, ref i);
@@ -1072,7 +1073,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var LdStMultiple = Mask(7 + 16, 3,
                 Mask(4 + 16, 1,
-                    Nyi("SRS,SRSDA,SRSDB,SRSIA,SRSIB - T1"),
+                    Instr(Opcode.srsdb, "w21 sp,i0:5"),
                     Nyi("RFE,RFEDA,RFEDB,RFEIA,RFEIB - T1")),
                 Mask(4 + 16, 1,
                     new LdmStmDecoder32(Opcode.stm, "R16,M"),
@@ -1081,7 +1082,7 @@ namespace Reko.Arch.Arm.AArch32
                     new LdmStmDecoder32(Opcode.stmdb, "R16,M"),
                     new LdmStmDecoder32(Opcode.ldmdb, "R16,M")),
                 Mask(4 + 16, 1,
-                    Nyi("SRS,SRSDA,SRSDB,SRSIA,SRSIB - T2"),
+                    Instr(Opcode.srsia, "w21 sp,i0:5"),
                     Nyi("RFE,RFEDA,RFEDB,RFEIA,RFEIB - T2")));
 
             var DataProcessingModifiedImmediate = Mask(4 + 16, 0x1F,

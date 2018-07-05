@@ -85,7 +85,7 @@ namespace Reko.WindowsItp
 
             public void Error(Address address, string format, params object[] args)
             {
-                throw new NotImplementedException();
+                //$TODO: ERROR
             }
 
             public void Warn(Address address, string format, params object[] args)

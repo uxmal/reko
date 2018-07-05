@@ -451,5 +451,12 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xED88, 0x5E3D); // stc p14, c6, [r8, #0xf4]
             Expect_Code("stc\tp14,c5,[r8,#&F4]");
         }
+
+        [Test]
+        public void ThumbDis_srsdb()
+        {
+            Given_Instructions(0xE807, 0x01C9);
+            Expect_Code("srsdb\tsp,#9");
+        }
     }
 }
