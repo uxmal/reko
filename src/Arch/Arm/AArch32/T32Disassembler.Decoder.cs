@@ -43,6 +43,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, int shift, uint mask)
             {
+                return;
                 var shMask = mask << shift;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
@@ -389,29 +390,9 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                Console.WriteLine($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-                Console.WriteLine("[Test]");
-                Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
-                Console.WriteLine("{");
-                if (wInstr > 0xFFFF)
-                {
-                    Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
-                }
-                else
-                {
-                    Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
-                }
-                Console.WriteLine("    Expect_Code(\"@@@\");");
-
-                Console.WriteLine("}");
-                Console.WriteLine();
-
-#if !DEBUG
-                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-#else
-                return dasm.Invalid();
-#endif
+                return dasm.NotYetImplemented(message, wInstr);
             }
+
         }
 
         #endregion

@@ -107,25 +107,34 @@ namespace Reko.WindowsItp
                 int instrs = 0;
                 var watch = new Stopwatch();
                 var addrEnd = bytes.EndAddress;
-                try
-                {
-                    watch.Start();
-                    var ei = rw.GetEnumerator();
-                    while (ei.MoveNext() && ei.Current.Address < addrEnd)
-                    {
-                        var i = ei.Current;
-                        ++instrs;
-                    }
-                }
-                catch (Exception ex)
-                {
 
+                watch.Start();
+                var ei = rw.GetEnumerator();
+                while (SafeMoveNext(ei) && ei.Current.Address < addrEnd)
+                {
+                    var i = ei.Current;
+                    ++instrs;
                 }
                 watch.Stop();
                 return watch.Elapsed;
             });
             lblTime.Text = nInstrs.ToString();
             button1.Enabled = true;
+        }
+
+        private bool SafeMoveNext(IEnumerator<RtlInstructionCluster> ei)
+        {
+            for (; ; )
+            {
+                try
+                {
+                    return ei.MoveNext();
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         private MemoryArea CreateBytes()

@@ -405,7 +405,7 @@ namespace Reko.Arch.Arm.AArch32
                         op = CoprocessorRegister(wInstr, offset);
                         break;
                     default:
-                        throw new NotImplementedException($"Unknown format specifier C{format[i]} in {format} when decoding {opcode} ({wInstr:X4}).");
+                        return NotYetImplemented($"Unknown format specifier C{format[i]} in {format} when decoding {opcode}", wInstr);
                     }
                      break;
                 case 'B':   // barrier operation
@@ -416,7 +416,7 @@ namespace Reko.Arch.Arm.AArch32
                         return Invalid();
                     break;
                 default:
-                    throw new NotImplementedException($"Unknown format specifier {format[i]} in {format} when decoding {opcode} ({wInstr:X4}).");
+                    return NotYetImplemented($"Unknown format specifier {format[i]} in {format} when decoding {opcode}", wInstr);
                 }
                 ops.Add(op);
             }
@@ -562,6 +562,33 @@ namespace Reko.Arch.Arm.AArch32
                 ops = new MachineOperand[0]
             };
         }
+
+        private AArch32Instruction NotYetImplemented(string message, uint wInstr)
+        {
+            Console.WriteLine($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+            Console.WriteLine("[Test]");
+            Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
+            Console.WriteLine("{");
+            if (wInstr > 0xFFFF)
+            {
+                Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
+            }
+            else
+            {
+                Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
+            }
+            Console.WriteLine("    Expect_Code(\"@@@\");");
+
+            Console.WriteLine("}");
+            Console.WriteLine();
+
+#if !DEBUG
+                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+#else
+            return Invalid();
+#endif
+        }
+
 
         private ArmVectorData VectorIntUIntData(uint wInstr, uint n)
         {

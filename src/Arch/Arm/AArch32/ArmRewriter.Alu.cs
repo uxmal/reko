@@ -30,9 +30,19 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> opr, bool reverse)
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var opSrc1 = this.Operand(Src1());
-            var opSrc2 = this.Operand(Src2());
+            Expression opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            Expression opSrc1;
+            Expression opSrc2;
+            if (instr.ops.Length == 3)
+            {
+                opSrc1 = this.Operand(Src1());
+                opSrc2 = this.Operand(Src2());
+            }
+            else
+            {
+                opSrc1 =  this.Operand(Dst(), PrimitiveType.Word32);
+                opSrc2 = this.Operand(Src1());
+            }
             if (reverse)
             {
                 var tmp = opSrc1;
