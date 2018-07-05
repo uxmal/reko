@@ -64,8 +64,7 @@ STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 
 STDMETHODIMP_(int32_t) ArmRewriter::Next()
 {
-	Dump("Next: %08x", this);
-	if (available == 0)
+	if (available <= 0)
 		return S_FALSE;			// No more work to do.
 	auto addrInstr = address;
 	bool f = cs_disasm_iter(hcapstone, &rawBytes, &available, &address, instr);
@@ -73,6 +72,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	{
 		// Failed to disassemble the instruction because it was invalid.
 		m.Invalid();
+		address += 4;
+		available -= 4;
 		m.FinishCluster(RtlClass::Invalid, addrInstr, 4);
 		return S_OK;
 	}
