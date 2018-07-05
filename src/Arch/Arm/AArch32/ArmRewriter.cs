@@ -141,7 +141,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.rfeib:
                 case Opcode.sasx:
                 case Opcode.sel:
-                case Opcode.setend:
                 case Opcode.sha1c:
                 case Opcode.sha1h:
                 case Opcode.sha1m:
@@ -408,6 +407,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.sbc: RewriteAdcSbc(m.ISub, false); break;
                 case Opcode.sbfx: RewriteSbfx(); break;
                 case Opcode.sdiv: RewriteDiv(m.SDiv); break;
+                case Opcode.setend: RewriteSetend(); break;
                 case Opcode.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
                 case Opcode.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
                 case Opcode.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;

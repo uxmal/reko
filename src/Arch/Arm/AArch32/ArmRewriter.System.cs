@@ -122,6 +122,13 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(intrinsic);
         }
 
+        private void RewriteSetend()
+        {
+            var endianness = (EndiannessOperand)instr.ops[0];
+            var intrisic = host.PseudoProcedure("__set_bigendian", VoidType.Instance, Constant.Bool(endianness.BigEndian));
+            m.SideEffect(intrisic);
+        }
+
         private void RewriteStc(string name)
         {
             var intrinsic = host.PseudoProcedure("__stc", PrimitiveType.Word32,

@@ -18,21 +18,17 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Rtl;
-using Reko.Core.Types;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Arch.Arm.AArch32;
 
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    [Category(Categories.Capstone)]
     public class ArmRewriterTests : RewriterTestBase
     {
         private Arm32Architecture arch = new Arm32Architecture("arm32");
@@ -1414,6 +1410,15 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
+        }
+
+        [Test]
+        public void ArmRw_setend()
+        {
+            BuildTest(0xF1010200);      // setend be
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__set_bigendian(true)");
         }
     }
 }

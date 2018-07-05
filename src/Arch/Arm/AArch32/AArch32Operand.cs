@@ -50,4 +50,22 @@ namespace Reko.Arch.Arm.AArch32
         {
         }
     }
+
+    /// <summary>
+    /// Used by AArch32 to express endianness.
+    /// </summary>
+    public class EndiannessOperand : MachineOperand
+    {
+        public EndiannessOperand(bool bigEndian) : base(PrimitiveType.Bool)
+        {
+            this.BigEndian = bigEndian;
+        }
+
+        public bool BigEndian { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString(BigEndian ? "be" : "le");
+        }
+    }
 }

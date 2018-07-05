@@ -54,7 +54,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 this.shift = shift;
                 this.mask = mask;
-                Debug.Assert(decoders.Length == mask + 1);
+                Debug.Assert(decoders.Length == mask + 1, $"Inconsistent number of decoders {decoders.Length} (shift {shift} mask {mask:X})");
                 this.decoders = decoders;
             }
 
@@ -214,5 +214,29 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private class SelectDecoder:Decoder
+        {
+            private readonly int pos;
+            private readonly uint mask;
+            private readonly Predicate<uint> predicate;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
+
+            public SelectDecoder(int pos, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            {
+                this.pos = pos;
+                this.mask = mask;
+                this.predicate = predicate;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
+            {
+                var op = (wInstr >> pos) & mask;
+                var decoder = predicate(op) ? trueDecoder : falseDecoder;
+                return decoder.Decode(wInstr, dasm);
+            }
+        }
     }
 }

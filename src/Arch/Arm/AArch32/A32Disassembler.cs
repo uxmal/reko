@@ -127,6 +127,11 @@ namespace Reko.Arch.Arm.AArch32
                     else 
                         goto default;
                     break;
+                case 'E':   // Endianness
+                    ++i;
+                    imm = ReadBitfields(wInstr, format, ref i);
+                    op = new EndiannessOperand(imm!=0);
+                    break;
                 case 's':   // use bit 20 to determine 
                     updateFlags = ((wInstr >> 20) & 1) != 0;
                     continue;
@@ -138,7 +143,7 @@ namespace Reko.Arch.Arm.AArch32
                         (shiftOp, shiftValue) = DecodeRegShift(wInstr);
                     continue;
                 default:
-                    throw new NotImplementedException($"Format character '{format[i]}' is unknown.");
+                    throw new NotImplementedException($"Found unknown format character '{format[i]}' in '{format}' while decoding {opcode}.");
                 }
                 ops.Add(op);
             }
@@ -152,6 +157,59 @@ namespace Reko.Arch.Arm.AArch32
                 Writeback = writeback,
             };
             return instr;
+        }
+
+        /// <summary>
+        /// Reads and concatenates bitfields out of <paramref name="wInstr"/>.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private static uint ReadBitfields(uint wInstr, string format, ref int i)
+        {
+            uint n = 0;
+            do
+            {
+                int pos = ReadDecimal(format, ref i);
+                Expect(':', format, ref i);
+                int size = ReadDecimal(format, ref i);
+                n = (n << size) | ((wInstr >> pos) & (1u << size) - 1);
+            } while (PeekAndDiscard(':', format, ref i));
+            return n;
+        }
+
+        private static int ReadDecimal(string format, ref int i)
+        {
+            int n = 0;
+            while (i < format.Length)
+            {
+                var c = format[i];
+                if (!Char.IsDigit(c))
+                    break;
+                n = n * 10 + (c - '0');
+                ++i;
+            }
+            return n;
+        }
+
+        private static void Expect(char c, string format, ref int i)
+        {
+            if (i < format.Length && format[i] == c)
+            {
+                ++i;
+                return;
+            }
+            throw new InvalidOperationException($"Unexpected character '{c}' at position {i} in format string '{format}'.");
+        }
+
+        private static bool PeekAndDiscard(char c, string format, ref int i)
+        {
+            if (i >= format.Length)
+                return false;
+            if (format[i] != c)
+                return false;
+            ++i;
+            return true;
         }
 
         private PrimitiveType GetDataType(char dom, int size)
@@ -295,7 +353,11 @@ namespace Reko.Arch.Arm.AArch32
                 writeback);
         }
 
- 
+        private static Decoder Instr(Opcode opcode, string format)
+        {
+            return new InstrDecoder(opcode, format);
+        }
+         
         private static NyiDecoder nyi(string str)
         {
             return new NyiDecoder(str);
@@ -309,6 +371,11 @@ namespace Reko.Arch.Arm.AArch32
         private static Decoder SparseMask(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
         {
             return new SparseMaskDecoder(shift, mask, decoders, @default);
+        }
+
+        private static Decoder Select(int shift, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
+        {
+            return new SelectDecoder(shift, mask, predicate, trueDecoder, falseDecoder);
         }
 
         static A32Disassembler()
@@ -614,48 +681,69 @@ namespace Reko.Arch.Arm.AArch32
             var Blx = new InstrDecoder(Opcode.blx, null);
             var Clz = new InstrDecoder(Opcode.blx, null);
             var Eret = new InstrDecoder(Opcode.eret, null);
-            var Miscellaneous = new MaskDecoder(21, 3,   // op0
-                new MaskDecoder(4, 7, // op1
-                    MoveSpecialRegister,
-                    invalid,
-                    invalid,
-                    invalid,
 
-                    CyclicRedundancyCheck,
-                    IntegerSaturatingArithmetic,
-                    invalid,
-                    ExceptionGeneration),
-                new MaskDecoder(4, 7, // op1
-                    MoveSpecialRegister,
-                    Bx,
-                    Bxj,
-                    Blx,
+            var ChangeProcessState = new MaskDecoder(16, 1, // op
+                nyi("CPS,CPSID,CPSIE"),
+                Select(4, 1, n => n == 0, Instr(Opcode.setend, "E9:1"), invalid));
 
-                    CyclicRedundancyCheck,
-                    IntegerSaturatingArithmetic,
-                    invalid,
-                    ExceptionGeneration),
-                new MaskDecoder(4, 7, // op1
-                    MoveSpecialRegister,
-                    invalid,
-                    invalid,
-                    invalid,
+            var Miscellaneous = new MaskDecoder(22, 7,   // op0
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
-                    CyclicRedundancyCheck,
-                    IntegerSaturatingArithmetic,
+                new MaskDecoder(20, 3,
+                    Select(5, 1, n => n == 0, ChangeProcessState, invalid),
+                    Select(4, 0xF, n => n == 0, new InstrDecoder(Opcode.setpan, "*"), invalid),
                     invalid,
-                    ExceptionGeneration),
-                new MaskDecoder(4, 7, // op1
-                    MoveSpecialRegister,
-                    Clz,
-                    invalid,
-                    invalid,
+                    invalid),
+                invalid,
+                invalid,
+                invalid);
 
-                    CyclicRedundancyCheck,
-                    IntegerSaturatingArithmetic,
-                    Eret,
-                    ExceptionGeneration));
+            /*
+        var Miscellaneous = new MaskDecoder(21, 3,   // op0
+            new MaskDecoder(24, 1, // op1
+                MoveSpecialRegister,
+                invalid,
+                invalid,
+                invalid,
 
+                CyclicRedundancyCheck,
+                IntegerSaturatingArithmetic,
+                invalid,
+                ExceptionGeneration),
+            new MaskDecoder(4, 7, // op1
+                MoveSpecialRegister,
+                Bx,
+                Bxj,
+                Blx,
+
+                CyclicRedundancyCheck,
+                IntegerSaturatingArithmetic,
+                invalid,
+                ExceptionGeneration),
+            new MaskDecoder(4, 7, // op1
+                MoveSpecialRegister,
+                invalid,
+                invalid,
+                invalid,
+
+                CyclicRedundancyCheck,
+                IntegerSaturatingArithmetic,
+                invalid,
+                ExceptionGeneration),
+            new MaskDecoder(4, 7, // op1
+                MoveSpecialRegister,
+                Clz,
+                invalid,
+                invalid,
+
+                CyclicRedundancyCheck,
+                IntegerSaturatingArithmetic,
+                Eret,
+                ExceptionGeneration));
+                */
             var HalfwordMultiplyAndAccumulate = new MaskDecoder(21, 0x3,
                 nyi("SmlabbSmlabtSmlatbSmlatt"),
                 new MaskDecoder(5, 3,

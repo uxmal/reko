@@ -452,5 +452,6 @@
         sevl,
         smlad,
         smladx,
+        setpan,
     }
 }
