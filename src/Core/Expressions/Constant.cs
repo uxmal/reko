@@ -1280,10 +1280,77 @@ namespace Reko.Core.Expressions
             var pt = PrimitiveType.Create(Domain.Real, dt.BitSize);
             switch (dt.BitSize)
             {
+            case 16: return new ConstantReal16(pt, value);
             case 32: return new ConstantReal32(pt, (float)value);
             case 64: return new ConstantReal64(pt, value);
             }
             throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
+        }
+    }
+
+    internal class ConstantReal16 : ConstantReal
+    {
+        private readonly Float16 value;
+
+        public ConstantReal16(DataType dt, double value)
+            : base(dt)
+        {
+            this.value = new Float16(value);
+        }
+
+        public override Expression CloneExpression()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object GetValue()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Constant Negate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte ToByte()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override uint ToUInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ulong ToUInt64()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override short ToInt16()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int ToInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long ToInt64()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override float ToFloat()
+        {
+            throw new NotImplementedException();
         }
     }
 

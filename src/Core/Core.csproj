@@ -330,6 +330,7 @@
     <Compile Include="Lib\ArticulationPointFinder.cs" />
     <Compile Include="Lib\Dijkstra.cs" />
     <Compile Include="Lib\FibonacciHeap.cs" />
+    <Compile Include="Lib\Float16.cs" />
     <Compile Include="Lib\LinqAlgorithms.cs" />
     <Compile Include="Lib\LTDominatorGraph.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
