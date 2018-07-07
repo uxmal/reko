@@ -77,5 +77,54 @@ namespace Reko.Arch.Arm.AArch64
         }
     }
 
+    public class AArch64Instruction : MachineInstruction
+    {
+        public Opcode opcode;
+        public MachineOperand[] ops;
+        public Opcode shiftCode;
+        public MachineOperand shiftAmount;
+
+        public override InstructionClass InstructionClass { get; }
+
+        public override bool IsValid { get; }
+
+        public override int OpcodeAsInteger => (int)opcode;
+
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(opcode.ToString());
+            if (ops == null || ops.Length == 0)
+                return;
+            writer.Tab();
+            ops[0].Write(writer, options);
+            foreach (var op in ops.Skip(1))
+            {
+                writer.WriteString(",");
+                RenderOperand(op, writer, options);
+            }
+        }
+
+        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            switch (op)
+            {
+            case ImmediateOperand imm:
+                int v = imm.Value.ToInt32();
+                if (0 <= v && v <= 9)
+                    writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                else
+                    writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                break;
+            default:
+                op.Write(writer, options);
+                break;
+            }
+        }
+    }
 }
 

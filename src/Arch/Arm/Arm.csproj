@@ -74,6 +74,7 @@
     <Compile Include="AArch32\T32Disassembler.Decoder.cs" />
     <Compile Include="AArch64.cs" />
     <Compile Include="AArch64\AArch64Disassembler.cs" />
+    <Compile Include="AArch64\AArch64Disassembler.Decoders.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />
     <Compile Include="AArch64\Arm64State.cs" />
     <Compile Include="AArch64\Opcode.cs" />

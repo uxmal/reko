@@ -19,6 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class AArch64Disassembler : DisassemblerBase<Arm64Instruction>
+    public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction>
     {
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid;
@@ -43,7 +47,7 @@ namespace Reko.Arch.Arm.AArch64
             this.rdr = rdr;
         }
 
-        public override Arm64Instruction DisassembleInstruction()
+        public override AArch64Instruction DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt32(out var wInstr))
@@ -54,141 +58,223 @@ namespace Reko.Arch.Arm.AArch64
             return instr;
         }
 
-        public abstract class Decoder
+        private AArch64Instruction Decode(uint wInstr, Opcode opcode, string format)
         {
-            public abstract Arm64Instruction Decode(uint wInstr, AArch64Disassembler dasm);
-
-            public static uint bitmask(uint u, int shift, uint mask)
+            int i = 0;
+            RegisterStorage reg;
+            Opcode shiftCode = Opcode.Invalid;
+            MachineOperand shiftAmount = null;
+            int n;
+            var ops = new List<MachineOperand>();
+            while (i < format.Length)
             {
-                return (u >> shift) & mask;
-            }
-
-            public static bool bit(uint u, int shift)
-            {
-                return ((u >> shift) & 1) != 0;
-            }
-        }
-
-        public class MaskDecoder : Decoder
-        {
-            private int shift;
-            private uint mask;
-            private Decoder[] decoders;
-
-            public MaskDecoder(int shift, uint mask, params Decoder[] decoders)
-            {
-                this.shift = shift;
-                this.mask = mask;
-                Debug.Assert(decoders.Length == mask + 1);
-                this.decoders = decoders;
-            }
-
-            public override Arm64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
-            {
-                TraceDecoder(wInstr);
-                uint op = (wInstr >> shift) & mask;
-                return decoders[op].Decode(wInstr, dasm);
-            }
-
-            [Conditional("DEBUG")]
-            public void TraceDecoder(uint wInstr)
-            {
-                var shMask = this.mask << shift;
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
+                switch (format[i++])
                 {
-                    if ((shMask & hibit) != 0)
+                case ',':
+                case ' ':
+                    break;
+                case 'W':
+                    // 32-bit register.
+                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    reg = Registers.GpRegs32[n];
+                    ops.Add(new RegisterOperand(reg));
+                    break;
+                case 'X':
+                    // 64-bit register.
+                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    reg = Registers.GpRegs64[n];
+                    ops.Add(new RegisterOperand(reg));
+                    break;
+                case 'U':
+                    ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
+                    ops.Add(op);
+                    break;
+                case 's':
+                    // Shift type
+                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    switch (n)
                     {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
+                    case 1:
+                        shiftCode = Opcode.lsl;
+                        shiftAmount = ImmediateOperand.Int32(12);
+                        break;
                     }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
+                    break;
+                default:
+                    NotYetImplemented($"Unknown format character '{format[i - 1]}'", wInstr);
+                    return Invalid();
                 }
-                Debug.Print(sb.ToString());
             }
+            var instr = new AArch64Instruction
+            {
+                opcode = opcode,
+                ops = ops.ToArray(),
+                shiftCode = shiftCode,
+                shiftAmount = shiftAmount
+            };
+            return instr;
         }
 
-        public class SparseMaskDecoder : Decoder
+        private ImmediateOperand DecodeImmediateOperand(uint wInstr, string format, ref int i)
         {
-            private int shift;
-            private uint mask;
-            private Dictionary<uint, Decoder> decoders;
-            private Decoder @default;
-
-            public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
+            // Unsigned immediate field.
+            ulong? imm;
+            DataType dt;
+            if (PeekAndDiscard('l', format, ref i))
             {
-                this.shift = shift;
-                this.mask = mask;
-                this.decoders = decoders;
-                this.@default = @default;
+                // Logical immediates have really complex formats.
+                var offset = ReadNumber(format, ref i);
+                dt = ReadBitSize(format, ref i);
+                imm = DecodeLogicalImmediate(wInstr >> offset, dt.BitSize);
             }
-
-            public override Arm64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
+            else
             {
-                var op = (wInstr >> shift) & mask;
-                if (!decoders.TryGetValue(op, out Decoder decoder))
-                    decoder = @default;
-                return decoder.Decode(wInstr, dasm);
+                imm = (uint)ReadSignedBitfield(wInstr, format, ref i);
+                dt = ReadBitSize(format, ref i);
             }
+            if (imm == null)
+                return null;
+            var op = new ImmediateOperand(Constant.Create(dt, imm.Value));
+            return op;
         }
 
-        public class NyiDecoder : Decoder
+        private DataType ReadBitSize(string format, ref int i)
         {
-            private string message;
-
-            public NyiDecoder(string message)
+            switch (format[i++])
             {
-                this.message = message;
+            case 'w': return PrimitiveType.Word32;
+            case 'l': return PrimitiveType.Word64;
             }
-
-            public override Arm64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
-            {
-                throw new NotImplementedException($"An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
-            }
+            throw new NotImplementedException();
         }
 
-        class CustomDecoder : Decoder
+        /// Decode a logical immediate value in the form
+        /// "N:immr:imms" (where the immr and imms fields are each 6 bits) into the
+        /// integer value it represents with regSize bits.
+        private ulong? DecodeLogicalImmediate(uint val, int bitSize)
         {
-            private Func<uint, AArch64Disassembler, Decoder> decode;
+            // Extract the N, imms, and immr fields.
+            uint N = (val >> 12) & 1;
+            uint immr = (val >> 6) & 0x3f;
+            uint imms = val & 0x3f;
 
-            public CustomDecoder(Func<uint, AArch64Disassembler, Decoder> decode)
-            {
-                this.decode = decode;
-            }
+            if (bitSize != 64 && N == 1)
+                return null;
+            int len = 6 - Bits.CountLeadingZeros(7, (N << 6) | (~imms & 0x3f));
+            if (len < 0)
+                return null;
+            int size = 1 << len;
+            int R = (int) (immr & (size - 1));
+            int S = (int) (imms & (size - 1));
+            if (S == size - 1)
+                return null;
+            ulong pattern = (1UL << (S + 1)) -1;
+            pattern = Bits.RotateR(size, pattern, R);
 
-            public override Arm64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
+            // Replicate the pattern to fill the regSize.
+            while (size != bitSize)
             {
-                return decode(wInstr, dasm).Decode(wInstr, dasm);
+                pattern |= pattern << size;
+                size *= 2;
             }
+            return pattern;
         }
 
+        private int ReadSignedBitfield(uint word, string format, ref int i)
+        {
+            uint n = 0;
+            do
+            {
+                int shift = ReadNumber(format, ref i);
+                Expect(':', format, ref i);
+                int maskSize = ReadNumber(format, ref i);
+                uint mask = (1u << maskSize) - 1u;
+                n = (n << maskSize) | ((word >> shift) & mask);
+            } while (PeekAndDiscard(':', format, ref i));
+            return  (int)n;
+        }
 
-        private static NyiDecoder nyi(string str)
+        private void Expect(char c, string format, ref int i)
+        {
+            if (format[i] != c)
+                throw new InvalidOperationException();
+            ++i;
+        }
+
+        private bool PeekAndDiscard(char c, string format, ref int i)
+        {
+            if (i >= format.Length)
+                return false;
+            if (format[i] != c)
+                return false;
+            ++i;
+            return true;
+        }
+
+        private int ReadNumber(string format, ref int i)
+        {
+            int n = 0;
+            while (i < format.Length)
+            {
+                char c = format[i];
+                if (!Char.IsDigit(c))
+                    break;
+                n = n * 10 + (c - '0');
+                ++i;
+            }
+            return n;
+        }
+
+        private static Decoder Instr(Opcode opcode, string format)
+        {
+            return new InstrDecoder(opcode, format);
+        }
+
+        private static Decoder Mask(int pos, uint mask, params Decoder[] decoders)
+        {
+            return new MaskDecoder(pos, mask, decoders);
+        }
+
+        private static NyiDecoder Nyi(string str)
         {
             return new NyiDecoder(str);
         }
 
-        private class InstrDecoder : Decoder
+        private AArch64Instruction NotYetImplemented(string message, uint wInstr)
         {
-            private Opcode opcode;
-            private string format;
-
-            public InstrDecoder(Opcode opcode, string format)
+            Console.WriteLine($"An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+            Console.WriteLine("[Test]");
+            Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
+            Console.WriteLine("{");
+            if (wInstr > 0xFFFF)
             {
-                this.opcode = opcode;
-                this.format = format;
+                Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
             }
-
-            public override Arm64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
+            else
             {
-                throw new NotImplementedException();
+                Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
             }
+            Console.WriteLine("    Expect_Code(\"@@@\");");
+
+            Console.WriteLine("}");
+            Console.WriteLine();
+
+#if !DEBUG
+                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+#else
+            return Invalid();
+#endif
         }
+
+        private AArch64Instruction Invalid()
+        {
+            return new AArch64Instruction
+            {
+                opcode = Opcode.Invalid,
+                ops = new MachineOperand[0]
+            };
+        }
+
 
         static AArch64Disassembler()
         {
@@ -200,28 +286,75 @@ namespace Reko.Arch.Arm.AArch64
                     new MaskDecoder(28, 3,          // op0 = 0 
                         new MaskDecoder(26, 1,      // op0 = 0 op1 = 0
                             new MaskDecoder(23, 3,  // op0 = 0 op1 = 0 op2 = 0
-                                nyi("LoadStoreExclusive"),
-                                nyi("LoadStoreExclusive"),
+                                Nyi("LoadStoreExclusive"),
+                                Nyi("LoadStoreExclusive"),
                                 invalid,
                                 invalid),
                             new MaskDecoder(23, 3,  // op0 = 0 op1 = 0 op2 = 1
-                                nyi("AdvancedSimdLdStMultiple"),
-                                nyi("AdvancedSimdLdStMultiple"),
+                                Nyi("AdvancedSimdLdStMultiple"),
+                                Nyi("AdvancedSimdLdStMultiple"),
                                 invalid,
                                 invalid)),
                         new MaskDecoder(23, 3,      // op0 = 0, op1 = 1
-                            nyi("LoadRegLit"),
-                            nyi("LoadRegLit"),
+                            Nyi("LoadRegLit"),
+                            Nyi("LoadRegLit"),
                             invalid,
                             invalid),
                         new MaskDecoder(23, 3,      // op0 = 0, op1 = 2
-                            nyi("LdStNoallocatePair"),
-                            nyi("LdStRegPairPost"),
-                            nyi("LdStRegPairOffset"),
-                            nyi("LdStRegPairPre")),
-                        nyi(" op0 = 0, op1 = 3")),
+                            Nyi("LdStNoallocatePair"),
+                            Nyi("LdStRegPairPost"),
+                            Nyi("LdStRegPairOffset"),
+                            Nyi("LdStRegPairPre")),
+                        Nyi(" op0 = 0, op1 = 3")),
                     invalid);
             }
+
+            var AddSubImmediate = Mask(23, 1,
+                Mask(29, 0x7,
+                    Instr(Opcode.add, "W0:5,W5:5,U10:12w s22:2"),
+                    Instr(Opcode.adds, "W0:5,W5:5,U10:12w s22:2"),
+                    Instr(Opcode.sub, "W0:5,W5:5,U10:12w s22:2"),
+                    Instr(Opcode.subs, "W0:5,W5:5,U10:12w s22:2"),
+                    
+                    Instr(Opcode.add, "X0:5,X5:5,U10:12l s22:2"),
+                    Instr(Opcode.adds, "X0:5,X5:5,U10:12l s22:2"),
+                    Instr(Opcode.sub, "X0:5,X5:5,U10:12l s22:2"),
+                    Instr(Opcode.subs, "X0:5,X5:5,U10:12l s22:2")),
+                invalid);
+
+            var LogicalImmediate = Mask(29, 7, // size + op flag
+                Mask(22, 1, // N bit
+                    Instr(Opcode.and, "W0:5,W5:5,Ul10w"),
+                    invalid),
+                Mask(22, 1, // N bit
+                    Instr(Opcode.orr, "W0:5,W5:5,Ul10w"),
+                    invalid),
+                Mask(22, 1, // N bit
+                    Instr(Opcode.eor, "W0:5,W5:5,Ul10w"),
+                    invalid),
+                Mask(22, 1, // N bit
+                    Instr(Opcode.ands, "W0:5,W5:5,Ul10w"),
+                    invalid),
+
+                Instr(Opcode.and, "X0:5,X5:5,Ul10l"),
+                Instr(Opcode.orr, "X0:5,X5:5,Ul10l"),
+                Instr(Opcode.eor, "X0:5,X5:5,Ul10l"),
+                Instr(Opcode.ands, "X0:5,X5:5,Ul10l"));
+
+
+                Nyi("LogicalImmediate");
+
+
+            var DataProcessingImm = new MaskDecoder(23, 0x7,
+                Nyi("PC-Rel addressing"),
+                Nyi("PC-Rel addressing"),
+                AddSubImmediate,
+                AddSubImmediate,
+
+                LogicalImmediate,
+                Nyi("Move Wide immediate"),
+                Nyi("Bitfield"),
+                Nyi("Extract"));
 
             rootDecoder = new MaskDecoder(25, 0x0F,
                 invalid,
@@ -230,19 +363,19 @@ namespace Reko.Arch.Arm.AArch64
                 invalid,
 
                 LoadsAndStores,
-                nyi("DataProcessingReg"),
-                nyi("LoadsAndStores"),
-                nyi("DataProcessingScalarFpAdvancedSimd"),
+                Nyi("DataProcessingReg"),
+                Nyi("LoadsAndStores"),
+                Nyi("DataProcessingScalarFpAdvancedSimd"),
                 
-                nyi("DataProcessingImm"),
-                nyi("DataProcessingImm"),
-                nyi("BranchesExceptionsSystem"),
-                nyi("BranchesExceptionsSystem"),
+                DataProcessingImm,
+                DataProcessingImm,
+                Nyi("BranchesExceptionsSystem"),
+                Nyi("BranchesExceptionsSystem"),
                 
-                nyi("LoadsAndStores"),
-                nyi("DataProcessingReg"),
-                nyi("LoadsAndStores"),
-                nyi("DataProcessingScalarFpAdvancedSimd"));
+                Nyi("LoadsAndStores"),
+                Nyi("DataProcessingReg"),
+                Nyi("LoadsAndStores"),
+                Nyi("DataProcessingScalarFpAdvancedSimd"));
         }
     }
 }
