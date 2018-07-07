@@ -61,5 +61,29 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual(0x09, Bits.RotateR(8, 0x12, 1));
             Assert.AreEqual(0x84, Bits.RotateR(8, 0x12, 2));
         }
+
+        [Test]
+        public void Bits_CountLeadingZeros_0()
+        {
+            Assert.AreEqual(64, Bits.CountLeadingZeros(64, 0));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_1()
+        {
+            Assert.AreEqual(63, Bits.CountLeadingZeros(64, 1));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_1_16bitWord()
+        {
+            Assert.AreEqual(15, Bits.CountLeadingZeros(16, 1));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_0x7F_7bitWord()
+        {
+            Assert.AreEqual(0, Bits.CountLeadingZeros(7, 0x7F));
+        }
     }
 }
