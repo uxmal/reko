@@ -431,6 +431,7 @@ client_read_reply: error: An error occurred during data flow analysis.
 0000000000014F80: warning: Unable to resolve imported reference snprintf.
 0000000000014F30: warning: Unable to resolve imported reference __strdup.
 0000000000014F20: warning: Unable to resolve imported reference herror.
+=== Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
@@ -2415,4 +2416,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 53 binaries in 33.20 seconds ---
+Decompiled 54 binaries in 40.94 seconds ---
