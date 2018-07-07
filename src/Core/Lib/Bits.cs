@@ -90,5 +90,18 @@ namespace Reko.Core.Lib
         {
             return (u << (32 - s)) | (u >> s);
         }
+
+        /// <summary>
+        /// Rotate the <paramref name="wordSize"/> least significant bits of 
+        /// the unsigned value <paramref name="u"/> to the right by <paramref name="s"/>
+        /// bits.
+        /// </summary>
+        public static ulong RotateR(int wordSize, ulong u, int s)
+        {
+            var mask = (1ul << wordSize) - 1;
+            u &= mask;
+            u = (u << (wordSize - s)) | (u >> s);
+            return u & mask;
+        }
     }
 }

@@ -53,5 +53,13 @@ namespace Reko.UnitTests.Core.Lib
             Assert.IsFalse(Bits.IsEvenPowerOfTwo(7), "7 isn't power of two");
             Assert.IsFalse(Bits.IsEvenPowerOfTwo(127), "127 isn't power of two");
         }
+
+        [Test]
+        public void Bits_RotateR_8bit()
+        {
+            Assert.AreEqual(0x12, Bits.RotateR(8, 0x12, 0));
+            Assert.AreEqual(0x09, Bits.RotateR(8, 0x12, 1));
+            Assert.AreEqual(0x84, Bits.RotateR(8, 0x12, 2));
+        }
     }
 }
