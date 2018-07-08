@@ -112,6 +112,30 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        public class SelectDecoder : Decoder
+        {
+            private string bitfields;
+            private Predicate<int> predicate;
+            private Decoder trueDecoder;
+            private Decoder falseDecoder;
+
+            public SelectDecoder(string bitfields, Predicate<int> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            {
+                this.bitfields = bitfields;
+                this.predicate = predicate;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
+            {
+                int i = 0;
+                int n = dasm.ReadSignedBitfield(wInstr, bitfields, ref i);
+                var decoder = predicate(n) ? trueDecoder : falseDecoder;
+                return decoder.Decode(wInstr, dasm);
+            }
+        }
+
         public class NyiDecoder : Decoder
         {
             private string message;

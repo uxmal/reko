@@ -108,7 +108,7 @@ namespace Reko.Arch.Arm.AArch64
                     }
                     break;
                 default:
-                    NotYetImplemented($"Unknown format character '{format[i - 1]}'", wInstr);
+                    NotYetImplemented($"Unknown format character '{format[i - 1]}' decoding {opcode}", wInstr);
                     return Invalid();
                 }
             }
@@ -149,6 +149,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             switch (format[i++])
             {
+            case 'h': return PrimitiveType.Word16;
             case 'w': return PrimitiveType.Word32;
             case 'l': return PrimitiveType.Word64;
             }
@@ -240,6 +241,16 @@ namespace Reko.Arch.Arm.AArch64
         private static Decoder Mask(int pos, uint mask, params Decoder[] decoders)
         {
             return new MaskDecoder(pos, mask, decoders);
+        }
+
+        private static Decoder Sparse(int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
+        {
+            return new SparseMaskDecoder(pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
+        }
+
+        private static Decoder Select(string bitfields, Predicate<int> predicate, Decoder trueDecoder, Decoder falseDecoder)
+        {
+            return new SelectDecoder(bitfields, predicate, trueDecoder, falseDecoder);
         }
 
         private static NyiDecoder Nyi(string str)
@@ -351,6 +362,23 @@ namespace Reko.Arch.Arm.AArch64
 
                 Nyi("LogicalImmediate");
 
+            var MoveWideImmediate = Mask(29, 7,
+                Mask(22, 1,
+                    Instr(Opcode.movn, "* - 32 bit variant"),
+                    invalid),
+                invalid,
+                Mask(22, 1,
+                    Instr(Opcode.movz, "* - 32 bit variant"),
+                    invalid),
+                Mask(22, 1,
+                    Instr(Opcode.movk, "W0:5,U5:16 S21:2"),
+                    invalid),
+
+                Instr(Opcode.movn, "* - 64 bit variant"),
+                    invalid,
+                Instr(Opcode.movz, "* - 64 bit variant"),
+                Instr(Opcode.movk, "X0:5,U5:16 S21:2"));
+
 
             var DataProcessingImm = new MaskDecoder(23, 0x7,
                 Nyi("PC-Rel addressing"),
@@ -359,7 +387,7 @@ namespace Reko.Arch.Arm.AArch64
                 AddSubImmediate,
 
                 LogicalImmediate,
-                Nyi("Move Wide immediate"),
+                MoveWideImmediate,
                 Nyi("Bitfield"),
                 Nyi("Extract"));
 
@@ -367,7 +395,49 @@ namespace Reko.Arch.Arm.AArch64
                 Instr(Opcode.b, "J0:26"),
                 Instr(Opcode.bl, "J0:26"));
 
-            var UncondBranchReg = Nyi("UncondBranchReg");
+            var UncondBranchReg = Select("16:5", n => n != 0x1F,
+                invalid,
+                Mask(21, 0xF,
+                    Sparse(10, 6,
+                        invalid,
+                        (0, Select("0:5", n => n == 0, Instr(Opcode.br, "X5:5"), invalid)),
+                        (2, Select("0:5", n => n == 0x1F, Nyi("BRAA,BRAAZ... Key A"), invalid)),
+                        (3, Select("0:5", n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
+                    Sparse(10, 6,
+                        invalid,
+                        (0, Select("0:5", n => n == 0, Instr(Opcode.blr, "*X5:5"), invalid)),
+                        (2, Select("0:5", n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
+                        (3, Select("0:5", n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
+                    Sparse(10, 6,
+                        invalid,
+                        (0, Select("0:5", n => n == 0, Instr(Opcode.ret, "*X5:5"), invalid)),
+                        (2, Select("0:5", n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
+                        (3, Select("0:5", n => n == 0x1F, Nyi("RETAA,RETAAZ... Key B"), invalid))),
+                    invalid,
+
+                    Select("5:5", n => n == 0x1F,
+                        Sparse(10, 6,
+                            invalid,
+                            (0, Select("0:5", n => n == 0, Instr(Opcode.eret, "*X5:5"), invalid)),
+                            (2, Select("0:5", n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key A"), invalid)),
+                            (3, Select("0:5", n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key B"), invalid))),
+                        invalid),
+                    Select("10:6:5:5:0:5", n => n == 0b000000_11111_00000,
+                        Instr(Opcode.drps, "*"), invalid),
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid));
+
+
             var CompareBranchImm = Nyi("CompareBranchImm");
             var TestBranchImm = Nyi("TestBranchImm");
             var CondBranchImm = Nyi("CondBranchImm");

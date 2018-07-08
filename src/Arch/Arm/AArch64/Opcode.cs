@@ -41,5 +41,13 @@ namespace Reko.Arch.Arm.AArch64
         ands,
         b,
         bl,
+        br,
+        blr,
+        ret,
+        eret,
+        drps,
+        movn,
+        movk,
+        movz,
     }
 }
