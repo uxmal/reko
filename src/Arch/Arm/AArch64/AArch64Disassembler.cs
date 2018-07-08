@@ -107,6 +107,11 @@ namespace Reko.Arch.Arm.AArch64
                         break;
                     }
                     break;
+                case 'S':   // 16-bit shifts
+                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    shiftCode = Opcode.lsl;
+                    shiftAmount = ImmediateOperand.Int32(16 * n);
+                    break;
                 default:
                     NotYetImplemented($"Unknown format character '{format[i - 1]}' decoding {opcode}", wInstr);
                     return Invalid();
@@ -260,25 +265,17 @@ namespace Reko.Arch.Arm.AArch64
 
         private AArch64Instruction NotYetImplemented(string message, uint wInstr)
         {
-            Console.WriteLine($"An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+            Console.WriteLine($"// An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
             Console.WriteLine("[Test]");
-            Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
+            Console.WriteLine($"public void AArch64Dis_{wInstr:X8}()");
             Console.WriteLine("{");
-            if (wInstr > 0xFFFF)
-            {
-                Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
-            }
-            else
-            {
-                Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
-            }
+            Console.WriteLine($"    Given_Instruction(0x{wInstr:X8});");
             Console.WriteLine("    Expect_Code(\"@@@\");");
-
             Console.WriteLine("}");
             Console.WriteLine();
 
 #if !DEBUG
-                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+                throw new NotImplementedException($"An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
 #else
             return Invalid();
 #endif
@@ -371,13 +368,13 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.movz, "* - 32 bit variant"),
                     invalid),
                 Mask(22, 1,
-                    Instr(Opcode.movk, "W0:5,U5:16 S21:2"),
+                    Instr(Opcode.movk, "W0:5,U5:16h S21:2"),
                     invalid),
 
                 Instr(Opcode.movn, "* - 64 bit variant"),
                     invalid,
                 Instr(Opcode.movz, "* - 64 bit variant"),
-                Instr(Opcode.movk, "X0:5,U5:16 S21:2"));
+                Instr(Opcode.movk, "X0:5,U5:16h S21:2"));
 
 
             var DataProcessingImm = new MaskDecoder(23, 0x7,

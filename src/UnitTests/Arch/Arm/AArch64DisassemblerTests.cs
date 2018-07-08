@@ -31,6 +31,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         private IProcessorArchitecture arch = new Arm64Architecture("aarch64");
         private Address baseAddress = Address.Ptr64(0x00100000);
+        private AArch64Instruction instr;
 
         public override IProcessorArchitecture Architecture
         {
@@ -45,6 +46,16 @@ namespace Reko.UnitTests.Arch.Arm
         public override Address LoadAddress
         {
             get { return baseAddress; }
+        }
+
+        private void Given_Instruction(uint wInstr)
+        {
+            this.instr = base.DisassembleWord(wInstr);
+        }
+
+        private void Expect_Code(string sexp)
+        {
+            Assert.AreEqual(sexp, instr.ToString());
         }
 
         [Test]
@@ -123,5 +134,6 @@ namespace Reko.UnitTests.Arch.Arm
             var instr = DisassembleBits("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
             Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
+
     }
 }
