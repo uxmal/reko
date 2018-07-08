@@ -89,6 +89,13 @@ namespace Reko.Arch.Arm.AArch64
                     ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
                     ops.Add(op);
                     break;
+                case 'J':
+                    // Jump displacement from address of current instruction
+                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    n = (int)Bits.SignExtend(wInstr, 26);
+                    AddressOperand aop = AddressOperand.Create(addr + (n << 2));
+                    ops.Add(aop);
+                    break;
                 case 's':
                     // Shift type
                     n = ReadSignedBitfield(wInstr, format, ref i);
@@ -356,6 +363,53 @@ namespace Reko.Arch.Arm.AArch64
                 Nyi("Bitfield"),
                 Nyi("Extract"));
 
+            var UncondBranchImm = Mask(31, 1,
+                Instr(Opcode.b, "J0:26"),
+                Instr(Opcode.bl, "J0:26"));
+
+            var UncondBranchReg = Nyi("UncondBranchReg");
+            var CompareBranchImm = Nyi("CompareBranchImm");
+            var TestBranchImm = Nyi("TestBranchImm");
+            var CondBranchImm = Nyi("CondBranchImm");
+            var System = Nyi("System");
+            var ExceptionGeneration = Nyi("ExceptionGeneration");
+
+            var BranchesExceptionsSystem = Mask(29, 0x7,
+                UncondBranchImm,
+                Mask(25, 1,
+                    CompareBranchImm,
+                    TestBranchImm),
+                Mask(25, 1,
+                    CondBranchImm,
+                    invalid),
+                invalid,
+
+                UncondBranchImm,
+                Mask(25, 1,
+                    CompareBranchImm,
+                    TestBranchImm),
+                Mask(22, 0xF,
+                    ExceptionGeneration,
+                    ExceptionGeneration,
+                    ExceptionGeneration,
+                    ExceptionGeneration,
+
+                    System,
+                    invalid,
+                    invalid,
+                    invalid,
+
+                    UncondBranchReg,
+                    UncondBranchReg,
+                    UncondBranchReg,
+                    UncondBranchReg,
+
+                    UncondBranchReg,
+                    UncondBranchReg,
+                    UncondBranchReg,
+                    UncondBranchReg),
+                invalid);
+
             rootDecoder = new MaskDecoder(25, 0x0F,
                 invalid,
                 invalid,
@@ -369,8 +423,8 @@ namespace Reko.Arch.Arm.AArch64
                 
                 DataProcessingImm,
                 DataProcessingImm,
-                Nyi("BranchesExceptionsSystem"),
-                Nyi("BranchesExceptionsSystem"),
+                BranchesExceptionsSystem,
+                BranchesExceptionsSystem,
                 
                 Nyi("LoadsAndStores"),
                 Nyi("DataProcessingReg"),

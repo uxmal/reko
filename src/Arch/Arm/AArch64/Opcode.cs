@@ -29,6 +29,7 @@ namespace Reko.Arch.Arm.AArch64
     public enum Opcode
     {
         Invalid,
+
         add,
         sub,
         adds,
@@ -38,5 +39,7 @@ namespace Reko.Arch.Arm.AArch64
         orr,
         eor,
         ands,
+        b,
+        bl,
     }
 }

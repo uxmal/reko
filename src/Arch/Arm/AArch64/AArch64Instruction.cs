@@ -101,7 +101,7 @@ namespace Reko.Arch.Arm.AArch64
             if (ops == null || ops.Length == 0)
                 return;
             writer.Tab();
-            ops[0].Write(writer, options);
+            RenderOperand(ops[0], writer, options);
             foreach (var op in ops.Skip(1))
             {
                 writer.WriteString(",");
@@ -119,6 +119,10 @@ namespace Reko.Arch.Arm.AArch64
                     writer.WriteFormat($"#{imm.Value.ToInt32()}");
                 else
                     writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                break;
+            case AddressOperand addrOp:
+                ulong linAddr = addrOp.Address.ToLinear();
+                writer.WriteAddress($"#&{linAddr:X}", addrOp.Address);
                 break;
             default:
                 op.Write(writer, options);
