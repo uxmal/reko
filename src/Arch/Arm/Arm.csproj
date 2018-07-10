@@ -77,6 +77,7 @@
     <Compile Include="AArch64\AArch64Disassembler.Decoders.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />
     <Compile Include="AArch64\Arm64State.cs" />
+    <Compile Include="AArch64\MemoryOperand.cs" />
     <Compile Include="AArch64\Opcode.cs" />
     <Compile Include="AArch64\Registers.cs" />
     <Compile Include="Arm32Architecture.cs" />

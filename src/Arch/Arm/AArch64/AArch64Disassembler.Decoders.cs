@@ -88,6 +88,25 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        public class BitfieldDecoder : Decoder
+        {
+            private readonly string bitfields;
+            private readonly Decoder[] decoders;
+
+            public BitfieldDecoder(string bitfields, params Decoder[] decoders)
+            {
+                this.bitfields = bitfields;
+                this.decoders = decoders;
+            }
+
+            public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
+            {
+                int i = 0;
+                int op = dasm.ReadUnsignedBitField(wInstr, bitfields, ref i);
+                return decoders[op].Decode(wInstr, dasm);
+            }
+        }
+
         public class SparseMaskDecoder : Decoder
         {
             private readonly int shift;
@@ -130,7 +149,7 @@ namespace Reko.Arch.Arm.AArch64
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
                 int i = 0;
-                int n = dasm.ReadSignedBitfield(wInstr, bitfields, ref i);
+                int n = dasm.ReadUnsignedBitField(wInstr, bitfields, ref i);
                 var decoder = predicate(n) ? trueDecoder : falseDecoder;
                 return decoder.Decode(wInstr, dasm);
             }

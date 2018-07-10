@@ -75,45 +75,68 @@ namespace Reko.Arch.Arm.AArch64
                     break;
                 case 'W':
                     // 32-bit register.
-                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    n = ReadUnsignedBitField(wInstr, format, ref i);
                     reg = Registers.GpRegs32[n];
                     ops.Add(new RegisterOperand(reg));
                     break;
                 case 'X':
                     // 64-bit register.
-                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    n = ReadUnsignedBitField(wInstr, format, ref i);
                     reg = Registers.GpRegs64[n];
+                    ops.Add(new RegisterOperand(reg));
+                    break;
+                case 'S':
+                    // 32-bit SIMD/FPU register.
+                    n = ReadUnsignedBitField(wInstr, format, ref i);
+                    reg = Registers.SimdRegs32[n];
                     ops.Add(new RegisterOperand(reg));
                     break;
                 case 'U':
                     ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
                     ops.Add(op);
                     break;
+                case 'I':
+                    ops.Add(DecodeSignedImmediateOperand(wInstr, format, ref i));
+                    break;
                 case 'J':
                     // Jump displacement from address of current instruction
-                    n = ReadSignedBitfield(wInstr, format, ref i);
+                    n = ReadUnsignedBitField(wInstr, format, ref i);
                     n = (int)Bits.SignExtend(wInstr, 26);
                     AddressOperand aop = AddressOperand.Create(addr + (n << 2));
                     ops.Add(aop);
                     break;
+
+                case '[':
+                    // Memory access
+                    ops.Add(ReadMemoryAccess(wInstr, format, ref i));
+                    break;
+                    
                 case 's':
                     // Shift type
-                    n = ReadSignedBitfield(wInstr, format, ref i);
-                    switch (n)
+                    switch (format[i++])
                     {
-                    case 1:
+                    case 'c': // code
+                        n = ReadUnsignedBitField(wInstr, format, ref i);
+                        switch (n)
+                        {
+                        case 1:
+                            shiftCode = Opcode.lsl;
+                            shiftAmount = ImmediateOperand.Int32(12);
+                            break;
+                        }
+                        break;
+                    case 'h': // 16-bit shifts
+                        n = ReadUnsignedBitField(wInstr, format, ref i);
                         shiftCode = Opcode.lsl;
-                        shiftAmount = ImmediateOperand.Int32(12);
+                        shiftAmount = ImmediateOperand.Int32(16 * n);
+                        break;
+                    default:
+                        NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode} shift", wInstr);
                         break;
                     }
                     break;
-                case 'S':   // 16-bit shifts
-                    n = ReadSignedBitfield(wInstr, format, ref i);
-                    shiftCode = Opcode.lsl;
-                    shiftAmount = ImmediateOperand.Int32(16 * n);
-                    break;
                 default:
-                    NotYetImplemented($"Unknown format character '{format[i - 1]}' decoding {opcode}", wInstr);
+                    NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode}", wInstr);
                     return Invalid();
                 }
             }
@@ -125,6 +148,47 @@ namespace Reko.Arch.Arm.AArch64
                 shiftAmount = shiftAmount
             };
             return instr;
+        }
+
+        private MemoryOperand ReadMemoryAccess(uint wInstr, string format, ref int i)
+        {
+            Expect('X', format, ref i);
+            int n = ReadUnsignedBitField(wInstr, format, ref i);
+            RegisterStorage regBase = Registers.GpRegs64[n];
+            Constant offset = null;
+
+            if (PeekAndDiscard(',', format, ref i))
+            {
+                if (PeekAndDiscard('I', format, ref i))
+                {
+                    var imm = DecodeSignedImmediateOperand(wInstr, format, ref i);
+                    offset = imm.Value;
+                } else if (PeekAndDiscard('U', format, ref i))
+                {
+                    var imm = DecodeImmediateOperand(wInstr, format, ref i);
+                    offset = imm.Value;
+                }
+            }
+            Expect(',', format, ref i);
+            var dt = ReadBitSize(format, ref i);
+            Expect(']', format, ref i);
+            return new MemoryOperand(dt)
+            {
+                Base = regBase,
+                Offset = offset
+            };
+        }
+
+        private ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, string format, ref int i)
+        {
+            int n = ReadSignedBitField(wInstr, format, ref i);
+            if (PeekAndDiscard('<', format, ref i))
+            {
+                int sh = ReadNumber(format, ref i);
+                n <<= sh;
+            }
+            var dt = ReadBitSize(format, ref i);
+            return new ImmediateOperand(Constant.Create(dt, n));
         }
 
         private ImmediateOperand DecodeImmediateOperand(uint wInstr, string format, ref int i)
@@ -141,8 +205,13 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
             {
-                imm = (uint)ReadSignedBitfield(wInstr, format, ref i);
+                imm = (uint)ReadUnsignedBitField(wInstr, format, ref i);
                 dt = ReadBitSize(format, ref i);
+                if (PeekAndDiscard('<', format, ref i))
+                {
+                    var sh = ReadNumber(format, ref i);
+                    imm = imm.Value << sh;
+                }
             }
             if (imm == null)
                 return null;
@@ -150,7 +219,7 @@ namespace Reko.Arch.Arm.AArch64
             return op;
         }
 
-        private DataType ReadBitSize(string format, ref int i)
+        private PrimitiveType ReadBitSize(string format, ref int i)
         {
             switch (format[i++])
             {
@@ -158,6 +227,7 @@ namespace Reko.Arch.Arm.AArch64
             case 'w': return PrimitiveType.Word32;
             case 'l': return PrimitiveType.Word64;
             }
+            NotYetImplemented($"Unknown bit size format character '{format[i - 1]}'", 0);
             throw new NotImplementedException();
         }
 
@@ -193,7 +263,7 @@ namespace Reko.Arch.Arm.AArch64
             return pattern;
         }
 
-        private int ReadSignedBitfield(uint word, string format, ref int i)
+        private int ReadUnsignedBitField(uint word, string format, ref int i)
         {
             uint n = 0;
             do
@@ -205,6 +275,22 @@ namespace Reko.Arch.Arm.AArch64
                 n = (n << maskSize) | ((word >> shift) & mask);
             } while (PeekAndDiscard(':', format, ref i));
             return  (int)n;
+        }
+
+        private int ReadSignedBitField(uint word, string format, ref int i)
+        {
+            uint n = 0;
+            int totalBits = 0;
+            do
+            {
+                int shift = ReadNumber(format, ref i);
+                Expect(':', format, ref i);
+                int maskSize = ReadNumber(format, ref i);
+                totalBits += maskSize;
+                uint mask = (1u << maskSize) - 1u;
+                n = (n << maskSize) | ((word >> shift) & mask);
+            } while (PeekAndDiscard(':', format, ref i));
+            return (int) Bits.SignExtend(n, totalBits);
         }
 
         private void Expect(char c, string format, ref int i)
@@ -246,6 +332,11 @@ namespace Reko.Arch.Arm.AArch64
         private static Decoder Mask(int pos, uint mask, params Decoder[] decoders)
         {
             return new MaskDecoder(pos, mask, decoders);
+        }
+
+        private static Decoder Mask(string bitfields, params Decoder[] decoders)
+        {
+            return new BitfieldDecoder(bitfields, decoders);
         }
 
         private static Decoder Sparse(int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
@@ -295,6 +386,39 @@ namespace Reko.Arch.Arm.AArch64
         {
             invalid = new InstrDecoder(Opcode.Invalid, "");
 
+            Decoder LdStRegUImm;
+            {
+                LdStRegUImm = Mask(30, 3, // size
+                    Mask(26, 1, // V
+                        Mask(22, 3,
+                           Instr(Opcode.strb, "*imm"),
+                           Instr(Opcode.ldrb, "*imm"),
+                           Instr(Opcode.ldrsb, "*imm 64-bit"),
+                           Instr(Opcode.ldrsb, "*imm 32-bit")),
+                        Nyi("LdStRegUImm size = 0, V = 1")),
+                    Nyi("LdStRegUImm size = 1"),
+                    Nyi("LdStRegUImm size = 2"),
+                    Mask(26, 1, // V
+                        Mask(22, 3,
+                            Instr(Opcode.str, "X0:5,[X5:5,U10:12l<3,l]"),
+                            Instr(Opcode.ldr, "X0:5,[X5:5,U10:12l<3,l]"),
+                            Instr(Opcode.prfm, "*"),
+                            invalid),
+                        Nyi("LdStRegUImm size = 3, V = 1")));
+            }
+            Decoder LdStRegPairOffset;
+            {
+                LdStRegPairOffset = Mask(30, 3,
+                    Mask(26, 1, // V
+                        Nyi("LdStRegPairOffset - 00 V = 0"),
+                        Mask(22, 1,  // L
+                            Instr(Opcode.stp, "*SIMD&FP - 32bit"),
+                            Instr(Opcode.ldp, "S0:5,S10:5,[X5:5,I15:7<2l,l]"))),
+
+                    Nyi("LdStRegPairOffset - 01"),
+                    Nyi("LdStRegPairOffset - 10"),
+                    invalid);
+            }
             Decoder LoadsAndStores;
             {
                 LoadsAndStores = new MaskDecoder(31, 1,
@@ -318,23 +442,29 @@ namespace Reko.Arch.Arm.AArch64
                         new MaskDecoder(23, 3,      // op0 = 0, op1 = 2
                             Nyi("LdStNoallocatePair"),
                             Nyi("LdStRegPairPost"),
-                            Nyi("LdStRegPairOffset"),
+                            LdStRegPairOffset,
                             Nyi("LdStRegPairPre")),
                         Nyi(" op0 = 0, op1 = 3")),
-                    invalid);
+                    new MaskDecoder(28, 3,          // op0 = 0 
+                        Nyi("op0 = 0"),
+                        Nyi("op0 = 1"),
+                        Nyi("op0 = 2"),
+                        Mask(24, 1,
+                            Nyi("op0 = 3, op3 = 0x"),
+                            LdStRegUImm)));
             }
 
             var AddSubImmediate = Mask(23, 1,
                 Mask(29, 0x7,
-                    Instr(Opcode.add, "W0:5,W5:5,U10:12w s22:2"),
-                    Instr(Opcode.adds, "W0:5,W5:5,U10:12w s22:2"),
-                    Instr(Opcode.sub, "W0:5,W5:5,U10:12w s22:2"),
-                    Instr(Opcode.subs, "W0:5,W5:5,U10:12w s22:2"),
+                    Instr(Opcode.add, "W0:5,W5:5,U10:12w sc22:2"),
+                    Instr(Opcode.adds, "W0:5,W5:5,U10:12w sc22:2"),
+                    Instr(Opcode.sub, "W0:5,W5:5,U10:12w sc22:2"),
+                    Instr(Opcode.subs, "W0:5,W5:5,U10:12w sc22:2"),
                     
-                    Instr(Opcode.add, "X0:5,X5:5,U10:12l s22:2"),
-                    Instr(Opcode.adds, "X0:5,X5:5,U10:12l s22:2"),
-                    Instr(Opcode.sub, "X0:5,X5:5,U10:12l s22:2"),
-                    Instr(Opcode.subs, "X0:5,X5:5,U10:12l s22:2")),
+                    Instr(Opcode.add, "X0:5,X5:5,U10:12l sc22:2"),
+                    Instr(Opcode.adds, "X0:5,X5:5,U10:12l sc22:2"),
+                    Instr(Opcode.sub, "X0:5,X5:5,U10:12l sc22:2"),
+                    Instr(Opcode.subs, "X0:5,X5:5,U10:12l sc22:2")),
                 invalid);
 
             var LogicalImmediate = Mask(29, 7, // size + op flag
@@ -368,18 +498,22 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.movz, "* - 32 bit variant"),
                     invalid),
                 Mask(22, 1,
-                    Instr(Opcode.movk, "W0:5,U5:16h S21:2"),
+                    Instr(Opcode.movk, "W0:5,U5:16h sh21:2"),
                     invalid),
 
                 Instr(Opcode.movn, "* - 64 bit variant"),
                     invalid,
                 Instr(Opcode.movz, "* - 64 bit variant"),
-                Instr(Opcode.movk, "X0:5,U5:16h S21:2"));
+                Instr(Opcode.movk, "X0:5,U5:16h sh21:2"));
 
+
+            var PcRelativeAddressing = Mask(31, 1,
+                Instr(Opcode.adr, "*"),
+                Instr(Opcode.adrp, "X0:5,I5:19:29:2<12w"));
 
             var DataProcessingImm = new MaskDecoder(23, 0x7,
-                Nyi("PC-Rel addressing"),
-                Nyi("PC-Rel addressing"),
+                PcRelativeAddressing,
+                PcRelativeAddressing,
                 AddSubImmediate,
                 AddSubImmediate,
 
@@ -434,9 +568,16 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
                     invalid));
 
-
             var CompareBranchImm = Nyi("CompareBranchImm");
-            var TestBranchImm = Nyi("TestBranchImm");
+
+            var TestBranchImm = Mask(24, 1,
+                Mask(31, 1,
+                    Instr(Opcode.tbz, "W0:5,I19:5w,J5:14"),
+                    Instr(Opcode.tbnz, "W0:5,I19:5w,J5:14")),
+                Mask(31, 1,
+                    Instr(Opcode.tbz, "W0:5,I19:5w,J5:14"),
+                    Instr(Opcode.tbnz, "W0:5,I19:5w,J5:14")));
+
             var CondBranchImm = Nyi("CondBranchImm");
             var System = Nyi("System");
             var ExceptionGeneration = Nyi("ExceptionGeneration");
@@ -485,7 +626,7 @@ namespace Reko.Arch.Arm.AArch64
 
                 LoadsAndStores,
                 Nyi("DataProcessingReg"),
-                Nyi("LoadsAndStores"),
+                LoadsAndStores,
                 Nyi("DataProcessingScalarFpAdvancedSimd"),
                 
                 DataProcessingImm,
@@ -493,9 +634,9 @@ namespace Reko.Arch.Arm.AArch64
                 BranchesExceptionsSystem,
                 BranchesExceptionsSystem,
                 
-                Nyi("LoadsAndStores"),
+                LoadsAndStores,
                 Nyi("DataProcessingReg"),
-                Nyi("LoadsAndStores"),
+                LoadsAndStores,
                 Nyi("DataProcessingScalarFpAdvancedSimd"));
         }
     }

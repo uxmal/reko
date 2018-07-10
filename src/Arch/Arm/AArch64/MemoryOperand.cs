@@ -18,6 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,40 +30,34 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public enum Opcode
+    public class MemoryOperand : MachineOperand
     {
-        Invalid,
+        public RegisterStorage Base;
+        public Constant Offset;
 
-        add,
-        sub,
-        adds,
-        subs,
-        lsl,
-        and,
-        orr,
-        eor,
-        ands,
-        b,
-        bl,
-        br,
-        blr,
-        ret,
-        eret,
-        drps,
-        movn,
-        movk,
-        movz,
-        ldp,
-        stp,
-        tbz,
-        tbnz,
-        adrp,
-        adr,
-        strb,
-        ldrb,
-        ldrsb,
-        ldr,
-        str,
-        prfm,
+        public MemoryOperand(PrimitiveType dt)  : base(dt)
+        {
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteChar('[');
+            writer.WriteString(Base.Name);
+            if (Offset != null && !Offset.IsIntegerZero)
+            {
+                writer.WriteChar(',');
+                var off = Offset.ToInt32();
+                if (off < 0)
+                {
+                    writer.WriteFormat("-#&{0:X}", -off);
+                }
+                else
+                {
+                    writer.WriteFormat("#&{0:X}", off);
+                }
+            }
+            writer.WriteChar(']');
+
+        }
     }
 }
