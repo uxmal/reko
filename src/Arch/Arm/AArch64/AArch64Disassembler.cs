@@ -410,7 +410,17 @@ namespace Reko.Arch.Arm.AArch64
                            Instr(Opcode.ldrsb, "*imm 32-bit")),
                         Nyi("LdStRegUImm size = 0, V = 1")),
                     Nyi("LdStRegUImm size = 1"),
-                    Nyi("LdStRegUImm size = 2"),
+                    Mask(26, 1, // V
+                        Mask(22, 3,
+                            Instr(Opcode.str, "W0:5,[X5:5,U10:12l<2,l]"),
+                            Instr(Opcode.ldr, "W0:5,[X5:5,U10:12l<2,l]"),
+                            Instr(Opcode.ldrsw, "X0:5,[X5:5,U10:12l<2,l]"),
+                            invalid),
+                        Mask(22, 3,
+                            Instr(Opcode.str, "*immediate SIMD&FP 32-bit"),
+                            Instr(Opcode.ldr, "*immediate SIMD&FP 32-bit"),
+                            invalid,
+                            invalid)),
                     Mask(26, 1, // V
                         Mask(22, 3,
                             Instr(Opcode.str, "X0:5,[X5:5,U10:12l<3,l]"),

@@ -69,5 +69,6 @@ namespace Reko.Arch.Arm.AArch64
         asr,
         ror,
         mov,
+        ldrsw,
     }
 }

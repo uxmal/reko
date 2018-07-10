@@ -191,20 +191,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("movz\tw0,#6");
         }
 
-        // An AArch64 decoder for the instruction B9800033 (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_B9800033()
+        public void AArch64Dis_ldrsw()
         {
             Given_Instruction(0xB9800033);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA0003E1 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA0003E1()
-        {
-            Given_Instruction(0xAA0003E1);
-            Expect_Code("@@@");
+            Expect_Code("ldrsw\tx19,[x1]");
         }
 
         // An AArch64 decoder for the instruction D37DF273 (Bitfield) has not been implemented yet.
@@ -239,22 +230,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction AA1B03E0 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1B03E0()
-        {
-            Given_Instruction(0xAA1B03E0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA1C03E1 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1C03E1()
-        {
-            Given_Instruction(0xAA1C03E1);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction D37FFA99 (Bitfield) has not been implemented yet.
         [Test]
         public void AArch64Dis_D37FFA99()
@@ -284,14 +259,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0xF9000AE0);
             Expect_Code("str\tx0,[x23,#&10]");
-        }
-
-        // An AArch64 decoder for the instruction AA1603E2 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1603E2()
-        {
-            Given_Instruction(0xAA1603E2);
-            Expect_Code("@@@");
         }
 
         // An AArch64 decoder for the instruction 2A1403E1 (DataProcessingReg) has not been implemented yet.
@@ -334,22 +301,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction AA1403F9 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1403F9()
-        {
-            Given_Instruction(0xAA1403F9);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA1903F4 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1903F4()
-        {
-            Given_Instruction(0xAA1903F4);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction B8356B7F (LoadsAndStores) has not been implemented yet.
         [Test]
         public void AArch64Dis_B8356B7F()
@@ -366,60 +317,12 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 52800020 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_52800020()
-        {
-            Given_Instruction(0x52800020);
-            Expect_Code("@@@");
-        }
 
-        // An AArch64 decoder for the instruction B9006FA0 (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_B9006FA0()
+        public void AArch64Dis_str_w32()
         {
             Given_Instruction(0xB9006FA0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 90000000 (PC-Rel addressing) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_90000000()
-        {
-            Given_Instruction(0x90000000);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 528000A2 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_528000A2()
-        {
-            Given_Instruction(0x528000A2);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 90000001 (PC-Rel addressing) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_90000001()
-        {
-            Given_Instruction(0x90000001);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA0003E2 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA0003E2()
-        {
-            Given_Instruction(0xAA0003E2);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 52800021 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_52800021()
-        {
-            Given_Instruction(0x52800021);
-            Expect_Code("@@@");
+            Expect_Code("str\tw0,[x29,#&6C]");
         }
 
         [Test]
@@ -442,14 +345,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_1A9F17E0()
         {
             Given_Instruction(0x1A9F17E0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA0003E5 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA0003E5()
-        {
-            Given_Instruction(0xAA0003E5);
             Expect_Code("@@@");
         }
 
@@ -485,12 +380,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
         
-        // An AArch64 decoder for the instruction B9400001 (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_B9400001()
+        public void AArch64Dis_ldr_w32()
         {
             Given_Instruction(0xB9400001);
-            Expect_Code("@@@");
+            Expect_Code("ldr\rw1,[x0]");
         }
 
         // An AArch64 decoder for the instruction 35FFFE73 (CompareBranchImm) has not been implemented yet.
@@ -506,14 +400,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_54000401()
         {
             Given_Instruction(0x54000401);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA0003F5 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA0003F5()
-        {
-            Given_Instruction(0xAA0003F5);
             Expect_Code("@@@");
         }
 
@@ -533,22 +419,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction AA0103F7 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA0103F7()
-        {
-            Given_Instruction(0xAA0103F7);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA0203F8 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA0203F8()
-        {
-            Given_Instruction(0xAA0203F8);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction B4000194 (CompareBranchImm) has not been implemented yet.
         [Test]
         public void AArch64Dis_B4000194()
@@ -562,22 +432,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_F8737AA3()
         {
             Given_Instruction(0xF8737AA3);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA1803E2 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1803E2()
-        {
-            Given_Instruction(0xAA1803E2);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA1703E1 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1703E1()
-        {
-            Given_Instruction(0xAA1703E1);
             Expect_Code("@@@");
         }
 
