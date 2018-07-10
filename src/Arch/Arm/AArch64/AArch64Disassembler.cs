@@ -130,6 +130,19 @@ namespace Reko.Arch.Arm.AArch64
                         shiftCode = Opcode.lsl;
                         shiftAmount = ImmediateOperand.Int32(16 * n);
                         break;
+                    case 'i': // code + immediate 
+                        n = ReadUnsignedBitField(wInstr, format, ref i);
+                        switch (n)
+                        {
+                        case 0: shiftCode = Opcode.lsl; break;
+                        case 1: shiftCode = Opcode.lsr; break;
+                        case 2: shiftCode = Opcode.asr; break;
+                        case 3: shiftCode = Opcode.ror;  break;
+                        }
+                        Expect(',', format, ref i);
+                        n = ReadUnsignedBitField(wInstr, format, ref i);
+                        shiftAmount = ImmediateOperand.Int32(n);
+                        break;
                     default:
                         NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode} shift", wInstr);
                         break;
@@ -495,7 +508,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid),
                 invalid,
                 Mask(22, 1,
-                    Instr(Opcode.movz, "* - 32 bit variant"),
+                    Instr(Opcode.movz, "W0:5,U5:16w sh21:2"),
                     invalid),
                 Mask(22, 1,
                     Instr(Opcode.movk, "W0:5,U5:16h sh21:2"),
@@ -503,7 +516,7 @@ namespace Reko.Arch.Arm.AArch64
 
                 Instr(Opcode.movn, "* - 64 bit variant"),
                     invalid,
-                Instr(Opcode.movz, "* - 64 bit variant"),
+                Instr(Opcode.movz, "X0:5,U5:16l sh21:2"),
                 Instr(Opcode.movk, "X0:5,U5:16h sh21:2"));
 
 
@@ -618,6 +631,88 @@ namespace Reko.Arch.Arm.AArch64
                     UncondBranchReg),
                 invalid);
 
+            Decoder LogicalShiftedRegister;
+            {
+                LogicalShiftedRegister = Mask(31, 1,
+                    Select("15:1", n => n == 1,
+                        invalid,
+                        Mask("29:2:21:1",
+                            Instr(Opcode.and, "*shifted register, 32-bit"),
+                            Instr(Opcode.bic, "*shifted register, 32-bit"),
+                            Select("22:2:10:6:5:5", n => n == 0x1F,
+                                Instr(Opcode.mov, "W0:5,W16:5 si22:2,10:6"),
+                                Instr(Opcode.orr, "W0:5,W5:5,W16:5 si22:2,10:6")),
+                            Instr(Opcode.orn, "*shifted register, 32-bit"),
+
+                            Instr(Opcode.eor, "*shifted register, 32-bit"),
+                            Instr(Opcode.eon, "*shifted register, 32-bit"),
+                            Instr(Opcode.ands, "*shifted register, 32-bit"),
+                            Instr(Opcode.bics, "*shifted register, 32-bit"))),
+                    Mask("29:2:21:1",
+                        Instr(Opcode.and, "*shifted register, 64-bit"),
+                        Instr(Opcode.bic, "*shifted register, 64-bit"),
+                        Select("22:2:10:6:5:5", n => n == 0x1F,
+                            Instr(Opcode.mov, "X0:5,X16:5 si22:2,10:6"),
+                            Instr(Opcode.orr, "X0:5,X5:5,X16:5 si22:2,10:6")),
+                        Instr(Opcode.orn, "*shifted register, 64-bit"),
+
+                        Instr(Opcode.eor, "*shifted register, 64-bit"),
+                        Instr(Opcode.eon, "*shifted register, 64-bit"),
+                        Instr(Opcode.ands, "*shifted register, 64-bit"),
+                        Instr(Opcode.bics, "*shifted register, 64-bit")));
+            }
+            var AddSubShiftedRegister = Nyi("AddSubShiftedRegister");
+            var AddSubExtendedRegister = Nyi("AddSubExtendedRegister");
+            var DataProcessing3Source = Nyi("DataProcessing3Source");
+
+            Decoder DataProcessingReg;
+            {
+                DataProcessingReg =  Mask(28, 1,         // op1
+                    Mask(21, 0xF,           // op2
+                        LogicalShiftedRegister,
+                        LogicalShiftedRegister,
+                        LogicalShiftedRegister,
+                        LogicalShiftedRegister,
+
+                        LogicalShiftedRegister,
+                        LogicalShiftedRegister,
+                        LogicalShiftedRegister,
+                        LogicalShiftedRegister,
+
+                        AddSubShiftedRegister,
+                        AddSubExtendedRegister,
+                        AddSubShiftedRegister,
+                        AddSubExtendedRegister,
+
+                        AddSubShiftedRegister,
+                        AddSubExtendedRegister,
+                        AddSubShiftedRegister,
+                        AddSubExtendedRegister),
+                    Mask(21, 0xF,           // op1 = 1, op2
+                        Nyi("AddSubWithCarry"),
+                        invalid,
+                        Mask(11, 1,         // op1 = 1, op2 = 2,
+                            Nyi("ConditionalCompareReg"),
+                            Nyi("ConditionalCompareImm")),
+                        invalid,
+
+                        Nyi("ConditionalSelect"),
+                        invalid,
+                        Mask(30, 1,         // op1 = 1, op2 = 6, op0
+                            Nyi("DataProcessing 2 source"),
+                            Nyi("DataProcessing 1 source")),
+                        invalid,
+
+                        DataProcessing3Source,
+                        DataProcessing3Source,
+                        DataProcessing3Source,
+                        DataProcessing3Source,
+
+                        DataProcessing3Source,
+                        DataProcessing3Source,
+                        DataProcessing3Source,
+                        DataProcessing3Source));
+            }
             rootDecoder = new MaskDecoder(25, 0x0F,
                 invalid,
                 invalid,
@@ -625,7 +720,7 @@ namespace Reko.Arch.Arm.AArch64
                 invalid,
 
                 LoadsAndStores,
-                Nyi("DataProcessingReg"),
+                DataProcessingReg,
                 LoadsAndStores,
                 Nyi("DataProcessingScalarFpAdvancedSimd"),
                 

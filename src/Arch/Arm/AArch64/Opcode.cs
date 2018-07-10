@@ -61,5 +61,13 @@ namespace Reko.Arch.Arm.AArch64
         ldr,
         str,
         prfm,
+        bic,
+        orn,
+        eon,
+        bics,
+        lsr,
+        asr,
+        ror,
+        mov,
     }
 }

@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ldp()
         {
             Given_Instruction(0x2D646C2F);
-            Expect_Code("ldp\ts46,s59,[x1,-#&E0]");
+            Expect_Code("ldp\ts47,s59,[x1,-#&E0]");
         }
 
         [Test]
@@ -163,76 +163,32 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldr\tx2,[x2,#&FC8]");
         }
 
-        // An AArch64 decoder for the instruction AA0103F4 (DataProcessingReg) has not been implemented yet.
         [Test]
-        public void AArch64Dis_AA0103F4()
+        public void AArch64Dis_mov_reg64()
         {
             Given_Instruction(0xAA0103F4);
-            Expect_Code("@@@");
+            Expect_Code("mov\tx20,x1");
         }
 
-        // An AArch64 decoder for the instruction B0000001 (PC-Rel addressing) has not been implemented yet.
         [Test]
-        public void AArch64Dis_B0000001()
+        public void AArch64Dis_adrp_00001()
         {
             Given_Instruction(0xB0000001);
-            Expect_Code("@@@");
+            Expect_Code("adrp\tx1,#&1000");
         }
 
-        // An AArch64 decoder for the instruction 2A0003F5 (DataProcessingReg) has not been implemented yet.
         [Test]
-        public void AArch64Dis_2A0003F5()
+        public void AArch64Dis_mov_reg32()
         {
             Given_Instruction(0x2A0003F5);
-            Expect_Code("@@@");
+            Expect_Code("mov\tw21,w0");
         }
 
-        // An AArch64 decoder for the instruction 528000C0 (Unknown format character '*' decoding movz) has not been implemented yet.
         [Test]
-        public void AArch64Dis_528000C0()
+        public void AArch64Dis_movz_imm32()
         {
             Given_Instruction(0x528000C0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction B0000013 (PC-Rel addressing) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_B0000013()
-        {
-            Given_Instruction(0xB0000013);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction AA1303E0 (DataProcessingReg) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_AA1303E0()
-        {
-            Given_Instruction(0xAA1303E0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 52800000 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_52800000()
-        {
-            Given_Instruction(0x52800000);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D00000E1 (PC-Rel addressing) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D00000E1()
-        {
-            Given_Instruction(0xD00000E1);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D2900000 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D2900000()
-        {
-            Given_Instruction(0xD2900000);
-            Expect_Code("@@@");
+            Expect_Code("movz\tw0,#6");
         }
 
         // An AArch64 decoder for the instruction B9800033 (LoadsAndStores) has not been implemented yet.
@@ -434,14 +390,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction D2900002 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D2900002()
-        {
-            Given_Instruction(0xD2900002);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 528000A2 (Unknown format character '*' decoding movz) has not been implemented yet.
         [Test]
         public void AArch64Dis_528000A2()
@@ -458,15 +406,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction D2800000 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D2800000()
-        {
-            Given_Instruction(0xD2800000);
-            Expect_Code("@@@");
-        }
-
-
         // An AArch64 decoder for the instruction AA0003E2 (DataProcessingReg) has not been implemented yet.
         [Test]
         public void AArch64Dis_AA0003E2()
@@ -480,14 +419,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_52800021()
         {
             Given_Instruction(0x52800021);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D00000E0 (PC-Rel addressing) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D00000E0()
-        {
-            Given_Instruction(0xD00000E0);
             Expect_Code("@@@");
         }
 
@@ -511,22 +442,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_1A9F17E0()
         {
             Given_Instruction(0x1A9F17E0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D280001D (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D280001D()
-        {
-            Given_Instruction(0xD280001D);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D280001E (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D280001E()
-        {
-            Given_Instruction(0xD280001E);
             Expect_Code("@@@");
         }
 
@@ -639,14 +554,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_B4000194()
         {
             Given_Instruction(0xB4000194);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D2800013 (Unknown format character '*' decoding movz) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D2800013()
-        {
-            Given_Instruction(0xD2800013);
             Expect_Code("@@@");
         }
 
