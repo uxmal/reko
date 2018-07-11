@@ -373,5 +373,12 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xA9446BB9);
             Expect_Code("ldp\tx25,x26,[x29,#&20]");
         }
+
+        [Test]
+        public void AArch64Dis_ldp_post()
+        {
+            Given_Instruction(0xA8C17BFD);
+            Expect_Code("ldp\tx29,x30,[x31],#&8");
+        }
     }
 }

@@ -38,6 +38,7 @@ namespace Reko.Arch.Arm.AArch64
         public Opcode IndexExtend;
         public int IndexShift;
         public bool PreIndex;
+        public bool PostIndex;
 
         public MemoryOperand(PrimitiveType dt)  : base(dt)
         {
@@ -49,6 +50,10 @@ namespace Reko.Arch.Arm.AArch64
             writer.WriteString(Base.Name);
             if (Offset != null && !Offset.IsIntegerZero)
             {
+                if (PostIndex)
+                {
+                    writer.WriteChar(']');
+                }
                 writer.WriteChar(',');
                 var off = Offset.ToInt32();
                 if (off < 0)
@@ -74,7 +79,10 @@ namespace Reko.Arch.Arm.AArch64
                     }
                 }
             }
-            writer.WriteChar(']');
+            if (!PostIndex)
+            {
+                writer.WriteChar(']');
+            }
             if (PreIndex)
             {
                 writer.WriteChar('!');
