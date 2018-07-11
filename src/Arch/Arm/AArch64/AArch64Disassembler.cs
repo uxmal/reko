@@ -228,13 +228,15 @@ namespace Reko.Arch.Arm.AArch64
             Expect(',', format, ref i);
             var dt = ReadBitSize(format, ref i);
             Expect(']', format, ref i);
+            var preIndex = PeekAndDiscard('!', format, ref i);
             return new MemoryOperand(dt)
             {
                 Base = regBase,
                 Offset = offset,
                 Index = regIndex,
                 IndexExtend = extend,
-                IndexShift = amount
+                IndexShift = amount,
+                PreIndex = preIndex,
             };
         }
 
@@ -286,6 +288,7 @@ namespace Reko.Arch.Arm.AArch64
             case 'h': return PrimitiveType.Word16;
             case 'w': return PrimitiveType.Word32;
             case 'l': return PrimitiveType.Word64;
+            case 'q': return PrimitiveType.Word128;
             }
             NotYetImplemented($"Unknown bit size format character '{format[i - 1]}'", 0);
             throw new NotImplementedException();
@@ -511,9 +514,33 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Opcode.ldp, "S0:5,S10:5,[X5:5,I15:7<2l,l]"))),
 
                     Nyi("LdStRegPairOffset - 01"),
-                    Nyi("LdStRegPairOffset - 10"),
+                    Mask(26, 1, // V
+                        Mask(22, 1,  // L
+                            Instr(Opcode.stp, "X0:5,X10:5,[X5:5,I15:7<2l,q]"),
+                            Instr(Opcode.ldp, "X0:5,X10:5,[X5:5,I15:7<2l,q]")),
+                        Mask(22, 1,  // L
+                            Instr(Opcode.stp, "*SIMD&FP - 128bit"),
+                            Instr(Opcode.ldp, "*SIMD&FP - 128bit"))),
                     invalid);
             }
+
+            Decoder LdStRegPairPre;
+            {
+                LdStRegPairPre = Mask(30, 3,     // opc
+                    Nyi("LdStRegPairPre opc=0b00"),
+                    Nyi("LdStRegPairPre opc=0b01"),
+                    Mask(26, 1, // V
+                        Mask(22, 1, // L
+                            Instr(Opcode.stp, "X0:5,X10:5,[X5:5,I15:7<2l,q]!"),
+                            Instr(Opcode.ldp, "*SIMD&FP - 64bit")),
+                        Mask(22, 1, // L
+                            Instr(Opcode.stp, "*SIMD&FP - 128bit"),
+                            Instr(Opcode.ldp, "*SIMD&FP - 128bit"))),
+                    Nyi("LdStRegPairPre opc=0b11"));
+            }
+
+            Decoder LdStNoallocatePair = Nyi("LdStNoallocatePair");
+
             Decoder LoadsAndStores;
             {
                 LoadsAndStores = new MaskDecoder(31, 1,
@@ -535,10 +562,10 @@ namespace Reko.Arch.Arm.AArch64
                             invalid,
                             invalid),
                         new MaskDecoder(23, 3,      // op0 = 0, op1 = 2
-                            Nyi("LdStNoallocatePair"),
+                            LdStNoallocatePair,
                             Nyi("LdStRegPairPost"),
                             LdStRegPairOffset,
-                            Nyi("LdStRegPairPre")),
+                            LdStRegPairPre),
                         Mask(23, 3, // op0 = 0, op1 = 3
                             Nyi("LdSt op0 = 0, op1 = 3, op3 = 0"),
                             Nyi("LdSt op0 = 0, op1 = 3, op3 = 1"),
@@ -547,7 +574,11 @@ namespace Reko.Arch.Arm.AArch64
                     new MaskDecoder(28, 3,          // op0 = 1 
                         Nyi("op1 = 0"),
                         Nyi("op1 = 1"),
-                        Nyi("op1 = 2"),
+                        Mask(23, 3, // op1 = 2 op3
+                            LdStNoallocatePair,
+                            Nyi("loadstore op1=2 op3=1"),
+                            LdStRegPairOffset,
+                            LdStRegPairPre),
                         Mask(24, 1,
                             Mask(21, 1,     // high bit of op4
                                 Nyi("op1 = 3, op3 = 0x, op4=0xxxx"),

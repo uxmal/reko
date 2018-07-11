@@ -226,7 +226,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ubfm\tx28,x20,#0,#&3D");
         }
 
-        // An AArch64 decoder for the instruction FA400B84 (DataProcessingReg) has not been implemented yet.
         [Test]
         public void AArch64Dis_ccmp_imm()
         {
@@ -241,7 +240,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("str\tx0,[x23,#&10]");
         }
 
-        // An AArch64 decoder for the instruction D65F03C0 (Unknown format character '*' decoding ret) has not been implemented yet.
         [Test]
         public void AArch64Dis_ret()
         {
@@ -249,7 +247,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ret\tx30");
         }
 
-        // An AArch64 decoder for the instruction B8356B7F (LoadsAndStores) has not been implemented yet.
         [Test]
         public void AArch64Dis_str_reg()
         {
@@ -313,7 +310,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x39002260);
             Expect_Code("strb\tw0,[x19,#&8]");
         }
-        
+
         [Test]
         public void AArch64Dis_ldr_w32()
         {
@@ -328,7 +325,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("cbnz\tw19,#&FFFCC");
         }
 
-        // An AArch64 decoder for the instruction 54000401 (CondBranchImm) has not been implemented yet.
         [Test]
         public void AArch64Dis_bne1()
         {
@@ -356,6 +352,26 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x54FFFF21);
             Expect_Code("b.ne\t#&FFFE4");
         }
-        
+
+        [Test]
+        public void AArch64Dis_stp_preindex()
+        {
+            Given_Instruction(0xA9B87BFD);
+            Expect_Code("stp\tx29,x30,[x31,-#&40]!");
+        }
+
+        [Test]
+        public void AArch64Dis_stp_w64()
+        {
+            Given_Instruction(0xA90153F3);
+            Expect_Code("stp\tx19,x20,[x31,#&8]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldp_w64()
+        {
+            Given_Instruction(0xA9446BB9);
+            Expect_Code("ldp\tx25,x26,[x29,#&20]");
+        }
     }
 }

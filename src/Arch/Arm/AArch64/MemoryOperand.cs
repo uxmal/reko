@@ -37,6 +37,7 @@ namespace Reko.Arch.Arm.AArch64
         public RegisterStorage Index;
         public Opcode IndexExtend;
         public int IndexShift;
+        public bool PreIndex;
 
         public MemoryOperand(PrimitiveType dt)  : base(dt)
         {
@@ -74,7 +75,10 @@ namespace Reko.Arch.Arm.AArch64
                 }
             }
             writer.WriteChar(']');
-
+            if (PreIndex)
+            {
+                writer.WriteChar('!');
+            }
         }
     }
 }
