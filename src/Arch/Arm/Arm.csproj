@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AArch64\A64Rewriter.cs" />
     <Compile Include="AArch32\A32Disassembler.cs" />
     <Compile Include="AArch32\BarrierOperand.cs" />
     <Compile Include="AArch32\T32Disassembler.Decoder.cs" />

@@ -21,17 +21,13 @@
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Registers64 = Reko.Arch.Arm.AArch64.Registers;
 
 namespace Reko.Arch.Arm
@@ -173,7 +169,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new A64Rewriter(this, rdr, state, binder, host);
         }
 
         public override SortedList<string, int> GetOpcodeNames()
