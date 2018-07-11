@@ -21,6 +21,7 @@
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -28,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using Registers64 = Reko.Arch.Arm.AArch64.Registers;
 
 namespace Reko.Arch.Arm
@@ -179,7 +181,7 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-                return null;
+            return null;
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -207,7 +209,12 @@ namespace Reko.Arch.Arm
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -217,7 +224,16 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = Registers.ByName["pstate"];
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

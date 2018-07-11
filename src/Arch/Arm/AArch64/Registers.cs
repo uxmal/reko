@@ -42,6 +42,7 @@ namespace Reko.Arch.Arm.AArch64
 
         public static readonly RegisterStorage sp;
         public static readonly RegisterStorage wsp;
+        public static readonly RegisterStorage pstate;
         public static readonly RegisterStorage fpcr;
         public static readonly RegisterStorage fpsr;
 
@@ -76,6 +77,7 @@ namespace Reko.Arch.Arm.AArch64
             sp = new RegisterStorage("sp", 64, 0, PrimitiveType.Word64);
             wsp = new RegisterStorage("wsp", 64, 0, PrimitiveType.Word32);
 
+            pstate = new RegisterStorage("pstate", 65, 0, PrimitiveType.Word32);
             fpcr = new RegisterStorage("fpcr", 65, 0, PrimitiveType.Word32);
             fpsr = new RegisterStorage("fpsr", 66, 0, PrimitiveType.Word32);
 
@@ -90,6 +92,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     sp,
                     wsp,
+                    pstate,
                     fpcr,
                     fpsr,
                 })
