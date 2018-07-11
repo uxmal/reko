@@ -84,5 +84,11 @@ namespace Reko.Arch.Arm.AArch64
         sxtx,
         ccmp,
         ccmn,
+        nop,
+        yield,
+        wfi,
+        wfe,
+        sev,
+        sevl,
     }
 }

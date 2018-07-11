@@ -219,20 +219,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("cbz\tx1,#&100268");
         }
 
-        // An AArch64 decoder for the instruction D37DF29C (Bitfield) has not been implemented yet.
         [Test]
-        public void AArch64Dis_D37DF29C()
+        public void AArch64Dis_ubfm()
         {
             Given_Instruction(0xD37DF29C);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction D37FFA99 (Bitfield) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D37FFA99()
-        {
-            Given_Instruction(0xD37FFA99);
-            Expect_Code("@@@");
+            Expect_Code("ubfm\tx28,x20,#0,#&3D");
         }
 
         // An AArch64 decoder for the instruction FA400B84 (DataProcessingReg) has not been implemented yet.
@@ -240,7 +231,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ccmp_imm()
         {
             Given_Instruction(0xFA400B84);
-            Expect_Code("ccmp\tx28,#0,#4,Eq");
+            Expect_Code("ccmp\tx28,#0,#4,EQ");
         }
 
         [Test]
@@ -248,14 +239,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0xF9000AE0);
             Expect_Code("str\tx0,[x23,#&10]");
-        }
-
-        // An AArch64 decoder for the instruction D37EF415 (Bitfield) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_D37EF415()
-        {
-            Given_Instruction(0xD37EF415);
-            Expect_Code("@@@");
         }
 
         // An AArch64 decoder for the instruction D65F03C0 (Unknown format character '*' decoding ret) has not been implemented yet.
@@ -274,12 +257,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("str\tw31,[x27,x21]");
         }
 
-        // An AArch64 decoder for the instruction D503201F (System) has not been implemented yet.
         [Test]
-        public void AArch64Dis_D503201F()
+        public void AArch64Dis_nop()
         {
             Given_Instruction(0xD503201F);
-            Expect_Code("@@@");
+            Expect_Code("nop");
         }
 
 
@@ -354,12 +336,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("b.ne\t#&100080");
         }
 
-        // An AArch64 decoder for the instruction F8737AA3 (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_F8737AA3()
+        public void AArch64Dis_ldr_reg_shift()
         {
             Given_Instruction(0xF8737AA3);
-            Expect_Code("@@@");
+            Expect_Code("ldr\tx3,[x21,x19,lsl,#3]");
         }
 
         [Test]

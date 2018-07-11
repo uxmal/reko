@@ -491,7 +491,14 @@ namespace Reko.Arch.Arm.AArch64
                                 Instr(Opcode.ldrsw, "W0:5,[X5:5,R16:5,w]"),
                                 invalid),
                             Nyi("LoadStoreRegisterRegOff sz = 0b10 V = 1")),
-                        Nyi("*LoadStoreRegisterRegOff sz = 0b11")));
+                        Mask(26, 1, // LoadStoreRegisterRegOff sz = 0b11
+                            Mask(22, 3,
+                                Instr(Opcode.str, "X0:5,[X5:5,R16:5,l]"),
+                                Instr(Opcode.ldr, "X0:5,[X5:5,R16:5,l]"),
+                                Instr(Opcode.ldrsw, "X0:5,[X5:5,R16:5,l]"),
+                                invalid),
+                            Nyi("LoadStoreRegisterRegOff sz = 0b11 V = 1"))));
+
             }
 
             Decoder LdStRegPairOffset;
@@ -600,7 +607,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid),
 
                 Instr(Opcode.movn, "* - 64 bit variant"),
-                    invalid,
+                invalid,
                 Instr(Opcode.movz, "X0:5,U5:16l sh21:2"),
                 Instr(Opcode.movk, "X0:5,U5:16h sh21:2"));
 
@@ -619,7 +626,7 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
 
                         invalid,
-                        invalid,
+                        Instr(Opcode.Invalid, "*BOGOTRON"),
                         invalid,
                         invalid),
                     Mask(29, 7,
@@ -630,7 +637,7 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Opcode.sbfm, "64-bit variant"),
                         Instr(Opcode.bfm, "64-bit variant"),
-                        Instr(Opcode.ubfm, "X0:5,X5:5,Ul10w,U16:6h"),
+                        Instr(Opcode.ubfm, "X0:5,X5:5,Ul10l,U16:6h"),
                         invalid));
             }
             Decoder Extract = Nyi("Extract");
@@ -713,7 +720,72 @@ namespace Reko.Arch.Arm.AArch64
                 invalid,
                 invalid);
 
-            var System = Nyi("System");
+            var System = Mask(19, 7,  // L:op0
+                Mask(16, 7,  // System L:op0 = 0b000
+                    Nyi("System L:op0 = 0b000 op1=0b000"),
+                    Nyi("System L:op0 = 0b000 op1=0b001"),
+                    Nyi("System L:op0 = 0b000 op1=0b010"),
+                    Mask(12, 0xF, // System L:op0 = 0b000 op1=0b011
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0000"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0001"),
+                        Mask(8, 0xF, // System L:op0 = 0b000 op1=0b011 crN=0010 crM
+                            Mask(5,7, // System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2
+                                Select("0:5", n => n == 0x1F, Instr(Opcode.nop, ""), invalid),
+                                Select("0:5", n => n == 0x1F, Instr(Opcode.yield, "*"), invalid),
+                                Select("0:5", n => n == 0x1F, Instr(Opcode.wfe, "*"), invalid),
+                                Select("0:5", n => n == 0x1F, Instr(Opcode.wfi, "*"), invalid),
+
+                                Select("0:5", n => n == 0x1F, Instr(Opcode.sev, "*"), invalid),
+                                Select("0:5", n => n == 0x1F, Instr(Opcode.sevl, "*"), invalid),
+                                Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=110"),
+                                Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=111")),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0001"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0010"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0011"),
+
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0100"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0110"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0101"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0111"),
+
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1000"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1001"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1010"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1011"),
+
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1100"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1101"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1110"),
+                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1111")),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0011"),
+
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0100"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0110"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0101"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0111"),
+
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1000"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1001"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1010"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1011"),
+
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1100"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1101"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1110"),
+                        Nyi("System L:op0 = 0b000 op1=0b011 crN=1111")),
+                    Nyi("System L:op0 = 0b000 op1=0b100"),
+                    Nyi("System L:op0 = 0b000 op1=0b101"),
+                    Nyi("System L:op0 = 0b000 op1=0b110"),
+                    Nyi("System L:op0 = 0b000 op1=0b111")),
+                Nyi("System L:op0 = 0b001"),
+                Nyi("System L:op0 = 0b010"),
+                Nyi("System L:op0 = 0b011"),
+
+                Nyi("System L:op0 = 0b100"),
+                Nyi("System L:op0 = 0b101"),
+                Nyi("System L:op0 = 0b110"),
+                Nyi("System L:op0 = 0b111"));
+
             var ExceptionGeneration = Nyi("ExceptionGeneration");
 
             var BranchesExceptionsSystem = Mask(29, 0x7,
