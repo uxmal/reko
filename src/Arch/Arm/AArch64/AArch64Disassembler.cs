@@ -93,6 +93,8 @@ namespace Reko.Arch.Arm.AArch64
                     break;
                 case 'U':
                     ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
+                    if (op == null)
+                        return Invalid();
                     ops.Add(op);
                     break;
                 case 'I':
@@ -100,8 +102,7 @@ namespace Reko.Arch.Arm.AArch64
                     break;
                 case 'J':
                     // Jump displacement from address of current instruction
-                    n = ReadUnsignedBitField(wInstr, format, ref i);
-                    n = (int)Bits.SignExtend(wInstr, 26);
+                    n = ReadSignedBitField(wInstr, format, ref i);
                     AddressOperand aop = AddressOperand.Create(addr + (n << 2));
                     ops.Add(aop);
                     break;
@@ -534,6 +535,32 @@ namespace Reko.Arch.Arm.AArch64
                 Instr(Opcode.adr, "*"),
                 Instr(Opcode.adrp, "X0:5,I5:19:29:2<12w"));
 
+            Decoder Bitfield;
+            {
+                Bitfield = Mask(22, 1,
+                    Mask(29, 7,
+                        Instr(Opcode.sbfm, "32-bit variant"),
+                        Instr(Opcode.bfm, "32-bit variant"),
+                        Instr(Opcode.ubfm, "32-bit variant"),
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid),
+                    Mask(29, 7,
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        Instr(Opcode.sbfm, "64-bit variant"),
+                        Instr(Opcode.bfm, "64-bit variant"),
+                        Instr(Opcode.ubfm, "X0:5,X5:5,Ul10w,U16:6h"),
+                        invalid));
+            }
+            Decoder Extract = Nyi("Extract");
+
             var DataProcessingImm = new MaskDecoder(23, 0x7,
                 PcRelativeAddressing,
                 PcRelativeAddressing,
@@ -542,8 +569,8 @@ namespace Reko.Arch.Arm.AArch64
 
                 LogicalImmediate,
                 MoveWideImmediate,
-                Nyi("Bitfield"),
-                Nyi("Extract"));
+                Bitfield,
+                Extract);
 
             var UncondBranchImm = Mask(31, 1,
                 Instr(Opcode.b, "J0:26"),
@@ -591,7 +618,13 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
                     invalid));
 
-            var CompareBranchImm = Nyi("CompareBranchImm");
+            var CompareBranchImm = Mask(31, 1, 
+                Mask(24, 1,
+                    Instr(Opcode.cbz, "W0:5,J5:19"),
+                    Instr(Opcode.cbnz, "W0:5,J5:19")),
+                Mask(24, 1,
+                    Instr(Opcode.cbz, "X0:5,J5:19"),
+                    Instr(Opcode.cbnz, "X0:5,J5:19")));
 
             var TestBranchImm = Mask(24, 1,
                 Mask(31, 1,
@@ -671,7 +704,23 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Opcode.ands, "*shifted register, 64-bit"),
                         Instr(Opcode.bics, "*shifted register, 64-bit")));
             }
-            var AddSubShiftedRegister = Nyi("AddSubShiftedRegister");
+            Decoder AddSubShiftedRegister;
+            {
+                AddSubShiftedRegister = Mask(31,1,  // size
+                    Select("15:1", n => n == 1,
+                        invalid,
+                        Mask(29, 3,
+                            Instr(Opcode.add, "W0:5,W5:5,W16:5 si22:2,10:6"),
+                            Instr(Opcode.adds, "W0:5,W5:5,W16:5 si22:2,10:6"),
+                            Instr(Opcode.sub, "W0:5,W5:5,W16:5 si22:2,10:6"),
+                            Instr(Opcode.subs, "W0:5,W5:5,W16:5 si22:2,10:6"))),
+                    Mask(29, 3,
+                        Instr(Opcode.add, "X0:5,X5:5,X16:5 si22:2,10:6"),
+                        Instr(Opcode.adds, "X0:5,X5:5,X16:5 si22:2,10:6"),
+                        Instr(Opcode.sub, "X0:5,X5:5,X16:5 si22:2,10:6"),
+                        Instr(Opcode.subs, "X0:5,X5:5,X16:5 si22:2,10:6")));
+            }
+
             var AddSubExtendedRegister = Nyi("AddSubExtendedRegister");
             var DataProcessing3Source = Nyi("DataProcessing3Source");
 

@@ -70,5 +70,10 @@ namespace Reko.Arch.Arm.AArch64
         ror,
         mov,
         ldrsw,
+        sbfm,
+        bfm,
+        ubfm,
+        cbz,
+        cbnz,
     }
 }

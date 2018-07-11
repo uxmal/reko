@@ -104,9 +104,17 @@ namespace Reko.Arch.Arm.AArch64
             RenderOperand(ops[0], writer, options);
             foreach (var op in ops.Skip(1))
             {
-                writer.WriteString(",");
+                writer.WriteChar(',');
                 RenderOperand(op, writer, options);
             }
+            if (this.shiftCode == Opcode.Invalid)
+                return;
+            if (shiftCode == Opcode.lsl && (shiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
+                return;
+            writer.WriteChar(',');
+            writer.WriteOpcode(shiftCode.ToString());
+            writer.WriteChar(' ');
+            RenderOperand(shiftAmount, writer, options);
         }
 
         private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
