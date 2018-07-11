@@ -212,7 +212,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("add\tx0,x20,x19,lsl #2");
         }
 
-        // An AArch64 decoder for the instruction B4001341 (CompareBranchImm) has not been implemented yet.
         [Test]
         public void AArch64Dis_cbz()
         {
@@ -241,14 +240,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_FA400B84()
         {
             Given_Instruction(0xFA400B84);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 54000A61 (CondBranchImm) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_54000A61()
-        {
-            Given_Instruction(0x54000A61);
             Expect_Code("@@@");
         }
 
@@ -306,7 +297,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldr\tx0,[x0]");
         }
 
-        // An AArch64 decoder for the instruction EB13001F (DataProcessingReg) has not been implemented yet.
         [Test]
         public void AArch64Dis_subs()
         {
@@ -314,23 +304,20 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("subs\tx31,x0,x19");
         }
 
-        // An AArch64 decoder for the instruction 1A9F17E0 (DataProcessingReg) has not been implemented yet.
         [Test]
-        public void AArch64Dis_1A9F17E0()
+        public void AArch64Dis_csinc()
         {
             Given_Instruction(0x1A9F17E0);
-            Expect_Code("@@@");
+            Expect_Code("csinc\tw0,w31,w31,NE");
         }
 
-        // An AArch64 decoder for the instruction 39402260 (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_39402260()
+        public void AArch64Dis_ldrb()
         {
             Given_Instruction(0x39402260);
-            Expect_Code("@@@");
+            Expect_Code("ldrb\tw0,[x19,#&8]");
         }
 
-        // An AArch64 decoder for the instruction 35000140 (CompareBranchImm) has not been implemented yet.
         [Test]
         public void AArch64Dis_cbnz()
         {
@@ -338,12 +325,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("cbnz\tw0,#&100028");
         }
 
-        // An AArch64 decoder for the instruction 39002260 (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_39002260()
+        public void AArch64Dis_strb()
         {
             Given_Instruction(0x39002260);
-            Expect_Code("@@@");
+            Expect_Code("strb\tw0,[x19,#&8]");
         }
         
         [Test]
@@ -362,10 +348,10 @@ namespace Reko.UnitTests.Arch.Arm
 
         // An AArch64 decoder for the instruction 54000401 (CondBranchImm) has not been implemented yet.
         [Test]
-        public void AArch64Dis_54000401()
+        public void AArch64Dis_bne1()
         {
             Given_Instruction(0x54000401);
-            Expect_Code("@@@");
+            Expect_Code("b.ne\t#&100080");
         }
 
         // An AArch64 decoder for the instruction F8737AA3 (LoadsAndStores) has not been implemented yet.
@@ -390,7 +376,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_54FFFF21()
         {
             Given_Instruction(0x54FFFF21);
-            Expect_Code("@@@");
+            Expect_Code("b.ne\t#&FFFE4");
         }
         
     }

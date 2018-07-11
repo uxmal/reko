@@ -41,6 +41,7 @@
         GT,
         LE,
         AL = 0xE,
+        NV = 0xF,
 
     }
 }

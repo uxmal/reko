@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,58 +28,19 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public enum Opcode
+    public class ConditionOperand : MachineOperand
     {
-        Invalid,
 
-        add,
-        sub,
-        adds,
-        subs,
-        lsl,
-        and,
-        orr,
-        eor,
-        ands,
-        b,
-        bl,
-        br,
-        blr,
-        ret,
-        eret,
-        drps,
-        movn,
-        movk,
-        movz,
-        ldp,
-        stp,
-        tbz,
-        tbnz,
-        adrp,
-        adr,
-        strb,
-        ldrb,
-        ldrsb,
-        ldr,
-        str,
-        prfm,
-        bic,
-        orn,
-        eon,
-        bics,
-        lsr,
-        asr,
-        ror,
-        mov,
-        ldrsw,
-        sbfm,
-        bfm,
-        ubfm,
-        cbz,
-        cbnz,
-        csel,
-        csinc,
-        csinv,
-        csneg,
+        public ConditionOperand(ArmCondition cond) : base(PrimitiveType.Byte)
+        {
+            this.Condition = cond;
+        }
+
+        public ArmCondition Condition { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Condition.ToString());
+        }
     }
 }

@@ -97,13 +97,14 @@ namespace Reko.Arch.Arm.AArch64
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(opcode.ToString());
+            int iOp = WriteOpcode(writer);
             if (ops == null || ops.Length == 0)
                 return;
             writer.Tab();
-            RenderOperand(ops[0], writer, options);
-            foreach (var op in ops.Skip(1))
+            RenderOperand(ops[iOp++], writer, options);
+            for (; iOp < ops.Length; ++iOp)
             {
+                var op = ops[iOp];
                 writer.WriteChar(',');
                 RenderOperand(op, writer, options);
             }
@@ -115,6 +116,17 @@ namespace Reko.Arch.Arm.AArch64
             writer.WriteOpcode(shiftCode.ToString());
             writer.WriteChar(' ');
             RenderOperand(shiftAmount, writer, options);
+        }
+
+        private int WriteOpcode(MachineInstructionWriter writer)
+        {
+            if (opcode == Opcode.b && ops[0] is ConditionOperand cop)
+            {
+                writer.WriteOpcode($"b.{cop.Condition.ToString().ToLower()}");
+                return 1;
+            }
+            writer.WriteOpcode(opcode.ToString());
+            return 0;
         }
 
         private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)

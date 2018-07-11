@@ -111,7 +111,11 @@ namespace Reko.Arch.Arm.AArch64
                     // Memory access
                     ops.Add(ReadMemoryAccess(wInstr, format, ref i));
                     break;
-                    
+                case 'C':
+                    // Condition field
+                    var cop = ReadConditionField(wInstr, format, ref i);
+                    ops.Add(new ConditionOperand(cop));
+                    break;
                 case 's':
                     // Shift type
                     switch (format[i++])
@@ -162,6 +166,11 @@ namespace Reko.Arch.Arm.AArch64
                 shiftAmount = shiftAmount
             };
             return instr;
+        }
+
+        private ArmCondition ReadConditionField(uint wInstr, string format, ref int i)
+        {
+            return (ArmCondition) ReadSignedBitField(wInstr, format, ref i);
         }
 
         private MemoryOperand ReadMemoryAccess(uint wInstr, string format, ref int i)
@@ -405,8 +414,8 @@ namespace Reko.Arch.Arm.AArch64
                 LdStRegUImm = Mask(30, 3, // size
                     Mask(26, 1, // V
                         Mask(22, 3,
-                           Instr(Opcode.strb, "*imm"),
-                           Instr(Opcode.ldrb, "*imm"),
+                           Instr(Opcode.strb, "W0:5,[X5:5,U10:12l,l]"),
+                           Instr(Opcode.ldrb, "W0:5,[X5:5,U10:12l,l]"),
                            Instr(Opcode.ldrsb, "*imm 64-bit"),
                            Instr(Opcode.ldrsb, "*imm 32-bit")),
                         Nyi("LdStRegUImm size = 0, V = 1")),
@@ -468,11 +477,15 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("LdStRegPairPost"),
                             LdStRegPairOffset,
                             Nyi("LdStRegPairPre")),
-                        Nyi(" op0 = 0, op1 = 3")),
+                        Mask(23, 3, // op0 = 0, op1 = 3
+                            Nyi("LdSt op0 = 0, op1 = 3, op3 = 0"),
+                            Nyi("LdSt op0 = 0, op1 = 3, op3 = 1"),
+                            LdStRegUImm,
+                            LdStRegUImm)),
                     new MaskDecoder(28, 3,          // op0 = 0 
-                        Nyi("op0 = 0"),
-                        Nyi("op0 = 1"),
-                        Nyi("op0 = 2"),
+                        Nyi("op1 = 0"),
+                        Nyi("op2 = 1"),
+                        Nyi("op3 = 2"),
                         Mask(24, 1,
                             Nyi("op0 = 3, op3 = 0x"),
                             LdStRegUImm)));
@@ -634,7 +647,11 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.tbz, "W0:5,I19:5w,J5:14"),
                     Instr(Opcode.tbnz, "W0:5,I19:5w,J5:14")));
 
-            var CondBranchImm = Nyi("CondBranchImm");
+            var CondBranchImm = Mask("24:1:4:1",
+                Instr(Opcode.b, "C0:4,J5:19"),
+                invalid,
+                invalid);
+
             var System = Nyi("System");
             var ExceptionGeneration = Nyi("ExceptionGeneration");
 
@@ -724,6 +741,35 @@ namespace Reko.Arch.Arm.AArch64
             var AddSubExtendedRegister = Nyi("AddSubExtendedRegister");
             var DataProcessing3Source = Nyi("DataProcessing3Source");
 
+            Decoder ConditionalSelect;
+            {
+                ConditionalSelect = Mask(29, 7,
+                    Mask(10, 3,
+                        Instr(Opcode.csel, "W0:5,W5:5,W16:5,C12:4"),
+                        Instr(Opcode.csinc, "W0:5,W5:5,W16:5,C12:4"),
+                        invalid,
+                        invalid),
+                    invalid,
+                    Mask(10, 3,
+                        Instr(Opcode.csinv, "W0:5,W5:5,W16:5,C12:4"),
+                        Instr(Opcode.csneg, "W0:5,W5:5,W16:5,C12:4"),
+                        invalid,
+                        invalid),
+                    invalid,
+                    Mask(10, 3,
+                        Instr(Opcode.csel, "X0:5,X5:5,X16:5,C12:4"),
+                        Instr(Opcode.csinc, "X0:5,X5:5,X16:5,C12:4"),
+                        invalid,
+                        invalid),
+                    invalid,
+                    Mask(10, 3,
+                        Instr(Opcode.csinv, "X0:5,X5:5,X16:5,C12:4"),
+                        Instr(Opcode.csneg, "X0:5,X5:5,X16:5,C12:4"),
+                        invalid,
+                        invalid),
+                    invalid);
+            }
+
             Decoder DataProcessingReg;
             {
                 DataProcessingReg =  Mask(28, 1,         // op1
@@ -755,7 +801,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("ConditionalCompareImm")),
                         invalid,
 
-                        Nyi("ConditionalSelect"),
+                        ConditionalSelect,
                         invalid,
                         Mask(30, 1,         // op1 = 1, op2 = 6, op0
                             Nyi("DataProcessing 2 source"),
@@ -789,7 +835,7 @@ namespace Reko.Arch.Arm.AArch64
                 BranchesExceptionsSystem,
                 
                 LoadsAndStores,
-                Nyi("DataProcessingReg"),
+                DataProcessingReg,
                 LoadsAndStores,
                 Nyi("DataProcessingScalarFpAdvancedSimd"));
         }
