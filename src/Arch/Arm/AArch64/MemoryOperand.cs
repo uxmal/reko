@@ -34,6 +34,9 @@ namespace Reko.Arch.Arm.AArch64
     {
         public RegisterStorage Base;
         public Constant Offset;
+        public RegisterStorage Index;
+        public Opcode IndexExtend;
+        public int IndexShift;
 
         public MemoryOperand(PrimitiveType dt)  : base(dt)
         {
@@ -54,6 +57,20 @@ namespace Reko.Arch.Arm.AArch64
                 else
                 {
                     writer.WriteFormat("#&{0:X}", off);
+                }
+            }
+            else if (Index != null)
+            {
+                writer.WriteChar(',');
+                writer.WriteString(Index.Name);
+                if (IndexExtend != Opcode.Invalid && (IndexExtend != Opcode.lsl || IndexShift != 0))
+                {
+                    writer.WriteChar(',');
+                    writer.WriteOpcode(IndexExtend.ToString());
+                    if (IndexShift != 0)
+                    {
+                        writer.WriteString($",#{IndexShift}");
+                    }
                 }
             }
             writer.WriteChar(']');

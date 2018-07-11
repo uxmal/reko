@@ -79,5 +79,10 @@ namespace Reko.Arch.Arm.AArch64
         csinc,
         csinv,
         csneg,
+        uxtw,
+        sxtw,
+        sxtx,
+        ccmp,
+        ccmn,
     }
 }

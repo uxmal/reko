@@ -178,7 +178,10 @@ namespace Reko.Arch.Arm.AArch64
             Expect('X', format, ref i);
             int n = ReadUnsignedBitField(wInstr, format, ref i);
             RegisterStorage regBase = Registers.GpRegs64[n];
+            RegisterStorage regIndex = null;
             Constant offset = null;
+            Opcode extend = Opcode.Invalid;
+            int amount = 0;
 
             if (PeekAndDiscard(',', format, ref i))
             {
@@ -191,6 +194,36 @@ namespace Reko.Arch.Arm.AArch64
                     var imm = DecodeImmediateOperand(wInstr, format, ref i);
                     offset = imm.Value;
                 }
+                else if (PeekAndDiscard('R', format, ref i))
+                {
+                    var reg = ReadUnsignedBitField(wInstr, format, ref i);
+                    var opt = (wInstr >> 13) & 7;
+                    
+                    switch (opt)
+                    {
+                    case 2:
+                        regIndex = Registers.GpRegs32[reg];
+                        extend = Opcode.uxtw; break;
+                    case 3:
+                        regIndex = Registers.GpRegs64[reg];
+                        extend = Opcode.lsl; break;
+                    case 6:
+                        regIndex = Registers.GpRegs32[reg];
+                        extend = Opcode.sxtw; break;
+                    case 7:
+                        regIndex = Registers.GpRegs64[reg];
+                        extend = Opcode.sxtx; break;
+                    }
+                    var size = (wInstr >> 30) & 1;
+                    if (size == 0) // 32-bit
+                    {
+                        amount = ((wInstr >> 12) & 1) != 0 ? 2 : 0;
+                    }
+                    else
+                    {
+                        amount = ((wInstr >> 12) & 1) != 0 ? 3 : 0;
+                    }
+                }
             }
             Expect(',', format, ref i);
             var dt = ReadBitSize(format, ref i);
@@ -198,7 +231,10 @@ namespace Reko.Arch.Arm.AArch64
             return new MemoryOperand(dt)
             {
                 Base = regBase,
-                Offset = offset
+                Offset = offset,
+                Index = regIndex,
+                IndexExtend = extend,
+                IndexShift = amount
             };
         }
 
@@ -246,6 +282,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             switch (format[i++])
             {
+            case 'b': return PrimitiveType.Byte;
             case 'h': return PrimitiveType.Word16;
             case 'w': return PrimitiveType.Word32;
             case 'l': return PrimitiveType.Word64;
@@ -439,6 +476,24 @@ namespace Reko.Arch.Arm.AArch64
                             invalid),
                         Nyi("LdStRegUImm size = 3, V = 1")));
             }
+
+            Decoder LoadStoreRegisterRegOff;
+            {
+                LoadStoreRegisterRegOff = Mask(14, 1,
+                    invalid,
+                    Mask(30, 3,
+                        Nyi("*LoadStoreRegisterRegOff sz = 0b00"),
+                        Nyi("*LoadStoreRegisterRegOff sz = 0b01"),
+                        Mask(26, 1, // LoadStoreRegisterRegOff sz = 0b10,
+                            Mask(22, 3,
+                                Instr(Opcode.str, "W0:5,[X5:5,R16:5,w]"),
+                                Instr(Opcode.ldr, "W0:5,[X5:5,R16:5,w]"),
+                                Instr(Opcode.ldrsw, "W0:5,[X5:5,R16:5,w]"),
+                                invalid),
+                            Nyi("LoadStoreRegisterRegOff sz = 0b10 V = 1")),
+                        Nyi("*LoadStoreRegisterRegOff sz = 0b11")));
+            }
+
             Decoder LdStRegPairOffset;
             {
                 LdStRegPairOffset = Mask(30, 3,
@@ -482,12 +537,18 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("LdSt op0 = 0, op1 = 3, op3 = 1"),
                             LdStRegUImm,
                             LdStRegUImm)),
-                    new MaskDecoder(28, 3,          // op0 = 0 
+                    new MaskDecoder(28, 3,          // op0 = 1 
                         Nyi("op1 = 0"),
-                        Nyi("op2 = 1"),
-                        Nyi("op3 = 2"),
+                        Nyi("op1 = 1"),
+                        Nyi("op1 = 2"),
                         Mask(24, 1,
-                            Nyi("op0 = 3, op3 = 0x"),
+                            Mask(21, 1,     // high bit of op4
+                                Nyi("op1 = 3, op3 = 0x, op4=0xxxx"),
+                                Mask(10, 3, // op1 = 3, op3 = 0x, op4=1xxxx
+                                    Nyi("*AtomicMemoryOperations"),
+                                    Nyi("*LoadStoreRegister PAC"),
+                                    LoadStoreRegisterRegOff,
+                                    Nyi("*LoadStoreRegister PAC"))),
                             LdStRegUImm)));
             }
 
@@ -599,12 +660,12 @@ namespace Reko.Arch.Arm.AArch64
                         (3, Select("0:5", n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select("0:5", n => n == 0, Instr(Opcode.blr, "*X5:5"), invalid)),
+                        (0, Select("0:5", n => n == 0, Instr(Opcode.blr, "X5:5"), invalid)),
                         (2, Select("0:5", n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
                         (3, Select("0:5", n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select("0:5", n => n == 0, Instr(Opcode.ret, "*X5:5"), invalid)),
+                        (0, Select("0:5", n => n == 0, Instr(Opcode.ret, "X5:5"), invalid)),
                         (2, Select("0:5", n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
                         (3, Select("0:5", n => n == 0x1F, Nyi("RETAA,RETAAZ... Key B"), invalid))),
                     invalid,
@@ -770,6 +831,22 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
             }
 
+            Decoder ConditionalCompareImm;
+            {
+
+                ConditionalCompareImm = Select("10:1:4:1", n => n != 0,
+                    invalid,
+                    Mask(29, 7,
+                        invalid,
+                        Instr(Opcode.ccmn, "* 32=bit"),
+                        invalid,
+                        Instr(Opcode.ccmp, "* 32-bit"),
+                        invalid,
+                        Instr(Opcode.ccmn, "* - 64-bit"),
+                        invalid,
+                        Instr(Opcode.ccmp, "X5:5,U16:1l,U0:4b,C12:4")));
+            }
+
             Decoder DataProcessingReg;
             {
                 DataProcessingReg =  Mask(28, 1,         // op1
@@ -798,7 +875,7 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         Mask(11, 1,         // op1 = 1, op2 = 2,
                             Nyi("ConditionalCompareReg"),
-                            Nyi("ConditionalCompareImm")),
+                            ConditionalCompareImm),
                         invalid,
 
                         ConditionalSelect,

@@ -237,10 +237,10 @@ namespace Reko.UnitTests.Arch.Arm
 
         // An AArch64 decoder for the instruction FA400B84 (DataProcessingReg) has not been implemented yet.
         [Test]
-        public void AArch64Dis_FA400B84()
+        public void AArch64Dis_ccmp_imm()
         {
             Given_Instruction(0xFA400B84);
-            Expect_Code("@@@");
+            Expect_Code("ccmp\tx28,#0,#4,Eq");
         }
 
         [Test]
@@ -260,18 +260,18 @@ namespace Reko.UnitTests.Arch.Arm
 
         // An AArch64 decoder for the instruction D65F03C0 (Unknown format character '*' decoding ret) has not been implemented yet.
         [Test]
-        public void AArch64Dis_D65F03C0()
+        public void AArch64Dis_ret()
         {
             Given_Instruction(0xD65F03C0);
-            Expect_Code("@@@");
+            Expect_Code("ret\tx30");
         }
 
         // An AArch64 decoder for the instruction B8356B7F (LoadsAndStores) has not been implemented yet.
         [Test]
-        public void AArch64Dis_B8356B7F()
+        public void AArch64Dis_str_reg()
         {
             Given_Instruction(0xB8356B7F);
-            Expect_Code("@@@");
+            Expect_Code("str\tw31,[x27,x21]");
         }
 
         // An AArch64 decoder for the instruction D503201F (System) has not been implemented yet.
@@ -362,18 +362,15 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction D63F0060 (Unknown format character '*' decoding blr) has not been implemented yet.
         [Test]
-        public void AArch64Dis_D63F0060()
+        public void AArch64Dis_blr()
         {
             Given_Instruction(0xD63F0060);
-            Expect_Code("@@@");
+            Expect_Code("blr\tx3");
         }
 
-
-        // An AArch64 decoder for the instruction 54FFFF21 (CondBranchImm) has not been implemented yet.
         [Test]
-        public void AArch64Dis_54FFFF21()
+        public void AArch64Dis_bne_backward()
         {
             Given_Instruction(0x54FFFF21);
             Expect_Code("b.ne\t#&FFFE4");
