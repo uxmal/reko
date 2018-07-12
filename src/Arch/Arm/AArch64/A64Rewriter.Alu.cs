@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -117,6 +118,14 @@ namespace Reko.Arch.Arm.AArch64
             var imm = ((ImmediateOperand)instr.ops[1]).Value;
             var shift = ((ImmediateOperand)instr.shiftAmount).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
+        }
+
+        private void RewriteMovz()
+        {
+            var dst = RewriteOp(instr.ops[0]);
+            var imm = ((ImmediateOperand)instr.ops[1]).Value;
+            var shift = ((ImmediateOperand)instr.shiftAmount).Value;
+            m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
         }
 
         private Expression RewriteEffectiveAddress(MemoryOperand mem)

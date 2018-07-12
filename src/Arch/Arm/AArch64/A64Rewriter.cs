@@ -86,6 +86,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.ldrsw: RewriteLdr(PrimitiveType.Int32); break;
                 case Opcode.mov: RewriteUnary(n => n); break;
                 case Opcode.movk: RewriteMovk(); break;
+                case Opcode.movz: RewriteMovz(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.str: RewriteStr(null); break;
