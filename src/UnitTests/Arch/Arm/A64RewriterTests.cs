@@ -168,15 +168,20 @@ namespace Reko.UnitTests.Arch.Arm
             {
                 BuildTest("111 100100 0 010101 010101 00100 00111");
                 AssertCode(     // ands\tx7,x4,#&FFFFF801
-                    "0|L--|00100000(4): 2 instructions",
-                    "1|L--|x7 = x4 & 0xFFFFF801FFFFF801");
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|x7 = x4 & 0xFFFFF801FFFFF801",
+                    "2|L--|NZ = cond(x7)",
+                    "3|L--|C = false",
+                    "4|L--|V = false");
             }
 
             [Test]
             public void A64Rw_movk_imm()
             {
                 BuildTest("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
-                AssertCode("movk\tx7,#&AAA4");
+                AssertCode(     // movk\tx7,#&AAA4
+                    "0|L--|00100000(4): 1 instructions",
+                    "1|L--|x7 = DPB(x7, 0xAAA4, 0)");
             }
 
             [Test]
@@ -190,14 +195,18 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_tbz()
             {
                 Given_Instruction(0x36686372);
-                AssertCode("tbz\tw18,#&D,#&100C6C");
+                AssertCode(     // tbz\tw18,#&D,#&100C6C
+                    "0|T--|00100000(4): 1 instructions",
+                    "1|T--|if ((w18 & 0x00002000) == 0x00000000) branch 00100C6C");
             }
 
             [Test]
             public void A64Rw_adrp()
             {
                 Given_Instruction(0xF00000E2);
-                AssertCode("adrp\tx2,#&1F000");
+                AssertCode(     // adrp\tx2,#&1F000
+                    "0|L--|00100000(4): 1 instructions",
+                    "1|L--|x2 = 000000000011F000");
             }
 
             [Test]
@@ -222,7 +231,9 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_adrp_00001()
             {
                 Given_Instruction(0xB0000001);
-                AssertCode("adrp\tx1,#&1000");
+                AssertCode(     // adrp\tx1,#&1000
+                    "0|L--|00100000(4): 1 instructions",
+                    "1|L--|x1 = 0000000000101000");
             }
 
             [Test]
@@ -238,7 +249,9 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_movz_imm32()
             {
                 Given_Instruction(0x528000C0);
-                AssertCode("movz\tw0,#6");
+                AssertCode(     // movz\tw0,#6
+                    "0|L--|00100000(4): 1 instructions",
+                    "1|L--|w0 = 0x00000006");
             }
 
             [Test]
@@ -289,7 +302,12 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_ccmp_imm()
             {
                 Given_Instruction(0xFA400B84);
-                AssertCode("ccmp\tx28,#0,#4,EQ");
+                AssertCode(     // ccmp\tx28,#0,#4,EQ
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|v3 = Test(NE,Z)",
+                    "2|L--|NZCV = 0x04",
+                    "3|T--|if (v3) branch 00100004",
+                    "4|L--|NZCV = cond(x28 - 0x0000000000000000)");
             }
 
             [Test]
@@ -361,7 +379,9 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_csinc()
             {
                 Given_Instruction(0x1A9F17E0);
-                AssertCode("csinc\tw0,w31,w31,NE");
+                AssertCode(     // csinc\tw0,w31,w31,NE
+                    "0|L--|00100000(4): 1 instructions",
+                    "1|L--|w0 = (word32) Test(EQ,Z)");
             }
 
             [Test]
@@ -405,7 +425,9 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_cbnz_negative_offset()
             {
                 Given_Instruction(0x35FFFE73);
-                AssertCode("cbnz\tw19,#&FFFCC");
+                AssertCode(     // cbnz\tw19,#&FFFCC
+                    "0|T--|00100000(4): 1 instructions",
+                    "1|T--|if (w19 != 0x00000000) branch 000FFFCC");
             }
 
             [Test]

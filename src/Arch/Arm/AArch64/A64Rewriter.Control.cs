@@ -84,5 +84,15 @@ namespace Reko.Arch.Arm.AArch64
                 m.Goto(binder.EnsureRegister(reg));
             }
         }
+
+        private void RewriteTb(Func<Expression,Expression> fn)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            var reg = RewriteOp(instr.ops[0]);
+            int sh = ((ImmediateOperand)instr.ops[1]).Value.ToInt32();
+            var mask = Constant.Create(reg.DataType, 1ul << sh);
+            var dst = ((AddressOperand)instr.ops[2]).Address;
+            m.Branch(fn(m.And(reg, mask)), dst, RtlClass.ConditionalTransfer);
+        }
     }
 }

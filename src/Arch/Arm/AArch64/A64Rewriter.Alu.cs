@@ -18,8 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -31,13 +33,23 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
-        private void RewriteBinary(Func<Expression,Expression,Expression> fn, bool setFlags)
+        private void RewriteAdrp()
+        {
+            var dst = RewriteOp(instr.ops[0]);
+            var imm = ((ImmediateOperand)instr.ops[1]).Value;
+            var wBase = instr.Address.ToLinear();
+            wBase &= ~0xFFFul;        // Mask out lowest 12 bits.
+            wBase = (ulong)((long)wBase + imm.ToInt64());
+            m.Assign(dst, Address.Ptr64(wBase));
+        }
+
+        private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression> setFlags = null)
         {
             var dst = RewriteOp(instr.ops[0]);
             var left = RewriteOp(instr.ops[1]);
             var right = RewriteOp(instr.ops[2]);
             if (instr.shiftCode != Opcode.Invalid &&
-                (instr.shiftCode != Opcode.lsl || 
+                (instr.shiftCode != Opcode.lsl ||
                 !(instr.shiftAmount is ImmediateOperand imm) ||
                 !imm.Value.IsIntegerZero))
             {
@@ -49,11 +61,37 @@ namespace Reko.Arch.Arm.AArch64
                 }
             }
             m.Assign(dst, fn(left, right));
-            if (setFlags)
+            if (setFlags != null)
             {
-                var nzcv = NZCV();
-                m.Assign(nzcv, m.Cond(dst));
+                setFlags(m.Cond(dst));
             }
+        }
+
+        private void RewriteCcmp()
+        {
+            var nzcv = NZCV();
+            var tmp = binder.CreateTemporary(PrimitiveType.Bool);
+            var cond = Invert(((ConditionOperand)instr.ops[3]).Condition);
+            m.Assign(tmp, this.TestCond(cond));
+            m.Assign(nzcv, RewriteOp(instr.ops[2]));
+            m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+            var left = RewriteOp(instr.ops[0]);
+            var right = RewriteOp(instr.ops[1]);
+            m.Assign(nzcv, m.Cond(m.ISub(left, right)));
+        }
+
+        private void RewriteCsinc()
+        {
+            var dst = RewriteOp(instr.ops[0]);
+            var rTrue = ((RegisterOperand)instr.ops[1]).Register;
+            var rFalse = ((RegisterOperand)instr.ops[2]).Register;
+            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            if (rTrue.Number == 31 && rFalse.Number == 31)
+            {
+                m.Assign(dst, m.Cast(dst.DataType, TestCond(Invert(cond))));
+                return;
+            }
+            NotImplementedYet();
         }
 
         private void RewriteLdr(DataType dt)
@@ -71,6 +109,14 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(tmp, m.Mem(dt, ea));
                 m.Assign(dst, m.Cast(dst.DataType, tmp));
             }
+        }
+
+        private void RewriteMovk()
+        {
+            var dst = RewriteOp(instr.ops[0]);
+            var imm = ((ImmediateOperand)instr.ops[1]).Value;
+            var shift = ((ImmediateOperand)instr.shiftAmount).Value;
+            m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
         }
 
         private Expression RewriteEffectiveAddress(MemoryOperand mem)

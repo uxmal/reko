@@ -68,26 +68,32 @@ namespace Reko.Arch.Arm.AArch64
                     rtlc = RtlClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.add: RewriteBinary(m.IAdd, false); break;
-                case Opcode.adds: RewriteBinary(m.IAdd, true); break;
-                case Opcode.and: RewriteBinary(m.And, false); break;
-                case Opcode.ands: RewriteBinary(m.And, true); break;
+                case Opcode.add: RewriteBinary(m.IAdd); break;
+                case Opcode.adds: RewriteBinary(m.IAdd, this.NZCV); break;
+                case Opcode.adrp: RewriteAdrp(); break;
+                case Opcode.and: RewriteBinary(m.And); break;
+                case Opcode.ands: RewriteBinary(m.And, this.NZ00); break;
                 case Opcode.b: RewriteB(); break;
                 case Opcode.bl: RewriteBl(); break;
                 case Opcode.blr: RewriteBlr(); break;
                 case Opcode.br: RewriteBr(); break;
                 case Opcode.cbnz: RewriteCb(m.Ne0); break;
                 case Opcode.cbz: RewriteCb(m.Eq0); break;
+                case Opcode.ccmp: RewriteCcmp(); break;
+                case Opcode.csinc: RewriteCsinc(); break;
                 case Opcode.ldr: RewriteLdr(null); break;
                 case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
                 case Opcode.ldrsw: RewriteLdr(PrimitiveType.Int32); break;
                 case Opcode.mov: RewriteUnary(n => n); break;
+                case Opcode.movk: RewriteMovk(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.str: RewriteStr(null); break;
                 case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
-                case Opcode.sub: RewriteBinary(m.ISub, false); break;
-                case Opcode.subs: RewriteBinary(m.ISub, true); break;
+                case Opcode.sub: RewriteBinary(m.ISub); break;
+                case Opcode.subs: RewriteBinary(m.ISub, NZCV); break;
+                case Opcode.tbnz: RewriteTb(m.Ne0); break;
+                case Opcode.tbz: RewriteTb(m.Eq0); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, cluster.ToArray())
                 {
@@ -104,14 +110,7 @@ namespace Reko.Arch.Arm.AArch64
         void NotImplementedYet()
         {
             uint wInstr;
-            if (instr.Length == 4)
-            {
-                wInstr = rdr.PeekLeUInt32(-4);
-            }
-            else
-            {
-                wInstr = rdr.PeekLeUInt16(-2);
-            }
+            wInstr = rdr.PeekLeUInt32(-4);
             host.Error(instr.Address, "Rewriting A64 opcode '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
             EmitUnitTest();
             m.Invalid();
@@ -163,6 +162,22 @@ namespace Reko.Arch.Arm.AArch64
             return binder.EnsureFlagGroup(nzcv);
         }
 
+        private void NZCV(Expression test)
+        {
+            var nzcv = NZCV();
+            m.Assign(nzcv, test);
+        }
+
+        private void NZ00(Expression test)
+        {
+            var nz = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF)));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var v = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.VF));
+            m.Assign(nz, test);
+            m.Assign(c, Constant.False());
+            m.Assign(v, Constant.False());
+        }
+
         Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
         {
             var grf = arch.GetFlagGroup((uint)bits);
@@ -205,6 +220,29 @@ namespace Reko.Arch.Arm.AArch64
                 return m.Test(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             }
             return null;
+        }
+
+        protected ArmCondition Invert(ArmCondition cc)
+        {
+            switch (cc)
+            {
+            case ArmCondition.EQ: return ArmCondition.NE;
+            case ArmCondition.NE: return ArmCondition.EQ;
+            case ArmCondition.HS: return ArmCondition.LO;
+            case ArmCondition.LO: return ArmCondition.HS;
+            case ArmCondition.MI: return ArmCondition.PL;
+            case ArmCondition.PL: return ArmCondition.MI;
+            case ArmCondition.VS: return ArmCondition.VC;
+            case ArmCondition.VC: return ArmCondition.VS;
+            case ArmCondition.HI: return ArmCondition.LS;
+            case ArmCondition.LS: return ArmCondition.HI;
+            case ArmCondition.GE: return ArmCondition.LT;
+            case ArmCondition.LT: return ArmCondition.GE;
+            case ArmCondition.GT: return ArmCondition.LE;
+            case ArmCondition.LE: return ArmCondition.GT;
+            case ArmCondition.AL: return ArmCondition.Invalid;
+            }
+            return ArmCondition.Invalid;
         }
 
     }
