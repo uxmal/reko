@@ -100,7 +100,12 @@ namespace Reko.Arch.Arm.AArch32
                     // The following case are modifiers, they don't generate operands.
                     // The cases should end with a 'continue' rather than a 'break'.
                 case '.':
+                    // This instruction always sets the flags.
                     updateFlags = true;
+                    continue;
+                case ':':
+                    // This instructions sets the flags if it's outside an IT block.
+                    updateFlags = this.itCondition == ArmCondition.AL;
                     continue;
                 case 'v': // vector element size
                     ++i;
@@ -565,7 +570,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
-            Console.WriteLine($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+            Console.WriteLine($"// A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
             Console.WriteLine("[Test]");
             Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
             Console.WriteLine("{");
@@ -1004,22 +1009,22 @@ namespace Reko.Arch.Arm.AArch32
         private static Decoder CreateDataLowRegisters()
         {
             return Mask(6, 0xF,
-                Instr(Opcode.and, ".r0,r3"),
-                Instr(Opcode.eor, ".r0,r3"),
-                Nyi("MOV,MOVS"),
-                Nyi("MOV,MOVS"),
+                Instr(Opcode.and, ":r0,r3"),
+                Instr(Opcode.eor, ":r0,r3"),
+                Instr(Opcode.lsl, ":r0,r3"),
+                Instr(Opcode.lsr, ":r0,r3"),
 
-                Nyi("MOV,MOVS"),
-                Instr(Opcode.adc, ".r0,r3"),
-                Instr(Opcode.sbc, ".r0,r3"),
-                Nyi("MOV,MOVS"),
+                Instr(Opcode.asr, ":r0,r3"),
+                Instr(Opcode.adc, ":r0,r3"),
+                Instr(Opcode.sbc, ":r0,r3"),
+                Instr(Opcode.ror, ":r0,r3"),
 
-                Instr(Opcode.adc, ".r0,r3"),
-                Instr(Opcode.rsb, ".r0,r3"),
+                Instr(Opcode.adc, ":r0,r3"),
+                Instr(Opcode.rsb, ":r0,r3"),
                 Instr(Opcode.cmp, ".r0,r3"),
                 Instr(Opcode.cmn, ".r0,r3"),
 
-                Instr(Opcode.orr, ".r0,r3"),
+                Instr(Opcode.orr, ":r0,r3"),
                 invalid,
                 invalid,
                 invalid);
@@ -1046,10 +1051,10 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid,
                 Mask(5, 0x7,
-                    Nyi("SETPAN"),        // SETPAN
+                    Instr(Opcode.setpan, "i3:1"),
+                    Nyi("ChangeProcessorState"),
                     invalid,
-                    Nyi("Change processor state"),        // Change processor state
-                    Nyi("WUT"),
+                    invalid,
 
                     invalid,
                     invalid,
@@ -1101,7 +1106,7 @@ namespace Reko.Arch.Arm.AArch32
             var LdStMultiple = Mask(7 + 16, 3,
                 Mask(4 + 16, 1,
                     Instr(Opcode.srsdb, "w21 sp,i0:5"),
-                    Nyi("RFE,RFEDA,RFEDB,RFEIA,RFEIB - T1")),
+                    Instr(Opcode.rfedb, "w21 R16")),
                 Mask(4 + 16, 1,
                     new LdmStmDecoder32(Opcode.stm, "R16,M"),
                     new LdmStmDecoder32(Opcode.ldm, "R16,M")),
@@ -2439,7 +2444,45 @@ namespace Reko.Arch.Arm.AArch32
 
         private static MaskDecoder CreateLoadStoreDualMultipleBranchDecoder()
         {
-            var ldStExclusive = Nyi("Load/store exclusive, load-acquire/store-release, table branch");
+            var ldrd = Nyi("LDRD (literal)");
+            var LoadAcquireStoreRelease = Nyi("LoadAcquireStoreRelease");
+            var LdStDualImm = Nyi("Load/store dual (immediate)");
+            var LdStDualImmPre = Nyi("Load/store dual (immediate,preindex)");
+            var LdStDualImmPost = Nyi("Load/store dual (immediate,postindex)");
+            var ldStExclusive = Mask(21, 0xF,
+                invalid,
+                invalid,
+                Mask(20, 1,
+                    Instr(Opcode.strex, "R8,R12,[R16,I0:8:w]"),
+                    Instr(Opcode.ldrex, "R12,[R16,I0:8:w]")),
+                Select("16:4", n => n != 15, LdStDualImmPost, ldrd),
+
+                invalid,
+                invalid,
+                Mask(5, 7, // op0 = 0b0110, op3 
+                    Mask(20, 1,
+                        invalid,
+                        Nyi("TBB,TBH")),
+                    invalid,
+                    Nyi("load/store exclusive byte/half/dual"),
+                    Nyi("load/store exclusive byte/half/dual"),
+
+                    LoadAcquireStoreRelease,
+                    LoadAcquireStoreRelease,
+                    LoadAcquireStoreRelease,
+                    LoadAcquireStoreRelease),
+                Select("16:4", n => n != 15, LdStDualImmPost, ldrd),
+
+                invalid,
+                invalid,
+                LdStDualImm,
+                LdStDualImmPre,
+
+                invalid,
+                invalid,
+                LdStDualImm,
+                LdStDualImmPre);
+
             var ldStDual = Nyi("Load/store dual (post-indexed)");
             var ldStDualImm = Mask(4 + 16, 1,
                 Instr(Opcode.strd, "R12,R8,[R16,I0:8:dX]"),
