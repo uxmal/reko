@@ -81,6 +81,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.cbz: RewriteCb(m.Eq0); break;
                 case Opcode.ccmp: RewriteCcmp(); break;
                 case Opcode.csinc: RewriteCsinc(); break;
+                case Opcode.ldp: RewriteLoadStorePair(true); break;
                 case Opcode.ldr: RewriteLdr(null); break;
                 case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
                 case Opcode.ldrsw: RewriteLdr(PrimitiveType.Int32); break;
@@ -89,6 +90,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.movz: RewriteMovz(); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.ret: RewriteRet(); break;
+                case Opcode.stp: RewriteLoadStorePair(false); break;
                 case Opcode.str: RewriteStr(null); break;
                 case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
                 case Opcode.sub: RewriteBinary(m.ISub); break;

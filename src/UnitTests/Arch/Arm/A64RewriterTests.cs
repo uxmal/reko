@@ -188,7 +188,12 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_ldp()
             {
                 Given_Instruction(0x2D646C2F);
-                AssertCode("ldp\ts47,s59,[x1,-#&E0]");
+                AssertCode(     // ldp\ts47,s59,[x1,-#&E0]
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|v5 = x1 + -224",
+                    "2|L--|s47 = Mem0[v5:word32]",
+                    "3|L--|v5 = v5 + 4",
+                    "4|L--|s59 = Mem0[v5:word32]");
             }
 
             [Test]
@@ -295,7 +300,9 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_ubfm()
             {
                 Given_Instruction(0xD37DF29C);
-                AssertCode("ubfm\tx28,x20,#0,#&3D");
+                AssertCode(     // ubfm\tx28,x20,#0,#&3D
+                    "0|L--|00100000(4): 1 instructions",
+                    "1|L--|@@@");
             }
 
             [Test]
@@ -470,28 +477,48 @@ namespace Reko.UnitTests.Arch.Arm
             public void A64Rw_stp_preindex()
             {
                 Given_Instruction(0xA9B87BFD);
-                AssertCode("stp\tx29,x30,[x31,-#&40]!");
+                AssertCode(     // stp\tx29,x30,[x31,-#&40]!
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|x31 = x31 + -64",
+                    "2|L--|Mem0[x31:word64] = x29",
+                    "3|L--|x31 = x31 + 8",
+                    "4|L--|Mem0[x31:word64] = x30");
             }
 
             [Test]
             public void A64Rw_stp_w64()
             {
                 Given_Instruction(0xA90153F3);
-                AssertCode("stp\tx19,x20,[x31,#&8]");
+                AssertCode(     // stp\tx19,x20,[x31,#&8]
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|v5 = x31 + 8",
+                    "2|L--|Mem0[v5:word64] = x19",
+                    "3|L--|v5 = v5 + 8",
+                    "4|L--|Mem0[v5:word64] = x20");
             }
 
             [Test]
             public void A64Rw_ldp_w64()
             {
                 Given_Instruction(0xA9446BB9);
-                AssertCode("ldp\tx25,x26,[x29,#&20]");
+                AssertCode(     // ldp\tx25,x26,[x29,#&20]
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|v5 = x29 + 32",
+                    "2|L--|x25 = Mem0[v5:word64]",
+                    "3|L--|v5 = v5 + 8",
+                    "4|L--|x26 = Mem0[v5:word64]");
             }
 
             [Test]
             public void A64Rw_ldp_post()
             {
                 Given_Instruction(0xA8C17BFD);
-                AssertCode("ldp\tx29,x30,[x31],#&8");
+                AssertCode(     // ldp\tx29,x30,[x31],#&8
+                    "0|L--|00100000(4): 4 instructions",
+                    "1|L--|x29 = Mem0[x31:word64]",
+                    "2|L--|x31 = x31 + 8",
+                    "3|L--|x30 = Mem0[x31:word64]",
+                    "4|L--|x31 = x31 + 8");
             }
         }
     }

@@ -19,6 +19,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -29,10 +31,18 @@ namespace Reko.Arch.Arm.AArch64
     public class Arm64State : ProcessorState
     {
         private Arm64Architecture arch;
+        private Dictionary<StorageDomain, Constant> values;
 
         public Arm64State(Arm64Architecture arch)
         {
             this.arch = arch;
+            this.values = new Dictionary<StorageDomain, Constant>();
+        }
+
+        public Arm64State(Arm64State that)
+        {
+            this.arch = that.arch;
+            this.values = that.values.ToDictionary(k => k.Key, v => v.Value);
         }
 
         public override IProcessorArchitecture Architecture
@@ -42,7 +52,7 @@ namespace Reko.Arch.Arm.AArch64
 
         public override ProcessorState Clone()
         {
-            throw new NotImplementedException();
+            return new Arm64State(this.arch);
         }
 
         public override Constant GetRegister(RegisterStorage r)
@@ -52,27 +62,23 @@ namespace Reko.Arch.Arm.AArch64
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

@@ -380,6 +380,19 @@ namespace Reko.Core.Expressions
             return new ConstantSByte(PrimitiveType.SByte, p);
         }
 
+        /// <summary>
+        /// Creates a constant signed integer whose bit size is the same
+        /// as <paramref name="dt"/>'s bit size.
+        /// </summary>
+        /// <param name="dt">Data type whose bit size is used to build 
+        /// the constant.</param>
+        /// <param name="l">Constant value.</param>
+        public static Constant Int(DataType dt, long l)
+        {
+            var dtInt = PrimitiveType.Create(Domain.SignedInt, dt.BitSize);
+            return Create(dtInt, l);
+        }
+
         public static Constant Int16(short s)
         {
             return new ConstantInt16(PrimitiveType.Int16, s);

@@ -40,11 +40,11 @@ namespace Reko.Scanning
     /// </remarks>
     public class ProcedureDetector
     {
-        private Program program;
-        private ScanResults sr;
-        private DecompilerEventListener listener;
-        private HashSet<Address> procedures;
-        private Dictionary<Address, RtlBlock> mpAddrToBlock;
+        private readonly Program program;
+        private readonly ScanResults sr;
+        private readonly DecompilerEventListener listener;
+        private readonly HashSet<Address> procedures;
+        private readonly Dictionary<Address, RtlBlock> mpAddrToBlock;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {

@@ -58,14 +58,12 @@ namespace Reko.Arch.Arm.AArch64
                 switch (instr.shiftCode)
                 {
                 case Opcode.lsl: right = m.Shl(right, amt); break;
+                case Opcode.lsr: right = m.Shr(right, amt); break;
                 default: throw new NotImplementedException($"Shift operation {instr.shiftCode} not implemented yet.");
                 }
             }
             m.Assign(dst, fn(left, right));
-            if (setFlags != null)
-            {
-                setFlags(m.Cond(dst));
-            }
+            setFlags?.Invoke(m.Cond(dst));
         }
 
         private void RewriteCcmp()
@@ -93,6 +91,38 @@ namespace Reko.Arch.Arm.AArch64
                 return;
             }
             NotImplementedYet();
+        }
+
+        private void RewriteLoadStorePair(bool load)
+        {
+            var reg1 = RewriteOp(instr.ops[0]);
+            var reg2 = RewriteOp(instr.ops[1]);
+            var mem = (MemoryOperand)instr.ops[2];
+            Expression ea = binder.EnsureRegister(mem.Base);
+            Expression offset = RewriteEffectiveAddressOffset(mem);
+            if (mem.PreIndex)
+            {
+                m.Assign(ea, m.IAdd(ea, offset));
+            }
+            else if (!mem.PostIndex)
+            {
+                var tmp = binder.CreateTemporary(ea.DataType);
+                m.Assign(tmp, m.IAdd(ea, offset));
+                ea = tmp;
+            }
+            if (load)
+                m.Assign(reg1, m.Mem(reg1.DataType, ea));
+            else 
+                m.Assign(m.Mem(reg1.DataType, ea), reg1);
+            m.Assign(ea, m.IAdd(ea, Constant.Int(reg1.DataType, reg1.DataType.Size)));
+            if (load)
+                m.Assign(reg2, m.Mem(reg2.DataType, ea));
+            else
+                m.Assign(m.Mem(reg2.DataType, ea), reg2);
+            if (mem.PostIndex)
+            {
+                m.Assign(ea, m.IAdd(ea, offset));
+            }
         }
 
         private void RewriteLdr(DataType dt)
@@ -131,16 +161,19 @@ namespace Reko.Arch.Arm.AArch64
         private Expression RewriteEffectiveAddress(MemoryOperand mem)
         {
             Expression ea = binder.EnsureRegister(mem.Base);
+            Expression offset = RewriteEffectiveAddressOffset(mem);
+            if (offset != null)
+            {
+                ea = m.IAdd(ea, offset);
+            }
+            return ea;
+        }
+
+        private Expression RewriteEffectiveAddressOffset(MemoryOperand mem)
+        { 
             if (mem.Offset != null && !mem.Offset.IsIntegerZero)
             {
-                if (mem.Offset.DataType.BitSize < 64 && mem.Offset.IsNegative)
-                {
-                    ea = m.ISub(ea, -mem.Offset.ToInt32());
-                }
-                else
-                {
-                    ea = m.IAdd(ea, m.Int32(mem.Offset.ToInt32()));
-                }
+                return Constant.Int(mem.Base.DataType, mem.Offset.ToInt32());
             }
             else if (mem.Index != null)
             {
@@ -155,10 +188,9 @@ namespace Reko.Arch.Arm.AArch64
                     }
                     break;
                 }
-                ea = m.IAdd(ea, idx);
+                return idx;
             }
-
-            return ea;
+            return null;
         }
 
         private void RewriteStr(DataType dt)
