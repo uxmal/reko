@@ -139,8 +139,8 @@ namespace Reko.WindowsItp
 
         private MemoryArea CreateBytes()
         {
-            var buf = new byte[10000001];    // 1e6 bytes
-            var rnd = new Random(0x42);
+            var buf = new byte[100000001];    // 1e6 bytes
+            var rnd = new Random(0x4242);
             rnd.NextBytes(buf);
             var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
             return mem;
