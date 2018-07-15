@@ -29,6 +29,20 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class A32Disassembler
     {
+        public struct Bitfield
+        {
+            public readonly int Position;
+            public readonly int Length;
+            public readonly uint Mask;
+
+            public Bitfield(int position, int length)
+            {
+                this.Position = position;
+                this.Length = length;
+                this.Mask = (1U << length) - 1U;
+            }
+        }
+
         public abstract class Decoder
         {
             public abstract AArch32Instruction Decode(uint wInstr, A32Disassembler dasm);
@@ -68,6 +82,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
+                return;
                 var shMask = this.mask << shift;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
@@ -85,6 +100,28 @@ namespace Reko.Arch.Arm.AArch32
                     wInstr <<= 1;
                 }
                 Debug.Print(sb.ToString());
+            }
+        }
+
+        public class BitfieldDecoder : Decoder
+        {
+            private Bitfield [] bitfields;
+            private Decoder[] decoders;
+
+            public BitfieldDecoder(Bitfield[] bitfields, Decoder[] decoders)
+            {
+                this.bitfields = bitfields;
+                this.decoders = decoders;
+            }
+
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
+            {
+                uint n = 0;
+                foreach (var bitfield in bitfields)
+                {
+                    n = n << bitfield.Length | ((wInstr >> bitfield.Position) & bitfield.Mask);
+                }
+                return this.decoders[n].Decode(wInstr, dasm);
             }
         }
 
@@ -123,9 +160,10 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
-                throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented.");
+                return dasm.NotYetImplemented(message, wInstr);
             }
         }
+
 
         private class InstrDecoder : Decoder
         {
@@ -141,7 +179,7 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 if (format == null)
-                    throw new NotImplementedException($"Format missing for ARM instruction {opcode}.");
+                    return dasm.NotYetImplemented($"Format missing for ARM instruction {opcode}.", wInstr);
                 return dasm.Decode(wInstr, opcode, format);
             }
         }

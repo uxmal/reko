@@ -52,6 +52,7 @@ namespace Reko.Arch.Arm
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
+            StackRegister = Registers.sp;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 #if NATIVE
 

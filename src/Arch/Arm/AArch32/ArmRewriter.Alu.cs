@@ -394,7 +394,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src1 = Operand(Src1());
-            var src2 = Operand(Src2());
+            var src2 = Operand(instr.ShiftValue);
             m.Assign(dst, ctor(src1, src2));
             if (instr.UpdateFlags)
             {

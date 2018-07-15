@@ -159,6 +159,38 @@ namespace Reko.Arch.Arm.AArch32
             return instr;
         }
 
+        private static HashSet<uint> seen = new HashSet<uint>();
+
+        private AArch32Instruction NotYetImplemented(string message, uint wInstr)
+        {
+            if (!seen.Contains(wInstr))
+            {
+                seen.Add(wInstr);
+                Console.WriteLine($"// An A32 decoder for the instruction {wInstr:X8} ({message}) has not been implemented yet.");
+                Console.WriteLine("[Test]");
+                Console.WriteLine($"public void ArmDasm_{wInstr:X8}()");
+                Console.WriteLine("{");
+                Console.WriteLine($"    Disassemble32(0x{wInstr:X8});");
+                Console.WriteLine("    Expect_Code(\"@@@\");");
+                Console.WriteLine("}");
+                Console.WriteLine();
+            }
+#if !DEBUG
+                throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+#else
+            return Invalid();
+#endif
+        }
+
+        private AArch32Instruction Invalid()
+        {
+            return new AArch32Instruction
+            {
+                opcode = Opcode.Invalid,
+                ops = new MachineOperand[0]
+            };
+        }
+
         /// <summary>
         /// Reads and concatenates bitfields out of <paramref name="wInstr"/>.
         /// </summary>
@@ -363,6 +395,25 @@ namespace Reko.Arch.Arm.AArch32
             return new NyiDecoder(str);
         }
 
+        /// <summary>
+        /// Create a decoder for 4 bitfields.
+        /// </summary>
+        private static Decoder Mask(
+            int sh1, int len1, 
+            int sh2, int len2,
+            int sh3, int len3,
+            int sh4, int len4,
+            params Decoder [] decoders)
+        {
+            return new BitfieldDecoder(
+                new Bitfield[] {
+                    new Bitfield(sh1, len1),
+                    new Bitfield(sh2, len2),
+                    new Bitfield(sh3, len3),
+                    new Bitfield(sh4, len4)
+                }, decoders);
+        }
+
         private static Decoder SparseMask(int shift, uint mask, Dictionary<uint, Decoder> decoders)
         {
             return new SparseMaskDecoder(shift, mask, decoders, invalid);
@@ -384,28 +435,28 @@ namespace Reko.Arch.Arm.AArch32
 
             var LoadStoreExclusive = nyi("LoadStoreExclusive");
 
-            var Stl = new InstrDecoder(Opcode.stl, null);
-            var Stlex = new InstrDecoder(Opcode.stlex, null);
-            var Strex = new InstrDecoder(Opcode.strex, null);
-            var Lda = new InstrDecoder(Opcode.lda, null);
-            var Ldaex = new InstrDecoder(Opcode.ldaex, null);
-            var Ldrex = new InstrDecoder(Opcode.ldrex, null);
-            var Stlexd = new InstrDecoder(Opcode.stlexd, null);
-            var Strexd = new InstrDecoder(Opcode.strexd, null);
-            var Ldaexd = new InstrDecoder(Opcode.ldaexd, null);
-            var Ldrexd = new InstrDecoder(Opcode.ldrexd, null);
-            var Stlb = new InstrDecoder(Opcode.stlb, null);
-            var Stlexb = new InstrDecoder(Opcode.stlexb, null);
-            var Strexb = new InstrDecoder(Opcode.strexb, null);
-            var Ldab = new InstrDecoder(Opcode.ldab, null);
-            var Ldaexb = new InstrDecoder(Opcode.ldrexb, null);
-            var Ldrexb = new InstrDecoder(Opcode.ldaexb, null);
-            var Stlh = new InstrDecoder(Opcode.stlh, null);
-            var Stlexh = new InstrDecoder(Opcode.stlexh, null);
-            var Strexh = new InstrDecoder(Opcode.strexh, null);
-            var Ldah = new InstrDecoder(Opcode.ldah, null);
-            var Ldaexh = new InstrDecoder(Opcode.ldrexh, null);
-            var Ldrexh = new InstrDecoder(Opcode.ldaexh, null);
+            var Stl = new InstrDecoder(Opcode.stl, "*");
+            var Stlex = new InstrDecoder(Opcode.stlex, "*");
+            var Strex = new InstrDecoder(Opcode.strex, "*");
+            var Lda = new InstrDecoder(Opcode.lda, "*");
+            var Ldaex = new InstrDecoder(Opcode.ldaex, "*");
+            var Ldrex = new InstrDecoder(Opcode.ldrex, "*");
+            var Stlexd = new InstrDecoder(Opcode.stlexd, "*");
+            var Strexd = new InstrDecoder(Opcode.strexd, "*");
+            var Ldaexd = new InstrDecoder(Opcode.ldaexd, "*");
+            var Ldrexd = new InstrDecoder(Opcode.ldrexd, "*");
+            var Stlb = new InstrDecoder(Opcode.stlb, "*");
+            var Stlexb = new InstrDecoder(Opcode.stlexb, "*");
+            var Strexb = new InstrDecoder(Opcode.strexb, "*");
+            var Ldab = new InstrDecoder(Opcode.ldab, "*");
+            var Ldaexb = new InstrDecoder(Opcode.ldrexb, "*");
+            var Ldrexb = new InstrDecoder(Opcode.ldaexb, "*");
+            var Stlh = new InstrDecoder(Opcode.stlh, "*");
+            var Stlexh = new InstrDecoder(Opcode.stlexh, "*");
+            var Strexh = new InstrDecoder(Opcode.strexh, "*");
+            var Ldah = new InstrDecoder(Opcode.ldah, "*");
+            var Ldaexh = new InstrDecoder(Opcode.ldrexh, "*");
+            var Ldrexh = new InstrDecoder(Opcode.ldaexh, "*");
 
             var SynchronizationPrimitives = new MaskDecoder(23, 1,
                 invalid,
@@ -487,12 +538,12 @@ namespace Reko.Arch.Arm.AArch32
             var LdrhRegister = new InstrDecoder(Opcode.ldrh, "r3,[_:u2]");
             var LdrsbRegister = new InstrDecoder(Opcode.ldrsb, "r3,[_:s1]");
             var LdrshRegister = new InstrDecoder(Opcode.ldrsh, "r3,[_:s2]");
-            var Ldrht = new InstrDecoder(Opcode.ldrht, null);
-            var Ldrsbt = new InstrDecoder(Opcode.ldrsbt, null);
-            var Ldrsht = new InstrDecoder(Opcode.ldrsht, null);
-            var StrdRegister = new InstrDecoder(Opcode.strd, null);
-            var StrhRegister = new InstrDecoder(Opcode.strh, null);
-            var Strht = new InstrDecoder(Opcode.strht, null);
+            var Ldrht = new InstrDecoder(Opcode.ldrht, "*");
+            var Ldrsbt = new InstrDecoder(Opcode.ldrsbt, "*");
+            var Ldrsht = new InstrDecoder(Opcode.ldrsht, "*");
+            var StrdRegister = new InstrDecoder(Opcode.strd, "r3,[x:w8]");
+            var StrhRegister = new InstrDecoder(Opcode.strh, "r3,[_:w2]");
+            var Strht = new InstrDecoder(Opcode.strht, "*");
 
             var LoadStoreDualHalfSbyteRegister = new MaskDecoder(24, 1,
                 new MaskDecoder(20, 0x3,
@@ -528,16 +579,16 @@ namespace Reko.Arch.Arm.AArch32
                         LdrsbRegister,
                         LdrshRegister)));
 
-            var LdrdLiteral = new InstrDecoder(Opcode.ldrd, null);
-            var LdrhLiteral = new InstrDecoder(Opcode.ldrh, null);
-            var LdrsbLiteral = new InstrDecoder(Opcode.ldrsb, null);
-            var LdrshLiteral = new InstrDecoder(Opcode.ldrsh, null);
-            var StrhImmediate = new InstrDecoder(Opcode.strh, null);
-            var LdrdImmediate = new InstrDecoder(Opcode.ldrd, null);
-            var StrdImmediate = new InstrDecoder(Opcode.strd, null);
-            var LdrhImmediate = new InstrDecoder(Opcode.ldrh, null);
+            var LdrdLiteral = new InstrDecoder(Opcode.ldrd, "*");
+            var LdrhLiteral = new InstrDecoder(Opcode.ldrh, "*");
+            var LdrsbLiteral = new InstrDecoder(Opcode.ldrsb, "*");
+            var LdrshLiteral = new InstrDecoder(Opcode.ldrsh, "*");
+            var StrhImmediate = new InstrDecoder(Opcode.strh, "*");
+            var LdrdImmediate = new InstrDecoder(Opcode.ldrd, "*");
+            var StrdImmediate = new InstrDecoder(Opcode.strd, "*");
+            var LdrhImmediate = new InstrDecoder(Opcode.ldrh, "*");
             var LdrsbImmediate = new InstrDecoder(Opcode.ldrsb, "r3,[h:s1]");
-            var LdrshImmediate = new InstrDecoder(Opcode.ldrsh, null);
+            var LdrshImmediate = new InstrDecoder(Opcode.ldrsh, "*");
 
             var LoadStoreDualHalfSbyteImmediate = new CustomDecoder((wInstr, dasm) =>
             {
@@ -627,9 +678,9 @@ namespace Reko.Arch.Arm.AArch32
                 LoadStoreDualHalfSbyteImmediate);
 
             var Mrs = new InstrDecoder(Opcode.mrs, "r3,SR");
-            var Msr = new InstrDecoder(Opcode.msr, null);
-            var MrsBanked = new InstrDecoder(Opcode.mrs, null);
-            var MsrBanked = new InstrDecoder(Opcode.msr, null);
+            var Msr = new InstrDecoder(Opcode.msr, "*");
+            var MrsBanked = new InstrDecoder(Opcode.mrs, "*");
+            var MsrBanked = new InstrDecoder(Opcode.msr, "*");
             var MoveSpecialRegister = new MaskDecoder(21, 1,
                 new MaskDecoder(9, 1,
                     Mrs,
@@ -638,8 +689,8 @@ namespace Reko.Arch.Arm.AArch32
                     Msr,
                     MsrBanked));
 
-            var Crc32 = new InstrDecoder(Opcode.crc32w, null);
-            var Crc32C = new InstrDecoder(Opcode.crc32cw, null);
+            var Crc32 = new InstrDecoder(Opcode.crc32w, "*");
+            var Crc32C = new InstrDecoder(Opcode.crc32cw, "*");
 
             var CyclicRedundancyCheck = new MaskDecoder(21, 3,
                 new MaskDecoder(9, 1,
@@ -655,10 +706,10 @@ namespace Reko.Arch.Arm.AArch32
                     Crc32,
                     Crc32C));
 
-            var Qadd = new InstrDecoder(Opcode.qadd, null);
-            var Qsub = new InstrDecoder(Opcode.qsub, null);
-            var Qdadd = new InstrDecoder(Opcode.qdadd, null);
-            var Qdsub = new InstrDecoder(Opcode.qdsub, null);
+            var Qadd = new InstrDecoder(Opcode.qadd, "*");
+            var Qsub = new InstrDecoder(Opcode.qsub, "*");
+            var Qdadd = new InstrDecoder(Opcode.qdadd, "*");
+            var Qdsub = new InstrDecoder(Opcode.qdsub, "*");
             var IntegerSaturatingArithmetic = new MaskDecoder(21, 3,
                 Qadd,
                 Qsub,
@@ -666,21 +717,21 @@ namespace Reko.Arch.Arm.AArch32
                 Qsub);
 
 
-            var Hlt = new InstrDecoder(Opcode.hlt, null);
-            var Bkpt = new InstrDecoder(Opcode.bkpt, null);
-            var Hvc = new InstrDecoder(Opcode.hvc, null);
-            var Smc = new InstrDecoder(Opcode.smc, null);
+            var Hlt = new InstrDecoder(Opcode.hlt, "*");
+            var Bkpt = new InstrDecoder(Opcode.bkpt, "*");
+            var Hvc = new InstrDecoder(Opcode.hvc, "*");
+            var Smc = new InstrDecoder(Opcode.smc, "*");
             var ExceptionGeneration = new MaskDecoder(21, 3,
                 Hlt,
                 Bkpt,
                 Hvc,
                 Smc);
 
-            var Bx = new InstrDecoder(Opcode.bx, null);
-            var Bxj = new InstrDecoder(Opcode.bxj, null);
-            var Blx = new InstrDecoder(Opcode.blx, null);
-            var Clz = new InstrDecoder(Opcode.blx, null);
-            var Eret = new InstrDecoder(Opcode.eret, null);
+            var Bx = new InstrDecoder(Opcode.bx, "*");
+            var Bxj = new InstrDecoder(Opcode.bxj, "*");
+            var Blx = new InstrDecoder(Opcode.blx, "*");
+            var Clz = new InstrDecoder(Opcode.blx, "*");
+            var Eret = new InstrDecoder(Opcode.eret, "*");
 
             var ChangeProcessState = new MaskDecoder(16, 1, // op
                 nyi("CPS,CPSID,CPSIE"),
@@ -765,16 +816,16 @@ namespace Reko.Arch.Arm.AArch32
                 new InstrDecoder(Opcode.rsc, "sr3,r4,r0,>i"));
 
             var IntegerTestAndCompareImmShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.tst, null),
-                new InstrDecoder(Opcode.teq, null),
-                new InstrDecoder(Opcode.cmp, null),
-                new InstrDecoder(Opcode.cmn, null));
+                new InstrDecoder(Opcode.tst, "r4,r0,>i"),
+                new InstrDecoder(Opcode.teq, "r4,r0,>i"),
+                new InstrDecoder(Opcode.cmp, "r4,r0,>i"),
+                new InstrDecoder(Opcode.cmn, "r4,r0,>i"));
 
             var LogicalArithmeticImmShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.orr, null),
+                new InstrDecoder(Opcode.orr, "sr3,r4,r0,>i"),
                 new MovDecoder(Opcode.mov, "sr3,r0,>i"),
-                new InstrDecoder(Opcode.bic, null),
-                new InstrDecoder(Opcode.mvn, null));
+                new InstrDecoder(Opcode.bic, "sr3,r4,r0,>i"),
+                new InstrDecoder(Opcode.mvn, "sr3,r0,>i"));
 
             var DataProcessingImmediateShift = new MaskDecoder(23, 3,
                 IntegerDataProcessingImmShift, // 3 reg, imm shift
@@ -793,16 +844,16 @@ namespace Reko.Arch.Arm.AArch32
                new InstrDecoder(Opcode.rsc, "sr3,r4,r0,>r"));
 
             var IntegerTestAndCompareRegShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.tst, null),
-                new InstrDecoder(Opcode.teq, null),
-                new InstrDecoder(Opcode.cmp, null),
-                new InstrDecoder(Opcode.cmn, null));
+                new InstrDecoder(Opcode.tst, "r4,r0,>r"),
+                new InstrDecoder(Opcode.teq, "r4,r0,>r"),
+                new InstrDecoder(Opcode.cmp, "r4,r0,>r"),
+                new InstrDecoder(Opcode.cmn, "r4,r0,>r"));
 
             var LogicalArithmeticRegShift = new MaskDecoder(21, 3,
-                new InstrDecoder(Opcode.orr, null),
-                new InstrDecoder(Opcode.mov, "@"),
-                new InstrDecoder(Opcode.bic, null),
-                new InstrDecoder(Opcode.mvn, null));
+                new InstrDecoder(Opcode.orr, "sr3,r4,r0,>r"),
+                new InstrDecoder(Opcode.mov, "sr4,r0,>r"),
+                new InstrDecoder(Opcode.bic, "sr3,r4,r0,>r"),
+                new InstrDecoder(Opcode.mvn, "sr4,r0,>r"));
 
             var DataProcessingRegisterShift = new MaskDecoder(23, 3,
                 IntegerDataProcessingRegShift,
@@ -828,7 +879,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var MoveHalfwordImm = new MaskDecoder(22, 1,
                new InstrDecoder(Opcode.mov, "r3,Y"),
-               new InstrDecoder(Opcode.movt, null));
+               new InstrDecoder(Opcode.movt, "r3,Y"));
 
             var IntegerTestAndCompareOneRegImm = new MaskDecoder(21, 3,
                 new InstrDecoder(Opcode.tst, "r4,I"),
@@ -836,16 +887,16 @@ namespace Reko.Arch.Arm.AArch32
                 new InstrDecoder(Opcode.cmp, "r4,I"),
                 new InstrDecoder(Opcode.cmn, "r4,I"));
 
-            var MsrImmediate = new InstrDecoder(Opcode.msr, null);
+            var MsrImmediate = new InstrDecoder(Opcode.msr, "*");
             var Nop = new InstrDecoder(Opcode.nop, "");
-            var Yield = new InstrDecoder(Opcode.yield, null);
-            var Wfe = new InstrDecoder(Opcode.wfe, null);
-            var Wfi = new InstrDecoder(Opcode.wfi, null);
-            var Sev = new InstrDecoder(Opcode.sevl, null);
-            var Sevl = new InstrDecoder(Opcode.sevl, null);
+            var Yield = new InstrDecoder(Opcode.yield, "*");
+            var Wfe = new InstrDecoder(Opcode.wfe, "*");
+            var Wfi = new InstrDecoder(Opcode.wfi, "*");
+            var Sev = new InstrDecoder(Opcode.sevl, "*");
+            var Sevl = new InstrDecoder(Opcode.sevl, "*");
             var ReservedNop = new InstrDecoder(Opcode.nop, "");
-            var Esb = new InstrDecoder(Opcode.esb, null);
-            var Dbg = new InstrDecoder(Opcode.dbg, null);
+            var Esb = new InstrDecoder(Opcode.esb, "*");
+            var Dbg = new InstrDecoder(Opcode.dbg, "*");
 
             var MoveSpecialRegisterAndHints = new CustomDecoder((wInstr, dasm) =>
             {
@@ -936,59 +987,45 @@ namespace Reko.Arch.Arm.AArch32
             });
 
             var LdrLiteral = new InstrDecoder(Opcode.ldr, "r3,[o:w4]");
-            var LdrbLiteral = new InstrDecoder(Opcode.ldrb, null);
+            var LdrbLiteral = new InstrDecoder(Opcode.ldrb, "r3,[0:w1]");
             var StrImm = new InstrDecoder(Opcode.str, "r3,[o:w4]");
             var LdrImm = new InstrDecoder(Opcode.ldr, "r3,[o:w4]");
-            var StrbImm = new InstrDecoder(Opcode.strb, null);
+            var StrbImm = new InstrDecoder(Opcode.strb, "r3,[o:w1]");
             var LdrbImm = new InstrDecoder(Opcode.ldrb, "r3,[o:w1]");
             
-            var Strt = new InstrDecoder(Opcode.strt, null);
-            var Ldrt = new InstrDecoder(Opcode.ldrt, null);
-            var Strbt = new InstrDecoder(Opcode.strbt, null);
-            var Ldrbt = new InstrDecoder(Opcode.ldrbt, null);
+            var LoadStoreWordUnsignedByteImmLit = Mask(24, 1, 21, 1, 22, 1, 20, 1,
+                // PW=0b00 00
+                Instr(Opcode.str, "r3,[o:w4]"),
+                Select(16, 0xF, n => n != 0xF,
+                    Instr(Opcode.ldr, "r3,[o:w4]"),
+                    Instr(Opcode.ldr, "r3,[o:w4]")),
+                Instr(Opcode.strb, "r3,[o:w1]"),
+                Select(16, 0xF, n => n != 0xF,
+                    Instr(Opcode.ldrb, "r3,[o:w1]"),
+                    Instr(Opcode.ldrb, "r3,[o:w1]")),
 
-            var LoadStoreWordUnsignedByteImmLit = new CustomDecoder((wInstr, dasm) => {
-                var rn = bitmask(wInstr, 16, 0xF);
-                var pw = bitmask(wInstr, 23, 0x10) | bitmask(wInstr, 21, 1);
-                var o2_1 = bitmask(wInstr, 21, 2) | bitmask(wInstr, 20, 1);
-                if (rn == 0xF)
-                {
-                    if (pw != 1)
-                    {
-                        if (o2_1 == 0x01)
-                        {
-                            return LdrLiteral;
-                        }
-                        else if (o2_1 == 0x03)
-                        {
-                            return LdrbLiteral;
-                        }
-                    }
-                }
-                switch ((pw << 2) | o2_1)
-                {
-                case 0: return StrImm;
-                case 1: return LdrImm;
-                case 2: return StrbImm;
-                case 3: return LdrbImm;
+                Instr(Opcode.strt, "*"),
+                Instr(Opcode.ldrt, "*"),
+                Instr(Opcode.strbt, "*"),
+                Instr(Opcode.ldrbt, "*"),
 
-                case 4: return Strt;
-                case 5: return Ldrt;
-                case 6: return Strbt;
-                case 7: return Ldrbt;
+                Instr(Opcode.str, "r3,[o:w4]"),
+                Select(16, 0xF, n => n != 0xF,
+                    Instr(Opcode.ldr, "r3,[o:w4]"),
+                    Instr(Opcode.ldr, "r3,[o:w4]")),
+                Instr(Opcode.strb, "r3,[o:w1]"),
+                Select(16, 0xF, n => n != 0xF,
+                    Instr(Opcode.ldrb, "r3,[o:w1]"),
+                    Instr(Opcode.ldrb, "r3,[o:w1]")),
 
-                case 8: return StrImm;
-                case 9: return StrImm;
-                case 10: return StrImm;
-                case 11: return StrImm;
-
-                case 12: return StrImm;
-                case 13: return LdrImm;
-                case 14: return StrbImm;
-                case 15: return LdrbImm;
-                }
-                throw new InvalidOperationException("impossible");
-            });
+                Instr(Opcode.str, "r3,[o:w4]"),
+                Select(16, 0xF, n => n != 0xF,
+                    Instr(Opcode.ldr, "r3,[o:w4]"),
+                    Instr(Opcode.ldr, "r3,[o:w4]")),
+                Instr(Opcode.strb, "r3,[o:w1]"),
+                Select(16, 0xF, n => n != 0xF,
+                    Instr(Opcode.ldrb, "r3,[o:w1]"),
+                    Instr(Opcode.ldrb, "r3,[o:w1]")));
 
             var StrReg = new InstrDecoder(Opcode.str, "r3,[x:w4]");
             var LdrReg = new InstrDecoder(Opcode.ldr, "r3,[x:w4]");
@@ -1002,13 +1039,13 @@ namespace Reko.Arch.Arm.AArch32
                 {
                 case 0: return StrReg;
                 case 1: return LdrReg;
-                case 2: return Strt;
-                case 3: return Ldrt;
+                case 2: throw new NotImplementedException(" return Strt");
+                case 3: throw new NotImplementedException(" return ldrt");
 
                 case 4: return StrbReg;
                 case 5: return LdrbReg;
-                case 6: return Strbt;
-                case 7: return Ldrbt;
+                case 6: throw new NotImplementedException(" return Strnt");
+                case 7: throw new NotImplementedException(" return ldrbt");
 
                 case 8: return StrReg;
                 case 9: return LdrReg;
@@ -1023,42 +1060,42 @@ namespace Reko.Arch.Arm.AArch32
                 throw new InvalidOperationException();
             });
 
-            var Sadd16 = new InstrDecoder(Opcode.sadd16, null);
-            var Sasx = new InstrDecoder(Opcode.sasx, null);
-            var Ssax = new InstrDecoder(Opcode.ssax, null);
-            var Ssub16 = new InstrDecoder(Opcode.ssub16, null);
-            var Sadd8 = new InstrDecoder(Opcode.sadd8, null);
-            var Ssub8 = new InstrDecoder(Opcode.ssub8, null);
-            var Qadd16 = new InstrDecoder(Opcode.qadd16, null);
-            var Qasx = new InstrDecoder(Opcode.qasx, null);
-            var Qsax = new InstrDecoder(Opcode.qsax, null);
-            var Qsub16 = new InstrDecoder(Opcode.qsub16, null);
-            var Qadd8 = new InstrDecoder(Opcode.qadd8, null);
-            var QSub8 = new InstrDecoder(Opcode.qsub8, null);
-            var Shadd16 = new InstrDecoder(Opcode.shadd16, null);
-            var Shasx = new InstrDecoder(Opcode.shasx, null);
-            var Shsax = new InstrDecoder(Opcode.shsax, null);
-            var Shsub16 = new InstrDecoder(Opcode.shsub16, null);
-            var Shadd8 = new InstrDecoder(Opcode.shadd8, null);
-            var Shsub8 = new InstrDecoder(Opcode.shsub8, null);
-            var Uadd16 = new InstrDecoder(Opcode.uadd16, null);
-            var Uasx = new InstrDecoder(Opcode.uasx, null);
-            var Usax = new InstrDecoder(Opcode.usax, null);
-            var Usub16 = new InstrDecoder(Opcode.usub16, null);
-            var Uadd8 = new InstrDecoder(Opcode.uadd8, null);
-            var Usub8 = new InstrDecoder(Opcode.usub8, null);
-            var Uqadd16 = new InstrDecoder(Opcode.uqadd16, null);
-            var Uqasx = new InstrDecoder(Opcode.uqasx, null);
-            var Uqsax = new InstrDecoder(Opcode.uqsax, null);
-            var Uqsub16 = new InstrDecoder(Opcode.uqsub16, null);
-            var Uqadd8 = new InstrDecoder(Opcode.uqadd8, null);
-            var Uqsub8 = new InstrDecoder(Opcode.uqsub8, null);
-            var Uhadd16 = new InstrDecoder(Opcode.uhadd16, null);
-            var Uhasx = new InstrDecoder(Opcode.uhasx, null);
-            var Uhsax = new InstrDecoder(Opcode.uhsax, null);
-            var Uhsub16 = new InstrDecoder(Opcode.uhsub16, null);
-            var Uhadd8 = new InstrDecoder(Opcode.uhadd8, null);
-            var Uhsub8 = new InstrDecoder(Opcode.uhsub8, null);
+            var Sadd16 = new InstrDecoder(Opcode.sadd16, "*");
+            var Sasx = new InstrDecoder(Opcode.sasx, "*");
+            var Ssax = new InstrDecoder(Opcode.ssax, "*");
+            var Ssub16 = new InstrDecoder(Opcode.ssub16, "*");
+            var Sadd8 = new InstrDecoder(Opcode.sadd8, "*");
+            var Ssub8 = new InstrDecoder(Opcode.ssub8, "*");
+            var Qadd16 = new InstrDecoder(Opcode.qadd16, "*");
+            var Qasx = new InstrDecoder(Opcode.qasx, "*");
+            var Qsax = new InstrDecoder(Opcode.qsax, "*");
+            var Qsub16 = new InstrDecoder(Opcode.qsub16, "*");
+            var Qadd8 = new InstrDecoder(Opcode.qadd8, "*");
+            var QSub8 = new InstrDecoder(Opcode.qsub8, "*");
+            var Shadd16 = new InstrDecoder(Opcode.shadd16, "*");
+            var Shasx = new InstrDecoder(Opcode.shasx, "*");
+            var Shsax = new InstrDecoder(Opcode.shsax, "*");
+            var Shsub16 = new InstrDecoder(Opcode.shsub16, "*");
+            var Shadd8 = new InstrDecoder(Opcode.shadd8, "*");
+            var Shsub8 = new InstrDecoder(Opcode.shsub8, "*");
+            var Uadd16 = new InstrDecoder(Opcode.uadd16, "*");
+            var Uasx = new InstrDecoder(Opcode.uasx, "*");
+            var Usax = new InstrDecoder(Opcode.usax, "*");
+            var Usub16 = new InstrDecoder(Opcode.usub16, "*");
+            var Uadd8 = new InstrDecoder(Opcode.uadd8, "*");
+            var Usub8 = new InstrDecoder(Opcode.usub8, "*");
+            var Uqadd16 = new InstrDecoder(Opcode.uqadd16, "*");
+            var Uqasx = new InstrDecoder(Opcode.uqasx, "*");
+            var Uqsax = new InstrDecoder(Opcode.uqsax, "*");
+            var Uqsub16 = new InstrDecoder(Opcode.uqsub16, "*");
+            var Uqadd8 = new InstrDecoder(Opcode.uqadd8, "*");
+            var Uqsub8 = new InstrDecoder(Opcode.uqsub8, "*");
+            var Uhadd16 = new InstrDecoder(Opcode.uhadd16, "*");
+            var Uhasx = new InstrDecoder(Opcode.uhasx, "*");
+            var Uhsax = new InstrDecoder(Opcode.uhsax, "*");
+            var Uhsub16 = new InstrDecoder(Opcode.uhsub16, "*");
+            var Uhadd8 = new InstrDecoder(Opcode.uhadd8, "*");
+            var Uhsub8 = new InstrDecoder(Opcode.uhsub8, "*");
 
             var ParallelArithmetic = new MaskDecoder(20, 7,
                 invalid,
@@ -1215,6 +1252,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSIMDandFloatingPoint32bitMove = nyi("AdvancedSIMDandFloatingPoint32bitMove");
 
+            var SystemRegister32BitMove = nyi("SystemRegister32BitMove");
+
             Decoder SystemRegister_AdvancedSimd_FloatingPoint = new MaskDecoder(24, 3,
                 SparseMask(9, 0x7, new Dictionary<uint, Decoder>
                 {
@@ -1239,6 +1278,10 @@ namespace Reko.Arch.Arm.AArch32
                         FloatingPointDataProcessing,
                         AdvancedSIMDandFloatingPoint32bitMove)
                     },
+                    { 7, new MaskDecoder(4, 1,
+                        FloatingPointDataProcessing,
+                        SystemRegister32BitMove)
+                    }
                 }),
                 new InstrDecoder(Opcode.svc, "V"));
 
@@ -1297,27 +1340,6 @@ namespace Reko.Arch.Arm.AArch32
                 ConditionalDecoder,
                 ConditionalDecoder,
                 unconditionalDecoder);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             /*
 
