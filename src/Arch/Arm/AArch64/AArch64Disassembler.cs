@@ -34,6 +34,8 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction>
     {
+        private const uint RegisterMask = 0b11111;
+
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid;
 
@@ -167,6 +169,19 @@ namespace Reko.Arch.Arm.AArch64
             };
             return instr;
         }
+
+        /// <summary>
+        /// 64-bit register.
+        /// </summary>
+        private static Action<List<MachineOperand>, AArch64Disassembler, uint> X(int regnumberOffset)
+        {
+            return (ops, dasm, w) =>
+            {
+                var reg = Registers.GpRegs64[(w >> regnumberOffset) & RegisterMask];
+                ops.Add(new RegisterOperand(reg));
+            };
+        }
+
 
         private ArmCondition ReadConditionField(uint wInstr, string format, ref int i)
         {
@@ -644,7 +659,7 @@ namespace Reko.Arch.Arm.AArch64
 
             var MoveWideImmediate = Mask(29, 7,
                 Mask(22, 1,
-                    Instr(Opcode.movn, "* - 32 bit variant"),
+                    Instr(Opcode.movn, "W0:5,U5:16w sh21:2"),
                     invalid),
                 invalid,
                 Mask(22, 1,
@@ -654,7 +669,7 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.movk, "W0:5,U5:16h sh21:2"),
                     invalid),
 
-                Instr(Opcode.movn, "* - 64 bit variant"),
+                Instr(Opcode.movn, "X0:5,U5:16l sh21:2"),
                 invalid,
                 Instr(Opcode.movz, "X0:5,U5:16l sh21:2"),
                 Instr(Opcode.movk, "X0:5,U5:16h sh21:2"));
@@ -872,13 +887,15 @@ namespace Reko.Arch.Arm.AArch64
                     UncondBranchReg),
                 invalid);
 
+
+
             Decoder LogicalShiftedRegister;
             {
                 LogicalShiftedRegister = Mask(31, 1,
                     Select("15:1", n => n == 1,
                         invalid,
                         Mask("29:2:21:1",
-                            Instr(Opcode.and, "*shifted register, 32-bit"),
+                            Instr(Opcode.and, "W0:5,W5:5,W16:5 si22:2,10:6"),
                             Instr(Opcode.bic, "*shifted register, 32-bit"),
                             Select("22:2:10:6:5:5", n => n == 0x1F,
                                 Instr(Opcode.mov, "W0:5,W16:5 si22:2,10:6"),
@@ -890,7 +907,7 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Opcode.ands, "*shifted register, 32-bit"),
                             Instr(Opcode.bics, "*shifted register, 32-bit"))),
                     Mask("29:2:21:1",
-                        Instr(Opcode.and, "*shifted register, 64-bit"),
+                        Instr(Opcode.and, "X0:5,X5:5,X16:5 si22:2,10:6"),
                         Instr(Opcode.bic, "*shifted register, 64-bit"),
                         Select("22:2:10:6:5:5", n => n == 0x1F,
                             Instr(Opcode.mov, "X0:5,X16:5 si22:2,10:6"),
@@ -1083,5 +1100,6 @@ namespace Reko.Arch.Arm.AArch64
                 LoadsAndStores,
                 DataProcessingScalarFpAdvancedSimd);
         }
+
     }
 }
