@@ -170,7 +170,7 @@ namespace Reko.Arch.Arm.AArch32
                 if (0 <= v && v <= 9)
                     writer.WriteFormat($"#{imm.Value.ToInt32()}");
                 else 
-                    writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                    writer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
                 break;
             case AddressOperand aop:
                 writer.WriteAddress($"${aop.Address}", aop.Address);

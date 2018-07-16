@@ -56,6 +56,27 @@ namespace Reko.Arch.Arm.AArch32
             {
                 return ((u >> shift) & 1) != 0;
             }
+
+            protected void DumpMaskedInstruction(uint wInstr, uint shMask)
+            {
+                var hibit = 0x80000000u;
+                var sb = new StringBuilder();
+                for (int i = 0; i < 32; ++i)
+                {
+                    if ((shMask & hibit) != 0)
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
+                    }
+                    else
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
+                    }
+                    shMask <<= 1;
+                    wInstr <<= 1;
+                }
+                Debug.Print(sb.ToString());
+            }
+
         }
 
         public class MaskDecoder : Decoder
@@ -82,31 +103,16 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
-                return;
+                //return;
                 var shMask = this.mask << shift;
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
-                {
-                    if ((shMask & hibit) != 0)
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
-                    }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
-                }
-                Debug.Print(sb.ToString());
+                DumpMaskedInstruction(wInstr, shMask);
             }
         }
 
         public class BitfieldDecoder : Decoder
         {
-            private Bitfield [] bitfields;
-            private Decoder[] decoders;
+            private readonly Bitfield [] bitfields;
+            private readonly Decoder[] decoders;
 
             public BitfieldDecoder(Bitfield[] bitfields, Decoder[] decoders)
             {
@@ -116,12 +122,21 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                TraceDecoder(wInstr);
                 uint n = 0;
                 foreach (var bitfield in bitfields)
                 {
                     n = n << bitfield.Length | ((wInstr >> bitfield.Position) & bitfield.Mask);
                 }
                 return this.decoders[n].Decode(wInstr, dasm);
+            }
+
+            [Conditional("DEBUG")]
+            public void TraceDecoder(uint wInstr)
+            {
+                //return;
+                var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
+                DumpMaskedInstruction(wInstr, shMask);
             }
         }
 
@@ -214,11 +229,19 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                TraceMask(wInstr);
                 var op = (wInstr >> shift) & 0xF;
                 if (op == 0xF)
                     return is1111.Decode(wInstr, dasm);
                 else
                     return not1111.Decode(wInstr, dasm);
+            }
+
+            [Conditional("DEBUG")]
+            public void TraceMask(uint wInstr)
+            {
+                var shMask = 0xFu << shift;
+                DumpMaskedInstruction(wInstr, shMask);
             }
         }
 
@@ -271,9 +294,17 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                TraceMask(wInstr);
                 var op = (wInstr >> pos) & mask;
                 var decoder = predicate(op) ? trueDecoder : falseDecoder;
                 return decoder.Decode(wInstr, dasm);
+            }
+
+            [Conditional("DEBUG")]
+            private void TraceMask(uint wInstr)
+            {
+                var uMask = mask << pos;
+                DumpMaskedInstruction(wInstr, uMask);
             }
         }
     }

@@ -27,18 +27,24 @@ namespace Reko.Arch.Arm.AArch32
     public enum ArmVectorData
     {
         INVALID = 0,
-        S16,
         S8,
-        I16,
+        S16,
+        S32,
+        S64,
+
         I8,
+        I16,
+        I32,
+        I64,
+
         U8,
         U16,
-        F32,
-        S64,
-        S32,
-        I32,
-        F64,
         U32,
+
+        F16,
+        F32,
+        F64,
+
         F64S32,
         F32S32,
         F16U16,
@@ -48,6 +54,5 @@ namespace Reko.Arch.Arm.AArch32
         S32F32,
         F32U32,
         U32F32,
-        F16,
     }
 }
