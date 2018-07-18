@@ -169,8 +169,7 @@ namespace Reko.Core
 
         private Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
         {
-            var pt = dt as PrimitiveType;
-            if (pt == null)
+            if (!(dt is PrimitiveType pt))
                 return Constant.Invalid;
             else if (pt.Domain == Domain.Real && pt.BitSize > 80)
             {
