@@ -86,13 +86,15 @@ namespace Reko.Arch.SuperH
         public static RegisterStorage fv12 = new RegisterStorage("fv12", 16, 0x000, PrimitiveType.Word128);
 
         public static RegisterStorage fpul = new RegisterStorage("fpul", 17, 0, PrimitiveType.Word32);
-        public static RegisterStorage pr = new RegisterStorage("pr", 18, 0, PrimitiveType.Word32);
-        public static RegisterStorage gbr = new RegisterStorage("gbr", 19, 0, PrimitiveType.Word32);
-        public static RegisterStorage mac = new RegisterStorage("mac", 20, 0, PrimitiveType.Word64);
-        public static RegisterStorage macl = new RegisterStorage("macl", 20, 0, PrimitiveType.Word32);
-        public static RegisterStorage mach = new RegisterStorage("mach", 20, 32, PrimitiveType.Word32);
-
-        public static RegisterStorage sr = new RegisterStorage("sr", 21, 0, PrimitiveType.Word32);
+        public static RegisterStorage fpscr = new RegisterStorage("fpscr", 18, 0, PrimitiveType.Word32);
+        public static RegisterStorage pr = new RegisterStorage("pr", 19, 0, PrimitiveType.Word32);
+        public static RegisterStorage gbr = new RegisterStorage("gbr", 20, 0, PrimitiveType.Word32);
+        public static RegisterStorage mac = new RegisterStorage("mac", 21, 0, PrimitiveType.Word64);
+        public static RegisterStorage macl = new RegisterStorage("macl", 21, 0, PrimitiveType.Word32);
+        public static RegisterStorage mach = new RegisterStorage("mach", 21, 32, PrimitiveType.Word32);
+        public static RegisterStorage sr = new RegisterStorage("sr", 22, 0, PrimitiveType.Word32);
+        public static RegisterStorage vbr = new RegisterStorage("vbr", 23, 0, PrimitiveType.Word32);
+        public static RegisterStorage spc = new RegisterStorage("spc", 23, 0, PrimitiveType.Word32);
 
         public static FlagGroupStorage T = new FlagGroupStorage(sr, 1, "T", PrimitiveType.Bool);
 

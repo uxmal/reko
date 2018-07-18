@@ -73,10 +73,12 @@ namespace Reko.Arch.SuperH
             { Opcode.fcmp_eq, "fcmp/eq" },
             { Opcode.fcmp_gt, "fcmp/gt" },
             { Opcode.lds_l, "lds.l" },
+            { Opcode.mac_l, "mac.l" },
             { Opcode.mov_b, "mov.b" },
             { Opcode.mov_l, "mov.l" },
             { Opcode.mov_w, "mov.w" },
             { Opcode.mul_l, "mul.l" },
+            { Opcode.stc_l, "stc.l" },
             { Opcode.sts_l, "sts.l" },
             { Opcode.swap_w, "swap.w" },
         };
@@ -99,38 +101,41 @@ namespace Reko.Arch.SuperH
 
         private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
+            switch (op)
             {
+            case ImmediateOperand immOp:
                 writer.WriteChar('#');
                 immOp.Write(writer, options);
                 return;
+            case MemoryOperand memOp:
+                if (memOp.mode == AddressingMode.PcRelativeDisplacement)
+                {
+                    uint uAddr = this.Address.ToUInt32();
+                    if (memOp.Width.Size == 4)
+                    {
+                        uAddr &= ~3u;
+                    }
+                    uAddr += (uint)(memOp.disp + 4);
+                    var addr = Core.Address.Ptr32(uAddr);
+                    if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    {
+                        writer.WriteChar('(');
+                        writer.WriteAddress(addr.ToString(), addr);
+                        writer.WriteChar(')');
+                        writer.AddAnnotation(op.ToString());
+                    }
+                    else
+                    {
+                        op.Write(writer, options);
+                        writer.AddAnnotation(addr.ToString());
+                    }
+                    return;
+                }
+                goto default;
+            default:
+                op.Write(writer, options);
+                break;
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null && memOp.mode == AddressingMode.PcRelativeDisplacement)
-            {
-                uint uAddr = this.Address.ToUInt32();
-                if (memOp.Width.Size == 4)
-                {
-                    uAddr &= ~3u;
-                }
-                uAddr += (uint)(memOp.disp + 4);
-                var addr = Core.Address.Ptr32(uAddr);
-                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
-                {
-                    writer.WriteChar('(');
-                    writer.WriteAddress(addr.ToString(), addr);
-                    writer.WriteChar(')');
-                    writer.AddAnnotation(op.ToString());
-                }
-                else
-                {
-                    op.Write(writer, options);
-                    writer.AddAnnotation(addr.ToString());
-                }
-                return;
-            }
-            op.Write(writer, options);
         }
     }
 }
