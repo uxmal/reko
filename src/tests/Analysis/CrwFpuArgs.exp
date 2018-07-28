@@ -14,6 +14,7 @@ void fn0C00_0000(Register selector ds)
 // ax:ax
 // SCZO:SCZO
 // bx:bx
+// rRet0:rRet0
 // rLoc1:FPU -1
 // rLoc2:FPU -2
 // wLoc02:Local -0002
@@ -29,13 +30,13 @@ fn0C00_0000_entry:
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	rLoc1_28 = (real64) Mem0[ds:0x0300:real32]
-	rLoc2_29 = (real64) Mem0[ds:0x0304:real32]
-	fn0C00_0024(ds, 0x0308, rLoc2_29, rLoc1_28)
+	rLoc1_30 = (real64) Mem0[ds:0x0300:real32]
+	rLoc2_31 = (real64) Mem0[ds:0x0304:real32]
+	fn0C00_0024(ds, 0x0308, rLoc2_31, rLoc1_30)
 	Mem17[ds:0x030C:real32] = 0.0F
 	ax_19 = Mem17[ds:0x0308:word16]
-	rLoc1_33 = fn0C00_0031(ds, ax_19)
-	Mem24[ds:0x030C:real32] = (real32) rLoc1_33
+	rRet0_23 = fn0C00_0031(ds, ax_19)
+	Mem26[ds:0x030C:real32] = (real32) rRet0_23
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
