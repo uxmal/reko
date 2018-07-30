@@ -542,9 +542,9 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         // A SuperH decoder for the instruction FFFE has not been implemented yet.
         [Test]
-        public void ShDis_FFFE()
+        public void ShDis_fmac()
         {
-            AssertCode("@@@", "FEFF");
+            AssertCode("fmac\tfr0,fr15,fr15", "FEFF");
         }
 
         // A SuperH decoder for the instruction F91A has not been implemented yet.

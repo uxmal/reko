@@ -75,6 +75,7 @@ namespace Reko.Arch.SuperH
         flds,
         fldi0,
         fldi1,
+        fmac,
         jmp,
         jsr,
         ldc,

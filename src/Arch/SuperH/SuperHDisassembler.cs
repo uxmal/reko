@@ -54,7 +54,7 @@ namespace Reko.Arch.SuperH
 
         private SuperHInstruction Decode(ushort uInstr, Opcode opcode, string format)
         {
-            var ops = new MachineOperand[2];
+            var ops = new MachineOperand[3];
             int iop = 0;
             RegisterStorage reg;
             PrimitiveType width;
@@ -97,6 +97,11 @@ namespace Reko.Arch.SuperH
                     else if (format[i] == 'S')
                     {
                         ops[iop] = new RegisterOperand(Registers.fpscr);
+                        break;
+                    }
+                    else if (format[i] == '0')
+                    {
+                        ops[iop] = new RegisterOperand(Registers.fr0);
                         break;
                     }
                     goto default;
@@ -179,6 +184,7 @@ namespace Reko.Arch.SuperH
                 Opcode = opcode,
                 op1 = ops[0],
                 op2 = ops[1],
+                op3 = ops[2],
             };
         }
 
@@ -616,7 +622,8 @@ namespace Reko.Arch.SuperH
                         { 0x1E, new Oprec(Opcode.fipr, "v2,v1") },
                     })
                 },
-                { 0xF, new Oprec(Opcode.invalid, "") },
+                { 0x0E, new Oprec(Opcode.fmac, "F0,f2,f1") },
+                { 0x0F, new Oprec(Opcode.invalid, "") },
                 { 0x14, new Oprec(Opcode.fcmp_eq, "f2,f1") },
                 { 0x1D, new OprecField(4, 5, new Dictionary<int, OprecBase>
                     {
@@ -630,6 +637,7 @@ namespace Reko.Arch.SuperH
                         { 0x19, new Oprec(Opcode.fldi1, "f1") },
                     })
                 },
+                { 0x1E, new Oprec(Opcode.fmac, "F0,f2,f1") },
                 { 0x1F, new Oprec(Opcode.invalid, "") },
             })
         };

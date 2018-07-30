@@ -41,6 +41,7 @@ namespace Reko.Arch.SuperH
 
         public MachineOperand op1 { get; set; }
         public MachineOperand op2 { get; set; }
+        public MachineOperand op3 { get; set; }
 
         public override int OpcodeAsInteger
         {
@@ -92,11 +93,14 @@ namespace Reko.Arch.SuperH
                 return;
             writer.Tab();
             Render(op1, writer, options);
-            if (op2 != null)
-            {
-                writer.WriteChar(',');
-                Render(op2, writer, options);
-            }
+            if (op2 == null)
+                return;
+            writer.WriteChar(',');
+            Render(op2, writer, options);
+            if (op3 == null)
+                return;
+            writer.WriteChar(',');
+            Render(op3, writer, options);
         }
 
         private void Render(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
