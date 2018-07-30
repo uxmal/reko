@@ -41,6 +41,16 @@ namespace Reko.Arch.Arm.AArch32
                 this.Length = length;
                 this.Mask = (1U << length) - 1U;
             }
+
+            public static uint ReadFields(Bitfield[] bitfields, uint wInstr)
+            {
+                uint n = 0;
+                foreach (var bitfield in bitfields)
+                {
+                    n = n << bitfield.Length | ((wInstr >> bitfield.Position) & bitfield.Mask);
+                }
+                return n;
+            }
         }
 
         public abstract class Decoder
@@ -76,7 +86,6 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 Debug.Print(sb.ToString());
             }
-
         }
 
         public class MaskDecoder : Decoder
@@ -123,13 +132,10 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 TraceDecoder(wInstr);
-                uint n = 0;
-                foreach (var bitfield in bitfields)
-                {
-                    n = n << bitfield.Length | ((wInstr >> bitfield.Position) & bitfield.Mask);
-                }
+                uint n = Bitfield.ReadFields(bitfields, wInstr);
                 return this.decoders[n].Decode(wInstr, dasm);
             }
+
 
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
@@ -178,7 +184,6 @@ namespace Reko.Arch.Arm.AArch32
                 return dasm.NotYetImplemented(message, wInstr);
             }
         }
-
 
         private class InstrDecoder : Decoder
         {

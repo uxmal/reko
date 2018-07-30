@@ -257,7 +257,7 @@ namespace Reko.Arch.Arm.AArch32
                     Writeback = w,
                     ops = new MachineOperand[] {
                             new RegisterOperand(rn),
-                            new MultiRegisterOperand(PrimitiveType.Word16, (registers)) }
+                            new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
                 };
             }
         }
@@ -287,7 +287,7 @@ namespace Reko.Arch.Arm.AArch32
                     {
                         opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
                         Writeback = w,
-                        ops = new MachineOperand[] { new MultiRegisterOperand(PrimitiveType.Word16, (registers)) }
+                        ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
                     };
                 }
                 else
@@ -298,7 +298,7 @@ namespace Reko.Arch.Arm.AArch32
                         Writeback = w,
                         ops = new MachineOperand[] {
                             new RegisterOperand(rn),
-                            new MultiRegisterOperand(PrimitiveType.Word16, (registers))
+                            new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers))
                         }
                     };
 

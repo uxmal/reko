@@ -41,6 +41,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             Opcode.ldm, Opcode.ldmda, Opcode.ldmdb, Opcode.ldmib,
             Opcode.stm, Opcode.stmda, Opcode.stmdb, Opcode.stmib,
+            Opcode.vldmia, Opcode.vldmdb, Opcode.vstmia, Opcode.vstmdb
         };
         #endregion
 
@@ -107,8 +108,10 @@ namespace Reko.Arch.Arm.AArch32
             {
                 writer.Tab();
                 RenderOperand(ops[0], writer, options);
-                if (blockDataXferOpcodes.Contains(opcode))
+                if (this.Writeback && blockDataXferOpcodes.Contains(opcode))
+                {
                     writer.WriteChar('!');
+                }
                 for (int iOp = 1; iOp < ops.Length; ++iOp)
                 {
                     writer.WriteChar(',');

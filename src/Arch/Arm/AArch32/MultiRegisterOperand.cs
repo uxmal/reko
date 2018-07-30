@@ -31,20 +31,22 @@ namespace Reko.Arch.Arm.AArch32
 {
     public class MultiRegisterOperand : MachineOperand
     {
-        private ushort bitmask;
+        private readonly RegisterStorage[] registers;
+        private readonly uint bitmask;
 
-        public MultiRegisterOperand(PrimitiveType width, ushort bitmask) : base(width)
+        public MultiRegisterOperand(RegisterStorage[] registers, PrimitiveType width, uint bitmask) : base(width)
         {
+            this.registers = registers;
             this.bitmask = bitmask;
         }
 
         public IEnumerable<RegisterStorage> GetRegisters()
         {
             int mask = 1;
-            for (int i = 0; i < 16; ++i, mask <<= 1)
+            for (int i = 0; i < 32; ++i, mask <<= 1)
             {
                 if ((bitmask & mask) != 0)
-                    yield return Registers.GpRegs[i];
+                    yield return registers[i];
             }
         }
 
@@ -53,7 +55,7 @@ namespace Reko.Arch.Arm.AArch32
             var sep = "{";
             int mask = 1;
             int iStart = -1;
-            for (int i = 0; i < 17; ++i, mask <<= 1)
+            for (int i = 0; i < 33; ++i, mask <<= 1)
             {
                 if ((bitmask & mask) != 0)
                 {
@@ -63,7 +65,7 @@ namespace Reko.Arch.Arm.AArch32
                         writer.WriteString(sep);
                         sep = ",";
                         iStart = i;
-                        writer.WriteString(Registers.GpRegs[i].Name);
+                        writer.WriteString(registers[i].Name);
                     }
                 }
                 else
@@ -71,7 +73,7 @@ namespace Reko.Arch.Arm.AArch32
                     if (0 <= iStart && iStart < i - 1)
                     {
                         writer.WriteChar('-');
-                        writer.WriteString(Registers.GpRegs[i-1].Name);
+                        writer.WriteString(registers[i-1].Name);
                     }
                     iStart = -1;
                 }

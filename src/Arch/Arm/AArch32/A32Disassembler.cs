@@ -102,7 +102,12 @@ namespace Reko.Arch.Arm.AArch32
                     offset = ReadDecimal(format, ref i);
                     useQ = bit(wInstr, offset);
                     continue;
-
+                case 'w': // sets the writeback bit.
+                    ++i;
+                    offset = ReadDecimal(format, ref i);
+                    writeback = bit(wInstr, offset);
+                    continue;
+                
                 case 'I':   // 12-bit encoded immediate at offset 0;
                     op = DecodeImm12(wInstr);
                     break;
@@ -165,11 +170,24 @@ namespace Reko.Arch.Arm.AArch32
                     if (PeekAndDiscard('r', format, ref i))
                     {
                         imm = ReadBitfields(wInstr, format, ref i);
-                        op = new MultiRegisterOperand(PrimitiveType.Word16, (ushort)imm);
+                        op = new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (ushort)imm);
+                    }
+                    else if (PeekAndDiscard('d', format, ref i))
+                    {
+                        // double-precision VLDM{IA|DB} arguments.
+                        //$PERF: put this in a static field
+                        var baseRegFields = new[]
+                        {
+                            new Bitfield(22, 1), new Bitfield(12, 4)
+                        };
+                        var baseReg = (int) Bitfield.ReadFields(baseRegFields, wInstr);
+                        var regs = SBitfield(wInstr, 1, 7);
+                        var bitmask = (((1u << regs) - 1u) << baseReg);
+                        op = new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, bitmask);
                     }
                     else
                     {
-                        return NotYetImplemented("SIMD LDRM modes not done yet", wInstr);
+                        return NotYetImplemented($"SIMD LDRM mode {format[i]} not implemented", wInstr);
                     }
                     break;
                 case 'S':   // 'SR' = special register
@@ -1538,18 +1556,18 @@ namespace Reko.Arch.Arm.AArch32
                         PermanentlyUndefined)));
 
 
-            var StmdaStmed = new InstrDecoder(Opcode.stmda, "r4,Mr0:16");
-            var LdmdaLdmfa = new InstrDecoder(Opcode.ldmda, "r4,Mr0:16");
-            var Stm =        new InstrDecoder(Opcode.stm, "r4,Mr0:16");
-            var Ldm =        new InstrDecoder(Opcode.ldm, "r4,Mr0:16");
-            var StmStmia =   new InstrDecoder(Opcode.stm, "r4,Mr0:16");
-            var LdmLdmia =   new InstrDecoder(Opcode.ldm, "r4,Mr0:16");
-            var StmdbStmfd = new InstrDecoder(Opcode.stmdb, "r4,Mr0:16");
-            var LdmdbLDmea = new InstrDecoder(Opcode.ldmdb, "r4,Mr0:16");
-            var StmibStmfa = new InstrDecoder(Opcode.stmib, "r4,Mr0:16");
-            var LdmibLdmed = new InstrDecoder(Opcode.ldmib, "r4,Mr0:16");
+            var StmdaStmed = new InstrDecoder(Opcode.stmda, "w21 r4,Mr0:16");
+            var LdmdaLdmfa = new InstrDecoder(Opcode.ldmda, "w21 r4,Mr0:16");
+            var Stm =        new InstrDecoder(Opcode.stm, "w21 r4,Mr0:16");
+            var Ldm =        new InstrDecoder(Opcode.ldm, "w21 r4,Mr0:16");
+            var StmStmia =   new InstrDecoder(Opcode.stm, "w21 r4,Mr0:16");
+            var LdmLdmia =   new InstrDecoder(Opcode.ldm, "w21 r4,Mr0:16");
+            var StmdbStmfd = new InstrDecoder(Opcode.stmdb, "w21 r4,Mr0:16");
+            var LdmdbLDmea = new InstrDecoder(Opcode.ldmdb, "w21 r4,Mr0:16");
+            var StmibStmfa = new InstrDecoder(Opcode.stmib, "w21 r4,Mr0:16");
+            var LdmibLdmed = new InstrDecoder(Opcode.ldmib, "w21 r4,Mr0:16");
 
-            var LoadStoreMultiple = new MaskDecoder(22, 7, // PUop
+            var LoadStoreMultiple = new MaskDecoder(22, 7, // P U op
                 new MaskDecoder(20, 1, // L
                     StmdaStmed,
                     LdmdaLdmfa),
@@ -1676,14 +1694,25 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b10"),
                     Mask(0, 1,
-                        Instr(Opcode.vldmia, "r4,Md"),
+                        Instr(Opcode.vldmia, "w21 r4,Md"),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b11 xxxxxx1"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110"),
-                nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111"),
-
+                Mask(8, 3,
+                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b00"),
+                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b01"),
+                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b10"),
+                    Mask(0, 1,
+                        Instr(Opcode.vldmia, "w21 r4,Md"),
+                        nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b11 xxxxxx1"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1000"),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001"),
-                nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010"),
+                Mask(8, 3,
+                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b00"),
+                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b01"),
+                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b10"),
+                    Mask(0, 1,
+                        Instr(Opcode.vstmdb, "w21 r4,Md"),
+                        nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b11 xxxxxx1"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011"),
 
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1100"),
@@ -1695,8 +1724,26 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
+            var AdvancedSimd_and_floatingpoint64bitmove = Mask(22, 1,
+                invalid,
+                Mask(4, 1, // o3
+                    invalid,
+                    Select(6, 0x3, n => n != 0, // opc2
+                        invalid,
+                        Mask(20, 1, // op
+                            Mask(8, 3, // size
+                                invalid,
+                                invalid,
+                                nyi("vmov from 2 gp regs to 2 single floats"),
+                                Instr(Opcode.vmov, "D5:1:0:4,r3,r4")),
+                            Mask(8, 3, // size
+                                invalid,
+                                invalid,
+                                nyi("vmov to 2 gp regs from 2 single floats"),
+                                nyi("vmov to 2 gp regs from 1 double float"))))));
+
             var AdvancedSimd_LdSt_64bitmove = Select(21, 0b1101, n => n == 0,
-                nyi("AdvancedSimd_and_floatingpoint64bitmove"),
+                AdvancedSimd_and_floatingpoint64bitmove,
                 AdvancedSimd_and_floatingpoint_LdSt);
 
             var SystemRegister32BitMove = nyi("SystemRegister32BitMove");
@@ -1867,75 +1914,6 @@ namespace Reko.Arch.Arm.AArch32
                 ConditionalDecoder,
                 ConditionalDecoder,
                 unconditionalDecoder);
-
-            /*
-
-            Saturate16Bit = new MaskDecoder(22, 1,
-                Ssat16,
-                Usat16);
-
-            ReverseBitByte = new MaskDecoder(22, 1,
-                new MaskDecoder(7, 1,
-                    Rev,
-                    Rev16),
-                new MaskDecoder(7, 1,
-                    Rbit,
-                    Revsh));
-
-            Saturate32Bit = new MaskDecoder(22, 1)
-                Ssat,
-                Usat);
-
-            SignedMultiplyDivide = nyi,
-
-            UnsignedSumOfAbsDifferences = new PcDecoder(12, 0xF,
-                Usada8,
-                Usad8);
-
-            BitfieldInsert = new PcDecoder(0, 0x0F,
-                Bfi,
-                Bfc);
-
-            PermanentlyUndefined = MaskDecoder(28, 0xF,
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-
-                invalid,
-                invalid,
-                invalid,
-                invalid,
-
-                invalid,
-                invalid,
-                Udf,
-                invalid);
-
-            BitfieldExtract = MaskDecoder(22, 1,
-                Sbfx,
-                Ubfx);
-
-
-
-
-
-
-
-            var SystemRegister32bitMove = new PcDecoder(28,
-                MaskDecoder(20, 1,
-                    Mcr,
-                    Mrc)),
-                invalid);
-                
-                    */
-
-
         }
     }
 }

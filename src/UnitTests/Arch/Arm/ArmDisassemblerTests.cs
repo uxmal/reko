@@ -326,14 +326,22 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldm()
         {
             var instr = Disassemble32(0xE89B000F);
+            Assert.AreEqual("ldm\tfp,{r0-r3}", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_ldmia_writeback()
+        {
+            var instr = Disassemble32(0xE8BB000F);
             Assert.AreEqual("ldm\tfp!,{r0-r3}", instr.ToString());
         }
+
 
         [Test]
         public void ArmDasm_ldmia()
         {
-            var instr = Disassemble32(0xE8BB000F);
-            Assert.AreEqual("ldm\tfp!,{r0-r3}", instr.ToString());
+            var instr = Disassemble32(0xE89B000F);
+            Assert.AreEqual("ldm\tfp,{r0-r3}", instr.ToString());
         }
 
         [Test]
@@ -629,38 +637,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("bfi\tr1,r3,#&1A,#&18");        //$REVIEW: the ARM docs are inconsistent here.
         }
 
-        
-                        
-        // An A32 decoder for the instruction ECF20B04 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
         [Test]
-        public void ArmDasm_ECF20B04()
-        {
-            Disassemble32(0xECF20B04);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction ECFC0B04 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ECFC0B04()
-        {
-            Disassemble32(0xECFC0B04);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction ED2D8B04 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ED2D8B04()
-        {
-            Disassemble32(0xED2D8B04);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction ED2D8B02 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ED2D8B02()
+        public void ArmDasm_vstmdb()
         {
             Disassemble32(0xED2D8B02);
-            Expect_Code("@@@");
+            Expect_Code("vstmdb\tsp!,{d8}");
         }
 
         [Test]
@@ -668,14 +649,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xF3C70E5F);
             Expect_Code("vmov.i32\tq8,#&FFFFFFFFFFFFFFFF");
-        }
-
-        // An A32 decoder for the instruction ECF50B04 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ECF50B04()
-        {
-            Disassemble32(0xECF50B04);
-            Expect_Code("@@@");
         }
 
         [Test]
@@ -692,23 +665,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vdup.i8\tq8,r2");
         }
 
-        // An A32 decoder for the instruction EC410B31 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_mcrr()
-        {
-            Disassemble32(0xEC410B31);
-            Expect_Code("mcrr\tp11,#3,r0,r1,c1");
-        }
-
-        // An A32 decoder for the instruction ECF00B04 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ECF00B04()
-        {
-            Disassemble32(0xECF00B04);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction EDDD7A0B (SystemRegister_LdSt_64bitMove) has not been implemented yet.
         [Test]
         public void ArmDasm_vldr_sp()
         {
@@ -716,7 +672,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vldr\ts15,[sp,#&2C]");
         }
 
-        // An A32 decoder for the instruction EE071A10 (AdvancedSIMDandFloatingPoint32bitMove) has not been implemented yet.
         [Test]
         public void ArmDasm_vmov_s14_r1()
         {
@@ -724,7 +679,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov\ts14,r1");
         }
 
-        // An A32 decoder for the instruction EDDF1BEE (SystemRegister_LdSt_64bitMove) has not been implemented yet.
         [Test]
         public void ArmDasm_vldr_pc_relative()
         {
@@ -732,12 +686,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vldr\td17,[pc,#&3B8]");
         }
 
-        // An A32 decoder for the instruction ECD40B04 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
         [Test]
-        public void ArmDasm_ECD40B04()
+        public void ArmDasm_vldmia()
         {
             Disassemble32(0xECD40B04);
-            Expect_Code("@@@");
+            Expect_Code("vldmia\tr4,{d16-d17}");
         }
 
         [Test]
@@ -768,45 +721,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("tsteq\tr10,r4,lsr pc");
         }
 
-        // An A32 decoder for the instruction EC432B17 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
         [Test]
-        public void ArmDasm_EC432B17()
+        public void ArmDasm_vmov()
         {
             Disassemble32(0xEC432B17);
-            Expect_Code("mcrr\tp11,#1,r2,r3,c7");
-        }
-
-        // An A32 decoder for the instruction ED2D8B08 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ED2D8B08()
-        {
-            Disassemble32(0xED2D8B08);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction ED2D8B10 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ED2D8B10()
-        {
-            Disassemble32(0xED2D8B10);
-            Expect_Code("@@@");
-        }
-
-        // An A32 decoder for the instruction ED2D8B06 (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ED2D8B06()
-        {
-            Disassemble32(0xED2D8B06);
-            Expect_Code("@@@");
-        }
-
-
-        // An A32 decoder for the instruction ED2D8B0E (SystemRegister_LdSt_64bitMove) has not been implemented yet.
-        [Test]
-        public void ArmDasm_ED2D8B0E()
-        {
-            Disassemble32(0xED2D8B0E);
-            Expect_Code("@@@");
+            Expect_Code("vmov\td7,r2,r3");
         }
 
         [Test]
@@ -814,6 +733,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xE1C15FC1);
             Expect_Code("bic\tr5,r1,r1,asr #&1F");
+        }
+
+        [Test]
+        public void ArmDasm_ldmda()
+        {
+            Disassemble32(0xE811EB85);
+            Expect_Code("ldmda\tr1,{r0,r2,r7-r9,fp,sp-pc}");
         }
     }
 }
