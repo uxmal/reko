@@ -741,5 +741,12 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xE811EB85);
             Expect_Code("ldmda\tr1,{r0,r2,r7-r9,fp,sp-pc}");
         }
+
+        [Test]
+        public void ArmDasm_ldrls_pc_relative_shift()
+        {
+            Disassemble32(0x979FF103);   // ldrls\tpc,[pc,r3,lsl #2]
+            Expect_Code("ldrls\tpc,[pc,r3,lsl #2]");
+        }
     }
 }

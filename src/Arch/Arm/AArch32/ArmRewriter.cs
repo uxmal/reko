@@ -558,20 +558,20 @@ namespace Reko.Arch.Arm.AArch32
         Identifier Reg(RegisterStorage reg) { return binder.EnsureRegister(reg); }
 
 
-Expression NZC()
-{
-    return binder.EnsureFlagGroup(Registers.cpsr, 0xE, "NZC", PrimitiveType.Byte);
-}
+        Expression NZC()
+        {
+            return binder.EnsureFlagGroup(Registers.cpsr, 0xE, "NZC", PrimitiveType.Byte);
+        }
 
-Expression NZCV()
-{
-    return binder.EnsureFlagGroup(Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte);
-}
+        Expression NZCV()
+        {
+            return binder.EnsureFlagGroup(Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte);
+        }
 
-Expression Q()
-{
-    return binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool);
-}
+        Expression Q()
+        {
+            return binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool);
+        }
 
 void MaybeUpdateFlags(Expression opDst)
 {
@@ -765,7 +765,11 @@ case ARM_OP_SYSREG:
                     if (mop.BaseRegister == Registers.pc)
                     {
                         // PC-relative address
-                        var dst = instr.Address + mop.Offset.ToInt32() + 8u;
+                        var dst = instr.Address + 8u;
+                        if (mop.Offset != null)
+                        {
+                            dst += mop.Offset.ToInt32();
+                        }
                         ea = dst;
 
                         if (mop.Index != null)
@@ -783,12 +787,22 @@ case ARM_OP_SYSREG:
                         }
                         return m.Mem(dt, ea);
                     }
-                    if ((mop.PreIndex || !instr.Writeback) && mop.Offset != null && !mop.Offset.IsZero)
+                    if ((mop.PreIndex || !instr.Writeback))
                     {
-                        var offset = mop.Offset;
-                        ea = mop.Add
-                            ? m.IAdd(ea, offset)
-                            : m.ISub(ea, offset);
+                        if (mop.Offset != null && !mop.Offset.IsZero)
+                        {
+                            var offset = mop.Offset;
+                            ea = mop.Add
+                                ? m.IAdd(ea, offset)
+                                : m.ISub(ea, offset);
+                        }
+                        else if (mop.Index != null)
+                        {
+                            var idx = Reg(mop.Index);
+                            ea = mop.Add
+                                ? m.IAdd(ea, idx)
+                                : m.ISub(ea, idx);
+                        }
                     }
                     if (mop.PreIndex && instr.Writeback)
                     {

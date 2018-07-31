@@ -125,8 +125,16 @@ namespace Reko.Arch.Arm.AArch32
                     op = AddressOperand.Create(addr + offset);
                     break;
                 case 'Y':   // immediate low 12 bits + extra 4 bits
+                    ++i;
                     imm = (wInstr & 0xFFF) | ((wInstr >> 4) & 0xF000);
-                    op = ImmediateOperand.Word32(imm);
+                    if (PeekAndDiscard('h', format, ref i))
+                    {
+                        op = ImmediateOperand.Word16((ushort)imm);
+                    }
+                    else
+                    {
+                        op = ImmediateOperand.Word32(imm);
+                    }
                     break;
                 case 'r':   // register at a 4-bit multiple offset
                     offset = (format[++i] - '0') * 4;
@@ -334,6 +342,10 @@ namespace Reko.Arch.Arm.AArch32
                 var cmode = (wInstr >> 8) & 0xF;
                 var op = (wInstr >> 5) & 1;
                 return ImmediateOperand.Word64(SimdExpandImm(op, cmode, (uint)imm));
+            }
+            if (PeekAndDiscard('h', format, ref i))
+            {
+                return ImmediateOperand.Word16((ushort)imm);
             }
             return ImmediateOperand.Word32(imm);
         }
@@ -1146,7 +1158,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var MoveHalfwordImm = new MaskDecoder(22, 1,
                new InstrDecoder(Opcode.mov, "r3,Y"),
-               new InstrDecoder(Opcode.movt, "r3,Y"));
+               new InstrDecoder(Opcode.movt, "r3,Yh"));
 
             var IntegerTestAndCompareOneRegImm = new MaskDecoder(21, 3,
                 new InstrDecoder(Opcode.tst, "r4,I"),

@@ -457,6 +457,16 @@ means
         [Test]
         public void ArmRw_vldmia()
         {
+            BuildTest(0xEC720B04);
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|d16 = Mem0[r2:word64]",
+                "2|L--|d17 = Mem0[r2 + 8:word64]");
+        }
+
+        [Test]
+        public void ArmRw_vldmia_update()
+        {
             //04 0B F2 EC
             //04 0B E3 EC
             BuildTest(0xECF20B04);
@@ -1196,7 +1206,7 @@ means
         [Test]
         public void ArmRw_ldmdalt()
         {
-            BuildTest(0xb851eb85);  // ldmdalt r1, {r0, r2, r7, r8, sb, fp, sp, lr, pc} ^
+            BuildTest(0xB811EB85);  // ldmdalt r1, {r0, r2, r7, r8, sb, fp, sp, lr, pc} ^
             AssertCode(
                 "0|T--|00100000(4): 10 instructions",
                 "1|T--|if (Test(GE,NZV)) branch 00100004",
@@ -1400,7 +1410,7 @@ means
             BuildTest(0xE19120D3);  // ldrsb\tr2,[r1,-r3]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r2 = (word32) Mem0[r1 + r3:int8]");
         }
 
         [Test]
@@ -1409,7 +1419,7 @@ means
             BuildTest(0xE11120D3); // ldrsb\tr2,[r1, r3]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r2 = (word32) Mem0[r1 - r3:int8]");
         }
 
         [Test]
