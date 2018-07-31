@@ -118,7 +118,7 @@ namespace Reko.Arch.Arm.AArch32
                 var src = Operand(Src1());
                 m.Assign(dst, op(dst, src));
             }
-            if (instr.UpdateFlags)
+            if (instr.SetFlags)
             {
                 m.Assign(NZCV(), m.Cond(opDst));
             }
@@ -138,7 +138,7 @@ namespace Reko.Arch.Arm.AArch32
                 var src = Operand(Src1());
                 m.Assign(dst, cons(dst, src));
             }
-            if (instr.UpdateFlags)
+            if (instr.SetFlags)
             {
                 m.Assign(NZC(), m.Cond(dst));
             }
@@ -177,7 +177,7 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
             m.Assign(opDst, op(opSrc));
-            if (instr.UpdateFlags)
+            if (instr.SetFlags)
             {
                 m.Assign(NZCV(), m.Cond(opDst));
             }
@@ -333,7 +333,7 @@ namespace Reko.Arch.Arm.AArch32
             var opSrc2 = this.Operand(Src2());
             var opSrc3 = this.Operand(Src3());
             m.Assign(opDst, op(opSrc3, m.IMul(opSrc1, opSrc2)));
-            if (instr.UpdateFlags)
+            if (instr.SetFlags)
             {
                 m.Assign(NZCV(), m.Cond(opDst));
             }
@@ -395,7 +395,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src1 = Operand(Src1());
             m.Assign(dst, src1);
-            if (instr.UpdateFlags)
+            if (instr.SetFlags)
             {
                 m.Assign(this.NZC(), m.Cond(dst));
             }
@@ -477,7 +477,7 @@ namespace Reko.Arch.Arm.AArch32
             var opSrc1 = this.Operand(Src3());
             var opSrc2 = this.Operand(Src2());
             m.Assign(opDst, op(opSrc1, opSrc2));
-            if (instr.UpdateFlags)
+            if (instr.SetFlags)
             {
                 m.Assign(NZCV(), m.Cond(opDst));
             }

@@ -436,7 +436,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 opcode = opcode,
                 condition = cc,
-                UpdateFlags = updateFlags,
+                SetFlags = updateFlags,
                 ops = ops.ToArray(),
                 Writeback = writeback,
                 ShiftType = shiftType,

@@ -276,7 +276,7 @@ namespace Reko.Arch.Arm.AArch32
                 ops = ops.ToArray(),
                 ShiftType = shiftOp,
                 ShiftValue = shiftValue,
-                UpdateFlags = updateFlags,
+                SetFlags = updateFlags,
                 Writeback = writeback,
                 vector_data = vectorData,
             };

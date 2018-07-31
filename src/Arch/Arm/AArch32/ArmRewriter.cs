@@ -400,7 +400,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
                 case Opcode.push: case Opcode.push_w: RewritePush(); break;
                 case Opcode.rev: RewriteRev(); break;
-                case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.UpdateFlags); break;
+                case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
                 case Opcode.rsc: RewriteAdcSbc(m.ISub, true); break;
                 case Opcode.sadd16: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S16); break;
                 case Opcode.sadd8: RewriteVectorBinOp("__sadd_{0}", ArmVectorData.S8); break;
@@ -575,7 +575,7 @@ namespace Reko.Arch.Arm.AArch32
 
 void MaybeUpdateFlags(Expression opDst)
 {
-    if (instr.UpdateFlags)
+    if (instr.SetFlags)
     {
         m.Assign(NZCV(), m.Cond(opDst));
     }

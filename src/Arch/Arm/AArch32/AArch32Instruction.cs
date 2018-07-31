@@ -137,7 +137,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 sOpcode = opcode.ToString();
             }
-            var sUpdate = UpdateFlags ? "s" : "";
+            var sUpdate = SetFlags ? "s" : "";
             var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
             sb.Append(sOpcode);
             sb.Append(sUpdate);
@@ -244,7 +244,7 @@ namespace Reko.Arch.Arm.AArch32
         };
 
         public bool Writeback;
-        public bool UpdateFlags;
+        public bool SetFlags;
         public Opcode ShiftType;
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
