@@ -96,7 +96,14 @@ namespace Reko.Arch.Arm.AArch32
                         --i;
                         continue;
                     }
-                    return NotYetImplemented($"Unknown format {format}", wInstr);
+                    else if (PeekAndDiscard('f', format, ref i))
+                    {
+                        offset = ReadDecimal(format, ref i);
+                        vectorData = VectorElementFloat(offset);
+                        --i;
+                        continue;
+                    }
+                    return NotYetImplemented($"Unknown SIMD format {format}", wInstr);
                 case 'q': // bit which determines whether or not to use Qx or Dx registers in SIMD
                     ++i;
                     offset = ReadDecimal(format, ref i);
@@ -294,6 +301,18 @@ namespace Reko.Arch.Arm.AArch32
             case 64: return ArmVectorData.I64;
             }
         }
+
+        private ArmVectorData VectorElementFloat(int bitSize)
+        {
+            switch (bitSize)
+            {
+            default: throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
+            case 16: return ArmVectorData.F16;
+            case 32: return ArmVectorData.F32;
+            case 64: return ArmVectorData.F64;
+            }
+        }
+
 
         private ArmVectorData VectorElementUntypedReverse(uint imm)
         {
@@ -673,6 +692,22 @@ namespace Reko.Arch.Arm.AArch32
                 }, decoders);
         }
 
+        /// <summary>
+        /// Create a decoder for 3 bitfields.
+        /// </summary>
+        private static Decoder Mask(
+            int sh1, int len1,
+            int sh2, int len2,
+            int sh3, int len3,
+            params Decoder[] decoders)
+        {
+            return new BitfieldDecoder(
+                new Bitfield[] {
+                    new Bitfield(sh1, len1),
+                    new Bitfield(sh2, len2),
+                    new Bitfield(sh3, len3),
+                }, decoders);
+        }
 
         /// <summary>
         /// Create a decoder for 4 bitfields.
@@ -1670,8 +1705,46 @@ namespace Reko.Arch.Arm.AArch32
                 SystemRegister_64bitMove,
                 SystemRegister_LdSt);
 
-            var FloatingPointDataProcessing = nyi("FloatingPointDataProcessing");
+            var FloatingPointDataProcessing3regs = Mask(23, 1, 20, 2, 6, 1,
+                Instr(Opcode.vmla, "* floating-point"),
+                Instr(Opcode.vmls, "* floating-point"),
+                Instr(Opcode.vnmls, "*"),
+                Instr(Opcode.vnmla, "*"),
 
+                Instr(Opcode.vmul, "* floating-point"),
+                Instr(Opcode.vnmul, "*"),
+                Instr(Opcode.vadd, "* floating-point"),
+                Mask(8, 0x3,
+                    invalid,
+                    Instr(Opcode.vsub, "* floating-point size=01"),
+                    Instr(Opcode.vsub, "* floating-point size=10"),
+                    Instr(Opcode.vsub, "vf64 D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+
+                Instr(Opcode.vdiv, "* vdiv"),
+                invalid,
+                Instr(Opcode.vfnms, "* vfnms"),
+                Instr(Opcode.vfnma, "* vfnma"),
+
+                Instr(Opcode.vfma, "*"),
+                Instr(Opcode.vfms, "*"),
+                invalid,
+                invalid);
+
+            var FloatingPointDataProcessing = new PcDecoder(28,
+                Select(20, 0b1011, n => n != 0b1011,
+                    FloatingPointDataProcessing3regs,
+                    Mask(6, 1,
+                        nyi("FloatingPointMoveImmediate"),
+                        nyi("FloatingPointDataProcessing - 2 regs"))),
+                Select(8, 0b11, n => n == 0,
+                    invalid,
+                    Select(23, 1, n => n == 0,  // op0 = 0b0xxx
+                        Mask(6, 1,
+                            invalid,
+                            nyi("floating point conditional select")),
+                        Select(20, 3, n => n == 0,  // op0 = 0b1x00
+                            nyi("floating point minNum/maxNum"),
+                            nyi("floating point data processing")))));
 
             var AdvancedSIMDElementMovDuplicate = Mask(20, 1,
                 Mask(23, 1,

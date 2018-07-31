@@ -748,5 +748,12 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0x979FF103);   // ldrls\tpc,[pc,r3,lsl #2]
             Expect_Code("ldrls\tpc,[pc,r3,lsl #2]");
         }
+
+        [Test]
+        public void ArmDasm_vsub_f64()
+        {
+            Disassemble32(0xEE711BE0);
+            Expect_Code("vsub.f64 d17, d17, d16");
+        }
     }
 }
