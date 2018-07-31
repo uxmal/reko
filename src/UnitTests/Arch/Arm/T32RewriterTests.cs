@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     [Category(Categories.Capstone)]
-    public class ThumbRewriterTests : RewriterTestBase
+    public class T32RewriterTests : RewriterTestBase
     {
         private ThumbArchitecture arch;
         private MemoryArea image;

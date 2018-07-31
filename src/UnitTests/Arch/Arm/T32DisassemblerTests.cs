@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     [Category(Categories.Capstone)]
-    public class ThumbDisassemblerTests : ArmTestBase
+    public class T32DisassemblerTests : ArmTestBase
     {
         private IEnumerator<MachineInstruction> dasm;
 

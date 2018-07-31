@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.Arm
 
     [TestFixture]
     [Category(Categories.Capstone)]
-    public class ArmDisassemblerTests : ArmTestBase
+    public class A32DisassemblerTests : ArmTestBase
     {
         private const string ArmObsolete = "Obsolete instrction? can't find it in ARM Architecture Reference Manual - ARMv8, for ARMv8";
         protected override IProcessorArchitecture CreateArchitecture()
