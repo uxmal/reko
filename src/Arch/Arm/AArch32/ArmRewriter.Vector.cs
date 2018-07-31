@@ -68,28 +68,22 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVldmia()
         {
-            throw new NotImplementedException();
-            /*
             var rSrc = this.Operand(Dst(), PrimitiveType.Word32, true);
             var offset = 0;
-            var begin = &instr.operands[1];
-            var end = begin + instr.op_count - 1;
-            for (var r = begin; r != end; ++r)
+            foreach (var r in ((MultiRegisterOperand)Src1()).GetRegisters())
             {
-                var dst = this.Operand(*r);
+                var dst = Reg(r);
                 Expression ea =
                     offset != 0
                     ? m.IAdd(rSrc, m.Int32(offset))
                     : rSrc;
-                var dt = register_types[r->reg];
-                m.Assign(dst, m.Mem(register_types[r->reg], ea));
-                offset += type_sizes[(int)dt];
+                m.Assign(dst, m.Mem(dst.DataType, ea));
+                offset += dst.DataType.Size;
             }
-            if (instr.writeback)
+            if (instr.Writeback)
             {
                 m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
             }
-            */
         }
 
         private void RewriteVldr()
@@ -195,28 +189,22 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVstmia()
         {
-            throw new NotImplementedException();
-            /*
             var rSrc = this.Operand(Dst(), PrimitiveType.Word32, true);
             int offset = 0;
-            var begin = &instr.operands[1];
-            var end = begin + instr.op_count - 1;
-            for (var r = begin; r != end; ++r)
+            foreach (var r in ((MultiRegisterOperand)Src1()).GetRegisters())
             {
-                var dst = this.Operand(*r);
+                var dst = Reg(r);
                 Expression ea =
                     offset != 0
                     ? m.IAdd(rSrc, m.Int32(offset))
                     : rSrc;
-                var dt = register_types[r->reg];
-                m.Assign(m.Mem(dt, ea), dst);
-                offset += type_sizes[(int)dt];
+                m.Assign(m.Mem(r.DataType, ea), dst);
+                offset += r.DataType.Size;
             }
-            if (instr.writeback)
+            if (instr.Writeback)
             {
                 m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
             }
-            */
         }
 
         private void RewriteVsqrt()
