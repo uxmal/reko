@@ -38,9 +38,9 @@ namespace Reko.Arch.Arm
     {
 #if NATIVE
         private INativeArchitecture native;
-#endif
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;
+#endif
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm64Architecture(string archId) : base(archId)
@@ -199,7 +199,11 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage[] GetRegisters()
         {
+#if NATIVE
             return regsByNumber.ToArray();
+#else
+            return Registers.GpRegs64;
+#endif
         }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)

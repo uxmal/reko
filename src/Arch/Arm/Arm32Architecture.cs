@@ -41,9 +41,11 @@ namespace Reko.Arch.Arm
     // https://wiki.ubuntu.com/ARM/Thumb2PortingHowto
     public class Arm32Architecture : ProcessorArchitecture
     {
+#if NATIVE
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
+#endif
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm32Architecture(string archId) : base(archId)
@@ -64,6 +66,7 @@ namespace Reko.Arch.Arm
 #endif
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             this.regsByName = new Dictionary<string, RegisterStorage>();
@@ -96,6 +99,7 @@ namespace Reko.Arch.Arm
                 --cRegs;
             }
         }
+#endif
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -217,8 +221,12 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage[] GetRegisters()
         {
+#if NATIVE
             // First element is "Invalid".
             return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
+#else
+            return Registers.GpRegs;
+#endif
         }
 
         public override int? GetOpcodeNumber(string name)
@@ -236,7 +244,11 @@ namespace Reko.Arch.Arm
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            return regsByName.TryGetValue(name, out reg);
+#if NATIVE
+            return regsByName.TryGetValue(name, out reg);'
+#else
+            return Registers.RegistersByName.TryGetValue(name, out reg);
+#endif
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
@@ -247,7 +259,12 @@ namespace Reko.Arch.Arm
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var flagregister = this.regsByName["cpsr"];
+            var flagregister =
+#if NATIVE
+                this.regsByName["cpsr"];
+#else
+                Registers.cpsr;
+#endif
             var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
