@@ -19,17 +19,14 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Typing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core;
-using Reko.Core.Types;
-using Reko.UnitTests.Mocks;
 using Reko.Core.Expressions;
-using Reko.UnitTests.Fragments;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Typing;
+using Reko.UnitTests.Fragments;
+using Reko.UnitTests.Mocks;
+using System;
 
 namespace Reko.UnitTests.Typing
 {
@@ -312,7 +309,6 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void TycoReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TycoReg00012.txt");
