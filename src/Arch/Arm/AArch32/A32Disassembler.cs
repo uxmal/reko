@@ -616,6 +616,12 @@ namespace Reko.Arch.Arm.AArch32
             return ImmediateOperand.Word32(n);
         }
 
+        /// <summary>
+        /// Decode an A32 memory access from the instruction <paramref name="wInstr"/>
+        /// </summary>
+        /// <returns>A value tuple of the resulting MemoryOperand and whether or not the 
+        /// index register should be written back after dereference.
+        /// </returns>
         private (MemoryOperand, bool) DecodeMemoryAccess(uint wInstr, char memType, int shift, PrimitiveType dtAccess)
         {
             var n = Registers.GpRegs[bitmask(wInstr, 16, 0xF)];
@@ -1711,8 +1717,16 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vnmls, "*"),
                 Instr(Opcode.vnmla, "*"),
 
-                Instr(Opcode.vmul, "* floating-point"),
-                Instr(Opcode.vnmul, "*"),
+                Mask(8, 0x3, 
+                    invalid,
+                    Instr(Opcode.vmul, "vf16 D12:4:22:1,D16:4:7:1,D0:4:5:1"),
+                    Instr(Opcode.vmul, "vf32 D12:4:22:1,D16:4:7:1,D0:4:5:1"),
+                    Instr(Opcode.vmul, "vf64 D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                Mask(8, 0x3,
+                    invalid,
+                    Instr(Opcode.vnmul, "vf16 D12:4:22:1,D16:4:7:1,D0:4:5:1"),
+                    Instr(Opcode.vnmul, "vf32 D12:4:22:1,D16:4:7:1,D0:4:5:1"),
+                    Instr(Opcode.vnmul, "vf64 D22:1:12:4,D7:1:16:4,D5:1:0:4")),
                 Instr(Opcode.vadd, "* floating-point"),
                 Mask(8, 0x3,
                     invalid,
@@ -1789,8 +1803,12 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(0, 1,
                         Instr(Opcode.vldmia, "w21 r4,Md"),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b11 xxxxxx1"))),
-                
-                Instr(Opcode.vstr, "*"),
+
+                Mask(8, 3, // size
+                    invalid,
+                    Instr(Opcode.vstr, "h*"),
+                    Instr(Opcode.vstr, "s*"),
+                    Instr(Opcode.vstr, "d*")),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001"),
                 Mask(8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b00"),
@@ -1801,7 +1819,11 @@ namespace Reko.Arch.Arm.AArch32
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b11 xxxxxx1"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011"),
 
-                Instr(Opcode.vstr, "*"),
+                Mask(8, 3, // size
+                    invalid,    
+                    Instr(Opcode.vstr, "vi16 S12:4:22:1,[i<1:w2]"),
+                    Instr(Opcode.vstr, "S12:4:22:1,[i<2:w4]"),
+                    Instr(Opcode.vstr, "D22:1:12:4,[i<2:w8]")),
                 Mask(8, 3, // size
                     invalid,
                     Instr(Opcode.vldr, "vi16 S12:4:22:1,[i<1:w2]"),
@@ -1834,7 +1856,68 @@ namespace Reko.Arch.Arm.AArch32
 
             var SystemRegister32BitMove = nyi("SystemRegister32BitMove");
 
-            var AdvancedSimd_ThreeRegisters = nyi("AdvancedSimd_ThreeRegisters");
+            var AdvancedSimd_ThreeRegisters = Mask(24, 1,
+                Mask(8, 0xF, // AdvancedSimd_ThreeRegisters - U = 0
+                    Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000
+                        Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=00
+                            invalid,
+                            Instr(Opcode.vand, "*")),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=01"),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=10"),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=11")),
+                    Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001
+                        Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1
+                            nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1=0"),
+                            Instr(Opcode.vand, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=01"),
+                        Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1
+                            nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1=0"),
+                            Instr(Opcode.vorr, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0010"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0011"),
+
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0100"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0101"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0111"),
+
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1001"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1011"),
+
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1110"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1111")),
+
+                Mask(8, 0xF, // AdvancedSimd_ThreeRegisters - U = 1
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0000"),
+                    Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001
+                        Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1
+                            nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1=0"),
+                            Instr(Opcode.veor, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=01"),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=10"),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0010"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0011"),
+
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0101"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0111"),
+
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1000"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1001"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1010"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1011"),
+
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1100"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1101"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1110"),
+                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1111")));
 
             var AdvancedSimd_TwoRegistersScalarExtension = nyi("AdvancedSimd_TwoRegistersScalarExtension");
 

@@ -46,6 +46,7 @@ namespace Reko.Arch.Arm.AArch32
         protected AArch32Instruction instr;
         protected RtlClass rtlClass;
         protected RtlEmitter m;
+        protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
 
         public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, new A32Disassembler(arch, rdr).GetEnumerator())
         {
@@ -58,6 +59,7 @@ namespace Reko.Arch.Arm.AArch32
             this.host = host;
             this.binder = binder;
             this.dasm = dasm;
+            this.pcValueOffset = 8;
         }
 
         protected virtual void PostRewrite() { }
@@ -724,7 +726,7 @@ void RewriteB(bool link)
                 {
                     if (!write && rOp.Register == Registers.pc)
                     {
-                        return instr.Address + 4;
+                        return instr.Address + pcValueOffset;
                     }
                     var reg = Reg(rOp.Register);
                     return MaybeShiftOperand(reg, op);

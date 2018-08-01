@@ -757,10 +757,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasmw_vstr()
+        public void ArmDasm_vstr()
         {
             Disassemble32(0xEDCD0B29);
-            Expect_Code("vstr\td16,[sp, #0xa4]");
+            Expect_Code("vstr\td16,[sp,#&A4]");
         }
     }
 }

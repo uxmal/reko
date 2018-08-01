@@ -41,6 +41,7 @@ namespace Reko.Arch.Arm.AArch32
             IStorageBinder binder) :
             base(arch, rdr, host, binder, new T32Disassembler(arch, rdr).GetEnumerator())
         {
+            base.pcValueOffset = 4;
         }
 
         protected override void ConditionalSkip(bool force)
