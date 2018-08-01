@@ -1774,7 +1774,7 @@ namespace Reko.Arch.Arm.AArch32
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0011"),
 
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100"),
-                Mask(8, 3, 
+                Mask(8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b10"),
@@ -1789,7 +1789,8 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(0, 1,
                         Instr(Opcode.vldmia, "w21 r4,Md"),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b11 xxxxxx1"))),
-                nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1000"),
+                
+                Instr(Opcode.vstr, "*"),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001"),
                 Mask(8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b00"),
@@ -1800,7 +1801,7 @@ namespace Reko.Arch.Arm.AArch32
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b11 xxxxxx1"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011"),
 
-                nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1100"),
+                Instr(Opcode.vstr, "*"),
                 Mask(8, 3, // size
                     invalid,
                     Instr(Opcode.vldr, "vi16 S12:4:22:1,[i<1:w2]"),

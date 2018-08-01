@@ -753,7 +753,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_vsub_f64()
         {
             Disassemble32(0xEE711BE0);
-            Expect_Code("vsub.f64 d17, d17, d16");
+            Expect_Code("vsub.f64\td17,d17,d16");
+        }
+
+        [Test]
+        public void ArmDasmw_vstr()
+        {
+            Disassemble32(0xEDCD0B29);
+            Expect_Code("vstr\td16,[sp, #0xa4]");
         }
     }
 }
