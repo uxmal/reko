@@ -1767,14 +1767,37 @@ namespace Reko.Arch.Arm.AArch32
                 SystemRegister_LdSt);
 
             var FloatingPointDataProcessing2regs = Mask(19, 1, 16, 3,
-                nyi("Floating-point data-procesing (two registers) 0 000"),
-                nyi("Floating-point data-procesing (two registers) 0 001"),
+                Mask(7, 0b111,  // size:o3
+                    invalid,
+                    invalid,
+                    invalid,
+                    Instr(Opcode.vabs, F16, "S12:4:22:1,S0:4:5:1"),
+
+                    Instr(Opcode.vmov, "*(register) - single precision"),
+                    Instr(Opcode.vabs, F32, "S12:4:22:1,S0:4:5:1"),
+                    Instr(Opcode.vmov, "*(register) - double precision"),
+                    Instr(Opcode.vabs, F64, "D22:1:12:4,D5:1:0:4")),
+                Mask(7, 1,
+                    Mask(8, 3,
+                        invalid,
+                        Instr(Opcode.vneg, F16, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vneg, F32, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vneg, F64, "D22:1:12:4,D5:1:0:4")),
+                    Mask(8, 3,
+                        invalid,
+                        Instr(Opcode.vsqrt, F16, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vsqrt, F32, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vsqrt, F64, "D22:1:12:4,D5:1:0:4"))),
                 nyi("Floating-point data-procesing (two registers) 0 010"),
                 nyi("Floating-point data-procesing (two registers) 0 011"),
 
                 Mask(7, 1,
-                    nyi("Floating-point data-procesing (two registers) 0 100 o3=0"),
                     Mask(8, 3,
+                        invalid,
+                        Instr(Opcode.vcmp, F16, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vcmp, F32, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vcmp, F64, "D22:1:12:4,D5:1:0:4")),
+                    Mask(8, 3, 
                         invalid,
                         Instr(Opcode.vcmpe, "vf16 S12:4:22:1,S0:4:5:1"),
                         Instr(Opcode.vcmpe, "vf32 S12:4:22:1,S0:4:5:1"),
@@ -1787,9 +1810,9 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("Floating-point data-procesing (two registers) 1 000 o3=0"),
                     Mask(8, 3,
                         invalid,
-                        nyi("Floating-point data-procesing (two registers) 1 000 o3=1 size=01"),
-                        nyi("Floating-point data-procesing (two registers) 1 000 o3=1 size=10"),
-                        Instr(Opcode.vcvt, "*"))),
+                        Instr(Opcode.vcvt, F16S16, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vcvt, F32S32, "S12:4:22:1,S0:4:5:1"),
+                        Instr(Opcode.vcvt, F64S32, "D22:1:12:4,S0:4:5:1"))),
                 nyi("Floating-point data-procesing (two registers) 1 001"),
                 nyi("Floating-point data-procesing (two registers) 1 010"),
                 nyi("Floating-point data-procesing (two registers) 1 011"),
@@ -1856,6 +1879,10 @@ namespace Reko.Arch.Arm.AArch32
                         invalid)),
                 Instr(Opcode.vmov, "*Scalar to GP"));
 
+            var FloatingPointMoveSpecialReg = Mask(20, 1,
+                Instr(Opcode.vmsr, "i16:4,r3"),
+                Instr(Opcode.vmrs, "r3,i16:4"));
+
             var AdvancedSIMDandFloatingPoint32bitMove = Mask(8, 1,
                     Mask(21, 7,
                         Instr(Opcode.vmov, "S16:4:7:1,r3"),
@@ -1866,7 +1893,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         invalid,
-                        nyi("FloatingPointMoveSpecialReg")),
+                        FloatingPointMoveSpecialReg),
                     AdvancedSIMDElementMovDuplicate);
 
             var AdvancedSimd_and_floatingpoint_LdSt = Mask(23, 2, 20, 2,

@@ -914,22 +914,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("smulwt\tr0,ip,r10");
         }
 
-        // An A32 decoder for the instruction EEB09BC9 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EEB09BC9()
+        public void ArmDasm_vabs_f64()
         {
             Disassemble32(0xEEB09BC9);
-            Expect_Code("@@@");
+            Expect_Code("vabs.f64\td9,d9");
         }
 
-        // An A32 decoder for the instruction EEF47A47 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EEF47A47()
+        public void ArmDasm_vcmp_f32()
         {
             Disassemble32(0xEEF47A47);
-            Expect_Code("@@@");
+            Expect_Code("vcmp.f32\ts15,s14");
         }
 
         [Test]
@@ -939,13 +935,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vcmpe.f32\ts18,s15");
         }
 
-        // An A32 decoder for the instruction EEF80BE7 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EEF80BE7()
+        public void ArmDasm_vcvt_f64_s32()
         {
             Disassemble32(0xEEF80BE7);
-            Expect_Code("@@@");
+            Expect_Code("vcvt.f64.s32\td16,s15");
         }
 
         [Test]
@@ -969,22 +963,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmin.s32\tq10,q10,q8");
         }
 
-        // An A32 decoder for the instruction EEF1FA10 (FloatingPointMoveSpecialReg) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EEF1FA10()
+        public void ArmDasm_vmrs()
         {
             Disassemble32(0xEEF1FA10);
-            Expect_Code("@@@");
+            Expect_Code("vmrs\tpc,#1");
         }
 
-        // An A32 decoder for the instruction EEF10B60 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EEF10B60()
+        public void ArmDasm_vneg_f64()
         {
             Disassemble32(0xEEF10B60);
-            Expect_Code("@@@");
+            Expect_Code("vneg.f64\td16,d16");
         }
 
         [Test]
@@ -1015,13 +1005,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vshl.u32\tq9,q10,q9");
         }
 
-        // An A32 decoder for the instruction EEB1CBE0 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EEB1CBE0()
+        public void ArmDasm_vsqrt_f64()
         {
             Disassemble32(0xEEB1CBE0);
-            Expect_Code("@@@");
+            Expect_Code("vsqrt.f64\td12,d16");
         }
 
         [Test]

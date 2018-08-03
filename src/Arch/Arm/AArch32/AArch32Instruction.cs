@@ -144,7 +144,12 @@ namespace Reko.Arch.Arm.AArch32
             sb.Append(sCond);
             if (this.vector_data != ArmVectorData.INVALID)
             {
-                sb.AppendFormat(".{0}", this.vector_data.ToString().ToLowerInvariant());
+                var s = this.vector_data.ToString().ToLowerInvariant();
+                if (s.Length == 6)
+                {
+                    s = s.Substring(0, 3) + "." + s.Substring(3);
+                }
+                sb.AppendFormat(".{0}", s);
             }
             writer.WriteOpcode(sb.ToString());
         }
