@@ -83,14 +83,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            switch ((PpcRt)(rela.Info & 0xFF))
+            var rt = (PpcRt)(rela.Info & 0xFF);
+            switch (rt)
             {
             case PpcRt.R_PPC_GLOB_DAT:
             case PpcRt.R_PPC_COPY:
             case PpcRt.R_PPC_JMP_SLOT:
                 break;
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException($"PowerPC ELF relocation type {rt} has not been implemented yet.");
             }
         }
 
