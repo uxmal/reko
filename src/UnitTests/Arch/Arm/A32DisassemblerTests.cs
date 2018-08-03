@@ -780,22 +780,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("dmb\tsy");
         }
 
-        // An A32 decoder for the instruction EE070F58 (SystemRegister32BitMove) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EE070F58()
+        public void ArmDasm_mcr()
         {
             Disassemble32(0xEE070F58);
-            Expect_Code("@@@");
+            Expect_Code("mcr\tp15,#6,r0,c7,c8,#2");
         }
 
-        // An A32 decoder for the instruction EE123F10 (SystemRegister32BitMove) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_EE123F10()
+        public void ArmDasm_mrc()
         {
             Disassemble32(0xEE123F10);
-            Expect_Code("@@@");
+            Expect_Code("mrc\tp15,#6,r3,c2,c0,#0");
         }
 
         [Test]
@@ -952,13 +948,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An A32 decoder for the instruction F2F068E2 (AdvancedSimd_TwoRegisterOrThreeRegisters) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_F2F068E2()
+        public void ArmDasm_vext_8()
         {
             Disassemble32(0xF2F068E2);
-            Expect_Code("@@@");
+            Expect_Code("vext.u8\tq11,q8,q9,#8");
         }
 
         [Test]
@@ -968,13 +962,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmax.s32\tq8,q8,q9");
         }
 
-        // An A32 decoder for the instruction F26446F0 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_F26446F0()
+        public void ArmDasm_vmin_s32()
         {
             Disassemble32(0xF26446F0);
-            Expect_Code("@@@");
+            Expect_Code("vmin.s32\tq10,q10,q8");
         }
 
         // An A32 decoder for the instruction EEF1FA10 (FloatingPointMoveSpecialReg) has not been implemented yet.
@@ -995,13 +987,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An A32 decoder for the instruction F2622BB2 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1011) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_F2622BB2()
+        public void ArmDasm_vpadd_i32()
         {
             Disassemble32(0xF2622BB2);
-            Expect_Code("@@@");
+            Expect_Code("vpadd.i32\td18,d18,d18");
         }
 
         [Test]
@@ -1011,22 +1001,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vpmax.s32\td16,d16,d16");
         }
 
-        // An A32 decoder for the instruction F2644AB4 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_F2644AB4()
+        public void ArmDasm_vpmin_s32()
         {
             Disassemble32(0xF2644AB4);
-            Expect_Code("@@@");
+            Expect_Code("vpmin.s32\td20,d20,d20");
         }
 
-        // An A32 decoder for the instruction F36424E2 (AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_F36424E2()
+        public void ArmDasm_vshl_u32()
         {
             Disassemble32(0xF36424E2);
-            Expect_Code("@@@");
+            Expect_Code("vshl.u32\tq9,q10,q9");
         }
 
         // An A32 decoder for the instruction EEB1CBE0 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.

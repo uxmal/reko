@@ -63,7 +63,7 @@ namespace Reko.Arch.Arm.AArch32
             var src3 = Operand(Src3());
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var intrinsic = host.PseudoProcedure("__vext", dst.DataType, src1, src2, src3);
-            m.Assign(dst, m.Fn(intrinsic));
+            m.Assign(dst, intrinsic);
         }
 
         private void RewriteVldmia()
@@ -310,6 +310,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.U32: return "u32";
             case ArmVectorData.F64: return "f64";
             case ArmVectorData.S64: return "s64";
+            case ArmVectorData.U64: return "u64";
             default: NotImplementedYet(); return "(NYI)";
             }
         }
@@ -330,6 +331,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.U32: return PrimitiveType.UInt32;
             case ArmVectorData.F64: return PrimitiveType.Real64;
             case ArmVectorData.S64: return PrimitiveType.Int64;
+            case ArmVectorData.U64: return PrimitiveType.UInt64;
             default: NotImplementedYet(); return VoidType.Instance;
             }
         }

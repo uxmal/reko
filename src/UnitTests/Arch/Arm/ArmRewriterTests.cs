@@ -665,10 +665,10 @@ means
         [Test]
         public void ArmRw_mcr()
         {
-            BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7
+            BuildTest(0xEE070F58);  // mcr p15,#6,r0,c7,c8,#2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mcr(p15, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
+                "1|L--|__mcr(p15, 0x00000006, r0, c7, c8, 0x00000002)");
         }
 
         [Test]
@@ -891,10 +891,10 @@ means
         [Test]
         public void ArmRw_vext_64()
         {
-            BuildTest(0xf2f068e2);	// vext.64 q11, q8, q9, #1
+            BuildTest(0xF2F068E2);	// vext.64 q11, q8, q9, #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q11 = __vext(q8, q9, 0x00000001)");
+                "1|L--|q11 = __vext(q8, q9, 0x00000008)");
         }
 
         [Test]
