@@ -183,16 +183,23 @@ namespace Reko.Arch.Arm.AArch32
             {
                 return dasm.NotYetImplemented(message, wInstr);
             }
+
+            public override string ToString()
+            {
+                return $"nyi({message})";
+            }
         }
 
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
+            private readonly ArmVectorData vec;
             private readonly string format;
 
-            public InstrDecoder(Opcode opcode, string format)
+            public InstrDecoder(Opcode opcode, ArmVectorData vec, string format)
             {
                 this.opcode = opcode;
+                this.vec = vec;
                 this.format = format;
             }
 
@@ -200,7 +207,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (format == null)
                     return dasm.NotYetImplemented($"Format missing for ARM instruction {opcode}.", wInstr);
-                return dasm.Decode(wInstr, opcode, format);
+                return dasm.Decode(wInstr, opcode, vec, format);
             }
         }
 
@@ -267,7 +274,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private class MovDecoder : InstrDecoder
         {
-            public MovDecoder(Opcode opcode, string format) : base(opcode, format) { }
+            public MovDecoder(Opcode opcode, string format) : base(opcode, ArmVectorData.INVALID, format) { }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {

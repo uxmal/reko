@@ -458,7 +458,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("sxth\tr2,r2,#0");
         }
 
-        // An A32 decoder for the instruction E6E44076 (media1) has not been implemented yet.
         [Test]
         public void ArmDasm_uxtab()
         {
@@ -608,7 +607,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldr\tr3,[r4,-#&4]!");
         }
 
-        // An A32 decoder for the instruction F2C00050 (AdvancedSimd) has not been implemented yet.
         [Test]
         public void ArmDasm_vmov_imm()
         {
@@ -762,5 +760,290 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xEDCD0B29);
             Expect_Code("vstr\td16,[sp,#&A4]");
         }
+
+        [Test]
+        public void ArmDasm_cpsid()
+        {
+            Disassemble32(0xF10C0080);
+            Expect_Code("cps");
+        }
+
+        // An A32 decoder for the instruction F57FF05F (MemoryHintsAndBarries) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F57FF05F()
+        {
+            Disassemble32(0xF57FF05F);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EE070F58 (SystemRegister32BitMove) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EE070F58()
+        {
+            Disassemble32(0xEE070F58);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EE123F10 (SystemRegister32BitMove) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EE123F10()
+        {
+            Disassemble32(0xEE123F10);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ArmDasm_sbfx()
+        {
+            Disassemble32(0xE7A9C35C);
+            Expect_Code("sbfx\tip,ip,#6,#&A");
+        }
+
+        [Test]
+        public void ArmDasm_E10E3B88()
+        {
+            Disassemble32(0xE10E3B88);
+            Expect_Code("smlabb\tlr,r8,fp,r3");
+        }
+
+        [Test]
+        public void ArmDasm_smlabt()
+        {
+            Disassemble32(0xE10F54CC);
+            Expect_Code("smlabt\tpc,ip,r4,r5");
+        }
+
+        [Test]
+        public void ArmDasm_smlalbb()
+        {
+            Disassemble32(0xE1409280);
+            Expect_Code("smlalbb\tr9,r0,r0,r2");
+        }
+
+        [Test]
+        public void ArmDasm_smlalbt()
+        {
+            Disassemble32(0xE14090C0);
+            Expect_Code("smlalbt\tr9,r0,r0,r0");
+        }
+
+        [Test]
+        public void ArmDasm_smlaltb()
+        {
+            Disassemble32(0xE14091A0);
+            Expect_Code("smlaltb\tr9,r0,r0,r1");
+        }
+
+        [Test]
+        public void ArmDasm_smlaltt()
+        {
+            Disassemble32(0xE140ABEC);
+            Expect_Code("smlaltt\tr10,r0,ip,fp");
+        }
+
+        [Test]
+        public void ArmDasm_smlatb()
+        {
+            Disassemble32(0xE10C6CA0);
+            Expect_Code("smlatb\tip,r0,ip,r6");
+        }
+
+        // An A32 decoder for the instruction 010BDAE4 (SmlabbSmlabtSmlatbSmlatt) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_smlatteq()
+        {
+            Disassemble32(0x010BDAE4);
+            Expect_Code("smlatteq\tfp,r4,r10,sp");
+        }
+
+        [Test]
+        public void ArmDasm_E12D5980()
+        {
+            Disassemble32(0xE12D5980);
+            Expect_Code("smlawb\tsp,r0,r9,r5");
+        }
+
+        [Test]
+        public void ArmDasm_smlawt()
+        {
+            Disassemble32(0x012D06CC);
+            Expect_Code("smlawteq\tsp,ip,r6,r0");
+        }
+
+        [Test]
+        public void ArmDasm_smulbb()
+        {
+            Disassemble32(0xE1600380);
+            Expect_Code("smulbb\tr0,r0,r3");
+        }
+
+        [Test]
+        public void ArmDasm_smulbt()
+        {
+            Disassemble32(0xE168DBCC);
+            Expect_Code("smulbt\tr8,ip,fp");
+        }
+
+        [Test]
+        public void ArmDasm_smultb()
+        {
+            Disassemble32(0xE16C69AC);
+            Expect_Code("smultb\tip,ip,r9");
+        }
+
+        [Test]
+        public void ArmDasm_smultt()
+        {
+            Disassemble32(0xE168DBE0);
+            Expect_Code("smultt\tr8,r0,fp");
+        }
+
+        [Test]
+        public void ArmDasm_smulwb()
+        {
+            Disassemble32(0xE12E5BA8);
+            Expect_Code("smulwb\tlr,r8,fp");
+        }
+
+        [Test]
+        public void ArmDasm_smulwt()
+        {
+            Disassemble32(0xE1206AEC);
+            Expect_Code("smulwt\tr0,ip,r10");
+        }
+
+        // An A32 decoder for the instruction EEB09BC9 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EEB09BC9()
+        {
+            Disassemble32(0xEEB09BC9);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EEF47A47 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EEF47A47()
+        {
+            Disassemble32(0xEEF47A47);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ArmDasm_vcmpe()
+        {
+            Disassemble32(0xEEB49AE7);
+            Expect_Code("vcmpe.f32\ts18,s15");
+        }
+
+        // An A32 decoder for the instruction EEF80BE7 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EEF80BE7()
+        {
+            Disassemble32(0xEEF80BE7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F2F068E2 (AdvancedSimd_TwoRegisterOrThreeRegisters) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F2F068E2()
+        {
+            Disassemble32(0xF2F068E2);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ArmDasm_F26006E2()
+        {
+            Disassemble32(0xF26006E2);
+            Expect_Code("vmax.s32\tq8,q8,q9");
+        }
+
+        // An A32 decoder for the instruction F26446F0 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F26446F0()
+        {
+            Disassemble32(0xF26446F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EEF1FA10 (FloatingPointMoveSpecialReg) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EEF1FA10()
+        {
+            Disassemble32(0xEEF1FA10);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EEF10B60 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EEF10B60()
+        {
+            Disassemble32(0xEEF10B60);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F2622BB2 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1011) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F2622BB2()
+        {
+            Disassemble32(0xF2622BB2);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F2600AA0 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F2600AA0()
+        {
+            Disassemble32(0xF2600AA0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F2644AB4 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F2644AB4()
+        {
+            Disassemble32(0xF2644AB4);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F36424E2 (AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_F36424E2()
+        {
+            Disassemble32(0xF36424E2);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EEB1CBE0 (FloatingPointDataProcessing - 2 regs) has not been implemented yet.
+
+        [Test]
+        public void ArmDasm_EEB1CBE0()
+        {
+            Disassemble32(0xEEB1CBE0);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ArmDasm_vstmia()
+        {
+            Disassemble32(0xECE30B04);
+            Expect_Code("vstmia\tr3!,{d16-d17}");
+        }
+
     }
 }

@@ -43,15 +43,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteCps()
         {
-            throw new NotImplementedException();
-            /*
-            if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
-            {
-                m.SideEffect(m.Fn(host.PseudoProcedure("__cps_id", VoidType.Instance, 1)));
-                return;
-            }
-            NotImplementedYet();
-            */
+            m.SideEffect(host.PseudoProcedure("__cps_id", VoidType.Instance));
         }
 
         private void RewriteDmb()
