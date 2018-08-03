@@ -268,12 +268,35 @@ namespace Reko.Arch.Arm.AArch32
                 case '>':   // shift
                     ++i;
                     if (format[i] == 'i')
+                    {
                         (shiftOp, shiftValue) = DecodeImmShift(wInstr);
+                    }
+                    else if (format[i] == 'R') // rotation as encoded in uxtb / stxb and  friends
+                    {
+                        ++i;
+                        offset = (int) ReadBitfields(wInstr, format, ref i);
+                        if (offset == 0)
+                        {
+                            shiftOp = Opcode.Invalid;
+                        }
+                        else
+                        {
+                            shiftOp = Opcode.ror;
+                            shiftValue = ImmediateOperand.Int32(offset << 3);
+                        }
+                    }
                     else
+                    {
                         (shiftOp, shiftValue) = DecodeRegShift(wInstr);
+                    }
                     continue;
+                case 'B': // Barrier
+                    ++i;
+                    imm = ReadBitfields(wInstr, format, ref i);
+                    op = new BarrierOperand((BarrierOption)imm);
+                    break;
                 default:
-                    throw new NotImplementedException($"Found unknown format character '{format[i]}' in '{format}' while decoding {opcode}.");
+                    return NotYetImplemented($"Found unknown format character '{format[i]}' in '{format}' while decoding {opcode}.", wInstr);
                 }
                 ops.Add(op);
             }
@@ -1517,13 +1540,13 @@ namespace Reko.Arch.Arm.AArch32
             var ExtendAndAdd = Mask(20, 7,
                 Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab16, "*"), Instr(Opcode.sxtb16, "*")),
                 invalid,
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab, "*"), Instr(Opcode.sxtb, "r3,r0,i10:2<3")),
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtah, "*"), Instr(Opcode.sxth, "r3,r0,i10:2<3")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab, "*"), Instr(Opcode.sxtb, "r3,r0,>R10:2")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtah, "*"), Instr(Opcode.sxth, "r3,r0,>R10:2")),
                 
                 Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab16, "*"), Instr(Opcode.uxtb16, "*")),
                 invalid,
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab, "r3,r4,r0,i10:2<3"), Instr(Opcode.uxtb, "r3,r0,i10:2<3")),
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtah, "r3,r4,r0,i10:2<3"), Instr(Opcode.uxth, "r3,r0,i10:2<3")));
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab, "r3,r4,r0,>R10:2"), Instr(Opcode.uxtb, "r3,r0,>R10:2")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtah, "r3,r4,r0,>R10:2"), Instr(Opcode.uxth, "r3,r0,>R10:2")));
             var ReverseBitByte = Mask(22, 1,
                 Mask(7, 1,
                     Instr(Opcode.rev, "r3,r0"),
@@ -1950,22 +1973,28 @@ namespace Reko.Arch.Arm.AArch32
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0100"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0101"),
-                    Mask(24, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110
-                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110 u=0  
-                            Instr(Opcode.vmax, "*size 00"),
-                            Instr(Opcode.vmax, "*size 01"),
-                            Instr(Opcode.vmax, S32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            invalid),
-                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110 u=1
-                            Instr(Opcode.vmax, "*size 00"),
-                            Instr(Opcode.vmax, "*size 01"),
-                            Instr(Opcode.vmax, "q6 *size 10"),
-                            invalid)),
+                    Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110 u=0  
+                        Instr(Opcode.vmax, S8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
+                        Instr(Opcode.vmax, S16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
+                        Instr(Opcode.vmax, S32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
+                        invalid),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0111"),
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1001"),
-                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010"),
+                    Mask(6, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010
+                        Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 
+                            Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=0
+                                Instr(Opcode.vpmax, S8, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmax, S16, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmax, S32, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                invalid),
+                            Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=1
+                                Instr(Opcode.vpmin, S8, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmin, S16, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmin, S32, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                invalid)),
+                        invalid),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1011"),
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100"),
@@ -2126,7 +2155,46 @@ namespace Reko.Arch.Arm.AArch32
                     AdvancedSimd_ShiftsAndImmediate));
 
             var AdvancedSimdElementLoadStore = nyi("AdvancedSimdElementLoadStore");
-            var MemoryHintsAndBarriers = nyi("MemoryHintsAndBarries");
+
+            var Barriers = Mask(4, 0xF,
+                invalid,
+                Instr(Opcode.clrex, "*"),
+                invalid,
+                invalid,
+
+                Instr(Opcode.dsb, "B0:4"),
+                Instr(Opcode.dmb, "B0:4"),
+                Instr(Opcode.isb, "B0:4"),
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid);
+
+            var MemoryHintsAndBarriers = Mask(25, 1,
+                Mask(21, 1,
+                    nyi("Preload (immediate)"),
+                    Mask(22, 7,
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        Barriers,
+                        invalid,
+                        invalid)),
+                Mask(4, 1,
+                    Mask(21, 1,
+                        nyi("Preload (register)"),
+                        invalid),
+                    invalid));
 
             var unconditionalDecoder = new MaskDecoder(25, 7,
                 Miscellaneous,

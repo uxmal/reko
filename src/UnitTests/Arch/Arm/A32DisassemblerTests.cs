@@ -449,27 +449,25 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("ldrls\tpc,[pc,r3,lsl #2]", instr.ToString());
         }
 
-        ////////////////////////////////////////////////////////////////////////////
-
         [Test]
         public void ArmDasm_sxth()
         {
             Disassemble32(0xE6BF2072);
-            Expect_Code("sxth\tr2,r2,#0");
+            Expect_Code("sxth\tr2,r2");
         }
 
         [Test]
         public void ArmDasm_uxtab()
         {
             Disassemble32(0xE6E44076);
-            Expect_Code("uxtab\tr4,r4,r6,#0");
+            Expect_Code("uxtab\tr4,r4,r6");
         }
 
         [Test]
         public void ArmDasm_uxtah()
         {
             Disassemble32(0xE6F45071);
-            Expect_Code("uxtah\tr5,r4,r1,#0");
+            Expect_Code("uxtah\tr5,r4,r1");
         }
 
         [Test]
@@ -483,16 +481,22 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_uxth()
         {
             Disassemble32(0xE6FF8070);
-            Expect_Code("uxth\tr8,r0,#0");
+            Expect_Code("uxth\tr8,r0");
         }
 
         [Test]
         public void ArmDasm_uxtb()
         {
             Disassemble32(0xE6EF307A);
-            Expect_Code("uxtb\tr3,r10,#0");
+            Expect_Code("uxtb\tr3,r10");
         }
 
+        [Test]
+        public void ArmDasm_uxtb_ror()
+        {
+            Disassemble32(0xE6EF347A);
+            Expect_Code("uxtb\tr3,r10,ror #8");
+        }
 
         [Test]
         public void ArmDasm_ubfxlt()
@@ -505,7 +509,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_sxtb()
         {
             Disassemble32(0xE6AF2072);
-            Expect_Code("sxtb\tr2,r2,#0");
+            Expect_Code("sxtb\tr2,r2");
         }
 
         [Test]
@@ -768,13 +772,12 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("cps");
         }
 
-        // An A32 decoder for the instruction F57FF05F (MemoryHintsAndBarries) has not been implemented yet.
 
         [Test]
-        public void ArmDasm_F57FF05F()
+        public void ArmDasm_dmb()
         {
             Disassemble32(0xF57FF05F);
-            Expect_Code("@@@");
+            Expect_Code("dmb\tsy");
         }
 
         // An A32 decoder for the instruction EE070F58 (SystemRegister32BitMove) has not been implemented yet.
@@ -803,7 +806,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_E10E3B88()
+        public void ArmDasm_smlabb()
         {
             Disassemble32(0xE10E3B88);
             Expect_Code("smlabb\tlr,r8,fp,r3");
@@ -851,7 +854,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("smlatb\tip,r0,ip,r6");
         }
 
-        // An A32 decoder for the instruction 010BDAE4 (SmlabbSmlabtSmlatbSmlatt) has not been implemented yet.
 
         [Test]
         public void ArmDasm_smlatteq()
@@ -861,7 +863,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_E12D5980()
+        public void ArmDasm_smlawb()
         {
             Disassemble32(0xE12D5980);
             Expect_Code("smlawb\tsp,r0,r9,r5");
@@ -960,7 +962,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_F26006E2()
+        public void ArmDasm_vmax_s32()
         {
             Disassemble32(0xF26006E2);
             Expect_Code("vmax.s32\tq8,q8,q9");
@@ -1002,13 +1004,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An A32 decoder for the instruction F2600AA0 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010) has not been implemented yet.
-
         [Test]
-        public void ArmDasm_F2600AA0()
+        public void ArmDasm_vpmax()
         {
             Disassemble32(0xF2600AA0);
-            Expect_Code("@@@");
+            Expect_Code("vpmax.s32\td16,d16,d16");
         }
 
         // An A32 decoder for the instruction F2644AB4 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010) has not been implemented yet.
