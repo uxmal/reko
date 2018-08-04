@@ -624,7 +624,7 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xE1E0C003);
             Expect_Code("mvn\tip,r3");
         }
-        
+
         [Test]
         public void ArmDasm_movt_imm()
         {
@@ -1019,5 +1019,124 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vstmia\tr3!,{d16-d17}");
         }
 
+        // An A32 decoder for the instruction C47A0000 (Found unknown format character '*' in '*' while decoding ldrbt.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_C47A0000()
+        {
+            Disassemble32(0xC47A0000);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction E1C722D8 (Found unknown format character '*' in '*' while decoding ldrd.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E1C722D8()
+        {
+            Disassemble32(0xE1C722D8);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction E0FD52B4 (Found unknown format character '*' in '*' while decoding strht.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E0FD52B4()
+        {
+            Disassemble32(0xE0FD52B4);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction 44340000 (Found unknown format character '*' in '*' while decoding ldrt.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_44340000()
+        {
+            Disassemble32(0x44340000);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction E04343F8 (Found unknown format character '*' in '*' while decoding strd.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E04343F8()
+        {
+            Disassemble32(0xE04343F8);
+            Expect_Code("@@@");
+        }
+        // An A32 decoder for the instruction E0E051B0 (Found unknown format character '*' in '*' while decoding strht.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E0E051B0()
+        {
+            Disassemble32(0xE0E051B0);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction E6A55078 (Found unknown format character '*' in '*' while decoding sxtab.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E6A55078()
+        {
+            Disassemble32(0xE6A55078);
+            Expect_Code("@@@");
+        }
+        
+        
+        // An A32 decoder for the instruction E6B6A07A (Found unknown format character '*' in '*' while decoding sxtah.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E6B6A07A()
+        {
+            Disassemble32(0xE6B6A07A);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EE377B20 (Found unknown format character '*' in '* floating-point' while decoding vadd.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EE377B20()
+        {
+            Disassemble32(0xEE377B20);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction EE817BA0 (Found unknown format character '*' in '* vdiv' while decoding vdiv.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EE817BA0()
+        {
+            Disassemble32(0xEE817BA0);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction EE476A86 (Found unknown format character '*' in '* floating-point' while decoding vmla.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EE476A86()
+        {
+            Disassemble32(0xEE476A86);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction EE017BE0 (Found unknown format character '*' in '* floating-point' while decoding vmls.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EE017BE0()
+        {
+            Disassemble32(0xEE017BE0);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction EE102B90 (Found unknown format character '*' in '*Scalar to GP' while decoding vmov.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EE102B90()
+        {
+            Disassemble32(0xEE102B90);
+            Expect_Code("@@@");
+        }
+        
+        // An A32 decoder for the instruction F2C04077 (Found unknown format character '*' in '*immediate - A1' while decoding vmvn.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F2C04077()
+        {
+            Disassemble32(0xF2C04077);
+            Expect_Code("@@@");
+        }
+ 
+        // An A32 decoder for the instruction EE567A87 (Found unknown format character '*' in '*' while decoding vnmls.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EE567A87()
+        {
+            Disassemble32(0xEE567A87);
+            Expect_Code("@@@");
+        }
     }
 }
