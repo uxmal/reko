@@ -1105,12 +1105,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmls.f64\td7,d17,d16");
         }
         
-        // An A32 decoder for the instruction EE102B90 (Found unknown format character '*' in '*Scalar to GP' while decoding vmov.) has not been implemented yet.
         [Test]
-        public void ArmDasm_EE102B90()
+        public void ArmDasm_vmov_i32()
         {
             Disassemble32(0xEE102B90);
-            Expect_Code("@@@");
+            Expect_Code("vmov.i32\tr2,d16[0]");
         }
         
         // An A32 decoder for the instruction F2C04077 (Found unknown format character '*' in '*immediate - A1' while decoding vmvn.) has not been implemented yet.

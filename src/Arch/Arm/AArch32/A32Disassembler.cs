@@ -68,6 +68,7 @@ namespace Reko.Arch.Arm.AArch32
             Opcode shiftOp = Opcode.Invalid;
             MachineOperand shiftValue = null;
             bool useQ = false;
+            int? vector_index = null;
 
             for (int i = 0; i < format.Length; ++i)
             {
@@ -224,7 +225,7 @@ namespace Reko.Arch.Arm.AArch32
                         op = new RegisterOperand(sr);
                     }
                     else
-                    {
+                    {  
                         // 'S13' = fpu register.
                         offset = (int)ReadBitfields(wInstr, format, ref i);
                         op = new RegisterOperand(Registers.SRegs[offset]);
@@ -234,6 +235,12 @@ namespace Reko.Arch.Arm.AArch32
                     // 'D13' = fpu register.
                     ++i;
                     offset = (int)ReadBitfields(wInstr, format, ref i);
+                    if (PeekAndDiscard('[', format, ref i))
+                    {
+                        // D13[3] - index into sub-element
+                        vector_index = (int)ReadBitfields(wInstr, format, ref i);
+                        Expect(']', format, ref i);
+                    }
                     op = new RegisterOperand(Registers.DRegs[offset]);
                     break;
                 case 'E':   // Endianness
@@ -319,6 +326,7 @@ namespace Reko.Arch.Arm.AArch32
                 SetFlags = updateFlags,
                 Writeback = writeback,
                 vector_data = vectorData,
+                vector_index = vector_index,
             };
             return instr;
         }
@@ -1895,7 +1903,26 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(6, 1,
                         Instr(Opcode.vdup, "vW22:1:5:1q21 W7:1:16:4,r3"),
                         invalid)),
-                Instr(Opcode.vmov, "r3,*Scalar to GP"));
+                Mask(21,2,5,2,
+                    Instr(Opcode.vmov, I32, "r3,D7:1:16:4[21:1]"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b00 01"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b00 10"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b00 11"),
+
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 00"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 01"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 10"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 11"),
+
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 00"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 01"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 10"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 11"),
+
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 00"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 01"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 10"),
+                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 11")));
 
             var FloatingPointMoveSpecialReg = Mask(20, 1,
                 Instr(Opcode.vmsr, "i16:4,r3"),

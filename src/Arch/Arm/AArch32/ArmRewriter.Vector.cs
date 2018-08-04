@@ -111,7 +111,10 @@ namespace Reko.Arch.Arm.AArch32
                     m.Assign(dst, Operand(instr.ops[1]));
                     return;
                 }
-
+                if (instr.vector_index.HasValue)
+                {
+                    throw new NotImplementedException();
+                }
                 var fname = $"__vmov_{VectorElementType(instr.vector_data)}";
                 var ppp = host.PseudoProcedure(fname, Dst().Width, src);
                 m.Assign(dst, m.Fn(ppp));
