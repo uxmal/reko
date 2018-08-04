@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|Mem0[r3:word64] = r5_r4",
-                "2|L--|r3 = r3 + 0xFFFFFFC8");
+                "2|L--|r3 = r3 - 56");
         }
 
         [Test]
@@ -903,7 +903,7 @@ means
             BuildTest(0xee102b90);	// vmov.32 r2, d16[0]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = d16");
+                "1|L--|r2 = d16[0]");
         }
 
         [Test]

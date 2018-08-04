@@ -255,7 +255,8 @@ namespace Reko.Arch.Arm.AArch32
         public Opcode ShiftType;
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
-        public int vector_size;
+        public int vector_size;         // only valid if vector_data is valid
+        public int vector_index;        // only valid if vector_data is valid
         public byte itmask;
     }
 }

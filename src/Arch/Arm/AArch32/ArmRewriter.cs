@@ -893,9 +893,9 @@ case ARM_OP_SYSREG:
             var baseReg = Reg(mop.BaseRegister);
 
             var offset = mop.Offset;
-            var ea = false
-                ? m.ISub(baseReg, offset)
-                : m.IAdd(baseReg, offset);
+            var ea = mop.Add
+                ? m.IAdd(baseReg, offset)
+                : m.ISub(baseReg, offset);
             m.Assign(baseReg, ea);
         }
 

@@ -144,8 +144,18 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     break;
                 case 'r':   // register at a 4-bit multiple offset
-                    offset = (format[++i] - '0') * 4;
-                    op = new RegisterOperand(Registers.GpRegs[bitmask(wInstr, offset, 0xF)]);
+                    ++i;
+                    bool isRegisterPair = PeekAndDiscard('p', format, ref i);
+                    offset = (format[i] - '0') * 4;
+                    imm = bitmask(wInstr, offset, 0xF);
+                    if (isRegisterPair && ((imm & 1) != 0))
+                        return Invalid();
+                    op = new RegisterOperand(Registers.GpRegs[imm]);
+                    if (isRegisterPair)
+                    {
+                        ops.Add(op);
+                        op = new RegisterOperand(Registers.GpRegs [imm+1]);
+                    }
                     break;
                 case 'W':   // "wector" register
                     ++i;
@@ -235,7 +245,7 @@ namespace Reko.Arch.Arm.AArch32
                     ++i;
                     op = ReadImmediate(wInstr, format, ref i);
                     break;
-                case 's':   // use bit 20 to determine 
+                case 's':   // use bit 20 to determine if sets flags
                     updateFlags = ((wInstr >> 20) & 1) != 0;
                     continue;
                 case 'C': // coprocessor 
@@ -882,16 +892,16 @@ namespace Reko.Arch.Arm.AArch32
                Smlal);
 
             // --
-            var LdrdRegister = Instr(Opcode.ldrd, "r3,[_:w8]");
+            var LdrdRegister = Instr(Opcode.ldrd, "rp3,[_:w8]");
             var LdrhRegister = Instr(Opcode.ldrh, "r3,[_:u2]");
             var LdrsbRegister = Instr(Opcode.ldrsb, "r3,[_:s1]");
             var LdrshRegister = Instr(Opcode.ldrsh, "r3,[_:s2]");
             var Ldrht = Instr(Opcode.ldrht, "*");
             var Ldrsbt = Instr(Opcode.ldrsbt, "*");
             var Ldrsht = Instr(Opcode.ldrsht, "*");
-            var StrdRegister = Instr(Opcode.strd, "r3,[x:w8]");
+            var StrdRegister = Instr(Opcode.strd, "rp3,[x:w8]");
             var StrhRegister = Instr(Opcode.strh, "r3,[_:w2]");
-            var Strht = Instr(Opcode.strht, "*");
+            var Strht = Instr(Opcode.strht, "r3,[h:w2]");
 
             var LoadStoreDualHalfSbyteRegister = new MaskDecoder(24, 1,
                 new MaskDecoder(20, 0x3,
@@ -927,13 +937,13 @@ namespace Reko.Arch.Arm.AArch32
                         LdrsbRegister,
                         LdrshRegister)));
 
-            var LdrdLiteral = Instr(Opcode.ldrd, "*");
+            var LdrdLiteral = Instr(Opcode.ldrd, "rp3,*");
             var LdrhLiteral = Instr(Opcode.ldrh, "*");
             var LdrsbLiteral = Instr(Opcode.ldrsb, "*");
             var LdrshLiteral = Instr(Opcode.ldrsh, "*");
             var StrhImmediate = Instr(Opcode.strh, "*");
-            var LdrdImmediate = Instr(Opcode.ldrd, "*");
-            var StrdImmediate = Instr(Opcode.strd, "*");
+            var LdrdImmediate = Instr(Opcode.ldrd, "rp3[h:w8]");
+            var StrdImmediate = Instr(Opcode.strd, "rp3,[h:w8]");
             var LdrhImmediate = Instr(Opcode.ldrh, "*");
             var LdrsbImmediate = Instr(Opcode.ldrsb, "r3,[h:s1]");
             var LdrshImmediate = Instr(Opcode.ldrsh, "*");
@@ -1540,8 +1550,8 @@ namespace Reko.Arch.Arm.AArch32
             var ExtendAndAdd = Mask(20, 7,
                 Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab16, "*"), Instr(Opcode.sxtb16, "*")),
                 invalid,
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab, "*"), Instr(Opcode.sxtb, "r3,r0,>R10:2")),
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtah, "*"), Instr(Opcode.sxth, "r3,r0,>R10:2")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab, "r3,r4,r0,>R10:2"), Instr(Opcode.sxtb, "r3,r0,>R10:2")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtah, "r3,r4,r0,>R10:2"), Instr(Opcode.sxth, "r3,r0,>R10:2")),
                 
                 Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab16, "*"), Instr(Opcode.uxtb16, "*")),
                 invalid,
@@ -1823,8 +1833,16 @@ namespace Reko.Arch.Arm.AArch32
                 nyi("Floating-point data-procesing (two registers) 1 111"));
 
             var FloatingPointDataProcessing3regs = Mask(23, 1, 20, 2, 6, 1,
-                Instr(Opcode.vmla, "* floating-point"),
-                Instr(Opcode.vmls, "* floating-point"),
+                Mask(8, 0x3,
+                    invalid,
+                    Instr(Opcode.vmla, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
+                    Instr(Opcode.vmla, F32, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
+                    Instr(Opcode.vmla, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                Mask(8, 0x3,
+                    invalid,
+                    Instr(Opcode.vmls, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
+                    Instr(Opcode.vmls, F32, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
+                    Instr(Opcode.vmls, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
                 Instr(Opcode.vnmls, "*"),
                 Instr(Opcode.vnmla, "*"),
 
@@ -1877,7 +1895,7 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(6, 1,
                         Instr(Opcode.vdup, "vW22:1:5:1q21 W7:1:16:4,r3"),
                         invalid)),
-                Instr(Opcode.vmov, "*Scalar to GP"));
+                Instr(Opcode.vmov, "r3,*Scalar to GP"));
 
             var FloatingPointMoveSpecialReg = Mask(20, 1,
                 Instr(Opcode.vmsr, "i16:4,r3"),
@@ -2115,37 +2133,6 @@ namespace Reko.Arch.Arm.AArch32
                             invalid),
                         Select(10, 3, n => n == 2, AdvancedSimd_TwoRegistersScalarExtension, invalid))),
                     Instr(Opcode.svc, "i0:24"));
-                //SparseMask(9, 0x7, new Dictionary<uint, Decoder>
-                //{
-                //    { 4, SystemRegister_LdSt_64bitMove },
-                //    { 5, SystemRegister_LdSt_64bitMove },
-                //    { 7, SystemRegister_LdSt_64bitMove },
-                //}),
-                //SparseMask(9, 0x7, new Dictionary<uint, Decoder>
-                //{
-                //    { 4, SystemRegister_LdSt_64bitMove },
-                //    { 5, SystemRegister_LdSt_64bitMove },
-                //    { 7, SystemRegister_LdSt_64bitMove },
-                //}),
-                //SparseMask(9, 0x7, new Dictionary<uint, Decoder>
-                //{
-                //    //$TODO cond fields.
-                //    { 4, new MaskDecoder(4, 1,
-                //        FloatingPointDataProcessing,
-                //        AdvancedSIMDandFloatingPoint32bitMove)
-                //    },
-                //    { 5, new MaskDecoder(4, 1,
-                //        FloatingPointDataProcessing,
-                //        AdvancedSIMDandFloatingPoint32bitMove)
-                //    },
-                //    { 7, new MaskDecoder(4, 1,
-                //        FloatingPointDataProcessing,
-                //        SystemRegister32BitMove)
-                //    }
-                //}),
-                //new InstrDecoder(Opcode.svc, "V"));
-
-            //}nyi("SystemRegister_AdvancedSimd_FloatingPoint");
 
 
             var ConditionalDecoder = new CondMaskDecoder(25, 0x7,

@@ -580,7 +580,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_strd()
         {
             Disassemble32(0xE0000FFE);
-            Expect_Code("strd\tr0,[r0],-lr");
+            Expect_Code("strd\tr0,r1,[r0],-lr");
         }
 
         [Test]
@@ -1026,20 +1026,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldrbtgt\tr0,[r10]");
         }
         
-        // An A32 decoder for the instruction E1C722D8 (Found unknown format character '*' in '*' while decoding ldrd.) has not been implemented yet.
         [Test]
-        public void ArmDasm_E1C722D8()
+        public void ArmDasm_ldrd()
         {
             Disassemble32(0xE1C722D8);
-            Expect_Code("@@@");
+            Expect_Code("ldrd\tr2,r3,[r7,#&28]");
         }
         
-        // An A32 decoder for the instruction E0FD52B4 (Found unknown format character '*' in '*' while decoding strht.) has not been implemented yet.
         [Test]
-        public void ArmDasm_E0FD52B4()
+        public void ArmDasm_strht_sp()
         {
             Disassemble32(0xE0FD52B4);
-            Expect_Code("@@@");
+            Expect_Code("strht\tr5,[sp],#&24");
         }
         
         [Test]
@@ -1049,36 +1047,32 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldrtmi\tr0,[r4]");
         }
         
-        // An A32 decoder for the instruction E04343F8 (Found unknown format character '*' in '*' while decoding strd.) has not been implemented yet.
         [Test]
-        public void ArmDasm_E04343F8()
+        public void ArmDasm_strd_r3()
         {
             Disassemble32(0xE04343F8);
-            Expect_Code("@@@");
+            Expect_Code("strd\tr4,r5,[r3],-#&38");
         }
-        // An A32 decoder for the instruction E0E051B0 (Found unknown format character '*' in '*' while decoding strht.) has not been implemented yet.
+
         [Test]
-        public void ArmDasm_E0E051B0()
+        public void ArmDasm_strht()
         {
             Disassemble32(0xE0E051B0);
-            Expect_Code("@@@");
+            Expect_Code("strht\tr5,[r0],#&10");
         }
         
-        // An A32 decoder for the instruction E6A55078 (Found unknown format character '*' in '*' while decoding sxtab.) has not been implemented yet.
         [Test]
-        public void ArmDasm_E6A55078()
+        public void ArmDasm_sxtab()
         {
             Disassemble32(0xE6A55078);
-            Expect_Code("@@@");
+            Expect_Code("sxtab\tr5,r5,r8");
         }
         
-        
-        // An A32 decoder for the instruction E6B6A07A (Found unknown format character '*' in '*' while decoding sxtah.) has not been implemented yet.
         [Test]
-        public void ArmDasm_E6B6A07A()
+        public void ArmDasm_sxtah()
         {
             Disassemble32(0xE6B6A07A);
-            Expect_Code("@@@");
+            Expect_Code("sxtah\tr10,r6,r10");
         }
 
         // An A32 decoder for the instruction EE377B20 (Found unknown format character '*' in '* floating-point' while decoding vadd.) has not been implemented yet.
@@ -1097,20 +1091,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
         
-        // An A32 decoder for the instruction EE476A86 (Found unknown format character '*' in '* floating-point' while decoding vmla.) has not been implemented yet.
         [Test]
-        public void ArmDasm_EE476A86()
+        public void ArmDasm_vmla()
         {
             Disassemble32(0xEE476A86);
-            Expect_Code("@@@");
+            Expect_Code("vmla.f32\ts13,s15,s12");
         }
         
-        // An A32 decoder for the instruction EE017BE0 (Found unknown format character '*' in '* floating-point' while decoding vmls.) has not been implemented yet.
         [Test]
         public void ArmDasm_EE017BE0()
         {
             Disassemble32(0xEE017BE0);
-            Expect_Code("@@@");
+            Expect_Code("vmls.f64\td7,d17,d16");
         }
         
         // An A32 decoder for the instruction EE102B90 (Found unknown format character '*' in '*Scalar to GP' while decoding vmov.) has not been implemented yet.
