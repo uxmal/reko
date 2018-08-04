@@ -1019,12 +1019,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vstmia\tr3!,{d16-d17}");
         }
 
-        // An A32 decoder for the instruction C47A0000 (Found unknown format character '*' in '*' while decoding ldrbt.) has not been implemented yet.
         [Test]
-        public void ArmDasm_C47A0000()
+        public void ArmDasm_ldrbtgt()
         {
             Disassemble32(0xC47A0000);
-            Expect_Code("@@@");
+            Expect_Code("ldrbtgt\tr0,[r10]");
         }
         
         // An A32 decoder for the instruction E1C722D8 (Found unknown format character '*' in '*' while decoding ldrd.) has not been implemented yet.
@@ -1043,12 +1042,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
         
-        // An A32 decoder for the instruction 44340000 (Found unknown format character '*' in '*' while decoding ldrt.) has not been implemented yet.
         [Test]
-        public void ArmDasm_44340000()
+        public void ArmDasm_ldrt()
         {
             Disassemble32(0x44340000);
-            Expect_Code("@@@");
+            Expect_Code("ldrtmi\tr0,[r4]");
         }
         
         // An A32 decoder for the instruction E04343F8 (Found unknown format character '*' in '*' while decoding strd.) has not been implemented yet.

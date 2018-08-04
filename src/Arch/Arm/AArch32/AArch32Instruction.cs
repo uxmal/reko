@@ -189,9 +189,10 @@ namespace Reko.Arch.Arm.AArch32
                 if (this.Writeback && !mem.PreIndex)
                 {
                     // Post-indexed
-                    writer.WriteString("],");
+                    writer.WriteString("]");
                     if (mem.Offset != null && !mem.Offset.IsIntegerZero)
                     {
+                        writer.WriteChar(',');
                         if (!mem.Add)
                             writer.WriteChar('-');
                         writer.WriteString("#&");
@@ -199,6 +200,7 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     else if (mem.Index != null)
                     {
+                        writer.WriteChar(',');
                         if (!mem.Add)
                             writer.WriteChar('-');
                         writer.WriteString(mem.Index.Name);

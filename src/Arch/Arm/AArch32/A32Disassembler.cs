@@ -1370,10 +1370,10 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.ldrb, "r3,[o:w1]"),
                     Instr(Opcode.ldrb, "r3,[o:w1]")),
 
-                Instr(Opcode.strt, "*"),
-                Instr(Opcode.ldrt, "*"),
-                Instr(Opcode.strbt, "*"),
-                Instr(Opcode.ldrbt, "*"),
+                Instr(Opcode.strt, "r3,[o:w4]"),
+                Instr(Opcode.ldrt, "r3,[o:w4]"),
+                Instr(Opcode.strbt, "r3,[o:w1]"),
+                Instr(Opcode.ldrbt, "r3,[o:w1]"),
 
                 Instr(Opcode.str, "r3,[o:w4]"),
                 Select(16, 0xF, n => n != 0xF,
