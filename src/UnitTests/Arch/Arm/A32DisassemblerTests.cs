@@ -1075,20 +1075,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("sxtah\tr10,r6,r10");
         }
 
-        // An A32 decoder for the instruction EE377B20 (Found unknown format character '*' in '* floating-point' while decoding vadd.) has not been implemented yet.
         [Test]
-        public void ArmDasm_EE377B20()
+        public void ArmDasm_vadd_f64()
         {
             Disassemble32(0xEE377B20);
-            Expect_Code("@@@");
+            Expect_Code("vadd.f64\td7,d7,d16");
         }
         
-        // An A32 decoder for the instruction EE817BA0 (Found unknown format character '*' in '* vdiv' while decoding vdiv.) has not been implemented yet.
         [Test]
-        public void ArmDasm_EE817BA0()
+        public void ArmDasm_vdiv_f64()
         {
             Disassemble32(0xEE817BA0);
-            Expect_Code("@@@");
+            Expect_Code("vdiv.f64\td7,d17,d16");
         }
         
         [Test]
@@ -1112,20 +1110,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov.i32\tr2,d16[0]");
         }
         
-        // An A32 decoder for the instruction F2C04077 (Found unknown format character '*' in '*immediate - A1' while decoding vmvn.) has not been implemented yet.
         [Test]
-        public void ArmDasm_F2C04077()
+        public void ArmDasm_vmvn_imm()
         {
             Disassemble32(0xF2C04077);
-            Expect_Code("@@@");
+            Expect_Code("vmvn.i32\td20,#7");
         }
  
-        // An A32 decoder for the instruction EE567A87 (Found unknown format character '*' in '*' while decoding vnmls.) has not been implemented yet.
         [Test]
-        public void ArmDasm_EE567A87()
+        public void ArmDasm_vnmls_f32()
         {
             Disassemble32(0xEE567A87);
-            Expect_Code("@@@");
+            Expect_Code("vnmls.f32\ts15,s13,s14");
         }
     }
 }
