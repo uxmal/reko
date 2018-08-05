@@ -48,12 +48,9 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteDmb()
         {
-            /*
-            var memBarrier = MemBarrierName(instr->detail->arm.mem_barrier);
-            char name[100];
-            snprintf(name, sizeof(name), "__dmb_%s", memBarrier);
-            m.SideEffect(m.Fn(host.PseudoProcedure(name, VoidType.Instance, 1)));
-            */
+            var memBarrier = (BarrierOperand)instr.ops[0];
+            var name = $"__dmb_{memBarrier.Option.ToString().ToLower()}";
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
 
         private void RewriteLdc(string fnName)
