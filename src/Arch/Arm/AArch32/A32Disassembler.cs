@@ -1147,10 +1147,10 @@ namespace Reko.Arch.Arm.AArch32
                 Hvc,
                 Smc);
 
-            var Bx = Instr(Opcode.bx, "*");
-            var Bxj = Instr(Opcode.bxj, "*");
-            var Blx = Instr(Opcode.blx, "*");
-            var Clz = Instr(Opcode.blx, "*");
+            var Bx = Instr(Opcode.bx, "r0");
+            var Bxj = Instr(Opcode.bxj, "r0");
+            var Blx = Instr(Opcode.blx, "J");
+            var Clz = Instr(Opcode.clz, "r3,r0");
             var Eret = Instr(Opcode.eret, "*");
 
             var ChangeProcessState = new MaskDecoder(16, 1, // op
@@ -1163,7 +1163,7 @@ namespace Reko.Arch.Arm.AArch32
                         nyi("CPS,CPSID,CPSIE mask=0b11 m=1"))),
                 Select(4, 1, n => n == 0, Instr(Opcode.setend, "E9:1"), invalid));
 
-            var Miscellaneous = new MaskDecoder(22, 7,   // op0
+            var UncMiscellaneous = new MaskDecoder(22, 7,   // op0
                 invalid,
                 invalid,
                 invalid,
@@ -1178,9 +1178,8 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
-            /*
         var Miscellaneous = new MaskDecoder(21, 3,   // op0
-            new MaskDecoder(24, 1, // op1
+            new MaskDecoder(4, 7, // op1
                 MoveSpecialRegister,
                 invalid,
                 invalid,
@@ -1220,7 +1219,7 @@ namespace Reko.Arch.Arm.AArch32
                 IntegerSaturatingArithmetic,
                 Eret,
                 ExceptionGeneration));
-                */
+
             var HalfwordMultiplyAndAccumulate = new MaskDecoder(21, 0x3,
                 Mask(5, 3,      // M:N
                     Instr(Opcode.smlabb, "r4,r0,r2,r3"),
@@ -1396,53 +1395,6 @@ namespace Reko.Arch.Arm.AArch32
                         ExtraLoadStore,
                         ExtraLoadStore)),
                 DataProcessingImmediate);
-
-            var DataProcessingAndMisc2 = new CustomDecoder((wInstr, dasm) =>
-            {
-                if (bitmask(wInstr, 25, 1) == 0)
-                {
-                    var op1 = bitmask(wInstr, 20, 0x1F);
-                    var op2 = bitmask(wInstr, 7, 1);
-                    var op3 = bitmask(wInstr, 5, 3);
-                    var op4 = bitmask(wInstr, 4, 1);
-                    if (op2 == 1 && op4 == 1)
-                    {
-                        if (op3 == 0)
-                        {
-                            if (op1 < 0x10)
-                                return MultiplyAndAccumulate;
-                            else
-                                return SynchronizationPrimitives;
-                        }
-                        else
-                        {
-                            return ExtraLoadStore;
-                        }
-                    }
-                    if ((op1 & 0x19) == 0x10)
-                    {
-                        if (op2 == 0)
-                            return Miscellaneous;
-                        else if (op2 == 1 && op4 == 0)
-                            return HalfwordMultiplyAndAccumulate;
-                        else
-                            return nyi("DataProcessingAndMisc");
-                    }
-                    else
-                    {
-                        if (op4 == 0)
-                            return DataProcessingImmediateShift;
-                        else if (op2 == 0 && op4 == 1)
-                            return DataProcessingRegisterShift;
-                        else
-                            return nyi("DataProcessingAndMisc");
-                    }
-                }
-                else
-                {
-                    return DataProcessingImmediate;
-                }
-            });
 
             var LdrLiteral = Instr(Opcode.ldr, "r3,[o:w4]");
             var LdrbLiteral = Instr(Opcode.ldrb, "r3,[0:w1]");
@@ -2139,10 +2091,10 @@ namespace Reko.Arch.Arm.AArch32
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=0
-                            Instr(Opcode.vshl, S8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vshl, S16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vshl, S32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vshl, S64, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                            Instr(Opcode.vshl, S8, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
+                            Instr(Opcode.vshl, S16, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
+                            Instr(Opcode.vshl, S32, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
+                            Instr(Opcode.vshl, S64, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4")),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=1
                             Instr(Opcode.vqshl, S8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
                             Instr(Opcode.vqshl, S16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
@@ -2204,10 +2156,10 @@ namespace Reko.Arch.Arm.AArch32
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=0
-                            Instr(Opcode.vshl, U8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vshl, U16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vshl, U32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vshl, U64, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                            Instr(Opcode.vshl, U8, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
+                            Instr(Opcode.vshl, U16, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
+                            Instr(Opcode.vshl, U32, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
+                            Instr(Opcode.vshl, U64, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4")),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=1
                             Instr(Opcode.vqshl, U8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
                             Instr(Opcode.vqshl, U16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
@@ -2368,7 +2320,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var unconditionalDecoder = new MaskDecoder(25, 7,
-                Miscellaneous,
+                UncMiscellaneous,
                 AdvancedSimd,
                 new MaskDecoder(20, 1,
                     AdvancedSimdElementLoadStore,

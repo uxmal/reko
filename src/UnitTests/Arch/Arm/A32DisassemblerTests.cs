@@ -1000,7 +1000,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_vshl_u32()
         {
             Disassemble32(0xF36424E2);
-            Expect_Code("vshl.u32\tq9,q10,q9");
+            Expect_Code("vshl.u32\tq9,q9,q10");
         }
 
         [Test]

@@ -1130,6 +1130,7 @@ means
         }
 
         [Test]
+        [Ignore("Can't find documentation for this instruction")]
         public void ArmRw_cdplo()
         {
             BuildTest(0x3e200000);  // cdplo p0, #2, c0, c0, c0, #0
@@ -1188,7 +1189,7 @@ means
         [Test]
         public void ArmRw_vshl_u32()
         {
-            BuildTest(0xf36424e2);  // vshl.u32 q9, q9, q10
+            BuildTest(0xF36424E2);  // vshl.u32 q9, q9, q10
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q9 = __vshl_u32(q9, q10)");
