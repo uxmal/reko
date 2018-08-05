@@ -634,7 +634,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_bfi()
         {
             Disassemble32(0xE7C3E198);
-            Expect_Code("bfi\tr1,r3,#&1A,#&18");        //$REVIEW: the ARM docs are inconsistent here.
+            Expect_Code("bfi\tlr,r8,#3,#1");
         }
 
         [Test]

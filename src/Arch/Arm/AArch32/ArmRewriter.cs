@@ -65,8 +65,6 @@ namespace Reko.Arch.Arm.AArch32
         protected virtual void PostRewrite() { }
         protected virtual void RewriteIt() { }
 
-        //HExpr Operand(const cs_arm_op & op, BaseType dt = PrimitiveType.Word32, bool write = false);
-
         MachineOperand Dst() => instr.ops[0];
         MachineOperand Src1() => instr.ops[1];
         MachineOperand Src2() => instr.ops[2]; 
@@ -77,6 +75,7 @@ namespace Reko.Arch.Arm.AArch32
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
+                Debug.Print("//$DEBUG: {0}", instr);
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
                 this.rtlClass = RtlClass.Linear;

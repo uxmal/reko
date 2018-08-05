@@ -307,10 +307,23 @@ namespace Reko.Arch.Arm.AArch32
                         (shiftOp, shiftValue) = DecodeRegShift(wInstr);
                     }
                     continue;
-                case 'B': // Barrier
+                case 'B': // Bitfield or Barrier
                     ++i;
-                    imm = ReadBitfields(wInstr, format, ref i);
-                    op = new BarrierOperand((BarrierOption)imm);
+                    if (PeekAndDiscard('a', format, ref i))
+                    {
+                        imm = ReadBitfields(wInstr, format, ref i);
+                        op = new BarrierOperand((BarrierOption)imm);
+                    }
+                    else
+                    {
+                        // BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
+                        // decoded as lsb,width
+                        var lsb = ReadBitfields(wInstr, format, ref i);
+                        ops.Add(ImmediateOperand.Int32((int)lsb));
+                        Expect(';', format, ref i);
+                        var msb = ReadBitfields(wInstr, format, ref i);
+                        op = ImmediateOperand.Int32((int)(msb - lsb + 1));
+                    }
                     break;
                 default:
                     return NotYetImplemented($"Found unknown format character '{format[i]}' in '{format}' while decoding {opcode}.", wInstr);
@@ -1607,9 +1620,9 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     Uhsub8));
 
-            var BitfieldInsert = Select(28, 0xF, n => n != 0xF,
-                Instr(Opcode.bfi, "r2,r4,i12:3:6:2,i0:5"),
-                Instr(Opcode.bfc, "*"));
+            var BitfieldInsert = Select(0, 0xF, n => n != 0xF,
+                Instr(Opcode.bfi, "r3,r0,B7:5;16:5"),
+                Instr(Opcode.bfc, "r3,B7:5;16:5"));
 
             var BitfieldExtract = Mask(22, 1,
                 Instr(Opcode.sbfx, "r3,r0,i7:5,i16:5+1"),
@@ -2321,9 +2334,9 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid,
 
-                Instr(Opcode.dsb, "B0:4"),
-                Instr(Opcode.dmb, "B0:4"),
-                Instr(Opcode.isb, "B0:4"),
+                Instr(Opcode.dsb, "Ba0:4"),
+                Instr(Opcode.dmb, "Ba0:4"),
+                Instr(Opcode.isb, "Ba0:4"),
                 invalid,
 
                 invalid,
