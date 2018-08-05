@@ -664,8 +664,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private ImmediateOperand DecodeImm12(uint wInstr)
         {
-            var imm12 = bitmask(wInstr, 0, 0xFFF);
-            var unrotated_value = imm12 & 0xF;
+            var unrotated_value = wInstr & 0xFF;
             var n = Bits.RotateR32(unrotated_value, 2 * (int)bitmask(wInstr, 8, 0xF));
             return ImmediateOperand.Word32(n);
         }
