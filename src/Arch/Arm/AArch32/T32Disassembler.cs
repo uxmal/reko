@@ -1453,15 +1453,15 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.fldmiax, "*")));
             var vstr = Mask(8, 3,  // size
                 invalid,
-                Instr(Opcode.vstr, "F12:4:22:1,[R16,I0:8:r16X]"),
-                Instr(Opcode.vstr, "F12:4:22:1,[R16,I0:8:r32X]"),
-                Instr(Opcode.vstr, "F22:1:12:4,[R16,I0:8:r64X]"));
+                Instr(Opcode.vstr, "F12:4:22:1,[R16,I0:8,r16X]"),
+                Instr(Opcode.vstr, "F12:4:22:1,[R16,I0:8,r32X]"),
+                Instr(Opcode.vstr, "F22:1:12:4,[R16,I0:8,r64X]"));
             var vldr = Select(w => SBitfield(w, 16, 4) != 0xF,
                 Mask(8, 3,
                     invalid,
-                    Instr(Opcode.vldr, "F12:4:22:1,[R16,I0:8:r16X]"),
-                    Instr(Opcode.vldr, "F12:4:22:1,[R16,I0:8:r32X]"),
-                    Instr(Opcode.vldr, "D22:1:12:4,[R16,I0:8:r64X]")),
+                    Instr(Opcode.vldr, "F12:4:22:1,[R16,I0:8,r16X]"),
+                    Instr(Opcode.vldr, "F12:4:22:1,[R16,I0:8,r32X]"),
+                    Instr(Opcode.vldr, "D22:1:12:4,[R16,I0:8,r64X]")),
                 Instr(Opcode.vldr, "*lit"));
             var AdvancedSimdAndFpLdSt = Mask(4 + 16, 0x1F,
                 invalid,
