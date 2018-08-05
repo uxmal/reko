@@ -904,9 +904,9 @@ namespace Reko.Arch.Arm.AArch32
             var LdrhRegister = Instr(Opcode.ldrh, "r3,[_:u2]");
             var LdrsbRegister = Instr(Opcode.ldrsb, "r3,[_:s1]");
             var LdrshRegister = Instr(Opcode.ldrsh, "r3,[_:s2]");
-            var Ldrht = Instr(Opcode.ldrht, "*");
-            var Ldrsbt = Instr(Opcode.ldrsbt, "*");
-            var Ldrsht = Instr(Opcode.ldrsht, "*");
+            var Ldrht = Instr(Opcode.ldrht, "r3,[h:u2]");
+            var Ldrsbt = Instr(Opcode.ldrsbt, "r3,[h:s1]");
+            var Ldrsht = Instr(Opcode.ldrsht, "r3,[h:s2]");
             var StrdRegister = Instr(Opcode.strd, "rp3,[x:w8]");
             var StrhRegister = Instr(Opcode.strh, "r3,[_:w2]");
             var Strht = Instr(Opcode.strht, "r3,[h:w2]");
@@ -956,7 +956,49 @@ namespace Reko.Arch.Arm.AArch32
             var LdrsbImmediate = Instr(Opcode.ldrsb, "r3,[h:s1]");
             var LdrshImmediate = Instr(Opcode.ldrsh, "*");
 
-            var LoadStoreDualHalfSbyteImmediate = new CustomDecoder((wInstr, dasm) =>
+            var LoadStoreDualHalfSbyteImmediate = Mask(24, 1, 20, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=000 op2
+                        invalid,
+                        StrhImmediate,
+                        new PcDecoder(16, LdrdImmediate, LdrdLiteral),
+                        StrdImmediate),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=001 op2
+                        invalid,
+                        new PcDecoder(16, LdrhImmediate, LdrhLiteral),
+                        new PcDecoder(16, LdrsbImmediate, LdrsbLiteral),
+                        new PcDecoder(16, LdrshImmediate, LdrshLiteral)),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=010 op2
+                        invalid,
+                        Strht,
+                        new PcDecoder(16, LdrdImmediate, LdrdLiteral),
+                        invalid),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=011 op2
+                        invalid,
+                        Ldrht,
+                        Ldrsbt,
+                        Ldrsht),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=100 op2
+                        invalid,
+                        StrhImmediate,
+                        new PcDecoder(16, LdrdImmediate, LdrdLiteral),
+                        StrdImmediate),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=101 op2
+                        invalid,
+                        new PcDecoder(16, LdrhImmediate, LdrhLiteral),
+                        new PcDecoder(16, LdrsbImmediate, LdrsbLiteral),
+                        new PcDecoder(16, LdrshImmediate, LdrshLiteral)),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=110 op2
+                        invalid,
+                        StrhImmediate,
+                        new PcDecoder(16, LdrdImmediate, LdrdLiteral),
+                        new PcDecoder(16, LdrshImmediate, LdrshLiteral)),
+                    Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=111 op2
+                        invalid,
+                        new PcDecoder(16, LdrhImmediate, LdrhLiteral),
+                        new PcDecoder(16, LdrsbImmediate, LdrsbLiteral),
+                        new PcDecoder(16, LdrshImmediate, LdrshLiteral)));
+
+            var LoadStoreDualHalfSbyteImmediate2 = new CustomDecoder((wInstr, dasm) =>
             {
                 var rn = bitmask(wInstr, 16, 0xF);
                 var pw = bitmask(wInstr, 23, 2) | bitmask(wInstr, 21, 1);
@@ -1323,7 +1365,27 @@ namespace Reko.Arch.Arm.AArch32
                     IntegerTestAndCompareOneRegImm),
                 LogicalArithmeticTwoRegImm);
 
-            var DataProcessingAndMisc = new CustomDecoder((wInstr, dasm) =>
+            var DataProcessingAndMisc = Mask(25, 1,
+                Mask(7, 1, 4, 1, // DataProcessingAndMisc op0=0 op2:op4
+                    Select(20, 0b11001, n => n == 0b10000,
+                        Miscellaneous,
+                        DataProcessingImmediateShift),
+                    Select(20, 0b11001, n => n == 0b10000,
+                        Miscellaneous,
+                        DataProcessingRegisterShift),
+                    Select(20, 0b11001, n => n == 0b10000,
+                        HalfwordMultiplyAndAccumulate,
+                        DataProcessingImmediateShift),
+                    Mask(5, 3, // DataProcessingAndMisc op0=0 op2:op4=11 op3
+                        Mask(24, 1, // DataProcessingAndMisc op0=0 op2=1 op4=1 op3=0b00 op1
+                            MultiplyAndAccumulate,
+                            SynchronizationPrimitives),
+                        ExtraLoadStore,
+                        ExtraLoadStore,
+                        ExtraLoadStore)),
+                DataProcessingImmediate);
+
+            var DataProcessingAndMisc2 = new CustomDecoder((wInstr, dasm) =>
             {
                 if (bitmask(wInstr, 25, 1) == 0)
                 {

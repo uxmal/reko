@@ -135,8 +135,6 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("blgt\t$000FFEB0", instr.ToString());
         }
 
-
-
         [Test]
         public void ArmDasm_Andne_rr()
         {
@@ -1025,7 +1023,14 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xC47A0000);
             Expect_Code("ldrbtgt\tr0,[r10]");
         }
-        
+
+        [Test]
+        public void ArmDasm_ldrsht()
+        {
+            Disassemble32(0xE0FE50FC);
+            Expect_Code("ldrsht\tr5,[lr],#&C");
+        }
+
         [Test]
         public void ArmDasm_ldrd()
         {
@@ -1034,10 +1039,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
         
         [Test]
-        public void ArmDasm_strht_sp()
+        public void ArmDasm_ldrht()
         {
             Disassemble32(0xE0FD52B4);
-            Expect_Code("strht\tr5,[sp],#&24");
+            Expect_Code("ldrht\tr5,[sp],#&24");
         }
         
         [Test]

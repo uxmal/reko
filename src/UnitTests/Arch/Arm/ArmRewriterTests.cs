@@ -659,7 +659,7 @@ means
             BuildTest(0xEE123F10);  // mrc p15,#0,r3,c2
             AssertCode(
              "0|L--|00100000(4): 1 instructions",
-             "1|L--|r3 = __mrc(p15, 0x00000000, 0x02, 0x00, 0x00000000)");
+             "1|L--|r3 = __mrc(p15, 0x00000000, c2, c0, 0x00000000)");
         }
 
         [Test]
@@ -769,7 +769,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v4 = (word32) Mem0[lr:int16]",
-                "2|L--|lr = lr + 0x0000000C",
+                "2|L--|lr = lr + 12",
                 "3|L--|r5 = v4");
         }
 
@@ -819,7 +819,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v4 = (word32) Mem0[sp:word16]",
-                "2|L--|sp = sp + 0x00000024",
+                "2|L--|sp = sp + 36",
                 "3|L--|r5 = v4");
         }
 
@@ -843,12 +843,12 @@ means
         [Test]
         public void ArmRw_ldrsbteq()
         {
-            BuildTest(0x00f707d0);	// ldrsbteq r0, [r7], #0x70
+            BuildTest(0x00F707D0);	// ldrsbteq r0, [r7], #0x70
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
                 "2|L--|v5 = (word32) Mem0[r7:int8]",
-                "3|L--|r7 = r7 + 0x00000070",
+                "3|L--|r7 = r7 + 112",
                 "4|L--|r0 = v5");
         }
 
@@ -1018,7 +1018,7 @@ means
                 "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(LE,NZV)) branch 00100004",
                 "2|L--|v5 = (word32) Mem0[r10:byte]",
-                "3|L--|r10 = r10 + 0x00000000",
+                "3|L--|r10 = r10 + 0",
                 "4|L--|r0 = v5");
         }
 
@@ -1343,7 +1343,7 @@ means
                 "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(GE,N)) branch 00100004",
                 "2|L--|v5 = Mem0[r4:word32]",
-                "3|L--|r4 = r4 + 0x00000000",
+                "3|L--|r4 = r4 + 0",
                 "4|L--|r0 = v5");
         }
 
