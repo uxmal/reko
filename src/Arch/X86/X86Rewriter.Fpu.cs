@@ -32,8 +32,6 @@ namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
-        private int maxFpuStackWrite;
-
         public void EmitCommonFpuInstruction(
             Func<Expression,Expression,Expression> op,
             bool fReversed,
@@ -106,7 +104,6 @@ namespace Reko.Arch.X86
             GrowFpuStack(1);
             m.Assign(FpuRegister(0),
                 host.PseudoProcedure("__fbld", PrimitiveType.Real64, SrcOp(instrCur.op1)));
-            WriteFpuStack(0);
         }
 
         private void RewriteFbstp()
@@ -121,7 +118,6 @@ namespace Reko.Arch.X86
             m.Assign(
                 orw.FpuRegister(0, state),
                 m.Neg(orw.FpuRegister(0, state)));		//$BUGBUG: should be Real, since we don't know the actual size.
-            WriteFpuStack(0);
         }
 
         private void RewriteFclex()
@@ -171,7 +167,6 @@ namespace Reko.Arch.X86
             m.Assign(
                 orw.FpuRegister(0, state),
                 host.PseudoProcedure(name, PrimitiveType.Real64, orw.FpuRegister(0, state)));
-            WriteFpuStack(0);
         }
 
         private void RewriteFicom(bool pop)
@@ -194,7 +189,6 @@ namespace Reko.Arch.X86
             m.Assign(
                 orw.FpuRegister(0, state),
                 m.Cast(PrimitiveType.Real64, SrcOp(instrCur.op1, iType)));
-            WriteFpuStack(0);
         }
 
         private void RewriteFincstp()
@@ -233,7 +227,6 @@ namespace Reko.Arch.X86
                     src);
             }
             m.Assign(dst, src);
-            WriteFpuStack(0);
         }
 
         private void RewriteFldConst(double constant)
@@ -245,7 +238,6 @@ namespace Reko.Arch.X86
         {
             GrowFpuStack(1);
             m.Assign(FpuRegister(0), c);
-            WriteFpuStack(0);
         }
 
         private void RewriteFldcw()
@@ -278,7 +270,6 @@ namespace Reko.Arch.X86
             Expression op2 = FpuRegister(0);
             ShrinkFpuStack(1);
             m.Assign(FpuRegister(0), host.PseudoProcedure("atan", PrimitiveType.Real64, op1, op2));
-            WriteFpuStack(0);
         }
 
         private void RewriteFprem()
@@ -288,7 +279,6 @@ namespace Reko.Arch.X86
             ShrinkFpuStack(1);
             m.Assign(FpuRegister(0),
                 m.Mod(op2, op1));
-            WriteFpuStack(0);
         }
 
         private void RewriteFprem1()
@@ -296,7 +286,6 @@ namespace Reko.Arch.X86
             Expression op1 = SrcOp(instrCur.op1);
             Expression op2 = SrcOp(instrCur.op2);
             m.Assign(op1, host.PseudoProcedure("__fprem1", op1.DataType, op1, op2));
-            WriteFpuStack(0);
         }
 
         private void RewriteFptan()
@@ -315,8 +304,6 @@ namespace Reko.Arch.X86
             GrowFpuStack(1);
             m.Assign(FpuRegister(1), host.PseudoProcedure("cos", PrimitiveType.Real64, itmp));
             m.Assign(FpuRegister(0), host.PseudoProcedure("sin", PrimitiveType.Real64, itmp));
-            WriteFpuStack(0);
-            WriteFpuStack(1);
         }
 
         private void RewriteFst(bool pop)
@@ -521,7 +508,7 @@ namespace Reko.Arch.X86
             var fp = this.FpuRegister(0);
             var tmp = binder.CreateTemporary(fp.DataType);
             m.Assign(tmp, fp);
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             m.Assign(this.FpuRegister(1), host.PseudoProcedure("__exponent", fp.DataType, tmp));
             m.Assign(this.FpuRegister(0), host.PseudoProcedure("__significand", fp.DataType, tmp));
         }
@@ -536,7 +523,6 @@ namespace Reko.Arch.X86
                       host.PseudoProcedure("lg2", PrimitiveType.Real64, op2)));
 
             ShrinkFpuStack(1);
-            WriteFpuStack(0);
         }
 
         private void RewriteFyl2xp1()
@@ -555,7 +541,6 @@ namespace Reko.Arch.X86
                 orw.AluRegister(Registers.FPUF),
                 m.Cond(op2));
             ShrinkFpuStack(1);
-            WriteFpuStack(0);
         }
 
         private void RewriteWait()
@@ -591,13 +576,6 @@ namespace Reko.Arch.X86
         {
             var top = binder.EnsureRegister(Registers.Top);
             m.Assign(top, m.IAdd(top, amount));
-        }
-
-        private void WriteFpuStack(int offset)
-        {
-            int o = offset - state.FpuStackItems;
-            if (o > maxFpuStackWrite)
-                maxFpuStackWrite = o;
         }
     }
 }
