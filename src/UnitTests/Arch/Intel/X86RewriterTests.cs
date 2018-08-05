@@ -3205,10 +3205,11 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0xD9, 0xF4);	// fxtract
             AssertCode(
-                "0|L--|10000000(2): 3 instructions",
+                "0|L--|10000000(2): 4 instructions",
                 "1|L--|v3 = ST[Top:real64]",
-                "2|L--|ST[Top + 1:real64] = __exponent(v3)",
-                "3|L--|ST[Top:real64] = __significand(v3)");
+                "2|L--|Top = Top - 0x01",
+                "3|L--|ST[Top + 1:real64] = __exponent(v3)",
+                "4|L--|ST[Top:real64] = __significand(v3)");
         }
 
         [Test]

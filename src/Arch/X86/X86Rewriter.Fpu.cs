@@ -521,7 +521,7 @@ namespace Reko.Arch.X86
             var fp = this.FpuRegister(0);
             var tmp = binder.CreateTemporary(fp.DataType);
             m.Assign(tmp, fp);
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             m.Assign(this.FpuRegister(1), host.PseudoProcedure("__exponent", fp.DataType, tmp));
             m.Assign(this.FpuRegister(0), host.PseudoProcedure("__significand", fp.DataType, tmp));
         }
