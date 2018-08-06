@@ -1128,5 +1128,42 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xEE567A87);
             Expect_Code("vnmls.f32\ts15,s13,s14");
         }
+
+        // An A32 decoder for the instruction E121F001 (Found unknown format character '*' in '*' while decoding msr.) has not been implemented yet.
+        [Test]
+        public void ArmDasm_E121F001()
+        {
+            Disassemble32(0xE121F001);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void ArmDasm_qadd()
+        {
+            Disassemble32(0xE10FB85C);
+            Expect_Code("qadd\tfp,ip,pc");
+        }
+
+        [Test]
+        public void ArmDasm_qdadd()
+        {
+            Disassemble32(0x01408E50);
+            Expect_Code("qdaddeq\tr8,r0,r0");
+        }
+
+        [Test]
+        public void ArmDasm_qdsub()
+        {
+            Disassemble32(0xE168DA50);
+            Expect_Code("qdsub\tsp,r0,r8");
+        }
+
+        [Test]
+        public void ArmDasm_qsub()
+        {
+            Disassemble32(0xE12D6650);
+            Expect_Code("qsub\tr6,r0,sp");
+        }
+
     }
 }

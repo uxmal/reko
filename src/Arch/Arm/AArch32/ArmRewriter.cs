@@ -870,7 +870,12 @@ case ARM_OP_SYSREG:
             else
                 sh = ((ImmediateOperand)instr.ShiftValue).Value;
 
-            switch (instr.ShiftType)
+            return MaybeShiftExpression(exp, sh, instr.ShiftType);
+        }
+
+        private Expression MaybeShiftExpression(Expression exp, Expression sh, Opcode shiftType)
+        {
+            switch (shiftType)
             {
             case Opcode.asr: return m.Sar(exp, sh);
             case Opcode.lsl: return m.Shl(exp, sh);
@@ -879,8 +884,8 @@ case ARM_OP_SYSREG:
             case Opcode.rrx:
                 var c = binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
                 return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, c);
+            default: return exp;
             }
-            throw new NotImplementedException();
         }
 
         void MaybePostOperand(MachineOperand op)
@@ -891,11 +896,28 @@ case ARM_OP_SYSREG:
                 return;
             var baseReg = Reg(mop.BaseRegister);
 
+            Expression idx = null;
             var offset = mop.Offset;
-            var ea = mop.Add
-                ? m.IAdd(baseReg, offset)
-                : m.ISub(baseReg, offset);
-            m.Assign(baseReg, ea);
+            if (offset != null && !offset.IsIntegerZero)
+            {
+                idx = offset;
+            }
+            else if (mop.Index != null)
+            {
+                idx = binder.EnsureRegister(mop.Index);
+                if (mop.ShiftType != Opcode.Invalid)
+                {
+                    var sh = Constant.Int32(mop.Shift);
+                    idx = MaybeShiftExpression(idx, sh, mop.ShiftType);
+                }
+            }
+            if (idx != null)
+            {
+                var ea = mop.Add
+                    ? m.IAdd(baseReg, idx)
+                    : m.ISub(baseReg, idx);
+                m.Assign(baseReg, ea);
+            }
         }
 
         protected Expression TestCond(ArmCondition cond)

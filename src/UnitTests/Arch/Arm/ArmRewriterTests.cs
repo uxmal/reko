@@ -541,7 +541,7 @@ means
             BuildTest(0xE10F3000); // mrs r3, cpsr
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|r3 = __mrs(apsr)");
+               "1|L--|r3 = __mrs(cpsr)");
         }
 
         [Test]
@@ -758,7 +758,7 @@ means
             BuildTest(0xE168da50);	// qdsub sp, r0, r8
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|sp = __signed_sat_32(r8 - __signed_sat_32(r0 *s 2))",
+                "1|L--|sp = __signed_sat_32(r0 - __signed_sat_32(r8 *s 2))",
                 "2|L--|Q = cond(sp)");
         }
 

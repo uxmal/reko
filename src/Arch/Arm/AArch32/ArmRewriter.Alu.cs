@@ -513,7 +513,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(Src2());
             var sum = op(src1, src2);
             var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, sum);
-            m.Assign(dst, m.Fn(sat));
+            m.Assign(dst, sat);
             m.Assign(
                 Q(),
                 m.Cond(dst));
@@ -522,15 +522,15 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteQDAddSub(Func<Expression, Expression, Expression> op)
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            var src1 = m.SMul(Operand(Src1()), m.Int32(2));
-
-            var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, src1);
-            src1 = m.Fn(sat);
-            var src2 = Operand(Src2());
-            var sum = op(src2, src1);
-            m.Assign(dst, m.Fn(sat, sum));
+            var src2 = m.SMul(Operand(Src2()), m.Int32(2));
+            var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, src2);
+            src2 = sat;
+            var src1 = Operand(Src1());
+            var sum = op(src1, src2);
+            sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, sum);
+            m.Assign(dst, sat);
             m.Assign(
-                binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool),
+                Q(),
                 m.Cond(dst));
         }
 

@@ -220,7 +220,6 @@ namespace Reko.Arch.Arm.AArch32
                     ++i;
                     if (PeekAndDiscard('R', format, ref i))
                     {
-                        ++i;
                         var sr = bit(wInstr, 22) ? Registers.spsr : Registers.cpsr;
                         op = new RegisterOperand(sr);
                     }
@@ -286,7 +285,12 @@ namespace Reko.Arch.Arm.AArch32
                     ++i;
                     if (format[i] == 'i')
                     {
-                        (shiftOp, shiftValue) = DecodeImmShift(wInstr);
+                        int sh;
+                        (shiftOp, sh) = DecodeImmShift(wInstr);
+                        if (shiftOp != Opcode.Invalid)
+                        {
+                            shiftValue = ImmediateOperand.Int32(sh);
+                        }
                     }
                     else if (format[i] == 'R') // rotation as encoded in uxtb / stxb and  friends
                     {
@@ -606,7 +610,7 @@ namespace Reko.Arch.Arm.AArch32
             throw new InvalidOperationException($"Unknown size specifier {dom}{size}.");
         }
 
-        private (Opcode, MachineOperand) DecodeImmShift(uint wInstr)
+        private (Opcode, int) DecodeImmShift(uint wInstr)
         {
             uint type = bitmask(wInstr, 5, 0x3);
             int shift_n = (int)bitmask(wInstr, 7, 0x1F);
@@ -632,8 +636,8 @@ namespace Reko.Arch.Arm.AArch32
                 throw new InvalidOperationException("impossiburu");
             }
             return (shift_t != Opcode.Invalid)
-                ? (shift_t, ImmediateOperand.Int32(shift_n))
-                : (shift_t, null);
+                ? (shift_t, shift_n)
+                : (shift_t, 0);
         }
 
         private (Opcode, MachineOperand) DecodeRegShift(uint wInstr)
@@ -698,9 +702,7 @@ namespace Reko.Arch.Arm.AArch32
                 m = null;
                 break;
             case 'x':   // wide shift amt.
-                shiftAmt = (int)bitmask(wInstr, 7, 0x1F);
-                shiftType = shiftAmt > 0 ? Opcode.lsl : Opcode.Invalid;
-                //$TODO exotic shifts rotates etc
+                (shiftType, shiftAmt) = DecodeImmShift(wInstr);
                 break;
             }
             bool add = bit(wInstr, 23);
@@ -1098,7 +1100,7 @@ namespace Reko.Arch.Arm.AArch32
                 LoadStoreDualHalfSbyteImmediate);
 
             var Mrs = Instr(Opcode.mrs, "r3,SR");
-            var Msr = Instr(Opcode.msr, "*");
+            var Msr = Instr(Opcode.msr, "SR,r0");
             var MrsBanked = Instr(Opcode.mrs, "*");
             var MsrBanked = Instr(Opcode.msr, "*");
             var MoveSpecialRegister = new MaskDecoder(21, 1,
@@ -1126,15 +1128,15 @@ namespace Reko.Arch.Arm.AArch32
                     Crc32,
                     Crc32C));
 
-            var Qadd = Instr(Opcode.qadd, "*");
-            var Qsub = Instr(Opcode.qsub, "*");
-            var Qdadd = Instr(Opcode.qdadd, "*");
-            var Qdsub = Instr(Opcode.qdsub, "*");
+            var Qadd = Instr(Opcode.qadd, "r3,r0,r4");
+            var Qsub = Instr(Opcode.qsub, "r3,r0,r4");
+            var Qdadd = Instr(Opcode.qdadd, "r3,r0,r4");
+            var Qdsub = Instr(Opcode.qdsub, "r3,r0,r4");
             var IntegerSaturatingArithmetic = new MaskDecoder(21, 3,
                 Qadd,
                 Qsub,
                 Qdadd,
-                Qsub);
+                Qdsub);
 
 
             var Hlt = Instr(Opcode.hlt, "*");
@@ -1441,34 +1443,30 @@ namespace Reko.Arch.Arm.AArch32
             var LdrReg = Instr(Opcode.ldr, "r3,[x:w4]");
             var StrbReg = Instr(Opcode.strb, "r3,[x:w1]");
             var LdrbReg = Instr(Opcode.ldrb, "r3,[x:w1]");
+            var StrtReg = Instr(Opcode.strt, "r3,[x:w4]");
+            var LdrtReg = Instr(Opcode.strt, "r3,[x:w4]");
+            var StrbtReg = Instr(Opcode.strbt, "r3,[x:w1]");
+            var LdrbtReg = Instr(Opcode.strbt, "r3,[x:w1]");
+            var LoadStoreWordUnsignedByteRegister = Mask(24, 1, 20, 3,  // P:o2:W:o1
+                 StrReg,
+                 LdrReg,
+                 StrtReg,
+                 LdrtReg,
 
-            var LoadStoreWordUnsignedByteRegister = new CustomDecoder((wInstr, dasm) =>
-            {
-                var po2w01 = bitmask(wInstr, 21, 8) | bitmask(wInstr, 20, 7);
-                switch (po2w01)
-                {
-                case 0: return StrReg;
-                case 1: return LdrReg;
-                case 2: throw new NotImplementedException(" return Strt");
-                case 3: throw new NotImplementedException(" return ldrt");
+                 StrbReg,
+                 LdrbReg,
+                 StrbtReg,
+                 LdrbtReg,
 
-                case 4: return StrbReg;
-                case 5: return LdrbReg;
-                case 6: throw new NotImplementedException(" return Strnt");
-                case 7: throw new NotImplementedException(" return ldrbt");
+                 StrReg,
+                 LdrReg,
+                 StrReg,
+                 LdrReg,
 
-                case 8: return StrReg;
-                case 9: return LdrReg;
-                case 10: return StrReg;
-                case 11: return LdrReg;
-
-                case 12: return StrbReg;
-                case 13: return LdrbReg;
-                case 14: return StrbReg;
-                case 15: return LdrbReg;
-                }
-                throw new InvalidOperationException();
-            });
+                 StrbReg,
+                 LdrbReg,
+                 StrbReg,
+                 LdrbReg);
 
             var Sadd16 = Instr(Opcode.sadd16, "*");
             var Sasx = Instr(Opcode.sasx, "*");
