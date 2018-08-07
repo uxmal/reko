@@ -26,9 +26,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Types;
+using System.Diagnostics;
 
 namespace Reko.Arch.SuperH
 {
+    // http://www.shared-ptr.com/sh_insns.html
+    
     public class SuperHDisassembler : DisassemblerBase<SuperHInstruction>
     {
         private EndianImageReader rdr;
@@ -40,9 +43,8 @@ namespace Reko.Arch.SuperH
 
         public override SuperHInstruction DisassembleInstruction()
         {
-            ushort uInstr;
             var addr = rdr.Address;
-            if (!rdr.TryReadUInt16(out uInstr))
+            if (!rdr.TryReadUInt16(out ushort uInstr))
                 return null;
             var instr = oprecs[uInstr >> 12].Decode(this, uInstr);
             instr.Address = addr;
@@ -160,6 +162,27 @@ namespace Reko.Arch.SuperH
             };
         }
 
+        private static HashSet<ushort> seen = new HashSet<ushort>();
+
+        private SuperHInstruction Invalid(ushort wInstr)
+        {
+            if (!seen.Contains(wInstr))
+            {
+                seen.Add(wInstr);
+                Debug.WriteLine($"// A SuperH decoder for the instruction {wInstr:X4} has not been implemented yet.");
+                Debug.WriteLine("[Test]");
+                Debug.WriteLine($"public void ShDis_{wInstr:X4}()");
+                Debug.WriteLine("{");
+                Debug.WriteLine($"    AssertCode(\"@@@\", \"{wInstr&0xFF:X2}{wInstr>>8:X2}\");");
+                Debug.WriteLine("}");
+                Debug.WriteLine("");
+            }
+#if !DEBUG
+                throw new NotImplementedException($"A SuperH decoder for the instruction {wInstr:X4} has not been implemented yet.");
+#else
+            return Decode(wInstr, Opcode.invalid, "");
+#endif
+        }
 
         private PrimitiveType GetWidth(char w)
         {
@@ -274,7 +297,7 @@ namespace Reko.Arch.SuperH
             {
                 var mask = (1 << bitcount) - 1;
                 if (!oprecs.TryGetValue((uInstr >> shift) & mask, out OprecBase or))
-                    return dasm.Decode(uInstr, Opcode.invalid, "");
+                    return dasm.Invalid(uInstr);
                 return or.Decode(dasm, uInstr);
             }
         }
@@ -400,6 +423,8 @@ namespace Reko.Arch.SuperH
                 { 0xDC, new Oprec(Opcode.shad, "r2,r1") },
                 { 0xEC, new Oprec(Opcode.shad, "r2,r1") },
                 { 0xFC, new Oprec(Opcode.shad, "r2,r1") },
+
+                { 0x2A, new Oprec(Opcode.lds, "r1,RP") },
 
                 { 0x0D, new Oprec(Opcode.shld, "r2,r1") },
                 { 0x1D, new Oprec(Opcode.shld, "r2,r1") },

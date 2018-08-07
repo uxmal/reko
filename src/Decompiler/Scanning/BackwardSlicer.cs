@@ -522,8 +522,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitAssignment(RtlAssignment ass)
         {
-            var id = ass.Dst as Identifier;
-            if (id == null)
+            if (!(ass.Dst is Identifier id))
             {
                 // Ignore writes to memory.
                 return null;
@@ -541,6 +540,8 @@ namespace Reko.Scanning
             }
             this.assignLhs = deadRegs[0].Key;
             var se = ass.Src.Accept(this, deadRegs[0].Value);
+            if (se == null)
+                return se;
             var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
             this.JumpTableFormat = slicer.Simplify(newJt);
             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
