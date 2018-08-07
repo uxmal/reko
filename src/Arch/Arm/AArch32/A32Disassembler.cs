@@ -1716,33 +1716,27 @@ namespace Reko.Arch.Arm.AArch32
             var LdmdbLDmea = Instr(Opcode.ldmdb, "w21 r4,Mr0:16");
             var StmibStmfa = Instr(Opcode.stmib, "w21 r4,Mr0:16");
             var LdmibLdmed = Instr(Opcode.ldmib, "w21 r4,Mr0:16");
-
-            var LoadStoreMultiple = new MaskDecoder(22, 7, // P U op
-                new MaskDecoder(20, 1, // L
+            var StmUser = nyi("StmUser");
+            var LdmUser = nyi("LdmUser");
+            var LoadStoreMultiple = Mask(22, 3, 20, 1, // P U op L
                     StmdaStmed,
-                    LdmdaLdmfa),
-                new MaskDecoder(20, 1, // L
+                    LdmdaLdmfa,
                     Stm,
-                    Ldm),
-                new MaskDecoder(20, 1, // L
+                    Ldm,
                     StmStmia,
-                    LdmLdmia),
-                new MaskDecoder(20, 1, // L
-                    Stm,
-                    Ldm),
+                    LdmLdmia,
+                    StmUser,
+                    LdmUser,
 
-                new MaskDecoder(20, 1, // L
                     StmdbStmfd,
-                    LdmdbLDmea),
-                new MaskDecoder(20, 1, // L
-                    Stm,
-                    Ldm),
-                new MaskDecoder(20, 1, // L
+                    LdmdbLDmea,
+                    StmUser,
+                    LdmUser,
+                    
                     StmibStmfa,
-                    LdmibLdmed),
-                new MaskDecoder(20, 1, // L
-                    Stm,
-                    Ldm));
+                    LdmibLdmed,
+                    StmUser,
+                    LdmUser);
 
             var RfeRfeda = nyi("RfeRefda");
             var SrcSrsda = nyi("SrcSrsda");
