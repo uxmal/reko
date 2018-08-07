@@ -28,6 +28,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class PpcRelocator : ElfRelocator32
     {
+        private ElfRelocation prevPpcHi16;
+        private Address prevAddr;
+
         public PpcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
@@ -81,16 +84,77 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
-        {
-            switch ((PpcRt)(rela.Info & 0xFF))
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        {try
             {
-            case PpcRt.R_PPC_GLOB_DAT:
-            case PpcRt.R_PPC_COPY:
-            case PpcRt.R_PPC_JMP_SLOT:
-                break;
-            default:
-                throw new NotImplementedException();
+                if (loader.Sections.Count <= sym.SectionIndex)
+                    return;
+                if (sym.SectionIndex == 0)
+                    return;
+                var symSection = loader.Sections[(int)sym.SectionIndex];
+                uint S = (uint)sym.Value;
+                int A = 0;
+                int sh = 0;
+                uint mask = ~0u;
+                uint P = (uint)rela.Offset;
+                var addr = Address.Ptr32(P);
+                uint PP = P;
+                var relR = program.CreateImageReader(addr);
+                var relW = program.CreateImageWriter(addr);
+
+                var rt = (PpcRt)(rela.Info & 0xFF);
+                switch (rt)
+                {
+                case PpcRt.R_PPC_GLOB_DAT:
+                case PpcRt.R_PPC_COPY:
+                case PpcRt.R_PPC_JMP_SLOT:
+                    break;
+                case PpcRt.R_PPC_REL24:
+                    uint value = relR.ReadUInt32();
+                    uint copy = value;
+                    // 24 bit relocation where bits 3-29 are used for relocations
+                    value = (value & 0x3FFFFFC) >> 2;
+                    value += (uint)(S + rela.Addend - ((long)rela.Offset >> 2));
+                    value = (copy & 0xFC000003) | ((value << 2) & 0x3FFFFFC);
+                    relW.WriteUInt32(value);
+                    break;
+                case PpcRt.R_PPC_ADDR16_HI:
+                case PpcRt.R_PPC_ADDR16_HA:
+                    // Postpone this relocation until we find next R_PPC_ADDR16_LO relocation
+                    prevPpcHi16 = rela;
+                    prevAddr = addr;
+                    break;
+                case PpcRt.R_PPC_ADDR16_LO:
+                        if (prevPpcHi16 == null)
+                            return;
+                    uint valueHi = prevPpcHi16.
+                        std::uint64_t value, valueHi, valueLo;
+                        get2Byte(lastPpcHi16->getAddress(), valueHi);
+                        get2Byte(rel.getAddress(), valueLo);
+
+                        // Handling of R_PPC_ADDR16_HA
+                        if (lastPpcHi16->getType() == R_PPC_ADDR16_HA)
+                            valueHi += (valueHi & 0x8000) ? 1 : 0;
+
+                        // Addend is ignored here because addend seems to be already written into valueLo
+                        value = (valueHi << 16) | valueLo;
+                        value += symAddress;
+
+                        valueHi = (value >> 16) & 0xFFFF;
+                        valueLo = value & 0xFFFF;
+                        set2Byte(lastPpcHi16->getAddress(), valueHi);
+                        set2Byte(rel.getAddress(), valueLo);
+                        lastPpcHi16 = nullptr;
+                        break;
+                    }
+                case (PpcRt)0x6D:
+                    break;
+                default:
+                    throw new NotImplementedException();
+                }
+            } catch
+            {
+
             }
         }
 
