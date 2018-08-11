@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Typing
             }
         }
 
-        private void RunTest(Expression e)
+        private void RunTest(Expression e, string outputFileName)
         {
             var globals = new Identifier("globals", PrimitiveType.Ptr32, RegisterStorage.None);
             store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
@@ -84,20 +84,19 @@ namespace Reko.UnitTests.Typing
 
             e.Accept(exa);
 
-            var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
             Verify(outputFileName);
         }
 
         [Test]
         public void ExaConstant()
         {
-            RunTest(Constant.Int32(3));
+            RunTest(Constant.Int32(3), "Typing/ExaConstant.txt");
         }
 
         [Test]
         public void ExaIdentifier()
         {
-            RunTest(Id("x", PrimitiveType.Byte));
+            RunTest(Id("x", PrimitiveType.Byte), "Typing/ExaIdentifier.txt");
         }
 
         [Test]
@@ -106,7 +105,8 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 m.And(
                     Id("x", PrimitiveType.Byte),
-                    3));
+                    3),
+                "Typing/ExaAnd.txt");
         }
 
         [Test]
@@ -114,7 +114,8 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(
                 m.Mem8(
-                    Id("x", PrimitiveType.Word16)));
+                    Id("x", PrimitiveType.Word16)),
+                "Typing/ExaMem.txt");
         }
 
         [Test]
@@ -123,7 +124,8 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 m.IAdd(
                     Id("p", new Pointer(PrimitiveType.Word32, 32)),
-                    Constant.Int32(4)));
+                    Constant.Int32(4)),
+                "Typing/ExaAddPtrInt.txt");
         }
 
         [Test]
@@ -132,7 +134,8 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 m.Seq(
                     Id("ds", PrimitiveType.SegmentSelector),
-                    Constant.Word16(4)));
+                    Constant.Word16(4)),
+                "Typing/ExaSeqWithSelector.txt");
         }
 
         [Test]
@@ -142,7 +145,8 @@ namespace Reko.UnitTests.Typing
                 m.SegMem(
                     PrimitiveType.Byte,
                     Id("ds", PrimitiveType.SegmentSelector),
-                    Constant.Word16(0x123)));
+                    Constant.Word16(0x123)),
+                "Typing/ExaSegmem.txt");
         }
 
         [Test(Description = "Duplicate occurrences of same TypeReference should resolve to same TypeVariable")]
@@ -151,7 +155,8 @@ namespace Reko.UnitTests.Typing
             var a = Id("a", new TypeReference("INT", PrimitiveType.Int32));
             var b = Id("b", new TypeReference("INT", PrimitiveType.Int32));
             RunTest(
-                m.IAdd(a, b));
+                m.IAdd(a, b),
+                "Typing/ExaTypeReference.txt");
         }
 
         [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
@@ -159,7 +164,8 @@ namespace Reko.UnitTests.Typing
         {
             var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 32)));
             RunTest(
-                m.Mem8(m.IAdd(psz, Constant.Word32(0))));
+                m.Mem8(m.IAdd(psz, Constant.Word32(0))),
+                "Typing/ExaTypeReferenceToPointer.txt");
         }
 
         public void ExaMkSequence()
@@ -168,7 +174,8 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 m.Seq(
                     m.Mem16(m.IAdd(lpsz, 4)),
-                    Constant.Word16(0x1200)));
+                    Constant.Word16(0x1200)),
+                "Typing/ExaMkSequence.txt");
         }
 
         [Test(Description = "Pointers should be processed as globals")]
@@ -176,7 +183,8 @@ namespace Reko.UnitTests.Typing
         {
             Given_GlobalVariable(
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
-            RunTest(Constant.Create(PrimitiveType.Ptr32, 0x10001200));
+            RunTest(Constant.Create(PrimitiveType.Ptr32, 0x10001200),
+                "Typing/ExaUsrGlobals_Ptr32.txt");
         }
 
         [Test(Description = "Reals should not be processed as globals")]
@@ -184,21 +192,24 @@ namespace Reko.UnitTests.Typing
         {
             Given_GlobalVariable(
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
-            RunTest(Constant.Create(PrimitiveType.Real32, 0x10001200));
+            RunTest(Constant.Create(PrimitiveType.Real32, 0x10001200),
+                "Typing/ExaUsrGlobals_Real32.txt");
         }
 
         [Test]
         public void ExaSubtraction()
         {
             var p = Id("p", PointerTo(PrimitiveType.Real64));
-            RunTest(m.ISub(p, m.Word32(4)));
+            RunTest(m.ISub(p, m.Word32(4)),
+                "Typing/ExaSubtraction.txt");
         }
 
         [Test]
         public void ExaAddrOf()
         {
             var p = Id("p", PrimitiveType.Real64);
-            RunTest(m.AddrOf(p));
+            RunTest(m.AddrOf(p),
+                "Typing/ExaAddrOf.txt");
         }
 
         [Test]
@@ -207,7 +218,8 @@ namespace Reko.UnitTests.Typing
             var id = Id("id", PrimitiveType.Bool);
             var id1 = Id("id1", PrimitiveType.Int32);
             var id2 = Id("id2", PrimitiveType.Int32);
-            RunTest(m.Conditional(PrimitiveType.Word32, id, id1, id2));
+            RunTest(m.Conditional(PrimitiveType.Word32, id, id1, id2),
+                "Typing/ExaConditional.txt");
         }
     }
 }
