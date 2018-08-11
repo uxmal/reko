@@ -49,6 +49,7 @@ namespace Reko.UnitTests.Analysis
         private ProgramDataFlow programFlow;
         private bool addUseInstructions;
         private IImportResolver importResolver;
+        private SsaTransform sst;
 
         private Identifier r1;
         private Identifier r2;
@@ -207,12 +208,19 @@ namespace Reko.UnitTests.Analysis
         {
             this.programFlow = new ProgramDataFlow();
             var proc = this.pb.Program.Procedures.Values.First();
-            var sst = new SsaTransform(
+            this.sst = new SsaTransform(
                 this.pb.Program,
                 proc,
                 new HashSet<Procedure>(),
                 importResolver,
                 programFlow);
+            sst.Transform();
+            sst.SsaState.Validate(s => Assert.Fail(s));
+        }
+
+        private void RenameFrameAccesses()
+        {
+            sst.RenameFrameAccesses = true;
             sst.Transform();
             sst.SsaState.Validate(s => Assert.Fail(s));
         }
@@ -3329,6 +3337,53 @@ test_exit:
             RunSsaTransform();
 
             AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void SsaReal64Arg()
+        {
+            var proc = Given_Procedure("proc", m =>
+            {
+                var a = m.Reg32("a", 0);
+                var b = m.Reg32("b", 1);
+                var fp = m.Frame.FramePointer;
+
+                m.Label("body");
+                m.Assign(a, m.Mem32(m.IAdd(fp, 4)));
+                m.Assign(b, m.Mem32(m.IAdd(fp, 8)));
+                m.MStore(m.Word32(0x5678), a);
+                m.MStore(m.Word32(0x567C), b);
+                m.Return();
+            });
+            proc.Signature = FunctionType.Action(
+                new Identifier(
+                    "doubleArg",
+                    PrimitiveType.Real64,
+                    new StackArgumentStorage(4, PrimitiveType.Real64))
+            );
+
+            RunSsaTransform();
+            RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def fp
+	def Mem0
+	def doubleArg
+	dwArg04_8 = doubleArg
+	dwArg08_9 = doubleArg
+body:
+	a_3 = dwArg04_8
+	b_4 = dwArg08_9
+	Mem5[0x00005678:word32] = a_3
+	Mem6[0x0000567C:word32] = b_4
+	return
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+
         }
     }
 }
