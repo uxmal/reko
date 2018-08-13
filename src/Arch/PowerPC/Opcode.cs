@@ -374,5 +374,10 @@ namespace Reko.Arch.PowerPC
         vsubfp128,
         vupkd3d128,
         vxor128,
+        vmsumshm,
+        vmsumshs,
+        vpermxor,
+        ps_neg,
+        ps_sub,
     }
 }

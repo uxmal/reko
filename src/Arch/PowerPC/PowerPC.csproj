@@ -73,6 +73,7 @@
     <Compile Include="Opcode.cs" />
     <Compile Include="PowerPcArchitecture.cs" />
     <Compile Include="PowerPcDisassembler.cs" />
+    <Compile Include="PowerPcDisassembler.Decoders.cs" />
     <Compile Include="PowerPcInstruction.cs" />
     <Compile Include="PowerPcInstructionComparer.cs" />
     <Compile Include="PowerPcPointerScanner.cs" />
