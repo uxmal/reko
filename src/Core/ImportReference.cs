@@ -73,9 +73,9 @@ namespace Reko.Core
                 if (that.ModuleName != null)
                     return -1;
             }
-            else if (this.ModuleName == null)
+            else if (this.ModuleName != null)
             {
-                if (that.ModuleName != null)
+                if (that.ModuleName == null)
                     return 1;
             }
             else
