@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf
 
         #endregion
 
-        internal static TraceSwitch trace = new TraceSwitch("HunkLoader", "Traces the progress of the Amiga Hunk loader") { Level = TraceLevel.Warning };
+        internal static TraceSwitch trace = new TraceSwitch("ElfImageLoader", "Traces the progress of the ELF image loader") { Level = TraceLevel.Warning };
 
         private byte fileClass;
         private byte endianness;
