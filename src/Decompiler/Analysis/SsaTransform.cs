@@ -1418,6 +1418,8 @@ namespace Reko.Analysis
                     if (param != null)
                     {
                         var sidParam = EnsureSsaIdentifier(param, b);
+                        //$TODO: make sure identifier sizes are observed here, use SLICE
+                        //       when extracting smaller bitvectors out of larger values
                         var copy = new Assignment(id, sidParam.Identifier);
                         var stmCopy = b.Statements.Add(0, copy); 
                         var sidCopy = ssaIds.Add(id, stmCopy, null, false);
