@@ -1386,7 +1386,7 @@ namespace Reko.Analysis
                 }
             }
 
-            private SsaIdentifier EnsureDef(Identifier id, Block b)
+            private SsaIdentifier EnsureSsaIdentifier(Identifier id, Block b)
             {
                 if (ssaIds.TryGetValue(id, out var sid))
                     return sid;
@@ -1417,7 +1417,7 @@ namespace Reko.Analysis
                     var param = sig.Parameters.FirstOrDefault(p => p.Storage.Covers(id.Storage));
                     if (param != null)
                     {
-                        var sidParam = EnsureDef(param, b);
+                        var sidParam = EnsureSsaIdentifier(param, b);
                         var copy = new Assignment(id, sidParam.Identifier);
                         var stmCopy = b.Statements.Add(0, copy); 
                         var sidCopy = ssaIds.Add(id, stmCopy, null, false);
