@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Analysis
             return pb.Add(name, builder);
         }
 
-        private void RunSsaTransform()
+        private void When_RunSsaTransform()
         {
             this.programFlow = new ProgramDataFlow();
             var proc = this.pb.Program.Procedures.Values.First();
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Analysis
             sst.SsaState.Validate(s => Assert.Fail(s));
         }
 
-        private void RenameFrameAccesses()
+        private void When_RenameFrameAccesses()
         {
             sst.RenameFrameAccesses = true;
             sst.Transform();
@@ -3181,7 +3181,7 @@ proc1_exit:
                 m.Return();
             });
 
-            RunSsaTransform();
+            When_RunSsaTransform();
 
             var expected =
             #region Expected
@@ -3247,7 +3247,7 @@ proc_exit:
                 m.Return();
             });
 
-            RunSsaTransform();
+            When_RunSsaTransform();
 
             var expected =
             #region Expected
@@ -3291,7 +3291,7 @@ proc_exit:
             proc.Signature = FunctionType.Action(
                 new Identifier("r2", PrimitiveType.Real32, proc.Architecture.GetRegister("r2")));
 
-            RunSsaTransform();
+            When_RunSsaTransform();
 
             var ass = proc.Statements
                 .Select(stm => stm.Instruction as Assignment)
@@ -3334,7 +3334,7 @@ test_exit:
 ";
             #endregion
 
-            RunSsaTransform();
+            When_RunSsaTransform();
 
             AssertProcedureCode(sExp);
         }
@@ -3362,8 +3362,8 @@ test_exit:
                     new StackArgumentStorage(4, PrimitiveType.Real64))
             );
 
-            RunSsaTransform();
-            RenameFrameAccesses();
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
 
             var expected =
             #region Expected
