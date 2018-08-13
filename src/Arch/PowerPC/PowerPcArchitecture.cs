@@ -318,11 +318,6 @@ namespace Reko.Arch.PowerPC
             return CcFieldMin <= reg.Number && reg.Number < CcFieldMax;
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new PowerPcRewriter(this, rdr, binder, host);
