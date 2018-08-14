@@ -205,7 +205,7 @@ namespace Reko.Arch.PowerPC
             var addrInstr = e.Current.Address;
             var reg = ((RegisterOperand)e.Current.op1).Register;
             var uAddr = ((ImmediateOperand)e.Current.op3).Value.ToUInt32() << 16;
-
+             
             if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
                 return null;
             if (!(e.Current.op2 is MemoryOperand mem))
@@ -241,7 +241,8 @@ namespace Reko.Arch.PowerPC
         {
             if (this.primaryDecoders == null)
             {
-                var factory = new DecoderFactory();
+                this.Options.TryGetValue("Model", out var model);
+                var factory = new DecoderFactory((string)model);
                 this.primaryDecoders = factory.CreateDecoders();
             }
             return this.primaryDecoders;

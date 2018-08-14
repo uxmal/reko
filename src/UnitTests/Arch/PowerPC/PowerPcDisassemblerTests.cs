@@ -1054,7 +1054,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7FF94AA6, "mfspr\t00000139,r31");
         }
 
-
         // Unknown PowerPC VX instruction 10050044 04-044 (68)
         [Test]
         [Ignore("Don't know how to decode this yet")]
@@ -1062,7 +1061,5 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x10050044, "@@@");
         }
-
-
     }
 }

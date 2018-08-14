@@ -28,11 +28,13 @@ namespace Reko.Arch.PowerPC
 {
     public class DecoderFactory
     {
-        private Decoder invalid;
+        private readonly Decoder invalid;
+        private readonly string model;
 
-        public DecoderFactory()
+        public DecoderFactory(string model)
         {
             this.invalid = new InvalidDecoder();
+            this.model = model ?? ""; 
         }
 
         public Decoder[] CreateDecoders()
