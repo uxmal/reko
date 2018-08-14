@@ -12,7 +12,7 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcDisassembler
     {
-        private abstract class Decoder
+        public abstract class Decoder
         {
             public abstract PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr);
         }

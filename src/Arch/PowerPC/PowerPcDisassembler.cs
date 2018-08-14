@@ -36,12 +36,14 @@ namespace Reko.Arch.PowerPC
         private PrimitiveType defaultWordWidth;
         private PowerPcInstruction instrCur;
         private Address addr;
+        private Decoder[] primaryDecoders;
 
-        public PowerPcDisassembler(PowerPcArchitecture arch, EndianImageReader rdr, PrimitiveType defaultWordWidth)
+        public PowerPcDisassembler(PowerPcArchitecture arch, Decoder [] primaryDecoders, EndianImageReader rdr, PrimitiveType defaultWordWidth)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.defaultWordWidth = defaultWordWidth;
+            this.primaryDecoders = primaryDecoders;
         }
 
         public override PowerPcInstruction DisassembleInstruction()
@@ -52,7 +54,7 @@ namespace Reko.Arch.PowerPC
             uint wInstr = rdr.ReadUInt32();
             try
             {
-                instrCur = oprecs[wInstr >> 26].Decode(this, wInstr);
+                instrCur = primaryDecoders[wInstr >> 26].Decode(this, wInstr);
             }
             catch
             {
@@ -361,7 +363,7 @@ namespace Reko.Arch.PowerPC
 
 
 
-        static Decoder[] oprecs;
+        public static Decoder[] oprecs;
         static Decoder invalid;
 
         static PowerPcDisassembler()

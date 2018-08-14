@@ -153,12 +153,12 @@ namespace Reko.Arch.PowerPC
 
         public PowerPcDisassembler CreateDisassemblerImpl(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, rdr, WordWidth);
+            return new PowerPcDisassembler(this, PowerPcDisassembler.oprecs, rdr, WordWidth);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, rdr, WordWidth);
+            return new PowerPcDisassembler(this, PowerPcDisassembler.oprecs, rdr, WordWidth);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

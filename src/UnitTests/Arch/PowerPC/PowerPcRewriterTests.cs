@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            ppcInstrs = new PowerPcDisassembler(arch, image.CreateBeReader(LoadAddress), arch.WordWidth);
+            ppcInstrs = (IEnumerable<PowerPcInstruction>) arch.CreateDisassembler(image.CreateBeReader(LoadAddress));
             return image;
         }
 
