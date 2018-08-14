@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
@@ -46,6 +45,7 @@ namespace Reko.Arch.PowerPC
         private Dictionary<int, RegisterStorage> spregs;
         private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
         private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
+        private PowerPcDisassembler.Decoder[] primaryDecoders;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -153,12 +153,12 @@ namespace Reko.Arch.PowerPC
 
         public PowerPcDisassembler CreateDisassemblerImpl(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, PowerPcDisassembler.oprecs, rdr, WordWidth);
+            return new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, PowerPcDisassembler.oprecs, rdr, WordWidth);
+            return new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -235,6 +235,16 @@ namespace Reko.Arch.PowerPC
         public override ProcessorState CreateProcessorState()
         {
             return new PowerPcState(this);
+        }
+
+        private PowerPcDisassembler.Decoder[] EnsureDecoders()
+        {
+            if (this.primaryDecoders == null)
+            {
+                var factory = new DecoderFactory();
+                this.primaryDecoders = factory.CreateDecoders();
+            }
+            return this.primaryDecoders;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -333,8 +343,10 @@ namespace Reko.Arch.PowerPC
             foreach (var option in options)
             {
                 this.Options[option.Key] = option.Value;
-                OnOptionChanged(option.Key);
             }
+            // Clearing primarydecoders will force the creation of a new decoder tree next time
+            // a disassembler is created.
+            this.primaryDecoders = null;
         }
 
         public override abstract Address MakeAddressFromConstant(Constant c);
@@ -342,14 +354,6 @@ namespace Reko.Arch.PowerPC
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
-        }
-
-        private void OnOptionChanged(string optionName)
-        {
-            if (optionName == "Model")
-            {
-
-            }
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

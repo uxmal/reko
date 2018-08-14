@@ -17,7 +17,7 @@ namespace Reko.Arch.PowerPC
             public abstract PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr);
         }
 
-        private class InvalidOpRec : Decoder
+        public class InvalidOpRec : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -25,7 +25,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class NyiDecoder : Decoder
+        public class NyiDecoder : Decoder
         {
             private string message;
 
@@ -53,7 +53,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class MaskDecoder : Decoder
+        public class MaskDecoder : Decoder
         {
             private readonly int shift;
             private readonly uint mask;
@@ -75,7 +75,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class FnDecoder : Decoder
+        public class FnDecoder : Decoder
         {
             private Func<PowerPcDisassembler, uint, PowerPcInstruction> decoder;
 
@@ -90,7 +90,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class DOpRec : Decoder
+        public class DOpRec : Decoder
         {
             public readonly Opcode opcode;
             public readonly string opFmt;
@@ -107,7 +107,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class DSOpRec : Decoder
+        public class DSOpRec : Decoder
         {
             public readonly Opcode opcode0;
             public readonly Opcode opcode1;
@@ -128,7 +128,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class MDOpRec : Decoder
+        public class MDOpRec : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -163,7 +163,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class AOpRec : Decoder
+        public class AOpRec : Decoder
         {
             private Dictionary<uint, DOpRec> xOpRecs;
 
@@ -178,7 +178,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class XOpRec : Decoder
+        public class XOpRec : Decoder
         {
             private Dictionary<uint, Decoder> xOpRecs;
 
@@ -202,7 +202,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class FpuOpRec : Decoder
+        public class FpuOpRec : Decoder
         {
             private Dictionary<uint, Decoder> fpuOpRecs;
             private int shift;
@@ -227,7 +227,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class XlOpRecAux : DOpRec
+        public class XlOpRecAux : DOpRec
         {
             private Opcode opLink;
 
@@ -243,7 +243,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class FpuOpRecAux : Decoder
+        public class FpuOpRecAux : Decoder
         {
             private Opcode opcode;
             private string opFmt;
@@ -260,7 +260,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class IOpRec : Decoder
+        public class IOpRec : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -276,7 +276,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class BOpRec : Decoder
+        public class BOpRec : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -391,7 +391,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class BclrOpRec : Decoder
+        public class BclrOpRec : Decoder
         {
             public BclrOpRec()
             {
@@ -432,7 +432,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class XfxOpRec : DOpRec
+        public class XfxOpRec : DOpRec
         {
             public XfxOpRec(Opcode opcode, string fmt) : base(opcode, fmt)
             {
@@ -451,7 +451,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class SprOpRec : Decoder
+        public class SprOpRec : Decoder
         {
             private bool to;
 
@@ -484,7 +484,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class CmpOpRec : DOpRec
+        public class CmpOpRec : DOpRec
         {
             public CmpOpRec(Opcode op, string format) : base(op, format)
             { }
@@ -505,7 +505,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class VXOpRec : Decoder
+        public class VXOpRec : Decoder
         {
             private Dictionary<uint, Decoder> vxOpRecs;
             private Dictionary<uint, Decoder> vaOpRecs;
@@ -535,7 +535,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class XSOpRec : DOpRec
+        public class XSOpRec : DOpRec
         {
             public XSOpRec(Opcode opcode, string format) : base(opcode, format) { }
 
@@ -551,7 +551,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class XX3OpRec : Decoder
+        public class XX3OpRec : Decoder
         {
             private Dictionary<uint, Decoder> decoders;
 
@@ -575,7 +575,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        private class VMXDecoder : Decoder
+        public class VMXDecoder : Decoder
         {
             private uint mask;
             public Dictionary<uint, Decoder> decoders;
