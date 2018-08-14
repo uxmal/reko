@@ -28,11 +28,13 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Arch.PowerPC
 {
+    [Designer("Reko.Arch.PowerPC.Design.PowerPCArchitectureDesigner,Reko.Arch.PowerPC.Design")]
     public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
         public const int CcFieldMin = 0x40;
@@ -348,6 +350,11 @@ namespace Reko.Arch.PowerPC
             // Clearing primarydecoders will force the creation of a new decoder tree next time
             // a disassembler is created.
             this.primaryDecoders = null;
+        }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            return Options;
         }
 
         public override abstract Address MakeAddressFromConstant(Constant c);

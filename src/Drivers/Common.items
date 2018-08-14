@@ -25,6 +25,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(Configuration)\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(Configuration)\Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(Configuration)\Reko.Arch.PowerPC.*" />
+    <Architectures Include="$(SolutionDir)Arch\PowerPC.Design\bin\$(Configuration)\Reko.Arch.PowerPC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\bin\$(Configuration)\Reko.Arch.RiscV.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(Configuration)\Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(Configuration)\Reko.Arch.SuperH.*" />

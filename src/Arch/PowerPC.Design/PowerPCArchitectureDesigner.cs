@@ -18,26 +18,33 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui;
+using Reko.Gui.Design;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core.Configuration
+namespace Reko.Arch.PowerPC.Design
 {
-    public class PropertyOption
+    public class PowerPCArchitectureDesigner : ArchitectureDesigner
     {
-        public string Name { get; set; }
-        public string Text { get; set; }
-        public string Description { get; set; }
-        public bool Required { get; set; }
-        public string TypeName { get; set; }
-        public ListOption_v1[] Choices { get; set; }
-
-        public override string ToString()
+        public override void DoDefaultAction()
         {
-            return Text;
+            var shellUiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var windowFrame = shellUiSvc.FindDocumentWindow(GetType().FullName, Component);
+            if (windowFrame == null)
+            {
+                var arch = (PowerPcArchitecture)Component;
+                windowFrame = shellUiSvc.CreateDocumentWindow(
+                    GetType().FullName,
+                    Component,
+                    arch.Description,
+                    new PowerPCSettingsInteractor(arch));
+            }
+            windowFrame.Show();
         }
     }
 }

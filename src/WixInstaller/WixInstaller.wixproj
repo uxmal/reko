@@ -113,6 +113,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\arch\PowerPC.Design\PowerPC.Design.csproj">
+      <Name>PowerPC.Design</Name>
+      <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Name>PowerPC</Name>
       <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>

@@ -208,6 +208,10 @@
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\arch\PowerPC.Design\PowerPC.Design.csproj">
+      <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
+      <Name>PowerPC.Design</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\SuperH\SuperH.csproj">
       <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
       <Name>SuperH</Name>

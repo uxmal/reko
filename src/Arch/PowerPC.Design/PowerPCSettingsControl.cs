@@ -18,26 +18,20 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Gui.Controls;
+using Reko.UserInterfaces.WindowsForms;
+using System.Windows.Forms;
 
-namespace Reko.Core.Configuration
+namespace Reko.Arch.PowerPC.Design
 {
-    public class PropertyOption
+    public partial class PowerPCSettingsControl : UserControl
     {
-        public string Name { get; set; }
-        public string Text { get; set; }
-        public string Description { get; set; }
-        public bool Required { get; set; }
-        public string TypeName { get; set; }
-        public ListOption_v1[] Choices { get; set; }
-
-        public override string ToString()
+        public PowerPCSettingsControl()
         {
-            return Text;
+            InitializeComponent();
+            this.ProcessorModel = new ComboBoxWrapper(ddlProcessorModel);
         }
+
+        public IComboBox ProcessorModel { get; }
     }
 }
