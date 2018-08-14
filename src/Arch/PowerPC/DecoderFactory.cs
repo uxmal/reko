@@ -32,13 +32,11 @@ namespace Reko.Arch.PowerPC
 
         public DecoderFactory()
         {
-            this.invalid = new InvalidOpRec();
+            this.invalid = new InvalidDecoder();
         }
 
         public Decoder[] CreateDecoders()
         {
-            invalid = new InvalidOpRec();
-
             var decoders = new Decoder[] {
                 // 00
                 invalid,
