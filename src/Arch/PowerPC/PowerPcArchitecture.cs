@@ -119,6 +119,7 @@ namespace Reko.Arch.PowerPC
             //$REVIEW: using R1 as the stack register is a _convention_. It 
             // should be platform-specific at the very least.
             StackRegister = regs[1];
+            Options = new Dictionary<string, object>();
         }
 
         public ReadOnlyCollection<RegisterStorage> Registers
@@ -145,6 +146,8 @@ namespace Reko.Arch.PowerPC
         }
 
         public PrimitiveType SignedWord { get; }
+
+        public Dictionary<string,object> Options { get; }
 
         #region IProcessorArchitecture Members
 
@@ -323,11 +326,30 @@ namespace Reko.Arch.PowerPC
             return new PowerPcRewriter(this, rdr, binder, host);
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options == null)
+                return;
+            foreach (var option in options)
+            {
+                this.Options[option.Key] = option.Value;
+                OnOptionChanged(option.Key);
+            }
+        }
+
         public override abstract Address MakeAddressFromConstant(Constant c);
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        private void OnOptionChanged(string optionName)
+        {
+            if (optionName == "Model")
+            {
+
+            }
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

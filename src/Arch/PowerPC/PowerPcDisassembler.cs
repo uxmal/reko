@@ -374,7 +374,7 @@ namespace Reko.Arch.PowerPC
                 invalid,
                 new DOpRec(Opcode.tdi, "I1,r2,S"),
                 new DOpRec(Opcode.twi, "I1,r2,S"),
-                Ext4Decoder_PPC750CL(),
+                //Ext4Decoder_PPC750CL(),
                 Ext4Decoder_VMX128(),
                  new VMXDecoder(0x3D, new Dictionary<uint, Decoder>
                 {
@@ -1247,22 +1247,14 @@ Conventions:
                  },
                  new Dictionary<uint, Decoder>
                  {
-                        // These instructions are for the PowerISA and conflict with the 
-                        // instructions from PowerPC 750. The PowerPC ISA is a nightmare of 
-                        // different model numbers and conflicting extensions, some poorly 
-                        // documented. For now, PowerPC 750 wins....
-                        //{ 0x028, new DOpRec(Opcode.vmsumshm, "v1,v2,v3,v4") },
-                        //{ 0x029, new DOpRec(Opcode.vmsumshs, "v1,v2,v3,v4") },
-                        //{ 0x02A, new DOpRec(Opcode.vsel, "v1,v2,v3,v4") },
-                        //{ 0x02B, new DOpRec(Opcode.vperm, "v1,v2,v3,v4") },
-                        //{ 0x02C, new DOpRec(Opcode.vsldoi, "v1,v2,v3,u6:5") },
-                        //{ 0x02E, new DOpRec(Opcode.vmaddfp, "v1,v2,v4,v3") },
-                        //{ 0x02F, new DOpRec(Opcode.vnmsubfp, "v1,v2,v4,v3") }
+                        { 0x028, new DOpRec(Opcode.vmsumshm, "v1,v2,v3,v4") },
+                        { 0x029, new DOpRec(Opcode.vmsumshs, "v1,v2,v3,v4") },
+                        { 0x02A, new DOpRec(Opcode.vsel, "v1,v2,v3,v4") },
+                        { 0x02B, new DOpRec(Opcode.vperm, "v1,v2,v3,v4") },
+                        { 0x02C, new DOpRec(Opcode.vsldoi, "v1,v2,v3,u6:5") },
+                        { 0x02E, new DOpRec(Opcode.vmaddfp, "v1,v2,v4,v3") },
+                        { 0x02F, new DOpRec(Opcode.vnmsubfp, "v1,v2,v4,v3") }
 
-                        { 0x028, new DOpRec(Opcode.ps_sub, "f1,f2,f3") },
-                        { 0x029, new DOpRec(Opcode.ps_sub, ".f1,f2,f3") },
-                        { 0x050, new DOpRec(Opcode.ps_neg, "f1,f3") },
-                        { 0x051, new DOpRec(Opcode.ps_neg, ".f1,f3") }
                  });
             return decoder;
         }
