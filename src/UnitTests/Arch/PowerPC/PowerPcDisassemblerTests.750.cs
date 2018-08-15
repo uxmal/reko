@@ -40,7 +40,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x10111819, "ps_muls0.\tf0,f17,f0");
         }
 
-
         [Test]
         public void PPC750Dis_psq_lx()
         {
@@ -52,7 +51,14 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPC750Dis_psq_stx()
         {
             Given_ProcessorModel_750();
-            AssertCode(0x13E0180E, "psq_stx\tf31,r0,r3,00,00");
+            AssertCode(0x13E0180E, "psq_stx\tf31,r0,r3,01,07");
+        }
+
+        [Test]
+        public void PPC750Dis_psq_stux()
+        {
+            Given_ProcessorModel_750();
+            AssertCode(0x1023674E, "psq_stux\tf1,r3,r12,01,00");
         }
 
         [Test]
@@ -124,37 +130,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_ProcessorModel_750();
             AssertCode(0x10200090, "ps_mr\tf1,f0");
-        }
-
-        // Unknown PowerPC VX instruction 102004A0 04-4A0(1184)
-        [Test]
-        public void PPC750Dis_102004A0()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x102004A0, "@@@");
-        }
-
-        // Unknown PowerPC VX instruction 102104A0 04-4A0(1184)
-        [Test]
-        public void PPC750Dis_102104A0()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x102104A0, "@@@");
-        }
-
-        // Unknown PowerPC VX instruction 10210CA0 04-4A0(1184)
-        [Test]
-        public void PPC750Dis_10210CA0()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x10210CA0, "@@@");
-        }
-
-           [Test]
-        public void PPC750Dis_psq_stux()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x1023674E, "psq_stux\tf1,r3,r12,01,06");
         }
 
         // Unknown PowerPC VX instruction 10248036 04-036 (54)
@@ -246,17 +221,9 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         // Unknown PowerPC VX instruction 10050044 04-044 (68)
         [Test]
-        public void PPCDis_10050044()
+        public void PPC750Dis_10050044()
         {
             AssertCode(0x10050044, "@@@");
-        }
-
-        // Unknown PowerPC VX instruction 10400C60 04-460 (1120)
-        [Test]
-        public void PPC750Dis_10400C60()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x10400C60, "@@@");
         }
 
         // Unknown PowerPC VX instruction 10680008 04-008 (8)
@@ -331,13 +298,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x10C314A0, "@@@");
         }
 
-        [Test]
-        public void PPC750Dis_10E424A0()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x10E424A0, "@@@");
-        }
-
         // Unknown PowerPC VX instruction 10EB6FD2 04-7D2 (2002)
         [Test]
         public void PPC750Dis_10EB6FD2()
@@ -352,13 +312,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_ProcessorModel_750();
             AssertCode(0x10FB4492, "@@@");
-        }
-
-        [Test]
-        public void PPC750Dis_110844A0()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x110844A0, "@@@");
         }
 
         // Unknown PowerPC VX instruction 111705E3 04-5E3 (1507)

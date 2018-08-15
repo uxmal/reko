@@ -766,7 +766,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1020014a, "vrsqrtefp\tv1,v0");
             AssertCode(0x116b0b2a, "vsel\tv11,v11,v1,v12");
             AssertCode(0x1000012c, "vsldoi\tv0,v0,v0,04");
-            AssertCode(0x101f038c, "vspltisw\tv0,-01");
+            AssertCode(0x101f038c, "vspltisw\tv0,-00000001");
             AssertCode(0x1000028c, "vspltw\tv0,v0,00");
             AssertCode(0x114948ab, "vperm\tv10,v9,v9,v2");
             AssertCode(0x112c484a, "vsubfp\tv9,v12,v9");
@@ -980,7 +980,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x18280186, "vcmpbfp128\tv33,v8,v64");   // 06 - 018(24)
             AssertCode(0x195CB9F1, "vsrw128\tv10,v60,v55");     // 06 - 01F(31)
             //AssertCode(0x1BA5AA15, "@@@");    // 06 - 021(33)  - permutation odd encoding
-            AssertCode(0x1AC0FA35, "vcfpsxws128\tv54,v63,+00"); // 06 - 023(35)
+            AssertCode(0x1AC0FA35, "vcfpsxws128\tv54,v63,+00000000"); // 06 - 023(35)
             //AssertCode(0x1918F251, "@@@");    // 06 - 025(37)
             //AssertCode(0x180EB291, "@@@");    // 06 - 029(41)
             AssertCode(0x1BDEE2A5, "vmaxfp128\tv62,v62,v60");   // 06 - 02A(42)
@@ -1009,7 +1009,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x19C49F15, "vrlimi128\tv46,v51,04,02"); // 06 - 071(113)
             AssertCode(0x1923CF31, "vspltw128\tv9,v57,03");     // 06 - 073(115)
             AssertCode(0x18019F51, "vrlimi128\tv0,v51,01,02");  // 06 - 075(117)
-            AssertCode(0x1B600774, "vspltisw128\tv59,v0,+20");  // 06 - 077(119)
+            AssertCode(0x1B600774, "vspltisw128\tv59,v0,+00000020");  // 06 - 077(119)
             AssertCode(0x19ACFF91, "vrlimi128\tv13,v63,0C,03"); // 06 - 079(121)
             AssertCode(0x18099FD1, "vrlimi128\tv0,v51,09,02");  // 06 - 07D(125)
             AssertCode(0x1B24DFF5, "vupkd3d128\tv57,v59,04");   // 06 - 07F(127)

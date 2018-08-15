@@ -407,5 +407,6 @@ namespace Reko.Arch.PowerPC
         ps_nmadd,
         ps_sel,
         ps_cmpo0,
+        psq_l,
     }
 }
