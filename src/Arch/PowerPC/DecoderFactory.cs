@@ -998,8 +998,7 @@ Conventions:
                     (1, new DOpRec(Opcode.ps_neg, ".f1,f3")),
                     (2, new DOpRec(Opcode.ps_mr, ".f1,f3")),
                     (4, new DOpRec(Opcode.ps_nabs, ".f1,f3")),
-                    (8, new DOpRec(Opcode.ps_abs, ".f1,f3"))
-                    ),
+                    (8, new DOpRec(Opcode.ps_abs, ".f1,f3"))),
                 Nyi("0b01001"),
                 Instr(Opcode.ps_sum0, ".f1,f2,f3,f4"),
                 Instr(Opcode.ps_sum1, ".f1,f2,f3,f4"),
