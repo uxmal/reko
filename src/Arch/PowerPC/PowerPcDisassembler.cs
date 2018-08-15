@@ -284,7 +284,7 @@ namespace Reko.Arch.PowerPC
 
         private RegisterOperand CRegFromBits(uint r)
         {
-            return new RegisterOperand(arch.CrRegisters[(int)r & 0x1F]);
+            return new RegisterOperand(arch.CrRegisters[(int)r & 0x7]);
         }
 
         private RegisterOperand RegFromBits(uint r)

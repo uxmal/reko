@@ -393,5 +393,15 @@ namespace Reko.Arch.PowerPC
         psq_lux,
         psq_stx,
         psq_stux,
+        ps_rsqrte,
+        ps_mr,
+        ps_nabs,
+        ps_abs,
+        ps_res,
+        ps_merge11,
+        ps_msub,
+        ps_nmsub,
+        ps_nmadd,
+        ps_cmpo0,
     }
 }

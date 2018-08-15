@@ -45,8 +45,7 @@ namespace Reko.Arch.PowerPC
                 invalid,
                 new DOpRec(Opcode.tdi, "I1,r2,S"),
                 new DOpRec(Opcode.twi, "I1,r2,S"),
-                //Ext4Decoder_PPC750CL(),
-                Ext4Decoder_VMX128(),
+                Ext4Decoder(),
                  new VMXDecoder(0x3D, new Dictionary<uint, Decoder>
                 {
                     { 0x00, new FnDecoder(VMXDecoder.DecodeVperm128) },         // |0 0 0 1 0 1|  VD128  |  VA128  |  VB128  |A|0| VC  |a|0|VDh|VBh|    vperm128      vr(VD128), vr(VA128), vr(VB128), vr(VC)
@@ -470,6 +469,51 @@ namespace Reko.Arch.PowerPC
 
             };
             return decoders;
+        }
+
+
+        private Decoder Nyi(string message)
+        {
+            return new NyiDecoder(message);
+        }
+
+        private Decoder Instr(Opcode opcode, string format)
+        {
+            return new DOpRec(opcode, format);
+        }
+
+        private Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
+        {
+            return new MaskDecoder(ppcBitPosition, bits, decoders);
+        }
+
+        private Decoder Sparse(int ppcBitPosition, int bits, params (uint, Decoder)[] sparseDecoders)
+        {
+            var decoders = new Decoder[1 << bits];
+            foreach (var (code, decoder) in sparseDecoders)
+            {
+                Debug.Assert(0 <= code && code < decoders.Length);
+                Debug.Assert(decoders[code] == null);
+                decoders[code] = decoder;
+            }
+            for (int i = 0; i < decoders.Length; ++i)
+            {
+                if (decoders[i] == null)
+                    decoders[i] = invalid;
+            }
+            return new MaskDecoder(ppcBitPosition, bits, decoders);
+        }
+
+        private Decoder Ext4Decoder()
+        {
+            if (string.Compare(this.model , "750") == 0)
+            {
+                return Ext4Decoder_PPC750CL();
+            }
+            else
+            {
+                return Ext4Decoder_VMX128();
+            }
         }
 
         private Decoder Ext4Decoder_VMX128()
@@ -931,42 +975,12 @@ Conventions:
             return decoder;
         }
 
-        private Decoder Nyi(string message)
-        {
-            return new NyiDecoder(message);
-        }
-
-        private Decoder Instr(Opcode opcode, string format)
-        {
-            return new DOpRec(opcode, format);
-        }
-
-        private Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
-        {
-            return new MaskDecoder(ppcBitPosition, bits, decoders);
-        }
-
-        private Decoder Sparse(int ppcBitPosition, int bits, params (uint, Decoder)[] sparseDecoders)
-        {
-            var decoders = new Decoder[1 << bits];
-            foreach (var (code, decoder) in sparseDecoders)
-            {
-                Debug.Assert(0 <= code && code < decoders.Length);
-                Debug.Assert(decoders[code] == null);
-                decoders[code] = decoder;
-            }
-            for (int i = 0; i < decoders.Length; ++i)
-            {
-                if (decoders[i] == null)
-                    decoders[i] = invalid;
-            }
-            return new MaskDecoder(ppcBitPosition, bits, decoders);
-        }
-
         private Decoder Ext4Decoder_PPC750CL()
         {
             var decoder = Mask(26, 5,
-                Nyi("0b00000"),
+                Sparse(21, 5,
+                    (1, Instr(Opcode.ps_cmpo0, "c1,f2,f3"))
+                    ),
                 Nyi("0b00001"),
                 Nyi("0b00010"),
                 Nyi("0b00011"),
@@ -981,7 +995,10 @@ Conventions:
                     Instr(Opcode.psq_stux, "f1,r2,r3,i21:1,i22:3")),
 
                 Sparse(21, 5,
-                    (1, new DOpRec(Opcode.ps_neg, ".f1,f3"))
+                    (1, new DOpRec(Opcode.ps_neg, ".f1,f3")),
+                    (2, new DOpRec(Opcode.ps_mr, ".f1,f3")),
+                    (4, new DOpRec(Opcode.ps_nabs, ".f1,f3")),
+                    (8, new DOpRec(Opcode.ps_abs, ".f1,f3"))
                     ),
                 Nyi("0b01001"),
                 Instr(Opcode.ps_sum0, ".f1,f2,f3,f4"),
@@ -992,7 +1009,9 @@ Conventions:
                 Instr(Opcode.ps_madds0, ".f1,f2,f3,f4"),
                 Instr(Opcode.ps_madds1, ".f1,f2,f3,f4"),
 
-                Nyi("0b10000"),
+                Sparse(21, 5,
+                    (0b10011, Instr(Opcode.ps_merge11, ".f1,f2,f3"))
+                    ),
                 Nyi("0b10001"),
                 Instr(Opcode.ps_div, ".f1,f2,f3"),
                 Nyi("0b10011"),
@@ -1002,15 +1021,15 @@ Conventions:
                 Nyi("0b10110"),
                 Nyi("0b10111"),
 
-                Nyi("0b11000"),
+                Instr(Opcode.ps_res, ".f1,f3"),
                 Instr(Opcode.ps_mul, ".f1,f2,f4"),
-                Nyi("0b11010"),
+                Instr(Opcode.ps_rsqrte, ".f1,f3"),
                 Nyi("0b11011"),
 
-                Nyi("0b11100"),
+                Instr(Opcode.ps_msub, ".f1,f2,f3,f4"),
                 Instr(Opcode.ps_madd, ".f1,f2,f3,f4"),
-                Nyi("0b11110"),
-                Nyi("0b11111"));
+                Instr(Opcode.ps_nmsub, ".f1,f2,f3,f4"),
+                Instr(Opcode.ps_nmadd, ".f1,f2,f3,f4"));
             return decoder;
         }
     }
