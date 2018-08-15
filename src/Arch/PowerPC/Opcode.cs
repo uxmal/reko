@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -398,10 +398,14 @@ namespace Reko.Arch.PowerPC
         ps_nabs,
         ps_abs,
         ps_res,
+        ps_merge00,
+        ps_merge01,
+        ps_merge10,
         ps_merge11,
         ps_msub,
         ps_nmsub,
         ps_nmadd,
+        ps_sel,
         ps_cmpo0,
     }
 }
