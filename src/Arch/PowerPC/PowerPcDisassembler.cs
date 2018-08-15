@@ -176,10 +176,6 @@ namespace Reko.Arch.PowerPC
                     default: throw new NotImplementedException(string.Format("Bitfield {0}.", opFmt[i]));
                     }
                     break;
-                case 'i': // General purpose read bitfield
-                    ++i;
-                    op = ReadBitfield(wInstr, opFmt, ref i);
-                    break;
                 case 'M':   // Condition register fields.
                     op = ImmediateOperand.Byte((byte)((wInstr >> 12) & 0xFF)); break;
                 case 'S':
@@ -226,17 +222,27 @@ namespace Reko.Arch.PowerPC
         struct BitField
         {
             private readonly int shift;
+            private readonly int width;
             private readonly uint mask;
 
             public BitField(int ppcBitOffset, int width)
             {
                 this.shift = 32 - (ppcBitOffset + width);
+                this.width = width;
                 this.mask = (1u << width) - 1u;
             }
 
             public uint ReadValue(uint wInstr)
             {
                 return (wInstr >> shift) & mask;
+            }
+
+            public int ReadSignedValue(uint wInstr)
+            {
+                int sh = (32 - (width + shift));
+                int sInstr = (int)wInstr << sh;
+                sInstr >>= sh;
+                return sInstr;
             }
         }
 
@@ -248,6 +254,16 @@ namespace Reko.Arch.PowerPC
             var bf = new BitField(bitOffset, width);
 
             return ImmediateOperand.Byte((byte)bf.ReadValue(wInstr));
+        }
+
+        private MachineOperand ReadSignedBitfield(uint wInstr, string opFmt, ref int i)
+        {
+            int bitOffset = ReadDecimal(opFmt, ref i);
+            Expect(':', opFmt, ref i);
+            int width = ReadDecimal(opFmt, ref i);
+            var bf = new BitField(bitOffset, width);
+
+            return ImmediateOperand.Int32(bf.ReadSignedValue(wInstr));
         }
 
         private void Expect(char expected, string opFmt, ref int i)
@@ -342,8 +358,8 @@ namespace Reko.Arch.PowerPC
             uint x = (wInstr >> offset) & mask;
 
             uint m = 1u << (size - 1);
-            sbyte r = (sbyte)((x ^ m) - m);
-            return new ImmediateOperand(Constant.SByte(r));
+            int r = (int)((x ^ m) - m);
+            return ImmediateOperand.Int32(r);
         }
 
         private PowerPcInstruction EmitUnknown(uint instr)

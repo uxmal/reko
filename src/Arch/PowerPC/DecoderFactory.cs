@@ -234,13 +234,7 @@ namespace Reko.Arch.PowerPC
                     { 31, new FpuOpRecAux(Opcode.fnmadds, ".f1,f2,f3,f4") },
                 }),
 
-                new XX3OpRec(new Dictionary<uint, Decoder>                // 3C
-                {
-                    { 0x00, new DOpRec(Opcode.xsaddsp, "v1,v2,v3") },
-                    { 0x01, new DOpRec(Opcode.xsmaddasp, "v1,v2,v3") },
-                    //{ 0x02, new DOpRec(Opcode.xxsldwi, "v1,v2,v3") },       //$TODO need extra work.
-                    { 0x09, new DOpRec(Opcode.xsmaddmsp, "v1,v2,v3") },
-                }),
+                Ext3CDecoder(),
                 new DOpRec(Opcode.stfdp, "p1,E2:2"),                    // 3D
                 new DSOpRec(Opcode.std, Opcode.stdu, "r1,E2"),          // 3E
                 new FpuOpRec(1, 0x1F, new Dictionary<uint, Decoder>()     // 3F
@@ -828,11 +822,11 @@ Conventions:
                 Nyi("0b00100"),
                 Nyi("0b00101"),
                 Mask(25, 1,
-                    Instr(Opcode.psq_lx, "f1,r2,r3,i21:1,i22:3"),
-                    Instr(Opcode.psq_lux, "f1,r2,r3,i21:1,i22:3")),
+                    Instr(Opcode.psq_lx, "f1,r2,r3,u21:1,u22:3"),
+                    Instr(Opcode.psq_lux, "f1,r2,r3,u21:1,u22:3")),
                 Mask(25, 1,
-                    Instr(Opcode.psq_stx, "f1,r2,r3,i21:1,i22:3"),
-                    Instr(Opcode.psq_stux, "f1,r2,r3,i21:1,i22:3")),
+                    Instr(Opcode.psq_stx, "f1,r2,r3,u21:1,u22:3"),
+                    Instr(Opcode.psq_stux, "f1,r2,r3,u21:1,u22:3")),
 
                 Sparse(21, 5,
                     (1, new DOpRec(Opcode.ps_neg, ".f1,f3")),
@@ -1041,6 +1035,24 @@ Conventions:
 
                 { 0x7F, new DOpRec(Opcode.vupkd3d128, "Wd,Wb,u16:5") },     // |0 0 0 1 1 0|  VD128  |  UIMM   |  VB128  |1 1 1 1 1 1 1|VDh|VBh|    vupkd3d128    vr(VD128), vr(VB128), UIMM
             });
+        }
+
+        private Decoder Ext3CDecoder()
+        {
+            if (model == "750")
+            {
+                return Instr(Opcode.psq_st, "f1,r2,s0:12,u21:1,u22:3");
+            }
+            else
+            {
+                return new XX3OpRec(new Dictionary<uint, Decoder>                // 3C
+                {
+                    { 0x00, new DOpRec(Opcode.xsaddsp, "v1,v2,v3") },
+                    { 0x01, new DOpRec(Opcode.xsmaddasp, "v1,v2,v3") },
+                    //{ 0x02, new DOpRec(Opcode.xxsldwi, "v1,v2,v3") },       //$TODO need extra work.
+                    { 0x09, new DOpRec(Opcode.xsmaddmsp, "v1,v2,v3") },
+                });
+            }
         }
     }
 }
