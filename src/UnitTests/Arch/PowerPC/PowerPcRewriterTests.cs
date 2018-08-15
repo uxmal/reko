@@ -87,6 +87,14 @@ namespace Reko.UnitTests.Arch.PowerPC
             this.arch = new PowerPcBe64Architecture("ppc-be-64");
         }
 
+        private void Given_750()
+        {
+            this.arch = new PowerPcBe64Architecture("ppc-be-32");
+            this.arch.LoadUserOptions(new Dictionary<string, object>
+            {
+                { "Model", "750" }
+            });
+        }
 
 
         [Test]
@@ -2214,5 +2222,233 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v2 = __vsubfp(v61, v1)");
         }
+
+#if NYI
+
+        [Test]
+        public void PPCRw_psq_st()
+        {
+            Given_750();
+            AssertCode(0xF3E10038,   // psq_st	f31,r1,+00000038,01,07
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fcmpo()
+        {
+            Given_750();
+            AssertCode(0xFC160040,   // fcmpo	cr0,f22,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_bdzt()
+        {
+            Given_750();
+            AssertCode(0x41700000,   // bdzt	cr4+lt,$803CDB28
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_psq_lx()
+        {
+            Given_750();
+            AssertCode(0x1009000C,   // psq_lx	f0,r9,r0,00,00
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_psq_l()
+        {
+            Given_750();
+            AssertCode(0xE3E10028,   // psq_l	f31,r1,+00000028,01,07
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fnmadds()
+        {
+            Given_750();
+            AssertCode(0xEC0400FE,   // fnmadds	f0,f4,f0,f3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_add()
+        {
+            Given_750();
+            AssertCode(0x11AA80EA,   // ps_add	f13,f10,f16
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_psq_lux()
+        {
+            Given_750();
+            AssertCode(0x10245F4C,   // psq_lux	f1,r4,r11,01,00
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_sub()
+        {
+            Given_750();
+            AssertCode(0x10000028,   // ps_sub	f0,f0,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_rsqrte()
+        {
+            Given_750();
+            AssertCode(0x10228034,   // ps_rsqrte	f1,f16
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_psq_stx()
+        {
+            Given_750();
+            AssertCode(0x11C0180E,   // psq_stx	f14,r0,r3,00,07
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_frsqrte()
+        {
+            Given_750();
+            AssertCode(0xFC005834,   // frsqrte	f0,f11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_madds1()
+        {
+            Given_750();
+            AssertCode(0x1206029F,   // ps_madds1.	f16,f6,f0,f10
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_bdztl()
+        {
+            Given_750();
+            AssertCode(0x41747461,   // bdztl	cr5+lt,$80273FB0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_fnmadd()
+        {
+            Given_750();
+            AssertCode(0xFFFFFFFF,   // fnmadd.	f31,f31,f31,f31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_div()
+        {
+            Given_750();
+            AssertCode(0x102C0024,   // ps_div	f1,f12,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_neg()
+        {
+            Given_750();
+            AssertCode(0x108B6850,   // ps_neg	f4,f13
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_res()
+        {
+            Given_750();
+            AssertCode(0x10320030,   // ps_res	f1,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_madds0()
+        {
+            Given_750();
+            AssertCode(0x1031801D,   // ps_madds0.	f1,f17,f16,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_merge11()
+        {
+            Given_750();
+            AssertCode(0x11D39CE0,   // ps_merge11	f14,f19,f19
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_muls0()
+        {
+            Given_750();
+            AssertCode(0x12870718,   // ps_muls0	f20,f7,f28
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_bdzfl()
+        {
+            Given_750();
+            AssertCode(0x40490FDB,   // bdzfl	cr2+gt,$00000FD8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_bdnztl()
+        {
+            Given_750();
+            AssertCode(0x412F6C6F,   // bdnztl	cr3+so,$00006C6C
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_vcmpbfp128()
+        {
+            Given_750();
+            AssertCode(0x196F818F,   // vcmpbfp128	v107,v15,v112
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void PPCRw_ps_nmsub()
+        {
+            Given_750();
+            AssertCode(0x1021003C,   // ps_nmsub	f1,f1,f0,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+#endif
     }
 }
