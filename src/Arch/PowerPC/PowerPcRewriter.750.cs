@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -31,6 +32,28 @@ namespace Reko.Arch.PowerPC
     public partial class PowerPcRewriter
     {
         private static ArrayType fpPair = new ArrayType(PrimitiveType.Real32, 2);
+
+        private void Rewrite_psq_l(bool update) {
+            var baseReg = RewriteOperand(instr.op2);
+            Expression ea = m.IAdd(
+                baseReg,
+                RewriteOperand(instr.op3));
+            var tmp1 = binder.CreateTemporary(PrimitiveType.Word64);
+            var tmp2 = binder.CreateTemporary(fpPair);
+            m.Assign(tmp1, m.Mem64(ea));
+            m.Assign(tmp2, host.PseudoProcedure(
+                "__unpack_quantized",
+                fpPair,
+                tmp1,
+                RewriteOperand(instr.op4),
+                RewriteOperand(instr.op5)));
+            m.Assign(RewriteOperand(instr.op1), tmp2);
+            if (update)
+            {
+                m.Assign(baseReg, ea);
+            }
+        }
+
 
         private void RewritePairedInstruction_Src1(string intrinsic)
         {

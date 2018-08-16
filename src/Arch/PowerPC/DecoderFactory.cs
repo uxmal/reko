@@ -116,12 +116,12 @@ namespace Reko.Arch.PowerPC
                 new DOpRec(Opcode.stfdu, "f1,E2"),
 
                 Ext38Decoder(),
-                new DOpRec(Opcode.lfdp, "p1,E2:2"),             // 39
+                Ext39Decoder(),
                 new DSOpRec(Opcode.ld, Opcode.ldu, "r1,E2"),    // 3A
                 Ext3BDecoder(),
 
                 Ext3CDecoder(),
-                new DOpRec(Opcode.stfdp, "p1,E2:2"),                    // 3D
+                Ext3DDecoder(),
                 new DSOpRec(Opcode.std, Opcode.stdu, "r1,E2"),          // 3E
                 new FpuOpRec(1, 0x1F, new Dictionary<uint, Decoder>()     // 3F
                 {
@@ -1042,6 +1042,18 @@ Conventions:
             }
         }
 
+        private Decoder Ext39Decoder()
+        {
+            if (model == "750")
+            {
+                return Instr(Opcode.psq_lu, "f1,r2,s0:12,u21:1,u22:3");
+            }
+            else
+            {
+                return new DOpRec(Opcode.lfdp, "p1,E2:2");
+            }
+        }
+
         private Decoder Ext3BDecoder()
         {
             return new FpuOpRec(1, 0x1F, new Dictionary<uint, Decoder> // 3B
@@ -1074,6 +1086,19 @@ Conventions:
                     //{ 0x02, new DOpRec(Opcode.xxsldwi, "v1,v2,v3") },       //$TODO need extra work.
                     { 0x09, new DOpRec(Opcode.xsmaddmsp, "v1,v2,v3") },
                 });
+            }
+        }
+
+        private Decoder Ext3DDecoder()
+        {
+            if (model == "750")
+            {
+                return Instr(Opcode.psq_stu, "f1,r2,s0:12,u21:1,u22:3");
+            }
+            else
+            {
+                return new DOpRec(Opcode.stfdp, "p1,E2:2");
+
             }
         }
     }

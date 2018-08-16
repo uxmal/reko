@@ -2283,22 +2283,39 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_psq_lx()
-        {
-            Given_750();
-            AssertCode(0x1009000C,   // psq_lx	f0,r9,r0,00,00
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void PPCRw_psq_l()
         {
             Given_750();
             AssertCode(0xE3E10028,   // psq_l	f31,r1,+00000028,01,07
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = Mem0[r1 + 40:word64]",
+                "2|L--|v4 = __unpack_quantized(v3, 0x00000001, 0x00000007)",
+                "3|L--|f31 = v4");
         }
+
+        [Test]
+        public void PPCRw_psq_lx()
+        {
+            Given_750();
+            AssertCode(0x1009000C,   // psq_lx	f0,r9,r0,00,00
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = Mem0[r9 + r0:word64]",
+                "2|L--|v5 = __unpack_quantized(v4, 0x00000000, 0x00000000)",
+                "3|L--|f0 = v5");
+        }
+
+        [Test]
+        public void PPCRw_psq_lux()
+        {
+            Given_750();
+            AssertCode(0x10245F4C,   // psq_lux	f1,r4,r11,01,00
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v4 = Mem0[r4 + r11:word64]",
+                "2|L--|v5 = __unpack_quantized(v4, 0x00000001, 0x00000000)",
+                "3|L--|f1 = v5",
+                "4|L--|r4 = r4 + r11");
+        }
+
 
         [Test]
         public void PPCRw_fnmadds()
@@ -2357,14 +2374,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "4|L--|f1 = v7");
         }
 
-        [Test]
-        public void PPCRw_psq_lux()
-        {
-            Given_750();
-            AssertCode(0x10245F4C,   // psq_lux	f1,r4,r11,01,00
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+      
 
 
 
@@ -2461,9 +2471,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x12870718,   // ps_muls0	f20,f7,f28
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|vx = f7",
-                "2|L--|vx = f7",
-                "3|L--|vx = f7",
+                "1|L--|v5 = f7",
+                "2|L--|v6 = f28",
+                "3|L--|v7 = __ps_muls0(v5, v6)",
                 "4|L--|f20 = v7");
         }
 
