@@ -79,6 +79,7 @@
     <Compile Include="PowerPcInstructionComparer.cs" />
     <Compile Include="PowerPcPointerScanner.cs" />
     <Compile Include="PowerPcCallingConvention.cs" />
+    <Compile Include="PowerPcRewriter.750.cs" />
     <Compile Include="PowerPcRewriter.Alu.cs" />
     <Compile Include="PowerPcRewriter.Control.cs" />
     <Compile Include="PowerPcRewriter.cs" />
