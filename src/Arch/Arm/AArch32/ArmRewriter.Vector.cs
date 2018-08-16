@@ -134,11 +134,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (Src1() is ImmediateOperand)
             {
-                RewriteVectorBinOp("__vmvn_imm_{0}");
+                RewriteVectorUnaryOp("__vmvn_imm_{0}");
             }
             else
             {
-                RewriteVectorBinOp("__vmvn_{0}");
+                RewriteVectorUnaryOp("__vmvn_{0}");
             }
         }
 
@@ -217,7 +217,7 @@ namespace Reko.Arch.Arm.AArch32
             var src = this.Operand(Src1());
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var ppp = host.PseudoProcedure(fnname, dt, src);
-            m.Assign(dst, m.Fn(ppp));
+            m.Assign(dst, ppp);
         }
 
         private void RewriteVdup()
