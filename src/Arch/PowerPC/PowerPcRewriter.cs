@@ -102,8 +102,12 @@ namespace Reko.Arch.PowerPC
                 case Opcode.bdnzf: RewriteCtrBranch(false, false, m.Ne, false); break;
                 case Opcode.bdnzl: RewriteCtrBranch(true, false, m.Ne, false); break;
                 case Opcode.bdnzt: RewriteCtrBranch(false, false, m.Ne, true); break;
+                case Opcode.bdnztl: RewriteCtrBranch(true, false, m.Ne, true); break;
                 case Opcode.bdz: RewriteCtrBranch(false, false, m.Eq, false); break;
                 case Opcode.bdzf: RewriteCtrBranch(false, false, m.Eq, false); break;
+                case Opcode.bdzfl: RewriteCtrBranch(true, false, m.Eq, false); break;
+                case Opcode.bdzt: RewriteCtrBranch(false, false, m.Eq, true); break;
+                case Opcode.bdztl: RewriteCtrBranch(true, false, m.Eq, true); break;
                 case Opcode.bdzl: RewriteCtrBranch(true, false, m.Eq, false); break;
                 case Opcode.beq: RewriteBranch(false, false,ConditionCode.EQ); break;
                 case Opcode.beql: RewriteBranch(true, false, ConditionCode.EQ); break;
@@ -168,6 +172,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.fctid: RewriteFctid(); break;
                 case Opcode.fctidz: RewriteFctidz(); break;
                 case Opcode.fctiwz: RewriteFctiwz(); break;
+                case Opcode.fcmpo: RewriteFcmpo(); break;
                 case Opcode.fcmpu: RewriteFcmpu(); break;
                 case Opcode.fdiv: RewriteFdiv(); break;
                 case Opcode.fdivs: RewriteFdiv(); break;

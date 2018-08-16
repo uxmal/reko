@@ -278,9 +278,61 @@ namespace Reko.Arch.PowerPC
 
         public class BOpRec : Decoder
         {
+            private static readonly Opcode[] opcBdnzf =
+            {
+                Opcode.bdnzf, Opcode.bdnzfl
+            };
+
+            private static readonly Opcode[] opcBdzf =
+            {
+                Opcode.bdzf, Opcode.bdzfl
+            };
+
+            private static readonly Opcode[,] opcBNcc =
+            {
+                { Opcode.bge, Opcode.bgel },
+                { Opcode.ble, Opcode.blel },
+                { Opcode.bne, Opcode.blel },
+                { Opcode.bns, Opcode.bnsl },
+            };
+
+
+            private static readonly Opcode[,] opcBcc =
+            {
+                { Opcode.blt, Opcode.bgel },
+                { Opcode.bgt, Opcode.blel },
+                { Opcode.beq, Opcode.blel },
+                { Opcode.bso, Opcode.bnsl },
+            };
+
+            private static readonly Opcode[] opcBdnzt =
+            {
+                Opcode.bdnzt, Opcode.bdnztl
+            };
+
+            private static readonly Opcode[] opcBdzt =
+            {
+                Opcode.bdzt, Opcode.bdztl
+            };
+
+            private static readonly Opcode[] opcBdnz =
+            {
+                Opcode.bdnz, Opcode.bdnzl
+            };
+
+            private static readonly Opcode[] opcBdz =
+            {
+                Opcode.bdz, Opcode.bdzl
+            };
+
+            private static readonly Opcode[] opcB =
+            {
+                Opcode.b, Opcode.bl
+            };
+
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                bool link = (wInstr & 1) != 0;
+                uint link = (wInstr & 1);
                 var uOffset = wInstr & 0x0000FFFC;
                 if ((uOffset & 0x8000) != 0)
                     uOffset |= 0xFFFF0000;
@@ -289,105 +341,103 @@ namespace Reko.Arch.PowerPC
                 var crf = grfBi >> 2;
 
                 Opcode opcode;
+                MachineOperand op1;
+                MachineOperand op2;
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 var dst = new AddressOperand(baseAddr + uOffset);
-                if ((grfBo & 0x10) != 0)
+                switch (grfBo)
                 {
-                    // Unconditionals.
-                    if ((grfBo & 0x04) != 0)
+                case 0:
+                case 1:
+                    // Decrement ctr, branch if ctr != 0 and condition is false
+                    opcode = opcBdnzf[link];
+                    op1 = new ConditionOperand(grfBi);
+                    op2 = dst;
+                    break;
+                case 2:
+                case 3:
+                    // Decrement ctr, branch if ctr == 0 and condition is false
+                    opcode = opcBdzf[link];
+                    op1 = new ConditionOperand(grfBi);
+                    op2 = dst;
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    // Branch if condition is false
+                    opcode = opcBNcc[grfBi & 0b11, link];
+                    if (grfBi < 4)
                     {
-                        return new PowerPcInstruction(link ? Opcode.bl : Opcode.b)
-                        {
-                            op1 = dst
-                        };
+                        op1 = dst;
+                        op2 = null;
                     }
                     else
                     {
-                        return new PowerPcInstruction(
-                            ((grfBo & 2) != 0)
-                                ? (link ? Opcode.bdzl : Opcode.bdz)
-                                : (link ? Opcode.bdnzl : Opcode.bdnz))
-                        {
-                            op1 = dst,
-                        };
+                        op1 = new RegisterOperand(dasm.arch.CrRegisters[(int)grfBi >> 2]);
+                        op2 = dst;
                     }
+                    break;
+                case 8:
+                case 9:
+                    // Decrement ctr, branch if ctr != 0 and condition is true
+                    opcode = opcBdnzt[link];
+                    op1 = new ConditionOperand(grfBi);
+                    op2 = dst;
+                    break;
+                case 0xA:
+                case 0xB:
+                    // Decrement ctr, branch if ctr == 0 and condition is true
+                    opcode = opcBdzt[link];
+                    op1 = new ConditionOperand(grfBi);
+                    op2 = dst;
+                    break;
+                case 0xC:
+                case 0xD:
+                case 0xE:
+                case 0xF:
+                    // Branch if condition is true.
+                    opcode = opcBcc[grfBi & 0b11, link];
+                    if (grfBi < 4)
+                    {
+                        op1 = dst;
+                        op2 = null;
+                    }
+                    else
+                    {
+                        op1 = new RegisterOperand(dasm.arch.CrRegisters[(int)grfBi >> 2]);
+                        op2 = dst;
+                    }
+                    break;
+                case 0b10000:
+                case 0b10001:
+                case 0b11000:
+                case 0b11001:
+                    // Decrement ctr, Branch if ctr != 0
+                    opcode = opcBdnz[link];
+                    op1 = dst;
+                    op2 = null;
+                    break;
+                case 0b10010:
+                case 0b10011:
+                case 0b11010:
+                case 0b11011:
+                    // Decrement ctr, Branch if ctr == 0
+                    opcode = opcBdz[link];
+                    op1 = dst;
+                    op2 = null;
+                    break;
+                default:
+                    opcode = opcB[link];
+                    op1 = dst;
+                    op2 = null;
+                    break;
                 }
-                else
+                return new PowerPcInstruction(opcode)
                 {
-                    opcode = Opcode.illegal;
-                    // Decrement also
-                    switch (grfBo)
-                    {
-                    case 0:
-                    case 1:
-                        opcode = (link ? Opcode.bdnzfl : Opcode.bdnzf);
-                        break;
-                    case 2:
-                    case 3:
-                        opcode = (link ? Opcode.bdzfl : Opcode.bdzf);
-                        break;
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                        switch (grfBi & 3)
-                        {
-                        default:
-                            throw new NotImplementedException();
-                        //return new PowerPcInstruction(link ? Opcode.bcl : Opcode.bc)
-                        //{
-                        //    op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
-                        //    op2 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
-                        //    op3 = dst
-                        //};
-                        case 0: opcode = link ? Opcode.bgel : Opcode.bge; break;
-                        case 1: opcode = link ? Opcode.blel : Opcode.ble; break;
-                        case 2: opcode = link ? Opcode.bnel : Opcode.bne; break;
-                        case 3: opcode = link ? Opcode.bnsl : Opcode.bns; break;
-                        }
-                        return new PowerPcInstruction(opcode)
-                        {
-                            op1 = (grfBi > 3) ? new RegisterOperand(dasm.arch.CrRegisters[(int)grfBi >> 2]) : (MachineOperand)dst,
-                            op2 = (grfBi > 3) ? dst : (MachineOperand)null,
-                        };
-                    case 8:
-                    case 9:
-                        opcode = (link ? Opcode.bdnztl : Opcode.bdnzt);
-                        break;
-                    case 0xA:
-                    case 0xB:
-                        opcode = (link ? Opcode.bdztl : Opcode.bdzt);
-                        break;
-                    case 0xC:
-                    case 0xD:
-                    case 0xE:
-                    case 0xF:
-                        switch (grfBi & 0x3)
-                        {
-                        default: throw new NotImplementedException();
-                        //return new PowerPcInstruction(link ? Opcode.bcl : Opcode.bc)
-                        //{
-                        //    op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
-                        //    op2 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
-                        //    op3 = dst
-                        //};
-                        case 0: opcode = link ? Opcode.bltl : Opcode.blt; break;
-                        case 1: opcode = link ? Opcode.bgtl : Opcode.bgt; break;
-                        case 2: opcode = link ? Opcode.beql : Opcode.beq; break;
-                        case 3: opcode = link ? Opcode.bsol : Opcode.bso; break;
-                        }
-                        return new PowerPcInstruction(opcode)
-                        {
-                            op1 = (grfBi > 3) ? new RegisterOperand(dasm.arch.CrRegisters[(int)grfBi >> 2]) : (MachineOperand)dst,
-                            op2 = (grfBi > 3) ? dst : (MachineOperand)null,
-                        };
-                    }
-                    return new PowerPcInstruction(opcode)
-                    {
-                        op1 = new ConditionOperand(grfBi),
-                        op2 = dst
-                    };
-                }
+                    op1 = op1,
+                    op2 = op2,
+                };
             }
         }
 

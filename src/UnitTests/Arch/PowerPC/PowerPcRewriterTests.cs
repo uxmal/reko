@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private void Given_750()
         {
-            this.arch = new PowerPcBe64Architecture("ppc-be-32");
+            this.arch = new PowerPcBe32Architecture("ppc-be-32");
             this.arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Model", "750" }
@@ -1117,6 +1117,48 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (Test(EQ,cr0)) branch 00100004",
                 "2|T--|return (0,0)");
+        }
+
+        [Test]
+        public void PPCRw_bdzt()
+        {
+            Given_750();
+            AssertCode(0x41700000,   // bdzt	cr4+lt,$803CDB28
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|ctr = ctr - 0x00000001",
+                "2|T--|if (ctr == 0x00000000 && Test(LT,cr4)) branch 00100000");
+        }
+
+        [Test]
+        public void PPCRw_bdzfl()
+        {
+            Given_750();
+            AssertCode(0x40490FDB,   // bdzfl	cr2+gt,$00000FD8
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 0x00000001",
+                "2|T--|if (ctr != 0x00000000 || Test(GT,cr2)) branch 00100004",
+                "3|T--|call 00000FD8 (0)");
+        }
+
+        [Test]
+        public void PPCRw_bdnztl()
+        {
+            Given_750();
+            AssertCode(0x412F6C6F,   // bdnztl	cr3+so,$00006C6C
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 0x00000001",
+                "2|T--|if (ctr == 0x00000000 || Test(NO,cr3)) branch 00100004",
+                "3|T--|call 00006C6C (0)");
+        }
+        [Test]
+        public void PPCRw_bdztl()
+        {
+            Given_750();
+            AssertCode(0x41747461,   // bdztl	cr5+lt,$80273FB0
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 0x00000001",
+                "2|T--|if (ctr != 0x00000000 || Test(GE,cr5)) branch 00100004",
+                "3|T--|call 00107460 (0)");
         }
 
         [Test]
@@ -2223,8 +2265,6 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|v2 = __vsubfp(v61, v1)");
         }
 
-#if NYI
-
         [Test]
         public void PPCRw_psq_st()
         {
@@ -2240,16 +2280,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0xFC160040,   // fcmpo	cr0,f22,f0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void PPCRw_bdzt()
-        {
-            Given_750();
-            AssertCode(0x41700000,   // bdzt	cr4+lt,$803CDB28
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|cr0 = cond(f22 - f0)");
         }
 
         [Test]
@@ -2342,14 +2373,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void PPCRw_bdztl()
-        {
-            Given_750();
-            AssertCode(0x41747461,   // bdztl	cr5+lt,$80273FB0
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void PPCRw_fnmadd()
@@ -2415,24 +2439,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_bdzfl()
-        {
-            Given_750();
-            AssertCode(0x40490FDB,   // bdzfl	cr2+gt,$00000FD8
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void PPCRw_bdnztl()
-        {
-            Given_750();
-            AssertCode(0x412F6C6F,   // bdnztl	cr3+so,$00006C6C
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void PPCRw_vcmpbfp128()
         {
             Given_750();
@@ -2449,6 +2455,5 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
         }
-#endif
     }
 }

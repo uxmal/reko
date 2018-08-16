@@ -61,6 +61,16 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, m.Cast(PrimitiveType.Real64, src));
         }
 
+        public void RewriteFcmpo()
+        {
+            //$TODO: How to deal with the "orderered" part, i.e. 
+            // if there are NaNs involved.
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, m.Cond(m.FSub(opL, opR)));
+        }
+
         public void RewriteFcmpu()
         {
             var opL = RewriteOperand(instr.op2);
