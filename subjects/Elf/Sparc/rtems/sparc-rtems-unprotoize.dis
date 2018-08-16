@@ -945,7 +945,7 @@ l00011840_ds_f:
 // SymbolicIn: sp:<invalid> i0:<invalid> i1:<invalid> i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 l2:o0 l0:<invalid> l1:0x0002B400 g0:<invalid> o0:<invalid> o1:<invalid> o2:<invalid>
 
 l0001184C:
-	word32 o0_56 = DPB(o0, read(o0, i1_27, l0_20), 0)
+	word32 o0_56 = read(o0, i1_27, l0_20)
 	branch o0_56 >= 0x00000000 l0001184C_ds_t
 // DataOut: i0 i1 l0 l1 l2 l4 l5 l6 sp
 // DataOut (flags): Z
@@ -1064,7 +1064,7 @@ l00011898:
 // SymbolicIn: sp:fp + 0xFFFFFF90 i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 g0:o2 l1:0x0002B400
 
 l000118A4:
-	word32 o0_59 = DPB(o0, write(o0, i1_110, i2_109), 0)
+	word32 o0_59 = write(o0, i1_110, i2_109)
 	branch o0_59 >= 0x00000000 l00011898_ds_t
 // DataOut: i0 i1 i2 i3 o0 sp
 // DataOut (flags): 
