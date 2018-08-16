@@ -96,6 +96,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return;
             var symSection = loader.Sections[(int)sym.SectionIndex];
             uint S = (uint)sym.Value;
+            uint A = (uint)rela.Addend;
             uint P = (uint)rela.Offset;
             var addr = Address.Ptr32(P);
             uint PP = P;
@@ -110,18 +111,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case PpcRt.R_PPC_JMP_SLOT:
                 break;
             case PpcRt.R_PPC_ADDR32:
-                uint value32 = relR.ReadUInt32();
-                value32 += S;
-                relW.WriteUInt32(value32);
+                relW.WriteUInt32(S + A);
                 break;
             case PpcRt.R_PPC_REL24:
-                uint value = relR.ReadUInt32();
-                uint copy = value;
+                uint wInstr = relR.ReadUInt32();
                 // 24 bit relocation where bits 3-29 are used for relocations
-                value = (value & 0x3FFFFFC) >> 2;
-                value += (uint)(S + rela.Addend - ((long)rela.Offset >> 2));
-                value = (copy & 0xFC000003) | ((value << 2) & 0x3FFFFFC);
-                relW.WriteUInt32(value);
+                uint value = (S + A - P);
+                wInstr = (wInstr & 0xFC000003) | (value & 0x03FFFFFC);
+                relW.WriteUInt32(wInstr);
                 break;
             case PpcRt.R_PPC_ADDR16_HI:
             case PpcRt.R_PPC_ADDR16_HA:
