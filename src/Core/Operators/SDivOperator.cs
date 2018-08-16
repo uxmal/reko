@@ -29,7 +29,10 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() / c2.ToInt32());
+            var denom = c2.ToInt32();
+            if (denom == 0)
+                return Constant.Invalid;
+            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() / denom);
 		}
 
 		public override string ToString()

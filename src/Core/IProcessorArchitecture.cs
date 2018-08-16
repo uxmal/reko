@@ -216,7 +216,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Abstract base class from which most IProcessorArchitecture derive.
+    /// Abstract base class from which most IProcessorArchitecture 
+    /// implementations derive.
     /// </summary>
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
@@ -229,7 +230,7 @@ namespace Reko.Core
         }
 
         public string Name { get; }
-        public string Description {get; set; }
+        public string Description { get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
@@ -270,7 +271,12 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        public abstract Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
+        public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
+        {
+            var sp = binder.EnsureRegister(StackRegister);
+            var mem = MemoryAccess.Create(sp, cbOffset, dataType);
+            return mem;
+        }
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);

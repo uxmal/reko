@@ -61,6 +61,16 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, m.Cast(PrimitiveType.Real64, src));
         }
 
+        public void RewriteFcmpo()
+        {
+            //$TODO: How to deal with the "orderered" part, i.e. 
+            // if there are NaNs involved.
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, m.Cond(m.FSub(opL, opR)));
+        }
+
         public void RewriteFcmpu()
         {
             var opL = RewriteOperand(instr.op2);
@@ -110,48 +120,30 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
-        public void RewriteFmadd()
+        public void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> add, bool negate)
         {
-            var opS = RewriteOperand(instr.op4);
-            var opL = RewriteOperand(instr.op2);
-            var opR = RewriteOperand(instr.op3);
-            var opD = RewriteOperand(instr.op1);
-            m.Assign(opD, m.FAdd(opS, m.FMul(opL, opR)));
-            MaybeEmitCr1(opD);
-        }
-
-        public void RewriteFmsub()
-        {
-            var opc = RewriteOperand(instr.op4);
-            var opb = RewriteOperand(instr.op3);
+            bool needsCast = dt == PrimitiveType.Real32;
+            var opb = RewriteOperand(instr.op4);
+            var opc = RewriteOperand(instr.op3);
             var opa = RewriteOperand(instr.op2);
             var opt = RewriteOperand(instr.op1);
-            m.Assign(opt, m.FSub(m.FMul(opa, opb), opc));
-            MaybeEmitCr1(opt);
-        }
+            if (needsCast)
+            {
+                opa = m.Cast(dt, opa);
+                opb = m.Cast(dt, opb);
+                opc = m.Cast(dt, opc);
+            }
 
-        public void RewriteFnmsub(PrimitiveType dt)
-        {
-            var opc = RewriteOperand(instr.op4);
-            var opb = RewriteOperand(instr.op3);
-            var opa = RewriteOperand(instr.op2);
-            var opt = RewriteOperand(instr.op1);
-            if (dt == PrimitiveType.Real32)
+            var exp = add(m.FMul(opa, opc), opb);
+            if (negate)
             {
-                m.Assign(opt,
-                    m.Cast(
-                        PrimitiveType.Real64,
-                        m.FNeg(
-                            m.FSub(
-                                m.FMul(
-                                    m.Cast(PrimitiveType.Real32, opa),
-                                    m.Cast(PrimitiveType.Real32, opc)),
-                                m.Cast(PrimitiveType.Real32, opb)))));
+                exp = m.FNeg(exp);
             }
-            else
+            if (needsCast)
             {
-                m.Assign(opt, m.FNeg(m.FSub(m.FMul(opa, opc), opb)));
+                exp=m.Cast(PrimitiveType.Real64, exp);
             }
+            m.Assign(opt, exp);
             MaybeEmitCr1(opt);
         }
 
@@ -203,6 +195,15 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 dst,
                 host.PseudoProcedure("sqrt", PrimitiveType.Real64, src));
+        }
+
+        private void RewriteFrsqrte()
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            m.Assign(
+                dst,
+                host.PseudoProcedure("__frsqrte", PrimitiveType.Real64, src));
         }
 
         public void RewriteFsub()

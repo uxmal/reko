@@ -148,6 +148,7 @@
         <File Source="$(var.Mos6502.TargetPath)" />
         <File Source="$(var.Pdp11.TargetPath)" />
         <File Source="$(var.PowerPC.TargetPath)" />
+        <File Source="$(var.PowerPC.Design.TargetPath)" />
         <File Source="$(var.RiscV.TargetPath)" />
         <File Source="$(var.Sparc.TargetPath)" />
         <File Source="$(var.SuperH.TargetPath)" />

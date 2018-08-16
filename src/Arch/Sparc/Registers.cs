@@ -107,6 +107,7 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage f31;
 
         public static RegisterStorage psr;
+        public static RegisterStorage fsr;
 
         public static FlagGroupStorage N;
         public static FlagGroupStorage Z;
@@ -215,6 +216,8 @@ namespace Reko.Arch.Sparc
             G = new FlagGroupStorage(psr, (uint) FlagM.GF, "G", PrimitiveType.Bool);
             U = new FlagGroupStorage(psr, (uint) FlagM.UF, "U", PrimitiveType.Bool);
 
+            fsr = new RegisterStorage("fsr", 41, 32, PrimitiveType.Word32);
+
             IntegerRegisters = new RegisterStorage[]
             {
                 g0, 
@@ -294,6 +297,8 @@ namespace Reko.Arch.Sparc
                 f31,
             };
             mpNameToReg = IntegerRegisters.Concat(FloatRegisters).ToDictionary(k => k.Name, v => v);
+            mpNameToReg.Add(psr.Name, psr);
+            mpNameToReg.Add(fsr.Name, fsr);
         }
 
         public static RegisterStorage GetRegister(uint r)

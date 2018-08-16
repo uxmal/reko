@@ -3,6 +3,18 @@
 As the Reko project has developed over time, its complexity has grown to the point where it is hard to understand
 how everything gets built. This document aims to clarify the Reko build process. 
 
+## Quick start
+For the tl;dr crowd:
+
+To build the Reko solution for x86-64 versions of Windows, use the following command:
+```
+msbuild /p:Configuration=Release /p:Platform=x64 src/Reko-decompiler.sln
+```
+To build the solution for x86-64 Unix systems, use the following command:
+```
+msbuild /p:Configuration=UnixRelease /p:Platform=x64 src/Reko-decompiler.sln
+```
+
 ## Background 
 
 The goal of the Reko build process is to generate a coherent set of executable files that work correctly when launched.
@@ -46,10 +58,10 @@ drivers and Reko unit tests must be built for specific platforms. Currently, the
 x86 and 64-bit executables for x86-64 processors. The names of the solution platforms are `x86` and `x64`, following 
 the conventions used by Visual Studio solution files.
 
-The currently supported configurations are `Debug`, `Release`, and `TravisRelease`. The `Debug` configuration
+The currently supported solution configurations are `Debug`, `Release`, and `UnixRelease`. The `Debug` configuration
 is not optimized and contains full debug symbols. The `Release` configuration is optimized and may not contain
-full debug symbol support. The `TravisRelease` configuration is identical to the `Release` configuration except
-that it excludes the WiX MSI installer scripts. The `TravisRelease` configuration is used to build on Unixy platforms, where MSI
+full debug symbol support. The `UnixRelease` configuration is identical to the `Release` configuration except
+that it excludes the WiX MSI installer scripts. The `UnixRelease` configuration is used to build on Unixy platforms, where MSI
 installers are not supported nor relevant.
 
 ## Build process

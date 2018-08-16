@@ -198,14 +198,6 @@ namespace Reko.Arch.Arm
 #endif
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
-        {
-            return new MemoryAccess(new BinaryExpression(
-                                    Operator.IAdd, FramePointerType,
-                                    frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
-                                    dataType);
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

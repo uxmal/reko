@@ -8212,27 +8212,16 @@ void client_read_reply(word32 r2, word32 r4, word32 dwArg00)
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 client_read_reply_entry:
-	def r4
 // DataOut: r2 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l0040307C:
-	dwArg00_14 = r4
-	r25_16 = time
-	r3_24 = time(r4_15)
-	r3_28 = r2_23
-	r2_29 = r4
+	time(r4_15)
 	Mem30[r4 + 0x000017D0:word32] = r2_23
-	r25_37 = read
-	r3_45 = DPB(r3, read(r4_34, r5_35, r6_36), 0)
-	r3_49 = r2_44
-	r2_50 = r4
+	read(r4_34, r5_35, r6_36)
 	Mem51[r4 + 0x0000178C:word32] = r2_44
-	r3_52 = r4
-	r2_53 = r4
-	r2_54 = r4 + 4024
 	Mem55[r4 + 0x00001788:word32] = r4 + 4024
 	return
 // DataOut:

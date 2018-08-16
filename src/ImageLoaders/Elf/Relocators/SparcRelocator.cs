@@ -98,6 +98,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 mask = 0x3FF;
                 P = 0;
                 break;
+            case SparcRt.R_SPARC_32:
+                A = (int)rela.Addend;
+                mask = 0xFFFFFFFF;
+                P = 0;
+                break;
             case SparcRt.R_SPARC_WDISP30:
                 A = (int)rela.Addend;
                 P = ~P + 1;

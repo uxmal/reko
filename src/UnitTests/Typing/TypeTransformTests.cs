@@ -438,7 +438,7 @@ namespace Reko.UnitTests.Typing
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSegmentedArray.txt");
         }
 
         [Test]
@@ -486,7 +486,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranAddressOf.txt");
         }
 
         [Test]
@@ -509,7 +509,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranTypedAddressOf.txt");
         }
 
         [Test]
@@ -524,7 +524,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.IAdd(a4, m.Shl(d0, 2)), a4);
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSelfArray.txt");
         }
 
         [Test]
@@ -538,7 +538,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(a4, a4);
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSelfRef.txt");
         }
     }
 }

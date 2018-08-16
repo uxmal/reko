@@ -125,21 +125,6 @@ namespace Reko.Arch.RiscV
             return new RiscVRewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            var sp = binder.EnsureRegister(StackRegister);
-            Expression ea = sp;
-            if (cbOffset < 0)
-            {
-                ea = new BinaryExpression(Operator.ISub, sp.DataType, ea, Constant.Word(ea.DataType.BitSize, -cbOffset));
-            }
-            else if (cbOffset > 0)
-            {
-                ea = new BinaryExpression(Operator.IAdd, sp.DataType, ea, Constant.Word(ea.DataType.BitSize, -cbOffset));
-            }
-            return new MemoryAccess(ea, dataType);
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

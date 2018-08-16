@@ -179,12 +179,6 @@ namespace Reko.Arch.Sparc
             return GetFlagGroup((uint)grf);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            var sp = binder.EnsureRegister(Registers.sp);
-            return MemoryAccess.Create(sp, cbOffset, dataType);
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
