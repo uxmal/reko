@@ -264,26 +264,38 @@ namespace Reko.Arch.PowerPC
                 case Opcode.orc: RewriteOrc(false); break;
                 case Opcode.ori: RewriteOr(false); break;
                 case Opcode.oris: RewriteOris(); break;
+                case Opcode.ps_abs: RewritePairedInstruction_Src1("__ps_abs"); break;
                 case Opcode.ps_add: RewritePairedInstruction_Src2("__ps_add"); break;
+                case Opcode.ps_cmpo0: Rewrite_ps_cmpo("__ps_cmpo0"); break;
                 case Opcode.ps_div: RewritePairedInstruction_Src2("__ps_div"); break;
                 case Opcode.psq_l: Rewrite_psq_l(false); break;
                 case Opcode.psq_lu: Rewrite_psq_l(true); break;
                 case Opcode.psq_lx: Rewrite_psq_l(false); break;
                 case Opcode.psq_lux: Rewrite_psq_l(true); break;
+                case Opcode.ps_madd: RewritePairedInstruction_Src3("__ps_madd"); break;
                 case Opcode.ps_madds0: RewritePairedInstruction_Src3("__ps_madds0"); break;
                 case Opcode.ps_madds1: RewritePairedInstruction_Src3("__ps_madds1"); break;
+                case Opcode.ps_merge00: RewritePairedInstruction_Src2("__ps_merge00"); break;
+                case Opcode.ps_merge01: RewritePairedInstruction_Src2("__ps_merge01"); break;
+                case Opcode.ps_merge10: RewritePairedInstruction_Src2("__ps_merge10"); break;
+                case Opcode.ps_merge11: RewritePairedInstruction_Src2("__ps_merge11"); break;
+                case Opcode.ps_mr: Rewrite_ps_mr(); break;
                 case Opcode.ps_mul: RewritePairedInstruction_Src2("__ps_mul"); break;
                 case Opcode.ps_muls0: RewritePairedInstruction_Src2("__ps_muls0"); break;
                 case Opcode.ps_muls1: RewritePairedInstruction_Src2("__ps_muls1"); break;
+                case Opcode.ps_nmadd: RewritePairedInstruction_Src3("__ps_nmadd"); break;
+                case Opcode.ps_nmsub: RewritePairedInstruction_Src3("__ps_nmsub"); break;
+                case Opcode.ps_nabs: RewritePairedInstruction_Src1("__ps_nabs"); break;
                 case Opcode.ps_neg: RewritePairedInstruction_Src1("__ps_neg"); break;
                 case Opcode.ps_res: RewritePairedInstruction_Src1("__ps_res"); break;
                 case Opcode.ps_rsqrte: RewritePairedInstruction_Src1("__ps_rsqrte"); break;
+                case Opcode.ps_sel: RewritePairedInstruction_Src3("__ps_sel"); break;
+                case Opcode.ps_sub: RewritePairedInstruction_Src2("__ps_sub"); break;
+                case Opcode.ps_sum0: RewritePairedInstruction_Src3("__ps_sum0"); break;
                 case Opcode.psq_st: Rewrite_psq_st(false); break;
                 case Opcode.psq_stu: Rewrite_psq_st(true); break;
                 case Opcode.psq_stx: Rewrite_psq_st(false); break;
                 case Opcode.psq_stux: Rewrite_psq_st(true); break;
-
-                case Opcode.ps_sub: RewritePairedInstruction_Src2("__ps_sub"); break;
                 case Opcode.rfi: RewriteRfi(); break;
                 case Opcode.rldicl: RewriteRldicl(); break;
                 case Opcode.rldicr: RewriteRldicr(); break;
@@ -351,6 +363,8 @@ namespace Reko.Arch.PowerPC
                 case Opcode.vandc: RewriteAndc(); break;
                 case Opcode.vcfsx: RewriteVct("__vcfsx", PrimitiveType.Real32); break;
                 case Opcode.vcfpsxws128: RewriteVcfpsxws("__vcfpsxws"); break;
+                case Opcode.vcmpbfp:
+                case Opcode.vcmpbfp128: RewriteVcmpfp("__vcmpebfp"); break;
                 case Opcode.vcmpeqfp:
                 case Opcode.vcmpeqfp128: RewriteVcmpfp("__vcmpeqfp"); break;
                 case Opcode.vcmpgtfp:

@@ -720,8 +720,8 @@ Conventions:
                     (4, new DOpRec(Opcode.ps_nabs, ".f1,f3")),
                     (8, new DOpRec(Opcode.ps_abs, ".f1,f3"))),
                 Nyi("0b01001"),
-                Instr(Opcode.ps_sum0, ".f1,f2,f3,f4"),
-                Instr(Opcode.ps_sum1, ".f1,f2,f3,f4"),
+                Instr(Opcode.ps_sum0, ".f1,f2,f4,f3"),
+                Instr(Opcode.ps_sum1, ".f1,f2,f4,f3"),
 
                 Instr(Opcode.ps_muls0, ".f1,f2,f4"),
                 Instr(Opcode.ps_muls1, ".f1,f2,f4"),
@@ -740,17 +740,17 @@ Conventions:
                 Instr(Opcode.ps_sub, ".f1,f2,f3"),
                 Instr(Opcode.ps_add, ".f1,f2,f3"),
                 Nyi("0b10110"),
-                Instr(Opcode.ps_sel, ".f1,f2,f3"),
+                Instr(Opcode.ps_sel, ".f1,f2,f4,f3"),
 
                 Instr(Opcode.ps_res, ".f1,f3"),
                 Instr(Opcode.ps_mul, ".f1,f2,f4"),
                 Instr(Opcode.ps_rsqrte, ".f1,f3"),
                 Nyi("0b11011"),
 
-                Instr(Opcode.ps_msub, ".f1,f2,f3,f4"),
-                Instr(Opcode.ps_madd, ".f1,f2,f3,f4"),
-                Instr(Opcode.ps_nmsub, ".f1,f2,f3,f4"),
-                Instr(Opcode.ps_nmadd, ".f1,f2,f3,f4"));
+                Instr(Opcode.ps_msub, ".f1,f2,f4,f3"),
+                Instr(Opcode.ps_madd, ".f1,f2,f4,f3"),
+                Instr(Opcode.ps_nmsub, ".f1,f2,f4,f3"),
+                Instr(Opcode.ps_nmadd, ".f1,f2,f4,f3"));
             return decoder;
         }
 

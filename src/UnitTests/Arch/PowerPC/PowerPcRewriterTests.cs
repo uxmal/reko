@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override Address LoadAddress => addr;
-    
+
         private void RunTest(Action<InstructionBuilder> m)
         {
             b = new InstructionBuilder(arch, Address.Ptr32(0x01000000));
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            ppcInstrs = (IEnumerable<PowerPcInstruction>) arch.CreateDisassembler(image.CreateBeReader(LoadAddress));
+            ppcInstrs = (IEnumerable<PowerPcInstruction>)arch.CreateDisassembler(image.CreateBeReader(LoadAddress));
             return image;
         }
 
@@ -2463,8 +2463,11 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_750();
             AssertCode(0x11D39CE0,   // ps_merge11	f14,f19,f19
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v4 = f19",
+                "2|L--|v5 = f19",
+                "3|L--|v6 = __ps_merge11(v4, v5)",
+                "4|L--|f14 = v6");
         }
 
         [Test]
@@ -2485,7 +2488,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_750();
             AssertCode(0x196F818F,   // vcmpbfp128	v107,v15,v112
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|v107 = __vcmpebfp(v15, v112)");
         }
 
         [Test]
@@ -2493,8 +2496,82 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_750();
             AssertCode(0x1021003C,   // ps_nmsub	f1,f1,f0,f0
+                "0|L--|00100000(4): 5 instructions",
+                "1|L--|v4 = f1",
+                "2|L--|v5 = f0",
+                "3|L--|v6 = f0",
+                "4|L--|v7 = __ps_nmsub(v4, v5, v6)",
+                "5|L--|f1 = v7");
+        }
+
+        [Test]
+        public void PPCRw_ps_mr()
+        {
+            Given_750();
+            AssertCode(0x10200090,   // ps_mr	f1,f0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|f1 = f0");
+        }
+
+        [Test]
+        public void PPCRw_ps_sum0()
+        {
+            Given_750();
+            AssertCode(0x102D0014,   // ps_sum0	f1,f13,f0,f0
+                "0|L--|00100000(4): 5 instructions",
+                "1|L--|v5 = f13",
+                "2|L--|v6 = f0",
+                "3|L--|v7 = f0",
+                "4|L--|v8 = __ps_sum0(v5, v6, v7)",
+                "5|L--|f1 = v8");
+        }
+
+        [Test]
+        public void PPCRw_ps_madd()
+        {
+            Given_750();
+            AssertCode(0x1065113A,   // ps_madd	f3,f5,f4,f2
+                "0|L--|00100000(4): 5 instructions",
+                "1|L--|v6 = f5",
+                "2|L--|v7 = f4",
+                "3|L--|v8 = f2",
+                "4|L--|v9 = __ps_madd(v6, v7, v8)",
+                "5|L--|f3 = v9");
+        }
+
+        [Test]
+        public void PPCRw_ps_cmpo0()
+        {
+            Given_750();
+            AssertCode(0x129D0040,   // ps_cmpo0	cr4,f29,f0
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v5 = f29",
+                "2|L--|v6 = f0",
+                "3|L--|cr4 = __ps_cmpo0(v5, v6)");
+        }
+
+        [Test]
+        public void PPCRw_ps_sel()
+        {
+            Given_750();
+            AssertCode(0x121153AE,   // ps_sel	f16,f17,f14,f10
+                "0|L--|00100000(4): 5 instructions",
+                "1|L--|v6 = f17",
+                "2|L--|v7 = f14",
+                "3|L--|v8 = f10",
+                "4|L--|v9 = __ps_sel(v6, v7, v8)",
+                "5|L--|f16 = v9");
+        }
+
+        [Test]
+        public void PPCRw_ps_nabs()
+        {
+            Given_750();
+            AssertCode(0x12008910,   // ps_nabs	f16,f17
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = f17",
+                "2|L--|v5 = __ps_nabs(v4)",
+                "3|L--|f16 = v5");
         }
     }
 }

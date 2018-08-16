@@ -30,7 +30,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPC750Dis_ps_madd()
         {
             Given_ProcessorModel_750();
-            AssertCode(0x1008333A, "ps_madd\tf0,f8,f6,f12");
+            AssertCode(0x1008333A, "ps_madd\tf0,f8,f12,f6");
         }
 
         [Test]

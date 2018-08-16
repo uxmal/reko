@@ -93,6 +93,25 @@ namespace Reko.Arch.PowerPC
             return (ea, baseReg);
         }
 
+        private void Rewrite_ps_cmpo(string intrinsic) {
+
+            var cr = RewriteOperand(instr.op1);
+            var opA = RewriteOperand(instr.op2);
+            var opB = RewriteOperand(instr.op3);
+            var tmpA = binder.CreateTemporary(fpPair);
+            var tmpB = binder.CreateTemporary(fpPair);
+            m.Assign(tmpA, opA);
+            m.Assign(tmpB, opB);
+            m.Assign(cr, host.PseudoProcedure(intrinsic, cr.DataType, tmpA, tmpB));
+        }
+
+        private void Rewrite_ps_mr()
+        {
+            m.Assign(
+                RewriteOperand(instr.op1),
+                RewriteOperand(instr.op2));
+        }
+
         private void RewritePairedInstruction_Src1(string intrinsic)
         {
             var src = RewriteOperand(instr.op2);

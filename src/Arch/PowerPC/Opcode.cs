@@ -298,6 +298,7 @@ namespace Reko.Arch.PowerPC
         vand,
         vandc,
         vcfsx,
+        vcmpbfp,
         vcmpeqfp,
         vcmpequb,
         vcmpequd,
