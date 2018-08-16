@@ -725,8 +725,8 @@ Conventions:
 
                 Instr(Opcode.ps_muls0, ".f1,f2,f4"),
                 Instr(Opcode.ps_muls1, ".f1,f2,f4"),
-                Instr(Opcode.ps_madds0, ".f1,f2,f3,f4"),
-                Instr(Opcode.ps_madds1, ".f1,f2,f3,f4"),
+                Instr(Opcode.ps_madds0, ".f1,f2,f4,f3"),
+                Instr(Opcode.ps_madds1, ".f1,f2,f4,f3"),
 
                 Sparse(21, 5,
                     (0b10000, Instr(Opcode.ps_merge00, ".f1,f2,f3")),

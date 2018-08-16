@@ -41,7 +41,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmpA, src);
             m.Assign(tmpD, host.PseudoProcedure(intrinsic, fpPair, tmpA));
             m.Assign(dst, tmpD);
-            MaybeEmitCr0(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
+            MaybeEmitCr1(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
         }
 
         private void RewritePairedInstruction_Src2(string intrinsic)
@@ -56,7 +56,26 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmpB, srcB);
             m.Assign(tmpD, host.PseudoProcedure(intrinsic, fpPair, tmpA, tmpB));
             m.Assign(dst, tmpD);
-            MaybeEmitCr0(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
+            MaybeEmitCr1(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
         }
+
+        private void RewritePairedInstruction_Src3(string intrinsic)
+        {
+            var srcA = RewriteOperand(instr.op2);
+            var srcB = RewriteOperand(instr.op3);
+            var srcC = RewriteOperand(instr.op4);
+            var dst = RewriteOperand(instr.op1);
+            var tmpA = binder.CreateTemporary(fpPair);
+            var tmpB = binder.CreateTemporary(fpPair);
+            var tmpC= binder.CreateTemporary(fpPair);
+            var tmpD = binder.CreateTemporary(fpPair);
+            m.Assign(tmpA, srcA);
+            m.Assign(tmpB, srcB);
+            m.Assign(tmpC, srcC);
+            m.Assign(tmpD, host.PseudoProcedure(intrinsic, fpPair, tmpA, tmpB, tmpC));
+            m.Assign(dst, tmpD);
+            MaybeEmitCr1(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
+        }
+
     }
 }

@@ -266,7 +266,11 @@ namespace Reko.Arch.PowerPC
                 case Opcode.oris: RewriteOris(); break;
                 case Opcode.ps_add: RewritePairedInstruction_Src2("__ps_add"); break;
                 case Opcode.ps_div: RewritePairedInstruction_Src2("__ps_div"); break;
+                case Opcode.ps_madds0: RewritePairedInstruction_Src3("__ps_madds0"); break;
+                case Opcode.ps_madds1: RewritePairedInstruction_Src3("__ps_madds1"); break;
                 case Opcode.ps_mul: RewritePairedInstruction_Src2("__ps_mul"); break;
+                case Opcode.ps_muls0: RewritePairedInstruction_Src2("__ps_muls0"); break;
+                case Opcode.ps_muls1: RewritePairedInstruction_Src2("__ps_muls1"); break;
                 case Opcode.ps_neg: RewritePairedInstruction_Src1("__ps_neg"); break;
                 case Opcode.ps_res: RewritePairedInstruction_Src1("__ps_res"); break;
                 case Opcode.ps_rsqrte: RewritePairedInstruction_Src1("__ps_rsqrte"); break;

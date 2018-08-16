@@ -34,17 +34,17 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPC750Dis_ps_madds1()
-        {
-            Given_ProcessorModel_750();
-            AssertCode(0x1009011E, "ps_madds1\tf0,f9,f0,f4");
-        }
-
-        [Test]
         public void PPC750Dis_ps_madds0()
         {
             Given_ProcessorModel_750();
-            AssertCode(0x100B015C, "ps_madds0\tf0,f11,f0,f5");
+            AssertCode(0x100B015C, "ps_madds0\tf0,f11,f5,f0");
+        }
+
+        [Test]
+        public void PPC750Dis_ps_madds1()
+        {
+            Given_ProcessorModel_750();
+            AssertCode(0x1009011E, "ps_madds1\tf0,f9,f4,f0");
         }
 
         [Test]
