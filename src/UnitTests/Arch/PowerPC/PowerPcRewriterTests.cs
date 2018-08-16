@@ -2269,9 +2269,23 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             Given_750();
             AssertCode(0xF3E10038,   // psq_st	f31,r1,+00000038,01,07
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = f31",
+                "2|L--|v4 = __pack_quantized(v3, 0x00000001, 0x00000007)",
+                "3|L--|Mem0[r1 + 56:word64] = v4");
         }
+
+        [Test]
+        public void PPCRw_psq_stx()
+        {
+            Given_750();
+            AssertCode(0x11C0180E,   // psq_stx	f14,r0,r3,00,07
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = f14",
+                "2|L--|v4 = __pack_quantized(v3, 0x00000000, 0x00000007)",
+                "3|L--|Mem0[r3:word64] = v4");
+        }
+
 
         [Test]
         public void PPCRw_fcmpo()
@@ -2374,18 +2388,6 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "4|L--|f1 = v7");
         }
 
-      
-
-
-
-        [Test]
-        public void PPCRw_psq_stx()
-        {
-            Given_750();
-            AssertCode(0x11C0180E,   // psq_stx	f14,r0,r3,00,07
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void PPCRw_frsqrte()

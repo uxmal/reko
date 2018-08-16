@@ -34,10 +34,8 @@ namespace Reko.Arch.PowerPC
         private static ArrayType fpPair = new ArrayType(PrimitiveType.Real32, 2);
 
         private void Rewrite_psq_l(bool update) {
-            var baseReg = RewriteOperand(instr.op2);
-            Expression ea = m.IAdd(
-                baseReg,
-                RewriteOperand(instr.op3));
+
+            var (ea, baseReg) = Rewrite_psq_EffectiveAddress();
             var tmp1 = binder.CreateTemporary(PrimitiveType.Word64);
             var tmp2 = binder.CreateTemporary(fpPair);
             m.Assign(tmp1, m.Mem64(ea));
@@ -54,6 +52,46 @@ namespace Reko.Arch.PowerPC
             }
         }
 
+        private void Rewrite_psq_st(bool update)
+        {
+            var (ea, baseReg) = Rewrite_psq_EffectiveAddress();
+            var tmp1 = binder.CreateTemporary(PrimitiveType.Word64);
+            var tmp2 = binder.CreateTemporary(fpPair);
+
+            m.Assign(tmp1, RewriteOperand(instr.op1));
+
+            m.Assign(tmp2, host.PseudoProcedure(
+                "__pack_quantized",
+                fpPair,
+                tmp1,
+                RewriteOperand(instr.op4),
+                RewriteOperand(instr.op5)));
+
+            m.Assign(m.Mem64(ea), tmp2);
+
+            if (update)
+            {
+                m.Assign(baseReg, ea);
+            }
+        }
+
+        private (Expression, Expression) Rewrite_psq_EffectiveAddress()
+        {
+            Expression ea;
+            Expression baseReg;
+            if (((RegisterOperand)instr.op2).Register.Number == 0)
+            {
+                ea = RewriteOperand(instr.op3);
+                baseReg = ea;
+            }
+            else
+            {
+                ea = RewriteOperand(instr.op2);
+                baseReg = ea;
+                ea = m.IAdd(ea, RewriteOperand(instr.op3));
+            }
+            return (ea, baseReg);
+        }
 
         private void RewritePairedInstruction_Src1(string intrinsic)
         {

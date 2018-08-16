@@ -278,6 +278,11 @@ namespace Reko.Arch.PowerPC
                 case Opcode.ps_neg: RewritePairedInstruction_Src1("__ps_neg"); break;
                 case Opcode.ps_res: RewritePairedInstruction_Src1("__ps_res"); break;
                 case Opcode.ps_rsqrte: RewritePairedInstruction_Src1("__ps_rsqrte"); break;
+                case Opcode.psq_st: Rewrite_psq_st(false); break;
+                case Opcode.psq_stu: Rewrite_psq_st(true); break;
+                case Opcode.psq_stx: Rewrite_psq_st(false); break;
+                case Opcode.psq_stux: Rewrite_psq_st(true); break;
+
                 case Opcode.ps_sub: RewritePairedInstruction_Src2("__ps_sub"); break;
                 case Opcode.rfi: RewriteRfi(); break;
                 case Opcode.rldicl: RewriteRldicl(); break;
