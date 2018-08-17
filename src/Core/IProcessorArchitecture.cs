@@ -271,17 +271,30 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            var sp = binder.EnsureRegister(StackRegister);
-            var mem = MemoryAccess.Create(sp, cbOffset, dataType);
-            return mem;
-        }
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+
+        /// <summary>
+        /// Create a stack access to a variable offset by <paramref name="cbOffsets"/>
+        /// from the stack pointer
+        /// </summary>
+        /// <remarks>
+        /// This method is the same for all _sane_ architectures. The crazy madness
+        /// of x86 segmented memory accesses is dealt with in that processor's 
+        /// implementation of this method.
+        /// </remarks>
+        /// <param name="bindRegister"></param>
+        /// <param name="cbOffset"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
+        {
+            var sp = binder.EnsureRegister(StackRegister);
+            return MemoryAccess.Create(sp, cbOffset, dataType);
+        }
 
         /// <summary>
         /// For a particular opcode name, returns its internal (Reko) number.
