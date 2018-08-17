@@ -128,12 +128,12 @@ namespace Reko.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog, outputFile);
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(m);
+            RunTest(program, outputFile);
         }
 
-        protected abstract void RunTest(Program prog, string outputFile);
+        protected abstract void RunTest(Program program, string outputFile);
 
 		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)
 		{
