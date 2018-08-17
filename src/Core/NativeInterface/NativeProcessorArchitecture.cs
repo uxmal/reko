@@ -89,11 +89,6 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
-		{
-			throw new NotImplementedException();
-		}
-
 		public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
 			throw new NotImplementedException();

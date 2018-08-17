@@ -92,7 +92,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="reg">The PIC register containing the bit field.</param>
         /// <param name="sfrfielddef">The bit field definition per PIC XML definition.</param>
         public PICRegisterBitFieldStorage(PICRegisterStorage reg, ISFRBitField sfrfielddef)
-            : base(reg, (uint)(sfrfielddef.BitMask << sfrfielddef.BitPos), sfrfielddef.Name, PrimitiveType.CreateWordFromBits(sfrfielddef.BitWidth))
+            : base(reg, (uint)(sfrfielddef.BitMask << sfrfielddef.BitPos), sfrfielddef.Name, CreateBitFieldType(sfrfielddef.BitWidth))
         {
             SFRField = sfrfielddef;
             BitFieldSortKey = new PICRegisterBitFieldSortKey(sfrfielddef.BitPos, (byte)sfrfielddef.BitWidth);
@@ -124,6 +124,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public PICRegisterStorage ParentReg => FlagRegister as PICRegisterStorage;
 
+        private static PrimitiveType CreateBitFieldType(int bitSize)
+            => (bitSize <= 1 ? PrimitiveType.Bool : PrimitiveType.CreateWord(bitSize));
     }
 
 }

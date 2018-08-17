@@ -289,5 +289,13 @@ namespace Reko.WindowsItp
             }
             this.propOptionsDlg.Show();
         }
+
+        private void rewriterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new RewriterPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }

@@ -97,6 +97,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 
             public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
             {
+                //$TODO: another microprocessor with an 8-bit stack pointer.
                 throw new NotImplementedException();
             }
 

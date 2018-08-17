@@ -28,12 +28,13 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
+    [Designer("Reko.Arch.PowerPC.Design.PowerPCArchitectureDesigner,Reko.Arch.PowerPC.Design")]
     public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
         public const int CcFieldMin = 0x40;
@@ -46,6 +47,7 @@ namespace Reko.Arch.PowerPC
         private Dictionary<int, RegisterStorage> spregs;
         private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
         private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
+        private PowerPcDisassembler.Decoder[] primaryDecoders;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -119,6 +121,7 @@ namespace Reko.Arch.PowerPC
             //$REVIEW: using R1 as the stack register is a _convention_. It 
             // should be platform-specific at the very least.
             StackRegister = regs[1];
+            Options = new Dictionary<string, object>();
         }
 
         public ReadOnlyCollection<RegisterStorage> Registers
@@ -146,16 +149,18 @@ namespace Reko.Arch.PowerPC
 
         public PrimitiveType SignedWord { get; }
 
+        public Dictionary<string,object> Options { get; }
+
         #region IProcessorArchitecture Members
 
         public PowerPcDisassembler CreateDisassemblerImpl(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, rdr, WordWidth);
+            return new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new PowerPcDisassembler(this, rdr, WordWidth);
+            return new PowerPcDisassembler(this, EnsureDecoders(), rdr, WordWidth);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -202,7 +207,7 @@ namespace Reko.Arch.PowerPC
             var addrInstr = e.Current.Address;
             var reg = ((RegisterOperand)e.Current.op1).Register;
             var uAddr = ((ImmediateOperand)e.Current.op3).Value.ToUInt32() << 16;
-
+             
             if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
                 return null;
             if (!(e.Current.op2 is MemoryOperand mem))
@@ -232,6 +237,17 @@ namespace Reko.Arch.PowerPC
         public override ProcessorState CreateProcessorState()
         {
             return new PowerPcState(this);
+        }
+
+        private PowerPcDisassembler.Decoder[] EnsureDecoders()
+        {
+            if (this.primaryDecoders == null)
+            {
+                this.Options.TryGetValue("Model", out var model);
+                var factory = new DecoderFactory((string)model);
+                this.primaryDecoders = factory.CreateDecoders();
+            }
+            return this.primaryDecoders;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -318,14 +334,27 @@ namespace Reko.Arch.PowerPC
             return CcFieldMin <= reg.Number && reg.Number < CcFieldMax;
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new PowerPcRewriter(this, rdr, binder, host);
+        }
+
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options == null)
+                return;
+            foreach (var option in options)
+            {
+                this.Options[option.Key] = option.Value;
+            }
+            // Clearing primarydecoders will force the creation of a new decoder tree next time
+            // a disassembler is created.
+            this.primaryDecoders = null;
+        }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            return Options;
         }
 
         public override abstract Address MakeAddressFromConstant(Constant c);

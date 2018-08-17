@@ -47,6 +47,10 @@ namespace Reko.Core.Output
         //$TODO: move this to a language-specific class.
 		private static Dictionary<Operator,int> precedences;
         private static HashSet<Type> singleStatements;
+        /// <summary>
+        /// Maps # of nybbles to an appropriate format string.
+        /// </summary>
+        private static string[] unsignedConstantFormatStrings; 
 
         private const int PrecedenceApplication = 1;
 		private const int PrecedenceArrayAccess = 1;
@@ -127,9 +131,13 @@ namespace Reko.Core.Output
                 typeof(AbsynAssignment),
                 typeof(AbsynSideEffect)
             };
+
+            unsignedConstantFormatStrings = Enumerable.Range(0, 17)
+                .Select(n => $"0x{{0:X{n}}}")
+                .ToArray();
         }
 
-		private void ResetPresedence(int precedenceOld)
+        private void ResetPresedence(int precedenceOld)
 		{
 			if (precedenceOld < precedenceCur ||
                 (forceParensIfSamePrecedence && precedenceCur == precedenceOld))
@@ -780,15 +788,16 @@ namespace Reko.Core.Output
 
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
-            switch (type.Size)
-            {
-            case 1: return "0x{0:X2}";
-            case 2: return "0x{0:X4}";
-            case 4: return "0x{0:X8}";
-            case 8: return "0x{0:X16}";
-            case 16: return "0x{0:X16}";
-            default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
-            }
+            var nybbles = Nybbles(type.BitSize);
+            if (nybbles < unsignedConstantFormatStrings.Length)
+                return unsignedConstantFormatStrings[nybbles];
+            else
+                return "0x{0:X16}";
+        }
+
+        private static int Nybbles(int bitSize)
+        {
+            return (bitSize + 3) / 4;
         }
 
         private string FormatString(PrimitiveType type, object value)

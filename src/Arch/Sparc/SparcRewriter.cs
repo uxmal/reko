@@ -163,6 +163,7 @@ namespace Reko.Arch.Sparc
                 case Opcode.ldsh: RewriteLoad(PrimitiveType.Int16); break;
                 case Opcode.ldub: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.lduh: RewriteLoad(PrimitiveType.Word16); break;
+                case Opcode.ldfsr: RewriteLoad(PrimitiveType.Word32); break;
                 case Opcode.mulscc: RewriteMulscc(); break;
                 case Opcode.or: RewriteAlu(m.Or, false); break;
                 case Opcode.orcc: RewriteAluCc(m.Or, false); break;
@@ -182,6 +183,7 @@ namespace Reko.Arch.Sparc
                 case Opcode.std: RewriteStore(PrimitiveType.Word64); break;
                 case Opcode.stf: RewriteStore(PrimitiveType.Real32); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
+                case Opcode.stfsr: RewriteStore(PrimitiveType.Word32); break;
                 case Opcode.sub: RewriteAlu(m.ISub, false); break;
                 case Opcode.subcc: RewriteAluCc(m.ISub, false); break;
                 case Opcode.subx: RewriteAddxSubx(m.ISub, false); break;

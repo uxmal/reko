@@ -1105,7 +1105,7 @@ test_exit:
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TerAddressOf.txt");
         }
 
         [Test]
@@ -1128,7 +1128,7 @@ test_exit:
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TerTypedAddressOf.txt");
         }
 
         [Test(Description = "@smx-smx discovered that 64-bit ELF binaries always have an issue with a variable" + 
@@ -1163,7 +1163,7 @@ test_exit:
 
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TerUnsignedSigned.txt");
         }
     }
 }

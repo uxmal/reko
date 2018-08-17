@@ -142,6 +142,9 @@ namespace Reko.Arch.Sparc
                     case 'T':       // trap number
                         ops.Add(GetRegImmOperand(wInstr, false, 7));
                         break;
+                    case '%':
+                        ops.Add(GetRegByName(ref i));
+                        break;
                     }
                 }
                 return new SparcInstruction
@@ -151,6 +154,20 @@ namespace Reko.Arch.Sparc
                     Op2 = ops.Count > 1 ? ops[1] : null,
                     Op3 = ops.Count > 2 ? ops[2] : null,
                 };
+            }
+
+            private MachineOperand GetRegByName(ref int i)
+            {
+                var iStart = i;
+                while (i < fmt.Length)
+                {
+                    if (!Char.IsLetter(fmt[i]) && !Char.IsDigit(fmt[i]))
+                        break;
+                    ++i;
+                }
+                var regName = fmt.Substring(iStart, i - iStart);
+                var reg = Registers.GetRegister(regName);
+                return new RegisterOperand(reg);
             }
 
             private PrimitiveType GetOperandSize(ref int i)

@@ -163,29 +163,6 @@ namespace Reko.Core.Types
         public static PrimitiveType CreateWord(uint bitSize)
             => CreateWord((int)bitSize);
 
-        //$TODO: Shall remove when Constant.Create will accept any bit-wide PrimitiveType.
-        // As of today only accepts multiple of 1, 2, 4, 8, 16 bytes. See issue #643.
-        public static PrimitiveType CreateWordFromBits(uint bitSize)
-        {
-            if (bitSize == 0)
-                throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
-            if (bitSize == 1)
-                return Bool;
-            if (bitSize <= 8)
-                return Byte;
-            if (bitSize <= 16)
-                return Word16;
-            if (bitSize <= 32)
-                return Word32;
-            if (bitSize <= 64)
-                return Word64;
-            if (bitSize <= 128)
-                return Word128;
-            if (bitSize <= 256)
-                return Word256;
-            throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
-        }
-
         public Domain Domain { get; private set; }
 
 		public override bool Equals(object obj)

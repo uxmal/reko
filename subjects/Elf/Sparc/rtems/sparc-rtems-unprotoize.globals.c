@@ -4,12 +4,12 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-Eq_673 g_tFFFFFFFF;
+Eq_671 g_tFFFFFFFF;
 char g_b0002;
 char g_b0004;
 char g_b0022;
-Eq_5097 g_t007B;
-Eq_851 g_t2FF4;
+Eq_5095 g_t007B;
+Eq_849 g_t2FF4;
 Eq_2 g_t16EE4 = Unexpected function type (fn void ())
 ;
 char g_str16F00[] = ".X";
@@ -17,7 +17,7 @@ Eq_216 g_t16F14 =
 	{
 		&g_t16F30
 	};
-Eq_9682 g_t16F30 = 
+Eq_9680 g_t16F30 = 
 	{
 		
 		{
@@ -26,7 +26,7 @@ Eq_9682 g_t16F30 =
 		116,
 		114,
 	};
-Eq_9682 g_t17040 = 
+Eq_9680 g_t17040 = 
 	{
 		
 		{
@@ -46,7 +46,7 @@ Eq_216 g_t1753C =
 Eq_216 g_a17540[] = 
 	{
 	};
-Eq_9682 g_t17598 = 
+Eq_9680 g_t17598 = 
 	{
 		
 		{
@@ -113,7 +113,7 @@ Eq_216 g_t27F54 =
 	{
 		null
 	};
-Eq_4280 g_t28000 = 
+Eq_4278 g_t28000 = 
 	{
 		0x00000000,
 	};
@@ -127,12 +127,12 @@ Eq_216 g_t28064 =
 int32 g_dw28068 = 1;
 word32 g_dw2806C = 0x00000000;
 word32 g_dw28070 = 0x00000001;
-Eq_7238 g_t28074 = 
+Eq_7236 g_t28074 = 
 	{
 		'\x00'
 	};
 char * g_ptr28078 = &g_str17AF0;
-Eq_3779 g_t28120 = 
+Eq_3777 g_t28120 = 
 	{
 		null
 	};
@@ -140,11 +140,11 @@ Eq_216 g_t28130 =
 	{
 		null
 	};
-Eq_3779 g_t28140 = 
+Eq_3777 g_t28140 = 
 	{
 		null
 	};
-Eq_4695 g_t28150 = 
+Eq_4693 g_t28150 = 
 	{
 		0
 	};
@@ -161,7 +161,7 @@ Eq_216 g_t28190 =
 		null
 	};
 word32 g_dw281A0 = 0x00000000;
-Eq_3779 g_t281C0 = 
+Eq_3777 g_t281C0 = 
 	{
 		null
 	};
@@ -175,7 +175,7 @@ up32 g_dw28200 = 0x00000000;
 up32 g_dw28210 = 0x00000000;
 int8 * g_ptr28220 = null;
 int32 g_dw28230 = 0;
-Eq_852 g_t28240 = 
+Eq_850 g_t28240 = 
 	{
 		0x00000000,
 	};
@@ -205,15 +205,15 @@ Eq_216 g_t2B310 =
 	{
 		null
 	};
-Eq_9139 g_t2B400 = 
+Eq_9137 g_t2B400 = 
 	{
 		0x0000000000000000
 	};
-struct Eq_784 * g_ptr2B408 = null;
+struct Eq_782 * g_ptr2B408 = null;
 ptr32 g_ptr2B40C = 0x00000000;
-Eq_3371 g_t2B640 = 
+Eq_3369 g_t2B640 = 
 	{
 	};
 char * g_ptr2B760 = null;
-struct Eq_702 * g_ptr2B764 = null;
+struct Eq_700 * g_ptr2B764 = null;
 

@@ -184,6 +184,7 @@ namespace Reko.Environments.SysV
             switch (Architecture.Name)
             {
             case "mips-be-32":
+            case "mips-le-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
                 m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint)addr.ToLinear()));
                 break;

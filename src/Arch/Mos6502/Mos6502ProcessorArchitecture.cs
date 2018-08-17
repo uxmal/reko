@@ -146,6 +146,12 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
+        {
+            //$TODO: the M6502 stack pointer is an 8-bit offset into the fixed memory area $0100-$01FF.
+            throw new NotImplementedException();
+        }
+
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());

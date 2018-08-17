@@ -126,5 +126,22 @@ namespace Reko.UnitTests.Core
             var sum = Operator.IAdd.ApplyConstants(c1, c2);
             Assert.AreEqual("0x03", sum.ToString(), "Silent overflow is not working.");
         }
-	}
+
+        [Test]
+        public void Con_Display_24_bit()
+        {
+            var dt = PrimitiveType.Create(Domain.UnsignedInt, 24);
+            var c = Constant.Create(dt, 42);
+            Assert.AreEqual("0x00002A", c.ToString());
+        }
+
+        [Test]
+        public void Con_Display_64_bit()
+        {
+            var dt = PrimitiveType.Create(Domain.UnsignedInt, 64);
+            var c = Constant.Create(dt, 42);
+            Assert.AreEqual("0x000000000000002A", c.ToString());
+        }
+
+    }
 }

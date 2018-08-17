@@ -1489,7 +1489,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = GetStrPtr(symtab, sym);
-                Debug.Print("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -1769,14 +1769,14 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            Debug.Print("== Symbols from {0} ==", symSection.Name);
+            DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo , "== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
-                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     (ElfSymbolType)(sym.st_info & 0xF),
