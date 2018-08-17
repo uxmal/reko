@@ -497,13 +497,21 @@ means
         }
 
         [Test]
-        public void ArmRw_vmov_i32()
+        public void ArmRw_vmov_i32_128bit()
         {
-            //  51 00 C0 F2 
             BuildTest(0xF2C00051); // vmov.i32 q8,#1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q8 = SEQ(0x00000001, 0x00000001, 0x00000001, 0x00000001)");
+                "1|L--|q8 = SEQ(0x0000000100000001, 0x0000000100000001)");
+        }
+
+        [Test]
+        public void ArmRw_vmov_i32_64bit()
+        {
+            BuildTest(0xF2C00011); // vmov.i32 d16,#1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d16 = 0x0000000100000001");
         }
 
         [Test]
