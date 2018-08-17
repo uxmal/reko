@@ -1129,12 +1129,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vnmls.f32\ts15,s13,s14");
         }
 
-        // An A32 decoder for the instruction E121F001 (Found unknown format character '*' in '*' while decoding msr.) has not been implemented yet.
         [Test]
-        public void ArmDasm_E121F001()
+        public void ArmDasm_msr()
         {
             Disassemble32(0xE121F001);
-            Expect_Code("@@@");
+            Expect_Code("msr\tcpsr,r1");
         }
 
         [Test]
