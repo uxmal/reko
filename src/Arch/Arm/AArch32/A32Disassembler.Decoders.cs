@@ -112,7 +112,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
-                //return;
+                return;
                 var shMask = this.mask << shift;
                 DumpMaskedInstruction(wInstr, shMask);
             }
@@ -140,7 +140,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
-                //return;
+                return;
                 var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
                 DumpMaskedInstruction(wInstr, shMask);
             }
@@ -211,6 +211,31 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private class InstrDecoder2 : Decoder
+        {
+            private Opcode opcode;
+            private ArmVectorData vectorData;
+            private Action<uint, A32Disassembler>[] mutators;
+
+            public InstrDecoder2(Opcode opcode, ArmVectorData iNVALID, Action<uint, A32Disassembler>[] mutators)
+            {
+                this.opcode = opcode;
+                this.vectorData = iNVALID;
+                this.mutators = mutators;
+            }
+
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
+            {
+                for (int i = 0; i < mutators.Length; ++i)
+                {
+                    mutators[i](wInstr, dasm);
+                }
+                return dasm.GenInstruction(opcode, vectorData);
+            }
+        }
+
+
+
         private class CondMaskDecoder : MaskDecoder
         {
             public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)
@@ -252,6 +277,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceMask(uint wInstr)
             {
+                return;
                 var shMask = 0xFu << shift;
                 DumpMaskedInstruction(wInstr, shMask);
             }
@@ -315,6 +341,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             private void TraceMask(uint wInstr)
             {
+                return;
                 var uMask = mask << pos;
                 DumpMaskedInstruction(wInstr, uMask);
             }

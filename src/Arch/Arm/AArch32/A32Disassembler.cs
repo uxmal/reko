@@ -54,22 +54,25 @@ namespace Reko.Arch.Arm.AArch32
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
                 return null;
+            this.state = new DasmState();
             var instr = rootDecoder.Decode(wInstr, this);
-            instr.Address = addr;
-            instr.Length = 4;
             return instr;
         }
 
+        public class DasmState
+        {
+            public List<MachineOperand> ops = new List<MachineOperand>();
+            public bool updateFlags = false;
+            public bool writeback = false;
+            public Opcode shiftOp = Opcode.Invalid;
+            public MachineOperand shiftValue = null;
+            public bool useQ = false;
+            public int? vector_index = null;
+
+        }
         private AArch32Instruction Decode(uint wInstr, Opcode opcode, ArmVectorData vectorData, string format)
         {
-            var ops = new List<MachineOperand>();
-            bool updateFlags = false;
-            bool writeback = false;
-            Opcode shiftOp = Opcode.Invalid;
-            MachineOperand shiftValue = null;
-            bool useQ = false;
-            int? vector_index = null;
-
+            var state = new DasmState();
             for (int i = 0; i < format.Length; ++i)
             {
                 MachineOperand op;
@@ -108,12 +111,12 @@ namespace Reko.Arch.Arm.AArch32
                 case 'q': // bit which determines whether or not to use Qx or Dx registers in SIMD
                     ++i;
                     offset = ReadDecimal(format, ref i);
-                    useQ = bit(wInstr, offset);
+                    state.useQ = bit(wInstr, offset);
                     continue;
                 case 'w': // sets the writeback bit.
                     ++i;
                     offset = ReadDecimal(format, ref i);
-                    writeback = bit(wInstr, offset);
+                    state.writeback = bit(wInstr, offset);
                     continue;
                 
                 case 'I':   // 12-bit encoded immediate at offset 0;
@@ -154,14 +157,14 @@ namespace Reko.Arch.Arm.AArch32
                     op = new RegisterOperand(Registers.GpRegs[imm]);
                     if (isRegisterPair)
                     {
-                        ops.Add(op);
-                        op = new RegisterOperand(Registers.GpRegs [imm+1]);
+                        state.ops.Add(op);
+                        op = new RegisterOperand(Registers.GpRegs[imm + 1]);
                     }
                     break;
                 case 'W':   // "wector" register
                     ++i;
                     imm = ReadBitfields(wInstr, format, ref i);
-                    if (useQ)
+                    if (state.useQ)
                     {
                         if ((imm & 1) == 1)
                             return Invalid();
@@ -188,7 +191,7 @@ namespace Reko.Arch.Arm.AArch32
                         var size = format[i] - '0';
                         ++i;
                         var dt = GetDataType(dom, size);
-                        (op, writeback) = DecodeMemoryAccess(wInstr, memType, shift, dt);
+                        (op, state.writeback) = DecodeMemoryAccess(wInstr, memType, shift, dt);
                     }
                     break;
                 case 'M': // Multiple registers
@@ -237,7 +240,7 @@ namespace Reko.Arch.Arm.AArch32
                     if (PeekAndDiscard('[', format, ref i))
                     {
                         // D13[3] - index into sub-element
-                        vector_index = (int)ReadBitfields(wInstr, format, ref i);
+                        state.vector_index = (int)ReadBitfields(wInstr, format, ref i);
                         Expect(']', format, ref i);
                     }
                     op = new RegisterOperand(Registers.DRegs[offset]);
@@ -252,7 +255,7 @@ namespace Reko.Arch.Arm.AArch32
                     op = ReadImmediate(wInstr, format, ref i);
                     break;
                 case 's':   // use bit 20 to determine if sets flags
-                    updateFlags = ((wInstr >> 20) & 1) != 0;
+                    state.updateFlags = ((wInstr >> 20) & 1) != 0;
                     continue;
                 case 'C': // coprocessor 
                     ++i;
@@ -286,10 +289,10 @@ namespace Reko.Arch.Arm.AArch32
                     if (format[i] == 'i')
                     {
                         int sh;
-                        (shiftOp, sh) = DecodeImmShift(wInstr);
-                        if (shiftOp != Opcode.Invalid)
+                        (state.shiftOp, sh) = DecodeImmShift(wInstr);
+                        if (state.shiftOp != Opcode.Invalid)
                         {
-                            shiftValue = ImmediateOperand.Int32(sh);
+                            state.shiftValue = ImmediateOperand.Int32(sh);
                         }
                     }
                     else if (format[i] == 'R') // rotation as encoded in uxtb / stxb and  friends
@@ -298,17 +301,17 @@ namespace Reko.Arch.Arm.AArch32
                         offset = (int) ReadBitfields(wInstr, format, ref i);
                         if (offset == 0)
                         {
-                            shiftOp = Opcode.Invalid;
+                            state.shiftOp = Opcode.Invalid;
                         }
                         else
                         {
-                            shiftOp = Opcode.ror;
-                            shiftValue = ImmediateOperand.Int32(offset << 3);
+                            state.shiftOp = Opcode.ror;
+                            state.shiftValue = ImmediateOperand.Int32(offset << 3);
                         }
                     }
                     else
                     {
-                        (shiftOp, shiftValue) = DecodeRegShift(wInstr);
+                        (state.shiftOp, state.shiftValue) = DecodeRegShift(wInstr);
                     }
                     continue;
                 case 'B': // Bitfield or Barrier
@@ -323,7 +326,7 @@ namespace Reko.Arch.Arm.AArch32
                         // BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
                         // decoded as lsb,width
                         var lsb = ReadBitfields(wInstr, format, ref i);
-                        ops.Add(ImmediateOperand.Int32((int)lsb));
+                        state.ops.Add(ImmediateOperand.Int32((int)lsb));
                         Expect(';', format, ref i);
                         var msb = ReadBitfields(wInstr, format, ref i);
                         op = ImmediateOperand.Int32((int)(msb - lsb + 1));
@@ -332,18 +335,18 @@ namespace Reko.Arch.Arm.AArch32
                 default:
                     return NotYetImplemented($"Found unknown format character '{format[i]}' in '{format}' while decoding {opcode}.", wInstr);
                 }
-                ops.Add(op);
+                state.ops.Add(op);
             }
             var instr = new AArch32Instruction
             {
                 opcode = opcode,
-                ops = ops.ToArray(),
-                ShiftType = shiftOp,
-                ShiftValue = shiftValue,
-                SetFlags = updateFlags,
-                Writeback = writeback,
+                ops = state.ops.ToArray(),
+                ShiftType = state.shiftOp,
+                ShiftValue = state.shiftValue,
+                SetFlags = state.updateFlags,
+                Writeback = state.writeback,
                 vector_data = vectorData,
-                vector_index = vector_index,
+                vector_index = state.vector_index,
             };
             return instr;
         }
@@ -491,6 +494,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         private static HashSet<uint> seen = new HashSet<uint>();
+        private DasmState state;
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
@@ -528,11 +532,13 @@ namespace Reko.Arch.Arm.AArch32
         /// <param name="format"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        private static uint ReadBitfields(uint wInstr, string format, ref int i)
+        private uint ReadBitfields(uint wInstr, string format, ref int i)
         {
             uint n = 0;
+            string sep = "";
             do
             {
+                sep = ",";
                 int pos = ReadDecimal(format, ref i);
                 Expect(':', format, ref i);
                 int size = ReadDecimal(format, ref i);
@@ -723,6 +729,26 @@ namespace Reko.Arch.Arm.AArch32
                 writeback);
         }
 
+        private AArch32Instruction GenInstruction(Opcode opcode, ArmVectorData vectorData)
+        {
+            var instr = new AArch32Instruction
+            {
+                Address = addr,
+                Length = 4,
+                opcode = opcode,
+                ops = state.ops.ToArray(),
+                ShiftType = state.shiftOp,
+                ShiftValue = state.shiftValue,
+                SetFlags = state.updateFlags,
+                Writeback = state.writeback,
+                vector_data = vectorData,
+                vector_index = state.vector_index,
+            };
+            return instr;
+        }
+
+
+
         private static Decoder Instr(Opcode opcode, string format)
         {
             return new InstrDecoder(opcode, ArmVectorData.INVALID, format);
@@ -733,6 +759,11 @@ namespace Reko.Arch.Arm.AArch32
             return new InstrDecoder(opcode, vec, format);
         }
          
+        private static Decoder Instr(Opcode opcode, params Action<uint, A32Disassembler> [] mutators)
+        {
+            return new InstrDecoder2(opcode, ArmVectorData.INVALID, mutators);
+        }
+
         private static NyiDecoder nyi(string str)
         {
             return new NyiDecoder(str);
