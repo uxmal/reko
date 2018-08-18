@@ -174,7 +174,7 @@ py_unused_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0008(32)
+// LocalsOut: _Py_NoneStruct(32) fp(32) Stack +0008(32)
 
 l10001140:
 	word32 eax_15 = PyArg_ParseTuple(args, 0x1000216C)
@@ -182,6 +182,7 @@ l10001140:
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
+// LocalsOut: _Py_NoneStruct(32)
 
 l10001158:
 	word32 eax_24 = &_Py_NoneStruct

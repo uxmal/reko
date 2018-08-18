@@ -51,7 +51,10 @@ namespace Reko.Core.Expressions
 
         public static Identifier Global(string name, DataType dt)
         {
-            return new Identifier(name, dt, new MemoryStorage());
+            //$HACK: Is there solution which is better than using temporary
+            // storage?
+            var globalStorage = new TemporaryStorage(name, 8000, dt);
+            return new Identifier(name, dt, globalStorage);
         }
 
         public string Name { get; private set; }
