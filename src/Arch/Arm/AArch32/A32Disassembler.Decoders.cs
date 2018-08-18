@@ -211,6 +211,47 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private class InstrDecoder2 : Decoder
+        {
+            private readonly Opcode opcode;
+            private readonly ArmVectorData vectorData;
+            private readonly Action<uint, A32Disassembler>[] mutators;
+
+            public InstrDecoder2(Opcode opcode, ArmVectorData vectorData, Action<uint, A32Disassembler>[] mutators)
+            {
+                this.opcode = opcode;
+                this.vectorData = vectorData;
+                this.mutators = mutators;
+            }
+
+            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
+            {
+                dasm.state.opcode = this.opcode;
+                dasm.state.vectorData = this.vectorData;
+                for (int i = 0; i < mutators.Length; ++i)
+                {
+                    mutators[i](wInstr, dasm);
+                }
+                var instr = dasm.state.MakeInstruction();
+                return instr;
+            }
+        }
+        /*
+         *             var instr = new AArch32Instruction
+            {
+                opcode = opcode,
+                ops = ops.ToArray(),
+                ShiftType = shiftOp,
+                ShiftValue = shiftValue,
+                SetFlags = updateFlags,
+                Writeback = writeback,
+                vector_data = vectorData,
+                vector_index = vector_index,
+            };
+            return instr;
+        }
+*/
+
         private class CondMaskDecoder : MaskDecoder
         {
             public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)

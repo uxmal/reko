@@ -34,10 +34,12 @@ using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
+    using Mutator = System.Action<uint, A32Disassembler>;
+
     public partial class A32Disassembler : DisassemblerBase<AArch32Instruction>
     {
         private static readonly Decoder rootDecoder;
-        private static readonly Decoder invalid; 
+        private static readonly Decoder invalid;
 
         private Arm32Architecture arch;
         private EndianImageReader rdr;
@@ -54,6 +56,7 @@ namespace Reko.Arch.Arm.AArch32
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
                 return null;
+            this.state = new DasmState();
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = addr;
             instr.Length = 4;
@@ -115,7 +118,7 @@ namespace Reko.Arch.Arm.AArch32
                     offset = ReadDecimal(format, ref i);
                     writeback = bit(wInstr, offset);
                     continue;
-                
+
                 case 'I':   // 12-bit encoded immediate at offset 0;
                     op = DecodeImm12(wInstr);
                     break;
@@ -155,7 +158,7 @@ namespace Reko.Arch.Arm.AArch32
                     if (isRegisterPair)
                     {
                         ops.Add(op);
-                        op = new RegisterOperand(Registers.GpRegs [imm+1]);
+                        op = new RegisterOperand(Registers.GpRegs[imm + 1]);
                     }
                     break;
                 case 'W':   // "wector" register
@@ -206,7 +209,7 @@ namespace Reko.Arch.Arm.AArch32
                         {
                             new Bitfield(22, 1), new Bitfield(12, 4)
                         };
-                        var baseReg = (int) Bitfield.ReadFields(baseRegFields, wInstr);
+                        var baseReg = (int)Bitfield.ReadFields(baseRegFields, wInstr);
                         var regs = SBitfield(wInstr, 1, 7);
                         var bitmask = (((1u << regs) - 1u) << baseReg);
                         op = new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, bitmask);
@@ -224,7 +227,7 @@ namespace Reko.Arch.Arm.AArch32
                         op = new RegisterOperand(sr);
                     }
                     else
-                    {  
+                    {
                         // 'S13' = fpu register.
                         offset = (int)ReadBitfields(wInstr, format, ref i);
                         op = new RegisterOperand(Registers.SRegs[offset]);
@@ -245,7 +248,7 @@ namespace Reko.Arch.Arm.AArch32
                 case 'E':   // Endianness
                     ++i;
                     imm = ReadBitfields(wInstr, format, ref i);
-                    op = new EndiannessOperand(imm!=0);
+                    op = new EndiannessOperand(imm != 0);
                     break;
                 case 'i':   // General purpose immediate
                     ++i;
@@ -295,7 +298,7 @@ namespace Reko.Arch.Arm.AArch32
                     else if (format[i] == 'R') // rotation as encoded in uxtb / stxb and  friends
                     {
                         ++i;
-                        offset = (int) ReadBitfields(wInstr, format, ref i);
+                        offset = (int)ReadBitfields(wInstr, format, ref i);
                         if (offset == 0)
                         {
                             shiftOp = Opcode.Invalid;
@@ -352,7 +355,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (bitSize)
             {
-            default:  throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
+            default: throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
             case 8: return ArmVectorData.I8;
             case 16: return ArmVectorData.I16;
             case 32: return ArmVectorData.I32;
@@ -491,6 +494,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         private static HashSet<uint> seen = new HashSet<uint>();
+        private DasmState state;
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
@@ -689,16 +693,16 @@ namespace Reko.Arch.Arm.AArch32
             switch (memType)
             {
             case 'o':   // offset 12 bits
-                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFFF)<<shift);
+                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFFF) << shift);
                 m = null;
                 break;
             case 'i':   // offset 8 bits
-                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFF)<<shift);
+                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFF) << shift);
                 m = null;
                 break;
             case 'h':   // offset split in hi-lo nybbles.
                 offset = Constant.Int32(
-                    (int)(((wInstr >> 4) & 0xF0) | (wInstr & 0x0F))<<shift);
+                    (int)(((wInstr >> 4) & 0xF0) | (wInstr & 0x0F)) << shift);
                 m = null;
                 break;
             case 'x':   // wide shift amt.
@@ -709,19 +713,526 @@ namespace Reko.Arch.Arm.AArch32
             bool preIndex = bit(wInstr, 24);
             bool wback = bit(wInstr, 21);
             bool writeback = !preIndex | wback;
-            return
-                (new MemoryOperand(dtAccess)
-                {
-                    BaseRegister = n,
-                    Offset = offset,
-                    Index = m,
-                    Add = add,
-                    PreIndex = preIndex,
-                    ShiftType = shiftType,
-                    Shift = shiftAmt,
-                },
-                writeback);
+            var mem = new MemoryOperand(dtAccess)
+            {
+                BaseRegister = n,
+                Offset = offset,
+                Index = m,
+                Add = add,
+                PreIndex = preIndex,
+                ShiftType = shiftType,
+                Shift = shiftAmt,
+            };
+            return (mem, writeback);
         }
+
+        public class DasmState
+        {
+            public Opcode opcode;
+            public List<MachineOperand> ops;
+            public bool updateFlags = false;
+            public bool writeback = false;
+            public Opcode shiftOp = Opcode.Invalid;
+            public MachineOperand shiftValue = null;
+            public bool useQ = false;
+            public int? vector_index = null;
+            public ArmVectorData vectorData;
+
+            public void Clear() {
+                ops.Clear();
+                updateFlags = false;
+                writeback = false;
+                shiftOp = Opcode.Invalid;
+                shiftValue = null;
+                useQ = false;
+                vector_index = null;
+                vectorData = ArmVectorData.INVALID;
+            }
+
+            public void Invalid()
+            {
+                Clear();
+                opcode = Opcode.Invalid;
+            }
+
+            public AArch32Instruction MakeInstruction()
+            {
+                var instr = new AArch32Instruction
+                {
+                    opcode = opcode,
+                    ops = ops.ToArray(),
+                    ShiftType = shiftOp,
+                    ShiftValue = shiftValue,
+                    SetFlags = updateFlags,
+                    Writeback = writeback,
+                    vector_data = vectorData,
+                    vector_index = vector_index,
+                };
+                return instr;
+            }
+        }
+
+
+        private Action<uint, A32Disassembler> vW(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.vectorData = VectorElementUntypedReverse(imm);
+            };
+        }
+
+        private Action<uint, A32Disassembler> vi(int offset)
+        {
+            return (u, d) => { d.state.vectorData = VectorElementInteger(offset); };
+        }
+
+        private Mutator vf(int offset)
+        {
+            return (u, d) => { d.state.vectorData = VectorElementFloat(offset); };
+        }
+
+        // bit which determines whether or not to use Qx or Dx registers in SIMD
+        private Mutator q(int offset)
+        {
+            return (u, d) => { d.state.useQ = bit(u, offset); };
+        }
+
+        // sets the writeback bit.
+        private Mutator w(int offset)
+        {
+            return (u, d) => { d.state.writeback = bit(u, offset); };
+        }
+
+        // 12-bit encoded immediate at offset 0;
+        private Mutator I =>
+            (u, d) => { d.state.ops.Add(DecodeImm12(u)); };
+
+        // 24-bits at offset 0.
+        private Mutator J =>
+            (u, d) =>
+            {
+                var offset = 8 + (((int)u << 8) >> 6);
+                d.state.ops.Add(AddressOperand.Create(addr + offset));
+            };
+
+        // 24-bits at offset 0.
+        private Mutator V =>
+            (u, d) =>
+            {
+                var imm = u & 0x00FFFFFF;
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+            };
+
+        // 24-bits + extra H bit
+        private Mutator X =>
+            (u, d) =>
+            {
+                var offset = 8 + (((int)u << 8) >> 6);
+                offset |= ((int)u >> 23) & 2;
+                d.state.ops.Add(AddressOperand.Create(addr + offset));
+            };
+
+        // immediate low 12 bits + extra 4 bits
+        private Mutator Y =>
+            (u, d) =>
+            {
+                var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+            };
+
+        // immediate low 12 bits + extra 4 bits
+        private Mutator Yh =>
+            (u, d) =>
+            {
+                var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
+                d.state.ops.Add(ImmediateOperand.Word16((ushort)imm));
+            };
+
+        // register at a 4-bit multiple offset
+        private Mutator r(int offset)
+        {
+            offset *= 4;
+            return (u, d) => {
+                var imm = bitmask(u, offset, 0xF);
+                d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
+            };
+        }
+
+        // register pair ]
+        private Mutator rp(int offset)
+        {
+            offset *= 4;
+            return (u, d) =>
+            {
+                var imm = bitmask(u, offset, 0xF);
+                if ((imm & 1) != 0)
+                {
+                    d.state.Invalid();
+                }
+                else
+                {
+                    d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
+                    d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm + 1]));
+                }
+            };
+        }
+
+        // Vector register
+        private Mutator W(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                if (d.state.useQ)
+                {
+                    if ((imm & 1) == 1)
+                        d.state.Invalid();
+                    else
+                        d.state.ops.Add(new RegisterOperand(Registers.QRegs[imm >> 1]));
+                }
+                else
+                {
+                    d.state.ops.Add(new RegisterOperand(Registers.DRegs[imm]));
+                }
+            };
+        }
+
+
+        private (MemoryOperand,bool) MakeMemoryOperand(
+            uint wInstr, 
+            RegisterStorage n,
+            RegisterStorage m,
+            Constant offset, 
+            Opcode shiftType,
+            int shiftAmt,
+            PrimitiveType dt)
+        { 
+            bool add = bit(wInstr, 23);
+            bool preIndex = bit(wInstr, 24);
+            bool wback = bit(wInstr, 21);
+            bool writeback = !preIndex | wback;
+            var mem = new MemoryOperand(dt)
+            {
+                BaseRegister = n,
+                Offset = offset,
+                Index = m,
+                Add = add,
+                PreIndex = preIndex,
+                ShiftType = shiftType,
+                Shift = shiftAmt,
+            };
+            return (mem, writeback);
+
+
+        }
+
+        // 12-bit offset
+        private Mutator Mo(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var offset = Constant.Int32((int)bitmask(u, 0, 0xFFF));
+                MemoryOperand mem;
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private Mutator M_(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var m = Registers.GpRegs[bitmask(u, 0, 0x0F)];
+                MemoryOperand mem;
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, m, null, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        // offset split in hi-lo nybbles.
+        private Mutator Mh(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var offset = Constant.Int32(
+                    (int)(((u >> 4) & 0xF0) | (u & 0x0F)));
+                MemoryOperand mem;
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private Mutator Mx(PrimitiveType dt)
+        {
+            return (wInstr, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(wInstr, 16, 0xF)];
+                var m = Registers.GpRegs[bitmask(wInstr, 0, 0x0F)];
+                int shiftAmt;
+                Opcode shiftType = Opcode.Invalid;
+                (shiftType, shiftAmt) = DecodeImmShift(wInstr);
+                MemoryOperand mem;
+                (mem, d.state.writeback) = MakeMemoryOperand(wInstr, n, m, null, shiftType, shiftAmt, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private Mutator Mi(int shift, PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var offset = Constant.Int32((int)bitmask(u, 0, 0xFF) << shift);
+                MemoryOperand mem;
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private PrimitiveType w1 => PrimitiveType.Byte;
+        private PrimitiveType w2 => PrimitiveType.Word16;
+        private PrimitiveType w4 => PrimitiveType.Word32;
+        private PrimitiveType w8 => PrimitiveType.Word64;
+
+        //case '[':
+        //    {
+        //        int shift = 0;
+        //        ++i;
+        //        var memType = format[i];
+        //        ++i;
+        //        if (PeekAndDiscard('<', format, ref i))
+        //        {
+        //            shift = ReadDecimal(format, ref i);
+        //        }
+        //        Expect(':', format, ref i);
+        //        var dom = format[i];
+        //        ++i;
+        //        var size = format[i] - '0';
+        //        ++i;
+        //        var dt = GetDataType(dom, size);
+        //        (op, writeback) = DecodeMemoryAccess(u, memType, shift, dt);
+        //    }
+        //    break;
+
+
+        // Multiple registers
+        private Mutator Mr(int pos, int size) {
+            var bitfields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfields, u);
+                d.state.ops.Add(new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (ushort)imm));
+            };
+        }
+
+        private static Bitfield[] baseRegFields = new[]
+{
+                            new Bitfield(22, 1), new Bitfield(12, 4)
+                        };
+
+        private Mutator Md(int pos, int size)
+        {
+            var bitfields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfields, u);
+                var baseReg = (int)Bitfield.ReadFields(baseRegFields, u);
+                var regs = SBitfield(u, 1, 7);
+                var bitmask = (((1u << regs) - 1u) << baseReg);
+                d.state.ops.Add(new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, bitmask));
+            };
+        }
+
+        private Mutator SR =>
+            (u, d) =>
+            {
+                var sr = bit(u, 22) ? Registers.spsr : Registers.cpsr;
+                d.state.ops.Add(new RegisterOperand(sr));
+            };
+    
+        // Single precision register
+        private Mutator S(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.SRegs[iReg]));
+            };
+        }
+
+        private Mutator D(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.DRegs[iReg]));
+            };
+        }
+
+        //if (PeekAndDiscard('[', format, ref i))
+        //{
+        //    // D13[3] - index into sub-element
+        //    vector_index = (int)ReadBitfields(u, format, ref i);
+        //    Expect(']', format, ref i);
+        //}
+
+        // Endianness
+        private Mutator E(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new EndiannessOperand(imm != 0));
+            };
+        }
+
+
+        //case 'i':   // General purpose immediate
+        //    ++i;
+        //    op = ReadImmediate(u, format, ref i);
+        //    break;
+
+        // use bit 20 to determine if sets flags
+        private Mutator s =>
+            (u, d) => { d.state.updateFlags = ((u >> 20) & 1) != 0; };
+
+
+        // Coprocessor #
+        private Mutator CP(int n)
+        {
+            return (u, d) =>
+            {
+                d.state.ops.Add(Coprocessor(u, n));
+            };
+        }
+
+        // Coprocessor register
+        private Mutator CR(int offset)
+        {
+            return (u, d) => { d.state.ops.Add(CoprocessorRegister(u, offset)); };
+        }
+
+        // '>i' immediate shift
+        private Mutator Shi()
+        {
+            return (u, d) =>
+            {
+                int sh;
+                (d.state.shiftOp, sh) = DecodeImmShift(u);
+                if (d.state.shiftOp != Opcode.Invalid)
+                {
+                    d.state.shiftValue = ImmediateOperand.Int32(sh);
+                }
+            };
+        }
+
+        // >R:  rotation as encoded in uxtb / stxb and  friends
+        private Mutator ShR(int pos, int size)
+        {
+            var bitfields = new Bitfield[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var offset = (int)Bitfield.ReadFields(bitfields, u);
+                if (offset == 0)
+                {
+                    d.state.shiftOp = Opcode.Invalid;
+                }
+                else
+                {
+                    d.state.shiftOp = Opcode.ror;
+                    d.state.shiftValue = ImmediateOperand.Int32(offset << 3);
+                }
+            };
+        }
+
+        // >r : register shift
+        private Mutator Shr =>
+            (u, d) => { (d.state.shiftOp, d.state.shiftValue) = DecodeRegShift(u); };
+
+
+        // Ba => barrier
+        private Mutator Ba(int pos, int size)
+        {
+            var bitfield = new[] { new Bitfield(pos, size) };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfield, u);
+                d.state.ops.Add(new BarrierOperand((BarrierOption)imm));
+            };
+        }
+
+        // BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
+        // decoded as lsb,width
+        private Mutator B(int lsbPos, int lsbSize, int msbPos, int msbSize)
+        {
+            var lsbField = new[]
+            {
+                new Bitfield(lsbPos, lsbSize),
+            };
+            var msbField = new[]
+            {
+                new Bitfield(msbPos, msbSize)
+            };
+            return (u, d) =>
+            {
+                var lsb = Bitfield.ReadFields(lsbField, u);
+                var msb = Bitfield.ReadFields(lsbField, u);
+                d.state.ops.Add(ImmediateOperand.Int32((int)lsb));
+                d.state.ops.Add(ImmediateOperand.Int32((int)(msb - lsb + 1)));
+            };
+         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private static Decoder Instr(Opcode opcode, string format)
         {
@@ -1399,7 +1910,7 @@ namespace Reko.Arch.Arm.AArch32
                 DataProcessingImmediate);
 
             var LdrLiteral = Instr(Opcode.ldr, "r3,[o:w4]");
-            var LdrbLiteral = Instr(Opcode.ldrb, "r3,[0:w1]");
+            var LdrbLiteral = Instr(Opcode.ldrb, "r3,[o:w1]");
             var StrImm = Instr(Opcode.str, "r3,[o:w4]");
             var LdrImm = Instr(Opcode.ldr, "r3,[o:w4]");
             var StrbImm = Instr(Opcode.strb, "r3,[o:w1]");
