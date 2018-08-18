@@ -9,7 +9,7 @@ fn00401000_entry:
 // DataOut: bl ebp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -000C(32) Local -0018(32)
+// LocalsOut: exported_critical_section(32) exported_int(32) fp(32) Local -000C(32) Local -0018(32)
 
 l00401000:
 	InitializeCriticalSection(&exported_critical_section)
