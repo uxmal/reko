@@ -217,7 +217,7 @@ namespace Reko.Arch.Arm.AArch32
             private readonly ArmVectorData vectorData;
             private readonly Action<uint, A32Disassembler>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, ArmVectorData vectorData, Action<uint, A32Disassembler>[] mutators)
+            public InstrDecoder2(Opcode opcode, ArmVectorData vectorData, params Action<uint, A32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.vectorData = vectorData;
@@ -313,9 +313,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private class MovDecoder : InstrDecoder
+        private class MovDecoder : InstrDecoder2
         {
-            public MovDecoder(Opcode opcode, string format) : base(opcode, ArmVectorData.INVALID, format) { }
+            public MovDecoder(Opcode opcode, params Action<uint,A32Disassembler> [] mutators) : base(opcode, ArmVectorData.INVALID, mutators) { }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
