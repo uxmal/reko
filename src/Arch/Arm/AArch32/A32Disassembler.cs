@@ -230,6 +230,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
+            return Invalid();
             if (!seen.Contains(wInstr))
             {
                 seen.Add(wInstr);
