@@ -21,6 +21,7 @@
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
@@ -188,64 +189,101 @@ namespace Reko.Arch.Arm.AArch32
                 writer.WriteAddress($"${aop.Address}", aop.Address);
                 break;
             case MemoryOperand mem:
-                writer.WriteChar('[');
-                writer.WriteString(mem.BaseRegister.Name);
-                if (this.Writeback && !mem.PreIndex)
+                if (mem.BaseRegister == Registers.pc)
                 {
-                    // Post-indexed
-                    writer.WriteString("]");
-                    if (mem.Offset != null && !mem.Offset.IsIntegerZero)
-                    {
-                        writer.WriteChar(',');
-                        if (!mem.Add)
-                            writer.WriteChar('-');
-                        writer.WriteString("#&");
-                        writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
-                    }
-                    else if (mem.Index != null)
-                    {
-                        writer.WriteChar(',');
-                        if (!mem.Add)
-                            writer.WriteChar('-');
-                        writer.WriteString(mem.Index.Name);
-                    }
+                    RenderPcRelativeAddressAnnotation(mem, writer, options);
                 }
                 else
                 {
-                    if (mem.Offset != null && !mem.Offset.IsIntegerZero)
-                    {
-                        writer.WriteString(",");
-                        if (!mem.Add)
-                            writer.WriteChar('-');
-                        writer.WriteString("#&");
-                        writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
-                    }
-                    else if (mem.Index != null)
-                    {
-                        writer.WriteChar(',');
-                        if (!mem.Add)
-                            writer.WriteChar('-');
-                        writer.WriteString(mem.Index.Name);
-                        if (mem.ShiftType != Opcode.Invalid)
-                        {
-                            writer.WriteChar(',');
-                            writer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());
-                            if (this.ShiftType != Opcode.rrx)
-                            {
-                                writer.WriteFormat(" #{0}", mem.Shift);
-                            }
-                        }
-                    }
-                    writer.WriteChar(']');
-                    if (this.Writeback)
-                    {
-                        writer.WriteChar('!');
-                    }
+                    WriteMemoryOperand(mem, writer);
                 }
                 break;
             default:
                 op.Write(writer, options);
                 break;
+            }
+        }
+
+        private void WriteMemoryOperand(MemoryOperand mem, MachineInstructionWriter writer)
+        {
+            writer.WriteChar('[');
+            writer.WriteString(mem.BaseRegister.Name);
+            if (this.Writeback && !mem.PreIndex)
+            {
+                // Post-indexed
+                writer.WriteString("]");
+                if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+                {
+                    writer.WriteChar(',');
+                    if (!mem.Add)
+                        writer.WriteChar('-');
+                    writer.WriteString("#&");
+                    writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
+                }
+                else if (mem.Index != null)
+                {
+                    writer.WriteChar(',');
+                    if (!mem.Add)
+                        writer.WriteChar('-');
+                    writer.WriteString(mem.Index.Name);
+                }
+            }
+            else
+            {
+                if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+                {
+                    writer.WriteString(",");
+                    if (!mem.Add)
+                        writer.WriteChar('-');
+                    writer.WriteString("#&");
+                    writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
+                }
+                else if (mem.Index != null)
+                {
+                    writer.WriteChar(',');
+                    if (!mem.Add)
+                        writer.WriteChar('-');
+                    writer.WriteString(mem.Index.Name);
+                    if (mem.ShiftType != Opcode.Invalid)
+                    {
+                        writer.WriteChar(',');
+                        writer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());
+                        if (this.ShiftType != Opcode.rrx)
+                        {
+                            writer.WriteFormat(" #{0}", mem.Shift);
+                        }
+                    }
+                }
+                writer.WriteChar(']');
+                if (this.Writeback)
+                {
+                    writer.WriteChar('!');
+                }
+            }
+        }
+
+        private void RenderPcRelativeAddressAnnotation(MemoryOperand mem, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            int offset = 8;     // PC-relative addressing has a hidden 8-byte offset.
+            if (mem.Offset != null)
+                offset += mem.Offset.ToInt32();
+            var addr = this.Address + offset;
+            if (mem.Index == null &&
+                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+            {
+                writer.WriteChar('[');
+                writer.WriteAddress(addr.ToString(), addr);
+                writer.WriteChar(']');
+
+                var sr = new StringRenderer();
+                WriteMemoryOperand(mem, sr);
+                var str = sr.ToString();
+                writer.AddAnnotation(str);
+            }
+            else
+            {
+                WriteMemoryOperand(mem, writer);
+                writer.AddAnnotation(addr.ToString());
             }
         }
 
