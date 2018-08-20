@@ -939,9 +939,21 @@ namespace Reko.Arch.Arm.AArch32
                 Shift = shiftAmt,
             };
             return (mem, writeback);
-
-
         }
+
+        // Simple base register access.
+        private static Mutator M(int offset, PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var iReg = bitmask(u, offset * 4, 0xF);
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                MemoryOperand mem;
+                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, null, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
 
         // 12-bit offset
         private static Mutator Mo(PrimitiveType dt)
@@ -1428,7 +1440,9 @@ namespace Reko.Arch.Arm.AArch32
             var Ldrexh = Instr(Opcode.ldaexh, x(""));
 
             var SynchronizationPrimitives = new MaskDecoder(23, 1,
-                invalid,
+                Mask(22, 1,
+                    Instr(Opcode.swp, r(3), r(0), M(4,w4)),     //$TODO: deprecated in ARMv6 and later.
+                    Instr(Opcode.swpb, r(3), r(0), M(4,w1))),   //$TODO: deprecated in ARMv6 and later.
                 new MaskDecoder(20, 7,  // type || L
                     new MaskDecoder(8, 3,   // ex ord
                         Stl,

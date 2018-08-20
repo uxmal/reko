@@ -976,7 +976,7 @@ void RewriteB(bool link)
             var intrinsic = host.PseudoProcedure(fnName, type,
                 Operand(Src1()),
                 Operand(Src2()));
-            m.Assign(dst, m.Fn(intrinsic));
+            m.Assign(dst, intrinsic);
         }
 
 void EmitUnitTest()
