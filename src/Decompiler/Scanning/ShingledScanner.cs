@@ -176,12 +176,12 @@ namespace Reko.Scanning
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             var delaySlot = RtlClass.None;
-            var rewriterPool = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
+            var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
                 var addr = addrStart + a;
-                var dasm = GetRewriter(addr, rewriterPool);
+                var dasm = GetRewriter(addr, rewriterCache);
                 if (!dasm.MoveNext())
                 {
                     AddEdge(G, Bad, addr);
@@ -268,6 +268,7 @@ namespace Reko.Scanning
                 {
                     AddInstruction(i);
                 }
+                SaveRewriter(addr + i.Length, dasm, rewriterCache);
                 eventListener.ShowProgress("Shingle scanning", sr.Instructions.Count, (int)workToDo);
             }
             return y;
@@ -360,14 +361,33 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
         {
-            var rdr = program.CreateImageReader(addr);
-            var arch = program.Architecture;
-            var rw = arch.CreateRewriter(
-                program.CreateImageReader(addr), 
-                arch.CreateProcessorState(),
-                storageBinder,
-                this.host);
-            return rw.GetEnumerator();
+            if (true || !pool.TryGetValue(addr, out var e))
+            {
+                var rdr = program.CreateImageReader(addr);
+                var arch = program.Architecture;
+                var rw = arch.CreateRewriter(
+                    program.CreateImageReader(addr),
+                    arch.CreateProcessorState(),
+                    storageBinder,
+                    this.host);
+                return rw.GetEnumerator();
+            }
+            else
+            {
+                pool.Remove(addr);
+                return e;
+            }
+        }
+
+        private void SaveRewriter(
+            Address addr,
+            IEnumerator<RtlInstructionCluster> e,
+            IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
+        {
+            if (!pool.ContainsKey(addr))
+            {
+                pool.Add(addr, e);
+            }
         }
 
         public DiGraph<RtlBlock> BuildIcfg(HashSet<Address> deadNodes)
