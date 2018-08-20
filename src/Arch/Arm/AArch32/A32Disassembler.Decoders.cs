@@ -69,6 +69,7 @@ namespace Reko.Arch.Arm.AArch32
 
             protected void DumpMaskedInstruction(uint wInstr, uint shMask)
             {
+                return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -191,31 +192,10 @@ namespace Reko.Arch.Arm.AArch32
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
-            private readonly ArmVectorData vec;
-            private readonly string format;
-
-            public InstrDecoder(Opcode opcode, ArmVectorData vec, string format)
-            {
-                this.opcode = opcode;
-                this.vec = vec;
-                this.format = format;
-            }
-
-            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
-            {
-                if (format == null)
-                    return dasm.NotYetImplemented($"Format missing for ARM instruction {opcode}.", wInstr);
-                return dasm.Decode(wInstr, opcode, vec, format);
-            }
-        }
-
-        private class InstrDecoder2 : Decoder
-        {
-            private readonly Opcode opcode;
             private readonly ArmVectorData vectorData;
-            private readonly Action<uint, A32Disassembler>[] mutators;
+            private readonly Func<uint, A32Disassembler, bool>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, ArmVectorData vectorData, params Action<uint, A32Disassembler>[] mutators)
+            public InstrDecoder(Opcode opcode, ArmVectorData vectorData, params Func<uint, A32Disassembler, bool>[] mutators)
             {
                 this.opcode = opcode;
                 this.vectorData = vectorData;
@@ -228,7 +208,10 @@ namespace Reko.Arch.Arm.AArch32
                 dasm.state.vectorData = this.vectorData;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
-                    mutators[i](wInstr, dasm);
+                    if (!mutators[i](wInstr, dasm))
+                    {
+                        break;
+                    }
                 }
                 var instr = dasm.state.MakeInstruction();
                 return instr;
@@ -296,9 +279,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private class MovDecoder : InstrDecoder2
+        private class MovDecoder : InstrDecoder
         {
-            public MovDecoder(Opcode opcode, params Action<uint,A32Disassembler> [] mutators) : base(opcode, ArmVectorData.INVALID, mutators) { }
+            public MovDecoder(Opcode opcode, params Func<uint,A32Disassembler,bool> [] mutators) : base(opcode, ArmVectorData.INVALID, mutators) { }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {

@@ -1428,5 +1428,24 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__set_bigendian(true)");
         }
+
+        [Test]
+        public void ArmRw_pop_pc()
+        {
+            BuildTest(0xE49DF004);  //  pop pc
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|sp = sp + 4",
+                "2|T--|return (0,0)");
+        }
+
+        [Test]
+        public void ArmRw_switch()
+        {
+            BuildTest(0xE796F104);    // ldr pc,[r6,r4, lsl #2]
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto Mem0[r6 + (r4 << 2):word32]");
+        }
     }
 }

@@ -797,7 +797,12 @@ void RewriteB(bool link)
                         }
                         else if (mop.Index != null)
                         {
-                            var idx = Reg(mop.Index);
+                            Expression idx = Reg(mop.Index);
+                            if (mop.ShiftType != Opcode.Invalid)
+                            {
+                                var sh = m.Int32(mop.Shift);
+                                idx = MaybeShiftExpression(idx, sh, mop.ShiftType);
+                            }
                             ea = mop.Add
                                 ? m.IAdd(ea, idx)
                                 : m.ISub(ea, idx);

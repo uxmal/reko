@@ -261,9 +261,22 @@ namespace Reko.Arch.Arm.AArch32
             if (!mem.PreIndex && instr.Writeback)
             {
                 // Post-index operand.
+                var baseReg = binder.EnsureRegister(mem.BaseRegister);
+                if (isJump && instr.IsSinglePop())
+                {
+                    //$TODO: this is a cheat; we could be popping
+                    // something other than the LR (or continuation)
+                    // of this procedure. That requires more advanced 
+                    // analyses than Reko can manage presently.
+                    rtlClass = instr.condition == ArmCondition.AL
+                        ? RtlClass.Transfer
+                        : RtlClass.ConditionalTransfer;
+                    m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
+                    m.Return(0, 0);
+                    return;
+                }
                 var tmp = binder.CreateTemporary(dtDst);
                 m.Assign(tmp, src);
-                var baseReg = binder.EnsureRegister(mem.BaseRegister);
                 m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
                 src = tmp;
             }
@@ -640,8 +653,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteStm(bool add, bool updateAfter)
         {
-            var rSrc = this.Operand(Dst(), PrimitiveType.Word32, true);
             var regs = ((MultiRegisterOperand)Src1()).GetRegisters().ToArray();
+            if (regs.Length == 0)
+            {
+                Invalid();
+                return;
+            }
+            var rSrc = this.Operand(Dst(), PrimitiveType.Word32, true);
             int regSize = regs[0].DataType.Size;
             int totalRegsize = regs.Length * regSize;
             int offset;

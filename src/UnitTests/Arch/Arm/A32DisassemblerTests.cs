@@ -1187,8 +1187,15 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDis_swpb()
         {
-            Disassemble32(0xE1409190);  // swpb sb, r0, [r0]
+            Disassemble32(0xE1409190);
             Expect_Code("swpb\tr9,r0,[r0]");
+        }
+
+        [Test]
+        public void ArmDis_msr_imm()
+        {
+            Disassemble32(0xA36A6BDD);
+            Expect_Code("msrge\tspsr,#&BDD");
         }
     }
 }
