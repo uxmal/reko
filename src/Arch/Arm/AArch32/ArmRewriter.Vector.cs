@@ -289,7 +289,8 @@ namespace Reko.Arch.Arm.AArch32
             var dstType = Dst().Width;
             var srcType = Src1().Width;
             var srcElemSize = VectorElementDataType(elemType);
-            var celemSrc = srcType.BitSize / srcElemSize.BitSize;
+            //$BUG: some instructions are returned with srcElemnSize == 0!
+            var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = string.Format(fnNameFormat, VectorElementType(elemType));

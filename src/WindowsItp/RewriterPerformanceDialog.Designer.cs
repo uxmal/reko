@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.lblTime = new System.Windows.Forms.Label();
+            this.lblDasm = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblRw = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -45,14 +46,14 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // lblTime
+            // lblDasm
             // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(95, 61);
-            this.lblTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(0, 13);
-            this.lblTime.TabIndex = 2;
+            this.lblDasm.AutoSize = true;
+            this.lblDasm.Location = new System.Drawing.Point(12, 90);
+            this.lblDasm.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDasm.Name = "lblDasm";
+            this.lblDasm.Size = new System.Drawing.Size(0, 13);
+            this.lblDasm.TabIndex = 2;
             // 
             // textBox1
             // 
@@ -71,14 +72,23 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Disassemble this many bytes:";
             // 
+            // lblRw
+            // 
+            this.lblRw.AutoSize = true;
+            this.lblRw.Location = new System.Drawing.Point(120, 90);
+            this.lblRw.Name = "lblRw";
+            this.lblRw.Size = new System.Drawing.Size(0, 13);
+            this.lblRw.TabIndex = 5;
+            // 
             // RewriterPerformanceDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(296, 312);
+            this.Controls.Add(this.lblRw);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.lblTime);
+            this.Controls.Add(this.lblDasm);
             this.Controls.Add(this.button1);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
@@ -96,8 +106,9 @@
 
         #endregion
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.Label lblDasm;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblRw;
     }
 }

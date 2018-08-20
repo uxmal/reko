@@ -69,6 +69,7 @@ namespace Reko.Arch.Arm.AArch32
 
             protected void DumpMaskedInstruction(uint wInstr, uint shMask)
             {
+                return; //$DEBUG
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -112,7 +113,6 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
-                //return;
                 var shMask = this.mask << shift;
                 DumpMaskedInstruction(wInstr, shMask);
             }
@@ -140,7 +140,6 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
-                //return;
                 var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
                 DumpMaskedInstruction(wInstr, shMask);
             }

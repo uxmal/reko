@@ -775,13 +775,28 @@ case ARM_OP_SYSREG:
                         if (mop.Index != null)
                         {
                             var ireg = Reg(mop.Index);
-                            if (mop.ShiftType == Opcode.lsl)
+                            //$REVIEW: does it even make sense 
+                            // to translate rotates / right-shifts?
+                            switch (mop.ShiftType)
                             {
+                            case Opcode.Invalid:
+                                ea = ireg;
+                                break;
+                            case Opcode.lsl:
                                 ea = m.IAdd(ea, m.IMul(ireg, Constant.Int32(1 << mop.Shift)));
-                            }
-                            else
-                            {
-                                //$TODO: handle these (unlikely) cases!
+                                break;
+                            case Opcode.lsr:
+                                ea = m.IAdd(ea, m.Shr(ireg, Constant.Int32(mop.Shift)));
+                                break;
+                            case Opcode.asr:
+                                ea = m.IAdd(ea, m.Sar(ireg, Constant.Int32(mop.Shift)));
+                                break;
+                            case Opcode.ror:
+                                var ix = host.PseudoProcedure(PseudoProcedure.Ror, ireg.DataType, ireg, Constant.Int32(mop.Shift));
+                                ea = m.IAdd(ea, ix);
+                                break;
+                            case Opcode.rrx:
+                                //$TODO: handle this (very unlikely) case!
                                 throw new NotImplementedException();
                             }
                         }
