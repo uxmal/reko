@@ -277,7 +277,12 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 var tmp = binder.CreateTemporary(dtDst);
                 m.Assign(tmp, src);
-                m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
+                Expression ea = baseReg;
+                if (mem.Offset != null)
+                {
+                    ea = m.IAdd(baseReg, mem.Offset);
+                }
+                m.Assign(baseReg, ea);
                 src = tmp;
             }
             if (isJump)
@@ -438,6 +443,10 @@ namespace Reko.Arch.Arm.AArch32
                 if (Src1() is RegisterOperand ropSrc && ropSrc.Register == Registers.lr)
                 {
                     m.Return(0, 0);
+                }
+                else if (Src1() is ImmediateOperand imm)
+                {
+                    m.Goto(arch.MakeAddressFromConstant(imm.Value));
                 }
                 else
                 {

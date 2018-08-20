@@ -789,7 +789,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("cps");
         }
 
-
         [Test]
         public void ArmDasm_dmb()
         {
@@ -1056,21 +1055,21 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xE1C722D8);
             Expect_Code("ldrd\tr2,r3,[r7,#&28]");
         }
-        
+
         [Test]
         public void ArmDasm_ldrht()
         {
             Disassemble32(0xE0FD52B4);
             Expect_Code("ldrht\tr5,[sp],#&24");
         }
-        
+
         [Test]
         public void ArmDasm_ldrt()
         {
             Disassemble32(0x44340000);
             Expect_Code("ldrtmi\tr0,[r4]");
         }
-        
+
         [Test]
         public void ArmDasm_strd_r3()
         {
@@ -1084,14 +1083,14 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xE0E051B0);
             Expect_Code("strht\tr5,[r0],#&10");
         }
-        
+
         [Test]
         public void ArmDasm_sxtab()
         {
             Disassemble32(0xE6A55078);
             Expect_Code("sxtab\tr5,r5,r8");
         }
-        
+
         [Test]
         public void ArmDasm_sxtah()
         {
@@ -1105,42 +1104,42 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xEE377B20);
             Expect_Code("vadd.f64\td7,d7,d16");
         }
-        
+
         [Test]
         public void ArmDasm_vdiv_f64()
         {
             Disassemble32(0xEE817BA0);
             Expect_Code("vdiv.f64\td7,d17,d16");
         }
-        
+
         [Test]
         public void ArmDasm_vmla()
         {
             Disassemble32(0xEE476A86);
             Expect_Code("vmla.f32\ts13,s15,s12");
         }
-        
+
         [Test]
         public void ArmDasm_EE017BE0()
         {
             Disassemble32(0xEE017BE0);
             Expect_Code("vmls.f64\td7,d17,d16");
         }
-        
+
         [Test]
         public void ArmDasm_vmov_i32()
         {
             Disassemble32(0xEE102B90);
             Expect_Code("vmov.i32\tr2,d16[0]");
         }
-        
+
         [Test]
         public void ArmDasm_vmvn_imm()
         {
             Disassemble32(0xF2C04077);
             Expect_Code("vmvn.i32\tq10,#7");
         }
- 
+
         [Test]
         public void ArmDasm_vnmls_f32()
         {

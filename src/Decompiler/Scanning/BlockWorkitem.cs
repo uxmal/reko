@@ -132,7 +132,6 @@ namespace Reko.Scanning
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
-
                 if (!ri.Accept(this))
                 {
                     return false;

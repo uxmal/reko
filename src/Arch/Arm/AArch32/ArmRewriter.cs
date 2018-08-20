@@ -80,7 +80,6 @@ namespace Reko.Arch.Arm.AArch32
                 this.rtlClass = RtlClass.Linear;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
-
                 // Most instructions have a conditional mode of operation.
                 //$TODO: make sure non-conditional instructions are handled correctly here.
                 ConditionalSkip(false);

@@ -210,6 +210,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     if (!mutators[i](wInstr, dasm))
                     {
+                        dasm.state.Invalid();
                         break;
                     }
                 }
