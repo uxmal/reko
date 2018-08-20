@@ -233,9 +233,12 @@ namespace Reko.Arch.Arm.AArch32
                     mutators[i](wInstr, dasm);
                 }
                 var instr = dasm.state.MakeInstruction();
+                instr.Address = dasm.addr;
+                instr.Length = 4;
                 return instr;
             }
         }
+
         private class CondMaskDecoder : MaskDecoder
         {
             public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)

@@ -63,6 +63,7 @@ namespace Reko.Arch.Arm.AArch32
 
         public class DasmState
         {
+            public Opcode opcode;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public bool updateFlags = false;
             public bool writeback = false;
@@ -70,8 +71,43 @@ namespace Reko.Arch.Arm.AArch32
             public MachineOperand shiftValue = null;
             public bool useQ = false;
             public int? vector_index = null;
+            public ArmVectorData vectorData;
 
+            public void Clear()
+            {
+                ops.Clear();
+                updateFlags = false;
+                writeback = false;
+                shiftOp = Opcode.Invalid;
+                shiftValue = null;
+                useQ = false;
+                vector_index = null;
+                vectorData = ArmVectorData.INVALID;
+            }
+
+            public void Invalid()
+            {
+                Clear();
+                opcode = Opcode.Invalid;
+            }
+
+            public AArch32Instruction MakeInstruction()
+            {
+                var instr = new AArch32Instruction
+                {
+                    opcode = opcode,
+                    ops = ops.ToArray(),
+                    ShiftType = shiftOp,
+                    ShiftValue = shiftValue,
+                    SetFlags = updateFlags,
+                    Writeback = writeback,
+                    vector_data = vectorData,
+                    vector_index = vector_index,
+                };
+                return instr;
+            }
         }
+
         private AArch32Instruction Decode(uint wInstr, Opcode opcode, ArmVectorData vectorData, string format)
         {
             var state = new DasmState();
@@ -159,7 +195,7 @@ namespace Reko.Arch.Arm.AArch32
                     op = new RegisterOperand(Registers.GpRegs[imm]);
                     if (isRegisterPair)
                     {
-                        ops.Add(op);
+                        state.ops.Add(op);
                         op = new RegisterOperand(Registers.GpRegs[imm + 1]);
                     }
                     break;
@@ -730,51 +766,6 @@ namespace Reko.Arch.Arm.AArch32
             return (mem, writeback);
         }
 
-        public class DasmState
-        {
-            public Opcode opcode;
-            public List<MachineOperand> ops = new List<MachineOperand>();
-            public bool updateFlags = false;
-            public bool writeback = false;
-            public Opcode shiftOp = Opcode.Invalid;
-            public MachineOperand shiftValue = null;
-            public bool useQ = false;
-            public int? vector_index = null;
-            public ArmVectorData vectorData;
-
-            public void Clear() {
-                ops.Clear();
-                updateFlags = false;
-                writeback = false;
-                shiftOp = Opcode.Invalid;
-                shiftValue = null;
-                useQ = false;
-                vector_index = null;
-                vectorData = ArmVectorData.INVALID;
-            }
-
-            public void Invalid()
-            {
-                Clear();
-                opcode = Opcode.Invalid;
-            }
-
-            public AArch32Instruction MakeInstruction()
-            {
-                var instr = new AArch32Instruction
-                {
-                    opcode = opcode,
-                    ops = ops.ToArray(),
-                    ShiftType = shiftOp,
-                    ShiftValue = shiftValue,
-                    SetFlags = updateFlags,
-                    Writeback = writeback,
-                    vector_data = vectorData,
-                    vector_index = vector_index,
-                };
-                return instr;
-            }
-        }
 
 
         private static Mutator vW(int pos1, int size1, int pos2, int size2)
@@ -1329,11 +1320,6 @@ namespace Reko.Arch.Arm.AArch32
         private static Decoder Instr(Opcode opcode, ArmVectorData vec, params Mutator[] mutators)
         {
             return new InstrDecoder2(opcode, vec, mutators);
-        }
-
-        private static Decoder Instr(Opcode opcode, params Action<uint, A32Disassembler> [] mutators)
-        {
-            return new InstrDecoder2(opcode, ArmVectorData.INVALID, mutators);
         }
 
         private static NyiDecoder nyi(string str)
