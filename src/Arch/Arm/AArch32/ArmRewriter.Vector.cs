@@ -108,12 +108,19 @@ namespace Reko.Arch.Arm.AArch32
 
                 if (Src1() is ImmediateOperand imm)
                 {
-                    m.Assign(dst, Operand(instr.ops[1]));
+                    if (dst.DataType.BitSize == 128)
+                    {
+                        src = m.Seq(src, src);
+                    }
+                    m.Assign(dst, src);
                     return;
                 }
                 if (instr.vector_index.HasValue)
                 {
-                    throw new NotImplementedException();
+                    // Extract a single item from the vector register
+                    var index = Constant.Int32(instr.vector_index.Value);
+                    m.Assign(dst, m.Array(dst.DataType, src, index));
+                    return;
                 }
                 var fname = $"__vmov_{VectorElementType(instr.vector_data)}";
                 var ppp = host.PseudoProcedure(fname, Dst().Width, src);

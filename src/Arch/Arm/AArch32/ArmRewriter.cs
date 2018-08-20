@@ -75,7 +75,6 @@ namespace Reko.Arch.Arm.AArch32
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                Debug.Print("//$DEBUG: {0}", instr);
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
                 this.rtlClass = RtlClass.Linear;
