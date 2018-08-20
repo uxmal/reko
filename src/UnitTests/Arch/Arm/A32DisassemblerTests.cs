@@ -782,14 +782,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_mcr()
         {
             Disassemble32(0xEE070F58);
-            Expect_Code("mcr\tp15,#6,r0,c7,c8,#2");
+            Expect_Code("mcr\tp15,#0,r0,c7,c8,#2");
         }
 
         [Test]
         public void ArmDasm_mrc()
         {
             Disassemble32(0xEE123F10);
-            Expect_Code("mrc\tp15,#6,r3,c2,c0,#0");
+            Expect_Code("mrc\tp15,#0,r3,c2,c0,#0");
         }
 
         [Test]
@@ -1119,7 +1119,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_vmvn_imm()
         {
             Disassemble32(0xF2C04077);
-            Expect_Code("vmvn.i32\td20,#7");
+            Expect_Code("vmvn.i32\tq10,#7");
         }
  
         [Test]

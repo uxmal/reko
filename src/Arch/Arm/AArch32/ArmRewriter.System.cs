@@ -61,9 +61,8 @@ namespace Reko.Arch.Arm.AArch32
             var  intrinsic = host.PseudoProcedure(fnName, PrimitiveType.Word32, 
                 Operand(Src1()),
                 tmp);
-            var fn = m.Fn(intrinsic);
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            m.Assign(dst, fn);
+            m.Assign(dst, intrinsic);
         }
 
         private void RewriteMcr()

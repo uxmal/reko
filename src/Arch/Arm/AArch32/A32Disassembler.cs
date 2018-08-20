@@ -58,6 +58,8 @@ namespace Reko.Arch.Arm.AArch32
                 return null;
             this.state = new DasmState();
             var instr = rootDecoder.Decode(wInstr, this);
+            instr.Address = this.addr;
+            instr.Length = 4;
             return instr;
         }
 
@@ -2390,16 +2392,27 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.mrrc, x("")))),
                 invalid);
 
-            var SystemRegister_LdSt = Mask(23, 2, 21, 1,
-                invalid,
-                nyi("SystemRegister_LdSt puw=001"),
-                nyi("SystemRegister_LdSt puw=010"),
-                nyi("SystemRegister_LdSt puw=011"),
+            var SystemRegister_LdSt = Mask(20, 1,         // L (load)
+                Mask(23, 2, 21, 1,
+                    invalid,
+                    nyi("SystemRegister_LdSt puw=001"),
+                    Instr(Opcode.stc, CP(8),CR(12),M(4,w4)),
+                    nyi("SystemRegister_LdSt puw=011"),
 
-                nyi("SystemRegister_LdSt puw=100"),
-                nyi("SystemRegister_LdSt puw=101"),
-                nyi("SystemRegister_LdSt puw=110"),
-                nyi("SystemRegister_LdSt puw=111"));
+                    nyi("SystemRegister_LdSt puw=100"),
+                    nyi("SystemRegister_LdSt puw=101"),
+                    nyi("SystemRegister_LdSt puw=110"),
+                    nyi("SystemRegister_LdSt puw=111")),
+                Mask(23, 2, 21, 1,
+                    invalid,
+                    nyi("SystemRegister_LdSt puw=001"),
+                    Instr(Opcode.ldc, CP(8),CR(12),M(4,w4)),
+                    nyi("SystemRegister_LdSt puw=011"),
+
+                    nyi("SystemRegister_LdSt puw=100"),
+                    nyi("SystemRegister_LdSt puw=101"),
+                    nyi("SystemRegister_LdSt puw=110"),
+                    nyi("SystemRegister_LdSt puw=111")));
 
             var SystemRegister_LdSt_64bitMove = Select(21, 0b1101, n => n == 0,
                 SystemRegister_64bitMove,
@@ -2659,8 +2672,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var SystemRegister32BitMove = new PcDecoder(28,
                 Mask(20, 1,
-                    Instr(Opcode.mcr, CP(8),i(28,3),r(3),CR(16),CR(0),i(5,3)),
-                    Instr(Opcode.mrc, CP(8),i(28,3),r(3),CR(16),CR(0),i(5,3))),
+                    Instr(Opcode.mcr, CP(8),i(21,3),r(3),CR(16),CR(0),i(5,3)),
+                    Instr(Opcode.mrc, CP(8),i(21,3),r(3),CR(16),CR(0),i(5,3))),
                 invalid);
 
             var AdvancedSimd_ThreeRegisters = Mask(24, 1,
@@ -2780,12 +2793,12 @@ namespace Reko.Arch.Arm.AArch32
                 Select(9, 7, n => n == 7,
                     SystemRegister_LdSt_64bitMove,
                     new PcDecoder(28, 
-                        Select(10, 3, n => n == 2, AdvancedSimd_LdSt_64bitmove, invalid),
+                        Select(10, 3, n => n == 2, AdvancedSimd_LdSt_64bitmove, SystemRegister_LdSt_64bitMove),
                         AdvancedSimd_ThreeRegisters)),
                 Select(9, 7, n => n == 7,
                     SystemRegister_LdSt_64bitMove,
                     new PcDecoder(28,
-                        Select(10, 3, n => n == 2, AdvancedSimd_LdSt_64bitmove, invalid),
+                        Select(10, 3, n => n == 2, AdvancedSimd_LdSt_64bitmove, SystemRegister_LdSt_64bitMove),
                         AdvancedSimd_ThreeRegisters)),
                 Select(9, 7, n => n == 7,
                     Mask(4, 1, invalid, SystemRegister32BitMove),
@@ -2819,17 +2832,17 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimd_OneRegisterModifiedImmediate = Mask(8, 3, 5, 1,
                 Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
-                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
                 Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
-                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
                 Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
-                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 

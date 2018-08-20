@@ -673,10 +673,10 @@ means
         [Test]
         public void ArmRw_mcr()
         {
-            BuildTest(0xEE070F58);  // mcr p15,#6,r0,c7,c8,#2
+            BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7,c8,#2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mcr(p15, 0x00000006, r0, c7, c8, 0x00000002)");
+                "1|L--|__mcr(p15, 0x00000000, r0, c7, c8, 0x00000002)");
         }
 
         [Test]
@@ -1170,10 +1170,20 @@ means
         [Test]
         public void ArmRw_stc()
         {
-            BuildTest(0xECCCCCCD);  // stc p12, c12, [ip], {0xcd}
+            BuildTest(0xECCC5CED);  // stc p12, c12, [ip], {0xcd}
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stc(p12, 0x0C, Mem0[ip:word32])");
+                "1|L--|__stc(p12, c5, Mem0[ip:word32])");
+        }
+
+        [Test]
+        public void ArmRw_ldc()
+        {
+            BuildTest(0xECDC5CED); 
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = Mem0[ip:word32]",
+                "2|L--|p12 = __ldc(c5, v3)");
         }
 
         [Test]
@@ -1391,17 +1401,6 @@ means
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|L--|__syscall(0x00001234)");
-        }
-
-        [Test]
-        public void ArmRw_ldc()
-        {
-            BuildTest(0xEC344444); // svc 0x1234
-            AssertCode(
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|r4 = r4",
-                "2|L--|v3 = Mem0[r4:word32]",
-                "3|L--|p4 = __ldc(0x04, v3)");
         }
 
         [Test]

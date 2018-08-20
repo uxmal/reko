@@ -250,11 +250,12 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var dstType = Dst().Width;
             var srcType = Src1().Width;
-            var celem = dstType.BitSize / (instr.vector_size / 8);
+            int elemBitSize = BitSize(instr.vector_data);
+            var celem = dstType.BitSize / elemBitSize;
             var arrType = new ArrayType(srcType, celem);
-            var fnName = $"__vdup_{instr.vector_size}";
+            var fnName = $"__vdup_{elemBitSize}";
             var intrinsic = host.PseudoProcedure(fnName, arrType, src);
-            m.Assign(dst, m.Fn(intrinsic));
+            m.Assign(dst, intrinsic);
         }
 
         private void RewriteVmul()

@@ -960,6 +960,32 @@ void RewriteB(bool link)
             return binder.EnsureFlagGroup(Registers.cpsr, (uint)bits, name, type);
         }
 
+        int BitSize(ArmVectorData vec)
+        {
+            switch (vec)
+            {
+            case ArmVectorData.I8:
+            case ArmVectorData.S8:
+            case ArmVectorData.U8:
+                return 8;
+            case ArmVectorData.F16:
+            case ArmVectorData.I16:
+            case ArmVectorData.S16:
+            case ArmVectorData.U16:
+                return 16;
+            case ArmVectorData.F32:
+            case ArmVectorData.I32:
+            case ArmVectorData.S32:
+            case ArmVectorData.U32:
+                return 32;
+            case ArmVectorData.F64:
+            case ArmVectorData.I64:
+            case ArmVectorData.S64:
+            case ArmVectorData.U64:
+                return 64;
+            }
+            return 0;
+        }
 
         void RewriteSwp(PrimitiveType type)
         {

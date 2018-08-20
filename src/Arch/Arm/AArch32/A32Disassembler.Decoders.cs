@@ -231,8 +231,6 @@ namespace Reko.Arch.Arm.AArch32
                     mutators[i](wInstr, dasm);
                 }
                 var instr = dasm.state.MakeInstruction();
-                instr.Address = dasm.addr;
-                instr.Length = 4;
                 return instr;
             }
         }
