@@ -29,6 +29,9 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Arm.AArch32
 {
+
+    using Mutator = Func<uint, T32Disassembler, bool>;
+
     /// <summary>
     /// Disassembles machine code in the ARM T32 encoding into 
     /// ARM32 instructions.
@@ -43,6 +46,7 @@ namespace Reko.Arch.Arm.AArch32
         private Address addr;
         private int itState;
         private ArmCondition itCondition;
+        private DasmState state;
 
         public T32Disassembler(ThumbArchitecture arch, ImageReader rdr)
         {
@@ -57,6 +61,8 @@ namespace Reko.Arch.Arm.AArch32
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out var wInstr))
                 return null;
+            this.state = new DasmState();
+
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
@@ -76,16 +82,32 @@ namespace Reko.Arch.Arm.AArch32
             return instr;
         }
 
+        private class DasmState
+        {
+            public List<MachineOperand> ops = new List<MachineOperand>();
+            public ArmCondition cc = ArmCondition.AL;
+            public bool updateFlags = false;
+            public bool writeback = false;
+            public Opcode shiftType = Opcode.Invalid;
+            public MachineOperand shiftValue = null;
+            public ArmVectorData vectorData = ArmVectorData.INVALID;
+            public uint n;
+            internal Opcode opcode;
+
+            internal void Invalid()
+            {
+                throw new NotImplementedException();
+            }
+
+            public AArch32Instruction MakeInstruction()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         private AArch32Instruction DecodeFormat(uint wInstr, Opcode opcode, string format)
         {
-            var ops = new List<MachineOperand>();
-            ArmCondition cc = ArmCondition.AL;
-            bool updateFlags = false;
-            bool writeback = false;
-            Opcode shiftType = Opcode.Invalid;
-            MachineOperand shiftValue = null;
-            ArmVectorData vectorData = ArmVectorData.INVALID;
-            uint n;
+            this.state.opcode = opcode;
             for (int i = 0; i < format.Length; ++i)
             {
                 int offset;
@@ -101,11 +123,11 @@ namespace Reko.Arch.Arm.AArch32
                     // The cases should end with a 'continue' rather than a 'break'.
                 case '.':
                     // This instruction always sets the flags.
-                    updateFlags = true;
+                    state.updateFlags = true;
                     continue;
                 case ':':
                     // This instructions sets the flags if it's outside an IT block.
-                    updateFlags = this.itCondition == ArmCondition.AL;
+                    state.updateFlags = this.itCondition == ArmCondition.AL;
                     continue;
                 case 'v': // vector element size
                     ++i;
@@ -115,49 +137,59 @@ namespace Reko.Arch.Arm.AArch32
                         ++i;
                         if (Char.IsDigit(format[i]))
                         {
-                            n = ReadBitfields(wInstr, format, ref i);
-                            vectorData = VectorIntUIntData(0, n);
+                            uint n = ReadBitfields(wInstr, format, ref i);
+                            state.vectorData = VectorIntUIntData(0, n);
                         }
                         else
                         {
-                            vectorData = VectorIntUIntData(format, ref i);
+                            state.vectorData = VectorIntUIntData(format, ref i);
                         }
-                        if (vectorData == ArmVectorData.INVALID)
+                        if (state.vectorData == ArmVectorData.INVALID)
                             return Invalid();
                         continue;
                     case 'u':   // signed or unsigned integer
                         ++i;
-                        n = ReadBitfields(wInstr, format, ref i);
-                        vectorData = VectorIntUIntData(wInstr, n);
+                        uint nn = ReadBitfields(wInstr, format, ref i);
+                        state.vectorData = VectorIntUIntData(wInstr, nn);
                         continue;
                     case 'r':
-                        n = ReadBitfields(wInstr, format, ref i);
-                        throw new NotImplementedException();
+                        {
+                            uint n = ReadBitfields(wInstr, format, ref i);
+                            throw new NotImplementedException();
+                        }
                     case 'c':       // conversion 
-                        vectorData = VectorConvertData(wInstr);
-                        continue;
+                        {
+                            state.vectorData = VectorConvertData(wInstr);
+                            continue;
+                        }
                     case 'C':       // conversion2 
-                        vectorData = VectorConvertData2(wInstr);
-                        continue;
+                        {
+                            state.vectorData = VectorConvertData2(wInstr);
+                            continue;
+                        }
                     case 'f':       // floating point vector
-                        ++i;
-                        vectorData = VectorFloatData(format, ref i);
-                        if (vectorData == ArmVectorData.INVALID)
-                            return Invalid();
+                        {
+                            ++i;
+                            state.vectorData = VectorFloatData(format, ref i);
+                            if (state.vectorData == ArmVectorData.INVALID)
+                                return Invalid();
+                        }
                         continue;
                     case 'F':       // floating point elements specified by a bitfield
                         ++i;
-                        n = ReadBitfields(wInstr, format, ref i);
-                        vectorData = VectorFloatElementData(n);
-                        if (vectorData == ArmVectorData.INVALID)
-                            return Invalid();
+                        {
+                            uint n = ReadBitfields(wInstr, format, ref i);
+                            state.vectorData = VectorFloatElementData(n);
+                            if (state.vectorData == ArmVectorData.INVALID)
+                                return Invalid();
+                        }
                         continue;
                     }
                     throw new InvalidOperationException();
                 case 'w':   // Writeback bit.
                     ++i;
                     offset = ReadDecimal(format, ref i);
-                    writeback = SBitfield(wInstr, offset, 1) != 0;
+                    state.writeback = SBitfield(wInstr, offset, 1) != 0;
                     continue;
 
                     // The following cases generate operands of different types.
@@ -179,7 +211,7 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     else // Signed immediate (in bitfields)
                     {
-                        n = ReadBitfields(wInstr, format, ref i);
+                        uint n = ReadBitfields(wInstr, format, ref i);
                         op = ImmediateOperand.Int32((int)n);
                     }
                     break;
@@ -188,15 +220,15 @@ namespace Reko.Arch.Arm.AArch32
                     if (PeekAndDiscard('r', format, ref i))
                     {
                         // 'Sr' = rotate
-                        n = ReadBitfields(wInstr, format, ref i);
-                        shiftType = Opcode.ror;
-                        shiftValue = ImmediateOperand.Int32((int)n);
+                        uint n = ReadBitfields(wInstr, format, ref i);
+                        state.shiftType = Opcode.ror;
+                        state.shiftValue = ImmediateOperand.Int32((int)n);
                         continue;
                     }
                     else if (PeekAndDiscard('i', format, ref i))
                     {
                         // 'Si' = shift immediate
-                        (shiftType, shiftValue) = DecodeImmShift(wInstr, format, ref i);
+                        (state.shiftType, state.shiftValue) = DecodeImmShift(wInstr, format, ref i);
                         continue;
                     }
                     else
@@ -209,26 +241,28 @@ namespace Reko.Arch.Arm.AArch32
                     break;
                 case 'i':   // immediate value in bitfield(s)
                     ++i;
-                    n = ReadBitfields(wInstr, format, ref i);
-                    if (PeekAndDiscard('h', format, ref i))
                     {
-                        op = ImmediateOperand.Word16((ushort)n);
-                    }
-                    else if (PeekAndDiscard('-', format, ref i))
-                    {
-                        var minuend = ReadDecimal(format, ref i);
-                        op = ImmediateOperand.Word32(minuend - (int) n);
-                    }
-                    else
-                    {
-                        op = ImmediateOperand.Word32(n);
+                        uint n = ReadBitfields(wInstr, format, ref i);
+                        if (PeekAndDiscard('h', format, ref i))
+                        {
+                            op = ImmediateOperand.Word16((ushort)n);
+                        }
+                        else if (PeekAndDiscard('-', format, ref i))
+                        {
+                            var minuend = ReadDecimal(format, ref i);
+                            op = ImmediateOperand.Word32(minuend - (int)n);
+                        }
+                        else
+                        {
+                            op = ImmediateOperand.Word32(n);
+                        }
                     }
                     break;
                 case 'M':
                     ++i;
                     if (PeekAndDiscard('S', format, ref i))
                     {
-                        n = ReadBitfields(wInstr, format, ref i);
+                        uint n = ReadBitfields(wInstr, format, ref i);
                         op = ModifiedSimdImmediate(wInstr, n);
                     }
                     else
@@ -264,18 +298,24 @@ namespace Reko.Arch.Arm.AArch32
                     break;
                 case 'F':   // Sn register
                     ++i;
-                    n = ReadBitfields(wInstr, format, ref i);
-                    op = new RegisterOperand(Registers.SRegs[n]);
+                    {
+                        uint n = ReadBitfields(wInstr, format, ref i);
+                        op = new RegisterOperand(Registers.SRegs[n]);
+                    }
                     break;
                 case 'D':   // Dn register
                     ++i;
-                    n = ReadBitfields(wInstr, format, ref i);
-                    op = new RegisterOperand(Registers.DRegs[n]);
+                    {
+                        uint n = ReadBitfields(wInstr, format, ref i);
+                        op = new RegisterOperand(Registers.DRegs[n]);
+                    }
                     break;
                 case 'Q':   // Qn register
                     ++i;
-                    n = ReadBitfields(wInstr, format, ref i);
-                    op = new RegisterOperand(Registers.QRegs[n >> 1]);
+                    {
+                        uint n = ReadBitfields(wInstr, format, ref i);
+                        op = new RegisterOperand(Registers.QRegs[n >> 1]);
+                    }
                     break;
                 case '[':   // Memory access
                     ++i;
@@ -344,13 +384,13 @@ namespace Reko.Arch.Arm.AArch32
                         // Negative bit in U=9
                         preindex = SBitfield(wInstr, 10, 1) != 0;
                         add = (SBitfield(wInstr, 9, 1) != 0);
-                        writeback = SBitfield(wInstr, 8, 1) != 0;
+                        state.writeback = SBitfield(wInstr, 8, 1) != 0;
                     }
                     else if (PeekAndDiscard('X', format, ref i))
                     {
                         preindex = SBitfield(wInstr, 24, 1) != 0;
                         add = SBitfield(wInstr, 23, 1) != 0;
-                        writeback = SBitfield(wInstr, 21, 1) != 0;
+                        state.writeback = SBitfield(wInstr, 21, 1) != 0;
                     }
 
                     Expect(']', format, ref i);
@@ -360,7 +400,7 @@ namespace Reko.Arch.Arm.AArch32
                         Offset = Constant.Int32(offset),
                         Index = index,
                         PreIndex = preindex,
-                        ShiftType = shiftType,
+                        ShiftType = state.shiftType,
                         Add = add,
                     };
                     break;
@@ -388,7 +428,7 @@ namespace Reko.Arch.Arm.AArch32
                     else
                     {
                         offset = ReadDecimal(format, ref i);
-                        cc = (ArmCondition)SBitfield(wInstr, offset, 4);
+                        state.cc = (ArmCondition)SBitfield(wInstr, offset, 4);
                         --i;
                     }
                     continue;
@@ -421,27 +461,29 @@ namespace Reko.Arch.Arm.AArch32
                      break;
                 case 'B':   // barrier operation
                     ++i;
-                    n = ReadBitfields(wInstr, format, ref i);
-                    op = MakeBarrierOperand(n);
-                    if (op == null)
-                        return Invalid();
+                    {
+                        uint n = ReadBitfields(wInstr, format, ref i);
+                        op = MakeBarrierOperand(n);
+                        if (op == null)
+                            return Invalid();
+                    }
                     break;
                 default:
                     return NotYetImplemented($"Unknown format specifier {format[i]} in {format} when decoding {opcode}", wInstr);
                 }
-                ops.Add(op);
+                state.ops.Add(op);
             }
 
             return new AArch32Instruction
             {
-                opcode = opcode,
-                condition = cc,
-                SetFlags = updateFlags,
-                ops = ops.ToArray(),
-                Writeback = writeback,
-                ShiftType = shiftType,
-                ShiftValue = shiftValue,
-                vector_data = vectorData,
+                opcode = state.opcode,
+                condition = state.cc,
+                SetFlags = state.updateFlags,
+                ops = state.ops.ToArray(),
+                Writeback = state.writeback,
+                ShiftType = state.shiftType,
+                ShiftValue = state.shiftValue,
+                vector_data = state.vectorData,
             };
         }
 
@@ -835,6 +877,11 @@ namespace Reko.Arch.Arm.AArch32
         private static InstrDecoder Instr(Opcode opcode, string format)
         {
             return new InstrDecoder(opcode, format);
+        }
+
+        private static InstrDecoder2 Instr(Opcode opcode, params Mutator[] mutators)
+        {
+            return new InstrDecoder2(opcode, mutators);
         }
 
         private static MaskDecoder Mask(int shift, uint mask, params Decoder [] decoders)

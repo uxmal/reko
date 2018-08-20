@@ -28,6 +28,8 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {
+    using Mutator = Func<uint, T32Disassembler, bool>;
+
     public partial class T32Disassembler
     {
         #region Decoder classes
@@ -216,6 +218,34 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 return dasm.DecodeFormat(wInstr, opcode, format);
+            }
+        }
+
+        private class InstrDecoder2 : Decoder
+        {
+            private readonly Opcode opcode;
+            private readonly Mutator[] mutators;
+            private object state;
+
+            public InstrDecoder2(Opcode opcode, params Mutator[] mutators)
+            {
+                this.opcode = opcode;
+                this.mutators = mutators;
+            }
+
+            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
+            {
+                dasm.state.opcode = this.opcode;
+                for (int i = 0; i < mutators.Length; ++i)
+                {
+                    if (!mutators[i](wInstr, dasm))
+                    {
+                        dasm.state.Invalid();
+                        break;
+                    }
+                }
+                var instr = dasm.state.MakeInstruction();
+                return instr;
             }
         }
 
