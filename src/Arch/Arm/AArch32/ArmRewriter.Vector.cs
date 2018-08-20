@@ -214,11 +214,13 @@ namespace Reko.Arch.Arm.AArch32
             */
         }
 
-        private void RewriteVstmia()
+        private void RewriteVstmia(bool add, bool writeback)
         {
             var rSrc = this.Operand(Dst(), PrimitiveType.Word32, true);
-            int offset = 0;
-            foreach (var r in ((MultiRegisterOperand)Src1()).GetRegisters())
+            var regs = ((MultiRegisterOperand)Src1()).GetRegisters().ToArray();
+            int totalRegsize = regs.Length * regs[0].DataType.Size;
+            int offset = add ? 0 : -totalRegsize;
+            foreach (var r in regs)
             {
                 var dst = Reg(r);
                 Expression ea =
@@ -230,7 +232,14 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (instr.Writeback)
             {
-                m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
+                if (add)
+                {
+                    m.Assign(rSrc, m.IAdd(rSrc, m.Int32(totalRegsize)));
+                }
+                else
+                {
+                    m.Assign(rSrc, m.ISub(rSrc, m.Int32(totalRegsize)));
+                }
             }
         }
 

@@ -300,7 +300,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vst2:
                 case Opcode.vst3:
                 case Opcode.vst4:
-                case Opcode.vstmdb:
                 case Opcode.vsubhn:
                 case Opcode.vsubl:
                 case Opcode.vsubw:
@@ -521,7 +520,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
                 case Opcode.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
                 case Opcode.vrshr: RewriteVectorBinOp("__vrshr_{0}"); break;
-                case Opcode.vstmia: RewriteVstmia(); break;
+                case Opcode.vstm: RewriteVstmia(true, false); break;
+                case Opcode.vstmdb: RewriteVstmia(false, true); break;
+                case Opcode.vstmia: RewriteVstmia(true, true); break;
                 case Opcode.vsqrt: RewriteVsqrt(); break;
                 case Opcode.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
                 case Opcode.vstr: RewriteVstr(); break;

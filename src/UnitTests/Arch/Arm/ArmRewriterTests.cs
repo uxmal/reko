@@ -455,16 +455,6 @@ means
         }
 
         [Test]
-        public void ArmRw_vldmia()
-        {
-            BuildTest(0xEC720B04);
-            AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|d16 = Mem0[r2:word64]",
-                "2|L--|d17 = Mem0[r2 + 8:word64]");
-        }
-
-        [Test]
         public void ArmRw_vldmia_update()
         {
             //04 0B F2 EC
@@ -937,11 +927,11 @@ means
         public void ArmRw_vpush()
         {
             BuildTest(0xed2d8b04);  // vpush {d8, d9}
-            AssertCode(
+            AssertCode( 
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|sp = sp - 16",
-                "2|L--|Mem0[sp:word64] = d8",
-                "3|L--|Mem0[sp + 8:word64] = d9");
+                "1|L--|Mem0[sp + -16:word64] = d8",
+                "2|L--|Mem0[sp + -8:word64] = d9",
+                "3|L--|sp = sp - 16");
         }
 
         [Test]
