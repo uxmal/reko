@@ -1,0 +1,1464 @@
+// _init
+// Return size: 0
+void _init()
+_init_entry:
+	// succ:  l000000000041C1E8
+l000000000041C1E8:
+	sp = fp
+	x31 = x31 + -8
+	Mem0[x31:word64] = x29
+	x31 = x31 + 8
+	Mem0[x31:word64] = x30
+	x29 = x31 + 0x0000000000000000
+	call fn000000000041E7B0 (retsize: 0;)
+	x29 = Mem0[x31:word64]
+	x31 = x31 + 8
+	x30 = Mem0[x31:word64]
+	x31 = x31 + 8
+	return
+	// succ:  _init_exit
+_init_exit:
+
+
+// mbrtowc
+// Return size: 0
+void mbrtowc()
+mbrtowc_entry:
+mbrtowc_exit:
+
+
+// memcpy
+// Return size: 0
+void memcpy()
+memcpy_entry:
+memcpy_exit:
+
+
+// endservent
+// Return size: 0
+void endservent()
+endservent_entry:
+endservent_exit:
+
+
+// memmove
+// Return size: 0
+void memmove()
+memmove_entry:
+memmove_exit:
+
+
+// gai_strerror
+// Return size: 0
+void gai_strerror()
+gai_strerror_entry:
+gai_strerror_exit:
+
+
+// getcwd
+// Return size: 0
+void getcwd()
+getcwd_entry:
+getcwd_exit:
+
+
+// freeaddrinfo
+// Return size: 0
+void freeaddrinfo()
+freeaddrinfo_entry:
+freeaddrinfo_exit:
+
+
+// setuid
+// Return size: 0
+void setuid()
+setuid_entry:
+setuid_exit:
+
+
+// strtoul
+// Return size: 0
+void strtoul()
+strtoul_entry:
+strtoul_exit:
+
+
+// strlen
+// Return size: 0
+void strlen()
+strlen_entry:
+strlen_exit:
+
+
+// getpeername
+// Return size: 0
+void getpeername()
+getpeername_entry:
+getpeername_exit:
+
+
+// fputs
+// Return size: 0
+void fputs()
+fputs_entry:
+fputs_exit:
+
+
+// __sprintf_chk
+// Return size: 0
+void __sprintf_chk()
+__sprintf_chk_entry:
+__sprintf_chk_exit:
+
+
+// mbstowcs
+// Return size: 0
+void mbstowcs()
+mbstowcs_entry:
+mbstowcs_exit:
+
+
+// exit
+// Return size: 0
+void exit()
+exit_entry:
+exit_exit:
+
+
+// dup
+// Return size: 0
+void dup()
+dup_entry:
+dup_exit:
+
+
+// tcsetpgrp
+// Return size: 0
+void tcsetpgrp()
+tcsetpgrp_entry:
+tcsetpgrp_exit:
+
+
+// mbtowc
+// Return size: 0
+void mbtowc()
+mbtowc_entry:
+mbtowc_exit:
+
+
+// getegid
+// Return size: 0
+void getegid()
+getegid_entry:
+getegid_exit:
+
+
+// sbrk
+// Return size: 0
+void sbrk()
+sbrk_entry:
+sbrk_exit:
+
+
+// wctype
+// Return size: 0
+void wctype()
+wctype_entry:
+wctype_exit:
+
+
+// sigprocmask
+// Return size: 0
+void sigprocmask()
+sigprocmask_entry:
+sigprocmask_exit:
+
+
+// strnlen
+// Return size: 0
+void strnlen()
+strnlen_entry:
+strnlen_exit:
+
+
+// geteuid
+// Return size: 0
+void geteuid()
+geteuid_entry:
+geteuid_exit:
+
+
+// tputs
+// Return size: 0
+void tputs()
+tputs_entry:
+tputs_exit:
+
+
+// __sigsetjmp
+// Return size: 0
+void __sigsetjmp()
+__sigsetjmp_entry:
+__sigsetjmp_exit:
+
+
+// ttyname
+// Return size: 0
+void ttyname()
+ttyname_entry:
+ttyname_exit:
+
+
+// readlink
+// Return size: 0
+void readlink()
+readlink_entry:
+readlink_exit:
+
+
+// getuid
+// Return size: 0
+void getuid()
+getuid_entry:
+getuid_exit:
+
+
+// pipe
+// Return size: 0
+void pipe()
+pipe_entry:
+pipe_exit:
+
+
+// opendir
+// Return size: 0
+void opendir()
+opendir_entry:
+opendir_exit:
+
+
+// strftime
+// Return size: 0
+void strftime()
+strftime_entry:
+strftime_exit:
+
+
+// fputc
+// Return size: 0
+void fputc()
+fputc_entry:
+fputc_exit:
+
+
+// setrlimit
+// Return size: 0
+void setrlimit()
+setrlimit_entry:
+setrlimit_exit:
+
+
+// qsort
+// Return size: 0
+void qsort()
+qsort_entry:
+qsort_exit:
+
+
+// dlclose
+// Return size: 0
+void dlclose()
+dlclose_entry:
+dlclose_exit:
+
+
+// setvbuf
+// Return size: 0
+void setvbuf()
+setvbuf_entry:
+setvbuf_exit:
+
+
+// kill
+// Return size: 0
+void kill()
+kill_entry:
+kill_exit:
+
+
+// pathconf
+// Return size: 0
+void pathconf()
+pathconf_entry:
+pathconf_exit:
+
+
+// fork
+// Return size: 0
+void fork()
+fork_entry:
+fork_exit:
+
+
+// endgrent
+// Return size: 0
+void endgrent()
+endgrent_entry:
+endgrent_exit:
+
+
+// lseek
+// Return size: 0
+void lseek()
+lseek_entry:
+lseek_exit:
+
+
+// eaccess
+// Return size: 0
+void eaccess()
+eaccess_entry:
+eaccess_exit:
+
+
+// tgoto
+// Return size: 0
+void tgoto()
+tgoto_entry:
+tgoto_exit:
+
+
+// sigfillset
+// Return size: 0
+void sigfillset()
+sigfillset_entry:
+sigfillset_exit:
+
+
+// dlopen
+// Return size: 0
+void dlopen()
+dlopen_entry:
+dlopen_exit:
+
+
+// __ctype_tolower_loc
+// Return size: 0
+void __ctype_tolower_loc()
+__ctype_tolower_loc_entry:
+__ctype_tolower_loc_exit:
+
+
+// tcgetattr
+// Return size: 0
+void tcgetattr()
+tcgetattr_entry:
+tcgetattr_exit:
+
+
+// stpcpy
+// Return size: 0
+void stpcpy()
+stpcpy_entry:
+stpcpy_exit:
+
+
+// fileno
+// Return size: 0
+void fileno()
+fileno_entry:
+fileno_exit:
+
+
+// localtime
+// Return size: 0
+void localtime()
+localtime_entry:
+localtime_exit:
+
+
+// __memcpy_chk
+// Return size: 0
+void __memcpy_chk()
+__memcpy_chk_entry:
+__memcpy_chk_exit:
+
+
+// __snprintf_chk
+// Return size: 0
+void __snprintf_chk()
+__snprintf_chk_entry:
+__snprintf_chk_exit:
+
+
+// wcschr
+// Return size: 0
+void wcschr()
+wcschr_entry:
+wcschr_exit:
+
+
+// fclose
+// Return size: 0
+void fclose()
+fclose_entry:
+fclose_exit:
+
+
+// wctob
+// Return size: 0
+void wctob()
+wctob_entry:
+wctob_exit:
+
+
+// getpid
+// Return size: 0
+void getpid()
+getpid_entry:
+getpid_exit:
+
+
+// fopen
+// Return size: 0
+void fopen()
+fopen_entry:
+fopen_exit:
+
+
+// __vsnprintf_chk
+// Return size: 0
+void __vsnprintf_chk()
+__vsnprintf_chk_entry:
+__vsnprintf_chk_exit:
+
+
+// time
+// Return size: 0
+void time()
+time_entry:
+time_exit:
+
+
+// iswctype
+// Return size: 0
+void iswctype()
+iswctype_entry:
+iswctype_exit:
+
+
+// wcwidth
+// Return size: 0
+void wcwidth()
+wcwidth_entry:
+wcwidth_exit:
+
+
+// dlerror
+// Return size: 0
+void dlerror()
+dlerror_entry:
+dlerror_exit:
+
+
+// dlsym
+// Return size: 0
+void dlsym()
+dlsym_entry:
+dlsym_exit:
+
+
+// open
+// Return size: 0
+void open()
+open_entry:
+open_exit:
+
+
+// __fdelt_chk
+// Return size: 0
+void __fdelt_chk()
+__fdelt_chk_entry:
+__fdelt_chk_exit:
+
+
+// __strncpy_chk
+// Return size: 0
+void __strncpy_chk()
+__strncpy_chk_entry:
+__strncpy_chk_exit:
+
+
+// tzset
+// Return size: 0
+void tzset()
+tzset_entry:
+tzset_exit:
+
+
+// __strcpy_chk
+// Return size: 0
+void __strcpy_chk()
+__strcpy_chk_entry:
+__strcpy_chk_exit:
+
+
+// wcswidth
+// Return size: 0
+void wcswidth()
+wcswidth_entry:
+wcswidth_exit:
+
+
+// getppid
+// Return size: 0
+void getppid()
+getppid_entry:
+getppid_exit:
+
+
+// __strtol_internal
+// Return size: 0
+void __strtol_internal()
+__strtol_internal_entry:
+__strtol_internal_exit:
+
+
+// sigemptyset
+// Return size: 0
+void sigemptyset()
+sigemptyset_entry:
+sigemptyset_exit:
+
+
+// strncmp
+// Return size: 0
+void strncmp()
+strncmp_entry:
+strncmp_exit:
+
+
+// wcsncmp
+// Return size: 0
+void wcsncmp()
+wcsncmp_entry:
+wcsncmp_exit:
+
+
+// bindtextdomain
+// Return size: 0
+void bindtextdomain()
+bindtextdomain_entry:
+bindtextdomain_exit:
+
+
+// __libc_start_main
+// Return size: 0
+void __libc_start_main()
+__libc_start_main_entry:
+__libc_start_main_exit:
+
+
+// strcat
+// Return size: 0
+void strcat()
+strcat_entry:
+strcat_exit:
+
+
+// __printf_chk
+// Return size: 0
+void __printf_chk()
+__printf_chk_entry:
+__printf_chk_exit:
+
+
+// __fpurge
+// Return size: 0
+void __fpurge()
+__fpurge_entry:
+__fpurge_exit:
+
+
+// tgetflag
+// Return size: 0
+void tgetflag()
+tgetflag_entry:
+tgetflag_exit:
+
+
+// memset
+// Return size: 0
+void memset()
+memset_entry:
+memset_exit:
+
+
+// fdopen
+// Return size: 0
+void fdopen()
+fdopen_entry:
+fdopen_exit:
+
+
+// strpbrk
+// Return size: 0
+void strpbrk()
+strpbrk_entry:
+strpbrk_exit:
+
+
+// gettimeofday
+// Return size: 0
+void gettimeofday()
+gettimeofday_entry:
+gettimeofday_exit:
+
+
+// getpwnam
+// Return size: 0
+void getpwnam()
+getpwnam_entry:
+getpwnam_exit:
+
+
+// wcslen
+// Return size: 0
+void wcslen()
+wcslen_entry:
+wcslen_exit:
+
+
+// getgroups
+// Return size: 0
+void getgroups()
+getgroups_entry:
+getgroups_exit:
+
+
+// sleep
+// Return size: 0
+void sleep()
+sleep_entry:
+sleep_exit:
+
+
+// tgetent
+// Return size: 0
+void tgetent()
+tgetent_entry:
+tgetent_exit:
+
+
+// __vfprintf_chk
+// Return size: 0
+void __vfprintf_chk()
+__vfprintf_chk_entry:
+__vfprintf_chk_exit:
+
+
+// __strtoul_internal
+// Return size: 0
+void __strtoul_internal()
+__strtoul_internal_entry:
+__strtoul_internal_exit:
+
+
+// tgetnum
+// Return size: 0
+void tgetnum()
+tgetnum_entry:
+tgetnum_exit:
+
+
+// getgrent
+// Return size: 0
+void getgrent()
+getgrent_entry:
+getgrent_exit:
+
+
+// strcasecmp
+// Return size: 0
+void strcasecmp()
+strcasecmp_entry:
+strcasecmp_exit:
+
+
+// readdir
+// Return size: 0
+void readdir()
+readdir_entry:
+readdir_exit:
+
+
+// __ctype_toupper_loc
+// Return size: 0
+void __ctype_toupper_loc()
+__ctype_toupper_loc_entry:
+__ctype_toupper_loc_exit:
+
+
+// getpagesize
+// Return size: 0
+void getpagesize()
+getpagesize_entry:
+getpagesize_exit:
+
+
+// setpwent
+// Return size: 0
+void setpwent()
+setpwent_entry:
+setpwent_exit:
+
+
+// closedir
+// Return size: 0
+void closedir()
+closedir_entry:
+closedir_exit:
+
+
+// strerror
+// Return size: 0
+void strerror()
+strerror_entry:
+strerror_exit:
+
+
+// close
+// Return size: 0
+void close()
+close_entry:
+close_exit:
+
+
+// sigaction
+// Return size: 0
+void sigaction()
+sigaction_entry:
+sigaction_exit:
+
+
+// strrchr
+// Return size: 0
+void strrchr()
+strrchr_entry:
+strrchr_exit:
+
+
+// tcgetpgrp
+// Return size: 0
+void tcgetpgrp()
+tcgetpgrp_entry:
+tcgetpgrp_exit:
+
+
+// fn000000000041C8B0
+// Return size: 0
+void fn000000000041C8B0()
+fn000000000041C8B0_entry:
+	// succ:  l000000000041C8B0
+l000000000041C8B0:
+	sp = fp
+	x16 = 0x00000000004D6000
+	x17 = Mem0[x16 + 840:word64]
+	x16 = x16 + 0x0000000000000348
+	call x17 (retsize: 0;)
+	return
+	// succ:  fn000000000041C8B0_exit
+l000000000041C8B0:
+fn000000000041C8B0_exit:
+
+
+// write
+// Return size: 0
+void write()
+write_entry:
+write_exit:
+
+
+// abort
+// Return size: 0
+void abort()
+abort_entry:
+abort_exit:
+
+
+// setgid
+// Return size: 0
+void setgid()
+setgid_entry:
+setgid_exit:
+
+
+// mbsinit
+// Return size: 0
+void mbsinit()
+mbsinit_entry:
+mbsinit_exit:
+
+
+// access
+// Return size: 0
+void access()
+access_entry:
+access_exit:
+
+
+// wcsrtombs
+// Return size: 0
+void wcsrtombs()
+wcsrtombs_entry:
+wcsrtombs_exit:
+
+
+// __mbrlen
+// Return size: 0
+void __mbrlen()
+__mbrlen_entry:
+__mbrlen_exit:
+
+
+// puts
+// Return size: 0
+void puts()
+puts_entry:
+puts_exit:
+
+
+// memcmp
+// Return size: 0
+void memcmp()
+memcmp_entry:
+memcmp_exit:
+
+
+// getrusage
+// Return size: 0
+void getrusage()
+getrusage_entry:
+getrusage_exit:
+
+
+// textdomain
+// Return size: 0
+void textdomain()
+textdomain_entry:
+textdomain_exit:
+
+
+// __asprintf_chk
+// Return size: 0
+void __asprintf_chk()
+__asprintf_chk_entry:
+__asprintf_chk_exit:
+
+
+// _IO_putc
+// Return size: 0
+void _IO_putc()
+_IO_putc_entry:
+_IO_putc_exit:
+
+
+// __fprintf_chk
+// Return size: 0
+void __fprintf_chk()
+__fprintf_chk_entry:
+__fprintf_chk_exit:
+
+
+// strcmp
+// Return size: 0
+void strcmp()
+strcmp_entry:
+strcmp_exit:
+
+
+// getpwuid
+// Return size: 0
+void getpwuid()
+getpwuid_entry:
+getpwuid_exit:
+
+
+// __ctype_b_loc
+// Return size: 0
+void __ctype_b_loc()
+__ctype_b_loc_entry:
+__ctype_b_loc_exit:
+
+
+// strtol
+// Return size: 0
+void strtol()
+strtol_entry:
+strtol_exit:
+
+
+// wctomb
+// Return size: 0
+void wctomb()
+wctomb_entry:
+wctomb_exit:
+
+
+// setpgid
+// Return size: 0
+void setpgid()
+setpgid_entry:
+setpgid_exit:
+
+
+// strtold
+// Return size: 0
+void strtold()
+strtold_entry:
+strtold_exit:
+
+
+// chdir
+// Return size: 0
+void chdir()
+chdir_entry:
+chdir_exit:
+
+
+// __ctype_get_mb_cur_max
+// Return size: 0
+void __ctype_get_mb_cur_max()
+__ctype_get_mb_cur_max_entry:
+__ctype_get_mb_cur_max_exit:
+
+
+// getgid
+// Return size: 0
+void getgid()
+getgid_entry:
+getgid_exit:
+
+
+// getpgrp
+// Return size: 0
+void getpgrp()
+getpgrp_entry:
+getpgrp_exit:
+
+
+// strncasecmp
+// Return size: 0
+void strncasecmp()
+strncasecmp_entry:
+strncasecmp_exit:
+
+
+// connect
+// Return size: 0
+void connect()
+connect_entry:
+connect_exit:
+
+
+// mbsnrtowcs
+// Return size: 0
+void mbsnrtowcs()
+mbsnrtowcs_entry:
+mbsnrtowcs_exit:
+
+
+// killpg
+// Return size: 0
+void killpg()
+killpg_entry:
+killpg_exit:
+
+
+// strchr
+// Return size: 0
+void strchr()
+strchr_entry:
+strchr_exit:
+
+
+// setitimer
+// Return size: 0
+void setitimer()
+setitimer_entry:
+setitimer_exit:
+
+
+// execve
+// Return size: 0
+void execve()
+execve_entry:
+execve_exit:
+
+
+// fwrite
+// Return size: 0
+void fwrite()
+fwrite_entry:
+fwrite_exit:
+
+
+// wcsdup
+// Return size: 0
+void wcsdup()
+wcsdup_entry:
+wcsdup_exit:
+
+
+// __longjmp_chk
+// Return size: 0
+void __longjmp_chk()
+__longjmp_chk_entry:
+__longjmp_chk_exit:
+
+
+// fcntl
+// Return size: 0
+void fcntl()
+fcntl_entry:
+fcntl_exit:
+
+
+// setgrent
+// Return size: 0
+void setgrent()
+setgrent_entry:
+setgrent_exit:
+
+
+// clearerr
+// Return size: 0
+void clearerr()
+clearerr_entry:
+clearerr_exit:
+
+
+// dcngettext
+// Return size: 0
+void dcngettext()
+dcngettext_entry:
+dcngettext_exit:
+
+
+// socket
+// Return size: 0
+void socket()
+socket_entry:
+socket_exit:
+
+
+// fflush
+// Return size: 0
+void fflush()
+fflush_entry:
+fflush_exit:
+
+
+// strcpy
+// Return size: 0
+void strcpy()
+strcpy_entry:
+strcpy_exit:
+
+
+// getrlimit
+// Return size: 0
+void getrlimit()
+getrlimit_entry:
+getrlimit_exit:
+
+
+// getservent
+// Return size: 0
+void getservent()
+getservent_entry:
+getservent_exit:
+
+
+// endpwent
+// Return size: 0
+void endpwent()
+endpwent_entry:
+endpwent_exit:
+
+
+// confstr
+// Return size: 0
+void confstr()
+confstr_entry:
+confstr_exit:
+
+
+// __lxstat
+// Return size: 0
+void __lxstat()
+__lxstat_entry:
+__lxstat_exit:
+
+
+// mbsrtowcs
+// Return size: 0
+void mbsrtowcs()
+mbsrtowcs_entry:
+mbsrtowcs_exit:
+
+
+// getaddrinfo
+// Return size: 0
+void getaddrinfo()
+getaddrinfo_entry:
+getaddrinfo_exit:
+
+
+// read
+// Return size: 0
+void read()
+read_entry:
+read_exit:
+
+
+// tcsetattr
+// Return size: 0
+void tcsetattr()
+tcsetattr_entry:
+tcsetattr_exit:
+
+
+// isatty
+// Return size: 0
+void isatty()
+isatty_entry:
+isatty_exit:
+
+
+// iswupper
+// Return size: 0
+void iswupper()
+iswupper_entry:
+iswupper_exit:
+
+
+// sysconf
+// Return size: 0
+void sysconf()
+sysconf_entry:
+sysconf_exit:
+
+
+// gethostname
+// Return size: 0
+void gethostname()
+gethostname_entry:
+gethostname_exit:
+
+
+// getpwent
+// Return size: 0
+void getpwent()
+getpwent_entry:
+getpwent_exit:
+
+
+// select
+// Return size: 0
+void select()
+select_entry:
+select_exit:
+
+
+// tgetstr
+// Return size: 0
+void tgetstr()
+tgetstr_entry:
+tgetstr_exit:
+
+
+// iswalnum
+// Return size: 0
+void iswalnum()
+iswalnum_entry:
+iswalnum_exit:
+
+
+// setservent
+// Return size: 0
+void setservent()
+setservent_entry:
+setservent_exit:
+
+
+// __fxstat
+// Return size: 0
+void __fxstat()
+__fxstat_entry:
+__fxstat_exit:
+
+
+// strchrnul
+// Return size: 0
+void strchrnul()
+strchrnul_entry:
+strchrnul_exit:
+
+
+// strstr
+// Return size: 0
+void strstr()
+strstr_entry:
+strstr_exit:
+
+
+// dcgettext
+// Return size: 0
+void dcgettext()
+dcgettext_entry:
+dcgettext_exit:
+
+
+// wcscmp
+// Return size: 0
+void wcscmp()
+wcscmp_entry:
+wcscmp_exit:
+
+
+// regexec
+// Return size: 0
+void regexec()
+regexec_entry:
+regexec_exit:
+
+
+// strcoll
+// Return size: 0
+void strcoll()
+strcoll_entry:
+strcoll_exit:
+
+
+// sigdelset
+// Return size: 0
+void sigdelset()
+sigdelset_entry:
+sigdelset_exit:
+
+
+// regfree
+// Return size: 0
+void regfree()
+regfree_entry:
+regfree_exit:
+
+
+// dup2
+// Return size: 0
+void dup2()
+dup2_entry:
+dup2_exit:
+
+
+// regcomp
+// Return size: 0
+void regcomp()
+regcomp_entry:
+regcomp_exit:
+
+
+// strncpy
+// Return size: 0
+void strncpy()
+strncpy_entry:
+strncpy_exit:
+
+
+// strsignal
+// Return size: 0
+void strsignal()
+strsignal_entry:
+strsignal_exit:
+
+
+// sigaddset
+// Return size: 0
+void sigaddset()
+sigaddset_entry:
+sigaddset_exit:
+
+
+// towupper
+// Return size: 0
+void towupper()
+towupper_entry:
+towupper_exit:
+
+
+// wcscoll
+// Return size: 0
+void wcscoll()
+wcscoll_entry:
+wcscoll_exit:
+
+
+// umask
+// Return size: 0
+void umask()
+umask_entry:
+umask_exit:
+
+
+// faccessat
+// Return size: 0
+void faccessat()
+faccessat_entry:
+faccessat_exit:
+
+
+// __errno_location
+// Return size: 0
+void __errno_location()
+__errno_location_entry:
+__errno_location_exit:
+
+
+// putchar
+// Return size: 0
+void putchar()
+putchar_entry:
+putchar_exit:
+
+
+// __xstat
+// Return size: 0
+void __xstat()
+__xstat_entry:
+__xstat_exit:
+
+
+// __memmove_chk
+// Return size: 0
+void __memmove_chk()
+__memmove_chk_entry:
+__memmove_chk_exit:
+
+
+// alarm
+// Return size: 0
+void alarm()
+alarm_entry:
+alarm_exit:
+
+
+// mblen
+// Return size: 0
+void mblen()
+mblen_entry:
+mblen_exit:
+
+
+// waitpid
+// Return size: 0
+void waitpid()
+waitpid_entry:
+waitpid_exit:
+
+
+// unlink
+// Return size: 0
+void unlink()
+unlink_entry:
+unlink_exit:
+
+
+// getdtablesize
+// Return size: 0
+void getdtablesize()
+getdtablesize_entry:
+getdtablesize_exit:
+
+
+// towlower
+// Return size: 0
+void towlower()
+towlower_entry:
+towlower_exit:
+
+
+// fgets
+// Return size: 0
+void fgets()
+fgets_entry:
+fgets_exit:
+
+
+// strcasestr
+// Return size: 0
+void strcasestr()
+strcasestr_entry:
+strcasestr_exit:
+
+
+// tcflow
+// Return size: 0
+void tcflow()
+tcflow_entry:
+tcflow_exit:
+
+
+// ioctl
+// Return size: 0
+void ioctl()
+ioctl_entry:
+ioctl_exit:
+
+
+// setlocale
+// Return size: 0
+void setlocale()
+setlocale_entry:
+setlocale_exit:
+
+
+// ferror
+// Return size: 0
+void ferror()
+ferror_entry:
+ferror_exit:
+
+
+// wcrtomb
+// Return size: 0
+void wcrtomb()
+wcrtomb_entry:
+wcrtomb_exit:
+
+
+// iswlower
+// Return size: 0
+void iswlower()
+iswlower_entry:
+iswlower_exit:
+
+
+// fn000000000041CEC0
+// Return size: 0
+void fn000000000041CEC0()
+fn000000000041CEC0_entry:
+	// succ:  l000000000041CEC0
+l000000000041CEC0:
+	sp = fp
+	x0 = 0x00000000004DE000
+	w0 = Mem0[x0 + 1716:word32]
+	x7 = 0x00000000004DE000
+	branch w0 == 0x00000000 l000000000041CF34
+	// succ:  l000000000041CED0 l000000000041CF34
+l000000000041CED0:
+	x0 = 0x00000000004D7000
+	w0 = Mem0[x0 + 376:word32]
+	w31 = w0 - 0x00000029
+	NZCV = cond(w31)
+	branch 

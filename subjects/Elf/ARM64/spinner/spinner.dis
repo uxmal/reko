@@ -1,0 +1,50 @@
+void fn0000000000003200()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000000000003200_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn0000000000003200_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0000000000003200:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void main()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+main_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0000000000005528:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
