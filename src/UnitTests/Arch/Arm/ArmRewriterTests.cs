@@ -131,19 +131,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = r0 << 4");
         }
 
-        [Test]
-        public void ArmRw_stmdb()
-        {
-            BuildTest(0xE92C003B);  // stmdb ip!,{r0,r1,r3-r5},lr,pc}
-            AssertCode(
-                "0|L--|00100000(4): 6 instructions",
-                "1|L--|Mem0[ip - 4:word32] = r0",
-                "2|L--|Mem0[ip - 8:word32] = r1",
-                "3|L--|Mem0[ip - 12:word32] = r3",
-                "4|L--|Mem0[ip - 16:word32] = r4",
-                "5|L--|Mem0[ip - 20:word32] = r5",
-                "6|L--|ip = ip - 24");
-        }
 
         [Test]
         public void ArmRw_bllt()
@@ -254,9 +241,9 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE92D4010);
             AssertCode(
                "0|L--|00100000(4): 3 instructions",
-               "1|L--|sp = sp - 8",
-               "2|L--|Mem0[sp:word32] = r4",
-               "3|L--|Mem0[sp + 4:word32] = lr");
+               "1|L--|Mem0[sp + -8:word32] = r4",
+               "2|L--|Mem0[sp + -4:word32] = lr",
+               "3|L--|sp = sp - 8");
         }
 
         [Test]
@@ -679,16 +666,14 @@ means
         }
 
         [Test]
-        [Ignore(Categories.Capstone)]
         public void ArmRw_rsc()
         {
             // Capstone incorrectly disassembles this as setting the S flag.
             BuildTest(0x00E050CC); // rsceq asr r5,r0,ip, asr #1
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
+                "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|r5 = (ip >> 1) - r0 - C",
-                "3|L--|r5 = ip - r0");
+                "2|L--|r5 = (ip >> 1) - r0 - C");
         }
 
         [Test]
@@ -1077,37 +1062,52 @@ means
         [Test]
         public void ArmRw_stmda()
         {
-            BuildTest(0xE84230fd);  // stmda r2, {r0, r2, r3, r4, r5, r6, r7, ip, sp} ^
+            BuildTest(0xE80230fd);  // stmda r2, {r0, r2, r3, r4, r5, r6, r7, ip, sp} ^
             AssertCode(
                 "0|L--|00100000(4): 9 instructions",
-                "1|L--|Mem0[r2:word32] = r0",
-                "2|L--|Mem0[r2 - 4:word32] = r2",
-                "3|L--|Mem0[r2 - 8:word32] = r3",
-                "4|L--|Mem0[r2 - 12:word32] = r4",
-                "5|L--|Mem0[r2 - 16:word32] = r5",
-                "6|L--|Mem0[r2 - 20:word32] = r6",
-                "7|L--|Mem0[r2 - 24:word32] = r7",
-                "8|L--|Mem0[r2 - 28:word32] = ip",
-                "9|L--|Mem0[r2 - 32:word32] = sp");
+                "1|L--|Mem0[r2 + -32:word32] = r0",
+                "2|L--|Mem0[r2 + -28:word32] = r2",
+                "3|L--|Mem0[r2 + -24:word32] = r3",
+                "4|L--|Mem0[r2 + -20:word32] = r4",
+                "5|L--|Mem0[r2 + -16:word32] = r5",
+                "6|L--|Mem0[r2 + -12:word32] = r6",
+                "7|L--|Mem0[r2 + -8:word32] = r7",
+                "8|L--|Mem0[r2 + -4:word32] = ip",
+                "9|L--|Mem0[r2:word32] = sp");
         }
 
         [Test]
-        public void ArmRw_stmda_w()
+        public void ArmRw_stmda_writeback()
         {
-            BuildTest(0xE86230fd);  // stmda r2, {r0, r2, r3, r4, r5, r6, r7, ip, sp} ^
+            BuildTest(0xE82230fd);  // stmda r2!, {r0, r2, r3, r4, r5, r6, r7, ip, sp} ^
             AssertCode(
                 "0|L--|00100000(4): 10 instructions",
-                "1|L--|Mem0[r2:word32] = r0",
-                "2|L--|Mem0[r2 - 4:word32] = r2",
-                "3|L--|Mem0[r2 - 8:word32] = r3",
-                "4|L--|Mem0[r2 - 12:word32] = r4",
-                "5|L--|Mem0[r2 - 16:word32] = r5",
-                "6|L--|Mem0[r2 - 20:word32] = r6",
-                "7|L--|Mem0[r2 - 24:word32] = r7",
-                "8|L--|Mem0[r2 - 28:word32] = ip",
-                "9|L--|Mem0[r2 - 32:word32] = sp",
+                "1|L--|Mem0[r2 + -32:word32] = r0",
+                "2|L--|Mem0[r2 + -28:word32] = r2",
+                "3|L--|Mem0[r2 + -24:word32] = r3",
+                "4|L--|Mem0[r2 + -20:word32] = r4",
+                "5|L--|Mem0[r2 + -16:word32] = r5",
+                "6|L--|Mem0[r2 + -12:word32] = r6",
+                "7|L--|Mem0[r2 + -8:word32] = r7",
+                "8|L--|Mem0[r2 + -4:word32] = ip",
+                "9|L--|Mem0[r2:word32] = sp",
                 "10|L--|r2 = r2 - 36");
         }
+
+        [Test]
+        public void ArmRw_stmdb()
+        {
+            BuildTest(0xE92C003B);  // stmdb ip!,{r0,r1,r3-r5},lr,pc}
+            AssertCode(
+                "0|L--|00100000(4): 6 instructions",
+                "1|L--|Mem0[ip + -20:word32] = r0",
+                "2|L--|Mem0[ip + -16:word32] = r1",
+                "3|L--|Mem0[ip + -12:word32] = r3",
+                "4|L--|Mem0[ip + -8:word32] = r4",
+                "5|L--|Mem0[ip + -4:word32] = r5",
+                "6|L--|ip = ip - 20");
+        }
+
 
         [Test]
         public void ArmRw_vneg_f64()

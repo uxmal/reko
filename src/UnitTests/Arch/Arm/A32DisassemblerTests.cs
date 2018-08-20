@@ -264,13 +264,11 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(ArmObsolete)]
         public void ArmDasm_swpb()
         {
             var instr = DisassembleBits("1110 00010 100 0001 0010 00001001 0011");
             Assert.AreEqual("swpb\tr2,r3,[r1]", instr.ToString());
         }
-
 
         [Test]
         [Ignore("Can't seem to find a definition for this in ARM docs?")]

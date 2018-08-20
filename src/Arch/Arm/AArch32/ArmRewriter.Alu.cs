@@ -638,31 +638,42 @@ namespace Reko.Arch.Arm.AArch32
         }
 
 
-        private void RewriteStm(int offset, bool inc)
+        private void RewriteStm(bool add, bool updateAfter)
         {
-            var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var mul = (MultiRegisterOperand)Src1();
-            var increment = inc ? 4 : -4;
-            foreach (var r in mul.GetRegisters())
+            var rSrc = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var regs = ((MultiRegisterOperand)Src1()).GetRegisters().ToArray();
+            int regSize = regs[0].DataType.Size;
+            int totalRegsize = regs.Length * regSize;
+            int offset;
+            if (add)
             {
-                var ea = offset > 0
-                    ? m.IAdd(dst, m.Int32(offset))
-                    : offset < 0
-                    ? m.ISub(dst, m.Int32(Math.Abs(offset)))
-                    : dst;
-                var srcReg = Reg(r);
-                m.Assign(m.Mem32(ea), srcReg);
-                offset += increment;
+                offset = updateAfter ? 0 : regSize;
+            }
+            else
+            {
+                offset = -totalRegsize;
+                if (updateAfter)
+                    offset += regSize;
+            }
+            foreach (var r in regs)
+            {
+                var dst = Reg(r);
+                Expression ea =
+                    offset != 0
+                    ? m.IAdd(rSrc, m.Int32(offset))
+                    : rSrc;
+                m.Assign(m.Mem(r.DataType, ea), dst);
+                offset += r.DataType.Size;
             }
             if (instr.Writeback)
             {
-                if (offset > 0)
+                if (add)
                 {
-                    m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
+                    m.Assign(rSrc, m.IAdd(rSrc, m.Int32(totalRegsize)));
                 }
-                else if (offset < 0)
+                else
                 {
-                    m.Assign(dst, m.ISub(dst, m.Int32(Math.Abs(offset))));
+                    m.Assign(rSrc, m.ISub(rSrc, m.Int32(totalRegsize)));
                 }
             }
         }

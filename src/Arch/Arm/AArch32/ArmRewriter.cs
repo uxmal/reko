@@ -441,10 +441,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.stc2: RewriteStc("__stc2"); break;
                 case Opcode.stc: RewriteStc("__stc"); break;
                 case Opcode.stcl: RewriteStc("__stcl"); break;
-                case Opcode.stm: RewriteStm(0, true); break;
-                case Opcode.stmdb: RewriteStm(-4, false); break;
-                case Opcode.stmda: RewriteStm(0, false); break;
-                case Opcode.stmib: RewriteStm(4, true); break;
+                case Opcode.stm: RewriteStm(true, true); break;
+                case Opcode.stmdb: RewriteStm(false, false); break;
+                case Opcode.stmda: RewriteStm(false, true); break;
+                case Opcode.stmib: RewriteStm(true, false); break;
                 case Opcode.str: RewriteStr(PrimitiveType.Word32); break;
                 case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
                 case Opcode.strbt: RewriteStr(PrimitiveType.Byte); break;
