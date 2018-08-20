@@ -361,7 +361,7 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
         {
-            if (true || !pool.TryGetValue(addr, out var e))
+            if (!pool.TryGetValue(addr, out var e))
             {
                 var rdr = program.CreateImageReader(addr);
                 var arch = program.Architecture;
