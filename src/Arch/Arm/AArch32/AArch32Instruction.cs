@@ -22,6 +22,7 @@ using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
@@ -43,6 +44,42 @@ namespace Reko.Arch.Arm.AArch32
             Opcode.ldm, Opcode.ldmda, Opcode.ldmdb, Opcode.ldmib,
             Opcode.stm, Opcode.stmda, Opcode.stmdb, Opcode.stmib,
             Opcode.vldmia, Opcode.vldmdb, Opcode.vstmia, Opcode.vstmdb
+        };
+
+        // Instruction aliases render instructions differently under special conditions.
+        private class ArmAlias
+        {
+            public readonly Func<AArch32Instruction, bool> Matches;  // predicate for the alias
+            public readonly string sOpcode;
+            public readonly Func<AArch32Instruction, (MachineOperand[], bool)> NewOperands;   // Mutated operands
+
+            public ArmAlias(
+                Func<AArch32Instruction, bool> match,
+                string sOpcode, 
+                Func<AArch32Instruction, (MachineOperand[], bool)> newOperands)
+            {
+                this.Matches = match;
+                this.sOpcode = sOpcode;
+                this.NewOperands = newOperands;
+            }
+
+            public static (MachineOperand[], bool) Shift(AArch32Instruction i)
+            {
+                return (i.ops.Skip(1).ToArray(), false);
+            }
+
+            public static (MachineOperand[], bool) FirstOp(AArch32Instruction i)
+            {
+                return (i.ops.Take(1).ToArray(), false);
+            }
+        }
+
+        private static readonly Dictionary<Opcode, ArmAlias> aliases = new Dictionary<Opcode, ArmAlias>
+        {
+            { Opcode.ldm, new ArmAlias(i => i.Writeback && i.IsStackPointer(0), "pop", ArmAlias.Shift) },
+            { Opcode.ldr, new ArmAlias(i => i.IsSinglePop(), "pop", ArmAlias.FirstOp) },
+            { Opcode.stmdb, new ArmAlias(i => i.Writeback && i.IsStackPointer(0), "push", ArmAlias.Shift) },
+            { Opcode.str, new ArmAlias(i => i.IsSinglePush(), "push", ArmAlias.FirstOp) },
         };
         #endregion
 
@@ -104,12 +141,14 @@ namespace Reko.Arch.Arm.AArch32
                 writer.WriteString(condition.ToString().ToLowerInvariant());
                 return;
             }
-            RenderMnemonic(writer);
+            var (ops, writeback) = RenderMnemonic(writer);
             if (ops.Length > 0)
             {
                 writer.Tab();
                 RenderOperand(ops[0], writer, options);
-                if (this.Writeback && blockDataXferOpcodes.Contains(opcode))
+                if (writeback &&
+                    blockDataXferOpcodes.Contains(opcode) &&
+                    ops[0] is RegisterOperand)
                 {
                     writer.WriteChar('!');
                 }
@@ -135,10 +174,45 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        public bool IsStackPointer(int iOp)
+        {
+            return ops[iOp] is RegisterOperand r && r.Register == Registers.sp;
+        }
+
+        public bool IsSinglePop()
+        {
+            return ops[1] is MemoryOperand mem &&
+                mem.BaseRegister == Registers.sp &&
+                this.Writeback && 
+                !mem.PreIndex &&
+                mem.Offset != null &&
+                mem.Add &&
+                mem.Offset.ToInt32() == ops[0].Width.Size;
+        }
+
+        public bool IsSinglePush()
+        {
+            return ops[1] is MemoryOperand mem &&
+                mem.BaseRegister == Registers.sp &&
+                this.Writeback &&
+                mem.PreIndex &&
+                mem.Offset != null &&
+                !mem.Add &&
+                mem.Offset.ToInt32() == ops[0].Width.Size;
+        }
+
+        private (MachineOperand[], bool) RenderMnemonic(MachineInstructionWriter writer)
         {
             var sb = new StringBuilder();
-            if (!opcodes.TryGetValue(opcode, out string sOpcode))
+            string sOpcode;
+            var ops = (this.ops, this.Writeback);
+            if (aliases.TryGetValue(opcode, out ArmAlias armAlias) &&
+                armAlias.Matches(this))
+            {
+                sOpcode = armAlias.sOpcode;
+                ops = armAlias.NewOperands(this);
+            }
+            else if (!opcodes.TryGetValue(opcode, out sOpcode))
             {
                 sOpcode = opcode.ToString();
             }
@@ -157,12 +231,13 @@ namespace Reko.Arch.Arm.AArch32
                 sb.AppendFormat(".{0}", s);
             }
             writer.WriteOpcode(sb.ToString());
+            return ops;
         }
 
         private string RenderIt()
         {
             var sb = new StringBuilder();
-            sb.Append("it");
+            ;  sb.Append("it");
             int mask = this.itmask;
             var bit = (~(int)this.condition & 1) << 3;
 

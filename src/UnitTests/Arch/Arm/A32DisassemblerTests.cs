@@ -348,10 +348,31 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_pop_many()
+        {
+            var instr = Disassemble32(0xE8BD000A);
+            Assert.AreEqual("pop\t{r1,r3}", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_push_one()
+        {
+            var instr = Disassemble32(0xE52DE004);
+            Expect_Code("push\tlr");
+        }
+
+        [Test]
+        public void ArmDasm_pop_one()
+        {
+            var instr = Disassemble32(0xE49DE004);
+            Expect_Code("pop\tlr");
+        }
+
+        [Test]
         public void ArmDasm_blx()
         {
             var instr = Disassemble32(0xFB000000);
-            Assert.AreEqual("blx\t$0010000A", instr.ToString());
+            Expect_Code("blx\t$0010000A");
         }
 
         [Test]
@@ -519,8 +540,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_str_preindex()
         {
-            Disassemble32(0xE52D0004);
-            Expect_Code("str\tr0,[sp,-#&4]!");
+            Disassemble32(0xE52D0008);
+            Expect_Code("str\tr0,[sp,-#&8]!");
         }
 
         [Test]
