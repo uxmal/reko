@@ -1281,7 +1281,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var lsb = Bitfield.ReadFields(lsbField, u);
-                var msb = Bitfield.ReadFields(lsbField, u);
+                var msb = Bitfield.ReadFields(msbField, u);
                 d.state.ops.Add(ImmediateOperand.Int32((int)lsb));
                 d.state.ops.Add(ImmediateOperand.Int32((int)(msb - lsb + 1)));
             };

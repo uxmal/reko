@@ -38,6 +38,12 @@ namespace Reko.Arch.Arm.AArch32
         public static readonly RegisterStorage cpsr = new RegisterStorage("cpsr", 16, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage fpscr = new RegisterStorage("fpscr", 17, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage spsr = new RegisterStorage("spsr", 18, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage fpsid = new RegisterStorage("fpsid", 19, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage mvfr2 = new RegisterStorage("mvfr2", 20, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage mvfr1 = new RegisterStorage("mvfr1", 21, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage mvfr0 = new RegisterStorage("mvfr0", 22, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage fpexc = new RegisterStorage("fpexc", 23, 0, PrimitiveType.Word32);
+
 
         // We need to provide the coprocessors as named register storages even though
         // they more appropriately should be treated as symbols.

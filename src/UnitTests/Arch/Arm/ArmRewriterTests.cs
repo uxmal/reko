@@ -997,7 +997,7 @@ means
             BuildTest(0xeef1fa10);  // vmrs apsr_nzcv, fpscr
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|apsr_nzcv = fpscr");
+                "1|L--|NZCV = fpscr");
         }
 
         [Test]
@@ -1191,7 +1191,7 @@ means
             BuildTest(0xf2c04077);  // vmvn.i32 q10, #7
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q10 = __vmvn_imm_i32(0x00000007)");
+                "1|L--|q10 = __vmvn_imm_i32(0x0000000700000007)");
         }
 
         [Test]

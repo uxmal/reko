@@ -539,6 +539,12 @@ namespace Reko.Arch.Arm.AArch32
             return GetEnumerator();
         }
 
+        void Invalid()
+        {
+            this.rtlClass = RtlClass.Invalid;
+            m.Invalid();
+        }
+
         void NotImplementedYet()
         {
             uint wInstr;
@@ -552,7 +558,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             host.Error(instr.Address, "Rewriting ARM opcode '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
             EmitUnitTest();
-            m.Invalid();
+            Invalid();
         }
 
         Identifier Reg(RegisterStorage reg) { return binder.EnsureRegister(reg); }

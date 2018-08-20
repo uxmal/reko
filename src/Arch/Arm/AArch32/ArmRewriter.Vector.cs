@@ -16,6 +16,7 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -134,7 +135,23 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmrs()
         {
-            m.Assign(Operand(Dst()), Operand(Src1()));
+            var nsysreg= ((ImmediateOperand)Src1()).Value.ToInt32();
+            var dst = Operand(Dst());
+            RegisterStorage sysreg;
+            switch (nsysreg)
+            {
+            case 0: sysreg = Registers.fpsid; break;
+            case 1:
+                sysreg =  Registers.fpscr;
+                dst = NZCV();
+                break;
+            case 5: sysreg = Registers.mvfr2; break;
+            case 6: sysreg = Registers.mvfr1; break;
+            case 7: sysreg = Registers.mvfr0; break;
+            case 8: sysreg = Registers.fpexc; break;
+            default: Invalid(); return;
+            }
+            m.Assign(dst, binder.EnsureRegister(sysreg));
         }
 
         private void RewriteVmvn()

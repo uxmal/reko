@@ -69,7 +69,6 @@ namespace Reko.Arch.Arm.AArch32
 
             protected void DumpMaskedInstruction(uint wInstr, uint shMask)
             {
-                return; //$DEBUG
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
