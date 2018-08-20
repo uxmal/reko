@@ -1444,7 +1444,7 @@ namespace Reko.Arch.Arm.AArch32
                 MoveSpecialRegister,
                 Bx,
                 Bxj,
-                Blx,
+                Instr(Opcode.blx, r(0)),
 
                 CyclicRedundancyCheck,
                 IntegerSaturatingArithmetic,

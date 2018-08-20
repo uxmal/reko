@@ -271,6 +271,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_swpb_2()
+        {
+            Disassemble32(0xE1409190);
+            Expect_Code("swpb\tr9,r0,[r0]");
+        }
+
+        [Test]
         [Ignore("Can't seem to find a definition for this in ARM docs?")]
         public void ArmDasm_cdp()
         {
@@ -373,6 +380,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble32(0xFB000000);
             Expect_Code("blx\t$0010000A");
+        }
+
+        [Test]
+        public void ArmDasm_blx_reg()
+        {
+            Disassemble32(0xE12FFF35);
+            Expect_Code("blx\tr5");
         }
 
         [Test]
@@ -1182,19 +1196,20 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("qsub\tr6,r0,sp");
         }
 
+  
 
         [Test]
-        public void ArmDis_swpb()
-        {
-            Disassemble32(0xE1409190);
-            Expect_Code("swpb\tr9,r0,[r0]");
-        }
-
-        [Test]
-        public void ArmDis_msr_imm()
+        public void ArmDasm_msr_imm()
         {
             Disassemble32(0xA36A6BDD);
             Expect_Code("msrge\tspsr,#&BDD");
+        }
+
+        [Test]
+        public void ArmDasm_ldr_literal()
+        {
+            Disassemble32(0xE59F5254);
+            Expect_Code("ldr\tr5,[pc,#596]");
         }
     }
 }
