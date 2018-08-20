@@ -51,11 +51,11 @@
 
 ;; _init: 000082F0
 _init proc
-	str	lr,[sp,-#4]!
+	push	lr
 	bl	$0000836C
 	bl	$00008404
 	bl	$0000870C
-	pop	{pc}
+	pop	pc
 ;;; Segment .plt (00008304)
 00008304             04 E0 2D E5 10 E0 9F E5 0E E0 8F E0     ..-.........
 00008310 08 F0 BE E5 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 ................
@@ -67,13 +67,13 @@ _init proc
 _start proc
 	ldr	ip,[pc,#&24]                                           ; 00008360
 	mov	fp,#0
-	pop	{r1}
+	pop	r1
 	mov	r2,sp
-	str	r2,[sp,-#4]!
-	str	r0,[sp,-#4]!
+	push	r2
+	push	r0
 	ldr	r0,[pc,#&10]                                           ; 00008364
 	ldr	r3,[pc,#&10]                                           ; 00008368
-	str	ip,[sp,-#4]!
+	push	ip
 	bl	$00008324
 	bl	$00008314
 00008360 B0 86 00 00 5C 85 00 00 54 86 00 00             ....\...T...   
@@ -125,8 +125,8 @@ l000083E8:
 
 ;; call___do_global_dtors_aux: 000083FC
 call___do_global_dtors_aux proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+	push	lr
+	pop	pc
 
 ;; frame_dummy: 00008404
 frame_dummy proc
@@ -146,8 +146,8 @@ l00008420:
 
 ;; call_frame_dummy: 0000842C
 call_frame_dummy proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+	push	lr
+	pop	pc
 
 ;; frobulate: 00008434
 frobulate proc
@@ -165,7 +165,7 @@ frobulate proc
 	bl	$00008588
 	mov	r3,r0
 	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
+	ldmdb	fp,{fp,sp,pc}
 
 ;; bazulate: 00008470
 bazulate proc
@@ -193,7 +193,7 @@ bazulate proc
 	bl	$00008588
 	mov	r3,r0
 	mov	r0,r3
-	ldmdb	fp,r4,fp,sp
+	ldmdb	fp,{r4,fp,sp,pc}
 
 ;; switcheroo: 000084D4
 switcheroo proc
@@ -242,7 +242,7 @@ l0000854C:
 	ldr	r3,[fp,-#&10]
 	add	r3,r3,#1
 	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
+	ldmdb	fp,{fp,sp,pc}
 
 ;; main: 0000855C
 main proc
@@ -256,7 +256,7 @@ main proc
 	bl	$000084D4
 	mov	r3,#0
 	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
+	ldmdb	fp,{fp,sp,pc}
 
 ;; __divsi3: 00008588
 __divsi3 proc
@@ -278,7 +278,7 @@ l000085A8:
 	blo	$00008618
 
 l000085B0:
-	cmp	r1,#1<<28
+	cmp	r1,#&10000000
 	cmplo	r1,r0
 
 l000085B8:
@@ -350,10 +350,10 @@ l00008624:
 	mov	pc,lr
 
 l00008628:
-	str	lr,[sp,-#4]!
+	push	lr
 	bl	$00008638
 	mov	r0,#0
-	pop	{pc}
+	pop	pc
 
 ;; __div0: 00008638
 __div0 proc
@@ -421,7 +421,7 @@ l000086F8:
 __do_global_ctors_aux proc
 	push	{r4,lr}
 	ldr	r3,[pc,#&28]                                           ; 00008740
-	ldr	r2,[r3,-#4]
+	ldr	r2,[r3,-#&4]
 	cmn	r2,#1
 	sub	r4,r3,#4
 	popeq	{r4,pc}
@@ -435,15 +435,15 @@ l00008724:
 
 ;; call___do_global_ctors_aux: 00008744
 call___do_global_ctors_aux proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+	push	lr
+	pop	pc
 ;;; Segment .fini (0000874C)
 
 ;; _fini: 0000874C
 _fini proc
-	str	lr,[sp,-#4]!
+	push	lr
 	bl	$0000839C
-	pop	{pc}
+	pop	pc
 ;;; Segment .rodata (00008758)
 00008758                         01 00 02 00                     ....   
 ;;; Segment .data (0001075C)
