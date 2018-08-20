@@ -413,7 +413,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "genPICdb", "tools\genPICdb\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrochipPIC.Design", "Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj", "{E75C3BE2-0F98-48CD-943D-198159B57DC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPC.Design", "arch\PowerPC.Design\PowerPC.Design.csproj", "{16550DF3-0916-4BDD-AA7A-7E1BAD7ABA3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPC.Design", "Arch\PowerPC.Design\PowerPC.Design.csproj", "{16550DF3-0916-4BDD-AA7A-7E1BAD7ABA3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
