@@ -213,29 +213,29 @@ namespace Reko.Arch.Arm.AArch32
 
         private class InstrDecoder2 : Decoder
         {
-            private Opcode opcode;
-            private ArmVectorData vectorData;
-            private Action<uint, A32Disassembler>[] mutators;
+            private readonly Opcode opcode;
+            private readonly ArmVectorData vectorData;
+            private readonly Action<uint, A32Disassembler>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, ArmVectorData iNVALID, Action<uint, A32Disassembler>[] mutators)
+            public InstrDecoder2(Opcode opcode, ArmVectorData vectorData, params Action<uint, A32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
-                this.vectorData = iNVALID;
+                this.vectorData = vectorData;
                 this.mutators = mutators;
             }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                dasm.state.opcode = this.opcode;
+                dasm.state.vectorData = this.vectorData;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
                     mutators[i](wInstr, dasm);
                 }
-                return dasm.GenInstruction(opcode, vectorData);
+                var instr = dasm.state.MakeInstruction();
+                return instr;
             }
         }
-
-
-
         private class CondMaskDecoder : MaskDecoder
         {
             public CondMaskDecoder(int shift, uint mask, params Decoder[] decoders)
@@ -298,9 +298,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private class MovDecoder : InstrDecoder
+        private class MovDecoder : InstrDecoder2
         {
-            public MovDecoder(Opcode opcode, string format) : base(opcode, ArmVectorData.INVALID, format) { }
+            public MovDecoder(Opcode opcode, params Action<uint,A32Disassembler> [] mutators) : base(opcode, ArmVectorData.INVALID, mutators) { }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {

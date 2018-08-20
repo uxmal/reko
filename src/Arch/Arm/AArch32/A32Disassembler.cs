@@ -34,10 +34,12 @@ using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
+    using Mutator = System.Action<uint, A32Disassembler>;
+
     public partial class A32Disassembler : DisassemblerBase<AArch32Instruction>
     {
         private static readonly Decoder rootDecoder;
-        private static readonly Decoder invalid; 
+        private static readonly Decoder invalid;
 
         private Arm32Architecture arch;
         private EndianImageReader rdr;
@@ -118,7 +120,7 @@ namespace Reko.Arch.Arm.AArch32
                     offset = ReadDecimal(format, ref i);
                     state.writeback = bit(wInstr, offset);
                     continue;
-                
+
                 case 'I':   // 12-bit encoded immediate at offset 0;
                     op = DecodeImm12(wInstr);
                     break;
@@ -157,7 +159,7 @@ namespace Reko.Arch.Arm.AArch32
                     op = new RegisterOperand(Registers.GpRegs[imm]);
                     if (isRegisterPair)
                     {
-                        state.ops.Add(op);
+                        ops.Add(op);
                         op = new RegisterOperand(Registers.GpRegs[imm + 1]);
                     }
                     break;
@@ -209,7 +211,7 @@ namespace Reko.Arch.Arm.AArch32
                         {
                             new Bitfield(22, 1), new Bitfield(12, 4)
                         };
-                        var baseReg = (int) Bitfield.ReadFields(baseRegFields, wInstr);
+                        var baseReg = (int)Bitfield.ReadFields(baseRegFields, wInstr);
                         var regs = SBitfield(wInstr, 1, 7);
                         var bitmask = (((1u << regs) - 1u) << baseReg);
                         op = new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, bitmask);
@@ -227,7 +229,7 @@ namespace Reko.Arch.Arm.AArch32
                         op = new RegisterOperand(sr);
                     }
                     else
-                    {  
+                    {
                         // 'S13' = fpu register.
                         offset = (int)ReadBitfields(wInstr, format, ref i);
                         op = new RegisterOperand(Registers.SRegs[offset]);
@@ -248,7 +250,7 @@ namespace Reko.Arch.Arm.AArch32
                 case 'E':   // Endianness
                     ++i;
                     imm = ReadBitfields(wInstr, format, ref i);
-                    op = new EndiannessOperand(imm!=0);
+                    op = new EndiannessOperand(imm != 0);
                     break;
                 case 'i':   // General purpose immediate
                     ++i;
@@ -298,7 +300,7 @@ namespace Reko.Arch.Arm.AArch32
                     else if (format[i] == 'R') // rotation as encoded in uxtb / stxb and  friends
                     {
                         ++i;
-                        offset = (int) ReadBitfields(wInstr, format, ref i);
+                        offset = (int)ReadBitfields(wInstr, format, ref i);
                         if (offset == 0)
                         {
                             state.shiftOp = Opcode.Invalid;
@@ -367,7 +369,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (bitSize)
             {
-            default: throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
+            default: throw new ArgumentException(nameof(bitSize),"Bit size must be 8, 16, or 32.");
             case 16: return ArmVectorData.F16;
             case 32: return ArmVectorData.F32;
             case 64: return ArmVectorData.F64;
@@ -695,16 +697,16 @@ namespace Reko.Arch.Arm.AArch32
             switch (memType)
             {
             case 'o':   // offset 12 bits
-                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFFF)<<shift);
+                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFFF) << shift);
                 m = null;
                 break;
             case 'i':   // offset 8 bits
-                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFF)<<shift);
+                offset = Constant.Int32((int)bitmask(wInstr, 0, 0xFF) << shift);
                 m = null;
                 break;
             case 'h':   // offset split in hi-lo nybbles.
                 offset = Constant.Int32(
-                    (int)(((wInstr >> 4) & 0xF0) | (wInstr & 0x0F))<<shift);
+                    (int)(((wInstr >> 4) & 0xF0) | (wInstr & 0x0F)) << shift);
                 m = null;
                 break;
             case 'x':   // wide shift amt.
@@ -715,8 +717,7 @@ namespace Reko.Arch.Arm.AArch32
             bool preIndex = bit(wInstr, 24);
             bool wback = bit(wInstr, 21);
             bool writeback = !preIndex | wback;
-            return
-                (new MemoryOperand(dtAccess)
+            var mem = new MemoryOperand(dtAccess)
                 {
                     BaseRegister = n,
                     Offset = offset,
@@ -725,27 +726,588 @@ namespace Reko.Arch.Arm.AArch32
                     PreIndex = preIndex,
                     ShiftType = shiftType,
                     Shift = shiftAmt,
-                },
-                writeback);
+            };
+            return (mem, writeback);
         }
 
-        private AArch32Instruction GenInstruction(Opcode opcode, ArmVectorData vectorData)
+        public class DasmState
         {
-            var instr = new AArch32Instruction
+            public Opcode opcode;
+            public List<MachineOperand> ops = new List<MachineOperand>();
+            public bool updateFlags = false;
+            public bool writeback = false;
+            public Opcode shiftOp = Opcode.Invalid;
+            public MachineOperand shiftValue = null;
+            public bool useQ = false;
+            public int? vector_index = null;
+            public ArmVectorData vectorData;
+
+            public void Clear() {
+                ops.Clear();
+                updateFlags = false;
+                writeback = false;
+                shiftOp = Opcode.Invalid;
+                shiftValue = null;
+                useQ = false;
+                vector_index = null;
+                vectorData = ArmVectorData.INVALID;
+            }
+
+            public void Invalid()
             {
-                Address = addr,
-                Length = 4,
-                opcode = opcode,
-                ops = state.ops.ToArray(),
-                ShiftType = state.shiftOp,
-                ShiftValue = state.shiftValue,
-                SetFlags = state.updateFlags,
-                Writeback = state.writeback,
-                vector_data = vectorData,
-                vector_index = state.vector_index,
-            };
-            return instr;
+                Clear();
+                opcode = Opcode.Invalid;
+            }
+
+            public AArch32Instruction MakeInstruction()
+            {
+                var instr = new AArch32Instruction
+                {
+                    opcode = opcode,
+                    ops = ops.ToArray(),
+                    ShiftType = shiftOp,
+                    ShiftValue = shiftValue,
+                    SetFlags = updateFlags,
+                    Writeback = writeback,
+                    vector_data = vectorData,
+                    vector_index = vector_index,
+                };
+                return instr;
+            }
         }
+
+
+        private static Mutator vW(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.vectorData = d.VectorElementUntypedReverse(imm);
+            };
+        }
+
+        private static Mutator vi(int offset)
+        {
+            return (u, d) => { d.state.vectorData = d.VectorElementInteger(offset); };
+        }
+
+        private static Mutator vf(int offset)
+        {
+            return (u, d) => { d.state.vectorData = d.VectorElementFloat(offset); };
+        }
+
+        // bit which determines whether or not to use Qx or Dx registers in SIMD
+        private static Mutator q(int offset)
+        {
+            return (u, d) => { d.state.useQ = bit(u, offset); };
+        }
+
+        // sets the writeback bit.
+        private static Mutator w(int offset)
+        {
+            return (u, d) => { d.state.writeback = bit(u, offset); };
+        }
+
+        // 12-bit encoded immediate at offset 0
+        private static Mutator I =>
+            (u, d) => { d.state.ops.Add(d.DecodeImm12(u)); };
+
+        // 24-bits at offset 0.
+        private static Mutator J =>
+            (u, d) =>
+            {
+                var offset = 8 + (((int)u << 8) >> 6);
+                d.state.ops.Add(AddressOperand.Create(d.addr + offset));
+            };
+
+        // 24-bits at offset 0.
+        private static Mutator V =>
+            (u, d) =>
+            {
+                var imm = u & 0x00FFFFFF;
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+            };
+
+        // 24-bits + extra H bit
+        private static Mutator X =>
+            (u, d) =>
+            {
+                var offset = 8 + (((int)u << 8) >> 6);
+                offset |= ((int)u >> 23) & 2;
+                d.state.ops.Add(AddressOperand.Create(d.addr + offset));
+            };
+
+        // immediate low 12 bits + extra 4 bits
+        private static Mutator Y =>
+            (u, d) =>
+            {
+                var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+            };
+
+        // immediate low 12 bits + extra 4 bits
+        private static Mutator Yh =>
+            (u, d) =>
+            {
+                var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
+                d.state.ops.Add(ImmediateOperand.Word16((ushort)imm));
+            };
+
+        // register at a 4-bit multiple offset
+        private static Mutator r(int offset)
+        {
+            offset *= 4;
+            return (u, d) => {
+                var imm = bitmask(u, offset, 0xF);
+                d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
+            };
+        }
+
+        // register pair ]
+        private static Mutator rp(int offset)
+        {
+            offset *= 4;
+            return (u, d) =>
+            {
+                var imm = bitmask(u, offset, 0xF);
+                if ((imm & 1) != 0)
+                {
+                    d.state.Invalid();
+                }
+                else
+                {
+                    d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
+                    d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm + 1]));
+                }
+            };
+        }
+
+        // Vector register
+        private static Mutator W(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                if (d.state.useQ)
+                {
+                    if ((imm & 1) == 1)
+                        d.state.Invalid();
+                    else
+                        d.state.ops.Add(new RegisterOperand(Registers.QRegs[imm >> 1]));
+                }
+                else
+                {
+                    d.state.ops.Add(new RegisterOperand(Registers.DRegs[imm]));
+                }
+            };
+        }
+
+        private static Mutator Ix(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.vector_index = (int)imm;
+            };
+        }
+        private (MemoryOperand,bool) MakeMemoryOperand(
+            uint wInstr, 
+            RegisterStorage n,
+            RegisterStorage m,
+            Constant offset, 
+            Opcode shiftType,
+            int shiftAmt,
+            PrimitiveType dt)
+        { 
+            bool add = bit(wInstr, 23);
+            bool preIndex = bit(wInstr, 24);
+            bool wback = bit(wInstr, 21);
+            bool writeback = !preIndex | wback;
+            var mem = new MemoryOperand(dt)
+            {
+                BaseRegister = n,
+                Offset = offset,
+                Index = m,
+                Add = add,
+                PreIndex = preIndex,
+                ShiftType = shiftType,
+                Shift = shiftAmt,
+            };
+            return (mem, writeback);
+
+
+        }
+
+        // 12-bit offset
+        private static Mutator Mo(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var offset = Constant.Int32((int)bitmask(u, 0, 0xFFF));
+                MemoryOperand mem;
+                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private static Mutator M_(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var m = Registers.GpRegs[bitmask(u, 0, 0x0F)];
+                MemoryOperand mem;
+                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, m, null, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        // offset split in hi-lo nybbles.
+        private static Mutator Mh(PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var offset = Constant.Int32(
+                    (int)(((u >> 4) & 0xF0) | (u & 0x0F)));
+                MemoryOperand mem;
+                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private static Mutator Mx(PrimitiveType dt)
+        {
+            return (wInstr, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(wInstr, 16, 0xF)];
+                var m = Registers.GpRegs[bitmask(wInstr, 0, 0x0F)];
+                int shiftAmt;
+                Opcode shiftType = Opcode.Invalid;
+                (shiftType, shiftAmt) = d.DecodeImmShift(wInstr);
+                MemoryOperand mem;
+                (mem, d.state.writeback) = d.MakeMemoryOperand(wInstr, n, m, null, shiftType, shiftAmt, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private static Mutator Mi(int shift, PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
+                var offset = Constant.Int32((int)bitmask(u, 0, 0xFF) << shift);
+                MemoryOperand mem;
+                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
+                d.state.ops.Add(mem);
+            };
+        }
+
+        private static  PrimitiveType w1 => PrimitiveType.Byte;
+        private static PrimitiveType w2 => PrimitiveType.Word16;
+        private static PrimitiveType w4 => PrimitiveType.Word32;
+        private static PrimitiveType w8 => PrimitiveType.Word64;
+        private static PrimitiveType s1 => PrimitiveType.SByte;
+        private static PrimitiveType s2 => PrimitiveType.Int16;
+        private static PrimitiveType s4 => PrimitiveType.Int32;
+        private static PrimitiveType s8 => PrimitiveType.Int64;
+
+        //case '[':
+        //    {
+        //        int shift = 0;
+        //        ++i;
+        //        var memType = format[i];
+        //        ++i;
+        //        if (PeekAndDiscard('<', format, ref i))
+        //        {
+        //            shift = ReadDecimal(format, ref i);
+        //        }
+        //        Expect(':', format, ref i);
+        //        var dom = format[i];
+        //        ++i;
+        //        var size = format[i] - '0';
+        //        ++i;
+        //        var dt = GetDataType(dom, size);
+        //        (op, writeback) = DecodeMemoryAccess(u, memType, shift, dt);
+        //    }
+        //    break;
+
+
+        // Multiple registers
+        private static Mutator Mr(int pos, int size) {
+            var bitfields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfields, u);
+                d.state.ops.Add(new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (ushort)imm));
+            };
+        }
+
+        private static Bitfield[] baseRegFields = new[]
+{
+                            new Bitfield(22, 1), new Bitfield(12, 4)
+                        };
+
+        private static Mutator Md(int pos, int size)
+        {
+            var bitfields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfields, u);
+                var baseReg = (int)Bitfield.ReadFields(baseRegFields, u);
+                var regs = d.SBitfield(u, 1, 7);
+                var bitmask = (((1u << regs) - 1u) << baseReg);
+                d.state.ops.Add(new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, bitmask));
+            };
+        }
+
+        private static Mutator SR =>
+            (u, d) =>
+            {
+                var sr = bit(u, 22) ? Registers.spsr : Registers.cpsr;
+                d.state.ops.Add(new RegisterOperand(sr));
+            };
+    
+        // Single precision register
+        private static Mutator S(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.SRegs[iReg]));
+            };
+        }
+
+        private static Mutator D(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.DRegs[iReg]));
+            };
+        }
+
+        //if (PeekAndDiscard('[', format, ref i))
+        //{
+        //    // D13[3] - index into sub-element
+        //    vector_index = (int)ReadBitfields(u, format, ref i);
+        //    Expect(']', format, ref i);
+        //}
+
+        // Endianness
+        private static Mutator E(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new EndiannessOperand(imm != 0));
+            };
+        }
+
+        private static Mutator i(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+            };
+        }
+
+        private static Mutator i_p1(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(ImmediateOperand.Word32(imm+1));
+            };
+        }
+
+        private static Mutator ih(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(ImmediateOperand.Word16((ushort)imm));
+            };
+        }
+
+        private static Mutator Is(int pos1, int size1, int pos2, int size2, int pos3, int size3)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2),
+                new Bitfield(pos3, size3),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                var cmode = (u >> 8) & 0xF;
+                var op = (u >> 5) & 1;
+                d.state.ops.Add(ImmediateOperand.Word64(d.SimdExpandImm(op, cmode, (uint)imm)));
+            };
+
+        }
+
+        // use bit 20 to determine if sets flags
+        private static Mutator s =>
+            (u, d) => { d.state.updateFlags = ((u >> 20) & 1) != 0; };
+
+
+        // Coprocessor #
+        private static Mutator CP(int n)
+        {
+            return (u, d) =>
+            {
+                d.state.ops.Add(d.Coprocessor(u, n));
+            };
+        }
+
+        // Coprocessor register
+        private static Mutator CR(int offset)
+        {
+            return (u, d) => { d.state.ops.Add(d.CoprocessorRegister(u, offset)); };
+        }
+
+        // '>i' immediate shift
+        private static Mutator Shi =>
+            (u, d) =>
+            {
+                int sh;
+                (d.state.shiftOp, sh) = d.DecodeImmShift(u);
+                if (d.state.shiftOp != Opcode.Invalid)
+                {
+                    d.state.shiftValue = ImmediateOperand.Int32(sh);
+                }
+            };
+
+        // >R:  rotation as encoded in uxtb / stxb and  friends
+        private static Mutator ShR(int pos, int size)
+        {
+            var bitfields = new Bitfield[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var offset = (int)Bitfield.ReadFields(bitfields, u);
+                if (offset == 0)
+                {
+                    d.state.shiftOp = Opcode.Invalid;
+                }
+                else
+                {
+                    d.state.shiftOp = Opcode.ror;
+                    d.state.shiftValue = ImmediateOperand.Int32(offset << 3);
+                }
+            };
+        }
+
+        private static Mutator x(string message)
+        {
+            return (u, d) =>
+            {
+                d.NotYetImplemented(message, u);
+                d.Invalid();
+            };
+        }
+
+        // >r : register shift
+        private static Mutator Shr =>
+            (u, d) => { (d.state.shiftOp, d.state.shiftValue) = d.DecodeRegShift(u); };
+
+
+        // Ba => barrier
+        private static Mutator Ba(int pos, int size)
+        {
+            var bitfield = new[] { new Bitfield(pos, size) };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfield, u);
+                d.state.ops.Add(new BarrierOperand((BarrierOption)imm));
+            };
+        }
+
+        // BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
+        // decoded as lsb,width
+        private static Mutator B(int lsbPos, int lsbSize, int msbPos, int msbSize)
+        {
+            var lsbField = new[]
+            {
+                new Bitfield(lsbPos, lsbSize),
+            };
+            var msbField = new[]
+            {
+                new Bitfield(msbPos, msbSize)
+            };
+            return (u, d) =>
+            {
+                var lsb = Bitfield.ReadFields(lsbField, u);
+                var msb = Bitfield.ReadFields(lsbField, u);
+                d.state.ops.Add(ImmediateOperand.Int32((int)lsb));
+                d.state.ops.Add(ImmediateOperand.Int32((int)(msb - lsb + 1)));
+            };
+         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -758,7 +1320,17 @@ namespace Reko.Arch.Arm.AArch32
         {
             return new InstrDecoder(opcode, vec, format);
         }
-         
+
+        private static Decoder Instr(Opcode opcode, params Mutator[] mutators)
+        {
+            return new InstrDecoder2(opcode, ArmVectorData.INVALID, mutators);
+        }
+
+        private static Decoder Instr(Opcode opcode, ArmVectorData vec, params Mutator[] mutators)
+        {
+            return new InstrDecoder2(opcode, vec, mutators);
+        }
+
         private static Decoder Instr(Opcode opcode, params Action<uint, A32Disassembler> [] mutators)
         {
             return new InstrDecoder2(opcode, ArmVectorData.INVALID, mutators);
@@ -842,32 +1414,32 @@ namespace Reko.Arch.Arm.AArch32
 
         static A32Disassembler()
         {
-            invalid = new InstrDecoder(Opcode.Invalid, ArmVectorData.INVALID, "");
+            invalid = new InstrDecoder2(Opcode.Invalid, ArmVectorData.INVALID);
 
             var LoadStoreExclusive = nyi("LoadStoreExclusive");
 
-            var Stl = Instr(Opcode.stl, "*");
-            var Stlex = Instr(Opcode.stlex, "*");
-            var Strex = Instr(Opcode.strex, "*");
-            var Lda = Instr(Opcode.lda, "*");
-            var Ldaex = Instr(Opcode.ldaex, "*");
-            var Ldrex = Instr(Opcode.ldrex, "*");
-            var Stlexd = Instr(Opcode.stlexd, "*");
-            var Strexd = Instr(Opcode.strexd, "*");
-            var Ldaexd = Instr(Opcode.ldaexd, "*");
-            var Ldrexd = Instr(Opcode.ldrexd, "*");
-            var Stlb = Instr(Opcode.stlb, "*");
-            var Stlexb = Instr(Opcode.stlexb, "*");
-            var Strexb = Instr(Opcode.strexb, "*");
-            var Ldab = Instr(Opcode.ldab, "*");
-            var Ldaexb = Instr(Opcode.ldrexb, "*");
-            var Ldrexb = Instr(Opcode.ldaexb, "*");
-            var Stlh = Instr(Opcode.stlh, "*");
-            var Stlexh = Instr(Opcode.stlexh, "*");
-            var Strexh = Instr(Opcode.strexh, "*");
-            var Ldah = Instr(Opcode.ldah, "*");
-            var Ldaexh = Instr(Opcode.ldrexh, "*");
-            var Ldrexh = Instr(Opcode.ldaexh, "*");
+            var Stl = Instr(Opcode.stl, x(""));
+            var Stlex = Instr(Opcode.stlex, x(""));
+            var Strex = Instr(Opcode.strex, x(""));
+            var Lda = Instr(Opcode.lda, x(""));
+            var Ldaex = Instr(Opcode.ldaex, x(""));
+            var Ldrex = Instr(Opcode.ldrex, x(""));
+            var Stlexd = Instr(Opcode.stlexd, x(""));
+            var Strexd = Instr(Opcode.strexd, x(""));
+            var Ldaexd = Instr(Opcode.ldaexd, x(""));
+            var Ldrexd = Instr(Opcode.ldrexd, x(""));
+            var Stlb = Instr(Opcode.stlb, x(""));
+            var Stlexb = Instr(Opcode.stlexb, x(""));
+            var Strexb = Instr(Opcode.strexb, x(""));
+            var Ldab = Instr(Opcode.ldab, x(""));
+            var Ldaexb = Instr(Opcode.ldrexb, x(""));
+            var Ldrexb = Instr(Opcode.ldaexb, x(""));
+            var Stlh = Instr(Opcode.stlh, x(""));
+            var Stlexh = Instr(Opcode.stlexh, x(""));
+            var Strexh = Instr(Opcode.strexh, x(""));
+            var Ldah = Instr(Opcode.ldah, x(""));
+            var Ldaexh = Instr(Opcode.ldrexh, x(""));
+            var Ldrexh = Instr(Opcode.ldaexh, x(""));
 
             var SynchronizationPrimitives = new MaskDecoder(23, 1,
                 invalid,
@@ -914,14 +1486,14 @@ namespace Reko.Arch.Arm.AArch32
                         Ldaexh,
                         Ldrexh)));
 
-            var Mul = Instr(Opcode.mul, "sr4,r0,r2");
-            var Mla = Instr(Opcode.mla, "sr4,r0,r2,r3");
-            var Umaal = Instr(Opcode.umaal, "sr3,r4,r0,r2");
-            var Mls = Instr(Opcode.mls, "sr4,r0,r2,r3");
-            var Umull = Instr(Opcode.umull, "sr3,r4,r0,r2");
-            var Umlal = Instr(Opcode.umlal, "sr4,r0,r2,r3");
-            var Smull = Instr(Opcode.smull, "sr4,r0,r2,r3");
-            var Smlal = Instr(Opcode.smlal, "sr4,r0,r2,r3");
+            var Mul = Instr(Opcode.mul, s,r(4),r(0),r(2));
+            var Mla = Instr(Opcode.mla, s,r(4),r(0),r(2),r(3));
+            var Mls = Instr(Opcode.mls, s,r(4),r(0),r(2),r(3));
+            var Umaal = Instr(Opcode.umaal, s,r(3),r(4),r(0),r(2));
+            var Umull = Instr(Opcode.umull, s,r(3),r(4),r(0),r(2));
+            var Umlal = Instr(Opcode.umlal, s,r(3),r(4),r(0),r(2));
+            var Smull = Instr(Opcode.smull, s,r(3),r(4),r(0),r(2));
+            var Smlal = Instr(Opcode.smlal, s,r(3),r(4),r(0),r(2));
 
             var MultiplyAndAccumulate = new MaskDecoder(20, 0xF,
                Mul,
@@ -945,16 +1517,16 @@ namespace Reko.Arch.Arm.AArch32
                Smlal);
 
             // --
-            var LdrdRegister = Instr(Opcode.ldrd, "rp3,[_:w8]");
-            var LdrhRegister = Instr(Opcode.ldrh, "r3,[_:u2]");
-            var LdrsbRegister = Instr(Opcode.ldrsb, "r3,[_:s1]");
-            var LdrshRegister = Instr(Opcode.ldrsh, "r3,[_:s2]");
-            var Ldrht = Instr(Opcode.ldrht, "r3,[h:u2]");
-            var Ldrsbt = Instr(Opcode.ldrsbt, "r3,[h:s1]");
-            var Ldrsht = Instr(Opcode.ldrsht, "r3,[h:s2]");
-            var StrdRegister = Instr(Opcode.strd, "rp3,[x:w8]");
-            var StrhRegister = Instr(Opcode.strh, "r3,[_:w2]");
-            var Strht = Instr(Opcode.strht, "r3,[h:w2]");
+            var LdrdRegister = Instr(Opcode.ldrd, rp(3),M_(w8));
+            var LdrhRegister = Instr(Opcode.ldrh, r(3),M_(w2));
+            var LdrsbRegister = Instr(Opcode.ldrsb, r(3),M_(s1));
+            var LdrshRegister = Instr(Opcode.ldrsh, r(3),M_(s2));
+            var Ldrht = Instr(Opcode.ldrht, r(3),Mh(w2));
+            var Ldrsbt = Instr(Opcode.ldrsbt, r(3),Mh(s1));
+            var Ldrsht = Instr(Opcode.ldrsht, r(3),Mh(s2));
+            var StrdRegister = Instr(Opcode.strd, rp(3),Mx(w8));
+            var StrhRegister = Instr(Opcode.strh, r(3),M_(w2));
+            var Strht = Instr(Opcode.strht, r(3),Mh(w2));
 
             var LoadStoreDualHalfSbyteRegister = new MaskDecoder(24, 1,
                 new MaskDecoder(20, 0x3,
@@ -990,16 +1562,16 @@ namespace Reko.Arch.Arm.AArch32
                         LdrsbRegister,
                         LdrshRegister)));
 
-            var LdrdLiteral = Instr(Opcode.ldrd, "rp3,*");
-            var LdrhLiteral = Instr(Opcode.ldrh, "*");
-            var LdrsbLiteral = Instr(Opcode.ldrsb, "*");
-            var LdrshLiteral = Instr(Opcode.ldrsh, "*");
-            var StrhImmediate = Instr(Opcode.strh, "*");
-            var LdrdImmediate = Instr(Opcode.ldrd, "rp3[h:w8]");
-            var StrdImmediate = Instr(Opcode.strd, "rp3,[h:w8]");
-            var LdrhImmediate = Instr(Opcode.ldrh, "*");
-            var LdrsbImmediate = Instr(Opcode.ldrsb, "r3,[h:s1]");
-            var LdrshImmediate = Instr(Opcode.ldrsh, "*");
+            var LdrdLiteral = Instr(Opcode.ldrd, rp(3), x("*)"));
+            var LdrhLiteral = Instr(Opcode.ldrh, x(""));
+            var LdrsbLiteral = Instr(Opcode.ldrsb, x(""));
+            var LdrshLiteral = Instr(Opcode.ldrsh, x(""));
+            var StrhImmediate = Instr(Opcode.strh, x(""));
+            var LdrdImmediate = Instr(Opcode.ldrd, rp(3),Mh(w8));
+            var StrdImmediate = Instr(Opcode.strd, rp(3),Mh(w8));
+            var LdrhImmediate = Instr(Opcode.ldrh, x(""));
+            var LdrsbImmediate = Instr(Opcode.ldrsb, r(3),Mh(s1));
+            var LdrshImmediate = Instr(Opcode.ldrsh, x(""));
 
             var LoadStoreDualHalfSbyteImmediate = Mask(24, 1, 20, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1
                     Mask(5, 3, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=000 op2
@@ -1130,10 +1702,10 @@ namespace Reko.Arch.Arm.AArch32
                 LoadStoreDualHalfSbyteRegister,
                 LoadStoreDualHalfSbyteImmediate);
 
-            var Mrs = Instr(Opcode.mrs, "r3,SR");
-            var Msr = Instr(Opcode.msr, "SR,r0");
-            var MrsBanked = Instr(Opcode.mrs, "*");
-            var MsrBanked = Instr(Opcode.msr, "*");
+            var Mrs = Instr(Opcode.mrs, r(3),SR);
+            var Msr = Instr(Opcode.msr, SR,r(0));
+            var MrsBanked = Instr(Opcode.mrs, x(""));
+            var MsrBanked = Instr(Opcode.msr, x(""));
             var MoveSpecialRegister = new MaskDecoder(21, 1,
                 new MaskDecoder(9, 1,
                     Mrs,
@@ -1142,8 +1714,8 @@ namespace Reko.Arch.Arm.AArch32
                     Msr,
                     MsrBanked));
 
-            var Crc32 = Instr(Opcode.crc32w, "*");
-            var Crc32C = Instr(Opcode.crc32cw, "*");
+            var Crc32 = Instr(Opcode.crc32w, x(""));
+            var Crc32C = Instr(Opcode.crc32cw, x(""));
 
             var CyclicRedundancyCheck = new MaskDecoder(21, 3,
                 new MaskDecoder(9, 1,
@@ -1159,10 +1731,10 @@ namespace Reko.Arch.Arm.AArch32
                     Crc32,
                     Crc32C));
 
-            var Qadd = Instr(Opcode.qadd, "r3,r0,r4");
-            var Qsub = Instr(Opcode.qsub, "r3,r0,r4");
-            var Qdadd = Instr(Opcode.qdadd, "r3,r0,r4");
-            var Qdsub = Instr(Opcode.qdsub, "r3,r0,r4");
+            var Qadd = Instr(Opcode.qadd, r(3),r(0),r(4));
+            var Qsub = Instr(Opcode.qsub, r(3),r(0),r(4));
+            var Qdadd = Instr(Opcode.qdadd, r(3),r(0),r(4));
+            var Qdsub = Instr(Opcode.qdsub, r(3),r(0),r(4));
             var IntegerSaturatingArithmetic = new MaskDecoder(21, 3,
                 Qadd,
                 Qsub,
@@ -1170,21 +1742,21 @@ namespace Reko.Arch.Arm.AArch32
                 Qdsub);
 
 
-            var Hlt = Instr(Opcode.hlt, "*");
-            var Bkpt = Instr(Opcode.bkpt, "*");
-            var Hvc = Instr(Opcode.hvc, "*");
-            var Smc = Instr(Opcode.smc, "*");
+            var Hlt = Instr(Opcode.hlt, x(""));
+            var Bkpt = Instr(Opcode.bkpt, x(""));
+            var Hvc = Instr(Opcode.hvc, x(""));
+            var Smc = Instr(Opcode.smc, x(""));
             var ExceptionGeneration = new MaskDecoder(21, 3,
                 Hlt,
                 Bkpt,
                 Hvc,
                 Smc);
 
-            var Bx = Instr(Opcode.bx, "r0");
-            var Bxj = Instr(Opcode.bxj, "r0");
-            var Blx = Instr(Opcode.blx, "J");
-            var Clz = Instr(Opcode.clz, "r3,r0");
-            var Eret = Instr(Opcode.eret, "*");
+            var Bx = Instr(Opcode.bx, r(0));
+            var Bxj = Instr(Opcode.bxj, r(0));
+            var Blx = Instr(Opcode.blx, J);
+            var Clz = Instr(Opcode.clz, r(3),r(0));
+            var Eret = Instr(Opcode.eret, x(""));
 
             var ChangeProcessState = new MaskDecoder(16, 1, // op
                 Mask(18, 0x3,
@@ -1192,9 +1764,9 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("CPS,CPSID,CPSIE mask=0b01"),
                     nyi("CPS,CPSID,CPSIE mask=0b10"),
                     Mask(17, 1,  // mask=0b11 M
-                        Instr(Opcode.cps, ""),
+                        Instr(Opcode.cps, x("*")),
                         nyi("CPS,CPSID,CPSIE mask=0b11 m=1"))),
-                Select(4, 1, n => n == 0, Instr(Opcode.setend, "E9:1"), invalid));
+                Select(4, 1, n => n == 0, Instr(Opcode.setend, E(9,1)), invalid));
 
             var UncMiscellaneous = new MaskDecoder(22, 7,   // op0
                 invalid,
@@ -1204,7 +1776,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 new MaskDecoder(20, 3,
                     Select(5, 1, n => n == 0, ChangeProcessState, invalid),
-                    Select(4, 0xF, n => n == 0, Instr(Opcode.setpan, "*"), invalid),
+                    Select(4, 0xF, n => n == 0, Instr(Opcode.setpan, x("")), invalid),
                     invalid,
                     invalid),
                 invalid,
@@ -1255,47 +1827,47 @@ namespace Reko.Arch.Arm.AArch32
 
             var HalfwordMultiplyAndAccumulate = new MaskDecoder(21, 0x3,
                 Mask(5, 3,      // M:N
-                    Instr(Opcode.smlabb, "r4,r0,r2,r3"),
-                    Instr(Opcode.smlatb, "r4,r0,r2,r3"),
-                    Instr(Opcode.smlabt, "r4,r0,r2,r3"),
-                    Instr(Opcode.smlatt, "r4,r0,r2,r3")),
+                    Instr(Opcode.smlabb, r(4),r(0),r(2),r(3)),
+                    Instr(Opcode.smlatb, r(4),r(0),r(2),r(3)),
+                    Instr(Opcode.smlabt, r(4),r(0),r(2),r(3)),
+                    Instr(Opcode.smlatt, r(4),r(0),r(2),r(3))),
                 Mask(5, 3,
-                    Instr(Opcode.smlawb, "r4,r0,r2,r3"),
-                    Instr(Opcode.smulwb, "r4,r0,r2"),
-                    Instr(Opcode.smlawt, "r4,r0,r2,r3"),
-                    Instr(Opcode.smulwt, "r4,r0,r2")),
+                    Instr(Opcode.smlawb, r(4),r(0),r(2),r(3)),
+                    Instr(Opcode.smulwb, r(4),r(0),r(2)),
+                    Instr(Opcode.smlawt, r(4),r(0),r(2),r(3)),
+                    Instr(Opcode.smulwt, r(4),r(0),r(2))),
                 Mask(5, 3,
-                    Instr(Opcode.smlalbb, "r3,r4,r0,r2"),
-                    Instr(Opcode.smlaltb, "r3,r4,r0,r2"),
-                    Instr(Opcode.smlalbt, "r3,r4,r0,r2"),
-                    Instr(Opcode.smlaltt, "r3,r4,r0,r2")),
+                    Instr(Opcode.smlalbb, r(3),r(4),r(0),r(2)),
+                    Instr(Opcode.smlaltb, r(3),r(4),r(0),r(2)),
+                    Instr(Opcode.smlalbt, r(3),r(4),r(0),r(2)),
+                    Instr(Opcode.smlaltt, r(3),r(4),r(0),r(2))),
                 Mask(5, 3,
-                    Instr(Opcode.smulbb, "r4,r0,r2"),
-                    Instr(Opcode.smultb, "r4,r0,r2"),
-                    Instr(Opcode.smulbt, "r4,r0,r2"),
-                    Instr(Opcode.smultt, "r4,r0,r2")));
+                    Instr(Opcode.smulbb, r(4),r(0),r(2)),
+                    Instr(Opcode.smultb, r(4),r(0),r(2)),
+                    Instr(Opcode.smulbt, r(4),r(0),r(2)),
+                    Instr(Opcode.smultt, r(4),r(0),r(2))));
 
             var IntegerDataProcessingImmShift = new MaskDecoder(21, 7,
-                Instr(Opcode.and, "sr3,r4,r0,>i"),
-                Instr(Opcode.eor, "sr3,r4,r0,>i"),
-                Instr(Opcode.sub, "sr3,r4,r0,>i"),
-                Instr(Opcode.rsb, "sr3,r4,r0,>i"),
-                Instr(Opcode.add, "sr3,r4,r0,>i"),
-                Instr(Opcode.adc, "sr3,r4,r0,>i"),
-                Instr(Opcode.sbc, "sr3,r4,r0,>i"),
-                Instr(Opcode.rsc, "sr3,r4,r0,>i"));
+                Instr(Opcode.and, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.eor, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.sub, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.rsb, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.add, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.adc, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.sbc, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.rsc, s,r(3),r(4),r(0),Shi));
 
             var IntegerTestAndCompareImmShift = new MaskDecoder(21, 3,
-                Instr(Opcode.tst, "r4,r0,>i"),
-                Instr(Opcode.teq, "r4,r0,>i"),
-                Instr(Opcode.cmp, "r4,r0,>i"),
-                Instr(Opcode.cmn, "r4,r0,>i"));
+                Instr(Opcode.tst, r(4),r(0),Shi),
+                Instr(Opcode.teq, r(4),r(0),Shi),
+                Instr(Opcode.cmp, r(4),r(0),Shi),
+                Instr(Opcode.cmn, r(4),r(0),Shi));
 
             var LogicalArithmeticImmShift = new MaskDecoder(21, 3,
-                Instr(Opcode.orr, "sr3,r4,r0,>i"),
-                new MovDecoder(Opcode.mov, "sr3,r0,>i"),
-                Instr(Opcode.bic, "sr3,r4,r0,>i"),
-                Instr(Opcode.mvn, "sr3,r0,>i"));
+                Instr(Opcode.orr, s,r(3),r(4),r(0),Shi),
+                new MovDecoder(Opcode.mov, s,r(3),r(0),Shi),
+                Instr(Opcode.bic, s,r(3),r(4),r(0),Shi),
+                Instr(Opcode.mvn, s,r(3),r(0),Shi));
 
             var DataProcessingImmediateShift = new MaskDecoder(23, 3,
                 IntegerDataProcessingImmShift, // 3 reg, imm shift
@@ -1304,26 +1876,26 @@ namespace Reko.Arch.Arm.AArch32
                 LogicalArithmeticImmShift);
 
             var IntegerDataProcessingRegShift = new MaskDecoder(21, 7,
-               Instr(Opcode.and, "sr3,r4,r0,>r"),
-               Instr(Opcode.eor, "sr3,r4,r0,>r"),
-               Instr(Opcode.sub, "sr3,r4,r0,>r"),
-               Instr(Opcode.rsb, "sr3,r4,r0,>r"),
-               Instr(Opcode.add, "sr3,r4,r0,>r"),
-               Instr(Opcode.adc, "sr3,r4,r0,>r"),
-               Instr(Opcode.sbc, "sr3,r4,r0,>r"),
-               Instr(Opcode.rsc, "sr3,r4,r0,>r"));
+               Instr(Opcode.and, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.eor, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.sub, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.rsb, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.add, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.adc, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.sbc, s,r(3),r(4),r(0),Shr),
+               Instr(Opcode.rsc, s,r(3),r(4),r(0),Shr));
 
             var IntegerTestAndCompareRegShift = new MaskDecoder(21, 3,
-                Instr(Opcode.tst, "r4,r0,>r"),
-                Instr(Opcode.teq, "r4,r0,>r"),
-                Instr(Opcode.cmp, "r4,r0,>r"),
-                Instr(Opcode.cmn, "r4,r0,>r"));
+                Instr(Opcode.tst, r(4),r(0),Shr),
+                Instr(Opcode.teq, r(4),r(0),Shr),
+                Instr(Opcode.cmp, r(4),r(0),Shr),
+                Instr(Opcode.cmn, r(4),r(0),Shr));
 
             var LogicalArithmeticRegShift = new MaskDecoder(21, 3,
-                Instr(Opcode.orr, "sr3,r4,r0,>r"),
-                Instr(Opcode.mov, "sr4,r0,>r"),
-                Instr(Opcode.bic, "sr3,r4,r0,>r"),
-                Instr(Opcode.mvn, "sr4,r0,>r"));
+                Instr(Opcode.orr, s,r(3),r(4),r(0),Shr),
+                Instr(Opcode.mov, s,r(4),r(0),Shr),
+                Instr(Opcode.bic, s,r(3),r(4),r(0),Shr),
+                Instr(Opcode.mvn, s,r(4),r(0),Shr));
 
             var DataProcessingRegisterShift = new MaskDecoder(23, 3,
                 IntegerDataProcessingRegShift,
@@ -1332,41 +1904,41 @@ namespace Reko.Arch.Arm.AArch32
                 LogicalArithmeticRegShift);
 
             var IntegerDataProcessingTwoRegImm = new MaskDecoder(21, 7,
-               Instr(Opcode.and, "sr3,r4,I"),
-               Instr(Opcode.eor, "sr3,r4,I"),
-               Instr(Opcode.sub, "sr3,r4,I"),
-               Instr(Opcode.rsb, "sr3,r4,I"),
-               Instr(Opcode.add, "sr3,r4,I"),
-               Instr(Opcode.adc, "sr3,r4,I"),
-               Instr(Opcode.sbc, "sr3,r4,I"),
-               Instr(Opcode.rsc, "sr3,r4,I"));
+               Instr(Opcode.and, s,r(3),r(4),I),
+               Instr(Opcode.eor, s,r(3),r(4),I),
+               Instr(Opcode.sub, s,r(3),r(4),I),
+               Instr(Opcode.rsb, s,r(3),r(4),I),
+               Instr(Opcode.add, s,r(3),r(4),I),
+               Instr(Opcode.adc, s,r(3),r(4),I),
+               Instr(Opcode.sbc, s,r(3),r(4),I),
+               Instr(Opcode.rsc, s,r(3),r(4),I));
 
             var LogicalArithmeticTwoRegImm = new MaskDecoder(21, 3,
-                Instr(Opcode.orr, "sr3,r4,I"),
-                Instr(Opcode.mov, "sr3,I"),
-                Instr(Opcode.bic, "sr3,r4,I"),
-                Instr(Opcode.mvn, "sr3,I"));
+                Instr(Opcode.orr, s,r(3),r(4),I),
+                Instr(Opcode.mov, s,r(3),I),
+                Instr(Opcode.bic, s,r(3),r(4),I),
+                Instr(Opcode.mvn, s,r(3),I));
 
             var MoveHalfwordImm = new MaskDecoder(22, 1,
-               Instr(Opcode.mov, "r3,Y"),
-               Instr(Opcode.movt, "r3,Yh"));
+               Instr(Opcode.mov, r(3),Y),
+               Instr(Opcode.movt, r(3),Yh));
 
             var IntegerTestAndCompareOneRegImm = new MaskDecoder(21, 3,
-                Instr(Opcode.tst, "r4,I"),
-                Instr(Opcode.teq, "r4,I"),
-                Instr(Opcode.cmp, "r4,I"),
-                Instr(Opcode.cmn, "r4,I"));
+                Instr(Opcode.tst, r(4),I),
+                Instr(Opcode.teq, r(4),I),
+                Instr(Opcode.cmp, r(4),I),
+                Instr(Opcode.cmn, r(4),I));
 
-            var MsrImmediate = Instr(Opcode.msr, "*");
+            var MsrImmediate = Instr(Opcode.msr, x(""));
             var Nop = Instr(Opcode.nop, "");
-            var Yield = Instr(Opcode.yield, "*");
-            var Wfe = Instr(Opcode.wfe, "*");
-            var Wfi = Instr(Opcode.wfi, "*");
-            var Sev = Instr(Opcode.sevl, "*");
-            var Sevl = Instr(Opcode.sevl, "*");
+            var Yield = Instr(Opcode.yield, x(""));
+            var Wfe = Instr(Opcode.wfe, x(""));
+            var Wfi = Instr(Opcode.wfi, x(""));
+            var Sev = Instr(Opcode.sevl, x(""));
+            var Sevl = Instr(Opcode.sevl, x(""));
             var ReservedNop = Instr(Opcode.nop, "");
-            var Esb = Instr(Opcode.esb, "*");
-            var Dbg = Instr(Opcode.dbg, "*");
+            var Esb = Instr(Opcode.esb, x(""));
+            var Dbg = Instr(Opcode.dbg, x(""));
 
             var MoveSpecialRegisterAndHints = new CustomDecoder((wInstr, dasm) =>
             {
@@ -1429,55 +2001,55 @@ namespace Reko.Arch.Arm.AArch32
                         ExtraLoadStore)),
                 DataProcessingImmediate);
 
-            var LdrLiteral = Instr(Opcode.ldr, "r3,[o:w4]");
-            var LdrbLiteral = Instr(Opcode.ldrb, "r3,[0:w1]");
-            var StrImm = Instr(Opcode.str, "r3,[o:w4]");
-            var LdrImm = Instr(Opcode.ldr, "r3,[o:w4]");
-            var StrbImm = Instr(Opcode.strb, "r3,[o:w1]");
-            var LdrbImm = Instr(Opcode.ldrb, "r3,[o:w1]");
+            var LdrLiteral = Instr(Opcode.ldr, r(3),Mo(w4));
+            var LdrbLiteral = Instr(Opcode.ldrb, r(3),Mo(w1));
+            var StrImm = Instr(Opcode.str, r(3),Mo(w4));
+            var LdrImm = Instr(Opcode.ldr, r(3),Mo(w4));
+            var StrbImm = Instr(Opcode.strb, r(3),Mo(w1));
+            var LdrbImm = Instr(Opcode.ldrb, r(3),Mo(w1));
             
             var LoadStoreWordUnsignedByteImmLit = Mask(24, 1, 21, 1, 22, 1, 20, 1,
                 // PW=0b00 00
-                Instr(Opcode.str, "r3,[o:w4]"),
+                Instr(Opcode.str, r(3),Mo(w4)),
                 Select(16, 0xF, n => n != 0xF,
-                    Instr(Opcode.ldr, "r3,[o:w4]"),
-                    Instr(Opcode.ldr, "r3,[o:w4]")),
-                Instr(Opcode.strb, "r3,[o:w1]"),
+                    Instr(Opcode.ldr, r(3),Mo(w4)),
+                    Instr(Opcode.ldr, r(3),Mo(w4))),
+                Instr(Opcode.strb, r(3),Mo(w1)),
                 Select(16, 0xF, n => n != 0xF,
-                    Instr(Opcode.ldrb, "r3,[o:w1]"),
-                    Instr(Opcode.ldrb, "r3,[o:w1]")),
+                    Instr(Opcode.ldrb, r(3),Mo(w1)),
+                    Instr(Opcode.ldrb, r(3),Mo(w1))),
 
-                Instr(Opcode.strt, "r3,[o:w4]"),
-                Instr(Opcode.ldrt, "r3,[o:w4]"),
-                Instr(Opcode.strbt, "r3,[o:w1]"),
-                Instr(Opcode.ldrbt, "r3,[o:w1]"),
+                Instr(Opcode.strt, r(3),Mo(w4)),
+                Instr(Opcode.ldrt, r(3),Mo(w4)),
+                Instr(Opcode.strbt, r(3),Mo(w1)),
+                Instr(Opcode.ldrbt, r(3),Mo(w1)),
 
-                Instr(Opcode.str, "r3,[o:w4]"),
+                Instr(Opcode.str, r(3),Mo(w4)),
                 Select(16, 0xF, n => n != 0xF,
-                    Instr(Opcode.ldr, "r3,[o:w4]"),
-                    Instr(Opcode.ldr, "r3,[o:w4]")),
-                Instr(Opcode.strb, "r3,[o:w1]"),
+                    Instr(Opcode.ldr, r(3),Mo(w4)),
+                    Instr(Opcode.ldr, r(3),Mo(w4))),
+                Instr(Opcode.strb, r(3),Mo(w1)),
                 Select(16, 0xF, n => n != 0xF,
-                    Instr(Opcode.ldrb, "r3,[o:w1]"),
-                    Instr(Opcode.ldrb, "r3,[o:w1]")),
+                    Instr(Opcode.ldrb, r(3),Mo(w1)),
+                    Instr(Opcode.ldrb, r(3),Mo(w1))),
 
-                Instr(Opcode.str, "r3,[o:w4]"),
+                Instr(Opcode.str, r(3),Mo(w4)),
                 Select(16, 0xF, n => n != 0xF,
-                    Instr(Opcode.ldr, "r3,[o:w4]"),
-                    Instr(Opcode.ldr, "r3,[o:w4]")),
-                Instr(Opcode.strb, "r3,[o:w1]"),
+                    Instr(Opcode.ldr, r(3),Mo(w4)),
+                    Instr(Opcode.ldr, r(3),Mo(w4))),
+                Instr(Opcode.strb, r(3),Mo(w1)),
                 Select(16, 0xF, n => n != 0xF,
-                    Instr(Opcode.ldrb, "r3,[o:w1]"),
-                    Instr(Opcode.ldrb, "r3,[o:w1]")));
+                    Instr(Opcode.ldrb, r(3),Mo(w1)),
+                    Instr(Opcode.ldrb, r(3),Mo(w1))));
 
-            var StrReg = Instr(Opcode.str, "r3,[x:w4]");
-            var LdrReg = Instr(Opcode.ldr, "r3,[x:w4]");
-            var StrbReg = Instr(Opcode.strb, "r3,[x:w1]");
-            var LdrbReg = Instr(Opcode.ldrb, "r3,[x:w1]");
-            var StrtReg = Instr(Opcode.strt, "r3,[x:w4]");
-            var LdrtReg = Instr(Opcode.strt, "r3,[x:w4]");
-            var StrbtReg = Instr(Opcode.strbt, "r3,[x:w1]");
-            var LdrbtReg = Instr(Opcode.strbt, "r3,[x:w1]");
+            var StrReg = Instr(Opcode.str, r(3),Mx(w4));
+            var LdrReg = Instr(Opcode.ldr, r(3),Mx(w4));
+            var StrbReg = Instr(Opcode.strb, r(3),Mx(w1));
+            var LdrbReg = Instr(Opcode.ldrb, r(3),Mx(w1));
+            var StrtReg = Instr(Opcode.strt, r(3),Mx(w4));
+            var LdrtReg = Instr(Opcode.strt, r(3),Mx(w4));
+            var StrbtReg = Instr(Opcode.strbt, r(3),Mx(w1));
+            var LdrbtReg = Instr(Opcode.strbt, r(3),Mx(w1));
             var LoadStoreWordUnsignedByteRegister = Mask(24, 1, 20, 3,  // P:o2:W:o1
                  StrReg,
                  LdrReg,
@@ -1499,42 +2071,42 @@ namespace Reko.Arch.Arm.AArch32
                  StrbReg,
                  LdrbReg);
 
-            var Sadd16 = Instr(Opcode.sadd16, "*");
-            var Sasx = Instr(Opcode.sasx, "*");
-            var Ssax = Instr(Opcode.ssax, "*");
-            var Ssub16 = Instr(Opcode.ssub16, "*");
-            var Sadd8 = Instr(Opcode.sadd8, "*");
-            var Ssub8 = Instr(Opcode.ssub8, "*");
-            var Qadd16 = Instr(Opcode.qadd16, "*");
-            var Qasx = Instr(Opcode.qasx, "*");
-            var Qsax = Instr(Opcode.qsax, "*");
-            var Qsub16 = Instr(Opcode.qsub16, "*");
-            var Qadd8 = Instr(Opcode.qadd8, "*");
-            var QSub8 = Instr(Opcode.qsub8, "*");
-            var Shadd16 = Instr(Opcode.shadd16, "*");
-            var Shasx = Instr(Opcode.shasx, "*");
-            var Shsax = Instr(Opcode.shsax, "*");
-            var Shsub16 = Instr(Opcode.shsub16, "*");
-            var Shadd8 = Instr(Opcode.shadd8, "*");
-            var Shsub8 = Instr(Opcode.shsub8, "*");
-            var Uadd16 = Instr(Opcode.uadd16, "*");
-            var Uasx = Instr(Opcode.uasx, "*");
-            var Usax = Instr(Opcode.usax, "*");
-            var Usub16 = Instr(Opcode.usub16, "*");
-            var Uadd8 = Instr(Opcode.uadd8, "*");
-            var Usub8 = Instr(Opcode.usub8, "*");
-            var Uqadd16 = Instr(Opcode.uqadd16, "*");
-            var Uqasx = Instr(Opcode.uqasx, "*");
-            var Uqsax = Instr(Opcode.uqsax, "*");
-            var Uqsub16 = Instr(Opcode.uqsub16, "*");
-            var Uqadd8 = Instr(Opcode.uqadd8, "*");
-            var Uqsub8 = Instr(Opcode.uqsub8, "*");
-            var Uhadd16 = Instr(Opcode.uhadd16, "*");
-            var Uhasx = Instr(Opcode.uhasx, "*");
-            var Uhsax = Instr(Opcode.uhsax, "*");
-            var Uhsub16 = Instr(Opcode.uhsub16, "*");
-            var Uhadd8 = Instr(Opcode.uhadd8, "*");
-            var Uhsub8 = Instr(Opcode.uhsub8, "*");
+            var Sadd16 = Instr(Opcode.sadd16, x(""));
+            var Sasx = Instr(Opcode.sasx, x(""));
+            var Ssax = Instr(Opcode.ssax, x(""));
+            var Ssub16 = Instr(Opcode.ssub16, x(""));
+            var Sadd8 = Instr(Opcode.sadd8, x(""));
+            var Ssub8 = Instr(Opcode.ssub8, x(""));
+            var Qadd16 = Instr(Opcode.qadd16, x(""));
+            var Qasx = Instr(Opcode.qasx, x(""));
+            var Qsax = Instr(Opcode.qsax, x(""));
+            var Qsub16 = Instr(Opcode.qsub16, x(""));
+            var Qadd8 = Instr(Opcode.qadd8, x(""));
+            var QSub8 = Instr(Opcode.qsub8, x(""));
+            var Shadd16 = Instr(Opcode.shadd16, x(""));
+            var Shasx = Instr(Opcode.shasx, x(""));
+            var Shsax = Instr(Opcode.shsax, x(""));
+            var Shsub16 = Instr(Opcode.shsub16, x(""));
+            var Shadd8 = Instr(Opcode.shadd8, x(""));
+            var Shsub8 = Instr(Opcode.shsub8, x(""));
+            var Uadd16 = Instr(Opcode.uadd16, x(""));
+            var Uasx = Instr(Opcode.uasx, x(""));
+            var Usax = Instr(Opcode.usax, x(""));
+            var Usub16 = Instr(Opcode.usub16, x(""));
+            var Uadd8 = Instr(Opcode.uadd8, x(""));
+            var Usub8 = Instr(Opcode.usub8, x(""));
+            var Uqadd16 = Instr(Opcode.uqadd16, x(""));
+            var Uqasx = Instr(Opcode.uqasx, x(""));
+            var Uqsax = Instr(Opcode.uqsax, x(""));
+            var Uqsub16 = Instr(Opcode.uqsub16, x(""));
+            var Uqadd8 = Instr(Opcode.uqadd8, x(""));
+            var Uqsub8 = Instr(Opcode.uqsub8, x(""));
+            var Uhadd16 = Instr(Opcode.uhadd16, x(""));
+            var Uhasx = Instr(Opcode.uhasx, x(""));
+            var Uhsax = Instr(Opcode.uhsax, x(""));
+            var Uhsub16 = Instr(Opcode.uhsub16, x(""));
+            var Uhadd8 = Instr(Opcode.uhadd8, x(""));
+            var Uhsub8 = Instr(Opcode.uhsub8, x(""));
 
             var ParallelArithmetic = new MaskDecoder(20, 7,
                 invalid,
@@ -1601,32 +2173,32 @@ namespace Reko.Arch.Arm.AArch32
                     Uhsub8));
 
             var BitfieldInsert = Select(0, 0xF, n => n != 0xF,
-                Instr(Opcode.bfi, "r3,r0,B7:5;16:5"),
-                Instr(Opcode.bfc, "r3,B7:5;16:5"));
+                Instr(Opcode.bfi, r(3),r(0),B(7,5,16,5)),
+                Instr(Opcode.bfc, r(3),B(7,5,16,5)));
 
             var BitfieldExtract = Mask(22, 1,
-                Instr(Opcode.sbfx, "r3,r0,i7:5,i16:5+1"),
-                Instr(Opcode.ubfx, "r3,r0,i7:5,i16:5+1"));
+                Instr(Opcode.sbfx, r(3),r(0),i(7,5),i_p1(16,5)),
+                Instr(Opcode.ubfx, r(3),r(0),i(7,5),i_p1(16,5)));
 
             var Saturate16Bit = nyi("Saturate16Bit");
             var Saturate32Bit = nyi("Saturate32Bit");
             var ExtendAndAdd = Mask(20, 7,
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab16, "*"), Instr(Opcode.sxtb16, "*")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab16, x("*")), Instr(Opcode.sxtb16, x("*"))),
                 invalid,
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab, "r3,r4,r0,>R10:2"), Instr(Opcode.sxtb, "r3,r0,>R10:2")),
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtah, "r3,r4,r0,>R10:2"), Instr(Opcode.sxth, "r3,r0,>R10:2")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtab, r(3),r(4),r(0),ShR(10,2)), Instr(Opcode.sxtb, r(3),r(0),ShR(10,2))),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.sxtah, r(3),r(4),r(0),ShR(10,2)), Instr(Opcode.sxth, r(3),r(0),ShR(10,2))),
                 
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab16, "*"), Instr(Opcode.uxtb16, "*")),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab16, x("*")), Instr(Opcode.uxtb16, x("*"))),
                 invalid,
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab, "r3,r4,r0,>R10:2"), Instr(Opcode.uxtb, "r3,r0,>R10:2")),
-                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtah, "r3,r4,r0,>R10:2"), Instr(Opcode.uxth, "r3,r0,>R10:2")));
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtab, r(3),r(4),r(0),ShR(10,2)), Instr(Opcode.uxtb, r(3),r(0),ShR(10,2))),
+                Select(16, 0xF, n => n != 0xF, Instr(Opcode.uxtah, r(3),r(4),r(0),ShR(10,2)), Instr(Opcode.uxth, r(3),r(0),ShR(10,2))));
             var ReverseBitByte = Mask(22, 1,
                 Mask(7, 1,
-                    Instr(Opcode.rev, "r3,r0"),
-                    Instr(Opcode.rev16, "r3,r0")),
+                    Instr(Opcode.rev, r(3),r(0)),
+                    Instr(Opcode.rev16, r(3),r(0))),
                 Mask(7, 1,
-                    Instr(Opcode.rbit, "r3,r0"),
-                    Instr(Opcode.revsh, "r3,r0")));
+                    Instr(Opcode.rbit, r(3),r(0)),
+                    Instr(Opcode.revsh, r(3),r(0))));
 
 
             var PermanentlyUndefined = nyi("PermanentlyUndefined");
@@ -1737,16 +2309,16 @@ namespace Reko.Arch.Arm.AArch32
                         PermanentlyUndefined)));
 
 
-            var StmdaStmed = Instr(Opcode.stmda, "w21 r4,Mr0:16");
-            var LdmdaLdmfa = Instr(Opcode.ldmda, "w21 r4,Mr0:16");
-            var Stm =        Instr(Opcode.stm, "w21 r4,Mr0:16");
-            var Ldm =        Instr(Opcode.ldm, "w21 r4,Mr0:16");
-            var StmStmia =   Instr(Opcode.stm, "w21 r4,Mr0:16");
-            var LdmLdmia =   Instr(Opcode.ldm, "w21 r4,Mr0:16");
-            var StmdbStmfd = Instr(Opcode.stmdb, "w21 r4,Mr0:16");
-            var LdmdbLDmea = Instr(Opcode.ldmdb, "w21 r4,Mr0:16");
-            var StmibStmfa = Instr(Opcode.stmib, "w21 r4,Mr0:16");
-            var LdmibLdmed = Instr(Opcode.ldmib, "w21 r4,Mr0:16");
+            var StmdaStmed = Instr(Opcode.stmda, w(21), r(4),Mr(0,16));
+            var LdmdaLdmfa = Instr(Opcode.ldmda, w(21), r(4),Mr(0,16));
+            var Stm =        Instr(Opcode.stm, w(21), r(4),Mr(0,16));
+            var Ldm =        Instr(Opcode.ldm, w(21), r(4),Mr(0,16));
+            var StmStmia =   Instr(Opcode.stm, w(21), r(4),Mr(0,16));
+            var LdmLdmia =   Instr(Opcode.ldm, w(21), r(4),Mr(0,16));
+            var StmdbStmfd = Instr(Opcode.stmdb, w(21), r(4),Mr(0,16));
+            var LdmdbLDmea = Instr(Opcode.ldmdb, w(21), r(4),Mr(0,16));
+            var StmibStmfa = Instr(Opcode.stmib, w(21), r(4),Mr(0,16));
+            var LdmibLdmed = Instr(Opcode.ldmib, w(21), r(4),Mr(0,16));
             var StmUser = nyi("StmUser");
             var LdmUser = nyi("LdmUser");
             var LoadStoreMultiple = Mask(22, 3, 20, 1, // P U op L
@@ -1800,9 +2372,9 @@ namespace Reko.Arch.Arm.AArch32
 
             var BranchImmediate = new PcDecoder(28,
                 new MaskDecoder(24, 1,
-                    Instr(Opcode.b, "J"),
-                    Instr(Opcode.bl, "J")),
-                Instr(Opcode.blx, "X"));
+                    Instr(Opcode.b, J),
+                    Instr(Opcode.bl, J)),
+                Instr(Opcode.blx, X));
 
             var Branch_BranchLink_BlockDataTransfer = new MaskDecoder(25, 1,
                 new PcDecoder(28,
@@ -1814,8 +2386,8 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(22, 1,
                     invalid,
                     Mask(20, 1,
-                        Instr(Opcode.mcrr, "CP8,i4:4,r3,r4,CR0"),
-                        Instr(Opcode.mrrc, "*"))),
+                        Instr(Opcode.mcrr, CP(8),i(4,4),r(3),r(4),CR(0)),
+                        Instr(Opcode.mrrc, x("")))),
                 invalid);
 
             var SystemRegister_LdSt = Mask(23, 2, 21, 1,
@@ -1838,37 +2410,37 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid,
                     invalid,
-                    Instr(Opcode.vabs, F16, "S12:4:22:1,S0:4:5:1"),
+                    Instr(Opcode.vabs, F16, S(12,4,22,1),S(0,4,5,1)),
 
-                    Instr(Opcode.vmov, "*(register) - single precision"),
-                    Instr(Opcode.vabs, F32, "S12:4:22:1,S0:4:5:1"),
-                    Instr(Opcode.vmov, "*(register) - double precision"),
-                    Instr(Opcode.vabs, F64, "D22:1:12:4,D5:1:0:4")),
+                    Instr(Opcode.vmov, x("(register) - single precision")),
+                    Instr(Opcode.vabs, F32, S(12,4,22,1),S(0,4,5,1)),
+                    Instr(Opcode.vmov, x("(register) - double precision")),
+                    Instr(Opcode.vabs, F64, D(22,1,12,4),D(5,1,0,4))),
                 Mask(7, 1,
                     Mask(8, 3,
                         invalid,
-                        Instr(Opcode.vneg, F16, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vneg, F32, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vneg, F64, "D22:1:12:4,D5:1:0:4")),
+                        Instr(Opcode.vneg, F16, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vneg, F32, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vneg, F64, D(22,1,12,4),D(5,1,0,4))),
                     Mask(8, 3,
                         invalid,
-                        Instr(Opcode.vsqrt, F16, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vsqrt, F32, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vsqrt, F64, "D22:1:12:4,D5:1:0:4"))),
+                        Instr(Opcode.vsqrt, F16, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vsqrt, F32, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vsqrt, F64, D(22,1,12,4),D(5,1,0,4)))),
                 nyi("Floating-point data-procesing (two registers) 0 010"),
                 nyi("Floating-point data-procesing (two registers) 0 011"),
 
                 Mask(7, 1,
                     Mask(8, 3,
                         invalid,
-                        Instr(Opcode.vcmp, F16, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vcmp, F32, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vcmp, F64, "D22:1:12:4,D5:1:0:4")),
+                        Instr(Opcode.vcmp, F16, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vcmp, F32, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vcmp, F64, D(22,1,12,4),D(5,1,0,4))),
                     Mask(8, 3, 
                         invalid,
-                        Instr(Opcode.vcmpe, "vf16 S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vcmpe, "vf32 S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vcmpe, "vf64 D22:1:12:4,D5:1:0:4"))),
+                        Instr(Opcode.vcmpe, F16, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vcmpe, F32, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vcmpe, F64, D(22,1,12,4),D(5,1,0,4)))),
                 nyi("Floating-point data-procesing (two registers) 0 101"),
                 nyi("Floating-point data-procesing (two registers) 0 110"),
                 nyi("Floating-point data-procesing (two registers) 0 111"),
@@ -1877,9 +2449,9 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("Floating-point data-procesing (two registers) 1 000 o3=0"),
                     Mask(8, 3,
                         invalid,
-                        Instr(Opcode.vcvt, F16S16, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vcvt, F32S32, "S12:4:22:1,S0:4:5:1"),
-                        Instr(Opcode.vcvt, F64S32, "D22:1:12:4,S0:4:5:1"))),
+                        Instr(Opcode.vcvt, F16S16, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vcvt, F32S32, S(12,4,22,1),S(0,4,5,1)),
+                        Instr(Opcode.vcvt, F64S32, D(22,1,12,4),S(0,4,5,1)))),
                 nyi("Floating-point data-procesing (two registers) 1 001"),
                 nyi("Floating-point data-procesing (two registers) 1 010"),
                 nyi("Floating-point data-procesing (two registers) 1 011"),
@@ -1892,57 +2464,57 @@ namespace Reko.Arch.Arm.AArch32
             var FloatingPointDataProcessing3regs = Mask(23, 1, 20, 2, 6, 1,
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vmla, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vmla, F32, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vmla, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vmla, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vmla, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vmla, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vmls, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vmls, F32, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vmls, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vmls, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vmls, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vmls, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vnmls, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vnmls, F32, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vnmls, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vnmls, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vnmls, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vnmls, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vnmla, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vnmla, F32, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vnmla, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vnmla, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vnmla, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vnmla, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
 
                 Mask(8, 0x3, 
                     invalid,
-                    Instr(Opcode.vmul, "vf16 S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vmul, "vf32 S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vmul, "vf64 D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vmul, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vmul, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vmul, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vnmul, "vf16 S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vnmul, "vf32 S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vnmul, "vf64 D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vnmul, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vnmul, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vnmul, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vadd, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vadd, F32, "12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vadd, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vadd, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vadd, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vadd, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vsub, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vsub, F32, "12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vsub, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vsub, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vsub, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vsub, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
 
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vdiv, F16, "S12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vdiv, F32, "12:4:22:1,S16:4:7:1,S0:4:5:1"),
-                    Instr(Opcode.vdiv, F64, "D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Instr(Opcode.vdiv, F16, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vdiv, F32, S(12,4,22,1),S(16,4,7,1),S(0,4,5,1)),
+                    Instr(Opcode.vdiv, F64, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4))),
                 invalid,
-                Instr(Opcode.vfnms, "* vfnms"),
-                Instr(Opcode.vfnma, "* vfnma"),
+                Instr(Opcode.vfnms, x(" vfnms")),
+                Instr(Opcode.vfnma, x(" vfnma")),
 
-                Instr(Opcode.vfma, "*"),
-                Instr(Opcode.vfms, "*"),
+                Instr(Opcode.vfma, x("")),
+                Instr(Opcode.vfms, x("")),
                 invalid,
                 invalid);
 
@@ -1964,38 +2536,38 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSIMDElementMovDuplicate = Mask(20, 1,
                 Mask(23, 1,
-                    Instr(Opcode.vmov, "*GP to scalar"),
+                    Instr(Opcode.vmov, x("GP to scalar")),
                     Mask(6, 1,
-                        Instr(Opcode.vdup, "vW22:1:5:1q21 W7:1:16:4,r3"),
+                        Instr(Opcode.vdup, vW(22,1,5,1),q(21), W(7,1,16,4),r(3)),
                         invalid)),
                 Mask(21,2,5,2,
-                    Instr(Opcode.vmov, I32, "r3,D7:1:16:4[21:1]"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b00 01"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b00 10"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b00 11"),
+                    Instr(Opcode.vmov, I32, r(3),D(7,1,16,4), Ix(21,1)),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 01)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 10)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 11)")),
 
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 00"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 01"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 10"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b01 11"),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 00)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 01)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 10)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 11)")),
 
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 00"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 01"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 10"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b10 11"),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 00)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 01)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 10)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 11)")),
 
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 00"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 01"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 10"),
-                    Instr(Opcode.vmov, "r3,*Scalar to GP op1:op2=0b11 11")));
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 00)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 01)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 10)")),
+                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 11)))"))));
 
             var FloatingPointMoveSpecialReg = Mask(20, 1,
-                Instr(Opcode.vmsr, "i16:4,r3"),
-                Instr(Opcode.vmrs, "r3,i16:4"));
+                Instr(Opcode.vmsr, i(16,4),r(3)),
+                Instr(Opcode.vmrs, r(3),i(16,4)));
 
             var AdvancedSIMDandFloatingPoint32bitMove = Mask(8, 1,
                     Mask(21, 7,
-                        Instr(Opcode.vmov, "S16:4:7:1,r3"),
+                        Instr(Opcode.vmov, S(16,4,7,1),r(3)),
                         invalid,
                         invalid,
                         invalid,
@@ -2018,48 +2590,48 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b10"),
                     Mask(0, 1,
-                        Instr(Opcode.vldmia, "w21 r4,Md"),
+                        Instr(Opcode.vldmia, w(21), r(4),Md(0,16)),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b11 xxxxxx1"))),
                 Mask(8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b01"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b10"),
                     Mask(0, 1,
-                        Instr(Opcode.vstmia, "w21 r4,Md"),
+                        Instr(Opcode.vstmia, w(21), r(4),Md(0,16)),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b11 xxxxxx1"))),
                 Mask(8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b01"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b10"),
                     Mask(0, 1,
-                        Instr(Opcode.vldmia, "w21 r4,Md"),
+                        Instr(Opcode.vldmia, w(21), r(4),Md(0,16)),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b11 xxxxxx1"))),
 
                 Mask(8, 3, // size
                     invalid,
-                    Instr(Opcode.vstr, "h*"),
-                    Instr(Opcode.vstr, "s*"),
-                    Instr(Opcode.vstr, "d*")),
+                    Instr(Opcode.vstr, x("h")),
+                    Instr(Opcode.vstr, x("s")),
+                    Instr(Opcode.vstr, x("d*"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001"),
                 Mask(8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b01"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b10"),
                     Mask(0, 1,
-                        Instr(Opcode.vstmdb, "w21 r4,Md"),
+                        Instr(Opcode.vstmdb, w(21), r(4),Md(0,16)),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b11 xxxxxx1"))),
                 nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011"),
 
                 Mask(8, 3, // size
                     invalid,    
-                    Instr(Opcode.vstr, "vi16 S12:4:22:1,[i<1:w2]"),
-                    Instr(Opcode.vstr, "S12:4:22:1,[i<2:w4]"),
-                    Instr(Opcode.vstr, "D22:1:12:4,[i<2:w8]")),
+                    Instr(Opcode.vstr, I16, S(12,4,22,1),Mi(1,w2)),
+                    Instr(Opcode.vstr, S(12,4,22,1),Mi(2,w4)),
+                    Instr(Opcode.vstr, D(22,1,12,4),Mi(2,w8))),
                 Mask(8, 3, // size
                     invalid,
-                    Instr(Opcode.vldr, "vi16 S12:4:22:1,[i<1:w2]"),
-                    Instr(Opcode.vldr, "S12:4:22:1,[i<2:w4]"),
-                    Instr(Opcode.vldr, "D22:1:12:4,[i<2:w8]")),
+                    Instr(Opcode.vldr, I16, S(12,4,22,1),Mi(1,w2)),
+                    Instr(Opcode.vldr, S(12,4,22,1),Mi(2,w4)),
+                    Instr(Opcode.vldr, D(22,1,12,4),Mi(2,w8))),
                 invalid,
                 invalid);
 
@@ -2074,7 +2646,7 @@ namespace Reko.Arch.Arm.AArch32
                                 invalid,
                                 invalid,
                                 nyi("vmov from 2 gp regs to 2 single floats"),
-                                Instr(Opcode.vmov, "D5:1:0:4,r3,r4")),
+                                Instr(Opcode.vmov, D(5,1,0,4),r(3),r(4))),
                             Mask(8, 3, // size
                                 invalid,
                                 invalid,
@@ -2087,8 +2659,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var SystemRegister32BitMove = new PcDecoder(28,
                 Mask(20, 1,
-                    Instr(Opcode.mcr, "CP8,i28:3,r3,CR16,CR0,i5:3"),
-                    Instr(Opcode.mrc, "CP8,i28:3,r3,CR16,CR0,i5:3")),
+                    Instr(Opcode.mcr, CP(8),i(28,3),r(3),CR(16),CR(0),i(5,3)),
+                    Instr(Opcode.mrc, CP(8),i(28,3),r(3),CR(16),CR(0),i(5,3))),
                 invalid);
 
             var AdvancedSimd_ThreeRegisters = Mask(24, 1,
@@ -2096,44 +2668,44 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=00
                             invalid,
-                            Instr(Opcode.vand, "*")),
+                            Instr(Opcode.vand, x(""))),
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=01"),
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=10"),
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=11")),
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1=0"),
-                            Instr(Opcode.vand, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                            Instr(Opcode.vand, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4))),
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=01"),
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1=0"),
-                            Instr(Opcode.vorr, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                            Instr(Opcode.vorr, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4))),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0010"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0011"),
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=0
-                            Instr(Opcode.vshl, S8, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
-                            Instr(Opcode.vshl, S16, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
-                            Instr(Opcode.vshl, S32, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
-                            Instr(Opcode.vshl, S64, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4")),
+                            Instr(Opcode.vshl, S8, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4)),
+                            Instr(Opcode.vshl, S16, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4)),
+                            Instr(Opcode.vshl, S32, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4)),
+                            Instr(Opcode.vshl, S64, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4))),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=1
-                            Instr(Opcode.vqshl, S8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vqshl, S16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vqshl, S32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vqshl, S64, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"))), 
+                            Instr(Opcode.vqshl, S8, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vqshl, S16, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vqshl, S32, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vqshl, S64, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)))), 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0101"),
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110 u=0  
                         Mask(20, 3, 
-                            Instr(Opcode.vmax, S8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vmax, S16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vmax, S32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
+                            Instr(Opcode.vmax, S8, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vmax, S16, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vmax, S32, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
                             invalid),
                         Mask(20, 3,
-                            Instr(Opcode.vmin, S8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vmin, S16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vmin, S32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
+                            Instr(Opcode.vmin, S8, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vmin, S16, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vmin, S32, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
                             invalid)),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0111"),
 
@@ -2142,22 +2714,22 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(6, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 
                             Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=0
-                                Instr(Opcode.vpmax, S8, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                                Instr(Opcode.vpmax, S16, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                                Instr(Opcode.vpmax, S32, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmax, S8, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
+                                Instr(Opcode.vpmax, S16, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
+                                Instr(Opcode.vpmax, S32, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
                                 invalid),
                             Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=1
-                                Instr(Opcode.vpmin, S8, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                                Instr(Opcode.vpmin, S16, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                                Instr(Opcode.vpmin, S32, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                                Instr(Opcode.vpmin, S8, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
+                                Instr(Opcode.vpmin, S16, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
+                                Instr(Opcode.vpmin, S32, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
                                 invalid)),
                         invalid),
                     Mask(4, 1,
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101 o1=0"),
                         Mask(20, 3,
-                            Instr(Opcode.vpadd, I8, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                            Instr(Opcode.vpadd, I16, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
-                            Instr(Opcode.vpadd, I32, "D22:1:12:4,D7:1:16:4,D5:1:0:4"),
+                            Instr(Opcode.vpadd, I8, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
+                            Instr(Opcode.vpadd, I16, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
+                            Instr(Opcode.vpadd, I32, D(22,1,12,4),D(7,1,16,4),D(5,1,0,4)),
                             invalid)),
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100"),
@@ -2170,7 +2742,7 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1=0"),
-                            Instr(Opcode.veor, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4")),
+                            Instr(Opcode.veor, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4))),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=01"),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=10"),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
@@ -2179,15 +2751,15 @@ namespace Reko.Arch.Arm.AArch32
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=0
-                            Instr(Opcode.vshl, U8, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
-                            Instr(Opcode.vshl, U16, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
-                            Instr(Opcode.vshl, U32, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4"),
-                            Instr(Opcode.vshl, U64, "q6 W22:1:12:4,W5:1:0:4,W7:1:16:4")),
+                            Instr(Opcode.vshl, U8, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4)),
+                            Instr(Opcode.vshl, U16, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4)),
+                            Instr(Opcode.vshl, U32, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4)),
+                            Instr(Opcode.vshl, U64, q(6), W(22,1,12,4),W(5,1,0,4),W(7,1,16,4))),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=1
-                            Instr(Opcode.vqshl, U8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vqshl, U16, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vqshl, U32, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"),
-                            Instr(Opcode.vqshl, U64, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4"))),
+                            Instr(Opcode.vqshl, U8, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vqshl, U16, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vqshl, U32, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)),
+                            Instr(Opcode.vqshl, U64, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4)))),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0101"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0111"),
@@ -2224,7 +2796,7 @@ namespace Reko.Arch.Arm.AArch32
                                 AdvancedSIMDandFloatingPoint32bitMove),
                             invalid),
                         Select(10, 3, n => n == 2, AdvancedSimd_TwoRegistersScalarExtension, invalid))),
-                    Instr(Opcode.svc, "i0:24"));
+                    Instr(Opcode.svc, i(0,24)));
 
 
             var ConditionalDecoder = new CondMaskDecoder(25, 0x7,
@@ -2241,49 +2813,49 @@ namespace Reko.Arch.Arm.AArch32
 
             var AdvancedSimd_TwoRegisterOrThreeRegisters = Select(20, 0x3, n => n == 0b11,
                 Mask(24, 1, 
-                    Instr(Opcode.vext, U8, "q6 W22:1:12:4,W7:1:16:4,W5:1:0:4,i8:4"),
+                    Instr(Opcode.vext, U8, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4),i(8,4)),
                     nyi("AdvancedSimd_TwoRegisterOrThreeRegisters op1==0b11 op0=1")),
                 nyi("AdvancedSimd_TwoRegisterOrThreeRegisters op1!=0b11"));
 
             var AdvancedSimd_OneRegisterModifiedImmediate = Mask(8, 3, 5, 1,
-                Instr(Opcode.vmov, "q6 vi32 W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vmvn, I32, "W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vorr, "*immediate - A1"),
-                Instr(Opcode.vbic, "*immediate - A1"),
+                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vorr, x("immediate - A1")),
+                Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, "q6 vi32 W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vmvn, I32, "W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vorr, "*immediate - A1"),
-                Instr(Opcode.vbic, "*immediate - A1"),
+                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vorr, x("immediate - A1")),
+                Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, "q6 vi32 W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vmvn, I32, "W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vorr, "*immediate - A1"),
-                Instr(Opcode.vbic, "*immediate - A1"),
+                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vorr, x("immediate - A1")),
+                Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, "q6 vi32 W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vmvn, I32, "W22:1:12:4,is24:1:16:3:0:4"),
-                Instr(Opcode.vorr, "*immediate - A1"),
-                Instr(Opcode.vbic, "*immediate - A1"),
+                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
+                Instr(Opcode.vorr, x("immediate - A1")),
+                Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, "*immediate - A3"),
-                Instr(Opcode.vmvn, "*immediate - A2"),
-                Instr(Opcode.vorr, "*immediate - A2"),
-                Instr(Opcode.vbic, "*immediate - A2"),
+                Instr(Opcode.vmov, x("immediate - A3")),
+                Instr(Opcode.vmvn, x("immediate - A2")),
+                Instr(Opcode.vorr, x("immediate - A2")),
+                Instr(Opcode.vbic, x("immediate - A2")),
 
-                Instr(Opcode.vmov, "*immediate - A3"),
-                Instr(Opcode.vmvn, "*immediate - A2"),
-                Instr(Opcode.vorr, "*immediate - A2"),
-                Instr(Opcode.vbic, "*immediate - A2"),
+                Instr(Opcode.vmov, x("immediate - A3")),
+                Instr(Opcode.vmvn, x("immediate - A2")),
+                Instr(Opcode.vorr, x("immediate - A2")),
+                Instr(Opcode.vbic, x("immediate - A2")),
 
-                Instr(Opcode.vmov, "*immediate - A4"),
-                Instr(Opcode.vmvn, "*immediate - A3"),
-                Instr(Opcode.vmov, "*immediate - A4"),
-                Instr(Opcode.vmvn, "*immediate - A3"),
+                Instr(Opcode.vmov, x("immediate - A4")),
+                Instr(Opcode.vmvn, x("immediate - A3")),
+                Instr(Opcode.vmov, x("immediate - A4")),
+                Instr(Opcode.vmvn, x("immediate - A3")),
 
-                Instr(Opcode.vmov, "*immediate - A4"),
-                Instr(Opcode.vmov, "*immediate - A5"),
-                Instr(Opcode.vmov, "*immediate - A4"),
+                Instr(Opcode.vmov, x("immediate - A4")),
+                Instr(Opcode.vmov, x("immediate - A5")),
+                Instr(Opcode.vmov, x("immediate - A4")),
                 invalid);
 
 
@@ -2304,13 +2876,13 @@ namespace Reko.Arch.Arm.AArch32
 
             var Barriers = Mask(4, 0xF,
                 invalid,
-                Instr(Opcode.clrex, "*"),
+                Instr(Opcode.clrex, x("")),
                 invalid,
                 invalid,
 
-                Instr(Opcode.dsb, "Ba0:4"),
-                Instr(Opcode.dmb, "Ba0:4"),
-                Instr(Opcode.isb, "Ba0:4"),
+                Instr(Opcode.dsb, Ba(0,4)),
+                Instr(Opcode.dmb, Ba(0,4)),
+                Instr(Opcode.isb, Ba(0,4)),
                 invalid,
 
                 invalid,
