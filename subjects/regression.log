@@ -232,7 +232,6 @@ fn092A: error: An error occurred during data flow analysis.
 00000109: warning: Call target address FFC02AB1 is invalid.
 00000111: warning: Call target address 01A18AC9 is invalid.
 00000129: warning: Call target address FFC02AD1 is invalid.
-0000A4B8: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
 0000A4EC: error: Rewriting ARM opcode 'usateq' is not supported yet.
 000094FD: error: An error occurred while processing instruction at address 000094FD.
     Expected stack depth to be known.
@@ -2362,4 +2361,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 42.27 seconds ---
+Decompiled 54 binaries in 39.68 seconds ---
