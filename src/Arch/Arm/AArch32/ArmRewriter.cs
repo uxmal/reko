@@ -90,7 +90,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.aese:
                 case Opcode.aesimc:
                 case Opcode.aesmc:
-                case Opcode.bkpt:
                 case Opcode.bxj:
                 case Opcode.clrex:
                 case Opcode.crc32b:
@@ -121,7 +120,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.mcrr:
                 case Opcode.mcrr2:
                 case Opcode.mrc2:
-                case Opcode.mrrc:
                 case Opcode.mrrc2:
                 case Opcode.pkhbt:
                 case Opcode.pkhtb:
@@ -154,7 +152,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.shadd8:
                 case Opcode.shasx:
                 case Opcode.shsax:
-                case Opcode.smc:
                 case Opcode.smmla:
                 case Opcode.smmlar:
                 case Opcode.smmls:
@@ -193,7 +190,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uhsub8:
                 case Opcode.uqadd16:
                 case Opcode.uqadd8:
-                case Opcode.uqasx:
                 case Opcode.uqsax:
                 case Opcode.uqsub16:
                 case Opcode.uqsub8:
@@ -201,7 +197,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.usada8:
                 case Opcode.usat:
                 case Opcode.usat16:
-                case Opcode.usax:
                 case Opcode.uxtab16:
                 case Opcode.uxtb16:
                 case Opcode.vabal:
@@ -337,6 +332,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.bfc: RewriteBfc(); break;
                 case Opcode.bfi: RewriteBfi(); break;
                 case Opcode.bic: RewriteBic(); break;
+                case Opcode.bkpt: RewriteBkpt(); break;
                 case Opcode.bl: RewriteB(true); break;
                 case Opcode.blx: RewriteB(true); break;
                 case Opcode.bx: RewriteB(false); break;
@@ -350,7 +346,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.cps: RewriteCps(); break;
                 case Opcode.dmb: RewriteDmb(); break;
                 case Opcode.eor: RewriteLogical(m.Xor); break;
+                case Opcode.eret: RewriteEret(); break;
                 case Opcode.hint: RewriteHint(); break;
+                case Opcode.hvc: RewriteHvc(); break;
                 case Opcode.it: RewriteIt(); break;
                 case Opcode.ldc2l: RewriteLdc("__ldc2l"); break;
                 case Opcode.ldc2: RewriteLdc("__ldc2"); break;
@@ -408,6 +406,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.setend: RewriteSetend(); break;
                 case Opcode.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
                 case Opcode.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
+                case Opcode.smc: RewriteSmc(); break;
                 case Opcode.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlad:  RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
@@ -472,6 +471,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.umaal: RewriteUmaal(); break;
                 case Opcode.umlal: RewriteUmlal(); break;
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
+                case Opcode.uqasx: RewriteVectorBinOp("__uqasx_{0}", ArmVectorData.U16); break;
+                case Opcode.usax: RewriteUsax(); break;
                 case Opcode.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
                 case Opcode.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
                 case Opcode.uxtab: RewriteXtab(PrimitiveType.Byte); break;
@@ -677,13 +678,13 @@ void RewriteB(bool link)
             Expression ea = baseReg;
             if (mem.Offset != null)
             {
-                if (mem.Offset.ToInt32() > 0)
+                if (mem.Add)
                 {
                     ea = m.IAdd(ea, mem.Offset);
                 }
-                else if (mem.Offset.ToInt32() < 0)
+                else 
                 {
-                    ea = m.ISub(ea, mem.Offset.Negate());
+                    ea = m.ISub(ea, mem.Offset);
                 }
             }
             else if (mem.Index != null)

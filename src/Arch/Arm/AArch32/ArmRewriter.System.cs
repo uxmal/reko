@@ -27,6 +27,11 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
+        private void RewriteBkpt()
+        {
+            var n = Operand(instr.ops[0]);
+            m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, n));
+        }
 
         private void RewriteCdp(string name)
         {
@@ -51,6 +56,18 @@ namespace Reko.Arch.Arm.AArch32
             var memBarrier = (BarrierOperand)instr.ops[0];
             var name = $"__dmb_{memBarrier.Option.ToString().ToLower()}";
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+        }
+
+        private void RewriteEret()
+        {
+            rtlClass = RtlClass.Transfer;
+            m.Return(0, 0);
+        }
+
+        private void RewriteHvc()
+        {
+            var n = Operand(instr.ops[0]);
+            m.SideEffect(host.PseudoProcedure("__hypervisor", VoidType.Instance, n));
         }
 
         private void RewriteLdc(string fnName)
@@ -115,6 +132,12 @@ namespace Reko.Arch.Arm.AArch32
             var endianness = (EndiannessOperand)instr.ops[0];
             var intrisic = host.PseudoProcedure("__set_bigendian", VoidType.Instance, Constant.Bool(endianness.BigEndian));
             m.SideEffect(intrisic);
+        }
+
+        private void RewriteSmc()
+        {
+            var n = Operand(instr.ops[0]);
+            m.SideEffect(host.PseudoProcedure("__smc", VoidType.Instance, n));
         }
 
         private void RewriteStc(string name)

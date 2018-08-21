@@ -129,6 +129,10 @@ namespace Reko.Arch.Arm.AArch32
             }
             else
             {
+                if (dst.DataType.BitSize != src.DataType.BitSize)
+                {
+                    src = m.Cast(dst.DataType, src);
+                }
                 m.Assign(dst, src);
             }
         }

@@ -648,6 +648,14 @@ means
         }
 
         [Test]
+        [Ignore("Find an example in a binary")]
+        public void ArmRw_mrrc()
+        {
+            BuildTest(0xEC5F5554);        // mrrc\tp5,#5,r5,pc,c4
+            AssertCode("1|L--|00100000(4): 1 instructions");
+        }
+
+        [Test]
         public void ArmRw_mcr()
         {
             BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7,c8,#2
@@ -912,7 +920,7 @@ means
         public void ArmRw_vpush()
         {
             BuildTest(0xed2d8b04);  // vpush {d8, d9}
-            AssertCode( 
+            AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|Mem0[sp + -16:word64] = d8",
                 "2|L--|Mem0[sp + -8:word64] = d9",
@@ -1169,7 +1177,7 @@ means
         [Test]
         public void ArmRw_ldc()
         {
-            BuildTest(0xECDC5CED); 
+            BuildTest(0xECDC5CED);
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v3 = Mem0[ip:word32]",
@@ -1446,6 +1454,194 @@ means
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto Mem0[r6 + (r4 << 2):word32]");
+        }
+
+        public void ArmRw_ldr_literal()
+        {
+            BuildTest(0xE59F5254);        // ldr\tr5,[pc,#&254]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = Mem0[@@@:word32]");
+        }
+
+        [Test]
+        public void ArmRw_strh()
+        {
+            BuildTest(0xE1C320B0);        // strh\tr2,[r3]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r3:word16] = (uint16) r2");
+        }
+
+        [Test]
+        public void ArmRw_ldrh()
+        {
+            BuildTest(0xE1D041BC);        // ldrh\tr4,[r0,#&1C]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = (word32) Mem0[r0 + 28:word16]");
+        }
+
+        [Test]
+        public void ArmRw_strh_pre_imm()
+        {
+            BuildTest(0xE16230B2);        // strh\tr3,[r2,-#&2]!
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r2 = r2 - 2",
+                "2|L--|Mem0[r2:word16] = (uint16) r3");
+        }
+
+        [Test]
+        public void ArmRw_stm_user()
+        {
+            BuildTest(0xE9435246);        // stm r3,{r1-r2,r6,r9,ip,lr}^
+            AssertCode("" +
+                "0|L--|00100000(4): 6 instructions",
+                "1|L--|Mem0[r3:word32] = r1",
+                "2|L--|Mem0[r3 + 4:word32] = r2",
+                "3|L--|Mem0[r3 + 8:word32] = r6",
+                "4|L--|Mem0[r3 + 12:word32] = r9",
+                "5|L--|Mem0[r3 + 16:word32] = ip",
+                "6|L--|Mem0[r3 + 20:word32] = lr");
+        }
+
+        [Test]
+        public void ArmRw_ldm_user()
+        {
+            BuildTest(0xE958414D);        // ldm\tr8,{r0,r2-r3,r6,r8,lr}^
+            AssertCode(
+                "0|L--|00100000(4): 6 instructions",
+                "1|L--|r0 = Mem0[r8:word32]",
+                "2|L--|r2 = Mem0[r8 + 4:word32]",
+                "3|L--|r3 = Mem0[r8 + 8:word32]",
+                "4|L--|r6 = Mem0[r8 + 12:word32]",
+                "5|L--|r8 = Mem0[r8 + 16:word32]",
+                "6|L--|lr = Mem0[r8 + 20:word32]");
+        }
+
+        [Test]
+        public void ArmRw_usax()
+        {
+            BuildTest(0xE6535054);        // usax\tr5,r3,r4
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v2 = SLICE(r3, ui16, 0) + SLICE(r4, ui16, 16)",
+                "2|L--|v3 = SLICE(r3, ui16, 16) - SLICE(r4, ui16, 0)",
+                "3|L--|r5 = SEQ(v3, v2)");
+        }
+
+        [Test]
+        public void ArmRw_eret()
+        {
+            BuildTest(0xE167B760);        // eret
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|return (0,0)");
+        }
+
+        [Test]
+        public void ArmRw_smc()
+        {
+            BuildTest(0xE167C970);        // smc\t#0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__smc(0x00000000)");
+        }
+
+        [Test]
+        public void ArmRw_smlsldx()
+        {
+            BuildTest(0xE7434774);        // smlsldx\tr3,r4,r7,r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4_r3 = r4_r3 + ((int16) r7 *s (r4 >> 16) - (r7 >> 16) *s (int16) r4)");
+        }
+
+        [Test]
+        public void ArmRw_ldrsh_imm_pre()
+        {
+            BuildTest(0xE167C9F0);        // ldrsh\tip,[r7,-#&90]!
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r7 = r7 - 144",
+                "2|L--|ip = (word32) Mem0[r7:int16]");
+        }
+
+        [Test]
+        public void ArmRw_msr_banked_register()
+        {
+            BuildTest(0xE167B70C);        // msr\tr11_usr,ip
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__msr(r11_usr, ip)");
+        }
+
+        [Test]
+        public void ArmRw_qsub16()
+        {
+            BuildTest(0xE6206174);        // qsub16\tr6,r0,r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = __qsub_s16(r0, r4)");
+        }
+
+        [Test]
+        public void ArmRw_uqasx()
+        {
+            BuildTest(0xE6664F3A);        // uqasx\tr4,r6,r10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = __uqasx_u16(r6, r10)");
+        }
+
+        [Test]
+        public void ArmRw_ldrh_imm()
+        {
+            BuildTest(0xE0DA85B8);        // ldrheq\tr8,[r10],#&58
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = (word32) Mem0[r10:word16]",
+                "2|L--|r10 = r10 + 88",
+                "3|L--|r8 = v4");
+        }
+
+        [Test]
+        public void ArmRw_ldrsh_imm()
+        {
+            BuildTest(0xE0DAC7F0);        // ldrsh\tip,[r10],#&70
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = (word32) Mem0[r10:int16]",
+                "2|L--|r10 = r10 + 112",
+                "3|L--|ip = v4");
+        }
+
+        [Test]
+        public void ArmRw_vmov_gp_to_scalar()
+        {
+            BuildTest(0xEE6F6974);        // vmov\td15,r6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d15 = (word64) r6");
+        }
+
+        [Test]
+        public void ArmRw_hvc()
+        {
+            BuildTest(0xE14C7472);        // hvc\t#&C742
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__hypervisor(0x0000C742)");
+        }
+
+        [Test]
+        public void ArmRw_bkpt()
+        {
+            BuildTest(0xE1262B70);        // bkpt\t#&62B0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__breakpoint(0x000062B0)");
         }
     }
 }

@@ -183,6 +183,19 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewriteUsax()
+        {
+            var sum = binder.CreateTemporary(PrimitiveType.UInt16);
+            var diff = binder.CreateTemporary(PrimitiveType.UInt16);
+            var rn = Operand(instr.ops[1]);
+            var rm = Operand(instr.ops[2]);
+            m.Assign(sum, m.IAdd(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
+            m.Assign(diff, m.ISub(m.Slice(rn, 16, 16), m.Slice(rm, 0, 16)));
+            var rd = Operand(Dst());
+            m.Assign(rd, m.Seq(diff, sum));
+            //$REVIEW: flags?
+        }
+
         private void RewriteBic()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);

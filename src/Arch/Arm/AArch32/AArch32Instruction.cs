@@ -172,6 +172,10 @@ namespace Reko.Arch.Arm.AArch32
                     RenderOperand(ShiftValue, writer, options);
                 }
             }
+            if (UserStmLdm)
+            {
+                writer.WriteChar('^');
+            }
         }
 
         public bool IsStackPointer(int iOp)
@@ -219,16 +223,19 @@ namespace Reko.Arch.Arm.AArch32
             var sUpdate = SetFlags ? "s" : "";
             var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
             sb.Append(sOpcode);
-            sb.Append(sUpdate);
-            sb.Append(sCond);
-            if (this.vector_data != ArmVectorData.INVALID)
+            if (opcode != Opcode.Invalid)
             {
-                var s = this.vector_data.ToString().ToLowerInvariant();
-                if (s.Length == 6)
+                sb.Append(sUpdate);
+                sb.Append(sCond);
+                if (this.vector_data != ArmVectorData.INVALID)
                 {
-                    s = s.Substring(0, 3) + "." + s.Substring(3);
+                    var s = this.vector_data.ToString().ToLowerInvariant();
+                    if (s.Length == 6)
+                    {
+                        s = s.Substring(0, 3) + "." + s.Substring(3);
+                    }
+                    sb.AppendFormat(".{0}", s);
                 }
-                sb.AppendFormat(".{0}", s);
             }
             writer.WriteOpcode(sb.ToString());
             return ops;
@@ -369,6 +376,7 @@ namespace Reko.Arch.Arm.AArch32
 
         public bool Writeback;
         public bool SetFlags;
+        public bool UserStmLdm;
         public Opcode ShiftType;
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;

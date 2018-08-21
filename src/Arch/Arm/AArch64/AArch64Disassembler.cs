@@ -743,7 +743,7 @@ namespace Reko.Arch.Arm.AArch64
                     Select("5:5", n => n == 0x1F,
                         Sparse(10, 6,
                             invalid,
-                            (0, Select("0:5", n => n == 0, Instr(Opcode.eret, "*X5:5"), invalid)),
+                            (0, Select("0:5", n => n == 0, Instr(Opcode.eret, ""), invalid)),
                             (2, Select("0:5", n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key A"), invalid)),
                             (3, Select("0:5", n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key B"), invalid))),
                         invalid),

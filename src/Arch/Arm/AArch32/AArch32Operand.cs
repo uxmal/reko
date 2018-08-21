@@ -41,7 +41,6 @@ namespace Reko.Arch.Arm.AArch32
         public int Scale;
         public bool PreIndex;
 
-
         public MemoryOperand(PrimitiveType dataType) : base(dataType)
         {
         }

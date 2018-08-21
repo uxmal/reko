@@ -44,6 +44,44 @@ namespace Reko.Arch.Arm.AArch32
         public static readonly RegisterStorage mvfr0 = new RegisterStorage("mvfr0", 22, 0, PrimitiveType.Word32);
         public static readonly RegisterStorage fpexc = new RegisterStorage("fpexc", 23, 0, PrimitiveType.Word32);
 
+        public static readonly RegisterStorage r8_usr = new RegisterStorage("r8_usr", 40, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r9_usr = new RegisterStorage("r9_usr", 41, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r10_usr = new RegisterStorage("r10_usr", 42, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r11_usr = new RegisterStorage("r11_usr", 43, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r12_usr = new RegisterStorage("r12_usr", 44, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_usr = new RegisterStorage("sp_usr", 45, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_usr = new RegisterStorage("lr_usr", 46, 0, PrimitiveType.Word32);
+
+        public static readonly RegisterStorage r8_fiq = new RegisterStorage("r8_fiq", 48, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r9_fiq = new RegisterStorage("r9_fiq", 49, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r10_fiq = new RegisterStorage("r10_fiq", 50, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r11_fiq = new RegisterStorage("r11_fiq", 51, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r12_fiq = new RegisterStorage("r12_fiq", 52, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_fiq = new RegisterStorage("sp_fiq", 53, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_fiq = new RegisterStorage("lr_fiq", 54, 0, PrimitiveType.Word32);
+
+        public static readonly RegisterStorage lr_irq = new RegisterStorage("lr_irq", 55, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_irq = new RegisterStorage("sp_irq", 56, 0, PrimitiveType.Word32);
+
+        public static readonly RegisterStorage lr_svc = new RegisterStorage("lr_svc", 57, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_svc = new RegisterStorage("sp_svc", 58, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_abt = new RegisterStorage("lr_abt", 59, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_abt = new RegisterStorage("sp_abt", 60, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_und = new RegisterStorage("lr_und", 61, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_und = new RegisterStorage("sp_und", 62, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_mon = new RegisterStorage("lr_mon", 63, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_mon = new RegisterStorage("sp_mon", 64, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage elr_hyp = new RegisterStorage("elr_hyp", 65, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage sp_hyp = new RegisterStorage("sp_hyp", 66, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_fiq = new RegisterStorage("spsr_fiq", 67, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_irq = new RegisterStorage("spsr_irq", 68, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_svc = new RegisterStorage("spsr_svc", 69, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_abt = new RegisterStorage("spsr_abt", 70, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_und = new RegisterStorage("spsr_und", 71, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_mon = new RegisterStorage("spsr_mon", 72, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage spsr_hyp = new RegisterStorage("spsr_hyp", 73, 0, PrimitiveType.Word32);
+
+
 
         // We need to provide the coprocessors as named register storages even though
         // they more appropriately should be treated as symbols.

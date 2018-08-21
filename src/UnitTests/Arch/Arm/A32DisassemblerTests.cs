@@ -1196,7 +1196,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("qsub\tr6,r0,sp");
         }
 
-  
+
 
         [Test]
         public void ArmDasm_msr_imm()
@@ -1209,7 +1209,147 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldr_literal()
         {
             Disassemble32(0xE59F5254);
-            Expect_Code("ldr\tr5,[pc,#596]");
+            Expect_Code("ldr\tr5,[pc,#&254]");
+        }
+
+        [Test]
+        public void ArmDasm_strh()
+        {
+            Disassemble32(0xE1C320B0);
+            Expect_Code("strh\tr2,[r3]");
+        }
+
+        [Test]
+        public void ArmDasm_ldrh()
+        {
+            Disassemble32(0xE1D041BC);
+            Expect_Code("ldrh\tr4,[r0,#&1C]");
+        }
+
+        [Test]
+        public void ArmDasm_strh_pre_imm()
+        {
+            Disassemble32(0xE16230B2);
+            Expect_Code("strh\tr3,[r2,-#&2]!");
+        }
+
+        [Test]
+        public void ArmDasm_stm_user()
+        {
+            Disassemble32(0x39435246);
+            Expect_Code("stmlo\tr3,{r1-r2,r6,r9,ip,lr}^");
+        }
+
+        [Test]
+        public void ArmDasm_mrrc()
+        {
+            Disassemble32(0xEC5F5554);
+            Expect_Code("mrrc\tp5,#5,r5,pc,c4");
+        }
+
+        [Test]
+        public void ArmDasm_ldm_user()
+        {
+            Disassemble32(0x3958414D);
+            Expect_Code("ldmlo\tr8,{r0,r2-r3,r6,r8,lr}^");
+        }
+
+        [Test]
+        public void ArmDasm_usax()
+        {
+            Disassemble32(0x36535054);
+            Expect_Code("usaxlo\tr5,r3,r4");
+        }
+
+        [Test]
+        public void ArmDasm_eret()
+        {
+            Disassemble32(0xE167B760);
+            Expect_Code("eret");
+        }
+
+        [Test]
+        public void ArmDasm_smc()
+        {
+            Disassemble32(0xE167C970);
+            Expect_Code("smc\t#0");
+        }
+
+        [Test]
+        public void ArmDasm_smlsldx()
+        {
+            Disassemble32(0x47434774);
+            Expect_Code("smlsldxmi\tr3,r4,r7,r4");
+        }
+
+        [Test]
+        public void ArmDasm_strh_imm_pre()
+        {
+            Disassemble32(0x0167C9F0);
+            Expect_Code("ldrsheq\tip,[r7,-#&90]!");
+        }
+
+        [Test]
+        public void ArmDasm_msr_banked_register()
+        {
+            Disassemble32(0x0167B70C);
+            Expect_Code("msreq\tr11_usr,ip");
+        }
+
+        [Test]
+        public void ArmDasm_qsub16()
+        {
+            Disassemble32(0x66206174);
+            Expect_Code("qsub16vs\tr6,r0,r4");
+        }
+
+        [Test]
+        public void ArmDasm_uqasxvs()
+        {
+            Disassemble32(0x66664F3A);
+            Expect_Code("uqasxvs\tr4,r6,r10");
+        }
+
+        [Test]
+        public void ArmDasm_ldrh_imm()
+        {
+            Disassemble32(0x00DA85B8);
+            Expect_Code("ldrheq\tr8,[r10],#&58");
+        }
+
+        [Test]
+        public void ArmDasm_ldrsh_imm()
+        {
+            Disassemble32(0x00DAC7F0);
+            Expect_Code("ldrsheq\tip,[r10],#&70");
+        }
+
+        [Test]
+        public void ArmDasm_vmov_gp_to_scalar()
+        {
+            Disassemble32(0x6E6F6974);
+            Expect_Code("vmovvs\td15,r6");
+        }
+
+        [Test]
+        public void ArmDasm_hvc()
+        {
+            Disassemble32(0xE14C7472);
+            Expect_Code("hvc\t#&C742");
+        }
+
+        [Test]
+        public void ArmDasm_stc()
+        {
+            Disassemble32(0x2C642520);
+            Expect_Code("stchs\tp5,c2,[r4],-#&80");
+        }
+
+        [Test]
+        public void ArmDasm_bkpt()
+        {
+            Disassemble32(0x01262B70);
+            Expect_Code("bkpteq\t#&62B0");
         }
     }
 }
