@@ -29,9 +29,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Reko.Arch.Arm.AArch32.A32Disassembler;
 
 namespace Reko.Arch.Arm.AArch64
 {
+    using Mutator = Func<uint, AArch64Disassembler, bool>;
+
     public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction>
     {
         private const uint RegisterMask = 0b11111;
@@ -42,6 +45,7 @@ namespace Reko.Arch.Arm.AArch64
         private Arm64Architecture arch;
         private EndianImageReader rdr;
         private Address addr;
+        private DasmState state;
 
         public AArch64Disassembler(Arm64Architecture arch, EndianImageReader rdr)
         {
@@ -54,20 +58,52 @@ namespace Reko.Arch.Arm.AArch64
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt32(out var wInstr))
                 return null;
+            this.state = new DasmState();
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = addr;
             instr.Length = 4;
             return instr;
         }
 
+        private class DasmState
+        {
+            public Opcode opcode;
+            public List<MachineOperand> ops = new List<MachineOperand>();
+            public Opcode shiftCode = Opcode.Invalid;
+            public MachineOperand shiftAmount = null;
+
+            public void Clear()
+            {
+                this.opcode = Opcode.Invalid;
+                this.ops.Clear();
+                this.shiftCode = Opcode.Invalid;
+                this.shiftAmount = null;
+            }
+            public void Invalid()
+            {
+                Clear();
+                opcode = Opcode.Invalid;
+            }
+
+            internal AArch64Instruction MakeInstruction()
+            {
+                var instr = new AArch64Instruction
+                {
+                    opcode = opcode,
+                    ops = ops.ToArray(),
+                    shiftCode = shiftCode,
+                    shiftAmount = shiftAmount
+                };
+                return instr;
+
+            }
+        }
+
         private AArch64Instruction Decode(uint wInstr, Opcode opcode, string format)
         {
             int i = 0;
             RegisterStorage reg;
-            Opcode shiftCode = Opcode.Invalid;
-            MachineOperand shiftAmount = null;
             int n;
-            var ops = new List<MachineOperand>();
             while (i < format.Length)
             {
                 switch (format[i++])
@@ -79,44 +115,44 @@ namespace Reko.Arch.Arm.AArch64
                     // 32-bit register.
                     n = ReadUnsignedBitField(wInstr, format, ref i);
                     reg = Registers.GpRegs32[n];
-                    ops.Add(new RegisterOperand(reg));
+                    state.ops.Add(new RegisterOperand(reg));
                     break;
                 case 'X':
                     // 64-bit register.
                     n = ReadUnsignedBitField(wInstr, format, ref i);
                     reg = Registers.GpRegs64[n];
-                    ops.Add(new RegisterOperand(reg));
+                    state.ops.Add(new RegisterOperand(reg));
                     break;
                 case 'S':
                     // 32-bit SIMD/FPU register.
                     n = ReadUnsignedBitField(wInstr, format, ref i);
                     reg = Registers.SimdRegs32[n];
-                    ops.Add(new RegisterOperand(reg));
+                    state.ops.Add(new RegisterOperand(reg));
                     break;
                 case 'U':
                     ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
                     if (op == null)
                         return Invalid();
-                    ops.Add(op);
+                    state.ops.Add(op);
                     break;
                 case 'I':
-                    ops.Add(DecodeSignedImmediateOperand(wInstr, format, ref i));
+                    state.ops.Add(DecodeSignedImmediateOperand(wInstr, format, ref i));
                     break;
                 case 'J':
                     // Jump displacement from address of current instruction
                     n = ReadSignedBitField(wInstr, format, ref i);
                     AddressOperand aop = AddressOperand.Create(addr + (n << 2));
-                    ops.Add(aop);
+                    state.ops.Add(aop);
                     break;
 
                 case '[':
                     // Memory access
-                    ops.Add(ReadMemoryAccess(wInstr, format, ref i));
+                    state.ops.Add(ReadMemoryAccess(wInstr, format, ref i));
                     break;
                 case 'C':
                     // Condition field
                     var cop = ReadConditionField(wInstr, format, ref i);
-                    ops.Add(new ConditionOperand(cop));
+                    state.ops.Add(new ConditionOperand(cop));
                     break;
                 case 's':
                     // Shift type
@@ -127,28 +163,28 @@ namespace Reko.Arch.Arm.AArch64
                         switch (n)
                         {
                         case 1:
-                            shiftCode = Opcode.lsl;
-                            shiftAmount = ImmediateOperand.Int32(12);
+                            state.shiftCode = Opcode.lsl;
+                            state.shiftAmount = ImmediateOperand.Int32(12);
                             break;
                         }
                         break;
                     case 'h': // 16-bit shifts
                         n = ReadUnsignedBitField(wInstr, format, ref i);
-                        shiftCode = Opcode.lsl;
-                        shiftAmount = ImmediateOperand.Int32(16 * n);
+                        state.shiftCode = Opcode.lsl;
+                        state.shiftAmount = ImmediateOperand.Int32(16 * n);
                         break;
                     case 'i': // code + immediate 
                         n = ReadUnsignedBitField(wInstr, format, ref i);
                         switch (n)
                         {
-                        case 0: shiftCode = Opcode.lsl; break;
-                        case 1: shiftCode = Opcode.lsr; break;
-                        case 2: shiftCode = Opcode.asr; break;
-                        case 3: shiftCode = Opcode.ror;  break;
+                        case 0: state.shiftCode = Opcode.lsl; break;
+                        case 1: state.shiftCode = Opcode.lsr; break;
+                        case 2: state.shiftCode = Opcode.asr; break;
+                        case 3: state.shiftCode = Opcode.ror;  break;
                         }
                         Expect(',', format, ref i);
                         n = ReadUnsignedBitField(wInstr, format, ref i);
-                        shiftAmount = ImmediateOperand.Int32(n);
+                        state.shiftAmount = ImmediateOperand.Int32(n);
                         break;
                     default:
                         NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode} shift", wInstr);
@@ -163,9 +199,9 @@ namespace Reko.Arch.Arm.AArch64
             var instr = new AArch64Instruction
             {
                 opcode = opcode,
-                ops = ops.ToArray(),
-                shiftCode = shiftCode,
-                shiftAmount = shiftAmount
+                ops = state.ops.ToArray(),
+                shiftCode = state.shiftCode,
+                shiftAmount = state.shiftAmount
             };
             return instr;
         }
@@ -197,7 +233,9 @@ namespace Reko.Arch.Arm.AArch64
             Constant offset = null;
             Opcode extend = Opcode.Invalid;
             int amount = 0;
-
+            //Ms(xp,xs,Is,Ip)
+            //Mu(xp,xs,Is,Ip)
+            //MR(xp,xs,rs,rp)
             if (PeekAndDiscard(',', format, ref i))
             {
                 if (PeekAndDiscard('I', format, ref i))
@@ -404,9 +442,158 @@ namespace Reko.Arch.Arm.AArch64
             return n;
         }
 
+
+
+
+
+
+
+
+
+        // 32-bit register.
+        private static Mutator W(int pos, int size) {
+            var fields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                uint iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.GpRegs32[iReg]));
+                return true;
+            };
+        }
+
+        // 64-bit register.
+        private static Mutator X(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                uint iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.GpRegs64[iReg]));
+                return true;
+            };
+        }
+
+
+        // 32-bit SIMD/FPU register.
+        private static Mutator S(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                uint iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.SimdRegs32[iReg]));
+                return true;
+            };
+        }
+
+        // Unsigned immediate
+        private static Mutator U(int pos, int size, PrimitiveType dt)
+        {
+            //ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
+            //if (op == null)
+            //    return Invalid();
+            //state.ops.Add(op);
+            throw new NotImplementedException();
+        }
+
+        // Signed immediate
+        private static Mutator I(int pos, int size, PrimitiveType dt)
+        {
+            //case 'I':
+            //    state.ops.Add(DecodeSignedImmediateOperand(wInstr, format, ref i));
+            //    break;
+            throw new NotImplementedException();
+        }
+
+        // Jump displacement from address of current instruction
+        private static Mutator J(int pos, int size)
+        {
+            //n = ReadSignedBitField(wInstr, format, ref i);
+            //AddressOperand aop = AddressOperand.Create(addr + (n << 2));
+            //state.ops.Add(aop);
+            //break;
+            throw new NotImplementedException();
+        }
+
+        private static Mutator M(int mem)
+        {
+            throw new NotImplementedException();
+                //case '[':
+                //    // Memory access
+                //    state.ops.Add(ReadMemoryAccess(wInstr, format, ref i));
+        }
+        //    case 'C':
+        //        // Condition field
+        //        var cop = ReadConditionField(wInstr, format, ref i);
+        //        state.ops.Add(new ConditionOperand(cop));
+        //        break;
+        //    case 's':
+        //        // Shift type
+        //        switch (format[i++])
+        //        {
+        //        case 'c': // code
+        //            n = ReadUnsignedBitField(wInstr, format, ref i);
+        //            switch (n)
+        //            {
+        //            case 1:
+        //                state.shiftCode = Opcode.lsl;
+        //                state.shiftAmount = ImmediateOperand.Int32(12);
+        //                break;
+        //            }
+        //            break;
+        //        case 'h': // 16-bit shifts
+        //            n = ReadUnsignedBitField(wInstr, format, ref i);
+        //            state.shiftCode = Opcode.lsl;
+        //            state.shiftAmount = ImmediateOperand.Int32(16 * n);
+        //            break;
+        //        case 'i': // code + immediate 
+        //            n = ReadUnsignedBitField(wInstr, format, ref i);
+        //            switch (n)
+        //            {
+        //            case 0: state.shiftCode = Opcode.lsl; break;
+        //            case 1: state.shiftCode = Opcode.lsr; break;
+        //            case 2: state.shiftCode = Opcode.asr; break;
+        //            case 3: state.shiftCode = Opcode.ror; break;
+        //            }
+        //            Expect(',', format, ref i);
+        //            n = ReadUnsignedBitField(wInstr, format, ref i);
+        //            state.shiftAmount = ImmediateOperand.Int32(n);
+        //            break;
+        //        default:
+        //            NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode} shift", wInstr);
+        //            break;
+        //        }
+        //        break;
+        //    default:
+        //        NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode}", wInstr);
+        //        return Invalid();
+        //    }
+        //}
+
+
+        private static PrimitiveType i32 => PrimitiveType.Int32;
+
+
+
+
+
         private static Decoder Instr(Opcode opcode, string format)
         {
             return new InstrDecoder(opcode, format);
+        }
+
+        private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
+        {
+            return new InstrDecoder2(opcode, mutators);
         }
 
         private static Decoder Mask(int pos, uint mask, params Decoder[] decoders)
@@ -683,9 +870,9 @@ namespace Reko.Arch.Arm.AArch64
             {
                 Bitfield = Mask(22, 1,
                     Mask(29, 7,
-                        Instr(Opcode.sbfm, "32-bit variant"),
-                        Instr(Opcode.bfm, "32-bit variant"),
-                        Instr(Opcode.ubfm, "32-bit variant"),
+                        Instr(Opcode.sbfm, W(0,5),W(5,5),I(16,6,i32),I(10,6,i32)),
+                        Instr(Opcode.bfm, W(0,5),W(5,5),I(16,6,i32),I(10,6,i32)),
+                        Instr(Opcode.ubfm, W(0,5),W(5,5),I(16,6,i32),I(10,6,i32)),
                         invalid,
 
                         invalid,
@@ -983,6 +1170,11 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Opcode.ccmp, "X5:5,U16:1l,U0:4b,C12:4")));
             }
 
+            Decoder DataProcessing2source;
+            {
+                DataProcessing2source = Nyi("* Data Processing 2 source");
+            }
+
             Decoder DataProcessingReg;
             {
                 DataProcessingReg =  Mask(28, 1,         // op1
@@ -1017,7 +1209,7 @@ namespace Reko.Arch.Arm.AArch64
                         ConditionalSelect,
                         invalid,
                         Mask(30, 1,         // op1 = 1, op2 = 6, op0
-                            Nyi("DataProcessing 2 source"),
+                            DataProcessing2source,
                             Nyi("DataProcessing 1 source")),
                         invalid,
 

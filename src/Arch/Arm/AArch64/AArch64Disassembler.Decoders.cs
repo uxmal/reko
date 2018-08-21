@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
+    using Mutator = Func<uint, AArch64Disassembler, bool>;
+
     public partial class AArch64Disassembler
     {
         public abstract class Decoder
@@ -199,6 +201,32 @@ namespace Reko.Arch.Arm.AArch64
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
                 return dasm.Decode(wInstr, opcode, format);
+            }
+        }
+
+        private class InstrDecoder2 : Decoder
+        {
+            private readonly Opcode opcode;
+            private readonly Mutator[] mutators;
+
+            public InstrDecoder2(Opcode opcode, params Mutator[] mutators)
+            {
+                this.opcode = opcode;
+                this.mutators = mutators;
+            }
+            public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
+            {
+                for (int i = 0; i < mutators.Length; ++i)
+                {
+                    if (!mutators[i](wInstr, dasm))
+                    {
+                        dasm.state.Invalid();
+                        break;
+                    }
+                }
+                var instr = dasm.state.MakeInstruction();
+                return instr;
+                throw new NotImplementedException();
             }
         }
     }

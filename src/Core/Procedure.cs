@@ -42,8 +42,6 @@ namespace Reko.Core
 
 		public Procedure(IProcessorArchitecture arch, string name, Frame frame) : base(name)
 		{
-            if (name.EndsWith("000001")) //$DEBUG
-                name.ToString();
             //$REVIEW consider removing Body completely and use
             // AbsynProcedure instead.
             this.Architecture = arch;
