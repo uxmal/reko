@@ -18,12 +18,12 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
@@ -92,10 +92,10 @@ namespace Reko.Arch.Arm.AArch64
 
         public class BitfieldDecoder : Decoder
         {
-            private readonly string bitfields;
+            private readonly Bitfield[] bitfields;
             private readonly Decoder[] decoders;
 
-            public BitfieldDecoder(string bitfields, params Decoder[] decoders)
+            public BitfieldDecoder(Bitfield[] bitfields, params Decoder[] decoders)
             {
                 this.bitfields = bitfields;
                 this.decoders = decoders;
@@ -103,8 +103,7 @@ namespace Reko.Arch.Arm.AArch64
 
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
-                int i = 0;
-                int op = dasm.ReadUnsignedBitField(wInstr, bitfields, ref i);
+                uint op = Bitfield.ReadFields(bitfields, wInstr);
                 return decoders[op].Decode(wInstr, dasm);
             }
         }
@@ -135,12 +134,12 @@ namespace Reko.Arch.Arm.AArch64
 
         public class SelectDecoder : Decoder
         {
-            private string bitfields;
+            private Bitfield[] bitfields;
             private Predicate<int> predicate;
             private Decoder trueDecoder;
             private Decoder falseDecoder;
 
-            public SelectDecoder(string bitfields, Predicate<int> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            public SelectDecoder(Bitfield[] bitfields, Predicate<int> predicate, Decoder trueDecoder, Decoder falseDecoder)
             {
                 this.bitfields = bitfields;
                 this.predicate = predicate;
@@ -150,8 +149,7 @@ namespace Reko.Arch.Arm.AArch64
 
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
-                int i = 0;
-                int n = dasm.ReadUnsignedBitField(wInstr, bitfields, ref i);
+                int n = (int) Bitfield.ReadFields(bitfields, wInstr);
                 var decoder = predicate(n) ? trueDecoder : falseDecoder;
                 return decoder.Decode(wInstr, dasm);
             }
@@ -216,6 +214,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
+                dasm.state.opcode = this.opcode;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
                     if (!mutators[i](wInstr, dasm))

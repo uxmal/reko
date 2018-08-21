@@ -193,6 +193,7 @@
     <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_RewriterTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_RewriterTests.cs" />
     <Compile Include="Core\ImportReferenceTests.cs" />
+    <Compile Include="Core\Lib\BitfieldTests.cs" />
     <Compile Include="Core\Lib\Float16Tests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />

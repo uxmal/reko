@@ -328,6 +328,7 @@
     <Compile Include="IRFormat\IRToken.cs" />
     <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\ArticulationPointFinder.cs" />
+    <Compile Include="Lib\Bitfield.cs" />
     <Compile Include="Lib\Dijkstra.cs" />
     <Compile Include="Lib\FibonacciHeap.cs" />
     <Compile Include="Lib\Float16.cs" />

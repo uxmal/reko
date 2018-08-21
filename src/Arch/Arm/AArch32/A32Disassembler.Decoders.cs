@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,29 +30,6 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class A32Disassembler
     {
-        public struct Bitfield
-        {
-            public readonly int Position;
-            public readonly int Length;
-            public readonly uint Mask;
-
-            public Bitfield(int position, int length)
-            {
-                this.Position = position;
-                this.Length = length;
-                this.Mask = (1U << length) - 1U;
-            }
-
-            public static uint ReadFields(Bitfield[] bitfields, uint wInstr)
-            {
-                uint n = 0;
-                foreach (var bitfield in bitfields)
-                {
-                    n = n << bitfield.Length | ((wInstr >> bitfield.Position) & bitfield.Mask);
-                }
-                return n;
-            }
-        }
 
         public abstract class Decoder
         {

@@ -396,12 +396,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("movn\tw0,#0");
         }
 
-        // An AArch64 decoder for the instruction 13017E73 (Unknown format character '3' in '32-bit variant' decoding sbfm) has not been implemented yet.
         [Test]
-        public void AArch64Dis_13017E73()
+        public void AArch64Dis_sbfm()
         {
             Given_Instruction(0x13017E73);
-            Expect_Code("@@@");
+            Expect_Code("sbfm\tw19,w19,#1,#&1F");
         }
 
         // An AArch64 decoder for the instruction 93407C16 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -414,10 +413,10 @@ namespace Reko.UnitTests.Arch.Arm
 
         // An AArch64 decoder for the instruction 8A140000 (Unknown format character '*' in '*shifted register, 64-bit' decoding and) has not been implemented yet.
         [Test]
-        public void AArch64Dis_8A140000()
+        public void AArch64Dis_and_reg()
         {
             Given_Instruction(0x8A140000);
-            Expect_Code("@@@");
+            Expect_Code("and\tx0,x0,x20");
         }
 
         // An AArch64 decoder for the instruction 3D8023A0 (LdStRegUImm size = 0, V = 1) has not been implemented yet.
@@ -484,12 +483,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 385F9019 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
-        public void AArch64Dis_385F9019()
+        public void AArch64Dis_ldurb()
         {
             Given_Instruction(0x385F9019);
-            Expect_Code("@@@");
+            Expect_Code("ldurb\tw25,[x0,-#&7]");
         }
 
         [Test]
@@ -504,14 +502,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_93407EB9()
         {
             Given_Instruction(0x93407EB9);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 531656B9 (Unknown format character '3' in '32-bit variant' decoding ubfm) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_531656B9()
-        {
-            Given_Instruction(0x531656B9);
             Expect_Code("@@@");
         }
 
@@ -603,22 +593,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 381FF024 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_381FF024()
-        {
-            Given_Instruction(0x381FF024);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 38236A9F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_38236A9F()
-        {
-            Given_Instruction(0x38236A9F);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 93407C62 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
         [Test]
         public void AArch64Dis_93407C62()
@@ -667,14 +641,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 531F7C3A (Unknown format character '3' in '32-bit variant' decoding ubfm) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_531F7C3A()
-        {
-            Given_Instruction(0x531F7C3A);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 93407E9A (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
         [Test]
         public void AArch64Dis_93407E9A()
@@ -683,12 +649,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 8B34C2D9 (AddSubExtendedRegister) has not been implemented yet.
         [Test]
-        public void AArch64Dis_8B34C2D9()
+        public void AArch64Dis_add_extension()
         {
             Given_Instruction(0x8B34C2D9);
-            Expect_Code("@@@");
+            Expect_Code("add\tx25,x22,w20,sxtw #0");
         }
 
         // An AArch64 decoder for the instruction 93407EF6 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -744,22 +709,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_937D7C41()
         {
             Given_Instruction(0x937D7C41);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 8B224C02 (AddSubExtendedRegister) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_8B224C02()
-        {
-            Given_Instruction(0x8B224C02);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 928000E0 (Unknown format character '*' in '* - 64 bit variant' decoding movn) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_928000E0()
-        {
-            Given_Instruction(0x928000E0);
             Expect_Code("@@@");
         }
 
@@ -851,14 +800,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 1AC10C00 (DataProcessing 2 source) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_1AC10C00()
-        {
-            Given_Instruction(0x1AC10C00);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 93407EC2 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
         [Test]
         public void AArch64Dis_93407EC2()
@@ -923,14 +864,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 8B34D2F4 (AddSubExtendedRegister) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_8B34D2F4()
-        {
-            Given_Instruction(0x8B34D2F4);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 1B017C01 (DataProcessing3Source) has not been implemented yet.
         [Test]
         public void AArch64Dis_1B017C01()
@@ -960,14 +893,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_93407E62()
         {
             Given_Instruction(0x93407E62);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 3821C844 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3821C844()
-        {
-            Given_Instruction(0x3821C844);
             Expect_Code("@@@");
         }
 
@@ -1043,12 +968,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 3820C83F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
-        public void AArch64Dis_3820C83F()
+        public void AArch64Dis_strb_indexed()
         {
             Given_Instruction(0x3820C83F);
-            Expect_Code("@@@");
+            Expect_Code("strb\tw31,[x1,w16,uxtw]");
         }
 
         // An AArch64 decoder for the instruction 93407E80 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -1107,14 +1031,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 3822C87F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3822C87F()
-        {
-            Given_Instruction(0x3822C87F);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 38346A76 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
         public void AArch64Dis_38346A76()
@@ -1142,26 +1058,10 @@ namespace Reko.UnitTests.Arch.Arm
 
         // An AArch64 decoder for the instruction 38216A63 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
-        public void AArch64Dis_38216A63()
+        public void AArch64Dis_strb_index()
         {
             Given_Instruction(0x38216A63);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 38216A74 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_38216A74()
-        {
-            Given_Instruction(0x38216A74);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 38216A62 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_38216A62()
-        {
-            Given_Instruction(0x38216A62);
-            Expect_Code("@@@");
+            Expect_Code("strb\tw3,[x2,@@@");
         }
 
         // An AArch64 decoder for the instruction 93407EB8 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -1196,17 +1096,8 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 8B34CEF4 (AddSubExtendedRegister) has not been implemented yet.
         [Test]
-        public void AArch64Dis_8B34CEF4()
-        {
-            Given_Instruction(0x8B34CEF4);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 8B33D2D3 (AddSubExtendedRegister) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_8B33D2D3()
+        public void AArch64Dis_add_ext_reg()
         {
             Given_Instruction(0x8B33D2D3);
             Expect_Code("@@@");
@@ -1316,35 +1207,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 3822C805 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3822C805()
-        {
-            Given_Instruction(0x3822C805);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 3822C804 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3822C804()
-        {
-            Given_Instruction(0x3822C804);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 93407C60 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
         [Test]
         public void AArch64Dis_93407C60()
         {
             Given_Instruction(0x93407C60);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 38206B3F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_38206B3F()
-        {
-            Given_Instruction(0x38206B3F);
             Expect_Code("@@@");
         }
 
@@ -1388,12 +1255,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 1AC00F03 (DataProcessing 2 source) has not been implemented yet.
         [Test]
-        public void AArch64Dis_1AC00F03()
+        public void AArch64Dis_sdiv()
         {
             Given_Instruction(0x1AC00F03);
-            Expect_Code("@@@");
+            Expect_Code("sdiv\tw3,w24,w0");
         }
 
         // An AArch64 decoder for the instruction 93407E63 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -1436,22 +1302,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 1AC10F03 (DataProcessing 2 source) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_1AC10F03()
-        {
-            Given_Instruction(0x1AC10F03);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 8B3C4C00 (AddSubExtendedRegister) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_8B3C4C00()
-        {
-            Given_Instruction(0x8B3C4C00);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 3837681F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
         public void AArch64Dis_3837681F()
@@ -1473,14 +1323,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_93407C17()
         {
             Given_Instruction(0x93407C17);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 1AD60C1A (DataProcessing 2 source) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_1AD60C1A()
-        {
-            Given_Instruction(0x1AD60C1A);
             Expect_Code("@@@");
         }
 
@@ -1582,14 +1424,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 3821681F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3821681F()
-        {
-            Given_Instruction(0x3821681F);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 38616A62 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
         public void AArch64Dis_38616A62()
@@ -1637,14 +1471,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 131F7E61 (Unknown format character '3' in '32-bit variant' decoding sbfm) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_131F7E61()
-        {
-            Given_Instruction(0x131F7E61);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 3876CB00 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
         public void AArch64Dis_3876CB00()
@@ -1653,12 +1479,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 7874D800 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
-        public void AArch64Dis_7874D800()
+        public void AArch64Dis_ldrh_indexed()
         {
             Given_Instruction(0x7874D800);
-            Expect_Code("@@@");
+            Expect_Code("ldrh\tw0,[x0,w20,sxtw #1]");
         }
 
         // An AArch64 decoder for the instruction 93407EE5 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -1677,12 +1502,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 7875D800 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
-        public void AArch64Dis_7875D800()
+        public void AArch64Dis_ldr_index_sxtw()
         {
             Given_Instruction(0x7875D800);
-            Expect_Code("@@@");
+            Expect_Code("ldr\tw0,[x0,w21,sxtw,#3]");
         }
 
         // An AArch64 decoder for the instruction 93407C24 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -1717,35 +1541,13 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 53067C03 (Unknown format character '3' in '32-bit variant' decoding ubfm) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_53067C03()
-        {
-            Given_Instruction(0x53067C03);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 3822683F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3822683F()
-        {
-            Given_Instruction(0x3822683F);
-            Expect_Code("@@@");
-        }
+  
 
         // An AArch64 decoder for the instruction 530C7C04 (Unknown format character '3' in '32-bit variant' decoding ubfm) has not been implemented yet.
         [Test]
         public void AArch64Dis_530C7C04()
         {
             Given_Instruction(0x530C7C04);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 3823683F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_3823683F()
-        {
-            Given_Instruction(0x3823683F);
             Expect_Code("@@@");
         }
 
@@ -1775,18 +1577,10 @@ namespace Reko.UnitTests.Arch.Arm
 
         // An AArch64 decoder for the instruction 9280000A (Unknown format character '*' in '* - 64 bit variant' decoding movn) has not been implemented yet.
         [Test]
-        public void AArch64Dis_9280000A()
+        public void AArch64Dis_movn_imm()
         {
             Given_Instruction(0x9280000A);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 92800000 (Unknown format character '*' in '* - 64 bit variant' decoding movn) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_92800000()
-        {
-            Given_Instruction(0x92800000);
-            Expect_Code("@@@");
+            Expect_Code("movn\tx10,#0");
         }
 
         // An AArch64 decoder for the instruction 38606821 (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
@@ -1821,13 +1615,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-
-        // An AArch64 decoder for the instruction 381FF09F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
         [Test]
-        public void AArch64Dis_381FF09F()
+        public void AArch64Dis_sturb_off()
         {
             Given_Instruction(0x381FF09F);
-            Expect_Code("@@@");
+            Expect_Code("sturb\tw31,[x4,-#&1]");
         }
 
         // An AArch64 decoder for the instruction 93407EB6 (Unknown format character '6' in '64-bit variant' decoding sbfm) has not been implemented yet.
@@ -1843,14 +1635,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_38664849()
         {
             Given_Instruction(0x38664849);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 38236A7F (LdSt op0 = 0, op1 = 3, op3 = 0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_38236A7F()
-        {
-            Given_Instruction(0x38236A7F);
             Expect_Code("@@@");
         }
    }

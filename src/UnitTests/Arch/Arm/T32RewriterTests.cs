@@ -7228,10 +7228,10 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("06E90F00");	// stmdb r6, {r0, r1, r2, r3}
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|Mem0[r6 - 4:word32] = r0",
-                "2|L--|Mem0[r6 - 8:word32] = r1",
-                "3|L--|Mem0[r6 - 12:word32] = r2",
-                "4|L--|Mem0[r6 - 16:word32] = r3");
+                "1|L--|Mem0[r6 + -16:word32] = r0",
+                "2|L--|Mem0[r6 + -12:word32] = r1",
+                "3|L--|Mem0[r6 + -8:word32] = r2",
+                "4|L--|Mem0[r6 + -4:word32] = r3");
         }
 
         [Test]

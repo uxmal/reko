@@ -639,7 +639,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_FFA4BE38()
         {
             Given_Instructions(0xFFA4, 0xBE38);
-            Expect_Code("vcvt.f32u32\td11,d24,#&1C");
+            Expect_Code("vcvt.f32.u32\td11,d24,#&1C");
         }
 
         // A T32 decoder for the instruction EE284AED (FloatingPointDataProcessing3Regs) has not been implemented yet.
