@@ -65,16 +65,6 @@ namespace Reko.Core
 		public abstract void Write(TextWriter writer);
     }
 
-    public static class StorageEx
-    {
-        [Obsolete("Use new C# 7 features to avoid this")]
-        public static bool As<T>(this Storage self, out T t) where T : Storage
-        {
-            t = self as T;
-            return t != null;
-        }
-    }
-
     public enum StorageDomain
     {
         None = -1,
@@ -115,10 +105,9 @@ namespace Reko.Core
 
 		public override bool Equals(object obj)
 		{
-			FlagGroupStorage fgs = obj as FlagGroupStorage;
-			if (fgs == null)
-				return false;
-			return FlagGroupBits == fgs.FlagGroupBits;
+            if (!(obj is FlagGroupStorage fgs))
+                return false;
+            return FlagGroupBits == fgs.FlagGroupBits;
 		}
 
 		public override int GetHashCode()
@@ -128,10 +117,9 @@ namespace Reko.Core
 
 		public override int OffsetOf(Storage stgSub)
 		{
-			FlagGroupStorage f = stgSub as FlagGroupStorage;
-			if (f == null)
-				return -1;
-			return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
+            if (!(stgSub is FlagGroupStorage f))
+                return -1;
+            return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
 		}
 
 		public override SerializedKind Serialize()
@@ -168,10 +156,9 @@ namespace Reko.Core
 
 		public override bool Equals(object obj)
 		{
-			FpuStackStorage fss = obj as FpuStackStorage;
-			if (fss == null)
-				return false;
-			return FpuStackOffset == fss.FpuStackOffset;
+            if (!(obj is FpuStackStorage that))
+                return false;
+            return this.FpuStackOffset == that.FpuStackOffset;
 		}
 
 		public override int GetHashCode()
@@ -243,10 +230,9 @@ namespace Reko.Core
 
 		public override bool Equals(object obj)
 		{
-			OutArgumentStorage oas = obj as OutArgumentStorage;
-			if (oas == null)
-				return false;
-			return oas.OriginalIdentifier.Equals(OriginalIdentifier);
+            if (!(obj is OutArgumentStorage that))
+                return false;
+            return this.OriginalIdentifier.Equals(that.OriginalIdentifier);
 		}
 
 		public override int GetHashCode()
@@ -351,8 +337,7 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            var that = obj as RegisterStorage;
-            if (that == null)
+            if (!(obj is RegisterStorage that))
                 return false;
             return this.Domain == that.Domain &&
                 this.BitAddress == that.BitAddress &&
@@ -379,12 +364,11 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            var regSub = stgSub as RegisterStorage;
-            if (regSub == null)
+            if (!(stgSub is RegisterStorage that))
                 return -1;
-            if (!OverlapsWith(regSub))
+            if (!this.OverlapsWith(that))
                 return -1;
-            return (int)stgSub.BitAddress;
+            return (int)that.BitAddress;
         }
 
         public bool OverlapsWith(RegisterStorage that)
@@ -495,10 +479,9 @@ namespace Reko.Core
 
 		public override bool Equals(object obj)
 		{
-			SequenceStorage ss = obj as SequenceStorage;
-			if (ss == null)
-				return false;
-			return Head.Equals(ss.Head) && Tail.Equals(ss.Tail);
+            if (!(obj is SequenceStorage that))
+                return false;
+            return Head.Equals(that.Head) && Tail.Equals(that.Tail);
 		}
 
 		public override int GetHashCode()
@@ -569,10 +552,9 @@ namespace Reko.Core
 
 		public override bool Equals(object obj)
 		{
-			StackArgumentStorage sas = obj as StackArgumentStorage;
-			if (sas == null)
-				return false;
-			return StackOffset == sas.StackOffset;
+            if (!(obj is StackArgumentStorage that))
+                return false;
+            return this.StackOffset == that.StackOffset;
 		}
 
 		public override int GetHashCode()
@@ -582,11 +564,10 @@ namespace Reko.Core
 
 		public override int OffsetOf(Storage stgSub)
 		{
-			StackArgumentStorage arg = stgSub as StackArgumentStorage;
-			if (arg == null)
-				return -1;
-            if (arg.StackOffset >= StackOffset && arg.StackOffset + arg.DataType.Size <= StackOffset + DataType.Size)
-                return (arg.StackOffset - StackOffset) * DataType.BitsPerByte;
+            if (!(stgSub is StackArgumentStorage that))
+                return -1;
+            if (that.StackOffset >= this.StackOffset && that.StackOffset + that.DataType.Size <= StackOffset + DataType.Size)
+                return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
 			return -1;
 		}
 
@@ -622,10 +603,9 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            StackLocalStorage sas = obj as StackLocalStorage;
-            if (sas == null)
+            if (!(obj is StackLocalStorage that))
                 return false;
-            return StackOffset == sas.StackOffset;
+            return this.StackOffset == that.StackOffset;
         }
 
         public override int GetHashCode()
@@ -636,11 +616,10 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            StackLocalStorage local = stgSub as StackLocalStorage;
-            if (local == null)
+            if (!(stgSub is StackLocalStorage that))
                 return -1;
-            if (local.StackOffset >= StackOffset && local.StackOffset + local.DataType.Size <= StackOffset + DataType.Size)
-                return (local.StackOffset - StackOffset) * DataType.BitsPerByte;
+            if (that.StackOffset >= this.StackOffset && that.StackOffset + that.DataType.Size <= this.StackOffset + DataType.Size)
+                return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
             return -1;
         }
 
