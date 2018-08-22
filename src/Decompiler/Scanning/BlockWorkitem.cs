@@ -679,9 +679,9 @@ namespace Reko.Scanning
             scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
             var sig = new FunctionType();
             ProcedureCharacteristics chr = null;
+            var name = NamingPolicy.Instance.GenerateProcedureName(addr);
             EmitCall(
-                CreateProcedureConstant(
-                    new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                CreateProcedureConstant(new ExternalProcedure(name, sig)),
                 sig,
                 chr,
                 site);

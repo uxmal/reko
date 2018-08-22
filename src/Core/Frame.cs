@@ -65,6 +65,7 @@ namespace Reko.Core
 	public class Frame : IStorageBinder
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
+        private NamingPolicy namingPolicy;
 		
         /// <summary>
         /// Creates a Frame instance for maintaining the local variables and arguments.
@@ -74,6 +75,7 @@ namespace Reko.Core
 		public Frame(PrimitiveType framePointerSize)
 		{
 			identifiers = new List<Identifier>();
+            this.namingPolicy = NamingPolicy.Instance;
 
 			// There is always a "variable" for the global memory and the frame
 			// pointer.
@@ -264,7 +266,7 @@ namespace Reko.Core
 			Identifier id = FindStackLocal(cbOffset, type.Size);
 			if (id == null)
 			{
-				id = new Identifier(FormatStackAccessName(type, "Loc", cbOffset, name), type, new StackLocalStorage(cbOffset, type));
+				id = new Identifier(namingPolicy.GenerateStackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
 				identifiers.Add(id);
 			}
 			return id;
@@ -281,7 +283,7 @@ namespace Reko.Core
 			if (id == null)
 			{
 				id = new Identifier(
-					FormatStackAccessName(type, "Arg", cbOffset, argName), 
+					namingPolicy.GenerateStackArgumentName(type, cbOffset, argName), 
 					type, 
 					new StackArgumentStorage(cbOffset, type));
 				identifiers.Add(id);
@@ -337,20 +339,6 @@ namespace Reko.Core
 					return id;
 			}
 			return null;
-		}
-
-		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset)
-		{
-			cbOffset = Math.Abs(cbOffset);
-			string fmt = (cbOffset > 0xFF) ? "{0}{1}{2:X4}" : "{0}{1}{2:X2}";
-			return string.Format(fmt, type.Prefix, prefix, cbOffset);
-		}
-
-		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
-		{
-			if (nameOverride != null)
-				return nameOverride;
-			else return FormatStackAccessName(type, prefix, cbOffset);
 		}
 
 		/// <summary>

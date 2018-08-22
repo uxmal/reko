@@ -95,9 +95,8 @@ namespace Reko.Core.Serialization
             {
                 return null;
             }
-            var name = Frame.FormatStackAccessName(
+            var name = NamingPolicy.Instance.GenerateStackArgumentName(
                 dt,
-                "Arg",
                 procSer.StackOffset + retAddressOnStack,
                 argCur.Name);
             var idArg = procSer.CreateId(

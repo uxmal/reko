@@ -221,7 +221,7 @@ namespace Reko.Core.Serialization
                 return name;
             var stack = storage as StackStorage;
             if (stack != null)
-                return Frame.FormatStackAccessName(dataType, "Arg", stack.StackOffset, name);
+                return NamingPolicy.Instance.GenerateStackArgumentName(dataType, stack.StackOffset, name);
             var seq = storage as SequenceStorage;
             if (seq != null)
                 return seq.Name;
