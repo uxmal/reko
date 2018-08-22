@@ -47,6 +47,7 @@ namespace Reko.Analysis
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;
         private readonly CallGraph callGraph;
+        private readonly IDynamicLinker dynamicLinker;
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaMutator ssam;
@@ -63,6 +64,7 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.callGraph = callGraph;
             this.arch = ssa.Procedure.Architecture;
+            this.dynamicLinker = dynamicLinker;
             this.eventListener = eventListener;
             this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
@@ -104,8 +106,10 @@ namespace Reko.Analysis
         {
             bool changed;
             (a.Src, changed) = a.Src.Accept(eval);
+            var (src, changed2) = ReplaceIndirectCallToImport(a.Src);
+            a.Src = src;
             ssa.Identifiers[a.Dst].DefExpression = a.Src;
-            return (a, changed);
+            return (a, changed|changed2);
         }
 
         public (Instruction, bool) VisitBranch(Branch b)
@@ -245,6 +249,23 @@ namespace Reko.Analysis
             var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
             stm.Instruction = ab.CreateInstruction(sig, chr);
             ssam.AdjustSsa(stm, ci);
+        }
+
+        private (Expression, bool) ReplaceIndirectCallToImport(Expression e)
+        {
+            if (dynamicLinker != null && 
+                e is MemoryAccess mem && 
+                mem.EffectiveAddress is Constant c)
+            {
+                var stm = evalCtx.Statement!;
+                var pc = dynamicLinker.ResolveToImportedValue(stm, c);
+                if (pc != null)
+                {
+                    Debug.Print("Const: {0} was replaced with ", c, pc);
+                    return (pc, true);
+                }
+            }
+            return (e, false);
         }
     }
 }
