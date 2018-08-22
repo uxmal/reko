@@ -33,6 +33,20 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
+        private void RewriteBgezal(MipsInstruction instr)
+        {
+            // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
+            // We handle that case here explicitly.
+            if (((RegisterOperand)instr.op1).Register.Number == 0)
+            {
+                rtlc = RtlClass.Transfer;
+                var dst = RewriteOperand(instr.op2);
+                m.CallD(dst, 0);
+                return;
+            }
+            RewriteBranch0(instr, m.Ge, false);
+        }
+
         private void RewriteBranch(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
         {
             if (!link)
@@ -57,7 +71,7 @@ namespace Reko.Arch.Mips
             else
             {
                 throw new NotImplementedException("Linked branches not implemented yet.");
-        }
+            }
         }
 
         private void RewriteBranch0(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
