@@ -35,13 +35,26 @@ namespace Reko.Arch.Mips
     {
         private void RewriteBgezal(MipsInstruction instr)
         {
+            if (instr.Address.ToLinear() == 0x5B8)  //$DEBUG
+                instr.ToString();
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
             // We handle that case here explicitly.
             if (((RegisterOperand)instr.op1).Register.Number == 0)
             {
-                rtlc = RtlClass.Transfer;
-                var dst = RewriteOperand(instr.op2);
-                m.CallD(dst, 0);
+                // A special case is when we call to the location after
+                // the delay slot. This is an idiom to capture the 
+                // program counter in the la register.
+                var dst = ((AddressOperand)instr.op2).Address;
+                if (instr.Address.ToLinear() + 8 == dst.ToLinear())
+                {
+                    var ra = binder.EnsureRegister(arch.LinkRegister);
+                    m.Assign(ra, dst);
+                }
+                else
+                {
+                    rtlc = RtlClass.Transfer;
+                    m.CallD(dst, 0);
+                }
                 return;
             }
             RewriteBranch0(instr, m.Ge, false);

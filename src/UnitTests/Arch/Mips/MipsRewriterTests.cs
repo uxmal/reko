@@ -870,5 +870,15 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|T--|00100000(4): 1 instructions",
                 "1|TD-|call 000FFD9C (0)");
         }
+
+        [Test]
+        public void MipsRw_bgezal_idiom()
+        {
+            // This idiom is used to capture the address of the 
+            // called destination in the la register.
+            AssertCode(0x04110001,      // skip the delay slot.
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ra = 00100008");
+        }
     }
 }

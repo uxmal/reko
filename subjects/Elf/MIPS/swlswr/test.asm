@@ -118,8 +118,6 @@ l000005AC:
 l000005B8:
 	bgezal	r0,000005C0
 	nop
-
-l000005C0:
 	lui	r28,+0002
 	addiu	r28,r28,-00007B40
 	addu	r28,r28,ra
@@ -129,8 +127,6 @@ l000005C0:
 	nop
 	bgezal	r0,000005E4
 	nop
-
-l000005E4:
 	lui	r28,+0002
 	addiu	r28,r28,-00007B64
 	addu	r28,r28,ra
@@ -148,8 +144,6 @@ __start proc
 	or	r0,ra,r0
 	bgezal	r0,0000061C
 	nop
-
-l0000061C:
 	lui	r28,+0002
 	addiu	r28,r28,-00007B9C
 	addu	r28,r28,ra
@@ -286,8 +280,6 @@ l000007A4:
 	addiu	r25,r25,+00000670
 	bgezal	r0,00000670
 	nop
-
-l000007B0:
 	addiu	r2,r0,+00000001
 	sb	r2,0AF0(r19)
 
@@ -384,8 +376,6 @@ __libc_csu_init proc
 	sw	ra,0034(sp)
 	bgezal	r0,00000588
 	sw	r17,0020(sp)
-
-l00000904:
 	lw	r28,0010(sp)
 	lw	r16,-7FC4(r28)
 	lw	r18,-7FC4(r28)
@@ -491,8 +481,6 @@ _fini proc
 	sw	ra,001C(sp)
 	bgezal	r0,00000A30
 	nop
-
-l00000A30:
 	lui	r28,+0002
 	addiu	r28,r28,-00007FB0
 	addu	r28,r28,ra
