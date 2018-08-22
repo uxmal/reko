@@ -159,7 +159,7 @@ namespace Reko.ImageLoaders.LLVM
         public Identifier RegisterGlobal(GlobalDefinition global)
         {
             var dt = TranslateType(global.Type);
-            var id = new Identifier(global.Name, dt, MemoryStorage.Instance);
+            var id = Identifier.Global(global.Name, dt);
             this.Globals.Add(global.Name, id);
             return id;
         }
@@ -167,7 +167,7 @@ namespace Reko.ImageLoaders.LLVM
         public void RegisterDeclaration(Declaration decl)
         {
             var dt = TranslateType(decl.Type);
-            var id = new Identifier(decl.Name, dt, MemoryStorage.Instance);
+            var id = Identifier.Global(decl.Name, dt);
             this.Globals.Add(id.Name, id);
         }
         

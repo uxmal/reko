@@ -49,6 +49,12 @@ namespace Reko.Core.Expressions
             return new Identifier(name, dt, tmp);
         }
 
+        public static Identifier Global(string name, DataType dt)
+        {
+            var globalStorage = new GlobalStorage(name, dt);
+            return new Identifier(name, dt, globalStorage);
+        }
+
         public string Name { get; private set; }
 
         public override IEnumerable<Expression> Children

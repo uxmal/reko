@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(m =>
             {
-                var foo = new Identifier("foo", new UnknownType(), MemoryStorage.Instance);
+                var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Typing
                         { 4, PrimitiveType.Byte, "byte004"}
                     }
                 });
-                var foo = new Identifier("foo", str, MemoryStorage.Instance);
+                var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
