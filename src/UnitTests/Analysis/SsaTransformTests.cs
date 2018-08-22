@@ -3385,5 +3385,36 @@ proc_exit:
             AssertProcedureCode(expected);
 
         }
+
+        [Test]
+        public void SsaGlobals()
+        {
+            var proc = Given_Procedure("proc", m =>
+            {
+                var global = Identifier.Global("gbl", PrimitiveType.Word32);
+
+                m.Label("body");
+                m.MStore(m.Word32(0x5678), m.Mem32(m.Word32(0x1234)));
+                m.MStore(m.Word32(0x1234), global);
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def Mem0
+	def gbl
+body:
+	Mem2[0x00005678:word32] = Mem0[0x00001234:word32]
+	Mem4[0x00001234:word32] = gbl
+	return
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+
+        }
     }
 }
