@@ -121,6 +121,7 @@ namespace Reko.Core
         Register = 0,   // Few architectures have 4096 registers (fingers xD)
         Memory = 4096,
         FpuStack = 4098,
+        Global = 8191,
         Temporary = 8192,
         Stack = 16834,  
     }
@@ -908,11 +909,17 @@ namespace Reko.Core
     /// </remarks>
 	public class TemporaryStorage : Storage
 	{
-		public TemporaryStorage(string name, int number, DataType dt) : base("Temporary")
+        protected TemporaryStorage(string name, StorageDomain domain, DataType dt)
+            : base("Temporary")
         {
-            Domain = StorageDomain.Temporary + number;
+            Domain = domain;
             Name = name;
             DataType = dt;
+        }
+
+        public TemporaryStorage(string name, int number, DataType dt)
+            : this(name, StorageDomain.Temporary + number, dt)
+        {
         }
 
         public DataType DataType { get; private set; }
@@ -950,6 +957,14 @@ namespace Reko.Core
         public override void Write(TextWriter writer)
         {
             writer.Write(Name);
+        }
+    }
+
+    public class GlobalStorage : TemporaryStorage
+    {
+        public GlobalStorage(string name, DataType dt)
+            : base(name, StorageDomain.Global, dt)
+        {
         }
     }
 }
