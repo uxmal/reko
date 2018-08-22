@@ -115,7 +115,7 @@
         <PropertyValue name="Space_WithinMethodDeclarationParentheses">0</PropertyValue>
         <PropertyValue name="Space_WithinOtherParentheses">0</PropertyValue>
         <PropertyValue name="Space_WithinSquares">0</PropertyValue>
-        <PropertyValue name="Style_NamingPreferences">&lt;NamingPreferencesInfo SerializationVersion="4"&gt;
+        <PropertyValue name="Style_NamingPreferences">&lt;NamingPreferencesInfo SerializationVersion="5"&gt;
   &lt;SymbolSpecifications&gt;
     &lt;SymbolSpecification ID="5c545a62-b14d-460a-88d8-e936c0a39316" Name="Class"&gt;
       &lt;ApplicableSymbolKindList&gt;
@@ -197,7 +197,7 @@
     &lt;/SymbolSpecification&gt;
     &lt;SymbolSpecification ID="390caed4-f0a9-42bb-adbb-b44c4a302a22" Name="Method"&gt;
       &lt;ApplicableSymbolKindList&gt;
-        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+        &lt;MethodKind&gt;Ordinary&lt;/MethodKind&gt;
       &lt;/ApplicableSymbolKindList&gt;
       &lt;ApplicableAccessibilityList&gt;
         &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
@@ -206,7 +206,7 @@
     &lt;/SymbolSpecification&gt;
     &lt;SymbolSpecification ID="af410767-f189-47c6-b140-aeccf1ff242e" Name="Private Method"&gt;
       &lt;ApplicableSymbolKindList&gt;
-        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+        &lt;MethodKind&gt;Ordinary&lt;/MethodKind&gt;
       &lt;/ApplicableSymbolKindList&gt;
       &lt;ApplicableAccessibilityList&gt;
         &lt;AccessibilityKind&gt;Private&lt;/AccessibilityKind&gt;
@@ -215,7 +215,7 @@
     &lt;/SymbolSpecification&gt;
     &lt;SymbolSpecification ID="8076757e-6a4a-47f1-9b4b-ae8a3284e987" Name="Abstract Method"&gt;
       &lt;ApplicableSymbolKindList&gt;
-        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+        &lt;MethodKind&gt;Ordinary&lt;/MethodKind&gt;
       &lt;/ApplicableSymbolKindList&gt;
       &lt;ApplicableAccessibilityList&gt;
         &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
@@ -230,7 +230,7 @@
     &lt;/SymbolSpecification&gt;
     &lt;SymbolSpecification ID="16133061-a8e7-4392-92c3-1d93cd54c218" Name="Static Method"&gt;
       &lt;ApplicableSymbolKindList&gt;
-        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
+        &lt;MethodKind&gt;Ordinary&lt;/MethodKind&gt;
       &lt;/ApplicableSymbolKindList&gt;
       &lt;ApplicableAccessibilityList&gt;
         &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
@@ -322,8 +322,8 @@
     &lt;SymbolSpecification ID="5f3ddba1-279f-486c-801e-5c097c36dd85" Name="Non-Field Members"&gt;
       &lt;ApplicableSymbolKindList&gt;
         &lt;SymbolKind&gt;Property&lt;/SymbolKind&gt;
-        &lt;SymbolKind&gt;Method&lt;/SymbolKind&gt;
         &lt;SymbolKind&gt;Event&lt;/SymbolKind&gt;
+        &lt;MethodKind&gt;Ordinary&lt;/MethodKind&gt;
       &lt;/ApplicableSymbolKindList&gt;
       &lt;ApplicableAccessibilityList&gt;
         &lt;AccessibilityKind&gt;Public&lt;/AccessibilityKind&gt;
@@ -402,11 +402,14 @@
         <PropertyValue name="DefaultFormattingStyle">0</PropertyValue>
         <PropertyValue name="DisableAutoPch">false</PropertyValue>
         <PropertyValue name="DisableBrowsingUpToDateCheck">true</PropertyValue>
+        <PropertyValue name="DisableCodeAnalysisInBackground">true</PropertyValue>
+        <PropertyValue name="DisableCodeAnalysisSquiggles">false</PropertyValue>
         <PropertyValue name="DisableCreateDeclDefnScan">false</PropertyValue>
         <PropertyValue name="DisableCurrentItemSelection">true</PropertyValue>
         <PropertyValue name="DisableErrorReporting">false</PropertyValue>
         <PropertyValue name="DisableHLSLIntelliSense">true</PropertyValue>
         <PropertyValue name="DisableIntelliSenseErrorsInErrorList">false</PropertyValue>
+        <PropertyValue name="DisableVCCodeAnalysisUX">false</PropertyValue>
         <PropertyValue name="DontShowClangFormatFileFound">false</PropertyValue>
         <PropertyValue name="EnableChangeSignature">false</PropertyValue>
         <PropertyValue name="EnableClangFormatSupport">true</PropertyValue>
@@ -417,6 +420,8 @@
         <PropertyValue name="EnableSQLiteStoreEngine">true</PropertyValue>
         <PropertyValue name="EnableSingleFileISense">true</PropertyValue>
         <PropertyValue name="EnableSingleFileISenseSquiggles">false</PropertyValue>
+        <PropertyValue name="EnableSwitchToSlnInfoBar">true</PropertyValue>
+        <PropertyValue name="EnableTemplateIntelliSense">true</PropertyValue>
         <PropertyValue name="EnumerateCommentTasks">true</PropertyValue>
         <PropertyValue name="GroupBrackets">true</PropertyValue>
         <PropertyValue name="HideExperimentalAd">true</PropertyValue>
@@ -437,6 +442,7 @@
         <PropertyValue name="IndentNamespaceContents">true</PropertyValue>
         <PropertyValue name="IndentPreprocessor">2</PropertyValue>
         <PropertyValue name="IndentationReference">2</PropertyValue>
+        <PropertyValue name="MacroToConstexprErrorTagType">1</PropertyValue>
         <PropertyValue name="MaximumFindReferencesThreads">7</PropertyValue>
         <PropertyValue name="MemberListDotToArrow">false</PropertyValue>
         <PropertyValue name="MemberListDotToArrow_1">true</PropertyValue>
@@ -475,6 +481,7 @@
         <PropertyValue name="RenameShowPreview">false</PropertyValue>
         <PropertyValue name="RenameSkipPreviewIfConfirmed">true</PropertyValue>
         <PropertyValue name="ShowSingleFileISenseErrorsInTaskList">false</PropertyValue>
+        <PropertyValue name="SkippedRegionErrorTagType">1</PropertyValue>
         <PropertyValue name="SpaceAfterCastParenthesis">false</PropertyValue>
         <PropertyValue name="SpaceAfterComma">true</PropertyValue>
         <PropertyValue name="SpaceAfterSemicolon">true</PropertyValue>
@@ -507,6 +514,7 @@
         <PropertyValue name="TrimSpaceAroundScope">true</PropertyValue>
         <PropertyValue name="TrimSpaceUnaryOperator">true</PropertyValue>
         <PropertyValue name="UseCustomClangFormatExe">false</PropertyValue>
+        <PropertyValue name="UserHasChangedBGAnalysisSetting">false</PropertyValue>
       </ToolsOptionsSubCategory>
     </ToolsOptionsCategory>
   </ToolsOptions>

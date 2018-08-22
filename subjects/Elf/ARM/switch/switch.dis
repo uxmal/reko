@@ -29,6 +29,46 @@ _init_exit:
 
 
 
+void abort()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+abort_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+abort_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
+void __libc_start_main()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+__libc_start_main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+__libc_start_main_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+
+
 void _start(word32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

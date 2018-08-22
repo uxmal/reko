@@ -15,6 +15,16 @@ word32 _init(ptr32 & r10Out)
 	return r4_6;
 }
 
+// 00008314: void abort()
+void abort()
+{
+}
+
+// 00008324: void __libc_start_main()
+void __libc_start_main()
+{
+}
+
 // 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_19) ptrArg08, Stack (ptr32 Eq_20) ptrArg0C, Stack (ptr32 void) ptrArg10)
 void _start(int32 dwArg00,  * ptrArg08,  * ptrArg0C, void)
 {

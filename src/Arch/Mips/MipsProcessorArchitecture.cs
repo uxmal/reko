@@ -171,12 +171,6 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            var esp = binder.EnsureRegister(this.StackRegister);
-            return MemoryAccess.Create(esp, cbOffset, dataType);
-        }
-
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             if (rdr.TryReadUInt32(out var uaddr))

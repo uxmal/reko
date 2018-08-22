@@ -511,6 +511,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("fcmp/eq\tfr5,fr9", "﻿54F9");
         }
+
+        [Test]
+        public void SHDis_432A()
+        {
+            AssertCode("lds\tr3,pr", "2A43");
+        }
     }
 }
 

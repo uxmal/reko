@@ -91,11 +91,6 @@ namespace Reko.Arch.Alpha
             return new AlphaRewriter(this, rdr, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

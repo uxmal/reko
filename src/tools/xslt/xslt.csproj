@@ -74,7 +74,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>

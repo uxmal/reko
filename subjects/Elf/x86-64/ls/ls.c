@@ -20,6 +20,16 @@ void _init()
 	}
 }
 
+// 00000000004021F0: void free()
+void free()
+{
+}
+
+// 0000000000402640: void malloc()
+void malloc()
+{
+}
+
 // 00000000004028C0: void fn00000000004028C0(Register word64 rsi, Register word32 edi, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r13, Register word64 r14, Register word64 r15, Register selector fs)
 void fn00000000004028C0(word64 rsi, word32 edi, word64 r9, word64 r10, word64 r11, word64 r13, word64 r14, word64 r15, selector fs)
 {
@@ -5516,55 +5526,53 @@ word64 fn0000000000409CC0(word64 rsi, word64 rdi)
 word64 fn0000000000409D20(word64 rsi, word64 rdi, ptr64 & rsiOut)
 {
 	*rsiOut = rsi;
-	word64 rbx_135 = 0x0401;
+	word64 rbx_128 = 0x0401;
 	if (rsi <=u 0x0400)
-		rbx_135 = rsi + 0x01;
+		rbx_128 = rsi + 0x01;
 l0000000000409D60:
-	word64 rax_131 = malloc(rbx_135);
-	byte al_132 = (byte) rax_131;
-	word64 rbp_136 = rax_131;
-	if (rax_131 != 0x00)
+	word64 rax_126 = malloc(rbx_128);
+	word64 rbp_129 = rax_126;
+	if (rax_126 != 0x00)
 	{
 		do
 		{
-			word64 rsi_138 = rax_131;
-			*rsiOut = rsi_138;
-			word64 rax_141 = DPB(rax_131, DPB(al_132, readlink(rdi, rax_131, rbx_135), 0), 0);
-			if (rax_141 < 0x00)
+			word64 rsi_131 = rax_126;
+			*rsiOut = rsi_131;
+			word64 rax_134 = DPB(rax_126, readlink(rdi, rax_126, rbx_128), 0);
+			if (rax_134 < 0x00)
 			{
-				word64 rax_209 = __errno_location();
-				word32 edx_214 = (word32) (uint64) Mem0[rax_209 + 0x00:word32];
-				if (edx_214 != 0x22)
+				word64 rax_198 = __errno_location();
+				word32 edx_202 = (word32) (uint64) Mem0[rax_198 + 0x00:word32];
+				if (edx_202 != 0x22)
 				{
-					free(rbp_136);
-					Mem223[rax_209 + 0x00:word32] = (word32) (uint64) edx_214;
+					free(rbp_129);
+					Mem211[rax_198 + 0x00:word32] = (word32) (uint64) edx_202;
 					return 0x00;
 				}
 			}
-			if (rbx_135 >u rax_141)
+			if (rbx_128 >u rax_134)
 			{
-				Mem191[rbp_136 + 0x00:byte] = 0x00;
-				return rbp_136;
+				Mem181[rbp_129 + 0x00:byte] = 0x00;
+				return rbp_129;
 			}
-			free(rbp_136);
-			if (rbx_135 >u 0xFFFFFFFF)
+			free(rbp_129);
+			if (rbx_128 >u 0xFFFFFFFF)
 			{
-				if (rbx_135 >u 0xFFFFFFFE)
+				if (rbx_128 >u 0xFFFFFFFE)
 				{
-					Mem172[__errno_location() + 0x00:word32] = 0x0C;
+					Mem163[__errno_location() + 0x00:word32] = 0x0C;
 					return 0x00;
 				}
 				else
 				{
-					rbx_135 = 0xFFFFFFFF;
+					rbx_128 = 0xFFFFFFFF;
 					goto l0000000000409D60;
 				}
 			}
-			rbx_135 = rbx_135 * 0x02;
-			rax_131 = malloc(rbx_135);
-			al_132 = (byte) rax_131;
-			rbp_136 = rax_131;
-		} while (rax_131 != 0x00);
+			rbx_128 = rbx_128 * 0x02;
+			rax_126 = malloc(rbx_128);
+			rbp_129 = rax_126;
+		} while (rax_126 != 0x00);
 	}
 	return 0x00;
 }

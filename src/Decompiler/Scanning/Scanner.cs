@@ -974,9 +974,18 @@ namespace Reko.Scanning
                     }
                 }
             }
-            foreach (var sym in Program.EntryPoints.Values.Concat(
-                Program.ImageSymbols.Values.Where(
-                    s => s.Type == SymbolType.Procedure)))
+            EnqueueImageSymbolProcedures(Program.EntryPoints.Values, noDecompiles);
+            EnqueueImageSymbolProcedures(Program.ImageSymbols.Values
+                .Where(sym => sym.Type == SymbolType.Procedure ||
+                              sym.Type == SymbolType.ExternalProcedure),    // PLT entries.
+                              noDecompiles);
+
+            this.ProcessQueue();
+        }
+
+        private void EnqueueImageSymbolProcedures(IEnumerable<ImageSymbol> imageSymbols, HashSet<Address> noDecompiles)
+        {
+            foreach (var sym in imageSymbols)
             {
                 if (sym.NoDecompile || noDecompiles.Contains(sym.Address))
                 {
@@ -989,7 +998,6 @@ namespace Reko.Scanning
                 }
                 sr.KnownProcedures.Add(sym.Address);
             }
-            this.ProcessQueue();
         }
 
 

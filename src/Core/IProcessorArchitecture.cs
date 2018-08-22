@@ -254,7 +254,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Abstract base class from which most IProcessorArchitecture derive.
+    /// Abstract base class from which most IProcessorArchitecture 
+    /// implementations derive.
     /// </summary>
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
@@ -267,7 +268,7 @@ namespace Reko.Core
         }
 
         public string Name { get; }
-        public string Description {get; set; }
+        public string Description { get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
@@ -354,6 +355,7 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
+        /// <summary>
         /// For a particular opcode name, returns its internal (Reko) number.
         /// </summary>
         /// <returns></returns>

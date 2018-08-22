@@ -314,60 +314,6 @@ SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting
 UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === Elf\ARM\switch\switch
 === Elf\MIPS\redir\redir
-*** Elf\MIPS\redir\redir
-00400BB8: warning: Unable to resolve imported reference __xpg_basename.
-00400E78: warning: Unable to resolve imported reference inet_addr.
-0040137C: warning: Unable to resolve imported reference select.
-00400AC4: warning: Unable to resolve imported reference getpid.
-004009BC: warning: Unable to resolve imported reference fork.
-00401DE8: warning: Unable to resolve imported reference inet_ntoa.
-0040207C: warning: Unable to resolve imported reference getsockopt.
-004020A0: warning: Unable to resolve imported reference inet_ntoa.
-004020C4: warning: Unable to resolve imported reference inet_ntoa.
-00402120: warning: Unable to resolve imported reference snprintf.
-00402EB0: warning: Unable to resolve imported reference recv.
-00402F84: warning: Unable to resolve imported reference send.
-client_read_reply: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.SsaEvaluationContext.GetValue(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaEvaluationContext.cs:line 49
-   at Reko.Evaluation.IdConstant.Match(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 55
-   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 494
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
-   at Reko.Evaluation.ExpressionSimplifier.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 456
-   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
-   at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 92
-   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
-   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
-   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
-00403264: warning: Unable to resolve imported reference send.
-004047B8: warning: Unable to resolve imported reference snprintf.
-00404840: warning: Unable to resolve imported reference snprintf.
-004048B0: warning: Unable to resolve imported reference snprintf.
-00404B70: warning: Unable to resolve imported reference strsep.
-00404C04: warning: Unable to resolve imported reference strsep.
-00404C98: warning: Unable to resolve imported reference strsep.
-00405810: warning: Unable to resolve imported reference strspn.
-00405874: warning: Unable to resolve imported reference strcspn.
-00405940: warning: Unable to resolve imported reference strspn.
-00405984: warning: Unable to resolve imported reference strcspn.
-00405F8C: warning: Unable to resolve imported reference toupper.
-00405FE0: warning: Unable to resolve imported reference toupper.
-00406458: warning: Unable to resolve imported reference tolower.
-004064B0: warning: Unable to resolve imported reference toupper.
-00406680: warning: Unable to resolve imported reference vsnprintf.
-0040692C: warning: Unable to resolve imported reference rename.
-004069E0: warning: Unable to resolve imported reference gmtime.
-00406B50: warning: Unable to resolve imported reference ftell.
-00406D0C: warning: Unable to resolve imported reference inet_addr.
-00406F18: warning: Unable to resolve imported reference listen.
-100007E0: warning: Expected sizes of arrays to have been determined by now
-1000002C: warning: Expected sizes of arrays to have been determined by now
-1000002C: warning: Expected sizes of arrays to have been determined by now
-100007E0: warning: Expected sizes of arrays to have been determined by now
 === Elf\MIPS\swlswr\test
 === Elf\RiscV\ipcalc\ipcalc.dcproject
 *** Elf\RiscV\ipcalc\ipcalc.dcproject
@@ -422,6 +368,16 @@ client_read_reply: error: An error occurred during data flow analysis.
 0000000000017C28: warning: Unable to resolve imported reference __strdup.
 00000000000165A0: warning: Unable to resolve imported reference __vasprintf_chk.
 0000000000015CA4: warning: Unable to resolve imported reference inet_ntop.
+0000000000014F70: warning: Unable to resolve imported reference inet_ntop.
+0000000000015170: warning: Unable to resolve imported reference freeaddrinfo.
+0000000000015040: warning: Unable to resolve imported reference inet_pton.
+0000000000015020: warning: Unable to resolve imported reference getnameinfo.
+0000000000015000: warning: Unable to resolve imported reference __vasprintf_chk.
+0000000000014F90: warning: Unable to resolve imported reference getaddrinfo.
+0000000000014F80: warning: Unable to resolve imported reference snprintf.
+0000000000014F30: warning: Unable to resolve imported reference __strdup.
+0000000000014F20: warning: Unable to resolve imported reference herror.
+=== Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
@@ -438,6 +394,22 @@ client_read_reply: error: An error occurred during data flow analysis.
 00016C30: warning: Unable to resolve imported reference wait.
 00013154: warning: Unable to resolve imported reference stat.
 000131A0: warning: Unable to resolve imported reference stat.
+00027E48: warning: Unable to resolve imported reference execv.
+00027EB4: warning: Unable to resolve imported reference __udiv64.
+00027EA8: warning: Unable to resolve imported reference __urem64.
+00027E9C: warning: Unable to resolve imported reference getpid.
+00027E84: warning: Unable to resolve imported reference wait.
+00027E6C: warning: Unable to resolve imported reference vfork.
+00027E60: warning: Unable to resolve imported reference sleep.
+00027E54: warning: Unable to resolve imported reference pipe.
+00027E3C: warning: Unable to resolve imported reference execvp.
+00027E30: warning: Unable to resolve imported reference mktemp.
+00027E18: warning: Unable to resolve imported reference getcwd.
+00027DDC: warning: Unable to resolve imported reference link.
+00027DC4: warning: Unable to resolve imported reference setjmp.
+00027DB8: warning: Unable to resolve imported reference longjmp.
+00027D40: warning: Unable to resolve imported reference stat.
+00027CA4: warning: Unable to resolve imported reference vfprintf.
 000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
 00016C9C: warning: Unable to resolve imported reference getpid.
 00016D1C: warning: Unable to resolve imported reference __urem64.
@@ -456,7 +428,21 @@ client_read_reply: error: An error occurred during data flow analysis.
 00013EFC: warning: Unable to resolve imported reference setjmp.
 0001393C: warning: Unable to resolve imported reference setjmp.
 00012350: warning: Unable to resolve imported reference stat.
+00027CA4: warning: Unable to resolve imported reference vfprintf.
+00027EB4: warning: Unable to resolve imported reference __udiv64.
+00027EA8: warning: Unable to resolve imported reference __urem64.
+00027E9C: warning: Unable to resolve imported reference getpid.
+00027E84: warning: Unable to resolve imported reference wait.
+00027E6C: warning: Unable to resolve imported reference vfork.
+00027E60: warning: Unable to resolve imported reference sleep.
+00027E54: warning: Unable to resolve imported reference pipe.
+00027E48: warning: Unable to resolve imported reference execv.
+00027E3C: warning: Unable to resolve imported reference execvp.
+00027E30: warning: Unable to resolve imported reference mktemp.
+00027E18: warning: Unable to resolve imported reference getcwd.
 00027DDC: warning: Unable to resolve imported reference link.
+00027DC4: warning: Unable to resolve imported reference setjmp.
+00027DB8: warning: Unable to resolve imported reference longjmp.
 00027D40: warning: Unable to resolve imported reference stat.
 000122C0: error: An error occurred while processing the statement branch o3_129 - l1_122 <=u 0x00000000 l000122B8_ds_t.
     Pulling difference uint32 and (ptr32 (struct 0001 (0 byte b0000)))
@@ -634,7 +620,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 80
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr64 (struct (0 T_12633 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_12629 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2376,4 +2362,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 53 binaries in 38.34 seconds ---
+Decompiled 54 binaries in 42.27 seconds ---

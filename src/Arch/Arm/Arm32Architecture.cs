@@ -184,14 +184,6 @@ namespace Reko.Arch.Arm
             return new ArmRewriter(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
-        {
-            return new MemoryAccess(new BinaryExpression(
-                                    Operator.IAdd, FramePointerType,
-                                    frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
-                                    dataType);
-        }
-
         public override RegisterStorage GetRegister(int i)
         {
             if (regsByNumber.TryGetValue(i, out var reg))

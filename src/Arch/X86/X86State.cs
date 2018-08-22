@@ -56,13 +56,11 @@ namespace Reko.Arch.X86
 		public X86State(X86State st) : base(st)
 		{
             arch = st.arch;
-            FpuStackItems = st.FpuStackItems;
             regs = (ulong[])st.regs.Clone();
 			valid = (ulong []) st.valid.Clone();
 		}
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
-        public int FpuStackItems { get; set; }
 
 		public Address AddressFromSegOffset(RegisterStorage seg, uint offset)
 		{
@@ -128,7 +126,6 @@ namespace Reko.Arch.X86
 
         public override void OnProcedureEntered()
         {
-            FpuStackItems = 0;
             // We're making an assumption that the direction flag is always clear
             // when a procedure is entered. This is true of the vast majority of
             // x86 code out there, and the assumption is certainly made by most
@@ -140,34 +137,15 @@ namespace Reko.Arch.X86
 
         public override void OnProcedureLeft(FunctionType sig)
         {
-            sig.FpuStackDelta = FpuStackItems;
         }
 
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, FpuStackItems);  
+            return new CallSite(returnAddressSize, 0);
         }
 
         public override void OnAfterCall(FunctionType sig)
         {
-            if (sig == null)
-                return;
-
-            ShrinkFpuStack(-sig.FpuStackDelta);
-        }
-
-		public void GrowFpuStack(Address addrInstr)
-		{
-			++FpuStackItems;
-			if (FpuStackItems > 7)
-			{
-				Debug.WriteLine(string.Format("Possible FPU stack overflow at address {0}", addrInstr));	//$BUGBUG: should be an exception
-			}
-		}
-
-        public void ShrinkFpuStack(int cItems)
-        {
-            FpuStackItems -= cItems;
         }
 
         public Constant GetFlagGroup(uint mask)

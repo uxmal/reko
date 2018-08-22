@@ -179,7 +179,6 @@ namespace Reko.Arch.Sparc
             return GetFlagGroup(Registers.psr, (uint)grf);
         }
 
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());

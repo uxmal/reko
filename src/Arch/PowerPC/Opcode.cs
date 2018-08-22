@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -298,6 +298,7 @@ namespace Reko.Arch.PowerPC
         vand,
         vandc,
         vcfsx,
+        vcmpbfp,
         vcmpeqfp,
         vcmpequb,
         vcmpequd,
@@ -374,5 +375,41 @@ namespace Reko.Arch.PowerPC
         vsubfp128,
         vupkd3d128,
         vxor128,
+        vmsumshm,
+        vmsumshs,
+        vpermxor,
+        ps_neg,
+        ps_sub,
+        ps_mul,
+        ps_muls0,
+        ps_muls1,
+        ps_madds0,
+        ps_madds1,
+        ps_sum0,
+        ps_sum1,
+        ps_div,
+        ps_add,
+        ps_madd,
+        psq_lx,
+        psq_lux,
+        psq_stx,
+        psq_stux,
+        ps_rsqrte,
+        ps_mr,
+        ps_nabs,
+        ps_abs,
+        ps_res,
+        ps_merge00,
+        ps_merge01,
+        ps_merge10,
+        ps_merge11,
+        ps_msub,
+        ps_nmsub,
+        ps_nmadd,
+        ps_sel,
+        ps_cmpo0,
+        psq_l,
+        psq_lu,
+        psq_stu
     }
 }

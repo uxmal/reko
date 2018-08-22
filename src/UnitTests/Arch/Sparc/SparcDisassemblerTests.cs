@@ -214,5 +214,11 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             AssertInstruction(0xd01be000, "ldd\t[%o7+0],%o0");
         }
+
+        [Test]
+        public void SparcDis_sss()
+        {
+            AssertInstruction(0xC12D0000, "stfsr\t%fsr,[%l4+%g0]");
+        }
     }
 }

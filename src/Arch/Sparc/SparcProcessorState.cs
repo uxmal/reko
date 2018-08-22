@@ -43,8 +43,8 @@ namespace Reko.Arch.Sparc
         public SparcProcessorState(SparcArchitecture arch)
         {
             this.arch = arch;
-            this.regs = new ulong[32];
-            this.valid = new bool[32];
+            this.regs = new ulong[42];
+            this.valid = new bool[42];
         }
 
         public SparcProcessorState(SparcProcessorState old) : base(old)
