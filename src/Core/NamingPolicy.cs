@@ -37,6 +37,13 @@ namespace Reko.Core
     /// </remarks>
     public class NamingPolicy
     {
+        public NamingPolicy()
+        {
+            this.Types = new TypeNamingPolicy();
+        }
+
+        public TypeNamingPolicy Types { get; }
+
         public string GenerateProcedureName(Address addr)
         {
             return addr.GenerateName("fn", "");

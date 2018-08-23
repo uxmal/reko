@@ -157,32 +157,33 @@ namespace Reko.Core.Types
 
 	public class UnionAlternative : Field
 	{
-        private int index;
-
         public UnionAlternative(DataType t, int index)
 		{
 			this.DataType = t;
-            this.index = index;
+            this.Index = index;
 		}
 
 		public UnionAlternative(string name, DataType dt, int index)
 		{
 			DataType = dt;
 			Name = name;
-            this.index = index;
+            Index = index;
         }
 
         public override string Name { get { if (name == null) return GenerateDefaultName(); return name; } set { name = value; } }
+
+        public int Index { get; }
+
         private string name;
 
         private string GenerateDefaultName()
         {
-            return string.Format("u{0}", index);
+            return string.Format("u{0}", Index);
         }
 
         public UnionAlternative Clone()
         {
-            return new UnionAlternative(name, DataType, index);
+            return new UnionAlternative(name, DataType, Index);
         }
     }
 

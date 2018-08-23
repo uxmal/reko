@@ -755,6 +755,7 @@
     <Compile Include="TypedServiceProvider.cs" />
     <Compile Include="TypeLibraryDeserializer.cs" />
     <Compile Include="TypeLibraryLoader.cs" />
+    <Compile Include="TypeNamingPolicy.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
