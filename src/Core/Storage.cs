@@ -30,17 +30,17 @@ using System.IO;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Encapsulates architecture-dependent storage mechanisms for an identifier.
-	/// </summary>
-	public abstract class Storage
-	{
-		public Storage(string storageKind)
-		{
-			this.Kind = storageKind;
-		}
+    /// <summary>
+    /// Encapsulates architecture-dependent storage mechanisms for an identifier.
+    /// </summary>
+    public abstract class Storage
+    {
+        public Storage(string storageKind)
+        {
+            this.Kind = storageKind;
+        }
 
-		public string Kind { get; private set; }
+        public string Kind { get; private set; }
         public StorageDomain Domain { get; set; }
         public ulong BitAddress { get; set; }
         public virtual ulong BitSize { get; set; }
@@ -50,19 +50,19 @@ namespace Reko.Core
         public abstract T Accept<T>(StorageVisitor<T> visitor);
         public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
 
-		public virtual SerializedKind Serialize()
-		{
-			throw new NotImplementedException(this.GetType().Name + ".Serialize not implemented.");
-		}
+        public virtual SerializedKind Serialize()
+        {
+            throw new NotImplementedException(this.GetType().Name + ".Serialize not implemented.");
+        }
 
-		public override string ToString()
-		{
-			StringWriter w = new StringWriter();
-			Write(w);
-			return w.ToString();
-		}
+        public override string ToString()
+        {
+            StringWriter w = new StringWriter();
+            Write(w);
+            return w.ToString();
+        }
 
-		public abstract void Write(TextWriter writer);
+        public abstract void Write(TextWriter writer);
     }
 
     public enum StorageDomain
@@ -70,7 +70,7 @@ namespace Reko.Core
         None = -1,
         Register = 0,
         Stack = 4096,   // Few architectures have this many registers (fingers xD)
-        Memory = 4097, 
+        Memory = 4097,
         Temporary = 8192,
     }
 
@@ -79,7 +79,7 @@ namespace Reko.Core
     /// Carry, Zero, Overflow etc flags that are set after ALU operations.
     /// </summary>
 	public class FlagGroupStorage : Storage
-	{
+    {
         public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
         {
             this.FlagRegister = freg;
@@ -95,169 +95,169 @@ namespace Reko.Core
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitFlagGroupStorage(this);
-		}
+            return visitor.VisitFlagGroupStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitFlagGroupStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
+        public override bool Equals(object obj)
+        {
             if (!(obj is FlagGroupStorage fgs))
                 return false;
             return FlagGroupBits == fgs.FlagGroupBits;
-		}
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ FlagGroupBits.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ FlagGroupBits.GetHashCode();
+        }
 
-		public override int OffsetOf(Storage stgSub)
-		{
+        public override int OffsetOf(Storage stgSub)
+        {
             if (!(stgSub is FlagGroupStorage f))
                 return -1;
             return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
-		}
+        }
 
-		public override SerializedKind Serialize()
-		{
-			return new FlagGroup_v1(Name);
-		}
+        public override SerializedKind Serialize()
+        {
+            return new FlagGroup_v1(Name);
+        }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("Flags");
-		}
-	}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("Flags");
+        }
+    }
 
-	public class FpuStackStorage : Storage
-	{
-		public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
-		{
-			this.FpuStackOffset = depth;
-			this.DataType = dataType;
-		}
+    public class FpuStackStorage : Storage
+    {
+        public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
+        {
+            this.FpuStackOffset = depth;
+            this.DataType = dataType;
+        }
 
         public DataType DataType { get; private set; }
         public int FpuStackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitFpuStackStorage(this);
-		}
+            return visitor.VisitFpuStackStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitFpuStackStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
+        public override bool Equals(object obj)
+        {
             if (!(obj is FpuStackStorage that))
                 return false;
             return this.FpuStackOffset == that.FpuStackOffset;
-		}
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ FpuStackOffset.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ FpuStackOffset.GetHashCode();
+        }
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			return -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            return -1;
+        }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("FPU stack");
-		}
-	}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("FPU stack");
+        }
+    }
 
-	/// <summary>
-	/// Storage is some unspecified part of global memory.
-	/// </summary>
-	public class MemoryStorage : Storage
-	{
-		public MemoryStorage() : base("Global")
-		{
+    /// <summary>
+    /// Storage is some unspecified part of global memory.
+    /// </summary>
+    public class MemoryStorage : Storage
+    {
+        public MemoryStorage() : base("Global")
+        {
             this.Domain = StorageDomain.Memory;
-		}
+        }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitMemoryStorage(this);
-		}
+            return visitor.VisitMemoryStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitMemoryStorage(this, context);
         }
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			return -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            return -1;
+        }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("Global memory");
-		}
-	}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("Global memory");
+        }
+    }
 
-	/// <summary>
-	/// Storage for registers or other identifiers that are live-out of a procedure.
-	/// </summary>
-	public class OutArgumentStorage : Storage
-	{
-		public OutArgumentStorage(Identifier originalId) : base("out")
-		{
-			this.OriginalIdentifier = originalId;
-		}
+    /// <summary>
+    /// Storage for registers or other identifiers that are live-out of a procedure.
+    /// </summary>
+    public class OutArgumentStorage : Storage
+    {
+        public OutArgumentStorage(Identifier originalId) : base("out")
+        {
+            this.OriginalIdentifier = originalId;
+        }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitOutArgumentStorage(this);
-		}
+            return visitor.VisitOutArgumentStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitOutArgumentStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
+        public override bool Equals(object obj)
+        {
             if (!(obj is OutArgumentStorage that))
                 return false;
             return this.OriginalIdentifier.Equals(that.OriginalIdentifier);
-		}
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ OriginalIdentifier.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ OriginalIdentifier.GetHashCode();
+        }
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			return -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            return -1;
+        }
 
-		public Identifier OriginalIdentifier { get; private set; }
+        public Identifier OriginalIdentifier { get; private set; }
 
         public override SerializedKind Serialize()
         {
             return OriginalIdentifier.Storage.Serialize();
         }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("Out:");
-			OriginalIdentifier.Storage.Write(writer);
-		}
-	}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("Out:");
+            OriginalIdentifier.Storage.Write(writer);
+        }
+    }
 
     /// <summary>
     /// Used to represent a machine register.
@@ -282,7 +282,7 @@ namespace Reko.Core
             }
             else
             {
-                BitMask = ((1ul << bitSize) - 1) << (int) bitAddress;
+                BitMask = ((1ul << bitSize) - 1) << (int)bitAddress;
             }
         }
 
@@ -306,7 +306,8 @@ namespace Reko.Core
             return new RegisterStorage(name, number, 0, PrimitiveType.Word64);
         }
 
-        public override ulong BitSize {
+        public override ulong BitSize
+        {
             get { return (ulong)DataType.BitSize; }
             set { throw new NotSupportedException(); }
         }
@@ -421,7 +422,7 @@ namespace Reko.Core
 
         public static RegisterStorage None { get { return none; } }
 
-        private static RegisterStorage none  = 
+        private static RegisterStorage none =
             new RegisterStorage("None")
             {
                 Name = "None",
@@ -430,7 +431,7 @@ namespace Reko.Core
                 BitAddress = 0,
                 DataType = PrimitiveType.Create(Types.Domain.Any, 0)
             };
-            
+
         public Expression GetSlice(Expression value)
         {
             if (value is Constant c && c.IsValid)
@@ -443,13 +444,13 @@ namespace Reko.Core
         }
     }
 
-	public class SequenceStorage : Storage
-	{
-		public SequenceStorage(Storage head, Storage tail, DataType dt) 
-			: base("Sequence")		
-		{
-			this.Head = head;
-			this.Tail = tail;
+    public class SequenceStorage : Storage
+    {
+        public SequenceStorage(Storage head, Storage tail, DataType dt)
+            : base("Sequence")
+        {
+            this.Head = head;
+            this.Tail = tail;
             this.Name = $"{head.Name}:{tail.Name}";
             this.DataType = dt;
         }
@@ -469,47 +470,47 @@ namespace Reko.Core
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitSequenceStorage(this);
-		}
+            return visitor.VisitSequenceStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitSequenceStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
+        public override bool Equals(object obj)
+        {
             if (!(obj is SequenceStorage that))
                 return false;
             return Head.Equals(that.Head) && Tail.Equals(that.Tail);
-		}
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ Head.GetHashCode() ^ (3 * Tail.GetHashCode());
-		}
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ Head.GetHashCode() ^ (3 * Tail.GetHashCode());
+        }
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			int off = Tail.OffsetOf(stgSub);
-			if (off != -1)
-				return off;
-			off = Head.OffsetOf(stgSub);
-			if (off != -1)
-				return off + (int)Tail.BitSize;
-			return -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            int off = Tail.OffsetOf(stgSub);
+            if (off != -1)
+                return off;
+            off = Head.OffsetOf(stgSub);
+            if (off != -1)
+                return off + (int)Tail.BitSize;
+            return -1;
+        }
 
-		public override SerializedKind Serialize()
-		{
-			return new SerializedSequence(this);
-		}
+        public override SerializedKind Serialize()
+        {
+            return new SerializedSequence(this);
+        }
 
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("Sequence {0}", Name);
-		}
-	}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("Sequence {0}", Name);
+        }
+    }
 
     public abstract class StackStorage : Storage
     {
@@ -533,54 +534,54 @@ namespace Reko.Core
     }
 
     public class StackArgumentStorage : StackStorage
-	{
-		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
-		{
-			this.StackOffset = cbOffset;
-			this.DataType = dataType;
-		}
+    {
+        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
+        {
+            this.StackOffset = cbOffset;
+            this.DataType = dataType;
+        }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitStackArgumentStorage(this);
-		}
+            return visitor.VisitStackArgumentStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
             return visitor.VisitStackArgumentStorage(this, context);
         }
 
-		public override bool Equals(object obj)
-		{
+        public override bool Equals(object obj)
+        {
             if (!(obj is StackArgumentStorage that))
                 return false;
             return this.StackOffset == that.StackOffset;
-		}
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ StackOffset;
-		}
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ StackOffset;
+        }
 
-		public override int OffsetOf(Storage stgSub)
-		{
+        public override int OffsetOf(Storage stgSub)
+        {
             if (!(stgSub is StackArgumentStorage that))
                 return -1;
             if (that.StackOffset >= this.StackOffset && that.StackOffset + that.DataType.Size <= StackOffset + DataType.Size)
                 return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
-			return -1;
-		}
+            return -1;
+        }
 
         public override SerializedKind Serialize()
         {
             return new StackVariable_v1();
         }
 
-		public override void Write(TextWriter writer)
-		{
+        public override void Write(TextWriter writer)
+        {
             writer.Write("{0} +{1:X4}", Kind, StackOffset);
-		}
-	}
+        }
+    }
 
     public class StackLocalStorage : StackStorage
     {
@@ -643,20 +644,20 @@ namespace Reko.Core
     /// </code>
     /// </remarks>
 	public class TemporaryStorage : Storage
-	{
-		public TemporaryStorage(string name, int number, DataType dt) : base("Temporary")
+    {
+        public TemporaryStorage(string name, int number, DataType dt) : base("Temporary")
         {
             Domain = StorageDomain.Temporary + number;
             Name = name;
             DataType = dt;
-		}
+        }
 
         public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitTemporaryStorage(this);
-		}
+            return visitor.VisitTemporaryStorage(this);
+        }
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
         {
@@ -664,9 +665,9 @@ namespace Reko.Core
         }
 
         public override int OffsetOf(Storage stgSub)
-		{
-			return -1;
-		}
+        {
+            return -1;
+        }
 
         public override void Write(TextWriter writer)
         {
