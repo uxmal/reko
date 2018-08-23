@@ -1162,9 +1162,9 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         invalid,
 
-                        Instr(Opcode.sbfm, "64-bit variant"),
-                        Instr(Opcode.bfm, "64-bit variant"),
-                        Instr(Opcode.ubfm, "X0:5,X5:5,Ul10l,U16:6h"),
+                        Instr(Opcode.sbfm, X(0,5),X(5,5),I(16,6,i32),I(10,6,i32)),
+                        Instr(Opcode.bfm, X(0,5),X(5,5),I(16,6,i32),I(10,6,i32)),
+                        Instr(Opcode.ubfm, X(0,5),X(5,5),I(16,6,i32),I(10,6,i32)), //$BUG: l h, look at encoding
                         invalid));
             }
             Decoder Extract = Nyi("Extract");
