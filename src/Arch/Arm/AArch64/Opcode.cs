@@ -116,5 +116,8 @@ namespace Reko.Arch.Arm.AArch64
         umaddl,
         umsubl,
         umulh,
+        mul,
+        mneg,
+        cmp,
     }
 }

@@ -75,7 +75,7 @@ namespace Reko.Arch.Arm.AArch64
                     writer.WriteOpcode(IndexExtend.ToString());
                     if (IndexShift != 0)
                     {
-                        writer.WriteString($",#{IndexShift}");
+                        writer.WriteString($" #{IndexShift}");
                     }
                 }
             }

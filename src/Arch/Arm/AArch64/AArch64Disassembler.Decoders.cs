@@ -44,6 +44,32 @@ namespace Reko.Arch.Arm.AArch64
             {
                 return ((u >> shift) & 1) != 0;
             }
+
+            protected void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields)
+            {
+                var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
+                DumpMaskedInstruction(wInstr, shMask);
+            }
+
+            protected void DumpMaskedInstruction(uint wInstr, uint shMask)
+            {
+                var hibit = 0x80000000u;
+                var sb = new StringBuilder();
+                for (int i = 0; i < 32; ++i)
+                {
+                    if ((shMask & hibit) != 0)
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
+                    }
+                    else
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
+                    }
+                    shMask <<= 1;
+                    wInstr <<= 1;
+                }
+                Debug.Print(sb.ToString());
+            }
         }
 
         public class MaskDecoder : Decoder
@@ -70,23 +96,7 @@ namespace Reko.Arch.Arm.AArch64
             [Conditional("DEBUG")]
             public void TraceDecoder(uint wInstr)
             {
-                var shMask = this.mask << shift;
-                var hibit = 0x80000000u;
-                var sb = new StringBuilder();
-                for (int i = 0; i < 32; ++i)
-                {
-                    if ((shMask & hibit) != 0)
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
-                    }
-                    else
-                    {
-                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
-                    }
-                    shMask <<= 1;
-                    wInstr <<= 1;
-                }
-                Debug.Print(sb.ToString());
+                DumpMaskedInstruction(wInstr, this.mask << shift);
             }
         }
 
@@ -97,14 +107,23 @@ namespace Reko.Arch.Arm.AArch64
 
             public BitfieldDecoder(Bitfield[] bitfields, params Decoder[] decoders)
             {
+                Debug.Assert(1 << bitfields.Sum(b => b.Length) == decoders.Length, 
+                    $"Expected {1 << bitfields.Sum(b => b.Length)} decoders but found {decoders.Length}.");
                 this.bitfields = bitfields;
                 this.decoders = decoders;
             }
 
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
+                TraceDecoder(wInstr);
                 uint op = Bitfield.ReadFields(bitfields, wInstr);
                 return decoders[op].Decode(wInstr, dasm);
+            }
+
+            [Conditional("DEBUG")]
+            public void TraceDecoder(uint wInstr)
+            {
+                DumpMaskedInstruction(wInstr, bitfields);
             }
         }
 
@@ -125,10 +144,17 @@ namespace Reko.Arch.Arm.AArch64
 
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
+                TraceDecoder(wInstr);
                 var op = (wInstr >> shift) & mask;
                 if (!decoders.TryGetValue(op, out Decoder decoder))
                     decoder = @default;
                 return decoder.Decode(wInstr, dasm);
+            }
+
+            [Conditional("DEBUG")]
+            public void TraceDecoder(uint wInstr)
+            {
+                DumpMaskedInstruction(wInstr, this.mask << shift);
             }
         }
 
@@ -153,6 +179,12 @@ namespace Reko.Arch.Arm.AArch64
                 var decoder = predicate(n) ? trueDecoder : falseDecoder;
                 return decoder.Decode(wInstr, dasm);
             }
+
+            [Conditional("DEBUG")]
+            public void TraceDecoder(uint wInstr)
+            {
+                DumpMaskedInstruction(wInstr, bitfields);
+            }
         }
 
         public class NyiDecoder : Decoder
@@ -167,21 +199,6 @@ namespace Reko.Arch.Arm.AArch64
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
                 return dasm.NotYetImplemented(message, wInstr);
-            }
-        }
-
-        class CustomDecoder : Decoder
-        {
-            private Func<uint, AArch64Disassembler, Decoder> decode;
-
-            public CustomDecoder(Func<uint, AArch64Disassembler, Decoder> decode)
-            {
-                this.decode = decode;
-            }
-
-            public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
-            {
-                return decode(wInstr, dasm).Decode(wInstr, dasm);
             }
         }
 

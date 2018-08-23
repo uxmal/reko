@@ -33,6 +33,8 @@ namespace Reko.Arch.Arm.AArch64
     {
         public static readonly RegisterStorage[] GpRegs64;
         public static readonly RegisterStorage[] GpRegs32;
+        public static readonly RegisterStorage[] AddrRegs64;
+        public static readonly RegisterStorage[] AddrRegs32;
 
         public static readonly RegisterStorage[] SimdRegs128;
         public static readonly RegisterStorage[] SimdRegs64;
@@ -56,26 +58,30 @@ namespace Reko.Arch.Arm.AArch64
             GpRegs32 = Enumerable.Range(0, 32)
                 .Select(n => new RegisterStorage($"w{n}", n, 0, PrimitiveType.Word32))
                 .ToArray();
+            AddrRegs64 = GpRegs64.ToArray();
+            AddrRegs32 = GpRegs32.ToArray();
 
             SimdRegs128 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"q{n}", n, 0, PrimitiveType.Word128))
+                .Select(n => new RegisterStorage($"q{n-32}", n, 0, PrimitiveType.Word128))
                 .ToArray();
             SimdRegs64 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"d{n}", n, 0, PrimitiveType.Word64))
+                .Select(n => new RegisterStorage($"d{n-32}", n, 0, PrimitiveType.Word64))
                 .ToArray();
             SimdRegs32 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"s{n}", n, 0, PrimitiveType.Word32))
+                .Select(n => new RegisterStorage($"s{n-32}", n, 0, PrimitiveType.Word32))
                 .ToArray();
             SimdRegs16 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"h{n}", n, 0, PrimitiveType.Word16))
+                .Select(n => new RegisterStorage($"h{n-32}", n, 0, PrimitiveType.Word16))
                 .ToArray();
             SimdRegs8 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage($"b{n}", n, 0, PrimitiveType.Byte))
+                .Select(n => new RegisterStorage($"b{n-32}", n, 0, PrimitiveType.Byte))
                 .ToArray();
 
 
             sp = new RegisterStorage("sp", 64, 0, PrimitiveType.Word64);
             wsp = new RegisterStorage("wsp", 64, 0, PrimitiveType.Word32);
+            AddrRegs64[31] = sp;
+            AddrRegs32[31] = wsp;
 
             pstate = new RegisterStorage("pstate", 65, 0, PrimitiveType.Word32);
             fpcr = new RegisterStorage("fpcr", 65, 0, PrimitiveType.Word32);
