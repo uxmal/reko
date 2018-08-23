@@ -1608,7 +1608,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 foreach (var section in Sections)
                 {
-                    if (section.Name == null || section.Address == null)
+                    if (string.IsNullOrEmpty(section.Name) || section.Address == null)
                         continue;
 
                     if (segMap.TryGetLowerBound(section.Address, out var mem) &&
