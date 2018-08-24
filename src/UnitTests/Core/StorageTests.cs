@@ -36,6 +36,7 @@ namespace Reko.UnitTests.Core
         private Storage ax;
         private Storage al;
         private Storage ah;
+        private Storage tmpWord32;
 
         private RegisterStorage freg;
         private FlagGroupStorage szc;
@@ -57,6 +58,8 @@ namespace Reko.UnitTests.Core
             this.c = new FlagGroupStorage(freg, 0x1, "c", PrimitiveType.Bool);
             this.z = new FlagGroupStorage(freg, 0x2, "z", PrimitiveType.Bool);
             this.s = new FlagGroupStorage(freg, 0x4, "s", PrimitiveType.Bool);
+
+            this.tmpWord32 = new TemporaryStorage("tmp", 0, PrimitiveType.Word32);
         }
 
         [Test]
@@ -109,6 +112,12 @@ namespace Reko.UnitTests.Core
             var argSmall = new StackArgumentStorage(7, PrimitiveType.Byte);
             Assert.IsTrue(argLarge.Covers(argSmall), $"{argLarge} should cover {argSmall}.");
             Assert.False(argSmall.Covers(argLarge), $"{argSmall} shouldn't cover {argLarge}.");
+        }
+
+        [Test]
+        public void Stg_TemporaryStorageWord32BitSize()
+        {
+            Assert.AreEqual(tmpWord32.BitSize, 32);
         }
     }
 }
