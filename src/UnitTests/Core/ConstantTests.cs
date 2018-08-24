@@ -143,5 +143,18 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("0x000000000000002A", c.ToString());
         }
 
+        [Test]
+        public void ConComplement()
+        {
+            Assert.AreEqual("-128", Constant.SByte(0x7F).Complement().ToString());
+            Assert.AreEqual("-32768", Constant.Int16(0x7FFF).Complement().ToString());
+            Assert.AreEqual("-2147483648", Constant.Int32(0x7FFFFFFF).Complement().ToString());
+            Assert.AreEqual("-9223372036854775808", Constant.Int64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
+            Assert.AreEqual("0x80", Constant.Byte(0x7F).Complement().ToString());
+            Assert.AreEqual("0x8000", Constant.UInt16(0x7FFF).Complement().ToString());
+            Assert.AreEqual("0x80000000", Constant.UInt32(0x7FFFFFFF).Complement().ToString());
+            Assert.AreEqual("0x8000000000000000", Constant.UInt64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
+        }
+
     }
 }
