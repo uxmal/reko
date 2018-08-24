@@ -363,21 +363,21 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_stp_preindex()
         {
             Given_Instruction(0xA9B87BFD);
-            Expect_Code("stp\tx29,x30,[x31,-#&40]!");
+            Expect_Code("stp\tx29,x30,[sp,-#&80]!");
         }
 
         [Test]
-        public void AArch64Dis_stp_w64()
+        public void AArch64Dis_stp_w6_stack()
         {
             Given_Instruction(0xA90153F3);
-            Expect_Code("stp\tx19,x20,[x31,#&8]");
+            Expect_Code("stp\tx19,x20,[sp,#&10]");
         }
 
         [Test]
         public void AArch64Dis_ldp_w64()
         {
             Given_Instruction(0xA9446BB9);
-            Expect_Code("ldp\tx25,x26,[x29,#&20]");
+            Expect_Code("ldp\tx25,x26,[x29,#&40]");
         }
 
         [Test]
@@ -775,5 +775,71 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x78206A62);
             Expect_Code("strh\tw2,[x19,x0]");
         }
+
+        [Test]
+        public void AArch64Dis_stp_r64_pre()
+        {
+            Given_Instruction(0x6DB73BEF);
+            Expect_Code("stp\td15,d14,[sp,-#&90]!");
+        }
+
+        [Test]
+        public void AArch64Dis_stp_r64()
+        {
+            Given_Instruction(0x6D0133ED);
+            Expect_Code("stp\td13,d12,[sp,#&10]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldr_r64_off()
+        {
+            Given_Instruction(0xFD45E540);
+            Expect_Code("ldr\td0,[x10,#&BC8]");
+        }
+
+        [Test]
+        public void AArch64Dis_str_r64_imm()
+        {
+            Given_Instruction(0xFD001BE0);
+            Expect_Code("str\td0,[sp,#&30]");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf()
+        {
+            Given_Instruction(0x1E220120);
+            Expect_Code("scvtf\ts0,w9");
+        }
+
+        // An AArch64 decoder for the instruction 4EA31C68 (DataProcessingScalarFpAdvancedSimd - op4) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_4EA31C68()
+        {
+            Given_Instruction(0x4EA31C68);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void AArch64Dis_ldp_w32()
+        {
+            Given_Instruction(0x296107A2);
+            Expect_Code("ldp\tw2,w1,[x29,-#&F8]");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_r32()
+        {
+            Given_Instruction(0x5E21D82F);
+            Expect_Code("scvtf\ts15,s1");
+        }
+
+        [Test]
+        public void AArch64Dis_stp_r32()
+        {
+            Given_Instruction(0x2D010FE2);
+            Expect_Code("stp\ts2,s3,[sp,#&8]");
+        }
+
+
     }
 }

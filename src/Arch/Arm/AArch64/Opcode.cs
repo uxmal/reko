@@ -128,5 +128,12 @@ namespace Reko.Arch.Arm.AArch64
         mvn,
         smull,
         smnegll,
+        ldpsw,
+        scvtf,
+        fcvtzu,
+        fcvtzs,
+        bit,
+        bif,
+        ucvtf,
     }
 }

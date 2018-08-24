@@ -671,7 +671,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var iReg = (u >> baseRegOff) & 0x1F;
                 var baseReg = Registers.AddrRegs64[iReg];
-                var offset = offsetField.Read(u);
+                var offset = offsetField.ReadSigned(u);
                 offset <<= shift;
                 var mem = new MemoryOperand(dt)
                 {
@@ -743,6 +743,25 @@ namespace Reko.Arch.Arm.AArch64
                 mem.Base = Registers.AddrRegs64[iReg];
 
                 int offset = (int)Bits.SignExtend(u >> 12, 9);
+                mem.Offset = offset != 0 ? Constant.Int32(offset) : null;
+                mem.PreIndex = true;
+                d.state.ops.Add(mem);
+                return true;
+            };
+        }
+
+        // Prefix form used for LDP / STP instructions.
+        private static Mutator MprePair(PrimitiveType dt)
+        {
+            var shift = ShiftFromSize(dt);
+            return (u, d) =>
+            {
+                var mem = new MemoryOperand(dt);
+                var iReg = (u >> 5) & 0x1F;
+                mem.Base = Registers.AddrRegs64[iReg];
+
+                int offset = (int)Bits.SignExtend(u >> 15, 7);
+                offset <<= shift;
                 mem.Offset = offset != 0 ? Constant.Int32(offset) : null;
                 mem.PreIndex = true;
                 d.state.ops.Add(mem);
@@ -1051,8 +1070,8 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.ldrsh, X(0, 5), Mo(i16, 5, 10, 12)),
                     Instr(Opcode.ldrsh, W(0, 5), Mo(i16, 5, 10, 12)),
                     // 01 1 00
-                    Nyi("LdStRegUImm size V opc = 01 1 00"),
-                    Nyi("LdStRegUImm size V opc = 01 1 01"),
+                    Instr(Opcode.str, H(0,5), Mo(w16, 5, 10, 12)),
+                    Instr(Opcode.ldr, H(0,5), Mo(w16, 5, 10, 12)),
                     invalid,
                     invalid,
                     // 10 0 00
@@ -1061,18 +1080,18 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.ldrsw, X(0, 5), Mo(i16, 5, 10, 12)),
                     invalid,
                     // 10 1 00
-                    Instr(Opcode.str, "*immediate SIMD&FP 32-bit"),
-                    Instr(Opcode.ldr, "*immediate SIMD&FP 32-bit"),
+                    Instr(Opcode.str, S(0,5), Mo(w32, 5, 10, 12)),
+                    Instr(Opcode.ldr, S(0,5), Mo(w32, 5, 10, 12)),
                     invalid,
                     invalid,
                     // 11 0 00
-                    Instr(Opcode.str, "X0:5,[X5:5,U10:12l<3,l]"),
-                    Instr(Opcode.ldr, "X0:5,[X5:5,U10:12l<3,l]"),
+                    Instr(Opcode.str, X(0,5), Mo(w64, 5, 10, 12)),
+                    Instr(Opcode.ldr, X(0,5), Mo(w64, 5, 10, 12)),
                     Instr(Opcode.prfm, "*"),
                     invalid,
                     // 11 1 00
-                    Instr(Opcode.str, x("immediate SIMD&FP 32-bit")),
-                    Instr(Opcode.ldr, x("immediate SIMD&FP 32-bit")),
+                    Instr(Opcode.str, D(0,5), Mo(w64, 5, 10, 12)),
+                    Instr(Opcode.ldr, D(0,5), Mo(w64, 5, 10, 12)),
                     invalid,
                     invalid);
             }
@@ -1133,37 +1152,50 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder LdStRegPairOffset;
             {
-                LdStRegPairOffset = Mask(30, 3,
-                    Mask(26, 1, // V
-                        Nyi("LdStRegPairOffset - 00 V = 0"),
-                        Mask(22, 1,  // L
-                            Instr(Opcode.stp, "*SIMD&FP - 32bit"),
-                            Instr(Opcode.ldp, "S0:5,S10:5,[X5:5,I15:7<2l,l]"))),
+                LdStRegPairOffset = Mask(30,2, 26,1, 22,1, // opc:V:L
+                    Instr(Opcode.stp, W(0,5),W(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.ldp, W(0,5),W(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.stp, S(0,5),S(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.ldp, S(0,5),S(10,5), Mo(w32,5,15,7)),
 
-                    Nyi("LdStRegPairOffset - 01"),
-                    Mask(26, 1, // V
-                        Mask(22, 1,  // L
-                            Instr(Opcode.stp, "X0:5,X10:5,[X5:5,I15:7<2l,q]"),
-                            Instr(Opcode.ldp, "X0:5,X10:5,[X5:5,I15:7<2l,q]")),
-                        Mask(22, 1,  // L
-                            Instr(Opcode.stp, "*SIMD&FP - 128bit"),
-                            Instr(Opcode.ldp, "*SIMD&FP - 128bit"))),
+                    invalid,
+                    Instr(Opcode.ldpsw, X(0,5),X(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.stp, D(0,5),D(10,5), Mo(w64,5,15,7)),
+                    Instr(Opcode.ldp, D(0,5),D(10,5), Mo(w64,5,15,7)),
+                    
+                    Instr(Opcode.stp, X(0,5),X(10,5), Mo(w64,5,15,7)),
+                    Instr(Opcode.ldp, X(0,5),X(10,5), Mo(w64,5,15,7)),
+                    Instr(Opcode.stp, Q(0,5),Q(10,5), Mo(w128,5,15,7)),
+                    Instr(Opcode.ldp, Q(0,5),Q(10,5), Mo(w128,5,15,7)),
+
+                    invalid,
+                    invalid,
+                    invalid,
                     invalid);
             }
 
             Decoder LdStRegPairPre;
             {
-                LdStRegPairPre = Mask(30, 3,     // opc
-                    Nyi("LdStRegPairPre opc=0b00"),
-                    Nyi("LdStRegPairPre opc=0b01"),
-                    Mask(26, 1, // V
-                        Mask(22, 1, // L
-                            Instr(Opcode.stp, "X0:5,X10:5,[X5:5,I15:7<2l,q]!"),
-                            Instr(Opcode.ldp, "X0:5,X10:5,[X5:5,I15:7<2l,q]!")),
-                        Mask(22, 1, // L
-                            Instr(Opcode.stp, "*SIMD&FP - 128bit"),
-                            Instr(Opcode.ldp, "*SIMD&FP - 128bit"))),
-                    Nyi("LdStRegPairPre opc=0b11"));
+                LdStRegPairPre = Mask(30,2, 26,1, 22,1, // opc:V:L
+                    Instr(Opcode.stp, W(0,5),W(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldp, W(0,5),W(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.stp, S(0,5),S(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldp, S(0,5),S(10,5), MprePair(PrimitiveType.Word32)),
+
+                    invalid,
+                    Instr(Opcode.ldpsw, X(0,5),X(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.stp, D(0,5),D(10,5), MprePair(PrimitiveType.Word64)),
+                    Instr(Opcode.ldp, D(0,5),D(10,5), MprePair(PrimitiveType.Word64)),
+                    
+                    Instr(Opcode.stp, X(0,5),X(10,5), MprePair(PrimitiveType.Word64)),
+                    Instr(Opcode.ldp, X(0,5),X(10,5), MprePair(PrimitiveType.Word64)),
+                    Instr(Opcode.stp, Q(0,5),Q(10,5), MprePair(PrimitiveType.Word128)),
+                    Instr(Opcode.ldp, Q(0,5),Q(10,5), MprePair(PrimitiveType.Word128)),
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid);
             }
 
             Decoder LdStRegPairPost;
@@ -1906,7 +1938,7 @@ namespace Reko.Arch.Arm.AArch64
             Decoder DataProcessingReg;
             {
                 DataProcessingReg =  Mask(28, 1,         // op1
-                    Mask(21, 0xF,           // op2
+                    Mask(21, 0xF,           //op1=0 op2
                         LogicalShiftedRegister,
                         LogicalShiftedRegister,
                         LogicalShiftedRegister,
@@ -1952,51 +1984,237 @@ namespace Reko.Arch.Arm.AArch64
                         DataProcessing3Source));
             }
 
+            Decoder ConversionBetweenFpAndInt;
+            {
+                ConversionBetweenFpAndInt = Mask(31,1,29,1,
+                    Mask(22, 0b11,      // sf:S=0b00 type
+                        Sparse(16, 0b11111,  // sf:S=0b00 type=00 rmode:opcode
+                            invalid,
+                            (0b00_010, Instr(Opcode.scvtf, S(0,5),W(5,5))),
+                            (0b00_011, Instr(Opcode.fcvtzu, x(""))),     
+                            (0b11_000, Instr(Opcode.fcvtzs, x(""))),
+                            (0b11_001, Instr(Opcode.fcvtzu, x("")))),
+                        Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=01"),
+                        Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=10"),
+                        Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=11")),
+                    invalid,
+                    Nyi("ConversionBetweenFpAndInt sf:S=0b10"),
+                    invalid);
+            }
+
+            Decoder AdvancedSimd3Same;
+            {
+                AdvancedSimd3Same = Mask(30, 1,
+                    Nyi("AdvancedSimd3Same U=0"),
+                    Mask(11, 0b11111, // U=1 opcode
+                        Nyi("AdvancedSimd3Same U=1 opcode=00000"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00001"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00010"),
+                        Mask(22, 0b11, // U=1 opcode=00011 size
+                            Nyi("AdvancedSimd3Same U=1 opcode=00011 size=00"),
+                            Nyi("AdvancedSimd3Same U=1 opcode=00011 size=01"),
+                            Instr(Opcode.bit, x("")),
+                            Instr(Opcode.bif, x(""))),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00100"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00101"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00110"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00111"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=00000"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01001"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01010"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01011"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01100"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01101"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01110"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=01111"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10000"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10001"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10010"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10011"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10100"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10101"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10110"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10111"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=10000"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11001"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11010"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11011"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11100"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11101"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11110"),
+                        Nyi("AdvancedSimd3Same U=1 opcode=11111")));
+            }
+
+            Decoder AdvancedSIMDscalar2RegMisc;
+            {
+                AdvancedSIMDscalar2RegMisc = Mask(29, 1,
+                    Mask(12, 0b11111, // U=0 opcode
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00100"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00101"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=00111"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01100"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01101"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=01111"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10100"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10101"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=10111"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11100"),
+                        Mask(22, 0b11, // U=1 opcode=11101 size
+                            Instr(Opcode.scvtf, S(0,5),S(5,5)),
+                            Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=01"),
+                            Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=10"),
+                            Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=11")),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11111")),
+                    Mask(12, 0b11111, // U=1 opcode
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00100"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00101"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=00111"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01100"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01101"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=01111"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10100"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10101"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=10111"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11000"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11001"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11010"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11011"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11100"),
+                        Mask(22, 0b11, // U=1 opcode=11101 size
+                            Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=00"),
+                            Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=01"),
+                            Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=10"),
+                            Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=11")),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11110"),
+                        Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11111")));
+            }
+
             Decoder DataProcessingScalarFpAdvancedSimd;
             {
                 DataProcessingScalarFpAdvancedSimd = Mask(28, 0xF,
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op1"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op2"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op3"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=0"),
+                    Mask(23, 0b11, //op0 = 1 op1
+                        Mask(19+2, 1, // op0=1 op1=0b00 _x__"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b00 op2=x0xx"),
+                            Select(10, 6, n => n == 0, // op0=1 op1=0b00 op2=x1xx op3=xxx000000")),
+                                ConversionBetweenFpAndInt,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b00 op2=x1xx op3!=xxx000000"))),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b01"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b10"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b11")),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=2"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=3"),
 
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op4"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op5"),
-                    Mask(23, 3, // DataProcessingScalarFpAdvancedSimd - op6
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=0"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=1"),
+                    Mask(23, 0b11, //op0 = 4 op1
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00"),
+                        Mask(19, 0b1111, // op0=4 op1=0b01 op2=0b0000
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0000"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0011"),
+                            Mask(10, 1,   // op0=4 op1=0b01 op2=0b0100 op3
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0100 op3=xxxxxxxx0"),
+                                AdvancedSimd3Same),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0111"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1000"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1011"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1100"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1111")),
+
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b11")),
+                    Mask(23, 0b11, // op0=5 op1
+                        Sparse(19, 0b1111, // op0=5 op1=0b00 op2
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???"),
+                            (0b0100, Mask(10, 0b11,     // op0=5 op1=0b00 op2=0100 op3
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx01"),
+                                Mask(17, 0b11,          // op0=5 op1=0b00 op2=0100 op3=??xxxxxx10"),
+                                    AdvancedSIMDscalar2RegMisc,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=01xxxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=10xxxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=11xxxxxx10")),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx11")))),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b01"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b10"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b11")),
+
+                    Mask(23, 0b11, // DataProcessingScalarFpAdvancedSimd - op0=6
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=0"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=1"),
                         Mask(19, 0xF,
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=0"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=1"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=2"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=3"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=0"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=1"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=2"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=3"),
                             
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=4"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=5"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=6"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=7"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=4"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=5"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=6"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=7"),
                             
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=8"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=9"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=A"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=B"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=8"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=9"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=A"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=B"),
 
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=C"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=D"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=E"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=2 op2=F")),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op6 op1=3")),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op7"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=C"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=D"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=E"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=2 op2=F")),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=3")),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7"),
 
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op8"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op9"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - opA"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - opB"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=8"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=9"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=A"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=B"),
 
-                    Nyi("DataProcessingScalarFpAdvancedSimd - opC"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - opD"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - opE"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - opF"));
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=C"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=D"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=E"),
+                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=F"));
             }
 
             rootDecoder = new MaskDecoder(25, 0x0F,
