@@ -186,12 +186,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void A64Rw_ldp()
         {
             Given_Instruction(0x2D646C2F);
-            AssertCode(     // ldp\ts47,s59,[x1,-#&E0]
+            AssertCode(     // ldp\ts15,27,[x1,-#&E0]
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v5 = x1 + -224",
-                "2|L--|s47 = Mem0[v5:word32]",
+                "2|L--|s15 = Mem0[v5:word32]",
                 "3|L--|v5 = v5 + 4",
-                "4|L--|s59 = Mem0[v5:word32]");
+                "4|L--|s27 = Mem0[v5:word32]");
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xB8356B7F);
             AssertCode(     // str\tw31,[x27,x21]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[x27 + x21:word32] = w31");
+                "1|L--|Mem0[x27 + x21:word32] = 0x00000000");
         }
 
         [Test]
@@ -519,5 +519,397 @@ namespace Reko.UnitTests.Arch.Arm
                 "4|L--|x31 = x31 + 8");
         }
 
+        [Test]
+        public void A64Rw_ldr_64_neg_lit()
+        {
+            Given_Instruction(0x18FFFFE0);
+            AssertCode(     // ldr\tw0,#&FFFFC
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w0 = Mem0[0x000FFFFC:word32]");
+        }
+
+        [Test]
+        public void A64Rw_movn()
+        {
+            Given_Instruction(0x12800000);
+            AssertCode(     // movn\tw0,#0
+                 "0|L--|00100000(4): 4 instructions",
+                 "1|L--|",
+                 "2|L--|",
+                 "3|L--|",
+                 "4|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_sbfm()
+        {
+            Given_Instruction(0x13017E73);
+            AssertCode(     // sbfm\tw19,w19,#1,#&1F
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_and_reg()
+        {
+            Given_Instruction(0x8A140000);
+            AssertCode(     // and\tx0,x0,x20
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x0 = x0 & x20");
+        }
+
+        [Test]
+        public void A64Rw_and_reg_reg()
+        {
+            Given_Instruction(0x0A000020);
+            AssertCode(     // and\tw0,w1,w0
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w0 = w1 & w0");
+        }
+
+        [Test]
+        public void A64Rw_sbfm_2()
+        {
+            Given_Instruction(0x937D7C63);
+            AssertCode(     // sbfm\tx3,x3,#&3,#&20
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_mul_64()
+        {
+            Given_Instruction(0x9B017C14);
+            AssertCode(     // mul\tx20,x0,x1
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x20 = x0 * x1");
+        }
+
+        [Test]
+        public void A64Rw_madd_64()
+        {
+            Given_Instruction(0x9B013C14);
+            AssertCode(     // madd\tx20,x0,x1,x15
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x20 = x15 + x0 * x1");
+        }
+
+        [Test]
+        public void A64Rw_ands_64_reg()
+        {
+            Given_Instruction(0xEA010013);
+            AssertCode(     // ands\tx19,x0,x1
+                 "0|L--|00100000(4): 4 instructions",
+                 "1|L--|x19 = x0 & x1",
+                 "2|L--|NZ = cond(x19)",
+                 "3|L--|C = false",
+                 "4|L--|V = false");
+        }
+
+        [Test]
+        public void A64Rw_test_64_reg()
+        {
+            Given_Instruction(0xEA01001F);
+            AssertCode(     // test\tx31,x0,x1
+                 "0|L--|00100000(4): 3 instructions",
+                 "1|L--|NZ = cond(x0 & x1)",
+                 "2|L--|C = false",
+                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void A64Rw_ldurb()
+        {
+            Given_Instruction(0x385F9019);
+            AssertCode(     // ldurb\tw25,[x0,-#&7]
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|v4 = Mem0[x0 + -7:byte]",
+                 "2|L--|w25 = (word32) v4");
+        }
+
+        [Test]
+        public void A64Rw_strb_postidx()
+        {
+            Given_Instruction(0x38018C14);
+            AssertCode(     // strb\tw20,[x0,#&18]!
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|x0 = x0 + 24",
+                 "2|L--|Mem0[x0:byte] = (byte) w20");
+        }
+
+        [Test]
+        public void A64Rw_strb_preidx_sp()
+        {
+            Given_Instruction(0x38018FFF);
+            AssertCode(     // strb\tw31,[sp,#&18]!
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|sp = sp + 24",
+                 "2|L--|Mem0[sp:byte] = 0x00");
+        }
+
+        [Test]
+        public void A64Rw_ldrh_32_off0()
+        {
+            Given_Instruction(0x79400021);
+            AssertCode(     // ldrh\tw1,[x1]
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|v4 = Mem0[x1:word16]",
+                 "2|L--|w1 = (word32) v4");
+        }
+
+        [Test]
+        public void A64Rw_add_extension()
+        {
+            Given_Instruction(0x8B34C2D9);
+            AssertCode(     // add\tx25,x22,w20,sxtw #0
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x25 = x22 + (int64) ((int32) w20)");
+        }
+
+        [Test]
+        public void A64Rw_madd_32()
+        {
+            Given_Instruction(0x1B003C21);
+            AssertCode(     // madd\tw1,w1,w0,w15
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w1 = w15 + w1 * w0");
+        }
+
+        [Test]
+        public void A64Rw_mneg_32()
+        {
+            Given_Instruction(0x1B00FC21);
+            AssertCode(     // mneg\tw1,w1,w0
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w1 = -(w1 * w0)");
+        }
+
+        [Test]
+        public void A64Rw_msub_32()
+        {
+            Given_Instruction(0x1B00BC21);
+            AssertCode(     // msub\tw1,w1,w0,w15
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w1 = w15 - w1 * w0");
+        }
+
+        [Test]
+        public void A64Rw_strb_post_idx()
+        {
+            Given_Instruction(0x38001410);
+            AssertCode(     // strb\tw16,[x0],#&1
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|Mem0[x0:byte] = (byte) w16",
+                 "2|L--|x0 = x0 + 1");
+        }
+
+        [Test]
+        public void A64Rw_strb_post_idx_zero()
+        {
+            Given_Instruction(0x3800141F);
+            AssertCode(     // strb\tw31,[x0],#&1
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|Mem0[x0:byte] = 0x00",
+                 "2|L--|x0 = x0 + 1");
+        }
+
+        [Test]
+        public void A64Rw_strb_post_sp()
+        {
+            Given_Instruction(0x381FC7FF);
+            AssertCode(     // strb\tw31,[sp],-#&4
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|Mem0[sp:byte] = 0x00",
+                 "2|L--|sp = sp + -4");
+        }
+
+        [Test]
+        public void A64Rw_msub_64()
+        {
+            Given_Instruction(0x9B038441);
+            AssertCode(     // msub\tx1,x2,x3,x1
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x1 = x1 - x2 * x3");
+        }
+
+        [Test]
+        public void A64Rw_ldur_64_negative_offset()
+        {
+            Given_Instruction(0xF85F8260);
+            AssertCode(     // ldur\tx0,[x19,-#&8]
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x0 = Mem0[x19 + -8:word64]");
+        }
+
+        [Test]
+        public void A64Rw_strb_indexed()
+        {
+            Given_Instruction(0x3820483F);
+            AssertCode(     // strb\tw31,[x1,w0,uxtw]
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|Mem0[x1 + (uint64) ((uint32) w0):byte] = 0x00");
+        }
+
+        [Test]
+        public void A64Rw_str_q0()
+        {
+            Given_Instruction(0x3D8027A0);
+            AssertCode(     // str\tq0,[x29,#&90]
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|Mem0[x29 + 144:word128] = q0");
+        }
+
+        [Test]
+        public void A64Rw_cmp_32_uxtb()
+        {
+            Given_Instruction(0x6B20031F);
+            AssertCode(     // cmp\tw0,w0,uxtb #0
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|NZCV = cond(w24 - (uint32) ((byte) w0))");
+        }
+
+        [Test]
+        public void A64Rw_ldrb_idx()
+        {
+            Given_Instruction(0x38616857);
+            AssertCode(     // ldrb\tw23,[x2,x1]
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|v5 = Mem0[x2 + x1:byte]",
+                 "2|L--|w23 = (word32) v5");
+        }
+
+        [Test]
+        public void A64Rw_sbfm_0_1F()
+        {
+            Given_Instruction(0x93407C18);
+            AssertCode(     // sbfm\tx24,x0,#0,#&1F@@
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_strb_index()
+        {
+            Given_Instruction(0x38216A63);
+            AssertCode(     // strb\tw3,[x19,x1]
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|Mem0[x19 + x1:byte] = (byte) w3");
+        }
+
+        [Test]
+        public void A64Rw_add_ext_reg_sxtw()
+        {
+            Given_Instruction(0x8B33D2D3);
+            AssertCode(     // add\tx19,x22,w19,sxtw #4
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x19 = x22 + (int64) ((int32) w19)");
+        }
+
+        [Test]
+        public void A64Rw_ldr_64_preidx()
+        {
+            Given_Instruction(0xF8410E81);
+            AssertCode(     // ldr\tx1,[x20,#&10]!
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|x20 = x20 + 16",
+                 "2|L--|x1 = Mem0[x20:word64]");
+        }
+
+        [Test]
+        public void A64Rw_ldrb_post()
+        {
+            Given_Instruction(0x38401420);
+            AssertCode(     // ldrb\tw0,[x1],#&1
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = Mem0[x1:byte]",
+                "2|L--|w0 = (word32) v4",
+                "3|L--|x1 = x1 + 1");
+        }
+
+        [Test]
+        public void A64Rw_strb_uxtw()
+        {
+            Given_Instruction(0x38344B23);
+            AssertCode(     // strb\tw3,[x25,w20,uxtw]
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|Mem0[x25 + (uint64) ((uint32) w20):byte] = (byte) w3");
+        }
+
+        [Test]
+        public void A64Rw_sdiv()
+        {
+            Given_Instruction(0x1AC00F03);
+            AssertCode(     // sdiv\tw3,w24,w0
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w3 = w24 / w0");
+        }
+
+
+        [Test]
+        public void A64Rw_ldrb_preidx()
+        {
+            Given_Instruction(0x38401C41);
+            AssertCode(     // ldrb\tw1,[x2,#&1]!
+                 "0|L--|00100000(4): 3 instructions",
+                 "1|L--|x2 = x2 + 1",
+                 "2|L--|v4 = Mem0[x2:byte]",
+                 "3|L--|w1 = (word32) v4");
+        }
+
+        [Test]
+        public void A64Rw_ldrb_idx_uxtw()
+        {
+            Given_Instruction(0x38614873);
+            AssertCode(     // ldrb\tw19,[x3,w1,uxtw]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = Mem0[x3 + (uint64) ((uint32) w1):byte]",
+                "2|L--|w19 = (word32) v5");
+        }
+
+        [Test]
+        public void A64Rw_ldrh_32_idx_lsl()
+        {
+            Given_Instruction(0x787B7B20);
+            AssertCode(     // ldrh\tw0,[x25,x27,lsl #1]
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|v5 = Mem0[x25 + x27 * 2:word16]",
+                 "2|L--|w0 = (word32) v5");
+        }
+
+        [Test]
+        public void A64Rw_ldrh_32_sxtw()
+        {
+            Given_Instruction(0x7876D800);
+            AssertCode(     // ldrh\tw0,[x0,w22,sxtw #1]
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|v5 = Mem0[x0 + (int64) ((int32) w22):word16]",
+                 "2|L--|w0 = (word32) v5");
+        }
+
+        public void A64Rw_3873C800()
+        {
+            Given_Instruction(0x3873C800);
+            AssertCode(     // @@@
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_movn_imm()
+        {
+            Given_Instruction(0x9280000A);
+            AssertCode(     // movn\tx10,#0
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|x10 = 0xFFFFFFFFFFFF");
+        }
+
+        [Test]
+        public void A64Rw_sturb_off()
+        {
+            Given_Instruction(0x381FF09F);
+            AssertCode(     // sturb\tw31,[x4,-#&1]
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|Mem0[x4 + -1:byte] = 0x00");
+        }
     }
 }

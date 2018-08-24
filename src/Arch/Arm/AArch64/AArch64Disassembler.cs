@@ -847,6 +847,23 @@ namespace Reko.Arch.Arm.AArch64
         //        return Invalid();
         //    }
         //}
+        private static Mutator Bm(int posS, int posR)
+        {
+            return (u, d) =>
+            {
+                var imms = (int)(u >> posS) & 0x3F;
+                var immr = (int)(u >> posR) & 0x3F;
+                uint n = (u >> 22) & 1;
+                if ((u & 0x80000000u) == 0 && n == 1)
+                {
+                    return false;
+                }
+                d.state.ops.Add(ImmediateOperand.Int32(immr));
+                d.state.ops.Add(ImmediateOperand.Int32(imms));
+                return true;
+            };
+        }
+
 
         private static Mutator x(string message)
         {
@@ -1425,9 +1442,9 @@ namespace Reko.Arch.Arm.AArch64
             {
                 Bitfield = Mask(22, 1,
                     Mask(29, 7,
-                        Instr(Opcode.sbfm, W(0,5),W(5,5),I(16,6,i32),I(10,6,i32)),
-                        Instr(Opcode.bfm, W(0,5),W(5,5),I(16,6,i32),I(10,6,i32)),
-                        Instr(Opcode.ubfm, W(0,5),W(5,5),I(16,6,i32),I(10,6,i32)),
+                        Instr(Opcode.sbfm, W(0,5),W(5,5),Bm(10,16)),
+                        Instr(Opcode.bfm, W(0,5),W(5,5),Bm(10,16)),
+                        Instr(Opcode.ubfm, W(0,5),W(5,5),Bm(10,16)),
                         invalid,
 
                         invalid,
@@ -1647,7 +1664,9 @@ namespace Reko.Arch.Arm.AArch64
 
                             Instr(Opcode.eor, "*shifted register, 32-bit"),
                             Instr(Opcode.eon, "*shifted register, 32-bit"),
-                            Instr(Opcode.ands, "*shifted register, 32-bit"),
+                            Select(0,5, n => n == 0x1F,
+                                Instr(Opcode.test, W(5,5),W(16,5),si(22,2,10,6)),
+                                Instr(Opcode.ands, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
                             Instr(Opcode.bics, "*shifted register, 32-bit"))),
                     Mask(29,2,21,1,
                         Instr(Opcode.and, "X0:5,X5:5,X16:5 si22:2,10:6"),
@@ -1659,7 +1678,9 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Opcode.eor, "*shifted register, 64-bit"),
                         Instr(Opcode.eon, "*shifted register, 64-bit"),
-                        Instr(Opcode.ands, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Select(0,5, n => n == 0x1F,
+                            Instr(Opcode.test, X(5,5),X(16,5),si(22,2,10,6)),
+                            Instr(Opcode.ands, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
                         Instr(Opcode.bics, "*shifted register, 64-bit")));
             }
             Decoder AddSubShiftedRegister;

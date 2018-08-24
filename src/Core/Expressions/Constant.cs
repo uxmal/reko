@@ -275,7 +275,7 @@ namespace Reko.Core.Expressions
 			}
 		}
 
-		public bool IsReal
+        public bool IsReal
 		{
 			get 
 			{

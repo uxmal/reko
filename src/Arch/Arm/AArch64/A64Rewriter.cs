@@ -64,6 +64,8 @@ namespace Reko.Arch.Arm.AArch64
                 switch (instr.opcode)
                 {
                 default:
+                    EmitUnitTest();
+                    goto case Opcode.Invalid;
                 case Opcode.Invalid:
                     rtlc = RtlClass.Invalid;
                     m.Invalid();
@@ -80,23 +82,43 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.cbnz: RewriteCb(m.Ne0); break;
                 case Opcode.cbz: RewriteCb(m.Eq0); break;
                 case Opcode.ccmp: RewriteCcmp(); break;
+                case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.csinc: RewriteCsinc(); break;
                 case Opcode.ldp: RewriteLoadStorePair(true); break;
                 case Opcode.ldr: RewriteLdr(null); break;
                 case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
+                case Opcode.ldrh: RewriteLdr(PrimitiveType.Word16); break;
+                case Opcode.ldrsb: RewriteLdr(PrimitiveType.SByte); break;
+                case Opcode.ldrsh: RewriteLdr(PrimitiveType.Int16); break;
                 case Opcode.ldrsw: RewriteLdr(PrimitiveType.Int32); break;
+                case Opcode.ldur: RewriteLdr(null); break;
+                case Opcode.ldurb: RewriteLdr(PrimitiveType.Byte); break;
+                case Opcode.ldurh: RewriteLdr(PrimitiveType.Word16); break;
+                case Opcode.ldursb: RewriteLdr(PrimitiveType.SByte); break;
+                case Opcode.ldursh: RewriteLdr(PrimitiveType.Int16); break;
+                case Opcode.ldursw: RewriteLdr(PrimitiveType.Int32); break;
+                case Opcode.madd: RewriteMaddSub(m.IAdd); break;
+                case Opcode.mneg: RewriteBinary((a, b) => m.Neg(m.IMul(a, b))); break;
+                case Opcode.msub: RewriteMaddSub(m.ISub); break;
                 case Opcode.mov: RewriteUnary(n => n); break;
                 case Opcode.movk: RewriteMovk(); break;
+                case Opcode.movn: RewriteMovn(); break;
                 case Opcode.movz: RewriteMovz(); break;
+                case Opcode.mul: RewriteBinary(m.IMul); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.ret: RewriteRet(); break;
+                case Opcode.sdiv: RewriteBinary(m.SDiv); break;
                 case Opcode.stp: RewriteLoadStorePair(false); break;
                 case Opcode.str: RewriteStr(null); break;
                 case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
+                case Opcode.stur: RewriteStr(null); break;
+                case Opcode.sturb: RewriteStr(PrimitiveType.Byte); break;
+                case Opcode.sturh: RewriteStr(PrimitiveType.Word16); break;
                 case Opcode.sub: RewriteBinary(m.ISub); break;
                 case Opcode.subs: RewriteBinary(m.ISub, NZCV); break;
                 case Opcode.tbnz: RewriteTb(m.Ne0); break;
                 case Opcode.tbz: RewriteTb(m.Eq0); break;
+                case Opcode.test: RewriteTest(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, cluster.ToArray())
                 {
@@ -159,6 +181,18 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private Expression MaybeZeroRegister(RegisterStorage reg, PrimitiveType dt)
+        {
+            if (reg == Registers.GpRegs32[31] ||
+                reg == Registers.GpRegs64[31])
+            {
+                return Constant.Zero(dt);
+            }
+            else
+            {
+                return binder.EnsureRegister(reg);
+            }
+        }
         private Identifier NZCV()
         {
             var nzcv = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.VF));

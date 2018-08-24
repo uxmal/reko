@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ubfm_32bit()
         {
             Given_Instruction(0x530C7C04);
-            Expect_Code("ubfm\tw4,w0,#&C,#&1F@@@");
+            Expect_Code("ubfm\tw4,w0,#&C,#&1F");
         }
 
         [Test]
@@ -444,11 +444,20 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_ands_64()
+        public void AArch64Dis_ands_64_reg()
+        {
+            Given_Instruction(0xEA010013);
+            Expect_Code("ands\tx19,x0,x1");
+        }
+
+        [Test]
+        public void AArch64Dis_test_64_reg()
         {
             Given_Instruction(0xEA01001F);
-            Expect_Code("ands\tx31,x0,x1");
+            Expect_Code("test\tx0,x1");
         }
+
+
 
         [Test]
         public void AArch64Dis_ldurb()
@@ -598,7 +607,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_ldrb_pre()
+        public void AArch64Dis_ldrb_post()
         {
             Given_Instruction(0x38401420);
             Expect_Code("ldrb\tw0,[x1],#&1");

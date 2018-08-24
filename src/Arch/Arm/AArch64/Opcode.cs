@@ -119,5 +119,6 @@ namespace Reko.Arch.Arm.AArch64
         mul,
         mneg,
         cmp,
+        test,
     }
 }

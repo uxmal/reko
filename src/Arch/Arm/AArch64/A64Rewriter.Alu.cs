@@ -49,6 +49,15 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.ops[0]);
             var left = RewriteOp(instr.ops[1]);
             var right = RewriteOp(instr.ops[2]);
+
+            var toBitSize = left.DataType.BitSize;
+            right = MaybeExtendExpression(right, toBitSize);
+            m.Assign(dst, fn(left, right));
+            setFlags?.Invoke(m.Cond(dst));
+        }
+
+        private Expression MaybeExtendExpression(Expression right, int toBitSize)
+        {
             if (instr.shiftCode != Opcode.Invalid &&
                 (instr.shiftCode != Opcode.lsl ||
                 !(instr.shiftAmount is ImmediateOperand imm) ||
@@ -59,11 +68,17 @@ namespace Reko.Arch.Arm.AArch64
                 {
                 case Opcode.lsl: right = m.Shl(right, amt); break;
                 case Opcode.lsr: right = m.Shr(right, amt); break;
+                case Opcode.sxtb: right = SignExtend(toBitSize, PrimitiveType.SByte, right); break;
+                case Opcode.sxth: right = SignExtend(toBitSize, PrimitiveType.Int16, right); break;
+                case Opcode.sxtw: right = SignExtend(toBitSize, PrimitiveType.Int32, right); break;
+                case Opcode.uxtb: right = ZeroExtend(toBitSize, PrimitiveType.Byte, right); break;
+                case Opcode.uxth: right = ZeroExtend(toBitSize, PrimitiveType.Word16, right); break;
+                case Opcode.uxtw: right = ZeroExtend(toBitSize, PrimitiveType.Word32, right); break;
                 default: throw new NotImplementedException($"Shift operation {instr.shiftCode} not implemented yet.");
                 }
             }
-            m.Assign(dst, fn(left, right));
-            setFlags?.Invoke(m.Cond(dst));
+
+            return right;
         }
 
         private void RewriteCcmp()
@@ -76,6 +91,15 @@ namespace Reko.Arch.Arm.AArch64
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, RtlClass.ConditionalTransfer);
             var left = RewriteOp(instr.ops[0]);
             var right = RewriteOp(instr.ops[1]);
+            m.Assign(nzcv, m.Cond(m.ISub(left, right)));
+        }
+
+        private void RewriteCmp()
+        {
+            var left = RewriteOp(instr.ops[0]);
+            var right = RewriteOp(instr.ops[1]);
+            right = MaybeExtendExpression(right, left.DataType.BitSize);
+            var nzcv = NZCV();
             m.Assign(nzcv, m.Cond(m.ISub(left, right)));
         }
 
@@ -128,8 +152,28 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteLdr(DataType dt)
         {
             var dst = RewriteOp(instr.ops[0]);
-            var mem = (MemoryOperand)instr.ops[1];
-            Expression ea = RewriteEffectiveAddress(mem);
+            Expression ea;
+            MemoryOperand mem = null;
+            Identifier baseReg = null;
+            Expression postIndex = null;
+            if (instr.ops[1] is AddressOperand aOp)
+            {
+                ea = aOp.Address;
+            }
+            else
+            {
+                mem = (MemoryOperand)instr.ops[1];
+                (ea, baseReg) = RewriteEffectiveAddress(mem);
+                if (mem.PreIndex)
+                {
+                    m.Assign(baseReg, ea);
+                    ea = baseReg;
+                } else if (mem.PostIndex)
+                {
+                    postIndex = ea;
+                    ea = baseReg;
+                }
+            }
             if (dt == null)
             {
                 m.Assign(dst, m.Mem(dst.DataType, ea));
@@ -140,6 +184,20 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(tmp, m.Mem(dt, ea));
                 m.Assign(dst, m.Cast(dst.DataType, tmp));
             }
+            if (postIndex != null)
+            {
+                m.Assign(baseReg, postIndex);
+            }
+        }
+
+        private void RewriteMaddSub(Func<Expression,Expression,Expression> op)
+        {
+            var op1 = RewriteOp(instr.ops[1]);
+            var op2 = RewriteOp(instr.ops[2]);
+            var op3 = RewriteOp(instr.ops[3]);
+            var dst = RewriteOp(instr.ops[0]);
+
+            m.Assign(dst, op(op3, m.IMul(op1, op2)));
         }
 
         private void RewriteMovk()
@@ -150,6 +208,21 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
         }
 
+        private void RewriteMovn()
+        {
+            var src = RewriteOp(instr.ops[1]);
+            var dst = RewriteOp(instr.ops[0]);
+            if (src is Constant c)
+            {
+                throw new NotImplementedException(" src = c.Complement();");
+            }
+            else
+            {
+                src = m.Comp(src);
+            }
+            m.Assign(dst, src);
+        }
+
         private void RewriteMovz()
         {
             var dst = RewriteOp(instr.ops[0]);
@@ -158,15 +231,16 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
         }
 
-        private Expression RewriteEffectiveAddress(MemoryOperand mem)
+        private (Expression, Identifier) RewriteEffectiveAddress(MemoryOperand mem)
         {
-            Expression ea = binder.EnsureRegister(mem.Base);
+            Identifier baseReg = binder.EnsureRegister(mem.Base);
+            Expression ea = baseReg;
             Expression offset = RewriteEffectiveAddressOffset(mem);
             if (offset != null)
             {
                 ea = m.IAdd(ea, offset);
             }
-            return ea;
+            return (ea, baseReg);
         }
 
         private Expression RewriteEffectiveAddressOffset(MemoryOperand mem)
@@ -187,18 +261,62 @@ namespace Reko.Arch.Arm.AArch64
                         idx = m.IMul(idx, Constant.Create(dtInt, 1 << mem.IndexShift));
                     }
                     break;
+                case Opcode.sxtb:
+                    idx = SignExtend(64, PrimitiveType.SByte, idx);
+                    break;
+                case Opcode.sxth:
+                    idx = SignExtend(64, PrimitiveType.Int16, idx);
+                    break;
+                case Opcode.sxtw:
+                    idx = SignExtend(64, PrimitiveType.Int32, idx);
+                    break;
+                case Opcode.uxtb:
+                    idx = ZeroExtend(64, PrimitiveType.UInt8, idx);
+                    break;
+                case Opcode.uxth:
+                    idx = ZeroExtend(64, PrimitiveType.UInt16, idx);
+                    break;
+                case Opcode.uxtw:
+                    idx = ZeroExtend(64, PrimitiveType.UInt32, idx);
+                    break;
+                default:
+                    throw new NotImplementedException($"Register extension {mem.IndexExtend} not implemented yet.");
                 }
                 return idx;
             }
             return null;
         }
 
-        private void RewriteStr(DataType dt)
+        private Expression ZeroExtend(int bitsizeDst, PrimitiveType dtOrig, Expression e)
         {
-            var src = RewriteOp(instr.ops[0]);
+            var dtUint = PrimitiveType.Create(Domain.UnsignedInt, bitsizeDst);
+            return m.Cast(dtUint, m.Cast(dtOrig, e));
+        }
+
+        private Expression SignExtend(int bitsizeDst, PrimitiveType dtOrig, Expression e)
+        {
+            var dtUint = PrimitiveType.Create(Domain.SignedInt, bitsizeDst);
+            return m.Cast(dtUint, m.Cast(dtOrig, e));
+        }
+
+        private void RewriteStr(PrimitiveType dt)
+        {
+            var rSrc = (RegisterOperand)instr.ops[0];
+            Expression src = MaybeZeroRegister(rSrc.Register, dt ?? rSrc.Width);
             var mem = (MemoryOperand)instr.ops[1];
-            Expression ea = RewriteEffectiveAddress(mem);
-            if (dt == null)
+            var (ea, baseReg) = RewriteEffectiveAddress(mem);
+            Expression postIndex = null;
+            if (mem.PreIndex)
+            {
+                m.Assign(baseReg, ea);
+                ea = baseReg;
+            }
+            else if (mem.PostIndex)
+            {
+                postIndex = ea;
+                ea = baseReg;
+            }
+            if (dt == null || src is Constant)
             {
                 m.Assign(m.Mem(src.DataType, ea), src);
             }
@@ -206,6 +324,17 @@ namespace Reko.Arch.Arm.AArch64
             {
                 m.Assign(m.Mem(dt, ea), m.Cast(dt, src));
             }
+            if (postIndex != null)
+            {
+                m.Assign(baseReg, postIndex);
+            }
+        }
+
+        private void RewriteTest()
+        {
+            var op1 = RewriteOp(instr.ops[0]);
+            var op2 = RewriteOp(instr.ops[1]);
+            NZ00(m.Cond(m.And(op1, op2)));
         }
 
         private void RewriteUnary(Func<Expression, Expression> fn)
