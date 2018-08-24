@@ -689,5 +689,91 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x381FF09F);
             Expect_Code("sturb\tw31,[x4,-#&1]");
         }
-   }
+
+        ////////////////////////////////////////////
+        
+        [Test]
+        public void AArch64Dis_adr()
+        {
+            Given_Instruction(0x10000063);
+            Expect_Code("adr\tx3,#&10000C");
+        }
+
+        [Test]
+        public void AArch64Dis_orn()
+        {
+            Given_Instruction(0x2A2200F8);
+            Expect_Code("orn\tw24,w7,w2");
+        }
+
+        [Test]
+        public void AArch64Dis_mvn()
+        {
+            Given_Instruction(0x2A2203F8);
+            Expect_Code("mvn\tw24,w2");
+        }
+
+        [Test]
+        public void AArch64Dis_sdiv_64()
+        {
+            Given_Instruction(0x9AC20C62);
+            Expect_Code("sdiv\tx2,x3,x2");
+        }
+
+        [Test]
+        public void AArch64Dis_eor_reg_32()
+        {
+            Given_Instruction(0x4A140074);
+            Expect_Code("eor\tw20,w3,w20");
+        }
+
+        [Test]
+        public void AArch64Dis_sub_reg_ext_64()
+        {
+            Given_Instruction(0xCB214F18);
+            Expect_Code("sub\tx24,x24,w1,uxtw #3");
+        }
+
+        [Test]
+        public void AArch64Dis_bic_reg_32()
+        {
+            Given_Instruction(0x0A350021);
+            Expect_Code("bic\tw1,w1,w21");
+        }
+
+        [Test]
+        public void AArch64Dis_umulh()
+        {
+            Given_Instruction(0x9BC57C00);
+            Expect_Code("umulh\tx0,w0,w5");
+        }
+
+        [Test]
+        public void AArch64Dis_lsrv()
+        {
+            Given_Instruction(0x1AC22462);
+            Expect_Code("lsrv\tw2,w3,w2");
+        }
+
+        [Test]
+        public void AArch64Dis_smull()
+        {
+            Given_Instruction(0x9B237C43);
+            Expect_Code("smull\tx3,w2,w3");
+        }
+
+        [Test]
+        public void AArch64Dis_smaddl()
+        {
+            Given_Instruction(0x9B233C43);
+            Expect_Code("smaddl\tx3,w2,w3,x15");
+        }
+
+        [Test]
+        public void AArch64Dis_strh_reg()
+        {
+            Given_Instruction(0x78206A62);
+            Expect_Code("strh\tw2,[x19,x0]");
+        }
+    }
 }

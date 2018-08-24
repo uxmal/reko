@@ -120,5 +120,13 @@ namespace Reko.Arch.Arm.AArch64
         mneg,
         cmp,
         test,
+        udiv,
+        lslv,
+        lsrv,
+        asrv,
+        rorv,
+        mvn,
+        smull,
+        smnegll,
     }
 }
