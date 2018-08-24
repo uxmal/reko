@@ -533,11 +533,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x12800000);
             AssertCode(     // movn\tw0,#0
-                 "0|L--|00100000(4): 4 instructions",
-                 "1|L--|",
-                 "2|L--|",
-                 "3|L--|",
-                 "4|L--|@@@");
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|w0 = 0xFFFFFFFF");
         }
 
         [Test]
@@ -900,7 +897,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x9280000A);
             AssertCode(     // movn\tx10,#0
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|x10 = 0xFFFFFFFFFFFF");
+                 "1|L--|x10 = 0xFFFFFFFFFFFFFFFF");
         }
 
         [Test]

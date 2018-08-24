@@ -1381,7 +1381,7 @@ namespace Reko.Core.Expressions
         }
     }
 
-    internal class ConstantReal16 : ConstantReal
+    public class ConstantReal16 : ConstantReal
     {
         private readonly Float16 value;
 
@@ -1391,9 +1391,20 @@ namespace Reko.Core.Expressions
             this.value = new Float16(value);
         }
 
+        public ConstantReal16(DataType dt, Float16 value)
+           : base(dt)
+        {
+            this.value = value;
+        }
+
         public override Expression CloneExpression()
         {
             throw new NotImplementedException();
+        }
+
+        public override Constant Complement()
+        {
+            throw new NotSupportedException("Cannot complement a real value.");
         }
 
         public override object GetValue()
@@ -1403,7 +1414,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Negate()
         {
-            throw new NotImplementedException();
+            return new ConstantReal16(this.DataType, -value);
         }
 
         public override byte ToByte()

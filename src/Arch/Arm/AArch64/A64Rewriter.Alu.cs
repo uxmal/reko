@@ -214,7 +214,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.ops[0]);
             if (src is Constant c)
             {
-                throw new NotImplementedException(" src = c.Complement();");
+                src = c.Complement();
             }
             else
             {

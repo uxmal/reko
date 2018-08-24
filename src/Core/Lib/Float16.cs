@@ -71,7 +71,8 @@ namespace Reko.Core.Lib
 
         public static Float16 operator - (Float16 a)
         {
-            throw new NotImplementedException();
+            var negated = (ushort)(a.value ^ 0x8000);
+            return new Float16(negated);
         }
 
         private bool IsZero()
