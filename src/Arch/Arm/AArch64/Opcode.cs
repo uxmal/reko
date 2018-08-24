@@ -135,5 +135,6 @@ namespace Reko.Arch.Arm.AArch64
         bit,
         bif,
         ucvtf,
+        umull,
     }
 }

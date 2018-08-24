@@ -200,6 +200,16 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, op(op3, m.IMul(op1, op2)));
         }
 
+        private void RewriteMaddl(PrimitiveType dt, Func<Expression,Expression,Expression> mul)
+        {
+            var op1 = RewriteOp(instr.ops[1]);
+            var op2 = RewriteOp(instr.ops[2]);
+            var op3 = RewriteOp(instr.ops[3]);
+            var dst = RewriteOp(instr.ops[0]);
+
+            m.Assign(dst, m.IAdd(op3, m.Cast(dt, mul(op1, op2))));
+        }
+
         private void RewriteMovk()
         {
             var dst = RewriteOp(instr.ops[0]);
@@ -229,6 +239,24 @@ namespace Reko.Arch.Arm.AArch64
             var imm = ((ImmediateOperand)instr.ops[1]).Value;
             var shift = ((ImmediateOperand)instr.shiftAmount).Value;
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
+        }
+
+        private void RewriteMulh(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
+        {
+            var op1 = RewriteOp(instr.ops[1]);
+            var op2 = RewriteOp(instr.ops[2]);
+            var dst = RewriteOp(instr.ops[0]);
+
+            m.Assign(dst, m.Slice(dt, mul(op1, op2), 64));
+        }
+
+        private void RewriteMull(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
+        {
+            var op1 = RewriteOp(instr.ops[1]);
+            var op2 = RewriteOp(instr.ops[2]);
+            var dst = RewriteOp(instr.ops[0]);
+
+            m.Assign(dst, m.Cast(dt, mul(op1, op2)));
         }
 
         private (Expression, Identifier) RewriteEffectiveAddress(MemoryOperand mem)

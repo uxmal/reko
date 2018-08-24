@@ -39,6 +39,7 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly RegisterStorage[] SimdRegs128;
         public static readonly RegisterStorage[] SimdRegs64;
         public static readonly RegisterStorage[] SimdRegs32;
+
         public static readonly RegisterStorage[] SimdRegs16;
         public static readonly RegisterStorage[] SimdRegs8;
 
@@ -49,6 +50,12 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly RegisterStorage fpsr;
 
         public static readonly Dictionary<string, RegisterStorage> ByName;
+
+        internal static bool IsIntegerRegister(RegisterStorage reg)
+        {
+            var prefix = reg.Name[0];
+            return prefix == 'w' || prefix == 'x';
+        }
 
         static Registers()
         {

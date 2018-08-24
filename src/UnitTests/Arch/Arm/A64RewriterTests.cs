@@ -896,5 +896,196 @@ namespace Reko.UnitTests.Arch.Arm
                  "0|L--|00100000(4): 1 instructions",
                  "1|L--|Mem0[x4 + -1:byte] = 0x00");
         }
+
+        [Test]
+        public void A64Rw_adr()
+        {
+            Given_Instruction(0x10000063);
+            AssertCode(     // adr\tx3,#&10000C
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x3 = 0010000C");
+        }
+
+        [Test]
+        public void A64Rw_orn()
+        {
+            Given_Instruction(0x2A2200F8);
+            AssertCode(     // orn\tw24,w7,w2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w24 = w7 | ~w2");
+        }
+
+        [Test]
+        public void A64Rw_mvn()
+        {
+            Given_Instruction(0x2A2203F8);
+            AssertCode(     // mvn\tw24,w2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w24 = ~w2");
+        }
+
+        [Test]
+        public void A64Rw_sdiv_64()
+        {
+            Given_Instruction(0x9AC20C62);
+            AssertCode(     // sdiv\tx2,x3,x2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x2 = x3 / x2");
+        }
+
+        [Test]
+        public void A64Rw_eor_reg_32()
+        {
+            Given_Instruction(0x4A140074);
+            AssertCode(     // eor\tw20,w3,w20
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w20 = w3 ^ w20");
+        }
+
+        [Test]
+        public void A64Rw_sub_reg_ext_64()
+        {
+            Given_Instruction(0xCB214F18);
+            AssertCode(     // sub\tx24,x24,w1,uxtw #3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x24 = x24 - (uint64) ((word32) w1)");
+        }
+
+        [Test]
+        public void A64Rw_bic_reg_32()
+        {
+            Given_Instruction(0x0A350021);
+            AssertCode(     // bic\tw1,w1,w21
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w1 = w1 & ~w21");
+        }
+
+        [Test]
+        public void A64Rw_umulh()
+        {
+            Given_Instruction(0x9BC57C00);
+            AssertCode(     // umulh\tx0,w0,w5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = SLICE(w0 *u w5, uint64, 64)");
+        }
+
+        [Test]
+        public void A64Rw_lsrv()
+        {
+            Given_Instruction(0x1AC22462);
+            AssertCode(     // lsrv\tw2,w3,w2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w2 = w3 >>u w2");
+        }
+
+        [Test]
+        public void A64Rw_smull()
+        {
+            Given_Instruction(0x9B237C43);
+            AssertCode(     // smull\tx3,w2,w3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x3 = (int64) (w2 *s w3)");
+        }
+
+        [Test]
+        public void A64Rw_smaddl()
+        {
+            Given_Instruction(0x9B233C43);
+            AssertCode(     // smaddl\tx3,w2,w3,x15
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x3 = x15 + (int64) (w2 *s w3)");
+        }
+
+        [Test]
+        public void A64Rw_strh_reg()
+        {
+            Given_Instruction(0x78206A62);
+            AssertCode(     // strh\tw2,[x19,x0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[x19 + x0:word16] = (word16) w2");
+        }
+
+        [Test]
+        public void A64Rw_stp_r64_pre()
+        {
+            Given_Instruction(0x6DB73BEF);
+            AssertCode(     // stp\td15,d14,[sp,-#&90]!
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|sp = sp + -144",
+                "2|L--|Mem0[sp:word64] = d15",
+                "3|L--|sp = sp + 8",
+                "4|L--|Mem0[sp:word64] = d14");
+        }
+
+        [Test]
+        public void A64Rw_ldr_r64_off()
+        {
+            Given_Instruction(0xFD45E540);
+            AssertCode(     // ldr\td0,[x10,#&BC8]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d0 = Mem0[x10 + 3016:word64]");
+        }
+
+        [Test]
+        public void A64Rw_str_r64_imm()
+        {
+            Given_Instruction(0xFD001BE0);
+            AssertCode(     // str\td0,[sp,#&30]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp + 48:word64] = d0");
+        }
+
+        [Test]
+        public void A64Rw_scvtf_int()
+        {
+            Given_Instruction(0x1E220120);
+            AssertCode(     // scvtf\ts0,w9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = (real32) (int32) w9");
+        }
+
+        // An AArch64 decoder for the instruction 4EA31C68 (DataProcessingScalarFpAdvancedSimd - op4) has not been implemented yet.
+        [Test]
+        public void A64Rw_4EA31C68()
+        {
+            Given_Instruction(0x4EA31C68);
+            AssertCode(     // @@@
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_ldp_w32()
+        {
+            Given_Instruction(0x296107A2);
+            AssertCode(     // ldp\tw2,w1,[x29,-#&F8]
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v5 = x29 + -248",
+                "2|L--|w2 = Mem0[v5:word32]",
+                "3|L--|v5 = v5 + 4",
+                "4|L--|w1 = Mem0[v5:word32]");
+        }
+
+        [Test]
+        public void A64Rw_scvtf_r32()
+        {
+            Given_Instruction(0x5E21D82F);
+            AssertCode(     // scvtf\ts15,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s15 = (real32) s1");
+        }
+
+        [Test]
+        public void A64Rw_stp_r32()
+        {
+            Given_Instruction(0x2D010FE2);
+            AssertCode(     // stp\ts2,s3,[sp,#&8]
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v5 = sp + 8",
+                "2|L--|Mem0[v5:word32] = s2",
+                "3|L--|v5 = v5 + 4",
+                "4|L--|Mem0[v5:word32] = s3");
+        }
+
     }
 }

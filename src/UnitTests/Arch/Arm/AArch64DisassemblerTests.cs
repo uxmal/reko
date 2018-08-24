@@ -690,8 +690,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("sturb\tw31,[x4,-#&1]");
         }
 
-        ////////////////////////////////////////////
-        
         [Test]
         public void AArch64Dis_adr()
         {

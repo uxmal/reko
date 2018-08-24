@@ -75,6 +75,7 @@
     <Compile Include="AArch32\BarrierOperand.cs" />
     <Compile Include="AArch32\T32Disassembler.Decoder.cs" />
     <Compile Include="AArch64.cs" />
+    <Compile Include="AArch64\A64Rewriter.Vector.cs" />
     <Compile Include="AArch64\AArch64Disassembler.cs" />
     <Compile Include="AArch64\AArch64Disassembler.Decoders.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />
