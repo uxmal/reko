@@ -49,8 +49,6 @@ namespace Reko.Arch.Mips
 
         public override MipsInstruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
             {

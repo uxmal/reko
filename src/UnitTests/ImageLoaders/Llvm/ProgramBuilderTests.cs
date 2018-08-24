@@ -63,7 +63,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
 
         public void Global(string name, DataType dt)
         {
-            globals.Add(name, new Identifier(name, dt, new MemoryStorage()));
+            globals.Add(name, Identifier.Global(name, dt));
         }
 
         private Procedure RunFuncTest(params string[] lines)

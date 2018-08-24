@@ -288,6 +288,12 @@ namespace Reko.Core.Expressions
 			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
 		}
 
+        /// <summary>
+        /// Create a new Constant whose bits are the inverse of
+        /// the bits of this Constant.
+        /// </summary>
+        public abstract Constant Complement();
+ 
         public virtual Constant Negate()
 		{
 			PrimitiveType p = (PrimitiveType) DataType;
@@ -507,6 +513,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override Constant Complement()
+        {
+            return new ConstantBool(DataType, !value);
+        }
+
         public override Expression Invert()
         {
             return new ConstantBool(DataType, !value);
@@ -568,6 +579,11 @@ namespace Reko.Core.Expressions
             return new ConstantSByte(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            return new ConstantSByte(DataType, (sbyte)~value);
+        }
+
         public override object GetValue()
         {
             return value;
@@ -622,6 +638,11 @@ namespace Reko.Core.Expressions
         public override Expression CloneExpression()
         {
             return new ConstantChar(DataType, value);
+        }
+
+        public override Constant Complement()
+        {
+            return new ConstantChar(DataType, (char)~value);
         }
 
         public override object GetValue()
@@ -680,6 +701,12 @@ namespace Reko.Core.Expressions
             return new ConstantByte(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            return new ConstantByte(DataType, (byte)~value);
+        }
+
+
         public override object GetValue()
         {
             return value;
@@ -736,6 +763,12 @@ namespace Reko.Core.Expressions
             return new ConstantInt16(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            return new ConstantInt16(DataType, (short)~value);
+        }
+
+
         public override object GetValue()
         {
             return value;
@@ -790,6 +823,11 @@ namespace Reko.Core.Expressions
         public override Expression CloneExpression()
         {
             return new ConstantUInt16(DataType, value);
+        }
+
+        public override Constant Complement()
+        {
+            return new ConstantUInt16(DataType, (ushort)~value);
         }
 
         public override object GetValue()
@@ -848,6 +886,11 @@ namespace Reko.Core.Expressions
             return new ConstantInt32(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            return new ConstantInt32(DataType, ~value);
+        }
+
         public override object GetValue()
         {
             return value;
@@ -903,6 +946,12 @@ namespace Reko.Core.Expressions
         {
             return new ConstantUInt32(DataType, value);
         }
+
+        public override Constant Complement()
+        {
+            return new ConstantUInt32(DataType, ~value);
+        }
+
 
         public override object GetValue()
         {
@@ -960,6 +1009,12 @@ namespace Reko.Core.Expressions
             return new ConstantInt64(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            return new ConstantInt64(DataType, ~value);
+        }
+
+
         public override object GetValue()
         {
             return value;
@@ -1014,6 +1069,11 @@ namespace Reko.Core.Expressions
         public override Expression CloneExpression()
         {
             return new ConstantUInt64(DataType, value);
+        }
+
+        public override Constant Complement()
+        {
+            return new ConstantUInt64(DataType, ~value);
         }
 
         public override object GetValue()
@@ -1072,6 +1132,11 @@ namespace Reko.Core.Expressions
             return new ConstantInt128(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            throw new NotImplementedException("ConstantInt128 needs to be implemented.");
+        }
+
         public override object GetValue()
         {
             return value;
@@ -1126,6 +1191,11 @@ namespace Reko.Core.Expressions
         public override Expression CloneExpression()
         {
             return new ConstantUInt128(DataType, value);
+        }
+
+        public override Constant Complement()
+        {
+            throw new NotImplementedException("ConstantUInt128 needs to be implemented.");
         }
 
         public override object GetValue()
@@ -1184,6 +1254,11 @@ namespace Reko.Core.Expressions
             return new ConstantInt128(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            throw new NotImplementedException("ConstantInt256 needs to be implemented.");
+        }
+
         public override object GetValue()
         {
             return value;
@@ -1238,6 +1313,11 @@ namespace Reko.Core.Expressions
         public override Expression CloneExpression()
         {
             return new ConstantUInt256(DataType, value);
+        }
+
+        public override Constant Complement()
+        {
+            throw new NotImplementedException("ConstantUInt256 needs to be implemented.");
         }
 
         public override object GetValue()
@@ -1382,6 +1462,11 @@ namespace Reko.Core.Expressions
             return new ConstantReal32(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            throw new NotSupportedException("Cannot complement a real value.");
+        }
+
         public override object GetValue()
         {
             return value;
@@ -1448,6 +1533,10 @@ namespace Reko.Core.Expressions
             return new ConstantReal80(DataType, value);
         }
 
+        public override Constant Complement()
+        {
+            throw new NotSupportedException("Cannot complement a real value.");
+        }
         public override object GetValue()
         {
             return value;
@@ -1514,6 +1603,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override Constant Complement()
+        {
+            throw new NotSupportedException("Cannot complement a real value.");
+        }
+
         public override Constant Negate()
         {
             return new ConstantReal64(DataType, -value);
@@ -1571,11 +1665,20 @@ namespace Reko.Core.Expressions
             return new StringConstant(DataType, str);
         }
 
+        public override Constant Complement()
+        {
+            throw new NotSupportedException("Cannot complement a real value.");
+        }
+
         public override object GetValue()
         {
             return str;
         }
 
+        public override Constant Negate()
+        {
+            throw new NotSupportedException("Cannot negate a string value.");
+        }
         public override byte ToByte()
         {
             throw new InvalidCastException();
