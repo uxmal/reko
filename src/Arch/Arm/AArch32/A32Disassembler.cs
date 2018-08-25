@@ -353,20 +353,20 @@ namespace Reko.Arch.Arm.AArch32
         // bit which determines whether or not to use Qx or Dx registers in SIMD
         private static Mutator q(int offset)
         {
-            return (u, d) => { d.state.useQ = bit(u, offset); return true; };
+            return (u, d) => { d.state.useQ = Bits.IsBitSet(u, offset); return true; };
         }
 
-        // sets the writeback bit.
+        // sets the writeback Bits.IsBitSet.
         private static Mutator w(int offset)
         {
-            return (u, d) => { d.state.writeback = bit(u, offset); return true; };
+            return (u, d) => { d.state.writeback = Bits.IsBitSet(u, offset); return true; };
         }
 
         // sets user bit (LDM user / STM user)
         private static Mutator u => (u, d) =>
             { d.state.userStmLdm = true; return true; };
 
-        // 12-bit encoded immediate at offset 0
+        // 12-Bits.IsBitSet encoded immediate at offset 0
         private static Mutator I =>
             (u, d) => { d.state.ops.Add(d.DecodeImm12(u)); return true; };
 
@@ -524,9 +524,9 @@ namespace Reko.Arch.Arm.AArch32
             int shiftAmt,
             PrimitiveType dt)
         { 
-            bool add = bit(wInstr, 23);
-            bool preIndex = bit(wInstr, 24);
-            bool wback = bit(wInstr, 21);
+            bool add = Bits.IsBitSet(wInstr, 23);
+            bool preIndex = Bits.IsBitSet(wInstr, 24);
+            bool wback = Bits.IsBitSet(wInstr, 21);
             bool writeback = !preIndex | wback;
             var mem = new MemoryOperand(dt)
             {
@@ -697,7 +697,7 @@ namespace Reko.Arch.Arm.AArch32
         private static Mutator SR =>
             (u, d) =>
             {
-                var sr = bit(u, 22) ? Registers.spsr : Registers.cpsr;
+                var sr = Bits.IsBitSet(u, 22) ? Registers.spsr : Registers.cpsr;
                 d.state.ops.Add(new RegisterOperand(sr));
                 return true;
             };

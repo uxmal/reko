@@ -1456,6 +1456,11 @@ namespace Reko.Core.Expressions
         {
             throw new NotImplementedException();
         }
+
+        public override double ToReal64()
+        {
+            return value.ToDouble(CultureInfo.InvariantCulture);
+        }
     }
 
     internal class ConstantReal32 : ConstantReal

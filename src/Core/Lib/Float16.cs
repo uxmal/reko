@@ -104,7 +104,6 @@ namespace Reko.Core.Lib
             int significand = sValue & ((1 << ExponentBitOffset) - 1);
             if (hBiasedExp == 0)
             {
-
                 throw new NotImplementedException("Denormal");
             }
             if (hBiasedExp >= 31)

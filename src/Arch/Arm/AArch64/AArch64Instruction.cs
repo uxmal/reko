@@ -83,6 +83,7 @@ namespace Reko.Arch.Arm.AArch64
         public MachineOperand[] ops;
         public Opcode shiftCode;
         public MachineOperand shiftAmount;
+        public VectorData vectorData;
 
         public override InstructionClass InstructionClass { get; }
 
@@ -133,6 +134,9 @@ namespace Reko.Arch.Arm.AArch64
         {
             switch (op)
             {
+            case RegisterOperand reg:
+                WriteRegister(reg.Register, writer);
+                break;
             case ImmediateOperand imm:
                 int v = imm.Value.ToInt32();
                 if (0 <= v && v <= 9)
@@ -148,6 +152,31 @@ namespace Reko.Arch.Arm.AArch64
                 op.Write(writer, options);
                 break;
             }
+        }
+
+        private void WriteRegister(RegisterStorage reg, MachineInstructionWriter writer)
+        {
+            int elemSize;
+            string elemName;
+            switch (vectorData)
+            {
+            case VectorData.F32:
+            case VectorData.I32:
+                elemSize = 32;
+                elemName = "s";
+                break;
+            case VectorData.F16:
+            case VectorData.I16:
+                elemSize = 16;
+                elemName = "h";
+                break;
+            default:
+                writer.WriteString(reg.Name);
+                return;
+            }
+            writer.WriteFormat("v{0}.", reg.Name.Substring(1));
+            int nElems = (int)reg.BitSize / elemSize;
+            writer.WriteFormat("{0}{1}", nElems, elemName);
         }
     }
 }

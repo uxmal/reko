@@ -30,6 +30,17 @@ namespace Reko.Core.Lib
     /// </summary>
     public static class Bits
     {
+        /// <summary>
+        /// Returns true if the bit at position <paramref name="pos"/> is set.
+        /// </summary>
+        public static bool IsBitSet(uint u, int pos)
+        {
+            return ((u >> pos) & 1) != 0;
+        }
+
+        /// <summary>
+        /// Returns true if exactly one bit of the word is set.
+        /// </summary>
         public static bool IsSingleBitSet(uint w)
         {
             return w != 0 && (w & (w - 1)) == 0;
@@ -117,6 +128,19 @@ namespace Reko.Core.Lib
             y = x >> 1; if (y != 0) return n - 2;
             var leading = n - (int) x;
             return leading;
+        }
+
+        /// <summary>
+        /// Change the endianness of <paramref name="u"/>.
+        /// </summary>
+        public static uint Reverse(uint u)
+        {
+            var uNew =
+                (u >> 24) |
+                (((u >> 16) & 0xFF) << 8) |
+                (((u >> 8) & 0xFF) << 16) |
+                ((u & 0xFF) << 24);
+            return uNew;
         }
     }
 }

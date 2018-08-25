@@ -175,6 +175,7 @@ namespace Reko.Arch.Arm.AArch64
 
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
+                base.DumpMaskedInstruction(wInstr, this.bitfields);
                 int n = (int) Bitfield.ReadFields(bitfields, wInstr);
                 var decoder = predicate(n) ? trueDecoder : falseDecoder;
                 return decoder.Decode(wInstr, dasm);
@@ -222,16 +223,20 @@ namespace Reko.Arch.Arm.AArch64
         private class InstrDecoder2 : Decoder
         {
             private readonly Opcode opcode;
+            private readonly VectorData vectorData;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder2(Opcode opcode, params Mutator[] mutators)
+            public InstrDecoder2(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
             {
                 this.opcode = opcode;
+                this.vectorData = vectorData;
                 this.mutators = mutators;
             }
+
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
                 dasm.state.opcode = this.opcode;
+                dasm.state.vectorData = this.vectorData;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
                     if (!mutators[i](wInstr, dasm))
@@ -242,7 +247,6 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 var instr = dasm.state.MakeInstruction();
                 return instr;
-                throw new NotImplementedException();
             }
         }
     }

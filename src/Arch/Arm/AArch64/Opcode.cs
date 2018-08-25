@@ -136,5 +136,16 @@ namespace Reko.Arch.Arm.AArch64
         bif,
         ucvtf,
         umull,
+        fmul,
+        fdiv,
+        fadd,
+        fsub,
+        fmax,
+        fnmul,
+        fmaxnm,
+        fmin,
+        fcvtms,
+        sxtl,
+        fmov,
     }
 }

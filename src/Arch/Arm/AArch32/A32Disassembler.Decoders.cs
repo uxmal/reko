@@ -40,11 +40,6 @@ namespace Reko.Arch.Arm.AArch32
                 return (u >> shift) & mask;
             }
 
-            public static bool bit(uint u, int shift)
-            {
-                return ((u >> shift) & 1) != 0;
-            }
-
             protected void DumpMaskedInstruction(uint wInstr, uint shMask)
             {
                 return;

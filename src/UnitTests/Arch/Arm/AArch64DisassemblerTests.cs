@@ -838,6 +838,212 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("stp\ts2,s3,[sp,#&8]");
         }
 
+        ////////////////////////////////////////////
+        [Test]
+        public void AArch64Dis_4F03F600()
+        {
+            Given_Instruction(0x4F03F600);
+            Expect_Code("@@@");
+        }
+
+        // An AArch64 decoder for the instruction FC4807EA (ldr - postidx SIMD&FP 64-bit) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_FC4807EA()
+        {
+            Given_Instruction(0xFC4807EA);
+            Expect_Code("@@@");
+        }
+
+        // An AArch64 decoder for the instruction 1E2E1003 (DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b00 op2=x1xx op3!=xxx000000) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_1E2E1003()
+        {
+            Given_Instruction(0x1E2E1003);
+            Expect_Code("@@@");
+        }
+
+        // An AArch64 decoder for the instruction 4EA81D00 (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0101) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_4EA81D00()
+        {
+            Given_Instruction(0x4EA81D00);
+            Expect_Code("@@@");
+        }
+
+
+        // An AArch64 decoder for the instruction 4EA11C24 (bit) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_4EA11C24()
+        {
+            Given_Instruction(0x4EA11C24);
+            Expect_Code("@@@");
+        }
+
+
+        // An AArch64 decoder for the instruction 1E6202E0 (ConversionBetweenFpAndInt sf:S=0b00 type=01) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_1E6202E0()
+        {
+            Given_Instruction(0x1E6202E0);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void AArch64Dis_add_32_ext()
+        {
+            Given_Instruction(0x0B20A1EF);
+            Expect_Code("add\tw15,w15,w0,sxth #0");
+        }
+
+        // An AArch64 decoder for the instruction 1E2E1008 (DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b00 op2=x1xx op3!=xxx000000) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_1E2E1008()
+        {
+            Given_Instruction(0x1E2E1008);
+            Expect_Code("@@@");
+        }
+
+        // An AArch64 decoder for the instruction 6E020653 (DataProcessingScalarFpAdvancedSimd - op0=6 op1=0) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_6E020653()
+        {
+            Given_Instruction(0x6E020653);
+            Expect_Code("@@@");
+        }
+
+
+        // An AArch64 decoder for the instruction 9E6701B0 (DataProcessingScalarFpAdvancedSimd - op0=9) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_9E6701B0()
+        {
+            Given_Instruction(0x9E6701B0);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void AArch64Dis_sxtl()
+        {
+            Given_Instruction(0x0F10A673);
+            Expect_Code("sxtl\tv19.4h,v19.4h");
+        }
+
+        [Test]
+        public void AArch64Dis_fadd_vector_real32()
+        {
+            Given_Instruction(0x4E33D4D3);
+            Expect_Code("fadd\tv19.4s,v6.4s,v19.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_fcvtzs_vector_real32()
+        {
+            Given_Instruction(0x4EA1BAB5);
+            Expect_Code("fcvtzs\tv21.4s,v21.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_fmul_real32()
+        {
+            Given_Instruction(0x1E210B25);
+            Expect_Code("fmul\ts5,s25,s1");
+        }
+
+
+        // An AArch64 decoder for the instruction 1E380069 (fcvtzs) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_1E380069()
+        {
+            Given_Instruction(0x1E380069);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void AArch64Dis_ucvtf_real32_int32()
+        {
+            Given_Instruction(0x1E230101);
+            Expect_Code("ucvtf\ts1,w8");
+        }
+
+
+        // An AArch64 decoder for the instruction 4EAA1D41 (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0101) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_4EAA1D41()
+        {
+            Given_Instruction(0x4EAA1D41);
+            Expect_Code("@@@");
+        }
+
+        // An AArch64 decoder for the instruction 6CC62BEB (LdStRegPairPre opc=0b01) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_6CC62BEB()
+        {
+            Given_Instruction(0x6CC62BEB);
+            Expect_Code("@@@");
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal16Immediate_1()
+        {
+            var c = AArch64Disassembler.DecodeReal16FpConstant(0x70);
+            Assert.AreEqual("1.0", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal16Immediate_minus1_9375()
+        {
+            var c = AArch64Disassembler.DecodeReal16FpConstant(0xFF);
+            Assert.AreEqual("-1.9375", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal16Immediate_31()
+        {
+            var c = AArch64Disassembler.DecodeReal16FpConstant(0x3F);
+            Assert.AreEqual("31.0", c.ToString());
+        }
+
+
+        [Test]
+        public void AArch64Dis_DecodeReal32Immediate_1()
+        {
+            var c = AArch64Disassembler.DecodeReal32FpConstant(0x70);
+            Assert.AreEqual("1.0F", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal32Immediate_minus1_9375()
+        {
+            var c = AArch64Disassembler.DecodeReal32FpConstant(0xFF);
+            Assert.AreEqual("-1.9375F", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal32Immediate_31()
+        {
+            var c = AArch64Disassembler.DecodeReal32FpConstant(0x3F);
+            Assert.AreEqual("31.0F", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal64Immediate_1()
+        {
+            var c = AArch64Disassembler.DecodeReal64FpConstant(0x70);
+            Assert.AreEqual("1.0", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal64Immediate_minus1_9375()
+        {
+            var c = AArch64Disassembler.DecodeReal64FpConstant(0xFF);
+            Assert.AreEqual("-1.9375", c.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_DecodeReal64Immediate_31()
+        {
+            var c = AArch64Disassembler.DecodeReal64FpConstant(0x3F);
+            Assert.AreEqual("31.0", c.ToString());
+        }
 
     }
 }
