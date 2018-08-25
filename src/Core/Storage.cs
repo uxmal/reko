@@ -904,6 +904,7 @@ namespace Reko.Core
             Domain = domain;
             Name = name;
             DataType = dt;
+            BitSize = (uint)dt.BitSize;
         }
 
         public TemporaryStorage(string name, int number, DataType dt)
