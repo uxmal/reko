@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.NativeInterface;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -138,11 +139,18 @@ namespace Reko.Arch.Arm.AArch64
                 WriteRegister(reg.Register, writer);
                 break;
             case ImmediateOperand imm:
-                int v = imm.Value.ToInt32();
-                if (0 <= v && v <= 9)
-                    writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                if (imm.Width.Domain == Domain.Real)
+                {
+                    writer.WriteFormat($"#{imm.Value}");
+                }
                 else
-                    writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                {
+                    int v = imm.Value.ToInt32();
+                    if (0 <= v && v <= 9)
+                        writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                    else
+                        writer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                }
                 break;
             case AddressOperand addrOp:
                 ulong linAddr = addrOp.Address.ToLinear();

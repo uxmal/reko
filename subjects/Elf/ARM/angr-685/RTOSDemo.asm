@@ -17,7 +17,7 @@ l00000061:
 	strbvs	r4,[r0],-#&5F8
 
 l00000065:
-	Invalidne
+	Invalid
 
 l00000069:
 	msrge	spsr,#&BDD
@@ -29,7 +29,7 @@ l00000071:
 	mvneq	r0,r6,lsl #&A
 
 l00000075:
-	Invalidpl
+	Invalid
 
 l00000079:
 	blvs	$FEC5AF49
@@ -47,8 +47,8 @@ l00000085:
 	ldrhteq	r5,[r2],#&C2
 	svc	#&D1F12B
 	ldrbmi	r8,[r8,#&523]!
-	Invalidhi
-	Invalidvs
+	Invalid
+	ldmibvs	r0,{r1,r3-r7,fp}^
 	ldrbtmi	r9,[r8],#&5FA
 	adcseq	r6,r2,r0,asr #8
 	blhs	$FF745965
@@ -57,20 +57,20 @@ l00000085:
 	teq	ip,#&38
 	blvs	$FEC9738D
 	blpl	$01A4AF8D
-	Invalideq
+	strheq	r3,[r6],-#&1
 	ldrshteq	r10,[pc],#&80                                     ; 00000151
 	bicseq	pc,r0,r8,lsr #8
 	blvs	$FFC005C9
-	Invalidpl
+	Invalid
 	Invalid
 	strhi	pc,[r3,-#&FD1]!
-	Invalidlt
+	ldclt	p4,c4,[r0,-#&3E0]!
 	stmeq	r0,{r3,r5-r7,ip-lr}
 	ldrshtvc	r6,[r10],#&20
 
 ;; prvCopyDataToQueue: 000000ED
 prvCopyDataToQueue proc
-	Invalideq
+	strheq	r0,[r6],-#&45
 
 l000000F1:
 	stmhs	fp!,{r2-r3,r5-r6,r8,r10,sp,pc}
@@ -94,7 +94,7 @@ l00000109:
 	blpl	$FFC02AB1
 
 l0000010D:
-	Invalidhs
+	ldrshhs	r10,[r8,-#&3A]!
 
 l00000111:
 	bleq	$01A18AC9
@@ -117,7 +117,7 @@ l00000125:
 
 l0000012D:
 	msr	spsr,#&2FA
-	Invalidhs
+	Invalid
 
 l00000135:
 	blhi	$01104EDD
@@ -156,7 +156,7 @@ l00000161:
 	ldrbvc	r0,[r0,#&168]!
 
 l00000165:
-	Invalidvs
+	Invalid
 
 l00000169:
 	rsceq	ip,r7,#&600000
@@ -169,10 +169,10 @@ l00000171:
 	asrsgt	r1,r6,asr #&20
 
 l00000175:
-	Invalidne
+	eretne
 
 l00000179:
-	Invalidgt
+	crc32wgt	r10,r2,r4
 
 l0000017D:
 	rorseq	r2,r0,ror #8
@@ -187,7 +187,7 @@ l00000189:
 	ldrshtvc	r1,[r10],#&C0
 
 l0000018D:
-	Invalidhs
+	Invalid
 
 ;; xQueueGenericSend: 00000191
 xQueueGenericSend proc
@@ -197,16 +197,16 @@ l00000195:
 	ldrteq	r8,[r0],#&425
 
 l00000199:
-	Invalideq
+	crc32cweq	r8,r6,r6
 
 l0000019D:
 	stmge	r6,{r1,r4,r7-ip}
 
 l000001A1:
 	Invalid
-	Invalideq
+	stmdbeq	r0,{r4,r7-r10,sp}^
 	ldrshteq	r0,[r10],#&20
-	Invalideq
+	ldmdbeq	ip,{r4-r7,r9-fp,sp}^
 	ldrbtls	lr,[r9],#&2F0
 	svc	#&3044F8
 	ldrthi	r0,[pc],#&82B                                       ; 000009EC
@@ -214,13 +214,13 @@ l000001A1:
 	svc	#&3045F8
 	ldrthi	r0,[pc],#&82B                                       ; 000009F8
 	stmeq	r0,{r3-r8,r10,lr}
-	Invalideq
+	ldrsheq	pc,[r9]!
 	adceq	r0,r8,r9,lsr #5
 	ldrshteq	ip,[pc]                                           ; 000001DD
-	Invalideq
+	ldmdbeq	r1,{r3,r5,ip,lr}^
 	rscsge	ip,r9,#&F000
 	bls	$01AF8F95
-	Invalideq
+	ldmdbeq	r0,{r1,r6,r8-r10,ip}^
 	ldrshths	lr,[r9],#&20
 	mvnslo	pc,#&118
 	bllo	$FFC005F5
@@ -232,18 +232,18 @@ l000001A1:
 	umlalseq	r9,r3,lr,r6
 	sbcseq	ip,r1,#&B400
 	ldrbls	r0,[r0,r8,lsr #1]!
-	Invalideq
-	Invalideq
+	stmdbeq	r7,{r0-r10,lr-pc}^
+	ldrsheq	ip,[r9,#&A0]!
 	smlalsne	r0,r1,r9,r4
 	blle	$FFC00229
 	svc	#&4620FE
 	ldrshteq	r1,[pc],#&67                                      ; 00000298
 	ldrshteq	r1,[lr],#&E0
 	svcmi	#&D1E028
-	Invalidgt
+	ldmgt	r3,{r4-r7,pc}^
 	svclt	#&3000F8
 	svclt	#&8F4FF3
-	Invalidle
+	Invalid
 	smlalttpl	r3,r6,r7,r10
 	svc	#&462046
 	mvnsvs	r4,#&F70
@@ -255,13 +255,13 @@ l000001A1:
 	mvnsge	r0,#&8F0000
 	strteq	r0,[r0],-#&1F9
 	Invalid
-	Invalidls
+	Invalid
 	strbeq	r3,[r6],-#&F9
 	Invalid
 	svc	#&462087
 	ldrshteq	lr,[lr],#&A7
 	ldrshteq	pc,[sp],#&20
-	Invalidlt
+	Invalid
 	streq	pc,[r7],#&E8
 	strdeq	r2,r3,[r0],-r1
 	ldrshteq	ip,[lr],#&20
@@ -271,7 +271,7 @@ l000001A1:
 
 ;; xQueuePeekFromISR: 000002A5
 xQueuePeekFromISR proc
-	Invalidne
+	ldrhne	lr,[r3,#&F5]!
 
 l000002A9:
 	svclt	#&F04F85
@@ -292,22 +292,22 @@ l000002BD:
 	strbhi	r1,[r6,-#&8B9]
 
 l000002C1:
-	Invalidvc
+	Invalid
 
 l000002C5:
-	Invalidgt
+	Invalid
 
 l000002C9:
 	svcmi	#&F7FF68
 
 l000002CD:
-	Invalideq
+	ldrsheq	lr,[r0,-#&6F]!
 
 l000002D1:
 	mvnsne	r8,r0,lsr #&A
 
 l000002D5:
-	Invalidhs
+	Invalid
 
 ;; xQueueGenericReceive: 000002D9
 xQueueGenericReceive proc
@@ -317,16 +317,16 @@ l000002DD:
 	ldrteq	r8,[r0],#&425
 
 l000002E1:
-	Invalideq
+	crc32cweq	r8,r6,r6
 
 l000002E5:
 	svchs	#&469992
 
 l000002E9:
-	Invalidlo
+	ldmdblo	r8,{r1-r2,r6,r8-ip,lr-pc}^
 
 l000002ED:
-	Invalideq
+	stmdbeq	r0,{r0,r7,r10-fp}^
 
 l000002F1:
 	mvnsge	r4,#&F
@@ -335,20 +335,20 @@ l000002F5:
 	strlo	r0,[fp,-fp,rrx #1]!
 
 l000002F9:
-	Invalidpl
+	ldmibpl	r0,{r4,r6-r7,fp}^
 
 l000002FD:
 	svc	#&4620F9
 	ldrshteq	r10,[lr],#&A7
 
 l00000305:
-	Invalideq
+	ldrsheq	fp,[sp,#&20]!
 
 l00000309:
 	ldrblo	r0,[r0,#&825]!
 
 l0000030D:
-	Invalideq
+	Invalid
 
 l00000311:
 	bicseq	r4,r1,lr,lsr #&1A
@@ -357,7 +357,7 @@ l00000315:
 	strtmi	r0,[fp],-#&9B
 
 l00000319:
-	Invalidlo
+	Invalid
 
 l0000031D:
 	ubfxmi	r0,r0,#&11,#&11
@@ -366,7 +366,7 @@ l00000321:
 	mvnsvc	r0,#&F9
 
 l00000325:
-	Invalidhs
+	Invalid
 
 l00000329:
 	ldrbtmi	r9,[r8],#&4F9
@@ -396,14 +396,14 @@ l00000349:
 	ldrbeq	r0,[r0,#&A8]!
 
 l0000034D:
-	Invalidgt
+	Invalid
 
 l00000351:
 	svc	#&4620D0
 	ldrshteq	r8,[lr],#&7
 
 l00000359:
-	Invalideq
+	ldmdbeq	sp,{r4-r7,fp,pc}^
 
 l0000035D:
 	mvnsge	r0,#&F000
@@ -412,7 +412,7 @@ l00000361:
 	ldmeq	r1!,{r0-r1,r3,r5-r6,r8-r9,fp-pc}
 
 l00000365:
-	Invalidgt
+	Invalid
 
 l00000369:
 	mvnshs	r0,r7,ror #&11
@@ -436,7 +436,7 @@ l00000381:
 	mvnsvc	r0,#&FE
 
 l00000385:
-	Invalidlt
+	Invalid
 
 l00000389:
 	ldrsbthi	r4,[r0],#&F1
@@ -457,20 +457,20 @@ l0000039D:
 	mvnsle	r0,r8,lsr #1
 
 l000003A1:
-	Invalideq
+	stmdbeq	r7,{r1-r7,r10-sp,pc}^
 
 l000003A5:
 	ldrshteq	r0,[r9],#&40
 
 l000003A9:
-	Invalidlt
+	Invalid
 
 l000003AD:
 	orrpl	pc,r7,r8,ror #1
 
 l000003B1:
 	strb	r2,[r6,-#&46]
-	Invalidle
+	ldmible	r7,{r3,r5-r6,r8-pc}^
 
 l000003B9:
 	ldrshteq	fp,[r1],#&9E
@@ -488,10 +488,10 @@ l000003C9:
 	ldmeq	fp!,{r0,r3,r5-r6,r8-r9}
 
 l000003CD:
-	Invalideq
+	ldrsheq	pc,[r8]!
 
 l000003D1:
-	Invalidlt
+	Invalid
 
 l000003D5:
 	stmeq	r7,{r3,r5-r7,ip-pc}
@@ -515,7 +515,7 @@ l000003DD:
 	rscsne	r0,r1,r7,ror #9
 	mvnseq	r0,#0
 	Invalid
-	Invalideq
+	Invalid
 	ldrshtvs	r5,[pc],#&A0                                      ; 000004C5
 	strbteq	sp,[r7],#&160
 	rscne	r0,r0,sp,ror #1
@@ -528,7 +528,7 @@ l0000042D:
 	ldrbtge	r10,[r8],#&4F0
 
 l00000431:
-	Invalidlt
+	Invalid
 
 l00000435:
 	strdne	r2,r3,[r6],-#&8
@@ -541,7 +541,7 @@ uxQueueSpacesAvailable proc
 	stmeq	r6,{r0,r2,r4-r5,r7-r8,r10}
 
 l00000441:
-	Invalidge
+	ldmdbge	r8,{r4-r7,r9,fp-ip,pc}^
 
 l00000445:
 	strbths	lr,[fp],-#&C6B
@@ -561,7 +561,7 @@ vQueueDelete proc
 
 ;; xQueueGenericSendFromISR: 00000459
 xQueueGenericSendFromISR proc
-	Invalidne
+	ldrhne	lr,[r3,#&F5]!
 
 l0000045D:
 	svclt	#&F04F86
@@ -585,15 +585,15 @@ l00000475:
 	msreq	cpsr,#&2D3
 
 l00000479:
-	Invalidhi
+	Invalid
 
 l0000047D:
 	Invalid
 	ldrbmi	r9,[r8,#&BD]!
 	strbvs	r1,[r6],-#&740
 	strbeq	r1,[r6,-#&AB2]
-	Invalidhs
-	Invalideq
+	Invalid
+	Invalid
 	ldrtvs	r0,[r4],-#&1D0
 	ldrbmi	r8,[r8,#&5B2]!
 	strthi	r0,[r0],-r0
@@ -604,12 +604,12 @@ l0000047D:
 	ldrshteq	fp,[sp],#&40
 	sbcseq	pc,r0,r8,lsr #4
 	bicseq	pc,r0,pc,lsr #&20
-	Invalidle
+	Invalid
 	ldmlo	pc!,{r0-r2,r5-r7}
 
 ;; xQueueGiveFromISR: 000004C5
 xQueueGiveFromISR proc
-	Invalidne
+	ldrhne	lr,[r3,#&F5]!
 
 l000004C9:
 	svclt	#&F04F84
@@ -661,12 +661,12 @@ l00000505:
 
 l00000509:
 	Invalid
-	Invalideq
+	ldceq	p4,c2,[r0,-#&340]!
 	mvnshi	r0,#&46
 	Invalid
-	Invalid
+	stc	p0,c0,[sp],-#&340
 	stmdahs	r0!,{r4,r6-r8}
-	Invalidhs
+	Invalid
 
 ;; xQueueReceiveFromISR: 00000525
 xQueueReceiveFromISR proc
@@ -694,23 +694,23 @@ l00000541:
 l00000545:
 	Invalid
 	subls	r0,r6,r1,lsl #&F
-	Invalidls
+	ldrshls	r4,[r0],-#&48
 	svc	#&B26D46
-	Invalideq
-	Invalidlt
+	ldrsheq	r0,[lr,#&A7]!
+	Invalid
 	bicseq	r0,r0,r3,ror #&10
-	Invalidhi
-	Invalideq
+	Invalid
+	ldrsheq	r4,[r0,-#&48]
 	mvnsne	r8,r0,lsr #&C
 	Invalid
 	rsbeq	r3,r9,r1,lsl #&17
 	ldrbeq	pc,[r0,fp,lsr #14]
-	Invalideq
+	Invalid
 	ldrshteq	r4,[sp],#&E0
-	Invalidlt
+	ldmdblt	r0,{r3,r5,r8,ip-pc}^
 	Invalid
 	stmdagt	r0!,{r4,r6-r8}
-	Invalidle
+	Invalid
 	adcshi	r0,pc,r7,ror #1
 
 ;; xQueueIsQueueEmptyFromISR: 00000595
@@ -742,7 +742,7 @@ uxQueueMessagesWaitingFromISR proc
 
 ;; xQueueGetMutexHolder: 000005B5
 xQueueGetMutexHolder proc
-	Invalideq
+	Invalid
 
 l000005B9:
 	mvnshs	sp,#&F00
@@ -753,7 +753,7 @@ l000005BD:
 l000005C1:
 	Invalid
 	strdne	r2,r3,[r6],-#&F
-	Invalideq
+	Invalid
 	ldrshths	pc,[pc]                                           ; 000005D5
 	adcsvc	r1,sp,r6,asr #&20
 
@@ -771,14 +771,14 @@ l000005E1:
 	sbcseq	r0,r0,r2,asr #&14
 
 l000005E5:
-	Invalidne
+	stmne	r6,{r0-r1,r5,r9,ip-sp}^
 
 l000005E9:
 	svc	#&462046
 	ldrshtne	r7,[lr],#&47
 
 l000005F1:
-	Invalideq
+	strheq	lr,[r8,-#&31]!
 
 l000005F5:
 	rsbvc	lr,r0,r3,lsr r3
@@ -802,7 +802,7 @@ l00000611:
 	stmdalo	r0!,{r4,r6-r7}
 
 l00000615:
-	Invalideq
+	strheq	lr,[r8,-#&3D]!
 
 l00000619:
 	bleq	$0183930D
@@ -815,14 +815,14 @@ l00000621:
 
 l00000625:
 	svc	#&461946
-	Invalideq
+	ldrsheq	fp,[sp,#&27]!
 
 l0000062D:
 	adcsvc	r3,sp,r0,lsr #&10
 
 ;; xQueueGenericReset: 00000631
 xQueueGenericReset proc
-	Invalideq
+	Invalid
 
 l00000635:
 	streq	pc,[r5,-r6,asr #30]!
@@ -859,13 +859,13 @@ l00000661:
 	ldreq	r1,[r9,r9,ror #22]!
 
 l00000665:
-	Invalideq
+	Invalid
 
 l00000669:
 	ldrteq	r7,[sp],#&20
 
 l0000066D:
-	Invalideq
+	Invalid
 
 l00000671:
 	ldrshteq	sp,[ip],#&40
@@ -883,28 +883,28 @@ l00000681:
 	svclt	#&8F4FF3
 
 l00000685:
-	Invalideq
+	Invalid
 
 l00000689:
-	Invalideq
+	Invalid
 
 l0000068D:
 	ldrteq	r7,[sp],#&20
 
 l00000691:
-	Invalideq
+	Invalid
 
 l00000695:
 	ldrbteq	r1,[lr],#&CF0
 
 l00000699:
-	Invalideq
+	Invalid
 
 l0000069D:
-	Invalideq
+	Invalid
 
 l000006A1:
-	Invalideq
+	Invalid
 
 l000006A5:
 	ldrteq	r7,[sp],#&20
@@ -914,13 +914,13 @@ l000006A9:
 
 ;; xQueueGenericCreate: 000006AD
 xQueueGenericCreate proc
-	Invalideq
+	strheq	r0,[r6],-#&65
 
 l000006B1:
-	Invalidmi
+	ldmdbmi	r0,{r0-r1,r3-r8}^
 
 l000006B5:
-	Invalideq
+	Invalid
 
 l000006B9:
 	ldrbteq	r3,[r8],#&8F0
@@ -929,11 +929,11 @@ l000006BD:
 	ldrpl	r4,[r1,#&846]!
 
 l000006C1:
-	Invalidmi
+	ldmdbmi	r1,{r0,r4-r5,r7}^
 
 l000006C5:
 	strbt	r0,[r0],-r3
-	Invalideq
+	ereteq
 
 l000006CD:
 	svc	#&462021
@@ -947,7 +947,7 @@ l000006D9:
 
 ;; xQueueCreateMutex: 000006DD
 xQueueCreateMutex proc
-	Invalideq
+	strheq	r0,[r6],-#&25
 
 l000006E1:
 	svc	#&200121
@@ -967,11 +967,11 @@ l000006F5:
 	ldrshths	r4,[sp],#&A7
 
 l000006FD:
-	Invalidhs
+	Invalid
 
 ;; prvInitialiseNewTask: 00000701
 prvInitialiseNewTask proc
-	Invalideq
+	Invalid
 
 l00000705:
 	strbhs	r9,[r6,-#&99C]
@@ -1010,7 +1010,7 @@ l00000731:
 	msrne	spsr,#&1F8
 
 l00000735:
-	Invalideq
+	Invalid
 
 l00000739:
 	Invalid
@@ -1019,28 +1019,28 @@ l00000739:
 	sub	r1,r6,#&980000
 	strbteq	r10,[r5],-#&264
 	strhi	r2,[r0],-#&4F1
-	Invalid
+	uqsub8	r5,r0,r8
 	ldrbgt	r0,[r0,r5,ror #14]!
-	Invalidlo
+	ldmdblo	r1,{r0,r2-r7,r10}^
 	mvnsgt	r0,#0
 	rscseq	ip,r1,#&3F40000
 	rsbhs	r10,r3,#&C000000
-	Invalideq
+	Invalid
 	ldrhs	r2,[sp],-#&99
 	rsbeq	r6,r4,r3,ror #8
-	Invalidhs
+	Invalid
 	strbhi	r5,[r6],-#&366
 	bmi	$01819B65
 	stmhs	r6,{r1-r2,r6,r8,lr}
 	Invalid
 	ldrshhs	r0,[fp],sp
-	Invalidne
 	Invalid
-	Invalidhs
+	Invalid
+	Invalid
 
 ;; prvAddNewTaskToReadyList: 00000799
 prvAddNewTaskToReadyList proc
-	Invalidhs
+	stchs	p0,c15,[r1,-#&3A4]
 
 l0000079D:
 	strbeq	r0,[r6,-ip,asr #10]
@@ -1059,7 +1059,7 @@ l000007AD:
 
 l000007B1:
 	ldm	r3!,{r0-r3,r5-r6,r8-r9,fp,sp}
-	Invalideq
+	ldmdbeq	r1,{r2-r3,r5-r6,r10}^
 
 l000007B9:
 	msr	cpsr,r6
@@ -1069,7 +1069,7 @@ l000007C1:
 	rschi	r0,fp,r0,asr #&20
 
 l000007C5:
-	Invalideq
+	mrseq	r11_usr,r0
 
 l000007C9:
 	rschi	r0,fp,r2,lsr r6
@@ -1084,38 +1084,96 @@ l000007D5:
 	blhi	$FFC02579
 
 l000007D9:
-	Invalid
+	ldmib	r0,{r0,r2-r10}^
 	msrvs	spsr,#&3FE
+
+l000007E1:
 	bl	$01A192AD
 	bls	$01B3519D
+
+l000007E9:
 	svcmi	#&D20742
-	Invalidne
+
+l000007ED:
+	ldmne	r2,{r4-r7,pc}^
+
+l000007F1:
 	svclt	#&601A4B
+
+l000007F5:
 	svclt	#&8F4FF3
-	Invalidlt
+
+l000007F9:
+	Invalid
+
+l000007FD:
 	orrvs	pc,r1,#&E8
+
+l00000801:
 	blle	$01B3A9A9
-	Invalideq
+
+l00000805:
+	ldmdbeq	r1,{r2-r3,r5-r6,r10}^
+
+l00000809:
 	stmls	r2,{r1-r2,r8-r9,pc}
+
+l0000080D:
 	msrle	spsr,#&5BF
+
+l00000811:
 	msrhs	spsr,#&5E7
-	Invalidgt
-	Invalideq
+
+l00000815:
+	stcgt	p1,c0,[fp],-#&1A0
+
+l00000819:
+	ldmdbeq	r1,{r0,r4,r6-r7,r10}^
+
+l0000081D:
 	strbeq	r3,[r6,-r6]
+
+l00000821:
 	ldrbteq	r5,[sp],#&6F0
+
+l00000825:
 	streq	r3,[r8],-#&F1
-	Invalideq
+
+l00000829:
+	Invalid
+
+l0000082D:
 	ldrbteq	r5,[sp],#&F0
+
+l00000831:
 	strdmi	r4,r5,[r7],-r1
+
+l00000835:
 	blmi	$FFC02555
-	Invalideq
+
+l00000839:
+	Invalid
+
+l0000083D:
 	ldrbteq	r4,[sp],#&8F0
-	Invalideq
+
+l00000841:
+	Invalid
+
+l00000845:
 	ldrbtgt	r4,[sp],#&4F0
+
+l00000849:
 	stm	r0,{r3-r7,r10-fp,sp-lr}
 	msrlt	spsr,#&76C
+
+l00000851:
 	ldrtgt	r0,[pc],#&E7                                        ; 00000940
+
+l00000855:
 	strteq	r0,[r0]
+
+l00000859:
 	rscvc	r0,r0,sp,ror #1
 
 ;; prvAddCurrentTaskToDelayedList.isra.0: 0000085D
@@ -1129,7 +1187,7 @@ l00000865:
 	strbths	r6,[r8],-#&60
 
 l00000869:
-	Invalidvs
+	ldmibvs	r0,{r4-r5,r8-r10}^
 
 l0000086D:
 	ldrsheq	r3,[r9,sp]!
@@ -1145,7 +1203,7 @@ l0000087D:
 	strblo	lr,[r7,-#&303]!
 
 l00000881:
-	Invalidge
+	Invalid
 
 l00000885:
 	bleq	$01897D95
@@ -1160,16 +1218,16 @@ l00000891:
 	ldrbtle	r3,[sp],#&CF0
 
 l00000895:
-	Invalidls
+	ldcls	p4,c8,[r0,-#&3E0]!
 
 l00000899:
 	ldrtgt	r3,[pc],#&842                                       ; 000010E3
 
 l0000089D:
-	Invalidvc
+	ldrshvc	r8,[r0],-#&48
 
 l000008A1:
-	Invalidvs
+	strhvs	r2,[pc,-#&D]!                                       ; 000008B6
 
 l000008A5:
 	rscvc	fp,r8,r8,ror #&1A
@@ -1181,7 +1239,7 @@ l000008AD:
 	ldrtgt	r2,[sp],#&EF0
 
 l000008B1:
-	Invalidhs
+	stchs	p0,c0,[r0]!
 
 ;; xTaskCreate: 000008B5
 xTaskCreate proc
@@ -1191,7 +1249,7 @@ l000008B9:
 	adcsls	r8,r0,r6,asr #8
 
 l000008BD:
-	Invalidhi
+	stmhi	r6,{r9-r10,ip}^
 
 l000008C1:
 	subeq	r9,r6,r6,asr #&14
@@ -1201,7 +1259,7 @@ l000008C5:
 	stmvs	r6,{r0,r4-r5,r7-r8,r10}
 
 l000008CD:
-	Invalidhs
+	Invalid
 
 l000008D1:
 	stmle	r6,{r0-r7,r10}
@@ -1213,13 +1271,13 @@ l000008D9:
 	ldrhi	r0,[sp],#&D65
 
 l000008DD:
-	Invalideq
+	ldrsheq	r6,[r0,-#&58]!
 
 l000008E1:
 	orrspl	r0,sp,#&9500
 
 l000008E5:
-	Invalidmi
+	stmmi	r6,{r1-r2,r6,r9,ip-sp}^
 
 l000008E9:
 	movteq	r4,#&6046
@@ -1232,10 +1290,10 @@ l000008F1:
 
 l000008F5:
 	svc	#&4620FF
-	Invalideq
+	Invalid
 
 l000008FD:
-	Invalidlt
+	Invalid
 
 l00000901:
 	svcmi	#&87F0E8
@@ -1263,11 +1321,11 @@ xTaskCreateRestricted proc
 	rscsne	sp,r8,r9,lsl #9
 	smulttvs	r5,r0,r1
 	orrseq	r0,r0,r8,ror #4
-	Invalidne
+	ldmdbne	r8,{r0-r2,r4,r7,r10,ip,lr}^
 	rscseq	ip,r8,fp,lsl #&1A
 	svc	#&9403E0
-	Invalidhs
-	Invalidne
+	ldmdbhs	lr,{r0-r2,r4-r7,r10,ip,lr-pc}^
+	Invalid
 	strbeq	r3,[r6,-#&FF]
 	svcmi	#&BDF0B0
 	blx	$00C4092D
@@ -1342,13 +1400,13 @@ l000009C5:
 	strtgt	r0,[r3],-#&32
 
 l000009CD:
-	Invalidvs
+	Invalid
 
 l000009D1:
 	rscshi	ip,r8,r7,ror #8
 
 l000009D5:
-	Invalidlt
+	Invalid
 
 l000009D9:
 	subeq	r1,r0,r8,ror #1
@@ -1357,10 +1415,10 @@ l000009DD:
 	ldrtgt	lr,[ip],#&8F0
 
 l000009E1:
-	Invalidvc
+	stcvc	p0,c0,[r0]
 
 l000009E5:
-	Invalidhs
+	stchs	p0,c0,[r0,-#&288]
 
 l000009E9:
 	svcmi	#&85
@@ -1392,7 +1450,7 @@ l00000A09:
 
 ;; vTaskSuspendAll: 00000A0D
 vTaskSuspendAll proc
-	Invalidhi
+	Invalid
 
 l00000A11:
 	eorsgt	r0,r3,#&C
@@ -1454,13 +1512,13 @@ l00000A55:
 
 ;; xTaskGenericNotify: 00000A59
 xTaskGenericNotify proc
-	Invalideq
+	Invalid
 
 l00000A5D:
 	strbne	r0,[r6,-#&F46]
 
 l00000A61:
-	Invalidhi
+	ldmibhi	r0,{r1-r2,r6,r8-r10}^
 
 l00000A65:
 	movslo	r0,#&FD00
@@ -1476,7 +1534,7 @@ l00000A71:
 
 l00000A75:
 	ldrt	r6,[r0],-#&4F8
-	Invalideq
+	Invalid
 
 l00000A7D:
 	rsceq	sp,r8,#&360
@@ -1488,17 +1546,17 @@ l00000A85:
 	stmdblo	ip!,{r1,r9}
 
 l00000A89:
-	Invalideq
+	Invalid
 
 l00000A8D:
 	bicseq	r0,r0,ip,lsr #&14
 
 l00000A91:
-	Invalidhi
+	Invalid
 
 l00000A95:
 	Invalid
-	Invalideq
+	strheq	r3,[lr,-#&3D]!
 	mvnseq	r0,ip,lsr #6
 	Invalid
 	ldrbths	r0,[r1],#&6D1
@@ -1526,7 +1584,7 @@ l00000A95:
 	strgt	r0,[r4,-r7,ror #1]!
 	ldrtgt	r0,[pc],#&E7                                        ; 00000BF0
 	strteq	r0,[r0]
-	Invalidhs
+	Invalid
 
 ;; xTaskGenericNotifyFromISR: 00000B0D
 xTaskGenericNotifyFromISR proc
@@ -1546,7 +1604,7 @@ l00000B21:
 	bleq	$FE3D4AF5
 
 l00000B25:
-	Invalidne
+	stcne	p4,c0,[lr],-#&2C4
 
 l00000B29:
 	eorls	r0,r3,r0,ror #4
@@ -1579,7 +1637,7 @@ l00000B4D:
 	strhi	r0,[r0,-#&1D0]!
 
 l00000B51:
-	Invalidlt
+	Invalid
 
 l00000B55:
 	orreq	pc,r1,#&E8
@@ -1600,10 +1658,10 @@ l00000B69:
 	teqlt	r0,#&F800
 
 l00000B6D:
-	Invalidlo
+	ldmdblo	r1,{r0,r4-r5,r7}^
 
 l00000B71:
-	Invalidpl
+	ldmdbpl	r1,{r0,r9-r10}^
 
 l00000B75:
 	bllt	$FFC0277D
@@ -1618,12 +1676,12 @@ l00000B81:
 l00000B85:
 	Invalid
 	strbhi	r1,[r0,-#&8B1]!
-	Invalidlt
+	Invalid
 	orreq	pc,r1,#&E8
-	Invalideq
+	Invalid
 	rsceq	sp,r7,r6,ror #&C
 	strdmi	r2,r3,[r8],-r1
-	Invalidgt
+	Invalid
 	Invalid
 	strbeq	r8,[r0],-pc
 	strdeq	r0,r1,[r3],-r1
@@ -1631,11 +1689,11 @@ l00000B85:
 	movteq	r4,#&6143
 	Invalid
 	ldrbls	r0,[r0,r7,ror #14]!
-	Invalideq
+	Invalid
 	strbtgt	ip,[r7],r0
-	Invalidgt
+	Invalid
 	ldrtgt	r0,[pc],#&E7                                        ; 00000CBC
-	Invalidhs
+	stchs	p0,c0,[r0]!
 
 ;; xTaskNotifyWait: 00000BD5
 xTaskNotifyWait proc
@@ -1648,7 +1706,7 @@ l00000BDD:
 	svcne	#&460E46
 
 l00000BE1:
-	Invalidgt
+	ldmibgt	r0,{r1-r2,r6,r8-r10}^
 
 l00000BE5:
 	rsbls	r6,r8,#&C000000F
@@ -1663,7 +1721,7 @@ l00000BF1:
 	beq	$01A19079
 
 l00000BF5:
-	Invalideq
+	stmdbeq	r10,{r1-r3,r5-r6,r9,sp}^
 
 l00000BF9:
 	msrvs	spsr,#&A02
@@ -1675,7 +1733,7 @@ l00000C01:
 	ldreq	sp,[r9,r0,lsl #30]!
 
 l00000C05:
-	Invalideq
+	Invalid
 
 l00000C09:
 	ldrbne	fp,[ip,#&6F0]!
@@ -1696,7 +1754,7 @@ l00000C1D:
 	msrvs	cpsr,#&1D0
 
 l00000C21:
-	Invalidhs
+	ereths
 
 l00000C25:
 	stmdbne	r1,{r1,r3,r5-r7,r9-r10}
@@ -1708,16 +1766,16 @@ l00000C2D:
 	ldrbtvs	r8,[r8],#&368
 
 l00000C31:
-	Invalidlt
+	Invalid
 
 l00000C35:
-	Invalidlt
+	Invalid
 
 l00000C39:
 	stmlo	r1,{r3,r5-r7,ip-pc}
 
 l00000C3D:
-	Invalideq
+	Invalid
 
 l00000C41:
 	ldrshthi	r4,[r0],#&FE
@@ -1741,7 +1799,7 @@ l00000C59:
 	strteq	r0,[r0]
 
 l00000C5D:
-	Invalidhs
+	Invalid
 
 ;; vTaskNotifyGiveFromISR: 00000C61
 vTaskNotifyGiveFromISR proc
@@ -1767,24 +1825,30 @@ l00000C7D:
 	ldrbtvs	r8,[r8],#&50
 
 l00000C81:
-	Invalid
+	stc	p3,c0,[lr,-#&C0]!
 	ldrheq	r0,[r3,-r2]!
+
+l00000C89:
 	msreq	spsr,#&32D
+
+l00000C8D:
 	ldrsbne	r8,[r3,#&60]!
+
+l00000C91:
 	Invalid
 	stmhi	pc,{r0-r1,r7-r8,fp-ip}
-	Invalidhi
+	Invalid
 	movtge	r0,#&6430
-	Invalidlo
-	Invalidpl
+	ldmdblo	r1,{r0,r4-r5,r7}^
+	ldmdbpl	r1,{r0,r8-r10}^
 	mvnshs	r0,r0,lsl #&E
 	rsb	r7,r8,#&3EC00
 	bls	$01B37A69
 	bicseq	lr,r9,r2,asr #&14
 	rscseq	fp,r1,r3,lsr #&10
-	Invalidgt
-	Invalidhi
-	Invalidlt
+	ldmdbgt	r0,{r0-r3,r8,fp-ip}^
+	Invalid
+	Invalid
 	addeq	pc,r3,r8,ror #&11
 	stmdami	r9,{r0,r4-r7,r10,sp}
 	ldrblo	r0,[r0,#&746]!
@@ -1795,14 +1859,14 @@ l00000C81:
 	movteq	r4,#&6943
 	Invalid
 	svc	#&F00767
-	Invalidgt
+	Invalid
 	ldmdbgt	r0!,{r3-r7,ip,pc}
 	ldrtgt	r0,[pc],#&E7                                        ; 00000DE8
 	eorvc	r0,r0,r0
 
 ;; ulTaskNotifyTake: 00000D01
 ulTaskNotifyTake proc
-	Invalideq
+	Invalid
 
 l00000D05:
 	strbeq	r0,[r6,-r6,asr #26]
@@ -1823,13 +1887,13 @@ l00000D19:
 	ldreq	fp,[r9,r0,lsr #10]!
 
 l00000D1D:
-	Invalideq
+	Invalid
 
 l00000D21:
 	mvnsvs	r2,#&F0000
 
 l00000D25:
-	Invalidne
+	stcne	p13,c1,[lr,-#&1A0]!
 
 l00000D29:
 	movsvs	r5,#&B100000
@@ -1844,7 +1908,7 @@ l00000D35:
 	ldrbtvs	r8,[r8],#&368
 
 l00000D39:
-	Invalidlo
+	ldmiblo	r0,{r5,r8-r10}^
 
 l00000D3D:
 	strdvc	r2,r3,[r6],-#&8C
@@ -1859,20 +1923,20 @@ l00000D45:
 	ldrbeq	r8,[r2],-#&F0
 	svclt	#&601A4B
 	svclt	#&8F4FF3
-	stcle	p15,c6,[pc]                                          ; 00000D65
+	stcle	p15,c6,[pc],#&3CC                                    ; 00001131
 	ldrtgt	r0,[pc],#&E7                                        ; 00000E50
 	strteq	r0,[r0]
-	Invalidhs
+	Invalid
 
 ;; xTaskIncrementTick: 00000D6D
 xTaskIncrementTick proc
 	mcrrlo	p0,#&E,pc,r7,c9
 
 l00000D71:
-	Invalidhi
+	Invalid
 
 l00000D75:
-	Invalidpl
+	Invalid
 
 l00000D79:
 	ldrsbthi	sp,[r8],#&41
@@ -1881,7 +1945,7 @@ l00000D7D:
 	ldrtgt	r0,[r7],-#&170
 
 l00000D81:
-	Invalidhi
+	Invalid
 
 l00000D85:
 	rsbhs	lr,lr,#&E4000002
@@ -1943,17 +2007,17 @@ l00000DD5:
 	bleq	$0000F1A1
 
 l00000DD9:
-	Invalidlt
+	ldrhlt	r0,[r0,#&71]!
 
 l00000DDD:
 	rsb	lr,ip,#&FA0000
 	rscseq	r0,r10,pc,ror #&12
 
 l00000DE5:
-	Invalidhi
+	Invalid
 
 l00000DE9:
-	Invalidpl
+	mrspl	r11_usr,r0
 
 l00000DED:
 	rschi	r0,fp,r6,asr #&10
@@ -2005,7 +2069,7 @@ l00000E2D:
 	lsrseq	r1,fp,lsr #&10
 
 l00000E31:
-	Invalidlt
+	stclt	p0,c3,[r6,-#&98]
 
 l00000E35:
 	strle	pc,[r7],#&E8
@@ -2023,11 +2087,11 @@ l00000E41:
 	strbtgt	r5,[r10],-#&B68
 	ldrtle	r8,[r0],-#&4F8
 	svcls	#&3084F8
-	Invalidge
+	ldmibge	r3,{r1,r6,r8-r9,fp-ip,lr-pc}^
 	ldrbthi	ip,[r8],#&4E7
 	strbtgt	sp,[r7],#&730
-	Invalidgt
-	Invalidhs
+	stcgt	p0,c0,[r0]
+	stchs	p0,c0,[r0]!
 
 ;; xTaskResumeAll: 00000E6D
 xTaskResumeAll proc
@@ -2037,7 +2101,7 @@ l00000E71:
 	mvnshi	r0,ip,asr #&E
 
 l00000E75:
-	Invalidhi
+	Invalid
 
 l00000E79:
 	ldrtgt	r0,[fp],-#&130
@@ -2046,7 +2110,7 @@ l00000E7D:
 	ldrtle	r8,[r0],-#&CF8
 
 l00000E81:
-	Invalideq
+	ldrsheq	r8,[r0],-#&C8
 
 l00000E85:
 	bicshs	r4,r1,#&2D0
@@ -2061,68 +2125,55 @@ l00000E91:
 	vmovne	s15,r0
 
 l00000E95:
-	Invalidle
+	stcle	p3,c6,[lr,-#&380]!
 
 l00000E99:
 	ldrbths	r0,[r1],#&568
 
 l00000E9D:
-	Invalidlo
+	ldmdblo	r1,{r3,r8,r10}^
 
 l00000EA1:
-	Invalidmi
+	Invalid
 
 l00000EA5:
-	Invalideq
+	Invalid
 
 l00000EA9:
-	Invalid
+	ldmdb	r10,{r4-r7,r9,fp,lr}^
 	strbteq	lr,[pc],-ip                                        ; 00000EB5
+
+l00000EB1:
 	ldrshteq	r0,[r3],#&A
+
+l00000EB5:
 	movne	r8,#&EB
+
+l00000EB9:
 	strbeq	r4,[r6,-r3,asr #2]
+
+l00000EBD:
 	mov	r8,#&EB
 	ldrbne	r0,[r0,#&767]!
+
+l00000EC5:
 	b	$01A19EB5
-	bls	$01B37C81
-	ldrtgt	r2,[pc],#&842                                       ; 00001717
-	msrge	spsr,#&F8
-	Invalidle
-	movs	r3,#&34400000
-	bllo	$01A07C9D
-	svc	#&F04FBB
-	ldrbthi	ip,[r8],#&433
-	Invalidls
-	movseq	r1,r0,asr sp
-	bllo	$FFE00B91
-	ldrtgt	r0,[r1],#&8FF
-	Invalideq
-	ldrbgt	pc,[r1],#&83D
-	ldrble	r9,[r0],-#&8F8
-	blvs	$00C252ED
-	ldrhthi	r4,[r0],#&F1
-	bne	$012C445D
-	svcmi	#&F3BF60
-	svcvs	#&F3BF8F
-	streq	r0,[r4,-pc,lsl #3]!
-	ldrshths	r4,[fp],#&80
-	Invalid
-	streq	r0,[r4,-r1,lsl #1]!
-	ldrshths	r4,[fp],#&20
-	Invalid
-	blle	$01BB9D3D
-	blpl	$01A37CDD
-	ldrbthi	ip,[r8],#&46A
-	strbtgt	sp,[r7],#&430
-	strteq	r0,[r0]
-	Invalideq
+00000EC9                            6C DB 6C 9A 42 28 BF          l.l.B(.
+00000ED0 C4 F8 90 60 A3 6D 00 2B DD D1 35 B1 E3 6E 1B 68 ...`.m.+..5..n.h
+00000EE0 3B BB 4F F0 FF 33 C4 F8 84 30 D4 F8 98 50 4D B1 ;.O..3...0...PM.
+00000EF0 01 26 FF F7 3B FF 08 B1 C4 F8 90 60 01 3D F8 D1 .&..;......`.=..
+00000F00 C4 F8 98 50 D4 F8 90 30 6B B1 4F F0 80 52 0D 4B ...P...0k.O..R.K
+00000F10 1A 60 BF F3 4F 8F BF F3 6F 8F 01 24 07 F0 48 FB .`..O...o..$..H.
+00000F20 20 46 BD E8 F0 81 00 24 07 F0 42 FB 20 46 BD E8  F.....$..B. F..
+00000F30 F0 81 E3 6E DB 68 DB 68 5B 6A C4 F8 84 30 D4 E7 ...n.h.h[j...0..
+00000F40 C4 00 00 20 04 ED 00 E0 08                      ... .....      
 
 ;; vTaskDelay: 00000F49
 vTaskDelay proc
 	svcmi	#&B940B5
 
 l00000F4D:
-	Invalideq
+	ldmeq	r2,{r4-r7,pc}^
 
 l00000F51:
 	svclt	#&601A4B
@@ -2140,13 +2191,13 @@ l00000F61:
 	ldrsheq	r8,[r0,-r8]!
 
 l00000F65:
-	Invalidhi
+	Invalid
 
 l00000F69:
-	Invalidvc
+	Invalid
 
 l00000F6D:
-	Invalidvc
+	Invalid
 
 l00000F71:
 	b	$00A01375
@@ -2173,7 +2224,7 @@ l00000F95:
 	vmlseq.f32	s19,s4,s8
 
 l00000F99:
-	Invalideq
+	vmoveq.i8	d18,r8
 
 l00000F9D:
 	svc	#&6001D8
@@ -2228,7 +2279,7 @@ l00000FE5:
 	mvnsls	r0,r1,lsr r7
 
 l00000FE9:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E4]
 
 l00000FED:
 	strblo	r1,[r0],-#&E8
@@ -2241,32 +2292,32 @@ l00000FF5:
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF9
 vTaskPlaceOnUnorderedEventList proc
-	Invalideq
+	Invalid
 
 l00000FFD:
 	rscseq	r4,r0,fp,asr #2
 
 ;; fn00000FFF: 00000FFF
 fn00000FFF proc
-	Invalidpl
+	stcpl	p0,c0,[r1,-#&3C0]
 
 ;; fn00001001: 00001001
 fn00001001 proc
 	blpl	$01A1850D
 
 l00001003:
-	Invalidge
+	stmge	r8,{r3,r5-r6,r8-r9,fp-ip,lr}^
 
 ;; fn00001005: 00001005
 fn00001005 proc
 	msreq	spsr,#&968
 
 l00001007:
-	Invalidlo
+	ldmdblo	r1,{r0-r1,r5-r6,r8-r9}^
 
 ;; fn00001009: 00001009
 fn00001009 proc
-	Invalideq
+	Invalid
 
 l0000100B:
 	rscsvc	r0,r0,r1,lsl #&E
@@ -2276,11 +2327,11 @@ fn0000100D proc
 	ldrshths	r7,[r9]
 
 l0000100F:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E4]
 
 ;; fn00001011: 00001011
 fn00001011 proc
-	Invalidlo
+	stmdblo	r8,{r1-r2,r6,r8,r10-sp,pc}^
 
 l00001013:
 	smlaltths	r3,r0,r8,r8
@@ -2301,35 +2352,35 @@ l0000101B:
 
 ;; xTaskRemoveFromEventList: 0000101D
 xTaskRemoveFromEventList proc
-	Invalidne
+	Invalid
 
 l0000101F:
-	Invalidle
+	stcle	p6,c1,[ip,-#&1A0]
 
 ;; fn00001021: 00001021
 fn00001021 proc
 	strbeq	sp,[r8,-#&D4C]!
 
 l00001023:
-	Invalidlo
+	ldmdblo	r1,{r3,r5-r6,r8,r10}^
 
 ;; fn00001025: 00001025
 fn00001025 proc
-	Invalidlo
+	Invalid
 
 l00001027:
 	strbeq	r3,[r6,-r6]
 
 ;; fn00001029: 00001029
 fn00001029 proc
-	Invalidhi
+	ldmibhi	r0,{r1-r2,r6,r8-r10}^
 
 l0000102B:
 	ldrbtle	r8,[r9],#&9F0
 
 ;; fn0000102D: 0000102D
 fn0000102D proc
-	Invalidhi
+	Invalid
 
 l0000102F:
 	bl	$00C24417
@@ -2349,7 +2400,7 @@ fn00001039 proc
 	mvnshi	r0,r6,asr #&E
 
 l0000103B:
-	Invalideq
+	ldrsheq	r8,[r9,#&10]!
 
 ;; fn0000103D: 0000103D
 fn0000103D proc
@@ -2363,7 +2414,7 @@ fn00001041 proc
 	msrhi	spsr,#&76C
 
 l00001045:
-	Invalideq
+	ldmdbeq	r1,{r6,r10}^
 
 l00001047:
 	strdeq	r0,r1,[r2],-r1
@@ -2377,7 +2428,7 @@ l0000104B:
 
 ;; fn0000104D: 0000104D
 fn0000104D proc
-	Invalidlo
+	mrslo	r11_usr,r0
 
 l0000104F:
 	subeq	r3,r6,#&C0000010
@@ -2402,7 +2453,7 @@ l0000105B:
 
 ;; xTaskRemoveFromUnorderedEventList: 00001081
 xTaskRemoveFromUnorderedEventList proc
-	Invalidgt
+	Invalid
 
 l00001085:
 	rscseq	r4,r0,r8,ror #2
@@ -2411,7 +2462,7 @@ l00001089:
 	strbteq	r0,[r0],-r1
 
 l0000108D:
-	Invalideq
+	Invalid
 
 l00001091:
 	svceq	#&F956F0
@@ -2421,14 +2472,14 @@ l00001095:
 
 l00001099:
 	Invalid
-	Invalidvc
+	Invalid
 	mvnseq	r0,#&38000000
-	Invalideq
+	ldmdbeq	r1,{r1,r4-r7,r10}^
 	mvnhi	r0,#0
 	mvnhi	r0,#3
-	Invalideq
+	Invalid
 	sub	r3,r6,#&8000
-	Invalidne
+	ldmibne	r0,{r0-r2,r5-r6,r8-r10}^
 	Invalid
 	bls	$01B37E79
 	ldmhs	pc!,{r1,r6,r9-r10,pc}
@@ -2439,7 +2490,7 @@ l00001099:
 
 ;; vTaskSwitchContext: 000010D9
 vTaskSwitchContext proc
-	Invalidhi
+	Invalid
 
 l000010DD:
 	adcsgt	ip,r9,#&C0000000
@@ -2466,7 +2517,7 @@ l000010F9:
 	rsbne	ip,r8,r6,asr #2
 
 l000010FD:
-	Invalidls
+	stmls	r8,{r0-r1,r4-r5,r8,fp,lr}^
 
 l00001101:
 	stmeq	r0!,{r1,r6,r8,lr-pc}
@@ -2529,7 +2580,7 @@ l00001149:
 	rscshi	sp,r8,r0,lsr #6
 
 l0000114D:
-	Invalideq
+	Invalid
 
 l00001151:
 	strbgt	r7,[r7]
@@ -2539,13 +2590,13 @@ l00001155:
 
 ;; xTaskCheckForTimeOut: 00001159
 xTaskCheckForTimeOut proc
-	Invalideq
+	Invalid
 
 l0000115D:
 	bleq	$FFC02E7D
 
 l00001161:
-	Invalidhs
+	Invalid
 
 l00001165:
 	rscshi	sp,r8,r8,ror #6
@@ -2554,7 +2605,7 @@ l00001169:
 	ldrbtls	sp,[r8],#&350
 
 l0000116D:
-	Invalidls
+	Invalid
 
 l00001171:
 	ldrbhi	r0,[r0,#&142]
@@ -2584,7 +2635,7 @@ l00001191:
 	streq	r0,[r0,-r8,ror #21]
 
 l00001195:
-	Invalidhs
+	ldmdbhs	r10,{r4-r7,r10-fp}^
 
 l00001199:
 	asrseq	r7,r6,asr #&20
@@ -2606,7 +2657,7 @@ vTaskMissedYield proc
 	movtgt	r0,#&B222
 
 l000011B1:
-	Invalidvc
+	Invalid
 
 l000011B5:
 	ldrtgt	r0,[pc],#&47                                        ; 00001204
@@ -2640,25 +2691,25 @@ vTaskPriorityInherit proc
 	msr	cpsr,#&1B9
 	rscseq	r0,r10,#&C000001B
 	rsceq	r2,r10,#&C8000003
-	Invalideq
+	msreq	r10_usr,r2
 	strbtle	r6,[r8],-#&223
 	rscle	r7,r0,#&F800
 	movtls	r3,#&696C
-	Invalideq
+	Invalid
 	rschi	r0,fp,#&30000000
 	strbeq	pc,[r4,-#&200]!
 	mov	r8,#&EB
 	Invalid
 	ldrbpl	r0,[r0,#&740]!
 	strbgt	r7,[r7],-#&B8
-	Invalidgt
+	stcgt	p0,c0,[r0]
 	eoreq	r0,r0,r0
 
 ;; xTaskPriorityDisinherit: 00001251
 xTaskPriorityDisinherit proc
 	Invalid
 	msrgt	spsr,#&1B5
-	Invalideq
+	ereteq
 	movtgt	r9,#&213B
 	bleq	$FF4013FD
 	Invalid
@@ -2666,28 +2717,28 @@ xTaskPriorityDisinherit proc
 	stmlo	r6,{r0-r2,r10}
 	ldrbvs	r0,[r0,#&746]!
 	ldrsh	r7,[r9,r8]!
-	Invalideq
+	Invalid
 	andeq	r8,r3,#&C000003A
 	blls	$000E2235
 	rorseq	r4,r8,ror #6
 	rsbeq	sp,pc,r0,lsr #6
 	mvnshs	r0,#&8000003E
 	smlattle	r1,r10,r1,r0
-	Invalideq
+	Invalid
 	msrge	cpsr,#&14A
-	Invalidvc
+	Invalid
 	strbeq	r0,[r8,-#&BE0]
-	Invalidlo
+	ldmiblo	r6,{r1,r3-r9}^
 	msrgt	spsr,#&346
 	moveq	r0,#&72F1
 	strmi	r8,[r3],-fp
 	andeq	r0,r6,r10,ror #&1D
 	strge	r8,[r0,-fp,ror #7]
 	strbeq	sp,[r7,-r3,ror #12]!
-	Invalidhs
+	ldmdbhs	r8,{r4-r7,r9-r10,ip}^
 	adcseq	pc,sp,r6,asr #&10
 	strbgt	r7,[r7],-#&20
-	Invalidgt
+	stcgt	p0,c0,[r0]
 	strteq	r0,[r0]
 
 ;; pvTaskIncrementMutexHeldCount: 000012D5
@@ -2714,13 +2765,13 @@ l000012ED:
 
 ;; prvRestoreContextOfFirstTask: 000012F1
 prvRestoreContextOfFirstTask proc
-	Invalideq
+	Invalid
 
 l000012F5:
 	rsbhi	r0,r8,r8,rrx
 
 l000012F9:
-	Invalideq
+	Invalid
 
 l000012FD:
 	stmeq	r8!,{r0-r1,r3,r6,r8,fp-ip}
@@ -2736,7 +2787,7 @@ l00001309:
 	Invalid
 	Invalid
 	ldrbtne	r8,[r3],#&30F
-	Invalideq
+	ldmibeq	r3,{r3,r7,pc}^
 	rscseq	r4,r0,r8,lsl #&1F
 	mvnsne	r8,r0
 	rscseq	r6,r0,#&220
@@ -2756,13 +2807,13 @@ l0000133D:
 
 l00001341:
 	svc	#&D1062B
-	Invalidhs
+	Invalid
 
 l00001349:
 	strdhi	r0,r1,[r1,-r0,ror #3]
 
 l0000134D:
-	Invalidvc
+	Invalid
 
 l00001351:
 	strbeq	r7,[r7,-r7,asr #32]
@@ -2789,7 +2840,7 @@ l0000136D:
 	strdvc	r6,r7,[pc],r3                                       ; 00001375
 
 l00001371:
-	Invalidne
+	Invalid
 
 l00001375:
 	strbteq	r0,[r0],#&ED
@@ -2832,10 +2883,10 @@ l000013A5:
 	ldrshtlo	r4,[ip],-#&48
 
 l000013A9:
-	Invalidvc
+	strhvc	r1,[r6],-#&C
 
 l000013AD:
-	Invalidmi
+	Invalid
 
 ;; xPortStartScheduler: 000013B1
 xPortStartScheduler proc
@@ -2896,7 +2947,7 @@ l000013F9:
 	ldrsbtvc	r0,[pc],#&F                                       ; 00001410
 
 l000013FD:
-	Invalidlo
+	Invalid
 
 l00001401:
 	svclo	#&493F48
@@ -2905,7 +2956,7 @@ l00001405:
 	andsmi	r0,r10,fp,asr #&12
 
 l00001409:
-	Invalidhs
+	Invalid
 
 l0000140D:
 	strbvs	r1,[r0,-#&A29]!
@@ -2917,7 +2968,7 @@ l00001415:
 	mvneq	r0,r2,lsr #4
 
 l00001419:
-	Invalidpl
+	Invalid
 
 l0000141D:
 	svcmi	#&4299D0
@@ -2926,26 +2977,26 @@ l00001421:
 	Invalid
 	movtmi	r3,#&B8D8
 	strlo	r4,[r2,-r10,ror #5]
-	Invalideq
+	stmeq	ip,{r0,r3,r6,fp-sp}^
 	submi	r3,fp,r10,lsl r4
-	Invalidhs
+	Invalid
 	stmne	r0!,{r0,r3,r5,r9,sp}
 	sbcsmi	r4,r9,r0,ror #&18
 	eoreq	r0,r2,#&8C00000
 	svcne	#&3201E0
-	Invalidls
+	ldmibls	r0,{r1,r3,r5,r9,lr}^
 	mvnmi	r4,#&108
 	svchs	#&D8F803
 	rscmi	r4,r10,#&2C000001
 	svchs	#&4B2F02
 	stmhs	sp,{r0,r3,r6,r10-fp,sp}
 	tstmi	r10,#&120000
-	Invalidhs
+	Invalid
 	strbteq	r2,[r0],-#&A29
 	sbcsmi	r3,r9,r0,ror #&10
 	eoreq	r0,r2,#&8C00000
 	svcne	#&3201E0
-	Invalidls
+	ldmibls	r0,{r1,r3,r5,r10-fp,sp}^
 	mvnmi	r4,#&108
 	ldrbhs	pc,[r8],r3
 	rscmi	r4,r10,#&48
@@ -2966,20 +3017,20 @@ l00001421:
 	andmi	r0,r3,#&3C000000
 	ldrshhi	r0,[ip,-r8]!
 	svc	#&4B1AE7
-	Invalidge
+	Invalid
 	smlalttgt	r1,r10,r7,r10
 	strble	r1,[r8,-r7,ror #21]
-	Invalidlt
+	Invalid
 	strbge	r1,[r10],-#&AE7
 	smlalttle	r1,r8,r7,r10
 	adcshs	r0,pc,r7,ror #1
 	rscls	r0,r0,sp,ror #1
 	strbtne	r0,[r0],#&ED
 	rscne	r0,r0,r0,ror #1
-	Invalidlt
+	Invalid
 	eoreq	r0,r0,r0
 	andeq	r0,r0,r0
-	Invalidls
+	Invalid
 	mvneq	r0,sp,ror #1
 	andeq	r0,r6,r0,lsl #&E
 	andge	r0,r0,r0,lsl #1
@@ -3024,14 +3075,14 @@ l0000155D:
 	blpl	$FF63F591
 	rsbmi	r8,r8,#0
 	movne	r0,#&21F0
-	Invalideq
-	blxeq	$00B4366D
+	Invalid
+	blxeq	r5
 	strdeq	r0,r1,[r1],-r1
 	svcle	#&8F1
 	ldrsbtvc	r3,[ip],#&1
 	rscsne	r4,r0,r7,asr #&A
 	msrhi	spsr,#&403
-	Invalidlo
+	Invalid
 	blls	$FF9FBE41
 	ldrbtne	r4,[r0],#&200
 	eoreq	r2,fp,#2
@@ -3050,7 +3101,7 @@ l0000155D:
 	strbtlo	r0,[r0],-r9
 	streq	r4,[r3,-#&D9]!
 	mvneq	r0,r2,lsr #4
-	Invalidhs
+	qasxhs	r1,r10,r2
 	svcmi	#&428BD0
 	Invalid
 	movtmi	r1,#&B7D3
@@ -3058,8 +3109,8 @@ l0000155D:
 	movtmi	r1,#&9A4B
 	stmdbgt	r4,{r4-r8,r10,ip}
 	eormi	r2,r9,#&1A
-	Invalidne
-	Invalidmi
+	Invalid
+	Invalid
 	mvneq	r0,r3,lsr #4
 	eorne	r1,r10,#&C8
 	svcmi	#&4299D0
@@ -3070,12 +3121,12 @@ l0000155D:
 	rsbgt	r0,r1,#&21000000
 	msrgt	spsr,#&360
 	rsblo	r8,r1,r1,ror #2
-	Invalideq
+	Invalid
 	bleq	$FF9F8B79
-	Invalideq
+	stmdbeq	r7,{r1,r3,r6,r8,ip-pc}^
 	beq	$FF9E76E5
 	beq	$FF9F0F8D
-	Invalideq
+	stmdbeq	r7,{r1,r3,r6,r8-r9,fp,sp-pc}^
 	mvneq	sp,r10,asr #6
 	svclo	#&30700
 	andeq	r0,r3,r0,lsl #&E
@@ -3094,13 +3145,13 @@ xPortPendSVHandler proc
 
 l0000168D:
 	svc	#&681A4B
-	Invalidhs
+	Invalid
 
 l00001695:
 	andne	pc,pc,r9,ror #5
 
 l00001699:
-	Invalideq
+	stmdbeq	r9,{r5-r6,r8,r10-fp,sp}^
 
 l0000169D:
 	svclt	#&F04F40
@@ -3118,7 +3169,7 @@ l000016AD:
 	mvnsne	r8,r0
 
 l000016B1:
-	Invalideq
+	stmdbeq	r8,{r3,r7-r8,r10-sp,pc}^
 
 l000016B5:
 	stmeq	r8!,{r6,r8,fp-ip}
@@ -3127,7 +3178,7 @@ l000016B9:
 	ldrbteq	r0,[r1],#&168
 
 l000016BD:
-	Invalidlt
+	mrslt	r10_usr,r1
 
 l000016C1:
 	andge	pc,pc,#&E8
@@ -3139,7 +3190,7 @@ l000016C9:
 	movhi	pc,#&F8E8
 
 l000016CD:
-	Invalidhi
+	Invalid
 
 l000016D1:
 	strdvc	r0,r1,[r8],r3
@@ -3158,7 +3209,7 @@ l000016E1:
 
 ;; xPortSysTickHandler: 000016E5
 xPortSysTickHandler proc
-	Invalidne
+	ldrhne	lr,[r3,#&F5]!
 
 l000016E9:
 	svclt	#&F04F84
@@ -3185,29 +3236,29 @@ l00001705:
 	strbthi	r1,[r0],-#&A4B
 
 l00001709:
-	Invalidne
+	Invalid
 
 l0000170D:
 	ldrteq	r0,[pc],#&BD                                        ; 000017D2
 
 l00001711:
-	Invalidne
+	Invalid
 
 ;; vPortSVCHandler: 00001715
 vPortSVCHandler proc
-	Invalideq
+	Invalid
 
 l00001719:
-	Invalideq
+	ldmdbeq	r3,{r0-r5,r7-fp,sp-pc}^
 
 l0000171D:
-	Invalideq
+	ldmibeq	r3,{r7-fp,sp-pc}^
 
 l00001721:
-	Invalideq
+	stmdbeq	r6,{r7-r10}^
 
 l00001725:
-	Invalidls
+	Invalid
 
 l00001729:
 	rscne	r0,r0,sp,ror #1
@@ -3223,7 +3274,7 @@ l00001735:
 	stmdaeq	r4,{r4-r10}
 
 l00001739:
-	Invalidvs
+	Invalid
 
 l0000173D:
 	bne	$012C5729
@@ -3238,10 +3289,10 @@ l00001749:
 	strtne	ip,[r5],-#&F8
 
 l0000174D:
-	Invalideq
+	stmeq	r2,{r2,r6,r10-fp,pc}^
 
 l00001751:
-	Invalideq
+	Invalid
 
 l00001755:
 	msrgt	spsr,#&9D2
@@ -3283,13 +3334,13 @@ vPortInitialiseBlocks proc
 	movtgt	r0,#&B222
 
 l00001789:
-	Invalidvc
+	Invalid
 
 l0000178D:
 	adcslo	r0,pc,r7,asr #&20
 
 l00001791:
-	Invalideq
+	Invalid
 
 ;; xPortGetFreeHeapSize: 00001795
 xPortGetFreeHeapSize proc
@@ -3319,30 +3370,30 @@ l000017B5:
 	ldrbteq	r4,[r8],#&23
 
 l000017B9:
-	Invalidhi
+	ldmibhi	r0,{r0-r1,r3-r5,r9-r10}^
 
 l000017BD:
 	strdne	r2,r3,[r6],-#&D
 
 l000017C1:
-	Invalidhs
+	Invalid
 
 ;; xEventGroupWaitBits: 000017C5
 xEventGroupWaitBits proc
 	strbeq	pc,[r1],-r9
 
 l000017C9:
-	Invalideq
+	stceq	p15,c1,[r6,-#&118]
 
 l000017CD:
 	svc	#&469046
 	ldrbtlo	r1,[r9],#&CF7
 
 l000017D5:
-	Invalidhs
+	Invalid
 
 l000017D9:
-	Invalidlt
+	ldmdblt	r0,{r1,r6,r8,r10-fp}^
 
 l000017DD:
 	andeq	r0,pc,#&F1
@@ -3365,7 +3416,7 @@ l000017ED:
 	ldmibhs	r9!,{r0,r4-r6,r8-r10,lr-pc}
 	addslo	r0,r10,r3,asr #&C
 	Invalid
-	Invalidhs
+	ldmibhs	r7,{r0-r1,r3-pc}^
 	svcmi	#&B938FB
 	cmpne	r2,#&F0
 	svclt	#&601A4B
@@ -3379,12 +3430,12 @@ l000017ED:
 	strbteq	lr,[r7],r1
 	ldrbtlo	r9,[lr],#&8F0
 	ldrhs	r6,[r9,#&F68]!
-	Invalidlt
+	ldmdblt	r0,{r1,r6,r8,r10}^
 	andeq	r0,pc,#&F1
 	strbeq	r2,[r10,#&4D0]!
 	strbteq	r3,[r0],-r5
 	ldrbths	r10,[lr],#&8F0
-	Invalidlt
+	stclt	p15,c7,[r0,-#&3C0]
 	strlo	pc,[r1,#&E8]
 	Invalid
 	strbteq	lr,[r7],#&FD1
@@ -3395,7 +3446,7 @@ xEventGroupClearBits proc
 	mcrreq	p6,#&B,r0,r6,c5
 
 l00001879:
-	Invalidvc
+	Invalid
 
 l0000187D:
 	strbhs	r3,[r8,-#&5FE]!
@@ -3417,13 +3468,13 @@ xEventGroupSetBits proc
 	mcrreq	p5,#&B,r0,r6,c5
 
 l00001895:
-	Invalidlt
+	ldmiblt	r7,{r1-r2,r6,r8-pc}^
 
 l00001899:
 	stmhs	r8!,{r3-r8,fp,sp}
 
 l0000189D:
-	Invalideq
+	Invalid
 
 l000018A1:
 	strbhi	r2,[r3],-r6
@@ -3432,20 +3483,20 @@ l000018A5:
 	rsbhs	r2,r0,#&108000
 
 l000018A9:
-	Invalideq
+	stceq	p0,c0,[r7],-#&340
 
 l000018AD:
 	strbeq	r0,[r2,-r0,ror #21]
 
 l000018B1:
-	Invalideq
+	Invalid
 
 l000018B5:
-	Invalidmi
+	Invalid
 
 l000018B9:
 	svc	#&7100F0
-	Invalidhs
+	ldmibhs	fp,{r0-r2,r4-r7,sp-pc}^
 
 l000018C1:
 	subhs	r10,r2,r8,ror #&C
@@ -3461,19 +3512,19 @@ l000018CD:
 
 l000018D1:
 	bl	$010A1899
-	Invalideq
+	Invalid
 
 l000018D9:
 	ldrbge	lr,[r0],lr
 
 l000018DD:
 	Invalid
-	Invalidlo
+	stmlo	r3,{r0,r4,r6-pc}^
 	svc	#&602940
-	Invalidhs
+	ldmdbhs	r10,{r0-r2,r4-r7,lr-pc}^
 	svcmi	#&BDF868
 	Invalid
-	Invalidhs
+	Invalid
 
 ;; xEventGroupSync: 000018F9
 xEventGroupSync proc
@@ -3484,26 +3535,26 @@ l000018FD:
 
 l00001901:
 	svc	#&461F46
-	Invalidmi
+	ldrshmi	r8,[r8,#&27]!
 
 l00001909:
 	stmhs	r8!,{r1-r2,r6,r10-fp,sp}
 
 l0000190D:
 	svc	#&430C46
-	Invalidlo
+	Invalid
 
 l00001915:
 	smlatths	r3,r10,r4,r0
 
 l00001919:
-	Invalidhs
+	Invalid
 
 l0000191D:
 	ldrbge	pc,[r7,#&F68]!
 
 l00001921:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E8]
 
 l00001925:
 	blo	$FE07DCCD
@@ -3514,7 +3565,7 @@ l00001929:
 l0000192D:
 	svc	#&1D2861
 	svc	#&FB62F7
-	Invalidlo
+	ldmdblo	r10,{r0-r2,r4-r7,r9,fp-ip,pc}^
 
 l00001939:
 	ldrhthi	r4,[r0],#&F9
@@ -3529,22 +3580,12 @@ l00001945:
 	svcvs	#&F3BF8F
 
 l00001949:
-	Invalid
-	streq	r8,[r1],-#&3FB
-	ldrbhs	r0,[r5],#&946
-	Invalidhs
-	Invalid
-	msrhs	spsr,#&B81
-	Invalidhs
-	strbteq	sp,[r7],r0
-	Invalidhs
-	strbteq	r3,[r10],#&668
-	ldrths	r0,[pc],#&403                                       ; 00001D7C
-	Invalidhs
-	Invalidne
-	svcvc	#&F024FE
-	strbteq	lr,[r7],#&944
-	svc	#&E000ED
+	ldmib	r7,{r0-r3,r7-pc}^
+0000194D                                        FB 83 01              ...
+00001950 04 46 09 D5 24 F0 7F 44 20 46 BD E8 F0 81 2B 68 .F..$..D F....+h
+00001960 23 EA 06 06 2E 60 DA E7 06 F0 06 FE 2C 68 36 EA #....`......,h6.
+00001970 04 03 04 BF 24 EA 06 06 2E 60 06 F0 19 FE 24 F0 ....$....`....$.
+00001980 7F 44 E9 E7 04 ED 00 E0 EF                      .D.......      
 
 ;; xEventGroupGetBitsFromISR: 00001989
 xEventGroupGetBitsFromISR proc
@@ -3563,7 +3604,7 @@ l00001999:
 	orrhi	r4,pc,#&3CC
 
 l0000199D:
-	Invalideq
+	Invalid
 
 l000019A1:
 	subne	r7,r7,r8,rrx
@@ -3583,16 +3624,16 @@ l000019B5:
 	mvnsvs	pc,#&1A4
 
 l000019B9:
-	Invalideq
+	Invalid
 
 l000019BD:
 	sbcshs	pc,r1,fp,lsr #&E
 
 l000019C1:
-	Invalidle
+	Invalid
 
 l000019C5:
-	Invalidne
+	Invalid
 
 l000019C9:
 	svcmi	#&F7FF40
@@ -3606,10 +3647,10 @@ vEventGroupSetBitsCallback proc
 
 ;; vEventGroupClearBitsCallback: 000019D5
 vEventGroupClearBitsCallback proc
-	Invalideq
+	stceq	p4,c0,[r6,-#&2D4]
 
 l000019D9:
-	Invalidgt
+	Invalid
 
 l000019DD:
 	msrhs	spsr,#&3FD
@@ -3618,7 +3659,7 @@ l000019E1:
 	movhs	r0,#&35EA
 
 l000019E5:
-	Invalidlo
+	stmdblo	r8,{r5-r6,r8,r10-sp,pc}^
 
 l000019E9:
 	mvns	r0,r0,asr #&C
@@ -23310,7 +23351,7 @@ l00008045:
 	rsbeq	r2,r8,r2,lsr r8
 
 l0000804D:
-	Invalideq
+	ldrsheq	r8,[sp,#&E0]!
 
 l00008051:
 	ldrbteq	r9,[fp],#&6F0
@@ -23319,13 +23360,13 @@ l00008055:
 	streq	r0,[r2],-#&1F0
 
 l00008059:
-	Invalideq
+	Invalid
 
 l0000805D:
 	ldrblt	r0,[r0,#&198]!
 
 l00008061:
-	Invalidhi
+	Invalid
 
 l00008065:
 	eorlo	r0,r0,r8
@@ -23347,7 +23388,7 @@ l00008079:
 	strdhs	r0,r1,[sp],-r8
 
 l0000807D:
-	Invalidhi
+	ldmdbhi	r2,{r1-r2,r6,r8,lr}^
 
 l00008081:
 	Invalid
@@ -23382,10 +23423,10 @@ l000080B9:
 	msrhs	cpsr,#&3FC
 
 l000080BD:
-	ldceq	p0,c0,[r2]
+	ldceq	p0,c0,[r2],#&118
 
 l000080C1:
-	Invalideq
+	crc32cheq	r3,r2,r9
 
 l000080C5:
 	umaaleq	r0,r8,r4,ip
@@ -23406,13 +23447,13 @@ l000080D9:
 	ldrbls	r0,[r0,#&48]!
 
 l000080DD:
-	Invalidpl
+	Invalid
 
 l000080E1:
 	strdhs	r2,r3,[r6,-#&2C]
 
 l000080E5:
-	Invalideq
+	crc32cweq	r0,r8,r6
 
 l000080E9:
 	Invalid
@@ -23432,16 +23473,16 @@ l0000810D:
 	asrseq	r8,sp,asr #4
 
 l00008111:
-	Invalideq
+	Invalid
 
 l00008115:
-	Invalidle
+	ldmible	r0,{r1-r2,r4,r7-r8}^
 
 l00008119:
 	strdeq	r0,r1,[r6,-#&4F]
 
 l0000811D:
-	Invalideq
+	crc32weq	r2,r6,r6
 
 l00008121:
 	rscs	sp,pc,#&F0000
@@ -23466,7 +23507,7 @@ l0000813D:
 	svcmi	#&B11B9B
 
 l00008141:
-	Invalideq
+	Invalid
 
 l00008145:
 	rsbeq	r1,r0,#&4B000
@@ -23475,22 +23516,22 @@ l00008149:
 	beq	$FEF64411
 
 l0000814D:
-	Invalidhi
+	stmhi	r8,{r0,r3,r6,r8,fp}^
 
 l00008151:
 	ldreq	r5,[pc,r6,lsl #24]!                                  ; 00008159
 
 l00008155:
-	Invalideq
+	Invalid
 
 l00008159:
 	Invalid
 	msrlo	spsr,#&DE7
-	Invalideq
+	crc32weq	r3,r6,r6
 	mvnseq	r0,#&2A80
 	mvnseq	r8,#&40
 	mvnsvc	pc,#&500000
-	Invalideq
+	Invalid
 	stmne	r0,{r6-r7}
 	mcrrhs	p0,#&C,r0,r0,c0
 	strteq	r0,[r0],-#&2
@@ -23544,7 +23585,7 @@ l000081BD:
 	bllt	$0030B589
 
 l000081C1:
-	Invalidne
+	Invalid
 
 l000081C5:
 	bne	$00A0B111
@@ -23553,7 +23594,7 @@ l000081C9:
 	stmdane	r9!,{r0,r4,r6-r7,r10-fp}
 
 l000081CD:
-	Invalidne
+	Invalid
 
 l000081D1:
 	strtne	r0,[fp],-#&ED1
@@ -23562,34 +23603,34 @@ l000081D5:
 	eorne	r0,ip,#&344
 
 l000081D9:
-	Invalidne
+	Invalid
 
 l000081DD:
-	Invalideq
+	Invalid
 
 l000081E1:
-	Invalideq
+	stceq	p2,c1,[pc],-#&344                                    ; 0000852D
 
 l000081E5:
 	mvnsne	fp,#&D10000
 
 l000081E9:
-	Invalidlt
+	ldmiblt	r1,{r0-r3,r8,fp}^
 
 l000081ED:
-	Invalideq
+	Invalid
 
 l000081F1:
 	ldrbne	fp,[r1,#&AD1]!
 
 l000081F5:
-	ldclt	p3,c0,[r1]
+	ldclt	p3,c0,[r1],#&3C
 
 l000081F9:
-	Invalideq
+	Invalid
 
 l000081FD:
-	Invalideq
+	Invalid
 
 l00008201:
 	stmhi	r9,{r0,r2,r4-r5,r7,r9-r10}
@@ -23608,7 +23649,7 @@ vApplicationIdleHook proc
 	blhi	$FFC084ED
 
 l00008215:
-	Invalidlt
+	ldmiblt	r7,{r1-pc}^
 
 l00008219:
 	strbhi	pc,[r7,#&AFF]!
@@ -23621,10 +23662,10 @@ PDCInit proc
 	movthi	r1,#&8AB5
 
 l00008225:
-	Invalidge
+	ldmibge	r0,{r4-r5,r7-r8}^
 
 l00008229:
-	Invalideq
+	Invalid
 
 l0000822D:
 	rscseq	r10,ip,#&F000000
@@ -23633,16 +23674,16 @@ l00008231:
 	svcmi	#&213422
 
 l00008235:
-	Invalideq
+	Invalid
 
 l00008239:
-	Invalideq
+	Invalid
 
 l0000823D:
 	svcmi	#&210822
 
 l00008241:
-	Invalideq
+	Invalid
 
 l00008245:
 	beq	$FFFE0E0D
@@ -23654,13 +23695,13 @@ l0000824D:
 	rscsmi	r4,r0,r1,lsr #&1E
 
 l00008251:
-	Invalidlt
+	ldmiblt	r0,{r5}^
 
 l00008255:
-	Invalideq
+	Invalid
 
 l00008259:
-	Invalidne
+	Invalid
 
 l0000825D:
 	stmhs	fp,{r1-r2,r6,r9-fp}
@@ -23669,7 +23710,7 @@ l00008261:
 	orrseq	r0,r4,r6,asr #&20
 
 l00008265:
-	Invalidhs
+	ldmdbhs	fp,{r4-r7,lr-pc}^
 
 l00008269:
 	mvns	r0,#&80000011
@@ -23682,7 +23723,7 @@ l00008275:
 	Invalid
 	strdhs	r2,r3,[r6,-#&28]
 	rscsmi	r4,r0,r6,asr #&1E
-	Invalidlt
+	Invalid
 	smlaltteq	r3,r0,r8,r0
 	ldrshtne	lr,[r8],#&40
 	tsteq	r0,r0
@@ -23706,7 +23747,7 @@ l000082A9:
 	Invalid
 	strdeq	r2,r3,[r6,-#&B]
 	Invalid
-	Invalidhs
+	Invalid
 	Invalid
 	ldrshtlo	r0,[r0],#&3B
 	ldrhteq	r0,[pc],#&D                                        ; 000082DE
@@ -23717,7 +23758,7 @@ vListInitialise proc
 	ldrshteq	pc,[r1],-#&F0
 
 l000082D5:
-	Invalideq
+	ldmdbeq	r1,{r1,r5}^
 
 l000082D9:
 	rsbhi	r8,r0,r3,lsl #2
@@ -23743,13 +23784,13 @@ vListInsertEnd proc
 	andne	r0,r0,r8,ror #&19
 
 l000082F5:
-	Invalideq
+	strheq	r9,[r8,-#&C4]!
 
 l000082F9:
-	Invalidls
+	stcls	p12,c8,[r0],-#&C8
 
 l000082FD:
-	Invalidvs
+	eretvs
 
 l00008301:
 	rsbne	r9,r0,r0,ror #&12
@@ -23780,7 +23821,7 @@ l00008321:
 	ldrbeq	pc,[r2],#&A42
 
 l00008325:
-	Invalideq
+	ereteq
 
 l00008329:
 	bhi	$0182E801
@@ -23800,13 +23841,13 @@ l00008339:
 
 ;; uxListRemove: 00008341
 uxListRemove proc
-	Invalidhi
+	erethi
 
 l00008345:
 	ldmibls	r4!,{r3,r5-r6,ip}
 
 l00008349:
-	Invalidhi
+	erethi
 
 l0000834D:
 	blmi	$010B04F5
@@ -23824,11 +23865,11 @@ l0000835D:
 	rsbne	r1,r0,lr,lsl r0
 
 l00008361:
-	Invalidvc
+	strhvc	r7,[r7],-#&C
 
 ;; xQueueCRSend: 00008365
 xQueueCRSend proc
-	Invalideq
+	Invalid
 
 l00008369:
 	svcmi	#&461446
@@ -23880,12 +23921,12 @@ l000083A9:
 	msrhi	cpsr,#&D3
 
 l000083AD:
-	Invalidvc
+	Invalid
 
 l000083B1:
 	Invalid
 	ldrthi	r7,[r9],#&CF8
-	Invalidhs
+	Invalid
 	adcseq	r7,sp,#&46
 	stmhs	r6,{r1-r2,r6,r8,ip-sp}
 	mvnsls	pc,r6,asr #&E
@@ -23893,7 +23934,7 @@ l000083B1:
 	strhteq	r0,[r0],-#&19
 	mvnsne	r8,r3,lsr #6
 	ldreq	r7,[sp,#&88]!
-	Invalidhs
+	Invalid
 	ldrbhi	r0,[r0,r6,asr #32]!
 	msrhi	cpsr,#&FD
 	svcvs	#&8811F3
@@ -23902,7 +23943,7 @@ l000083B1:
 	svcmi	#&F00000
 	stmdb	r8!,{r1-r7}
 	ldrbteq	r6,[r0],#&FD0
-	Invalidlo
+	stmdblo	r7,{r10,ip,lr-pc}^
 
 ;; xQueueCRReceive: 00008401
 xQueueCRReceive proc
@@ -23927,7 +23968,7 @@ l00008419:
 	sbcshi	r3,r1,#&2A00000
 
 l0000841D:
-	Invalidne
+	Invalid
 
 l00008421:
 	adcseq	r3,sp,r6,asr #&10
@@ -23951,7 +23992,7 @@ l00008439:
 	rsbhs	r8,fp,#&F0000008
 
 l0000843D:
-	Invalideq
+	strheq	r1,[r6],-#&9
 
 l00008441:
 	mvnsne	r8,r3,lsr #6
@@ -23961,18 +24002,18 @@ l00008445:
 
 l00008449:
 	Invalid
-	Invalidne
+	eretne
 	movtge	r9,#&2944
 	stmhs	r0!,{r0-r1,r3,r5-r6,r8,sp-pc}
 	msreq	spsr,#&1BF
 	teqge	r3,#&3C4
 	rors	r2,r3,ror #&10
-	Invalidge
+	Invalid
 	msrhs	spsr,#&3F8
 	strhteq	r0,[r0],-#&19
 	mvnsne	r8,r3,lsr #6
 	ldrteq	r3,[sp],#&888
-	Invalideq
+	Invalid
 	ldrshteq	r0,[lr],#&A0
 	svcvs	#&D0F428
 	ble	$0000984D
@@ -23985,13 +24026,13 @@ l00008449:
 
 ;; xQueueCRSendFromISR: 000084A1
 xQueueCRSendFromISR proc
-	Invalidhi
+	Invalid
 
 l000084A5:
-	Invalidls
+	Invalid
 
 l000084A9:
-	Invalidhs
+	ldmdbhs	r3,{r1,r6,r8}^
 
 l000084AD:
 	adcseq	r7,sp,r6,asr #&20
@@ -24004,7 +24045,7 @@ l000084B1:
 	ldrbths	r0,[r1],#&4D0
 	ldrb	r0,[r0]!
 	ldmdane	ip,{r0,r2-r8,r10}
-	Invalid
+	stc	p1,c0,[r5],-#&2FC
 	Invalid
 
 ;; xQueueCRReceiveFromISR: 000084D5
@@ -24028,13 +24069,13 @@ l000084ED:
 	stmhs	r0!,{r0-r1,r3,r5-r6,r8-r9,lr-pc}
 
 l000084F1:
-	Invalideq
+	Invalid
 
 l000084F5:
 	ldmdahs	r7!,{r0,r4-pc}
 
 l000084F9:
-	Invalidne
+	stmne	r0,{r0-r5,r7-r9,lr-pc}^
 
 l000084FD:
 	sublo	r7,r6,r6,asr #4
@@ -24058,7 +24099,7 @@ l00008515:
 	ldrteq	pc,[sp],#&846
 
 l00008519:
-	Invalideq
+	Invalid
 
 l0000851D:
 	ldrshteq	fp,[sp],#&A0
@@ -24075,14 +24116,14 @@ prvIdleTask proc
 	svcvs	#&F7FFB5
 
 l00008531:
-	Invalidlo
+	stmdblo	r7,{r1-r7,r10-pc}^
 
 ;; xTaskNotifyStateClear: 00008535
 xTaskNotifyStateClear proc
 	ldrteq	r7,[r1],#&8B5
 
 l00008539:
-	Invalidne
+	Invalid
 
 l0000853D:
 	ldrbtvs	r9,[r8],#&4F8
@@ -24100,19 +24141,21 @@ l0000854D:
 	ldrshteq	r6,[r0],-#&48
 
 l00008551:
-	Invalidhs
+	ldmdbhs	r8,{r4-r7,r9-fp,sp}^
 
 l00008555:
 	asrseq	r3,r6,asr #&10
 
 l00008559:
-	Invalid
+	stc	p12,c5,[r8,-#&12C]!
 	ldrtgt	r0,[pc],#&E7                                        ; 0000864C
+
+l00008561:
 	svc	#&200000
 
 ;; xPortRaisePrivilege: 00008565
 xPortRaisePrivilege proc
-	Invalidne
+	Invalid
 
 l00008569:
 	bne	$003C8D31
@@ -24121,7 +24164,7 @@ l0000856D:
 	eoreq	r0,r0,#&BF
 
 l00008571:
-	Invalidvc
+	Invalid
 
 l00008575:
 	stmdaeq	r0!,{r0-r2,r6}
@@ -24137,15 +24180,15 @@ vPortEnterCritical proc
 	msreq	spsr,#&328
 	movne	r0,#&31F1
 	svc	#&D00560
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
 	stmeq	r8,{r0-r1,r4-r7,r10,ip}
-	Invalidlt
+	Invalid
 	stmdaeq	r0!,}
 
 ;; vPortExitCritical: 000085B1
 vPortExitCritical proc
-	Invalidle
+	Invalid
 
 l000085B5:
 	movtne	r0,#&A8FF
@@ -24157,11 +24200,11 @@ l000085BD:
 	movshi	r0,#&18000
 
 l000085C1:
-	Invalideq
+	Invalid
 
 l000085C5:
 	svc	#&D00528
-	Invalidmi
+	Invalid
 
 l000085CD:
 	strdhi	r0,r1,[r0],-r0
@@ -24170,7 +24213,7 @@ l000085D1:
 	stmeq	r8,{r0-r1,r4-r7,r10,ip}
 
 l000085D5:
-	Invalidlt
+	Invalid
 
 l000085D9:
 	stmdaeq	r0!,}
@@ -24183,7 +24226,7 @@ l000085E1:
 	strbeq	r0,[fp,-#&3FE]
 
 l000085E5:
-	Invalidlt
+	Invalid
 
 l000085E9:
 	svc	#&4008E8
@@ -24192,19 +24235,19 @@ l000085E9:
 
 ;; vParTestSetLED: 000085F5
 vParTestSetLED proc
-	Invalideq
+	stceq	p4,c0,[r6,-#&2D4]
 
 l000085F9:
 	mvnsvs	r0,r6,asr #&20
 
 l000085FD:
-	Invalideq
+	stceq	p7,c0,[ip],-#&3E4
 
 l00008601:
 	msreq	cpsr,#&1D8
 
 l00008605:
-	Invalideq
+	ldmdbeq	r0,{r1,r3-r7,r10}^
 
 l00008609:
 	bne	$FECB873D
@@ -24213,11 +24256,11 @@ l0000860D:
 	adcsne	r4,r1,r8,ror sp
 
 l00008611:
-	Invalidne
+	ldmne	r0,{r0-r1,r6,fp-ip}^
 
 l00008615:
 	svc	#&200578
-	Invalidlt
+	Invalid
 
 l0000861D:
 	subeq	r3,r0,r8,ror #&11
@@ -24234,10 +24277,10 @@ l00008629:
 
 ;; vParTestToggleLED: 00008631
 vParTestToggleLED proc
-	Invalideq
+	strheq	r0,[r6],-#&45
 
 l00008635:
-	Invalideq
+	Invalid
 
 l00008639:
 	bicseq	r0,r8,ip,lsr #&1C
@@ -24246,13 +24289,13 @@ l0000863D:
 	subeq	r0,fp,#&8800
 
 l00008641:
-	Invalidne
+	ldmibne	r0,{r1,r3-r7,r10}^
 
 l00008645:
 	beq	$FECB902D
 
 l00008649:
-	Invalidne
+	ldmibne	r1,{r1,r6,r9,fp}^
 
 l0000864D:
 	bne	$010CB035
@@ -24264,7 +24307,7 @@ l00008655:
 	mvnshs	pc,r0,lsr #&1E
 
 l00008659:
-	Invalidne
+	Invalid
 
 l0000865D:
 	svclo	#&F00040
@@ -24284,21 +24327,43 @@ prvFlashCoRoutine proc
 	addhi	r8,lr,#&D4000002
 
 l00008675:
-	Invalid
+	ldrh	fp,[r5,#&30]!
 	blne	$0118987D
+
+l0000867D:
 	mvnsgt	r4,#&D0
+
+l00008681:
 	subeq	r9,r2,#&48000000
+
+l00008685:
 	adcseq	r2,r3,#&40000003
+
+l00008689:
 	ldrtne	r7,[sp],#&B0
+
+l0000868D:
 	asreq	r0,sp,asr #2
-	Invalidgt
+
+l00008691:
+	Invalid
+
+l00008695:
 	svc	#&F04FFF
 	stmhs	r6,{r1,r4-r5,r8,ip-sp}
+
+l0000869D:
 	svcge	#&F7FF68
+
+l000086A1:
 	ldmdane	sp,{r1-r7,r9}
-	Invalideq
+
+l000086A5:
 	Invalid
-	Invalideq
+
+l000086A9:
+	Invalid
+	stceq	p0,c0,[r2],-#&340
 	svc	#&601A4B
 	smlaltteq	r0,sp,r7,r10
 	smultblo	r8,lr,r8
@@ -24307,7 +24372,7 @@ l00008675:
 	sbcsmi	pc,r1,sp,lsl r0
 	tstge	r3,#&C8000003
 	adcsvc	r0,r0,r6,lsl #5
-	Invalideq
+	strheq	r0,[sp,-#&3D]
 	svcmi	#&E7DEAE
 	cmnge	r3,#&3D
 	Invalid
@@ -24319,22 +24384,22 @@ prvFixedDelayCoRoutine proc
 	addhi	r8,lr,#&D4000002
 
 l000086ED:
-	Invalidgt
+	ldrhgt	fp,[r5,#&30]!
 
 l000086F1:
-	Invalideq
+	hvceq	#&604F
 
 l000086F5:
-	Invalidhs
+	Invalid
 
 l000086F9:
 	mvnshi	r4,#&D9
 
 l000086FD:
-	Invalideq
+	stmeq	r2,{r1,r4,r8-r9,ip,pc}^
 
 l00008701:
-	Invalideq
+	Invalid
 
 l00008705:
 	rscshs	r5,r8,#&68000002
@@ -24352,7 +24417,7 @@ l00008715:
 	blgt	$FFD75611
 
 l00008719:
-	Invalidne
+	Invalid
 
 l0000871D:
 	stmdane	r2!,{r0-r1,r3,r6}
@@ -24374,7 +24439,7 @@ l00008735:
 	bne	$012CCFC5
 
 l00008739:
-	Invalideq
+	Invalid
 
 l0000873D:
 	rscshs	r5,r8,#&68000002
@@ -24400,7 +24465,7 @@ l00008755:
 	mvnshi	r4,#&E7
 	orrle	r10,r6,r3,lsl r3
 	mvnsgt	r4,r7,ror #&1F
-	Invalidgt
+	Invalid
 	ldrthi	r0,[pc],#&E7                                        ; 00008864
 	Invalid
 	eorgt	r0,r0,r7
@@ -24432,13 +24497,13 @@ l000087A1:
 	subhs	r0,lr,#&90000
 
 l000087A5:
-	Invalideq
+	crc32heq	r0,r1,r6
 
 l000087A9:
 	subeq	r3,r6,r4,lsr r0
 
 l000087AD:
-	Invalidge
+	Invalid
 
 l000087B1:
 	sbcseq	pc,r1,r2,asr #&E
@@ -24470,7 +24535,7 @@ l000087D9:
 
 ;; MPU_xTaskCreateRestricted: 000087DD
 MPU_xTaskCreateRestricted proc
-	Invalideq
+	Invalid
 
 l000087E1:
 	svclt	#&F7FF46
@@ -24480,13 +24545,13 @@ l000087E5:
 
 l000087E9:
 	Invalid
-	Invalideq
+	ldrsheq	r9,[r8,#&67]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
 	ldrbtne	r8,[r3]
 	subvc	r1,r6,r8,lsl #&11
-	Invalidhs
+	Invalid
 
 ;; MPU_xTaskCreate: 00008809
 MPU_xTaskCreate proc
@@ -24515,7 +24580,7 @@ l00008825:
 
 l00008829:
 	Invalid
-	Invalideq
+	ldrsheq	r4,[r8,#&27]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24526,7 +24591,7 @@ l00008829:
 
 ;; MPU_vTaskAllocateMPURegions: 0000884D
 MPU_vTaskAllocateMPURegions proc
-	Invalideq
+	Invalid
 
 l00008851:
 	ldrbhi	pc,[r7,r6,asr #30]!
@@ -24536,16 +24601,16 @@ l00008855:
 
 l00008859:
 	Invalid
-	Invalideq
+	ldrsheq	r8,[r8,#&87]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
-	Invalidvc
+	Invalid
 	ldrhtvc	r0,[pc],#&D                                        ; 00008886
 
 ;; MPU_vTaskDelayUntil: 00008875
 MPU_vTaskDelayUntil proc
-	Invalideq
+	Invalid
 
 l00008879:
 	mvnsvc	pc,#&118
@@ -24555,11 +24620,11 @@ l0000887D:
 
 l00008881:
 	Invalid
-	Invalideq
+	ldrsheq	r7,[fp,#&C7]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
-	Invalidvc
+	Invalid
 	ldmlo	pc!,{r0,r2-r5,r7}
 
 ;; MPU_vTaskDelay: 0000889D
@@ -24569,9 +24634,9 @@ MPU_vTaskDelay proc
 
 l000088A5:
 	Invalid
-	Invalideq
+	ldrsheq	r4,[fp,#&E7]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
 	stmlo	r8,{r0-r1,r4-r7,r10,ip}
 	ldrhtne	r0,[pc],#&D                                        ; 000088D2
@@ -24582,11 +24647,11 @@ MPU_vTaskSuspendAll proc
 
 l000088C5:
 	Invalid
-	Invalideq
+	ldrsheq	r10,[r8,#&7]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
-	Invalidne
+	Invalid
 	ldrhtne	r0,[pc],#&D                                        ; 000088F2
 
 ;; MPU_xTaskResumeAll: 000088E1
@@ -24595,7 +24660,7 @@ MPU_xTaskResumeAll proc
 
 l000088E5:
 	Invalid
-	Invalideq
+	ldrsheq	ip,[r10,#&7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24605,11 +24670,11 @@ l000088E5:
 
 ;; MPU_xTaskGetTickCount: 00008905
 MPU_xTaskGetTickCount proc
-	Invalidhs
+	Invalid
 
 l00008909:
 	Invalid
-	Invalideq
+	ldrsheq	r8,[r8,#&87]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24623,7 +24688,7 @@ MPU_uxTaskGetNumberOfTasks proc
 
 l0000892D:
 	Invalid
-	Invalideq
+	ldrsheq	r8,[r8,#&27]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24638,7 +24703,7 @@ MPU_pcTaskGetName proc
 
 l00008955:
 	Invalid
-	Invalideq
+	ldrsheq	r7,[r8,#&47]!
 
 ;; fn0000895D: 0000895D
 fn0000895D proc
@@ -24666,16 +24731,16 @@ MPU_vTaskSetTimeOutState proc
 
 l0000897D:
 	Invalid
-	Invalideq
+	ldrsheq	lr,[fp,#&7]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
 	stmlo	r8,{r0-r1,r4-r7,r10,ip}
 	ldrhtvc	r0,[pc],#&D                                        ; 000089AA
 
 ;; MPU_xTaskCheckForTimeOut: 00008999
 MPU_xTaskCheckForTimeOut proc
-	Invalideq
+	Invalid
 
 l0000899D:
 	mvns	pc,r6,asr #&1E
@@ -24683,13 +24748,13 @@ l0000899D:
 
 l000089A5:
 	Invalid
-	Invalideq
+	ldrsheq	sp,[fp,#&67]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
 	ldrbtne	r8,[r3]
 	subvc	r1,r6,r8,lsl #&11
-	Invalidhs
+	Invalid
 
 ;; MPU_xTaskGenericNotify: 000089C5
 MPU_xTaskGenericNotify proc
@@ -24716,7 +24781,7 @@ l000089E1:
 
 l000089E5:
 	svc	#&D00546
-	Invalidmi
+	Invalid
 
 l000089ED:
 	strdhi	r0,r1,[r0],-r0
@@ -24726,7 +24791,7 @@ l000089F1:
 
 l000089F5:
 	Invalid
-	Invalidhs
+	Invalid
 
 ;; MPU_xTaskNotifyWait: 000089FD
 MPU_xTaskNotifyWait proc
@@ -24746,14 +24811,14 @@ l00008A11:
 	stmhs	r6,{r1-r2,r6,r8,ip-sp}
 
 l00008A15:
-	Invalidle
+	Invalid
 
 l00008A19:
 	msreq	cpsr,#&1F8
 
 l00008A1D:
 	svc	#&D00546
-	Invalidmi
+	Invalid
 
 l00008A25:
 	strdhi	r0,r1,[r0],-r0
@@ -24767,7 +24832,7 @@ l00008A2D:
 
 ;; MPU_ulTaskNotifyTake: 00008A35
 MPU_ulTaskNotifyTake proc
-	Invalideq
+	Invalid
 
 l00008A39:
 	mvnsls	pc,#&118
@@ -24777,7 +24842,7 @@ l00008A3D:
 
 l00008A41:
 	Invalid
-	Invalideq
+	ldrsheq	r5,[r9,#&C7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24792,7 +24857,7 @@ MPU_xTaskNotifyStateClear proc
 
 l00008A69:
 	svc	#&462846
-	Invalideq
+	ldrsheq	r6,[sp,#&27]!
 
 l00008A71:
 	strbeq	r0,[r6,-#&32C]
@@ -24814,18 +24879,18 @@ l00008A85:
 
 ;; MPU_xQueueGenericCreate: 00008A89
 MPU_xQueueGenericCreate proc
-	Invalideq
+	Invalid
 
 l00008A8D:
 	svc	#&461746
 	blo	$FFF62E75
 
 l00008A95:
-	Invalidlo
+	crc32wlo	r0,r6,r6
 
 l00008A99:
 	Invalid
-	Invalideq
+	ldrsheq	r0,[lr,#&67]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24835,7 +24900,7 @@ l00008A99:
 
 ;; MPU_xQueueGenericReset: 00008AB9
 MPU_xQueueGenericReset proc
-	Invalideq
+	Invalid
 
 l00008ABD:
 	mvnspl	pc,r6,asr #&1E
@@ -24845,13 +24910,13 @@ l00008AC1:
 
 l00008AC5:
 	Invalid
-	Invalideq
+	ldrsheq	fp,[sp,#&27]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
 	ldrbtne	r8,[r3]
 	subvc	r1,r6,r8,lsl #&11
-	Invalidhs
+	Invalid
 
 ;; MPU_xQueueGenericSend: 00008AE5
 MPU_xQueueGenericSend proc
@@ -24878,7 +24943,7 @@ l00008B01:
 
 l00008B05:
 	svc	#&D00546
-	Invalidmi
+	Invalid
 
 l00008B0D:
 	strdhi	r0,r1,[r0],-r0
@@ -24897,7 +24962,7 @@ MPU_uxQueueMessagesWaiting proc
 
 l00008B25:
 	Invalid
-	Invalideq
+	ldrsheq	r7,[ip,#&E7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24912,13 +24977,13 @@ MPU_uxQueueSpacesAvailable proc
 
 l00008B4D:
 	Invalid
-	Invalideq
+	ldrsheq	r7,[ip,#&47]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
 	ldrbtne	r8,[r3]
 	stmlo	r6,{r3,r7,fp-ip}
-	Invalidhs
+	Invalid
 
 ;; MPU_xQueueGenericReceive: 00008B6D
 MPU_xQueueGenericReceive proc
@@ -24945,7 +25010,7 @@ l00008B89:
 
 l00008B8D:
 	svc	#&D00546
-	Invalidmi
+	Invalid
 
 l00008B95:
 	strdhi	r0,r1,[r0],-r0
@@ -24959,7 +25024,7 @@ l00008B9D:
 
 ;; MPU_xQueuePeekFromISR: 00008BA5
 MPU_xQueuePeekFromISR proc
-	Invalideq
+	Invalid
 
 l00008BA9:
 	blle	$FFE088C9
@@ -24969,7 +25034,7 @@ l00008BAD:
 
 l00008BB1:
 	Invalid
-	Invalideq
+	ldrsheq	r7,[fp,#&67]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24984,7 +25049,7 @@ MPU_xQueueGetMutexHolder proc
 
 l00008BD9:
 	Invalid
-	Invalideq
+	ldrsheq	lr,[ip,#&A7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -24999,7 +25064,7 @@ MPU_xQueueCreateMutex proc
 
 l00008C01:
 	Invalid
-	Invalideq
+	ldrsheq	r6,[sp,#&A7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -25009,17 +25074,17 @@ l00008C01:
 
 ;; MPU_xQueueTakeMutexRecursive: 00008C21
 MPU_xQueueTakeMutexRecursive proc
-	Invalideq
+	Invalid
 
 l00008C25:
-	Invalidls
+	Invalid
 
 l00008C29:
 	strbeq	r3,[r6],-#&1FC
 
 l00008C2D:
 	Invalid
-	Invalideq
+	ldrsheq	sp,[ip,#&7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -25034,7 +25099,7 @@ MPU_xQueueGiveMutexRecursive proc
 
 l00008C55:
 	Invalid
-	Invalideq
+	ldrsheq	sp,[ip,#&47]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -25049,9 +25114,9 @@ MPU_vQueueDelete proc
 
 l00008C7D:
 	Invalid
-	Invalideq
+	ldrsheq	lr,[fp,#&87]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
 	stmlo	r8,{r0-r1,r4-r7,r10,ip}
 	ldmlo	pc!,{r0,r2-r5,r7}
@@ -25063,7 +25128,7 @@ MPU_pvPortMalloc proc
 
 l00008CA1:
 	Invalid
-	Invalideq
+	ldrsheq	r4,[sp,#&27]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -25078,33 +25143,33 @@ MPU_vPortFree proc
 
 l00008CC9:
 	Invalid
-	Invalideq
+	ldrsheq	r5,[sp,#&87]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
 	stmlo	r8,{r0-r1,r4-r7,r10,ip}
 	ldrhtne	r0,[pc],#&D                                        ; 00008CF6
 
 ;; MPU_vPortInitialiseBlocks: 00008CE5
 MPU_vPortInitialiseBlocks proc
-	Invalidlo
+	Invalid
 
 l00008CE9:
 	Invalid
-	Invalideq
+	ldrsheq	r4,[sp,#&A7]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
-	Invalidne
+	Invalid
 	ldrhtne	r0,[pc],#&D                                        ; 00008D16
 
 ;; MPU_xPortGetFreeHeapSize: 00008D05
 MPU_xPortGetFreeHeapSize proc
-	Invalidhs
+	Invalid
 
 l00008D09:
 	Invalid
-	Invalideq
+	ldrsheq	r4,[sp,#&27]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -25118,23 +25183,23 @@ MPU_xEventGroupCreate proc
 
 l00008D2D:
 	Invalid
-	Invalideq
+	ldrsheq	r3,[sp,#&A7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
 	ldrbtne	r8,[r3]
 	subne	r1,r6,r8,lsl #&11
-	Invalidhs
+	Invalid
 
 ;; MPU_xEventGroupWaitBits: 00008D4D
 MPU_xEventGroupWaitBits proc
 	movthi	pc,#&30E9
 
 l00008D51:
-	Invalideq
+	Invalid
 
 l00008D55:
-	Invalidls
+	stmls	r6,{r1-r2,r6,ip,pc}^
 
 l00008D59:
 	svc	#&9F0A46
@@ -25148,7 +25213,7 @@ l00008D65:
 
 l00008D69:
 	Invalid
-	Invalideq
+	ldrsheq	r2,[sp,#&A7]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
@@ -25159,7 +25224,7 @@ l00008D69:
 
 ;; MPU_xEventGroupClearBits: 00008D8D
 MPU_xEventGroupClearBits proc
-	Invalideq
+	Invalid
 
 l00008D91:
 	ldrb	pc,[r7,r6,asr #30]!
@@ -25169,7 +25234,7 @@ l00008D91:
 
 ;; MPU_xEventGroupSetBits: 00008DB9
 MPU_xEventGroupSetBits proc
-	Invalideq
+	Invalid
 
 l00008DBD:
 	mvnsle	pc,r6,asr #&1E
@@ -25179,13 +25244,13 @@ l00008DC1:
 
 l00008DC5:
 	Invalid
-	Invalideq
+	ldrsheq	r6,[sp,#&27]!
 	strbeq	r0,[r6,-#&32C]
 	ldrbtne	lr,[r3],#&FD0
 	mvnseq	r4,r0,lsl #1
 	ldrbtne	r8,[r3]
 	subvc	r1,r6,r8,lsl #&11
-	Invalidhs
+	Invalid
 
 ;; MPU_xEventGroupSync: 00008DE5
 MPU_xEventGroupSync proc
@@ -25212,7 +25277,7 @@ l00008E01:
 
 l00008E05:
 	svc	#&D00546
-	Invalidmi
+	Invalid
 
 l00008E0D:
 	strdhi	r0,r1,[r0],-r0
@@ -25231,19 +25296,19 @@ MPU_vEventGroupDelete proc
 
 l00008E25:
 	Invalid
-	Invalideq
+	ldrsheq	fp,[sp,#&C7]!
 	svc	#&D0052C
-	Invalidmi
+	Invalid
 	strdhi	r0,r1,[r0],-r0
 	stmlo	r8,{r0-r1,r4-r7,r10,ip}
-	Invalidhs
+	Invalid
 
 ;; xCoRoutineCreate: 00008E41
 xCoRoutineCreate proc
 	smlaltthi	pc,pc,r9,r8
 
 l00008E45:
-	Invalideq
+	Invalid
 
 l00008E49:
 	Invalid
@@ -25267,25 +25332,25 @@ l00008E49:
 	rschi	r0,fp,r7,rrx
 	rschi	r0,fp,r0,lsl #&10
 	strbths	r10,[r1],-#&500
-	Invalidlo
+	eretlo
 	ldrbhs	pc,[r7,#&F46]!
-	Invalidlt
+	stclt	p1,c0,[r0,-#&3E8]!
 	stmlt	pc,{r3,r5-r7,fp-pc}
 	ldrbteq	r4,[r8],#&846
 	svc	#&46400B
-	Invalideq
-	Invalideq
+	Invalid
+	Invalid
 	svc	#&18F1
-	Invalideq
+	Invalid
 	stmdapl	r6,{r0,r4-r7,lr}
 	mvnseq	pc,r6,asr #&1E
 	svc	#&4630FA
-	Invalideq
+	Invalid
 	svc	#&54F1
-	Invalidgt
+	Invalid
 	Invalid
 	svcmi	#&E7BD66
-	Invalidlt
+	ldclt	p15,c15,[r0,-#&3C0]!
 	Invalid
 	eorvc	r0,r0,r7
 
@@ -25303,10 +25368,10 @@ l00008EFD:
 	svcne	#&F7FF1D
 
 l00008F01:
-	Invalidhs
+	Invalid
 
 l00008F05:
-	Invalidmi
+	stcmi	p13,c9,[r2,-#&1A0]
 
 l00008F09:
 	adcs	r3,pc,r0,ror #8
@@ -25317,7 +25382,7 @@ l00008F11:
 	ldrshhs	r3,[r1,r9]!
 
 l00008F19:
-	Invalidlt
+	stclt	p0,c3,[r6,-#&1A0]
 
 l00008F1D:
 	stmne	r0,{r3,r5-r7,ip-lr}
@@ -25325,7 +25390,7 @@ l00008F1D:
 l00008F21:
 	Invalid
 	Invalid
-	Invalidhs
+	stchs	p0,c0,[r0,-#&1C]!
 
 ;; vCoRoutineSchedule: 00008F2D
 vCoRoutineSchedule proc
@@ -25357,10 +25422,10 @@ l00008F4D:
 
 l00008F51:
 	svc	#&18F1
-	Invalidhi
+	Invalid
 
 l00008F59:
-	Invalidhs
+	Invalid
 
 l00008F5D:
 	svc	#&46301D
@@ -25381,7 +25446,7 @@ l00008F75:
 	blvs	$FFE77B5D
 
 l00008F7D:
-	Invalidle
+	stcle	p0,c0,[fp],-#&1B4
 
 l00008F81:
 	svclt	#&F7FFD1
@@ -25444,18 +25509,18 @@ l00008FCD:
 	svclt	#&8F6FF3
 
 l00008FD1:
-	Invalidhs
+	Invalid
 
 l00008FD5:
 	svc	#&46301D
 	mvnsge	fp,#&7000000F
 
 l00008FDD:
-	Invalidne
+	ldmdbne	r1,{r1,r3,r5-r6,r10}^
 
 l00008FE1:
 	svc	#&B10B00
-	Invalidhi
+	Invalid
 
 l00008FE9:
 	orr	r1,r8,#&C000003C
@@ -25484,7 +25549,7 @@ l0000900D:
 	rsbeq	lr,pc,pc,ror #&10
 
 l00009011:
-	Invalidhs
+	ldmibhs	r1,{r3,r5,r8,lr-pc}^
 
 l00009015:
 	blhi	$019F3DD9
@@ -25496,7 +25561,7 @@ l0000901D:
 	andpl	r8,r2,#&B000000E
 
 l00009021:
-	Invalidhs
+	Invalid
 
 l00009025:
 	bmi	$FECDF771
@@ -25520,28 +25585,46 @@ l0000903D:
 	mvnhi	fp,r8,lsl r5
 
 l00009041:
-	Invalidlo
+	stmlo	r8,{r0,r8,fp,lr}^
 
 l00009045:
-	Invalidlt
+	Invalid
 
 l00009049:
 	stmibge	r1,{r3,r5-r7,ip-pc}
 
 l0000904D:
-	Invalid
+	stm	lr,{r1-r3,r5-r6,r9,fp,sp-pc}^
 	strbge	r10,[r6,-r6,ror #20]!
+
+l00009055:
 	msrne	spsr,#&AE7
+
+l00009059:
 	stmdb	r0,{r2,r6,r8-r9,fp-ip,pc}
 	beq	$01A2B8C5
+
+l00009061:
 	msreq	spsr,#&248
+
+l00009065:
 	bhi	$010AF97D
+
+l00009069:
 	adcspl	r0,pc,#&600000
+
+l0000906D:
 	stmeq	r8!,{r3,r5-r6,ip,lr-pc}
+
+l00009071:
 	stmhs	r0!,{r0-r5,r7,r9,fp,pc}
-	Invalideq
+
+l00009075:
+	ereteq
+
+l00009079:
 	Invalid
-	Invalidlt
+	Invalid
 	beq	$FE085429
 	Invalid
 	stmdaeq	r0!,{r0-r2}
@@ -25550,16 +25633,16 @@ l0000904D:
 
 ;; xCoRoutineRemoveFromEventList: 00009095
 xCoRoutineRemoveFromEventList proc
-	Invalidle
+	Invalid
 
 l00009099:
 	strbeq	r0,[sp],-#&968
 
 l0000909D:
-	Invalidlo
+	Invalid
 
 l000090A1:
-	Invalidmi
+	Invalid
 
 l000090A5:
 	ldrbtpl	r0,[r1],#&5F9
@@ -25583,7 +25666,7 @@ l000090BD:
 
 ;; GPIOGetIntNumber: 000090C5
 GPIOGetIntNumber proc
-	Invalidne
+	stmne	r2,{r0-r1,r3,r6,fp-ip,pc}^
 
 l000090C9:
 	ldrsblt	r0,[r8],#&80
@@ -25598,7 +25681,7 @@ l000090D5:
 	beq	$010AF229
 
 l000090D9:
-	Invalidvc
+	Invalid
 
 l000090DD:
 	stmls	fp,{r0-r2,r6,r9,fp}
@@ -25653,7 +25736,7 @@ l0000911D:
 	rscshs	sp,r8,r4,lsr r0
 
 l00009121:
-	Invalidmi
+	Invalid
 
 l00009125:
 	movths	r1,#&39BF
@@ -25675,7 +25758,7 @@ l00009139:
 	ldrshtle	r0,[r1],#&1A
 
 l0000913D:
-	Invalidgt
+	stmgt	r4,{r3-r7}^
 
 l00009141:
 	ldrhths	sp,[r8],#&2
@@ -25693,7 +25776,7 @@ l00009151:
 	eorne	r0,r0,r0,lsr #&20
 
 l00009155:
-	Invalidvc
+	strhvc	r1,[r3],-#&8C
 
 l00009159:
 	adcsle	r0,pc,r7,asr #&20
@@ -25709,7 +25792,7 @@ l00009165:
 	blhi	$010CC069
 
 l00009169:
-	Invalideq
+	ldmdbeq	r8,{r0-r1,r6,lr-pc}^
 
 l0000916D:
 	ldrbteq	sp,[r8],#&34
@@ -25736,14 +25819,14 @@ l00009189:
 	mvneq	r2,r3,asr #6
 
 l0000918D:
-	Invalideq
+	Invalid
 
 l00009191:
-	Invalideq
+	Invalid
 
 ;; GPIOIntTypeGet: 00009195
 GPIOIntTypeGet proc
-	Invalideq
+	ldmdbeq	r8,{r0-r1,r5,ip,lr-pc}^
 
 l00009199:
 	mvnseq	r0,r4,lsr #6
@@ -25755,7 +25838,7 @@ l000091A1:
 	beq	$00D0A589
 
 l000091A5:
-	Invalideq
+	Invalid
 
 l000091A9:
 	lslseq	r1,r4,lsl #8
@@ -25789,7 +25872,7 @@ l000091CD:
 	mvnseq	r1,r5,asr #4
 
 l000091D1:
-	Invalideq
+	Invalid
 
 l000091D5:
 	subgt	r8,r3,r3,asr #&18
@@ -25810,13 +25893,13 @@ l000091E9:
 	ldrbteq	ip,[r8],#&43
 
 l000091ED:
-	Invalideq
+	ldmdbeq	r8,{r0,r2,r6,ip,lr-pc}^
 
 l000091F1:
 	ldrbteq	r1,[r0],#&245
 
 l000091F5:
-	Invalideq
+	Invalid
 
 l000091F9:
 	subgt	r8,r3,r3,asr #&18
@@ -25834,25 +25917,25 @@ l00009209:
 	bhi	$010CBD0D
 
 l0000920D:
-	Invalidne
+	ldmdbne	r8,{r0-r1,r6,lr-pc}^
 
 l00009211:
-	Invalideq
+	Invalid
 
 l00009215:
-	Invalidmi
+	Invalid
 
 l00009219:
 	bhi	$010CBD1D
 
 l0000921D:
-	Invalideq
+	Invalid
 
 l00009221:
 	rscsne	sp,r8,r5,lsr #&20
 
 l00009225:
-	Invalidmi
+	Invalid
 
 l00009229:
 	bhi	$010CBD2D
@@ -25864,7 +25947,7 @@ l00009231:
 	ldrbtne	sp,[r8],#&25
 
 l00009235:
-	Invalidmi
+	Invalid
 
 l00009239:
 	bhi	$010CBD3D
@@ -25873,10 +25956,10 @@ l0000923D:
 	ldrbtne	ip,[r8],#&43
 
 l00009241:
-	Invalideq
+	ldmdbeq	r0,{r0,r2,r5,r8-r9,ip}^
 
 l00009245:
-	Invalidne
+	Invalid
 
 l00009249:
 	ldrtne	r1,[ip],#&35
@@ -25901,7 +25984,7 @@ l00009261:
 	ldrbeq	r0,[r5],-#&F8
 
 l00009265:
-	Invalidgt
+	ldmibgt	r1,{r1,r3-r8}^
 
 l00009269:
 	ldrbteq	sp,[r8],#&B2
@@ -25943,7 +26026,7 @@ l00009299:
 	strbne	r2,[r3],-#&C43
 
 l0000929D:
-	Invalideq
+	Invalid
 
 l000092A1:
 	rscsne	sp,r8,r5,lsr #&20
@@ -26024,7 +26107,7 @@ l00009301:
 	suble	r7,r7,r4
 
 l00009305:
-	Invalidvc
+	Invalid
 
 l00009309:
 	adcsgt	r0,pc,r7,asr #&20
@@ -26111,7 +26194,7 @@ l00009375:
 	ldrbgt	r0,[r0,#&46]!
 
 l00009379:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E0]
 
 l0000937D:
 	subeq	r1,r0,r8,ror #1
@@ -26138,7 +26221,7 @@ l00009399:
 	mvnslt	r0,#&46
 
 l0000939D:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E0]
 
 l000093A1:
 	subeq	r1,r0,r8,ror #1
@@ -26227,7 +26310,7 @@ l00009411:
 	mvnsne	r0,r6,asr #&20
 
 l00009415:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E4]
 
 l00009419:
 	subeq	r1,r0,r8,ror #1
@@ -26252,7 +26335,7 @@ l00009431:
 
 l00009435:
 	svc	#&F00046
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E0]
 
 l0000943D:
 	subeq	r1,r0,r8,ror #1
@@ -26275,32 +26358,32 @@ l00009451:
 
 ;; GPIOPinWrite: 00009455
 GPIOPinWrite proc
-	Invalidvc
+	Invalid
 
 l00009459:
 	adcsvc	r0,pc,r7,asr #&20
 
 ;; GPIOPinTypeComparator: 0000945D
 GPIOPinTypeComparator proc
-	Invalidle
+	strhle	ip,[r3],-#&D4
 
 l00009461:
-	Invalideq
+	Invalid
 
 l00009465:
 	subgt	r2,r0,r3,lsr #&14
 
 l00009469:
-	Invalidle
+	Invalid
 
 l0000946D:
-	Invalideq
+	ldrsheq	r2,[r4,-#&8]!
 
 l00009471:
 	subgt	r3,r0,r2,lsr #&A
 
 l00009475:
-	Invalidvc
+	ldrshvc	r2,[r4],-#&8
 
 l00009479:
 	ldrbge	pc,[r7,#&FBC]!
@@ -26310,7 +26393,7 @@ l0000947D:
 
 ;; GPIOPinTypeI2C: 00009481
 GPIOPinTypeI2C proc
-	Invalidle
+	strhle	r0,[r6],-#&D4
 
 l00009485:
 	bleq	$0090986D
@@ -26336,7 +26419,7 @@ l0000949D:
 
 ;; GPIOPinTypeQEI: 000094A5
 GPIOPinTypeQEI proc
-	Invalidle
+	strhle	r0,[r6],-#&D4
 
 l000094A9:
 	beq	$00909891
@@ -26362,7 +26445,7 @@ l000094C1:
 
 ;; GPIOPinTypeUART: 000094C9
 GPIOPinTypeUART proc
-	Invalidle
+	strhle	r0,[r6],-#&D4
 
 l000094CD:
 	stmdaeq	r4!,{r3-r7}
@@ -26421,7 +26504,7 @@ l0000950D:
 	bicshs	r0,r0,#&42000
 
 l00009511:
-	Invalidlt
+	ldmdblt	r1,{r1-r2,r6,r10}^
 
 l00009515:
 	andsne	r1,fp,#&5000
@@ -26443,7 +26526,7 @@ IntUnregister proc
 	movtmi	r0,#&A34B
 
 l0000953D:
-	Invalidvc
+	Invalid
 
 l00009541:
 	adcseq	r0,pc,r7,asr #&20
@@ -26469,20 +26552,20 @@ l0000955D:
 	strbge	r7,[r7],-#&60
 
 l00009561:
-	Invalideq
+	Invalid
 
 l00009565:
 	svcmi	#&E000ED
 
 ;; IntPriorityGroupingGet: 00009569
 IntPriorityGroupingGet proc
-	Invalideq
+	uqsub8eq	lr,r3,r4
 
 l0000956D:
 	stmdbeq	r0!,{r0,r3,r6}
 
 l00009571:
-	Invalidne
+	stmne	r10,{r3,r5-r6,r9-r10}^
 
 l00009575:
 	rscpl	r0,r0,#&10
@@ -26496,7 +26579,7 @@ l0000957D:
 l00009581:
 	Invalid
 	mcrreq	p0,#&D,r7,r7,c1
-	Invalidge
+	stmdbge	r0,{r0,r2-r3,r5-r7}^
 	svc	#&A2
 
 ;; IntPrioritySet: 00009591
@@ -26522,7 +26605,7 @@ l000095A9:
 	smlatteq	r3,r10,r2,r0
 
 l000095AD:
-	Invalidne
+	ldmdbne	r0,{r1,r3-r7}^
 
 l000095B1:
 	rsbne	r2,r0,r3,asr #&20
@@ -26572,7 +26655,7 @@ l000095E9:
 	ldrbeq	r0,[r0,#&728]
 
 l000095ED:
-	Invalidne
+	Invalid
 
 l000095F1:
 	movteq	r0,#&AE38
@@ -26642,7 +26725,7 @@ l00009645:
 	ldrbeq	r0,[r0,#&728]
 
 l00009649:
-	Invalidne
+	Invalid
 
 l0000964D:
 	movteq	r0,#&AE38
@@ -26707,7 +26790,7 @@ l00009699:
 
 ;; OSRAMWriteFirst: 0000969D
 OSRAMWriteFirst proc
-	Invalideq
+	Invalid
 
 l000096A1:
 	eorhs	r0,r2,ip,asr #&20
@@ -26716,7 +26799,7 @@ l000096A5:
 	eoreq	r3,r1,r6,asr #&1A
 
 l000096A9:
-	Invalidhs
+	ldmibhs	sp,{r4-r7,r9-fp,sp,pc}^
 
 l000096AD:
 	subeq	r2,r6,r6,asr #&20
@@ -26725,7 +26808,7 @@ l000096B1:
 	ldrshths	ip,[sp],#&40
 
 l000096B5:
-	Invalidlo
+	stmdblo	r8,{r1-r2,r6,r8,r10-sp,pc}^
 
 l000096B9:
 	eoreq	r0,r1,r0,asr #6
@@ -26734,7 +26817,7 @@ l000096BD:
 	ldrshteq	fp,[sp]
 
 l000096C1:
-	Invalidgt
+	stmgt	r0,{r9}^
 
 ;; OSRAMWriteArray: 000096C5
 OSRAMWriteArray proc
@@ -26753,25 +26836,25 @@ l000096D5:
 	ldrshteq	r7,[sp],#&80
 
 l000096D9:
-	Invalidlo
+	ldmdblo	r0,{r3,r5,r8,fp-pc}^
 
 l000096DD:
-	Invalidle
+	ldmible	r7,{r3,r5-r6,r8-pc}^
 
 l000096E1:
-	Invalideq
+	ldrsheq	r1,[r8,#&5F]!
 
 l000096E5:
 	subeq	r2,r6,fp,lsl r0
 
 l000096E9:
-	Invalideq
+	ldrsheq	r10,[sp,#&80]!
 
 l000096ED:
 	subeq	r2,r6,r1,lsr #&20
 
 l000096F1:
-	Invalidge
+	Invalid
 
 l000096F5:
 	Invalid
@@ -26781,7 +26864,7 @@ l000096F5:
 
 ;; OSRAMWriteByte: 00009705
 OSRAMWriteByte proc
-	Invalideq
+	strheq	r0,[r6],-#&45
 
 l00009709:
 	subeq	r0,r8,r1,lsr #&12
@@ -26794,13 +26877,13 @@ l00009711:
 
 l00009715:
 	svc	#&68184B
-	Invalidhs
+	Invalid
 
 l0000971D:
 	subeq	r0,r8,r6,asr #8
 
 l00009721:
-	Invalidlt
+	Invalid
 
 l00009725:
 	smlaltteq	r1,r0,r8,r0
@@ -26819,7 +26902,7 @@ l00009735:
 
 ;; OSRAMWriteFinal: 00009739
 OSRAMWriteFinal proc
-	Invalideq
+	Invalid
 
 l0000973D:
 	eorhs	r0,r1,ip,asr #&20
@@ -26831,14 +26914,14 @@ l00009745:
 	Invalid
 	beq	$0134CA91
 	svc	#&68284C
-	Invalidlo
+	Invalid
 	subeq	r2,r6,r6,asr #&20
 	ldrbeq	r7,[sp,#&F0]!
 	subeq	r2,r6,r1,lsr #&20
 	ldrshteq	r5,[sp],#&E0
 	subeq	r2,r6,r1,lsr #&20
 	ldrshteq	r2,[sp],#&E0
-	Invalidhs
+	ldmdbhs	r0,{r3,r5,r8,fp-pc}^
 	rscvc	fp,r8,r8,ror #&1A
 	rsceq	r8,r7,r0,asr #&1A
 	mcrrvc	p2,#0,r0,r0,c0
@@ -26847,7 +26930,7 @@ l00009745:
 ;; OSRAMClear: 00009781
 OSRAMClear proc
 	svc	#&2080B5
-	Invalideq
+	Invalid
 
 l00009789:
 	svc	#&480E21
@@ -26855,7 +26938,7 @@ l00009789:
 
 l00009791:
 	svc	#&200024
-	Invalideq
+	Invalid
 
 l00009799:
 	sbcshs	pc,r1,ip,lsr r10
@@ -26865,7 +26948,7 @@ l0000979D:
 
 l000097A1:
 	svc	#&2080FF
-	Invalideq
+	Invalid
 
 l000097A9:
 	svc	#&480721
@@ -26873,7 +26956,7 @@ l000097A9:
 
 l000097B1:
 	svc	#&200024
-	Invalideq
+	Invalid
 
 l000097B9:
 	sbcshs	pc,r1,ip,lsr r10
@@ -26897,7 +26980,7 @@ l000097D5:
 	mvnsvs	pc,r0,lsr #&1E
 
 l000097D9:
-	Invalideq
+	stceq	p0,c0,[lr],-#&3FC
 
 l000097DD:
 	strhlt	fp,[r0,-pc]!
@@ -26910,7 +26993,7 @@ l000097E5:
 
 l000097E9:
 	svc	#&208006
-	Invalideq
+	Invalid
 
 l000097F1:
 	svc	#&FF0
@@ -26926,7 +27009,7 @@ l00009801:
 	rscsne	r4,r0,r0,lsl r0
 
 l00009805:
-	Invalidvc
+	Invalid
 
 l00009809:
 	svc	#&2040FF
@@ -26942,7 +27025,7 @@ l00009819:
 	strbne	r1,[r0,#&7D9]!
 
 l0000981D:
-	Invalideq
+	Invalid
 
 l00009821:
 	svc	#&B18334
@@ -26982,13 +27065,13 @@ l00009885:
 	ldreq	r8,[r3,#&69E]!
 
 l00009889:
-	Invalidls
+	stmls	r6,{r1-r2,r6,r10,ip}^
 
 l0000988D:
 	teqgt	r1,r6,asr #8
 
 l00009891:
-	Invalidne
+	Invalid
 
 l00009895:
 	rscsne	r4,r0,r4,asr #&10
@@ -27023,27 +27106,27 @@ l000098C5:
 	ldrshtmi	r1,[pc],#&C7                                      ; 00009998
 
 l000098CD:
-	Invalidne
+	ldmibne	r7,{r5,r8-pc}^
 
 l000098D1:
 	strdpl	r2,r3,[r6,-#&8F]
 
 l000098D5:
 	svc	#&444D46
-	Invalideq
+	ldrsheq	pc,[lr,#&47]!
 
 l000098DD:
 	mvnseq	r8,r4,lsr r5
 
 l000098E1:
-	Invalidhs
+	ldmibhs	r7,{r2-r3,r8-pc}^
 
 l000098E5:
 	blle	$010B34E9
 
 l000098E9:
 	Invalid
-	Invalidhs
+	Invalid
 
 ;; OSRAMInit: 000098F1
 OSRAMInit proc
@@ -27056,20 +27139,20 @@ l000098F9:
 	svclo	#&F00020
 
 l000098FD:
-	Invalideq
+	Invalid
 
 l00009901:
-	Invalideq
+	Invalid
 
 l00009905:
 	svc	#&481721
-	Invalidhs
+	ldrshhs	fp,[sp,#&A7]!
 
 l0000990D:
 	subeq	r1,r8,r6,asr #&C
 
 l00009911:
-	Invalideq
+	ldrsheq	pc,[fp]!
 
 l00009915:
 	strbne	r1,[fp,-#&522]
@@ -27084,28 +27167,28 @@ l00009921:
 	strbeq	r1,[r0,-r5,lsr #20]!
 
 l00009925:
-	Invalideq
+	Invalid
 
 l00009929:
 	Invalid
 	Invalid
 	movtls	r2,#&4301
 	svc	#&61ECF8
-	Invalidge
+	ldmdbge	lr,{r0-r2,r4-r7,ip-sp,pc}^
 	andsmi	r10,lr,ip,lsl r1
 	svc	#&340144
 	ldrbhs	fp,[lr,#&EF7]!
 	svc	#&463044
 	ldrshtvc	pc,[lr],#&47
 	strbeq	r0,[fp,#&72D]!
-	Invalidlt
+	Invalid
 	svc	#&41F0E8
 	adcseq	r1,pc,#&F7
 	eoreq	r0,r0,r0
 	subeq	r0,r0,r0,asr r0
 	mcrrvc	p2,#0,r0,r0,c0
 	Invalid
-	Invalidhs
+	stchs	p0,c0,[r0,-#&288]
 
 ;; OSRAMDisplayOn: 00009975
 OSRAMDisplayOn proc
@@ -27125,11 +27208,11 @@ l00009981:
 	Invalid
 	mvnshi	pc,r1,ror #&1E
 	ldrshge	r10,[ip,-lr]
-	Invalideq
+	Invalid
 	svchi	#&F7FF34
 	strdlo	r2,r3,[r4],-#&5E
 	ldrbgt	pc,[r7,#&F46]!
-	Invalideq
+	Invalid
 	stmda	r3,{r0-r1,r3,r5-r8,r10}
 	Invalid
 	Invalid
@@ -27145,20 +27228,20 @@ l000099C9:
 
 l000099CD:
 	svc	#&2080FE
-	Invalidge
+	Invalid
 
 l000099D5:
 	ldrbls	pc,[r7,#&F20]!
 
 l000099D9:
 	svc	#&2080FE
-	Invalidlt
+	Invalid
 
 l000099E1:
 	bhi	$0100BD89
 
 l000099E5:
-	Invalidhs
+	Invalid
 
 ;; SSIConfig: 000099E9
 SSIConfig proc
@@ -27189,13 +27272,13 @@ l00009A09:
 l00009A0D:
 	Invalid
 	svc	#&3A01F2
-	Invalideq
-	Invalideq
-	Invalidhi
+	ldmdbeq	r8,{r1,r3,r5,r8,fp-pc}^
+	Invalid
+	stmdbhi	r10,{r0,r2-r5,r8-r9,lr}^
 	strbmi	r0,[r3,-#&D11]
 	strtlo	r0,[r2],-#&2EA
-	Invalidlt
-	stceq	p0,c15,[r1]
+	stclt	p2,c3,[r0,-#&184]!
+	stceq	p0,c15,[r1],#&3A0
 	mvnmi	lr,#&9C0000
 
 ;; SSIEnable: 00009A35
@@ -27221,7 +27304,7 @@ l00009A49:
 ;; SSIIntRegister: 00009A4D
 SSIIntRegister proc
 	svc	#&2017B5
-	Invalidlt
+	Invalid
 
 l00009A55:
 	strbne	r0,[r0,-r8,ror #17]
@@ -27235,7 +27318,7 @@ l00009A5D:
 ;; SSIIntUnregister: 00009A61
 SSIIntUnregister proc
 	svc	#&2017B5
-	Invalidlt
+	Invalid
 
 l00009A69:
 	strbne	r0,[r0,-r8,ror #17]
@@ -27248,7 +27331,7 @@ l00009A71:
 
 ;; SSIIntEnable: 00009A75
 SSIIntEnable proc
-	Invalidmi
+	Invalid
 
 l00009A79:
 	movtmi	r7,#&7061
@@ -27598,10 +27681,10 @@ SysCtlIntRegister proc
 	mcrrhs	p1,#&B,r0,r6,c5
 
 l00009C45:
-	Invalidpl
+	Invalid
 
 l00009C49:
-	Invalideq
+	stmdbeq	r8,{r2-r8,r10-sp,pc}^
 
 l00009C4D:
 	svc	#&202C40
@@ -27610,13 +27693,13 @@ l00009C4D:
 ;; SysCtlIntUnregister: 00009C55
 SysCtlIntUnregister proc
 	svc	#&202CB5
-	Invalidlt
+	Invalid
 
 l00009C5D:
-	Invalidhs
+	Invalid
 
 l00009C61:
-	Invalidvs
+	ldmibvs	r7,{r5,r8-pc}^
 
 l00009C65:
 	adcseq	r0,pc,#&BC
@@ -27711,7 +27794,7 @@ SysCtlReset proc
 	bne	$0128A605
 
 l00009CD5:
-	Invalideq
+	Invalid
 
 l00009CD9:
 	strbteq	r0,[r0],#&ED
@@ -27753,7 +27836,7 @@ SysCtlResetCauseGet proc
 	rsbvc	r1,r8,fp,asr #&10
 
 l00009D09:
-	Invalidpl
+	Invalid
 
 l00009D0D:
 	subeq	r0,r0,#&380
@@ -27788,7 +27871,7 @@ l00009D2D:
 SysCtlClockSet proc
 	Invalid
 	strhteq	r4,[r7],-#&4
-	Invalidhs
+	stmhs	ip,{r1-r2,r5,r8,fp,sp}^
 	rsbvs	r2,r8,r9,asr #6
 	stmdbne	r5,{r4-r9}
 	rscseq	r4,r4,r0,asr #2
@@ -27822,7 +27905,7 @@ SysCtlClockSet proc
 	Invalid
 	ldrsbteq	r2,[r4],#&11
 	streq	r0,[r3,-r1,rrx #1]!
-	Invalideq
+	Invalid
 	svceq	#&9B0193
 	bicseq	r0,r8,fp,lsr #&A
 	swpeq	r0,fp,[r3]!
@@ -27831,7 +27914,7 @@ SysCtlClockSet proc
 	ldrhtvc	pc,[ip]
 	adcsvs	r0,pc,r7,asr #&20
 	svceq	#&400FE0
-	Invalidpl
+	ldmdbpl	pc,{r2-r3,r6-sp,pc}^
 	subpl	r0,r0,r0,ror #&1F
 	stmne	r0,{r5-fp}
 
@@ -27840,7 +27923,7 @@ SysCtlClockGet proc
 	msreq	spsr,#&B4B
 
 l00009DF5:
-	Invalidne
+	Invalid
 
 l00009DF9:
 	sbcshs	r2,r0,r10,lsr #&10
@@ -27861,13 +27944,13 @@ l00009E0D:
 	andne	r8,r2,fp,ror #3
 
 l00009E11:
-	Invalidne
+	Invalid
 
 l00009E15:
 	subne	r1,r10,#&35
 
 l00009E19:
-	Invalidmi
+	ldmdbmi	r3,{r3,r5-r6,r9,lr-pc}^
 
 l00009E1D:
 	eorseq	r0,r1,r1,lsl r2
@@ -27887,7 +27970,7 @@ l00009E29:
 	mvnsgt	ip,#&54000003
 	eorslt	r0,r3,r3,asr r1
 	ldrshtvc	pc,[r0],#&3B
-	Invalid
+	crc32w	r0,r8,r7
 	svcle	#&4805E7
 	adcsvs	r0,pc,r7,ror #1
 	strbpl	r0,[r0],-#&FE0
@@ -27973,7 +28056,7 @@ SysCtlADCSpeedGet proc
 	rsbeq	r1,r8,fp,asr #&10
 
 l00009EC9:
-	Invalidvc
+	Invalid
 
 l00009ECD:
 	adcseq	r0,pc,r7,asr #&20
@@ -27986,13 +28069,13 @@ SysCtlIOSCVerificationSet proc
 	stmne	r8!,{r1,r3,r6,r8-r9,ip}
 
 l00009ED9:
-	Invalideq
+	ldmdbeq	r0,{r0,r3-r5,r7-r9,sp}^
 
 l00009EDD:
 	rsbvc	r1,r0,r3,lsl #6
 
 l00009EE1:
-	Invalideq
+	ldmdbeq	r0,{r0-r2,r6,r8-r9,lr}^
 
 l00009EE5:
 	rsbvc	r1,r0,r3,lsl #6
@@ -28079,7 +28162,7 @@ l00009F49:
 
 ;; UARTConfigSet: 00009F4D
 UARTConfigSet proc
-	Invalidne
+	Invalid
 
 l00009F51:
 	stmne	r6,{r1-r2,r6,r8,r10}
@@ -28102,10 +28185,10 @@ l00009F6D:
 	bhs	$0008A735
 
 l00009F71:
-	Invalidlo
+	Invalid
 
 l00009F75:
-	Invalidlt
+	Invalid
 
 l00009F79:
 	mvnseq	pc,#&EC000003
@@ -28117,13 +28200,13 @@ l00009F81:
 	Invalid
 	blpl	$00CCA759
 	blge	$018A47B1
-	Invalidge
+	stcge	p14,c14,[r2],-#&188
 	msrmi	spsr,#&B61
 	bl	$000CE35D
 	msrmi	spsr,#&B62
 	cmnmi	r3,#&F4
 	blhs	$000CA769
-	Invalidhs
+	Invalid
 
 ;; UARTConfigGet: 00009FA9
 UARTConfigGet proc
@@ -28146,7 +28229,7 @@ l00009FC1:
 	Invalid
 	msr	spsr,#&8F0
 	Invalid
-	Invalidlt
+	stclt	p3,c3,[r0,-#&C]!
 	orrgt	pc,r1,#&E8
 
 ;; UARTEnable: 00009FD5
@@ -28228,7 +28311,7 @@ UARTCharNonBlockingPut proc
 	bpl	$001B0DF1
 
 l0000A049:
-	Invalideq
+	strheq	r0,[r0,-#&1F]!
 
 l0000A04D:
 	eorvc	r0,r0,r0,lsr #&20
@@ -28263,7 +28346,7 @@ l0000A075:
 
 ;; UARTIntRegister: 0000A079
 UARTIntRegister proc
-	Invalidge
+	strhge	r0,[ip],-#&65
 
 l0000A07D:
 	ldrne	r0,[pc,#&C42]!                                       ; 0000ACC7
@@ -28272,10 +28355,10 @@ l0000A081:
 	eorhs	r1,r4,r4,lsr #&C
 
 l0000A085:
-	Invalidlo
+	Invalid
 
 l0000A089:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E8]
 
 l0000A08D:
 	svc	#&4010E8
@@ -28286,7 +28369,7 @@ l0000A095:
 
 ;; UARTIntUnregister: 0000A099
 UARTIntUnregister proc
-	Invalidge
+	strhge	r0,[ip],-#&65
 
 l0000A09D:
 	ldrne	r0,[pc,#&C42]!                                       ; 0000ACE7
@@ -28298,7 +28381,7 @@ l0000A0A5:
 	ldrbgt	pc,[r7,r6,asr #30]!
 
 l0000A0A9:
-	Invalidlt
+	stclt	p0,c2,[r6,-#&3E8]
 
 l0000A0AD:
 	svc	#&4010E8
@@ -28309,7 +28392,7 @@ l0000A0B5:
 
 ;; UARTIntEnable: 0000A0B9
 UARTIntEnable proc
-	Invalidhi
+	Invalid
 
 l0000A0BD:
 	movthi	r7,#&7063
@@ -28340,21 +28423,21 @@ UARTIntClear proc
 
 ;; CPUcpsie: 0000A0DD
 CPUcpsie proc
-	Invalidvc
+	strhvc	r7,[r7],-#&6
 
 l0000A0E1:
 	adcsvc	r0,pc,#&47
 
 ;; CPUcpsid: 0000A0E5
 CPUcpsid proc
-	Invalidvc
+	strhvc	r7,[r7],-#&6
 
 l0000A0E9:
 	adcslo	r0,pc,r7,asr #&20
 
 ;; CPUwfi: 0000A0ED
 CPUwfi proc
-	Invalidvc
+	strhvc	r7,[r7],-#&F
 
 l0000A0F1:
 	ldmlo	pc!,{r0-r2,r6}
@@ -28373,7 +28456,7 @@ l0000A101:
 	ldrbvc	pc,[r7,#&F62]!
 
 l0000A105:
-	Invalideq
+	Invalid
 
 l0000A109:
 	teqeq	r8,r10,asr #2
@@ -28385,7 +28468,7 @@ l0000A111:
 	tstlt	r8,r6,asr #2
 
 l0000A115:
-	Invalideq
+	ldrsheq	pc,[r1,#&3B]!
 
 l0000A119:
 	stmlo	r0!,{r0,r3-r5,r8,sp-pc}
@@ -28457,7 +28540,7 @@ I2CSlaveDisable proc
 ;; I2CIntRegister: 0000A181
 I2CIntRegister proc
 	svc	#&2018B5
-	Invalidlt
+	Invalid
 
 l0000A189:
 	stmne	r0,{r3,r5-r7,fp}
@@ -28471,13 +28554,13 @@ l0000A191:
 ;; I2CIntUnregister: 0000A195
 I2CIntUnregister proc
 	svc	#&2018B5
-	Invalidlt
+	Invalid
 
 l0000A19D:
 	stmne	r0,{r3,r5-r7,fp}
 
 l0000A1A1:
-	Invalidgt
+	ldmibgt	r7,{r5,r8-pc}^
 
 l0000A1A5:
 	ldrheq	r0,[pc,r9]!                                         ; 0000A1AD
@@ -28553,7 +28636,7 @@ I2CMasterIntClear proc
 	msrhi	spsr,#&323
 
 l0000A1FD:
-	Invalideq
+	Invalid
 
 ;; I2CSlaveIntClear: 0000A201
 I2CSlaveIntClear proc
@@ -28581,7 +28664,7 @@ I2CMasterBusBusy proc
 	rscshi	ip,r3,r8,rrx
 
 l0000A21D:
-	Invalidmi
+	Invalid
 
 ;; I2CMasterControl: 0000A221
 I2CMasterControl proc
@@ -28598,7 +28681,7 @@ l0000A22D:
 	bicseq	r0,r0,#0
 
 l0000A231:
-	Invalidvc
+	Invalid
 
 l0000A235:
 	eorvc	r0,r0,r7,asr #&20
@@ -28616,7 +28699,7 @@ I2CMasterDataGet proc
 
 ;; I2CSlaveStatus: 0000A245
 I2CSlaveStatus proc
-	Invalidhi
+	Invalid
 
 ;; I2CSlaveDataPut: 0000A249
 I2CSlaveDataPut proc
@@ -28645,7 +28728,7 @@ l0000A265:
 	movpl	r0,#0
 
 l0000A269:
-	Invalidvs
+	Invalid
 
 l0000A26D:
 	svcvs	#&6E2064
@@ -28671,11 +28754,11 @@ l0000A285:
 
 l0000A289:
 	blx	$0000A291
-	Invalidhs
+	Invalid
 
 ;; fn0000A291: 0000A291
 fn0000A291 proc
-	Invalidpl
+	Invalid
 
 l0000A295:
 	andls	r0,r0,r1
@@ -28773,7 +28856,7 @@ l0000A5D9:
 	ldrlo	r1,[lr]!
 
 l0000A5DD:
-	Invalidhs
+	ldchs	p1,c0,[r5,-#&24]!
 
 l0000A5E1:
 	ldrhs	r4,[r9,-r1,lsl #10]
@@ -28789,7 +28872,7 @@ l0000A5ED:
 	rsbne	sp,r0,r8,ror #&1E
 
 l0000A5F5:
-	Invalidls
+	ldcls	p0,c1,[r4,-#&CC]!
 
 l0000A5F9:
 	svceq	#&D1F342
@@ -28804,7 +28887,7 @@ l0000A605:
 	movteq	r1,#&319
 
 l0000A609:
-	Invalidne
+	Invalid
 
 l0000A60D:
 	strtlt	r0,[r3],-#&1F
@@ -28823,7 +28906,7 @@ l0000A621:
 	movtlo	r10,#&3624
 
 l0000A625:
-	Invalidgt
+	stmgt	r0,{r0,r2-r4,r9,sp}^
 
 l0000A629:
 	andseq	lr,r8,r8,lsl sp
@@ -28832,7 +28915,7 @@ l0000A62D:
 	sbcseq	r0,r0,r10,lsr #&A
 
 l0000A631:
-	Invalid
+	mrrc	p12,#2,ip,ip,c3
 	teqls	r3,#&15
 	Invalid
 	ldmeq	ip!,{r2-r5,r7,r9}
