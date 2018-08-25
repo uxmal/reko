@@ -383,8 +383,15 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_ldp_post()
         {
+            Given_Instruction(0x6CC62B6B);
+            Expect_Code("ldp\td11,d10,[x27],#&60");
+        }
+
+        [Test]
+        public void AArch64Dis_ldp_post_sp()
+        {
             Given_Instruction(0xA8C17BFD);
-            Expect_Code("ldp\tx29,x30,[x31],#&8");
+            Expect_Code("ldp\tx29,x30,[sp],#&8");
         }
 
         [Test]
@@ -859,7 +866,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_1E2E1003()
         {
             Given_Instruction(0x1E2E1003);
-            Expect_Code("@@@");
+            Expect_Code("fmov\ts3,#1.0F");
         }
 
         // An AArch64 decoder for the instruction 4EA81D00 (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0101) has not been implemented yet.
@@ -879,13 +886,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-
-        // An AArch64 decoder for the instruction 1E6202E0 (ConversionBetweenFpAndInt sf:S=0b00 type=01) has not been implemented yet.
         [Test]
-        public void AArch64Dis_1E6202E0()
+        public void AArch64Dis_scvtf_i32_to_f32()
         {
             Given_Instruction(0x1E6202E0);
-            Expect_Code("@@@");
+            Expect_Code("scvtf\td0,w23");
         }
 
         [Test]
@@ -893,14 +898,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x0B20A1EF);
             Expect_Code("add\tw15,w15,w0,sxth #0");
-        }
-
-        // An AArch64 decoder for the instruction 1E2E1008 (DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b00 op2=x1xx op3!=xxx000000) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_1E2E1008()
-        {
-            Given_Instruction(0x1E2E1008);
-            Expect_Code("@@@");
         }
 
         // An AArch64 decoder for the instruction 6E020653 (DataProcessingScalarFpAdvancedSimd - op0=6 op1=0) has not been implemented yet.
@@ -911,13 +908,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-
-        // An AArch64 decoder for the instruction 9E6701B0 (DataProcessingScalarFpAdvancedSimd - op0=9) has not been implemented yet.
         [Test]
-        public void AArch64Dis_9E6701B0()
+        public void AArch64Dis_fmov_f64_to_i64()
         {
             Given_Instruction(0x9E6701B0);
-            Expect_Code("@@@");
+            Expect_Code("fmov\td16,x13");
         }
 
         [Test]
@@ -948,13 +943,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("fmul\ts5,s25,s1");
         }
 
-
-        // An AArch64 decoder for the instruction 1E380069 (fcvtzs) has not been implemented yet.
         [Test]
-        public void AArch64Dis_1E380069()
+        public void AArch64Dis_fcvtzs_i32_from_f32()
         {
             Given_Instruction(0x1E380069);
-            Expect_Code("@@@");
+            Expect_Code("fcvtzs\tw3,s9");
         }
 
         [Test]
@@ -973,13 +966,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 6CC62BEB (LdStRegPairPre opc=0b01) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6CC62BEB()
-        {
-            Given_Instruction(0x6CC62BEB);
-            Expect_Code("@@@");
-        }
+   
 
         [Test]
         public void AArch64Dis_DecodeReal16Immediate_1()
