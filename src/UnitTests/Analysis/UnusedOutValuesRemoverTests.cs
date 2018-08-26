@@ -41,6 +41,10 @@ namespace Reko.UnitTests.Analysis
         private MockRepository mr;
         private IImportResolver import;
         private DecompilerEventListener eventListener;
+        private ProgramBuilder pb;
+        private List<SsaState> ssaStates;
+        private RegisterStorage regA;
+        private RegisterStorage regB;
 
         [SetUp]
         public void Setup()
@@ -50,6 +54,48 @@ namespace Reko.UnitTests.Analysis
             this.mr = new MockRepository();
             this.import = mr.Stub<IImportResolver>();
             this.eventListener = mr.Stub<DecompilerEventListener>();
+            this.pb = new ProgramBuilder();
+            this.ssaStates = new List<SsaState>();
+            this.regA = new RegisterStorage("regA", 0x1234, 0, PrimitiveType.Word32);
+            this.regB = new RegisterStorage("regB", 0x5678, 0, PrimitiveType.Word32);
+        }
+
+        private void Given_Procedure(
+            string name,
+            Action<SsaProcedureBuilder> builder)
+        {
+            var m = new SsaProcedureBuilder(name);
+            builder(m);
+            pb.Add(m);
+            ssaStates.Add(m.Ssa);
+        }
+
+        private void When_RunUnusedOutValuesRemover()
+        {
+            var program = pb.BuildProgram();
+            var dataFlow = new ProgramDataFlow(program);
+            var uvr = new UnusedOutValuesRemover(
+                program,
+                ssaStates,
+                dataFlow,
+                eventListener);
+            uvr.Transform();
+        }
+
+        private void AssertProceduresCode(string expected)
+        {
+            var writer = new StringWriter();
+            foreach (var ssa in ssaStates)
+            {
+                writer.WriteLine("========================");
+                ssa.Procedure.WriteBody(false, writer);
+            }
+            var actual = writer.ToString();
+            if (actual != expected)
+            {
+                Debug.Print(actual);
+            }
+            Assert.AreEqual(expected, actual);
         }
 
         private void RunTest(string sExp, Program program)
@@ -349,6 +395,59 @@ level2_exit:
 ";
             #endregion
             RunTest(sExp, pb.Program);
+        }
+
+        [Test]
+        public void Uvr_Call_DefStgDiffersFromIdentifierStg()
+        {
+            Given_Procedure("fn", m =>
+            {
+                var a = m.Reg("a", regA);
+                var b = m.Reg("b", regB);
+                m.Label("body");
+                m.Assign(a, 0x12);
+                m.Assign(b, 0x34);
+                m.AddUseToExitBlock(a);
+                m.AddUseToExitBlock(b);
+            });
+            Given_Procedure("main", m =>
+            {
+                var a = m.Local32("a", -4);
+                var b = m.Local32("b", -8);
+                m.Label("body");
+                var uses = new (Storage, Expression)[]
+                {
+                };
+                var defines = new (Storage, Identifier)[]
+                {
+                    (regA, a), (regB, b)
+                };
+                m.Call("fn", 4, uses, defines);
+                m.MStore(m.Word32(0x5678), b);
+                m.AddUseToExitBlock(a);
+                m.AddUseToExitBlock(b);
+            });
+
+            When_RunUnusedOutValuesRemover();
+
+            var expected =
+            #region
+@"========================
+fn_entry:
+body:
+	b = 0x00000034
+fn_exit:
+	use b
+========================
+main_entry:
+body:
+	call fn (retsize: 4;)
+		defs: regB:b
+	Mem2[0x00005678:word32] = b
+main_exit:
+";
+            #endregion
+            AssertProceduresCode(expected);
         }
     }
 }
