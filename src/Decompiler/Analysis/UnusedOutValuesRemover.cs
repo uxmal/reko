@@ -272,7 +272,7 @@ namespace Reko.Analysis
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)
                         {
-                            var br = urf.Classify(ssaCaller, sid, true);
+                            var br = urf.Classify(ssaCaller, sid, def.Storage, true);
                             DebugEx.PrintIf(trace.TraceVerbose, "  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
