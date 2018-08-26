@@ -156,5 +156,7 @@ namespace Reko.Arch.Arm.AArch64
         fsqrt,
         fneg,
         fcvt,
+        xtn,
+        xtn2,
     }
 }

@@ -637,6 +637,19 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
+        // Picks a V register 
+        private static Mutator Vr(int pos, int size)
+        {
+            var bitfield = new Bitfield(pos, size);
+            return (u, d) =>
+            {
+                uint iReg = bitfield.Read(u);
+                var regs = d.state.useQ ? Registers.SimdRegs128 : Registers.SimdRegs64;
+
+                return true;
+            };
+        }
+
         // Extended register, depending on the option field.
         private static Mutator Rx(int pos, int size, int optionPos, int optionSize)
         {
@@ -2644,6 +2657,17 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("AdvancedSIMDcopy Q:op=11"));
             }
 
+            Decoder AdvancedSIMD2RegMisc;
+            {
+                AdvancedSIMD2RegMisc = Mask(29, 1,
+                    Sparse(12, 0b11111,
+                        Nyi("AdvancedSIMD2RegMisc U=0"),
+                        (0b10010, Mask(30, 1,
+                            Instr(Opcode.xtn, Vr(0,5),Vr(5,5)),
+                            Instr(Opcode.xtn2, x(""))))),
+                    Nyi("AdvancedSIMD2RegMisc U=1"));
+            }
+
             Decoder DataProcessingScalarFpAdvancedSimd;
             {
                 Decoder FloatingPointDecoders = Mask(10, 0b11,  // op3=xxxxxxx??
@@ -2660,23 +2684,33 @@ namespace Reko.Arch.Arm.AArch64
                     FloatingPointDataProcessing2src,            // op3=xxxxxxx10
                     FloatingPointCondSelect);                   // op3=xxxxxxx11
 
-                Decoder FloatingPointDecoders2 = Mask(10, 0b11,  // op3=xxxxxxx??
-                    Mask(12, 1,                     // op3=xxxxxx?00
-                        Mask(13, 1,                 // op3=xxxxx?000
-                            Mask(14, 1,             // op3=xxxxx0000
-                                Mask(15, 1,         // op3=xxxx00000
-                                    ConversionBetweenFpAndInt,  // op3=xxx000000
-                                    invalid),                   // op3=xxx100000
-                                Nyi("FloatingPointDataProcessing1src")), // op3=xxxx10000
-                            FloatingPointCompare),              // op3=xxxxx1000
-                        FloatingPointImmediate),                // op3=xxxxxx100
-                    Nyi("FloatingPointCondCompare"),            // op3=xxxxxxx01
-                    FloatingPointDataProcessing2src,            // op3=xxxxxxx10
-                    FloatingPointCondSelect);                   // op3=xxxxxxx11
-
                 DataProcessingScalarFpAdvancedSimd = Mask(28, 0xF,
                     Mask(23, 0b11, // op0 = 0000
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00"),
+                        Mask(19, 0b1111,        // op0=0000 op1=00 op
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0011"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0100"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0111"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1000"), 
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1011"),
+                            Mask(10, 0b11, 
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1100 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1100 op3=xxxxxxx01"),
+                                Mask(17, 0b11, // op0=0000 op1=00 op2=1100 op3=??xxxxx10
+                                    AdvancedSIMD2RegMisc,
+                                    invalid,    // op0=0000 op1=00 op2=1100 op3=01xxxxx10
+                                    invalid,    // op0=0000 op1=00 op2=1100 op3=10xxxxx10
+                                    invalid),   // op0=0000 op1=00 op2=1100 op3=11xxxxx10
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1100 op3=xxxxxxx11")),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1111")),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01"),
                         Mask(19, 0b1111,        // op0=0000 op1=10 op
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0000"),

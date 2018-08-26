@@ -36,6 +36,7 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly RegisterStorage[] AddrRegs64;
         public static readonly RegisterStorage[] AddrRegs32;
 
+        public static readonly RegisterStorage[] SimdVectorReg128;
         public static readonly RegisterStorage[] SimdRegs128;
         public static readonly RegisterStorage[] SimdRegs64;
         public static readonly RegisterStorage[] SimdRegs32;
@@ -84,6 +85,9 @@ namespace Reko.Arch.Arm.AArch64
                 .Select(n => new RegisterStorage($"b{n-32}", n, 0, PrimitiveType.Byte))
                 .ToArray();
 
+            SimdVectorReg128 = Enumerable.Range(32, 32)
+                .Select(n => new RegisterStorage("$v{n-32}", n, 0, PrimitiveType.Word128))
+                .ToArray();
 
             sp = new RegisterStorage("sp", 64, 0, PrimitiveType.Word64);
             wsp = new RegisterStorage("wsp", 64, 0, PrimitiveType.Word32);
