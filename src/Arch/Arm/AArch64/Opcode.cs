@@ -147,5 +147,16 @@ namespace Reko.Arch.Arm.AArch64
         fcvtms,
         sxtl,
         fmov,
+        rev16,
+        fcsel,
+        fcvtps,
+        fcmp,
+        fcmpe,
+        fabs,
+        fsqrt,
+        fneg,
+        fcvt,
+        xtn,
+        xtn2,
     }
 }

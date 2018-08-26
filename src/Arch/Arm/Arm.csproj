@@ -86,6 +86,7 @@
     <Compile Include="AArch64\Opcode.cs" />
     <Compile Include="AArch64\Registers.cs" />
     <Compile Include="AArch64\VectorData.cs" />
+    <Compile Include="AArch64\VectorRegisterOperand.cs" />
     <Compile Include="Arm32Architecture.cs" />
     <Compile Include="AArch32\AArch32Instruction.cs" />
     <Compile Include="AArch32\AArch32Operand.cs" />

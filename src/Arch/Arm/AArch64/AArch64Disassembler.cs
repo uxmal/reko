@@ -520,20 +520,61 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
+        // 16-bit SIMD/FPU register or zero if field = 0b00000
+        private static Mutator Hz(int pos, int size)
+        {
+            var field = new Bitfield(pos, size);
+            return (u, d) =>
+            {
+                uint iReg = field.Read(u);
+                MachineOperand op;
+                if (iReg == 0)
+                {
+                    op = new ImmediateOperand(new ConstantReal16(PrimitiveType.Real16, 0.0));
+                }
+                else
+                {
+                    op = new RegisterOperand(Registers.SimdRegs16[iReg]);
+                }
+                d.state.ops.Add(op);
+                return true;
+            };
+        }
+
         // 32-bit SIMD/FPU register.
         private static Mutator S(int pos, int size)
         {
-            var fields = new[]
-            {
-                new Bitfield(pos, size)
-            };
+            var field = new Bitfield(pos, size);
             return (u, d) =>
             {
-                uint iReg = Bitfield.ReadFields(fields, u);
+                uint iReg = field.Read(u);
                 d.state.ops.Add(new RegisterOperand(Registers.SimdRegs32[iReg]));
                 return true;
             };
         }
+
+        // 32-bit SIMD/FPU register or zero if field = 0b00000
+        private static Mutator Sz(int pos, int size)
+        {
+            var field = new Bitfield(pos, size);
+            return (u, d) =>
+            {
+                uint iReg = field.Read(u);
+                MachineOperand op;
+                if (iReg == 0)
+                {
+                    op = new ImmediateOperand(Constant.Real32(0.0F));
+                }
+                else
+                {
+                    op = new RegisterOperand(Registers.SimdRegs32[iReg]);
+                }
+                d.state.ops.Add(op);
+                return true;
+            };
+        }
+
+
 
         // 64-bit SIMD register.
         private static Mutator D(int pos, int size)
@@ -546,6 +587,28 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+
+        // 64-bit SIMD/FPU register or zero if field = 0b00000
+        private static Mutator Dz(int pos, int size)
+        {
+            var field = new Bitfield(pos, size);
+            return (u, d) =>
+            {
+                uint iReg = field.Read(u);
+                MachineOperand op;
+                if (iReg == 0)
+                {
+                    op = new ImmediateOperand(Constant.Real64(0.0));
+                }
+                else
+                {
+                    op = new RegisterOperand(Registers.SimdRegs64[iReg]);
+                }
+                d.state.ops.Add(op);
+                return true;
+            };
+        }
+
 
         // 128-bit SIMD register.
         private static Mutator Q(int pos, int size)
@@ -570,6 +633,19 @@ namespace Reko.Arch.Arm.AArch64
                 uint iReg = bitfield.Read(u);
                 var regs = d.state.useQ ? Registers.SimdRegs128 : Registers.SimdRegs64;
                 d.state.ops.Add(new RegisterOperand(regs[iReg]));
+                return true;
+            };
+        }
+
+        // Picks a V register 
+        private static Mutator Vr(int pos, int size)
+        {
+            var bitfield = new Bitfield(pos, size);
+            return (u, d) =>
+            {
+                uint iReg = bitfield.Read(u);
+                var regs = d.state.useQ ? Registers.SimdRegs128 : Registers.SimdRegs64;
+
                 return true;
             };
         }
@@ -931,6 +1007,10 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
+        /// <summary>
+        /// Creates a mutator for a condition operand
+        /// </summary>
+        /// <returns></returns>
         private static Mutator C(int pos, int size)
         {
             var field = new Bitfield(pos, size);
@@ -1177,16 +1257,22 @@ namespace Reko.Arch.Arm.AArch64
             return new NyiDecoder(str);
         }
 
+        private static HashSet<uint> seen = new HashSet<uint>();
+
         private AArch64Instruction NotYetImplemented(string message, uint wInstr)
         {
-            Console.WriteLine($"// An AArch64 decoder for the instruction {wInstr:X8} ({Bits.Reverse(wInstr):X8}) - ({message}) has not been implemented yet.");
-            Console.WriteLine("[Test]");
-            Console.WriteLine($"public void AArch64Dis_{wInstr:X8}()");
-            Console.WriteLine("{");
-            Console.WriteLine($"    Given_Instruction(0x{wInstr:X8});");
-            Console.WriteLine("    Expect_Code(\"@@@\");");
-            Console.WriteLine("}");
-            Console.WriteLine();
+            if (!seen.Contains(wInstr))
+            {
+                seen.Add(wInstr);
+                Console.WriteLine($"// An AArch64 decoder for the instruction {wInstr:X8} ({Bits.Reverse(wInstr):X8}) - ({message}) has not been implemented yet.");
+                Console.WriteLine("[Test]");
+                Console.WriteLine($"public void AArch64Dis_{wInstr:X8}()");
+                Console.WriteLine("{");
+                Console.WriteLine($"    Given_Instruction(0x{wInstr:X8});");
+                Console.WriteLine("    Expect_Code(\"@@@\");");
+                Console.WriteLine("}");
+                Console.WriteLine();
+            }
 
 #if !DEBUG
                 throw new NotImplementedException($"An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
@@ -1434,43 +1520,43 @@ namespace Reko.Arch.Arm.AArch64
                 Decoder LdStRegImmPostIdx;
                 {
                     LdStRegImmPostIdx = Mask(30, 2, 26, 1, 22, 2,
-                        Instr(Opcode.strb, W(0,5), Mpost(w8)),
-                        Instr(Opcode.ldrb, W(0,5), Mpost(w8)),
-                        Instr(Opcode.ldrsb, X(0,5), Mpost(i8)),
-                        Instr(Opcode.ldrsb, W(0,5), Mpost(i8)),
+                        Instr(Opcode.strb, W(0, 5), Mpost(w8)),
+                        Instr(Opcode.ldrb, W(0, 5), Mpost(w8)),
+                        Instr(Opcode.ldrsb, X(0, 5), Mpost(i8)),
+                        Instr(Opcode.ldrsb, W(0, 5), Mpost(i8)),
 
-                        Instr(Opcode.str, B(0,5), Mpost(w8)),
-                        Instr(Opcode.ldr, B(0,5), Mpost(w8)),
-                        Instr(Opcode.str, Q(0,5), Mpost(w128)),
-                        Instr(Opcode.ldr, Q(0,5), Mpost(w128)),
+                        Instr(Opcode.str, B(0, 5), Mpost(w8)),
+                        Instr(Opcode.ldr, B(0, 5), Mpost(w8)),
+                        Instr(Opcode.str, Q(0, 5), Mpost(w128)),
+                        Instr(Opcode.ldr, Q(0, 5), Mpost(w128)),
 
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 0 00"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 0 01"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 0 10"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 0 11"),
+                        Instr(Opcode.strh, W(0, 5), Mpost(w16)),
+                        Instr(Opcode.ldrh, W(0, 5), Mpost(w16)),
+                        Instr(Opcode.ldrsh, X(0, 5), Mpost(i16)),
+                        Instr(Opcode.ldrsh, W(0, 5), Mpost(i16)),
 
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 1 00"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 1 01"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 1 10"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 01 1 11"),
+                        Instr(Opcode.str, H(0, 5), Mpost(w16)),
+                        Instr(Opcode.ldr, H(0, 5), Mpost(w16)),
+                        invalid,
+                        invalid,
 
                         Instr(Opcode.str, W(0,5), Mpost(w32)),
                         Instr(Opcode.ldr, W(0,5), Mpost(w32)),
                         Instr(Opcode.ldrsw, X(0,5), Mpost(i32)),
                         invalid,
 
-                        Nyi("LdStRegImmPostIdx size:V:opc = 10 1 00"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 10 1 01"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 10 1 10"),
-                        Nyi("LdStRegImmPostIdx size:V:opc = 10 1 11"),
+                        Instr(Opcode.str, S(0, 5), Mpost(w32)),
+                        Instr(Opcode.ldr, S(0, 5), Mpost(w32)),
+                        invalid,
+                        invalid,
 
                         Instr(Opcode.str, X(0,5), Mpost(w64)),
                         Instr(Opcode.ldr, X(0,5), Mpost(w64)),
                         invalid,
                         invalid,
 
-                        Instr(Opcode.str, X(0,5), x("postidx SIMD&FP 64-bit")),
-                        Instr(Opcode.ldr, X(0,5), x("postidx SIMD&FP 64-bit")),
+                        Instr(Opcode.str, X(0,5), Mpost(w64)),
+                        Instr(Opcode.ldr, X(0,5), Mpost(w64)),
                         invalid,
                         invalid);
                 }
@@ -2035,14 +2121,29 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Opcode.ccmp, "X5:5,U16:1l,U0:4b,C12:4")));
             }
 
+            Decoder DataProcessing1source;
+            {
+                DataProcessing1source = Mask(31,1,29,1, // sf:S 
+                    Sparse(16, 0b11111, // sf:S=00
+                        Nyi("DataProcessing1source sf:S=00 opcode2=?????"),
+                        (0b00000, Sparse(10, 0x3F,      // sf:S=00 opcode2=00000 opcode
+                            Nyi("DataProcessing1source sf:S=00 opcode2=00000 opcode=??????"),
+                            (0b00001, Instr(Opcode.rev16, W(0,5),W(5,5)))
+                            ))
+                        ),
+                    Nyi("DataProcessing1source sf:S=01"),
+                    Nyi("DataProcessing1source sf:S=10"),
+                    Nyi("DataProcessing1source sf:S=11"));
+            }
+
             Decoder DataProcessing2source;
             {
                 DataProcessing2source = Mask(31, 1, 29, 1,
                     Mask(12,0b1111,
                         Mask(10, 0b11, // sf:S=0:0 opcode=0000xx
                             invalid,
-                            Nyi("* Data Processing 2 source - sf:S=0:0 opcode=000001"),
-                            Nyi("* Data Processing 2 source - sf:S=0:0 opcode=000010"),
+                            invalid,
+                            Instr(Opcode.udiv, W(0,5),W(5,5),W(16,5)),
                             Instr(Opcode.sdiv, W(0,5),W(5,5),W(16,5))),
                         Nyi("* Data Processing 2 source - sf:S=0:0 opcode=0001xx"),
                         Mask(10, 0b11, // sf:S=0:0 opcode=0010xx
@@ -2101,6 +2202,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
             }
 
+         
             Decoder DataProcessingReg;
             {
                 DataProcessingReg =  Mask(28, 1,         // op1
@@ -2136,7 +2238,7 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         Mask(30, 1,         // op1 = 1, op2 = 6, op0
                             DataProcessing2source,
-                            Nyi("DataProcessing 1 source")),
+                            DataProcessing1source),
                         invalid,
 
                         DataProcessing3Source,
@@ -2158,6 +2260,9 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=00"),
                             (0b00_010, Instr(Opcode.scvtf, S(0,5),W(5,5))),
                             (0b00_011, Instr(Opcode.ucvtf, S(0,5),W(5,5))),
+                            (0b00_111, Instr(Opcode.fmov,  S(0,5),W(5,5))),
+                            (0b01_000, Instr(Opcode.fcvtps, W(0,5),S(5,5))),
+                            (0b10_000, Instr(Opcode.fcvtms, W(0,5),S(5,5))),
                             (0b11_000, Instr(Opcode.fcvtzs, W(5,5),S(0,5))),
                             (0b11_001, Instr(Opcode.fcvtzu, W(5,5),S(0,5)))),
                         Sparse(16, 0b11111,  // sf:S=0b00 type=01 rmode:opcode
@@ -2304,6 +2409,43 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11111")));
             }
 
+            Decoder FloatingPointDataProcessing1src;
+            {
+                FloatingPointDataProcessing1src = Mask(31, 1, 29, 1, 22, 2,   // M:S:Type
+                    Sparse(15, 0x3F,    // M:S:Type=00 00
+                        Nyi("FloatingPointDataProcessing1src M:S:Type=00 00"),
+                        (0b000000, Instr(Opcode.fmov, S(0,5),S(5,5))),
+                        (0b000001, Instr(Opcode.fabs, S(0,5),S(5,5))),
+                        (0b000010, Instr(Opcode.fneg, S(0,5),S(5,5))),
+                        (0b000011, Instr(Opcode.fsqrt, S(0,5),S(5,5))),
+                        (0b000101, Instr(Opcode.fcvt, D(0,5),S(5,5))),
+                        (0b000111, Instr(Opcode.fcvt, H(0,5),S(5,5)))
+                        ),
+                    Sparse(15, 0x3F,    // M:S:Type=00 01
+                        Nyi("FloatingPointDataProcessing1src M:S:Type=00 01"),
+                        (0b000000, Instr(Opcode.fmov, D(0,5),D(5,5))),
+                        (0b000001, Instr(Opcode.fabs, D(0,5),D(5,5))),
+                        (0b000010, Instr(Opcode.fneg, D(0,5),D(5,5))),
+                        (0b000011, Instr(Opcode.fsqrt,D(0,5),D(5,5))),
+                        (0b000100, Instr(Opcode.fcvt, S(0,5),D(5,5))),
+                        (0b000111, Instr(Opcode.fcvt, H(0,5),D(5,5)))
+                        ),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=00 10"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=00 11"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=01 00"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=01 01"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=01 10"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=01 11"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=10 00"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=10 01"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=10 10"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=10 11"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=11 00"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=11 01"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=11 10"),
+                    Nyi("FloatingPointDataProcessing1src M:S:Type=11 11"));
+            }
+
             Decoder FloatingPointDataProcessing2src;
             {
                 FloatingPointDataProcessing2src = Mask(31,1,29,1,22,2,   // M:S:Type
@@ -2384,6 +2526,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
                     invalid);
             }
+
             Decoder FloatingPointImmediate;
             {
                 FloatingPointImmediate = Mask(31,1,29,1,    // M:S
@@ -2397,6 +2540,59 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("FloatingPointImmediate M:S=01"),
                     Nyi("FloatingPointImmediate M:S=10"),
                     Nyi("FloatingPointImmediate M:S=11"));
+            }
+
+            Decoder FloatingPointCompare;
+            {
+                FloatingPointCompare = Mask(31,1,29,1,    // M:S
+                    Select(14,2,n=>n!=0,
+                        invalid,
+                        Mask(22,2,3,2,  // M:S=00 type:opcode
+                            Instr(Opcode.fcmp,  S(5,5),S(16,5)),
+                            Instr(Opcode.fcmp,  S(5,5),Sz(16,5)),
+                            Instr(Opcode.fcmpe, S(5,5),S(16,5)),
+                            Instr(Opcode.fcmpe, S(5,5),Sz(16,5)),
+                            Instr(Opcode.fcmp,  D(5,5),D(16,5)),
+                            Instr(Opcode.fcmp,  D(5,5),Dz(16,5)),
+                            Instr(Opcode.fcmpe, D(5,5),D(16,5)),
+                            Instr(Opcode.fcmpe, D(5,5),Dz(16,5)),
+                            invalid,
+                            invalid,
+                            invalid,
+                            invalid,
+                            Instr(Opcode.fcmp,  H(5,5),H(16,5)),
+                            Instr(Opcode.fcmp,  H(5,5),Hz(16,5)),
+                            Instr(Opcode.fcmpe, H(5,5),H(16,5)),
+                            Instr(Opcode.fcmpe, H(5,5),Hz(16,5)))),
+                    invalid,
+                    invalid,
+                    invalid);
+            }
+
+            Decoder FloatingPointCondSelect;
+            {
+                FloatingPointCondSelect = Mask(31, 1, 29, 1,   // M:S
+                    Mask(22, 0b11,  // M:S=00 type
+                        Instr(Opcode.fcsel, S(0,5),S(5,5),S(16,5),C(12,4)),
+                        Instr(Opcode.fcsel, D(0,5),D(5,5),D(16,5),C(12,4)),
+                        invalid,
+                        Instr(Opcode.fcsel, H(0,5),H(5,5),H(16,5),C(12,4))),
+                    invalid,
+                    invalid,
+                    invalid);
+            }
+
+            Decoder FloatingPointCondCompare;
+            {
+                FloatingPointCondCompare = Mask(31, 1, 29, 1,   // M:S
+                    Mask(22, 0b11, // M:S=00 type
+                        Nyi("FloatingPointCondCompare M:S=00 type=00"),
+                        Nyi("FloatingPointCondCompare M:S=00 type=01"),
+                        invalid,    // M:S=00 type=00
+                        Nyi("FloatingPointCondCompare M:S=00 type=11")),
+                    invalid,
+                    invalid,
+                    invalid);
             }
 
             Decoder AdvancedSimdShiftByImm;
@@ -2461,25 +2657,60 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("AdvancedSIMDcopy Q:op=11"));
             }
 
+            Decoder AdvancedSIMD2RegMisc;
+            {
+                AdvancedSIMD2RegMisc = Mask(29, 1,
+                    Sparse(12, 0b11111,
+                        Nyi("AdvancedSIMD2RegMisc U=0"),
+                        (0b10010, Mask(30, 1,
+                            Instr(Opcode.xtn, Vr(0,5),Vr(5,5)),
+                            Instr(Opcode.xtn2, x(""))))),
+                    Nyi("AdvancedSIMD2RegMisc U=1"));
+            }
+
             Decoder DataProcessingScalarFpAdvancedSimd;
             {
                 Decoder FloatingPointDecoders = Mask(10, 0b11,  // op3=xxxxxxx??
-                    Mask(12, 1,                     // op3=xxxxxx?00
-                        Mask(13, 1,                 // op3=xxxxx?000
-                            Mask(14, 1,             // op3=xxxxx0000
-                                Mask(15, 1,         // op3=xxxx00000
-                                    ConversionBetweenFpAndInt,  // op3=xxx000000
-                                    invalid),                   // op3=xxx100000
-                                Nyi("FloatingPointDataProcessing1src")), // op3=xxxx10000
-                            Nyi("FloatingPointCompare")),       // op3=xxxxx1000
-                        FloatingPointImmediate),                // op3=xxxxxx100
-                    Nyi("FloatingPointCondCompare"),            // op3=xxxxxxx01
+                    Mask(12, 0b11,                              // op3=xxxxx??00
+                        Mask(14, 0b11,                          // op3=xxx??0000
+                            ConversionBetweenFpAndInt,          // op3=xxx000000
+                            FloatingPointDataProcessing1src,    // op3=xxx010000
+                            invalid,                            // op3=xxx100000
+                            FloatingPointDataProcessing1src),   // op3=xxx110000
+                        FloatingPointImmediate,                 // op3=xxxxx0100
+                        FloatingPointCompare,                   // op3=xxxxx1000
+                        FloatingPointImmediate),                // op3=xxxxx1100
+                    FloatingPointCondCompare,                   // op3=xxxxxxx01
                     FloatingPointDataProcessing2src,            // op3=xxxxxxx10
-                    Nyi("FloatingPointCondSelect"));            // op3=xxxxxxx11
+                    FloatingPointCondSelect);                   // op3=xxxxxxx11
 
                 DataProcessingScalarFpAdvancedSimd = Mask(28, 0xF,
                     Mask(23, 0b11, // op0 = 0000
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00"),
+                        Mask(19, 0b1111,        // op0=0000 op1=00 op
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0011"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0100"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0111"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1000"), 
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1011"),
+                            Mask(10, 0b11, 
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1100 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1100 op3=xxxxxxx01"),
+                                Mask(17, 0b11, // op0=0000 op1=00 op2=1100 op3=??xxxxx10
+                                    AdvancedSIMD2RegMisc,
+                                    invalid,    // op0=0000 op1=00 op2=1100 op3=01xxxxx10
+                                    invalid,    // op0=0000 op1=00 op2=1100 op3=10xxxxx10
+                                    invalid),   // op0=0000 op1=00 op2=1100 op3=11xxxxx10
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1100 op3=xxxxxxx11")),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1111")),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01"),
                         Mask(19, 0b1111,        // op0=0000 op1=10 op
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0000"),
