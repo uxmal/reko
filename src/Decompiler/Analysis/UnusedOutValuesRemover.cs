@@ -39,7 +39,7 @@ namespace Reko.Analysis
     {
         public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of unused out values");
 
-        private List<SsaTransform> ssts;
+        private IEnumerable<SsaState> ssaStates;
         private WorkList<SsaState> wl;
         private Program program;
         private Dictionary<Procedure, SsaState> procToSsa;
@@ -48,16 +48,15 @@ namespace Reko.Analysis
 
         public UnusedOutValuesRemover(
             Program program,
-            List<SsaTransform> ssts,
+            IEnumerable<SsaState> ssaStates,
             ProgramDataFlow dataFlow,
             DecompilerEventListener eventListener)
-        { 
+        {
             this.dataFlow = dataFlow;
             this.program = program;
-            this.ssts = ssts;
+            this.ssaStates = ssaStates;
             this.eventListener = eventListener;
-            this.procToSsa = ssts
-                .Select(t => t.SsaState)
+            this.procToSsa = ssaStates
                 .ToDictionary(s => s.Procedure);
         }
 
@@ -71,7 +70,7 @@ namespace Reko.Analysis
                 if (eventListener.IsCanceled())
                     return;
                 change = false;
-                this.wl = new WorkList<SsaState>(ssts.Select(t => t.SsaState));
+                this.wl = new WorkList<SsaState>(ssaStates);
                 while (wl.GetWorkItem(out SsaState ssa))
                 {
                     if (this.eventListener.IsCanceled())
@@ -92,7 +91,7 @@ namespace Reko.Analysis
 
         private void CollectLiveOutStorages()
         {
-            var wl = new WorkList<SsaState>(ssts.Select(s => s.SsaState));
+            var wl = new WorkList<SsaState>(ssaStates);
             while (wl.GetWorkItem(out SsaState ssa))
             {
                 var liveOut = CollectLiveOutStorages(ssa.Procedure);

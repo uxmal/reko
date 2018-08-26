@@ -33,6 +33,7 @@ using Reko.Arch.X86;
 using Reko.Core.Code;
 using System.Diagnostics;
 using Rhino.Mocks;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -98,7 +99,11 @@ namespace Reko.UnitTests.Analysis
 
             // Discover ssaId's that are live out at each call site.
             // Delete all others.
-            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
+            var uvr = new UnusedOutValuesRemover(
+                program,
+                ssts.Select(sst => sst.SsaState),
+                dfa.ProgramDataFlow,
+                eventListener);
             uvr.Transform();
 
             foreach (var p in program.Procedures.Values)

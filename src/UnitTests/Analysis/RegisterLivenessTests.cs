@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Reko.Core.Serialization;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -62,7 +63,11 @@ namespace Reko.UnitTests.Analysis
 
             // Discover ssaId's that are live out at each call site.
             // Delete all others.
-            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
+            var uvr = new UnusedOutValuesRemover(
+                program,
+                ssts.Select(sst => sst.SsaState),
+                dfa.ProgramDataFlow,
+                eventListener);
             uvr.Transform();
             DumpProcedureFlows(program, dfa, writer);
 		}
