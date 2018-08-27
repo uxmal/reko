@@ -1254,6 +1254,10 @@ namespace Reko.Arch.Arm.AArch64
         {
              VectorData.I32, VectorData.I32, VectorData.I32, VectorData.I32
         };
+        private static VectorData[] SSDD = new[]
+        {
+             VectorData.I32, VectorData.I32, VectorData.I64, VectorData.I64
+        };
 
         // Frequently occurring predicates.
 
@@ -2412,7 +2416,10 @@ namespace Reko.Arch.Arm.AArch64
                             Select(0, 21, Rn_Rm_Same,
                                 Instr(Opcode.mov, q(30),Vr(0,5,BBB_,30), Vr(5,5,BBB_,30)),                      // U=0 opcode=00011 size=10
                                 Instr(Opcode.orr, q(30), Vr(0,5,BBB_,30), Vr(5,5,BBB_,30), Vr(16,5,BBB_,30))),  // U=0 opcode=00011 size=10
-                            Nyi("AdvancedSimd3Same U=0 opcode=00011 size=11")))),
+                            Nyi("AdvancedSimd3Same U=0 opcode=00011 size=11"))),
+                        (0b11010, Mask(23, 1,       // U=0 opcode=11010 size=?x
+                            Instr(Opcode.fadd, q(30),Vr(0,5,SSDD),Vr(5,5,SSDD),Vr(16,5,SSDD)),
+                            Instr(Opcode.fsub, x("vector"))))),
                     Mask(11, 0b11111, // U=1 opcode
                         Nyi("AdvancedSimd3Same U=1 opcode=00000"),
                         Nyi("AdvancedSimd3Same U=1 opcode=00001"),
@@ -2791,7 +2798,11 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Opcode.fcvtzs, VectorData.F32, q(30),V(0,5),V(5,5)),
                             Instr(Opcode.fcvtzs, VectorData.F64, q(30),V(0,5),V(5,5))),
                         Nyi("AdvancedSimd2RegMisc U=0 opcode=11100"),
-                        Nyi("AdvancedSimd2RegMisc U=0 opcode=11101"),
+                        Mask(22,0b11,
+                            Instr(Opcode.scvtf, VectorData.I32, q(30),V(0,5),V(5,5)),
+                            Nyi("AdvancedSimd2RegMisc U=0 opcode=11101 size=01"),
+                            Nyi("AdvancedSimd2RegMisc U=0 opcode=11101 size=10"),
+                            Nyi("AdvancedSimd2RegMisc U=0 opcode=11101 size=11")),
                         invalid,
                         Nyi("AdvancedSimd2RegMisc U=0 opcode=11111")),
                     Nyi("AdvancedSimd2RegMisc U=1"));
@@ -2944,7 +2955,15 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0001"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0010"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0011"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100"),
+                            Mask(10, 0b11, 
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100 op3=xxxxxxx01"),
+                                Mask(17, 0b11,  // op0=4 op1=0b00 op2=0b0100 op3=??xxxxx10
+                                    AdvancedSimd2RegMisc,
+                                    invalid,
+                                    invalid,
+                                    invalid),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100 op3=xxxxxxx11")),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0101"),
                             Mask(10, 0b11, // op0=4 op1=00 op2=0110
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0110 op3=xxxxxxx00"),

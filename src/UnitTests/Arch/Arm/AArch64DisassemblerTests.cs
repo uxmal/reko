@@ -1093,6 +1093,20 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("dup\tv2.4s,v23.s[0]");
         }
 
+        [Test]
+        public void AArch64Dis_fadd_vector_f32()
+        {
+            Given_Instruction(0x4E30D4D0);
+            Expect_Code("fadd v16.4s,v4.4s,v16.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_vector_i32()
+        {
+            Given_Instruction(0x4E21DA10);
+            Expect_Code("scvtf\tv16.4s,v16.4s");
+        }
+
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -1256,21 +1270,8 @@ public void AArch64Dis_4EA31C68()
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 4E21DA73 (73DA214E) - (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E21DA73()
-        {
-            Given_Instruction(0x4E21DA73);
-            Expect_Code("@@@");
-        }
+ 
 
-        // An AArch64 decoder for the instruction 4E21DA94 (94DA214E) - (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E21DA94()
-        {
-            Given_Instruction(0x4E21DA94);
-            Expect_Code("@@@");
-        }
 
         // An AArch64 decoder for the instruction 6E33DC15 (15DC336E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
         [Test]
@@ -1301,38 +1302,6 @@ public void AArch64Dis_4EA31C68()
         public void AArch64Dis_6E34DCB4()
         {
             Given_Instruction(0x6E34DCB4);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E36D6B5 (B5D6364E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E36D6B5()
-        {
-            Given_Instruction(0x4E36D6B5);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E34D673 (73D6344E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E34D673()
-        {
-            Given_Instruction(0x4E34D673);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E35D455 (55D4354E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E35D455()
-        {
-            Given_Instruction(0x4E35D455);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E33D4D3 (D3D4334E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E33D4D3()
-        {
-            Given_Instruction(0x4E33D4D3);
             Expect_Code("@@@");
         }
 
@@ -1416,21 +1385,9 @@ public void AArch64Dis_4EA31C68()
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 4E21DA10 (10DA214E) - (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E21DA10()
-        {
-            Given_Instruction(0x4E21DA10);
-            Expect_Code("@@@");
-        }
+   
 
-        // An AArch64 decoder for the instruction 4E21DA31 (31DA214E) - (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E21DA31()
-        {
-            Given_Instruction(0x4E21DA31);
-            Expect_Code("@@@");
-        }
+   
 
         // An AArch64 decoder for the instruction 6E30DC12 (12DC306E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
         [Test]
@@ -1461,38 +1418,6 @@ public void AArch64Dis_4EA31C68()
         public void AArch64Dis_6E31DCB1()
         {
             Given_Instruction(0x6E31DCB1);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E33D652 (52D6334E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E33D652()
-        {
-            Given_Instruction(0x4E33D652);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E31D610 (10D6314E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E31D610()
-        {
-            Given_Instruction(0x4E31D610);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E32D451 (51D4324E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E32D451()
-        {
-            Given_Instruction(0x4E32D451);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4E30D4D0 (D0D4304E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4E30D4D0()
-        {
-            Given_Instruction(0x4E30D4D0);
             Expect_Code("@@@");
         }
 
