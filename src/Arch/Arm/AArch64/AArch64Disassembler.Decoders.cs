@@ -35,16 +35,6 @@ namespace Reko.Arch.Arm.AArch64
         {
             public abstract AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm);
 
-            public static uint bitmask(uint u, int shift, uint mask)
-            {
-                return (u >> shift) & mask;
-            }
-
-            public static bool bit(uint u, int shift)
-            {
-                return ((u >> shift) & 1) != 0;
-            }
-
             protected void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields)
             {
                 var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
@@ -160,10 +150,10 @@ namespace Reko.Arch.Arm.AArch64
 
         public class SelectDecoder : Decoder
         {
-            private Bitfield[] bitfields;
-            private Predicate<uint> predicate;
-            private Decoder trueDecoder;
-            private Decoder falseDecoder;
+            private readonly Bitfield[] bitfields;
+            private readonly Predicate<uint> predicate;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
 
             public SelectDecoder(Bitfield[] bitfields, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
             {
@@ -190,7 +180,7 @@ namespace Reko.Arch.Arm.AArch64
 
         public class NyiDecoder : Decoder
         {
-            private string message;
+            private readonly string message;
 
             public NyiDecoder(string message)
             {
@@ -206,27 +196,10 @@ namespace Reko.Arch.Arm.AArch64
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
-            private readonly string format;
-
-            public InstrDecoder(Opcode opcode, string format)
-            {
-                this.opcode = opcode;
-                this.format = format;
-            }
-
-            public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
-            {
-                return dasm.Decode(wInstr, opcode, format);
-            }
-        }
-
-        private class InstrDecoder2 : Decoder
-        {
-            private readonly Opcode opcode;
             private readonly VectorData vectorData;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder2(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
+            public InstrDecoder(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
             {
                 this.opcode = opcode;
                 this.vectorData = vectorData;

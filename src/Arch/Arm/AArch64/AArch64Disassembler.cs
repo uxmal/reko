@@ -71,7 +71,7 @@ namespace Reko.Arch.Arm.AArch64
             public MachineOperand shiftAmount = null;
             public bool useQ;
             public VectorData vectorData;
-            internal uint elemsize;
+            public uint elemsize;
 
             public void Clear()
             {
@@ -89,7 +89,7 @@ namespace Reko.Arch.Arm.AArch64
                 opcode = Opcode.Invalid;
             }
 
-            internal AArch64Instruction MakeInstruction()
+            public AArch64Instruction MakeInstruction()
             {
                 var instr = new AArch64Instruction
                 {
@@ -100,217 +100,10 @@ namespace Reko.Arch.Arm.AArch64
                     vectorData = vectorData,
                 };
                 return instr;
-
             }
         }
 
-        private AArch64Instruction Decode(uint wInstr, Opcode opcode, string format)
-        {
-            int i = 0;
-            RegisterStorage reg;
-            int n;
-            while (i < format.Length)
-            {
-                switch (format[i++])
-                {
-                case ',':
-                case ' ':
-                    break;
-                case 'W':
-                    // 32-bit register.
-                    n = ReadUnsignedBitField(wInstr, format, ref i);
-                    reg = Registers.GpRegs32[n];
-                    state.ops.Add(new RegisterOperand(reg));
-                    break;
-                case 'X':
-                    // 64-bit register.
-                    n = ReadUnsignedBitField(wInstr, format, ref i);
-                    reg = Registers.GpRegs64[n];
-                    state.ops.Add(new RegisterOperand(reg));
-                    break;
-                case 'S':
-                    // 32-bit SIMD/FPU register.
-                    n = ReadUnsignedBitField(wInstr, format, ref i);
-                    reg = Registers.SimdRegs32[n];
-                    state.ops.Add(new RegisterOperand(reg));
-                    break;
-                case 'U':
-                    ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
-                    if (op == null)
-                        return Invalid();
-                    state.ops.Add(op);
-                    break;
-                case 'I':
-                    state.ops.Add(DecodeSignedImmediateOperand(wInstr, format, ref i));
-                    break;
-                case 'J':
-                    // Jump displacement from address of current instruction
-                    n = ReadSignedBitField(wInstr, format, ref i);
-                    AddressOperand aop = AddressOperand.Create(addr + (n << 2));
-                    state.ops.Add(aop);
-                    break;
 
-                case '[':
-                    // Memory access
-                    state.ops.Add(ReadMemoryAccess(wInstr, format, ref i));
-                    break;
-                case 'C':
-                    // Condition field
-                    var cop = ReadConditionField(wInstr, format, ref i);
-                    state.ops.Add(new ConditionOperand(cop));
-                    break;
-                case 's':
-                    // Shift type
-                    switch (format[i++])
-                    {
-                    case 'c': // code
-                        n = ReadUnsignedBitField(wInstr, format, ref i);
-                        switch (n)
-                        {
-                        case 1:
-                            state.shiftCode = Opcode.lsl;
-                            state.shiftAmount = ImmediateOperand.Int32(12);
-                            break;
-                        }
-                        break;
-                    case 'h': // 16-bit shifts
-                        n = ReadUnsignedBitField(wInstr, format, ref i);
-                        state.shiftCode = Opcode.lsl;
-                        state.shiftAmount = ImmediateOperand.Int32(16 * n);
-                        break;
-                    case 'i': // code + immediate 
-                        n = ReadUnsignedBitField(wInstr, format, ref i);
-                        switch (n)
-                        {
-                        case 0: state.shiftCode = Opcode.lsl; break;
-                        case 1: state.shiftCode = Opcode.lsr; break;
-                        case 2: state.shiftCode = Opcode.asr; break;
-                        case 3: state.shiftCode = Opcode.ror;  break;
-                        }
-                        Expect(',', format, ref i);
-                        n = ReadUnsignedBitField(wInstr, format, ref i);
-                        state.shiftAmount = ImmediateOperand.Int32(n);
-                        break;
-                    default:
-                        NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode} shift", wInstr);
-                        break;
-                    }
-                    break;
-                default:
-                    NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode}", wInstr);
-                    return Invalid();
-                }
-            }
-            var instr = new AArch64Instruction
-            {
-                opcode = opcode,
-                ops = state.ops.ToArray(),
-                shiftCode = state.shiftCode,
-                shiftAmount = state.shiftAmount
-            };
-            return instr;
-        }
-
-        /// <summary>
-        /// 64-bit register.
-        /// </summary>
-        private static Action<List<MachineOperand>, AArch64Disassembler, uint> X(int regnumberOffset)
-        {
-            return (ops, dasm, w) =>
-            {
-                var reg = Registers.GpRegs64[(w >> regnumberOffset) & RegisterMask];
-                ops.Add(new RegisterOperand(reg));
-            };
-        }
-
-
-        private ArmCondition ReadConditionField(uint wInstr, string format, ref int i)
-        {
-            return (ArmCondition) ReadSignedBitField(wInstr, format, ref i);
-        }
-
-        private MemoryOperand ReadMemoryAccess(uint wInstr, string format, ref int i)
-        {
-            Expect('X', format, ref i);
-            int n = ReadUnsignedBitField(wInstr, format, ref i);
-            RegisterStorage regBase = Registers.GpRegs64[n];
-            RegisterStorage regIndex = null;
-            Constant offset = null;
-            Opcode extend = Opcode.Invalid;
-            int amount = 0;
-            //Ms(xp,xs,Is,Ip)
-            //Mu(xp,xs,Is,Ip)
-            //MR(xp,xs,rs,rp)
-            if (PeekAndDiscard(',', format, ref i))
-            {
-                if (PeekAndDiscard('I', format, ref i))
-                {
-                    var imm = DecodeSignedImmediateOperand(wInstr, format, ref i);
-                    offset = imm.Value;
-                } else if (PeekAndDiscard('U', format, ref i))
-                {
-                    var imm = DecodeImmediateOperand(wInstr, format, ref i);
-                    offset = imm.Value;
-                }
-                else if (PeekAndDiscard('R', format, ref i))
-                {
-                    var reg = ReadUnsignedBitField(wInstr, format, ref i);
-                    var opt = (wInstr >> 13) & 7;
-                    
-                    switch (opt)
-                    {
-                    case 2:
-                        regIndex = Registers.GpRegs32[reg];
-                        extend = Opcode.uxtw; break;
-                    case 3:
-                        regIndex = Registers.GpRegs64[reg];
-                        extend = Opcode.lsl; break;
-                    case 6:
-                        regIndex = Registers.GpRegs32[reg];
-                        extend = Opcode.sxtw; break;
-                    case 7:
-                        regIndex = Registers.GpRegs64[reg];
-                        extend = Opcode.sxtx; break;
-                    }
-                    var size = (wInstr >> 30) & 1;
-                    if (size == 0) // 32-bit
-                    {
-                        amount = ((wInstr >> 12) & 1) != 0 ? 2 : 0;
-                    }
-                    else
-                    {
-                        amount = ((wInstr >> 12) & 1) != 0 ? 3 : 0;
-                    }
-                }
-            }
-            Expect(',', format, ref i);
-            var dt = ReadBitSize(format, ref i);
-            Expect(']', format, ref i);
-            var preIndex = PeekAndDiscard('!', format, ref i);
-            var postIndex = PeekAndDiscard('P', format, ref i);
-            return new MemoryOperand(dt)
-            {
-                Base = regBase,
-                Offset = offset,
-                Index = regIndex,
-                IndexExtend = extend,
-                IndexShift = amount,
-                PreIndex = preIndex,
-                PostIndex = postIndex,
-            };
-        }
-
-        private ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, string format, ref int i)
-        {
-            int n = ReadSignedBitField(wInstr, format, ref i);
-            if (PeekAndDiscard('<', format, ref i))
-            {
-                int sh = ReadNumber(format, ref i);
-                n <<= sh;
-            }
-            var dt = ReadBitSize(format, ref i);
-            return new ImmediateOperand(Constant.Create(dt, n));
-        }
         private ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh =0 )
         {
             int n = Bitfield.ReadSignedFields(fields, wInstr);
@@ -321,48 +114,6 @@ namespace Reko.Arch.Arm.AArch64
             return new ImmediateOperand(Constant.Create(dt, n));
         }
 
-
-        private ImmediateOperand DecodeImmediateOperand(uint wInstr, string format, ref int i)
-        {
-            // Unsigned immediate field.
-            ulong? imm;
-            DataType dt;
-            if (PeekAndDiscard('l', format, ref i))
-            {
-                // Logical immediates have really complex formats.
-                var offset = ReadNumber(format, ref i);
-                dt = ReadBitSize(format, ref i);
-                imm = DecodeLogicalImmediate(wInstr >> offset, dt.BitSize);
-            }
-            else
-            {
-                imm = (uint)ReadUnsignedBitField(wInstr, format, ref i);
-                dt = ReadBitSize(format, ref i);
-                if (PeekAndDiscard('<', format, ref i))
-                {
-                    var sh = ReadNumber(format, ref i);
-                    imm = imm.Value << sh;
-                }
-            }
-            if (imm == null)
-                return null;
-            var op = new ImmediateOperand(Constant.Create(dt, imm.Value));
-            return op;
-        }
-
-        private PrimitiveType ReadBitSize(string format, ref int i)
-        {
-            switch (format[i++])
-            {
-            case 'b': return PrimitiveType.Byte;
-            case 'h': return PrimitiveType.Word16;
-            case 'w': return PrimitiveType.Word32;
-            case 'l': return PrimitiveType.Word64;
-            case 'q': return PrimitiveType.Word128;
-            }
-            NotYetImplemented($"Unknown bit size format character '{format[i - 1]}'", 0);
-            throw new NotImplementedException();
-        }
 
         /// Decode a logical immediate value in the form
         /// "N:immr:imms" (where the immr and imms fields are each 6 bits) into the
@@ -394,67 +145,6 @@ namespace Reko.Arch.Arm.AArch64
                 size *= 2;
             }
             return pattern;
-        }
-
-        private int ReadUnsignedBitField(uint word, string format, ref int i)
-        {
-            uint n = 0;
-            do
-            {
-                int shift = ReadNumber(format, ref i);
-                Expect(':', format, ref i);
-                int maskSize = ReadNumber(format, ref i);
-                uint mask = (1u << maskSize) - 1u;
-                n = (n << maskSize) | ((word >> shift) & mask);
-            } while (PeekAndDiscard(':', format, ref i));
-            return  (int)n;
-        }
-
-        private int ReadSignedBitField(uint word, string format, ref int i)
-        {
-            uint n = 0;
-            int totalBits = 0;
-            do
-            {
-                int shift = ReadNumber(format, ref i);
-                Expect(':', format, ref i);
-                int maskSize = ReadNumber(format, ref i);
-                totalBits += maskSize;
-                uint mask = (1u << maskSize) - 1u;
-                n = (n << maskSize) | ((word >> shift) & mask);
-            } while (PeekAndDiscard(':', format, ref i));
-            return (int) Bits.SignExtend(n, totalBits);
-        }
-
-        private void Expect(char c, string format, ref int i)
-        {
-            if (format[i] != c)
-                throw new InvalidOperationException();
-            ++i;
-        }
-
-        private bool PeekAndDiscard(char c, string format, ref int i)
-        {
-            if (i >= format.Length)
-                return false;
-            if (format[i] != c)
-                return false;
-            ++i;
-            return true;
-        }
-
-        private int ReadNumber(string format, ref int i)
-        {
-            int n = 0;
-            while (i < format.Length)
-            {
-                char c = format[i];
-                if (!Char.IsDigit(c))
-                    break;
-                n = n * 10 + (c - '0');
-                ++i;
-            }
-            return n;
         }
 
         private static ulong DecodeSimdImmediate(uint op, uint cmode, uint w8)
@@ -502,6 +192,17 @@ namespace Reko.Arch.Arm.AArch64
 
 
 
+        /// <summary>
+        /// 64-bit register.
+        /// </summary>
+        private static Action<List<MachineOperand>, AArch64Disassembler, uint> X(int regnumberOffset)
+        {
+            return (ops, dasm, w) =>
+            {
+                var reg = Registers.GpRegs64[(w >> regnumberOffset) & RegisterMask];
+                ops.Add(new RegisterOperand(reg));
+            };
+        }
 
         // 32-bit register.
         private static Mutator W(int pos, int size) {
@@ -798,13 +499,32 @@ namespace Reko.Arch.Arm.AArch64
  
 
         // Unsigned immediate
-        private static Mutator U(int pos, int size, PrimitiveType dt)
+        private static Mutator U(int pos, int size, PrimitiveType dt, int sh = 0)
         {
-            //ImmediateOperand op = DecodeImmediateOperand(wInstr, format, ref i);
-            //if (op == null)
-            //    return Invalid();
-            //state.ops.Add(op);
-            throw new NotImplementedException();
+            var fields = new Bitfield[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var i = d.DecodeSignedImmediateOperand(u, fields, dt, sh);
+                d.state.ops.Add(i);
+                return true;
+            };
+        }
+
+        // Unsigned immediate (encoded for logical instructions)
+        private static Mutator Ul(int offset, PrimitiveType dt, int sh = 0)
+        {
+            return (u, d) =>
+            {
+                var imm = d.DecodeLogicalImmediate(u >> offset, dt.BitSize);
+                if (imm == null)
+                    return false;
+                var op = new ImmediateOperand(Constant.Create(dt, imm.Value));
+                d.state.ops.Add(op);
+                return true;
+            };
         }
 
         // Signed immediate
@@ -813,6 +533,22 @@ namespace Reko.Arch.Arm.AArch64
             var fields = new Bitfield[]
             {
                 new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                var i = d.DecodeSignedImmediateOperand(u, fields, dt, sh);
+                d.state.ops.Add(i);
+                return true;
+            };
+        }
+
+        // Shifted immediate
+        private static Mutator I(int pos1, int len1, int pos2, int len2, PrimitiveType dt, int sh)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, len1),
+                new Bitfield(pos2, len2)
             };
             return (u, d) =>
             {
@@ -1164,25 +900,36 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        //    case 's':
-        //        // Shift type
-        //        switch (format[i++])
-        //        {
-        //        case 'c': // code
-        //            n = ReadUnsignedBitField(wInstr, format, ref i);
-        //            switch (n)
-        //            {
-        //            case 1:
-        //                state.shiftCode = Opcode.lsl;
-        //                state.shiftAmount = ImmediateOperand.Int32(12);
-        //                break;
-        //            }
-        //            break;
-        //        case 'h': // 16-bit shifts
-        //            n = ReadUnsignedBitField(wInstr, format, ref i);
-        //            state.shiftCode = Opcode.lsl;
-        //            state.shiftAmount = ImmediateOperand.Int32(16 * n);
-        //            break;
+        private static Mutator sc(int pos, int length)
+        {
+            var field = new Bitfield(pos, length);
+            return (u, d) =>
+            {
+                var n = field.Read(u);
+                switch (n)
+                {
+                case 1:
+                    d.state.shiftCode = Opcode.lsl;
+                    d.state.shiftAmount = ImmediateOperand.Int32(12);
+                    break;
+                }
+                return true;
+            };
+        }
+
+
+        private static Mutator sh(int pos, int length)
+        {
+            var field = new Bitfield(pos, length);
+            return (u, d) =>
+            {
+                int i = (int)field.Read(u);
+                d.state.shiftCode = Opcode.lsl;
+                d.state.shiftAmount = ImmediateOperand.Int32(16 * i);
+                return true;
+            };
+        }
+
         private static Mutator si(int pos1, int len1, int pos2, int len2)
         {
             var bfShtype = new Bitfield(pos1, len1);
@@ -1296,6 +1043,7 @@ namespace Reko.Arch.Arm.AArch64
         private static PrimitiveType i8 => PrimitiveType.SByte;
         private static PrimitiveType i16 => PrimitiveType.Int16;
         private static PrimitiveType i32 => PrimitiveType.Int32;
+        private static PrimitiveType i64 => PrimitiveType.Int64;
         private static PrimitiveType w8 => PrimitiveType.Byte;
         private static PrimitiveType w16 => PrimitiveType.Word16;
         private static PrimitiveType w32 => PrimitiveType.Word32;
@@ -1360,19 +1108,14 @@ namespace Reko.Arch.Arm.AArch64
 
         // Factory methods for different kinds of decoders.
 
-        private static Decoder Instr(Opcode opcode, string format)
-        {
-            return new InstrDecoder(opcode, format);
-        }
-
         private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
         {
-            return new InstrDecoder2(opcode, VectorData.Invalid, mutators);
+            return new InstrDecoder(opcode, VectorData.Invalid, mutators);
         }
 
         private static Decoder Instr(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
         {
-            return new InstrDecoder2(opcode, vectorData, mutators);
+            return new InstrDecoder(opcode, vectorData, mutators);
         }
 
         private static Decoder Mask(int pos, uint mask, params Decoder[] decoders)
@@ -1492,7 +1235,7 @@ namespace Reko.Arch.Arm.AArch64
 
         static AArch64Disassembler()
         {
-            invalid = new InstrDecoder(Opcode.Invalid, "");
+            invalid = Instr(Opcode.Invalid);
 
             Decoder LdStRegUImm;
             {
@@ -1529,7 +1272,7 @@ namespace Reko.Arch.Arm.AArch64
                     // 11 0 00
                     Instr(Opcode.str, X(0,5), Mo(w64, 5, 10, 12)),
                     Instr(Opcode.ldr, X(0,5), Mo(w64, 5, 10, 12)),
-                    Instr(Opcode.prfm, "*"),
+                    Instr(Opcode.prfm, x("*")),
                     invalid,
                     // 11 1 00
                     Instr(Opcode.str, D(0,5), Mo(w64, 5, 10, 12)),
@@ -1880,60 +1623,60 @@ namespace Reko.Arch.Arm.AArch64
 
             var AddSubImmediate = Mask(23, 1,
                 Mask(29, 0x7,
-                    Instr(Opcode.add, "W0:5,W5:5,U10:12w sc22:2"),
-                    Instr(Opcode.adds, "W0:5,W5:5,U10:12w sc22:2"),
-                    Instr(Opcode.sub, "W0:5,W5:5,U10:12w sc22:2"),
-                    Instr(Opcode.subs, "W0:5,W5:5,U10:12w sc22:2"),
+                    Instr(Opcode.add, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
+                    Instr(Opcode.adds, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
+                    Instr(Opcode.sub, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
+                    Instr(Opcode.subs, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
                     
-                    Instr(Opcode.add, "X0:5,X5:5,U10:12l sc22:2"),
-                    Instr(Opcode.adds, "X0:5,X5:5,U10:12l sc22:2"),
-                    Instr(Opcode.sub, "X0:5,X5:5,U10:12l sc22:2"),
-                    Instr(Opcode.subs, "X0:5,X5:5,U10:12l sc22:2")),
+                    Instr(Opcode.add, X(0,5),X(5,5),U(10,12,w64),sc(22,2)),
+                    Instr(Opcode.adds, X(0,5),X(5,5),U(10,12,w64),sc(22,2)),
+                    Instr(Opcode.sub, X(0,5),X(5,5),U(10,12,w64),sc(22,2)),
+                    Instr(Opcode.subs, X(0,5),X(5,5),U(10,12,w64),sc(22,2))),
                 invalid);
 
             var LogicalImmediate = Mask(29, 7, // size + op flag
                 Mask(22, 1, // N bit
-                    Instr(Opcode.and, "W0:5,W5:5,Ul10w"),
+                    Instr(Opcode.and, W(0,5),W(5,5),Ul(10,w32)),
                     invalid),
                 Mask(22, 1, // N bit
-                    Instr(Opcode.orr, "W0:5,W5:5,Ul10w"),
+                    Instr(Opcode.orr, W(0,5),W(5,5),Ul(10,w32)),
                     invalid),
                 Mask(22, 1, // N bit
-                    Instr(Opcode.eor, "W0:5,W5:5,Ul10w"),
+                    Instr(Opcode.eor, W(0,5),W(5,5),Ul(10,w32)),
                     invalid),
                 Mask(22, 1, // N bit
-                    Instr(Opcode.ands, "W0:5,W5:5,Ul10w"),
+                    Instr(Opcode.ands, W(0,5),W(5,5),Ul(10,w32)),
                     invalid),
 
-                Instr(Opcode.and, "X0:5,X5:5,Ul10l"),
-                Instr(Opcode.orr, "X0:5,X5:5,Ul10l"),
-                Instr(Opcode.eor, "X0:5,X5:5,Ul10l"),
-                Instr(Opcode.ands, "X0:5,X5:5,Ul10l"));
+                Instr(Opcode.and, X(0,5),X(5,5),Ul(10,w64)),
+                Instr(Opcode.orr, X(0,5),X(5,5),Ul(10,w64)),
+                Instr(Opcode.eor, X(0,5),X(5,5),Ul(10,w64)),
+                Instr(Opcode.ands, X(0,5),X(5,5),Ul(10,w64)));
 
 
                 Nyi("LogicalImmediate");
 
             var MoveWideImmediate = Mask(29, 7,
                 Mask(22, 1,
-                    Instr(Opcode.movn, "W0:5,U5:16w sh21:2"),
+                    Instr(Opcode.movn, W(0,5),U(5,16,w32),sh(21,2)),
                     invalid),
                 invalid,
                 Mask(22, 1,
-                    Instr(Opcode.movz, "W0:5,U5:16w sh21:2"),
+                    Instr(Opcode.movz, W(0,5),U(5,16,w32),sh(21,2)),
                     invalid),
                 Mask(22, 1,
-                    Instr(Opcode.movk, "W0:5,U5:16h sh21:2"),
+                    Instr(Opcode.movk, W(0,5),U(5,16,w32),sh(21,2)),
                     invalid),
 
-                Instr(Opcode.movn, "X0:5,U5:16l sh21:2"),
+                Instr(Opcode.movn, X(0,5),U(5,16,w64),sh(21,2)),
                 invalid,
-                Instr(Opcode.movz, "X0:5,U5:16l sh21:2"),
-                Instr(Opcode.movk, "X0:5,U5:16h sh21:2"));
+                Instr(Opcode.movz, X(0,5),U(5,16,w64),sh(21,2)),
+                Instr(Opcode.movk, X(0,5),U(5,16,w16),sh(21,2)));
 
 
             var PcRelativeAddressing = Mask(31, 1,
                 Instr(Opcode.adr, X(0,5), PcRel(5,19,29,2)),
-                Instr(Opcode.adrp, "X0:5,I5:19:29:2<12w"));
+                Instr(Opcode.adrp, X(0,5), I(5,19,29,2,i32,12)));
 
             Decoder Bitfield;
             {
@@ -1945,7 +1688,7 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
 
                         invalid,
-                        Instr(Opcode.Invalid, "*BOGOTRON"),
+                        Instr(Opcode.Invalid, x("*BOGOTRON")),
                         invalid,
                         invalid),
                     Mask(29, 7,
@@ -1981,17 +1724,17 @@ namespace Reko.Arch.Arm.AArch64
                 Mask(21, 0xF,
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, "X5:5"), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, "X5:5"), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, "X5:5"), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key B"), invalid))),
                     invalid,
@@ -1999,12 +1742,12 @@ namespace Reko.Arch.Arm.AArch64
                     Select(5,5, n => n == 0x1F,
                         Sparse(10, 6,
                             invalid,
-                            (0, Select(0,5, n => n == 0, Instr(Opcode.eret, ""), invalid)),
+                            (0, Select(0,5, n => n == 0, Instr(Opcode.eret, x("")), invalid)),
                             (2, Select(0,5, n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key A"), invalid)),
                             (3, Select(0,5, n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key B"), invalid))),
                         invalid),
                     Select(10,6,5,5,0,5, n => n == 0b000000_11111_00000,
-                        Instr(Opcode.drps, "*"), invalid),
+                        Instr(Opcode.drps, x("*")), invalid),
                     invalid,
                     invalid,
 
@@ -2020,19 +1763,19 @@ namespace Reko.Arch.Arm.AArch64
 
             var CompareBranchImm = Mask(31, 1, 
                 Mask(24, 1,
-                    Instr(Opcode.cbz, "W0:5,J5:19"),
-                    Instr(Opcode.cbnz, "W0:5,J5:19")),
+                    Instr(Opcode.cbz, W(0,5),J(5,19)),
+                    Instr(Opcode.cbnz, W(0,5),J(5,19))),
                 Mask(24, 1,
-                    Instr(Opcode.cbz, "X0:5,J5:19"),
-                    Instr(Opcode.cbnz, "X0:5,J5:19")));
+                    Instr(Opcode.cbz, X(0,5),J(5,19)),
+                    Instr(Opcode.cbnz, X(0,5),J(5,19))));
 
             var TestBranchImm = Mask(24, 1,
                 Mask(31, 1,
-                    Instr(Opcode.tbz, "W0:5,I19:5w,J5:14"),
-                    Instr(Opcode.tbnz, "W0:5,I19:5w,J5:14")),
+                    Instr(Opcode.tbz, W(0,5),I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, W(0,5),I(19,5,w32),J(5,14))),
                 Mask(31, 1,
-                    Instr(Opcode.tbz, "W0:5,I19:5w,J5:14"),
-                    Instr(Opcode.tbnz, "W0:5,I19:5w,J5:14")));
+                    Instr(Opcode.tbz, W(0,5),I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, W(0,5),I(19,5,w32),J(5,14))));
 
             var CondBranchImm = Mask(24,1,4,1,
                 Instr(Opcode.b, C(0,4),J(5,19)),
@@ -2050,13 +1793,13 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("System L:op0 = 0b000 op1=0b011 crN=0001"),
                         Mask(8, 0xF, // System L:op0 = 0b000 op1=0b011 crN=0010 crM
                             Mask(5,7, // System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.nop, ""), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.yield, "*"), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.wfe, "*"), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.wfi, "*"), invalid),
+                                Select(0,5, n => n == 0x1F, Instr(Opcode.nop), invalid),
+                                Select(0,5, n => n == 0x1F, Instr(Opcode.yield, x("*")), invalid),
+                                Select(0,5, n => n == 0x1F, Instr(Opcode.wfe, x("*")), invalid),
+                                Select(0,5, n => n == 0x1F, Instr(Opcode.wfi, x("*")), invalid),
 
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.sev, "*"), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.sevl, "*"), invalid),
+                                Select(0,5, n => n == 0x1F, Instr(Opcode.sev, x("*")), invalid),
+                                Select(0,5, n => n == 0x1F, Instr(Opcode.sevl, x("*")), invalid),
                                 Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=110"),
                                 Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=111")),
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0001"),
@@ -2162,17 +1905,17 @@ namespace Reko.Arch.Arm.AArch64
                                 Instr(Opcode.orn, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
 
                             Instr(Opcode.eor, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
-                            Instr(Opcode.eon, "*shifted register, 32-bit"),
+                            Instr(Opcode.eon, x("*shifted register, 32-bit")),
                             Select(0,5, n => n == 0x1F,
                                 Instr(Opcode.test, W(5,5),W(16,5),si(22,2,10,6)),
                                 Instr(Opcode.ands, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
-                            Instr(Opcode.bics, "*shifted register, 32-bit"))),
+                            Instr(Opcode.bics, x("*shifted register, 32-bit")))),
                     Mask(29,2,21,1,
-                        Instr(Opcode.and, "X0:5,X5:5,X16:5 si22:2,10:6"),
-                        Instr(Opcode.bic, "*shifted register, 64-bit"),
+                        Instr(Opcode.and, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Instr(Opcode.bic, x("*shifted register, 64-bit")),
                         Select(22,2,10,6,5,5, n => n == 0x1F,
-                            Instr(Opcode.mov, "X0:5,X16:5 si22:2,10:6"),
-                            Instr(Opcode.orr, "X0:5,X5:5,X16:5 si22:2,10:6")),
+                            Instr(Opcode.mov, X(0,5),X(16,5),si(22,2,10,6)),
+                            Instr(Opcode.orr, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
                         Select(5,5, n => n == 0x1F,
                             Instr(Opcode.mvn, X(0,5),X(16,5),si(22,2,10,6)),
                             Instr(Opcode.orn, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
@@ -2182,7 +1925,7 @@ namespace Reko.Arch.Arm.AArch64
                         Select(0,5, n => n == 0x1F,
                             Instr(Opcode.test, X(5,5),X(16,5),si(22,2,10,6)),
                             Instr(Opcode.ands, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
-                        Instr(Opcode.bics, "*shifted register, 64-bit")));
+                        Instr(Opcode.bics, x("*shifted register, 64-bit"))));
             }
             Decoder AddSubShiftedRegister;
             {
@@ -2190,17 +1933,17 @@ namespace Reko.Arch.Arm.AArch64
                     Select(15,1, n => n == 1,
                         invalid,
                         Mask(29, 3,
-                            Instr(Opcode.add, "W0:5,W5:5,W16:5 si22:2,10:6"),
-                            Instr(Opcode.adds, "W0:5,W5:5,W16:5 si22:2,10:6"),
-                            Instr(Opcode.sub, "W0:5,W5:5,W16:5 si22:2,10:6"),
+                            Instr(Opcode.add, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
+                            Instr(Opcode.adds, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
+                            Instr(Opcode.sub, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
                             Select(0, 5, n => n == 0x1F,
                                 Instr(Opcode.cmp, W(5,5),W(16,5),si(22,2,10,6)),
                                 Instr(Opcode.subs, W(0,5),W(5,5),W(16,5),si(22,2,10,6))))),
                     Mask(29, 3,
-                        Instr(Opcode.add, "X0:5,X5:5,X16:5 si22:2,10:6"),
-                        Instr(Opcode.adds, "X0:5,X5:5,X16:5 si22:2,10:6"),
-                        Instr(Opcode.sub, "X0:5,X5:5,X16:5 si22:2,10:6"),
-                        Instr(Opcode.subs, "X0:5,X5:5,X16:5 si22:2,10:6")));
+                        Instr(Opcode.add,  X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Instr(Opcode.adds, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Instr(Opcode.sub,  X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Instr(Opcode.subs, X(0,5),X(5,5),X(16,5),si(22,2,10,6))));
             }
 
             var AddSubExtendedRegister = Select(22, 2, n => n != 0,
@@ -2280,26 +2023,26 @@ namespace Reko.Arch.Arm.AArch64
             {
                 ConditionalSelect = Mask(29, 7,
                     Mask(10, 3,
-                        Instr(Opcode.csel, "W0:5,W5:5,W16:5,C12:4"),
-                        Instr(Opcode.csinc, "W0:5,W5:5,W16:5,C12:4"),
+                        Instr(Opcode.csel, W(0,5),W(5,5),W(16,5),C(12,4)),
+                        Instr(Opcode.csinc, W(0,5),W(5,5),W(16,5),C(12,4)),
                         invalid,
                         invalid),
                     invalid,
                     Mask(10, 3,
-                        Instr(Opcode.csinv, "W0:5,W5:5,W16:5,C12:4"),
-                        Instr(Opcode.csneg, "W0:5,W5:5,W16:5,C12:4"),
+                        Instr(Opcode.csinv, W(0,5),W(5,5),W(16,5),C(12,4)),
+                        Instr(Opcode.csneg, W(0,5),W(5,5),W(16,5),C(12,4)),
                         invalid,
                         invalid),
                     invalid,
                     Mask(10, 3,
-                        Instr(Opcode.csel, "X0:5,X5:5,X16:5,C12:4"),
-                        Instr(Opcode.csinc, "X0:5,X5:5,X16:5,C12:4"),
+                        Instr(Opcode.csel, X(0,5),X(5,5),X(16,5),C(12,4)),
+                        Instr(Opcode.csinc, X(0,5),X(5,5),X(16,5),C(12,4)),
                         invalid,
                         invalid),
                     invalid,
                     Mask(10, 3,
-                        Instr(Opcode.csinv, "X0:5,X5:5,X16:5,C12:4"),
-                        Instr(Opcode.csneg, "X0:5,X5:5,X16:5,C12:4"),
+                        Instr(Opcode.csinv, X(0,5),X(5,5),X(16,5),C(12,4)),
+                        Instr(Opcode.csneg, X(0,5),X(5,5),X(16,5),C(12,4)),
                         invalid,
                         invalid),
                     invalid);
@@ -2307,17 +2050,17 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder ConditionalCompareImm;
             {
-                ConditionalCompareImm = Select(10,1,4,1, n => n != 0,
+                ConditionalCompareImm = Select(10, 1, 4, 1, n => n != 0,
                     invalid,
                     Mask(29, 7,
                         invalid,
-                        Instr(Opcode.ccmn, "* 32=bit"),
+                        Instr(Opcode.ccmn, x("* 32=bit")),
                         invalid,
-                        Instr(Opcode.ccmp, "* 32-bit"),
+                        Instr(Opcode.ccmp, W(5,5), I(16,5,w32), U(0,4,w8), C(12,4)),
                         invalid,
-                        Instr(Opcode.ccmn, "* - 64-bit"),
+                        Instr(Opcode.ccmn, x("* - 64-bit")),
                         invalid,
-                        Instr(Opcode.ccmp, "X5:5,U16:1l,U0:4b,C12:4")));
+                        Instr(Opcode.ccmp, X(5,5), I(16,5,w64), U(0,4,w8), C(12,4))));
             }
 
             Decoder DataProcessing1source;
@@ -2618,7 +2361,7 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11011"),
                         Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11100"),
                         Mask(22, 0b11, // U=1 opcode=11101 size
-                            Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=00"),
+                            Instr(Opcode.ucvtf, S(0,5), S(5,5)),
                             Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=01"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=10"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=11")),
@@ -3196,7 +2939,35 @@ namespace Reko.Arch.Arm.AArch64
                                 AdvancedSimdModifiedImm,
                                 AdvancedSimdShiftByImm)),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=6 op1=3")),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7"),
+                    Mask(23, 0b11, // op0=7 op1
+                        Mask(19, 0b1111,    // op0=7 op1=00
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0000"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0011"),
+                            Mask(10, 0b11,  // op0=7 op1=00 op2=0100 op3=xxxxxxx??
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0100 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0100 op3=xxxxxxx01"),
+                                Mask(17, 0b11,  // op0=7 op1=00 op2=0100 op3=??xxxxx10
+                                    AdvancedSIMDscalar2RegMisc,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0100 op3=01xxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0100 op3=10xxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0100 op3=11xxxxx10")),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0100 op3=xxxxxxx11")),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=0111"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1000"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1001"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1010"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1111"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1100"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1101"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1110"),
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1111")),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=10"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=11")),
 
                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=8"),
                     Mask(23, 0b11, // op0=9 op1

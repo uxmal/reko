@@ -74,7 +74,9 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.uxtb: right = ZeroExtend(toBitSize, PrimitiveType.Byte, right); break;
                 case Opcode.uxth: right = ZeroExtend(toBitSize, PrimitiveType.Word16, right); break;
                 case Opcode.uxtw: right = ZeroExtend(toBitSize, PrimitiveType.Word32, right); break;
-                default: throw new NotImplementedException($"Shift operation {instr.shiftCode} not implemented yet.");
+                default:
+                    EmitUnitTest();
+                    break;
                 }
             }
 

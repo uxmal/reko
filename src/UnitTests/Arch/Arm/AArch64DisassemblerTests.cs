@@ -1149,124 +1149,18 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("movi\tv1.2d,#0");
         }
 
-        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-
-
-
-        // An AArch64 decoder for the instruction 6E33DC15 (15DC336E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
         [Test]
-        public void AArch64Dis_6E33DC15()
-        {
-            Given_Instruction(0x6E33DC15);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E34DC36 (36DC346E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E34DC36()
-        {
-            Given_Instruction(0x6E34DC36);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E33DC93 (93DC336E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E33DC93()
-        {
-            Given_Instruction(0x6E33DC93);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E34DCB4 (B4DC346E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E34DCB4()
-        {
-            Given_Instruction(0x6E34DCB4);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E35DC75 (75DC356E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E35DC75()
-        {
-            Given_Instruction(0x6E35DC75);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E33DCF3 (F3DC336E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E33DCF3()
-        {
-            Given_Instruction(0x6E33DCF3);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E31DC33 (33DC316E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E31DC33()
-        {
-            Given_Instruction(0x6E31DC33);
-            Expect_Code("@@@");
-        }
-
- 
-
-        // An AArch64 decoder for the instruction 6E31DCB1 (B1DC316E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E31DCB1()
-        {
-            Given_Instruction(0x6E31DCB1);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E31DC71 (71DC316E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E31DC71()
-        {
-            Given_Instruction(0x6E31DC71);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6E30DCF0 (F0DC306E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0110) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6E30DCF0()
-        {
-            Given_Instruction(0x6E30DCF0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 7E21D800 (00D8217E) - (DataProcessingScalarFpAdvancedSimd - op0=7) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_7E21D800()
-        {
-            Given_Instruction(0x7E21D800);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 7E21D821 (21D8217E) - (DataProcessingScalarFpAdvancedSimd - op0=7) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_7E21D821()
-        {
-            Given_Instruction(0x7E21D821);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 7E21D842 (42D8217E) - (DataProcessingScalarFpAdvancedSimd - op0=7) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_7E21D842()
-        {
-            Given_Instruction(0x7E21D842);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 7A43B900 (00B9437A) - (Unknown format character '*' in '* 32-bit' decoding ccmp) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_7A43B900()
+        public void AArch64Dis_ccmp_w32()
         {
             Given_Instruction(0x7A43B900);
-            Expect_Code("@@@");
+            Expect_Code("ccmp\tw8,#3,#0,LT");
+        }
+
+        [Test]
+        public void AArch64Dis_ucvtf_f32()
+        {
+            Given_Instruction(0x7E21D821);
+            Expect_Code("ucvtf\ts1,s1");
         }
     }
 }
