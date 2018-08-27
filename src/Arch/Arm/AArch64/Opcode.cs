@@ -163,5 +163,8 @@ namespace Reko.Arch.Arm.AArch64
         uxtl,
         uxtl2,
         dup,
+        addv,
+        ins,
+        movi,
     }
 }
