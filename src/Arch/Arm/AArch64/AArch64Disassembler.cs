@@ -638,14 +638,17 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Picks a V register 
-        private static Mutator Vr(int pos, int size)
+        private static Mutator Vr(int pos, int size, VectorData[] elementArrangement)
         {
             var bitfield = new Bitfield(pos, size);
             return (u, d) =>
             {
                 uint iReg = bitfield.Read(u);
-                var regs = d.state.useQ ? Registers.SimdRegs128 : Registers.SimdRegs64;
-
+                // Element arrangement from bits [23..22]
+                var iArr = (u >> 22) & 3;
+                var vr = new VectorRegisterOperand(Registers.SimdVectorReg128[iReg]);
+                vr.ElementType = elementArrangement[iArr];
+                d.state.ops.Add(vr);
                 return true;
             };
         }
@@ -1157,8 +1160,15 @@ namespace Reko.Arch.Arm.AArch64
         private static PrimitiveType w64 => PrimitiveType.Word64;
         private static PrimitiveType w128 => PrimitiveType.Word128;
 
-
-
+        // Packing arragement in SIMD vector register
+        private static VectorData[] BHS_ = new[]
+        {
+            VectorData.I8, VectorData.I16, VectorData.I32, VectorData.Invalid
+        };
+        private static VectorData[] HSD_ = new[]
+        {
+             VectorData.I16, VectorData.I32, VectorData.I64, VectorData.Invalid
+        };
 
 
         private static Decoder Instr(Opcode opcode, string format)
@@ -2663,7 +2673,7 @@ namespace Reko.Arch.Arm.AArch64
                     Sparse(12, 0b11111,
                         Nyi("AdvancedSIMD2RegMisc U=0"),
                         (0b10010, Mask(30, 1,
-                            Instr(Opcode.xtn, Vr(0,5),Vr(5,5)),
+                            Instr(Opcode.xtn, Vr(0,5,BHS_),Vr(5,5,HSD_)),
                             Instr(Opcode.xtn2, x(""))))),
                     Nyi("AdvancedSIMD2RegMisc U=1"));
             }

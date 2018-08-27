@@ -86,7 +86,7 @@ namespace Reko.Arch.Arm.AArch64
                 .ToArray();
 
             SimdVectorReg128 = Enumerable.Range(32, 32)
-                .Select(n => new RegisterStorage("$v{n-32}", n, 0, PrimitiveType.Word128))
+                .Select(n => new RegisterStorage($"v{n-32}", n, 0, PrimitiveType.Word128))
                 .ToArray();
 
             sp = new RegisterStorage("sp", 64, 0, PrimitiveType.Word64);

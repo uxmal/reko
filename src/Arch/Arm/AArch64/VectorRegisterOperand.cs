@@ -41,12 +41,24 @@ namespace Reko.Arch.Arm.AArch64
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteString(VectorRegister.Name);
+            writer.WriteChar('.');
             switch (ElementType)
             {
+            case VectorData.I16:
+                if (this.Width.BitSize == 64)
+                    writer.WriteString("4h");
+                else
+                    writer.WriteString("8h");
+                break;
+            case VectorData.I32:
+                if (this.Width.BitSize == 64)
+                    writer.WriteString("2s");
+                else
+                    writer.WriteString("4s");
+                break;
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException($"{ElementType}");
             }
-            throw new NotImplementedException();
         }
     }
 }

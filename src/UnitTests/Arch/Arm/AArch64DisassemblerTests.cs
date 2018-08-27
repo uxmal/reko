@@ -1456,22 +1456,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 0E612AB5 (B52A610E) - (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_0E612AB5()
-        {
-            Given_Instruction(0x0E612AB5);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 0E612A73 (732A610E) - (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_0E612A73()
-        {
-            Given_Instruction(0x0E612A73);
-            Expect_Code("@@@");
-        }
-
         // An AArch64 decoder for the instruction 6E022653 (5326026E) - (AdvancedSIMDcopy Q:op=11) has not been implemented yet.
         [Test]
         public void AArch64Dis_6E022653()
@@ -1600,20 +1584,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 0E612A31 (312A610E) - (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00) has not been implemented yet.
         [Test]
-        public void AArch64Dis_0E612A31()
-        {
-            Given_Instruction(0x0E612A31);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 0E612A10 (102A610E) - (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_0E612A10()
+        public void AArch64Dis_xtn()
         {
             Given_Instruction(0x0E612A10);
-            Expect_Code("@@@");
+            Expect_Code("xtn\tv16.8h,v16.4s");
         }
 
         // An AArch64 decoder for the instruction 4EA21C4A (4A1CA24E) - (bit) has not been implemented yet.
