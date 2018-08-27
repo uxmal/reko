@@ -93,7 +93,7 @@ namespace Reko.Analysis
                      //$REVIEW: flag groups could theoretically be live in
                      // although it's uncommon.
                 {
-                    var n = Classify(ssa, sid, ignoreUse);
+                    var n = Classify(ssa, sid, sid.Identifier.Storage, ignoreUse);
                     if (!n.IsEmpty)
                     {
                         procFlow.BitsUsed[sid.Identifier.Storage] = n;
@@ -106,15 +106,16 @@ namespace Reko.Analysis
         public BitRange Classify(
             SsaState ssa, 
             SsaIdentifier sid,
+            Storage storage,
             bool ignoreUseInstructions)
         {
             this.procFlow = flow[ssa.Procedure];
             this.ssa = ssa;
             this.useLiveness = ignoreUseInstructions;
-            if (sid.Identifier.Storage is RegisterStorage ||
-                 sid.Identifier.Storage is StackArgumentStorage ||
-                 sid.Identifier.Storage is FpuStackStorage ||
-                 sid.Identifier.Storage is FlagGroupStorage)
+            if (storage is RegisterStorage ||
+                storage is StackArgumentStorage ||
+                storage is FpuStackStorage ||
+                storage is FlagGroupStorage)
             {
                 var n = Classify(sid);
                 return n;

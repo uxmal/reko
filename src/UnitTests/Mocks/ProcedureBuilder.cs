@@ -174,6 +174,19 @@ namespace Reko.UnitTests.Mocks
             return Emit(ci);
         }
 
+        public Statement Call(
+            string procedureName,
+            int retSizeOnStack,
+            IEnumerable<(Storage stg, Expression e)> uses,
+            IEnumerable<(Storage stg, Identifier e)> definitions)
+        {
+            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0));
+            ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.stg, u.e)));
+            ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.stg, d.e)));
+            unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
+            return Emit(ci);
+        }
+
 
         public void Compare(string flags, Expression a, Expression b)
         {
