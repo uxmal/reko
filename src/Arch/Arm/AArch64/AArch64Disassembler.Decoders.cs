@@ -161,11 +161,11 @@ namespace Reko.Arch.Arm.AArch64
         public class SelectDecoder : Decoder
         {
             private Bitfield[] bitfields;
-            private Predicate<int> predicate;
+            private Predicate<uint> predicate;
             private Decoder trueDecoder;
             private Decoder falseDecoder;
 
-            public SelectDecoder(Bitfield[] bitfields, Predicate<int> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            public SelectDecoder(Bitfield[] bitfields, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
             {
                 this.bitfields = bitfields;
                 this.predicate = predicate;
@@ -176,7 +176,7 @@ namespace Reko.Arch.Arm.AArch64
             public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
             {
                 base.DumpMaskedInstruction(wInstr, this.bitfields);
-                int n = (int) Bitfield.ReadFields(bitfields, wInstr);
+                uint n = Bitfield.ReadFields(bitfields, wInstr);
                 var decoder = predicate(n) ? trueDecoder : falseDecoder;
                 return decoder.Decode(wInstr, dasm);
             }

@@ -501,10 +501,10 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xA8C17BFD);
             AssertCode(     // ldp\tx29,x30,[x31],#&8
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|x29 = Mem0[x31:word64]",
-                "2|L--|x31 = x31 + 8",
-                "3|L--|x30 = Mem0[x31:word64]",
-                "4|L--|x31 = x31 + 8");
+                "1|L--|x29 = Mem0[sp:word64]",
+                "2|L--|sp = sp + 16",
+                "3|L--|x30 = Mem0[sp:word64]",
+                "4|L--|sp = sp + 16");
         }
 
         [Test]

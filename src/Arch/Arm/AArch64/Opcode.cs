@@ -158,5 +158,9 @@ namespace Reko.Arch.Arm.AArch64
         fcvt,
         xtn,
         xtn2,
+        ushll,
+        ushll2,
+        uxtl,
+        uxtl2,
     }
 }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +31,11 @@ namespace Reko.Arch.Arm.AArch64
 {
     public class VectorRegisterOperand : MachineOperand
     {
-        public VectorRegisterOperand(RegisterStorage reg) : base(reg.DataType)
+        public VectorRegisterOperand(PrimitiveType dt, RegisterStorage reg) : base(dt)
         {
             this.VectorRegister = reg;
         }
+
         public RegisterStorage VectorRegister { get; }
         public VectorData ElementType { get; set; }
         public int Index { get; set; }
@@ -44,6 +46,12 @@ namespace Reko.Arch.Arm.AArch64
             writer.WriteChar('.');
             switch (ElementType)
             {
+            case VectorData.I8:
+                if (this.Width.BitSize == 64)
+                    writer.WriteString("8b");
+                else
+                    writer.WriteString("16b");
+                break;
             case VectorData.I16:
                 if (this.Width.BitSize == 64)
                     writer.WriteString("4h");
