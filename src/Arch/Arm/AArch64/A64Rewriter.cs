@@ -70,7 +70,7 @@ namespace Reko.Arch.Arm.AArch64
                     rtlc = RtlClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.add: RewriteBinary(m.IAdd); break;
+                case Opcode.add: RewriteMaybeSimdBinary(m.IAdd, "__add_{0}"); break;
                 case Opcode.adds: RewriteBinary(m.IAdd, this.NZCV); break;
                 case Opcode.adr: RewriteUnary(n => n); break;
                 case Opcode.asrv: RewriteBinary(m.Sar); break;
@@ -86,8 +86,19 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.cbz: RewriteCb(m.Eq0); break;
                 case Opcode.ccmp: RewriteCcmp(); break;
                 case Opcode.cmp: RewriteCmp(); break;
-                case Opcode.eor: RewriteBinary(m.Xor); break;
                 case Opcode.csinc: RewriteCsinc(); break;
+                case Opcode.eor: RewriteBinary(m.Xor); break;
+                case Opcode.fabs: RewriteFabs(); break;
+                case Opcode.fadd: RewriteFadd(); break;
+                case Opcode.fcmp: RewriteFcmp(); break;
+                case Opcode.fcvt: RewriteFcvt(); break;
+                case Opcode.fcvtms: RewriteFcvt(Domain.SignedInt, "floorf", "floor"); break;
+                case Opcode.fcvtps: RewriteFcvt(Domain.SignedInt, "ceilf", "ceil"); break;
+                case Opcode.fcvtzs: RewriteFcvt(Domain.SignedInt, "truncf", "trunc"); break;
+                case Opcode.fmov: RewriteFmov(); break;
+                case Opcode.fmul: RewriteFmul(); break;
+                case Opcode.fneg: RewriteUnary(m.FNeg); break;
+                case Opcode.fsqrt: RewriteFsqrt(); break;
                 case Opcode.ldp: RewriteLoadStorePair(true); break;
                 case Opcode.ldr: RewriteLdr(null); break;
                 case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
@@ -106,11 +117,11 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.madd: RewriteMaddSub(m.IAdd); break;
                 case Opcode.mneg: RewriteBinary((a, b) => m.Neg(m.IMul(a, b))); break;
                 case Opcode.msub: RewriteMaddSub(m.ISub); break;
-                case Opcode.mov: RewriteUnary(n => n); break;
+                case Opcode.mov: RewriteMov(); break;
                 case Opcode.movk: RewriteMovk(); break;
                 case Opcode.movn: RewriteMovn(); break;
                 case Opcode.movz: RewriteMovz(); break;
-                case Opcode.mul: RewriteBinary(m.IMul); break;
+                case Opcode.mul: RewriteMaybeSimdBinary(m.IMul, "__mul_{0}"); break;
                 case Opcode.mvn: RewriteUnary(m.Comp); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.orr: RewriteBinary(m.Or);break;
@@ -132,6 +143,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.tbnz: RewriteTb(m.Ne0); break;
                 case Opcode.tbz: RewriteTb(m.Eq0); break;
                 case Opcode.test: RewriteTest(); break;
+                case Opcode.ucvtf: RewriteIcvt(Domain.UnsignedInt); break;
+                case Opcode.udiv: RewriteBinary(m.UDiv); break;
                 case Opcode.umaddl: RewriteMaddl(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
@@ -183,16 +196,32 @@ namespace Reko.Arch.Arm.AArch64
             Debug.WriteLine("");
         }
 
-        private Expression RewriteOp(MachineOperand op)
+        private Expression RewriteOp(MachineOperand op, bool maybe0 = false)
         {
             switch (op)
             {
             case RegisterOperand regOp:
+                if (maybe0)
+                {
+                    if (regOp.Register == Registers.GpRegs32[31])
+                        return m.Word32(0);
+                    if (regOp.Register == Registers.GpRegs64[31])
+                        return m.Word64(0);
+                }
                 return binder.EnsureRegister(regOp.Register);
             case ImmediateOperand immOp:
                 return immOp.Value;
             case AddressOperand addrOp:
                 return addrOp.Address;
+            case VectorRegisterOperand vectorOp:
+                if (vectorOp.Width.BitSize == 64)
+                {
+                    return binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
+                }
+                else
+                {
+                    return binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
+                }
             default:
                 throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
             }

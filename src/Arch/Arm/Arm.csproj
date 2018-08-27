@@ -80,6 +80,7 @@
     <Compile Include="AArch64\AArch64Disassembler.Decoders.cs" />
     <Compile Include="AArch64\AArch64Instruction.cs" />
     <Compile Include="AArch64\Arm64State.cs" />
+    <Compile Include="AArch64\A64Rewriter.Fpu.cs" />
     <Compile Include="AArch64\ConditionOperand.cs" />
     <Compile Include="AArch64\FlagM.cs" />
     <Compile Include="AArch64\MemoryOperand.cs" />

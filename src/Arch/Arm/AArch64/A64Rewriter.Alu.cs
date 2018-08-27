@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,18 @@ namespace Reko.Arch.Arm.AArch64
             wBase &= ~0xFFFul;        // Mask out lowest 12 bits.
             wBase = (ulong)((long)wBase + imm.ToInt64());
             m.Assign(dst, Address.Ptr64(wBase));
+        }
+
+        private void RewriteMaybeSimdBinary(Func<Expression, Expression, Expression> fn, string simdFormat, Action<Expression> setFlags = null)
+        {
+            if (instr.ops[0] is VectorRegisterOperand)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                RewriteBinary(fn, setFlags);
+            }
         }
 
         private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression> setFlags = null)
@@ -138,7 +151,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             if (load)
                 m.Assign(reg1, m.Mem(reg1.DataType, ea));
-            else 
+            else
                 m.Assign(m.Mem(reg1.DataType, ea), reg1);
             m.Assign(ea, m.IAdd(ea, Constant.Int(reg1.DataType, reg1.DataType.Size)));
             if (load)
@@ -192,7 +205,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteMaddSub(Func<Expression,Expression,Expression> op)
+        private void RewriteMaddSub(Func<Expression, Expression, Expression> op)
         {
             var op1 = RewriteOp(instr.ops[1]);
             var op2 = RewriteOp(instr.ops[2]);
@@ -202,7 +215,7 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, op(op3, m.IMul(op1, op2)));
         }
 
-        private void RewriteMaddl(PrimitiveType dt, Func<Expression,Expression,Expression> mul)
+        private void RewriteMaddl(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
         {
             var op1 = RewriteOp(instr.ops[1]);
             var op2 = RewriteOp(instr.ops[2]);
@@ -210,6 +223,27 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.ops[0]);
 
             m.Assign(dst, m.IAdd(op3, m.Cast(dt, mul(op1, op2))));
+        }
+
+        private void RewriteMov()
+        {
+            if (instr.ops[1] is VectorRegisterOperand vecSrc)
+            {
+                var aSrc = MakeArrayType(vecSrc);
+                var vecDst = (VectorRegisterOperand)instr.ops[0];
+                if (vecSrc.Index >= 0)
+                {
+                    Debug.Assert(vecDst.Index >= 0);
+                    var tmp = binder.CreateTemporary(aSrc.ElementType);
+                    m.Assign(tmp, m.Array(tmp.DataType, RewriteOp(vecSrc), m.Int32(vecSrc.Index)));
+                    m.Assign(m.Array(tmp.DataType, RewriteOp(vecDst), m.Int32(vecDst.Index)), tmp);
+                    return;
+                }
+                else
+                {
+                }
+            }
+            RewriteUnary(n => n);
         }
 
         private void RewriteMovk()
