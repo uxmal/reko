@@ -836,8 +836,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("stp\ts2,s3,[sp,#&8]");
         }
 
-        ////////////////////////////////////////////
-
         [Test]
         public void AArch64Dis_fcvtms_f32_to_i32()
         {

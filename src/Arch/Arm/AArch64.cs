@@ -262,7 +262,7 @@ namespace Reko.Arch.Arm
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
-            throw new NotImplementedException("Endianness is BE or LE");
+            return mem.TryReadLe(addr, dt, out value);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

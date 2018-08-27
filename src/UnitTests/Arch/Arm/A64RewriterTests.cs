@@ -1087,5 +1087,342 @@ namespace Reko.UnitTests.Arch.Arm
                 "4|L--|Mem0[v5:word32] = s3");
         }
 
+        [Test]
+        public void A64Rw_fcvtms_f32_to_i32()
+        {
+            Given_Instruction(0x1E300003);
+            AssertCode(     // fcvtms\tw3,s0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_udiv_w32()
+        {
+            Given_Instruction(0x1ADA0908);
+            AssertCode(     // udiv\tw8,w8,w26
+            "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_rev16_w32()
+        {
+            Given_Instruction(0x5AC0056B);
+            AssertCode(     // rev16\tw11,w11
+            "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_add_32_ext()
+        {
+            Given_Instruction(0x0B20A1EF);
+            AssertCode(     // add\tw15,w15,w0,sxth #0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w15 = w15 + (int32)(int16) w0");
+        }
+
+        [Test]
+        public void A64Rw_scvtf_i32_to_f32()
+        {
+            Given_Instruction(0x1E6202E0);
+            AssertCode(     // scvtf\td0,w23
+            "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fmov_f64_to_i64()
+        {
+            Given_Instruction(0x9E6701B0);
+            AssertCode(     // fmov\td16,x13
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_sxtl()
+        {
+            Given_Instruction(0x0F10A673);
+            AssertCode(     // sxtl\tv19.4h,v19.4h
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fadd_vector_real32()
+        {
+            Given_Instruction(0x4E33D4D3);
+            AssertCode(     // fadd\tv19.4s,v6.4s,v19.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fcvtzs_vector_real32()
+        {
+            Given_Instruction(0x4EA1BAB5);
+            AssertCode(     // fcvtzs\tv21.4s,v21.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fmul_real32()
+        {
+            Given_Instruction(0x1E210B25);
+            AssertCode(     // fmul\ts5,s25,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s5 = s25 *f s1");
+        }
+
+        [Test]
+        public void A64Rw_fcvtzs_i32_from_f32()
+        {
+            Given_Instruction(0x1E380069);
+            AssertCode(     // fcvtzs\tw3,s9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_ucvtf_real32_int32()
+        {
+            Given_Instruction(0x1E230101);
+            AssertCode(     // ucvtf\ts1,w8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fcsel()
+        {
+            Given_Instruction(0x1E2B1C00);
+            AssertCode(     // fcsel\ts0,s0,s11,NE
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fcvtps_f32_to_i32()
+        {
+            Given_Instruction(0x1E280008);
+            AssertCode(     // fcvtps\tw8,s0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fcmp_f32()
+        {
+            Given_Instruction(0x1E222060);
+            AssertCode(     // fcmp\ts3,s2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fabs_f32()
+        {
+            Given_Instruction(0x1E20C021);
+            AssertCode(     // fabs\ts1,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fneg_f32()
+        {
+            Given_Instruction(0x1E214021);
+            AssertCode(     // fneg\ts1,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fsqrt()
+        {
+            Given_Instruction(0x1E21C001);
+            AssertCode(     // fsqrt\ts1,s0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fmov_i32_to_f32()
+        {
+            Given_Instruction(0x1E2703E1);
+            AssertCode(     // fmov\ts1,w31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fcvt_f32_to_f64()
+        {
+            Given_Instruction(0x1E22C041);
+            AssertCode(     // fcvt\td1,s2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fcvt_f64_to_f32()
+        {
+            Given_Instruction(0x1E624000);
+            AssertCode(     // fcvt\ts0,d0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_mov_w128()
+        {
+            Given_Instruction(0x4EA91D22);
+            AssertCode(     // mov\tv2.16b,v9.16b
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_uxtl()
+        {
+            Given_Instruction(0x2F08A400);
+            AssertCode(     // uxtl\tv0.8h,v0.8b
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_xtn()
+        {
+            Given_Instruction(0x0E612A10);
+            AssertCode(     // xtn\tv16.4h,v16.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        public void A64Rw_fmov_f32_to_w32()
+        {
+            Given_Instruction(0x1E26002B);
+            AssertCode(     // fmov\tw11,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fmov_vector_immedate()
+        {
+            Given_Instruction(0x4F03F600);
+            AssertCode(     // fmov\tv0.4s,#1.0F
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_dup_element_w32()
+        {
+            Given_Instruction(0x4E0406E2);
+            AssertCode(     // dup\tv2.4s,v23.s[0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fadd_vector_f32()
+        {
+            Given_Instruction(0x4E30D4D0);
+            AssertCode(     // fadd\tv16.4s,v6.4s,v16.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_scvtf_vector_i32()
+        {
+            Given_Instruction(0x4E21DA10);
+            AssertCode(     // scvtf\tv16.4s,v16.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_mul_vector_i16()
+        {
+            Given_Instruction(0x4E609C20);
+            AssertCode(     // mul\tv0.8h,v1.8h,v0.8h
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_addv_i32()
+        {
+            Given_Instruction(0x4EB1B821);
+            AssertCode(     // addv\ts1,v1.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_mov_vector_element_i16()
+        {
+            Given_Instruction(0x6E0A5633);
+            AssertCode(     // mov\tv19.h[2],v17.h[5]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_add_vector_i32()
+        {
+            Given_Instruction(0x4EA28482);
+            AssertCode(     // add\tv2.4s,v4.4s,v2.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_fmul_vector_f32()
+        {
+            Given_Instruction(0x6E30DC90);
+            AssertCode(     // fmul\tv16.4s,v4.4s,v16.4s
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_mov_0()
+        {
+            Given_Instruction(0x6F00E401);
+            AssertCode(     // movi\tv1.2d,#0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_ccmp_w32()
+        {
+            Given_Instruction(0x7A43B900);
+            AssertCode(     // ccmp\tw8,#3,#0,LT
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|@@@",
+                "2|L--|@@@",
+                "3|L--|@@@",
+                "4|L--|@@@");
+        }
+
+        [Test]
+        public void A64Rw_ucvtf_f32()
+        {
+            Given_Instruction(0x7E21D821);
+            AssertCode(     // ucvtf\ts1,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
     }
 }
