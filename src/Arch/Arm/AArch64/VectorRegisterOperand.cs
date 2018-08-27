@@ -34,6 +34,7 @@ namespace Reko.Arch.Arm.AArch64
         public VectorRegisterOperand(PrimitiveType dt, RegisterStorage reg) : base(dt)
         {
             this.VectorRegister = reg;
+            this.Index = -1;
         }
 
         public RegisterStorage VectorRegister { get; }
@@ -47,25 +48,43 @@ namespace Reko.Arch.Arm.AArch64
             switch (ElementType)
             {
             case VectorData.I8:
-                if (this.Width.BitSize == 64)
+                if (Index >= 0)
+                    writer.WriteString("b");
+                else if (this.Width.BitSize == 64)
                     writer.WriteString("8b");
                 else
                     writer.WriteString("16b");
                 break;
             case VectorData.I16:
-                if (this.Width.BitSize == 64)
+                if (Index >= 0)
+                    writer.WriteString("h");
+                else if (this.Width.BitSize == 64)
                     writer.WriteString("4h");
                 else
                     writer.WriteString("8h");
                 break;
             case VectorData.I32:
-                if (this.Width.BitSize == 64)
+                if (Index >= 0)
+                    writer.WriteString("s");
+                else if (this.Width.BitSize == 64)
                     writer.WriteString("2s");
                 else
                     writer.WriteString("4s");
                 break;
+            case VectorData.I64:
+                if (Index >= 0)
+                    writer.WriteString("d");
+                else if (this.Width.BitSize == 64)
+                    writer.WriteString("1d");
+                else
+                    writer.WriteString("2d");
+                break;
             default:
                 throw new NotImplementedException($"{ElementType}");
+            }
+            if (Index >= 0)
+            {
+                writer.WriteFormat("[{0}]", Index);
             }
         }
     }

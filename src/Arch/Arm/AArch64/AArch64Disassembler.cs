@@ -637,7 +637,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        // Picks a V register 
+        // Picks a V register and an element arrangement
         private static Mutator Vr(int pos, int size, VectorData[] elementArrangement, int sizePos = 22)
         {
             var bitfield = new Bitfield(pos, size);
@@ -648,6 +648,54 @@ namespace Reko.Arch.Arm.AArch64
                 var dt = d.state.useQ ? PrimitiveType.Word128 : PrimitiveType.Word64;
                 var vr = new VectorRegisterOperand(dt, Registers.SimdVectorReg128[iReg]);
                 vr.ElementType = elementArrangement[iArr];
+                d.state.ops.Add(vr);
+                return true;
+            };
+        }
+
+        public static uint? LowestSetBit(uint imm5)
+        {
+            switch (imm5 & 0b111)
+            {
+            default:
+                switch (imm5 >> 3)
+                {
+                default: return null;
+                case 0b01: 
+                case 0b11: return 3;
+                case 0b10: return 4;
+                }
+            case 0b001: return 0;
+            case 0b010: return 1;
+            case 0b011: return 0;
+            case 0b100: return 2;
+            case 0b101: return 0;
+            case 0b110: return 1;
+            case 0b111: return 0;
+            }
+        }
+
+        // Picks a V register and an element arrangement from packed bified
+        // (used in `dup`)
+        private static Mutator Vrs(int pos, int size, int sizePos, int sizeLength, bool index)
+        {
+            var bfReg = new Bitfield(pos, size);
+            var bfSize = new Bitfield(sizePos, sizeLength);
+            return (u, d) =>
+            {
+                uint iReg = bfReg.Read(u);
+                uint imm5 = bfSize.Read(u);
+                uint? elemsizeQ = LowestSetBit(imm5);
+                if (!elemsizeQ.HasValue)
+                    return false;
+                uint elemsize = elemsizeQ.Value;
+                if (elemsize > 3)
+                    return false;
+
+                var dt = d.state.useQ ? PrimitiveType.Word128 : PrimitiveType.Word64;
+                var vr = new VectorRegisterOperand(dt, Registers.SimdVectorReg128[iReg]);
+                vr.ElementType = BHSD[elemsize];
+                vr.Index = index ? (int)(imm5 >> ((int)elemsize + 1)) : -1;
                 d.state.ops.Add(vr);
                 return true;
             };
@@ -745,6 +793,23 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 var encodedFpNumber = bitfield.Read(u);
+                var decodedFpNumber = DecodeReal32FpConstant(encodedFpNumber);
+                var imm = new ImmediateOperand(decodedFpNumber);
+                d.state.ops.Add(imm);
+                return true;
+            };
+        }
+
+        private static Mutator If32(int pos1, int length1, int pos2, int length2)
+        {
+            var bitfields = new[]
+            {
+                new Bitfield(pos1, length1),
+                new Bitfield(pos2, length2),
+            };
+            return (u, d) =>
+            {
+                var encodedFpNumber = Bitfield.ReadFields(bitfields, u);
                 var decodedFpNumber = DecodeReal32FpConstant(encodedFpNumber);
                 var imm = new ImmediateOperand(decodedFpNumber);
                 d.state.ops.Add(imm);
@@ -1168,6 +1233,11 @@ namespace Reko.Arch.Arm.AArch64
         {
             VectorData.I8, VectorData.I16, VectorData.I32, VectorData.Invalid
         };
+        // Packing arragement in SIMD vector register
+        private static VectorData[] BHSD = new[]
+        {
+            VectorData.I8, VectorData.I16, VectorData.I32, VectorData.I64
+        };
         private static VectorData[] BHS_128 = new[]
         {
             VectorData.I8, VectorData.I16, VectorData.I32, VectorData.Invalid
@@ -1180,8 +1250,17 @@ namespace Reko.Arch.Arm.AArch64
         {
              VectorData.I8, VectorData.I8, VectorData.I8, VectorData.Invalid
         };
+        private static VectorData[] SSSS = new[]
+        {
+             VectorData.I32, VectorData.I32, VectorData.I32, VectorData.I32
+        };
 
         // Frequently occurring predicates.
+
+        private static bool IsZero(uint wInstr)
+        {
+            return wInstr == 0;
+        }
 
         private static bool Rn_Rm_Same(uint wInstr)
         {
@@ -2660,6 +2739,21 @@ namespace Reko.Arch.Arm.AArch64
                                 Instr(Opcode.ushll2, x("")))))));
             }
 
+            Decoder AdvancedSimdModifiedImm;
+            {
+                AdvancedSimdModifiedImm = Sparse(12, 0b1111,
+                    Nyi("AdvancedSimdModifiedImm cmode"),
+                    (0b1111, Mask(29, 2, 11, 1,  // cmode=0b1111 Q:op:op2
+                        Instr(Opcode.fmov, q(30),Vr(0,5,SSSS,30), If32(16,3,5,5)),
+                        Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=001"),
+                        Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=010"),
+                        Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=011"),
+                        Instr(Opcode.fmov, q(30),Vr(0,5,SSSS,30), If32(16,3,5,5)),
+                        Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=101"),
+                        Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=110"),
+                        Nyi("AdvancedSimdModifiedImm cmode=1111 Q:op:op2=111"))));
+            }
+
             Decoder AdvancedSimd2RegMisc;
             {
                 AdvancedSimd2RegMisc = Mask(29, 1,
@@ -2705,11 +2799,16 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder AdvancedSIMDcopy;
             {
-                AdvancedSIMDcopy = Mask(29, 0b11,    // Q:op
-                    Nyi("AdvancedSIMDcopy Q:op=00"),
-                    Nyi("AdvancedSIMDcopy Q:op=01"),
-                    Nyi("AdvancedSIMDcopy Q:op=10"),
-                    Nyi("AdvancedSIMDcopy Q:op=11"));
+                AdvancedSIMDcopy = Select(16, 4, IsZero,
+                    invalid,
+                    Mask(29, 0b11,    // Q:op
+                        Nyi("AdvancedSIMDcopy Q:op=00"),
+                        Nyi("AdvancedSIMDcopy Q:op=01"),
+                        Sparse(11, 4,
+                            invalid,
+                            (0b0000, Instr(Opcode.dup, q(30),Vrs(0,5,16,5,false),Vrs(5,5,16,5,true))),
+                            (0b0001, Instr(Opcode.dup, x("general")))),
+                        Nyi("AdvancedSIMDcopy Q:op=11")));
             }
 
             Decoder AdvancedSIMD2RegMisc;
@@ -2835,7 +2934,13 @@ namespace Reko.Arch.Arm.AArch64
 
                     Mask(23, 0b11, //op0 = 4 op1
                         Mask(19, 0b1111,    // op0=4 op1=00 op2
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0000"),
+                            Mask(10, 0b11,  // op0=4 op1=00 op2=0000 op3=xxxxxxx??
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0000 op3=xxxxxxx00"),
+                                Mask(15, 1, // op0=4 op1=0b00 op2=0b0000 op3=xxx?xxx01"
+                                    AdvancedSIMDcopy,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0000 op3=xxx1xxx01")),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0000 op3=xxxxxxx10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0000 op3=xxxxxxx11")),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0001"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0010"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0011"),
@@ -2884,8 +2989,13 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1111")),
-
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10"),
+                        Select(19, 4, IsZero, // op0=4 op1=0b01 op2
+                            Mask(10, 1, // op0=4 op1=0b10 op2=0000 op3=xxxxxxxx?
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10 op2=0b0000"),
+                                AdvancedSimdModifiedImm),
+                            Mask(10, 1, // op0=4 op1=0b10 op2=0000 op3=xxxxxxxx?
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10 op2=0b0001"),
+                                AdvancedSimdShiftByImm)),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b11")),
                     Mask(23, 0b11, // op0=5 op1
                         Sparse(19, 0b1111, // op0=5 op1=0b00 op2

@@ -142,5 +142,7 @@ namespace Reko.Core.Lib
                 ((u & 0xFF) << 24);
             return uNew;
         }
+
+  
     }
 }

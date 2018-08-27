@@ -162,5 +162,6 @@ namespace Reko.Arch.Arm.AArch64
         ushll2,
         uxtl,
         uxtl2,
+        dup,
     }
 }
