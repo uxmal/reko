@@ -1218,130 +1218,72 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ld3\t{v5.4h,v6.4h,v7.4h},[x11]");
         }
 
-        //@@@@@@@@@@@@@@@@@@@
-
-        // An AArch64 decoder for the instruction 9EAF0060 (6000AF9E) - (DataProcessingScalarFpAdvancedSimd - op0=9 op1=01) has not been implemented yet.
         [Test]
-        public void AArch64Dis_9EAF0060()
-        {
-            Given_Instruction(0x9EAF0060);
-            Expect_Code("@@@");
-        }
-
-
-        // An AArch64 decoder for the instruction 1E18C008 (08C0181E) - (DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b00 op2=0011) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_1E18C008()
-        {
-            Given_Instruction(0x1E18C008);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 0C4045A2 (A245400C) - (AdvancedSimdLdStMultiple) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_0C4045A2()
-        {
-            Given_Instruction(0x0C4045A2);
-            Expect_Code("@@@");
-        }
-
-  
-
-        // An AArch64 decoder for the instruction 4EA26400 (0064A24E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4EA26400()
-        {
-            Given_Instruction(0x4EA26400);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4EA36421 (2164A34E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4EA36421()
-        {
-            Given_Instruction(0x4EA36421);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4EA16400 (0064A14E) - (AdvancedSimd3Same U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4EA16400()
-        {
-            Given_Instruction(0x4EA16400);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4EB0A800 (00A8B04E) - (AdvancedSimdAcrossLanes opcode) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4EB0A800()
-        {
-            Given_Instruction(0x4EB0A800);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4EB91F26 (261FB94E) - (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0111) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4EB91F26()
-        {
-            Given_Instruction(0x4EB91F26);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 4EB81F06 (061FB84E) - (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0111) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_4EB81F06()
-        {
-            Given_Instruction(0x4EB81F06);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 0F00E460 (60E4000F) - (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0000) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_0F00E460()
+        public void AArch64Dis_movi_b()
         {
             Given_Instruction(0x0F00E460);
-            Expect_Code("@@@");
+            Expect_Code("movi\tv0.8b,#&3030303");
         }
 
-        // An AArch64 decoder for the instruction 4F008441 (4184004F) - (AdvancedSimdModifiedImm cmode) has not been implemented yet.
         [Test]
-        public void AArch64Dis_4F008441()
+        public void AArch64Dis_scvtf_fixed()
         {
-            Given_Instruction(0x4F008441);
-            Expect_Code("@@@");
+            Given_Instruction(0x1E18C008);
+            Expect_Code("scvtf\ts8,w0,#&10");
         }
 
-        // An AArch64 decoder for the instruction 6E024044 (4440026E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0000 op3=xxxxxxx00) has not been implemented yet.
         [Test]
-        public void AArch64Dis_6E024044()
-        {
-            Given_Instruction(0x6E024044);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 2E20C084 (84C0202E) - (DataProcessingScalarFpAdvancedSimd - op0=2 op1=00) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_2E20C084()
-        {
-            Given_Instruction(0x2E20C084);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 2E208045 (4580202E) - (DataProcessingScalarFpAdvancedSimd - op0=2 op1=00) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_2E208045()
+        public void AArch64Dis_umlal_vector()
         {
             Given_Instruction(0x2E208045);
-            Expect_Code("@@@");
+            Expect_Code("umlal\tv5.4h,v2.8b,v0.8b");
         }
 
-        // An AArch64 decoder for the instruction 6E231082 (8210236E) - (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0100) has not been implemented yet.
         [Test]
-        public void AArch64Dis_6E231082()
+        public void AArch64Dis_smax_vector()
+        {
+            Given_Instruction(0x4EA16400);
+            Expect_Code("smax\tv0.4s,v0.4s,v1.4s");
+        }
+
+
+        [Test]
+        public void AArch64Dis_movi_w16()
+        {
+            Given_Instruction(0x4F008441);
+            Expect_Code("movi\tv1.8h,#&20002");
+        }
+
+        [Test]
+        public void AArch64Dis_fmov_vector_hiword()
+        {
+            Given_Instruction(0x9EAF0060);
+            Expect_Code("fmov\tq0.d[1],x3");
+        }
+
+        [Test]
+        public void AArch64Dis_smaxv()
+        {
+            Given_Instruction(0x4EB0A800);
+            Expect_Code("smaxv\ts0,v0.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_umull_vector()
+        {
+            Given_Instruction(0x2E20C084);
+            Expect_Code("umull\tv4.8h,v4.8b,v0.8b");
+        }
+
+        [Test]
+        public void AArch64Dis_uaddw_i16()
         {
             Given_Instruction(0x6E231082);
-            Expect_Code("@@@");
+            Expect_Code("uaddw\tv2.8h,v4.8h,v3.16b");
         }
+
+        //@@@@@@@@@@@@@@@@@@@
+
 
     }
 }

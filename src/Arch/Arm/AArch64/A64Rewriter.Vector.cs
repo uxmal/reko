@@ -43,6 +43,11 @@ namespace Reko.Arch.Arm.AArch64
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
                 m.Assign(dst, m.Cast(realType, m.Cast(intType, src)));
             }
+            else if (instr.ops.Length == 3)
+            {
+                // fixed point conversion.
+                throw new NotImplementedException();
+            }
             else
             {
                 //$BUG: what is this supposed to do?

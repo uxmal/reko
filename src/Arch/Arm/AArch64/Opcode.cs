@@ -169,5 +169,9 @@ namespace Reko.Arch.Arm.AArch64
         xtn,
         xtn2,
         yield,
+        umlal,
+        smax,
+        smaxv,
+        uaddw,
     }
 }
