@@ -120,7 +120,7 @@ namespace Reko.Core.Types
         }
 
         private static PrimitiveType Create(Domain dom, int bitSize, string name)
-		{
+        {
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
                 dom &= domainMask;
@@ -321,9 +321,7 @@ namespace Reko.Core.Types
             mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
             {
                 { 0, Domain.Any },
-#if ISSUE_651
-                //{ 1, Domain.Boolean|Domain.Integer },
-#endif
+                { 1, Domain.Boolean },
                 { 8, Domain.Boolean|Domain.Character|Domain.Integer },
                 { 16, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
                 { 32, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
