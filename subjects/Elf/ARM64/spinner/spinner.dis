@@ -71,7 +71,7 @@ l0000000000002E00:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2128:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF850
+	x16 = x16 + 0x0000000000000850
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn0000000000002E00_exit
@@ -87,7 +87,7 @@ l0000000000002E60:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2176:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF880
+	x16 = x16 + 0x0000000000000880
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn0000000000002E60_exit
@@ -103,7 +103,7 @@ l0000000000002EB0:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2216:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF8A8
+	x16 = x16 + 0x00000000000008A8
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn0000000000002EB0_exit
@@ -119,7 +119,7 @@ l0000000000002F30:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2280:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF8E8
+	x16 = x16 + 0x00000000000008E8
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn0000000000002F30_exit
@@ -135,7 +135,7 @@ l0000000000002F60:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2304:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF900
+	x16 = x16 + 0x0000000000000900
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn0000000000002F60_exit
@@ -151,7 +151,7 @@ l00000000000030B0:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2472:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF9A8
+	x16 = x16 + 0x00000000000009A8
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn00000000000030B0_exit
@@ -167,7 +167,7 @@ l00000000000030F0:
 	sp = fp
 	x16 = 0x0000000000041000
 	x17 = Mem0[x16 + 2504:word64]
-	x16 = x16 + 0xFFFFFFFFFFFFF9C8
+	x16 = x16 + 0x00000000000009C8
 	call x17 (retsize: 0;)
 	return
 	// succ:  fn00000000000030F0_exit
@@ -189,7 +189,7 @@ l0000000000002AE0:
 	// succ:  fn0000000000003200_exit
 l0000000000003200:
 	sp = fp
-	x0 = x31 + x31
+	x0 = sp + x31
 	goto 0x0000000000003220
 	// succ:  l0000000000003220
 l0000000000003220:
@@ -202,7 +202,7 @@ l0000000000003220:
 	sp = sp + 8
 	Mem0[sp:word64] = x30
 	x1 = 0x0000000000000000
-	x29 = x31 + 0x0000000000000000
+	x29 = sp + 0x0000000000000000
 	x6 = Mem0[x6 + 1600:word64]
 	x3 = x29 + 0x0000000000000018
 	x5 = Mem0[x5 + 1616:word64]
@@ -215,7 +215,7 @@ l0000000000003220:
 	x1 = x0
 	x2 = 0x0000000000041000
 	x0 = 0x0000000000003000
-	x2 = x2 + 0xFFFFFFFFFFFFFA50
+	x2 = x2 + 0x0000000000000A50
 	x0 = x0 + 0x0000000000000208
 	goto 0x0000000000002AE0
 	goto l0000000000002AE0
@@ -266,10 +266,9 @@ l0000000000005528:
 	Mem0[v28:word64] = x29
 	v28 = v28 + 8
 	Mem0[v28:word64] = x30
-	x29 = x31 + 0x0000000000000080
-	x31 = x31 - 0x0000000000000260
-	w31 = w0 - 0x00000002
-	NZCV = cond(w31)
+	x29 = sp + 0x0000000000000080
+	sp = sp - 0x0000000000000260
+	NZCV = cond(w0 - 0x00000002)
 	branch Test(LT,NV) l0000000000005564
 	// succ:  l000000000000555C l0000000000005564
 l000000000000555C:
@@ -282,10 +281,10 @@ l0000000000005564:
 	// succ:  l0000000000005568
 l0000000000005568:
 	x0 = 0x000000000002E000
-	x0 = x0 + 0xFFFFFFFFFFFFFBD8
+	x0 = x0 + 0x0000000000000BD8
 	w1 = w31 | 0x00001000
 	x3 = x29 - 0x0000000000000100
-	x4 = x31 + 0x00000000000001D8
+	x4 = sp + 0x00000000000001D8
 	x5 = x29 - 0x00000000000000F4
 	x6 = x29 - 0x00000000000000F8
 	w2 = w31
@@ -316,25 +315,25 @@ l00000000000055A0:
 	x8 = x8 + 0x0000000000000710
 	Mem0[x29 + -200:word64] = x8
 	x8 = 0x0000000000003000
-	x8 = x8 + 0xFFFFFFFFFFFFF878
+	x8 = x8 + 0x0000000000000878
 	Mem0[x29 + -192:word64] = x8
 	x8 = 0x0000000000003000
-	x8 = x8 + 0xFFFFFFFFFFFFF8DC
+	x8 = x8 + 0x00000000000008DC
 	Mem0[x29 + -184:word64] = x8
 	x8 = 0x0000000000003000
-	x8 = x8 + 0xFFFFFFFFFFFFF8EC
+	x8 = x8 + 0x00000000000008EC
 	Mem0[x29 + -176:word64] = x8
 	x8 = 0x0000000000003000
-	x8 = x8 + 0xFFFFFFFFFFFFF900
+	x8 = x8 + 0x0000000000000900
 	Mem0[x29 + -168:word64] = x8
 	x8 = 0x0000000000004000
 	x8 = x8 + 0x0000000000000450
 	Mem0[x29 + -160:word64] = x8
 	x8 = 0x0000000000004000
-	x8 = x8 + 0xFFFFFFFFFFFFF9C0
+	x8 = x8 + 0x00000000000009C0
 	Mem0[x29 + -152:word64] = x8
 	x8 = 0x0000000000004000
-	x8 = x8 + 0xFFFFFFFFFFFFFE4C
+	x8 = x8 + 0x0000000000000E4C
 	Mem0[x29 + -144:word64] = x8
 	x8 = 0x0000000000005000
 	x8 = x8 + 0x0000000000000088
@@ -356,15 +355,15 @@ l00000000000055A0:
 l0000000000005668:
 	x1 = 0x000000000002E000
 	x2 = 0x000000000002E000
-	x1 = x1 + 0xFFFFFFFFFFFFFBF5
-	x2 = x2 + 0xFFFFFFFFFFFFFBFA
+	x1 = x1 + 0x0000000000000BF5
+	x2 = x2 + 0x0000000000000BFA
 	x0 = x20
 	call fn0000000000015FE8 (retsize: 0;)
 	branch (w0 & 0x00000000) == 0x00000000 l0000000000005A74
 	// succ:  l0000000000005684 l0000000000005A74
 l0000000000005684:
 	x1 = 0x000000000002E000
-	x1 = x1 + 0xFFFFFFFFFFFFFC27
+	x1 = x1 + 0x0000000000000C27
 	x0 = x20
 	w2 = w31
 	call fn0000000000013124 (retsize: 0;)
@@ -377,16 +376,15 @@ l00000000000056A0:
 	v48 = v48 + 4
 	w8 = Mem0[v48:word32]
 	x1 = 0x000000000002E000
-	x1 = x1 + 0xFFFFFFFFFFFFFC5B
-	w31 = w8 - 0x00000000
-	NZCV = cond(w31)
+	x1 = x1 + 0x0000000000000C5B
+	NZCV = cond(w8 - 0x00000000)
 l0000000000005A34:
 	x0 = 0x000000000002E000
 	x2 = 0x000000000002E000
 	x3 = 0x000000000002E000
-	x0 = x0 + 0xFFFFFFFFFFFFFBE0
-	x2 = x2 + 0xFFFFFFFFFFFFFBEA
-	x3 = x3 + 0xFFFFFFFFFFFFFBF2
+	x0 = x0 + 0x0000000000000BE0
+	x2 = x2 + 0x0000000000000BEA
+	x3 = x3 + 0x0000000000000BF2
 	w1 = 0x00000023
 	call fn0000000000002F30 (retsize: 0;)
 	// succ:  l0000000000005A54
@@ -394,9 +392,9 @@ l0000000000005A54:
 	x0 = 0x000000000002E000
 	x2 = 0x000000000002E000
 	x3 = 0x000000000002E000
-	x0 = x0 + 0xFFFFFFFFFFFFFBE0
-	x2 = x2 + 0xFFFFFFFFFFFFFBEA
-	x3 = x3 + 0xFFFFFFFFFFFFFBEF
+	x0 = x0 + 0x0000000000000BE0
+	x2 = x2 + 0x0000000000000BEA
+	x3 = x3 + 0x0000000000000BEF
 	w1 = w31 | 0x00000020
 	call fn0000000000002F30 (retsize: 0;)
 	// succ:  l0000000000005A74
@@ -404,9 +402,9 @@ l0000000000005A74:
 	x0 = 0x000000000002E000
 	x2 = 0x000000000002E000
 	x3 = 0x000000000002E000
-	x0 = x0 + 0xFFFFFFFFFFFFFBE0
-	x2 = x2 + 0xFFFFFFFFFFFFFBEA
-	x3 = x3 + 0xFFFFFFFFFFFFFC1D
+	x0 = x0 + 0x0000000000000BE0
+	x2 = x2 + 0x0000000000000BEA
+	x3 = x3 + 0x0000000000000C1D
 	w1 = 0x00000026
 	call fn0000000000002F30 (retsize: 0;)
 	// succ:  l0000000000005A94
@@ -414,17 +412,17 @@ l0000000000005A94:
 	x0 = 0x000000000002E000
 	x2 = 0x000000000002E000
 	x3 = 0x000000000002E000
-	x0 = x0 + 0xFFFFFFFFFFFFFBE0
-	x2 = x2 + 0xFFFFFFFFFFFFFBEA
-	x3 = x3 + 0xFFFFFFFFFFFFFC4A
+	x0 = x0 + 0x0000000000000BE0
+	x2 = x2 + 0x0000000000000BEA
+	x3 = x3 + 0x0000000000000C4A
 	w1 = 0x00000029
 	call fn0000000000002F30 (retsize: 0;)
 	x0 = 0x000000000002E000
 	x2 = 0x000000000002E000
 	x3 = 0x000000000002E000
-	x0 = x0 + 0xFFFFFFFFFFFFFBE0
-	x2 = x2 + 0xFFFFFFFFFFFFFBEA
-	x3 = x3 + 0xFFFFFFFFFFFFFC7E
+	x0 = x0 + 0x0000000000000BE0
+	x2 = x2 + 0x0000000000000BEA
+	x3 = x3 + 0x0000000000000C7E
 	w1 = w31 | 0x00000030
 	call fn0000000000002F30 (retsize: 0;)
 	sp = sp + -64
@@ -441,15 +439,14 @@ l0000000000005A94:
 	Mem0[v52:word64] = x29
 	v52 = v52 + 8
 	Mem0[v52:word64] = x30
-	x29 = x31 + 0x0000000000000030
-	x31 = x31 - 0x0000000000000220
+	x29 = sp + 0x0000000000000030
+	sp = sp - 0x0000000000000220
 	x8 = 0x000000000002E000
 	x9 = 0x000000000002E000
 	x19 = x0
-	x8 = x8 + 0xFFFFFFFFFFFFFCB1
-	x9 = x9 + 0xFFFFFFFFFFFFFCF4
-	x31 = x1 - 0x0000000000000000
-	NZCV = cond(x31)
+	x8 = x8 + 0x0000000000000CB1
+	x9 = x9 + 0x0000000000000CF4
+	NZCV = cond(x1 - 0x0000000000000000)
 	Mem0[sp:word64] = x8
 main_exit:
 
@@ -461,38 +458,38 @@ fn000000000000614C_entry:
 	// succ:  l000000000000614C
 l000000000000614C:
 	sp = fp
-	x31 = x31 - 0x00000000000000E0
-	v6 = sp + 128
-	Mem0[v6:word64] = x28
-	v6 = v6 + 8
-	Mem0[v6:word64] = x27
-	v9 = sp + 144
-	Mem0[v9:word64] = x26
-	v9 = v9 + 8
-	Mem0[v9:word64] = x25
-	v12 = sp + 160
-	Mem0[v12:word64] = x24
-	v12 = v12 + 8
-	Mem0[v12:word64] = x23
-	v15 = sp + 176
-	Mem0[v15:word64] = x22
-	v15 = v15 + 8
-	Mem0[v15:word64] = x21
-	v18 = sp + 192
-	Mem0[v18:word64] = x20
-	v18 = v18 + 8
-	Mem0[v18:word64] = x19
-	v21 = sp + 208
-	Mem0[v21:word64] = x29
-	v21 = v21 + 8
-	Mem0[v21:word64] = x30
-	x29 = x31 + 0x00000000000000D0
+	sp = sp - 0x00000000000000E0
+	v5 = sp + 128
+	Mem0[v5:word64] = x28
+	v5 = v5 + 8
+	Mem0[v5:word64] = x27
+	v8 = sp + 144
+	Mem0[v8:word64] = x26
+	v8 = v8 + 8
+	Mem0[v8:word64] = x25
+	v11 = sp + 160
+	Mem0[v11:word64] = x24
+	v11 = v11 + 8
+	Mem0[v11:word64] = x23
+	v14 = sp + 176
+	Mem0[v14:word64] = x22
+	v14 = v14 + 8
+	Mem0[v14:word64] = x21
+	v17 = sp + 192
+	Mem0[v17:word64] = x20
+	v17 = v17 + 8
+	Mem0[v17:word64] = x19
+	v20 = sp + 208
+	Mem0[v20:word64] = x29
+	v20 = v20 + 8
+	Mem0[v20:word64] = x30
+	x29 = sp + 0x00000000000000D0
 	x27 = x0
 	w0 = w31 | 0x00000080
-	v27 = sp + 8
-	Mem0[v27:word64] = x5
-	v27 = v27 + 8
-	Mem0[v27:word64] = x6
+	v26 = sp + 8
+	Mem0[v26:word64] = x5
+	v26 = v26 + 8
+	Mem0[v26:word64] = x6
 	x22 = x4
 	x23 = x3
 	w24 = w2
@@ -521,7 +518,7 @@ l000000000000BAF0:
 	Mem0[v9:word64] = x29
 	v9 = v9 + 8
 	Mem0[v9:word64] = x30
-	x29 = x31 + 0x0000000000000020
+	x29 = sp + 0x0000000000000020
 	x19 = x0
 	branch x19 == 0x0000000000000000 l000000000000BBC0
 	// succ:  l000000000000BB08 l000000000000BBC0
@@ -535,8 +532,7 @@ l000000000000BB10:
 	// succ:  l000000000000BB18
 l000000000000BB18:
 	w8 = Mem0[x19 + 116:word32]
-	w31 = w8 - 0x00000001
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x00000001)
 	branch Test(LT,NV) l000000000000BB6C
 	// succ:  l000000000000BB24 l000000000000BB6C
 l000000000000BB24:
@@ -555,8 +551,8 @@ l000000000000BB3C:
 	call fn0000000000002CC0 (retsize: 0;)
 	// succ:  l000000000000BB40
 l000000000000BB40:
-	v20 = Mem0[x20 + 132:byte]
-	w8 = (word32) v20
+	v19 = Mem0[x20 + 132:byte]
+	w8 = (word32) v19
 	branch w8 == 0x00000000 l000000000000BB54
 	// succ:  l000000000000BB48 l000000000000BB54
 l000000000000BB48:
@@ -614,14 +610,14 @@ l000000000000BBA8:
 	// succ:  l000000000000BBAC
 l000000000000BBAC:
 	x0 = x19
-	v21 = sp + 32
-	x29 = Mem0[v21:word64]
+	v20 = sp + 32
+	x29 = Mem0[v20:word64]
+	v20 = v20 + 8
+	x30 = Mem0[v20:word64]
+	v21 = sp + 16
+	x20 = Mem0[v21:word64]
 	v21 = v21 + 8
-	x30 = Mem0[v21:word64]
-	v22 = sp + 16
-	x20 = Mem0[v22:word64]
-	v22 = v22 + 8
-	x19 = Mem0[v22:word64]
+	x19 = Mem0[v21:word64]
 	x21 = Mem0[sp:word64]
 	sp = sp + 48
 	goto 0x0000000000002CC0
@@ -631,14 +627,14 @@ l000000000000BBBC_thunk_fn0000000000002CC0:
 	return
 	// succ:  fn000000000000BAF0_exit
 l000000000000BBC0:
-	v13 = sp + 32
-	x29 = Mem0[v13:word64]
+	v12 = sp + 32
+	x29 = Mem0[v12:word64]
+	v12 = v12 + 8
+	x30 = Mem0[v12:word64]
+	v13 = sp + 16
+	x20 = Mem0[v13:word64]
 	v13 = v13 + 8
-	x30 = Mem0[v13:word64]
-	v14 = sp + 16
-	x20 = Mem0[v14:word64]
-	v14 = v14 + 8
-	x19 = Mem0[v14:word64]
+	x19 = Mem0[v13:word64]
 	x21 = Mem0[sp:word64]
 	sp = sp + 48
 	return
@@ -653,31 +649,31 @@ fn000000000000E500_entry:
 	// succ:  l000000000000E500
 l000000000000E500:
 	sp = fp
-	x31 = x31 - 0x0000000000000130
-	v6 = sp + 224
-	Mem0[v6:word64] = x28
-	v6 = v6 + 8
-	Mem0[v6:word64] = x25
-	v9 = sp + 240
-	Mem0[v9:word64] = x24
-	v9 = v9 + 8
-	Mem0[v9:word64] = x23
-	v12 = sp + 256
-	Mem0[v12:word64] = x22
-	v12 = v12 + 8
-	Mem0[v12:word64] = x21
-	v15 = sp + 272
-	Mem0[v15:word64] = x20
-	v15 = v15 + 8
-	Mem0[v15:word64] = x19
-	v18 = sp + 288
-	Mem0[v18:word64] = x29
-	v18 = v18 + 8
-	Mem0[v18:word64] = x30
-	x29 = x31 + 0x0000000000000120
+	sp = sp - 0x0000000000000130
+	v5 = sp + 224
+	Mem0[v5:word64] = x28
+	v5 = v5 + 8
+	Mem0[v5:word64] = x25
+	v8 = sp + 240
+	Mem0[v8:word64] = x24
+	v8 = v8 + 8
+	Mem0[v8:word64] = x23
+	v11 = sp + 256
+	Mem0[v11:word64] = x22
+	v11 = v11 + 8
+	Mem0[v11:word64] = x21
+	v14 = sp + 272
+	Mem0[v14:word64] = x20
+	v14 = v14 + 8
+	Mem0[v14:word64] = x19
+	v17 = sp + 288
+	Mem0[v17:word64] = x29
+	v17 = v17 + 8
+	Mem0[v17:word64] = x30
+	x29 = sp + 0x0000000000000120
 	x23 = x1
 	x1 = 0x0000000000030000
-	x1 = x1 + 0xFFFFFFFFFFFFF83C
+	x1 = x1 + 0x000000000000083C
 	w20 = w4
 	x21 = x3
 	x22 = x2
@@ -687,10 +683,10 @@ l000000000000E500:
 	// succ:  l000000000000E540 l000000000000E594
 l000000000000E540:
 	x8 = 0x0000000000041000
-	x8 = x8 + 0xFFFFFFFFFFFFFA78
+	x8 = x8 + 0x0000000000000A78
 	q0 = Mem0[x8:word128]
 	x11 = Mem0[x8 + 16:word64]
-	x25 = x31 + 0x0000000000000008
+	x25 = sp + 0x0000000000000008
 	x24 = x25 + 0x0000000000000038
 	Mem0[sp + 24:word128] = q0
 	x8 = Mem0[sp + 24:word64]
@@ -699,14 +695,14 @@ l000000000000E540:
 	w2 = w31 | 0x00000080
 	x0 = x19
 	x1 = x24
-	v32 = sp + 40
-	Mem0[v32:word64] = x11
-	v32 = v32 + 8
-	Mem0[v32:word64] = x19
-	v33 = sp + 56
-	Mem0[v33:word32] = w10
-	v33 = v33 + 4
-	Mem0[v33:word32] = w9
+	v31 = sp + 40
+	Mem0[v31:word64] = x11
+	v31 = v31 + 8
+	Mem0[v31:word64] = x19
+	v32 = sp + 56
+	Mem0[v32:word32] = w10
+	v32 = v32 + 4
+	Mem0[v32:word32] = w9
 	Mem0[sp + 208:word64] = x24
 	call x8 (retsize: 0;)
 	branch w0 == 0x00000000 l000000000000E5AC
@@ -720,7 +716,7 @@ l000000000000E588:
 l000000000000E594:
 	x9 = 0x0000000000030000
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFF83F
+	x9 = x9 + 0x000000000000083F
 	x20 = x31
 	Mem0[x8 + 2736:word64] = x9
 	goto 0x000000000000E604
@@ -732,7 +728,7 @@ l000000000000E5AC:
 	Mem0[sp + 64:byte] = 0x00
 	// succ:  l000000000000E5B8
 l000000000000E5B8:
-	x0 = x31 + 0x0000000000000008
+	x0 = sp + 0x0000000000000008
 	x1 = x23
 	x2 = x22
 	x3 = x21
@@ -778,7 +774,7 @@ l000000000000E604:
 	x28 = Mem0[v42:word64]
 	v42 = v42 + 8
 	x25 = Mem0[v42:word64]
-	x31 = x31 + 0x0000000000000130
+	sp = sp + 0x0000000000000130
 	return
 	// succ:  fn000000000000E500_exit
 fn000000000000E500_exit:
@@ -809,7 +805,7 @@ l000000000000E714:
 	Mem0[v15:word64] = x29
 	v15 = v15 + 8
 	Mem0[v15:word64] = x30
-	x29 = x31 + 0x0000000000000040
+	x29 = sp + 0x0000000000000040
 	w19 = w4
 	x20 = x3
 	x21 = x2
@@ -823,8 +819,8 @@ l000000000000E744:
 	branch w8 == 0x00000000 l000000000000E894
 	// succ:  l000000000000E750 l000000000000E894
 l000000000000E750:
-	v25 = Mem0[x22:int32]
-	x8 = (word64) v25
+	v24 = Mem0[x22:int32]
+	x8 = (word64) v24
 	w11 = Mem0[x21:word32]
 	branch w19 != 0x00000000 l000000000000E760
 	// succ:  l000000000000E75C l000000000000E760
@@ -833,22 +829,22 @@ l000000000000E75C:
 	// succ:  l000000000000E760
 l000000000000E760:
 l000000000000E894:
-	v27 = sp + 64
-	x29 = Mem0[v27:word64]
+	v26 = sp + 64
+	x29 = Mem0[v26:word64]
+	v26 = v26 + 8
+	x30 = Mem0[v26:word64]
+	v27 = sp + 48
+	x20 = Mem0[v27:word64]
 	v27 = v27 + 8
-	x30 = Mem0[v27:word64]
-	v28 = sp + 48
-	x20 = Mem0[v28:word64]
+	x19 = Mem0[v27:word64]
+	v28 = sp + 32
+	x22 = Mem0[v28:word64]
 	v28 = v28 + 8
-	x19 = Mem0[v28:word64]
-	v29 = sp + 32
-	x22 = Mem0[v29:word64]
+	x21 = Mem0[v28:word64]
+	v29 = sp + 16
+	x24 = Mem0[v29:word64]
 	v29 = v29 + 8
-	x21 = Mem0[v29:word64]
-	v30 = sp + 16
-	x24 = Mem0[v30:word64]
-	v30 = v30 + 8
-	x23 = Mem0[v30:word64]
+	x23 = Mem0[v29:word64]
 	x25 = Mem0[sp:word64]
 	sp = sp + 80
 	return
@@ -863,17 +859,17 @@ fn0000000000011ECC_entry:
 	// succ:  l0000000000011ECC
 l0000000000011ECC:
 	sp = fp
-	x31 = x31 - 0x0000000000000070
+	sp = sp - 0x0000000000000070
 	Mem0[sp + 64:word64] = x21
-	v7 = sp + 80
-	Mem0[v7:word64] = x20
-	v7 = v7 + 8
-	Mem0[v7:word64] = x19
-	v10 = sp + 96
-	Mem0[v10:word64] = x29
-	v10 = v10 + 8
-	Mem0[v10:word64] = x30
-	x29 = x31 + 0x0000000000000060
+	v6 = sp + 80
+	Mem0[v6:word64] = x20
+	v6 = v6 + 8
+	Mem0[v6:word64] = x19
+	v9 = sp + 96
+	Mem0[v9:word64] = x29
+	v9 = v9 + 8
+	Mem0[v9:word64] = x30
+	x29 = sp + 0x0000000000000060
 	x20 = x0
 	w0 = 0x00002258
 	call fn0000000000002B80 (retsize: 0;)
@@ -962,7 +958,7 @@ l0000000000011F98:
 	// succ:  l0000000000011FD4 l0000000000012064
 l0000000000011FD4:
 	w8 = w31 | 0x00000200
-	x0 = x31 + 0x0000000000000000
+	x0 = sp + 0x0000000000000000
 	v25 = sp + 24
 	Mem0[v25:word64] = x31
 	v25 = v25 + 8
@@ -1009,7 +1005,7 @@ l0000000000012064:
 	v29 = v29 + 8
 	x19 = Mem0[v29:word64]
 	x21 = Mem0[sp + 64:word64]
-	x31 = x31 + 0x0000000000000070
+	sp = sp + 0x0000000000000070
 	return
 	// succ:  fn0000000000011ECC_exit
 fn0000000000011ECC_exit:
@@ -1028,9 +1024,9 @@ l00000000000120E0:
 	Mem0[v6:word64] = x29
 	v6 = v6 + 8
 	Mem0[v6:word64] = x30
-	x29 = x31 + 0x0000000000000010
-	v10 = Mem0[x0 + -3836:int32]
-	x8 = (word64) v10
+	x29 = sp + 0x0000000000000010
+	v9 = Mem0[x0 + -3836:int32]
+	x8 = (word64) v9
 	w9 = 0x0000010C
 	w2 = 0x00000104
 	w1 = w31
@@ -1096,7 +1092,7 @@ l00000000000121C0:
 	Mem0[v7:word64] = x29
 	v7 = v7 + 8
 	Mem0[v7:word64] = x30
-	x29 = x31 + 0x0000000000000010
+	x29 = sp + 0x0000000000000010
 	x19 = x0
 	branch x19 == 0x0000000000000000 l00000000000122A0
 	// succ:  l00000000000121D4 l00000000000122A0
@@ -1192,10 +1188,10 @@ l0000000000012288:
 	call x8 (retsize: 0;)
 	// succ:  l0000000000012290
 l0000000000012290:
-	v13 = sp + 16
-	x29 = Mem0[v13:word64]
-	v13 = v13 + 8
-	x30 = Mem0[v13:word64]
+	v12 = sp + 16
+	x29 = Mem0[v12:word64]
+	v12 = v12 + 8
+	x30 = Mem0[v12:word64]
 	x0 = x19
 	x20 = Mem0[sp:word64]
 	sp = sp + 8
@@ -1208,10 +1204,10 @@ l000000000001229C_thunk_fn0000000000002CC0:
 	return
 	// succ:  fn00000000000121C0_exit
 l00000000000122A0:
-	v10 = sp + 16
-	x29 = Mem0[v10:word64]
-	v10 = v10 + 8
-	x30 = Mem0[v10:word64]
+	v9 = sp + 16
+	x29 = Mem0[v9:word64]
+	v9 = v9 + 8
+	x30 = Mem0[v9:word64]
 	x20 = Mem0[sp:word64]
 	sp = sp + 8
 	x19 = Mem0[sp:word64]
@@ -1228,17 +1224,17 @@ fn0000000000013124_entry:
 	// succ:  l0000000000013124
 l0000000000013124:
 	sp = fp
-	x31 = x31 - 0x0000000000000040
+	sp = sp - 0x0000000000000040
 	Mem0[sp + 16:word64] = x21
-	v7 = sp + 32
-	Mem0[v7:word64] = x20
-	v7 = v7 + 8
-	Mem0[v7:word64] = x19
-	v10 = sp + 48
-	Mem0[v10:word64] = x29
-	v10 = v10 + 8
-	Mem0[v10:word64] = x30
-	x29 = x31 + 0x0000000000000030
+	v6 = sp + 32
+	Mem0[v6:word64] = x20
+	v6 = v6 + 8
+	Mem0[v6:word64] = x19
+	v9 = sp + 48
+	Mem0[v9:word64] = x29
+	v9 = v9 + 8
+	Mem0[v9:word64] = x30
+	x29 = sp + 0x0000000000000030
 	x8 = x1
 	w19 = w2
 	x20 = x0
@@ -1246,8 +1242,8 @@ l0000000000013124:
 	w10 = w31 | 0x00000001
 	x11 = 0x0000000000041000
 	x1 = x29 - 0x0000000000000014
-	x2 = x31 + 0x0000000000000018
-	x3 = x31 + 0x000000000000000C
+	x2 = sp + 0x0000000000000018
+	x3 = sp + 0x000000000000000C
 	w4 = w31 | 0x00000004
 	x0 = x8
 	Mem0[x9 + 2748:word32] = w10
@@ -1276,16 +1272,16 @@ l00000000000131A8:
 	// succ:  l00000000000131AC
 l00000000000131AC:
 	w0 = w19
-	v27 = sp + 48
-	x29 = Mem0[v27:word64]
+	v26 = sp + 48
+	x29 = Mem0[v26:word64]
+	v26 = v26 + 8
+	x30 = Mem0[v26:word64]
+	v27 = sp + 32
+	x20 = Mem0[v27:word64]
 	v27 = v27 + 8
-	x30 = Mem0[v27:word64]
-	v28 = sp + 32
-	x20 = Mem0[v28:word64]
-	v28 = v28 + 8
-	x19 = Mem0[v28:word64]
+	x19 = Mem0[v27:word64]
 	x21 = Mem0[sp + 16:word64]
-	x31 = x31 + 0x0000000000000040
+	sp = sp + 0x0000000000000040
 	return
 	// succ:  fn0000000000013124_exit
 fn0000000000013124_exit:
@@ -1314,11 +1310,11 @@ l000000000000BCE0:
 	Mem0[v14:word64] = x29
 	v14 = v14 + 8
 	Mem0[v14:word64] = x30
-	x29 = x31 + 0x0000000000000030
+	x29 = sp + 0x0000000000000030
 	x19 = x1
 	x1 = 0x0000000000030000
 	x20 = x0
-	x1 = x1 + 0xFFFFFFFFFFFFF83C
+	x1 = x1 + 0x000000000000083C
 	x0 = x2
 	call fn00000000000030B0 (retsize: 0;)
 	x21 = x0
@@ -1402,18 +1398,18 @@ l0000000000018648:
 	Mem0[v24:word64] = x29
 	v24 = v24 + 8
 	Mem0[v24:word64] = x30
-	x29 = x31 + 0x0000000000000070
-	x31 = x31 - (0x0000000000000004 << 12)
-	x31 = x31 - 0xFFFFFFFFFFFFFA40
+	x29 = sp + 0x0000000000000070
+	sp = sp - (0x0000000000000004 << 12)
+	sp = sp - 0x0000000000000A40
 	x19 = 0x0000000000023000
 	x20 = 0x0000000000023000
 	x21 = 0x0000000000023000
 	x26 = x1
 	x23 = x0
 	x19 = x19 + 0x00000000000005FC
-	x20 = x20 + 0xFFFFFFFFFFFFF9C0
-	x21 = x21 + 0xFFFFFFFFFFFFFA88
-	x0 = x31 + 0x00000000000001E0
+	x20 = x20 + 0x00000000000009C0
+	x21 = x21 + 0x0000000000000A88
+	x0 = sp + 0x00000000000001E0
 	w1 = w31 | 0x00000001
 	w27 = w4
 	x22 = x3
@@ -1423,14 +1419,14 @@ l0000000000018648:
 	Mem0[sp + -14000:word64] = x20
 	Mem0[sp + -13992:word64] = x21
 	call fn00000000000227F0 (retsize: 0;)
-	v36 = x23 + 200
-	x9 = Mem0[v36:word64]
+	v35 = x23 + 200
+	x9 = Mem0[v35:word64]
+	v35 = v35 + 8
+	x8 = Mem0[v35:word64]
+	v36 = x23 + 184
+	Mem0[v36:word64] = x9
 	v36 = v36 + 8
-	x8 = Mem0[v36:word64]
-	v37 = x23 + 184
-	Mem0[v37:word64] = x9
-	v37 = v37 + 8
-	Mem0[v37:word64] = x8
+	Mem0[v36:word64] = x8
 	branch w0 == 0x00000000 l0000000000018754
 	// succ:  l00000000000186C8 l0000000000018754
 l00000000000186C8:
@@ -1439,20 +1435,19 @@ l00000000000186C8:
 	Mem0[sp + -14000:word64] = x20
 	Mem0[sp + -13992:word64] = x21
 	Mem0[x23 + 8:word32] = 0x00000000
-	w31 = w27 - 0x00000005
-	NZCV = cond(w31)
+	NZCV = cond(w27 - 0x00000005)
 	branch Test(UGE,C) l00000000000187F8
 	// succ:  l00000000000186E4 l00000000000187F8
 l00000000000186E4:
 	w8 = 0x0000475C
-	x19 = x31 + 0x00000000000001E0
+	x19 = sp + 0x00000000000001E0
 	x8 = x19 + x8
-	x0 = x31 + 0x00000000000001E0
+	x0 = sp + 0x00000000000001E0
 	w1 = w31
-	v42 = sp + 80
-	Mem0[v42:word64] = x26
-	v42 = v42 + 8
-	Mem0[v42:word64] = x22
+	v41 = sp + 80
+	Mem0[v41:word64] = x26
+	v41 = v41 + 8
+	Mem0[v41:word64] = x22
 	Mem0[sp + 96:word64] = x24
 	Mem0[sp + 120:word64] = x27
 	Mem0[sp + 216:word64] = x8
@@ -1471,10 +1466,9 @@ l00000000000186E4:
 l0000000000018734:
 	w8 = 0x00004728
 	x20 = x19 + x8
-	v43 = Mem0[x20:byte]
-	w8 = (word32) v43
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	v42 = Mem0[x20:byte]
+	w8 = (word32) v42
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l00000000000188B0
 	// succ:  l0000000000018748 l00000000000188B0
 l0000000000018748:
@@ -1519,8 +1513,7 @@ l00000000000187CC:
 	// succ:  l00000000000187D8 l0000000000018810
 l00000000000187D8:
 	x19 = x19 + 0x0000000000000001
-	x31 = x19 - 0x0000000000000007
-	NZCV = cond(x31)
+	NZCV = cond(x19 - 0x0000000000000007)
 	branch Test(ULE,ZC) l0000000000018768
 	// succ:  l00000000000187E4 l0000000000018768
 l00000000000187E4:
@@ -1528,8 +1521,7 @@ l00000000000187E4:
 	x8 = Mem0[v74:word64]
 	v74 = v74 + 8
 	x9 = Mem0[v74:word64]
-	w31 = w27 - 0x00000005
-	NZCV = cond(w31)
+	NZCV = cond(w27 - 0x00000005)
 	v75 = x23 + 184
 	Mem0[v75:word64] = x8
 	v75 = v75 + 8
@@ -1540,7 +1532,7 @@ l00000000000187E4:
 l00000000000187F8:
 	x9 = 0x0000000000030000
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFB1F
+	x9 = x9 + 0x0000000000000B1F
 	x20 = x31
 	Mem0[x8 + 2736:word64] = x9
 	goto 0x00000000000209C4
@@ -1549,7 +1541,7 @@ l00000000000187F8:
 l0000000000018810:
 	x8 = 0x0000000000030000
 	x9 = 0x0000000000041000
-	x8 = x8 + 0xFFFFFFFFFFFFFC8A
+	x8 = x8 + 0x0000000000000C8A
 	Mem0[x9 + 2736:word64] = x8
 	v79 = x23 + 200
 	x9 = Mem0[v79:word64]
@@ -1581,7 +1573,7 @@ l0000000000018850:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l0000000000018878:
-	x0 = x31 + 0x00000000000001E0
+	x0 = sp + 0x00000000000001E0
 	w1 = w31
 	w2 = w27
 	call fn0000000000025A44 (retsize: 0;)
@@ -1634,8 +1626,7 @@ l0000000000018904:
 	goto l00000000000189B8
 	// succ:  l00000000000189B8
 l0000000000018924:
-	w31 = w9 - 0x00000042
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000042)
 	branch Test(NE,Z) l000000000001B9DC
 	// succ:  l000000000001892C l000000000001B9DC
 l000000000001892C:
@@ -1695,8 +1686,7 @@ l00000000000189E0:
 	goto l0000000000018AE4
 	// succ:  l0000000000018AE4
 l0000000000018A00:
-	w31 = w10 - 0x0000004D
-	NZCV = cond(w31)
+	NZCV = cond(w10 - 0x0000004D)
 	branch Test(NE,Z) l000000000001B9DC
 	// succ:  l0000000000018A08 l000000000001B9DC
 l0000000000018A08:
@@ -1718,8 +1708,7 @@ l0000000000018A24:
 	x8 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l0000000000018A60:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000018A70
 	// succ:  l0000000000018A68 l0000000000018A70
 l0000000000018A68:
@@ -1753,13 +1742,12 @@ l0000000000018A98:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l0000000000018ADC:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000018A70
 	// succ:  l0000000000018AE4 l0000000000018A70
 l0000000000018AE4:
 	w9 = 0x00004748
-	x28 = x31 + 0x00000000000001E0
+	x28 = sp + 0x00000000000001E0
 	w10 = 0x00004738
 	x9 = x28 + x9
 	w11 = 0x0000473C
@@ -1817,28 +1805,25 @@ l0000000000018BA4:
 	// succ:  l0000000000018BAC
 l0000000000018BAC:
 	w9 = w8 & 0x000000FF
-	w31 = w9 - 0x000000DA
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x000000DA)
 	branch Test(EQ,Z) l0000000000018C08
 	// succ:  l0000000000018BB8 l0000000000018C08
 l0000000000018BB8:
-	w31 = w9 - 0x000000D9
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x000000D9)
 	branch Test(EQ,Z) l000000000001ADC0
 	// succ:  l0000000000018BC0 l000000000001ADC0
 l0000000000018BC0:
 	w1 = w8 & 0x000000FF
-	x0 = x31 + 0x00000000000001E0
+	x0 = sp + 0x00000000000001E0
 	call fn0000000000023B3C (retsize: 0;)
 	branch w0 == 0x00000000 l000000000001BE8C
 	// succ:  l0000000000018BD0 l000000000001BE8C
 l0000000000018BD0:
 	x22 = Mem0[sp + 232:word64]
-	x28 = x31 + 0x00000000000001E0
+	x28 = sp + 0x00000000000001E0
 	v76 = Mem0[x22:byte]
 	w8 = (word32) v76
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	w25 = w31 | 0x00000060
 	branch Test(NE,Z) l0000000000018BA4
 	// succ:  l0000000000018BE8 l0000000000018BA4
@@ -1951,8 +1936,7 @@ l0000000000018D90:
 	x9 = Mem0[sp + 248:word64]
 	Mem0[x9:word32] = w8
 	w9 = w8 - 0x00000001
-	w31 = w9 - 0x00000003
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000003)
 	branch Test(UGT,ZC) l000000000001BE7C
 	// succ:  l0000000000018DA4 l000000000001BE7C
 l0000000000018DA4:
@@ -1964,8 +1948,7 @@ l0000000000018DA4:
 l0000000000018DB4:
 l0000000000018FD4:
 	w8 = w31 | 0x000000FF
-	w31 = w9 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x000000FF)
 	branch Test(NE,Z) l0000000000018BAC
 	// succ:  l0000000000018FE0 l0000000000018BAC
 l0000000000018FE0:
@@ -1994,8 +1977,7 @@ l0000000000019008:
 	x9 = Mem0[x20 + 16:word64]
 	x0 = Mem0[x20 + 40:word64]
 l000000000001904C:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000018FE0
 	// succ:  l0000000000019054 l0000000000018FE0
 l0000000000019054:
@@ -2013,27 +1995,25 @@ l000000000001ADC0:
 	branch w9 == 0x00000000 l000000000001AFF4
 	// succ:  l000000000001ADD4 l000000000001AFF4
 l000000000001ADD4:
-	w31 = w8 - 0x00000001
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x00000001)
 	branch Test(LT,NV) l000000000001AFF4
 	// succ:  l000000000001ADDC l000000000001AFF4
 l000000000001ADDC:
 	w8 = 0x000034C7
-	x9 = x31 + 0x00000000000001E0
+	x9 = sp + 0x00000000000001E0
 	w12 = 0x00003488
 	x11 = x31
 	w13 = w31 | 0x00000060
 	x26 = x9 + x8
 	x8 = x9 + x12
 	Mem0[x29 + -104:word64] = x8
-	x8 = x31 + 0x00000000000001E0
+	x8 = sp + 0x00000000000001E0
 	x8 = x8 + x11 * x13
 	w9 = 0x000045C0
 	w9 = Mem0[x8 + x9:word32]
 	w9 = w9 + 0x00000007
 l000000000001AFF4:
-	w31 = w10 - 0x00000000
-	NZCV = cond(w31)
+	NZCV = cond(w10 - 0x00000000)
 l000000000001B3C8:
 	x31 = x9 - x8
 	NZCV = cond(x31)
@@ -2337,8 +2317,7 @@ l000000000001BA04:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l000000000001BA44:
-	w31 = w9 - 0x00000047
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000047)
 	branch Test(NE,Z) l000000000001CF94
 	// succ:  l000000000001BA4C l000000000001CF94
 l000000000001BA4C:
@@ -2362,8 +2341,7 @@ l000000000001BA6C:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l000000000001BD58:
-	w31 = w9 - 0x00000049
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000049)
 	branch Test(NE,Z) l000000000001CF94
 	// succ:  l000000000001BD60 l000000000001CF94
 l000000000001BD60:
@@ -2387,8 +2365,7 @@ l000000000001BD80:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l000000000001BE24:
-	w31 = w9 - 0x00000046
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000046)
 	branch Test(NE,Z) l000000000001CF94
 	// succ:  l000000000001BE2C l000000000001CF94
 l000000000001BE2C:
@@ -2418,19 +2395,18 @@ l000000000001BE74:
 l000000000001BE7C:
 	x9 = 0x0000000000030000
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFB3F
+	x9 = x9 + 0x0000000000000B3F
 	Mem0[x8 + 2736:word64] = x9
 	// succ:  l000000000001BE8C
 l000000000001BE8C:
-	x0 = x31 + 0x00000000000001E0
+	x0 = sp + 0x00000000000001E0
 	call fn0000000000024714 (retsize: 0;)
 	x20 = x31
 	goto 0x00000000000209C4
 	goto l00000000000209C4
 	// succ:  l00000000000209C4
 l000000000001BEE4:
-	w31 = w9 - 0x00000038
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000038)
 	branch Test(NE,Z) l000000000001CF94
 	// succ:  l000000000001BEEC l000000000001CF94
 l000000000001BEEC:
@@ -2454,13 +2430,11 @@ l000000000001BF0C:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l000000000001CF3C:
-	w31 = w9 - 0x00000039
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000039)
 	branch Test(EQ,Z) l000000000001CF4C
 	// succ:  l000000000001CF44 l000000000001CF4C
 l000000000001CF44:
-	w31 = w9 - 0x00000037
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000037)
 	branch Test(NE,Z) l000000000001CF94
 	// succ:  l000000000001CF4C l000000000001CF94
 l000000000001CF4C:
@@ -2524,8 +2498,7 @@ l000000000001FA2C:
 	x10 = Mem0[v101:word64]
 	v101 = v101 + 8
 	x8 = Mem0[v101:word64]
-	w31 = w9 - 0x00000061
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000061)
 	v102 = x23 + 184
 	Mem0[v102:word64] = x10
 	v102 = v102 + 8
@@ -2533,11 +2506,11 @@ l000000000001FA2C:
 	branch Test(NE,Z) l000000000001CF9C
 	// succ:  l000000000001FA3C l000000000001CF9C
 l000000000001FA3C:
-	x0 = x31 + 0x00000000000001E0
+	x0 = sp + 0x00000000000001E0
 	w2 = 0x00004860
 	w1 = w31
 	call fn0000000000002E60 (retsize: 0;)
-	x1 = x31 + 0x00000000000001E0
+	x1 = sp + 0x00000000000001E0
 	x0 = x23
 	x2 = x22
 	w3 = w31
@@ -2556,8 +2529,8 @@ l000000000001FB38:
 	// succ:  l0000000000021880
 l00000000000209C4:
 	x0 = x20
-	x31 = x31 + (0x0000000000000004 << 12)
-	x31 = x31 + 0xFFFFFFFFFFFFFA40
+	sp = sp + (0x0000000000000004 << 12)
+	sp = sp + 0x0000000000000A40
 	v82 = sp + 112
 	x29 = Mem0[v82:word64]
 	v82 = v82 + 8
@@ -2603,32 +2576,32 @@ fn00000000000227F0_entry:
 	// succ:  l00000000000227F0
 l00000000000227F0:
 	sp = fp
-	x31 = x31 - 0x0000000000000070
-	v6 = sp + 16
-	Mem0[v6:word64] = x28
-	v6 = v6 + 8
-	Mem0[v6:word64] = x27
-	v9 = sp + 32
-	Mem0[v9:word64] = x26
-	v9 = v9 + 8
-	Mem0[v9:word64] = x25
-	v12 = sp + 48
-	Mem0[v12:word64] = x24
-	v12 = v12 + 8
-	Mem0[v12:word64] = x23
-	v15 = sp + 64
-	Mem0[v15:word64] = x22
-	v15 = v15 + 8
-	Mem0[v15:word64] = x21
-	v18 = sp + 80
-	Mem0[v18:word64] = x20
-	v18 = v18 + 8
-	Mem0[v18:word64] = x19
-	v21 = sp + 96
-	Mem0[v21:word64] = x29
-	v21 = v21 + 8
-	Mem0[v21:word64] = x30
-	x29 = x31 + 0x0000000000000060
+	sp = sp - 0x0000000000000070
+	v5 = sp + 16
+	Mem0[v5:word64] = x28
+	v5 = v5 + 8
+	Mem0[v5:word64] = x27
+	v8 = sp + 32
+	Mem0[v8:word64] = x26
+	v8 = v8 + 8
+	Mem0[v8:word64] = x25
+	v11 = sp + 48
+	Mem0[v11:word64] = x24
+	v11 = v11 + 8
+	Mem0[v11:word64] = x23
+	v14 = sp + 64
+	Mem0[v14:word64] = x22
+	v14 = v14 + 8
+	Mem0[v14:word64] = x21
+	v17 = sp + 80
+	Mem0[v17:word64] = x20
+	v17 = v17 + 8
+	Mem0[v17:word64] = x19
+	v20 = sp + 96
+	Mem0[v20:word64] = x29
+	v20 = v20 + 8
+	Mem0[v20:word64] = x30
+	x29 = sp + 0x0000000000000060
 	x19 = x0
 	w8 = 0x00004728
 	w9 = w31 | 0x000000FF
@@ -2636,10 +2609,10 @@ l00000000000227F0:
 	Mem0[x21:byte] = (byte) w9
 	x22 = Mem0[x19:word64]
 	w20 = w1
-	v30 = x22 + 184
-	x8 = Mem0[v30:word64]
-	v30 = v30 + 8
-	x9 = Mem0[v30:word64]
+	v29 = x22 + 184
+	x8 = Mem0[v29:word64]
+	v29 = v29 + 8
+	x9 = Mem0[v29:word64]
 	x31 = x8 - x9
 	NZCV = cond(x31)
 	branch Test(UGE,C) l0000000000022848
@@ -2660,15 +2633,14 @@ l0000000000022850:
 	x9 = Mem0[x22 + 16:word64]
 	x0 = Mem0[x22 + 40:word64]
 l0000000000022894:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l00000000000228D0
 	// succ:  l000000000002289C l00000000000228D0
 l000000000002289C:
 	x9 = 0x0000000000030000
 	w0 = w31
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFA3F
+	x9 = x9 + 0x0000000000000A3F
 	// succ:  l00000000000228AC
 l00000000000228AC:
 	Mem0[x8 + 2736:word64] = x9
@@ -2698,7 +2670,7 @@ l00000000000228B0:
 	x28 = Mem0[v41:word64]
 	v41 = v41 + 8
 	x27 = Mem0[v41:word64]
-	x31 = x31 + 0x0000000000000070
+	sp = sp + 0x0000000000000070
 	return
 	// succ:  fn00000000000227F0_exit
 l00000000000228D0:
@@ -2727,18 +2699,15 @@ l00000000000228F8:
 	x9 = Mem0[x22 + 16:word64]
 	x0 = Mem0[x22 + 40:word64]
 l000000000002293C:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l00000000000228D0
 	// succ:  l0000000000022944 l00000000000228D0
 l0000000000022944:
-	w31 = w8 - 0x000000D8
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000D8)
 	branch Test(NE,Z) l000000000002289C
 	// succ:  l000000000002294C l000000000002289C
 l000000000002294C:
-	w31 = w20 - 0x00000001
-	NZCV = cond(w31)
+	NZCV = cond(w20 - 0x00000001)
 	branch Test(NE,Z) l000000000002295C
 	// succ:  l0000000000022954 l000000000002295C
 l0000000000022954:
@@ -2749,8 +2718,7 @@ l0000000000022954:
 l000000000002295C:
 	v44 = Mem0[x21:byte]
 	w1 = (word32) v44
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000022974
 	// succ:  l0000000000022968 l0000000000022974
 l0000000000022968:
@@ -2790,8 +2758,7 @@ l00000000000229C8:
 	goto l0000000000022A74
 	// succ:  l0000000000022A74
 l00000000000229E8:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l00000000000229F8
 	// succ:  l00000000000229F0 l00000000000229F8
 l00000000000229F0:
@@ -2825,8 +2792,7 @@ l0000000000022A20:
 	x9 = Mem0[x22 + 16:word64]
 	x0 = Mem0[x22 + 40:word64]
 l0000000000022A64:
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(EQ,Z) l00000000000229F8
 	// succ:  l0000000000022A6C l00000000000229F8
 l0000000000022A6C:
@@ -2838,13 +2804,11 @@ l0000000000022A70:
 	// succ:  l0000000000022A74
 l0000000000022A74:
 	w8 = w1 - 0x000000C0
-	w31 = w8 - 0x00000003
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x00000003)
 	branch Test(UGE,C) l0000000000022AB8
 	// succ:  l0000000000022A80 l0000000000022AB8
 l0000000000022A80:
-	w31 = w1 - 0x000000C2
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000C2)
 	w8 = 0x00004730
 	w9 = (word32) Test(EQ,Z)
 	x22 = x19 + x8
@@ -2875,8 +2839,7 @@ l0000000000022AB8:
 l0000000000022AC0:
 	v54 = Mem0[x21:byte]
 	w1 = (word32) v54
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000022AE0
 	// succ:  l0000000000022ACC l0000000000022AE0
 l0000000000022ACC:
@@ -2884,8 +2847,7 @@ l0000000000022ACC:
 	// succ:  l0000000000022AD0
 l0000000000022AD0:
 	w8 = w1 - 0x000000C0
-	w31 = w8 - 0x00000003
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x00000003)
 	branch Test(UGE,C) l0000000000022CF8
 	// succ:  l0000000000022ADC l0000000000022CF8
 l0000000000022ADC:
@@ -2918,8 +2880,7 @@ l0000000000022B08:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l0000000000022B4C:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000022C78
 	// succ:  l0000000000022B54 l0000000000022C78
 l0000000000022B54:
@@ -2951,8 +2912,7 @@ l0000000000022B74:
 l0000000000022B80:
 	v59 = Mem0[x21:byte]
 	w1 = (word32) v59
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(NE,Z) l0000000000022ACC
 	// succ:  l0000000000022B8C l0000000000022ACC
 l0000000000022B8C:
@@ -2981,8 +2941,7 @@ l0000000000022BB4:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l0000000000022BF8:
-	w31 = w8 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000FF)
 	branch Test(NE,Z) l0000000000022B54
 	// succ:  l0000000000022C00 l0000000000022B54
 l0000000000022C00:
@@ -3011,8 +2970,7 @@ l0000000000022C28:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l0000000000022C6C:
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000022C00
 	// succ:  l0000000000022C74 l0000000000022C00
 l0000000000022C74:
@@ -3045,8 +3003,7 @@ l0000000000022CA0:
 	x9 = Mem0[x23 + 16:word64]
 	x0 = Mem0[x23 + 40:word64]
 l0000000000022CE4:
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(EQ,Z) l0000000000022C78
 	// succ:  l0000000000022CEC l0000000000022C78
 l0000000000022CEC:
@@ -3071,7 +3028,7 @@ l0000000000022D08:
 	x9 = 0x0000000000030000
 	w0 = w31
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFA46
+	x9 = x9 + 0x0000000000000A46
 	goto 0x00000000000228AC
 	goto l00000000000228AC
 	// succ:  l00000000000228AC
@@ -3093,53 +3050,50 @@ fn0000000000023B3C_entry:
 	// succ:  l0000000000023B3C
 l0000000000023B3C:
 	sp = fp
-	x31 = x31 - 0x00000000000000C0
-	v6 = sp + 96
-	Mem0[v6:word64] = x28
-	v6 = v6 + 8
-	Mem0[v6:word64] = x27
-	v9 = sp + 112
-	Mem0[v9:word64] = x26
-	v9 = v9 + 8
-	Mem0[v9:word64] = x25
-	v12 = sp + 128
-	Mem0[v12:word64] = x24
-	v12 = v12 + 8
-	Mem0[v12:word64] = x23
-	v15 = sp + 144
-	Mem0[v15:word64] = x22
-	v15 = v15 + 8
-	Mem0[v15:word64] = x21
-	v18 = sp + 160
-	Mem0[v18:word64] = x20
-	v18 = v18 + 8
-	Mem0[v18:word64] = x19
-	v21 = sp + 176
-	Mem0[v21:word64] = x29
-	v21 = v21 + 8
-	Mem0[v21:word64] = x30
-	x29 = x31 + 0x00000000000000B0
+	sp = sp - 0x00000000000000C0
+	v5 = sp + 96
+	Mem0[v5:word64] = x28
+	v5 = v5 + 8
+	Mem0[v5:word64] = x27
+	v8 = sp + 112
+	Mem0[v8:word64] = x26
+	v8 = v8 + 8
+	Mem0[v8:word64] = x25
+	v11 = sp + 128
+	Mem0[v11:word64] = x24
+	v11 = v11 + 8
+	Mem0[v11:word64] = x23
+	v14 = sp + 144
+	Mem0[v14:word64] = x22
+	v14 = v14 + 8
+	Mem0[v14:word64] = x21
+	v17 = sp + 160
+	Mem0[v17:word64] = x20
+	v17 = v17 + 8
+	Mem0[v17:word64] = x19
+	v20 = sp + 176
+	Mem0[v20:word64] = x29
+	v20 = v20 + 8
+	Mem0[v20:word64] = x30
+	x29 = sp + 0x00000000000000B0
 	x19 = x0
-	w31 = w1 - 0x000000DC
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000DC)
 	branch Test(GT,NZV) l0000000000023B9C
 	// succ:  l0000000000023B68 l0000000000023B9C
 l0000000000023B68:
-	w31 = w1 - 0x000000C4
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000C4)
 	branch Test(EQ,Z) l0000000000023BBC
 	// succ:  l0000000000023B70 l0000000000023BBC
 l0000000000023B70:
-	w31 = w1 - 0x000000DB
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000DB)
 	branch Test(NE,Z) l0000000000023C04
 	// succ:  l0000000000023B78 l0000000000023C04
 l0000000000023B78:
 	x20 = Mem0[x19:word64]
-	v30 = x20 + 184
-	x8 = Mem0[v30:word64]
-	v30 = v30 + 8
-	x9 = Mem0[v30:word64]
+	v28 = x20 + 184
+	x8 = Mem0[v28:word64]
+	v28 = v28 + 8
+	x9 = Mem0[v28:word64]
 	x31 = x8 - x9
 	NZCV = cond(x31)
 	branch Test(UGE,C) l0000000000023C40
@@ -3147,26 +3101,24 @@ l0000000000023B78:
 l0000000000023B88:
 	x11 = x8 + 0x0000000000000001
 	Mem0[x20 + 184:word64] = x11
-	v34 = Mem0[x8:byte]
-	w10 = (word32) v34
+	v33 = Mem0[x8:byte]
+	w10 = (word32) v33
 	x8 = x11
 	goto 0x0000000000023D28
 	goto l0000000000023D28
 	// succ:  l0000000000023D28
 l0000000000023B9C:
-	w31 = w1 - 0x000000DD
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000DD)
 	branch Test(EQ,Z) l0000000000023BE0
 	// succ:  l0000000000023BA4 l0000000000023BE0
 l0000000000023BA4:
-	w31 = w1 - 0x000000FF
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FF)
 	branch Test(NE,Z) l0000000000023C04
 	// succ:  l0000000000023BAC l0000000000023C04
 l0000000000023BAC:
 	x9 = 0x0000000000030000
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFA4D
+	x9 = x9 + 0x0000000000000A4D
 	goto 0x0000000000024318
 	goto l0000000000024318
 	// succ:  l0000000000024318
@@ -3209,15 +3161,13 @@ l0000000000023BF0:
 	goto l0000000000023F6C
 	// succ:  l0000000000023F6C
 l0000000000023C04:
-	w31 = w1 - 0x000000FE
-	NZCV = cond(w31)
+	NZCV = cond(w1 - 0x000000FE)
 	branch Test(EQ,Z) l0000000000023C1C
 	// succ:  l0000000000023C0C l0000000000023C1C
 l0000000000023C0C:
 	w0 = w31
 	w8 = w1 & 0xFFFFFFF0
-	w31 = w8 - 0x000000E0
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x000000E0)
 	branch Test(NE,Z) l00000000000244B0
 	// succ:  l0000000000023C1C l00000000000244B0
 l0000000000023C1C:
@@ -3302,7 +3252,7 @@ l00000000000244B0:
 	x28 = Mem0[v43:word64]
 	v43 = v43 + 8
 	x27 = Mem0[v43:word64]
-	x31 = x31 + 0x00000000000000C0
+	sp = sp + 0x00000000000000C0
 	return
 	// succ:  fn0000000000023B3C_exit
 fn0000000000023B3C_exit:
@@ -3325,12 +3275,11 @@ l0000000000024714:
 	Mem0[v9:word64] = x29
 	v9 = v9 + 8
 	Mem0[v9:word64] = x30
-	x29 = x31 + 0x0000000000000020
+	x29 = sp + 0x0000000000000020
 	x19 = x0
 	x8 = Mem0[x19:word64]
 	w8 = Mem0[x8 + 8:word32]
-	w31 = w8 - 0x00000001
-	NZCV = cond(w31)
+	NZCV = cond(w8 - 0x00000001)
 	branch Test(LT,NV) l0000000000024790
 	// succ:  l0000000000024738 l0000000000024790
 l0000000000024738:
@@ -3365,21 +3314,21 @@ l0000000000024778:
 	x8 = Mem0[x19:word64]
 	x20 = x20 + 0x0000000000000001
 	x21 = x21 + 0x0000000000000060
-	v20 = Mem0[x8 + 4:int32]
-	x8 = (word64) v20
+	v19 = Mem0[x8 + 4:int32]
+	x8 = (word64) v19
 	x31 = x20 - x8
 	NZCV = cond(x31)
 	branch Test(LT,NV) l0000000000024744
 	// succ:  l0000000000024790 l0000000000024744
 l0000000000024790:
-	v18 = sp + 32
-	x29 = Mem0[v18:word64]
+	v17 = sp + 32
+	x29 = Mem0[v17:word64]
+	v17 = v17 + 8
+	x30 = Mem0[v17:word64]
+	v18 = sp + 16
+	x20 = Mem0[v18:word64]
 	v18 = v18 + 8
-	x30 = Mem0[v18:word64]
-	v19 = sp + 16
-	x20 = Mem0[v19:word64]
-	v19 = v19 + 8
-	x19 = Mem0[v19:word64]
+	x19 = Mem0[v18:word64]
 	x21 = Mem0[sp:word64]
 	sp = sp + 48
 	return
@@ -3418,9 +3367,9 @@ l0000000000025A44:
 	Mem0[v19:word64] = x29
 	v19 = v19 + 8
 	Mem0[v19:word64] = x30
-	x29 = x31 + 0x0000000000000050
-	x31 = x31 - (0x0000000000000001 << 12)
-	x31 = x31 - 0x00000000000004A0
+	x29 = sp + 0x0000000000000050
+	sp = sp - (0x0000000000000001 << 12)
+	sp = sp - 0x00000000000004A0
 	Mem0[sp + 108:word32] = w2
 	Mem0[sp + 136:word32] = w1
 	x22 = x0
@@ -3431,10 +3380,10 @@ l0000000000025A44:
 	Mem0[x8 + 8:word64] = 0x0000000000000000
 	Mem0[sp + 128:word64] = x8
 	Mem0[x8 + 16:word64] = 0x0000000000000000
-	v26 = x20 + 184
-	x10 = Mem0[v26:word64]
-	v26 = v26 + 8
-	x8 = Mem0[v26:word64]
+	v25 = x20 + 184
+	x10 = Mem0[v25:word64]
+	v25 = v25 + 8
+	x8 = Mem0[v25:word64]
 	x21 = 0x0000000000030000
 	x19 = x31
 	x23 = x20 + 0x0000000000000038
@@ -3471,15 +3420,13 @@ l0000000000025B10:
 	// succ:  l0000000000025B1C l0000000000026C98
 l0000000000025B1C:
 	x19 = x19 + 0x0000000000000001
-	x31 = x19 - 0x0000000000000007
-	NZCV = cond(x31)
+	NZCV = cond(x19 - 0x0000000000000007)
 	branch Test(ULE,ZC) l0000000000025AA8
 	// succ:  l0000000000025B28 l0000000000025AA8
 l0000000000025B28:
 	w11 = Mem0[sp + 136:word32]
 	w0 = w31 | 0x00000001
-	w31 = w11 - 0x00000001
-	NZCV = cond(w31)
+	NZCV = cond(w11 - 0x00000001)
 	branch Test(EQ,Z) l0000000000026CAC
 	// succ:  l0000000000025B38 l0000000000026CAC
 l0000000000025B38:
@@ -3498,7 +3445,7 @@ l0000000000025B38:
 	Mem0[sp + 56:word64] = x22
 	Mem0[sp + 112:word64] = x11
 	w22 = w31
-	x21 = x31 + 0x00000000000000A0
+	x21 = sp + 0x00000000000000A0
 	w11 = w31 | 0x00000001
 	Mem0[sp + 52:word32] = 0x00000000
 	Mem0[sp + 124:word32] = 0x00000000
@@ -3631,12 +3578,12 @@ l0000000000026C98:
 	x9 = 0x0000000000030000
 	w0 = w31
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFC8A
+	x9 = x9 + 0x0000000000000C8A
 	Mem0[x8 + 2736:word64] = x9
 	// succ:  l0000000000026CAC
 l0000000000026CAC:
-	x31 = x31 + (0x0000000000000001 << 12)
-	x31 = x31 + 0x00000000000004A0
+	sp = sp + (0x0000000000000001 << 12)
+	sp = sp + 0x00000000000004A0
 	v43 = sp + 80
 	x29 = Mem0[v43:word64]
 	v43 = v43 + 8
@@ -3689,12 +3636,12 @@ l000000000002C68C:
 	Mem0[v13:word64] = x29
 	v13 = v13 + 8
 	Mem0[v13:word64] = x30
-	x29 = x31 + 0x0000000000000030
+	x29 = sp + 0x0000000000000030
 	x19 = x0
-	v18 = x19 + 184
-	x10 = Mem0[v18:word64]
-	v18 = v18 + 8
-	x8 = Mem0[v18:word64]
+	v17 = x19 + 184
+	x10 = Mem0[v17:word64]
+	v17 = v17 + 8
+	x8 = Mem0[v17:word64]
 	w21 = w3
 	x22 = x2
 	x20 = x1
@@ -3718,8 +3665,7 @@ l000000000002C6D4:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l000000000002C718:
-	w31 = w10 - 0x00000047
-	NZCV = cond(w31)
+	NZCV = cond(w10 - 0x00000047)
 	branch Test(NE,Z) l000000000002C970
 	// succ:  l000000000002C720 l000000000002C970
 l000000000002C720:
@@ -3730,8 +3676,8 @@ l000000000002C720:
 l000000000002C728:
 	x10 = x9 + 0x0000000000000001
 	Mem0[x19 + 184:word64] = x10
-	v32 = Mem0[x9:byte]
-	w9 = (word32) v32
+	v31 = Mem0[x9:byte]
+	w9 = (word32) v31
 	goto 0x000000000002C784
 	goto l000000000002C784
 	// succ:  l000000000002C784
@@ -3743,8 +3689,7 @@ l000000000002C740:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l000000000002C784:
-	w31 = w9 - 0x00000049
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000049)
 	branch Test(NE,Z) l000000000002C970
 	// succ:  l000000000002C78C l000000000002C970
 l000000000002C78C:
@@ -3768,8 +3713,7 @@ l000000000002C7AC:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l000000000002C7F0:
-	w31 = w10 - 0x00000046
-	NZCV = cond(w31)
+	NZCV = cond(w10 - 0x00000046)
 	branch Test(NE,Z) l000000000002C970
 	// succ:  l000000000002C7F8 l000000000002C970
 l000000000002C7F8:
@@ -3793,8 +3737,7 @@ l000000000002C818:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l000000000002C85C:
-	w31 = w9 - 0x00000038
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000038)
 	branch Test(NE,Z) l000000000002C970
 	// succ:  l000000000002C864 l000000000002C970
 l000000000002C864:
@@ -3818,13 +3761,11 @@ l000000000002C884:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l000000000002C8C8:
-	w31 = w9 - 0x00000037
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000037)
 	branch Test(EQ,Z) l000000000002C8D8
 	// succ:  l000000000002C8D0 l000000000002C8D8
 l000000000002C8D0:
-	w31 = w9 - 0x00000039
-	NZCV = cond(w31)
+	NZCV = cond(w9 - 0x00000039)
 	branch Test(NE,Z) l000000000002C970
 	// succ:  l000000000002C8D8 l000000000002C970
 l000000000002C8D8:
@@ -3848,14 +3789,13 @@ l000000000002C8F8:
 	x9 = Mem0[x19 + 16:word64]
 	x0 = Mem0[x19 + 40:word64]
 l000000000002C93C:
-	w31 = w10 - 0x00000061
-	NZCV = cond(w31)
+	NZCV = cond(w10 - 0x00000061)
 	branch Test(NE,Z) l000000000002C970
 	// succ:  l000000000002C944 l000000000002C970
 l000000000002C944:
 	x11 = 0x000000000002E000
 	x10 = 0x0000000000041000
-	x11 = x11 + 0xFFFFFFFFFFFFFCF4
+	x11 = x11 + 0x0000000000000CF4
 	Mem0[x10 + 2736:word64] = x11
 	x31 = x9 - x8
 	NZCV = cond(x31)
@@ -3873,7 +3813,7 @@ l000000000002C95C:
 l000000000002C970:
 	x9 = 0x0000000000030000
 	x8 = 0x0000000000041000
-	x9 = x9 + 0xFFFFFFFFFFFFFF24
+	x9 = x9 + 0x0000000000000F24
 	w0 = w31
 	Mem0[x8 + 2736:word64] = x9
 	v34 = sp + 48

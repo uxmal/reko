@@ -612,7 +612,7 @@ fn0000000000002CC0 proc
 fn0000000000002E00 proc
 	adrp	x16,#&3F000
 	ldr	x17,[x16,#&850]
-	add	x16,x16,#&FFFFF850
+	add	x16,x16,#&850
 	br	x17
 0000000000002E10 F0 01 00 F0 11 2E 44 F9 10 62 21 91 20 02 1F D6 ......D..b!. ...
 0000000000002E20 F0 01 00 F0 11 32 44 F9 10 82 21 91 20 02 1F D6 .....2D...!. ...
@@ -624,7 +624,7 @@ fn0000000000002E00 proc
 fn0000000000002E60 proc
 	adrp	x16,#&3F000
 	ldr	x17,[x16,#&880]
-	add	x16,x16,#&FFFFF880
+	add	x16,x16,#&880
 	br	x17
 0000000000002E70 F0 01 00 F0 11 46 44 F9 10 22 22 91 20 02 1F D6 .....FD.."". ...
 0000000000002E80 F0 01 00 F0 11 4A 44 F9 10 42 22 91 20 02 1F D6 .....JD..B". ...
@@ -635,7 +635,7 @@ fn0000000000002E60 proc
 fn0000000000002EB0 proc
 	adrp	x16,#&3F000
 	ldr	x17,[x16,#&8A8]
-	add	x16,x16,#&FFFFF8A8
+	add	x16,x16,#&8A8
 	br	x17
 0000000000002EC0 F0 01 00 F0 11 5A 44 F9 10 C2 22 91 20 02 1F D6 .....ZD...". ...
 0000000000002ED0 F0 01 00 F0 11 5E 44 F9 10 E2 22 91 20 02 1F D6 .....^D...". ...
@@ -649,7 +649,7 @@ fn0000000000002EB0 proc
 fn0000000000002F30 proc
 	adrp	x16,#&3F000
 	ldr	x17,[x16,#&8E8]
-	add	x16,x16,#&FFFFF8E8
+	add	x16,x16,#&8E8
 	br	x17
 0000000000002F40 F0 01 00 F0 11 7A 44 F9 10 C2 23 91 20 02 1F D6 .....zD...#. ...
 0000000000002F50 F0 01 00 F0 11 7E 44 F9 10 E2 23 91 20 02 1F D6 .....~D...#. ...
@@ -658,7 +658,7 @@ fn0000000000002F30 proc
 fn0000000000002F60 proc
 	adrp	x16,#&3F000
 	ldr	x17,[x16,#&900]
-	add	x16,x16,#&FFFFF900
+	add	x16,x16,#&900
 	br	x17
 0000000000002F70 F0 01 00 F0 11 86 44 F9 10 22 24 91 20 02 1F D6 ......D.."$. ...
 0000000000002F80 F0 01 00 F0 11 8A 44 F9 10 42 24 91 20 02 1F D6 ......D..B$. ...
@@ -685,7 +685,7 @@ fn0000000000002F60 proc
 fn00000000000030B0 proc
 	adrp	x16,#&3E000
 	ldr	x17,[x16,#&9A8]
-	add	x16,x16,#&FFFFF9A8
+	add	x16,x16,#&9A8
 	br	x17
 00000000000030C0 F0 01 00 D0 11 DA 44 F9 10 C2 26 91 20 02 1F D6 ......D...&. ...
 00000000000030D0 F0 01 00 D0 11 DE 44 F9 10 E2 26 91 20 02 1F D6 ......D...&. ...
@@ -695,7 +695,7 @@ fn00000000000030B0 proc
 fn00000000000030F0 proc
 	adrp	x16,#&3E000
 	ldr	x17,[x16,#&9C8]
-	add	x16,x16,#&FFFFF9C8
+	add	x16,x16,#&9C8
 	br	x17
 0000000000003100 F0 01 00 D0 11 EA 44 F9 10 42 27 91 20 02 1F D6 ......D..B'. ...
 0000000000003110 F0 01 00 D0 11 EE 44 F9 10 62 27 91 20 02 1F D6 ......D..b'. ...
@@ -717,7 +717,7 @@ fn00000000000030F0 proc
 
 ;; fn0000000000003200: 0000000000003200
 fn0000000000003200 proc
-	add	x0,x31,x31,uxtx #0
+	add	x0,sp,x31,uxtx #0
 	b	#&3220
 0000000000003208                         FD 7B BF A9 FD 03 00 91         .{......
 0000000000003210 40 00 00 B4 00 00 3F D6 FD 7B C1 A8 C0 03 5F D6 @.....?..{...._.
@@ -729,7 +729,7 @@ l0000000000003220:
 	adrp	x4,#&3E000
 	stp	x29,x30,[sp,-#&30]!
 	movz	x1,#0
-	add	x29,x31,#0
+	add	x29,sp,#0
 	ldr	x6,[x6,#&640]
 	add	x3,x29,#&18
 	ldr	x5,[x5,#&650]
@@ -742,7 +742,7 @@ l0000000000003220:
 	mov	x1,x0
 	adrp	x2,#&3E000
 	adrp	x0,#0
-	add	x2,x2,#&FFFFFA50
+	add	x2,x2,#&A50
 	add	x0,x0,#&208
 	b	#&2AE0
 0000000000003278                         FF 43 02 D1 F4 4F 07 A9         .C...O..
@@ -1313,9 +1313,9 @@ main proc
 	stp	x22,x21,[sp,#&60]
 	stp	x20,x19,[sp,#&70]
 	stp	x29,x30,[sp,#&80]
-	add	x29,x31,#&80
-	sub	x31,x31,#&260
-	subs	w31,w0,#2
+	add	x29,sp,#&80
+	sub	sp,sp,#&260
+	cmp	w0,#2
 	b.lt	#&5564
 
 l000000000000555C:
@@ -1327,10 +1327,10 @@ l0000000000005564:
 
 l0000000000005568:
 	adrp	x0,#&29000
-	add	x0,x0,#&FFFFFBD8
+	add	x0,x0,#&BD8
 	orr	w1,w31,#&1000
 	sub	x3,x29,#&100
-	add	x4,x31,#&1D8
+	add	x4,sp,#&1D8
 	sub	x5,x29,#&F4
 	sub	x6,x29,#&F8
 	mov	w2,w31
@@ -1361,25 +1361,25 @@ l00000000000055A0:
 	add	x8,x8,#&710
 	stur	x8,[x29,-#&C8]
 	adrp	x8,#&FFFFE000
-	add	x8,x8,#&FFFFF878
+	add	x8,x8,#&878
 	stur	x8,[x29,-#&C0]
 	adrp	x8,#&FFFFE000
-	add	x8,x8,#&FFFFF8DC
+	add	x8,x8,#&8DC
 	stur	x8,[x29,-#&B8]
 	adrp	x8,#&FFFFE000
-	add	x8,x8,#&FFFFF8EC
+	add	x8,x8,#&8EC
 	stur	x8,[x29,-#&B0]
 	adrp	x8,#&FFFFE000
-	add	x8,x8,#&FFFFF900
+	add	x8,x8,#&900
 	stur	x8,[x29,-#&A8]
 	adrp	x8,#&FFFFF000
 	add	x8,x8,#&450
 	stur	x8,[x29,-#&A0]
 	adrp	x8,#&FFFFF000
-	add	x8,x8,#&FFFFF9C0
+	add	x8,x8,#&9C0
 	stur	x8,[x29,-#&98]
 	adrp	x8,#&FFFFF000
-	add	x8,x8,#&FFFFFE4C
+	add	x8,x8,#&E4C
 	stur	x8,[x29,-#&90]
 	adrp	x8,#0
 	add	x8,x8,#&88
@@ -1398,15 +1398,15 @@ l00000000000055A0:
 l0000000000005668:
 	adrp	x1,#&29000
 	adrp	x2,#&29000
-	add	x1,x1,#&FFFFFBF5
-	add	x2,x2,#&FFFFFBFA
+	add	x1,x1,#&BF5
+	add	x2,x2,#&BFA
 	mov	x0,x20
 	bl	#&15FE8
 	tbz	w0,#&FFFFFFFF,#&5A74
 
 l0000000000005684:
 	adrp	x1,#&29000
-	add	x1,x1,#&FFFFFC27
+	add	x1,x1,#&C27
 	mov	x0,x20
 	mov	w2,w31
 	bl	#&13124
@@ -1416,10 +1416,10 @@ l0000000000005684:
 l00000000000056A0:
 	ldp	w9,w8,[x29,-#&F8]
 	adrp	x1,#&29000
-	add	x1,x1,#&FFFFFC5B
-	subs	w31,w8,#0
+	add	x1,x1,#&C5B
+	cmp	w8,#0
 	csinc	w24,w8,w8,GE
-	subs	w31,w9,#0
+	cmp	w9,#0
 	mov	x0,x20
 	mov	w2,w31
 	csinc	w25,w9,w9,GE
@@ -1429,8 +1429,8 @@ l00000000000056A0:
 	adrp	x10,#&29000
 	ldr	s0,[x10,#&BB4]
 	adrp	x10,#&29000
-	sbfm	w9,w25,#1,#&1F
-	sbfm	w8,w24,#1,#&1F
+	asr	w9,w25,#1
+	asr	w8,w24,#1
 	str	s0,[sp,#&44]
 	ldr	d0,[x10,#&BC8]
 	adrp	x10,#&29000
@@ -1517,11 +1517,11 @@ l00000000000056A0:
 	mov	v6.16b,v8.16b
 	mov	v7.16b,v9.16b
 	bl	#&132F4
-	add	x0,x31,#&188
+	add	x0,sp,#&188
 	sub	x1,x29,#&F0
 	movz	w2,#&4C
 	bl	#&30F0
-	add	x1,x31,#&188
+	add	x1,sp,#&188
 	mov	x0,x20
 	bl	#&13080
 	ldp	s1,s0,[x29,-#&F8]
@@ -1550,7 +1550,7 @@ l00000000000056A0:
 	mov	x0,x20
 	bl	#&12C90
 	ldp	s5,s8,[sp,#&28]
-	add	x8,x31,#&138
+	add	x8,sp,#&138
 	fmov	s4,w31
 	mov	x0,x20
 	mov	v0.16b,v11.16b
@@ -1561,11 +1561,11 @@ l00000000000056A0:
 	bl	#&134AC
 	mov	x0,x20
 	bl	#&13958
-	add	x0,x31,#&E8
-	add	x1,x31,#&138
+	add	x0,sp,#&E8
+	add	x1,sp,#&138
 	movz	w2,#&4C
 	bl	#&30F0
-	add	x1,x31,#&E8
+	add	x1,sp,#&E8
 	mov	x0,x20
 	bl	#&13080
 	mov	x0,x20
@@ -1578,7 +1578,7 @@ l00000000000056A0:
 	bl	#&147CC
 	mov	x0,x20
 	bl	#&12B7C
-	add	x8,x31,#&98
+	add	x8,sp,#&98
 	fmov	s4,w31
 	mov	x0,x20
 	mov	v0.16b,v11.16b
@@ -1590,11 +1590,11 @@ l00000000000056A0:
 	bl	#&134AC
 	mov	x0,x20
 	bl	#&13958
-	add	x0,x31,#&48
-	add	x1,x31,#&98
+	add	x0,sp,#&48
+	add	x1,sp,#&98
 	movz	w2,#&4C
 	bl	#&30F0
-	add	x1,x31,#&48
+	add	x1,sp,#&48
 	mov	x0,x20
 	bl	#&13080
 	mov	x0,x20
@@ -1613,13 +1613,13 @@ l00000000000056A0:
 	mov	x0,x20
 	bl	#&1619C
 	ldp	w9,w8,[x29,-#&F8]
-	subs	w31,w8,#0
-	ubfm	w9,w9,#&1F,#&1E
+	cmp	w8,#0
+	lsl	w9,w9,#1
 	csinc	w8,w8,w8,GE
 	smull	x9,w9,w24
-	sbfm	w8,w8,#1,#&1F
-	ubfm	x10,x9,#&FFFFFFFF,#&FFFFFFFF
-	ubfm	x9,x9,#&FFFFFFE0,#&FFFFFFFF
+	asr	w8,w8,#1
+	lsr	x10,x9,#&3F
+	lsr	x9,x9,#&20
 	scvtf	s0,w8
 	add	w8,w9,w10
 	add	w8,w8,#&18
@@ -1638,9 +1638,9 @@ l00000000000056A0:
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFBE0
-	add	x2,x2,#&FFFFFBEA
-	add	x3,x3,#&FFFFFC95
+	add	x0,x0,#&BE0
+	add	x2,x2,#&BEA
+	add	x3,x3,#&C95
 	movz	w1,#&5F
 	bl	#&2F30
 
@@ -1648,9 +1648,9 @@ l0000000000005A34:
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFBE0
-	add	x2,x2,#&FFFFFBEA
-	add	x3,x3,#&FFFFFBF2
+	add	x0,x0,#&BE0
+	add	x2,x2,#&BEA
+	add	x3,x3,#&BF2
 	movz	w1,#&23
 	bl	#&2F30
 
@@ -1658,9 +1658,9 @@ l0000000000005A54:
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFBE0
-	add	x2,x2,#&FFFFFBEA
-	add	x3,x3,#&FFFFFBEF
+	add	x0,x0,#&BE0
+	add	x2,x2,#&BEA
+	add	x3,x3,#&BEF
 	orr	w1,w31,#&20
 	bl	#&2F30
 
@@ -1668,9 +1668,9 @@ l0000000000005A74:
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFBE0
-	add	x2,x2,#&FFFFFBEA
-	add	x3,x3,#&FFFFFC1D
+	add	x0,x0,#&BE0
+	add	x2,x2,#&BEA
+	add	x3,x3,#&C1D
 	movz	w1,#&26
 	bl	#&2F30
 
@@ -1678,31 +1678,31 @@ l0000000000005A94:
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFBE0
-	add	x2,x2,#&FFFFFBEA
-	add	x3,x3,#&FFFFFC4A
+	add	x0,x0,#&BE0
+	add	x2,x2,#&BEA
+	add	x3,x3,#&C4A
 	movz	w1,#&29
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFBE0
-	add	x2,x2,#&FFFFFBEA
-	add	x3,x3,#&FFFFFC7E
+	add	x0,x0,#&BE0
+	add	x2,x2,#&BEA
+	add	x3,x3,#&C7E
 	orr	w1,w31,#&30
 	bl	#&2F30
 	str	x28,[sp,-#&40]!
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
-	sub	x31,x31,#&220
+	add	x29,sp,#&30
+	sub	sp,sp,#&220
 	adrp	x8,#&29000
 	adrp	x9,#&29000
 	mov	x19,x0
-	add	x8,x8,#&FFFFFCB1
-	add	x9,x9,#&FFFFFCF4
-	subs	x31,x1,#0
+	add	x8,x8,#&CB1
+	add	x9,x9,#&CF4
+	cmp	x1,#0
 	str	x8,[sp]
 	csel	x8,x1,x9,NE
 	str	x8,[sp,#&8]
@@ -1710,45 +1710,45 @@ l0000000000005A94:
 	str	x31,[x19]
 	bl	#&2ED0
 	mov	w20,w0
-	movz	w0,#&FFFF8B31
+	movz	w0,#&8B31
 	bl	#&2E70
 	mov	w21,w0
-	movz	w0,#&FFFF8B30
+	movz	w0,#&8B30
 	bl	#&2E70
 	adrp	x8,#&29000
 	mov	w22,w0
-	add	x8,x8,#&FFFFFCF5
+	add	x8,x8,#&CF5
 	orr	w1,w31,#3
-	add	x2,x31,#0
+	add	x2,sp,#0
 	mov	w0,w21
 	mov	x3,x31
 	str	x8,[sp,#&10]
 	bl	#&3110
 	adrp	x8,#&29000
-	add	x8,x8,#&FFFFFE75
+	add	x8,x8,#&E75
 	orr	w1,w31,#3
-	add	x2,x31,#0
+	add	x2,sp,#0
 	mov	w0,w22
 	mov	x3,x31
 	str	x8,[sp,#&10]
 	bl	#&3110
 	mov	w0,w21
 	bl	#&31C0
-	movz	w1,#&FFFF8B81
+	movz	w1,#&8B81
 	sub	x2,x29,#&28
 	mov	w0,w21
 	bl	#&2AD0
 	ldur	w8,[x29,-#&28]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.ne	#&5C34
 	mov	w0,w22
 	bl	#&31C0
-	movz	w1,#&FFFF8B81
+	movz	w1,#&8B81
 	sub	x2,x29,#&28
 	mov	w0,w22
 	bl	#&2AD0
 	ldur	w8,[x29,-#&28]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.ne	#&5C88
 	mov	w0,w20
 	mov	w1,w21
@@ -1757,23 +1757,23 @@ l0000000000005A94:
 	mov	w1,w22
 	bl	#&2A60
 	adrp	x2,#&2A000
-	add	x2,x2,#&FFFFFB42
+	add	x2,x2,#&B42
 	mov	w0,w20
 	mov	w1,w31
 	bl	#&2AB0
 	adrp	x2,#&2A000
-	add	x2,x2,#&FFFFFB49
+	add	x2,x2,#&B49
 	orr	w1,w31,#1
 	mov	w0,w20
 	bl	#&2AB0
 	mov	w0,w20
 	bl	#&3090
-	movz	w1,#&FFFF8B82
+	movz	w1,#&8B82
 	sub	x2,x29,#&28
 	mov	w0,w20
 	bl	#&2E30
 	ldur	w8,[x29,-#&28]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.ne	#&5CFC
 	orr	w0,w31,#1
 	stp	w22,w21,[x19,#&4]
@@ -1781,14 +1781,14 @@ l0000000000005A94:
 	b	#&5CE4
 	orr	w1,w31,#&200
 	sub	x2,x29,#&24
-	add	x3,x31,#&1C
+	add	x3,sp,#&1C
 	mov	w0,w21
 	stur	w31,[x29,-#&24]
 	orr	w19,w31,#&200
-	add	x20,x31,#&1C
+	add	x20,sp,#&1C
 	bl	#&30C0
 	ldur	w8,[x29,-#&24]
-	subs	w31,w8,#&201
+	cmp	w8,#&201
 	b.lt	#&5C68
 	orr	w8,w31,#&200
 	stur	w19,[x29,-#&24]
@@ -1796,20 +1796,20 @@ l0000000000005A94:
 	adrp	x1,#&2A000
 	adrp	x2,#&2A000
 	strb	w31,[x20,w8,sxtw]
-	add	x0,x0,#&FFFFFB50
-	add	x1,x1,#&FFFFFAEB
-	add	x2,x2,#&FFFFFB38
+	add	x0,x0,#&B50
+	add	x1,x1,#&AEB
+	add	x2,x2,#&B38
 	b	#&5CD8
 	orr	w1,w31,#&200
 	sub	x2,x29,#&24
-	add	x3,x31,#&1C
+	add	x3,sp,#&1C
 	mov	w0,w22
 	stur	w31,[x29,-#&24]
 	orr	w19,w31,#&200
-	add	x20,x31,#&1C
+	add	x20,sp,#&1C
 	bl	#&30C0
 	ldur	w8,[x29,-#&24]
-	subs	w31,w8,#&201
+	cmp	w8,#&201
 	b.lt	#&5CBC
 	orr	w8,w31,#&200
 	stur	w19,[x29,-#&24]
@@ -1817,13 +1817,13 @@ l0000000000005A94:
 	adrp	x1,#&2A000
 	adrp	x2,#&2A000
 	strb	w31,[x20,w8,sxtw]
-	add	x0,x0,#&FFFFFB50
-	add	x1,x1,#&FFFFFAEB
-	add	x2,x2,#&FFFFFB3D
-	add	x3,x31,#&1C
+	add	x0,x0,#&B50
+	add	x1,x1,#&AEB
+	add	x2,x2,#&B3D
+	add	x3,sp,#&1C
 	bl	#&2F90
 	mov	w0,w31
-	add	x31,x31,#&220
+	add	sp,sp,#&220
 	ldp	x29,x30,[sp,#&30]
 	ldp	x20,x19,[sp,#&20]
 	ldp	x22,x21,[sp,#&10]
@@ -1831,22 +1831,22 @@ l0000000000005A94:
 	ret	x30
 	orr	w1,w31,#&200
 	sub	x2,x29,#&24
-	add	x3,x31,#&1C
+	add	x3,sp,#&1C
 	mov	w0,w20
 	stur	w31,[x29,-#&24]
 	orr	w19,w31,#&200
-	add	x21,x31,#&1C
+	add	x21,sp,#&1C
 	bl	#&2DD0
 	ldur	w8,[x29,-#&24]
-	subs	w31,w8,#&201
+	cmp	w8,#&201
 	b.lt	#&5D30
 	orr	w8,w31,#&200
 	stur	w19,[x29,-#&24]
 	adrp	x0,#&2A000
 	adrp	x1,#&2A000
-	add	x0,x0,#&FFFFFB68
-	add	x1,x1,#&FFFFFAEB
-	add	x2,x31,#&1C
+	add	x0,x0,#&B68
+	add	x1,x1,#&AEB
+	add	x2,sp,#&1C
 	strb	w31,[x21,w8,sxtw]
 	bl	#&2F90
 	b	#&5CE0
@@ -1856,13 +1856,13 @@ l0000000000005A94:
 	ldr	x8,[x19,#&70]
 	ldr	w0,[x19,#&14]
 	mov	w20,w2
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	add	x2,x8,w1,sxtw #0
 	movz	w1,#&B
 	bl	#&3130
 	cbz	w20,#&5DB0
 	ldrsw	x8,[x19,#&14]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&5DDC
 	ldr	x9,[x19,#&18]
 	mov	x10,x31
@@ -1900,15 +1900,15 @@ l0000000000005A94:
 	ldp	x29,x30,[sp,#&10]
 	adrp	x0,#&2A000
 	adrp	x2,#&2A000
-	add	x0,x0,#&FFFFFB23
-	add	x2,x2,#&FFFFFBA8
+	add	x0,x0,#&B23
+	add	x2,x2,#&BA8
 	mov	w1,w8
 	ldp	x20,x19,[sp],#&20
 	b	#&2F90
 	ldp	x29,x30,[sp,#&10]
 	ldp	x20,x19,[sp],#&20
 	ret	x30
-	sub	x31,x31,#&A0
+	sub	sp,sp,#&A0
 	stp	x20,x19,[sp,#&80]
 	mov	x19,x1
 	stp	x22,x21,[sp,#&70]
@@ -1920,7 +1920,7 @@ l0000000000005A94:
 	stp	d11,d10,[sp,#&50]
 	stp	d9,d8,[sp,#&60]
 	stp	x29,x30,[sp,#&90]
-	add	x29,x31,#&90
+	add	x29,sp,#&90
 	mov	v8.16b,v2.16b
 	mov	v9.16b,v1.16b
 	mov	v10.16b,v0.16b
@@ -1953,7 +1953,7 @@ l0000000000005A94:
 	stp	x31,x31,[x19]
 	str	q0,[x19,#&80]
 	b	#&5FA8
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	mov	x1,x22
 	bl	#&129D8
 	ldr	w8,[sp,#&38]
@@ -2011,10 +2011,10 @@ l0000000000005A94:
 	ldr	w8,[x20,#&48]
 	cbz	w8,#&6010
 	ldrsw	x9,[x21,#&14]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&6070
 	ldr	x12,[x21,#&18]
-	ubfm	x11,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x11,x11,#&20
 	mov	x10,x31
 	fmov	s1,w11
 	add	x21,x12,#&14
@@ -2028,7 +2028,7 @@ l0000000000005A94:
 	b	#&6070
 	str	w31,[x19,#&AC]
 	ldr	w8,[x20,#&20]
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	mov	x1,x20
 	str	w8,[x19,#&98]
 	ldr	w8,[x20,#&24]
@@ -2055,44 +2055,44 @@ l0000000000005A94:
 	ldp	x22,x21,[sp,#&70]
 	ldp	d9,d8,[sp,#&60]
 	ldp	d11,d10,[sp,#&50]
-	add	x31,x31,#&A0
+	add	sp,sp,#&A0
 	ret	x30
-	subs	x31,x21,#&14
+	cmp	x21,#&14
 	b.eq	#&6070
 	ldrb	w8,[x21]
 	tbz	w8,#3,#&60A8
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	mov	x1,x20
 	b	#&6108
 	fmul	s1,s1,s0
-	add	x0,x31,#&20
+	add	x0,sp,#&20
 	fmov	s0,w31
 	bl	#&127F0
-	add	x0,x31,#&20
+	add	x0,sp,#&20
 	mov	x1,x20
 	bl	#&128CC
 	fmov	s0,#1.0F
 	fmov	s1,#-1.0F
-	add	x0,x31,#8
+	add	x0,sp,#8
 	bl	#&12804
-	add	x0,x31,#8
-	add	x1,x31,#&20
+	add	x0,sp,#8
+	add	x1,sp,#&20
 	bl	#&128CC
 	ldr	s0,[x19,#&94]
-	add	x0,x31,#&20
+	add	x0,sp,#&20
 	fmul	s1,s0,s11
 	fmov	s0,w31
 	bl	#&127F0
-	add	x0,x31,#&20
-	add	x1,x31,#8
+	add	x0,sp,#&20
+	add	x1,sp,#8
 	bl	#&128CC
-	add	x0,x31,#&38
-	add	x1,x31,#&20
+	add	x0,sp,#&38
+	add	x1,sp,#&20
 	bl	#&129D8
 	orr	w8,w31,#&3F800000
 	str	w8,[x19,#&AC]
 	ldur	w8,[x21,-#&4]
-	subs	w31,w8,#2
+	cmp	w8,#2
 	b.ne	#&6138
 	ldr	w8,[x21]
 	orr	w9,w31,#1
@@ -2108,14 +2108,14 @@ l0000000000005A94:
 
 ;; fn000000000000614C: 000000000000614C
 fn000000000000614C proc
-	sub	x31,x31,#&E0
+	sub	sp,sp,#&E0
 	stp	x28,x27,[sp,#&80]
 	stp	x26,x25,[sp,#&90]
 	stp	x24,x23,[sp,#&A0]
 	stp	x22,x21,[sp,#&B0]
 	stp	x20,x19,[sp,#&C0]
 	stp	x29,x30,[sp,#&D0]
-	add	x29,x31,#&D0
+	add	x29,sp,#&D0
 	mov	x27,x0
 	orr	w0,w31,#&80
 	stp	x5,x6,[sp,#&8]
@@ -2141,7 +2141,7 @@ fn000000000000614C proc
 	mov	x1,x21
 	bl	#&2E50
 	mov	x28,x21
-	add	x8,x31,#&20
+	add	x8,sp,#&20
 	mov	w0,w31
 	str	x20,[x28],#&8
 	bl	#&2BD0
@@ -2165,7 +2165,7 @@ fn000000000000614C proc
 	ldr	x9,[x8]
 	ldur	x9,[x9,-#&18]
 	add	x0,x8,x9
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	bl	#&2E50
 	ldr	x19,[x28]
 	cbz	x19,#&656C
@@ -2175,15 +2175,15 @@ fn000000000000614C proc
 	cbnz	w0,#&658C
 	ldp	w2,w1,[x21,#&10]
 	adrp	x0,#&29000
-	add	x0,x0,#&FFFFFCC0
+	add	x0,x0,#&CC0
 	stp	w1,w2,[x21,#&10]
 	bl	#&2F90
 	ldp	w19,w20,[x21,#&10]
 	tbz	w19,#&FFFFFFFF,#&628C
 	adrp	x1,#&29000
 	adrp	x2,#&29000
-	add	x1,x1,#&FFFFFDA6
-	add	x2,x2,#&FFFFFDAB
+	add	x1,x1,#&DA6
+	add	x2,x2,#&DAB
 	movz	w0,#5
 	mov	w3,w19
 	bl	#&2D30
@@ -2191,8 +2191,8 @@ fn000000000000614C proc
 	tbz	w20,#&FFFFFFFF,#&62B0
 	adrp	x1,#&29000
 	adrp	x2,#&29000
-	add	x1,x1,#&FFFFFDA6
-	add	x2,x2,#&FFFFFDD7
+	add	x1,x1,#&DA6
+	add	x2,x2,#&DD7
 	movz	w0,#5
 	mov	w3,w20
 	bl	#&2D30
@@ -2205,12 +2205,12 @@ fn000000000000614C proc
 	stp	w19,w20,[x29,-#&58]
 	bl	#&2C30
 	ldr	x19,[x21]
-	add	x0,x31,#&68
+	add	x0,sp,#&68
 	mov	x1,x27
 	bl	#&30D0
 	ldp	w2,w3,[x21,#&10]
-	add	x8,x31,#&20
-	add	x1,x31,#&68
+	add	x8,sp,#&20
+	add	x1,sp,#&68
 	orr	w4,w31,#2
 	mov	x0,x19
 	mov	w5,w31
@@ -2227,9 +2227,9 @@ fn000000000000614C proc
 	ldr	x0,[sp,#&20]
 	str	x19,[x26]
 	cbz	x0,#&6330
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	bl	#&2E50
-	add	x0,x31,#&68
+	add	x0,sp,#&68
 	bl	#&2A90
 	ldr	x8,[x26]
 	cbz	x8,#&65AC
@@ -2242,7 +2242,7 @@ fn000000000000614C proc
 	bl	#&2F10
 	cbnz	w19,#&65CC
 	ldr	x0,[x21,#&48]
-	add	x8,x31,#&20
+	add	x8,sp,#&20
 	add	x25,x21,#&50
 	bl	#&3120
 	ldr	x19,[sp,#&20]
@@ -2257,13 +2257,13 @@ fn000000000000614C proc
 	ldr	x0,[sp,#&20]
 	str	x19,[x25]
 	cbz	x0,#&63AC
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	bl	#&2E50
 	ldr	x19,[x25]
 	cbz	x19,#&65EC
 	adrp	x8,#&29000
 	ldr	q0,[x8,#&C00]
-	subs	w31,w24,#0
+	cmp	w24,#0
 	adrp	x9,#&29000
 	movz	w8,#&3022
 	str	q0,[sp,#&20]
@@ -2274,7 +2274,7 @@ fn000000000000614C proc
 	str	w8,[sp,#&38]
 	csinc	w8,w31,w31,EQ
 	orr	x9,x31,#&40
-	ubfm	w8,w8,#&1D,#&1C
+	lsl	w8,w8,#3
 	movk	x9,#&3040
 	str	w8,[sp,#&3C]
 	movz	w8,#&3038
@@ -2291,19 +2291,19 @@ fn000000000000614C proc
 	cbz	w0,#&662C
 	ldp	w1,w2,[x21,#&60]
 	adrp	x0,#&29000
-	add	x0,x0,#&FFFFFD12
+	add	x0,x0,#&D12
 	bl	#&2F90
 	ldr	x0,[x21,#&58]
 	add	x2,x21,#&68
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	orr	w3,w31,#1
-	add	x4,x31,#&68
+	add	x4,sp,#&68
 	bl	#&31F0
 	cbz	w0,#&664C
 	ldp	x8,x0,[x21,#&50]
 	ldr	x1,[x21,#&68]
 	add	x9,x8,#&10
-	subs	x31,x8,#0
+	cmp	x8,#0
 	csel	x2,x31,x9,EQ
 	mov	x3,x31
 	bl	#&3190
@@ -2312,7 +2312,7 @@ fn000000000000614C proc
 	ldr	x0,[x21,#&58]
 	ldr	x1,[x21,#&68]
 	adrp	x3,#&29000
-	add	x3,x3,#&FFFFFE04
+	add	x3,x3,#&E04
 	mov	x2,x31
 	bl	#&2C90
 	str	x0,[x21,#&78]
@@ -2320,16 +2320,16 @@ fn000000000000614C proc
 	ldr	x0,[x21,#&58]
 	ldr	x1,[x21,#&70]
 	movz	w2,#&3057
-	add	x3,x31,#&1C
+	add	x3,sp,#&1C
 	bl	#&2C60
 	ldr	x0,[x21,#&58]
 	ldr	x1,[x21,#&70]
 	movz	w2,#&3056
-	add	x3,x31,#&18
+	add	x3,sp,#&18
 	bl	#&2C60
 	ldp	w2,w1,[sp,#&18]
 	adrp	x0,#&29000
-	add	x0,x0,#&FFFFFD5F
+	add	x0,x0,#&D5F
 	bl	#&2F90
 	ldp	x1,x3,[x21,#&70]
 	ldr	x0,[x21,#&58]
@@ -2340,14 +2340,14 @@ fn000000000000614C proc
 	bl	#&3050
 	mov	x1,x0
 	adrp	x0,#&29000
-	add	x0,x0,#&FFFFFD6E
+	add	x0,x0,#&D6E
 	bl	#&2F90
 	adrp	x0,#&29000
-	add	x0,x0,#&FFFFFD7D
+	add	x0,x0,#&D7D
 	orr	w1,w31,#2
 	bl	#&2D70
 	adrp	x1,#&29000
-	add	x1,x1,#&FFFFFE10
+	add	x1,x1,#&E10
 	orr	w2,w31,#3
 	bl	#&2FE0
 	cbz	x23,#&6520
@@ -2370,94 +2370,94 @@ fn000000000000614C proc
 	ldp	x24,x23,[sp,#&A0]
 	ldp	x26,x25,[sp,#&90]
 	ldp	x28,x27,[sp,#&80]
-	add	x31,x31,#&E0
+	add	sp,sp,#&E0
 	ret	x30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFCA2
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&CA2
 	movz	w1,#&36
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFCB4
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&CB4
 	movz	w1,#&39
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFCCD
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&CCD
 	movz	w1,#&4A
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFCB4
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&CB4
 	movz	w1,#&4F
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFCE0
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&CE0
 	movz	w1,#&52
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFCED
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&CED
 	movz	w1,#&61
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFD0A
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&D0A
 	movz	w1,#&64
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFD0A
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&D0A
 	movz	w1,#&6A
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFD25
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&D25
 	movz	w1,#&6D
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFD42
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&D42
 	movz	w1,#&74
 	bl	#&2F30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
-	add	x0,x0,#&FFFFFC20
-	add	x2,x2,#&FFFFFC39
-	add	x3,x3,#&FFFFFD0A
+	add	x0,x0,#&C20
+	add	x2,x2,#&C39
+	add	x3,x3,#&D0A
 	orr	w1,w31,#&7C
 	bl	#&2F30
 	bl	#&6768
@@ -2472,7 +2472,7 @@ fn000000000000614C proc
 	ldr	x8,[sp,#&20]
 	mov	x19,x0
 	cbz	x8,#&675C
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	mov	x0,x8
 	bl	#&2E50
 	b	#&675C
@@ -2480,10 +2480,10 @@ fn000000000000614C proc
 	ldr	x8,[sp,#&20]
 	mov	x19,x0
 	cbz	x8,#&6728
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	mov	x0,x8
 	bl	#&2E50
-	add	x0,x31,#&68
+	add	x0,sp,#&68
 	bl	#&2A90
 	mov	x0,x19
 	bl	#&2D50
@@ -2494,7 +2494,7 @@ fn000000000000614C proc
 	ldr	x9,[x8]
 	ldur	x9,[x9,-#&18]
 	add	x0,x8,x9
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	bl	#&2E50
 	mov	x0,x19
 	bl	#&2D50
@@ -2504,55 +2504,55 @@ fn000000000000614C proc
 	bl	#&31A0
 	ldrb	w9,[x0]
 	movn	w8,#0
-	subs	w31,w9,#&4E
+	cmp	w9,#&4E
 	b.gt	#&67A4
 	cbz	w9,#&6880
-	subs	w31,w9,#&31
+	cmp	w9,#&31
 	b.ne	#&6878
 	ldrb	w8,[x0,#&1]
 	cbz	w8,#&68F4
 	movn	w8,#0
 	mov	w0,w8
 	ret	x30
-	subs	w31,w9,#&4F
+	cmp	w9,#&4F
 	b.eq	#&68A0
-	subs	w31,w9,#&74
+	cmp	w9,#&74
 	b.ne	#&6878
 	ldrb	w8,[x0,#&1]
-	subs	w31,w8,#&79
+	cmp	w8,#&79
 	b.ne	#&67D8
 	ldrb	w8,[x0,#&2]
-	subs	w31,w8,#&70
+	cmp	w8,#&70
 	b.ne	#&67D8
 	ldrb	w8,[x0,#&3]
-	subs	w31,w8,#&31
+	cmp	w8,#&31
 	b.eq	#&6948
 	ldrb	w8,[x0,#&1]
-	subs	w31,w8,#&74
+	cmp	w8,#&74
 	b.ne	#&68E8
 	ldrb	w8,[x0,#&2]
-	subs	w31,w8,#&63
+	cmp	w8,#&63
 	b.ne	#&6914
 	ldrb	w8,[x0,#&3]
-	subs	w31,w8,#&66
+	cmp	w8,#&66
 	b.ne	#&6958
 	ldrb	w8,[x0,#&4]
 	ldrb	w9,[x0,#&5]
 	ldrb	w10,[x0,#&6]
 	ldrb	w11,[x0,#&7]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w9,#&10,#7
 	bfm	w8,w10,#&18,#7
 	orr	w8,w8,w11
-	subs	w31,w8,#&20,lsl #&C
+	cmp	w8,#&20,lsl #&C
 	b.eq	#&682C
-	subs	w31,w8,#&10,lsl #&C
+	cmp	w8,#&10,lsl #&C
 	b.ne	#&6964
 	ldrb	w8,[x0,#&8]
 	ldrb	w9,[x0,#&9]
 	ldrb	w10,[x0,#&A]
 	ldrb	w11,[x0,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w9,#&10,#7
 	bfm	w8,w10,#&18,#7
 	orr	w8,w8,w11
@@ -2563,14 +2563,14 @@ fn000000000000614C proc
 	ldrb	w10,[x8,#&D]
 	ldrb	w11,[x8,#&E]
 	ldrb	w8,[x8,#&F]
-	ubfm	w9,w9,#8,#7
+	lsl	w9,w9,#&18
 	bfm	w9,w10,#&10,#7
 	bfm	w9,w11,#&18,#7
 	orr	w8,w9,w8
 	mov	w0,w8
 	ret	x30
 	ldrb	w8,[x0,#&1]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.ne	#&68D0
 	ldrb	w8,[x0,#&2]
 	cbz	w8,#&6920
@@ -2578,13 +2578,13 @@ fn000000000000614C proc
 	mov	w0,w8
 	ret	x30
 	ldrb	w8,[x0,#&1]
-	subs	w31,w8,#&54
+	cmp	w8,#&54
 	b.ne	#&68DC
 	ldrb	w8,[x0,#&2]
-	subs	w31,w8,#&54
+	cmp	w8,#&54
 	b.ne	#&6908
 	ldrb	w8,[x0,#&3]
-	subs	w31,w8,#&4F
+	cmp	w8,#&4F
 	b.eq	#&6948
 	movn	w8,#0
 	mov	w0,w8
@@ -2619,7 +2619,7 @@ fn000000000000614C proc
 	movn	w8,#0
 	mov	w0,w8
 	ret	x30
-	subs	w31,w1,#0
+	cmp	w1,#0
 	csinv	w8,w31,w31,EQ
 	mov	w0,w8
 	ret	x30
@@ -2644,16 +2644,16 @@ fn000000000000614C proc
 	mov	w12,w10
 	add	x13,x1,w12,uxtw #0
 	ldrb	w14,[x13]
-	subs	w31,w14,#&63
+	cmp	w14,#&63
 	b.ne	#&69D8
 	ldrb	w14,[x13,#&1]
-	subs	w31,w14,#&6D
+	cmp	w14,#&6D
 	b.ne	#&69D8
 	ldrb	w14,[x13,#&2]
-	subs	w31,w14,#&61
+	cmp	w14,#&61
 	b.ne	#&69D8
 	ldrb	w14,[x13,#&3]
-	subs	w31,w14,#&70
+	cmp	w14,#&70
 	b.eq	#&6D7C
 	add	x9,x9,#1
 	add	w12,w12,#&10
@@ -2665,16 +2665,16 @@ fn000000000000614C proc
 	mov	w13,w10
 	add	x14,x1,w13,uxtw #0
 	ldrb	w15,[x14]
-	subs	w31,w15,#&6C
+	cmp	w15,#&6C
 	b.ne	#&6A2C
 	ldrb	w15,[x14,#&1]
-	subs	w31,w15,#&6F
+	cmp	w15,#&6F
 	b.ne	#&6A2C
 	ldrb	w15,[x14,#&2]
-	subs	w31,w15,#&63
+	cmp	w15,#&63
 	b.ne	#&6A2C
 	ldrb	w15,[x14,#&3]
-	subs	w31,w15,#&61
+	cmp	w15,#&61
 	b.eq	#&6E54
 	add	x12,x12,#1
 	add	w13,w13,#&10
@@ -2692,16 +2692,16 @@ fn000000000000614C proc
 	mov	w14,w10
 	add	x15,x1,w14,uxtw #0
 	ldrb	w16,[x15]
-	subs	w31,w16,#&68
+	cmp	w16,#&68
 	b.ne	#&6A98
 	ldrb	w16,[x15,#&1]
-	subs	w31,w16,#&65
+	cmp	w16,#&65
 	b.ne	#&6A98
 	ldrb	w16,[x15,#&2]
-	subs	w31,w16,#&61
+	cmp	w16,#&61
 	b.ne	#&6A98
 	ldrb	w16,[x15,#&3]
-	subs	w31,w16,#&64
+	cmp	w16,#&64
 	b.eq	#&6DA0
 	add	x12,x12,#1
 	add	w14,w14,#&10
@@ -2717,16 +2717,16 @@ fn000000000000614C proc
 	mov	w15,w10
 	add	x16,x1,w15,uxtw #0
 	ldrb	w17,[x16]
-	subs	w31,w17,#&67
+	cmp	w17,#&67
 	b.ne	#&6AFC
 	ldrb	w17,[x16,#&1]
-	subs	w31,w17,#&6C
+	cmp	w17,#&6C
 	b.ne	#&6AFC
 	ldrb	w17,[x16,#&2]
-	subs	w31,w17,#&79
+	cmp	w17,#&79
 	b.ne	#&6AFC
 	ldrb	w17,[x16,#&3]
-	subs	w31,w17,#&66
+	cmp	w17,#&66
 	b.eq	#&6DC4
 	add	x14,x14,#1
 	add	w15,w15,#&10
@@ -2742,16 +2742,16 @@ fn000000000000614C proc
 	mov	w16,w10
 	add	x17,x1,w16,uxtw #0
 	ldrb	w18,[x17]
-	subs	w31,w18,#&68
+	cmp	w18,#&68
 	b.ne	#&6B60
 	ldrb	w18,[x17,#&1]
-	subs	w31,w18,#&68
+	cmp	w18,#&68
 	b.ne	#&6B60
 	ldrb	w18,[x17,#&2]
-	subs	w31,w18,#&65
+	cmp	w18,#&65
 	b.ne	#&6B60
 	ldrb	w18,[x17,#&3]
-	subs	w31,w18,#&61
+	cmp	w18,#&61
 	b.eq	#&6DE8
 	add	x15,x15,#1
 	add	w16,w16,#&10
@@ -2767,16 +2767,16 @@ fn000000000000614C proc
 	mov	w17,w10
 	add	x18,x1,w17,uxtw #0
 	ldrb	w2,[x18]
-	subs	w31,w2,#&68
+	cmp	w2,#&68
 	b.ne	#&6BC4
 	ldrb	w2,[x18,#&1]
-	subs	w31,w2,#&6D
+	cmp	w2,#&6D
 	b.ne	#&6BC4
 	ldrb	w2,[x18,#&2]
-	subs	w31,w2,#&74
+	cmp	w2,#&74
 	b.ne	#&6BC4
 	ldrb	w2,[x18,#&3]
-	subs	w31,w2,#&78
+	cmp	w2,#&78
 	b.eq	#&6E0C
 	add	x16,x16,#1
 	add	w17,w17,#&10
@@ -2792,16 +2792,16 @@ fn000000000000614C proc
 	mov	w18,w10
 	add	x2,x1,w18,uxtw #0
 	ldrb	w3,[x2]
-	subs	w31,w3,#&6B
+	cmp	w3,#&6B
 	b.ne	#&6C28
 	ldrb	w3,[x2,#&1]
-	subs	w31,w3,#&65
+	cmp	w3,#&65
 	b.ne	#&6C28
 	ldrb	w3,[x2,#&2]
-	subs	w31,w3,#&72
+	cmp	w3,#&72
 	b.ne	#&6C28
 	ldrb	w3,[x2,#&3]
-	subs	w31,w3,#&6E
+	cmp	w3,#&6E
 	b.eq	#&6E30
 	add	x17,x17,#1
 	add	w18,w18,#&10
@@ -2823,16 +2823,16 @@ fn000000000000614C proc
 	mov	x11,x31
 	add	x13,x1,w10,uxtw #0
 	ldrb	w14,[x13]
-	subs	w31,w14,#&6D
+	cmp	w14,#&6D
 	b.ne	#&6CA4
 	ldrb	w14,[x13,#&1]
-	subs	w31,w14,#&61
+	cmp	w14,#&61
 	b.ne	#&6CA4
 	ldrb	w14,[x13,#&2]
-	subs	w31,w14,#&78
+	cmp	w14,#&78
 	b.ne	#&6CA4
 	ldrb	w14,[x13,#&3]
-	subs	w31,w14,#&70
+	cmp	w14,#&70
 	b.eq	#&6E78
 	add	x11,x11,#1
 	add	w10,w10,#&10
@@ -2854,20 +2854,20 @@ fn000000000000614C proc
 	ldrb	w14,[x13,#&1]
 	bfm	w14,w15,#&18,#7
 	cbz	w14,#&6D18
-	subs	w31,w14,#3
+	cmp	w14,#3
 	b.ne	#&6D40
 	ldrb	w15,[x13,#&2]
 	ldrb	w14,[x13,#&3]
 	bfm	w14,w15,#&18,#7
-	subs	w31,w14,#&A
+	cmp	w14,#&A
 	b.eq	#&6D18
-	subs	w31,w14,#1
+	cmp	w14,#1
 	b.ne	#&6D40
 	ldrb	w11,[x13,#&4]
 	ldrb	w14,[x13,#&5]
 	ldrb	w15,[x13,#&6]
 	ldrb	w13,[x13,#&7]
-	ubfm	w11,w11,#8,#7
+	lsl	w11,w11,#&18
 	bfm	w11,w14,#&10,#7
 	bfm	w11,w15,#&18,#7
 	orr	w11,w11,w13
@@ -2892,7 +2892,7 @@ fn000000000000614C proc
 	ldrb	w12,[x13,#&9]
 	ldrb	w14,[x13,#&A]
 	ldrb	w13,[x13,#&B]
-	ubfm	w9,w9,#8,#7
+	lsl	w9,w9,#&18
 	bfm	w9,w12,#&10,#7
 	bfm	w9,w14,#&18,#7
 	orr	w9,w9,w13
@@ -2901,7 +2901,7 @@ fn000000000000614C proc
 	ldrb	w12,[x15,#&9]
 	ldrb	w14,[x15,#&A]
 	ldrb	w15,[x15,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w12,#&10,#7
 	bfm	w8,w14,#&18,#7
 	orr	w12,w8,w15
@@ -2910,7 +2910,7 @@ fn000000000000614C proc
 	ldrb	w14,[x16,#&9]
 	ldrb	w15,[x16,#&A]
 	ldrb	w16,[x16,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w14,#&10,#7
 	bfm	w8,w15,#&18,#7
 	orr	w14,w8,w16
@@ -2919,7 +2919,7 @@ fn000000000000614C proc
 	ldrb	w15,[x17,#&9]
 	ldrb	w16,[x17,#&A]
 	ldrb	w17,[x17,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w15,#&10,#7
 	bfm	w8,w16,#&18,#7
 	orr	w15,w8,w17
@@ -2928,7 +2928,7 @@ fn000000000000614C proc
 	ldrb	w16,[x18,#&9]
 	ldrb	w17,[x18,#&A]
 	ldrb	w18,[x18,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w16,#&10,#7
 	bfm	w8,w17,#&18,#7
 	orr	w16,w8,w18
@@ -2937,7 +2937,7 @@ fn000000000000614C proc
 	ldrb	w17,[x2,#&9]
 	ldrb	w18,[x2,#&A]
 	ldrb	w2,[x2,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w17,#&10,#7
 	bfm	w8,w18,#&18,#7
 	orr	w17,w8,w2
@@ -2946,7 +2946,7 @@ fn000000000000614C proc
 	ldrb	w12,[x14,#&9]
 	ldrb	w13,[x14,#&A]
 	ldrb	w14,[x14,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w12,#&10,#7
 	bfm	w8,w13,#&18,#7
 	orr	w13,w8,w14
@@ -2955,7 +2955,7 @@ fn000000000000614C proc
 	ldrb	w10,[x13,#&9]
 	ldrb	w11,[x13,#&A]
 	ldrb	w13,[x13,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w10,#&10,#7
 	bfm	w8,w11,#&18,#7
 	orr	w8,w8,w13
@@ -2966,17 +2966,17 @@ fn000000000000614C proc
 	bfm	w8,w10,#&18,#7
 	b	#&6CB8
 	stp	x29,x30,[sp,-#&10]!
-	add	x29,x31,#0
+	add	x29,sp,#0
 	ldr	x10,[x0,#&8]
 	ldr	w9,[x0,#&30]
 	add	x8,x10,x9
 	ldrb	w12,[x8]
 	ldrb	w11,[x8,#&1]
 	bfm	w11,w12,#&18,#7
-	subs	w31,w11,#6
+	cmp	w11,#6
 	b.hi	#&6F14
 	adrp	x12,#&29000
-	add	x12,x12,#&FFFFFE20
+	add	x12,x12,#&E20
 	ldrsw	x13,[x12,x11]
 	add	x12,x13,x12
 	br	x12
@@ -2991,13 +2991,13 @@ fn000000000000614C proc
 	ldp	x29,x30,[sp],#&10
 	ret	x30
 	and	w9,w11,#&FFFE
-	subs	w31,w9,#&C
+	cmp	w9,#&C
 	b.ne	#&7218
 	ldrb	w10,[x8,#&C]
 	ldrb	w12,[x8,#&D]
 	ldrb	w13,[x8,#&E]
 	ldrb	w14,[x8,#&F]
-	ubfm	w10,w10,#8,#7
+	lsl	w10,w10,#&18
 	bfm	w10,w12,#&10,#7
 	bfm	w10,w13,#&18,#7
 	mov	w9,w31
@@ -3014,7 +3014,7 @@ fn000000000000614C proc
 	ldrb	w16,[x13,#&1]
 	ldrb	w17,[x13,#&2]
 	ldrb	w18,[x13,#&3]
-	ubfm	w14,w14,#8,#7
+	lsl	w14,w14,#&18
 	bfm	w14,w16,#&10,#7
 	bfm	w14,w17,#&18,#7
 	orr	w14,w14,w18
@@ -3024,7 +3024,7 @@ fn000000000000614C proc
 	ldrb	w16,[x13,#&4]
 	ldrb	w17,[x13,#&6]
 	ldrb	w18,[x13,#&7]
-	ubfm	w9,w9,#&10,#&F
+	lsl	w9,w9,#&10
 	bfm	w9,w16,#8,#7
 	bfm	w9,w17,#&18,#7
 	orr	w16,w9,w18
@@ -3035,10 +3035,10 @@ fn000000000000614C proc
 	ldrb	w9,[x13,#&9]
 	ldrb	w10,[x13,#&A]
 	ldrb	w12,[x13,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w9,#&10,#7
 	sub	w13,w1,w14
-	subs	w31,w11,#&C
+	cmp	w11,#&C
 	bfm	w8,w10,#&18,#7
 	orr	w8,w8,w12
 	csel	w9,w13,w31,EQ
@@ -3053,7 +3053,7 @@ fn000000000000614C proc
 	mov	w0,w31
 	ldp	x29,x30,[sp],#&10
 	ret	x30
-	subs	w31,w1,#&10,lsl #&C
+	cmp	w1,#&10,lsl #&C
 	b.lt	#&7074
 	mov	w0,w31
 	ldp	x29,x30,[sp],#&10
@@ -3071,7 +3071,7 @@ fn000000000000614C proc
 	cmp	w10,w1
 	b.ls	#&7170
 	sub	w9,w1,w9
-	ubfm	w9,w9,#&1F,#&1E
+	lsl	w9,w9,#1
 	add	x8,x8,w9,uxtw #0
 	ldrb	w9,[x8,#&A]
 	ldrb	w0,[x8,#&B]
@@ -3104,7 +3104,7 @@ fn000000000000614C proc
 	ubfm	w16,w17,#1,#&F
 	ubfm	w16,w16,#1,#&F
 	add	x17,x10,w15,uxtw #0
-	ubfm	w18,w16,#&1F,#&1E
+	lsl	w18,w16,#1
 	add	x17,x17,w18,uxtw #0
 	ldrb	w0,[x17]
 	ldrb	w17,[x17,#&1]
@@ -3127,9 +3127,9 @@ fn000000000000614C proc
 	cmp	w13,w1
 	b.lt	#&7238
 	bfm	w11,w12,#&18,#7
-	ubfm	w11,w11,#1,#&1F
+	lsr	w11,w11,#1
 	add	x8,x8,#&E
-	ubfm	w12,w11,#&1F,#&1E
+	lsl	w12,w11,#1
 	add	x12,x8,w12,uxtw #0
 	add	x12,x12,x14
 	ldrb	w13,[x12,#&2]
@@ -3154,7 +3154,7 @@ fn000000000000614C proc
 	cbz	w15,#&71D0
 	add	x8,x10,w15,uxtw #0
 	sub	w10,w1,w12
-	ubfm	w10,w10,#&1F,#&1E
+	lsl	w10,w10,#1
 	add	x8,x8,w10,sxtw #0
 	add	x8,x8,x9
 	add	x8,x8,x13
@@ -3165,7 +3165,7 @@ fn000000000000614C proc
 	and	w0,w8,#&FFFF
 	ldp	x29,x30,[sp],#&10
 	ret	x30
-	ubfm	w9,w11,#&1E,#&1D
+	lsl	w9,w11,#2
 	add	x8,x8,w9,uxtw #0
 	add	x8,x8,x14
 	ldrb	w9,[x8,#&2]
@@ -3180,7 +3180,7 @@ fn000000000000614C proc
 	adrp	x3,#&29000
 	add	x0,x0,#&758
 	add	x2,x2,#&77E
-	add	x3,x3,#&FFFFF9F8
+	add	x3,x3,#&9F8
 	movz	w1,#&446
 	bl	#&2F30
 	adrp	x0,#&29000
@@ -3188,7 +3188,7 @@ fn000000000000614C proc
 	adrp	x3,#&29000
 	add	x0,x0,#&758
 	add	x2,x2,#&77E
-	add	x3,x3,#&FFFFF9F8
+	add	x3,x3,#&9F8
 	movz	w1,#&48D
 	bl	#&2F30
 	adrp	x0,#&29000
@@ -3201,7 +3201,7 @@ fn000000000000614C proc
 	bl	#&2F30
 	stp	x20,x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	mov	x19,x2
 	mov	x20,x0
 	bl	#&6EB0
@@ -3211,7 +3211,7 @@ fn000000000000614C proc
 	mov	x2,x19
 	ldp	x20,x19,[sp],#&20
 	b	#&7288
-	sub	x31,x31,#&110
+	sub	sp,sp,#&110
 	stp	d9,d8,[sp,#&A0]
 	stp	x28,x27,[sp,#&B0]
 	stp	x26,x25,[sp,#&C0]
@@ -3219,7 +3219,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&E0]
 	stp	x20,x19,[sp,#&F0]
 	stp	x29,x30,[sp,#&100]
-	add	x29,x31,#&100
+	add	x29,sp,#&100
 	mov	x22,x0
 	ldr	x19,[x22,#&8]
 	mov	x21,x2
@@ -3230,12 +3230,12 @@ fn000000000000614C proc
 	ldrb	w10,[x8]
 	ldrb	w9,[x8,#&1]
 	bfm	w9,w10,#&18,#7
-	sbfm	w10,w9,#0,#&F
-	subs	w31,w10,#1
+	sxth	w10,w9
+	cmp	w10,#1
 	b.lt	#&7354
-	ubfm	w10,w9,#&10,#&F
+	lsl	w10,w9,#&10
 	add	x8,x8,#&A
-	sbfm	w16,w9,#&1F,#&F
+	sbfiz	w16,w9,#1,#&10
 	sbfm	x9,x10,#&F,#&1F
 	add	x11,x8,x9
 	ldr	x14,[x22]
@@ -3252,7 +3252,7 @@ fn000000000000614C proc
 	madd	w16,w16,w17,w18
 	and	w16,w16,#&FFFFFFF0
 	add	w2,w16,w13
-	movz	w16,#&FFFFFA01
+	movz	w16,#&FA01
 	cmp	w2,w16
 	b.lt	#&7374
 	ldr	x8,[x14,-#&2D90]
@@ -3276,7 +3276,7 @@ fn000000000000614C proc
 	str	w2,[x15]
 	add	x20,x14,x13
 	cbz	x20,#&779C
-	bfm	x18,x16,#&FFFFFFF8,#7
+	bfm	x18,x16,#&38,#7
 	add	x11,x11,x18
 	mov	x0,x31
 	mov	w15,w31
@@ -3320,7 +3320,7 @@ fn000000000000614C proc
 	add	w15,w15,w0,sxth #0
 	b	#&7448
 	ldrb	w0,[x11],#&1
-	subs	w31,w18,#0
+	cmp	w18,#0
 	csneg	w18,w0,w0,NE
 	add	w15,w18,w15
 	sturh	w15,[x16,-#&10]
@@ -3345,7 +3345,7 @@ fn000000000000614C proc
 	add	w15,w15,w17,sxth #0
 	b	#&74AC
 	ldrb	w17,[x11],#&1
-	subs	w31,w16,#0
+	cmp	w16,#0
 	csneg	w16,w17,w17,NE
 	add	w15,w16,w15
 	sturh	w15,[x13,-#&C]
@@ -3385,8 +3385,8 @@ fn000000000000614C proc
 	add	w5,w7,#1
 	add	w7,w2,w12
 	add	w6,w3,w13
-	ubfm	w7,w7,#1,#&1F
-	ubfm	w6,w6,#1,#&1F
+	lsr	w7,w7,#1
+	lsr	w6,w6,#1
 	strh	w7,[x4,#&2]
 	mov	w7,w5
 	strb	w0,[x4,#&8]
@@ -3405,7 +3405,7 @@ fn000000000000614C proc
 	cbz	w24,#&75C8
 	and	w19,w21,#&FFFF
 	add	w21,w7,#1
-	sbfm	x23,x7,#0,#&1F
+	sxtw	x23,w7
 	smaddl	x7,w7,w17,x20
 	and	w22,w22,#&FFFF
 	add	x24,x7,#8
@@ -3424,8 +3424,8 @@ fn000000000000614C proc
 	add	w23,w21,w12
 	smaddl	x5,w7,w17,x20
 	add	w7,w7,#1
-	ubfm	w19,w19,#1,#&1F
-	ubfm	w23,w23,#1,#&1F
+	lsr	w19,w19,#1
+	lsr	w23,w23,#1
 	strb	w0,[x5,#&8]
 	strh	w13,[x5,#&4]
 	strh	w12,[x5,#&6]
@@ -3438,7 +3438,7 @@ fn000000000000614C proc
 	mov	w6,w7
 	b	#&7694
 	add	w6,w7,#1
-	sbfm	x4,x7,#0,#&1F
+	sxtw	x4,w7
 	smaddl	x7,w7,w17,x20
 	add	x19,x7,#8
 	cbz	w5,#&7678
@@ -3470,7 +3470,7 @@ fn000000000000614C proc
 	strh	w11,[x14,#&2]
 	strh	w31,[x14,#&4]
 	strh	w31,[x14,#&6]
-	subs	w31,w24,#0
+	cmp	w24,#0
 	csinc	w4,w31,w31,NE
 	cbz	w24,#&76B4
 	mov	w14,w22
@@ -3478,7 +3478,7 @@ fn000000000000614C proc
 	mov	w22,w3
 	mov	w21,w2
 	b	#&76E4
-	sbfm	x11,x23,#0,#&1F
+	sxtw	x11,w23
 	madd	x11,x11,x17,x20
 	ldrb	w2,[x11,#&12]
 	ldrsh	w14,[x11,#&A]
@@ -3486,8 +3486,8 @@ fn000000000000614C proc
 	tbz	w2,#0,#&76E0
 	add	w14,w14,w22
 	add	w11,w11,w21
-	sbfm	w14,w14,#1,#&1F
-	sbfm	w11,w11,#1,#&1F
+	asr	w14,w14,#1
+	asr	w11,w11,#1
 	b	#&76E4
 	add	w16,w16,#1
 	smaddl	x2,w6,w17,x20
@@ -3518,8 +3518,8 @@ fn000000000000614C proc
 	add	w16,w7,#1
 	orr	w15,w31,#3
 	smaddl	x10,w7,w10,x20
-	ubfm	w8,w8,#1,#&1F
-	ubfm	w9,w9,#1,#&1F
+	lsr	w8,w8,#1
+	lsr	w9,w9,#1
 	mov	w7,w16
 	strb	w15,[x10,#&8]
 	strh	w8,[x10]
@@ -3553,8 +3553,8 @@ fn000000000000614C proc
 	ldrb	w9,[x26,#&4]
 	ldrb	w10,[x26,#&5]
 	tbz	w28,#0,#&77F8
-	sbfm	w10,w10,#0,#7
-	sbfm	w9,w9,#0,#7
+	sxtb	w10,w10
+	sxtb	w9,w9
 	scvtf	s4,w9
 	scvtf	s5,w10
 	add	x26,x26,#6
@@ -3562,10 +3562,10 @@ fn000000000000614C proc
 	ldrb	w11,[x26,#&6]
 	ldrb	w12,[x26,#&7]
 	bfm	w10,w9,#&18,#7
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	scvtf	s4,w9
 	bfm	w12,w11,#&18,#&17
-	sbfm	w9,w12,#0,#&F
+	sxth	w9,w12
 	scvtf	s5,w9
 	add	x26,x26,#8
 	tbz	w28,#3,#&783C
@@ -3582,7 +3582,7 @@ fn000000000000614C proc
 	fmov	s2,w31
 	fmov	s1,w31
 	bfm	w10,w9,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	scvtf	s0,w9
 	fmul	s3,s0,s9
 	mov	v0.16b,v3.16b
@@ -3593,9 +3593,9 @@ fn000000000000614C proc
 	ldrb	w12,[x26,#&3]
 	add	x26,x26,#4
 	bfm	w10,w9,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	bfm	w12,w11,#&18,#&17
-	sbfm	w10,w12,#0,#&F
+	sxth	w10,w12
 	scvtf	s0,w9
 	scvtf	s1,w10
 	fmov	s2,w31
@@ -3613,14 +3613,14 @@ fn000000000000614C proc
 	ldrb	w16,[x26,#&7]
 	bfm	w10,w9,#&18,#&17
 	bfm	w12,w11,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	bfm	w14,w13,#&18,#&17
 	bfm	w16,w15,#&18,#&17
 	scvtf	s0,w9
-	sbfm	w9,w12,#0,#&F
+	sxth	w9,w12
 	scvtf	s1,w9
-	sbfm	w9,w14,#0,#&F
-	sbfm	w10,w16,#0,#&F
+	sxth	w9,w14
+	sxth	w10,w16
 	scvtf	s2,w9
 	scvtf	s3,w10
 	fmul	s0,s0,s9
@@ -3656,13 +3656,13 @@ fn000000000000614C proc
 	str	q1,[sp,#&10]
 	bl	#&7288
 	mov	w23,w0
-	subs	w31,w23,#1
+	cmp	w23,#1
 	b.lt	#&7CA8
 	ldur	x3,[x29,-#&68]
 	ldp	q28,q27,[sp,#&30]
 	ldr	q29,[sp,#&20]
 	mov	w8,w23
-	subs	w31,w23,#4
+	cmp	w23,#4
 	b.hs	#&79B0
 	ldp	q24,q23,[sp,#&50]
 	ldp	q26,q25,[sp,#&70]
@@ -3835,7 +3835,7 @@ fn000000000000614C proc
 	madd	w11,w19,w25,w11
 	and	w11,w11,#&FFFFFFF0
 	add	w2,w10,w11
-	movz	w11,#&FFFFFA01
+	movz	w11,#&FA01
 	cmp	w2,w11
 	b.ge	#&7CEC
 	ldr	x8,[x8,-#&2F80]
@@ -3843,8 +3843,8 @@ fn000000000000614C proc
 	add	x25,x8,x10
 	cbz	x25,#&7D00
 	movz	w24,#&A
-	sbfm	x27,x21,#0,#&1F
-	subs	w31,w21,#1
+	sxtw	x27,w21
+	cmp	w21,#1
 	b.lt	#&7C8C
 	mul	x2,x27,x24
 	mov	x0,x25
@@ -3864,7 +3864,7 @@ fn000000000000614C proc
 	movz	w9,#&A
 	smaddl	x9,w7,w9,x20
 	add	w21,w7,#1
-	sbfm	x8,x7,#0,#&1F
+	sxtw	x8,w7
 	add	x10,x9,#8
 	cbz	w5,#&7D08
 	movz	w16,#&A
@@ -3901,14 +3901,14 @@ fn000000000000614C proc
 	ldp	x26,x25,[sp,#&C0]
 	ldp	x28,x27,[sp,#&B0]
 	ldp	d9,d8,[sp,#&A0]
-	add	x31,x31,#&110
+	add	sp,sp,#&110
 	ret	x30
 	adrp	x0,#&29000
 	adrp	x2,#&29000
 	adrp	x3,#&29000
 	add	x0,x0,#&758
 	add	x2,x2,#&7CB
-	add	x3,x3,#&FFFFF9F8
+	add	x3,x3,#&9F8
 	movz	w1,#&57F
 	bl	#&2F30
 	adrp	x0,#&29000
@@ -3916,14 +3916,14 @@ fn000000000000614C proc
 	adrp	x3,#&29000
 	add	x0,x0,#&758
 	add	x2,x2,#&7CB
-	add	x3,x3,#&FFFFF9F8
+	add	x3,x3,#&9F8
 	movz	w1,#&5B4
 	bl	#&2F30
 	str	x23,[sp,-#&40]!
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x19,x5
 	mov	x21,x4
 	mov	x22,x3
@@ -3937,7 +3937,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&2]
 	ldrb	w8,[x8,#&3]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x23]
 	cbz	x22,#&7E08
 	ldr	x8,[x20,#&8]
@@ -3945,7 +3945,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&4]
 	ldrb	w8,[x8,#&5]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x22]
 	cbz	x21,#&7E28
 	ldr	x8,[x20,#&8]
@@ -3953,7 +3953,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x21]
 	cbz	x19,#&7E48
 	ldr	x8,[x20,#&8]
@@ -3961,7 +3961,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&8]
 	ldrb	w8,[x8,#&9]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x19]
 	orr	w0,w31,#1
 	b	#&7E54
@@ -3975,7 +3975,7 @@ fn000000000000614C proc
 	cmp	w8,w1
 	b.le	#&7E88
 	ldr	w9,[x0,#&34]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.le	#&7E90
 	movn	w0,#0
 	ret	x30
@@ -3991,11 +3991,11 @@ fn000000000000614C proc
 	ldrb	w11,[x9,#&1]
 	ldrb	w13,[x9,#&4]
 	ldrb	w14,[x9,#&5]
-	ubfm	w10,w10,#8,#7
+	lsl	w10,w10,#&18
 	ldrb	w12,[x9,#&2]
 	bfm	w10,w11,#&10,#7
 	ldrb	w11,[x9,#&6]
-	ubfm	w13,w13,#8,#7
+	lsl	w13,w13,#&18
 	bfm	w13,w14,#&10,#7
 	ldrb	w14,[x9,#&3]
 	ldrb	w15,[x9,#&7]
@@ -4010,9 +4010,9 @@ fn000000000000614C proc
 	ldrb	w12,[x9,#&2]
 	ldrb	w13,[x9,#&3]
 	bfm	w11,w10,#&18,#7
-	ubfm	w9,w11,#&1F,#&1E
+	lsl	w9,w11,#1
 	bfm	w13,w12,#&18,#7
-	ubfm	w10,w13,#&1F,#&1E
+	lsl	w10,w13,#1
 	add	w8,w9,w8
 	cmp	w9,w10
 	csinv	w0,w8,w31,NE
@@ -4021,7 +4021,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x19,x5
 	mov	x20,x4
 	mov	x21,x3
@@ -4041,7 +4041,7 @@ fn000000000000614C proc
 	b	#&7D98
 	str	x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	mov	x19,x0
 	bl	#&7E68
 	tbz	w0,#&FFFFFFFF,#&7FB0
@@ -4050,7 +4050,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8]
 	ldrb	w8,[x8,#&1]
 	bfm	w8,w9,#&18,#7
-	subs	w31,w8,#0
+	cmp	w8,#0
 	csinc	w0,w31,w31,NE
 	b	#&7FB4
 	orr	w0,w31,#1
@@ -4072,11 +4072,11 @@ fn000000000000614C proc
 	ldrb	w10,[x9]
 	ldrb	w9,[x9,#&1]
 	bfm	w9,w10,#&18,#&17
-	sbfm	w9,w9,#0,#&F
+	sxth	w9,w9
 	str	w9,[x2]
 	cbz	x3,#&8078
 	ldrsw	x9,[x0,#&14]
-	ubfm	w10,w1,#&1E,#&1D
+	lsl	w10,w1,#2
 	add	x8,x8,x9
 	add	x8,x8,w10,sxtw #0
 	ldrb	w9,[x8,#&2]
@@ -4084,13 +4084,13 @@ fn000000000000614C proc
 	b	#&806C
 	cbz	x2,#&804C
 	ldrsw	x10,[x0,#&14]
-	ubfm	w11,w9,#&1E,#&1D
+	lsl	w11,w9,#2
 	add	x10,x8,x10
 	add	x10,x10,w11,uxtw #0
 	ldurb	w11,[x10,-#&4]
 	ldurb	w10,[x10,-#&3]
 	bfm	w10,w11,#&18,#&17
-	sbfm	w10,w10,#0,#&F
+	sxth	w10,w10
 	str	w10,[x2]
 	cbz	x3,#&8078
 	ldrsw	x10,[x0,#&14]
@@ -4101,7 +4101,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8]
 	ldrb	w8,[x8,#&1]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x3]
 	ret	x30
 	ldrsw	x8,[x0,#&16]
@@ -4115,7 +4115,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&8]
 	ldrb	w10,[x8,#&9]
 	bfm	w10,w9,#&18,#7
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.ne	#&8144
 	ldrb	w9,[x8,#&A]
 	ldrb	w10,[x8,#&B]
@@ -4128,13 +4128,13 @@ fn000000000000614C proc
 	orr	w13,w31,#6
 	mov	w0,w31
 	add	w14,w10,w12
-	sbfm	w14,w14,#1,#&1F
+	asr	w14,w14,#1
 	smaddl	x15,w14,w13,x11
 	ldrb	w16,[x15]
 	ldrb	w17,[x15,#&1]
 	ldrb	w18,[x15,#&2]
 	ldrb	w15,[x15,#&3]
-	ubfm	w16,w16,#8,#7
+	lsl	w16,w16,#&18
 	bfm	w16,w17,#&10,#7
 	bfm	w16,w18,#&18,#7
 	orr	w15,w16,w15
@@ -4164,12 +4164,12 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&16]
 	ldrb	w8,[x8,#&17]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w0,w8,#0,#&F
+	sxth	w0,w8
 	ret	x30
 	str	x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x19,x0
 	ldr	w8,[x19,#&2C]
 	mov	w20,w2
@@ -4195,7 +4195,7 @@ fn000000000000614C proc
 	str	x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x19,x3
 	mov	x20,x2
 	mov	x21,x0
@@ -4215,7 +4215,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&4]
 	ldrb	w8,[x8,#&5]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x1]
 	cbz	x2,#&8264
 	ldr	x8,[x0,#&8]
@@ -4224,7 +4224,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x2]
 	cbz	x3,#&8288
 	ldr	x8,[x0,#&8]
@@ -4233,7 +4233,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&8]
 	ldrb	w8,[x8,#&9]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x3]
 	ret	x30
 	ldr	x8,[x0,#&8]
@@ -4242,28 +4242,28 @@ fn000000000000614C proc
 	ldrb	w10,[x9,#&24]
 	ldrb	w9,[x9,#&25]
 	bfm	w9,w10,#&18,#&17
-	sbfm	w9,w9,#0,#&F
+	sxth	w9,w9
 	str	w9,[x1]
 	ldrsw	x9,[x0,#&E]
 	add	x9,x8,x9
 	ldrb	w10,[x9,#&26]
 	ldrb	w9,[x9,#&27]
 	bfm	w9,w10,#&18,#&17
-	sbfm	w9,w9,#0,#&F
+	sxth	w9,w9
 	str	w9,[x2]
 	ldrsw	x9,[x0,#&E]
 	add	x9,x8,x9
 	ldrb	w10,[x9,#&28]
 	ldrb	w9,[x9,#&29]
 	bfm	w9,w10,#&18,#&17
-	sbfm	w9,w9,#0,#&F
+	sxth	w9,w9
 	str	w9,[x3]
 	ldrsw	x9,[x0,#&E]
 	add	x8,x8,x9
 	ldrb	w9,[x8,#&2A]
 	ldrb	w8,[x8,#&2B]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x4]
 	ret	x30
 	ldr	x8,[x0,#&8]
@@ -4274,7 +4274,7 @@ fn000000000000614C proc
 	ldrb	w11,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w10,w9,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	bfm	w8,w11,#&18,#&17
 	sub	w8,w9,w8,sxth #0
 	scvtf	s1,w8
@@ -4291,21 +4291,21 @@ fn000000000000614C proc
 	fdiv	s0,s0,s1
 	ret	x30
 	ret	x30
-	sub	x31,x31,#&60
+	sub	sp,sp,#&60
 	stp	d11,d10,[sp,#&10]
 	stp	d9,d8,[sp,#&20]
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
+	add	x29,sp,#&50
 	mov	x19,x5
 	mov	x20,x4
 	mov	x21,x3
 	mov	x22,x2
-	add	x2,x31,#&C
-	add	x3,x31,#8
-	add	x4,x31,#4
-	add	x5,x31,#0
+	add	x2,sp,#&C
+	add	x3,sp,#8
+	add	x4,sp,#4
+	add	x5,sp,#0
 	mov	v8.16b,v3.16b
 	mov	v10.16b,v2.16b
 	mov	v9.16b,v1.16b
@@ -4357,7 +4357,7 @@ fn000000000000614C proc
 	ldp	x22,x21,[sp,#&30]
 	ldp	d9,d8,[sp,#&20]
 	ldp	d11,d10,[sp,#&10]
-	add	x31,x31,#&60
+	add	sp,sp,#&60
 	ret	x30
 	fmov	s2,w31
 	fmov	s3,w31
@@ -4368,7 +4368,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
+	add	x29,sp,#&50
 	mov	x19,x5
 	mov	x20,x4
 	mov	x21,x3
@@ -4401,7 +4401,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	x19,x5
 	mov	x20,x4
 	mov	x21,x3
@@ -4436,8 +4436,8 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&70]
 	stp	x20,x19,[sp,#&80]
 	stp	x29,x30,[sp,#&90]
-	add	x29,x31,#&90
-	sub	x31,x31,#&270
+	add	x29,sp,#&90
+	sub	sp,sp,#&270
 	mov	v11.16b,v2.16b
 	mov	v10.16b,v1.16b
 	fcmp	s10,s11
@@ -4451,10 +4451,10 @@ fn000000000000614C proc
 	str	w3,[sp,#&40]
 	str	x1,[sp,#&58]
 	str	w31,[sp,#&60]
-	subs	w31,w2,#1
+	cmp	w2,#1
 	b.lt	#&8950
 	mov	w26,w2
-	subs	w31,w2,#1
+	cmp	w2,#1
 	b.ne	#&8604
 	mov	x8,x31
 	b	#&8650
@@ -4469,9 +4469,9 @@ fn000000000000614C proc
 	ldurb	w14,[x12,-#&A]
 	ldrb	w15,[x12],#&14
 	sub	x13,x13,#2
-	subs	w31,w14,#1
+	cmp	w14,#1
 	csinc	w10,w10,w10,NE
-	subs	w31,w15,#1
+	cmp	w15,#1
 	csinc	w11,w11,w11,NE
 	cbnz	x13,#&8624
 	add	w20,w11,w10
@@ -4485,7 +4485,7 @@ fn000000000000614C proc
 	add	x8,x8,#8
 	ldrb	w10,[x8],#&A
 	sub	x9,x9,#1
-	subs	w31,w10,#1
+	cmp	w10,#1
 	csinc	w20,w20,w20,NE
 	cbnz	x9,#&8668
 	cbz	w20,#&8950
@@ -4493,11 +4493,11 @@ fn000000000000614C proc
 	movz	w8,#&5088
 	add	x10,x9,x8
 	ldrsw	x11,[x10]
-	ubfm	w8,w20,#&1E,#&1D
+	lsl	w8,w20,#2
 	add	w8,w8,#&F
 	and	w8,w8,#&FFFFFFF0
 	add	w2,w11,w8
-	movz	w8,#&FFFFFA01
+	movz	w8,#&FA01
 	cmp	w2,w8
 	b.lt	#&86B8
 	ldr	x8,[x9,-#&2D90]
@@ -4514,16 +4514,16 @@ fn000000000000614C proc
 	mov	w28,w31
 	mov	x25,x31
 	fmul	s12,s0,s0
-	subs	w31,w24,#1
+	cmp	w24,#1
 	b.ne	#&8728
 	ldr	x10,[sp,#&38]
 	ldr	w9,[sp,#&60]
 	ldrsw	x8,[x10]
-	ubfm	w9,w9,#&1D,#&1C
+	lsl	w9,w9,#3
 	add	w9,w9,#&F
 	and	w9,w9,#&FFFFFFF0
 	add	w2,w9,w8
-	movz	w9,#&FFFFFA01
+	movz	w9,#&FA01
 	cmp	w2,w9
 	b.ge	#&8934
 	ldr	x9,[sp,#&48]
@@ -4541,11 +4541,11 @@ fn000000000000614C proc
 	fmov	s0,w31
 	str	w31,[sp,#&60]
 	ldrb	w9,[x22,#&8]
-	subs	w31,w9,#3
+	cmp	w9,#3
 	b.eq	#&87AC
-	subs	w31,w9,#2
+	cmp	w9,#2
 	b.eq	#&8810
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.ne	#&8840
 	tbz	w27,#&FFFFFFFF,#&8774
 	str	w10,[x19,x11]
@@ -4576,7 +4576,7 @@ fn000000000000614C proc
 	scvtf	s3,s3
 	scvtf	s4,s4
 	scvtf	s5,s5
-	add	x1,x31,#&60
+	add	x1,sp,#&60
 	mov	x0,x25
 	mov	v6.16b,v12.16b
 	mov	w2,w31
@@ -4602,24 +4602,24 @@ fn000000000000614C proc
 	stp	s0,s1,[x8]
 	b	#&8844
 	mov	w9,w8
-	sbfm	x11,x27,#0,#&1F
+	sxtw	x11,w27
 	sub	w10,w9,w28
 	add	x22,x22,#&A
 	sub	x26,x26,#1
 	mov	w8,w9
 	cbnz	x26,#&874C
 	add	w24,w24,#1
-	subs	w31,w24,#2
+	cmp	w24,#2
 	mov	x26,x23
 	str	w10,[x19,x11]
 	b.lo	#&86E4
 	ldr	w3,[sp,#&54]
 	cbz	x25,#&8950
 	fneg	s0,s11
-	subs	w31,w3,#0
+	cmp	w3,#0
 	mov	w8,w20
 	fcsel	s0,s0,s11,NE
-	subs	w31,w20,#8
+	cmp	w20,#8
 	b.hs	#&889C
 	ldp	x14,x13,[sp,#&20]
 	mov	x9,x31
@@ -4659,7 +4659,7 @@ fn000000000000614C proc
 	ldrsw	x8,[x10]
 	and	w9,w9,#&FFFFFFF0
 	add	w2,w9,w8
-	movz	w9,#&FFFFFA01
+	movz	w9,#&FA01
 	cmp	w2,w9
 	b.lt	#&8980
 	ldr	x8,[sp,#&48]
@@ -4669,7 +4669,7 @@ fn000000000000614C proc
 	orr	w1,w31,#2
 	ldr	x0,[x9,-#&2D88]
 	blr	x8
-	add	x31,x31,#&270
+	add	sp,sp,#&270
 	ldp	x29,x30,[sp,#&90]
 	ldp	x20,x19,[sp,#&80]
 	ldp	x22,x21,[sp,#&70]
@@ -4698,7 +4698,7 @@ fn000000000000614C proc
 	add	w14,w1,w17
 	subs	w0,w1,#1
 	b.lt	#&8A90
-	sbfm	x18,x17,#0,#&1F
+	sxtw	x18,w17
 	mov	x15,x31
 	mov	x16,x31
 	add	x17,x25,w17,sxtw #3
@@ -4709,7 +4709,7 @@ fn000000000000614C proc
 	fcmp	s1,s2
 	b.eq	#&8A78
 	smaddl	x2,w26,w12,x22
-	sbfm	x1,x26,#0,#&1F
+	sxtw	x1,w26
 	str	w31,[x2,#&10]!
 	fcmp	s1,s2
 	cbz	w3,#&8A08
@@ -4727,7 +4727,7 @@ fn000000000000614C proc
 	ldr	s2,[x2]
 	nop
 	madd	x1,x1,x12,x22
-	sbfm	x0,x0,#&FFFFFFFD,#&1F
+	sbfiz	x0,x0,#3,#&20
 	fmul	s1,s0,s1
 	fmul	s2,s2,s10
 	fadd	s2,s2,s9
@@ -4758,7 +4758,7 @@ fn000000000000614C proc
 	bl	#&17BC8
 	ldr	x20,[sp,#&48]
 	ldr	w25,[sp,#&34]
-	subs	w31,w26,#2
+	cmp	w26,#2
 	b.lt	#&8B5C
 	mov	w8,w26
 	orr	w9,w31,#1
@@ -4780,7 +4780,7 @@ fn000000000000614C proc
 	ldr	w16,[x15,#&10]
 	ldr	q1,[x15]
 	sub	x14,x14,#1
-	subs	x31,x14,#1
+	cmp	x14,#1
 	str	w16,[x15,#&24]
 	stur	q1,[x15,#&14]
 	sub	x15,x15,#&14
@@ -4802,7 +4802,7 @@ fn000000000000614C proc
 	b.ne	#&8AD0
 	stur	x31,[x29,-#&98]
 	ldr	x8,[x21]
-	subs	w31,w8,#&41
+	cmp	w8,#&41
 	b.lt	#&8BB4
 	ldr	x11,[sp,#&38]
 	orr	w10,w31,#4
@@ -4811,7 +4811,7 @@ fn000000000000614C proc
 	ldrsw	x9,[x11]
 	and	w8,w8,#&FFFFFFF0
 	add	w2,w9,w8
-	movz	w8,#&FFFFFA01
+	movz	w8,#&FA01
 	cmp	w2,w8
 	b.lt	#&8BBC
 	ldr	x8,[x20,-#&2D90]
@@ -4822,13 +4822,13 @@ fn000000000000614C proc
 	ldr	x8,[x21]
 	mov	x23,x31
 	b	#&8BCC
-	add	x23,x31,#&60
+	add	x23,sp,#&60
 	b	#&8BCC
 	ldr	x8,[x20,-#&2F80]
 	str	w2,[x11]
 	add	x23,x8,x9
 	ldr	x8,[x21]
-	ubfm	x9,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x9,x8,#&20
 	add	w11,w9,w25
 	fmov	s9,#1.0F
 	movz	w10,#&14
@@ -4836,16 +4836,16 @@ fn000000000000614C proc
 	smaddl	x10,w26,w10,x22
 	fadd	s0,s0,s9
 	str	s0,[x10,#&4]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&8950
 	ldr	w11,[sp,#&40]
 	mov	w9,w31
 	stp	x9,x31,[sp,#&20]
-	ubfm	x9,x8,#&FFFFFFE0,#&1F
+	lsl	x9,x8,#&20
 	scvtf	s10,w11
 	adrp	x11,#&28000
 	ldr	s4,[x11,#&668]
-	sbfm	x10,x8,#0,#&1F
+	sxtw	x10,w8
 	add	x9,x23,x9,asr #&1E
 	mov	x19,x31
 	mov	w28,w31
@@ -4856,7 +4856,7 @@ fn000000000000614C proc
 	add	x9,x9,#4
 	str	x9,[sp,#&18]
 	stp	s4,s10,[sp,#&10]
-	sbfm	x2,x8,#&FFFFFFFE,#&1F
+	sbfiz	x2,x8,#2,#&20
 	mov	x0,x23
 	mov	w1,w31
 	scvtf	s8,w25
@@ -4864,7 +4864,7 @@ fn000000000000614C proc
 	ldrsw	x8,[x21]
 	ldr	x0,[sp,#&40]
 	mov	w1,w31
-	ubfm	x8,x8,#&FFFFFFFE,#&FFFFFFFD
+	lsl	x8,x8,#2
 	add	x2,x8,#4
 	bl	#&2E60
 	cbz	x19,#&8CBC
@@ -4907,7 +4907,7 @@ fn000000000000614C proc
 	b	#&8D14
 	cbz	w10,#&8D84
 	sub	w10,w10,#1
-	sbfm	x8,x10,#0,#&1F
+	sxtw	x8,w10
 	mov	x27,x31
 	add	x8,x11,x8,lsl #5
 	cbz	x8,#&937C
@@ -4929,7 +4929,7 @@ fn000000000000614C proc
 	str	x31,[x8]
 	fmov	s2,#-1.0F
 	stp	s0,s1,[x8,#&18]
-	subs	w31,w9,#0
+	cmp	w9,#0
 	fcsel	s2,s9,s2,NE
 	str	s2,[x8,#&14]
 	fcmp	s1,s8
@@ -4942,7 +4942,7 @@ fn000000000000614C proc
 	movz	w9,#&6410
 	ldrsw	x8,[x10]
 	add	w2,w8,w9
-	movz	w9,#&FFFFFA01
+	movz	w9,#&FA01
 	cmp	w2,w9
 	b.lt	#&8DD4
 	ldr	x8,[x20,-#&2D90]
@@ -4999,7 +4999,7 @@ fn000000000000614C proc
 	fsub	s3,s3,s6
 	fsub	s6,s7,s11
 	fmov	s19,#1.0F
-	sbfm	x9,x10,#&FFFFFFFE,#&1F
+	sbfiz	x9,x10,#2,#&20
 	fadd	s3,s3,s19
 	fmul	s6,s2,s6
 	fmov	s7,#-0.5F
@@ -5043,7 +5043,7 @@ fn000000000000614C proc
 	fadd	s2,s2,s6
 	fadd	s4,s4,s20
 	fmov	s6,#-0.5F
-	sbfm	x8,x8,#&FFFFFFFE,#&1F
+	sbfiz	x8,x8,#2,#&20
 	fmul	s4,s4,s6
 	ldr	s7,[x23,x8]
 	fadd	s4,s4,s19
@@ -5123,7 +5123,7 @@ fn000000000000614C proc
 	ldr	s1,[x25,#&14]
 	fsub	s4,s5,s2
 	fsub	s2,s3,s2
-	sbfm	x8,x8,#&FFFFFFFE,#&1F
+	sbfiz	x8,x8,#2,#&20
 	fadd	s2,s4,s2
 	fmov	s3,#-0.5F
 	fmul	s2,s2,s3
@@ -5141,7 +5141,7 @@ fn000000000000614C proc
 	fadd	s0,s2,s0
 	str	s0,[x9,x8]
 	b	#&929C
-	subs	w31,w20,#1
+	cmp	w20,#1
 	b.lt	#&929C
 	mov	w26,w31
 	b	#&9110
@@ -5269,12 +5269,12 @@ fn000000000000614C proc
 	ldr	x8,[x21]
 	ldr	s4,[sp,#&10]
 	fmov	s3,#0.5F
-	subs	w31,w8,#1
+	cmp	w8,#1
 	orr	w13,w31,#&FF
 	b.lt	#&9310
 	mov	x9,x31
 	fmov	s0,w31
-	ubfm	x8,x9,#&FFFFFFFE,#&FFFFFFFD
+	lsl	x8,x9,#2
 	ldr	s1,[x24,x8]
 	ldr	s2,[x23,x8]
 	ldr	w8,[x21,#&8]
@@ -5285,7 +5285,7 @@ fn000000000000614C proc
 	fmul	s1,s1,s4
 	fadd	s1,s1,s3
 	fcvtzs	w1,s11
-	subs	w31,w11,#&FF
+	cmp	w11,#&FF
 	csel	w11,w13,w11,GT
 	madd	w8,w28,w8,w9
 	strb	w11,[x10,w8,sxtw]
@@ -5297,7 +5297,7 @@ fn000000000000614C proc
 	ldr	x20,[sp,#&48]
 	ldr	w25,[sp,#&34]
 	ldr	s10,[sp,#&14]
-	ubfm	x9,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x9,x8,#&20
 	mov	x10,x19
 	fmov	s9,#1.0F
 	fmov	s11,w31
@@ -5316,60 +5316,60 @@ fn000000000000614C proc
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF8F8
-	add	x3,x3,#&FFFFF92A
+	add	x2,x2,#&8F8
+	add	x3,x3,#&92A
 	movz	w1,#&778
 	bl	#&2F30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF8D6
-	add	x3,x3,#&FFFFF8E8
+	add	x2,x2,#&8D6
+	add	x3,x3,#&8E8
 	movz	w1,#&6A4
 	bl	#&2F30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF897
-	add	x3,x3,#&FFFFF8C2
+	add	x2,x2,#&897
+	add	x3,x3,#&8C2
 	movz	w1,#&840
 	bl	#&2F30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF8F8
-	add	x3,x3,#&FFFFF915
+	add	x2,x2,#&8F8
+	add	x3,x3,#&915
 	movz	w1,#&78B
 	bl	#&2F30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF8F8
-	add	x3,x3,#&FFFFF94B
+	add	x2,x2,#&8F8
+	add	x3,x3,#&94B
 	movz	w1,#&7CC
 	bl	#&2F30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF8F8
-	add	x3,x3,#&FFFFF939
+	add	x2,x2,#&8F8
+	add	x3,x3,#&939
 	movz	w1,#&7A7
 	bl	#&2F30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
 	adrp	x3,#&27000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF897
-	add	x3,x3,#&FFFFF8B5
+	add	x2,x2,#&897
+	add	x3,x3,#&8B5
 	movz	w1,#&833
 	bl	#&2F30
 	ret	x30
-	sub	x31,x31,#&A0
+	sub	sp,sp,#&A0
 	stp	d11,d10,[sp,#&30]
 	stp	d9,d8,[sp,#&40]
 	str	x25,[sp,#&50]
@@ -5377,9 +5377,9 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&70]
 	stp	x20,x19,[sp,#&80]
 	stp	x29,x30,[sp,#&90]
-	add	x29,x31,#&90
+	add	x29,sp,#&90
 	mov	x24,x2
-	add	x2,x31,#8
+	add	x2,sp,#8
 	mov	x21,x5
 	mov	x22,x4
 	mov	x23,x3
@@ -5402,8 +5402,8 @@ fn000000000000614C proc
 	b	#&95BC
 	sub	x2,x29,#&34
 	sub	x3,x29,#&38
-	add	x4,x31,#&2C
-	add	x5,x31,#&28
+	add	x4,sp,#&2C
+	add	x5,sp,#&28
 	mov	x0,x20
 	mov	w1,w25
 	mov	v0.16b,v11.16b
@@ -5436,7 +5436,7 @@ fn000000000000614C proc
 	ldrsw	x11,[x10]
 	and	w9,w9,#&FFFFFFF0
 	add	w2,w11,w9
-	movz	w9,#&FFFFFA01
+	movz	w9,#&FA01
 	cmp	w2,w9
 	b.lt	#&9578
 	ldr	x8,[x6,-#&2D90]
@@ -5456,7 +5456,7 @@ fn000000000000614C proc
 	adrp	x8,#&27000
 	ldr	x1,[sp,#&8]
 	ldr	s0,[x8,#&66C]
-	add	x0,x31,#&10
+	add	x0,sp,#&10
 	orr	w5,w31,#1
 	mov	w2,w19
 	mov	v1.16b,v11.16b
@@ -5472,12 +5472,12 @@ fn000000000000614C proc
 	ldr	x25,[sp,#&50]
 	ldp	d9,d8,[sp,#&40]
 	ldp	d11,d10,[sp,#&30]
-	add	x31,x31,#&A0
+	add	sp,sp,#&A0
 	ret	x30
 	fmov	s2,w31
 	fmov	s3,w31
 	b	#&9440
-	sub	x31,x31,#&A0
+	sub	sp,sp,#&A0
 	stp	d11,d10,[sp,#&30]
 	stp	d9,d8,[sp,#&40]
 	str	x25,[sp,#&50]
@@ -5485,11 +5485,11 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&70]
 	stp	x20,x19,[sp,#&80]
 	stp	x29,x30,[sp,#&90]
-	add	x29,x31,#&90
+	add	x29,sp,#&90
 	mov	w25,w5
 	mov	w23,w2
 	mov	x24,x1
-	add	x2,x31,#&20
+	add	x2,sp,#&20
 	mov	w1,w25
 	mov	v8.16b,v3.16b
 	mov	v9.16b,v2.16b
@@ -5500,10 +5500,10 @@ fn000000000000614C proc
 	mov	x20,x0
 	bl	#&7288
 	mov	w19,w0
-	add	x2,x31,#8
+	add	x2,sp,#8
 	sub	x3,x29,#&34
 	sub	x4,x29,#&38
-	add	x5,x31,#&2C
+	add	x5,sp,#&2C
 	mov	x0,x20
 	mov	w1,w25
 	str	w31,[sp,#&8]
@@ -5532,7 +5532,7 @@ fn000000000000614C proc
 	ldr	x1,[sp,#&20]
 	ldr	x6,[x20]
 	ldr	s0,[x8,#&66C]
-	add	x0,x31,#8
+	add	x0,sp,#8
 	orr	w5,w31,#1
 	mov	w2,w19
 	mov	v1.16b,v11.16b
@@ -5547,7 +5547,7 @@ fn000000000000614C proc
 	ldr	x25,[sp,#&50]
 	ldp	d9,d8,[sp,#&40]
 	ldp	d11,d10,[sp,#&30]
-	add	x31,x31,#&A0
+	add	sp,sp,#&A0
 	ret	x30
 	fmov	s2,w31
 	fmov	s3,w31
@@ -5558,7 +5558,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
+	add	x29,sp,#&50
 	mov	x19,x5
 	mov	x20,x4
 	mov	x21,x3
@@ -5592,7 +5592,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
+	add	x29,sp,#&50
 	mov	x22,x1
 	mov	w1,w5
 	mov	v8.16b,v3.16b
@@ -5626,7 +5626,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	x19,x5
 	mov	x20,x4
 	mov	x21,x3
@@ -5656,7 +5656,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	x22,x1
 	mov	w1,w5
 	mov	v8.16b,v1.16b
@@ -5682,7 +5682,7 @@ fn000000000000614C proc
 	mov	v1.16b,v8.16b
 	ldp	d9,d8,[sp],#&50
 	b	#&95F0
-	sub	x31,x31,#&E0
+	sub	sp,sp,#&E0
 	str	d8,[sp,#&70]
 	stp	x28,x27,[sp,#&80]
 	stp	x26,x25,[sp,#&90]
@@ -5690,11 +5690,11 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&B0]
 	stp	x20,x19,[sp,#&C0]
 	stp	x29,x30,[sp,#&D0]
-	add	x29,x31,#&D0
+	add	x29,sp,#&D0
 	mov	w8,w1
 	mov	x9,x0
 	mov	x21,x2
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	mov	x1,x9
 	mov	w2,w8
 	mov	x23,x7
@@ -5707,20 +5707,20 @@ fn000000000000614C proc
 	bl	#&697C
 	cbz	w0,#&9B6C
 	mul	w8,w20,w19
-	sbfm	x2,x8,#0,#&1F
+	sxtw	x2,w8
 	mov	x0,x21
 	mov	w1,w31
 	str	w19,[sp,#&20]
 	str	x21,[sp,#&8]
 	bl	#&2E60
 	orr	w22,w31,#1
-	subs	w31,w25,#1
+	cmp	w25,#1
 	orr	w8,w31,#1
 	str	w8,[sp,#&24]
 	b.lt	#&9B7C
 	ldr	x8,[sp,#&40]
 	ldrsw	x9,[sp,#&2E]
-	sbfm	x10,x25,#0,#&1F
+	sxtw	x10,w25
 	str	x10,[sp,#&10]
 	mov	w12,w24
 	add	x8,x8,x9
@@ -5732,7 +5732,7 @@ fn000000000000614C proc
 	bfm	w10,w9,#&18,#&17
 	str	w9,[sp,#&4]
 	bfm	w8,w11,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	sub	w8,w9,w8,sxth #0
 	scvtf	s0,w8
 	orr	w8,w31,#1
@@ -5744,22 +5744,22 @@ fn000000000000614C proc
 	fdiv	s8,s8,s0
 	str	w8,[sp,#&24]
 	ldr	x8,[sp,#&18]
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	add	w1,w8,w28
 	bl	#&6EB0
 	mov	w23,w0
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	sub	x2,x29,#&54
 	sub	x3,x29,#&58
 	mov	w1,w23
 	bl	#&7FC0
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	fmov	s2,w31
 	fmov	s3,w31
-	add	x2,x31,#&34
-	add	x3,x31,#&30
-	add	x4,x31,#&2C
-	add	x5,x31,#&28
+	add	x2,sp,#&34
+	add	x3,sp,#&30
+	add	x4,sp,#&2C
+	add	x5,sp,#&28
 	mov	w1,w23
 	mov	v0.16b,v8.16b
 	mov	v1.16b,v8.16b
@@ -5785,7 +5785,7 @@ fn000000000000614C proc
 	b.ge	#&9BA4
 	ldr	x8,[sp,#&8]
 	mul	w9,w21,w10
-	add	x0,x31,#&38
+	add	x0,sp,#&38
 	fmov	s2,w31
 	add	x8,x8,w19,sxtw #0
 	add	x1,x8,w9,sxtw #0
@@ -5840,7 +5840,7 @@ fn000000000000614C proc
 	ldp	x26,x25,[sp,#&90]
 	ldp	x28,x27,[sp,#&80]
 	ldr	d8,[sp,#&70]
-	add	x31,x31,#&E0
+	add	sp,sp,#&E0
 	ret	x30
 	adrp	x0,#&27000
 	adrp	x2,#&27000
@@ -5851,7 +5851,7 @@ fn000000000000614C proc
 	movz	w1,#&9F1
 	bl	#&2F30
 	movz	w8,#&14
-	subs	w31,w7,#0
+	cmp	w7,#0
 	fmov	s0,#-0.5F
 	fmov	s1,w31
 	smaddl	x8,w3,w8,x0
@@ -5910,7 +5910,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	x25,x6
 	movz	w8,#&5088
 	add	x26,x25,x8
@@ -5922,7 +5922,7 @@ fn000000000000614C proc
 	mov	x19,x1
 	mov	x24,x0
 	add	w2,w8,#&20
-	movz	w9,#&FFFFFA01
+	movz	w9,#&FA01
 	cmp	w2,w9
 	b.lt	#&9D10
 	ldr	x9,[x25,-#&2D90]
@@ -5934,7 +5934,7 @@ fn000000000000614C proc
 	mov	x9,x31
 	b	#&9D28
 	ldr	x9,[x25,-#&2F80]
-	sbfm	x8,x8,#0,#&1F
+	sxtw	x8,w8
 	str	w2,[x26]
 	add	x9,x9,x8
 	b	#&9D28
@@ -5943,7 +5943,7 @@ fn000000000000614C proc
 	add	w8,w10,#&F
 	and	w8,w8,#&FFFFFFF0
 	add	w8,w2,w8
-	movz	w11,#&FFFFFA01
+	movz	w11,#&FA01
 	cmp	w8,w11
 	b.lt	#&9D64
 	ldr	x9,[x25,-#&2D90]
@@ -5960,7 +5960,7 @@ fn000000000000614C proc
 	cbz	x9,#&9DC8
 	add	x8,x11,w2,sxtw #0
 	cbz	x8,#&9DC8
-	subs	w31,w23,#0
+	cmp	w23,#0
 	stp	x19,x8,[x24,#&28]
 	orr	w0,w31,#1
 	sub	w8,w20,w22
@@ -5974,7 +5974,7 @@ fn000000000000614C proc
 	str	w31,[x9,#&10]
 	cbz	x19,#&9DC8
 	mul	w8,w20,w21
-	sbfm	x2,x8,#0,#&1F
+	sxtw	x2,w8
 	mov	x0,x19
 	mov	w1,w31
 	bl	#&2E60
@@ -5987,10 +5987,10 @@ fn000000000000614C proc
 	ret	x30
 	ret	x30
 	stp	x29,x30,[sp,-#&10]!
-	add	x29,x31,#0
-	subs	w31,w1,#9
+	add	x29,sp,#0
+	cmp	w1,#9
 	b.hs	#&9E08
-	subs	w31,w2,#9
+	cmp	w2,#9
 	b.hs	#&9E28
 	stp	w1,w2,[x0,#&20]
 	ldp	x29,x30,[sp],#&10
@@ -6000,7 +6000,7 @@ fn000000000000614C proc
 	adrp	x3,#&27000
 	add	x0,x0,#&758
 	add	x2,x2,#&7FE
-	add	x3,x3,#&FFFFF818
+	add	x3,x3,#&818
 	movz	w1,#&A90
 	bl	#&2F30
 	adrp	x0,#&27000
@@ -6008,10 +6008,10 @@ fn000000000000614C proc
 	adrp	x3,#&27000
 	add	x0,x0,#&758
 	add	x2,x2,#&7FE
-	add	x3,x3,#&FFFFF82A
+	add	x3,x3,#&82A
 	movz	w1,#&A91
 	bl	#&2F30
-	sub	x31,x31,#&90
+	sub	sp,sp,#&90
 	str	d8,[sp,#&20]
 	stp	x28,x27,[sp,#&30]
 	stp	x26,x25,[sp,#&40]
@@ -6019,11 +6019,11 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&60]
 	stp	x20,x19,[sp,#&70]
 	stp	x29,x30,[sp,#&80]
-	add	x29,x31,#&80
+	add	x29,sp,#&80
 	mov	x19,x2
 	mov	x20,x1
 	mov	x21,x0
-	subs	w31,w3,#1
+	cmp	w3,#1
 	b.lt	#&A00C
 	mov	w8,w3
 	mov	x23,x31
@@ -6044,7 +6044,7 @@ fn000000000000614C proc
 	ldrb	w11,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w10,w9,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	bfm	w8,w11,#&18,#&17
 	sub	w8,w9,w8,sxth #0
 	scvtf	s1,w8
@@ -6063,10 +6063,10 @@ fn000000000000614C proc
 	madd	x28,x23,x12,x19
 	fdiv	s8,s0,s1
 	strb	w8,[x28,#&20]
-	ubfm	x8,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x8,x8,#&20
 	strb	w8,[x28,#&21]
 	ldr	w8,[x28,#&10]!
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&9FF8
 	madd	x8,x23,x12,x19
 	add	x25,x8,#8
@@ -6091,10 +6091,10 @@ fn000000000000614C proc
 	ucvtf	s1,s1
 	fmul	s0,s8,s0
 	fmul	s1,s8,s1
-	add	x2,x31,#&2C
-	add	x3,x31,#&28
-	add	x4,x31,#&1C
-	add	x5,x31,#&18
+	add	x2,sp,#&2C
+	add	x3,sp,#&28
+	add	x4,sp,#&1C
+	add	x5,sp,#&18
 	mov	x0,x20
 	bl	#&8368
 	ldr	w8,[sp,#&1C]
@@ -6133,9 +6133,9 @@ fn000000000000614C proc
 	ldp	x26,x25,[sp,#&40]
 	ldp	x28,x27,[sp,#&30]
 	ldr	d8,[sp,#&20]
-	add	x31,x31,#&90
+	add	sp,sp,#&90
 	ret	x30
-	sub	x31,x31,#&170
+	sub	sp,sp,#&170
 	stp	d13,d12,[sp,#&E0]
 	stp	d11,d10,[sp,#&F0]
 	stp	d9,d8,[sp,#&100]
@@ -6145,25 +6145,25 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&140]
 	stp	x20,x19,[sp,#&150]
 	stp	x29,x30,[sp,#&160]
-	add	x29,x31,#&160
+	add	x29,sp,#&160
 	str	x1,[sp,#&60]
 	ldr	w8,[x0,#&20]
 	mov	x22,x4
-	subs	w31,w3,#1
+	cmp	w3,#1
 	str	w8,[sp,#&14]
 	ldr	w8,[x0,#&24]
 	str	w8,[sp,#&10]
 	orr	w8,w31,#1
 	str	w8,[sp,#&3C]
 	b.lt	#&A974
-	sbfm	x8,x3,#0,#&1F
-	movz	w28,#&FFFFCCCC,lsl #&10
+	sxtw	x8,w3
+	movz	w28,#&CCCC,lsl #&10
 	mov	x9,x31
 	mov	w25,w31
 	stp	x8,x2,[sp,#&18]
 	fmov	s8,#1.0F
 	orr	w21,w31,#&18
-	movk	w28,#&FFFFCCCD
+	movk	w28,#&CCCD
 	orr	w8,w31,#1
 	str	w8,[sp,#&3C]
 	str	x22,[sp,#&68]
@@ -6184,7 +6184,7 @@ fn000000000000614C proc
 	ldrb	w11,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w10,w9,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	bfm	w8,w11,#&18,#&17
 	sub	w8,w9,w8,sxth #0
 	ldr	x9,[sp,#&20]
@@ -6229,7 +6229,7 @@ fn000000000000614C proc
 	madd	x9,x11,x12,x10
 	ldr	w8,[x9,#&10]!
 	str	x9,[sp,#&58]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&A95C
 	madd	x9,x11,x12,x10
 	add	x10,x9,#&18
@@ -6239,7 +6239,7 @@ fn000000000000614C proc
 	str	x10,[sp,#&50]
 	add	x10,x9,#8
 	add	x9,x9,#4
-	sbfm	x25,x25,#0,#&1F
+	sxtw	x25,w25
 	str	x10,[sp,#&48]
 	str	x9,[sp,#&30]
 	nop
@@ -6337,10 +6337,10 @@ fn000000000000614C proc
 	stur	x11,[x29,-#&A8]
 	ldr	w27,[x24]
 	ldrsw	x25,[x22]
-	movz	w23,#&FFFFAAAA,lsl #&10
-	movk	w23,#&FFFFAAAB
+	movz	w23,#&AAAA,lsl #&10
+	movk	w23,#&AAAB
 	stur	x31,[x29,-#&88]
-	subs	w31,w27,#1
+	cmp	w27,#1
 	b.lt	#&A5B0
 	ldur	x11,[x29,-#&A8]
 	add	x9,x9,x10
@@ -6358,10 +6358,10 @@ fn000000000000614C proc
 	sub	x0,x29,#&88
 	mov	w1,w31
 	bl	#&2E60
-	subs	w31,w20,#3
+	cmp	w20,#3
 	b.hi	#&A420
 	adrp	x8,#&25000
-	add	x8,x8,#&FFFFFE3C
+	add	x8,x8,#&E3C
 	mov	x9,x8
 	ldrsw	x8,[x9,x20]
 	add	x8,x8,x9
@@ -6379,7 +6379,7 @@ fn000000000000614C proc
 	strb	w10,[x13]
 	sub	w10,w10,w11
 	add	w8,w10,w8
-	ubfm	w10,w8,#1,#&1F
+	lsr	w10,w8,#1
 	strb	w10,[x21,x9]
 	add	x9,x9,#1
 	subs	x31,x24,x9
@@ -6418,7 +6418,7 @@ fn000000000000614C proc
 	sub	w10,w10,w11
 	add	w8,w10,w8
 	umaddl	x10,w8,w23,x31
-	ubfm	x10,x10,#&FFFFFFE1,#&FFFFFFFF
+	lsr	x10,x10,#&21
 	strb	w10,[x21,x9]
 	add	x9,x9,#1
 	subs	x31,x24,x9
@@ -6437,7 +6437,7 @@ fn000000000000614C proc
 	strb	w10,[x13]
 	sub	w10,w10,w11
 	add	w8,w10,w8
-	ubfm	w10,w8,#2,#&1F
+	lsr	w10,w8,#2
 	strb	w10,[x21,x9]
 	add	x9,x9,#1
 	subs	x31,x24,x9
@@ -6457,7 +6457,7 @@ fn000000000000614C proc
 	sub	w10,w10,w11
 	add	w8,w10,w8
 	umaddl	x10,w8,w28,x31
-	ubfm	x10,x10,#&FFFFFFE2,#&FFFFFFFF
+	lsr	x10,x10,#&22
 	strb	w10,[x21,x9]
 	add	x9,x9,#1
 	subs	x31,x24,x9
@@ -6468,7 +6468,7 @@ fn000000000000614C proc
 	mov	w8,w31
 	cmp	w9,w25
 	b.ge	#&A59C
-	sbfm	x9,x9,#0,#&1F
+	sxtw	x9,w9
 	ldrb	w10,[x21,x9]
 	cbnz	w10,#&A9B4
 	sub	x10,x29,#&88
@@ -6493,9 +6493,9 @@ fn000000000000614C proc
 	b	#&A5DC
 	mov	x12,x22
 	ldr	x22,[sp,#&68]
-	movz	w23,#&FFFFAAAA,lsl #&10
-	ubfm	x26,x19,#&FFFFFFE0,#&FFFFFFFF
-	movk	w23,#&FFFFAAAB
+	movz	w23,#&AAAA,lsl #&10
+	lsr	x26,x19,#&20
+	movk	w23,#&AAAB
 	subs	w27,w26,#2
 	b.lo	#&A8A0
 	ldr	x8,[sp,#&A0]
@@ -6507,7 +6507,7 @@ fn000000000000614C proc
 	ldrsw	x25,[x24]
 	stur	x31,[x29,-#&88]
 	stur	w11,[x29,-#&A8]
-	subs	w31,w11,#1
+	cmp	w11,#1
 	b.lt	#&A890
 	add	x9,x9,x10
 	orr	w10,w31,#1
@@ -6523,10 +6523,10 @@ fn000000000000614C proc
 	mov	w1,w31
 	mov	x2,x24
 	bl	#&2E60
-	subs	w31,w27,#3
+	cmp	w27,#3
 	b.hi	#&A6C0
 	adrp	x8,#&25000
-	add	x8,x8,#&FFFFFE4C
+	add	x8,x8,#&E4C
 	mov	x9,x8
 	ldrsw	x8,[x9,x27]
 	add	x8,x8,x9
@@ -6546,7 +6546,7 @@ fn000000000000614C proc
 	strb	w11,[x14]
 	sub	w11,w11,w12
 	add	w8,w11,w8
-	ubfm	w11,w8,#1,#&1F
+	lsr	w11,w8,#1
 	add	x10,x10,#1
 	strb	w11,[x21,x9]
 	add	x9,x9,x20
@@ -6592,7 +6592,7 @@ fn000000000000614C proc
 	sub	w11,w11,w12
 	add	w8,w11,w8
 	umaddl	x11,w8,w23,x31
-	ubfm	x11,x11,#&FFFFFFE1,#&FFFFFFFF
+	lsr	x11,x11,#&21
 	add	x10,x10,#1
 	strb	w11,[x21,x9]
 	add	x9,x9,x20
@@ -6614,7 +6614,7 @@ fn000000000000614C proc
 	strb	w11,[x14]
 	sub	w11,w11,w12
 	add	w8,w11,w8
-	ubfm	w11,w8,#2,#&1F
+	lsr	w11,w8,#2
 	add	x10,x10,#1
 	strb	w11,[x21,x9]
 	add	x9,x9,x20
@@ -6637,7 +6637,7 @@ fn000000000000614C proc
 	sub	w11,w11,w12
 	add	w8,w11,w8
 	umaddl	x11,w8,w28,x31
-	ubfm	x11,x11,#&FFFFFFE2,#&FFFFFFFF
+	lsr	x11,x11,#&22
 	add	x10,x10,#1
 	strb	w11,[x21,x9]
 	add	x9,x9,x20
@@ -6649,7 +6649,7 @@ fn000000000000614C proc
 	mov	w8,w31
 	cmp	w9,w25
 	b.ge	#&A87C
-	sbfm	x10,x9,#0,#&1F
+	sxtw	x10,w9
 	mul	w9,w20,w9
 	add	x9,x21,w9,sxtw #0
 	ldrb	w11,[x9]
@@ -6740,29 +6740,29 @@ fn000000000000614C proc
 	ldp	d9,d8,[sp,#&100]
 	ldp	d11,d10,[sp,#&F0]
 	ldp	d13,d12,[sp,#&E0]
-	add	x31,x31,#&170
+	add	sp,sp,#&170
 	ret	x30
 	adrp	x0,#&26000
 	adrp	x2,#&26000
 	adrp	x3,#&26000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF9D8
-	add	x3,x3,#&FFFFF9EB
+	add	x2,x2,#&9D8
+	add	x3,x3,#&9EB
 	movz	w1,#&ACF
 	bl	#&2F30
 	adrp	x0,#&26000
 	adrp	x2,#&26000
 	adrp	x3,#&26000
 	add	x0,x0,#&758
-	add	x2,x2,#&FFFFF9FA
-	add	x3,x3,#&FFFFFA0D
+	add	x2,x2,#&9FA
+	add	x3,x3,#&A0D
 	movz	w1,#&B0D
 	bl	#&2F30
-	subs	w31,w2,#1
+	cmp	w2,#1
 	b.lt	#&AA80
 	ldr	x9,[x0,#&8]
 	mov	x8,x31
-	sbfm	x12,x2,#0,#&1F
+	sxtw	x12,w2
 	add	x14,x1,#&14
 	ldp	w10,w11,[x9]
 	ldr	w13,[x9,#&8]
@@ -6796,10 +6796,10 @@ fn000000000000614C proc
 	mov	w8,w31
 	cmp	w8,w2
 	b.ge	#&AAF4
-	sbfm	x11,x8,#0,#&1F
-	sbfm	x8,x2,#0,#&1F
+	sxtw	x11,w8
+	sxtw	x8,w2
 	sub	x9,x8,x11
-	subs	x31,x9,#1
+	cmp	x9,#1
 	b.ls	#&AAD8
 	and	x10,x9,#0
 	cbz	x10,#&AAD8
@@ -6823,18 +6823,18 @@ fn000000000000614C proc
 	sub	x8,x8,#1
 	cbnz	x8,#&AAE8
 	ret	x30
-	sub	x31,x31,#&90
+	sub	sp,sp,#&90
 	str	x25,[sp,#&40]
 	stp	x24,x23,[sp,#&50]
 	stp	x22,x21,[sp,#&60]
 	stp	x20,x19,[sp,#&70]
 	stp	x29,x30,[sp,#&80]
-	add	x29,x31,#&80
+	add	x29,sp,#&80
 	mov	w19,w4
 	mov	x20,x3
 	mov	x22,x1
 	mov	x21,x0
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.lt	#&ABCC
 	mov	x9,x31
 	mov	w8,w19
@@ -6842,11 +6842,11 @@ fn000000000000614C proc
 	orr	w11,w31,#&1C
 	madd	x12,x9,x10,x20
 	ldrsw	x12,[x12,#&8]
-	subs	w31,w12,#1
+	cmp	w12,#1
 	b.lt	#&ABA4
 	madd	x13,x9,x10,x20
 	ldr	x14,[x13,#&18]
-	subs	w31,w12,#1
+	cmp	w12,#1
 	b.ne	#&AB64
 	mov	x13,x31
 	b	#&AB90
@@ -6869,10 +6869,10 @@ fn000000000000614C proc
 	add	x9,x9,#1
 	subs	x31,x9,x8
 	b.ne	#&AB3C
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.lt	#&ABCC
 	mov	w9,w19
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.ne	#&ABD4
 	mov	x8,x31
 	b	#&AC14
@@ -6909,7 +6909,7 @@ fn000000000000614C proc
 	and	w8,w8,#&FFFFFFF0
 	ldr	x9,[x21]
 	movz	w10,#&5088
-	movz	w11,#&FFFFFA01
+	movz	w11,#&FA01
 	add	x10,x9,x10
 	ldrsw	x24,[x10]
 	add	w8,w24,w8
@@ -6932,21 +6932,21 @@ fn000000000000614C proc
 	str	x9,[sp,#&8]
 	bl	#&6774
 	mov	w2,w0
-	add	x0,x31,#8
+	add	x0,sp,#8
 	mov	x1,x22
 	bl	#&697C
-	add	x1,x31,#8
+	add	x1,sp,#8
 	mov	x0,x21
 	mov	x2,x20
 	mov	w3,w19
 	mov	x4,x23
 	bl	#&9E48
-	subs	w31,w0,#1
+	cmp	w0,#1
 	b.lt	#&AD68
 	ldr	x9,[x21,#&8]
 	add	x14,x25,x24
 	mov	x8,x31
-	sbfm	x10,x0,#0,#&1F
+	sxtw	x10,w0
 	ldp	w11,w12,[x9]
 	ldr	w13,[x9,#&8]
 	add	x14,x14,#&14
@@ -6982,10 +6982,10 @@ fn000000000000614C proc
 	mov	w8,w31
 	cmp	w8,w0
 	b.ge	#&ADE4
-	sbfm	x11,x8,#0,#&1F
-	sbfm	x8,x0,#0,#&1F
+	sxtw	x11,w8
+	sxtw	x8,w0
 	sub	x9,x8,x11
-	subs	x31,x9,#1
+	cmp	x9,#1
 	b.ls	#&ADC4
 	and	x10,x9,#0
 	cbz	x10,#&ADC4
@@ -7010,7 +7010,7 @@ fn000000000000614C proc
 	str	w31,[x9],#&18
 	sub	x8,x8,#1
 	cbnz	x8,#&ADD8
-	add	x1,x31,#8
+	add	x1,sp,#8
 	mov	x0,x21
 	mov	x2,x20
 	mov	w3,w19
@@ -7021,21 +7021,21 @@ fn000000000000614C proc
 	ldp	x22,x21,[sp,#&60]
 	ldp	x24,x23,[sp,#&50]
 	ldr	x25,[sp,#&40]
-	add	x31,x31,#&90
+	add	sp,sp,#&90
 	ret	x30
-	sub	x31,x31,#&40
+	sub	sp,sp,#&40
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	str	w3,[sp,#&C]
 	str	w4,[sp,#&18]
-	add	x3,x31,#8
+	add	x3,sp,#8
 	orr	w4,w31,#1
 	str	x31,[sp,#&10]
 	str	x5,[sp,#&20]
 	str	s0,[sp,#&8]
 	bl	#&AAF8
 	ldp	x29,x30,[sp,#&30]
-	add	x31,x31,#&40
+	add	sp,sp,#&40
 	ret	x30
 	orr	w8,w31,#&1C
 	smaddl	x8,w3,w8,x0
@@ -7047,7 +7047,7 @@ fn000000000000614C proc
 	scvtf	s7,w2
 	fdiv	s1,s6,s0
 	fdiv	s0,s6,s7
-	sbfm	x8,x3,#0,#&1F
+	sxtw	x8,w3
 	fadd	s6,s5,s16
 	cbz	w7,#&AEC4
 	ldr	s16,[x5]
@@ -7102,7 +7102,7 @@ fn000000000000614C proc
 	ret	x30
 	str	x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	mov	w19,w1
 	bl	#&AF74
 	ldp	x29,x30,[sp,#&10]
@@ -7111,16 +7111,16 @@ fn000000000000614C proc
 	ldr	x19,[sp],#&20
 	ret	x30
 	cbz	w3,#&B114
-	movz	w11,#&FFFFFCA0,lsl #&10
+	movz	w11,#&FCA0,lsl #&10
 	mov	w9,w31
-	movz	w10,#&FFFFD800
+	movz	w10,#&D800
 	movk	w11,#&2400
-	movz	w12,#&FFFFDC00
+	movz	w12,#&DC00
 	ldrb	w14,[x2,#&1]
 	ldrb	w15,[x2]
 	mov	w13,w14
 	bfm	w13,w15,#&18,#7
-	subs	w31,w13,#&7F
+	cmp	w13,#&7F
 	b.hi	#&AFC0
 	cmp	w9,w1
 	b.ge	#&B120
@@ -7129,14 +7129,14 @@ fn000000000000614C proc
 	b.ne	#&B12C
 	add	w9,w9,#1
 	b	#&B0FC
-	subs	w31,w13,#&7FF
+	cmp	w13,#&7FF
 	b.hi	#&B008
-	sbfm	x8,x9,#0,#&1F
+	sxtw	x8,w9
 	add	x8,x8,#1
 	cmp	w8,w1
 	b.ge	#&B138
 	ldrb	w15,[x0,w9,sxtw]
-	ubfm	w13,w13,#6,#&1F
+	lsr	w13,w13,#6
 	add	w13,w13,#&C0
 	cmp	w15,w13
 	b.ne	#&B144
@@ -7147,9 +7147,9 @@ fn000000000000614C proc
 	b.ne	#&B150
 	add	w9,w9,#2
 	b	#&B0FC
-	ubfm	w8,w15,#&18,#&17
+	lsl	w8,w15,#8
 	and	w17,w8,#&FC00
-	sbfm	x8,x9,#0,#&1F
+	sxtw	x8,w9
 	cmp	w17,w10
 	b.ne	#&B0A0
 	add	x8,x8,#3
@@ -7161,7 +7161,7 @@ fn000000000000614C proc
 	add	w13,w15,w13,lsl #&A
 	ldrb	w14,[x0,w9,sxtw]
 	add	w13,w13,w11
-	ubfm	w15,w13,#&12,#&1F
+	lsr	w15,w13,#&12
 	add	w15,w15,#&F0
 	cmp	w14,w15
 	b.ne	#&B168
@@ -7192,7 +7192,7 @@ fn000000000000614C proc
 	cmp	w17,w12
 	b.eq	#&B10C
 	ldrb	w8,[x0,w9,sxtw]
-	ubfm	w15,w15,#4,#&1F
+	lsr	w15,w15,#4
 	orr	w15,w15,#&E0
 	cmp	w8,w15
 	b.ne	#&B198
@@ -7267,16 +7267,16 @@ fn000000000000614C proc
 	add	w11,w11,#&C
 	add	x12,x8,w11,uxtw #0
 	ldrb	w13,[x12]
-	subs	w31,w13,#&6E
+	cmp	w13,#&6E
 	b.ne	#&B214
 	ldrb	w13,[x12,#&1]
-	subs	w31,w13,#&61
+	cmp	w13,#&61
 	b.ne	#&B214
 	ldrb	w13,[x12,#&2]
-	subs	w31,w13,#&6D
+	cmp	w13,#&6D
 	b.ne	#&B214
 	ldrb	w13,[x12,#&3]
-	subs	w31,w13,#&65
+	cmp	w13,#&65
 	b.eq	#&B234
 	add	x10,x10,#1
 	add	w11,w11,#&10
@@ -7290,7 +7290,7 @@ fn000000000000614C proc
 	ldrb	w10,[x12,#&9]
 	ldrb	w11,[x12,#&A]
 	ldrb	w12,[x12,#&B]
-	ubfm	w9,w9,#8,#7
+	lsl	w9,w9,#&18
 	bfm	w9,w10,#&10,#7
 	bfm	w9,w11,#&18,#7
 	orr	w12,w9,w12
@@ -7344,7 +7344,7 @@ fn000000000000614C proc
 	str	w11,[x1]
 	ldrb	w9,[x13,#&A]
 	ldrb	w11,[x13,#&B]
-	bfm	x11,x9,#&FFFFFFF8,#7
+	bfm	x11,x9,#&38,#7
 	add	x0,x8,x11
 	ret	x30
 	str	x25,[sp,-#&50]!
@@ -7352,7 +7352,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	x21,x1
 	mov	w1,w31
 	mov	w19,w2
@@ -7366,30 +7366,30 @@ fn000000000000614C proc
 	mov	w24,w31
 	add	x8,x22,w20,uxtw #0
 	ldrb	w9,[x8]
-	subs	w31,w9,#&4E
+	cmp	w9,#&4E
 	b.gt	#&B394
 	cbz	w9,#&B3CC
-	subs	w31,w9,#&31
+	cmp	w9,#&31
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&1]
 	cbnz	w9,#&B4F0
 	b	#&B3D8
-	subs	w31,w9,#&4F
+	cmp	w9,#&4F
 	b.eq	#&B3EC
-	subs	w31,w9,#&74
+	cmp	w9,#&74
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&1]
-	subs	w31,w9,#&79
+	cmp	w9,#&79
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&2]
-	subs	w31,w9,#&70
+	cmp	w9,#&70
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&3]
-	subs	w31,w9,#&31
+	cmp	w9,#&31
 	b.eq	#&B410
 	b	#&B4F0
 	ldrb	w9,[x8,#&1]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&2]
 	cbnz	w9,#&B4F0
@@ -7397,13 +7397,13 @@ fn000000000000614C proc
 	cbnz	w9,#&B4F0
 	b	#&B410
 	ldrb	w9,[x8,#&1]
-	subs	w31,w9,#&54
+	cmp	w9,#&54
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&2]
-	subs	w31,w9,#&54
+	cmp	w9,#&54
 	b.ne	#&B4F0
 	ldrb	w9,[x8,#&3]
-	subs	w31,w9,#&4F
+	cmp	w9,#&4F
 	b.ne	#&B4F0
 	ldrb	w10,[x8,#&4]
 	cbz	w19,#&B494
@@ -7416,16 +7416,16 @@ fn000000000000614C proc
 	mov	w13,w8
 	add	x14,x22,w13,uxtw #0
 	ldrb	w15,[x14]
-	subs	w31,w15,#&68
+	cmp	w15,#&68
 	b.ne	#&B468
 	ldrb	w15,[x14,#&1]
-	subs	w31,w15,#&65
+	cmp	w15,#&65
 	b.ne	#&B468
 	ldrb	w15,[x14,#&2]
-	subs	w31,w15,#&61
+	cmp	w15,#&61
 	b.ne	#&B468
 	ldrb	w15,[x14,#&3]
-	subs	w31,w15,#&64
+	cmp	w15,#&64
 	b.eq	#&B50C
 	add	x12,x12,#1
 	add	w13,w13,#&10
@@ -7440,22 +7440,22 @@ fn000000000000614C proc
 	b	#&B49C
 	ldrb	w9,[x8,#&5]
 	add	w8,w20,#&C
-	ubfm	w10,w10,#&18,#&17
+	lsl	w10,w10,#8
 	orr	w9,w9,w10
 	cbz	w9,#&B4F0
 	mov	x10,x31
 	add	x11,x22,w8,uxtw #0
 	ldrb	w12,[x11]
-	subs	w31,w12,#&6E
+	cmp	w12,#&6E
 	b.ne	#&B4E0
 	ldrb	w12,[x11,#&1]
-	subs	w31,w12,#&61
+	cmp	w12,#&61
 	b.ne	#&B4E0
 	ldrb	w12,[x11,#&2]
-	subs	w31,w12,#&6D
+	cmp	w12,#&6D
 	b.ne	#&B4E0
 	ldrb	w12,[x11,#&3]
-	subs	w31,w12,#&65
+	cmp	w12,#&65
 	b.eq	#&B530
 	add	x10,x10,#1
 	add	w8,w8,#&10
@@ -7472,16 +7472,16 @@ fn000000000000614C proc
 	ldrb	w12,[x14,#&9]
 	ldrb	w13,[x14,#&A]
 	ldrb	w14,[x14,#&B]
-	ubfm	x11,x11,#&FFFFFFE8,#&FFFFFFE7
-	bfm	x11,x12,#&FFFFFFF0,#7
-	bfm	x11,x13,#&FFFFFFF8,#7
+	lsl	x11,x11,#&18
+	bfm	x11,x12,#&30,#7
+	bfm	x11,x13,#&38,#7
 	orr	x11,x11,x14
 	b	#&B47C
 	ldrb	w8,[x11,#&8]
 	ldrb	w9,[x11,#&9]
 	ldrb	w10,[x11,#&A]
 	ldrb	w11,[x11,#&B]
-	ubfm	w8,w8,#8,#7
+	lsl	w8,w8,#&18
 	bfm	w8,w9,#&10,#7
 	bfm	w8,w10,#&18,#7
 	orr	w25,w8,w11
@@ -7543,7 +7543,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&4]
 	ldrb	w8,[x8,#&5]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x1]
 	cbz	x2,#&B664
 	ldr	x8,[x0,#&8]
@@ -7552,7 +7552,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x2]
 	cbz	x3,#&B688
 	ldr	x8,[x0,#&8]
@@ -7561,7 +7561,7 @@ fn000000000000614C proc
 	ldrb	w9,[x8,#&8]
 	ldrb	w8,[x8,#&9]
 	bfm	w8,w9,#&18,#&17
-	sbfm	w8,w8,#0,#&F
+	sxth	w8,w8
 	str	w8,[x3]
 	ret	x30
 	ldr	x8,[x0,#&8]
@@ -7572,7 +7572,7 @@ fn000000000000614C proc
 	ldrb	w11,[x8,#&6]
 	ldrb	w8,[x8,#&7]
 	bfm	w10,w9,#&18,#&17
-	sbfm	w9,w10,#0,#&F
+	sxth	w9,w10
 	bfm	w8,w11,#&18,#&17
 	sub	w8,w9,w8,sxth #0
 	scvtf	s1,w8
@@ -7584,7 +7584,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	x19,x7
 	mov	x20,x6
 	mov	x21,x5
@@ -7619,7 +7619,7 @@ fn000000000000614C proc
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x20,x0
 	movz	w0,#&5280
 	bl	#&2B80
@@ -7630,7 +7630,7 @@ fn000000000000614C proc
 	mov	w1,w31
 	bl	#&2E60
 	ldr	q0,[x20,#&30]
-	movz	w0,#&FFFFFA00
+	movz	w0,#&FA00
 	str	q0,[x19,#&30]
 	ldr	q0,[x20,#&20]
 	str	q0,[x19,#&20]
@@ -7652,7 +7652,7 @@ fn000000000000614C proc
 	bl	#&2B80
 	mov	x20,x0
 	cbz	x20,#&B8E0
-	ubfm	x23,x22,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x23,x22,#&20
 	orr	w0,w31,#&600
 	str	x31,[x20,#&10]
 	stp	w22,w23,[x20]
@@ -7679,7 +7679,7 @@ fn000000000000614C proc
 	scvtf	s0,w22
 	fmov	s1,#1.0F
 	scvtf	s2,w23
-	sbfm	x20,x9,#0,#&1F
+	sxtw	x20,w9
 	fdiv	s0,s1,s0
 	fdiv	s1,s1,s2
 	stp	x31,x31,[x0,#&10]
@@ -7701,7 +7701,7 @@ fn000000000000614C proc
 	movz	w8,#&526C
 	add	x20,x19,x8
 	ldr	w8,[x20]
-	subs	w31,w8,#&14
+	cmp	w8,#&14
 	b.lt	#&B908
 	ldr	x9,[x19,-#&2D90]
 	cbz	x9,#&B948
@@ -7723,9 +7723,9 @@ fn000000000000614C proc
 	ldp	x22,x21,[sp,#&10]
 	ldr	x23,[sp],#&40
 	ret	x30
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&B940
-	sbfm	x8,x8,#0,#&1F
+	sxtw	x8,w8
 	orr	w9,w31,#&18
 	movz	w10,#&5084
 	madd	x8,x8,x9,x19
@@ -7759,13 +7759,13 @@ fn000000000000614C proc
 	b	#&B8F0
 	str	x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	mov	x19,x0
 	ldr	x0,[x19,#&68]
 	orr	w1,w31,#2
 	orr	w2,w31,#2
 	sub	x3,x29,#4
-	add	x4,x31,#8
+	add	x4,sp,#8
 	bl	#&1821C
 	cbz	w0,#&BA24
 	ldur	w8,[x29,-#&4]
@@ -7800,7 +7800,7 @@ fn000000000000614C proc
 	movz	w8,#&526C
 	add	x8,x0,x8
 	ldr	w9,[x8]
-	subs	w31,w9,#&14
+	cmp	w9,#&14
 	b.lt	#&BA5C
 	ldr	x3,[x0,-#&2D90]
 	cbz	x3,#&BA9C
@@ -7808,9 +7808,9 @@ fn000000000000614C proc
 	orr	w1,w31,#3
 	mov	w2,w31
 	br	x3
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&BA94
-	sbfm	x9,x9,#0,#&1F
+	sxtw	x9,w9
 	orr	w10,w31,#&18
 	movz	w11,#&5084
 	madd	x9,x9,x10,x0
@@ -7851,7 +7851,7 @@ fn000000000000BAF0 proc
 	str	x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x19,x0
 	cbz	x19,#&BBC0
 
@@ -7865,7 +7865,7 @@ l000000000000BB10:
 
 l000000000000BB18:
 	ldr	w8,[x19,#&74]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&BB6C
 
 l000000000000BB24:
@@ -7975,11 +7975,11 @@ l000000000000BCE0:
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x19,x1
 	adrp	x1,#&25000
 	mov	x20,x0
-	add	x1,x1,#&FFFFF83C
+	add	x1,x1,#&83C
 	mov	x0,x2
 	bl	#&30B0
 	mov	x21,x0
@@ -7997,7 +7997,7 @@ l000000000000BD14:
 	mov	x1,x31
 	mov	w2,w31
 	bl	#&2B90
-	sbfm	x24,x22,#0,#&1F
+	sxtw	x24,w22
 	mov	x0,x24
 	bl	#&2B80
 	mov	x23,x0
@@ -8661,16 +8661,16 @@ l000000000000BDA0:
 
 ;; fn000000000000E500: 000000000000E500
 fn000000000000E500 proc
-	sub	x31,x31,#&130
+	sub	sp,sp,#&130
 	stp	x28,x25,[sp,#&E0]
 	stp	x24,x23,[sp,#&F0]
 	stp	x22,x21,[sp,#&100]
 	stp	x20,x19,[sp,#&110]
 	stp	x29,x30,[sp,#&120]
-	add	x29,x31,#&120
+	add	x29,sp,#&120
 	mov	x23,x1
 	adrp	x1,#&22000
-	add	x1,x1,#&FFFFF83C
+	add	x1,x1,#&83C
 	mov	w20,w4
 	mov	x21,x3
 	mov	x22,x2
@@ -8680,10 +8680,10 @@ fn000000000000E500 proc
 
 l000000000000E540:
 	adrp	x8,#&33000
-	add	x8,x8,#&FFFFFA78
+	add	x8,x8,#&A78
 	ldr	q0,[x8]
 	ldr	x11,[x8,#&10]
-	add	x25,x31,#8
+	add	x25,sp,#8
 	add	x24,x25,#&38
 	stur	q0,[sp,#&18]
 	ldr	x8,[sp,#&18]
@@ -8706,7 +8706,7 @@ l000000000000E588:
 l000000000000E594:
 	adrp	x9,#&22000
 	adrp	x8,#&33000
-	add	x9,x9,#&FFFFF83F
+	add	x9,x9,#&83F
 	mov	x20,x31
 	str	x9,[x8,#&AB0]
 	b	#&E604
@@ -8717,7 +8717,7 @@ l000000000000E5AC:
 	strb	w31,[sp,#&40]
 
 l000000000000E5B8:
-	add	x0,x31,#8
+	add	x0,sp,#8
 	mov	x1,x23
 	mov	x2,x22
 	mov	x3,x21
@@ -8734,7 +8734,7 @@ l000000000000E5E0:
 	orr	w2,w31,#1
 	mov	x0,x19
 	sub	w8,w9,w8
-	sbfm	x1,x8,#0,#&1F
+	sxtw	x1,w8
 	bl	#&2B90
 
 l000000000000E5FC:
@@ -8748,7 +8748,7 @@ l000000000000E604:
 	ldp	x22,x21,[sp,#&100]
 	ldp	x24,x23,[sp,#&F0]
 	ldp	x28,x25,[sp,#&E0]
-	add	x31,x31,#&130
+	add	sp,sp,#&130
 	ret	x30
 000000000000E624             FF C3 04 D1 FC 67 0E A9 F8 5F 0F A9     .....g..._..
 000000000000E630 F6 57 10 A9 F4 4F 11 A9 FD 7B 12 A9 FD 83 04 91 .W...O...{......
@@ -8774,7 +8774,7 @@ fn000000000000E714 proc
 	stp	x22,x21,[sp,#&20]
 	stp	x20,x19,[sp,#&30]
 	stp	x29,x30,[sp,#&40]
-	add	x29,x31,#&40
+	add	x29,sp,#&40
 	mov	w19,w4
 	mov	x20,x3
 	mov	x21,x2
@@ -8796,12 +8796,12 @@ l000000000000E75C:
 	ldr	w19,[x20]
 
 l000000000000E760:
-	sbfm	w13,w11,#1,#&1F
-	subs	w31,w13,#1
+	asr	w13,w11,#1
+	cmp	w13,#1
 	b.lt	#&E894
 	and	x10,x8,#0
 	sub	w17,w11,#1
-	sbfm	x11,x19,#0,#&1F
+	sxtw	x11,w19
 	mov	w12,w19
 	mul	w17,w10,w17
 	and	w18,w19,#&F
@@ -8814,22 +8814,22 @@ l000000000000E760:
 	mov	x2,x0
 	mov	w3,w17
 	madd	w5,w14,w9,w17
-	sbfm	x5,x5,#0,#&1F
+	sxtw	x5,w5
 	mul	x4,x15,x9
 	mul	x5,x11,x5
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&E880
-	sbfm	x20,x3,#0,#&1F
+	sxtw	x20,w3
 	mov	x6,x31
 	add	x7,x16,x4
 	madd	x20,x11,x20,x0
 	add	x21,x16,x5
 	mov	x22,x2
 	mul	x24,x11,x6
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.lt	#&E86C
 	mov	x23,x31
-	subs	w31,w19,#&10
+	cmp	w19,#&10
 	b.lo	#&E850
 	cbz	x1,#&E850
 	add	x23,x4,x24
@@ -9751,11 +9751,11 @@ l000000000000E894:
 
 ;; fn0000000000011ECC: 0000000000011ECC
 fn0000000000011ECC proc
-	sub	x31,x31,#&70
+	sub	sp,sp,#&70
 	str	x21,[sp,#&40]
 	stp	x20,x19,[sp,#&50]
 	stp	x29,x30,[sp,#&60]
-	add	x29,x31,#&60
+	add	x29,sp,#&60
 	mov	x20,x0
 	movz	w0,#&2258
 	bl	#&2B80
@@ -9832,7 +9832,7 @@ l0000000000011F98:
 
 l0000000000011FD4:
 	orr	w8,w31,#&200
-	add	x0,x31,#0
+	add	x0,sp,#0
 	stp	x31,x31,[sp,#&18]
 	stp	x31,x31,[sp,#&8]
 	str	x31,[sp]
@@ -9888,7 +9888,7 @@ l0000000000012064:
 	ldp	x29,x30,[sp,#&60]
 	ldp	x20,x19,[sp,#&50]
 	ldr	x21,[sp,#&40]
-	add	x31,x31,#&70
+	add	sp,sp,#&70
 	ret	x30
 0000000000012088                         F3 0F 1E F8 FD 7B 01 A9         .....{..
 0000000000012090 FD 43 00 91 F3 03 00 AA 68 0A 62 B9 1F 7D 00 71 .C......h.b..}.q
@@ -9901,7 +9901,7 @@ l0000000000012064:
 fn00000000000120E0 proc
 	str	x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	ldrsw	x8,[x0,-#&EFC]
 	movz	w9,#&10C
 	movz	w2,#&104
@@ -9931,7 +9931,7 @@ fn00000000000120E0 proc
 	movz	w10,#&4120,lsl #&10
 	orr	w11,w31,#4
 	stp	w10,w11,[x19,#&28]
-	movz	w10,#&FFFFBF80,lsl #&10
+	movz	w10,#&BF80,lsl #&10
 	orr	w8,w31,#&3F800000
 	movz	w9,#&4180,lsl #&10
 	stp	w10,w10,[x19,#&68]
@@ -9960,7 +9960,7 @@ fn00000000000120E0 proc
 fn00000000000121C0 proc
 	stp	x20,x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	mov	x19,x0
 	cbz	x19,#&122A0
 
@@ -10301,11 +10301,11 @@ l00000000000122A0:
 
 ;; fn0000000000013124: 0000000000013124
 fn0000000000013124 proc
-	sub	x31,x31,#&40
+	sub	sp,sp,#&40
 	str	x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x8,x1
 	mov	w19,w2
 	mov	x20,x0
@@ -10313,8 +10313,8 @@ fn0000000000013124 proc
 	orr	w10,w31,#1
 	adrp	x11,#&2E000
 	sub	x1,x29,#&14
-	add	x2,x31,#&18
-	add	x3,x31,#&C
+	add	x2,sp,#&18
+	add	x3,sp,#&C
 	orr	w4,w31,#4
 	mov	x0,x8
 	str	w10,[x9,#&ABC]
@@ -10345,7 +10345,7 @@ l00000000000131AC:
 	ldp	x29,x30,[sp,#&30]
 	ldp	x20,x19,[sp,#&20]
 	ldr	x21,[sp,#&10]
-	add	x31,x31,#&40
+	add	sp,sp,#&40
 	ret	x30
 00000000000131C4             06 0C 40 F9 00 00 40 F9 E8 03 04 AA     ..@...@.....
 00000000000131D0 E9 03 03 2A EA 03 01 2A EB 03 02 2A E1 03 1F 32 ...*...*...*...2
@@ -11716,18 +11716,18 @@ fn0000000000018648 proc
 	stp	x22,x21,[sp,#&50]
 	stp	x20,x19,[sp,#&60]
 	stp	x29,x30,[sp,#&70]
-	add	x29,x31,#&70
-	sub	x31,x31,#4,lsl #&C
-	sub	x31,x31,#&FFFFFA40
+	add	x29,sp,#&70
+	sub	sp,sp,#4,lsl #&C
+	sub	sp,sp,#&A40
 	adrp	x19,#&B000
 	adrp	x20,#&B000
 	adrp	x21,#&B000
 	mov	x26,x1
 	mov	x23,x0
 	add	x19,x19,#&5FC
-	add	x20,x20,#&FFFFF9C0
-	add	x21,x21,#&FFFFFA88
-	add	x0,x31,#&1E0
+	add	x20,x20,#&9C0
+	add	x21,x21,#&A88
+	add	x0,sp,#&1E0
 	orr	w1,w31,#1
 	mov	w27,w4
 	mov	x22,x3
@@ -11747,14 +11747,14 @@ l00000000000186C8:
 	str	x20,[sp,-#&36B0]
 	str	x21,[sp,-#&36A8]
 	str	w31,[x23,#&8]
-	subs	w31,w27,#5
+	cmp	w27,#5
 	b.hs	#&187F8
 
 l00000000000186E4:
 	movz	w8,#&475C
-	add	x19,x31,#&1E0
+	add	x19,sp,#&1E0
 	add	x8,x19,x8
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	mov	w1,w31
 	stp	x26,x22,[sp,#&50]
 	str	x24,[sp,#&60]
@@ -11776,7 +11776,7 @@ l0000000000018734:
 	movz	w8,#&4728
 	add	x20,x19,x8
 	ldrb	w8,[x20]
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&188B0
 
 l0000000000018748:
@@ -11809,7 +11809,7 @@ l0000000000018784:
 l000000000001878C:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&187B4
@@ -11831,12 +11831,12 @@ l00000000000187CC:
 
 l00000000000187D8:
 	add	x19,x19,#1
-	subs	x31,x19,#7
+	cmp	x19,#7
 	b.ls	#&18768
 
 l00000000000187E4:
 	ldp	x8,x9,[x23,#&C8]
-	subs	w31,w27,#5
+	cmp	w27,#5
 	stp	x8,x9,[x23,#&B8]
 	str	x23,[sp,#&1E0]
 	b.lo	#&18878
@@ -11844,7 +11844,7 @@ l00000000000187E4:
 l00000000000187F8:
 	adrp	x9,#&18000
 	adrp	x8,#&29000
-	add	x9,x9,#&FFFFFB1F
+	add	x9,x9,#&B1F
 	mov	x20,x31
 	str	x9,[x8,#&AB0]
 	b	#&209C4
@@ -11852,7 +11852,7 @@ l00000000000187F8:
 l0000000000018810:
 	adrp	x8,#&18000
 	adrp	x9,#&29000
-	add	x8,x8,#&FFFFFC8A
+	add	x8,x8,#&C8A
 	str	x8,[x9,#&AB0]
 	ldp	x9,x8,[x23,#&C8]
 	stp	x9,x8,[x23,#&B8]
@@ -11874,7 +11874,7 @@ l0000000000018848:
 l0000000000018850:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1890C
@@ -11884,7 +11884,7 @@ l0000000000018850:
 	b	#&1891C
 
 l0000000000018878:
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	mov	w1,w31
 	mov	w2,w27
 	bl	#&25A44
@@ -11924,7 +11924,7 @@ l00000000000188D0:
 l00000000000188D8:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&18A48
@@ -11942,7 +11942,7 @@ l0000000000018904:
 0000000000018920 FC A2 0B A9                                     ....           
 
 l0000000000018924:
-	subs	w31,w9,#&42
+	cmp	w9,#&42
 	b.ne	#&1B9DC
 
 l000000000001892C:
@@ -11962,7 +11962,7 @@ l0000000000018944:
 l000000000001894C:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&189E8
@@ -12015,7 +12015,7 @@ l00000000000189E0:
 00000000000189F0 FF E2 00 39 E8 03 1C AA E9 03 1C AA FC A2 0B A9 ...9............
 
 l0000000000018A00:
-	subs	w31,w10,#&4D
+	cmp	w10,#&4D
 	b.ne	#&1B9DC
 
 l0000000000018A08:
@@ -12034,7 +12034,7 @@ l0000000000018A1C:
 l0000000000018A24:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B3B4
@@ -12049,7 +12049,7 @@ l0000000000018A24:
 	stp	x9,x10,[x19,#&B8]
 
 l0000000000018A60:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&18A70
 
 l0000000000018A68:
@@ -12075,7 +12075,7 @@ l0000000000018A90:
 l0000000000018A98:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&18AC4
@@ -12092,12 +12092,12 @@ l0000000000018A98:
 	stp	x9,x10,[x19,#&B8]
 
 l0000000000018ADC:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&18A70
 
 l0000000000018AE4:
 	movz	w9,#&4748
-	add	x28,x31,#&1E0
+	add	x28,sp,#&1E0
 	movz	w10,#&4738
 	add	x9,x28,x9
 	movz	w11,#&473C
@@ -12151,24 +12151,24 @@ l0000000000018BA4:
 
 l0000000000018BAC:
 	and	w9,w8,#&FF
-	subs	w31,w9,#&DA
+	cmp	w9,#&DA
 	b.eq	#&18C08
 
 l0000000000018BB8:
-	subs	w31,w9,#&D9
+	cmp	w9,#&D9
 	b.eq	#&1ADC0
 
 l0000000000018BC0:
 	and	w1,w8,#&FF
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	bl	#&23B3C
 	cbz	w0,#&1BE8C
 
 l0000000000018BD0:
 	ldr	x22,[sp,#&E8]
-	add	x28,x31,#&1E0
+	add	x28,sp,#&1E0
 	ldrb	w8,[x22]
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	orr	w25,w31,#&60
 	b.ne	#&18BA4
 
@@ -12204,7 +12204,7 @@ l0000000000018C2C:
 l0000000000018C34:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x20,#&38
 	blr	x8
 	cbz	w0,#&18CA0
@@ -12222,7 +12222,7 @@ l0000000000018C60:
 l0000000000018C6C:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	add	x1,x20,#&38
 	blr	x8
 	cbz	w0,#&18FBC
@@ -12255,7 +12255,7 @@ l0000000000018CD0:
 l0000000000018CD8:
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&18D0C
@@ -12291,7 +12291,7 @@ l0000000000018D44:
 l0000000000018D4C:
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&18D78
@@ -12311,7 +12311,7 @@ l0000000000018D90:
 	ldr	x9,[sp,#&F8]
 	str	w8,[x9]
 	sub	w9,w8,#1
-	subs	w31,w9,#3
+	cmp	w9,#3
 	b.hi	#&1BE7C
 
 l0000000000018DA4:
@@ -12321,8 +12321,8 @@ l0000000000018DA4:
 	b.gt	#&1BE7C
 
 l0000000000018DB4:
-	ubfm	w9,w22,#&18,#&17
-	ubfm	w10,w8,#&1F,#&1E
+	lsl	w9,w22,#8
+	lsl	w10,w8,#1
 	orr	w9,w23,w9
 	add	w10,w10,#6
 	cmp	w9,w10
@@ -12336,7 +12336,7 @@ l0000000000018DB4:
 	add	x22,x22,#1
 	ldr	w8,[x8]
 	ldp	x9,x10,[x20,#&B8]
-	sbfm	x24,x8,#0,#&1F
+	sxtw	x24,w8
 	subs	x31,x9,x10
 	b.hs	#&18E0C
 	add	x8,x9,#1
@@ -12347,7 +12347,7 @@ l0000000000018DB4:
 	cbz	w8,#&18E40
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&18E48
@@ -12378,7 +12378,7 @@ l0000000000018DB4:
 	cbz	w8,#&18ED8
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&18EBC
@@ -12395,7 +12395,7 @@ l0000000000018DB4:
 	stp	x9,x10,[x20,#&B8]
 	ldr	x20,[sp,#&1E0]
 	ldrsw	x10,[x20,#&4]
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.lt	#&18F0C
 	ldr	x11,[sp,#&F0]
 	mov	x9,x31
@@ -12410,20 +12410,20 @@ l0000000000018DB4:
 	mov	w9,w31
 	cmp	w9,w10
 	b.eq	#&1BE8C
-	add	x28,x31,#&1E0
+	add	x28,sp,#&1E0
 	orr	w25,w31,#&60
-	ubfm	w11,w8,#4,#&1F
+	lsr	w11,w8,#4
 	mov	w10,w9
 	umaddl	x12,w9,w25,x28
 	movz	w13,#&45B0
 	str	w11,[x12,x13]
-	subs	w31,w8,#&40
+	cmp	w8,#&40
 	b.hs	#&1ADA0
 	and	w8,w8,#&F
 	madd	x10,x10,x25,x28
 	movz	w11,#&45B4
 	str	w8,[x10,x11]
-	subs	w31,w8,#4
+	cmp	w8,#4
 	b.lo	#&18DD4
 	b	#&1ADB0
 	ldr	x8,[sp,#&B0]
@@ -12442,7 +12442,7 @@ l0000000000018DB4:
 	cbz	w8,#&19078
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&19058
@@ -12460,7 +12460,7 @@ l0000000000018DB4:
 
 l0000000000018FD4:
 	orr	w8,w31,#&FF
-	subs	w31,w9,#&FF
+	cmp	w9,#&FF
 	b.ne	#&18BAC
 
 l0000000000018FE0:
@@ -12482,7 +12482,7 @@ l0000000000019000:
 l0000000000019008:
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&19034
@@ -12499,7 +12499,7 @@ l0000000000019008:
 	stp	x9,x10,[x20,#&B8]
 
 l000000000001904C:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&18FE0
 
 l0000000000019054:
@@ -12984,30 +12984,30 @@ l000000000001ADC0:
 	cbz	w9,#&1AFF4
 
 l000000000001ADD4:
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&1AFF4
 
 l000000000001ADDC:
 	movz	w8,#&34C7
-	add	x9,x31,#&1E0
+	add	x9,sp,#&1E0
 	movz	w12,#&3488
 	mov	x11,x31
 	orr	w13,w31,#&60
 	add	x26,x9,x8
 	add	x8,x9,x12
 	stur	x8,[x29,-#&68]
-	add	x8,x31,#&1E0
+	add	x8,sp,#&1E0
 	madd	x8,x11,x13,x8
 	movz	w9,#&45C0
 	ldr	w9,[x8,x9]
 	add	w9,w9,#7
-	sbfm	w9,w9,#3,#&1F
+	asr	w9,w9,#3
 	str	w9,[sp,#&F8]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&1AFE4
 	movz	w9,#&45BC
 	ldr	w8,[x8,x9]
-	add	x9,x31,#&1E0
+	add	x9,sp,#&1E0
 	madd	x9,x11,x13,x9
 	movz	w10,#&45F0
 	add	x28,x9,x10
@@ -13018,7 +13018,7 @@ l000000000001ADDC:
 	movz	w10,#&45D0
 	add	w8,w8,#7
 	add	x19,x9,x10
-	sbfm	w10,w8,#3,#&1F
+	asr	w10,w8,#3
 	movz	w8,#&45C4
 	mov	w21,w31
 	add	x24,x9,x8
@@ -13026,21 +13026,21 @@ l000000000001ADDC:
 	str	x11,[sp,#&E8]
 	str	w10,[sp,#&F0]
 	ldr	w8,[sp,#&F0]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&1AFC4
 	mov	x27,x31
-	ubfm	w20,w21,#&1D,#&1C
+	lsl	w20,w21,#3
 	ldr	w9,[x25]
 	ldrsw	x10,[x23]
 	ldr	x11,[x28]
 	madd	w12,w9,w21,w27
-	ubfm	x8,x10,#&FFFFFFFA,#&FFFFFFF9
-	ubfm	w12,w12,#&1A,#&19
+	lsl	x8,x10,#6
+	lsl	w12,w12,#6
 	add	x2,x11,w12,sxtw #1
 	add	x12,x26,x8
 	subs	x31,x2,x12
 	b.hi	#&1AF04
-	add	x13,x31,#&1E0
+	add	x13,sp,#&1E0
 	add	x8,x13,x8
 	movz	w13,#&3488
 	add	x12,x2,#&7E
@@ -13048,21 +13048,21 @@ l000000000001ADDC:
 	subs	x31,x8,x12
 	b.hi	#&1AF04
 	madd	w9,w21,w9,w27
-	ubfm	w9,w9,#&1A,#&19
+	lsl	w9,w9,#6
 	add	x9,x11,w9,sxtw #1
 	ldur	x11,[x29,-#&68]
 	mov	x8,x31
 	add	x10,x11,x10,lsl #6
-	ubfm	x12,x8,#&FFFFFFFF,#&FFFFFFFE
+	lsl	x12,x8,#1
 	ldrb	w11,[x10,x8]
 	ldrh	w13,[x9,x12]
 	add	x8,x8,#1
 	mul	w11,w13,w11
 	strh	w11,[x9,x12]
-	subs	x31,x8,#&40
+	cmp	x8,#&40
 	b.ne	#&1AEE0
 	b	#&1AF9C
-	add	x8,x31,#&1E0
+	add	x8,sp,#&1E0
 	add	x8,x8,x10,lsl #6
 	ldr	d0,[x8,#&3488]
 	ldp	q1,q2,[x2]
@@ -13124,21 +13124,21 @@ l000000000001ADDC:
 	b.lt	#&1ADFC
 
 l000000000001AFF4:
-	subs	w31,w10,#0
+	cmp	w10,#0
 	csel	w25,w8,w10,EQ
-	subs	w31,w25,#3
+	cmp	w25,#3
 	ccmp	w8,#3,#0,LT
 	orr	w9,w31,#1
 	csel	w9,w9,w8,EQ
-	subs	w31,w9,#0
+	cmp	w9,#0
 	str	x9,[sp,#&F0]
 	b.le	#&1B128
 	ldr	w8,[x21]
 	ldr	x19,[sp,-#&36A8]
-	sbfm	x22,x9,#0,#&1F
-	add	x9,x31,#&100
+	sxtw	x22,w9
+	add	x9,sp,#&100
 	movz	w10,#&45A4
-	add	x24,x31,#&1E0
+	add	x24,sp,#&1E0
 	mov	x20,x31
 	movz	w26,#&458C
 	movz	w27,#&4588
@@ -13151,36 +13151,36 @@ l000000000001AFF4:
 	ldur	x12,[x23,#&2C]
 	sdiv	w10,w10,w11
 	sdiv	w9,w8,w9
-	sbfm	w8,w10,#1,#&1F
+	asr	w8,w10,#1
 	stp	w9,w10,[x28,-#&10]
 	stur	w8,[x28,-#&4]
 	ldr	w8,[x21]
 	str	w31,[x28]
 	stp	x12,x12,[x28,-#&20]
-	subs	w31,w9,#2
+	cmp	w9,#2
 	add	w11,w9,w8
 	sub	w11,w11,#1
 	udiv	w11,w11,w9
 	stur	w11,[x28,-#&8]
 	b.eq	#&1B0B4
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.ne	#&1B0D0
-	subs	w31,w10,#2
+	cmp	w10,#2
 	b.eq	#&1B0F4
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.ne	#&1B0D0
 	adrp	x9,#&9000
 	add	x9,x9,#&7A0
 	b	#&1B0D8
-	subs	w31,w10,#2
+	cmp	w10,#2
 	b.eq	#&1B100
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.ne	#&1B0D0
 	adrp	x9,#&9000
-	add	x9,x9,#&FFFFF8A0
+	add	x9,x9,#&8A0
 	b	#&1B0D8
 	adrp	x9,#&9000
-	add	x9,x9,#&FFFFF990
+	add	x9,x9,#&990
 	stur	x9,[x28,-#&28]
 	add	x20,x20,#1
 	add	x28,x28,#&30
@@ -13197,7 +13197,7 @@ l000000000001AFF4:
 	bl	#&2B80
 	stur	x0,[x23,#&44]
 	cbnz	x0,#&1B048
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	bl	#&24714
 	mov	x20,x31
 	b	#&1BDF8
@@ -13212,12 +13212,12 @@ l000000000001AFF4:
 	ldr	x24,[sp,#&F0]
 	ldr	w8,[x21,#&4]
 	cbz	w8,#&1B350
-	sbfm	x27,x25,#0,#&1F
+	sxtw	x27,w25
 	mov	w8,w24
 	stp	x8,x27,[sp,#&D0]
-	add	x8,x31,#&100
+	add	x8,sp,#&100
 	movz	w9,#&45C0
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	add	x8,x8,#&28
 	mov	w22,w31
 	mov	w23,w31
@@ -13231,11 +13231,11 @@ l000000000001AFF4:
 	mul	w8,w23,w25
 	str	w9,[sp,#&F8]
 	mul	w9,w8,w9
-	subs	w31,w24,#1
+	cmp	w24,#1
 	b.lt	#&1B258
 	ldp	x27,x19,[sp,#&C0]
 	ldr	x25,[sp,#&D0]
-	add	x21,x31,#&1C0
+	add	x21,sp,#&1C0
 	stur	w9,[x29,-#&68]
 	ldp	w3,w20,[x19,-#&8]
 	ldp	w4,w24,[x19,-#&10]
@@ -13279,10 +13279,10 @@ l000000000001AFF4:
 	ldur	w9,[x29,-#&68]
 	ldr	x1,[sp,#&1C0]
 	add	x0,x20,w9,uxtw #0
-	subs	w31,w25,#3
+	cmp	w25,#3
 	b.lt	#&1B290
 	ldr	w8,[x21,#&8]
-	subs	w31,w8,#3
+	cmp	w8,#3
 	b.ne	#&1B2C4
 	ldr	x8,[sp,-#&36B0]
 	ldp	x2,x3,[sp,#&1C8]
@@ -13292,7 +13292,7 @@ l000000000001AFF4:
 	ldr	x21,[sp,#&1E0]
 	b	#&1B33C
 	ldr	w8,[x21]
-	subs	w31,w25,#1
+	cmp	w25,#1
 	b.ne	#&1B310
 	cbz	w8,#&1B33C
 	mov	w8,w31
@@ -13339,7 +13339,7 @@ l000000000001AFF4:
 	add	w22,w22,w25
 	cmp	w23,w8
 	b.lo	#&1B190
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	bl	#&24714
 	ldr	x8,[sp,#&1E0]
 	ldr	x10,[sp,#&50]
@@ -13354,15 +13354,15 @@ l000000000001AFF4:
 	b	#&209C4
 	adrp	x9,#&15000
 	adrp	x8,#&26000
-	add	x9,x9,#&FFFFFB83
+	add	x9,x9,#&B83
 	b	#&1BE88
 	adrp	x9,#&15000
 	adrp	x8,#&26000
-	add	x9,x9,#&FFFFFB57
+	add	x9,x9,#&B57
 	b	#&1BE88
 	adrp	x9,#&15000
 	adrp	x8,#&26000
-	add	x9,x9,#&FFFFFB7B
+	add	x9,x9,#&B7B
 	b	#&1BE88
 	str	w31,[x23,#&30]
 	strb	w31,[x23,#&38]
@@ -13386,7 +13386,7 @@ l000000000001B3DC:
 l000000000001B3E4:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B408
@@ -13415,7 +13415,7 @@ l000000000001B430:
 l000000000001B438:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B45C
@@ -13444,7 +13444,7 @@ l000000000001B484:
 l000000000001B48C:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B4B0
@@ -13473,7 +13473,7 @@ l000000000001B4D8:
 l000000000001B4E0:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B504
@@ -13502,7 +13502,7 @@ l000000000001B52C:
 l000000000001B534:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B558
@@ -13531,7 +13531,7 @@ l000000000001B580:
 l000000000001B588:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B5AC
@@ -13560,7 +13560,7 @@ l000000000001B5D4:
 l000000000001B5DC:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B600
@@ -13589,7 +13589,7 @@ l000000000001B628:
 l000000000001B630:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B654
@@ -13618,7 +13618,7 @@ l000000000001B67C:
 l000000000001B684:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B6A8
@@ -13647,7 +13647,7 @@ l000000000001B6D0:
 l000000000001B6D8:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B6FC
@@ -13676,7 +13676,7 @@ l000000000001B724:
 l000000000001B72C:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B750
@@ -13707,7 +13707,7 @@ l000000000001B780:
 l000000000001B788:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B7B8
@@ -13740,7 +13740,7 @@ l000000000001B7EC:
 l000000000001B7F4:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B824
@@ -13773,7 +13773,7 @@ l000000000001B858:
 l000000000001B860:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1B890
@@ -13800,7 +13800,7 @@ l000000000001B8A8:
 	cbz	w8,#&1B908
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1B8F4
@@ -13815,7 +13815,7 @@ l000000000001B8A8:
 	stp	x28,x9,[x23,#&B8]
 	bfm	w21,w8,#&18,#7
 	bfm	w19,w21,#&10,#&F
-	subs	w31,w19,#&38
+	cmp	w19,#&38
 	b.hi	#&1B934
 	orr	x9,x31,#&1000100
 	orr	w8,w31,#1
@@ -13824,20 +13824,20 @@ l000000000001B8A8:
 	movk	x9,#0,lsl #&10
 	and	x8,x8,x9
 	cbnz	x8,#&1B944
-	subs	w31,w19,#&7C
+	cmp	w19,#&7C
 	b.eq	#&1B944
-	subs	w31,w19,#&6C
+	cmp	w19,#&6C
 	b.ne	#&1B9DC
 	ldp	x8,x9,[x23,#&C8]
 	orr	w10,w31,#&FF
-	add	x1,x31,#&100
+	add	x1,sp,#&100
 	mov	x0,x23
 	stp	x8,x9,[x23,#&B8]
 	str	w10,[sp,#&11C]
 	bl	#&2942C
 	cbz	x0,#&1BA94
 	ldr	w9,[x23,#&4]
-	subs	w31,w9,#0
+	cmp	w9,#0
 	csneg	w8,w9,w9,PL
 	str	w9,[sp,#&30]
 	str	w8,[x23,#&4]
@@ -13847,7 +13847,7 @@ l000000000001B8A8:
 	ldr	w19,[sp,#&100]
 	str	w8,[sp,#&D8]
 	ldr	w8,[sp,#&110]
-	subs	w31,w21,#&C
+	cmp	w21,#&C
 	str	x22,[sp,#&58]
 	str	w8,[sp,#&D0]
 	ldr	w8,[sp,#&114]
@@ -13855,15 +13855,15 @@ l000000000001B8A8:
 	ldr	w8,[sp,#&11C]
 	str	w8,[sp,#&F0]
 	b.ne	#&1BA9C
-	subs	w31,w19,#&17
+	cmp	w19,#&17
 	b.gt	#&1BABC
 	ldr	w8,[sp,#&104]
 	movz	w9,#&5555,lsl #&10
 	movk	w9,#&5556
 	sub	w8,w8,#&26
 	smull	x8,w8,w9
-	ubfm	x9,x8,#&FFFFFFFF,#&FFFFFFFF
-	ubfm	x8,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x9,x8,#&3F
+	lsr	x8,x8,#&20
 	add	w22,w8,w9
 	b	#&1BAC0
 
@@ -13886,7 +13886,7 @@ l000000000001B9FC:
 l000000000001BA04:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1BA2C
@@ -13902,7 +13902,7 @@ l000000000001BA04:
 	stp	x28,x8,[x23,#&B8]
 
 l000000000001BA44:
-	subs	w31,w9,#&47
+	cmp	w9,#&47
 	b.ne	#&1CF94
 
 l000000000001BA4C:
@@ -13922,7 +13922,7 @@ l000000000001BA64:
 l000000000001BA6C:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1BD40
@@ -13932,21 +13932,21 @@ l000000000001BA6C:
 	b	#&1BD50
 	mov	x20,x31
 	b	#&209C4
-	subs	w31,w19,#&F
+	cmp	w19,#&F
 	b.gt	#&1BABC
 	ldr	w8,[sp,#&104]
 	movn	w9,#&D
 	sub	w9,w9,w21
 	add	w8,w9,w8
-	sbfm	w22,w8,#2,#&1F
+	asr	w22,w8,#2
 	b	#&1BAC0
 	mov	w22,w31
 	str	w10,[sp,#&C0]
-	subs	w31,w10,#0
+	cmp	w10,#0
 	ldp	w9,w10,[x23]
 	orr	w8,w31,#3
 	csinc	w8,w8,w8,EQ
-	subs	w31,w27,#2
+	cmp	w27,#2
 	str	w8,[x23,#&8]
 	csel	w8,w27,w8,GT
 	str	w8,[sp,#&E8]
@@ -13955,20 +13955,20 @@ l000000000001BA6C:
 	bl	#&2B80
 	mov	x20,x0
 	cbz	x20,#&209B4
-	subs	w31,w19,#&F
+	cmp	w19,#&F
 	str	x20,[sp,#&E0]
 	b.gt	#&1BDA8
 	ldr	w6,[sp,#&E8]
 	cbz	w22,#&1BE9C
-	subs	w31,w22,#&100
+	cmp	w22,#&100
 	b.gt	#&1BE9C
 	str	x26,[sp,#&50]
 	str	x24,[sp,#&60]
 	str	x27,[sp,#&78]
-	subs	w31,w22,#1
+	cmp	w22,#1
 	b.lt	#&1BCEC
 	ldp	x9,x8,[x23,#&B8]
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	mov	w24,w22
 	orr	x26,x10,#0
 	orr	w27,w31,#&FF
@@ -13983,7 +13983,7 @@ l000000000001BA6C:
 	cbz	w10,#&1BBA4
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1BB88
@@ -14010,7 +14010,7 @@ l000000000001BA6C:
 	cbz	w10,#&1BC10
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1BBF4
@@ -14037,7 +14037,7 @@ l000000000001BA6C:
 	cbz	w10,#&1BC7C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1BC60
@@ -14053,7 +14053,7 @@ l000000000001BA6C:
 	mov	x9,x28
 	stp	x28,x8,[x23,#&B8]
 	sturb	w10,[x26,-#&3]
-	subs	w31,w21,#&C
+	cmp	w21,#&C
 	b.eq	#&1BCE0
 	subs	x31,x9,x8
 	b.hs	#&1BC9C
@@ -14064,7 +14064,7 @@ l000000000001BA6C:
 	cbz	w10,#&1BCE0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1BCC8
@@ -14081,7 +14081,7 @@ l000000000001BA6C:
 	sub	x24,x24,#1
 	cbnz	x24,#&1BB3C
 	ldr	w8,[sp,#&104]
-	subs	w31,w21,#&C
+	cmp	w21,#&C
 	orr	w9,w31,#3
 	movn	w10,#&D
 	csinc	w9,w9,w9,EQ
@@ -14109,7 +14109,7 @@ l000000000001BA6C:
 	stp	x28,x8,[x23,#&B8]
 
 l000000000001BD58:
-	subs	w31,w9,#&49
+	cmp	w9,#&49
 	b.ne	#&1CF94
 
 l000000000001BD60:
@@ -14129,7 +14129,7 @@ l000000000001BD78:
 l000000000001BD80:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1BE0C
@@ -14155,11 +14155,11 @@ l000000000001BD80:
 	blr	x8
 	ldr	w6,[sp,#&E8]
 	b	#&1BF40
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	bl	#&24714
 	adrp	x9,#&15000
 	adrp	x8,#&26000
-	add	x9,x9,#&FFFFFB16
+	add	x9,x9,#&B16
 	str	x9,[x8,#&AB0]
 	b	#&209C4
 	mov	w9,w31
@@ -14170,7 +14170,7 @@ l000000000001BD80:
 	stp	x28,x8,[x23,#&B8]
 
 l000000000001BE24:
-	subs	w31,w9,#&46
+	cmp	w9,#&46
 	b.ne	#&1CF94
 
 l000000000001BE2C:
@@ -14190,7 +14190,7 @@ l000000000001BE44:
 l000000000001BE4C:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1BECC
@@ -14206,11 +14206,11 @@ l000000000001BE74:
 l000000000001BE7C:
 	adrp	x9,#&15000
 	adrp	x8,#&26000
-	add	x9,x9,#&FFFFFB3F
+	add	x9,x9,#&B3F
 	str	x9,[x8,#&AB0]
 
 l000000000001BE8C:
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	bl	#&24714
 	mov	x20,x31
 	b	#&209C4
@@ -14222,7 +14222,7 @@ l000000000001BE8C:
 000000000001BEE0 FC A2 0B A9                                     ....           
 
 l000000000001BEE4:
-	subs	w31,w9,#&38
+	cmp	w9,#&38
 	b.ne	#&1CF94
 
 l000000000001BEEC:
@@ -14242,7 +14242,7 @@ l000000000001BF04:
 l000000000001BF0C:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1CF24
@@ -14253,12 +14253,12 @@ l000000000001BF0C:
 	ldr	x9,[x23,#&B8]
 	add	x8,x9,w8,sxtw #0
 	str	x8,[x23,#&B8]
-	subs	w31,w19,#&10
+	cmp	w19,#&10
 	b.eq	#&1BFB0
-	subs	w31,w19,#&20
+	cmp	w19,#&20
 	b.eq	#&1C240
 	mov	w30,w31
-	subs	w31,w19,#&18
+	cmp	w19,#&18
 	b.ne	#&1BFBC
 	mov	w8,w31
 	str	w8,[sp,#&B8]
@@ -14294,18 +14294,18 @@ l000000000001BF0C:
 	ldr	w19,[sp,#&D0]
 	ldr	w21,[sp,#&C8]
 	orr	w10,w31,#&55555555
-	ubfm	w13,w7,#&10,#&1F
-	ubfm	w17,w7,#1,#&1F
+	lsr	w13,w7,#&10
+	lsr	w17,w7,#1
 	orr	w9,w31,#&33333333
 	orr	w8,w31,#&F0F0F0F
 	orr	w11,w31,#8
 	orr	w12,w31,#8
 	and	w16,w7,#&55555555
 	orr	w15,w31,#8
-	ubfm	w1,w19,#1,#&1F
+	lsr	w1,w19,#1
 	orr	w2,w31,#8
-	ubfm	w4,w21,#1,#&1F
-	subs	w31,w13,#0
+	lsr	w4,w21,#1
+	cmp	w13,#0
 	and	w17,w17,#&55555555
 	and	w0,w19,#&55555555
 	and	w3,w21,#&55555555
@@ -14316,89 +14316,89 @@ l000000000001BF0C:
 	csinc	w5,w31,w31,EQ
 	add	w17,w1,w0
 	add	w0,w4,w3
-	ubfm	w3,w13,#8,#&1F
-	subs	w31,w13,#&FF
+	lsr	w3,w13,#8
+	cmp	w13,#&FF
 	and	w4,w16,#&33333333
-	ubfm	w16,w16,#2,#&1F
-	ubfm	w1,w5,#&1C,#&1B
+	lsr	w16,w16,#2
+	lsl	w1,w5,#4
 	bfm	w12,w5,#&1C,#0
 	csel	w13,w3,w13,HI
 	and	w16,w16,#&33333333
 	and	w3,w0,#&33333333
-	ubfm	w0,w0,#2,#&1F
+	lsr	w0,w0,#2
 	csel	w12,w12,w1,HI
 	add	w16,w16,w4
-	ubfm	w4,w13,#4,#&1F
-	subs	w31,w13,#&F
+	lsr	w4,w13,#4
+	cmp	w13,#&F
 	and	w0,w0,#&33333333
 	orr	w1,w12,#4
 	csel	w13,w4,w13,HI
 	add	w0,w0,w3
 	csel	w12,w1,w12,HI
-	ubfm	w3,w13,#2,#&1F
-	subs	w31,w13,#3
+	lsr	w3,w13,#2
+	cmp	w13,#3
 	add	w16,w16,w16,lsr #4
 	orr	w1,w12,#2
 	csel	w13,w3,w13,HI
 	and	w16,w16,#&F0F0F0F
 	csel	w12,w1,w12,HI
-	subs	w31,w13,#1
-	ubfm	w14,w19,#&10,#&1F
+	cmp	w13,#1
+	lsr	w14,w19,#&10
 	add	w16,w16,w16,lsr #8
 	csinc	w12,w12,w12,LS
 	add	w13,w16,w16,lsr #&10
-	subs	w31,w14,#0
+	cmp	w14,#0
 	sub	w12,w12,#7
 	and	w28,w13,#&3F
 	str	w12,[sp,#&B8]
 	csinc	w12,w31,w31,EQ
 	csel	w13,w14,w19,NE
-	ubfm	w14,w12,#&1C,#&1B
+	lsl	w14,w12,#4
 	bfm	w15,w12,#&1C,#0
-	ubfm	w12,w13,#8,#&1F
-	subs	w31,w13,#&FF
+	lsr	w12,w13,#8
+	cmp	w13,#&FF
 	csel	w12,w12,w13,HI
 	csel	w13,w15,w14,HI
-	ubfm	w15,w12,#4,#&1F
-	subs	w31,w12,#&F
+	lsr	w15,w12,#4
+	cmp	w12,#&F
 	orr	w14,w13,#4
 	csel	w12,w15,w12,HI
 	csel	w13,w14,w13,HI
-	ubfm	w15,w12,#2,#&1F
-	subs	w31,w12,#3
+	lsr	w15,w12,#2
+	cmp	w12,#3
 	orr	w14,w13,#2
 	csel	w12,w15,w12,HI
 	csel	w13,w14,w13,HI
-	subs	w31,w12,#1
-	ubfm	w18,w21,#&10,#&1F
+	cmp	w12,#1
+	lsr	w18,w21,#&10
 	csinc	w12,w13,w13,LS
 	and	w5,w17,#&33333333
-	ubfm	w17,w17,#2,#&1F
-	subs	w31,w18,#0
+	lsr	w17,w17,#2
+	cmp	w18,#0
 	sub	w12,w12,#7
 	and	w17,w17,#&33333333
 	str	w12,[sp,#&B0]
 	csinc	w12,w31,w31,EQ
 	csel	w13,w18,w21,NE
 	add	w17,w17,w5
-	ubfm	w14,w12,#&1C,#&1B
+	lsl	w14,w12,#4
 	bfm	w2,w12,#&1C,#0
-	ubfm	w12,w13,#8,#&1F
-	subs	w31,w13,#&FF
+	lsr	w12,w13,#8
+	cmp	w13,#&FF
 	add	w17,w17,w17,lsr #4
 	csel	w12,w12,w13,HI
 	and	w17,w17,#&F0F0F0F
 	csel	w13,w2,w14,HI
-	ubfm	w15,w12,#4,#&1F
-	subs	w31,w12,#&F
+	lsr	w15,w12,#4
+	cmp	w12,#&F
 	add	w17,w17,w17,lsr #8
 	orr	w14,w13,#4
 	csel	w12,w15,w12,HI
 	add	w0,w0,w0,lsr #4
 	add	w16,w17,w17,lsr #&10
 	csel	w13,w14,w13,HI
-	ubfm	w15,w12,#2,#&1F
-	subs	w31,w12,#3
+	lsr	w15,w12,#2
+	cmp	w12,#3
 	and	w0,w0,#&F0F0F0F
 	and	w22,w16,#&3F
 	orr	w14,w13,#2
@@ -14406,7 +14406,7 @@ l000000000001BF0C:
 	ldr	w16,[sp,#&C0]
 	add	w0,w0,w0,lsr #8
 	csel	w13,w14,w13,HI
-	subs	w31,w12,#1
+	cmp	w12,#1
 	add	w17,w0,w0,lsr #&10
 	csinc	w12,w13,w13,LS
 	str	x26,[sp,#&50]
@@ -14415,27 +14415,27 @@ l000000000001BF0C:
 	str	w12,[sp,#&A8]
 	str	x27,[sp,#&78]
 	cbz	w16,#&1C540
-	ubfm	w12,w16,#&10,#&1F
-	subs	w31,w12,#0
+	lsr	w12,w16,#&10
+	cmp	w12,#0
 	csinc	w13,w31,w31,EQ
 	csel	w12,w12,w16,NE
-	ubfm	w14,w13,#&1C,#&1B
+	lsl	w14,w13,#4
 	bfm	w11,w13,#&1C,#0
-	ubfm	w13,w12,#8,#&1F
-	subs	w31,w12,#&FF
+	lsr	w13,w12,#8
+	cmp	w12,#&FF
 	csel	w12,w13,w12,HI
 	csel	w11,w11,w14,HI
-	ubfm	w14,w12,#4,#&1F
-	subs	w31,w12,#&F
+	lsr	w14,w12,#4
+	cmp	w12,#&F
 	orr	w13,w11,#4
 	csel	w12,w14,w12,HI
 	csel	w11,w13,w11,HI
-	ubfm	w14,w12,#2,#&1F
-	subs	w31,w12,#3
+	lsr	w14,w12,#2
+	cmp	w12,#3
 	orr	w13,w11,#2
 	csel	w12,w14,w12,HI
 	csel	w11,w13,w11,HI
-	subs	w31,w12,#1
+	cmp	w12,#1
 	csinc	w11,w11,w11,LS
 	sub	w11,w11,#7
 	b	#&1C544
@@ -14443,7 +14443,7 @@ l000000000001BF0C:
 	bl	#&2CC0
 	adrp	x8,#&14000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFEB5
+	add	x8,x8,#&EB5
 	b	#&209BC
 	ldr	w9,[sp,#&C0]
 	mov	w19,w31
@@ -14451,14 +14451,14 @@ l000000000001BF0C:
 	cmp	w9,w8
 	b.ne	#&1FA04
 	ldr	w8,[sp,#&D8]
-	subs	w31,w8,#&FFFFFFF0,lsl #&C
+	cmp	w8,#&FF0,lsl #&C
 	b.ne	#&2074C
 	ldr	w9,[sp,#&D0]
 	orr	w8,w31,#&FF00
 	cmp	w9,w8
 	b.ne	#&20754
 	ldr	w8,[sp,#&C8]
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.ne	#&20754
 	orr	w8,w31,#2
 	str	w8,[sp,#&A0]
@@ -14481,28 +14481,28 @@ l000000000001BF0C:
 	ldr	x9,[x23,#&B8]
 	add	x8,x9,w8,sxtw #0
 	str	x8,[x23,#&B8]
-	subs	w31,w19,#8
+	cmp	w19,#8
 	b.eq	#&1C2F0
-	subs	w31,w19,#4
+	cmp	w19,#4
 	b.ne	#&1C528
 	ldr	x9,[x23]
 	add	w8,w9,#1
-	ubfm	w10,w8,#1,#&1F
+	lsr	w10,w8,#1
 	b	#&1C2F8
 	ldr	x9,[x23]
 	mov	w10,w9
-	ubfm	x8,x9,#&FFFFFFE0,#&FFFFFFFF
-	subs	w31,w8,#1
+	lsr	x8,x9,#&20
+	cmp	w8,#1
 	b.lt	#&1CCF4
 	sub	w10,w31,w10
 	mov	w28,w31
 	mov	w21,w31
-	add	x22,x31,#&1E0
+	add	x22,sp,#&1E0
 	and	w24,w10,#3
 	orr	w26,w31,#&FF
 	b	#&1C324
 	ldp	w9,w8,[x23]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&1C4D8
 	ldp	x9,x8,[x23,#&B8]
 	mov	w27,w31
@@ -14517,7 +14517,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C3A0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C384
@@ -14533,12 +14533,12 @@ l000000000001BF0C:
 	mov	x8,x9
 	ldr	w6,[sp,#&E8]
 	stp	x9,x8,[x23,#&B8]
-	ubfm	w11,w10,#4,#&1F
-	subs	w31,w19,#4
+	lsr	w11,w10,#4
+	cmp	w19,#4
 	csel	w11,w11,w10,EQ
 	add	x11,x22,w11,uxtw #2
 	ldrb	w12,[x11]
-	sbfm	x13,x28,#0,#&1F
+	sxtw	x13,w28
 	add	x14,x20,x13
 	and	w10,w10,#&F
 	strb	w12,[x14]
@@ -14548,7 +14548,7 @@ l000000000001BF0C:
 	add	x25,x13,#3
 	strb	w12,[x14,#&1]
 	strb	w11,[x14,#&2]
-	subs	w31,w6,#4
+	cmp	w6,#4
 	b.ne	#&1C3F0
 	add	w11,w28,#4
 	strb	w26,[x20,x25]
@@ -14557,7 +14557,7 @@ l000000000001BF0C:
 	add	w12,w27,#1
 	cmp	w12,w11
 	b.eq	#&1C4CC
-	subs	w31,w19,#8
+	cmp	w19,#8
 	b.ne	#&1C478
 	ldur	x20,[x29,-#&68]
 	subs	x31,x9,x8
@@ -14572,7 +14572,7 @@ l000000000001BF0C:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1C458
 	mov	x8,x23
@@ -14591,13 +14591,13 @@ l000000000001BF0C:
 	ldrb	w12,[x10]
 	ldrb	w14,[x10,#&1]
 	ldrb	w10,[x10,#&2]
-	sbfm	x11,x25,#0,#&1F
+	sxtw	x11,w25
 	add	x13,x20,x11
 	add	x28,x11,#3
 	strb	w12,[x13]
 	strb	w14,[x13,#&1]
 	strb	w10,[x13,#&2]
-	subs	w31,w6,#4
+	cmp	w6,#4
 	b.ne	#&1C4B4
 	add	w10,w25,#4
 	strb	w26,[x20,x28]
@@ -14610,7 +14610,7 @@ l000000000001BF0C:
 	b	#&1C4D4
 	mov	w28,w25
 	ldr	x25,[sp,#&F8]
-	ubfm	x8,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x8,x11,#&20
 	ldr	x9,[x23,#&10]
 	cbz	x9,#&1C50C
 	ldp	x9,x10,[x23,#&B8]
@@ -14635,7 +14635,7 @@ l000000000001BF0C:
 	bl	#&2CC0
 	adrp	x8,#&14000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFEAD
+	add	x8,x8,#&EAD
 	b	#&209BC
 	orr	w11,w31,#&FFFFFFF8
 	str	w11,[sp,#&70]
@@ -14656,7 +14656,7 @@ l000000000001BF0C:
 	str	w31,[sp,#&40]
 	str	x24,[sp,#&60]
 	ldr	w8,[x23,#&4]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&1CCF4
 	ldr	w8,[sp,#&100]
 	mov	w24,w31
@@ -14679,7 +14679,7 @@ l000000000001BF0C:
 	ldp	w9,w8,[x23]
 	ldr	w10,[sp,#&40]
 	cbz	w10,#&1C81C
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&1CCA4
 	ldp	x9,x8,[x23,#&B8]
 	mov	w19,w31
@@ -14694,7 +14694,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C664
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C648
@@ -14723,7 +14723,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C6D8
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C6BC
@@ -14753,7 +14753,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C750
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C734
@@ -14769,11 +14769,11 @@ l000000000001BF0C:
 	mov	x8,x9
 	ldr	w6,[sp,#&E8]
 	stp	x9,x8,[x23,#&B8]
-	sbfm	x11,x24,#0,#&1F
+	sxtw	x11,w24
 	strb	w10,[x20,x11]
 	ldr	w10,[sp,#&A0]
 	add	x21,x11,#3
-	subs	w31,w10,#2
+	cmp	w10,#2
 	b.ne	#&1C784
 	subs	x31,x9,x8
 	b.hs	#&1C78C
@@ -14788,7 +14788,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C7DC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C7C0
@@ -14805,7 +14805,7 @@ l000000000001BF0C:
 	ldr	w6,[sp,#&E8]
 	stp	x9,x8,[x23,#&B8]
 	ldr	w11,[sp,#&F0]
-	subs	w31,w6,#4
+	cmp	w6,#4
 	orr	w11,w10,w11
 	str	w11,[sp,#&F0]
 	b.ne	#&1C7FC
@@ -14817,15 +14817,15 @@ l000000000001BF0C:
 	cmp	w19,w10
 	mov	w24,w21
 	b.lt	#&1C5F8
-	ubfm	x8,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x8,x10,#&20
 	mov	w24,w21
 	b	#&1CCA0
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&1CCA4
 	ldp	x9,x8,[x23,#&B8]
 	mov	w19,w31
 	ldr	w10,[sp,#&98]
-	subs	w31,w10,#&10
+	cmp	w10,#&10
 	b.ne	#&1C854
 	subs	x31,x9,x8
 	b.hs	#&1C870
@@ -14845,7 +14845,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C8D8
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C8E8
@@ -14858,7 +14858,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C8E0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C958
@@ -14890,7 +14890,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C9E8
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C9CC
@@ -14917,7 +14917,7 @@ l000000000001BF0C:
 	cbz	w10,#&1C9C4
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1C9F0
@@ -14955,7 +14955,7 @@ l000000000001BF0C:
 	cbz	w10,#&1CA5C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1CA64
@@ -14988,7 +14988,7 @@ l000000000001BF0C:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1CADC
 	mov	x8,x23
@@ -15010,92 +15010,92 @@ l000000000001BF0C:
 	ldr	w12,[sp,#&B8]
 	ldr	w11,[sp,#&90]
 	and	w10,w21,w10
-	subs	w31,w12,#0
+	cmp	w12,#0
 	lslv	w11,w10,w11
 	asrv	w10,w10,w12
 	csel	w10,w11,w10,LT
-	subs	w31,w28,#7
+	cmp	w28,#7
 	b.hi	#&1CB4C
 	mov	w12,w28
 	mov	w11,w10
 	asrv	w13,w10,w12
 	add	w12,w12,w28
 	add	w11,w13,w11
-	subs	w31,w12,#8
+	cmp	w12,#8
 	b.lo	#&1CB34
 	b	#&1CB50
 	mov	w11,w10
-	sbfm	x12,x24,#0,#&1F
+	sxtw	x12,w24
 	ldr	w10,[sp,#&D0]
 	ldr	w14,[sp,#&B0]
 	strb	w11,[x20,x12]
 	ldr	w11,[sp,#&88]
 	and	w13,w21,w10
-	subs	w31,w14,#0
+	cmp	w14,#0
 	add	x10,x12,#1
 	lslv	w11,w13,w11
 	asrv	w12,w13,w14
 	csel	w12,w11,w12,LT
-	subs	w31,w22,#7
+	cmp	w22,#7
 	b.hi	#&1CBA4
 	mov	w13,w22
 	mov	w11,w12
 	asrv	w14,w12,w13
 	add	w13,w13,w22
 	add	w11,w14,w11
-	subs	w31,w13,#8
+	cmp	w13,#8
 	b.lo	#&1CB8C
 	b	#&1CBA8
 	mov	w11,w12
-	sbfm	x12,x24,#0,#&1F
+	sxtw	x12,w24
 	strb	w11,[x20,x10]
 	ldr	w10,[sp,#&C8]
 	ldr	w13,[sp,#&A8]
 	add	x11,x12,#2
 	ldr	w12,[sp,#&80]
 	and	w10,w21,w10
-	subs	w31,w13,#0
+	cmp	w13,#0
 	lslv	w12,w10,w12
 	asrv	w10,w10,w13
 	csel	w10,w12,w10,LT
-	subs	w31,w26,#7
+	cmp	w26,#7
 	b.hi	#&1CBFC
 	mov	w13,w26
 	mov	w12,w10
 	asrv	w14,w10,w13
 	add	w13,w13,w26
 	add	w12,w14,w12
-	subs	w31,w13,#8
+	cmp	w13,#8
 	b.lo	#&1CBE4
 	b	#&1CC00
 	mov	w12,w10
 	strb	w12,[x20,x11]
 	ldr	w11,[sp,#&C0]
-	sbfm	x10,x24,#0,#&1F
+	sxtw	x10,w24
 	add	x10,x10,#3
 	cbz	w11,#&1CC58
 	ldr	w13,[sp,#&70]
 	ldr	w12,[sp,#&68]
 	and	w11,w21,w11
-	subs	w31,w13,#0
+	cmp	w13,#0
 	lslv	w12,w11,w12
 	asrv	w11,w11,w13
 	csel	w12,w12,w11,LT
-	subs	w31,w27,#7
+	cmp	w27,#7
 	b.hi	#&1CC60
 	mov	w13,w27
 	mov	w11,w12
 	asrv	w14,w12,w13
 	add	w13,w13,w27
 	add	w11,w14,w11
-	subs	w31,w13,#8
+	cmp	w13,#8
 	b.lo	#&1CC40
 	b	#&1CC64
 	orr	w11,w31,#&FF
 	b	#&1CC64
 	mov	w11,w12
 	ldr	w12,[sp,#&F0]
-	subs	w31,w6,#4
+	cmp	w6,#4
 	orr	w12,w11,w12
 	str	w12,[sp,#&F0]
 	b.ne	#&1CC84
@@ -15107,7 +15107,7 @@ l000000000001BF0C:
 	cmp	w19,w11
 	mov	w24,w10
 	b.lt	#&1C82C
-	ubfm	x8,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x8,x11,#&20
 	mov	w24,w10
 	ldr	x19,[sp,#&38]
 	ldr	x9,[x23,#&10]
@@ -15130,7 +15130,7 @@ l000000000001BF0C:
 	add	w10,w10,#1
 	cmp	w10,w8
 	b.lt	#&1C5D8
-	subs	w31,w6,#4
+	cmp	w6,#4
 	b.ne	#&1CD94
 	ldr	x2,[sp,#&78]
 	ldp	x21,x19,[sp,#&58]
@@ -15139,13 +15139,13 @@ l000000000001BF0C:
 	cbnz	w9,#&1CDA0
 	ldp	w9,w8,[x23]
 	mul	w9,w9,w8
-	ubfm	w9,w9,#&1E,#&1D
+	lsl	w9,w9,#2
 	sub	w9,w9,#1
 	tbz	w9,#&FFFFFFFF,#&1CDA0
-	ubfm	w13,w9,#2,#&1F
-	sbfm	x11,x9,#0,#&1F
+	lsr	w13,w9,#2
+	sxtw	x11,w9
 	add	x12,x13,#1
-	subs	x31,x12,#2
+	cmp	x12,#2
 	b.lo	#&1CD78
 	and	x10,x12,#0
 	sub	x12,x12,x10
@@ -15174,21 +15174,21 @@ l000000000001BF0C:
 	ldp	x21,x19,[sp,#&58]
 	ldr	x20,[sp,#&50]
 	ldr	w9,[sp,#&30]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&1CED4
-	sbfm	w9,w8,#1,#&1F
-	subs	w31,w9,#1
+	asr	w9,w8,#1
+	cmp	w9,#1
 	b.lt	#&1CED4
 	ldr	x13,[x23]
 	ldr	x15,[sp,#&E0]
 	mov	w18,w31
 	mov	x9,x31
 	mul	w11,w13,w6
-	sbfm	x14,x11,#0,#&1F
+	sxtw	x14,w11
 	add	x16,x15,x14
 	add	x10,x15,#&10
-	ubfm	x12,x13,#&FFFFFFE0,#&FFFFFFFF
-	sbfm	x13,x13,#&FFFFFFE1,#&FFFFFFFF
+	lsr	x12,x13,#&20
+	asr	x13,x13,#&21
 	and	x15,x14,#0
 	sub	x16,x16,#1
 	movn	w17,#0
@@ -15197,10 +15197,10 @@ l000000000001BF0C:
 	mov	w18,w18
 	mul	w0,w11,w9
 	mul	w4,w11,w1
-	subs	w31,w14,#1
+	cmp	w14,#1
 	b.lt	#&1CEBC
 	mov	x1,x31
-	subs	w31,w14,#&20
+	cmp	w14,#&20
 	b.lo	#&1CE84
 	cbz	x15,#&1CE84
 	ldr	x1,[sp,#&E0]
@@ -15278,11 +15278,11 @@ l000000000001BF0C:
 	stp	x28,x8,[x23,#&B8]
 
 l000000000001CF3C:
-	subs	w31,w9,#&39
+	cmp	w9,#&39
 	b.eq	#&1CF4C
 
 l000000000001CF44:
-	subs	w31,w9,#&37
+	cmp	w9,#&37
 	b.ne	#&1CF94
 
 l000000000001CF4C:
@@ -15302,7 +15302,7 @@ l000000000001CF64:
 l000000000001CF6C:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1FA18
@@ -15332,7 +15332,7 @@ l000000000001CFB4:
 l000000000001CFBC:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1CFF0
@@ -15349,7 +15349,7 @@ l000000000001CFE4:
 000000000001D000 E9 03 1C AA FC A2 0B A9                         ........       
 
 l000000000001D008:
-	ubfm	w19,w11,#&18,#&17
+	lsl	w19,w11,#8
 	subs	x31,x9,x8
 	b.hs	#&1D028
 	add	x11,x9,#1
@@ -15361,7 +15361,7 @@ l000000000001D008:
 	cbz	w10,#&1D070
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D058
@@ -15387,7 +15387,7 @@ l000000000001D008:
 	cbz	w10,#&1D0D8
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D0C0
@@ -15401,9 +15401,9 @@ l000000000001D008:
 	mov	x8,x28
 	mov	x9,x28
 	stp	x28,x8,[x23,#&B8]
-	ubfm	w20,w19,#&10,#&F
+	lsl	w20,w19,#&10
 	movz	w19,#&3842,lsl #&10
-	ubfm	w21,w10,#&18,#&17
+	lsl	w21,w10,#8
 	movk	w19,#&5053
 	subs	x31,x9,x8
 	b.hs	#&1D100
@@ -15415,7 +15415,7 @@ l000000000001D008:
 	cbz	w8,#&1D144
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1D130
@@ -15441,7 +15441,7 @@ l000000000001D008:
 	ldrb	w9,[x10]
 	b	#&1D374
 	adrp	x1,#&13000
-	add	x1,x1,#&FFFFFFC3
+	add	x1,x1,#&FC3
 	mov	x0,x23
 	bl	#&2CF5C
 	cbz	w0,#&1D2C8
@@ -15457,7 +15457,7 @@ l000000000001D008:
 	cbz	w10,#&1D1E8
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D1D4
@@ -15472,7 +15472,7 @@ l000000000001D008:
 	sub	w19,w19,#1
 	cbnz	w19,#&1D194
 	adrp	x1,#&13000
-	add	x1,x1,#&FFFFFFC8
+	add	x1,x1,#&FC8
 	mov	x0,x23
 	bl	#&2CF5C
 	ldp	x9,x8,[x23,#&C8]
@@ -15489,7 +15489,7 @@ l000000000001D008:
 	cbz	w10,#&1D268
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D254
@@ -15516,7 +15516,7 @@ l000000000001D008:
 	cbz	w8,#&1D350
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1D35C
@@ -15539,7 +15539,7 @@ l000000000001D008:
 	cbz	w10,#&1D52C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D53C
@@ -15551,7 +15551,7 @@ l000000000001D008:
 	cbz	w10,#&1D534
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D9E4
@@ -15568,7 +15568,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w20,w9,#&18,#&17
+	lsl	w20,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1D394
 	add	x10,x8,#1
@@ -15580,7 +15580,7 @@ l000000000001D008:
 	cbz	w9,#&1D3E0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D3C8
@@ -15607,7 +15607,7 @@ l000000000001D008:
 	cbz	w9,#&1D44C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D434
@@ -15622,8 +15622,8 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w20,w20,#&10,#&F
-	ubfm	w21,w9,#&18,#&17
+	lsl	w20,w20,#&10
+	lsl	w21,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1D470
 	add	x10,x8,#1
@@ -15635,7 +15635,7 @@ l000000000001D008:
 	cbz	w9,#&1D4BC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D4A4
@@ -15663,13 +15663,13 @@ l000000000001D008:
 	b	#&1D8D0
 	adrp	x8,#&13000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFF60
+	add	x8,x8,#&F60
 	b	#&209BC
 	ldr	x9,[x23,#&30]
 	cbz	w9,#&1D8D0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D8B8
@@ -15698,7 +15698,7 @@ l000000000001D008:
 	cbz	w8,#&1D664
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1D59C
@@ -15711,11 +15711,11 @@ l000000000001D008:
 	strb	w31,[x23,#&38]
 	mov	x9,x28
 	stp	x28,x9,[x23,#&B8]
-	subs	w31,w19,#&50
+	cmp	w19,#&50
 	b.ne	#&1D664
 	sub	w8,w8,#&35
 	and	w8,w8,#&FF
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.hi	#&1D664
 	mov	x19,x24
 	add	x24,x23,#8
@@ -15744,7 +15744,7 @@ l000000000001D008:
 	sub	x9,x8,x1
 	subs	w21,w19,w9
 	b.le	#&1DBF8
-	sbfm	x19,x9,#0,#&1F
+	sxtw	x19,w9
 	mov	x2,x19
 	mov	x22,x0
 	bl	#&30F0
@@ -15772,7 +15772,7 @@ l000000000001D008:
 	cbz	w10,#&1D6DC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D6C4
@@ -15790,7 +15790,7 @@ l000000000001D008:
 	cmp	w10,w11
 	b.ne	#&1D85C
 	add	x19,x19,#1
-	subs	x31,x19,#&B
+	cmp	x19,#&B
 	b.ne	#&1D678
 	ldp	x8,x9,[x23,#&C8]
 	mov	x0,x23
@@ -15807,15 +15807,15 @@ l000000000001D008:
 	ldr	w27,[x22]
 	mul	w19,w9,w8
 	mul	w8,w27,w19
-	sbfm	x0,x8,#0,#&1F
+	sxtw	x0,w8
 	bl	#&2B80
 	mov	x20,x0
 	cbz	x20,#&1D8AC
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.lt	#&1D850
 	mov	w9,w19
 	stur	x9,[x29,-#&68]
-	sbfm	x9,x27,#&FFFFFFFE,#&1F
+	sbfiz	x9,x27,#2,#&20
 	str	x9,[sp,#&F8]
 	adrp	x9,#&13000
 	and	w8,w27,#1
@@ -15824,7 +15824,7 @@ l000000000001D008:
 	add	w8,w27,w8
 	sub	w26,w8,#1
 	mov	x21,x31
-	sbfm	x10,x27,#0,#&1F
+	sxtw	x10,w27
 	adrp	x24,#&24000
 	adrp	x25,#&24000
 	mov	w8,w26
@@ -15833,7 +15833,7 @@ l000000000001D008:
 	mov	x23,x20
 	stp	x8,x20,[sp,#&D8]
 	str	x10,[sp,#&E8]
-	subs	w31,w26,#1
+	cmp	w26,#1
 	b.lt	#&1D800
 	mov	x20,x27
 	ldr	x27,[sp,#&D8]
@@ -15895,7 +15895,7 @@ l000000000001D008:
 	cbz	w10,#&1DD48
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DD34
@@ -15911,7 +15911,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1D8F0
 	add	x10,x8,#1
@@ -15923,7 +15923,7 @@ l000000000001D008:
 	cbz	w9,#&1D93C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1D924
@@ -15939,12 +15939,12 @@ l000000000001D008:
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
 	orr	w9,w9,w19
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.ne	#&1D97C
 	ldr	x9,[x23,#&10]
 	cbz	x9,#&1D98C
 	sub	w9,w28,w8
-	subs	w31,w9,#5
+	cmp	w9,#5
 	b.gt	#&1D98C
 	ldr	x8,[x23,#&18]
 	ldr	x0,[x23,#&28]
@@ -15956,7 +15956,7 @@ l000000000001D008:
 	b	#&1D994
 	adrp	x8,#&13000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFF68
+	add	x8,x8,#&F68
 	b	#&209BC
 	add	x8,x8,#6
 	str	x8,[x23,#&B8]
@@ -15971,7 +15971,7 @@ l000000000001D008:
 	cbz	w9,#&1DC50
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DC38
@@ -15997,7 +15997,7 @@ l000000000001D008:
 	cbz	w10,#&1DA48
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DA50
@@ -16025,7 +16025,7 @@ l000000000001D008:
 	cbz	w10,#&1DAB8
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DAC0
@@ -16052,7 +16052,7 @@ l000000000001D008:
 	cbz	w10,#&1DB24
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DB2C
@@ -16078,9 +16078,9 @@ l000000000001D008:
 	ldp	x9,x8,[x23,#&B8]
 	subs	x31,x9,x8
 	b.hs	#&1DBA0
-	ubfm	w8,w19,#&18,#&17
+	lsl	w8,w19,#8
 	str	x26,[sp,#&50]
-	ubfm	w9,w22,#&18,#&17
+	lsl	w9,w22,#8
 	orr	w26,w21,w8
 	orr	w8,w31,#&10000000
 	orr	w25,w20,w9
@@ -16089,11 +16089,11 @@ l000000000001D008:
 	b.hs	#&1DBB0
 	adrp	x8,#&13000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFB0C
+	add	x8,x8,#&B0C
 	b	#&209BC
 	adrp	x8,#&13000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFFCD
+	add	x8,x8,#&FCD
 	b	#&209BC
 	ldp	x9,x8,[x23,#&B8]
 	subs	x31,x9,x8
@@ -16106,14 +16106,14 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E398
 	add	x8,x23,w0,sxtw #0
 	add	x8,x8,#&38
 	b	#&1E3A4
 	ldp	x1,x8,[x23,#&B8]
-	sbfm	x2,x19,#0,#&1F
+	sxtw	x2,w19
 	add	x19,x1,x2
 	subs	x31,x19,x8
 	mov	x20,x0
@@ -16135,7 +16135,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1DC70
 	add	x10,x8,#1
@@ -16147,7 +16147,7 @@ l000000000001D008:
 	cbz	w9,#&1DCBC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DCA4
@@ -16164,11 +16164,11 @@ l000000000001D008:
 	stp	x8,x28,[x23,#&B8]
 	orr	w9,w9,w19
 	str	x9,[sp,#&F0]
-	subs	w31,w9,#&11
+	cmp	w9,#&11
 	b.lo	#&1DCDC
 	adrp	x8,#&13000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFF76
+	add	x8,x8,#&F76
 	b	#&209BC
 	subs	x31,x8,x28
 	b.hs	#&1DCF8
@@ -16181,7 +16181,7 @@ l000000000001D008:
 	cbz	w9,#&1DD2C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DE08
@@ -16208,7 +16208,7 @@ l000000000001D008:
 	cbz	w10,#&1DD94
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DD9C
@@ -16224,7 +16224,7 @@ l000000000001D008:
 	mov	x8,x28
 	mov	x9,x28
 	stp	x28,x8,[x23,#&B8]
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.hi	#&1FBB4
 	subs	x31,x9,x8
 	b.hs	#&1DDD8
@@ -16237,7 +16237,7 @@ l000000000001D008:
 	cbz	w10,#&1E2B4
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1E29C
@@ -16263,7 +16263,7 @@ l000000000001D008:
 	cbz	w9,#&1DE78
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DE80
@@ -16293,7 +16293,7 @@ l000000000001D008:
 	cbz	w9,#&1DEF0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DEF8
@@ -16323,7 +16323,7 @@ l000000000001D008:
 	cbz	w9,#&1DF68
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DF70
@@ -16353,7 +16353,7 @@ l000000000001D008:
 	cbz	w9,#&1DFDC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1DFE4
@@ -16382,7 +16382,7 @@ l000000000001D008:
 	cbz	w9,#&1E050
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1E058
@@ -16410,7 +16410,7 @@ l000000000001D008:
 	cbz	w9,#&1E0C0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1E0C8
@@ -16440,7 +16440,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1E13C
 	mov	x8,x23
@@ -16468,7 +16468,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1E1A4
 	mov	x8,x23
@@ -16482,7 +16482,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1E1DC
 	add	x10,x8,#1
@@ -16495,7 +16495,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1E210
 	mov	x8,x23
@@ -16510,9 +16510,9 @@ l000000000001D008:
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
 	orr	w21,w9,w19
-	subs	w31,w21,#8
+	cmp	w21,#8
 	b.eq	#&1E23C
-	subs	w31,w21,#&10
+	cmp	w21,#&10
 	b.ne	#&1E258
 	subs	x31,x8,x28
 	b.hs	#&1E268
@@ -16523,14 +16523,14 @@ l000000000001D008:
 	b	#&1ED50
 	adrp	x8,#&12000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFF8A
+	add	x8,x8,#&F8A
 	b	#&209BC
 	ldr	x9,[x23,#&30]
 	cbz	w9,#&1ED50
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1ED38
 	mov	x8,x23
@@ -16544,15 +16544,15 @@ l000000000001D008:
 	mov	x8,x28
 	mov	x9,x28
 	stp	x28,x8,[x23,#&B8]
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.ne	#&1E2FC
 	orr	w10,w10,#8
-	subs	w31,w10,#9
+	cmp	w10,#9
 	b.ne	#&1FBB4
 	ldr	x10,[x23,#&10]
 	cbz	x10,#&1E348
 	sub	w10,w8,w9
-	subs	w31,w10,#3
+	cmp	w10,#3
 	b.gt	#&1E348
 	ldr	x9,[x23,#&18]
 	ldr	x0,[x23,#&28]
@@ -16562,7 +16562,7 @@ l000000000001D008:
 	blr	x9
 	ldp	x10,x8,[x23,#&B8]
 	b	#&1E350
-	subs	w31,w10,#&B
+	cmp	w10,#&B
 	b.hi	#&1FBB4
 	orr	w11,w31,#1
 	lslv	w10,w11,w10
@@ -16572,7 +16572,7 @@ l000000000001D008:
 	ldr	x10,[x23,#&10]
 	cbz	x10,#&1E340
 	sub	w10,w8,w9
-	subs	w31,w10,#8
+	cmp	w10,#8
 	b.gt	#&1E340
 	ldr	x9,[x23,#&18]
 	ldr	x0,[x23,#&28]
@@ -16593,7 +16593,7 @@ l000000000001D008:
 	cbz	w8,#&1FBB4
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1F794
@@ -16616,7 +16616,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E3EC
 	add	x8,x23,w0,sxtw #0
@@ -16637,7 +16637,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E440
 	add	x8,x23,w0,sxtw #0
@@ -16658,7 +16658,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E494
 	add	x8,x23,w0,sxtw #0
@@ -16679,7 +16679,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E4E8
 	add	x8,x23,w0,sxtw #0
@@ -16700,7 +16700,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E53C
 	add	x8,x23,w0,sxtw #0
@@ -16721,7 +16721,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E590
 	add	x8,x23,w0,sxtw #0
@@ -16743,7 +16743,7 @@ l000000000001D008:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&1E5E8
 	add	x8,x23,w0,sxtw #0
@@ -16753,9 +16753,9 @@ l000000000001D008:
 	strb	w31,[x23,#&38]
 	mov	x8,x28
 	stp	x28,x8,[x23,#&B8]
-	ubfm	w20,w26,#&1E,#&1D
+	lsl	w20,w26,#2
 	mul	w8,w25,w20
-	sbfm	x27,x8,#0,#&1F
+	sxtw	x27,w8
 	mov	x0,x27
 	str	x24,[sp,#&60]
 	bl	#&2B80
@@ -16763,11 +16763,11 @@ l000000000001D008:
 	mov	x2,x27
 	str	x0,[sp,#&F0]
 	bl	#&2E60
-	add	x8,x31,#&1E0
+	add	x8,sp,#&1E0
 	mov	x21,x31
 	mov	w22,w31
 	orr	x24,x8,#0
-	subs	x31,x21,#&A
+	cmp	x21,#&A
 	b.eq	#&1ECD4
 	ldp	x9,x8,[x23,#&B8]
 	subs	x31,x9,x8
@@ -16782,7 +16782,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E690
 	mov	x8,x23
@@ -16809,7 +16809,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E700
 	mov	x8,x23
@@ -16838,7 +16838,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E76C
 	mov	x8,x23
@@ -16865,7 +16865,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E7E0
 	mov	x8,x23
@@ -16892,7 +16892,7 @@ l000000000001D008:
 	ldp	x9,x8,[x23,#&B8]
 	subs	x31,x9,x8
 	b.hs	#&1ECE0
-	subs	w31,w28,#8
+	cmp	w28,#8
 	b.ne	#&1ECD4
 	ldur	x28,[x29,-#&68]
 	add	x21,x21,#1
@@ -16914,18 +16914,18 @@ l000000000001D008:
 	add	x8,x9,w8,sxtw #0
 	str	x8,[sp,#&E0]
 	add	x8,x24,x24,lsl #1
-	add	x9,x31,#&1E0
+	add	x9,sp,#&1E0
 	add	x8,x9,x8
 	ldrb	w8,[x8,#&1]
 	cbz	w8,#&1EB14
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.eq	#&1EB58
-	subs	w31,w8,#2
+	cmp	w8,#2
 	b.ne	#&1ECD4
 	cbz	w26,#&1ECA4
 	ldr	x28,[sp,#&E0]
 	add	x8,x24,x24,lsl #1
-	add	x9,x31,#&1E0
+	add	x9,sp,#&1E0
 	add	x8,x9,x8
 	add	x8,x8,#2
 	mov	w22,w26
@@ -16943,7 +16943,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E914
 	mov	x8,x23
@@ -16968,7 +16968,7 @@ l000000000001D008:
 	ldp	x9,x8,[x23,#&B8]
 	subs	x31,x9,x8
 	b.hs	#&1ECE0
-	sbfm	w8,w19,#0,#7
+	sxtb	w8,w19
 	tbz	w8,#&FFFFFFFF,#&1E99C
 	cmp	w19,w22
 	b.ge	#&1ECE0
@@ -16986,7 +16986,7 @@ l000000000001D008:
 	cmp	w20,w19
 	b.lo	#&1E974
 	b	#&1EB04
-	subs	w31,w19,#&80
+	cmp	w19,#&80
 	b.ne	#&1E9C4
 	ldp	x9,x8,[x23,#&B8]
 	subs	x31,x9,x8
@@ -17003,7 +17003,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1E9FC
 	mov	x8,x23
@@ -17016,7 +17016,7 @@ l000000000001D008:
 	mov	w10,w31
 	ldur	x9,[x29,-#&68]
 	stp	x9,x8,[x23,#&B8]
-	ubfm	w19,w10,#&18,#&17
+	lsl	w19,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&1EA30
 	add	x8,x9,#1
@@ -17028,7 +17028,7 @@ l000000000001D008:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&1EA60
 	mov	x9,x23
@@ -17045,7 +17045,7 @@ l000000000001D008:
 	cmp	w19,w22
 	b.gt	#&1ECE0
 	ldr	x8,[sp,#&D8]
-	add	x2,x31,#&100
+	add	x2,sp,#&100
 	mov	x0,x23
 	ldrb	w27,[x8]
 	mov	w1,w27
@@ -17077,12 +17077,12 @@ l000000000001D008:
 	add	x8,x28,w8,uxtw #2
 	add	x28,x8,#4
 	sub	w22,w22,w19
-	subs	w31,w22,#0
+	cmp	w22,#0
 	b.gt	#&1E8BC
 	b	#&1ECA4
 	cbz	w26,#&1ECA4
 	add	x8,x24,x24,lsl #1
-	add	x9,x31,#&1E0
+	add	x9,sp,#&1E0
 	add	x8,x9,x8
 	ldrb	w28,[x8,#&2]
 	ldr	x27,[sp,#&E0]
@@ -17100,7 +17100,7 @@ l000000000001D008:
 	cbz	w26,#&1ECA4
 	ldr	x19,[sp,#&E0]
 	add	x8,x24,x24,lsl #1
-	add	x9,x31,#&1E0
+	add	x9,sp,#&1E0
 	add	x8,x9,x8
 	add	x22,x8,#2
 	mov	w28,w26
@@ -17117,7 +17117,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1EBD0
 	mov	x8,x23
@@ -17144,7 +17144,7 @@ l000000000001D008:
 	subs	x31,x9,x8
 	b.hs	#&1ECE0
 	ldrb	w27,[x22]
-	add	x2,x31,#&100
+	add	x2,sp,#&100
 	mov	x0,x23
 	mov	w1,w27
 	bl	#&2D150
@@ -17178,7 +17178,7 @@ l000000000001D008:
 	add	x9,x19,w13,uxtw #2
 	add	x19,x9,#4
 	sub	w28,w28,w8
-	subs	w31,w28,#0
+	cmp	w28,#0
 	b.gt	#&1EB74
 	ldr	x20,[sp,#&58]
 	add	x24,x24,#1
@@ -17193,10 +17193,10 @@ l000000000001D008:
 	cbnz	x0,#&1ED04
 	b	#&1ECFC
 	adrp	x8,#&12000
-	add	x8,x8,#&FFFFFFD6
+	add	x8,x8,#&FD6
 	b	#&1ECE8
 	adrp	x8,#&12000
-	add	x8,x8,#&FFFFFFCD
+	add	x8,x8,#&FCD
 	adrp	x9,#&23000
 	str	x8,[x9,#&AB0]
 	ldr	x19,[sp,#&78]
@@ -17223,7 +17223,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1ED70
 	add	x10,x8,#1
@@ -17236,7 +17236,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1EDA4
 	mov	x8,x23
@@ -17251,7 +17251,7 @@ l000000000001D008:
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
 	orr	w9,w9,w19
-	subs	w31,w9,#3
+	cmp	w9,#3
 	b.ne	#&1EDE4
 	subs	x31,x8,x28
 	b.hs	#&1EDF4
@@ -17262,14 +17262,14 @@ l000000000001D008:
 	b	#&1EE40
 	adrp	x8,#&12000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFFA0
+	add	x8,x8,#&FA0
 	b	#&209BC
 	ldr	x9,[x23,#&30]
 	cbz	w9,#&1EE40
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1EE28
 	mov	x8,x23
@@ -17283,7 +17283,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1EE60
 	add	x10,x8,#1
@@ -17296,7 +17296,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1EE94
 	mov	x8,x23
@@ -17324,7 +17324,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1EF04
 	mov	x8,x23
@@ -17338,8 +17338,8 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w19,#&10,#&F
-	ubfm	w20,w9,#&18,#&17
+	lsl	w19,w19,#&10
+	lsl	w20,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1EF40
 	add	x10,x8,#1
@@ -17352,7 +17352,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1EF74
 	mov	x8,x23
@@ -17397,7 +17397,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F028
 	mov	x8,x23
@@ -17411,7 +17411,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1F060
 	add	x10,x8,#1
@@ -17424,7 +17424,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F094
 	mov	x8,x23
@@ -17451,7 +17451,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F100
 	mov	x8,x23
@@ -17465,8 +17465,8 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w19,#&10,#&F
-	ubfm	w20,w9,#&18,#&17
+	lsl	w19,w19,#&10
+	lsl	w20,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1F13C
 	add	x10,x8,#1
@@ -17479,7 +17479,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F170
 	mov	x8,x23
@@ -17524,7 +17524,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F224
 	mov	x8,x23
@@ -17538,7 +17538,7 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w9,#&18,#&17
+	lsl	w19,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1F25C
 	add	x10,x8,#1
@@ -17551,7 +17551,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F290
 	mov	x8,x23
@@ -17578,7 +17578,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F2FC
 	mov	x8,x23
@@ -17592,8 +17592,8 @@ l000000000001D008:
 	mov	w9,w31
 	mov	x28,x8
 	stp	x8,x28,[x23,#&B8]
-	ubfm	w19,w19,#&10,#&F
-	ubfm	w20,w9,#&18,#&17
+	lsl	w19,w19,#&10
+	lsl	w20,w9,#8
 	subs	x31,x8,x28
 	b.hs	#&1F338
 	add	x10,x8,#1
@@ -17606,7 +17606,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	blr	x8
 	cbz	w0,#&1F36C
 	mov	x8,x23
@@ -17650,7 +17650,7 @@ l000000000001D008:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&1F41C
 	mov	x9,x23
@@ -17665,7 +17665,7 @@ l000000000001D008:
 	mov	x28,x9
 	stp	x9,x28,[x23,#&B8]
 	mov	x19,x9
-	ubfm	w20,w8,#&18,#&17
+	lsl	w20,w8,#8
 	subs	x31,x19,x28
 	b.hs	#&1F454
 	add	x9,x19,#1
@@ -17677,7 +17677,7 @@ l000000000001D008:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&1F488
 	mov	x9,x23
@@ -17693,31 +17693,31 @@ l000000000001D008:
 	stp	x9,x28,[x23,#&B8]
 	mov	x19,x9
 	orr	w20,w8,w20
-	subs	w31,w20,#2
+	cmp	w20,#2
 	b.lo	#&1F4C0
 	adrp	x8,#&11000
 	mov	x20,x31
-	add	x8,x8,#&FFFFFFB3
+	add	x8,x8,#&FB3
 	b	#&209BC
 	ldr	w8,[sp,#&D0]
 	ldr	w12,[sp,#&E8]
 	ldr	w10,[sp,#&E0]
-	ubfm	w9,w26,#&18,#&17
-	ubfm	w8,w8,#&18,#&17
+	lsl	w9,w26,#8
+	lsl	w8,w8,#8
 	orr	w8,w12,w8
-	ubfm	w10,w10,#&18,#&17
-	ubfm	w8,w8,#&10,#&F
+	lsl	w10,w10,#8
+	lsl	w8,w8,#&10
 	orr	w8,w10,w8
 	ldr	w10,[sp,#&D8]
 	orr	w9,w22,w9
-	ubfm	w11,w25,#&18,#&17
-	ubfm	w9,w9,#&10,#&F
+	lsl	w11,w25,#8
+	lsl	w9,w9,#&10
 	orr	w9,w11,w9
 	orr	w22,w8,w10
 	orr	w25,w9,w27
 	mul	w8,w22,w25
-	ubfm	w8,w8,#&1E,#&1D
-	sbfm	x0,x8,#0,#&1F
+	lsl	w8,w8,#2
+	sxtw	x0,w8
 	bl	#&2B80
 	str	x0,[sp,#&E0]
 	cbz	x0,#&209B0
@@ -17730,7 +17730,7 @@ l000000000001D008:
 	mul	w8,w22,w8
 	tbz	w8,#&FFFFFFFF,#&1FC0C
 	ldr	x9,[x23,#&10]
-	ubfm	w8,w8,#&1F,#&1E
+	lsl	w8,w8,#1
 	cbz	x9,#&1FA0C
 	sub	w9,w28,w19
 	subs	w1,w8,w9
@@ -17743,7 +17743,7 @@ l000000000001D008:
 	sub	w8,w24,#1
 	add	x27,x8,#1
 	and	x26,x27,#0
-	ubfm	x8,x26,#&FFFFFFFE,#&FFFFFFFD
+	lsl	x8,x26,#2
 	str	x8,[sp,#&E8]
 	ldr	x8,[sp,#&E0]
 	mov	x19,x31
@@ -17751,9 +17751,9 @@ l000000000001D008:
 	ldr	x8,[sp,#&F0]
 	subs	x31,x19,x8
 	b.hs	#&1F688
-	subs	w31,w21,#&10
+	cmp	w21,#&10
 	b.ne	#&1F6DC
-	subs	w31,w24,#1
+	cmp	w24,#1
 	b.lt	#&1F77C
 	ldr	x25,[sp,#&E0]
 	mov	w22,w24
@@ -17770,7 +17770,7 @@ l000000000001D008:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&1F604
 	mov	x8,x23
@@ -17796,7 +17796,7 @@ l000000000001D008:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&1F660
 	ldur	x9,[x29,-#&68]
@@ -17813,12 +17813,12 @@ l000000000001D008:
 	sub	w22,w22,#1
 	cbnz	w22,#&1F5A8
 	b	#&1F77C
-	subs	x31,x19,#3
+	cmp	x19,#3
 	csinv	w8,w31,w31,NE
-	subs	w31,w24,#1
+	cmp	w24,#1
 	b.lt	#&1F77C
 	ldr	x9,[sp,#&E0]
-	subs	x31,x27,#2
+	cmp	x27,#2
 	add	x9,x9,x19
 	b.lo	#&1F768
 	cbz	x26,#&1F768
@@ -17835,7 +17835,7 @@ l000000000001D008:
 	b.ne	#&1F76C
 	b	#&1F77C
 	ldr	x22,[sp,#&E0]
-	subs	w31,w24,#1
+	cmp	w24,#1
 	mov	w20,w24
 	b.lt	#&1F77C
 	ldp	x8,x9,[x23,#&B8]
@@ -17850,7 +17850,7 @@ l000000000001D008:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&1F73C
 	mov	x9,x23
@@ -17877,7 +17877,7 @@ l000000000001D008:
 	ldr	x20,[sp,#&E0]
 	add	x19,x19,#1
 	add	x28,x28,#1
-	subs	x31,x19,#4
+	cmp	x19,#4
 	b.ne	#&1F584
 	b	#&1FEDC
 	mov	w10,w31
@@ -17886,7 +17886,7 @@ l000000000001D008:
 	mov	x8,x28
 	mov	x9,x28
 	stp	x28,x8,[x23,#&B8]
-	subs	w31,w10,#&20
+	cmp	w10,#&20
 	b.hi	#&1FBB4
 	orr	w11,w31,#1
 	lslv	x10,x11,x10
@@ -17898,7 +17898,7 @@ l000000000001D008:
 	ldr	x10,[x23,#&10]
 	cbz	x10,#&1F800
 	sub	w10,w8,w9
-	subs	w31,w10,#3
+	cmp	w10,#3
 	b.gt	#&1F800
 	ldr	x9,[x23,#&18]
 	ldr	x0,[x23,#&28]
@@ -17921,7 +17921,7 @@ l000000000001D008:
 	cbz	w10,#&1F858
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1F860
@@ -17948,7 +17948,7 @@ l000000000001D008:
 	cbz	w10,#&1F8DC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1F8C4
@@ -17975,7 +17975,7 @@ l000000000001D008:
 	cbz	w10,#&1F930
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1F938
@@ -18002,7 +18002,7 @@ l000000000001D008:
 	cbz	w10,#&1F9B4
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&1F99C
@@ -18028,7 +18028,7 @@ l000000000001D008:
 	cbz	w8,#&1FB54
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&1FB40
@@ -18049,16 +18049,16 @@ l000000000001D008:
 
 l000000000001FA2C:
 	ldp	x10,x8,[x23,#&C8]
-	subs	w31,w9,#&61
+	cmp	w9,#&61
 	stp	x10,x8,[x23,#&B8]
 	b.ne	#&1CF9C
 
 l000000000001FA3C:
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	movz	w2,#&4860
 	mov	w1,w31
 	bl	#&2E60
-	add	x1,x31,#&1E0
+	add	x1,sp,#&1E0
 	mov	x0,x23
 	mov	x2,x22
 	mov	w3,w31
@@ -18070,9 +18070,9 @@ l000000000001FA64:
 	ldr	w8,[sp,#&1E4]
 	str	x26,[sp,#&50]
 	ldr	x26,[sp,#&1E8]
-	ubfm	w21,w19,#&1E,#&1D
+	lsl	w21,w19,#2
 	mul	w8,w21,w8
-	sbfm	x22,x8,#0,#&1F
+	sxtw	x22,w8
 	mov	x0,x22
 	bl	#&2B80
 	mov	x25,x0
@@ -18083,24 +18083,24 @@ l000000000001FA64:
 	tbz	w8,#4,#&20B58
 	adrp	x9,#&10000
 	ubfm	w8,w8,#2,#4
-	add	x9,x9,#&FFFFFF4C
+	add	x9,x9,#&F4C
 	ldrsw	x8,[x9,x8]
 	add	x8,x8,x9
 	br	x8
-	subs	w31,w22,#1
+	cmp	w22,#1
 	b.lt	#&20B58
 	ldrsw	x9,[sp,#&FE]
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	mov	w8,w31
 	mov	w12,w19
 	add	x9,x10,x9,lsl #2
 	add	x9,x9,#&30
 	orr	x10,x9,#0
 	orr	x11,x9,#0
-	subs	w31,w19,#1
+	cmp	w19,#1
 	b.lt	#&1FB28
 	mov	x12,x31
-	sbfm	x13,x8,#0,#&1F
+	sxtw	x13,w8
 	ldr	x14,[sp,#&1E8]
 	ldrb	w15,[x10]
 	add	x14,x14,x13
@@ -18359,8 +18359,8 @@ l000000000001FB38:
 
 l00000000000209C4:
 	mov	x0,x20
-	add	x31,x31,#4,lsl #&C
-	add	x31,x31,#&FFFFFA40
+	add	sp,sp,#4,lsl #&C
+	add	sp,sp,#&A40
 	ldp	x29,x30,[sp,#&70]
 	ldp	x20,x19,[sp,#&60]
 	ldp	x22,x21,[sp,#&50]
@@ -18611,7 +18611,7 @@ l0000000000021880:
 	ldr	w3,[sp,#&1E0]
 	ldr	w4,[sp,#&1E4]
 	orr	w8,w27,#4
-	subs	w31,w8,#4
+	cmp	w8,#4
 	str	w3,[x26]
 	str	w4,[x24]
 	b.eq	#&209C4
@@ -18622,10 +18622,10 @@ l0000000000021880:
 	bl	#&2CC0
 	mov	x20,x31
 	b	#&209C4
-	ubfm	w22,w20,#&1E,#&1D
+	lsl	w22,w20,#2
 	movz	w10,#&485C
-	add	x11,x31,#&1E0
-	ubfm	w12,w19,#&1E,#&1D
+	add	x11,sp,#&1E0
+	lsl	w12,w19,#2
 	str	w22,[x11,x10]
 	movz	w10,#&4844
 	str	w12,[x11,x10]
@@ -18654,7 +18654,7 @@ l0000000000021880:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&21960
 	mov	x8,x23
@@ -18668,9 +18668,9 @@ l0000000000021880:
 	ldur	x9,[x29,-#&68]
 	stp	x9,x8,[x23,#&B8]
 	movz	w11,#&4840
-	add	x12,x31,#&1E0
+	add	x12,sp,#&1E0
 	sbfm	w13,w10,#6,#6
-	ubfm	w14,w20,#&1B,#&1A
+	lsl	w14,w20,#5
 	ands	w31,w10,#&40
 	movz	w15,#&483C
 	movz	w16,#&4838
@@ -18684,18 +18684,18 @@ l0000000000021880:
 	tbz	w10,#7,#&21B60
 	adrp	x9,#&F000
 	mov	x8,x31
-	add	x9,x9,#&FFFFFF03
+	add	x9,x9,#&F03
 	b	#&2186C
 	and	w10,w10,#7
 	orr	w11,w31,#2
 	lslv	w10,w11,w10
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.lt	#&21B48
 	ldrb	w12,[sp,#&208]
 	ldr	w11,[sp,#&204]
 	movn	w13,#0
 	mov	w19,w10
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	ands	w31,w12,#1
 	csel	x21,x13,x11,EQ
 	add	x22,x10,#&433
@@ -18711,7 +18711,7 @@ l0000000000021880:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&21A44
 	mov	x8,x23
@@ -18737,7 +18737,7 @@ l0000000000021880:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&21AAC
 	mov	x8,x23
@@ -18763,7 +18763,7 @@ l0000000000021880:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&21B14
 	mov	x8,x23
@@ -18776,14 +18776,14 @@ l0000000000021880:
 	mov	w10,w31
 	ldur	x9,[x29,-#&68]
 	stp	x9,x8,[x23,#&B8]
-	subs	x31,x21,#0
+	cmp	x21,#0
 	sturb	w10,[x22,-#&3]
 	csinv	w10,w31,w31,EQ
 	sub	x19,x19,#1
 	strb	w10,[x22],#&4
 	sub	x21,x21,#1
 	cbnz	x19,#&219F8
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	add	x10,x10,#&430
 	str	x10,[sp,-#&35F0]
 	movn	w10,#0
@@ -18796,13 +18796,13 @@ l0000000000021880:
 	movn	w10,#0
 	str	w10,[sp,#&C8]
 	b	#&21B94
-	add	x11,x31,#&1E0
+	add	x11,sp,#&1E0
 	add	x10,x11,x10,lsl #2
 	add	x10,x10,#&30
 	ldrb	w11,[x10,#&3]
 	strb	w31,[x10,#&3]
 	str	w11,[sp,#&C8]
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	add	x10,x10,#&30
 	str	x10,[sp,-#&35F0]
 	subs	x31,x9,x8
@@ -18817,7 +18817,7 @@ l0000000000021880:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&21BFC
 	mov	x8,x23
@@ -18836,17 +18836,17 @@ l0000000000021880:
 	ldur	x9,[x29,-#&68]
 	stp	x9,x8,[x23,#&B8]
 	ldr	w8,[sp,#&E8]
-	subs	w31,w8,#&C
+	cmp	w8,#&C
 	b.ls	#&21C2C
 	mov	x8,x31
 	b	#&21874
 	ldr	w9,[sp,#&E8]
 	orr	w8,w31,#1
 	lslv	w9,w8,w9
-	sbfm	x24,x9,#0,#&1F
-	add	x9,x31,#&1E0
+	sxtw	x24,w9
+	add	x9,sp,#&1E0
 	mov	x8,x31
-	add	x9,x9,#&FFFFF833
+	add	x9,x9,#&833
 	orr	w10,w31,#&FFFF
 	sturh	w10,[x9,-#&6]
 	sturb	w8,[x9,-#&1]
@@ -18858,11 +18858,11 @@ l0000000000021880:
 	str	w8,[sp,#&C0]
 	add	w8,w24,#1
 	str	w8,[sp,#&E0]
-	add	x8,x31,#&1E0
+	add	x8,sp,#&1E0
 	mov	w25,w31
 	mov	w26,w31
 	mov	w28,w31
-	add	x8,x8,#&FFFFF830
+	add	x8,x8,#&830
 	str	w31,[sp,#&D8]
 	str	x8,[sp,#&D0]
 	b	#&21C9C
@@ -18897,7 +18897,7 @@ l0000000000021880:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&21D2C
 	mov	x8,x23
@@ -18924,7 +18924,7 @@ l0000000000021880:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	blr	x8
 	cbz	w0,#&21D98
 	mov	x8,x23
@@ -18957,10 +18957,10 @@ l0000000000021880:
 	ldr	w8,[sp,#&D8]
 	tbz	w8,#0,#&21ECC
 	tbz	w27,#&FFFFFFFF,#&21E58
-	subs	w31,w19,#1,lsl #&C
+	cmp	w19,#1,lsl #&C
 	b.ge	#&21EDC
 	ldr	x10,[sp,#&D0]
-	sbfm	x8,x19,#0,#&1F
+	sxtw	x8,w19
 	add	x11,x10,x8,lsl #2
 	add	x9,x10,w27,sxtw #2
 	strh	w27,[x11]
@@ -18969,22 +18969,22 @@ l0000000000021880:
 	cmp	w22,w9
 	strb	w10,[x11,#&2]
 	b.eq	#&21E40
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	add	x10,x10,w22,sxtw #2
-	add	x10,x10,#&FFFFF830
+	add	x10,x10,#&830
 	ldrb	w10,[x10,#&2]
-	add	x11,x31,#&1E0
+	add	x11,sp,#&1E0
 	add	x8,x11,x8,lsl #2
-	add	x8,x8,#&FFFFF830
+	add	x8,x8,#&830
 	mov	w19,w9
 	strb	w10,[x8,#&3]
 	b	#&21E60
 	cmp	w22,w19
 	b.eq	#&21E8C
-	add	x0,x31,#&1E0
+	add	x0,sp,#&1E0
 	mov	w1,w22
 	bl	#&2CE1C
-	subs	w31,w19,#&FFFFFFFF
+	cmp	w19,#&FFF
 	mov	w27,w22
 	b.gt	#&21CD0
 	ldr	w8,[sp,#&F0]
@@ -18994,7 +18994,7 @@ l0000000000021880:
 	b	#&21CB0
 	adrp	x9,#&F000
 	mov	x8,x31
-	add	x9,x9,#&FFFFFF49
+	add	x9,x9,#&F49
 	b	#&2186C
 	tbz	w28,#&FFFFFFFF,#&21EEC
 	ldr	x8,[x23,#&10]
@@ -19010,11 +19010,11 @@ l0000000000021880:
 	b	#&21F10
 	adrp	x9,#&F000
 	mov	x8,x31
-	add	x9,x9,#&FFFFFF2C
+	add	x9,x9,#&F2C
 	b	#&2186C
 	adrp	x9,#&F000
 	mov	x8,x31
-	add	x9,x9,#&FFFFFF3A
+	add	x9,x9,#&F3A
 	b	#&2186C
 	ldr	x8,[x23,#&C0]
 	str	x8,[x23,#&B8]
@@ -19037,7 +19037,7 @@ l0000000000021880:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
 	ldr	x1,[sp,#&F8]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	blr	x9
 	cbz	w0,#&21F5C
 	mov	x8,x23
@@ -19064,10 +19064,10 @@ l0000000000021880:
 	ldr	x8,[sp,#&1E8]
 	cbz	x8,#&21874
 	ldr	w9,[sp,#&C8]
-	adds	w31,w9,#1
+	adds	wsp,w9,#1
 	b.eq	#&21874
 	ldrsw	x9,[sp,#&102]
-	add	x10,x31,#&1E0
+	add	x10,sp,#&1E0
 	add	x9,x10,x9,lsl #2
 	ldr	w10,[sp,#&C8]
 	add	x9,x9,#&30
@@ -19076,7 +19076,7 @@ l0000000000021880:
 	adrp	x0,#&F000
 	adrp	x2,#&10000
 	adrp	x3,#&10000
-	add	x0,x0,#&FFFFFB94
+	add	x0,x0,#&B94
 	add	x2,x2,#&6E
 	add	x3,x3,#&7D
 	movz	w1,#&13F0
@@ -19084,7 +19084,7 @@ l0000000000021880:
 	adrp	x0,#&F000
 	adrp	x2,#&10000
 	adrp	x3,#&10000
-	add	x0,x0,#&FFFFFB94
+	add	x0,x0,#&B94
 	add	x2,x2,#&6E
 	add	x3,x3,#&7D
 	movz	w1,#&13BF
@@ -19095,24 +19095,24 @@ l0000000000021880:
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
-	sub	x31,x31,#&470
+	add	x29,sp,#&50
+	sub	sp,sp,#&470
 	mov	x25,x1
-	add	x1,x31,#&70
+	add	x1,sp,#&70
 	mov	w21,w4
 	mov	x23,x3
 	mov	x24,x2
 	mov	x19,x0
 	bl	#&2D89C
 	adrp	x1,#&E000
-	add	x1,x1,#&FFFFFFF1
+	add	x1,x1,#&FF1
 	bl	#&2D90
 	cbz	w0,#&2206C
 	adrp	x9,#&E000
 	adrp	x8,#&1F000
-	add	x9,x9,#&FFFFFFFC
+	add	x9,x9,#&FFC
 	b	#&22154
-	add	x1,x31,#&70
+	add	x1,sp,#&70
 	mov	x0,x19
 	bl	#&2D89C
 	ldrb	w8,[x0]
@@ -19124,8 +19124,8 @@ l0000000000021880:
 	orr	w26,w31,#1
 	mov	x1,x20
 	bl	#&2D90
-	subs	w31,w0,#0
-	add	x1,x31,#&70
+	cmp	w0,#0
+	add	x1,sp,#&70
 	mov	x0,x19
 	csel	w22,w26,w22,EQ
 	bl	#&2D89C
@@ -19133,9 +19133,9 @@ l0000000000021880:
 	str	x0,[sp,#&68]
 	cbnz	w8,#&22094
 	cbz	w22,#&22148
-	add	x1,x31,#&70
+	add	x1,sp,#&70
 	mov	x0,x19
-	add	x20,x31,#&70
+	add	x20,sp,#&70
 	bl	#&2D89C
 	adrp	x1,#&F000
 	add	x1,x1,#&2E
@@ -19144,17 +19144,17 @@ l0000000000021880:
 	bl	#&30A0
 	cbnz	w0,#&22138
 	orr	x0,x20,#0
-	add	x1,x31,#&68
+	add	x1,sp,#&68
 	movz	w2,#&A
 	str	x0,[sp,#&68]
 	bl	#&3010
 	ldr	x22,[sp,#&68]
 	mov	x27,x0
 	ldrb	w8,[x22]
-	subs	w31,w8,#&20
+	cmp	w8,#&20
 	b.ne	#&22120
 	ldrb	w8,[x22,#&1]!
-	subs	w31,w8,#&20
+	cmp	w8,#&20
 	b.eq	#&22110
 	str	x22,[sp,#&68]
 	adrp	x1,#&F000
@@ -19173,7 +19173,7 @@ l0000000000021880:
 	mov	x28,x31
 	str	x9,[x8,#&AB0]
 	mov	x0,x28
-	add	x31,x31,#&470
+	add	sp,sp,#&470
 	ldp	x29,x30,[sp,#&50]
 	ldp	x20,x19,[sp,#&40]
 	ldp	x22,x21,[sp,#&30]
@@ -19192,36 +19192,36 @@ l0000000000021880:
 	cbz	x23,#&221AC
 	orr	w8,w31,#3
 	str	w8,[x23]
-	subs	w31,w21,#0
+	cmp	w21,#0
 	orr	w8,w31,#3
 	csel	w26,w8,w21,EQ
 	mul	w8,w27,w26
 	mul	w8,w8,w22
-	sbfm	x0,x8,#&FFFFFFFE,#&1F
+	sbfiz	x0,x8,#2,#&20
 	bl	#&2B80
 	sub	w8,w22,#8
 	mov	x28,x0
-	ubfm	w8,w8,#3,#&1F
-	subs	w31,w8,#&FFFFFFFE
+	lsr	w8,w8,#3
+	cmp	w8,#&FFE
 	str	x26,[sp,#&48]
 	b.ls	#&221E8
 	mov	w20,w31
 	b	#&22728
 	str	x28,[sp,#&18]
-	subs	w31,w27,#1
+	cmp	w27,#1
 	b.lt	#&22654
-	ubfm	w8,w22,#&1E,#&1D
-	sbfm	x9,x26,#0,#&1F
-	sbfm	x10,x22,#0,#&1F
-	sbfm	x8,x8,#0,#&1F
-	sbfm	x11,x27,#0,#&1F
+	lsl	w8,w22,#2
+	sxtw	x9,w26
+	sxtw	x10,w22
+	sxtw	x8,w8
+	sxtw	x11,w27
 	str	x8,[sp,#&20]
 	mul	x8,x9,x10
 	str	x11,[sp,#&40]
 	and	x11,x22,#0
-	ubfm	x8,x8,#&FFFFFFFE,#&FFFFFFFD
+	lsl	x8,x8,#2
 	stp	x8,x11,[sp,#&30]
-	sbfm	x8,x26,#&FFFFFFFE,#&1F
+	sbfiz	x8,x26,#2,#&20
 	str	x8,[sp,#&28]
 	ldr	x8,[sp,#&18]
 	mov	x23,x31
@@ -19242,7 +19242,7 @@ l0000000000021880:
 	cbz	w10,#&22294
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&2229C
@@ -19269,7 +19269,7 @@ l0000000000021880:
 	cbz	w10,#&22300
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&22308
@@ -19296,7 +19296,7 @@ l0000000000021880:
 	cbz	w10,#&22384
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x25
 	blr	x8
 	cbz	w0,#&2236C
@@ -19310,12 +19310,12 @@ l0000000000021880:
 	mov	x8,x28
 	mov	x9,x28
 	stp	x28,x8,[x19,#&B8]
-	subs	w31,w21,#2
+	cmp	w21,#2
 	b.ne	#&22668
-	subs	w31,w26,#2
+	cmp	w26,#2
 	b.ne	#&22668
 	tbz	w10,#7,#&22668
-	ubfm	w20,w10,#&18,#&17
+	lsl	w20,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&223B4
 	add	x8,x9,#1
@@ -19326,7 +19326,7 @@ l0000000000021880:
 	cbz	w8,#&223F8
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&223E4
@@ -19360,7 +19360,7 @@ l0000000000021880:
 	cbz	w8,#&225E8
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&2246C
@@ -19374,7 +19374,7 @@ l0000000000021880:
 	mov	x8,x28
 	mov	x9,x28
 	stp	x28,x8,[x19,#&B8]
-	subs	w31,w21,#&81
+	cmp	w21,#&81
 	b.lo	#&224A4
 	subs	x31,x9,x8
 	b.hs	#&2252C
@@ -19399,7 +19399,7 @@ l0000000000021880:
 	cbz	w8,#&2251C
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&22508
@@ -19420,7 +19420,7 @@ l0000000000021880:
 	cbz	w8,#&22570
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&2255C
@@ -19437,9 +19437,9 @@ l0000000000021880:
 	and	w9,w9,#&FF
 	cbz	w9,#&225E8
 	sub	w11,w9,#1
-	sbfm	x10,x26,#0,#&1F
+	sxtw	x10,w26
 	add	x12,x11,#1
-	subs	x31,x12,#2
+	cmp	x12,#2
 	b.hs	#&22598
 	mov	w11,w31
 	b	#&225CC
@@ -19466,7 +19466,7 @@ l0000000000021880:
 	cmp	w26,w22
 	b.lt	#&22420
 	add	w27,w27,#1
-	subs	w31,w27,#4
+	cmp	w27,#4
 	b.ne	#&2241C
 	ldr	x21,[sp,#&38]
 	ldr	x27,[sp,#&58]
@@ -19518,7 +19518,7 @@ l0000000000021880:
 	cbz	w8,#&226F8
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x25
 	blr	x9
 	cbz	w0,#&226E4
@@ -19532,7 +19532,7 @@ l0000000000021880:
 	mov	x9,x28
 	stp	x28,x9,[x19,#&B8]
 	ldr	x28,[sp,#&18]
-	add	x1,x31,#&64
+	add	x1,sp,#&64
 	mov	w2,w26
 	strb	w8,[sp,#&67]
 	mov	x0,x28
@@ -19548,16 +19548,16 @@ l0000000000021880:
 	mov	w21,w31
 	cmp	w21,w22
 	b.ge	#&22794
-	add	x24,x31,#&64
+	add	x24,sp,#&64
 	ldr	x23,[x19,#&10]
 	cbz	x23,#&2279C
 	mov	x8,x19
 	ldr	x1,[x8,#&B8]!
 	ldr	x9,[x8,#&8]
 	sub	x26,x9,x1
-	subs	w31,w26,#3
+	cmp	w26,#3
 	b.gt	#&227AC
-	sbfm	x25,x26,#0,#&1F
+	sxtw	x25,w26
 	mov	x0,x24
 	mov	x2,x25
 	bl	#&30F0
@@ -19596,14 +19596,14 @@ l0000000000021880:
 
 ;; fn00000000000227F0: 00000000000227F0
 fn00000000000227F0 proc
-	sub	x31,x31,#&70
+	sub	sp,sp,#&70
 	stp	x28,x27,[sp,#&10]
 	stp	x26,x25,[sp,#&20]
 	stp	x24,x23,[sp,#&30]
 	stp	x22,x21,[sp,#&40]
 	stp	x20,x19,[sp,#&50]
 	stp	x29,x30,[sp,#&60]
-	add	x29,x31,#&60
+	add	x29,sp,#&60
 	mov	x19,x0
 	movz	w8,#&4728
 	orr	w9,w31,#&FF
@@ -19628,7 +19628,7 @@ l0000000000022848:
 l0000000000022850:
 	ldr	x9,[x22,#&10]
 	ldr	x0,[x22,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x22,#&38
 	blr	x9
 	cbz	w0,#&2287C
@@ -19645,14 +19645,14 @@ l0000000000022850:
 	stp	x9,x10,[x22,#&B8]
 
 l0000000000022894:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&228D0
 
 l000000000002289C:
 	adrp	x9,#&E000
 	mov	w0,w31
 	adrp	x8,#&1F000
-	add	x9,x9,#&FFFFFA3F
+	add	x9,x9,#&A3F
 
 l00000000000228AC:
 	str	x9,[x8,#&AB0]
@@ -19664,7 +19664,7 @@ l00000000000228B0:
 	ldp	x24,x23,[sp,#&30]
 	ldp	x26,x25,[sp,#&20]
 	ldp	x28,x27,[sp,#&10]
-	add	x31,x31,#&70
+	add	sp,sp,#&70
 	ret	x30
 
 l00000000000228D0:
@@ -19686,7 +19686,7 @@ l00000000000228F0:
 l00000000000228F8:
 	ldr	x9,[x22,#&10]
 	ldr	x0,[x22,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x22,#&38
 	blr	x9
 	cbz	w0,#&22924
@@ -19703,15 +19703,15 @@ l00000000000228F8:
 	stp	x9,x10,[x22,#&B8]
 
 l000000000002293C:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&228D0
 
 l0000000000022944:
-	subs	w31,w8,#&D8
+	cmp	w8,#&D8
 	b.ne	#&2289C
 
 l000000000002294C:
-	subs	w31,w20,#1
+	cmp	w20,#1
 	b.ne	#&2295C
 
 l0000000000022954:
@@ -19720,7 +19720,7 @@ l0000000000022954:
 
 l000000000002295C:
 	ldrb	w1,[x21]
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.eq	#&22974
 
 l0000000000022968:
@@ -19747,7 +19747,7 @@ l0000000000022994:
 l000000000002299C:
 	ldr	x9,[x22,#&10]
 	ldr	x0,[x22,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x22,#&38
 	blr	x9
 	cbz	w0,#&229D0
@@ -19764,7 +19764,7 @@ l00000000000229C8:
 00000000000229E0 EA 03 09 AA C9 AA 0B A9                         ........       
 
 l00000000000229E8:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&229F8
 
 l00000000000229F0:
@@ -19790,7 +19790,7 @@ l0000000000022A18:
 l0000000000022A20:
 	ldr	x9,[x22,#&10]
 	ldr	x0,[x22,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x22,#&38
 	blr	x9
 	cbz	w0,#&22A4C
@@ -19807,7 +19807,7 @@ l0000000000022A20:
 	stp	x8,x9,[x22,#&B8]
 
 l0000000000022A64:
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.eq	#&229F8
 
 l0000000000022A6C:
@@ -19818,11 +19818,11 @@ l0000000000022A70:
 
 l0000000000022A74:
 	sub	w8,w1,#&C0
-	subs	w31,w8,#3
+	cmp	w8,#3
 	b.hs	#&22AB8
 
 l0000000000022A80:
-	subs	w31,w1,#&C2
+	cmp	w1,#&C2
 	movz	w8,#&4730
 	csinc	w9,w31,w31,NE
 	add	x22,x19,x8
@@ -19845,7 +19845,7 @@ l0000000000022AB8:
 
 l0000000000022AC0:
 	ldrb	w1,[x21]
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.eq	#&22AE0
 
 l0000000000022ACC:
@@ -19853,7 +19853,7 @@ l0000000000022ACC:
 
 l0000000000022AD0:
 	sub	w8,w1,#&C0
-	subs	w31,w8,#3
+	cmp	w8,#3
 	b.hs	#&22CF8
 
 l0000000000022ADC:
@@ -19878,7 +19878,7 @@ l0000000000022B00:
 l0000000000022B08:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&22B34
@@ -19895,7 +19895,7 @@ l0000000000022B08:
 	stp	x9,x10,[x23,#&B8]
 
 l0000000000022B4C:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.eq	#&22C78
 
 l0000000000022B54:
@@ -19919,7 +19919,7 @@ l0000000000022B74:
 
 l0000000000022B80:
 	ldrb	w1,[x21]
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.ne	#&22ACC
 
 l0000000000022B8C:
@@ -19941,7 +19941,7 @@ l0000000000022BAC:
 l0000000000022BB4:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&22BE0
@@ -19958,7 +19958,7 @@ l0000000000022BB4:
 	stp	x9,x10,[x23,#&B8]
 
 l0000000000022BF8:
-	subs	w31,w8,#&FF
+	cmp	w8,#&FF
 	b.ne	#&22B54
 
 l0000000000022C00:
@@ -19980,7 +19980,7 @@ l0000000000022C20:
 l0000000000022C28:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&22C54
@@ -19997,7 +19997,7 @@ l0000000000022C28:
 	stp	x8,x9,[x23,#&B8]
 
 l0000000000022C6C:
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.eq	#&22C00
 
 l0000000000022C74:
@@ -20022,7 +20022,7 @@ l0000000000022C98:
 l0000000000022CA0:
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&22CCC
@@ -20039,7 +20039,7 @@ l0000000000022CA0:
 	stp	x8,x9,[x23,#&B8]
 
 l0000000000022CE4:
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.eq	#&22C78
 
 l0000000000022CEC:
@@ -20061,7 +20061,7 @@ l0000000000022D08:
 	adrp	x9,#&E000
 	mov	w0,w31
 	adrp	x8,#&1F000
-	add	x9,x9,#&FFFFFA46
+	add	x9,x9,#&A46
 	b	#&228AC
 
 l0000000000022D1C:
@@ -20071,7 +20071,7 @@ l0000000000022D1C:
 l0000000000022D24:
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	add	x1,x23,#&38
 	blr	x8
 	cbz	w0,#&22D50
@@ -20088,7 +20088,7 @@ l0000000000022D24:
 	stp	x10,x8,[x23,#&B8]
 
 l0000000000022D68:
-	ubfm	w21,w9,#&18,#&17
+	lsl	w21,w9,#8
 	subs	x31,x10,x8
 	b.hs	#&22D88
 	add	x11,x10,#1
@@ -20100,7 +20100,7 @@ l0000000000022D68:
 	cbz	w9,#&22DD4
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	add	x1,x23,#&38
 	blr	x8
 	cbz	w0,#&22DBC
@@ -20116,12 +20116,12 @@ l0000000000022D68:
 	mov	x8,x10
 	stp	x10,x8,[x23,#&B8]
 	orr	w21,w9,w21
-	subs	w31,w21,#&A
+	cmp	w21,#&A
 	b.hi	#&22DF4
 	adrp	x9,#&E000
 	mov	w0,w31
 	adrp	x8,#&1F000
-	add	x9,x9,#&FFFFFAA4
+	add	x9,x9,#&AA4
 	b	#&228AC
 	subs	x31,x10,x8
 	b.hs	#&22E0C
@@ -20133,7 +20133,7 @@ l0000000000022D68:
 	cbz	w8,#&22E7C
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&22E40
@@ -20148,7 +20148,7 @@ l0000000000022D68:
 	strb	w31,[x23,#&38]
 	mov	x8,x9
 	stp	x9,x8,[x23,#&B8]
-	subs	w31,w10,#8
+	cmp	w10,#8
 	b.ne	#&22E7C
 	subs	x31,x9,x8
 	b.hs	#&22E90
@@ -20160,13 +20160,13 @@ l0000000000022D68:
 	adrp	x9,#&E000
 	mov	w0,w31
 	adrp	x8,#&1F000
-	add	x9,x9,#&FFFFFAB0
+	add	x9,x9,#&AB0
 	b	#&228AC
 	ldr	x10,[x23,#&30]
 	cbz	w10,#&22EDC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x23,#&38
 	blr	x8
 	cbz	w0,#&22EC4
@@ -20181,7 +20181,7 @@ l0000000000022D68:
 	strb	w31,[x23,#&38]
 	mov	x8,x9
 	stp	x9,x8,[x23,#&B8]
-	ubfm	w24,w10,#&18,#&17
+	lsl	w24,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&22EFC
 	add	x11,x9,#1
@@ -20193,7 +20193,7 @@ l0000000000022D68:
 	cbz	w10,#&22F48
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x23,#&38
 	blr	x8
 	cbz	w0,#&22F30
@@ -20221,13 +20221,13 @@ l0000000000022D68:
 	adrp	x9,#&E000
 	mov	w0,w31
 	adrp	x8,#&1F000
-	add	x9,x9,#&FFFFFABB
+	add	x9,x9,#&ABB
 	b	#&228AC
 	ldr	x10,[x23,#&30]
 	cbz	w10,#&22FD0
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x23,#&38
 	blr	x8
 	cbz	w0,#&22FB8
@@ -20242,7 +20242,7 @@ l0000000000022D68:
 	strb	w31,[x23,#&38]
 	mov	x8,x9
 	stp	x9,x8,[x23,#&B8]
-	ubfm	w24,w10,#&18,#&17
+	lsl	w24,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&22FF0
 	add	x11,x9,#1
@@ -20254,7 +20254,7 @@ l0000000000022D68:
 	cbz	w10,#&2303C
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x23,#&38
 	blr	x8
 	cbz	w0,#&23024
@@ -20281,13 +20281,13 @@ l0000000000022D68:
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFACC
+	add	x9,x9,#&ACC
 	b	#&228AC
 	ldr	x8,[x23,#&30]
 	cbz	w8,#&230E0
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&230A8
@@ -20303,17 +20303,17 @@ l0000000000022D68:
 	mov	x8,x10
 	stp	x10,x8,[x23,#&B8]
 	orr	w11,w9,#2
-	subs	w31,w11,#3
+	cmp	w11,#3
 	b.ne	#&230E0
 	str	w9,[x23,#&8]
-	subs	w31,w9,#2
+	cmp	w9,#2
 	b.hs	#&230F4
 	mov	x11,x31
 	b	#&2312C
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFAD4
+	add	x9,x9,#&AD4
 	b	#&228AC
 	and	x11,x9,#0
 	sub	x11,x9,x11
@@ -20359,7 +20359,7 @@ l0000000000022D68:
 	cbz	w9,#&231DC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&231C4
@@ -20390,7 +20390,7 @@ l0000000000022D68:
 	cbz	w9,#&23258
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&23240
@@ -20404,15 +20404,15 @@ l0000000000022D68:
 	mov	x8,x24
 	mov	x10,x24
 	stp	x24,x8,[x23,#&B8]
-	ubfm	w11,w9,#4,#&1F
+	lsr	w11,w9,#4
 	stur	w11,[x25,-#&8]
-	subs	w31,w9,#&4F
+	cmp	w9,#&4F
 	b.hi	#&23358
 	cbz	w11,#&23358
 	and	w9,w9,#&F
 	stur	w9,[x25,-#&4]
 	sub	w9,w9,#1
-	subs	w31,w9,#4
+	cmp	w9,#4
 	b.hs	#&2336C
 	subs	x31,x10,x8
 	b.hs	#&2329C
@@ -20425,7 +20425,7 @@ l0000000000022D68:
 	cbz	w9,#&232CC
 	ldr	x8,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&232D4
@@ -20442,7 +20442,7 @@ l0000000000022D68:
 	mov	x10,x24
 	stp	x24,x8,[x23,#&B8]
 	str	w9,[x25]
-	subs	w31,w9,#3
+	cmp	w9,#3
 	b.hi	#&23380
 	ldrsw	x9,[x23,#&4]
 	add	x25,x25,#&60
@@ -20461,32 +20461,32 @@ l0000000000022D68:
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFB0C
+	add	x9,x9,#&B0C
 	b	#&228AC
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFAE8
+	add	x9,x9,#&AE8
 	b	#&228AC
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFAF9
+	add	x9,x9,#&AF9
 	b	#&228AC
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFAFF
+	add	x9,x9,#&AFF
 	b	#&228AC
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFB05
+	add	x9,x9,#&B05
 	b	#&228AC
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&233B0
-	sbfm	x11,x9,#0,#&1F
-	subs	w31,w9,#1
+	sxtw	x11,w9
+	cmp	w9,#1
 	b.ne	#&233BC
 	mov	x12,x31
 	b	#&23430
@@ -20539,10 +20539,10 @@ l0000000000022D68:
 	cbnz	x11,#&2344C
 	movz	w11,#&4588
 	movz	w12,#&458C
-	ubfm	w13,w21,#&1D,#&1C
+	lsl	w13,w21,#3
 	movz	w14,#&4598
 	str	w21,[x19,x11]
-	ubfm	w15,w20,#&1D,#&1C
+	lsl	w15,w20,#3
 	movz	w11,#&459C
 	str	w20,[x19,x12]
 	str	w13,[x19,x14]
@@ -20558,7 +20558,7 @@ l0000000000022D68:
 	add	x25,x19,x14
 	str	w11,[x25]
 	str	w12,[x19,x13]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&235AC
 	sub	w9,w21,#1
 	str	w9,[sp,#&C]
@@ -20577,15 +20577,15 @@ l0000000000022D68:
 	mul	w9,w9,w11
 	ldr	w11,[sp,#&8]
 	udiv	w10,w10,w21
-	ubfm	w26,w9,#&1D,#&1C
+	lsl	w26,w9,#3
 	madd	w8,w13,w8,w11
 	mul	w11,w13,w12
 	udiv	w8,w8,w20
-	ubfm	w27,w11,#&1D,#&1C
+	lsl	w27,w11,#3
 	stp	w10,w8,[x28,-#&40]
 	mul	w8,w27,w26
 	orr	w8,w8,#&F
-	sbfm	x0,x8,#0,#&1F
+	sxtw	x0,w8
 	stp	w26,w27,[x28,-#&38]
 	bl	#&2B80
 	stur	x0,[x28,-#&24]
@@ -20596,15 +20596,15 @@ l0000000000022D68:
 	stur	x31,[x28,-#&14]
 	ldr	w8,[x22]
 	cbz	w8,#&2358C
-	sbfm	w8,w26,#3,#&1F
-	sbfm	w9,w27,#3,#&1F
+	asr	w8,w26,#3
+	asr	w9,w27,#3
 	stp	w8,w9,[x28,-#&4]
 	mul	w8,w26,w9
-	ubfm	w8,w8,#&1D,#&1C
-	sbfm	x8,x8,#0,#&1F
-	ubfm	x8,x8,#3,#&FFFFFFFF
+	lsl	w8,w8,#3
+	sxtw	x8,w8
+	lsr	x8,x8,#3
 	orr	w0,w31,#&F
-	bfm	x0,x8,#&FFFFFFFC,#&FFFFFFFB
+	bfm	x0,x8,#&3C,#&3B
 	bl	#&2B80
 	add	x8,x0,#&F
 	and	x8,x8,#0
@@ -20620,7 +20620,7 @@ l0000000000022D68:
 	orr	w0,w31,#1
 	b	#&228B0
 	cbz	w24,#&235E8
-	sbfm	x8,x24,#0,#&1F
+	sxtw	x8,w24
 	orr	w9,w31,#&60
 	add	x20,x8,#1
 	smaddl	x8,w24,w9,x19
@@ -20630,21 +20630,21 @@ l0000000000022D68:
 	bl	#&2CC0
 	str	x31,[x19],-#&60
 	sub	x20,x20,#1
-	subs	x31,x20,#1
+	cmp	x20,#1
 	b.gt	#&235D0
 	adrp	x9,#&D000
 	mov	w0,w31
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFB16
+	add	x9,x9,#&B16
 	b	#&228AC
-	sub	x31,x31,#&170
+	sub	sp,sp,#&170
 	stp	x28,x27,[sp,#&110]
 	stp	x26,x25,[sp,#&120]
 	stp	x24,x23,[sp,#&130]
 	stp	x22,x21,[sp,#&140]
 	stp	x20,x19,[sp,#&150]
 	stp	x29,x30,[sp,#&160]
-	add	x4,x31,#&10
+	add	x4,sp,#&10
 	mov	x8,x31
 	add	x9,x2,#&40
 	movz	w10,#&8A9
@@ -20662,7 +20662,7 @@ l0000000000022D68:
 	movn	w5,#&63C
 	b	#&23688
 	ldursh	w6,[x7,-#&40]
-	ubfm	w6,w6,#&1E,#&1D
+	lsl	w6,w6,#2
 	str	w6,[x4,#&60]
 	str	w6,[x4,#&40]
 	str	w6,[x4,#&20]
@@ -20697,7 +20697,7 @@ l0000000000022D68:
 	ldrsh	w23,[x7,#&30]
 	ldrsh	w24,[x7,#&10]
 	ldursh	w7,[x7,-#&10]
-	sbfm	w19,w19,#0,#&F
+	sxth	w19,w19
 	add	w25,w20,w19
 	add	w26,w22,w21
 	sub	w21,w21,w22
@@ -20707,8 +20707,8 @@ l0000000000022D68:
 	add	w30,w27,w22
 	add	w28,w6,w23
 	add	w29,w7,w24
-	ubfm	w26,w26,#&14,#&13
-	ubfm	w21,w21,#&14,#&13
+	lsl	w26,w26,#&C
+	lsl	w21,w21,#&C
 	mul	w22,w22,w3
 	mul	w27,w27,w5
 	madd	w20,w20,w11,w25
@@ -20740,14 +20740,14 @@ l0000000000022D68:
 	sub	w21,w24,w21
 	add	w24,w22,w23
 	sub	w22,w23,w22
-	sbfm	w23,w25,#&A,#&1F
-	sbfm	w6,w6,#&A,#&1F
-	sbfm	w19,w19,#&A,#&1F
-	sbfm	w7,w7,#&A,#&1F
-	sbfm	w20,w20,#&A,#&1F
-	sbfm	w21,w21,#&A,#&1F
-	sbfm	w24,w24,#&A,#&1F
-	sbfm	w22,w22,#&A,#&1F
+	asr	w23,w25,#&A
+	asr	w6,w6,#&A
+	asr	w19,w19,#&A
+	asr	w7,w7,#&A
+	asr	w20,w20,#&A
+	asr	w21,w21,#&A
+	asr	w24,w24,#&A
+	asr	w22,w22,#&A
 	stur	w23,[x4,-#&80]
 	str	w6,[x4,#&60]
 	stur	w19,[x4,-#&60]
@@ -20758,11 +20758,11 @@ l0000000000022D68:
 	str	w22,[x4]
 	add	x8,x8,#2
 	add	x4,x4,#4
-	subs	w31,w8,#&10
+	cmp	w8,#&10
 	b.ne	#&23688
-	add	x11,x31,#&10
+	add	x11,sp,#&10
 	mov	x8,x31
-	sbfm	x9,x1,#0,#&1F
+	sxtw	x9,w1
 	add	x10,x0,#3
 	movz	w12,#&101,lsl #&10
 	movz	w13,#&8A9
@@ -20804,8 +20804,8 @@ l0000000000022D68:
 	mul	w24,w28,w16
 	madd	w28,w29,w2,w24
 	madd	w24,w25,w3,w24
-	ubfm	w25,w27,#&14,#&13
-	ubfm	w19,w19,#&14,#&13
+	lsl	w25,w27,#&C
+	lsl	w19,w19,#&C
 	add	w7,w7,w24
 	add	w24,w26,w24
 	sub	w26,w25,w21
@@ -20826,49 +20826,49 @@ l0000000000022D68:
 	sub	w22,w22,w24
 	add	w24,w23,w25
 	sub	w23,w25,w23
-	sbfm	w25,w26,#&11,#&1F
-	sbfm	w26,w26,#&1F,#&1F
-	subs	w31,w25,#&FF
+	asr	w25,w26,#&11
+	asr	w26,w26,#&1F
+	cmp	w25,#&FF
 	csinv	w25,w25,w26,LS
-	sbfm	w26,w20,#&11,#&1F
-	sbfm	w20,w20,#&1F,#&1F
+	asr	w26,w20,#&11
+	asr	w20,w20,#&1F
 	sturb	w25,[x10,-#&3]
-	subs	w31,w26,#&FF
-	sbfm	w25,w21,#&11,#&1F
+	cmp	w26,#&FF
+	asr	w25,w21,#&11
 	csinv	w20,w26,w20,LS
-	sbfm	w21,w21,#&1F,#&1F
-	subs	w31,w25,#&FF
+	asr	w21,w21,#&1F
+	cmp	w25,#&FF
 	strb	w20,[x10,#&4]
 	csinv	w20,w25,w21,LS
-	sbfm	w21,w7,#&11,#&1F
-	sbfm	w7,w7,#&1F,#&1F
+	asr	w21,w7,#&11
+	asr	w7,w7,#&1F
 	sturb	w20,[x10,-#&2]
-	subs	w31,w21,#&FF
-	sbfm	w20,w19,#&11,#&1F
+	cmp	w21,#&FF
+	asr	w20,w19,#&11
 	csinv	w7,w21,w7,LS
-	sbfm	w19,w19,#&1F,#&1F
-	subs	w31,w20,#&FF
+	asr	w19,w19,#&1F
+	cmp	w20,#&FF
 	strb	w7,[x10,#&3]
 	csinv	w7,w20,w19,LS
-	sbfm	w19,w22,#&11,#&1F
-	sbfm	w20,w22,#&1F,#&1F
-	subs	w31,w19,#&FF
+	asr	w19,w22,#&11
+	asr	w20,w22,#&1F
+	cmp	w19,#&FF
 	sturb	w7,[x10,-#&1]
 	csinv	w7,w19,w20,LS
-	sbfm	w19,w24,#&11,#&1F
-	sbfm	w20,w24,#&1F,#&1F
-	subs	w31,w19,#&FF
+	asr	w19,w24,#&11
+	asr	w20,w24,#&1F
+	cmp	w19,#&FF
 	strb	w7,[x10,#&2]
 	csinv	w7,w19,w20,LS
-	sbfm	w19,w23,#&11,#&1F
-	sbfm	w20,w23,#&1F,#&1F
-	subs	w31,w19,#&FF
+	asr	w19,w23,#&11
+	asr	w20,w23,#&1F
+	cmp	w19,#&FF
 	strb	w7,[x10]
 	csinv	w7,w19,w20,LS
 	add	x8,x8,#&20
 	strb	w7,[x10,#&1]
 	add	x10,x10,x9
-	subs	w31,w8,#&100
+	cmp	w8,#&100
 	b.ne	#&23830
 	ldp	x29,x30,[sp,#&160]
 	ldp	x20,x19,[sp,#&150]
@@ -20876,19 +20876,19 @@ l0000000000022D68:
 	ldp	x24,x23,[sp,#&130]
 	ldp	x26,x25,[sp,#&120]
 	ldp	x28,x27,[sp,#&110]
-	add	x31,x31,#&170
+	add	sp,sp,#&170
 	ret	x30
-	subs	w31,w4,#1
+	cmp	w4,#1
 	b.lt	#&23A84
 	movz	w11,#&16,lsl #&10
-	movz	w12,#&FFFFFFF4,lsl #&10
-	movz	w13,#&FFFFFFFA,lsl #&10
+	movz	w12,#&FFF4,lsl #&10
+	movz	w13,#&FFFA,lsl #&10
 	movz	w14,#&1C,lsl #&10
-	sbfm	x8,x5,#0,#&1F
+	sxtw	x8,w5
 	mov	w9,w4
 	add	x10,x0,#1
 	movk	w11,#&6F00
-	movk	w12,#&FFFF9300
+	movk	w12,#&9300
 	movk	w13,#&7E00
 	movk	w14,#&5A00
 	orr	w15,w31,#&FF
@@ -20904,21 +20904,21 @@ l0000000000022D68:
 	madd	w16,w16,w12,w17
 	madd	w17,w18,w14,w17
 	and	w18,w4,#&FFFF0000
-	sbfm	w4,w0,#&14,#&1F
-	ubfm	w0,w0,#&1F,#&1F
+	asr	w4,w0,#&14
+	lsr	w0,w0,#&1F
 	add	w16,w16,w18
 	add	w18,w0,#&FF
-	subs	w31,w4,#&FF
-	sbfm	w0,w16,#&14,#&1F
-	ubfm	w16,w16,#&1F,#&1F
-	sbfm	w5,w17,#&14,#&1F
-	ubfm	w17,w17,#&1F,#&1F
+	cmp	w4,#&FF
+	asr	w0,w16,#&14
+	lsr	w16,w16,#&1F
+	asr	w5,w17,#&14
+	lsr	w17,w17,#&1F
 	csel	w18,w18,w4,HI
 	add	w16,w16,#&FF
-	subs	w31,w0,#&FF
+	cmp	w0,#&FF
 	add	w17,w17,#&FF
 	csel	w16,w16,w0,HI
-	subs	w31,w5,#&FF
+	cmp	w5,#&FF
 	csel	w17,w17,w5,HI
 	strb	w15,[x10,#&2]
 	sub	x9,x9,#1
@@ -20930,18 +20930,18 @@ l0000000000022D68:
 	ret	x30
 	ldrb	w8,[x1]
 	ldrb	w9,[x2]
-	subs	w31,w3,#1
+	cmp	w3,#1
 	add	w8,w8,w8,lsl #1
 	add	w8,w8,w9
 	add	w9,w8,#2
 	b.ne	#&23AB4
-	ubfm	w8,w9,#2,#&1F
+	lsr	w8,w9,#2
 	strb	w8,[x0,#&1]
 	strb	w8,[x0]
 	ret	x30
-	ubfm	w9,w9,#2,#&1F
+	lsr	w9,w9,#2
 	strb	w9,[x0]
-	subs	w31,w3,#2
+	cmp	w3,#2
 	b.lt	#&23B20
 	mov	w12,w3
 	add	x9,x2,#1
@@ -20958,42 +20958,42 @@ l0000000000022D68:
 	add	w8,w8,w8,lsl #1
 	add	w8,w8,w13
 	add	w8,w8,#8
-	ubfm	w8,w8,#4,#&1F
+	lsr	w8,w8,#4
 	add	w14,w14,#8
 	sturb	w8,[x11,-#&1]
-	ubfm	w8,w14,#4,#&1F
+	lsr	w8,w14,#4
 	strb	w8,[x11],#&2
 	mov	w8,w13
 	cbnz	x12,#&23AD8
 	b	#&23B24
 	mov	w13,w8
 	add	w8,w13,#2
-	ubfm	w9,w3,#&1F,#&1E
-	ubfm	w8,w8,#2,#&1F
+	lsl	w9,w3,#1
+	lsr	w8,w8,#2
 	add	x9,x0,w9,sxtw #0
 	sturb	w8,[x9,-#&1]
 	ret	x30
 
 ;; fn0000000000023B3C: 0000000000023B3C
 fn0000000000023B3C proc
-	sub	x31,x31,#&C0
+	sub	sp,sp,#&C0
 	stp	x28,x27,[sp,#&60]
 	stp	x26,x25,[sp,#&70]
 	stp	x24,x23,[sp,#&80]
 	stp	x22,x21,[sp,#&90]
 	stp	x20,x19,[sp,#&A0]
 	stp	x29,x30,[sp,#&B0]
-	add	x29,x31,#&B0
+	add	x29,sp,#&B0
 	mov	x19,x0
-	subs	w31,w1,#&DC
+	cmp	w1,#&DC
 	b.gt	#&23B9C
 
 l0000000000023B68:
-	subs	w31,w1,#&C4
+	cmp	w1,#&C4
 	b.eq	#&23BBC
 
 l0000000000023B70:
-	subs	w31,w1,#&DB
+	cmp	w1,#&DB
 	b.ne	#&23C04
 
 l0000000000023B78:
@@ -21010,17 +21010,17 @@ l0000000000023B88:
 	b	#&23D28
 
 l0000000000023B9C:
-	subs	w31,w1,#&DD
+	cmp	w1,#&DD
 	b.eq	#&23BE0
 
 l0000000000023BA4:
-	subs	w31,w1,#&FF
+	cmp	w1,#&FF
 	b.ne	#&23C04
 
 l0000000000023BAC:
 	adrp	x9,#&D000
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFA4D
+	add	x9,x9,#&A4D
 	b	#&24318
 
 l0000000000023BBC:
@@ -21050,13 +21050,13 @@ l0000000000023BF0:
 	b	#&23F6C
 
 l0000000000023C04:
-	subs	w31,w1,#&FE
+	cmp	w1,#&FE
 	b.eq	#&23C1C
 
 l0000000000023C0C:
 	mov	w0,w31
 	and	w8,w1,#&FFFFFFF0
-	subs	w31,w8,#&E0
+	cmp	w8,#&E0
 	b.ne	#&244B0
 
 l0000000000023C1C:
@@ -21079,7 +21079,7 @@ l0000000000023C40:
 l0000000000023C48:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x20,#&38
 	blr	x8
 	cbz	w0,#&23D10
@@ -21096,7 +21096,7 @@ l0000000000023C74:
 l0000000000023C7C:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x20,#&38
 	blr	x8
 	cbz	w0,#&23EEC
@@ -21113,7 +21113,7 @@ l0000000000023CA8:
 l0000000000023CB0:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x20,#&38
 	blr	x8
 	cbz	w0,#&23F54
@@ -21130,7 +21130,7 @@ l0000000000023CDC:
 l0000000000023CE4:
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&24358
@@ -21147,7 +21147,7 @@ l0000000000023CE4:
 	stp	x8,x9,[x20,#&B8]
 
 l0000000000023D28:
-	ubfm	w21,w10,#&18,#&17
+	lsl	w21,w10,#8
 	subs	x31,x8,x9
 	b.hs	#&23D44
 	add	x9,x8,#1
@@ -21158,7 +21158,7 @@ l0000000000023D28:
 	cbz	w8,#&23D90
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&23D78
@@ -21175,7 +21175,7 @@ l0000000000023D28:
 	stp	x9,x10,[x20,#&B8]
 	orr	w8,w8,w21
 	sub	w20,w8,#2
-	subs	w31,w8,#3
+	cmp	w8,#3
 	b.lo	#&23EC0
 	adrp	x21,#&D000
 	add	x21,x21,#&25C
@@ -21192,7 +21192,7 @@ l0000000000023D28:
 	cbz	w8,#&23E18
 	ldr	x9,[x23,#&10]
 	ldr	x0,[x23,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x23,#&38
 	blr	x9
 	cbz	w0,#&23E00
@@ -21210,7 +21210,7 @@ l0000000000023D28:
 	and	w9,w8,#&F0
 	cbnz	w9,#&23ECC
 	and	w23,w8,#&F
-	subs	w31,w23,#3
+	cmp	w23,#3
 	b.hi	#&23EDC
 	mov	x24,x31
 	ldr	x25,[x19]
@@ -21225,7 +21225,7 @@ l0000000000023D28:
 	cbz	w8,#&23E9C
 	ldr	x9,[x25,#&10]
 	ldr	x0,[x25,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x25,#&38
 	blr	x9
 	cbz	w0,#&23E84
@@ -21243,22 +21243,22 @@ l0000000000023D28:
 	ldrb	w9,[x21,x24]
 	add	x10,x19,x23,lsl #6
 	add	x24,x24,#1
-	subs	x31,x24,#&40
+	cmp	x24,#&40
 	add	x9,x10,x9
 	strb	w8,[x9,x22]
 	b.ne	#&23E30
 	subs	w20,w20,#&41
 	b.gt	#&23DAC
-	subs	w31,w20,#0
+	cmp	w20,#0
 	csinc	w0,w31,w31,NE
 	b	#&244B0
 	adrp	x9,#&D000
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFA69
+	add	x9,x9,#&A69
 	b	#&24318
 	adrp	x9,#&D000
 	adrp	x8,#&1E000
-	add	x9,x9,#&FFFFFA76
+	add	x9,x9,#&A76
 	b	#&24318
 	add	x8,x20,#&39
 	mov	w10,w31
@@ -21268,7 +21268,7 @@ l0000000000023D28:
 	stp	x8,x9,[x20,#&B8]
 
 l0000000000023F04:
-	ubfm	w21,w10,#&18,#&17
+	lsl	w21,w10,#8
 	subs	x31,x8,x9
 	b.hs	#&23F20
 	add	x9,x8,#1
@@ -21279,7 +21279,7 @@ l0000000000023F04:
 	cbz	w8,#&23FD4
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&23FBC
@@ -21296,7 +21296,7 @@ l0000000000023F04:
 	stp	x8,x9,[x20,#&B8]
 
 l0000000000023F6C:
-	ubfm	w21,w10,#&18,#&17
+	lsl	w21,w10,#8
 	subs	x31,x8,x9
 	b.hs	#&23F88
 	add	x9,x8,#1
@@ -21307,7 +21307,7 @@ l0000000000023F6C:
 	cbz	w8,#&242DC
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&242C4
@@ -21324,12 +21324,12 @@ l0000000000023F6C:
 	stp	x9,x10,[x20,#&B8]
 	orr	w8,w8,w21
 	sub	w24,w8,#2
-	subs	w31,w8,#3
+	cmp	w8,#3
 	b.lo	#&242A0
 	movz	w8,#&3588
 	movz	w9,#&1A48
 	add	x8,x19,x8
-	add	x21,x31,#&20
+	add	x21,sp,#&20
 	movz	w22,#&690
 	movz	w23,#&1E48
 	str	x8,[sp,#&10]
@@ -21347,7 +21347,7 @@ l0000000000023F6C:
 	cbz	w8,#&2405C
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&24064
@@ -21364,10 +21364,10 @@ l0000000000023F6C:
 	strb	w31,[x20,#&38]
 	mov	x9,x8
 	stp	x8,x9,[x20,#&B8]
-	subs	w31,w25,#&1F
+	cmp	w25,#&1F
 	b.hi	#&242AC
 	and	w28,w25,#&F
-	subs	w31,w28,#3
+	cmp	w28,#3
 	b.hi	#&242AC
 	mov	x26,x31
 	mov	w20,w31
@@ -21384,7 +21384,7 @@ l0000000000023F6C:
 	cbz	w8,#&24108
 	ldr	x9,[x24,#&10]
 	ldr	x0,[x24,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x24,#&38
 	blr	x9
 	cbz	w0,#&240F0
@@ -21402,21 +21402,21 @@ l0000000000023F6C:
 	str	w8,[x21,x26]
 	add	w20,w8,w20
 	add	x26,x26,#4
-	subs	x31,x26,#&40
+	cmp	x26,#&40
 	b.ne	#&2409C
 	madd	x8,x28,x22,x19
 	and	w25,w25,#&F0
 	cbz	w25,#&24148
 	movz	w9,#&1A48
 	add	x0,x8,x9
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	bl	#&24560
 	cbz	w0,#&242BC
 	madd	x8,x28,x22,x19
 	add	x26,x8,x23
 	b	#&24160
 	add	x0,x8,#8
-	add	x1,x31,#&20
+	add	x1,sp,#&20
 	bl	#&24560
 	cbz	w0,#&242BC
 	madd	x8,x28,x22,x19
@@ -21435,7 +21435,7 @@ l0000000000023F6C:
 	cbz	w8,#&241D4
 	ldr	x9,[x27,#&10]
 	ldr	x0,[x27,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x27,#&38
 	blr	x9
 	cbz	w0,#&241BC
@@ -21466,7 +21466,7 @@ l0000000000023F6C:
 	madd	x11,x28,x22,x11
 	ldrb	w12,[x11,x9]
 	strh	w31,[x10,x9]
-	subs	x31,x12,#&FF
+	cmp	x12,#&FF
 	b.eq	#&24288
 	madd	x13,x28,x22,x19
 	add	x13,x13,x12
@@ -21475,7 +21475,7 @@ l0000000000023F6C:
 	cbz	w14,#&24288
 	ldrb	w15,[x13,x18]
 	add	w13,w15,w14
-	subs	w31,w13,#9
+	cmp	w13,#9
 	b.hi	#&24288
 	lslv	w15,w9,w15
 	sub	w16,w0,w14
@@ -21489,24 +21489,24 @@ l0000000000023F6C:
 	add	w14,w14,w15
 	add	w15,w14,#1
 	add	w14,w15,#&80
-	subs	w31,w14,#&FF
+	cmp	w14,#&FF
 	b.hi	#&24288
 	and	w12,w12,#&F0
 	bfm	w12,w15,#&18,#&17
 	add	w12,w12,w13
 	strh	w12,[x10,x9]
 	add	x9,x9,#1
-	subs	x31,x9,#&200
+	cmp	x9,#&200
 	b.ne	#&2420C
 	sub	w24,w8,w20
-	subs	w31,w24,#0
+	cmp	w24,#0
 	b.gt	#&24008
-	subs	w31,w24,#0
+	cmp	w24,#0
 	csinc	w0,w31,w31,NE
 	b	#&244B0
 	adrp	x9,#&C000
 	adrp	x8,#&1D000
-	add	x9,x9,#&FFFFFA84
+	add	x9,x9,#&A84
 	str	x9,[x8,#&AB0]
 	mov	w0,w31
 	b	#&244B0
@@ -21517,7 +21517,7 @@ l0000000000023F6C:
 	mov	x10,x9
 	stp	x9,x10,[x20,#&B8]
 	orr	w8,w8,w21
-	subs	w31,w8,#4
+	cmp	w8,#4
 	b.ne	#&2430C
 	ldr	x20,[x19]
 	ldp	x8,x9,[x20,#&B8]
@@ -21530,7 +21530,7 @@ l0000000000023F6C:
 	b	#&243DC
 	adrp	x9,#&C000
 	adrp	x8,#&1D000
-	add	x9,x9,#&FFFFFA5D
+	add	x9,x9,#&A5D
 
 l0000000000024318:
 	mov	w0,w31
@@ -21543,7 +21543,7 @@ l0000000000024318:
 0000000000024360 7F 32 00 B9 7F E2 00 39 E8 03 09 AA 69 A2 0B A9 .2.....9....i...
 
 l0000000000024370:
-	ubfm	w20,w10,#&18,#&17
+	lsl	w20,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&24390
 	add	x11,x9,#1
@@ -21555,7 +21555,7 @@ l0000000000024370:
 	cbz	w10,#&24444
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2442C
@@ -21570,7 +21570,7 @@ l0000000000024370:
 	strb	w31,[x20,#&38]
 	mov	x9,x8
 	stp	x8,x9,[x20,#&B8]
-	ubfm	w21,w10,#&18,#&17
+	lsl	w21,w10,#8
 	subs	x31,x8,x9
 	b.hs	#&243F8
 	add	x9,x8,#1
@@ -21581,7 +21581,7 @@ l0000000000024370:
 	cbz	w8,#&244A0
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x20,#&38
 	blr	x9
 	cbz	w0,#&24488
@@ -21597,7 +21597,7 @@ l0000000000024370:
 	mov	x8,x9
 	stp	x9,x8,[x19,#&B8]
 	orr	w10,w10,w20
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.ls	#&24480
 	ldr	x11,[x19,#&10]
 	sub	w10,w10,#2
@@ -21631,7 +21631,7 @@ l00000000000244B0:
 	ldp	x24,x23,[sp,#&80]
 	ldp	x26,x25,[sp,#&70]
 	ldp	x28,x27,[sp,#&60]
-	add	x31,x31,#&C0
+	add	sp,sp,#&C0
 	ret	x30
 00000000000244D0 F3 0F 1E F8 FD 7B 01 A9 FD 43 00 91 F3 03 00 AA .....{...C......
 00000000000244E0 68 A6 4B A9 1F 01 09 EB A2 00 00 54 09 05 00 91 h.K........T....
@@ -21676,11 +21676,11 @@ fn0000000000024714 proc
 	str	x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x19,x0
 	ldr	x8,[x19]
 	ldr	w8,[x8,#&8]
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&24790
 
 l0000000000024738:
@@ -22034,9 +22034,9 @@ fn0000000000025A44 proc
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
-	sub	x31,x31,#1,lsl #&C
-	sub	x31,x31,#&4A0
+	add	x29,sp,#&50
+	sub	sp,sp,#1,lsl #&C
+	sub	sp,sp,#&4A0
 	str	w2,[sp,#&6C]
 	str	w1,[sp,#&88]
 	mov	x22,x0
@@ -22072,7 +22072,7 @@ l0000000000025AC4:
 l0000000000025ACC:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25AF4
@@ -22095,13 +22095,13 @@ l0000000000025B10:
 
 l0000000000025B1C:
 	add	x19,x19,#1
-	subs	x31,x19,#7
+	cmp	x19,#7
 	b.ls	#&25AA8
 
 l0000000000025B28:
 	ldr	w11,[sp,#&88]
 	orr	w0,w31,#1
-	subs	w31,w11,#1
+	cmp	w11,#1
 	b.eq	#&26CAC
 
 l0000000000025B38:
@@ -22117,7 +22117,7 @@ l0000000000025B38:
 	str	x22,[sp,#&38]
 	str	x11,[sp,#&70]
 	mov	w22,w31
-	add	x21,x31,#&A0
+	add	x21,sp,#&A0
 	orr	w11,w31,#1
 	str	w31,[sp,#&34]
 	str	w31,[sp,#&7C]
@@ -22143,7 +22143,7 @@ l0000000000025BA8:
 l0000000000025BB0:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25BE0
@@ -22176,7 +22176,7 @@ l0000000000025C18:
 l0000000000025C20:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25C50
@@ -22209,7 +22209,7 @@ l0000000000025C88:
 l0000000000025C90:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25CC0
@@ -22242,7 +22242,7 @@ l0000000000025CF8:
 l0000000000025D00:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25D30
@@ -22275,7 +22275,7 @@ l0000000000025D68:
 l0000000000025D70:
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25D98
@@ -22292,8 +22292,8 @@ l0000000000025D70:
 	stp	x25,x8,[x20,#&B8]
 
 l0000000000025DB4:
-	ubfm	x19,x19,#&FFFFFFF8,#&FFFFFFF7
-	ubfm	x28,x11,#&FFFFFFF8,#&FFFFFFF7
+	lsl	x19,x19,#8
+	lsl	x28,x11,#8
 	subs	x31,x9,x8
 	b.hs	#&25DD8
 	add	x10,x9,#1
@@ -22305,7 +22305,7 @@ l0000000000025DB4:
 	cbz	w11,#&25E24
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25E08
@@ -22333,7 +22333,7 @@ l0000000000025DB4:
 	cbz	w11,#&25E94
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25E78
@@ -22348,10 +22348,10 @@ l0000000000025DB4:
 	mov	x10,x25
 	mov	x9,x25
 	stp	x25,x8,[x20,#&B8]
-	ubfm	x19,x19,#&FFFFFFF0,#&FFFFFFEF
-	ubfm	x24,x26,#&FFFFFFF8,#&FFFFFFF7
-	ubfm	x26,x28,#&FFFFFFF0,#&FFFFFFEF
-	ubfm	x28,x11,#&FFFFFFF8,#&FFFFFFF7
+	lsl	x19,x19,#&10
+	lsl	x24,x26,#8
+	lsl	x26,x28,#&10
+	lsl	x28,x11,#8
 	subs	x31,x9,x8
 	b.hs	#&25EC0
 	add	x10,x9,#1
@@ -22363,7 +22363,7 @@ l0000000000025DB4:
 	cbz	w11,#&25F0C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25EF0
@@ -22408,7 +22408,7 @@ l0000000000025DB4:
 	and	w10,w10,#&FF
 	cbz	w10,#&263F4
 	ldr	w10,[sp,#&88]
-	subs	w31,w10,#2
+	cmp	w10,#2
 	b.eq	#&27130
 	ldr	x10,[sp,#&70]
 	cbz	w10,#&27140
@@ -22427,7 +22427,7 @@ l0000000000025DB4:
 	cbz	w10,#&26008
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&25FF0
@@ -22467,7 +22467,7 @@ l0000000000025DB4:
 	and	w8,w8,#&FF
 	cbnz	w8,#&26D74
 	ldr	w8,[sp,#&88]
-	subs	w31,w8,#2
+	cmp	w8,#2
 	b.eq	#&26DD8
 	ldr	w8,[sp,#&60]
 	add	w24,w19,w8
@@ -22475,14 +22475,14 @@ l0000000000025DB4:
 	b.lt	#&26DEC
 	cmp	w24,w22
 	b.ls	#&26360
-	subs	w31,w19,#1,lsl #&C
+	cmp	w19,#1,lsl #&C
 	ldr	x10,[sp,#&80]
 	orr	w8,w31,#&1000
 	csel	w8,w19,w8,HI
-	subs	w31,w22,#0
+	cmp	w22,#0
 	csel	w8,w8,w22,EQ
 	mov	w22,w8
-	ubfm	w8,w22,#&1F,#&1E
+	lsl	w8,w22,#1
 	cmp	w24,w22
 	b.hi	#&260A8
 	ldr	x0,[x10]
@@ -22494,7 +22494,7 @@ l0000000000025DB4:
 	b	#&26368
 	ldr	w10,[sp,#&90]
 	cbz	w10,#&26D4C
-	subs	w31,w19,#&D
+	cmp	w19,#&D
 	b.ne	#&26D88
 	subs	x31,x9,x8
 	b.hs	#&26328
@@ -22517,17 +22517,17 @@ l0000000000025DB4:
 	b	#&263D0
 	ldr	w10,[sp,#&90]
 	cbnz	w10,#&26CD8
-	subs	w31,w19,#&301
+	cmp	w19,#&301
 	b.hs	#&26D10
-	movz	w10,#&FFFFAAAA,lsl #&10
-	movk	w10,#&FFFFAAAB
+	movz	w10,#&AAAA,lsl #&10
+	movk	w10,#&AAAB
 	umaddl	x10,w19,w10,x31
-	ubfm	x10,x10,#&FFFFFFE1,#&FFFFFFFF
+	lsr	x10,x10,#&21
 	str	x10,[sp,#&70]
 	add	w10,w10,w10,lsl #1
 	cmp	w10,w19
 	b.ne	#&26D10
-	subs	w31,w19,#3
+	cmp	w19,#3
 	b.lo	#&26358
 	ldr	x10,[sp,#&70]
 	mov	x19,x31
@@ -22544,7 +22544,7 @@ l0000000000025DB4:
 	cbz	w10,#&261DC
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&261C4
@@ -22571,7 +22571,7 @@ l0000000000025DB4:
 	cbz	w10,#&26248
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26230
@@ -22598,7 +22598,7 @@ l0000000000025DB4:
 	cbz	w10,#&262B4
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&2629C
@@ -22645,7 +22645,7 @@ l0000000000025DB4:
 	cbz	w10,#&2655C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26544
@@ -22665,7 +22665,7 @@ l0000000000025DB4:
 	sub	x9,x8,x1
 	subs	w27,w19,w9
 	b.le	#&26510
-	sbfm	x28,x9,#0,#&1F
+	sxtw	x28,w9
 	mov	x0,x26
 	mov	x2,x28
 	bl	#&30F0
@@ -22696,11 +22696,11 @@ l0000000000025DB4:
 	tbz	w10,#0,#&27154
 	cmp	w19,w10,lsl #1
 	b.ne	#&26DF4
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.lt	#&264F8
 	ldr	x10,[sp,#&50]
 	mov	x19,x31
-	sbfm	x24,x10,#0,#&1F
+	sxtw	x24,w10
 	subs	x31,x9,x8
 	b.hs	#&2642C
 	add	x9,x9,#1
@@ -22710,7 +22710,7 @@ l0000000000025DB4:
 	cbz	w10,#&2646C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26458
@@ -22733,7 +22733,7 @@ l0000000000025DB4:
 	cbz	w10,#&264D0
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&264B8
@@ -22751,7 +22751,7 @@ l0000000000025DB4:
 	add	x11,x11,#&330
 	ldrb	w11,[x11,x24]
 	mul	w10,w11,w10
-	add	x11,x31,#&9C
+	add	x11,sp,#&9C
 	strb	w10,[x11,x19]
 	ldrsw	x10,[x20,#&4]
 	add	x19,x19,#1
@@ -22763,7 +22763,7 @@ l0000000000025DB4:
 	str	w8,[sp,#&34]
 	b	#&26B44
 	ldp	x1,x8,[x20,#&B8]
-	sbfm	x27,x19,#0,#&1F
+	sxtw	x27,w19
 	add	x9,x1,x27
 	subs	x31,x9,x8
 	b.hi	#&270CC
@@ -22782,7 +22782,7 @@ l0000000000025DB4:
 	mov	x8,x25
 	mov	x9,x25
 	stp	x25,x8,[x20,#&B8]
-	ubfm	w19,w10,#&18,#&17
+	lsl	w19,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&2657C
 	add	x11,x9,#1
@@ -22794,7 +22794,7 @@ l0000000000025DB4:
 	cbz	w10,#&265C4
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&265AC
@@ -22820,7 +22820,7 @@ l0000000000025DB4:
 	cbz	w10,#&2662C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26614
@@ -22834,8 +22834,8 @@ l0000000000025DB4:
 	mov	x8,x25
 	mov	x9,x25
 	stp	x25,x8,[x20,#&B8]
-	ubfm	w19,w19,#&10,#&F
-	ubfm	w24,w10,#&18,#&17
+	lsl	w19,w19,#&10
+	lsl	w24,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&26650
 	add	x11,x9,#1
@@ -22847,7 +22847,7 @@ l0000000000025DB4:
 	cbz	w10,#&26698
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26680
@@ -22879,7 +22879,7 @@ l0000000000025DB4:
 	cbz	w10,#&26718
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26700
@@ -22893,7 +22893,7 @@ l0000000000025DB4:
 	mov	x8,x25
 	mov	x9,x25
 	stp	x25,x8,[x20,#&B8]
-	ubfm	w19,w10,#&18,#&17
+	lsl	w19,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&26738
 	add	x11,x9,#1
@@ -22905,7 +22905,7 @@ l0000000000025DB4:
 	cbz	w10,#&26780
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26768
@@ -22931,7 +22931,7 @@ l0000000000025DB4:
 	cbz	w10,#&267E8
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&267D0
@@ -22945,8 +22945,8 @@ l0000000000025DB4:
 	mov	x8,x25
 	mov	x9,x25
 	stp	x25,x8,[x20,#&B8]
-	ubfm	w19,w19,#&10,#&F
-	ubfm	w24,w10,#&18,#&17
+	lsl	w19,w19,#&10
+	lsl	w24,w10,#8
 	subs	x31,x9,x8
 	b.hs	#&2680C
 	add	x11,x9,#1
@@ -22958,7 +22958,7 @@ l0000000000025DB4:
 	cbz	w10,#&26854
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&2683C
@@ -22989,7 +22989,7 @@ l0000000000025DB4:
 	cbz	w8,#&26D24
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x23
 	blr	x9
 	cbz	w0,#&268B8
@@ -23004,7 +23004,7 @@ l0000000000025DB4:
 	mov	x10,x25
 	stp	x25,x8,[x20,#&B8]
 	mov	x12,x9
-	subs	w31,w12,#8
+	cmp	w12,#8
 	b.hi	#&26D24
 	orr	w9,w31,#1
 	lslv	w9,w9,w12
@@ -23024,7 +23024,7 @@ l0000000000025DB4:
 	cbz	w9,#&26944
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&2694C
@@ -23041,9 +23041,9 @@ l0000000000025DB4:
 	mov	x10,x25
 	stp	x25,x8,[x20,#&B8]
 	mov	w11,w9
-	subs	w31,w11,#7
+	cmp	w11,#7
 	b.hs	#&26D38
-	subs	w31,w11,#3
+	cmp	w11,#3
 	str	w11,[sp,#&5C]
 	b.ne	#&26988
 	orr	w9,w31,#3
@@ -23061,7 +23061,7 @@ l0000000000025DB4:
 	cbz	w9,#&269F4
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&269D8
@@ -23087,7 +23087,7 @@ l0000000000025DB4:
 	cbz	w9,#&26A5C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x9,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26A40
@@ -23112,7 +23112,7 @@ l0000000000025DB4:
 	cbz	w8,#&26AA4
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x23
 	blr	x9
 	cbz	w0,#&26AAC
@@ -23127,7 +23127,7 @@ l0000000000025DB4:
 	strb	w31,[x20,#&38]
 	mov	x8,x25
 	stp	x25,x8,[x20,#&B8]
-	subs	w31,w10,#2
+	cmp	w10,#2
 	b.hs	#&2711C
 	ldr	w9,[x20]
 	cbz	w9,#&270E0
@@ -23140,7 +23140,7 @@ l0000000000025DB4:
 	and	w10,w10,#&FF
 	cbz	w10,#&26B0C
 	orr	w10,w31,#1
-	ubfm	w9,w9,#2,#&1F
+	lsr	w9,w9,#2
 	str	w10,[x20,#&8]
 	cmp	w9,w8
 	b.lo	#&26CEC
@@ -23156,7 +23156,7 @@ l0000000000025DB4:
 	cmp	w9,w8
 	b.lo	#&26CEC
 	ldr	w8,[sp,#&88]
-	subs	w31,w8,#2
+	cmp	w8,#2
 	b.eq	#&26D08
 	str	w31,[sp,#&90]
 	str	w31,[sp,#&7C]
@@ -23170,7 +23170,7 @@ l0000000000025DB4:
 	cbz	w10,#&26B9C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26B88
@@ -23191,7 +23191,7 @@ l0000000000025DB4:
 	cbz	w10,#&26BF0
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26BDC
@@ -23212,7 +23212,7 @@ l0000000000025DB4:
 	cbz	w10,#&26C44
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26C30
@@ -23231,7 +23231,7 @@ l0000000000025DB4:
 	cbz	w11,#&25B8C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x11,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x11,#&20
 	mov	x1,x23
 	blr	x8
 	cbz	w0,#&26C7C
@@ -23250,12 +23250,12 @@ l0000000000026C98:
 	adrp	x9,#&A000
 	mov	w0,w31
 	adrp	x8,#&1B000
-	add	x9,x9,#&FFFFFC8A
+	add	x9,x9,#&C8A
 	str	x9,[x8,#&AB0]
 
 l0000000000026CAC:
-	add	x31,x31,#1,lsl #&C
-	add	x31,x31,#&4A0
+	add	sp,sp,#1,lsl #&C
+	add	sp,sp,#&4A0
 	ldp	x29,x30,[sp,#&50]
 	ldp	x20,x19,[sp,#&40]
 	ldp	x22,x21,[sp,#&30]
@@ -24706,7 +24706,7 @@ fn000000000002C68C proc
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x19,x0
 	ldp	x10,x8,[x19,#&B8]
 	mov	w21,w3
@@ -24728,7 +24728,7 @@ l000000000002C6CC:
 l000000000002C6D4:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2C700
@@ -24745,7 +24745,7 @@ l000000000002C6D4:
 	stp	x9,x8,[x19,#&B8]
 
 l000000000002C718:
-	subs	w31,w10,#&47
+	cmp	w10,#&47
 	b.ne	#&2C970
 
 l000000000002C720:
@@ -24765,7 +24765,7 @@ l000000000002C738:
 l000000000002C740:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2C76C
@@ -24782,7 +24782,7 @@ l000000000002C740:
 	stp	x10,x8,[x19,#&B8]
 
 l000000000002C784:
-	subs	w31,w9,#&49
+	cmp	w9,#&49
 	b.ne	#&2C970
 
 l000000000002C78C:
@@ -24802,7 +24802,7 @@ l000000000002C7A4:
 l000000000002C7AC:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2C7D8
@@ -24819,7 +24819,7 @@ l000000000002C7AC:
 	stp	x9,x8,[x19,#&B8]
 
 l000000000002C7F0:
-	subs	w31,w10,#&46
+	cmp	w10,#&46
 	b.ne	#&2C970
 
 l000000000002C7F8:
@@ -24839,7 +24839,7 @@ l000000000002C810:
 l000000000002C818:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2C844
@@ -24856,7 +24856,7 @@ l000000000002C818:
 	stp	x11,x8,[x19,#&B8]
 
 l000000000002C85C:
-	subs	w31,w9,#&38
+	cmp	w9,#&38
 	b.ne	#&2C970
 
 l000000000002C864:
@@ -24876,7 +24876,7 @@ l000000000002C87C:
 l000000000002C884:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2C8B0
@@ -24893,11 +24893,11 @@ l000000000002C884:
 	stp	x10,x8,[x19,#&B8]
 
 l000000000002C8C8:
-	subs	w31,w9,#&37
+	cmp	w9,#&37
 	b.eq	#&2C8D8
 
 l000000000002C8D0:
-	subs	w31,w9,#&39
+	cmp	w9,#&39
 	b.ne	#&2C970
 
 l000000000002C8D8:
@@ -24917,7 +24917,7 @@ l000000000002C8F0:
 l000000000002C8F8:
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2C924
@@ -24934,13 +24934,13 @@ l000000000002C8F8:
 	stp	x9,x8,[x19,#&B8]
 
 l000000000002C93C:
-	subs	w31,w10,#&61
+	cmp	w10,#&61
 	b.ne	#&2C970
 
 l000000000002C944:
 	adrp	x11,#&2000
 	adrp	x10,#&15000
-	add	x11,x11,#&FFFFFCF4
+	add	x11,x11,#&CF4
 	str	x11,[x10,#&AB0]
 	subs	x31,x9,x8
 	b.hs	#&2C998
@@ -24955,7 +24955,7 @@ l000000000002C95C:
 l000000000002C970:
 	adrp	x9,#&4000
 	adrp	x8,#&15000
-	add	x9,x9,#&FFFFFF24
+	add	x9,x9,#&F24
 	mov	w0,w31
 	str	x9,[x8,#&AB0]
 	ldp	x29,x30,[sp,#&30]
@@ -24971,7 +24971,7 @@ l000000000002C998:
 l000000000002C9A0:
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2C9D4
@@ -25005,7 +25005,7 @@ l000000000002CA08:
 l000000000002CA10:
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2CA3C
@@ -25035,7 +25035,7 @@ l000000000002CA54:
 	cbz	w10,#&2CAAC
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2CAB4
@@ -25063,7 +25063,7 @@ l000000000002CA54:
 	cbz	w10,#&2CB34
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2CB1C
@@ -25091,7 +25091,7 @@ l000000000002CA54:
 	cbz	w10,#&2CBA4
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2CB8C
@@ -25118,7 +25118,7 @@ l000000000002CA54:
 	cbz	w10,#&2CC10
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2CBF8
@@ -25145,7 +25145,7 @@ l000000000002CA54:
 	cbz	w10,#&2CC7C
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2CC64
@@ -25171,7 +25171,7 @@ l000000000002CA54:
 	and	w10,w10,#7
 	orr	w11,w31,#2
 	lslv	w10,w11,w10
-	subs	w31,w10,#1
+	cmp	w10,#1
 	b.lt	#&2CE14
 	mov	w10,w10
 	add	x21,x19,#&38
@@ -25194,7 +25194,7 @@ l000000000002CA54:
 	cbz	w8,#&2CD38
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2CD24
@@ -25219,7 +25219,7 @@ l000000000002CA54:
 	cbz	w8,#&2CD9C
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2CD88
@@ -25244,7 +25244,7 @@ l000000000002CA54:
 	cbz	w8,#&2CE00
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2CDEC
@@ -25257,7 +25257,7 @@ l000000000002CA54:
 	strb	w31,[x19,#&38]
 	mov	x9,x22
 	stp	x22,x9,[x19,#&B8]
-	subs	x31,x24,#0
+	cmp	x24,#0
 	sturb	w8,[x20,-#&3]
 	csinv	w8,w31,w31,EQ
 	strb	w8,[x20]
@@ -25266,7 +25266,7 @@ l000000000002CA54:
 	b	#&2C984
 	stp	x20,x19,[sp,-#&20]!
 	stp	x29,x30,[sp,#&10]
-	add	x29,x31,#&10
+	add	x29,sp,#&10
 	mov	x19,x0
 	and	w20,w1,#&FFFF
 	add	x8,x19,w20,uxtw #2
@@ -25347,7 +25347,7 @@ l000000000002CA54:
 	stp	x22,x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x20,x0
 	ldp	x9,x8,[x20,#&B8]
 	mov	x19,x1
@@ -25364,7 +25364,7 @@ l000000000002CA54:
 	cbz	w10,#&2CFE4
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&2CFCC
@@ -25392,7 +25392,7 @@ l000000000002CA54:
 	cbz	w10,#&2D054
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&2D03C
@@ -25420,7 +25420,7 @@ l000000000002CA54:
 	cbz	w10,#&2D0C4
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&2D0AC
@@ -25452,7 +25452,7 @@ l000000000002CA54:
 	cbz	w8,#&2D140
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2D12C
@@ -25472,7 +25472,7 @@ l000000000002CA54:
 	str	x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x19,x2
 	mov	w21,w1
 	mov	x20,x0
@@ -25536,20 +25536,20 @@ l000000000002CA54:
 	adrp	x9,#&3000
 	mov	x19,x31
 	adrp	x8,#&14000
-	add	x9,x9,#&FFFFFFCD
+	add	x9,x9,#&FCD
 	str	x9,[x8,#&AB0]
 	mov	x0,x19
 	ldp	x29,x30,[sp,#&20]
 	ldp	x20,x19,[sp,#&10]
 	ldr	x21,[sp],#&30
 	ret	x30
-	sub	x31,x31,#&60
+	sub	sp,sp,#&60
 	stp	x26,x25,[sp,#&10]
 	stp	x24,x23,[sp,#&20]
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
+	add	x29,sp,#&50
 	mov	x19,x0
 	ldp	x9,x8,[x19,#&C8]
 	mov	x22,x3
@@ -25566,7 +25566,7 @@ l000000000002CA54:
 	cbz	w10,#&2D2F8
 	ldr	x8,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x19,#&38
 	blr	x8
 	cbz	w0,#&2D304
@@ -25594,7 +25594,7 @@ l000000000002CA54:
 	cbz	w8,#&2D3C8
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2D368
@@ -25609,13 +25609,13 @@ l000000000002CA54:
 	strb	w31,[x19,#&38]
 	mov	x8,x9
 	stp	x9,x8,[x19,#&B8]
-	subs	w31,w23,#&50
+	cmp	w23,#&50
 	b.ne	#&2D3C8
 	sub	w11,w10,#&35
 	and	w11,w11,#&FF
-	subs	w31,w11,#2
+	cmp	w11,#2
 	b.hs	#&2D3C8
-	subs	w31,w10,#&36
+	cmp	w10,#&36
 	orr	w10,w31,#1
 	orr	w11,w31,#3
 	csel	w10,w11,w10,EQ
@@ -25636,7 +25636,7 @@ l000000000002CA54:
 	cbz	w8,#&2D428
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	add	x1,x19,#&38
 	blr	x9
 	cbz	w0,#&2D410
@@ -25651,7 +25651,7 @@ l000000000002CA54:
 	strb	w31,[x19,#&38]
 	mov	x10,x9
 	stp	x9,x10,[x19,#&B8]
-	add	x1,x31,#&C
+	add	x1,sp,#&C
 	mov	x0,x19
 	strb	w8,[sp,#&C]
 	bl	#&2D6C8
@@ -25673,7 +25673,7 @@ l000000000002CA54:
 	b.hs	#&2D4F8
 	ldrb	w8,[sp,#&C]
 	sub	w9,w8,#&30
-	subs	w31,w9,#9
+	cmp	w9,#9
 	b.hi	#&2D4F8
 	ldp	x9,x10,[x19,#&B8]
 	madd	w8,w25,w26,w8
@@ -25689,7 +25689,7 @@ l000000000002CA54:
 	cbz	w8,#&2D44C
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x22
 	blr	x9
 	cbz	w0,#&2D4E0
@@ -25703,7 +25703,7 @@ l000000000002CA54:
 	mov	x9,x24
 	stp	x24,x9,[x19,#&B8]
 	b	#&2D44C
-	add	x1,x31,#&C
+	add	x1,sp,#&C
 	mov	x0,x19
 	str	w25,[x21]
 	bl	#&2D6C8
@@ -25723,7 +25723,7 @@ l000000000002CA54:
 	b.hs	#&2D5C0
 	ldrb	w8,[sp,#&C]
 	sub	w9,w8,#&30
-	subs	w31,w9,#9
+	cmp	w9,#9
 	b.hi	#&2D5C0
 	ldp	x9,x10,[x19,#&B8]
 	madd	w8,w21,w25,w8
@@ -25739,7 +25739,7 @@ l000000000002CA54:
 	cbz	w8,#&2D514
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x22
 	blr	x9
 	cbz	w0,#&2D5A8
@@ -25753,7 +25753,7 @@ l000000000002CA54:
 	mov	x9,x24
 	stp	x24,x9,[x19,#&B8]
 	b	#&2D514
-	add	x1,x31,#&C
+	add	x1,sp,#&C
 	mov	x0,x19
 	str	w21,[x20]
 	bl	#&2D6C8
@@ -25773,7 +25773,7 @@ l000000000002CA54:
 	b.hs	#&2D688
 	ldrb	w8,[sp,#&C]
 	sub	w9,w8,#&30
-	subs	w31,w9,#9
+	cmp	w9,#9
 	b.hi	#&2D688
 	ldp	x9,x10,[x19,#&B8]
 	madd	w8,w20,w21,w8
@@ -25789,7 +25789,7 @@ l000000000002CA54:
 	cbz	w8,#&2D5DC
 	ldr	x9,[x19,#&10]
 	ldr	x0,[x19,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x22
 	blr	x9
 	cbz	w0,#&2D670
@@ -25803,12 +25803,12 @@ l000000000002CA54:
 	mov	x9,x24
 	stp	x24,x9,[x19,#&B8]
 	b	#&2D5DC
-	subs	w31,w20,#&100
+	cmp	w20,#&100
 	b.lt	#&2D6A8
 	adrp	x9,#&3000
 	mov	w0,w31
 	adrp	x8,#&14000
-	add	x9,x9,#&FFFFFFE1
+	add	x9,x9,#&FE1
 	str	x9,[x8,#&AB0]
 	b	#&2D6AC
 	orr	w0,w31,#1
@@ -25817,13 +25817,13 @@ l000000000002CA54:
 	ldp	x22,x21,[sp,#&30]
 	ldp	x24,x23,[sp,#&20]
 	ldp	x26,x25,[sp,#&10]
-	add	x31,x31,#&60
+	add	sp,sp,#&60
 	ret	x30
 	str	x23,[sp,-#&40]!
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x20,x0
 	movz	w23,#&80,lsl #&10
 	mov	x19,x1
@@ -25844,7 +25844,7 @@ l000000000002CA54:
 	b.hs	#&2D7A8
 	ldrb	w8,[x19]
 	sub	w8,w8,#9
-	subs	w31,w8,#&17
+	cmp	w8,#&17
 	b.hi	#&2D7A8
 	and	x8,x8,#0
 	lsrv	w8,w23,w8
@@ -25861,7 +25861,7 @@ l000000000002CA54:
 	cbz	w8,#&2D6F8
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2D790
@@ -25886,7 +25886,7 @@ l000000000002CA54:
 	subs	x31,x8,x9
 	b.hs	#&2D888
 	ldrb	w8,[x19]
-	subs	w31,w8,#&23
+	cmp	w8,#&23
 	b.eq	#&2D7E4
 	b	#&2D888
 	strb	w8,[x19]
@@ -25901,9 +25901,9 @@ l000000000002CA54:
 	subs	x31,x8,x9
 	b.hs	#&2D6FC
 	ldrb	w8,[x19]
-	subs	w31,w8,#&A
+	cmp	w8,#&A
 	b.eq	#&2D6FC
-	subs	w31,w8,#&D
+	cmp	w8,#&D
 	b.eq	#&2D6FC
 	ldp	x8,x9,[x20,#&B8]
 	subs	x31,x8,x9
@@ -25917,7 +25917,7 @@ l000000000002CA54:
 	cbz	w8,#&2D7E0
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2D870
@@ -25942,7 +25942,7 @@ l000000000002CA54:
 	stp	x22,x21,[sp,#&30]
 	stp	x20,x19,[sp,#&40]
 	stp	x29,x30,[sp,#&50]
-	add	x29,x31,#&50
+	add	x29,sp,#&50
 	mov	x20,x0
 	ldp	x9,x8,[x20,#&B8]
 	mov	x19,x1
@@ -25959,7 +25959,7 @@ l000000000002CA54:
 	cbz	w10,#&2D91C
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	add	x1,x20,#&38
 	blr	x8
 	cbz	w0,#&2D924
@@ -26000,11 +26000,11 @@ l000000000002CA54:
 	b	#&2D998
 	mov	w8,w31
 	and	w9,w25,#&FF
-	subs	w31,w9,#&A
+	cmp	w9,#&A
 	b.eq	#&2DA20
 	cbnz	w8,#&2DA20
 	strb	w25,[x19,x26]
-	subs	x31,x26,#&3FE
+	cmp	x26,#&3FE
 	b.eq	#&2DA28
 	ldp	x9,x8,[x20,#&B8]
 	add	x26,x26,#1
@@ -26014,7 +26014,7 @@ l000000000002CA54:
 	cbz	w10,#&2D9F4
 	ldr	x8,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x10,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x10,#&20
 	mov	x1,x21
 	blr	x8
 	cbz	w0,#&2DA00
@@ -26033,7 +26033,7 @@ l000000000002CA54:
 	mov	x9,x23
 	add	x24,x24,x27
 	b	#&2D968
-	sbfm	x24,x24,#&FFFFFFE0,#&FFFFFFFF
+	asr	x24,x24,#&20
 	b	#&2DAC0
 	orr	w24,w31,#&3FF
 	ldr	x8,[x20,#&10]
@@ -26058,7 +26058,7 @@ l000000000002CA54:
 	cbz	w8,#&2DA2C
 	ldr	x9,[x20,#&10]
 	ldr	x0,[x20,#&28]
-	ubfm	x2,x8,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x2,x8,#&20
 	mov	x1,x21
 	blr	x9
 	cbz	w0,#&2DAA4
@@ -26071,7 +26071,7 @@ l000000000002CA54:
 	strb	w31,[x21]
 	mov	x9,x23
 	stp	x23,x9,[x20,#&B8]
-	subs	w31,w8,#&A
+	cmp	w8,#&A
 	b.ne	#&2DA2C
 	strb	w31,[x19,x24]
 	mov	x0,x19
@@ -26085,7 +26085,7 @@ l000000000002CA54:
 	str	x21,[sp,-#&30]!
 	stp	x20,x19,[sp,#&10]
 	stp	x29,x30,[sp,#&20]
-	add	x29,x31,#&20
+	add	x29,sp,#&20
 	mov	x21,x1
 	ldrb	w8,[x21,#&3]
 	mov	w20,w2
@@ -26096,7 +26096,7 @@ l000000000002CA54:
 	bl	#&2A70
 	ldrb	w8,[x21]
 	fcvt	s0,d0
-	subs	w31,w20,#2
+	cmp	w20,#2
 	b.gt	#&2DB7C
 	ldrb	w9,[x21,#&1]
 	ldrb	w10,[x21,#&2]
@@ -26109,7 +26109,7 @@ l000000000002CA54:
 	str	s0,[x19]
 	b	#&2DBA8
 	sub	w8,w20,#1
-	subs	w31,w8,#3
+	cmp	w8,#3
 	b.hi	#&2DBE0
 	adrp	x9,#&3000
 	add	x9,x9,#&E0
@@ -26131,9 +26131,9 @@ l000000000002CA54:
 	ucvtf	s1,s1
 	fmul	s0,s0,s1
 	str	s0,[x19,#&8]
-	subs	w31,w20,#4
+	cmp	w20,#4
 	b.eq	#&2DBC4
-	subs	w31,w20,#2
+	cmp	w20,#2
 	b.ne	#&2DBE0
 	orr	w8,w31,#&3F800000
 	str	w8,[x19,#&4]
@@ -26149,82 +26149,82 @@ l000000000002CA54:
 	ldp	x20,x19,[sp,#&10]
 	ldr	x21,[sp],#&30
 	ret	x30
-	sub	x31,x31,#&C0
+	sub	sp,sp,#&C0
 	stp	x22,x21,[sp,#&90]
 	stp	x20,x19,[sp,#&A0]
 	stp	x29,x30,[sp,#&B0]
-	add	x29,x31,#&B0
+	add	x29,sp,#&B0
 	mov	w21,w2
 	mov	x19,x1
 	mov	x20,x0
-	add	x0,x31,#&C
+	add	x0,sp,#&C
 	movz	w2,#&44
 	mov	w1,w31
-	add	x22,x31,#&C
+	add	x22,sp,#&C
 	bl	#&2E60
 	orr	w2,w31,#&400
 	mov	x0,x20
 	mov	w1,w31
 	bl	#&2E60
-	subs	w31,w21,#1
+	cmp	w21,#1
 	b.lt	#&2DC74
 	mov	w8,w21
 	mov	x9,x19
 	ldrb	w10,[x9],#&1
 	sub	x8,x8,#1
-	ubfm	x10,x10,#&FFFFFFFE,#&FFFFFFFD
+	lsl	x10,x10,#2
 	ldr	w11,[x22,x10]
 	add	w11,w11,#1
 	str	w11,[x22,x10]
 	cbnz	x8,#&2DC44
 	ldr	w8,[sp,#&10]
 	str	w31,[sp,#&C]
-	subs	w31,w8,#2
+	cmp	w8,#2
 	b.le	#&2DC7C
 	b	#&2DD24
 	mov	w8,w31
 	str	w31,[sp,#&C]
 	ldr	w9,[sp,#&14]
-	subs	w31,w9,#5
+	cmp	w9,#5
 	b.ge	#&2DD24
 	ldr	w9,[sp,#&18]
-	subs	w31,w9,#8
+	cmp	w9,#8
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&1C]
-	subs	w31,w9,#&10
+	cmp	w9,#&10
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&20]
-	subs	w31,w9,#&20
+	cmp	w9,#&20
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&24]
-	subs	w31,w9,#&40
+	cmp	w9,#&40
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&28]
-	subs	w31,w9,#&80
+	cmp	w9,#&80
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&2C]
-	subs	w31,w9,#&100
+	cmp	w9,#&100
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&30]
-	subs	w31,w9,#&200
+	cmp	w9,#&200
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&34]
-	subs	w31,w9,#&400
+	cmp	w9,#&400
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&38]
-	subs	w31,w9,#&FFFFF800
+	cmp	w9,#&800
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&3C]
-	subs	w31,w9,#1,lsl #&C
+	cmp	w9,#1,lsl #&C
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&40]
-	subs	w31,w9,#2,lsl #&C
+	cmp	w9,#2,lsl #&C
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&44]
-	subs	w31,w9,#4,lsl #&C
+	cmp	w9,#4,lsl #&C
 	b.gt	#&2DD24
 	ldr	w9,[sp,#&48]
-	subs	w31,w9,#8,lsl #&C
+	cmp	w9,#8,lsl #&C
 	b.le	#&2DD4C
 	adrp	x9,#&4000
 	adrp	x8,#&14000
@@ -26234,15 +26234,15 @@ l000000000002CA54:
 	ldp	x29,x30,[sp,#&B0]
 	ldp	x20,x19,[sp,#&A0]
 	ldp	x22,x21,[sp,#&90]
-	add	x31,x31,#&C0
+	add	sp,sp,#&C0
 	ret	x30
 	str	w31,[sp,#&54]
 	strh	w31,[x20,#&402]
 	strh	w31,[x20,#&466]
-	subs	w31,w8,#2
+	cmp	w8,#2
 	b.gt	#&2DDE4
-	add	x13,x31,#&50
-	add	x14,x31,#&C
+	add	x13,sp,#&50
+	add	x14,sp,#&C
 	mov	x16,x31
 	mov	w9,w31
 	add	x10,x20,#&404
@@ -26256,12 +26256,12 @@ l000000000002CA54:
 	lslv	w16,w8,w12
 	add	x0,x18,#2
 	str	w16,[x11,x18]
-	subs	x31,x0,#&F
+	cmp	x0,#&F
 	b.hi	#&2DDF4
-	ubfm	x0,x18,#&FFFFFFFE,#&FFFFFFFD
+	lsl	x0,x18,#2
 	add	w9,w17,w9
 	ldr	w17,[x14,x0]
-	ubfm	w8,w8,#&1F,#&1E
+	lsl	w8,w8,#1
 	add	x16,x18,#1
 	sub	w12,w12,#1
 	str	w8,[x13,x0]
@@ -26280,19 +26280,19 @@ l000000000002CA54:
 	b	#&2DD30
 	orr	w9,w31,#&10000
 	orr	w8,w31,#1
-	subs	w31,w21,#1
+	cmp	w21,#1
 	orr	w0,w31,#1
 	str	w9,[x20,#&460]
 	b.lt	#&2DD38
 	mov	x9,x31
 	mov	w10,w21
-	add	x11,x31,#&50
+	add	x11,sp,#&50
 	movz	w12,#&5555
-	movz	w13,#&FFFFAAAA
+	movz	w13,#&AAAA
 	movz	w14,#&3333
-	movz	w15,#&FFFFCCCC
+	movz	w15,#&CCCC
 	movz	w16,#&F0F
-	movz	w17,#&FFFFF0F0
+	movz	w17,#&F0F0
 	orr	w18,w31,#&10
 	ldrb	w0,[x19,x9]
 	cbz	x0,#&2DECC
@@ -26300,7 +26300,7 @@ l000000000002CA54:
 	ldr	w1,[x11,x0]
 	ldrh	w3,[x2,#&400]
 	ldrh	w2,[x2,#&464]
-	subs	w31,w0,#9
+	cmp	w0,#9
 	sub	w3,w1,w3
 	add	x2,x2,w3,sxtw #0
 	add	x3,x20,x2
@@ -26320,15 +26320,15 @@ l000000000002CA54:
 	rev16	w2,w2
 	sub	w3,w18,w0
 	lsrv	w3,w2,w3
-	subs	w31,w3,#&1FF
+	cmp	w3,#&1FF
 	b.gt	#&2DEC4
 	lslv	w4,w8,w0
 	orr	w2,w9,w0,lsl #9
-	sbfm	x3,x3,#0,#&1F
-	sbfm	x4,x4,#0,#&1F
+	sxtw	x3,w3
+	sxtw	x4,w4
 	strh	w2,[x20,x3]
 	add	x3,x3,x4
-	subs	w31,w3,#&200
+	cmp	w3,#&200
 	b.lt	#&2DEB4
 	add	w1,w1,#1
 	str	w1,[x11,x0]
@@ -26338,9 +26338,9 @@ l000000000002CA54:
 	b.ne	#&2DE34
 	b	#&2DD38
 	stp	x29,x30,[sp,-#&10]!
-	add	x29,x31,#0
+	add	x29,sp,#0
 	ldp	w9,w8,[x0,#&10]
-	subs	w31,w9,#&F
+	cmp	w9,#&F
 	b.gt	#&2DF3C
 	orr	w10,w31,#1
 	lslv	w11,w10,w9
@@ -26358,12 +26358,12 @@ l000000000002CA54:
 	add	w9,w9,#8
 	orr	w8,w11,w8
 	stp	w9,w8,[x0,#&10]
-	subs	w31,w9,#&19
+	cmp	w9,#&19
 	b.lt	#&2DEF8
 	and	w10,w8,#&1FF
 	ldrh	w10,[x1,w10,uxtw]
 	cbz	w10,#&2DF64
-	ubfm	w11,w10,#9,#&1F
+	lsr	w11,w10,#9
 	lsrv	w8,w8,w11
 	sub	w9,w9,w11
 	stp	w9,w8,[x0,#&10]
@@ -26371,17 +26371,17 @@ l000000000002CA54:
 	ldp	x29,x30,[sp],#&10
 	ret	x30
 	movz	w11,#&5555
-	movz	w12,#&FFFFAAAA
+	movz	w12,#&AAAA
 	and	w11,w11,w8,lsr #1
 	and	w12,w12,w8,lsl #1
 	movz	w13,#&3333
 	orr	w11,w11,w12
-	movz	w12,#&FFFFCCCC
+	movz	w12,#&CCCC
 	and	w13,w13,w11,lsr #2
 	and	w11,w12,w11,lsl #2
 	movz	w12,#&F0F
 	orr	w11,w13,w11
-	movz	w13,#&FFFFF0F0
+	movz	w13,#&F0F0
 	and	w12,w12,w11,lsr #4
 	and	w11,w13,w11,lsl #4
 	orr	w11,w12,w11
@@ -26394,7 +26394,7 @@ l000000000002CA54:
 	add	x12,x12,#2
 	cmp	w11,w14
 	b.ge	#&2DFB0
-	subs	w31,w10,#7
+	cmp	w10,#7
 	b.ne	#&2DFD8
 	movn	w0,#0
 	ldp	x29,x30,[sp],#&10
@@ -26409,7 +26409,7 @@ l000000000002CA54:
 	add	x12,x1,x11
 	ldrb	w12,[x12,#&484]
 	sub	w12,w10,w12
-	adds	w31,w12,#9
+	adds	wsp,w12,#9
 	b.ne	#&2E050
 	add	x12,x10,#9
 	sub	w9,w9,#9
@@ -26424,7 +26424,7 @@ l000000000002CA54:
 	adrp	x0,#&2000
 	adrp	x2,#&3000
 	adrp	x3,#&3000
-	add	x0,x0,#&FFFFFB94
+	add	x0,x0,#&B94
 	add	x2,x2,#&BD
 	add	x3,x3,#&CD
 	movz	w1,#&DEE
@@ -26432,7 +26432,7 @@ l000000000002CA54:
 	adrp	x0,#&2000
 	adrp	x2,#&3000
 	adrp	x3,#&3000
-	add	x0,x0,#&FFFFFB94
+	add	x0,x0,#&B94
 	add	x2,x2,#&192
 	add	x3,x3,#&1B1
 	movz	w1,#&E0A
@@ -26441,17 +26441,17 @@ l000000000002CA54:
 	stp	x22,x21,[sp,#&10]
 	stp	x20,x19,[sp,#&20]
 	stp	x29,x30,[sp,#&30]
-	add	x29,x31,#&30
+	add	x29,sp,#&30
 	mov	x20,x0
 	ldr	x8,[x20,#&2210]
 	mov	w19,w1
 	mov	v8.16b,v1.16b
 	mov	v9.16b,v0.16b
 	ldr	w9,[x8,#&18]
-	subs	w31,w9,#1
+	cmp	w9,#1
 	b.lt	#&2E1AC
 	ldr	x10,[x8,#&10]
-	sbfm	x9,x9,#0,#&1F
+	sxtw	x9,w9
 	sub	x9,x9,#1
 	orr	w11,w31,#&38
 	madd	x11,x9,x11,x10
@@ -26460,10 +26460,10 @@ l000000000002CA54:
 	madd	x21,x9,x11,x10
 	ldr	w10,[x21,#&4]!
 	ldr	x9,[x8,#&8]
-	subs	w31,w10,#0
+	cmp	w10,#0
 	b.le	#&2E130
-	ubfm	x10,x9,#&FFFFFFE0,#&FFFFFFFF
-	subs	w31,w9,#1
+	lsr	x10,x9,#&20
+	cmp	w9,#1
 	b.lt	#&2E134
 	ldr	x11,[x8]
 	orr	x12,x31,#0
@@ -26479,21 +26479,21 @@ l000000000002CA54:
 	fmul	s1,s2,s2
 	fcmp	s0,s1
 	b.pl	#&2E134
-	sbfm	x8,x12,#&FFFFFFE0,#&FFFFFFFF
+	asr	x8,x12,#&20
 	add	x8,x11,x8,lsl #5
 	ldrb	w9,[x8,#&1C]
 	orr	w9,w9,w19
 	strb	w9,[x8,#&1C]
 	b	#&2E1AC
-	ubfm	x10,x9,#&FFFFFFE0,#&FFFFFFFF
+	lsr	x10,x9,#&20
 	cmp	w9,w10
 	b.lt	#&2E16C
-	subs	w31,w10,#0
+	cmp	w10,#0
 	csinc	w10,w10,w10,GE
 	ldr	x0,[x8]
 	add	w8,w9,w10,asr #1
 	add	w22,w8,#1
-	sbfm	x1,x22,#&FFFFFFFB,#&1F
+	sbfiz	x1,x22,#5,#&20
 	bl	#&3070
 	cbz	x0,#&2E1AC
 	ldr	x8,[x20,#&2210]
@@ -26501,7 +26501,7 @@ l000000000002CA54:
 	str	x0,[x8]
 	str	w22,[x8,#&C]
 	ldr	x8,[x8]
-	sbfm	x9,x9,#0,#&1F
+	sxtw	x9,w9
 	add	x8,x8,x9,lsl #5
 	str	w31,[x8,#&1C]
 	stur	x31,[x8,#&14]
@@ -26528,7 +26528,7 @@ l000000000002CA54:
 	str	x21,[sp,#&40]
 	stp	x20,x19,[sp,#&50]
 	stp	x29,x30,[sp,#&60]
-	add	x29,x31,#&60
+	add	x29,sp,#&60
 	mov	w19,w2
 	mov	v9.16b,v7.16b
 	mov	v10.16b,v5.16b
@@ -26536,7 +26536,7 @@ l000000000002CA54:
 	mov	v12.16b,v3.16b
 	mov	v13.16b,v2.16b
 	mov	x20,x0
-	subs	w31,w1,#&A
+	cmp	w1,#&A
 	b.gt	#&2E30C
 	sub	w21,w1,#1
 	fmov	s8,#0.5F
@@ -26602,7 +26602,7 @@ l000000000002CA54:
 	add	w21,w21,#1
 	mov	v1.16b,v15.16b
 	mov	v0.16b,v14.16b
-	subs	w31,w21,#&A
+	cmp	w21,#&A
 	b.lt	#&2E210
 	ldp	x29,x30,[sp,#&60]
 	ldp	x20,x19,[sp,#&50]
@@ -26631,7 +26631,7 @@ l000000000002CA54:
 	ldrsw	x8,[x11,#&C]
 	fmov	s0,w31
 	fcsel	s0,s3,s0,GT
-	subs	w31,w8,#1
+	cmp	w8,#1
 	b.lt	#&2E504
 	ldr	x10,[x11,#&10]
 	ldr	x11,[x11]
@@ -26650,7 +26650,7 @@ l000000000002CA54:
 	ldpsw	x2,x16,[x17]
 	mov	w15,w31
 	str	w31,[x17,#&C]!
-	subs	w31,w16,#1
+	cmp	w16,#1
 	b.lt	#&2E4E8
 	add	x1,x11,x2,lsl #5
 	add	x3,x1,x16,lsl #5
@@ -26701,7 +26701,7 @@ l000000000002CA54:
 	orr	w4,w4,#8
 	strb	w4,[x2]
 	tbz	w4,#0,#&2E4B4
-	subs	w31,w12,#3
+	cmp	w12,#3
 	b.eq	#&2E4A8
 	fmul	s17,s19,s1
 	fmul	s17,s17,s1
