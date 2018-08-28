@@ -642,6 +642,8 @@ namespace Reko.Scanning
         /// <returns>Null if there was no trampoline.</returns>
         public ProcedureBase GetTrampoline(Address addr)
         {
+            if (!Program.SegmentMap.IsValidAddress(addr))
+                return null;
             var rdr = Program.CreateImageReader(addr);
             var arch = Program.Architecture;
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
