@@ -1430,5 +1430,14 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
+        [Test]
+        public void A64Rw_clz()
+        {
+            Given_Instruction(0xDAC01002);
+            AssertCode(     // clz\tx2,x0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x2 = __clz(x0)");
+        }
+
     }
 }

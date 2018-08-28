@@ -43,6 +43,11 @@ namespace Reko.Arch.Arm.AArch64
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            WriteName(Width.BitSize, VectorRegister, ElementType, Index, writer);
+        }
+
+        public static void WriteName(int bitSize, RegisterStorage VectorRegister, VectorData ElementType, int Index, MachineInstructionWriter writer)
+        {
             writer.WriteString(VectorRegister.Name);
             writer.WriteChar('.');
             switch (ElementType)
@@ -50,7 +55,7 @@ namespace Reko.Arch.Arm.AArch64
             case VectorData.I8:
                 if (Index >= 0)
                     writer.WriteString("b");
-                else if (this.Width.BitSize == 64)
+                else if (bitSize == 64)
                     writer.WriteString("8b");
                 else
                     writer.WriteString("16b");
@@ -58,7 +63,7 @@ namespace Reko.Arch.Arm.AArch64
             case VectorData.I16:
                 if (Index >= 0)
                     writer.WriteString("h");
-                else if (this.Width.BitSize == 64)
+                else if (bitSize == 64)
                     writer.WriteString("4h");
                 else
                     writer.WriteString("8h");
@@ -66,7 +71,7 @@ namespace Reko.Arch.Arm.AArch64
             case VectorData.I32:
                 if (Index >= 0)
                     writer.WriteString("s");
-                else if (this.Width.BitSize == 64)
+                else if (bitSize == 64)
                     writer.WriteString("2s");
                 else
                     writer.WriteString("4s");
@@ -74,7 +79,7 @@ namespace Reko.Arch.Arm.AArch64
             case VectorData.I64:
                 if (Index >= 0)
                     writer.WriteString("d");
-                else if (this.Width.BitSize == 64)
+                else if (bitSize == 64)
                     writer.WriteString("1d");
                 else
                     writer.WriteString("2d");

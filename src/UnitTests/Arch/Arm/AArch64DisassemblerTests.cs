@@ -1208,33 +1208,17 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7E21D821);
             Expect_Code("ucvtf\ts1,s1");
         }
-         
+
         ///////////////////////////////////////
+
+        [Test]
+        public void AArch64Dis_ld3()
+        {
+            Given_Instruction(0x0C404565);
+            Expect_Code("ld3\t{v5.4h,v6.4h,v7.4h},[x11]");
+        }
+
         //@@@@@@@@@@@@@@@@@@@
-
-        // An AArch64 decoder for the instruction 9C0020A2 (A220009C) - (op1 = 1) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_9C0020A2()
-        {
-            Given_Instruction(0x9C0020A2);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 9C0018E0 (E018009C) - (op1 = 1) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_9C0018E0()
-        {
-            Given_Instruction(0x9C0018E0);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction DAC01002 (0210C0DA) - (DataProcessing1source sf:S=10) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_DAC01002()
-        {
-            Given_Instruction(0xDAC01002);
-            Expect_Code("@@@");
-        }
 
         // An AArch64 decoder for the instruction 9EAF0060 (6000AF9E) - (DataProcessingScalarFpAdvancedSimd - op0=9 op1=01) has not been implemented yet.
         [Test]
@@ -1261,13 +1245,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // An AArch64 decoder for the instruction 0C404565 (6545400C) - (AdvancedSimdLdStMultiple) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_0C404565()
-        {
-            Given_Instruction(0x0C404565);
-            Expect_Code("@@@");
-        }
+  
 
         // An AArch64 decoder for the instruction 4EA26400 (0064A24E) - (AdvancedSimd3Same U=0) has not been implemented yet.
         [Test]
