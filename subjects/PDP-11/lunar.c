@@ -223,7 +223,7 @@ void fn0488()
 	fn114A(globals->w006E, r1_151, out r2_46, out r3_47);
 	Eq_2 r3_50 = r3_47 + globals->w0056;
 	word16 r3_149;
-	word16 r2_56 = fn126C(600, r2_46 + (r3_50 <u 0x00), r3_50, out r3_149);
+	Eq_2 r2_56 = fn126C(600, (bool) (r3_50 < 0x00) + r2_46, r3_50, out r3_149);
 	if (r3_31 <= 0x00)
 		r3_149 = -r3_149;
 	globals->w005C = globals->w005C + r3_149;

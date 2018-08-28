@@ -54,7 +54,7 @@ void fn0273(word16 af, Eq_16 c, Eq_16 b, Eq_18 de, ui16 hl, Eq_20 * ix)
 		ix->tFFFFFFFC = a;
 		a = h;
 		v17 = ix->bFFFFFFE9;
-		a = a + v17 + C;
+		a = (bool) C + ((byte) a + v17);
 		ix->tFFFFFFFD = a;
 		v18 = ix->tFFFFFFF2;
 		a = v18;
@@ -371,14 +371,14 @@ Eq_303 fn0351(Eq_16 b, Eq_18 de, Eq_16 l, Eq_16 h, Eq_20 * ix, Eq_908 & afOut, E
 	v17_31 = ix->tFFFFFFF7;
 	a_32 = v17_31;
 	v18_33 = ix->bFFFFFFEF;
-	a_34 = (bool) (a_27 < 0x00) + ((byte) a_32 + v18_33);
+	a_34 = (cu8) ((bool) (a_27 < 0x00) + ((byte) a_32 + v18_33));
 	SZHXVC_35 = cond(a_34);
 	C_36 = (bool) SZHXVC_35;
 	b_37 = a_34;
 	v19_38 = ix->tFFFFFFF8;
 	a_39 = v19_38;
 	v20_40 = ix->bFFFFFFF0;
-	a_41 = (bool) (a_34 < 0x00) + ((byte) a_39 + v20_40);
+	a_41 = (cu8) ((bool) (a_34 < 0x00) + ((byte) a_39 + v20_40));
 	SZHXVC_42 = cond(a_41);
 	C_43 = (bool) SZHXVC_42;
 	l_44 = a_41;
@@ -584,7 +584,7 @@ void fn04EE(word16 af, Eq_18 de, word16 hl, Eq_20 * ix)
 	ix->tFFFFFFFD = a_54;
 	uint8 a_60 = (bool) (a_54 < 0x00) + ((word16) ix->tFFFFFFF8 + l_39);
 	ix->bFFFFFFFE = a_60;
-	ix->bFFFFFFFF = (bool) (a_60 < 0x00) + ((word16) ix->tFFFFFFF9 + h_38);
+	ix->bFFFFFFFF = (uint8) ((bool) (a_60 < 0x00) + ((word16) ix->tFFFFFFF9 + h_38));
 	cu8 a_71 = (word16) ix->tFFFFFFE6 + ix->bFFFFFFDA;
 	cu8 a_78 = (bool) (a_71 < 0x00) + ((word16) ix->tFFFFFFE7 + ix->bFFFFFFDB);
 	cu8 a_85 = (bool) (a_78 < 0x00) + ((word16) ix->tFFFFFFE8 + ix->bFFFFFFDC);
@@ -647,7 +647,7 @@ void fn04EE(word16 af, Eq_18 de, word16 hl, Eq_20 * ix)
 	ix->tFFFFFFFD = a_261;
 	uint8 a_267 = (bool) (a_261 < 0x00) + (l_246 + ix->bFFFFFFF0);
 	ix->bFFFFFFFE = a_267;
-	ix->bFFFFFFFF = (bool) (a_267 < 0x00) + (h_245 + ix->bFFFFFFF1);
+	ix->bFFFFFFFF = (uint8) ((bool) (a_267 < 0x00) + (h_245 + ix->bFFFFFFF1));
 	word16 af_279 = DPB(af_283, ix->tFFFFFFDE, 8);
 	fn0607(af_279, de, ix);
 }
@@ -1098,14 +1098,14 @@ void fn0B2C(Eq_16 c, Eq_18 de, Eq_20 * ix)
 		v40_96 = ix_64->tFFFFFFF7;
 		a_98 = v40;
 		v41_99 = ix_64->bFFFFFFEF;
-		a_101 = (bool) (a_92 < 0x00) + (a_98 + v41);
+		a_101 = (cu8) ((bool) (a_92 < 0x00) + (a_98 + v41));
 		SZHXVC_102 = cond(a_101);
 		C_103 = (bool) SZHXVC_102;
 		b_104 = a_101;
 		v42_105 = ix_64->tFFFFFFF8;
 		a_107 = v42;
 		v43_108 = ix_64->bFFFFFFF0;
-		a_110 = (bool) (a_101 < 0x00) + (a_107 + v43);
+		a_110 = (cu8) ((bool) (a_101 < 0x00) + (a_107 + v43));
 		SZHXVC_111 = cond(a_110);
 		C_112 = (bool) SZHXVC_111;
 		l_113 = a_110;
@@ -1283,7 +1283,7 @@ void fn0C35(word16 af, Eq_16 c, Eq_16 b, Eq_18 de, byte * hl, Eq_20 * ix)
 	ix->tFFFFFFFD = a_14;
 	uint8 a_21 = (bool) (a_14 < 0x00) + ((word16) ix->tFFFFFFF8 + l);
 	ix->bFFFFFFFE = a_21;
-	ix->bFFFFFFFF = (bool) (a_21 < 0x00) + ((word16) ix->tFFFFFFF9 + h);
+	ix->bFFFFFFFF = (uint8) ((bool) (a_21 < 0x00) + ((word16) ix->tFFFFFFF9 + h));
 	cu8 a_33 = (word16) ix->tFFFFFFE6 + ix->bFFFFFFDA;
 	cu8 a_40 = (bool) (a_33 < 0x00) + ((word16) ix->tFFFFFFE7 + ix->bFFFFFFDB);
 	cu8 a_47 = (bool) (a_40 < 0x00) + ((word16) ix->tFFFFFFE8 + ix->bFFFFFFDC);
@@ -1309,7 +1309,7 @@ void fn0C39(word16 af, byte b, Eq_18 de, word16 hl, Eq_20 * ix)
 	ix->tFFFFFFFD = a_9;
 	uint8 a_16 = (bool) (a_9 < 0x00) + ((word16) ix->tFFFFFFF8 + l);
 	ix->bFFFFFFFE = a_16;
-	ix->bFFFFFFFF = (bool) (a_16 < 0x00) + ((word16) ix->tFFFFFFF9 + h);
+	ix->bFFFFFFFF = (uint8) ((bool) (a_16 < 0x00) + ((word16) ix->tFFFFFFF9 + h));
 	cu8 a_28 = (word16) ix->tFFFFFFE6 + ix->bFFFFFFDA;
 	cu8 a_35 = (bool) (a_28 < 0x00) + ((word16) ix->tFFFFFFE7 + ix->bFFFFFFDB);
 	word16 hl_52 = DPB(hl, (bool) ((bool) (a_35 < 0x00) + ((word16) ix->tFFFFFFE8 + ix->bFFFFFFDC) < 0x00) + (ix->bFFFFFFE9 + ix->bFFFFFFDD), 8);
@@ -1407,7 +1407,7 @@ void fn0D00(word16 af, Eq_16 b, Eq_16 c, Eq_18 de, ui16 hl, Eq_20 * ix)
 	ix->tFFFFFFFD = a_37;
 	uint8 a_43 = (bool) (a_37 < 0x00) + (l_19 + ix->bFFFFFFF0);
 	ix->bFFFFFFFE = a_43;
-	ix->bFFFFFFFF = (bool) (a_43 < 0x00) + (h_20 + ix->bFFFFFFF1);
+	ix->bFFFFFFFF = (uint8) ((bool) (a_43 < 0x00) + (h_20 + ix->bFFFFFFF1));
 	cu8 a_54 = (word16) ix->tFFFFFFDE + ix->bFFFFFFDA;
 	cu8 a_61 = (bool) (a_54 < 0x00) + ((word16) ix->tFFFFFFDF + ix->bFFFFFFDB);
 	cu8 a_68 = (bool) (a_61 < 0x00) + ((word16) ix->tFFFFFFE0 + ix->bFFFFFFDC);
