@@ -100,6 +100,20 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_cmp_Wn_imm()
+        {
+            var instr = DisassembleBits("011 10001 00 011111111111 10001 11111");
+            Assert.AreEqual("cmp\tw17,#&7FF", instr.ToString());
+        }
+
+        [Test]
+        public void AArch64Dis_cmp_wsp_imm()
+        {
+            var instr = DisassembleBits("011 10001 00 011111111111 11111 11111");
+            Assert.AreEqual("cmp\twsp,#&7FF", instr.ToString());
+        }
+
+        [Test]
         public void AArch64Dis_sub_Xn_imm()
         {
             var instr = DisassembleBits("110 10001 00 011111111111 10001 10011");
@@ -219,18 +233,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_ubfm_64bit()
+        public void AArch64Dis_lsr_32bit()
         {
-            Given_Instruction(0xD37DF29C);
-            Expect_Code("ubfm\tx28,x20,#0,#&3D");
+            Given_Instruction(0x530C7C04);
+            Expect_Code("lsr\tw4,w0,#&C");
         }
 
         [Test]
-        public void AArch64Dis_ubfm_32bit()
+        public void AArch64Dis_lsl_64bit()
         {
-            Given_Instruction(0x530C7C04);
-            Expect_Code("ubfm\tw4,w0,#&C,#&1F");
+            Given_Instruction(0xD37DF29C);
+            Expect_Code("lsl\tx28,x20,#3");
         }
+
+   
+
+    
 
         [Test]
         public void AArch64Dis_ccmp_imm()
@@ -279,6 +297,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0xF9400000);
             Expect_Code("ldr\tx0,[x0]");
+        }
+
+        [Test]
+        public void AArch64Dis_sub_sp()
+        {
+            Given_Instruction(0xCB33601F);
+            Expect_Code("sub\tsp,x0,x19,uxtx #0");
         }
 
         [Test]
@@ -415,10 +440,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_sbfm()
+        public void AArch64Dis_asr()
         {
             Given_Instruction(0x13017E73);
-            Expect_Code("sbfm\tw19,w19,#1,#&1F");
+            Expect_Code("asr\tw19,w19,#1");
         }
 
         [Test]
@@ -429,10 +454,31 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_sbfm_2()
+        public void AArch64Dis_sxth()
+        {
+            Given_Instruction(0x93403C18);
+            Expect_Code("sxth\tx24,w0");
+        }
+
+        [Test]
+        public void AArch64Dis_sbfiz()
         {
             Given_Instruction(0x937D7C63);
-            Expect_Code("sbfm\tx3,x3,#&3,#&20");
+            Expect_Code("sbfiz\tx3,x3,#3,#&20");
+        }
+
+        [Test]
+        public void AArch64Dis_sbfm_3()
+        {
+            Given_Instruction(0x93417C00);
+            Expect_Code("sbfm\tx0,x0,#1,#&1F");
+        }
+
+        [Test]
+        public void AArch64Dis_sxtw()
+        {
+            Given_Instruction(0x93407C63);
+            Expect_Code("sxtw\tx3,w3");
         }
 
         [Test]
@@ -584,12 +630,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldrb\tw23,[x2,x1]");
         }
 
-        [Test]
-        public void AArch64Dis_sbfm_0_1F()
-        {
-            Given_Instruction(0x93407C18);
-            Expect_Code("sbfm\tx24,x0,#0,#&1F@@");
-        }
+     
 
         [Test]
         public void AArch64Dis_strb_index()
@@ -862,6 +903,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x0B20A1EF);
             Expect_Code("add\tw15,w15,w0,sxth #0");
+        }
+
+        [Test]
+        public void AArch64Dis_add_wsp_ext()
+        {
+            Given_Instruction(0x0B20A3FF);
+            Expect_Code("add\twsp,wsp,w0,sxth #0");
         }
 
         [Test]

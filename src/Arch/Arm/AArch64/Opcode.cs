@@ -166,5 +166,6 @@ namespace Reko.Arch.Arm.AArch64
         addv,
         ins,
         movi,
+        sbfiz,
     }
 }

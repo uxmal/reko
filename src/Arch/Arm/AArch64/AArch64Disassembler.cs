@@ -114,6 +114,16 @@ namespace Reko.Arch.Arm.AArch64
             return new ImmediateOperand(Constant.Create(dt, n));
         }
 
+        private ImmediateOperand DecodeUnsignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
+        {
+            uint n = Bitfield.ReadFields(fields, wInstr);
+            if (sh > 0)
+            {
+                n <<= sh;
+            }
+            return new ImmediateOperand(Constant.Create(dt, n));
+        }
+
 
         /// Decode a logical immediate value in the form
         /// "N:immr:imms" (where the immr and imms fields are each 6 bits) into the
@@ -218,6 +228,22 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
+        // 32-bit register - but use stack register instead of w31
+
+        private static Mutator Ws(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                uint iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.AddrRegs32[iReg]));
+                return true;
+            };
+        }
+
         // 64-bit register.
         private static Mutator X(int pos, int size)
         {
@@ -229,6 +255,50 @@ namespace Reko.Arch.Arm.AArch64
             {
                 uint iReg = Bitfield.ReadFields(fields, u);
                 d.state.ops.Add(new RegisterOperand(Registers.GpRegs64[iReg]));
+                return true;
+            };
+        }
+
+        // Instructions that use sp rather than x31:
+        //  autda
+        //  autdza
+        //  autdb
+        //  autdzb
+        //  autia
+        //  autia1716
+        //  autiasp
+        //  autiaz
+        //  autiza
+        //  autib
+        //  autib1716
+        //  autibsp
+        //  autibz
+        //  autizb
+        //  cas* variants
+        //  ldadd* variants
+        //  ldapr* variants
+        //  ldar* variants
+        //  ldax* variants
+        //  ldclr* variants
+        //  ldeor* variants
+        //  ldlar* variants
+        //  ldnp
+        //  pac* variants
+        //  prfm*
+        //  swp* variants
+
+        // 64-bit register - but use stack register instead of x31
+
+        private static Mutator Xs(int pos, int size)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size)
+            };
+            return (u, d) =>
+            {
+                uint iReg = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(new RegisterOperand(Registers.AddrRegs64[iReg]));
                 return true;
             };
         }
@@ -507,7 +577,7 @@ namespace Reko.Arch.Arm.AArch64
             };
             return (u, d) =>
             {
-                var i = d.DecodeSignedImmediateOperand(u, fields, dt, sh);
+                var i = d.DecodeUnsignedImmediateOperand(u, fields, dt, sh);
                 d.state.ops.Add(i);
                 return true;
             };
@@ -998,7 +1068,10 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Force Q bit to true
-        private static Mutator q1 => (u, d) => { d.state.useQ = true; return true; };
+        private static bool q1(uint u, AArch64Disassembler d)
+        {
+            d.state.useQ = true; return true;
+        }
 
         // Arrangement specifier tells us how words are packed
         private static Mutator As(int pos, int length)
@@ -1038,6 +1111,110 @@ namespace Reko.Arch.Arm.AArch64
                 d.Invalid();
                 return false;
             };
+        }
+
+        // Aliases post process a decoded instruction to yield a preferred 
+        // decoding for special cases.
+
+        private static bool SbfmAliases(uint wInstr, AArch64Disassembler dasm)
+        {
+            var immr = ((ImmediateOperand)dasm.state.ops[2]).Value.ToUInt32();
+            var imms = ((ImmediateOperand)dasm.state.ops[3]).Value.ToUInt32();
+            int width = dasm.state.ops[0].Width.BitSize;
+            if ((width == 32 && imms == 0x1F) ||
+                (width == 64 && imms == 0x3F))
+            {
+                dasm.state.opcode = Opcode.asr;
+                dasm.state.ops.RemoveAt(3);
+                return true;
+            }
+            if (imms < immr)
+            {
+                dasm.state.opcode = Opcode.sbfiz;
+                dasm.state.ops[2] = ImmediateOperand.Int32(width - (int)immr);
+                dasm.state.ops[3] = ImmediateOperand.Int32((int)imms + 1);
+                return true;
+            }
+            if (immr == 0)
+            {
+                var reg = ((RegisterOperand)dasm.state.ops[1]).Register;
+                switch (imms)
+                {
+                case 0b00111:
+                    dasm.state.opcode = Opcode.sxtb;
+                    dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
+                    dasm.state.ops.RemoveRange(2, 2);
+                    return true;
+                case 0b01111:
+                    dasm.state.opcode = Opcode.sxth;
+                    dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
+                    dasm.state.ops.RemoveRange(2, 2);
+                    return true;
+                case 0b11111:
+                    dasm.state.opcode = Opcode.sxtw;
+                    dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
+                    dasm.state.ops.RemoveRange(2, 2);
+                    return true;
+                }
+            }
+            return true;
+        }
+
+        private static bool UbfmAliases(uint wInstr, AArch64Disassembler dasm)
+        {
+            var immr = ((ImmediateOperand)dasm.state.ops[2]).Value.ToUInt32();
+            var imms = ((ImmediateOperand)dasm.state.ops[3]).Value.ToUInt32();
+            int width = dasm.state.ops[0].Width.BitSize;
+            if (width == 32)
+            {
+                if (imms == 0x1F)
+                {
+                    dasm.state.opcode = Opcode.lsr;
+                    dasm.state.ops.RemoveAt(3);
+                    return true;
+                } else if (imms + 1 == immr)
+                {
+                    dasm.state.opcode = Opcode.lsl;
+                    dasm.state.ops.RemoveAt(3); dasm.state.ops[2] = ImmediateOperand.Int32(31 - (int)imms);
+
+                    return true;
+                }
+            }
+            if (width == 64)
+            {
+                if (imms == 0x3F)
+                {
+                    dasm.state.opcode = Opcode.lsr;
+                    dasm.state.ops.RemoveAt(3);
+                    return true;
+                }
+                else if (imms + 1 == immr)
+                {
+                    dasm.state.opcode = Opcode.lsl;
+                    dasm.state.ops[2] = ImmediateOperand.Int32(63 - (int)imms);
+                    dasm.state.ops.RemoveAt(3);
+                    return true;
+                }
+            }
+            if (immr == 0)
+            {
+                switch (imms)
+                {
+                case 0b00111:
+                    dasm.state.opcode = Opcode.uxtb;
+                    dasm.state.ops.RemoveRange(2, 2);
+                    return true;
+                case 0b01111:
+                    dasm.state.opcode = Opcode.uxth;
+                    dasm.state.ops.RemoveRange(2, 2);
+                    return true;
+                case 0b11111:
+                    dasm.state.opcode = Opcode.uxtw;
+                    dasm.state.ops.RemoveRange(2, 2);
+                    return true;
+                }
+            }
+            return true;
         }
 
         private static PrimitiveType i8 => PrimitiveType.SByte;
@@ -1623,15 +1800,19 @@ namespace Reko.Arch.Arm.AArch64
 
             var AddSubImmediate = Mask(23, 1,
                 Mask(29, 0x7,
-                    Instr(Opcode.add, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
-                    Instr(Opcode.adds, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
-                    Instr(Opcode.sub, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
-                    Instr(Opcode.subs, W(0,5),W(5,5),U(10,12,w32),sc(22,2)),
+                    Instr(Opcode.add, Ws(0,5),Ws(5,5),U(10,12,w32),sc(22,2)),
+                    Instr(Opcode.adds, Ws(0,5),Ws(5,5),U(10,12,w32),sc(22,2)),
+                    Instr(Opcode.sub, Ws(0,5),Ws(5,5),U(10,12,w32),sc(22,2)),
+                    Select(0,5, n=>n == 0x1F,
+                        Instr(Opcode.cmp, Ws(5,5),U(10,12,w32),sc(22,2)),
+                        Instr(Opcode.subs, W(0,5),W(5,5),U(10,12,w32),sc(22,2))),
                     
-                    Instr(Opcode.add, X(0,5),X(5,5),U(10,12,w64),sc(22,2)),
-                    Instr(Opcode.adds, X(0,5),X(5,5),U(10,12,w64),sc(22,2)),
-                    Instr(Opcode.sub, X(0,5),X(5,5),U(10,12,w64),sc(22,2)),
-                    Instr(Opcode.subs, X(0,5),X(5,5),U(10,12,w64),sc(22,2))),
+                    Instr(Opcode.add, Xs(0,5),Xs(5,5),U(10,12,w64),sc(22,2)),
+                    Instr(Opcode.adds, Xs(0,5),Xs(5,5),U(10,12,w64),sc(22,2)),
+                    Instr(Opcode.sub, Xs(0,5),Xs(5,5),U(10,12,w64),sc(22,2)),
+                    Select(0,5, n=> n == 0x1F,
+                        Instr(Opcode.cmp, Xs(5,5),U(10,12,w64),sc(22,2)),
+                        Instr(Opcode.subs, X(0,5),Xs(5,5),U(10,12,w64),sc(22,2)))),
                 invalid);
 
             var LogicalImmediate = Mask(29, 7, // size + op flag
@@ -1682,9 +1863,9 @@ namespace Reko.Arch.Arm.AArch64
             {
                 Bitfield = Mask(22, 1,
                     Mask(29, 7,
-                        Instr(Opcode.sbfm, W(0,5),W(5,5),Bm(10,16)),
-                        Instr(Opcode.bfm, W(0,5),W(5,5),Bm(10,16)),
-                        Instr(Opcode.ubfm, W(0,5),W(5,5),Bm(10,16)),
+                        Instr(Opcode.sbfm, W(0,5),W(5,5),U(16,6,i32),U(10,6,i32), SbfmAliases),
+                        Instr(Opcode.bfm, W(0,5),W(5,5),U(16,6,i32),U(10,6,i32)),
+                        Instr(Opcode.ubfm, W(0,5),W(5,5),U(16,6,i32),U(10,6,i32), UbfmAliases),
                         invalid,
 
                         invalid,
@@ -1697,9 +1878,9 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         invalid,
 
-                        Instr(Opcode.sbfm, X(0,5),X(5,5),I(16,6,i32),I(10,6,i32)),
-                        Instr(Opcode.bfm, X(0,5),X(5,5),I(16,6,i32),I(10,6,i32)),
-                        Instr(Opcode.ubfm, X(0,5),X(5,5),I(16,6,i32),I(10,6,i32)), //$BUG: l h, look at encoding
+                        Instr(Opcode.sbfm, X(0,5),X(5,5),U(16,6,i32),U(10,6,i32), SbfmAliases),
+                        Instr(Opcode.bfm, X(0,5),X(5,5),U(16,6,i32),U(10,6,i32)),
+                        Instr(Opcode.ubfm, X(0,5),X(5,5),U(16,6,i32),U(10,6,i32), UbfmAliases), 
                         invalid));
             }
             Decoder Extract = Nyi("Extract");
@@ -1937,7 +2118,7 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Opcode.adds, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
                             Instr(Opcode.sub, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
                             Select(0, 5, n => n == 0x1F,
-                                Instr(Opcode.cmp, W(5,5),W(16,5),si(22,2,10,6)),
+                                Instr(Opcode.cmp, Ws(5,5),W(16,5),si(22,2,10,6)),
                                 Instr(Opcode.subs, W(0,5),W(5,5),W(16,5),si(22,2,10,6))))),
                     Mask(29, 3,
                         Instr(Opcode.add,  X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
@@ -1949,19 +2130,19 @@ namespace Reko.Arch.Arm.AArch64
             var AddSubExtendedRegister = Select(22, 2, n => n != 0,
                 invalid,
                 Mask(29, 0b111,
-                    Instr(Opcode.add, W(0,5),W(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                    Instr(Opcode.adds, W(0,5),W(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                    Instr(Opcode.sub, W(0,5),W(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                    Instr(Opcode.add, Ws(0,5),Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                    Instr(Opcode.adds, Ws(0,5),Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                    Instr(Opcode.sub, Ws(0,5),Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
                     Select(0,5, n => n == 0x1F,
-                        Instr(Opcode.cmp, W(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                        Instr(Opcode.subs, W(0,5),W(5,5),Rx(16,5,13,3),Ex(13,3,10,3))),
+                        Instr(Opcode.cmp, Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                        Instr(Opcode.subs, W(0,5),Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3))),
 
-                    Instr(Opcode.add, X(0,5),X(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                    Instr(Opcode.adds, X(0,5),X(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                    Instr(Opcode.sub, X(0,5),X(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                    Instr(Opcode.add, Xs(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                    Instr(Opcode.adds, Xs(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                    Instr(Opcode.sub, Xs(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
                     Select(0,5, n => n == 0x1F,
-                        Instr(Opcode.cmp, X(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                        Instr(Opcode.subs, X(0,5),X(5,5),Rx(16,5,13,3),Ex(13,3,10,3)))));
+                        Instr(Opcode.cmp, Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
+                        Instr(Opcode.subs, X(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)))));
 
             Decoder DataProcessing3Source;
             {
