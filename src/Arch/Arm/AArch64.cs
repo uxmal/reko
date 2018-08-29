@@ -208,7 +208,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotSupportedException();
+            return reg;
         }
 
         public override string GrfToString(uint grf)
@@ -252,7 +252,7 @@ namespace Reko.Arch.Arm
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr64(c.ToUInt64());
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

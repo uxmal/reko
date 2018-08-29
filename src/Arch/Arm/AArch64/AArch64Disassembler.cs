@@ -2652,7 +2652,7 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("AdvancedSimd3Different U:opcode=1 0101"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0110"),
                     Nyi("AdvancedSimd3Different U:opcode=1 0111"),
-                    Instr(Opcode.umlal, q(30),Vr(0,5,HSD_),Vr(5,5,BHS_),Vr(16,5,BHS_)),
+                    Instr(Opcode.umlal, q1,Vr(0,5,HSD_),q(30),Vr(5,5,BHS_),Vr(16,5,BHS_)),
                     Nyi("AdvancedSimd3Different U:opcode=1 1001"),
                     Nyi("AdvancedSimd3Different U:opcode=1 1010"),
                     Nyi("AdvancedSimd3Different U:opcode=1 1011"),
@@ -2932,7 +2932,7 @@ namespace Reko.Arch.Arm.AArch64
                 AdvancedSimdShiftByImm = Mask(29, 1,
                     Sparse(11,0b11111, // U=0
                         Nyi("AdvancedSimdShiftByImm U=0"),
-                        (0b10100, Instr(Opcode.sxtl, q(30),As(19,4),V(0,5),V(5,5)))
+                        (0b10100, Instr(Opcode.sxtl, q1,As(19,4),V(0,5), q(30),V(5,5)))
                         ),
                     Sparse(11, 0b11111, // U=1
                         Nyi("AdvancedSimdShiftByImm U=1"),

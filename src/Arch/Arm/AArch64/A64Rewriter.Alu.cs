@@ -45,17 +45,38 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, Address.Ptr64(wBase));
         }
 
-        private void RewriteMaybeSimdBinary(Func<Expression, Expression, Expression> fn, string simdFormat, Action<Expression> setFlags = null)
+        private void RewriteMaybeSimdBinary(
+            Func<Expression, Expression, Expression> fn,
+            string simdFormat, 
+            Domain domain = Domain.None, 
+            Action<Expression> setFlags = null)
         {
-            if (instr.ops[0] is VectorRegisterOperand)
+            if (instr.vectorData != VectorData.Invalid || instr.ops[0] is VectorRegisterOperand vr)
             {
-                throw new NotImplementedException();
+                RewriteSimdBinary(simdFormat, domain, setFlags);
             }
             else
             {
                 RewriteBinary(fn, setFlags);
             }
         }
+
+        private void RewriteMaybeSimdUnary(
+            Func<Expression, Expression> fn,
+            string simdFormat,
+            Domain domain = Domain.None)
+        {
+            if (instr.vectorData != VectorData.Invalid || 
+                (instr.ops[0] is VectorRegisterOperand vr && vr.Index < 0))
+            {
+                RewriteSimdUnary(simdFormat, domain);
+            }
+            else
+            {
+                RewriteUnary(fn);
+            }
+        }
+
 
         private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression> setFlags = null)
         {
@@ -109,6 +130,13 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(nzcv, m.Cond(m.ISub(left, right)));
         }
 
+        private void RewriteClz()
+        {
+            var src = RewriteOp(instr.ops[1]);
+            var dst = RewriteOp(instr.ops[0]);
+            m.Assign(dst, host.PseudoProcedure("__clz", MakeInteger(Domain.SignedInt, dst.DataType), src));
+        }
+
         private void RewriteCmp()
         {
             var left = RewriteOp(instr.ops[0]);
@@ -129,24 +157,40 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(dst, m.Cast(dst.DataType, TestCond(Invert(cond))));
                 return;
             }
+            var src = RewriteOp(instr.ops[1]);
+            if (rFalse.Number != 31 && rTrue == rFalse)
+            {
+                m.BranchInMiddleOfInstruction(TestCond(Invert(cond)), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+                m.Assign(dst, m.IAdd(src, 1));
+                return;
+            }
             NotImplementedYet();
         }
 
         private void RewriteLoadStorePair(bool load)
         {
-            var reg1 = RewriteOp(instr.ops[0]);
-            var reg2 = RewriteOp(instr.ops[1]);
+            var reg1 = RewriteOp(instr.ops[0], !load);
+            var reg2 = RewriteOp(instr.ops[1], !load);
             var mem = (MemoryOperand)instr.ops[2];
-            Expression ea = binder.EnsureRegister(mem.Base);
+            Expression regBase = binder.EnsureRegister(mem.Base);
             Expression offset = RewriteEffectiveAddressOffset(mem);
+            Expression ea = regBase;
             if (mem.PreIndex)
             {
                 m.Assign(ea, m.IAdd(ea, offset));
             }
-            else if (!mem.PostIndex)
+            else
             {
                 var tmp = binder.CreateTemporary(ea.DataType);
-                m.Assign(tmp, m.IAdd(ea, offset));
+                if (offset == null || mem.PostIndex)
+                    //$DEBUG
+                {
+                    m.Assign(tmp, ea);
+                }
+                else
+                {
+                    m.Assign(tmp, m.IAdd(ea, offset));
+                }
                 ea = tmp;
             }
             if (load)
@@ -158,9 +202,9 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(reg2, m.Mem(reg2.DataType, ea));
             else
                 m.Assign(m.Mem(reg2.DataType, ea), reg2);
-            if (mem.PostIndex)
+            if (mem.PostIndex && offset != null)
             {
-                m.Assign(ea, m.IAdd(ea, offset));
+                m.Assign(regBase, m.IAdd(regBase, offset));
             }
         }
 
@@ -227,22 +271,6 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMov()
         {
-            if (instr.ops[1] is VectorRegisterOperand vecSrc)
-            {
-                var aSrc = MakeArrayType(vecSrc);
-                var vecDst = (VectorRegisterOperand)instr.ops[0];
-                if (vecSrc.Index >= 0)
-                {
-                    Debug.Assert(vecDst.Index >= 0);
-                    var tmp = binder.CreateTemporary(aSrc.ElementType);
-                    m.Assign(tmp, m.Array(tmp.DataType, RewriteOp(vecSrc), m.Int32(vecSrc.Index)));
-                    m.Assign(m.Array(tmp.DataType, RewriteOp(vecDst), m.Int32(vecDst.Index)), tmp);
-                    return;
-                }
-                else
-                {
-                }
-            }
             RewriteUnary(n => n);
         }
 
@@ -288,6 +316,11 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMull(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
         {
+            if (instr.ops[1] is VectorRegisterOperand)
+            {
+                RewriteSimdBinary("__mull_{0}", Domain.Integer);
+                return;
+            }
             var op1 = RewriteOp(instr.ops[1]);
             var op2 = RewriteOp(instr.ops[2]);
             var dst = RewriteOp(instr.ops[0]);
@@ -363,6 +396,30 @@ namespace Reko.Arch.Arm.AArch64
             return m.Cast(dtUint, m.Cast(dtOrig, e));
         }
 
+        private void RewriteRev16()
+        {
+            RewriteMaybeSimdUnary(
+                n => host.PseudoProcedure("__rev16", n.DataType, n),
+                "__rev16_{0}");
+        }
+
+        private void RewriteSbfiz()
+        {
+            var src1 = RewriteOp(instr.ops[1], true);
+            var src2 = RewriteOp(instr.ops[2], true);
+            var dst = RewriteOp(instr.ops[0]);
+            m.Assign(dst, host.PseudoProcedure("__sbfiz", dst.DataType, src1, src2));
+        }
+
+        private void RewriteSbfm()
+        {
+            var src1 = RewriteOp(instr.ops[1], true);
+            var src2 = RewriteOp(instr.ops[2], true);
+            var src3 = RewriteOp(instr.ops[2], true);
+            var dst = RewriteOp(instr.ops[0]);
+            m.Assign(dst, host.PseudoProcedure("__sbfm", dst.DataType, src1, src2, src3));
+        }
+
         private void RewriteStr(PrimitiveType dt)
         {
             var rSrc = (RegisterOperand)instr.ops[0];
@@ -396,16 +453,21 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteTest()
         {
-            var op1 = RewriteOp(instr.ops[0]);
-            var op2 = RewriteOp(instr.ops[1]);
+            var op1 = RewriteOp(instr.ops[0], true);
+            var op2 = RewriteOp(instr.ops[1], true);
             NZ00(m.Cond(m.And(op1, op2)));
         }
 
         private void RewriteUnary(Func<Expression, Expression> fn)
         {
+            var src = RewriteOp(instr.ops[1], true);
             var dst = RewriteOp(instr.ops[0]);
-            var src = RewriteOp(instr.ops[1]);
             m.Assign(dst, fn(src));
+        }
+
+        private void RewriteUSxt(PrimitiveType dtDst, PrimitiveType dtSrc)
+        {
+
         }
 
     }

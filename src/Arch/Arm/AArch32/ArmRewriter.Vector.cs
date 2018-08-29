@@ -120,7 +120,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     // Extract a single item from the vector register
                     var index = Constant.Int32(instr.vector_index.Value);
-                    m.Assign(dst, m.Array(dst.DataType, src, index));
+                    m.Assign(dst, m.ARef(dst.DataType, src, index));
                     return;
                 }
                 var fname = $"__vmov_{VectorElementType(instr.vector_data)}";

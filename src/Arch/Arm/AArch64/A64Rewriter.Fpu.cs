@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -46,10 +47,12 @@ namespace Reko.Arch.Arm.AArch64
             return PrimitiveType.Create(domain, dt.BitSize);
         }
 
-        private static ArrayType MakeArrayType(VectorRegisterOperand vector, Domain domain = 0)
+        private ArrayType MakeArrayType(MachineOperand mop, Domain domain = 0)
         {
-            var arrayBitsize = vector.Width.BitSize;
-            var elemBitsize = Bitsize(vector.ElementType);
+            var arrayBitsize = mop.Width.BitSize;
+            var elemBitsize = Bitsize((mop is VectorRegisterOperand vector)
+                ? vector.ElementType
+                : instr.vectorData);
             var celem = arrayBitsize / elemBitsize;
             DataType elemType;
             if (domain == 0)
@@ -91,14 +94,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteFadd()
         {
-            if (instr.ops[1] is VectorRegisterOperand)
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                RewriteBinary(m.FAdd);
-            }
+            RewriteMaybeSimdBinary(m.FAdd, "__fadd_{0}", Domain.Real);
         }
 
         private void RewriteFcmp()
@@ -106,6 +102,15 @@ namespace Reko.Arch.Arm.AArch64
             var left = RewriteOp(instr.ops[0]);
             var right = RewriteOp(instr.ops[1]);
             NZCV(m.Cond(m.FSub(left, right)));
+        }
+
+        private void RewriteFcsel()
+        {
+            var eTrue = RewriteOp(instr.ops[1]);
+            var eFalse = RewriteOp(instr.ops[2]);
+            var dst = RewriteOp(instr.ops[0]);
+            var cond = ((ConditionOperand)instr.ops[3]).Condition;
+            m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), eTrue, eFalse));
         }
 
         private void RewriteFcvt()
@@ -121,40 +126,47 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, Convert(dtDst, dtSrc, src));
         }
 
-        private void RewriteFcvt(Domain domain, string f32name, string f64name)
+        private Expression RewriteFcvt(Expression src, Domain domain, string f32name, string f64name)
         {
-            if (instr.ops[0] is VectorRegisterOperand)
-            {
-                throw new NotImplementedException();
-            }
             //$TODO: #include <math.h>
-            var dst = RewriteOp(instr.ops[0]);
-            var src = RewriteOp(instr.ops[1]);
             var dtSrc = MakeReal(src.DataType);
-            var dtDst = MakeInteger(domain, dst.DataType);
+            var dtDst = MakeInteger(domain, instr.ops[0].Width);
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, src);
             var fn = dtSrc.BitSize == 32 ? f32name : f64name;
-            m.Assign(dst, host.PseudoProcedure(fn, dtDst, tmp));
+            return m.Cast(dtDst, host.PseudoProcedure(fn, dtDst, tmp));
+        }
+
+        private void RewriteFcvtms()
+        {
+            RewriteMaybeSimdUnary(
+                n => RewriteFcvt(n, Domain.SignedInt, "floorf", "floor"),
+                "__floor_{0}",
+                Domain.Real);
+        }
+
+        private void RewriteFcvtps()
+        {
+            RewriteMaybeSimdUnary(
+                n => RewriteFcvt(n, Domain.SignedInt, "ceilf", "ceil"),
+                "__floor_{0}", Domain.Real);
+        }
+
+        private void RewriteFcvtzs()
+        {
+            RewriteMaybeSimdUnary(
+                n => RewriteFcvt(n, Domain.SignedInt, "truncf", "trunc"),
+                "__trunc_{0}", Domain.Real);
         }
 
         private void RewriteFmov()
         {
-            var dst = RewriteOp(instr.ops[0]);
-            var src = RewriteOp(instr.ops[1], true);
-            m.Assign(dst, src);
+            RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);
         }
 
         private void RewriteFmul()
         {
-            if (instr.ops[1] is VectorRegisterOperand)
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                RewriteBinary(m.FMul);
-            }
+            RewriteMaybeSimdBinary(m.FMul, "__fmul_{0}", Domain.Real);
         }
 
         private void RewriteFsqrt()

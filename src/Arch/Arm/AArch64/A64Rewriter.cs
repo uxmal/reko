@@ -72,12 +72,14 @@ namespace Reko.Arch.Arm.AArch64
                     break;
                 case Opcode.add: RewriteMaybeSimdBinary(m.IAdd, "__add_{0}"); break;
                 case Opcode.adds: RewriteBinary(m.IAdd, this.NZCV); break;
+                case Opcode.addv: RewriteAddv(); break;
                 case Opcode.adr: RewriteUnary(n => n); break;
                 case Opcode.asrv: RewriteBinary(m.Sar); break;
                 case Opcode.bic: RewriteBinary((a, b) => m.And(a, m.Comp(b))); break;
                 case Opcode.adrp: RewriteAdrp(); break;
                 case Opcode.and: RewriteBinary(m.And); break;
                 case Opcode.ands: RewriteBinary(m.And, this.NZ00); break;
+                case Opcode.asr: RewriteBinary(m.Sar); break;
                 case Opcode.b: RewriteB(); break;
                 case Opcode.bl: RewriteBl(); break;
                 case Opcode.blr: RewriteBlr(); break;
@@ -85,16 +87,19 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.cbnz: RewriteCb(m.Ne0); break;
                 case Opcode.cbz: RewriteCb(m.Eq0); break;
                 case Opcode.ccmp: RewriteCcmp(); break;
+                case Opcode.clz: RewriteClz(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.csinc: RewriteCsinc(); break;
+                case Opcode.dup: RewriteDup(); break;
                 case Opcode.eor: RewriteBinary(m.Xor); break;
                 case Opcode.fabs: RewriteFabs(); break;
                 case Opcode.fadd: RewriteFadd(); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
+                case Opcode.fcsel: RewriteFcsel(); break;
                 case Opcode.fcvt: RewriteFcvt(); break;
-                case Opcode.fcvtms: RewriteFcvt(Domain.SignedInt, "floorf", "floor"); break;
-                case Opcode.fcvtps: RewriteFcvt(Domain.SignedInt, "ceilf", "ceil"); break;
-                case Opcode.fcvtzs: RewriteFcvt(Domain.SignedInt, "truncf", "trunc"); break;
+                case Opcode.fcvtms: RewriteFcvtms(); break;
+                case Opcode.fcvtps: RewriteFcvtps(); break;
+                case Opcode.fcvtzs: RewriteFcvtzs(); break;
                 case Opcode.fmov: RewriteFmov(); break;
                 case Opcode.fmul: RewriteFmul(); break;
                 case Opcode.fneg: RewriteUnary(m.FNeg); break;
@@ -108,16 +113,20 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.ldrsw: RewriteLdr(PrimitiveType.Int32); break;
                 case Opcode.lslv: RewriteBinary(m.Shl); break;
                 case Opcode.lsrv: RewriteBinary(m.Shr); break;
+                case Opcode.ld3: RewriteLd3(); break;
                 case Opcode.ldur: RewriteLdr(null); break;
                 case Opcode.ldurb: RewriteLdr(PrimitiveType.Byte); break;
                 case Opcode.ldurh: RewriteLdr(PrimitiveType.Word16); break;
                 case Opcode.ldursb: RewriteLdr(PrimitiveType.SByte); break;
                 case Opcode.ldursh: RewriteLdr(PrimitiveType.Int16); break;
                 case Opcode.ldursw: RewriteLdr(PrimitiveType.Int32); break;
+                case Opcode.lsl: RewriteBinary(m.Shl); break;
+                case Opcode.lsr: RewriteBinary(m.Shr); break;
                 case Opcode.madd: RewriteMaddSub(m.IAdd); break;
                 case Opcode.mneg: RewriteBinary((a, b) => m.Neg(m.IMul(a, b))); break;
                 case Opcode.msub: RewriteMaddSub(m.ISub); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movi: RewriteMovi(); break;
                 case Opcode.movk: RewriteMovk(); break;
                 case Opcode.movn: RewriteMovn(); break;
                 case Opcode.movz: RewriteMovz(); break;
@@ -127,9 +136,14 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.orr: RewriteBinary(m.Or);break;
                 case Opcode.orn: RewriteBinary((a, b) => m.Or(a, m.Comp(b))); break;
                 case Opcode.ret: RewriteRet(); break;
+                case Opcode.rev16: RewriteRev16(); break;
+                case Opcode.sbfiz: RewriteSbfiz(); break;
+                case Opcode.sbfm: RewriteSbfm(); break;
                 case Opcode.scvtf: RewriteScvtf(); break;
                 case Opcode.sdiv: RewriteBinary(m.SDiv); break;
                 case Opcode.smaddl: RewriteMaddl(PrimitiveType.Int64, m.SMul); break;
+                case Opcode.smax: RewriteSmax(); break;
+                case Opcode.smaxv: RewriteSmaxv(); break;
                 case Opcode.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.stp: RewriteLoadStorePair(false); break;
                 case Opcode.str: RewriteStr(null); break;
@@ -140,15 +154,20 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.sturh: RewriteStr(PrimitiveType.Word16); break;
                 case Opcode.sub: RewriteBinary(m.ISub); break;
                 case Opcode.subs: RewriteBinary(m.ISub, NZCV); break;
+                case Opcode.sxtl: RewriteSimdUnary("__sxtl_{0}", Domain.SignedInt); break;
+                case Opcode.sxtw: RewriteUSxt(PrimitiveType.Int64, PrimitiveType.Int32); break;
                 case Opcode.tbnz: RewriteTb(m.Ne0); break;
                 case Opcode.tbz: RewriteTb(m.Eq0); break;
                 case Opcode.test: RewriteTest(); break;
+                case Opcode.uaddw: RewriteUaddw(); break;
                 case Opcode.ucvtf: RewriteIcvt(Domain.UnsignedInt); break;
                 case Opcode.udiv: RewriteBinary(m.UDiv); break;
                 case Opcode.umaddl: RewriteMaddl(PrimitiveType.UInt64, m.UMul); break;
+                case Opcode.umlal: RewriteUmlal(); break;
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
-
+                case Opcode.uxtl: RewriteSimdUnary("__uxtl_{0}", Domain.UnsignedInt); break;
+                case Opcode.xtn: RewriteSimdUnary("__xtn_{0}", Domain.None); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, cluster.ToArray())
                 {
@@ -156,6 +175,8 @@ namespace Reko.Arch.Arm.AArch64
                 };
             }
         }
+
+
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -214,13 +235,23 @@ namespace Reko.Arch.Arm.AArch64
             case AddressOperand addrOp:
                 return addrOp.Address;
             case VectorRegisterOperand vectorOp:
+                Identifier vreg;
                 if (vectorOp.Width.BitSize == 64)
                 {
-                    return binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
+                    vreg= binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
                 }
                 else
                 {
-                    return binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
+                    vreg= binder.EnsureRegister(Registers.SimdRegs128[vectorOp.VectorRegister.Number - 32]);
+                }
+                if (vectorOp.Index >= 0)
+                {
+                    var eType = PrimitiveType.CreateWord(vectorOp.Width.BitSize / Bitsize(vectorOp.ElementType));
+                    return m.ARef(eType, vreg, Constant.Int32(vectorOp.Index));
+                }
+                else
+                {
+                    return vreg;
                 }
             default:
                 throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
