@@ -44,6 +44,10 @@ namespace Reko.Arch.Arm.AArch64
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             WriteName(Width.BitSize, VectorRegister, ElementType, Index, writer);
+            if (Index >= 0)
+            {
+                writer.WriteFormat("[{0}]", Index);
+            }
         }
 
         public static void WriteName(int bitSize, RegisterStorage VectorRegister, VectorData ElementType, int Index, MachineInstructionWriter writer)
@@ -86,10 +90,6 @@ namespace Reko.Arch.Arm.AArch64
                 break;
             default:
                 throw new NotImplementedException($"{ElementType}");
-            }
-            if (Index >= 0)
-            {
-                writer.WriteFormat("[{0}]", Index);
             }
         }
     }

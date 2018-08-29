@@ -173,5 +173,18 @@ namespace Reko.Arch.Arm.AArch64
         smax,
         smaxv,
         uaddw,
+
+        cmeq,
+        tbl,
+        tbx,
+        st1,
+        addhn,
+        ld4,
+        ld2,
+        addhn2,
+        st2,
+        st3,
+        st4,
+        not,
     }
 }

@@ -29,7 +29,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class VectorMultipleRegisterOperand : MemoryOperand
+    public class VectorMultipleRegisterOperand : MachineOperand
     {
         private readonly RegisterStorage[] registers;
         private readonly int iRegStart;
@@ -39,11 +39,13 @@ namespace Reko.Arch.Arm.AArch64
             this.registers = registers;
             this.iRegStart = iRegStart;
             this.Repeat = repeat;
+            this.Index = -1;
         }
 
         public VectorData ElementType { get; set; }
 
         public int Repeat { get; set; }
+        public int Index { get; internal set; }
 
         public IEnumerable<RegisterStorage> GetRegisters()
         {
@@ -62,9 +64,13 @@ namespace Reko.Arch.Arm.AArch64
             {
                 writer.WriteString(sep);
                 sep = ",";
-                VectorRegisterOperand.WriteName(Width.BitSize, reg, ElementType, -1, writer);
+                VectorRegisterOperand.WriteName(Width.BitSize, reg, ElementType, Index, writer);
             }
             writer.WriteChar('}');
+            if (Index >= 0)
+            {
+                writer.WriteFormat("[{0}]", Index);
+            }
         }
     }
 }
