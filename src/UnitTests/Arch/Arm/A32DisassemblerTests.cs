@@ -1351,5 +1351,1539 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0x01262B70);
             Expect_Code("bkpteq\t#&62B0");
         }
+
+        /// If you're bored and want something to do, why not implement a 
+        /// A32 decoder or 10? :)
+#if BORED
+        // An AArch64 decoder for the instruction 5F03C0A8 (A8C0035F) - (AdvancedSimdScalar_x_IdxElem - opcode=1100 U=0) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_5F03C0A8()
+        {
+            Disassemble32(0x5F03C0A8);
+            Expect_Code("@@@");
+        }
+
+        // An AArch64 decoder for the instruction 6800F940 (40F90068) - (LdStNoallocatePair) has not been implemented yet.
+        [Test]
+        public void AArch64Dis_6800F940()
+        {
+            Disassemble32(0x6800F940);
+            Expect_Code("@@@");
+        }
+
+
+        // An A32 decoder for the instruction 5CB2E33C (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_5CB2E33C()
+        {
+            Disassemble32(0x5CB2E33C);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F42800FF (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F42800FF()
+        {
+            Disassemble32(0xF42800FF);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DBF0047 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DBF0047()
+        {
+            Disassemble32(0x2DBF0047);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FCF8DF46 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FCF8DF46()
+        {
+            Disassemble32(0xFCF8DF46);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8B994F0 (RfeRefda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8B994F0()
+        {
+            Disassemble32(0xF8B994F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 9CE000ED (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_9CE000ED()
+        {
+            Disassemble32(0x9CE000ED);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 03200002 (wfe) has not been implemented yet.
+        [Test]
+        public void ArmDasm_03200002()
+        {
+            Disassemble32(0x03200002);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DBF00BD (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DBF00BD()
+        {
+            Disassemble32(0x2DBF00BD);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2CB96768 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2CB96768()
+        {
+            Disassemble32(0x2CB96768);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8462846 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8462846()
+        {
+            Disassemble32(0xF8462846);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FC06DB68 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101 o1=0) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FC06DB68()
+        {
+            Disassemble32(0xFC06DB68);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 6C756F68 (SystemRegister_LdSt puw=001) has not been implemented yet.
+        [Test]
+        public void ArmDasm_6C756F68()
+        {
+            Disassemble32(0x6C756F68);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F4000001 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4000001()
+        {
+            Disassemble32(0xF4000001);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDFA4EF7 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDFA4EF7()
+        {
+            Disassemble32(0xBDFA4EF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDF9BEF7 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDF9BEF7()
+        {
+            Disassemble32(0xBDF9BEF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FCF5A023 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=11) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FCF5A023()
+        {
+            Disassemble32(0xFCF5A023);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FCF5A021 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=11) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FCF5A021()
+        {
+            Disassemble32(0xFCF5A021);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 3DF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_3DF7FF46()
+        {
+            Disassemble32(0x3DF7FF46);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FC069B68 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101 o1=0) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FC069B68()
+        {
+            Disassemble32(0xFC069B68);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction FC071B68 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101 o1=0) has not been implemented yet.
+[Test]
+public void ArmDasm_FC071B68()
+        {
+            Disassemble32(0xFC071B68);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 3DF7FF63 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_3DF7FF63()
+        {
+            Disassemble32(0x3DF7FF63);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F8477000 (SrcSrsda) has not been implemented yet.
+[Test]
+public void ArmDasm_F8477000()
+        {
+            Disassemble32(0xF8477000);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 5CBF0047 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_5CBF0047()
+        {
+            Disassemble32(0x5CBF0047);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 0CE7FE60 (SystemRegister_LdSt puw=011) has not been implemented yet.
+[Test]
+public void ArmDasm_0CE7FE60()
+        {
+            Disassemble32(0x0CE7FE60);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDFCEEF7 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDFCEEF7()
+        {
+            Disassemble32(0xBDFCEEF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 5DF7FF20 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_5DF7FF20()
+        {
+            Disassemble32(0x5DF7FF20);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FC075B68 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101 o1=0) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FC075B68()
+        {
+            Disassemble32(0xFC075B68);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FC079B68 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101 o1=0) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FC079B68()
+        {
+            Disassemble32(0xFC079B68);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDFE92F7 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDFE92F7()
+        {
+            Disassemble32(0xBDFE92F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DE6A720 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DE6A720()
+        {
+            Disassemble32(0x2DE6A720);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CF93CF0 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CF93CF0()
+        {
+            Disassemble32(0x0CF93CF0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0678F6F5 (uhsub8) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0678F6F5()
+        {
+            Disassemble32(0x0678F6F5);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction ECF893E0 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_ECF893E0()
+        {
+            Disassemble32(0xECF893E0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 161803F3 (ssub8) has not been implemented yet.
+        [Test]
+        public void ArmDasm_161803F3()
+        {
+            Disassemble32(0x161803F3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 7DF7FF00 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_7DF7FF00()
+        {
+            Disassemble32(0x7DF7FF00);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 063F01F8 (shsub8) has not been implemented yet.
+        [Test]
+        public void ArmDasm_063F01F8()
+        {
+            Disassemble32(0x063F01F8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 01FFB6F7 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_01FFB6F7()
+        {
+            Disassemble32(0x01FFB6F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 01FFA6F7 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_01FFA6F7()
+        {
+            Disassemble32(0x01FFA6F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4E7B940()
+        {
+            Disassemble32(0xF4E7B940);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 21FFBCF7 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_21FFBCF7()
+        {
+            Disassemble32(0x21FFBCF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDFD8CF0 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDFD8CF0()
+        {
+            Disassemble32(0xBDFD8CF0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F942AB2B (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F942AB2B()
+        {
+            Disassemble32(0xF942AB2B);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FEBFE8F7 (AdvancedSimd_TwoRegistersScalarExtension) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FEBFE8F7()
+        {
+            Disassemble32(0xFEBFE8F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CF8D060 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CF8D060()
+        {
+            Disassemble32(0x0CF8D060);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CBF140F (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CBF140F()
+        {
+            Disassemble32(0x0CBF140F);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CF8D025 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CF8D025()
+        {
+            Disassemble32(0x0CF8D025);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CF8C043 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CF8C043()
+        {
+            Disassemble32(0x0CF8C043);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 1CF8D00F (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_1CF8D00F()
+        {
+            Disassemble32(0x1CF8D00F);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CF8D042 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CF8D042()
+        {
+            Disassemble32(0x0CF8D042);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CF8C001 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CF8C001()
+        {
+            Disassemble32(0x0CF8C001);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction DCB57068 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_DCB57068()
+        {
+            Disassemble32(0xDCB57068);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 4DF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_4DF7FF46()
+        {
+            Disassemble32(0x4DF7FF46);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FCBD7020 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=11) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FCBD7020()
+        {
+            Disassemble32(0xFCBD7020);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 87F9F4F7 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_87F9F4F7()
+        {
+            Disassemble32(0x87F9F4F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 268811F3 (media1 - 0b01000) has not been implemented yet.
+        [Test]
+        public void ArmDasm_268811F3()
+        {
+            Disassemble32(0x268811F3);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 268F4FF3 (media1 - 0b01000) has not been implemented yet.
+[Test]
+public void ArmDasm_268F4FF3()
+        {
+            Disassemble32(0x268F4FF3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 87F9ACF7 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_87F9ACF7()
+        {
+            Disassemble32(0x87F9ACF7);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction BD672AB9 (AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1010 size: 0b10) has not been implemented yet.
+[Test]
+public void ArmDasm_BD672AB9()
+        {
+            Disassemble32(0xBD672AB9);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 216F63FA (ldrsh) has not been implemented yet.
+[Test]
+public void ArmDasm_216F63FA()
+        {
+            Disassemble32(0x216F63FA);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F3F7FF31 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
+[Test]
+public void ArmDasm_F3F7FF31()
+        {
+            Disassemble32(0xF3F7FF31);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8469246 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8469246()
+        {
+            Disassemble32(0xF8469246);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F84604FC (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F84604FC()
+        {
+            Disassemble32(0xF84604FC);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DF7FFB5 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DF7FFB5()
+        {
+            Disassemble32(0x2DF7FFB5);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 3DF7FFB5 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_3DF7FFB5()
+        {
+            Disassemble32(0x3DF7FFB5);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F7462846 (Preload (register)) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F7462846()
+        {
+            Disassemble32(0xF7462846);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 9DF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_9DF7FF46()
+        {
+            Disassemble32(0x9DF7FF46);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F8BF00BD (RfeRefda) has not been implemented yet.
+[Test]
+public void ArmDasm_F8BF00BD()
+        {
+            Disassemble32(0xF8BF00BD);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F84604FE (SrcSrsda) has not been implemented yet.
+[Test]
+public void ArmDasm_F84604FE()
+        {
+            Disassemble32(0xF84604FE);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction ACFB48F0 (AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b00) has not been implemented yet.
+[Test]
+public void ArmDasm_ACFB48F0()
+        {
+            Disassemble32(0xACFB48F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8BD70BB (RfeRefda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8BD70BB()
+        {
+            Disassemble32(0xF8BD70BB);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 26D02B91 (media1 - 0b01101) has not been implemented yet.
+        [Test]
+        public void ArmDasm_26D02B91()
+        {
+            Disassemble32(0x26D02B91);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction CDF7FF98 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_CDF7FF98()
+        {
+            Disassemble32(0xCDF7FF98);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 07F944F0 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_07F944F0()
+        {
+            Disassemble32(0x07F944F0);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F4E7F270 (AdvancedSimdElementLoadStore) has not been implemented yet.
+[Test]
+public void ArmDasm_F4E7F270()
+        {
+            Disassemble32(0xF4E7F270);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction BDFE40F7 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_BDFE40F7()
+        {
+            Disassemble32(0xBDFE40F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F4E7F370 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4E7F370()
+        {
+            Disassemble32(0xF4E7F370);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BCBF00BD (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BCBF00BD()
+        {
+            Disassemble32(0xBCBF00BD);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F3F7FFB5 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F3F7FFB5()
+        {
+            Disassemble32(0xF3F7FFB5);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 1DF00046 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_1DF00046()
+        {
+            Disassemble32(0x1DF00046);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F8602820 (SrcSrsda) has not been implemented yet.
+[Test]
+public void ArmDasm_F8602820()
+        {
+            Disassemble32(0xF8602820);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F7460422 (Preload (register)) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F7460422()
+        {
+            Disassemble32(0xF7460422);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction FDF000BD (AdvancedSimd_ThreeRegisters - U = 1, opc=0b0000) has not been implemented yet.
+[Test]
+public void ArmDasm_FDF000BD()
+        {
+            Disassemble32(0xFDF000BD);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F2685369 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0011) has not been implemented yet.
+[Test]
+public void ArmDasm_F2685369()
+        {
+            Disassemble32(0xF2685369);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 01FF68F0 (ldrsh) has not been implemented yet.
+[Test]
+public void ArmDasm_01FF68F0()
+        {
+            Disassemble32(0x01FF68F0);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction EDF00120 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_EDF00120()
+        {
+            Disassemble32(0xEDF00120);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 57F7F8FB (PermanentlyUndefined) has not been implemented yet.
+[Test]
+public void ArmDasm_57F7F8FB()
+        {
+            Disassemble32(0x57F7F8FB);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction CDF00646 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_CDF00646()
+        {
+            Disassemble32(0xCDF00646);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction DDF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_DDF7FF46()
+        {
+            Disassemble32(0xDDF7FF46);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2CB92FD0 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2CB92FD0()
+        {
+            Disassemble32(0x2CB92FD0);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 0CF10569 (SystemRegister_LdSt puw=011) has not been implemented yet.
+[Test]
+public void ArmDasm_0CF10569()
+        {
+            Disassemble32(0x0CF10569);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 7DF00646 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_7DF00646()
+        {
+            Disassemble32(0x7DF00646);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FC684C25 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FC684C25()
+        {
+            Disassemble32(0xFC684C25);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 4DBF0047 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_4DBF0047()
+        {
+            Disassemble32(0x4DBF0047);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 1CBF0047 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_1CBF0047()
+        {
+            Disassemble32(0x1CBF0047);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0C8808F3 (AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0C8808F3()
+        {
+            Disassemble32(0x0C8808F3);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 0CE88030 (SystemRegister_LdSt puw=011) has not been implemented yet.
+[Test]
+public void ArmDasm_0CE88030()
+        {
+            Disassemble32(0x0CE88030);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 8CF8D24A (SystemRegister_LdSt puw=011) has not been implemented yet.
+[Test]
+public void ArmDasm_8CF8D24A()
+        {
+            Disassemble32(0x8CF8D24A);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F3F952F0 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
+[Test]
+public void ArmDasm_F3F952F0()
+        {
+            Disassemble32(0xF3F952F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 8CF8D4F9 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_8CF8D4F9()
+        {
+            Disassemble32(0x8CF8D4F9);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 8CF8C233 (SystemRegister_LdSt puw=011) has not been implemented yet.
+[Test]
+public void ArmDasm_8CF8C233()
+        {
+            Disassemble32(0x8CF8C233);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 7DF7FFFC (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_7DF7FFFC()
+        {
+            Disassemble32(0x7DF7FFFC);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 8CF8D4FB (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_8CF8D4FB()
+        {
+            Disassemble32(0x8CF8D4FB);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 4DF00700 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_4DF00700()
+        {
+            Disassemble32(0x4DF00700);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 8CF8D44C (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_8CF8D44C()
+        {
+            Disassemble32(0x8CF8D44C);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 07FC48F0 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_07FC48F0()
+        {
+            Disassemble32(0x07FC48F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F3661A68 (AdvancedSimd_ThreeRegisters - U = 1, opc=0b1010) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F3661A68()
+        {
+            Disassemble32(0xF3661A68);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8E8BD88 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8E8BD88()
+        {
+            Disassemble32(0xF8E8BD88);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 07FCD4F0 (PermanentlyUndefined) has not been implemented yet.
+[Test]
+public void ArmDasm_07FCD4F0()
+        {
+            Disassemble32(0x07FCD4F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDF00720 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDF00720()
+        {
+            Disassemble32(0xBDF00720);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0DF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0DF7FF46()
+        {
+            Disassemble32(0x0DF7FF46);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 2DE000ED (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_2DE000ED()
+        {
+            Disassemble32(0x2DE000ED);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BD8811F3 (SystemRegister_LdSt puw=110) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BD8811F3()
+        {
+            Disassemble32(0xBD8811F3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F320019B (AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=10) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F320019B()
+        {
+            Disassemble32(0xF320019B);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 8DF00724 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_8DF00724()
+        {
+            Disassemble32(0x8DF00724);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F84620FD (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F84620FD()
+        {
+            Disassemble32(0xF84620FD);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction BDB00230 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_BDB00230()
+        {
+            Disassemble32(0xBDB00230);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 2DF00020 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_2DF00020()
+        {
+            Disassemble32(0x2DF00020);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 01FF4EF7 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_01FF4EF7()
+        {
+            Disassemble32(0x01FF4EF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDB00420 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDB00420()
+        {
+            Disassemble32(0xBDB00420);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction BD8F6FF3 (SystemRegister_LdSt puw=110) has not been implemented yet.
+[Test]
+public void ArmDasm_BD8F6FF3()
+        {
+            Disassemble32(0xBD8F6FF3);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 2DBD1046 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_2DBD1046()
+        {
+            Disassemble32(0x2DBD1046);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 01FFA4F0 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_01FFA4F0()
+        {
+            Disassemble32(0x01FFA4F0);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 078F6FF3 (media - 0b11000) has not been implemented yet.
+[Test]
+public void ArmDasm_078F6FF3()
+        {
+            Disassemble32(0x078F6FF3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 01FF92F0 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_01FF92F0()
+        {
+            Disassemble32(0x01FF92F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 07FE18F0 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_07FE18F0()
+        {
+            Disassemble32(0x07FE18F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 01FF86F0 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_01FF86F0()
+        {
+            Disassemble32(0x01FF86F0);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction F42B006A (AdvancedSimdElementLoadStore) has not been implemented yet.
+[Test]
+public void ArmDasm_F42B006A()
+        {
+            Disassemble32(0xF42B006A);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 27F008FB (PermanentlyUndefined) has not been implemented yet.
+[Test]
+public void ArmDasm_27F008FB()
+        {
+            Disassemble32(0x27F008FB);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction EDF00068 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_EDF00068()
+        {
+            Disassemble32(0xEDF00068);
+            Expect_Code("@@@");
+        }
+
+// An A32 decoder for the instruction 2DBD7088 (SystemRegister_LdSt puw=111) has not been implemented yet.
+[Test]
+public void ArmDasm_2DBD7088()
+        {
+            Disassemble32(0x2DBD7088);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 663501F8 (shsub8) has not been implemented yet.
+        [Test]
+        public void ArmDasm_663501F8()
+        {
+            Disassemble32(0x663501F8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2CFE06F0 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2CFE06F0()
+        {
+            Disassemble32(0x2CFE06F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 06782BFF (uhsub8) has not been implemented yet.
+        [Test]
+        public void ArmDasm_06782BFF()
+        {
+            Disassemble32(0x06782BFF);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F40000A3 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F40000A3()
+        {
+            Disassemble32(0xF40000A3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 06E38012 (media1 - 0b01110 - 000) has not been implemented yet.
+        [Test]
+        public void ArmDasm_06E38012()
+        {
+            Disassemble32(0x06E38012);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction AD8006E3 (SystemRegister_LdSt puw=110) has not been implemented yet.
+        [Test]
+        public void ArmDasm_AD8006E3()
+        {
+            Disassemble32(0xAD8006E3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 5CB2E3F8 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_5CB2E3F8()
+        {
+            Disassemble32(0x5CB2E3F8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction D78F6FF3 (media - 0b11000) has not been implemented yet.
+        [Test]
+        public void ArmDasm_D78F6FF3()
+        {
+            Disassemble32(0xD78F6FF3);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DF7FF46()
+        {
+            Disassemble32(0x2DF7FF46);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 87B26D35 (media - 0b11011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_87B26D35()
+        {
+            Disassemble32(0x87B26D35);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0D465B6D (vstr - d*) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0D465B6D()
+        {
+            Disassemble32(0x0D465B6D);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 1CB10360 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_1CB10360()
+        {
+            Disassemble32(0x1CB10360);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8E8BD60 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8E8BD60()
+        {
+            Disassemble32(0xF8E8BD60);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DBF008F (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DBF008F()
+        {
+            Disassemble32(0x2DBF008F);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 1DF7FF46 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_1DF7FF46()
+        {
+            Disassemble32(0x1DF7FF46);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F4663303 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4663303()
+        {
+            Disassemble32(0xF4663303);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction CDF00746 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_CDF00746()
+        {
+            Disassemble32(0xCDF00746);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F26CF8FB (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F26CF8FB()
+        {
+            Disassemble32(0xF26CF8FB);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F40080EB (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F40080EB()
+        {
+            Disassemble32(0xF40080EB);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 8CF8D746 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_8CF8D746()
+        {
+            Disassemble32(0x8CF8D746);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 863000F8 (shsub8) has not been implemented yet.
+        [Test]
+        public void ArmDasm_863000F8()
+        {
+            Disassemble32(0x863000F8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FD0080EB (AdvancedSimd_ThreeRegisters - U = 1, opc=0b0000) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FD0080EB()
+        {
+            Disassemble32(0xFD0080EB);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction C7E7DCFA (media - 0b11110 - 111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_C7E7DCFA()
+        {
+            Disassemble32(0xC7E7DCFA);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 7CF8D46C (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_7CF8D46C()
+        {
+            Disassemble32(0x7CF8D46C);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F26863F9 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F26863F9()
+        {
+            Disassemble32(0xF26863F9);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F864C36C (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F864C36C()
+        {
+            Disassemble32(0xF864C36C);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F2B968F8 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F2B968F8()
+        {
+            Disassemble32(0xF2B968F8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8E8BD67 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8E8BD67()
+        {
+            Disassemble32(0xF8E8BD67);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 0CE00067 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_0CE00067()
+        {
+            Disassemble32(0x0CE00067);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 7CF8D26D (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_7CF8D26D()
+        {
+            Disassemble32(0x7CF8D26D);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8E8B00F (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8E8B00F()
+        {
+            Disassemble32(0xF8E8B00F);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BD4A1AE7 (vstr - s) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BD4A1AE7()
+        {
+            Disassemble32(0xBD4A1AE7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BCE000E0 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BCE000E0()
+        {
+            Disassemble32(0xBCE000E0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F42B009B (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F42B009B()
+        {
+            Disassemble32(0xF42B009B);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F60304EA (Preload (register)) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F60304EA()
+        {
+            Disassemble32(0xF60304EA);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DBF00E7 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DBF00E7()
+        {
+            Disassemble32(0x2DBF00E7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F2FD28F0 (AdvancedSimd_TwoRegisterShiftAmount) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F2FD28F0()
+        {
+            Disassemble32(0xF2FD28F0);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction BDB00320 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_BDB00320()
+        {
+            Disassemble32(0xBDB00320);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FDF001A9 (AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FDF001A9()
+        {
+            Disassemble32(0xFDF001A9);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction ADF00260 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_ADF00260()
+        {
+            Disassemble32(0xADF00260);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8BF00E7 (RfeRefda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8BF00E7()
+        {
+            Disassemble32(0xF8BF00E7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8E7D386 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8E7D386()
+        {
+            Disassemble32(0xF8E7D386);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction CD86A373 (SystemRegister_LdSt puw=110) has not been implemented yet.
+        [Test]
+        public void ArmDasm_CD86A373()
+        {
+            Disassemble32(0xCD86A373);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DBF0081 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DBF0081()
+        {
+            Disassemble32(0x2DBF0081);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F8461888 (SrcSrsda) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F8461888()
+        {
+            Disassemble32(0xF8461888);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 07FA0CF7 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_07FA0CF7()
+        {
+            Disassemble32(0x07FA0CF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 07FA06F7 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_07FA06F7()
+        {
+            Disassemble32(0x07FA06F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 07F9FEF7 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_07F9FEF7()
+        {
+            Disassemble32(0x07F9FEF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction C7F9FAF7 (PermanentlyUndefined) has not been implemented yet.
+        [Test]
+        public void ArmDasm_C7F9FAF7()
+        {
+            Disassemble32(0xC7F9FAF7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FEB068F8 (AdvancedSimd_TwoRegistersScalarExtension) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FEB068F8()
+        {
+            Disassemble32(0xFEB068F8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FC8FF8E8 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FC8FF8E8()
+        {
+            Disassemble32(0xFC8FF8E8);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FCBD70B9 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=11) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FCBD70B9()
+        {
+            Disassemble32(0xFCBD70B9);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction FCE7E746 (AdvancedSimd_ThreeRegisters - U = 0, opc=0b0111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_FCE7E746()
+        {
+            Disassemble32(0xFCE7E746);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 31FFA0F7 (ldrsh) has not been implemented yet.
+        [Test]
+        public void ArmDasm_31FFA0F7()
+        {
+            Disassemble32(0x31FFA0F7);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction 2DBF0087 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_2DBF0087()
+        {
+            Disassemble32(0x2DBF0087);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction EDF89341 (SystemRegister_LdSt puw=111) has not been implemented yet.
+        [Test]
+        public void ArmDasm_EDF89341()
+        {
+            Disassemble32(0xEDF89341);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F4200008 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4200008()
+        {
+            Disassemble32(0xF4200008);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction ECF89344 (SystemRegister_LdSt puw=011) has not been implemented yet.
+        [Test]
+        public void ArmDasm_ECF89344()
+        {
+            Disassemble32(0xECF89344);
+            Expect_Code("@@@");
+        }
+
+        // An A32 decoder for the instruction F4000547 (AdvancedSimdElementLoadStore) has not been implemented yet.
+        [Test]
+        public void ArmDasm_F4000547()
+        {
+            Disassemble32(0xF4000547);
+            Expect_Code("@@@");
+        }
+#endif
+
     }
 }
