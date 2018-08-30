@@ -1251,7 +1251,6 @@ namespace Reko.UnitTests.Arch.Mips
         [Ignore("Requires MIPS processor option support")]
         public void MipsDis_ldc2()
         {
-
             AssertCode("ldc2	$12,13343(s8)", 0xdbcc341f);
         }
     }

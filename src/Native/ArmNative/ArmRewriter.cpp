@@ -579,7 +579,7 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	if (link)
 	{
-		rtlClass = RtlClass::Transfer;
+		rtlClass = (RtlClass)((int)RtlClass::Transfer | (int)RtlClass::Call);
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);

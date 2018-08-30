@@ -122,7 +122,11 @@ namespace Reko.Analysis
 
             // Discover ssaId's that are live out at each call site.
             // Delete all others.
-            var uvr = new UnusedOutValuesRemover(program, ssts, this.flow, eventListener);
+            var uvr = new UnusedOutValuesRemover(
+                program,
+                ssts.Select(sst => sst.SsaState),
+                this.flow,
+                eventListener);
             uvr.Transform();
 
             // At this point, the exit blocks contain only live out registers.
