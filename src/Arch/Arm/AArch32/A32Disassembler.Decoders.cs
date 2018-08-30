@@ -253,21 +253,6 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private class MovDecoder : InstrDecoder
-        {
-            public MovDecoder(Opcode opcode, params Func<uint,A32Disassembler,bool> [] mutators) : base(opcode, ArmVectorData.INVALID, mutators) { }
-
-            public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
-            {
-                var instr = base.Decode(wInstr, dasm);
-                if (instr.ShiftType != Opcode.Invalid)
-                {
-                    instr.opcode = instr.ShiftType;
-                }
-                return instr;
-            }
-        }
-
         private class SelectDecoder:Decoder
         {
             private readonly int pos;

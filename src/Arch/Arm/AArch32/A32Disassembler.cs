@@ -952,7 +952,19 @@ namespace Reko.Arch.Arm.AArch32
             };
          }
 
-
+        // Alias mutators that morph the disassembled instruction
+        // if special cases are present
+        private static bool MovToShift(uint wInstr, A32Disassembler dasm)
+        {
+            if (dasm.state.shiftOp != Opcode.Invalid)
+            {
+                dasm.state.opcode = dasm.state.shiftOp;
+                dasm.state.ops.Add(dasm.state.shiftValue);
+                dasm.state.shiftValue = null;
+                dasm.state.shiftOp = Opcode.Invalid;
+            }
+            return true;
+        }
 
 
 
@@ -1538,7 +1550,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var LogicalArithmeticImmShift = new MaskDecoder(21, 3,
                 Instr(Opcode.orr, s,r(3),r(4),r(0),Shi),
-                new MovDecoder(Opcode.mov, s,r(3),r(0),Shi),
+                Instr(Opcode.mov, s,r(3),r(0),Shi,MovToShift),
                 Instr(Opcode.bic, s,r(3),r(4),r(0),Shi),
                 Instr(Opcode.mvn, s,r(3),r(0),Shi));
 
