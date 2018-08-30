@@ -67,7 +67,7 @@ namespace Reko.Arch.Arm.AArch32
 
         MachineOperand Dst() => instr.ops[0];
         MachineOperand Src1() => instr.ops[1];
-        MachineOperand Src2() => instr.ops[2]; 
+        MachineOperand Src2() =>  instr.ops[2]; 
         MachineOperand Src3() => instr.ops[3];
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -580,18 +580,18 @@ namespace Reko.Arch.Arm.AArch32
             return binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool);
         }
 
-void MaybeUpdateFlags(Expression opDst)
-{
-    if (instr.SetFlags)
-    {
-        m.Assign(NZCV(), m.Cond(opDst));
-    }
-}
+        void MaybeUpdateFlags(Expression opDst)
+        {
+            if (instr.SetFlags)
+            {
+                m.Assign(NZCV(), m.Cond(opDst));
+            }
+        }
 
-void RewriteB(bool link)
-{
-    Expression dst;
-    bool dstIsAddress;
+        void RewriteB(bool link)
+        {
+            Expression dst;
+            bool dstIsAddress;
             if (Dst() is AddressOperand aOp)
             {
                 dst = aOp.Address;
@@ -637,7 +637,7 @@ void RewriteB(bool link)
                     }
                 }
             }
-}
+        }
 
         void RewriteCbnz(Func<Expression, Expression> ctor)
         {

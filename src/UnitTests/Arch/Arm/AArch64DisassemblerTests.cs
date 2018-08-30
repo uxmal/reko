@@ -1231,7 +1231,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("fmsub\ts11,s4,s0,s8");
         }
 
-
         [Test]
         public void AArch64Dis_fmadd_f16()
         {
@@ -1240,10 +1239,31 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_D8545280()
+        public void AArch64Dis_prfm()
         {
             Given_Instruction(0xD8545280);
             Expect_Code("prfm\t#0,#&1A8A50");
+        }
+
+        [Test]
+        public void AArch64Dis_ld1r_i8()
+        {
+            Given_Instruction(0x4D40C220);
+            Expect_Code("ld1r\t{v0.16b},[x17]");
+        }
+
+        [Test]
+        public void AArch64Dis_shrn_i8()
+        {
+            Given_Instruction(0x0F0E8463);
+            Expect_Code("shrn\tv3.8b,v3.8h,#2");
+        }
+
+        [Test]
+        public void AArch64Dis_ccmp_reg()
+        {
+            Given_Instruction(0x7A42D020);
+            Expect_Code("ccmp\tw1,w5,#0,LE");
         }
     }
 }

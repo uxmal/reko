@@ -117,6 +117,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.fnmul: RewriteFnmul(); break;
                 case Opcode.fsqrt: RewriteFsqrt(); break;
                 case Opcode.fsub: RewriteMaybeSimdBinary(m.FSub, "__fsub_{0}", Domain.Real); break;
+                case Opcode.ld1r: RewriteLdNr("__ld1r"); break;
                 case Opcode.ld2: RewriteLdN("__ld2"); break;
                 case Opcode.ld3: RewriteLdN("__ld3"); break;
                 case Opcode.ld4: RewriteLdN("__ld4"); break;
@@ -161,6 +162,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.sbfm: RewriteUSbfm("__sbfm"); break;
                 case Opcode.scvtf: RewriteScvtf(); break;
                 case Opcode.sdiv: RewriteBinary(m.SDiv); break;
+                case Opcode.shrn: RewriteShrn(); break;
                 case Opcode.smaddl: RewriteMaddl(PrimitiveType.Int64, m.SMul); break;
                 case Opcode.smax: RewriteSmax(); break;
                 case Opcode.smaxv: RewriteSmaxv(); break;

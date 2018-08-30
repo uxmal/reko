@@ -103,6 +103,21 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private static int Bitsize(VectorData data)
+        {
+            switch (data)
+            {
+            case VectorData.I8: return 8;
+            case VectorData.I16: return 16;
+            case VectorData.I32: return 32;
+            case VectorData.I64: return 64;
+            case VectorData.F16: return 16;
+            case VectorData.F32: return 32;
+            case VectorData.F64: return 64;
+            }
+            Debug.Assert(false, "Impossiburu");
+            return 0;
+        }
 
         private ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh =0 )
         {
@@ -1328,6 +1343,16 @@ namespace Reko.Arch.Arm.AArch64
             return true;
         }
 
+        private static bool ShrnShift(uint wInstr, AArch64Disassembler dasm)
+        {
+            var shift = (int)(wInstr >> 16) & 0x7F;
+            var vec = ((VectorRegisterOperand)dasm.state.ops[0]);
+
+            shift = 2 * Bitsize(vec.ElementType) - shift;
+            dasm.state.ops.Add(ImmediateOperand.Int32(shift));
+            return true;
+        }
+
         private static PrimitiveType i8 => PrimitiveType.SByte;
         private static PrimitiveType i16 => PrimitiveType.Int16;
         private static PrimitiveType i32 => PrimitiveType.Int32;
@@ -1974,7 +1999,19 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("AdvancedSimdLdStSingleStructure L:R=0 0 opcode=110"),
                             Nyi("AdvancedSimdLdStSingleStructure L:R=0 0 opcode=111")),
                         Nyi("AdvancedSimdLdStSingleStructure L:R=0 1"),
-                        Nyi("AdvancedSimdLdStSingleStructure L:R=1 0"),
+                        Mask(13, 0b111, // L:R=1 0 opcode
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=000"),
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=001"),
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=010"),
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=011"),
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=100"),
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=101"),
+                            Mask(12, 1, // L:R=10 opcode=110 S
+                                Mask(30,1,
+                                    Instr(Opcode.ld1r, q(30),Vmr(0,5,1,BHSD,10),Mb(w64,  5,5)),
+                                    Instr(Opcode.ld1r, q(30),Vmr(0,5,1,BHSD,10),Mb(w128, 5,5))),
+                                invalid),
+                            Nyi("AdvancedSimdLdStSingleStructure L:R=1 0 opcode=111")),
                         Nyi("AdvancedSimdLdStSingleStructure L:R=1 1"));
                 }
 
@@ -2546,6 +2583,24 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
             }
 
+            Decoder ConditionalCompareReg;
+            {
+                ConditionalCompareReg = Mask(10,1,4,1,   // o2:o3
+                    Mask(29,0b111,
+                        invalid,
+                        Nyi("ConditionalCompareReg sf:op:S=001"),
+                        invalid,
+                        Mask(31,1,
+                            Instr(Opcode.ccmp, W(5,5),W(15,5),U(0,4,w8),C(12,4)),
+                            Instr(Opcode.ccmp, X(5,5),X(15,5),U(0,4,w8),C(12,4))),
+                        invalid,
+                        Nyi("ConditionalCompareReg sf:op:S=101"),
+                        invalid,
+                        Nyi("ConditionalCompareReg sf:op:S=111")),
+                    invalid,
+                    invalid,
+                    invalid);
+            }
             Decoder ConditionalCompareImm;
             {
                 ConditionalCompareImm = Select(10, 1, 4, 1, n => n != 0,
@@ -2674,7 +2729,7 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AddSubWithCarry"),
                         invalid,
                         Mask(11, 1,         // op1 = 1, op2 = 2,
-                            Nyi("ConditionalCompareReg"),
+                            ConditionalCompareReg,
                             ConditionalCompareImm),
                         invalid,
 
@@ -3133,6 +3188,7 @@ namespace Reko.Arch.Arm.AArch64
                 AdvancedSimdShiftByImm = Mask(29, 1,
                     Sparse(11,0b11111, // U=0
                         Nyi("AdvancedSimdShiftByImm U=0"),
+                        (0b10000, Instr(Opcode.shrn, q(30),Vr(0,5,BHS_,20),q1,Vr(0,5,HSD_,20),ShrnShift)),
                         (0b10100, Instr(Opcode.sxtl, q1,As(19,4),V(0,5), q(30),V(5,5)))
                         ),
                     Sparse(11, 0b11111, // U=1
@@ -3364,7 +3420,11 @@ namespace Reko.Arch.Arm.AArch64
                     Mask(23, 0b11, // op0 = 0000
                         Mask(19, 0b1111,        // op0=0000 op1=00 op
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000"),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001"),
+                            Mask(10, 0b11,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001 op3=xxxxxxx01"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001 op3=xxxxxxx10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0001 op3=xxxxxxx11")),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0010"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0011"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0100"),
@@ -3404,7 +3464,11 @@ namespace Reko.Arch.Arm.AArch64
                                 AdvancedSimdModifiedImm,
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0000 op3=xxxxxxx10"),
                                 AdvancedSimdModifiedImm),
-                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0001"),
+                            Mask(10, 0b11,      // op0=0000 op1=10 op2=0000 op3=xxxxxxx??
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0001 op3=xxxxxxx00"),
+                                AdvancedSimdShiftByImm,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0001 op3=xxxxxxx10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0001 op3=xxxxxxx11")),
                             Mask(10, 1,         // op0=0000 op1=10 op2=0010 op3
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0010 op3=xxxxxxxx0"),
                                 AdvancedSimdShiftByImm),               // op0=0000 op1=10 op2=0010 op3=xxxxxxxx1
@@ -3504,13 +3568,13 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0011"),
                             Mask(10, 0b11, 
                                 AdvancedSimd3Different,
-                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100 op3=xxxxxxx01"),
+                                AdvancedSimd3Same,
                                 Mask(17, 0b11,  // op0=4 op1=0b00 op2=0b0100 op3=??xxxxx10
                                     AdvancedSimd2RegMisc,
                                     invalid,
                                     invalid,
                                     invalid),
-                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0100 op3=xxxxxxx11")),
+                                AdvancedSimd3Same),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0101"),
                             Mask(10, 0b11, // op0=4 op1=00 op2=0110
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0110 op3=xxxxxxx00"),

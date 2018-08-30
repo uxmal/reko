@@ -1824,5 +1824,37 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__prfm(0x00, 0x001A8A50)");
         }
+
+
+        [Test]
+        public void A64Rw_ld1r_i8()
+        {
+            Given_Instruction(0x4D40C220);
+            AssertCode(     // ld1r\t{v0.16b},[x17]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__ld1r(x17, out v0)");
+        }
+
+        [Test]
+        public void A64Rw_shrn_i8()
+        {
+            Given_Instruction(0x0F0E8463);
+            AssertCode(     // shrn\tv3.8b,v3.8h,#2
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v2 = v3",
+                "2|L--|v3 = __Shrn_xx()@@@");
+        }
+
+        [Test]
+        public void A64Rw_ccmp_reg()
+        {
+            Given_Instruction(0x7A42D020);
+            AssertCode(     // ccmp\tw1,w5,#0,LE
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v3 = Test(GT,NZV)",
+                "2|L--|NZCV = 0x00",
+                "3|T--|if (v3) branch 00100004",
+                "4|L--|NZCV = cond(w1 - w5)");
+        }
     }
 }

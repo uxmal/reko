@@ -49,6 +49,20 @@ namespace Reko.Arch.Arm.AArch64
             setFlags?.Invoke(dst);
         }
 
+        private void RewriteSimdWithScalar(string simdFormat, Domain domain, Action<Expression> setFlags = null)
+        {
+            var arrayLeft = MakeArrayType(instr.ops[1], domain);
+            var arrayDst = MakeArrayType(instr.ops[0], domain);
+            var tmpLeft = binder.CreateTemporary(arrayLeft);
+            var left = RewriteOp(instr.ops[1], true);
+            var right = RewriteOp(instr.ops[2], true);
+            var dst = RewriteOp(instr.ops[0]);
+            var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arrayLeft.ElementType);
+            m.Assign(tmpLeft, left);
+            m.Assign(dst, host.PseudoProcedure(name, arrayDst, tmpLeft, right));
+            setFlags?.Invoke(dst);
+        }
+
         private void RewriteSimdUnary(string simdFormat, Domain domain)
         {
             var array = MakeArrayType(instr.ops[0], domain);
@@ -130,6 +144,16 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private void RewriteLdNr(string fnName)
+        {
+            var (ea, _) = RewriteEffectiveAddress((MemoryOperand)instr.ops[1]);
+            var vec = ((VectorMultipleRegisterOperand)instr.ops[0]);
+            var args = new List<Expression> { ea };
+            args.AddRange(vec.GetRegisters()
+                .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
+            m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
+        }
+
         private void RewriteStN(string fnName)
         {
             var (ea, _) = RewriteEffectiveAddress((MemoryOperand)instr.ops[1]);
@@ -188,6 +212,11 @@ namespace Reko.Arch.Arm.AArch64
             {
                 RewriteSimdUnary("__scvtf_{0}", Domain.SignedInt);
             }
+        }
+
+        private void RewriteShrn()
+        {
+            RewriteSimdWithScalar("__shrn_{0}", Domain.None);
         }
 
         private void RewriteSmax()

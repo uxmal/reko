@@ -191,5 +191,7 @@ namespace Reko.Arch.Arm.AArch64
         fnmadd,
         fnmsub,
         sqdmulh,
+        shrn,
+        ld1r,
     }
 }
