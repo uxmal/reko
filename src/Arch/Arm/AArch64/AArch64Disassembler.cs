@@ -1529,7 +1529,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private AArch64Instruction NotYetImplemented(string message, uint wInstr)
         {
-            if (!seen.Contains(wInstr))
+            if (false && !seen.Contains(wInstr))
             {
                 seen.Add(wInstr);
                 Console.WriteLine($"// An AArch64 decoder for the instruction {wInstr:X8} ({Bits.Reverse(wInstr):X8}) - ({message}) has not been implemented yet.");
