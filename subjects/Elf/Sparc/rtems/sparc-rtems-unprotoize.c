@@ -295,7 +295,7 @@ Eq_410 substr(Eq_410 o0, int8 * o1)
 			g3_22 = (int32) *o3_21;
 			if (g3_22 == 0x00)
 			{
-				o0 = o0 + 0x01;
+				o0.u0 = (bool) o0.u0 + 0x01;
 				return o0;
 			}
 			o2_26 = (word32) o2_26 + 0x01;

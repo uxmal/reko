@@ -41,6 +41,8 @@ namespace Reko.Typing
         private ExpressionTypeAscender asc;
         private ExpressionTypeDescender desc;
         private DecompilerEventListener eventListener;
+        private Statement stmCur;
+        private bool seenPhi;
 
         public TypeCollector(
             TypeFactory factory, 
@@ -77,7 +79,8 @@ namespace Reko.Typing
                         return;
                     try
                     {
-                       stm.Instruction.Accept(this);
+                        this.stmCur = stm;
+                        stm.Instruction.Accept(this);
                     }
                     catch (Exception ex)
                     {
@@ -189,7 +192,14 @@ namespace Reko.Typing
 
         public void VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            if (!seenPhi)
+            {
+                seenPhi = true;
+                eventListener.Warn(
+                    eventListener.CreateBlockNavigator(this.program, stmCur.Block),
+                    "Phi functions will be ignored by type analysis. " +
+                    "This may be caused by a failure in a previous stage of the decompilation.");
+            }
         }
 
         public void VisitReturnInstruction(ReturnInstruction ret)

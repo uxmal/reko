@@ -470,10 +470,10 @@ namespace Reko.Scanning
             // make the mistake and use LE/LT for boundary checking in indirect transfers.
             case ConditionCode.LE: return StridedInterval.Create(1, 0, right.ToInt64());
             case ConditionCode.LT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
-            case ConditionCode.ULE: return StridedInterval.Create(1, 0, right.ToInt64());
-            case ConditionCode.ULT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
-            case ConditionCode.UGE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
-            case ConditionCode.UGT: return StridedInterval.Create(1, right.ToInt64() + 1, long.MaxValue);
+            case ConditionCode.ULE: return StridedInterval.Create(1, 0, (long) right.ToUInt64());
+            case ConditionCode.ULT: return StridedInterval.Create(1, 0, (long) right.ToUInt64() - 1);
+            case ConditionCode.UGE: return StridedInterval.Create(1, (long)right.ToUInt64(), long.MaxValue);
+            case ConditionCode.UGT: return StridedInterval.Create(1, (long)right.ToUInt64() + 1, long.MaxValue);
             case ConditionCode.EQ:
             case ConditionCode.NE:
             case ConditionCode.None:
