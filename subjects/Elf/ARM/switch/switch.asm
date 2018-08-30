@@ -282,10 +282,10 @@ l000085B0:
 	cmplo	r1,r0
 
 l000085B8:
-	lsllo	r1,r1,lsl #4
+	lsllo	r1,r1,#4
 
 l000085BC:
-	lsllo	r3,r3,lsl #4
+	lsllo	r3,r3,#4
 
 l000085C0:
 	blo	$000085B0
@@ -295,10 +295,10 @@ l000085C4:
 	cmplo	r1,r0
 
 l000085CC:
-	lsllo	r1,r1,lsl #1
+	lsllo	r1,r1,#1
 
 l000085D0:
-	lsllo	r3,r3,lsl #1
+	lsllo	r3,r3,#1
 
 l000085D4:
 	blo	$000085C4
@@ -333,10 +333,10 @@ l00008604:
 
 l00008608:
 	cmp	r0,#0
-	lsrsne	r3,r3,lsr #4
+	lsrsne	r3,r3,#4
 
 l00008610:
-	lsrne	r1,r1,lsr #4
+	lsrne	r1,r1,#4
 
 l00008614:
 	bne	$000085D8
@@ -400,7 +400,7 @@ __libc_csu_fini proc
 	ldr	r1,[r10,r3]
 	ldr	r3,[r10,r2]
 	rsb	r3,r1,r3
-	asr	r4,r3,asr #2
+	asr	r4,r3,#2
 	cmp	r4,#0
 	sub	r4,r4,#1
 	beq	$000086F8

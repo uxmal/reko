@@ -112,6 +112,12 @@ Eq_187: (fn ptr32 (Eq_141, Eq_141))
 Eq_205: (fn word32 (Eq_141))
 	T_205 (in switcheroo : ptr32)
 	T_206 (in signature of switcheroo : void)
+Eq_211: (union "Eq_211" (int32 u0) (uint32 u1))
+	T_211 (in r3_106 : Eq_211)
+	T_212 (in 0x00000001 : word32)
+	T_245 (in r3_106 << 4 : word32)
+	T_256 (in r3_106 << 1 : word32)
+	T_302 (in r3_106 >> 4 : word32)
 Eq_220: (fn void (Eq_141))
 	T_220 (in __div0 : ptr32)
 	T_221 (in signature of __div0 : void)
@@ -997,10 +1003,10 @@ T_210: (in r0 ^ r1 : word32)
   Class: Eq_209
   DataType: int32
   OrigDataType: ui32
-T_211: (in r3_106 : int32)
+T_211: (in r3_106 : Eq_211)
   Class: Eq_211
-  DataType: int32
-  OrigDataType: int32
+  DataType: Eq_211
+  OrigDataType: (union (int32 u0) (uint32 u1))
 T_212: (in 0x00000001 : word32)
   Class: Eq_211
   DataType: int32
@@ -1135,7 +1141,7 @@ T_244: (in 4 : int32)
   OrigDataType: int32
 T_245: (in r3_106 << 4 : word32)
   Class: Eq_211
-  DataType: int32
+  DataType: Eq_211
   OrigDataType: ui32
 T_246: (in C_133 : Eq_246)
   Class: Eq_246
@@ -1179,7 +1185,7 @@ T_255: (in 1 : int32)
   OrigDataType: int32
 T_256: (in r3_106 << 1 : word32)
   Class: Eq_211
-  DataType: int32
+  DataType: Eq_211
   OrigDataType: ui32
 T_257: (in r0_127 : Eq_141)
   Class: Eq_141
@@ -1363,8 +1369,8 @@ T_301: (in 4 : int32)
   OrigDataType: int32
 T_302: (in r3_106 >> 4 : word32)
   Class: Eq_211
-  DataType: int32
-  OrigDataType: int32
+  DataType: Eq_211
+  OrigDataType: uint32
 T_303: (in cond(r3_106) : byte)
   Class: Eq_294
   DataType: Eq_294
@@ -1376,7 +1382,7 @@ T_304: (in 4 : int32)
 T_305: (in r1_112 >> 4 : word32)
   Class: Eq_141
   DataType: Eq_141
-  OrigDataType: int32
+  OrigDataType: uint32
 T_306: (in __syscall : ptr32)
   Class: Eq_306
   DataType: (ptr32 Eq_306)
@@ -1950,6 +1956,11 @@ typedef Eq_141 (Eq_160)(Eq_141, Eq_141, ptr32);
 typedef ptr32 (Eq_187)(Eq_141, Eq_141);
 
 typedef word32 (Eq_205)(Eq_141);
+
+typedef union Eq_211 {
+	int32 u0;
+	uint32 u1;
+} Eq_211;
 
 typedef void (Eq_220)(Eq_141);
 

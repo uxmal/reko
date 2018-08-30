@@ -743,7 +743,7 @@ l00008608:
 // SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
 
 l0000860C_1:
-	r3_106 = r3_106 >> 4
+	r3_106 = r3_106 >>u 4
 	Z_102 = cond(r3_106) (alias)
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): Z
@@ -756,7 +756,7 @@ l00008610:
 // SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
 
 l00008610_1:
-	r1_112 = r1_112 >> 4
+	r1_112 = r1_112 >>u 4
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): Z
 // SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
