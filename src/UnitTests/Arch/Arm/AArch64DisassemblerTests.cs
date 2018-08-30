@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_sub_sp()
         {
             Given_Instruction(0xCB33601F);
-            Expect_Code("sub\tsp,x0,x19,uxtx #0");
+            Expect_Code("sub\tsp,x0,x19");
         }
 
         [Test]
@@ -1208,97 +1208,12 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7E21D821);
             Expect_Code("ucvtf\ts1,s1");
         }
-        //////////////////////////////////////
 
         [Test]
-        public void AArch64Dis_cmeq_register()
+        public void AArch64Dis_add_with_extension()
         {
-            Given_Instruction(0x6E208C21);
-            Expect_Code("cmeq\tv1.16b,v1.16b,v0.16b");
-        }
-
-        [Test]
-        public void AArch64Dis_tbl_3_regs()
-        {
-            Given_Instruction(0x6E124247);
-            Expect_Code("tbl\tv7.16b,{v18.16b,v19.16b,v20.16b},v7.16b");
-        }
-
-        [Test]
-        public void AArch64Dis_st1()
-        {
-            Given_Instruction(0x4D0000C1);
-            Expect_Code("st1\t{v1.b}[8],[x6]");
-        }
-
-        [Test]
-        public void AArch64Dis_ld4()
-        {
-            Given_Instruction(0x4C400114);
-            Expect_Code("ld4\t{v20.8b,v21.8b,v22.8b,v23.8b},[x8]");
-        }
-
-        [Test]
-        public void AArch64Dis_ld4_post()
-        {
-            Given_Instruction(0x4CDF0130);
-            Expect_Code("ld4\t{v16.16b,v17.16b,v18.16b,v19.16b},[x9],#&40");
-        }
-
-        [Test]
-        public void AArch64Dis_ld2()
-        {
-            Given_Instruction(0x4C408196);
-            Expect_Code("ld2\t{v22.8b,v23.8b},[x12]");
-        }
-
-        [Test]
-        public void AArch64Dis_st2_post()
-        {
-            Given_Instruction(0x4C9F8140);
-            Expect_Code("st2\t{v0.16b,v1.16b},[x10],#&20");
-        }
-
-        [Test]
-        public void AArch64Dis_ld3_post()
-        {
-            Given_Instruction(0x4CDF4125);
-            Expect_Code("ld3\t{v5.16b,v6.16b,v7.16b},[x9],#&30");
-        }
-
-        [Test]
-        public void AArch64Dis_st1_single()
-        {
-            Given_Instruction(0x0D0049D5);
-            Expect_Code("st1\t{v21.h}[1],[x14]");
-        }
-
-        [Test]
-        public void AArch64Dis_addhn()
-        {
-            Given_Instruction(0x0E344260);
-            Expect_Code("addhn\tv0.8b,v19.4h,v20.4h");
-        }
-
-        [Test]
-        public void AArch64Dis_addhn2()
-        {
-            Given_Instruction(0x4E254220);
-            Expect_Code("addhn2\tv0.16b,v17.8h,v5.8h");
-        }
-
-        [Test]
-        public void AArch64Dis_dup_general()
-        {
-            Given_Instruction(0x4E010D20);
-            Expect_Code("dup\tv0.16b,w9");
-        }
-
-        [Test]
-        public void Aarch64Dis_not_Vector()
-        {
-            Given_Instruction(0x6E205821);
-            Expect_Code("not\tv1.16b,v1.16b");
+            Given_Instruction(0x8B3F63E0);	// add	x0,sp,x31,uxtx #0
+            Expect_Code("add\tx0,sp,x31");
         }
     }
 }

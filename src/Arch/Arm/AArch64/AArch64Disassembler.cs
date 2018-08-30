@@ -619,11 +619,11 @@ namespace Reko.Arch.Arm.AArch64
                 case 0: ext = Opcode.uxtb; break; 
                 case 1: ext = Opcode.uxth; break;
                 case 2: ext = Opcode.uxtw; break;
-                case 3: ext = Opcode.uxtx; break;
+                case 3: if (sh != 0) ext = Opcode.uxtx; break;
                 case 4: ext = Opcode.sxtb; break;
                 case 5: ext = Opcode.sxth; break;
                 case 6: ext = Opcode.sxtw; break;
-                case 7: ext = Opcode.sxtx; break;
+                case 7: if (sh != 0) ext = Opcode.sxtx; break;
                 }
                 d.state.shiftCode = ext;
                 d.state.shiftAmount = ImmediateOperand.Int32((int)sh);

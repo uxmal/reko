@@ -102,19 +102,58 @@ namespace Reko.Arch.Arm.AArch64
             RewriteSimdReduce("__sum_{0}", Domain.Integer);
         }
 
+
+        private void RewriteCmeq()
+        {
+            RewriteSimdBinary("__cmeq", Domain.None);
+        }
+
         private void RewriteDup()
         {
             RewriteSimdExpand("__dup_{0}");
         }
 
-        private void RewriteLd3()
+        private void RewriteLdN(string fnName)
         {
             var (ea,_) = RewriteEffectiveAddress((MemoryOperand)instr.ops[1]);
-            var args = new List<Expression> { ea };
-            args.AddRange(((VectorMultipleRegisterOperand)instr.ops[0])
-                .GetRegisters()
-                .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-            m.SideEffect(host.PseudoProcedure("__ld3", VoidType.Instance, args.ToArray()));
+            var vec = ((VectorMultipleRegisterOperand)instr.ops[0]);
+            if (vec.Index < 0)
+            {
+                var args = new List<Expression> { ea };
+                args.AddRange(vec.GetRegisters()
+                    .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
+                m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
+            }
+            else
+            {
+                NotImplementedYet();
+            }
+        }
+
+        private void RewriteStN(string fnName)
+        {
+            var (ea, _) = RewriteEffectiveAddress((MemoryOperand)instr.ops[1]);
+            var vec = ((VectorMultipleRegisterOperand)instr.ops[0]);
+            if (vec.Index < 0)
+            {
+                var args = new List<Expression> { ea };
+                args.AddRange(vec.GetRegisters()
+                    .Select(r => (Expression)binder.EnsureRegister(r)));
+                m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, args.ToArray()));
+            }
+            else
+            {
+                var dtElem = PrimitiveType.CreateWord(Bitsize(vec.ElementType));
+                int offset = 0;
+                foreach (var reg in vec.GetRegisters())
+                {
+                    var vReg = binder.EnsureRegister(reg);
+                    var indexed = m.ARef(dtElem, vReg, Constant.Int32(vec.Index));
+                    var eaOffset = offset == 0 ? ea : m.IAdd(ea, Constant.Int(ea.DataType, offset));
+                    m.Assign(m.Mem(dtElem, eaOffset), indexed);
+                    offset += dtElem.Size;
+                }
+            }
         }
 
         private void RewriteMovi()

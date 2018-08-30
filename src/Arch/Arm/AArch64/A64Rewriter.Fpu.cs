@@ -159,6 +159,28 @@ namespace Reko.Arch.Arm.AArch64
                 "__trunc_{0}", Domain.Real);
         }
 
+        private void RewriteIntrinsicFBinary(string name32, string name64)
+        {
+            RewriteMaybeSimdBinary(
+                (a,b) =>
+                {
+                    DataType dt;
+                    string fname;
+                    if (instr.ops[0].Width.BitSize == 64)
+                    {
+                        dt = PrimitiveType.Real64;
+                        fname = name64;
+                    }
+                    else
+                    {
+                        dt = PrimitiveType.Real32;
+                        fname = name32;
+                    }
+                    return host.PseudoProcedure(fname, dt, a, b);
+                },
+                "__max_{0}", Domain.Real);
+        }
+
         private void RewriteFmov()
         {
             RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);
@@ -167,6 +189,11 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteFmul()
         {
             RewriteMaybeSimdBinary(m.FMul, "__fmul_{0}", Domain.Real);
+        }
+
+        private void RewriteFnmul()
+        {
+            RewriteBinary((a, b) => m.FNeg(m.FMul(a, b)));
         }
 
         private void RewriteFsqrt()

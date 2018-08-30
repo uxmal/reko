@@ -667,7 +667,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitConditionalExpression(ConditionalExpression c, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public SlicerResult VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)

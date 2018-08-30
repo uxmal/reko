@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Arm
             return arch.CreateRewriter(new LeImageReader(mem, 0), new Arm64State(arch), binder, host);
         }
 
-        private void BuildTest(params string[] bitStrings)
+        private void Given_Instruction(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
 
-        private void BuildTest(params uint[] words)
+        private void Given_Instruction(params uint[] words)
         {
             var bytes = words
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
@@ -72,16 +72,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
 
-        private void Given_Instruction(uint wInstr)
-        {
-            BuildTest(wInstr);
-        }
-
-
         [Test]
         public void A64Rw_b_label()
         {
-            BuildTest("00010111 11111111 11111111 00000000");
+            Given_Instruction("00010111 11111111 11111111 00000000");
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto 000FFC00");
@@ -90,7 +84,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_bl_label()
         {
-            BuildTest("10010111 11111111 11111111 00000000");
+            Given_Instruction("10010111 11111111 11111111 00000000");
             AssertCode(     // bl\t#&FFC00
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 000FFC00 (0)");
@@ -99,7 +93,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_br_Xn()
         {
-            BuildTest("11010110 00011111 00000011 11000000");
+            Given_Instruction("11010110 00011111 00000011 11000000");
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto x30");
@@ -108,7 +102,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_add_Wn_imm()
         {
-            BuildTest("000 10001 01 011111111111 10001 10011");
+            Given_Instruction("000 10001 01 011111111111 10001 10011");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|w19 = w17 + (0x000007FF << 12)");
@@ -117,7 +111,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_adds_Xn_imm()
         {
-            BuildTest("101 10001 00 011111111111 10001 10011");
+            Given_Instruction("101 10001 00 011111111111 10001 10011");
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|x19 = x17 + 0x00000000000007FF",
@@ -127,7 +121,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_subs_Wn_imm()
         {
-            BuildTest("011 10001 00 011111111111 10001 10011");
+            Given_Instruction("011 10001 00 011111111111 10001 10011");
             AssertCode( // subs\tw19, w17,#&7FF
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|w19 = w17 - 0x000007FF",
@@ -137,7 +131,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_sub_Xn_imm()
         {
-            BuildTest("110 10001 00 011111111111 10001 10011");
+            Given_Instruction("110 10001 00 011111111111 10001 10011");
             AssertCode( // sub\tx19,x17,#&7FF
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x19 = x17 - 0x00000000000007FF");
@@ -164,7 +158,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_ands_Xn_imm()
         {
-            BuildTest("111 100100 0 010101 010101 00100 00111");
+            Given_Instruction("111 100100 0 010101 010101 00100 00111");
             AssertCode(     // ands\tx7,x4,#&FFFFF801
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|x7 = x4 & 0xFFFFF801FFFFF801",
@@ -176,7 +170,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void A64Rw_movk_imm()
         {
-            BuildTest("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
+            Given_Instruction("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
             AssertCode(     // movk\tx7,#&AAA4
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x7 = DPB(x7, 0xAAA4, 0)");
@@ -1458,6 +1452,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void A64Rw_ld2()
+        {
+            Given_Instruction(0x4C4081C1);	// ld2	{v1.8b,v2.8b},[x14]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__ld2(x14, out v1, out v2)");
+        }
+
+        [Test]
         public void A64Rw_ld3()
         {
             Given_Instruction(0x0C404565);
@@ -1573,6 +1576,187 @@ namespace Reko.UnitTests.Arch.Arm
                 "3|L--|q2 = __uaddw_u16(v2, v3)");
         }
 
+        [Test]
+        public void A64Rw_add_with_extension()
+        {
+            Given_Instruction(0x8B3F63E0);	// add	x0,sp,x31,uxtx #0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = sp + 0x0000000000000000");
+        }
 
+
+        [Test]
+        public void A64Rw_bfm()
+        {
+            Given_Instruction(0x33101D28);	// bfm	w8,w9,#&10,#7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w8 = __bfm(w9, 16, 7)");
+        }
+
+        [Test]
+        public void A64Rw_csinv()
+        {
+            Given_Instruction(0x5A9F03E8);	// csinv	w8,w31,w31,EQ
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w8 = Test(EQ,Z) ? 0x00000000 : ~0x00000000");
+        }
+
+        [Test]
+        public void A64Rw_csel()
+        {
+            Given_Instruction(0x9A8903E2);	// csel	x2,x31,x9,EQ
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x2 = Test(EQ,Z) ? 0x0000000000000000 : x9");
+        }
+
+        [Test]
+        public void A64Rw_fdiv()
+        {
+            Given_Instruction(0x1E201820);	// fdiv	s0,s1,s0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = s1 / s0");
+        }
+
+        [Test]
+        public void A64Rw_ubfm()
+        {
+            Given_Instruction(0x5302096B);	// ubfm	w11,w11,#2,#2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w11 = __ubfm(w11, 2, 2)");
+        }
+
+        [Test]
+        public void A64Rw_fsub()
+        {
+            Given_Instruction(0x1E203920);	// fsub	s0,s9,s0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = s9 - s0");
+        }
+
+        [Test]
+        public void A64Rw_sxtb()
+        {
+            Given_Instruction(0x13001F6A);	// sxtb	w10,w27
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w10 = (int32) (int8) w27");
+        }
+
+        [Test]
+        public void A64Rw_fmax()
+        {
+            Given_Instruction(0x1E2A4800);	// fmax	s0,s0,s10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = fmaxf(s0, s10)");
+        }
+
+
+        [Test]
+        public void A64Rw_add()
+        {
+            Given_Instruction(0x8B8C6D6D);	// add	x13,x11,x12,asr #&1B
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x13 = x11 + (x12 >> 27)");
+        }
+
+     
+
+        [Test]
+        public void A64Rw_csneg()
+        {
+            Given_Instruction(0x5A895528);	// csneg	w8,w9,w9,PL
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w8 = Test(GE,N) ? w9 : -w9");
+        }
+
+
+        [Test]
+        public void A64Rw_fmin()
+        {
+            Given_Instruction(0x1E285800);	// fmin	s0,s0,s8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = fminf(s0, s8)");
+        }
+
+        [Test]
+        public void A64Rw_rorv()
+        {
+            Given_Instruction(0x1AC92D09);	// rorv	w9,w8,w9
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w9 = __ror(w8, w9)");
+        }
+
+        [Test]
+        public void A64Rw_cmp()
+        {
+            Given_Instruction(0x6B98069F);	// cmp	w20,w24,asr #1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|NZCV = cond(w20 - (w24 >> 1))");
+        }
+
+        [Test]
+        public void A64Rw_ldpsw()
+        {
+            Given_Instruction(0x69404222);	// ldpsw	x2,x16,[x17]
+            AssertCode(
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v5 = x17",
+                "2|L--|x2 = (int64) Mem0[v5:int32]",
+                "3|L--|v5 = v5 + 4",
+                "4|L--|x16 = (int64) Mem0[v5:int32]");
+        }
+
+        [Test]
+        public void A64Rw_fnmul()
+        {
+            Given_Instruction(0x1E227800);	// fnmul	s0,s0,s2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = -(s0 * s2)");
+        }
+
+
+        [Test]
+        public void A64Rw_cmeq()
+        {
+            Given_Instruction(0x6E208C21);	// cmeq	v1.16b,v1.16b,v0.16b
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q0",
+                "3|L--|q1 = __cmeq(v2, v3)");
+        }
+
+        [Test]
+        public void A64Rw_st1()
+        {
+            Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[x13:word16] = v21[0]");
+        }
+
+        [Test]
+        public void A64Rw_not()
+        {
+            Given_Instruction(0x6E205821);	// not	v1.16b,v1.16b
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|q1 = __not_i8(v2)");
+        }
     }
 }
