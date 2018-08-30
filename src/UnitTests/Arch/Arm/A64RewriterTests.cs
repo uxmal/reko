@@ -1841,8 +1841,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x0F0E8463);
             AssertCode(     // shrn\tv3.8b,v3.8h,#2
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = v3",
-                "2|L--|v3 = __Shrn_xx()@@@");
+                "1|L--|v2 = q3",
+                "2|L--|d3 = __shrn_i16(v2, 2)");
         }
 
         [Test]
