@@ -220,6 +220,10 @@ namespace Reko.Core.Expressions
 
         public abstract object GetValue();
 
+        // Get the hash code of the value. We do it this way to avoid incurring the
+        // cost of a boxing operation.
+        public abstract int GetHashOfValue();
+
         private static double IntPow(double b, int e)
 		{
 			double acc = 1.0;
@@ -513,6 +517,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override Constant Complement()
         {
             return new ConstantBool(DataType, !value);
@@ -589,6 +598,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -650,6 +664,10 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
         public override byte ToByte()
         {
             return (byte)value;
@@ -710,6 +728,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -774,6 +797,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -835,6 +863,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -894,6 +927,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -958,6 +996,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1018,6 +1061,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -1081,6 +1129,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1140,6 +1193,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -1203,6 +1261,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1264,6 +1327,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1323,6 +1391,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -1412,6 +1485,11 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override Constant Negate()
         {
             return new ConstantReal16(this.DataType, -value);
@@ -1488,6 +1566,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override Constant Negate()
         {
             return new ConstantReal32(DataType, -value);
@@ -1558,6 +1641,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override Constant Negate()
         {
             return new ConstantReal80(DataType, -value);
@@ -1617,6 +1705,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override Constant Complement()
@@ -1689,6 +1782,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return str;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return str.GetHashCode();
         }
 
         public override Constant Negate()

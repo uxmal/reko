@@ -321,6 +321,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.sevl:
                     NotImplementedYet();
                     break;
+                case Opcode.Invalid:
+                    Invalid();
+                    break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd, false); break;
                 case Opcode.add: RewriteBinOp(m.IAdd); break;
                 case Opcode.addw: RewriteAddw(); break;

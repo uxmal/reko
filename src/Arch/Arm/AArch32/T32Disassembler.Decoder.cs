@@ -45,6 +45,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, int shift, uint mask)
             {
+                return;
                 var shMask = mask << shift;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
