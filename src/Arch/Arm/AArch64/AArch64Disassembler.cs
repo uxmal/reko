@@ -1859,7 +1859,7 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Opcode.ldr, D(0,5), Mlit(w64)),
                         Instr(Opcode.ldrsw, X(0,5), Mlit(i32)),
                         Instr(Opcode.ldr, Q(0,5), Mlit(w128)),
-                        Instr(Opcode.prfm, x("literal")),
+                        Instr(Opcode.prfm, U(0,5,PrimitiveType.Byte),Mlit(w32)),
                         invalid);
                 }
 
@@ -1978,12 +1978,80 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSimdLdStSingleStructure L:R=1 1"));
                 }
 
+                Decoder LoadStoreExclusive = Mask(30, 2, 21, 3, 15, 1,
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000010"),
+                    Select(10, 5, Is31,
+                        Nyi("LoadStoreExclusive size:o2:L:o1:o0 000011"),
+                        invalid),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 000111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 001111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 010111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 011111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 100111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 101111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 110111"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111000"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111001"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111010"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111011"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111100"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111101"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111110"),
+                    Nyi("LoadStoreExclusive size:o2:L:o1:o0 111111"));
+
                 LoadsAndStores = new MaskDecoder(31, 1,
                     new MaskDecoder(28, 3,          // op0 = 0 
                         new MaskDecoder(26, 1,      // op0 = 0 op1 = 0
                             new MaskDecoder(23, 3,  // op0 = 0 op1 = 00 op2 = 0
-                                Nyi("LoadStoreExclusive"),
-                                Nyi("LoadStoreExclusive"),
+                                LoadStoreExclusive,
+                                LoadStoreExclusive,
                                 invalid,
                                 invalid),
                             new MaskDecoder(23, 3,  // op0 = 0 op1 = 00 op2 = 1
@@ -3002,9 +3070,9 @@ namespace Reko.Arch.Arm.AArch64
                             invalid,
                             Instr(Opcode.fmov, H(0,5),If16(13,8))),
                         invalid),
-                    Nyi("FloatingPointImmediate M:S=01"),
-                    Nyi("FloatingPointImmediate M:S=10"),
-                    Nyi("FloatingPointImmediate M:S=11"));
+                    invalid,
+                    invalid,
+                    invalid);
             }
 
             Decoder FloatingPointCompare;
@@ -3227,6 +3295,29 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
             }
 
+            Decoder AdvancedSimdScalar_x_IdxElem;
+            {
+                AdvancedSimdScalar_x_IdxElem = Mask(12, 0b1111, // opcode
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=0001"),
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=0011"),
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=0101"),
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=0111"),
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=1001"),
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=1011"),
+                    Mask(29,1,
+                        Nyi("AdvancedSimdScalar_x_IdxElem - opcode=1100 U=0"),
+                        invalid),
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=1101"),
+                    invalid,
+                    Nyi("AdvancedSimdScalar_x_IdxElem - opcode=1111"));
+            }
+
             Decoder DataProcessingScalarFpAdvancedSimd;
             {
                 Decoder FloatingPointDecoders = Mask(10, 0b11,  // op3=xxxxxxx??
@@ -3242,6 +3333,32 @@ namespace Reko.Arch.Arm.AArch64
                     FloatingPointCondCompare,                   // op3=xxxxxxx01
                     FloatingPointDataProcessing2src,            // op3=xxxxxxx10
                     FloatingPointCondSelect);                   // op3=xxxxxxx11
+
+                Decoder FloatingPointDataProcessing3src = Mask(31,1, 29,1, 22,2,  // M:S:type 
+                    Mask(21,1,15,1,
+                        Instr(Opcode.fmadd, S(0,5),S(5,5),S(16,6),S(10,5)),
+                        Instr(Opcode.fmsub, S(0,5),S(5,5),S(16,6),S(10,5)),
+                        Instr(Opcode.fnmadd, S(0,5),S(5,5),S(16,6),S(10,5)),
+                        Instr(Opcode.fnmsub, S(0,5),S(5,5),S(16,6),S(10,5))),
+                    Nyi("FloatingPointDataProcessing3src - M:S:type=0001"),
+                    Nyi("FloatingPointDataProcessing3src - M:S:type=0010"),
+                    Mask(21,1,15,1,
+                        Instr(Opcode.fmadd, H(0,5),H(5,5),H(16,6),H(10,5)),
+                        Instr(Opcode.fmsub, H(0,5),H(5,5),H(16,6),H(10,5)),
+                        Instr(Opcode.fnmadd, H(0,5),H(5,5),H(16,6),H(10,5)),
+                        Instr(Opcode.fnmsub, H(0,5),H(5,5),H(16,6),H(10,5))),
+                    Nyi("FloatingPointDataProcessing3src - M:S:type=0100"),
+                    Nyi("FloatingPointDataProcessing3src - M:S:type=0101"),
+                    Nyi("FloatingPointDataProcessing3src - M:S:type=0110"),
+                    Nyi("FloatingPointDataProcessing3src - M:S:type=0111"),
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid);
 
                 DataProcessingScalarFpAdvancedSimd = Mask(28, 0xF,
                     Mask(23, 0b11, // op0 = 0000
@@ -3274,7 +3391,13 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=1111")),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01"),
+                        Sparse(19, 0b1111,        // op0=0000 op1=01 op2
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01"),
+                            (0b1111, Mask(10, 0b11,
+                                AdvancedSimd3Different,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01 op2=1111 op3=xxxxxxx01"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01 op2=1111 op3=xxxxxxx10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=01 op2=1111 op3=xxxxxxx11")))),
                         Mask(19, 0b1111,        // op0=0000 op1=10 op2
                             Mask(10, 0b11,      // op0=0000 op1=10 op2=0000 op3=xxxxxxx??
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=10 op2=0000 op3=xxxxxxx00"),
@@ -3318,8 +3441,8 @@ namespace Reko.Arch.Arm.AArch64
                             FloatingPointDecoders,
                             FloatingPointDecoders),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b01"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b10"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=1 op1=0b11")),
+                        FloatingPointDataProcessing3src,
+                        FloatingPointDataProcessing3src),
                     Mask(23, 0b11, // op0=2,
                         Mask(19, 0b1111,    // op0=2 op1=00
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=2 op1=00 op2=0000"),
@@ -3468,8 +3591,16 @@ namespace Reko.Arch.Arm.AArch64
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=10xxxxxx10"),
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=11xxxxxx10")),
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx11")))),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b01"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b10"),
+                        Sparse(19, 0b1111,  // op0=5 op1=01 op2
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b01 op2=????"),
+                            (0b0101, FloatingPointDecoders)),
+                        Sparse(19, 0b1111,  // op0=5 op1=10 op2
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b10"),
+                            (0b0000, Mask(10, 0b11, // op0=5 op1=0b10 op2=0000 op3=xxxxxxx??
+                                AdvancedSimdScalar_x_IdxElem,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b11 op2=0000 op3=xxxxxxx01"),
+                                AdvancedSimdScalar_x_IdxElem,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b11 op2=0000 op3=xxxxxxx11")))),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b11")),
 
                     Mask(23, 0b11, // DataProcessingScalarFpAdvancedSimd - op0=6
@@ -3555,9 +3686,24 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=00 op2=1111")),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=10"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=11")),
+                        Sparse(19, 0b1111,
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01"),
+                            (0b0100, Mask(10,0b11,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=xxxxxxx01"),
+                                Mask(17,0b11,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=00xxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=01xxxxx10"),
+                                    invalid,
+                                    invalid),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=01 op2=0100 op3=xxxxxxx11")))),
+                        Sparse(19, 0b1111,
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=10")),
+                        Sparse(19, 0b1111,
+                            Nyi("DataProcessingScalarFpAdvancedSimd - op0=7 op1=11"),
+                            (0b1010, Mask(10, 1,
+                                AdvancedSimdScalar_x_IdxElem,
+                                invalid)))),
 
                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=8"),
                     Mask(23, 0b11, // op0=9 op1
@@ -3582,7 +3728,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=00 op2=1111")),
-                        Mask(19, 0b1111,        // op0=9 op1=01 op2=0000
+                        Mask(19, 0b1111,        // op0=9 op1=01 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=0000"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=0001"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=0010"),
@@ -3599,15 +3745,19 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=01 op2=1111")),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=10"),
-                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=9 op1=11")),
+                        FloatingPointDataProcessing3src,    // op0=9 op1=10
+                        FloatingPointDataProcessing3src),   // op0=9 op1=11
                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=A"),
                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=B"),
 
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=C"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=D"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=E"),
-                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=F"));
+                    Mask(23, 0b11,              // op0=C op1
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=C op1=00"),
+                        Nyi("DataProcessingScalarFpAdvancedSimd - op0=C op1=01"),
+                        invalid,
+                        invalid),
+                    invalid,
+                    invalid,
+                    invalid);
             }
 
             rootDecoder = new MaskDecoder(25, 0x0F,

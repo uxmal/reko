@@ -31,6 +31,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Arm.AArch64
 {
+    // https://developer.arm.com/technologies/neon/intrinsics?_ga=2.34513633.1180694635.1535627528-1335591578.1525783726
     public partial class A64Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly Arm64Architecture arch;
@@ -106,6 +107,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.fcvtps: RewriteFcvtps(); break;
                 case Opcode.fcvtzs: RewriteFcvtzs(); break;
                 case Opcode.fdiv: RewriteMaybeSimdBinary(m.FDiv, "__fdiv_{0}", Domain.Real); break;
+                case Opcode.fmadd: RewriteIntrinsicFTernary("__fmaddf", "__fmadd"); break;
+                case Opcode.fmsub: RewriteIntrinsicFTernary("__fmsubf", "__fmsub"); break;
                 case Opcode.fmax: RewriteIntrinsicFBinary("fmaxf", "fmax"); break;
                 case Opcode.fmin: RewriteIntrinsicFBinary("fminf", "fmin"); break;
                 case Opcode.fmov: RewriteFmov(); break;
@@ -149,6 +152,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.not: RewriteMaybeSimdUnary(m.Comp, "__not_{0}"); break;
                 case Opcode.orr: RewriteBinary(m.Or);break;
                 case Opcode.orn: RewriteBinary((a, b) => m.Or(a, m.Comp(b))); break;
+                case Opcode.prfm: RewritePrfm(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.rev16: RewriteRev16(); break;
                 case Opcode.ror: RewriteRor(); break;
@@ -189,7 +193,10 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.umlal: RewriteUmlal(); break;
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
+                case Opcode.uxtb: RewriteUSxt(Domain.UnsignedInt, 8); break;
+                case Opcode.uxth: RewriteUSxt(Domain.UnsignedInt, 16); break;
                 case Opcode.uxtl: RewriteSimdUnary("__uxtl_{0}", Domain.UnsignedInt); break;
+                case Opcode.uxtw: RewriteUSxt(Domain.UnsignedInt, 32); break;
                 case Opcode.xtn: RewriteSimdUnary("__xtn_{0}", Domain.None); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, cluster.ToArray())

@@ -181,6 +181,27 @@ namespace Reko.Arch.Arm.AArch64
                 "__max_{0}", Domain.Real);
         }
 
+        private void RewriteIntrinsicFTernary(string name32, string name64)
+        {
+            var src1 = RewriteOp(instr.ops[1]);
+            var src2 = RewriteOp(instr.ops[2]);
+            var src3 = RewriteOp(instr.ops[3]);
+            var dst = RewriteOp(instr.ops[0]);
+            DataType dt;
+            string fname;
+            if (instr.ops[0].Width.BitSize == 64)
+            {
+                dt = PrimitiveType.Real64;
+                fname = name64;
+            }
+            else
+            {
+                dt = PrimitiveType.Real32;
+                fname = name32;
+            }
+            m.Assign(dst, host.PseudoProcedure(fname, dt, src1, src2, src3));
+
+        }
         private void RewriteFmov()
         {
             RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);

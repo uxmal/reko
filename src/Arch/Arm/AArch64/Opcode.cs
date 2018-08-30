@@ -186,5 +186,10 @@ namespace Reko.Arch.Arm.AArch64
         st3,
         st4,
         not,
+        fmadd,
+        fmsub,
+        fnmadd,
+        fnmsub,
+        sqdmulh,
     }
 }

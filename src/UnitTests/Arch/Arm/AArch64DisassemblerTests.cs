@@ -1215,5 +1215,35 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x8B3F63E0);	// add	x0,sp,x31,uxtx #0
             Expect_Code("add\tx0,sp,x31");
         }
+
+        [Test]
+        public void AArch64Dis_fmadd_f32()
+        {
+            Given_Instruction(0x1F0000B9);
+            Expect_Code("fmadd\ts25,s5,s0,s0");
+        }
+
+
+        [Test]
+        public void AArch64Dis_fmsub_f32()
+        {
+            Given_Instruction(0x1F00A08B);
+            Expect_Code("fmsub\ts11,s4,s0,s8");
+        }
+
+
+        [Test]
+        public void AArch64Dis_fmadd_f16()
+        {
+            Given_Instruction(0x1FD61F00);
+            Expect_Code("fmadd\th0,h24,h22,h7");
+        }
+
+        [Test]
+        public void AArch64Dis_D8545280()
+        {
+            Given_Instruction(0xD8545280);
+            Expect_Code("prfm\t#0,#&1A8A50");
+        }
     }
 }

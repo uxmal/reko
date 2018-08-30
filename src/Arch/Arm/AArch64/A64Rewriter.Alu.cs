@@ -183,7 +183,9 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(dst, m.IAdd(src, 1));
                 return;
             }
-            NotImplementedYet();
+            var srcTrue = RewriteOp(instr.ops[1], true);
+            var srcFalse = RewriteOp(instr.ops[2], true);
+            m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.IAdd(srcFalse, 1)));
         }
 
         private void RewriteCsinv()
@@ -451,6 +453,23 @@ namespace Reko.Arch.Arm.AArch64
         {
             var dtUint = PrimitiveType.Create(Domain.SignedInt, bitsizeDst);
             return m.Cast(dtUint, m.Cast(dtOrig, e));
+        }
+
+        private void RewritePrfm()
+        {
+            var imm = ((ImmediateOperand)instr.ops[0]).Value;
+            var eMem = RewriteOp(instr.ops[1]);
+            Expression ea;
+            if (eMem is Address addr)
+            {
+                ea = addr;
+            }
+            else if (eMem is MemoryAccess mem)
+            {
+                ea = mem.EffectiveAddress;
+            } else
+                throw new AddressCorrelatedException(instr.Address, "Expected an address as the second operand of prfm.");
+            m.SideEffect(host.PseudoProcedure("__prfm", VoidType.Instance, imm, ea));
         }
 
         private void RewriteRev16()

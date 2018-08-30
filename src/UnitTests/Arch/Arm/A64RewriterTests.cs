@@ -1758,5 +1758,71 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v2 = q1",
                 "2|L--|q1 = __not_i8(v2)");
         }
+
+
+        [Test]
+        public void A64Rw_uxtb()
+        {
+            Given_Instruction(0x53001E63);	// uxtb	w3,w19
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w3 = (uint32) (uint8) w19");
+        }
+
+        [Test]
+        public void A64Rw_uxth()
+        {
+            Given_Instruction(0x53003C00);	// uxth	w0,w0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w0 = (uint32) (uint16) w0");
+        }
+
+        [Test]
+        public void A64Rw_csinc()
+        {
+            Given_Instruction(0x9A800660);	// csinc	x0,x19,x0,EQ
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = Test(EQ,Z) ? x19 : x0 + 0x0000000000000001");
+        }
+
+        [Test]
+        public void A64Rw_fmadd_f32()
+        {
+            Given_Instruction(0x1F0000B9);
+            AssertCode(     // fmadd\ts25,s5,s0,s0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s25 = __fmaddf(s5, s0, s0)");
+        }
+
+
+        [Test]
+        public void A64Rw_fmsub_f32()
+        {
+            Given_Instruction(0x1F00A08B);
+            AssertCode(     // fmsub\ts11,s16,s0,s8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s11 = __fmsubf(s4, s0, s8)");
+        }
+
+
+        [Test]
+        public void A64Rw_fmadd_f16()
+        {
+            Given_Instruction(0x1FD61F00);
+            AssertCode(     // fmadd\th0,h24,h22,h7
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|h0 = __fmaddf(h24, h22, h7)");
+        }
+
+        [Test]
+        public void A64Rw_prfm()
+        {
+            Given_Instruction(0xD8545280);
+            AssertCode(     // prfm\t#0,#&1A8A50"
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__prfm(0x00, 0x001A8A50)");
+        }
     }
 }
