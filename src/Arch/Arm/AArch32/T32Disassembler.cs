@@ -617,7 +617,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
-            Console.WriteLine($"// A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
+            Console.WriteLine($"// A T32 decoder for the instruction {wInstr:X} ({Bits.Reverse(wInstr):X8}) - ({message}) has not been implemented yet.");
             Console.WriteLine("[Test]");
             Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
             Console.WriteLine("{");
@@ -1041,9 +1041,9 @@ namespace Reko.Arch.Arm.AArch32
             var decAddSub3Imm = Nyi("AddSub3Imm");
             var decMovMovs = Mask(11, 3,
                 Select("6:5", n => n != 0,
-                    new MovMovsDecoder(Opcode.lsls, ".r0,r3,S6:5"),
+                    new MovMovsDecoder(Opcode.lsl, ".r0,r3,S6:5"),
                     Instr(Opcode.mov, "r0,r3")),
-                new MovMovsDecoder(Opcode.lsrs, ".r0,r3,S6:5"),
+                new MovMovsDecoder(Opcode.lsr, ".r0,r3,S6:5"),
                 Instr(Opcode.asrs, ".r0,r3,S6:5"),
                 invalid);
             var decAddSub = Mask(11, 3,
@@ -1332,12 +1332,12 @@ namespace Reko.Arch.Arm.AArch32
             var LoadStoreUnsignedPositiveImm = Mask(4 + 16, 7,
                 Instr(Opcode.strb, "R12,[R16,i0:12,b]"),
                 Select(w => SBitfield(w, 12, 4) != 0xF,
-                    Instr(Opcode.ldrb, "R12,[R16,i0:8,bx]"),
+                    Instr(Opcode.ldrb, "R12,[R16,i0:8,b]"),
                     Nyi("PLD,PLDW immediate preloadread")),
-                Instr(Opcode.strh, "*immediate"),
+                Instr(Opcode.strh, "R12,[R16,i0:12,h]"),
                 Select(w => SBitfield(w, 12, 4) != 0xF,
-                    Instr(Opcode.ldrh, "*immediate"),
-                    Nyi("PLD,PLDW immediate preloadwrite")),
+                    Instr(Opcode.ldrh, "R12,[R16,i0:12,h]"),
+                    Nyi("*PLD,PLDW immediate preloadwrite")),
                 // 4
                 Instr(Opcode.str, "R12,[R16,i0:12,w]"),
                 Instr(Opcode.ldr, "R12,[R16,i0:12,w]"),
@@ -1556,8 +1556,23 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("AdvancedSimdAndFp64bitMove"),
                 AdvancedSimdAndFpLdSt);
 
-            var FloatingPointDataProcessing3Regs = Nyi("FloatingPointDataProcessing3Regs");
-            var FloatingPointMoveImm= Nyi("FloatingPointMoveImm");
+            var FloatingPointDataProcessing3Regs = Mask(7+16, 1,
+                Mask(4, 0b11,
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 000"),
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 001"),
+                    Mask(8, 0b11,
+                        invalid,
+                        Instr(Opcode.vnmul, "vfh F12:4:22:1,F16:4:7:1,F0:4:5:1"),
+                        Instr(Opcode.vnmul, "vfs F12:4:22:1,F16:4:7:1,F0:4:5:1"),
+                        Instr(Opcode.vnmul, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4")),
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 011")),
+                Mask(4, 0b11,
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 100"),
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 101"),
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 110"),
+                    Nyi("FloatingPointDataProcessing3Regs - o0:o1 = 111")));
+
+            var FloatingPointMoveImm = Nyi("FloatingPointMoveImm");
 
             var FloatingPointConditionalSelect = Select("8:2", n => n == 1,
                 invalid,
@@ -2109,7 +2124,13 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vqshl, "@ vqshlu (immediate)"),
                     Instr(Opcode.vqshl, "@ vqshlu (immediate)")),
 
-                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc8"),
+                Mask(12+16,1,     // U
+                    Mask(12+16,0b11,     // L:Q
+                        Instr(Opcode.vshrn, "*AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00"),
+                        Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00"),
+                        Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00"),
+                        Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00")),
+                    Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=1")),
                 Mask(7, 1, // opc= 9 L
                     Mask(6, 1, //  L= 0 Q
                         Instr(Opcode.vqshrn, "*signed result variant"),
@@ -2511,7 +2532,7 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("DataProcessingShiftedRegister_opc0"),
                 Nyi("DataProcessingShiftedRegister_opc1"),
                 Mask(20, 1,
-                    Select("16:4", n => n != 15, 
+                    Select("16:4", n => n != 15,
                         Instr(Opcode.orr, "R8,R16,R0,Si4:2;12:3:6:2"),
                         Instr(Opcode.mov, "*")),
                     Select("16:4", n => n != 15,
@@ -2527,7 +2548,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 Nyi("DataProcessingShiftedRegister_opc4"),
                 invalid,
-                Mask(20, 1, 
+                Mask(20, 1,
                     Mask(4, 3,
                         Instr(Opcode.pkhbt, "*NYI"),
                         invalid,
@@ -2538,7 +2559,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(20, 1,
                     Nyi("DataProcessingShiftedRegister_opc8 s=0"),
-                    Select("8:4", n => n != 15, 
+                    Select("8:4", n => n != 15,
                         Select("16:4", n => n != 13,
                             Instr(Opcode.add, ".*"),
                             Instr(Opcode.add, ".S*")),
@@ -2549,10 +2570,14 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.sbc, "R8,R16,R0,Si4:2;12:3:6:2"),
                     Instr(Opcode.sbc, ".R8,R16,R0,Si4:2;12:3:6:2")),
 
-                Nyi("DataProcessingShiftedRegister_opcC"),
-                Nyi("DataProcessingShiftedRegister_opcD"),
-                Nyi("DataProcessingShiftedRegister_opcE"),
-                Nyi("DataProcessingShiftedRegister_opcF"));
+                invalid,
+                Mask(20, 1,
+                    Nyi("DataProcessingShiftedRegister_opcD s=0"),
+                    Nyi("DataProcessingShiftedRegister_opcD s=1")),
+                Mask(20, 1,
+                    Instr(Opcode.rsb, "R8,R16,R0,Si4:2;12:3:6:2"),
+                    Instr(Opcode.rsb, ".R8,R16,R0,Si4:2;12:3:6:2")),
+                invalid);
 
             return new LongDecoder(new Decoder[16]
             {
@@ -2617,7 +2642,7 @@ namespace Reko.Arch.Arm.AArch32
 
                     Instr(Opcode.ldaexb, "*"),
                     Instr(Opcode.ldaexh, "*"),
-                    Instr(Opcode.ldaex, "*"),
+                    Instr(Opcode.ldaex, "R12,[R16,w]"),
                     Instr(Opcode.ldaexd, "*")));
 
             var ldStExclusive = Mask(20, 1,

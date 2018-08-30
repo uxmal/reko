@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_ldr_imm()
         {
             Given_Instructions(0xF895, 0x4045);
-            Expect_Code("ldrb\tr4,[r5,-#&45]");
+            Expect_Code("ldrb\tr4,[r5,#&45]");
         }
 
         [Test]
@@ -635,6 +635,31 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
+        //////////////////////////////////////////////////////////////////////////////
+
+        [Test]
+        public void ThumbDis_ldaex()
+        {
+            Given_Instructions(0xE8DC, 0x10E4);
+            Expect_Code("ldaex\tr1,[ip]");
+        }
+
+        [Test]
+        public void ThumbDis_vnmul_f32()
+        {
+            Given_Instructions(0xEE28, 0x4AED);
+            Expect_Code("vnmul.f32\ts8,s17,s27");
+        }
+
+        [Test]
+        public void ThumbDis_rsb_asr()
+        {
+            Given_Instructions(0xEBDF, 0xDCE3);
+            Expect_Code("rsbs\tip,pc,r3,asr #&17");
+        }
+
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
         [Test]
         public void ThumbDis_FFA4BE38()
         {
@@ -642,27 +667,12 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vcvt.f32.u32\td11,d24,#&1C");
         }
 
-        // A T32 decoder for the instruction EE284AED (FloatingPointDataProcessing3Regs) has not been implemented yet.
-        [Test]
-        public void ThumbDis_EE284AED()
-        {
-            Given_Instructions(0xEE28, 0x4AED);
-            Expect_Code("@@@");
-        }
 
         // A T32 decoder for the instruction FF941D12 (AdvancedSimdTwoRegistersAndShiftAmount_opcD) has not been implemented yet.
         [Test]
         public void ThumbDis_FF941D12()
         {
             Given_Instructions(0xFF94, 0x1D12);
-            Expect_Code("@@@");
-        }
-
-        // A T32 decoder for the instruction EBDFDCE3 (DataProcessingShiftedRegister_opcE) has not been implemented yet.
-        [Test]
-        public void ThumbDis_EBDFDCE3()
-        {
-            Given_Instructions(0xEBDF, 0xDCE3);
             Expect_Code("@@@");
         }
 
@@ -674,13 +684,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // A T32 decoder for the instruction E8DC10E4 (Unknown format specifier * in * when decoding ldaex) has not been implemented yet.
-        [Test]
-        public void ThumbDis_E8DC10E4()
-        {
-            Given_Instructions(0xE8DC, 0x10E4);
-            Expect_Code("@@@");
-        }
+   
 
         // A T32 decoder for the instruction F6BF1D67 (ADR - T2) has not been implemented yet.
         [Test]
@@ -714,27 +718,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // A T32 decoder for the instruction EBF573FF (DataProcessingShiftedRegister_opcF) has not been implemented yet.
-        [Test]
-        public void ThumbDis_EBF573FF()
-        {
-            Given_Instructions(0xEBF5, 0x73FF);
-            Expect_Code("@@@");
-        }
-
         // A T32 decoder for the instruction F90C2904 (Unknown format specifier * in *multiple 2-element structures - T1 when decoding vst2) has not been implemented yet.
         [Test]
         public void ThumbDis_F90C2904()
         {
             Given_Instructions(0xF90C, 0x2904);
-            Expect_Code("@@@");
-        }
-
-        // A T32 decoder for the instruction EBDFE44B (DataProcessingShiftedRegister_opcE) has not been implemented yet.
-        [Test]
-        public void ThumbDis_EBDFE44B()
-        {
-            Given_Instructions(0xEBDF, 0xE44B);
             Expect_Code("@@@");
         }
 
@@ -746,14 +734,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // A T32 decoder for the instruction FF4F8CA7 (AdvancedSimd3RegistersSameLength_opcC) has not been implemented yet.
-        [Test]
-        public void ThumbDis_FF4F8CA7()
-        {
-            Given_Instructions(0xFF4F, 0x8CA7);
-            Expect_Code("@@@");
-        }
-
         // A T32 decoder for the instruction EE164ADF (Unknown format specifier * in *between GPR and single prec when decoding vmov) has not been implemented yet.
         [Test]
         public void ThumbDis_EE164ADF()
@@ -762,21 +742,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        // A T32 decoder for the instruction F8AE7B0B (Unknown format specifier * in *immediate when decoding strh) has not been implemented yet.
-        [Test]
-        public void ThumbDis_F8AE7B0B()
-        {
-            Given_Instructions(0xF8AE, 0x7B0B);
-            Expect_Code("@@@");
-        }
-
-        // A T32 decoder for the instruction EB93F817 (DataProcessingShiftedRegister_opcC) has not been implemented yet.
-        [Test]
-        public void ThumbDis_EB93F817()
-        {
-            Given_Instructions(0xEB93, 0xF817);
-            Expect_Code("@@@");
-        }
 
         // A T32 decoder for the instruction FE17FD7A (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
         [Test]

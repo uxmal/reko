@@ -425,7 +425,8 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src1 = Operand(Src1());
-            m.Assign(dst, src1);
+            var src2 = Operand(Src2());
+            m.Assign(dst, ctor(src1, src2));
             if (instr.SetFlags)
             {
                 m.Assign(this.NZC(), m.Cond(dst));

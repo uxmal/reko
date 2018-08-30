@@ -86,7 +86,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                //TraceDecoder(wInstr, shift, mask);
+                TraceDecoder(wInstr, shift, mask);
                 var op = (wInstr >> shift) & mask;
                 return decoders[op].Decode(dasm, wInstr);
             }
@@ -194,7 +194,7 @@ namespace Reko.Arch.Arm.AArch32
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
                 wInstr = (wInstr << 16) | wNext;
-                //TraceDecoder(wInstr, 9 + 16, 0xF);
+                TraceDecoder(wInstr, 9 + 16, 0xF);
                 return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(dasm, wInstr);
             }
         }
