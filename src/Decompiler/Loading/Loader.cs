@@ -154,6 +154,14 @@ namespace Reko.Loading
         /// <returns></returns>
         public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
         {
+            if (addrLoad.DataType.BitSize == 16 && image.Length > 65535)
+            {
+                //$HACK: this works around issues when a large ROM image is read
+                // for a 8- or 16-bit processor.
+                var newImage = new byte[65535];
+                Array.Copy(image, newImage, newImage.Length);
+                image = newImage;
+            }
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
             arch.LoadUserOptions(details.ArchitectureOptions);
             var platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
