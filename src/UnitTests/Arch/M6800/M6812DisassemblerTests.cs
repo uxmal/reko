@@ -132,5 +132,12 @@ namespace Reko.UnitTests.Arch.M6800
             Given_Code("24FE");
             Expect_Instruction("bcc\t0000");
         }
+
+        [Test]
+        public void M6812Dis_lbcc()
+        {
+            Given_Code("1824FFFC");
+            Expect_Instruction("lbcc\t0000");
+        }
     }
 }
