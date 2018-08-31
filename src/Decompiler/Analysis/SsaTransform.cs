@@ -490,33 +490,12 @@ namespace Reko.Analysis
                 }
                 //$REVIEW: this is very x86/x87 specific; find a way to generalize
                 // this to any sort of stack-based discipline.
-                var fpuDefs = new Dictionary<FpuStackStorage, Identifier>();
-                foreach (var def in calleeFlow.Trashed.OfType<FpuStackStorage>()
-                    .Where(def => def.FpuStackOffset >= fpuStackDelta))
-                {
-                    var name = $"rRet{def.FpuStackOffset - fpuStackDelta}";
-                    var id = ssa.Procedure.Frame.CreateTemporary(
-                        name, PrimitiveType.Word64); //$TODO: datatype?
-                    var fpuDefId = NewDef(id, ci.Callee, false);
-                    ci.Definitions.Add(
-                        new CallBinding(
-                            def,
-                            fpuDefId));
-                    fpuDefs.Add(def, fpuDefId);
-                }
-                foreach(var fpuDef in fpuDefs)
-                {
-                    var fpuAccess = arch.CreateFpuStackAccess(
-                        ssa.Procedure.Frame,
-                        fpuDef.Key.FpuStackOffset,
-                        PrimitiveType.Word64); //$TODO: datatype?
-                    var iCur = stmCur.Block.Statements.IndexOf(stmCur);
-                    stmCur = stmCur.Block.Statements.Insert(
-                        iCur + 1,
-                        stmCur.LinearAddress,
-                        new Store(fpuAccess, fpuDef.Value));
-                    stmCur.Instruction = stmCur.Instruction.Accept(this);
-                }
+                var fpuDefs = CreateFpuStackTemporaryBindings(
+                    calleeFlow,
+                    ci.Callee,
+                    fpuStackDelta);
+                ci.Definitions.UnionWith(fpuDefs);
+                InsertFpuStackAccessAssignments(fpuDefs);
             }
 
             //$REFACTOR: this is common code with BlockWorkItem; find
@@ -543,6 +522,42 @@ namespace Reko.Analysis
                         fpuStackReg,
                         new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
 
+                stmCur.Instruction = stmCur.Instruction.Accept(this);
+            }
+        }
+
+        private List<CallBinding> CreateFpuStackTemporaryBindings(
+            ProcedureFlow calleeFlow,
+            Expression callee,
+            int fpuStackDelta)
+        {
+            var fpuDefs = new List<CallBinding>();
+            foreach (var def in calleeFlow.Trashed.OfType<FpuStackStorage>()
+                .Where(def => def.FpuStackOffset >= fpuStackDelta))
+            {
+                var name = $"rRet{def.FpuStackOffset - fpuStackDelta}";
+                var id = ssa.Procedure.Frame.CreateTemporary(
+                    name, PrimitiveType.Word64); //$TODO: datatype?
+                var fpuDefId = NewDef(id, callee, false);
+                fpuDefs.Add(new CallBinding(def, fpuDefId));
+            }
+            return fpuDefs;
+        }
+
+        private void InsertFpuStackAccessAssignments(List<CallBinding> fpuDefs)
+        {
+            foreach(var fpuDef in fpuDefs)
+            {
+                var fpuStackStorage = (FpuStackStorage)fpuDef.Storage;
+                var fpuAccess = arch.CreateFpuStackAccess(
+                    ssa.Procedure.Frame,
+                    fpuStackStorage.FpuStackOffset,
+                    PrimitiveType.Word64); //$TODO: datatype?
+                var iCur = stmCur.Block.Statements.IndexOf(stmCur);
+                stmCur = stmCur.Block.Statements.Insert(
+                    iCur + 1,
+                    stmCur.LinearAddress,
+                    new Store(fpuAccess, fpuDef.Expression));
                 stmCur.Instruction = stmCur.Instruction.Accept(this);
             }
         }
