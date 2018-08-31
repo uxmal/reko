@@ -49,27 +49,27 @@ namespace Reko.Arch.M6800
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            return new LeImageReader(img, addr);
+            return new BeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addrBegin, addrEnd);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            return new LeImageReader(img, off);
+            return new BeImageReader(img, off);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new BeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

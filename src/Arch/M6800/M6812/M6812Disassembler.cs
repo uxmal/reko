@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +36,8 @@ namespace Reko.Arch.M6800.M6812
     public class M6812Disassembler : DisassemblerBase<M6812Instruction>
     {
         private readonly static Decoder[] decoders;
+        private readonly static RegisterStorage[] IndexRegisters;
+        private readonly static HashSet<byte> seen = new HashSet<byte>();
 
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> operands;
@@ -49,6 +53,7 @@ namespace Reko.Arch.M6800.M6812
             var addr = rdr.Address;
             if (!rdr.TryReadByte(out var bInstr))
                 return null;
+            operands.Clear();
             M6812Instruction instr = decoders[bInstr].Decode(bInstr, this);
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
@@ -82,7 +87,6 @@ namespace Reko.Arch.M6800.M6812
 
             public override M6812Instruction Decode(byte bInstr, M6812Disassembler dasm)
             {
-                dasm.operands.Clear();
                 foreach (var mutator in mutators)
                 {
                     if (!mutator(bInstr, dasm))
@@ -97,17 +101,66 @@ namespace Reko.Arch.M6800.M6812
         }
 
 
+
         private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
         {
             return new InstrDecoder(opcode, mutators);
         }
+
 
         private static Decoder Nyi(string message)
         {
             return new InstrDecoder(Opcode.invalid, NotYetImplemented);
         }
 
-        private static HashSet<byte> seen = new HashSet<byte>();
+        private static bool I(byte bInstr, M6812Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out var imm))
+                return false;
+            dasm.operands.Add(ImmediateOperand.Byte(imm));
+            return true;
+        }
+
+        private static bool HL(byte bInstr, M6812Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeInt16(out var imm))
+                return false;
+            var mem = new MemoryOperand(PrimitiveType.Byte)
+            {
+                Offset = imm
+            };
+            dasm.operands.Add(mem);
+            return true;
+        }
+
+        public static bool PostByte(byte bInstr, M6812Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out bInstr))
+                return false;
+            switch ((bInstr >> 5) & 7)
+            {
+            case 0:
+            case 2:
+            case 4:
+            case 6:
+                var idxReg = IndexRegisters[(bInstr >> 6) & 3];
+                var offset = (short)Bits.SignExtend(bInstr, 5);
+                var mem = new MemoryOperand(PrimitiveType.Byte)
+                {
+                    Base = idxReg,
+                    Offset = offset
+                };
+                dasm.operands.Add(mem);
+                return true;
+            case 1:
+            case 3:
+            case 5:
+            default:
+                Debug.Assert(false, "not implemented yet!");
+                return false;
+            }
+        }
+
         private static bool NotYetImplemented(byte bInstr, M6812Disassembler dasm)
         {
             if (!seen.Contains(bInstr))
@@ -127,6 +180,14 @@ namespace Reko.Arch.M6800.M6812
 
         static M6812Disassembler()
         {
+            IndexRegisters = new RegisterStorage[4]
+            {
+                Registers.x,
+                Registers.y,
+                Registers.sp,
+                Registers.pc
+            };
+
             var invalid = Instr(Opcode.invalid);
 
             decoders = new Decoder[256]
@@ -263,7 +324,7 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
 
                 Nyi(""),
-                Nyi(""),
+                Instr(Opcode.clr, PostByte),
                 Nyi(""),
                 Nyi(""),
 
@@ -292,8 +353,8 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Nyi(""),
                 // 80
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.suba, I),
+                Instr(Opcode.cmpa, I),
                 Nyi(""),
                 Nyi(""),
 
@@ -439,7 +500,7 @@ namespace Reko.Arch.M6800.M6812
 
                 Nyi(""),
                 Nyi(""),
-                Nyi(""),
+                Instr(Opcode.ldab, HL),
                 Nyi(""),
 
                 Nyi(""),

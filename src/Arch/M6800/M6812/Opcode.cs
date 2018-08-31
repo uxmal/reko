@@ -5,5 +5,9 @@
         invalid,
 
         pshd,
+        clr,
+        suba,
+        cmpa,
+        ldab,
     }
 }

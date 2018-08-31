@@ -19,27 +19,37 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.M6800.M6812
 {
-    public static class Registers
+    public class MemoryOperand : MachineOperand
     {
-        public static RegisterStorage d = new RegisterStorage("d", 0, 0, PrimitiveType.Word16);
-        public static RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Byte);
-        public static RegisterStorage b = new RegisterStorage("b", 0, 0, PrimitiveType.Byte);
+        public MemoryOperand(PrimitiveType width) : base(width)
+        {
+        }
 
-        public static RegisterStorage x = new RegisterStorage("x", 1, 0, PrimitiveType.Word16);
-        public static RegisterStorage y = new RegisterStorage("y", 2, 0, PrimitiveType.Word16);
-        public static RegisterStorage sp = new RegisterStorage("sp", 3, 0, PrimitiveType.Word16);
-        public static RegisterStorage pc = new RegisterStorage("pc", 4, 0, PrimitiveType.Word16);
+        public RegisterStorage Base { get; set; }
+        public short? Offset { get; set; }
 
-
-
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (Base != null)
+            {
+                if (Offset != null)
+                {
+                    writer.WriteFormat("${0:X4},{1}", Offset.Value, Base.Name);
+                    return;
+                }
+            }
+            else if (Offset != null)
+            {
+                // Absolute address
+                writer.WriteFormat("${0:X4}", (ushort)Offset.Value);
+                return;
+            }
+            throw new System.NotImplementedException();
+        }
     }
 }
