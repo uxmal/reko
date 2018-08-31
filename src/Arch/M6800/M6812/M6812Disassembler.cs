@@ -232,7 +232,7 @@ namespace Reko.Arch.M6800.M6812
             decoders = new Decoder[256]
             {
                 // 00
-                Nyi(""),
+                Instr(Opcode.bgnd),
                 Nyi(""),
                 Nyi(""),
                 Nyi(""),
@@ -258,9 +258,9 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
 
                 Nyi(""),
-                Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.jsr, PostByte),
+                Instr(Opcode.jsr, HL),
+                Instr(Opcode.jsr, D),
 
                 new NextByteDecoder(),
                 Nyi(""),
@@ -270,26 +270,26 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Instr(Opcode.bclr, HL,I),
                 Nyi(""),
-                Nyi(""),
+                Instr(Opcode.brclr, HL, I, R),
                 // 20
                 Nyi(""),
                 Nyi(""),
-                Nyi(""),
+                Instr(Opcode.bhi, R),
                 Nyi(""),
 
                 Instr(Opcode.bcc, R),
-                Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.bcs, R),
+                Instr(Opcode.bne, R),
+                Instr(Opcode.beq, R),
 
                 Nyi(""),
                 Nyi(""),
                 Nyi(""),
                 Nyi(""),
 
+                Instr(Opcode.bge, R),
                 Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.bgt, R),
                 Nyi(""),
                 // 30
                 Nyi(""),
@@ -398,9 +398,9 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
 
                 Instr(Opcode.anda, I),
-                Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.bita, I),
+                Instr(Opcode.ldaa, I),
+                Instr(Opcode.clra),
 
                 Nyi(""),
                 Instr(Opcode.adca, I),
@@ -412,19 +412,19 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Nyi(""),
                 // 90
+                Instr(Opcode.suba, D),
+                Instr(Opcode.cmpa, D),
+                Instr(Opcode.sbca, D),
+                Instr(Opcode.subd, D),
+
                 Instr(Opcode.anda, D),
-                Nyi(""),
-                Nyi(""),
-                Nyi(""),
-
-                Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.bita, D),
+                Instr(Opcode.ldaa, D),
                 Nyi(""),
 
-                Nyi(""),
+                Instr(Opcode.eora, D),
                 Instr(Opcode.adca, D),
-                Nyi(""),
+                Instr(Opcode.oraa, D),
                 Instr(Opcode.adda, D),
 
                 Nyi(""),
@@ -472,19 +472,19 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Nyi(""),
                 // C0
-                Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.subb, I),
+                Instr(Opcode.cmpb, I),
+                Instr(Opcode.sbcb, I),
                 Instr(Opcode.addd, JK),
 
                 Instr(Opcode.andb, I),
                 Nyi(""),
-                Nyi(""),
-                Nyi(""),
+                Instr(Opcode.ldab, I),
+                Instr(Opcode.clrb),
 
-                Nyi(""),
+                Instr(Opcode.eorb, I),
                 Instr(Opcode.adcb, I),
-                Nyi(""),
+                Instr(Opcode.orab, I),
                 Instr(Opcode.addb, I),
 
                 Nyi(""),
@@ -881,6 +881,11 @@ namespace Reko.Arch.M6800.M6812
 
             };
 
+        }
+
+        private static Decoder Instr(object brclr, Mutator hL, Mutator i, Mutator r)
+        {
+            throw new NotImplementedException();
         }
     }
 }
