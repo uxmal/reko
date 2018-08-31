@@ -552,6 +552,7 @@ CrwManyPredecessorsToExitBlock_exit:
 // fp:fp
 // Top:Top
 // r63:r63
+// rRet0:rRet0
 // rLoc1:FPU -1
 // rLoc2:FPU -2
 // rLoc3:FPU -3
@@ -560,8 +561,8 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	rLoc1_16 = FpuMultiplyAdd(5.0, 4.0, 3.0)
-	Mem11[0x00123400:real64] = rLoc1_16
+	rRet0_10 = FpuMultiplyAdd(5.0, 4.0, 3.0)
+	Mem13[0x00123400:real64] = rRet0_10
 	return
 	// succ:  main_exit
 main_exit:
