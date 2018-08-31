@@ -96,108 +96,41 @@ namespace Reko.UnitTests.Arch.M6800
             Expect_Instruction("ldab\t$4242");
         }
 
-        // An M6812 decoder for instruction 37 has not been implemented.
+
         [Test]
-        public void M6812Dis_37()
+        public void M6812Dis_aba()
         {
-            Given_Code("37");
-            Expect_Instruction("@@@");
+            Given_Code("1806");
+            Expect_Instruction("aba");
         }
 
-        // An M6812 decoder for instruction CD has not been implemented.
+
         [Test]
-        public void M6812Dis_CD()
+        public void M6812Dis_adca_immediate()
         {
-            Given_Code("CD");
-            Expect_Instruction("@@@");
+            Given_Code("8942");
+            Expect_Instruction("adca\t#$42");
         }
 
-        // An M6812 decoder for instruction C1 has not been implemented.
         [Test]
-        public void M6812Dis_C1()
+        public void M6812Dis_adca_direct()
         {
-            Given_Code("C1");
-            Expect_Instruction("@@@");
+            Given_Code("8942");
+            Expect_Instruction("adca\t#$42");
         }
 
-        // An M6812 decoder for instruction 11 has not been implemented.
         [Test]
-        public void M6812Dis_11()
+        public void M6812Dis_addd_imm()
         {
-            Given_Code("11");
-            Expect_Instruction("@@@");
+            Given_Code("C31234");
+            Expect_Instruction("addd\t#$1234");
         }
 
-        // An M6812 decoder for instruction 26 has not been implemented.
         [Test]
-        public void M6812Dis_26()
+        public void M6812Dis_bcc()
         {
-            Given_Code("26");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction 15 has not been implemented.
-        [Test]
-        public void M6812Dis_15()
-        {
-            Given_Code("15");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction 1F has not been implemented.
-        [Test]
-        public void M6812Dis_1F()
-        {
-            Given_Code("1F");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction 39 has not been implemented.
-        [Test]
-        public void M6812Dis_39()
-        {
-            Given_Code("39");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction 28 has not been implemented.
-        [Test]
-        public void M6812Dis_28()
-        {
-            Given_Code("28");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction 20 has not been implemented.
-        [Test]
-        public void M6812Dis_20()
-        {
-            Given_Code("20");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction 10 has not been implemented.
-        [Test]
-        public void M6812Dis_10()
-        {
-            Given_Code("10");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction C6 has not been implemented.
-        [Test]
-        public void M6812Dis_C6()
-        {
-            Given_Code("C6");
-            Expect_Instruction("@@@");
-        }
-
-        // An M6812 decoder for instruction A7 has not been implemented.
-        [Test]
-        public void M6812Dis_A7()
-        {
-            Given_Code("A7");
-            Expect_Instruction("@@@");
+            Given_Code("24FE");
+            Expect_Instruction("bcc\t0000");
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Reko.Arch.M6800.M6812
         public static RegisterStorage sp = new RegisterStorage("sp", 3, 0, PrimitiveType.Word16);
         public static RegisterStorage pc = new RegisterStorage("pc", 4, 0, PrimitiveType.Word16);
 
-
+        public static RegisterStorage ccr = new RegisterStorage("ccr", 5, 0, PrimitiveType.Byte);
 
     }
 }

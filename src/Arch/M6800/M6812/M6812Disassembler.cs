@@ -36,6 +36,7 @@ namespace Reko.Arch.M6800.M6812
     public class M6812Disassembler : DisassemblerBase<M6812Instruction>
     {
         private readonly static Decoder[] decoders;
+        private readonly static Decoder[] decodersSecondByte;
         private readonly static RegisterStorage[] IndexRegisters;
         private readonly static HashSet<byte> seen = new HashSet<byte>();
 
@@ -100,6 +101,15 @@ namespace Reko.Arch.M6800.M6812
             }
         }
 
+        public class NextByteDecoder : Decoder
+        {
+            public override M6812Instruction Decode(byte bInstr, M6812Disassembler dasm)
+            {
+                if (!dasm.rdr.TryReadByte(out bInstr))
+                    return dasm.Invalid();
+                return decodersSecondByte[bInstr].Decode(bInstr, dasm);
+            }
+        }
 
 
         private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
@@ -120,6 +130,26 @@ namespace Reko.Arch.M6800.M6812
             dasm.operands.Add(ImmediateOperand.Byte(imm));
             return true;
         }
+
+        private static bool JK(byte bInstr, M6812Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadBeUInt16(out var imm))
+                return false;
+            dasm.operands.Add(ImmediateOperand.Word16(imm));
+            return true;
+        }
+
+        private static bool D(byte bInstr, M6812Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out var imm))
+                return false;
+            var mem = new MemoryOperand(PrimitiveType.Byte)
+            {
+                Offset = imm
+            };
+            return true;
+        }
+
 
         private static bool HL(byte bInstr, M6812Disassembler dasm)
         {
@@ -159,6 +189,15 @@ namespace Reko.Arch.M6800.M6812
                 Debug.Assert(false, "not implemented yet!");
                 return false;
             }
+        }
+
+        private static bool R(byte bInstr, M6812Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out var rel))
+                return false;
+            var addrDst = dasm.rdr.Address + (sbyte)rel;
+            dasm.operands.Add(AddressOperand.Create(addrDst));
+            return true;
         }
 
         private static bool NotYetImplemented(byte bInstr, M6812Disassembler dasm)
@@ -201,6 +240,332 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Nyi(""),
                 Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.bclr, HL,PostByte),
+                Nyi(""),
+                Nyi(""),
+                // 10
+                Instr(Opcode.andcc, I),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                new NextByteDecoder(),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.bclr, HL,I),
+                Nyi(""),
+                Nyi(""),
+                // 20
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Instr(Opcode.bcc, R),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // 30
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.pshd),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // 40
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.asra),
+
+                Instr(Opcode.asla),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.bclr, D,I),
+                Nyi(""),
+                Nyi(""),
+                // 50
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.asrb),
+
+                Instr(Opcode.aslb),
+                Instr(Opcode.asld),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // 60
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.asr, PostByte),
+
+                Instr(Opcode.asl, PostByte),
+                Instr(Opcode.clr, PostByte),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // 70
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.asr, HL),
+
+                Instr(Opcode.asl, HL),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // 80
+                Instr(Opcode.suba, I),
+                Instr(Opcode.cmpa, I),
+                Nyi(""),
+                Nyi(""),
+
+                Instr(Opcode.anda, I),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adca, I),
+                Nyi(""),
+                Instr(Opcode.adda, I),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // 90
+                Instr(Opcode.anda, D),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adca, D),
+                Nyi(""),
+                Instr(Opcode.adda, D),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // A0
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Instr(Opcode.anda, PostByte),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adca, PostByte),
+                Nyi(""),
+                Instr(Opcode.adda, PostByte),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // B0
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.anda, HL),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adca, HL),
+                Nyi(""),
+                Instr(Opcode.adda, HL),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // C0
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.addd, JK),
+
+                Instr(Opcode.andb, I),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adcb, I),
+                Nyi(""),
+                Instr(Opcode.addb, I),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // D0
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.addd, D),
+
+                Instr(Opcode.andb, D),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adcb, D),
+                Nyi(""),
+                Instr(Opcode.addb, D),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // E0
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.addb, PostByte),
+
+                Instr(Opcode.andb, PostByte),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adcb, PostByte),
+                Nyi(""),
+                Instr(Opcode.addb, PostByte),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                // F0
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.addd, HL),
+
+                Instr(Opcode.andb, HL),
+                Nyi(""),
+                Instr(Opcode.ldab, HL),
+                Nyi(""),
+
+                Nyi(""),
+                Instr(Opcode.adcb, HL),
+                Nyi(""),
+                Instr(Opcode.addb, HL),
+
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+
+            };
+
+            decodersSecondByte = new Decoder[256]
+            {
+                // 00
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+                Nyi(""),
+
+                Nyi(""),
+                Nyi(""),
+                Instr(Opcode.aba),
                 Nyi(""),
 
                 Nyi(""),
@@ -266,7 +631,7 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Nyi(""),
                 Nyi(""),
-                Instr(Opcode.pshd),
+                Nyi(""),
 
                 Nyi(""),
                 Nyi(""),
@@ -324,7 +689,7 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
 
                 Nyi(""),
-                Instr(Opcode.clr, PostByte),
+                Nyi(""),
                 Nyi(""),
                 Nyi(""),
 
@@ -353,8 +718,8 @@ namespace Reko.Arch.M6800.M6812
                 Nyi(""),
                 Nyi(""),
                 // 80
-                Instr(Opcode.suba, I),
-                Instr(Opcode.cmpa, I),
+                Nyi(""),
+                Nyi(""),
                 Nyi(""),
                 Nyi(""),
 
@@ -500,7 +865,7 @@ namespace Reko.Arch.M6800.M6812
 
                 Nyi(""),
                 Nyi(""),
-                Instr(Opcode.ldab, HL),
+                Nyi(""),
                 Nyi(""),
 
                 Nyi(""),
@@ -515,7 +880,6 @@ namespace Reko.Arch.M6800.M6812
 
 
             };
-
 
         }
     }
