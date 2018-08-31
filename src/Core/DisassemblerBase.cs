@@ -50,9 +50,15 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Disassemble a single instruction. Return null if the end of the reader has been reached
+        /// Disassemble a single instruction. 
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// Implementors should make an effort to make sure this method doesn't
+        /// throw an exception. Instead, they should return an invalid instruction
+        /// and possibly spew a diagnostic message.
+        /// </remarks>
+        /// <returns>Return a disassembled machine instruction, or null
+        /// if the end of the reader has been reached</returns>
         public abstract TInstr DisassembleInstruction();
 
         public void Dispose()

@@ -143,6 +143,7 @@
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
+    <Compile Include="Arch\M6800\M6812DisassemblerTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.750.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
@@ -759,6 +760,10 @@
     <ProjectReference Include="..\Arch\i8051\i8051.csproj">
       <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>
       <Name>i8051</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\M6800\M6800.csproj">
+      <Project>{54944B1E-7C12-4FB1-A208-996AD6D04B80}</Project>
+      <Name>M6800</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\M68k.Design\M68k.Design.csproj">
       <Project>{90b83ec1-915b-471b-8f86-6a71b17db6a1}</Project>
