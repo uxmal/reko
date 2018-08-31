@@ -56,7 +56,8 @@ namespace Reko.Analysis
         private IPlatform platform;
         private ExpressionEmitter m;
 
-        private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
+        private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator", "Verbose");
+        private HashSet<Identifier> aliases;
 
         public ConditionCodeEliminator(SsaState ssa, IPlatform arch)
 		{
@@ -73,10 +74,13 @@ namespace Reko.Analysis
                 sidGrf = s;
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
-
+                if (sidGrf.DefStatement.Instruction is AliasAssignment)
+                    continue;
                 var uses = new HashSet<Statement>();
-                ClosureOfUsingStatements(sidGrf, uses);
-
+                this.aliases = new HashSet<Identifier>();
+                ClosureOfUsingStatements(sidGrf, uses, aliases);
+                if (sidGrf.Identifier.Name.EndsWith("_30"))   //$DEBUG
+                    sidGrf.ToString();
                 if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
 
                 foreach (var u in uses)
@@ -96,9 +100,11 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="sid">The SSA identifier whose use-closure we're calculating</param>
         /// <param name="uses">Uses we've seen so far.</param>
+        /// <param name="aliases">Aliases of sid we've seen so far.</param>
         public HashSet<Statement> ClosureOfUsingStatements(
             SsaIdentifier sid,
-            HashSet<Statement> uses)
+            HashSet<Statement> uses,
+            HashSet<Identifier> aliases)
         {
             foreach (var use in sid.Uses)
             {
@@ -111,13 +117,15 @@ namespace Reko.Analysis
                     // (C_4 = SLICE(SZC_3, bool, 0)
                     var ass = (Assignment)use.Instruction;
                     var sidAlias = ssaIds[ass.Dst];
-                    ClosureOfUsingStatements(sidAlias, uses);
+                    aliases.Add(sidAlias.Identifier);
+                    ClosureOfUsingStatements(sidAlias, uses, aliases);
                 }
                 if (use.Instruction is PhiAssignment phiAss)
                 {
                     // Bypass PHI nodes.
                     var sidPhi = ssaIds[phiAss.Dst];
-                    ClosureOfUsingStatements(sidPhi, uses);
+                    aliases.Add(sidPhi.Identifier);
+                    ClosureOfUsingStatements(sidPhi, uses,aliases);
                 }
             }
             return uses;

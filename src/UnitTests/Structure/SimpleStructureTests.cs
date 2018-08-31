@@ -226,7 +226,6 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("")]
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));

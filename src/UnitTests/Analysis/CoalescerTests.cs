@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Analysis
         private void AssertProcedureCode(string expected)
         {
             ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
-            }
+        }
 
         protected override void RunTest(Program program, TextWriter fut)
         {
@@ -136,7 +136,6 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.IntegrationTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void CoaAddSubCarries()
         {
             RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
