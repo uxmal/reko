@@ -204,12 +204,37 @@ namespace Reko.UnitTests.Analysis
             return pb.Add(name, builder);
         }
 
+        private RegisterStorage Given_FpuStackRegister(string name)
+        {
+            var top = new RegisterStorage(name, 123, 0, PrimitiveType.Byte);
+            var arch = (FakeArchitecture)pb.Program.Architecture;
+            arch.FpuStackRegister = top;
+            return arch.FpuStackRegister;
+        }
+
+        private MemoryIdentifier Given_FpuStackBase(string name)
+        {
+            var stg = new MemoryStorage("fpu", StorageDomain.Register + 456);
+            var ST = new MemoryIdentifier(name, PrimitiveType.Ptr32, stg);
+            var arch = (FakeArchitecture)pb.Program.Architecture;
+            arch.FpuStackBase = ST;
+            return arch.FpuStackBase;
+        }
+
+        private void Given_ProcedureFlow(string name, Func<Procedure, ProcedureFlow> flowBuilder)
+        {
+            var proc = Given_Procedure(name, m =>
+            {
+            });
+            this.programFlow.ProcedureFlows[proc] = flowBuilder(proc);
+        }
+
         private void When_RunSsaTransform()
         {
-            this.programFlow = new ProgramDataFlow();
-            var proc = this.pb.Program.Procedures.Values.First();
+            var program = pb.BuildProgram();
+            var proc = program.Procedures.Values.First();
             this.sst = new SsaTransform(
-                this.pb.Program,
+                program,
                 proc,
                 new HashSet<Procedure>(),
                 importResolver,
@@ -3415,6 +3440,53 @@ proc_exit:
             #endregion
             AssertProcedureCode(expected);
 
+        }
+
+        [Test]
+        public void SsaFpuCallDefsShouldBeIds()
+        {
+            var topReg = Given_FpuStackRegister("Top");
+            var ST = Given_FpuStackBase("ST");
+            Given_Procedure("main", m =>
+            {
+                var Top = m.Frame.EnsureRegister(topReg);
+                m.Label("body");
+                m.Assign(Top, 0);
+                m.Call("fn", 4);
+                m.MStore(m.Word32(0x1234), m.Mem(ST, PrimitiveType.Real64, Top));
+                m.Assign(Top, m.IAdd(Top, 1));
+                m.Return();
+            });
+            Given_ProcedureFlow("fn", p => new ProcedureFlow(p)
+            {
+                Trashed =
+                {
+                    new FpuStackStorage(-1, PrimitiveType.Real64)
+                },
+                Constants =
+                {
+                    { topReg, Constant.SByte(-1)}
+                }
+            });
+
+            When_RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"main_entry:
+body:
+	Top_1 = 0x00
+	call fn (retsize: 4;)
+		defs: FPU -1:rRet0_2
+	ST3[Top_1 - 0x01:real64] = rRet0_2
+	Top_4 = Top_1 - 0x01
+	Mem5[0x00001234:real64] = ST3[Top_4:real64]
+	Top_6 = Top_4 + 0x01
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
         }
     }
 }
