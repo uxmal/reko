@@ -181,7 +181,6 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
         public void StrFactorialReg()
         {
             RunTest("Fragments/factorial_reg.asm", "Structure/StrFactorialReg.txt");
