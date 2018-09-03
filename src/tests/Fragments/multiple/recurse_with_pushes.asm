@@ -2,7 +2,7 @@
 .i86
 
 main proc
-	mov si,0x1230
+;	mov si,0x1230
 	call recurse
 	ret
 	endp

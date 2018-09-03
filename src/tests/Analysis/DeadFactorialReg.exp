@@ -1,17 +1,15 @@
 fp:fp
-    uses: ax_18 = fn0C00_000B(cx - 0x0001)
 sp_2: orig: sp
 Top_3: orig: Top
 sp_4: orig: sp
 si:si
-    uses: ax_18 = fn0C00_000B(cx - 0x0001)
 ss:ss
 Mem7: orig: Mem0
 cx:cx
     def:  def cx
-    uses: ax_18 = fn0C00_000B(cx - 0x0001)
-          dx_ax_21 = cx *s ax_18
+    uses: dx_ax_21 = cx *s ax_18
           branch cx <= 0x0001 l0C00_001C
+          ax_18 = fn0C00_000B(cx - 0x0001)
 SCZO_9: orig: SCZO
 SZO_10: orig: SZO
 ax_11: orig: ax
@@ -23,7 +21,6 @@ SZO_14: orig: SZO
 sp_15: orig: sp
 cx_16: orig: cx
 ax:ax
-    uses: ax_18 = fn0C00_000B(cx - 0x0001)
 ax_18: orig: ax
     def:  ax_18 = fn0C00_000B(cx - 0x0001)
     uses: dx_ax_21 = cx *s ax_18
@@ -33,7 +30,6 @@ dx_ax_21: orig: dx_ax
     def:  dx_ax_21 = cx *s ax_18
     uses: ax_23 = (word16) dx_ax_21 (alias)
 dx_22: orig: dx
-    uses: ax_18 = fn0C00_000B(cx - 0x0001)
 ax_23: orig: ax
     def:  ax_23 = (word16) dx_ax_21 (alias)
     uses: ax_32 = PHI(ax_23, ax_11)

@@ -380,8 +380,8 @@ namespace Reko.Analysis
             ProcedureBase callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature.ParametersValid)
             {
-                // Signature is known: build the application immediately.
-                // First, remove all uses of the old call.
+                // Signature is known: build the application immediately,
+                // after removing all uses of the old call.
                 ssa.RemoveUses(stmCur);
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci);
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
@@ -580,8 +580,8 @@ namespace Reko.Analysis
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
                 if (!existingUses.Contains(calleeStg) &&
-                    (IsTrashed(trashedRegisters, calleeStg)
-                    || calleeStg is StackStorage))
+                    (calleeStg is RegisterStorage ||
+                     calleeStg is StackArgumentStorage))
                 {
                     ci.Uses.Add(new CallBinding(
                         calleeStg,

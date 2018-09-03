@@ -37,9 +37,9 @@ namespace Reko.Analysis
 	/// </summary>
 	public class CallRewriter
 	{
-		private ProgramDataFlow mpprocflow;
-        private DecompilerEventListener listener;
-        private IPlatform platform;
+		private readonly ProgramDataFlow mpprocflow;
+        private readonly DecompilerEventListener listener;
+        private readonly IPlatform platform;
 
         public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, DecompilerEventListener listener) 
 		{
@@ -126,8 +126,8 @@ namespace Reko.Analysis
 
             var mayUse = flow.BitsUsed.Where(b =>
                 {
-                    var reg = b.Key as RegisterStorage;
-                    return reg != null && !implicitRegs.Contains(reg);
+                    return b.Key is RegisterStorage reg && 
+                        !implicitRegs.Contains(reg);
                 })
                 .ToDictionary(
                     de => platform.Architecture.GetSubregister(
@@ -163,8 +163,8 @@ namespace Reko.Analysis
             var liveOut = allLiveOut
                 .Where(de =>
                 {
-                    var reg = de.Key as RegisterStorage;
-                    return reg != null && !implicitRegs.Contains(reg);
+                    return de.Key is RegisterStorage reg
+                        && !implicitRegs.Contains(reg);
                 })
                  .ToDictionary(
                     de => platform.Architecture.GetSubregister(
@@ -288,8 +288,7 @@ namespace Reko.Analysis
         /// a signature yet.</returns>
         public bool RewriteCall(Procedure proc, Statement stm, CallInstruction call)
         {
-            var callee = call.Callee as ProcedureConstant;
-            if (callee == null)
+            if (!(call.Callee is ProcedureConstant callee))
                 return false;          //$REVIEW: what happens with indirect calls?
             var procCallee = callee.Procedure;
             var sigCallee = procCallee.Signature;

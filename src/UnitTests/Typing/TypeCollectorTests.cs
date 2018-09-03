@@ -309,6 +309,7 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void TycoReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TycoReg00012.txt");

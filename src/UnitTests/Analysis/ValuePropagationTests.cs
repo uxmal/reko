@@ -35,9 +35,18 @@ using Rhino.Mocks;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Reko.UnitTests.Fragments;
+using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Analysis
 {
+    /// <summary>
+    /// Tests for intra-procedural value propagation. 
+    /// </summary>
+    /// <remarks>
+    /// Because of the intra procedural nature of ValuePropagation,
+    /// it is pointless to test it on fragments consisting of multiple
+    /// procedures. In addition, the dependency on 
+    /// </remarks>
 	[TestFixture]
 	public class ValuePropagationTests : AnalysisTestBase
 	{
@@ -100,7 +109,7 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
 		{
 			var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			foreach (Procedure proc in program.Procedures.Values)
+			foreach (Procedure proc in ProceduresInSccOrder(program))
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
                 SsaTransform sst = new SsaTransform(
@@ -127,7 +136,22 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-        private SsaState RunTest(ProcedureBuilder m)
+        private List<Procedure> ProceduresInSccOrder(Program program)
+        {
+            var list = new List<Procedure>();
+            void CollectScc(IList<Procedure> sccProcs)
+            {
+                list.AddRange(sccProcs);
+            }
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), CollectScc);
+            foreach (var procedure in program.Procedures.Values)
+            {
+                sscf.Find(procedure);
+            }
+            return list;
+        }
+
+    private SsaState RunTest(ProcedureBuilder m)
         {
             var proc = m.Procedure;
             var sst = new SsaTransform(
@@ -166,13 +190,6 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.IntegrationTests)]
-		public void VpChainTest()
-		{
-			RunFileTest_x86_real("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
-		}
-
-		[Test]
-        [Category(Categories.IntegrationTests)]
 		public void VpConstPropagation()
 		{
 			RunFileTest_x86_real("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
@@ -206,23 +223,10 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.IntegrationTests)]
-		public void VpSuccessiveDecs()
-		{
-			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
-		}
-
-		[Test]
-        [Category(Categories.IntegrationTests)]
 		public void VpWhileGoto()
 		{
 			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
 		}
-
-        [Test]
-        public void VpReg00011()
-        {
-            RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
-        }
 
         [Test]
         [Category(Categories.IntegrationTests)]

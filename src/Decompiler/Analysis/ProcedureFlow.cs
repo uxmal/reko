@@ -28,6 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -167,6 +168,62 @@ namespace Reko.Analysis
                 return 0;
             }
             return c.ToInt32();
+        }
+
+        public static IEnumerable<CallBinding> IntersectCallBindingsWithUses(
+            IEnumerable<CallBinding> callBindings,
+            IDictionary<Storage, BitRange> uses)
+        {
+            //$TODO: this is an O(n^2) implementation, which will be teh suck performancewise.
+            // If it can be improved, do so.
+            foreach (var use in uses)
+            {
+                switch (use.Key)
+                {
+                case RegisterStorage reg:
+                    yield return IntersectRegisterBinding(reg, callBindings);
+                    break;
+                case StackArgumentStorage stArg:
+                    yield return IntersectStackRegisterBinding(stArg, callBindings);
+                    break;
+                }
+            }
+        }
+
+        private static CallBinding IntersectStackRegisterBinding(StackArgumentStorage stArg, IEnumerable<CallBinding> callBindings)
+        {
+            var stRange = stArg.GetBitRange();
+            foreach (var binding in callBindings)
+            {
+                if (binding.Storage is StackArgumentStorage stBinding)
+                {
+                    if (binding.Storage.Equals(stArg))
+                        return binding;
+                }
+            }
+            return new CallBinding(stArg, new StringConstant(new UnknownType(), "???unsatisfied???"));
+        }
+
+        private static CallBinding IntersectRegisterBinding(RegisterStorage regCallee, IEnumerable<CallBinding> callBindings)
+        {
+            var dom = regCallee.Domain;
+            var regRange = regCallee.GetBitRange();
+            foreach (var binding in callBindings)
+            {
+                if (binding.Storage.Domain == dom)
+                {
+                    var isect = binding.BitRange | regRange;
+                    if (binding.BitRange == regRange)
+                        return binding;
+                    if (binding.BitRange.Extent > regRange.Extent)
+                    {
+                        var dt = PrimitiveType.CreateWord(regCallee.DataType.BitSize);
+                        var exp = new Cast(dt, binding.Expression);
+                        return new CallBinding(regCallee, exp);
+                    }
+                }
+            }
+            return new CallBinding(regCallee, new StringConstant(new UnknownType(), "???unsatisfied???"));
         }
     }
 }

@@ -187,7 +187,8 @@ namespace Reko.Analysis
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
                 uid.ComputeLiveIn(ssa, true);
-                RemoveDeadArgumentsFromCalls(ssa.Procedure, ssts);
+                var procFlow = flow[ssa.Procedure];
+                RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
             }
         }
 
@@ -224,10 +225,10 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         private void RemoveDeadArgumentsFromCalls(
             Procedure proc, 
+            ProcedureFlow flow,
             IEnumerable<SsaTransform> ssts)
         {
             var mpProcSsa = ssts.ToDictionary(d => d.SsaState.Procedure, d => d.SsaState);
-            var flow = this.flow[proc];
             foreach (Statement stm in program.CallGraph.CallerStatements(proc))
             {
                 if (!mpProcSsa.TryGetValue(stm.Block.Procedure, out var ssa))
@@ -236,14 +237,12 @@ namespace Reko.Analysis
                 // We have a call statement that calls `proc`. Make sure 
                 // that only arguments present in the procedure flow are present.
                 var call = (CallInstruction)stm.Instruction;
-                var deadUses =
-                    from u in call.Uses
-                    where !flow.BitsUsed.ContainsKey(u.Storage)
-                    select u;
-                foreach (var du in deadUses.ToList())
-                {
-                    call.Uses.Remove(du);
-                }
+                var filteredUses = ProcedureFlow.IntersectCallBindingsWithUses(call.Uses, flow.BitsUsed)
+                    .ToArray();
+                ssa.RemoveUses(stm);
+                call.Uses.Clear();
+                call.Uses.UnionWith(filteredUses);
+                ssa.AddUses(stm);
             }
         }
 

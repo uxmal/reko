@@ -1,10 +1,8 @@
 fp:fp
-    uses: ax_17 = fn0C00_000F(wArg02 - 0x0001)
 sp_2: orig: sp
 Top_3: orig: Top
 sp_4: orig: sp
 bp:bp
-    uses: ax_17 = fn0C00_000F(wArg02 - 0x0001)
 ss:ss
 Mem7: orig: Mem0
 bp_8: orig: bp
@@ -22,7 +20,6 @@ ax_17: orig: ax
     def:  ax_17 = fn0C00_000F(wArg02 - 0x0001)
     uses: dx_ax_25 = wArg02 *s ax_17
 dx:dx
-    uses: ax_17 = fn0C00_000F(wArg02 - 0x0001)
 dx_19: orig: dx
 Top_20: orig: Top
 SCZO_21: orig: SCZO
@@ -44,11 +41,9 @@ bp_32: orig: bp
 sp_33: orig: sp
 wArg02:Stack +0002
     def:  def wArg02
-    uses: ax_17 = fn0C00_000F(wArg02 - 0x0001)
-          branch wArg02 == 0x0001 l0C00_0026
-          ax_17 = fn0C00_000F(wArg02 - 0x0001)
-          ax_17 = fn0C00_000F(wArg02 - 0x0001)
+    uses: branch wArg02 == 0x0001 l0C00_0026
           dx_ax_25 = wArg02 *s ax_17
+          ax_17 = fn0C00_000F(wArg02 - 0x0001)
 wLoc04_36: orig: wLoc04
 ax_37: orig: ax
     def:  ax_37 = PHI(ax_27, ax_13)

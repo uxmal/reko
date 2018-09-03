@@ -107,6 +107,7 @@ C_58: orig: C
 Mem59: orig: Mem0
     def:  Mem59[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds

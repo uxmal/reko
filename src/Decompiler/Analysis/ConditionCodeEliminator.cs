@@ -79,8 +79,6 @@ namespace Reko.Analysis
                 var uses = new HashSet<Statement>();
                 this.aliases = new HashSet<Identifier>();
                 ClosureOfUsingStatements(sidGrf, uses, aliases);
-                if (sidGrf.Identifier.Name.EndsWith("_30"))   //$DEBUG
-                    sidGrf.ToString();
                 if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
 
                 foreach (var u in uses)
@@ -230,21 +228,22 @@ namespace Reko.Analysis
         {
             Expression u = binUse.Right;
             Cast c = null;
-            if (u != sidGrf.Identifier)
+            if (u != sidGrf.Identifier && !this.aliases.Contains(u))
             {
                 c = binUse.Right as Cast;
                 if (c != null)
                     u = c.Expression;
             }
-            if (u != sidGrf.Identifier)
+            if (u != sidGrf.Identifier && !this.aliases.Contains(u))
                 return a;
 
+            var oldSid = ssaIds[(Identifier)u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
             if (c != null)
                 c.Expression = u;
             else
                 binUse.Right = u;
-            sidGrf.Uses.Remove(useStm);
+            oldSid.Uses.Remove(useStm);
             Use(u, useStm);
             return a;
         }
