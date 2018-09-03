@@ -144,6 +144,7 @@
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
     <Compile Include="Arch\M6800\M6812DisassemblerTests.cs" />
+    <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.750.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />

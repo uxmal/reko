@@ -9,7 +9,7 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
-        internal MachineOperand[] Operands;
+        public MachineOperand[] Operands;
 
         public override InstructionClass InstructionClass => GetInstructionClass();
 

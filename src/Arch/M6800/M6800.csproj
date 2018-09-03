@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="M6812Architecture.cs" />
+    <Compile Include="M6812\M6812Rewriter.cs" />
     <Compile Include="M6812\M6812Disassembler.cs" />
     <Compile Include="M6812\M6812Instruction.cs" />
+    <Compile Include="M6812\M6812State.cs" />
     <Compile Include="M6812\MemoryOperand.cs" />
     <Compile Include="M6812\Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
