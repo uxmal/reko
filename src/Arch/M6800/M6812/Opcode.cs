@@ -175,5 +175,13 @@
         sba,
         staa,
         trap,
+        dbeq,
+        dbne,
+        tbeq,
+        tbne,
+        ibeq,
+        ibne,
+        tfr,
+        sex,
     }
 }

@@ -139,5 +139,12 @@ namespace Reko.UnitTests.Arch.M6800
             Given_Code("1824FFFC");
             Expect_Instruction("lbcc\t0000");
         }
+
+        [Test]
+        public void M6812Dis_dbeq()
+        {
+            Given_Code("041403");
+            Expect_Instruction("dbeq\td,0000");
+        }
     }
 }
