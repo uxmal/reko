@@ -64,8 +64,15 @@ namespace Reko.Arch.SuperH
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
                 {
-                case Opcode.invalid:
                 default:
+                    host.Error(
+                        dasm.Current.Address,
+                        string.Format(
+                            "Rewriting of SuperH instruction {0} not implemented yet.",
+                        dasm.Current.Opcode));
+                    EmitUnitTest();
+                    goto case Opcode.invalid;
+                case Opcode.invalid:
                     Invalid();
                     break;
                 case Opcode.add: RewriteBinOp(m.IAdd, n => (sbyte)n); break;
@@ -169,13 +176,6 @@ namespace Reko.Arch.SuperH
 
         private void Invalid()
         {
-            EmitUnitTest();
-            host.Error(
-                dasm.Current.Address,
-                string.Format(
-                    "Rewriting of SuperH instruction {0} not implemented yet.",
-                dasm.Current.Opcode));
-
             this.rtlc = RtlClass.Invalid;
             m.Invalid();
         }

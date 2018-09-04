@@ -886,6 +886,70 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "4|L--|00100004(2): 1 instructions",
                 "5|L--|Mem0[r1 + 8:word32] = r2");
         }
+
+        [Test]
+        public void SHRw_mac_l()
+        {
+            RewriteCode("FF00");	// mac.l	@r15+,@r0+
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void SHRw_cmp_str()
+        {
+            RewriteCode("AC25");	// cmp/str	r10,r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void SHRw_stc()
+        {
+            RewriteCode("0200");	// stc	sr,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void SHRw_lds()
+        {
+            RewriteCode("2A4F");	// lds	r15,pr
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        public void SHRw_clrs()
+        {
+            RewriteCode("4800");	// clrs
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void SHRw_fmac()
+        {
+            RewriteCode("0EF4");	// fmac	fr0,fr0,fr4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+[Test]
+        public void SHRw_ocbi()
+        {
+            RewriteCode("9300");	// ocbi	@r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
     }
 }
 
