@@ -30,7 +30,6 @@ namespace Reko.Arch.Arm.AArch64
 {
     public class ConditionOperand : MachineOperand
     {
-
         public ConditionOperand(ArmCondition cond) : base(PrimitiveType.Byte)
         {
             this.Condition = cond;
