@@ -402,6 +402,11 @@ namespace Reko.Core.Expressions
                 throw new InvalidOperationException();
             }
 
+            public override int GetHashOfValue()
+            {
+                throw new InvalidOperationException();
+            }
+
             public override byte ToByte()
             {
                 throw new InvalidOperationException();

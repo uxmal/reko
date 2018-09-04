@@ -140,6 +140,7 @@
     <Compile Include="Analysis\SsaMutatorTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
+    <Compile Include="Arch\Arm\A64RewriterTests.cs" />
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
@@ -194,6 +195,8 @@
     <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_RewriterTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_RewriterTests.cs" />
     <Compile Include="Core\ImportReferenceTests.cs" />
+    <Compile Include="Core\Lib\BitfieldTests.cs" />
+    <Compile Include="Core\Lib\Float16Tests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -352,10 +355,10 @@
     <Compile Include="Arch\ArchTestBase.cs" />
     <Compile Include="Arch\Arm\AArch64DisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmArchitectureTests.cs" />
-    <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\A32DisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
-    <Compile Include="Arch\Arm\ThumbDisassemblerTests.cs" />
-    <Compile Include="Arch\Arm\ThumbRewriterTests.cs" />
+    <Compile Include="Arch\Arm\T32DisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\T32RewriterTests.cs" />
     <Compile Include="Arch\Cil\CilDisassemblerTests.cs" />
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />

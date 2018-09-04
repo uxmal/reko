@@ -197,7 +197,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                                 if (nsec >= 0 && nsec < loader.Sections.Count)
                                     S += loader.Sections[nsec].Address.ToUInt32();
                             }
-                            A = relocR.ReadUInt32(pRelWord);
+                            A = relocR.ReadUInt32((int)pRelWord);
                             relocW.WriteUInt32(pRelWord, S + A);
                             break;
                         case 2: // R_386_PC32: S + A - P
@@ -234,7 +234,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                                         S += loader.Sections[nsec].Address.ToUInt32();
                                 }
                             }
-                            A = relocR.ReadUInt32(pRelWord);
+                            A = relocR.ReadUInt32((int)pRelWord);
                             P = destNatOrigin + r_offset;
                             relocW.WriteUInt32(pRelWord, S + A - P);
                             break;

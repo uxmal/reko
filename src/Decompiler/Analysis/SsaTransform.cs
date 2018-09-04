@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Analysis
 {
@@ -422,6 +423,7 @@ namespace Reko.Analysis
             private IImportResolver importResolver;
             private HashSet<Identifier> existingDefs;
             private HashSet<Statement> newPhiStatements;
+            private int recursionGuard;
 
             /// <summary>
             /// Walks the dominator tree, renaming the different definitions of variables
@@ -482,6 +484,12 @@ namespace Reko.Analysis
 			/// <param name="n">Block to rename</param>
 			public void RenameBlock(Block n)
 			{
+                if (this.recursionGuard > 1000)
+                {
+                    Debug.Print("Stopping recursion in SsaTransform.RenameBlock");
+                    return;
+                }
+                ++this.recursionGuard;
 				var wasonentry = new Dictionary<Identifier, Identifier>(rename);
 
 				// Rename variables in all blocks except the starting block which
@@ -529,6 +537,7 @@ namespace Reko.Analysis
 						RenameBlock(c);
 				}
 				rename = wasonentry;
+                --this.recursionGuard;
 			}
 
             /// <summary>

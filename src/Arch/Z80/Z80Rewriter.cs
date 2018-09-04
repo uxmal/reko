@@ -503,44 +503,45 @@ namespace Reko.Arch.Z80
 
         private Expression RewriteOp(MachineOperand op)
         {
-            var rOp = op as RegisterOperand;
-            if (rOp != null)
-                return binder.EnsureRegister(rOp.Register);
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
-                return immOp.Value;
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            switch (op)
             {
-                Identifier bReg = null;
-                if (memOp.Base != null)
-                    bReg = binder.EnsureRegister(memOp.Base);
-                if (memOp.Offset == null)
+            case RegisterOperand rOp:
+                return binder.EnsureRegister(rOp.Register);
+            case ImmediateOperand immOp:
+                return immOp.Value;
+            case MemoryOperand memOp:
                 {
-                    return m.Mem(memOp.Width, bReg);
-                }
-                else if (bReg == null)
-                {
-                    return m.Mem(memOp.Width, memOp.Offset);
-                }
-                else
-                {
-                    int s = memOp.Offset.ToInt32();
-                    if (s > 0)
-                    {
-                        return m.Mem(memOp.Width, m.IAdd(bReg, s));
-                    }
-                    else if (s < 0)
-                    {
-                        return m.Mem(memOp.Width, m.ISub(bReg, -s));
-                    }
-                    else
+                    Identifier bReg = null;
+                    if (memOp.Base != null)
+                        bReg = binder.EnsureRegister(memOp.Base);
+                    if (memOp.Offset == null)
                     {
                         return m.Mem(memOp.Width, bReg);
                     }
+                    else if (bReg == null)
+                    {
+                        return m.Mem(memOp.Width, memOp.Offset);
+                    }
+                    else
+                    {
+                        int s = memOp.Offset.ToInt32();
+                        if (s > 0)
+                        {
+                            return m.Mem(memOp.Width, m.IAdd(bReg, s));
+                        }
+                        else if (s < 0)
+                        {
+                            return m.Mem(memOp.Width, m.ISub(bReg, -s));
+                        }
+                        else
+                        {
+                            return m.Mem(memOp.Width, bReg);
+                        }
+                    }
                 }
+            default:
+                throw new NotImplementedException(string.Format("Rewriting of Z80 operand type {0} is not implemented yet.", op.GetType().FullName));
             }
-            throw new NotImplementedException(string.Format("Rewriting of Z80 operand type {0} is not implemented yet.", op.GetType().FullName));
         }
 
         private void RewriteIn()

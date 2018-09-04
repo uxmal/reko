@@ -583,10 +583,10 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a signed 16-bit integer constant.
+        /// Generates a signed 32-bit integer constant.
         /// </summary>
-        /// <param name="n">16-bit signed integer.</param>
-        /// <returns>Constant representing a signed 16-bit integer.</returns>
+        /// <param name="n">32-bit signed integer.</param>
+        /// <returns>Constant representing a signed 32-bit integer.</returns>
         public Constant Int32(int n)
         {
             return Constant.Int32(n);

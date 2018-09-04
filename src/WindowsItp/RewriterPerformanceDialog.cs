@@ -1,6 +1,8 @@
 ﻿using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -85,7 +87,7 @@ namespace Reko.WindowsItp
 
             public void Error(Address address, string format, params object[] args)
             {
-                throw new NotImplementedException();
+                //$TODO: ERROR
             }
 
             public void Warn(Address address, string format, params object[] args)
@@ -98,51 +100,117 @@ namespace Reko.WindowsItp
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            var bytes = CreateBytes();
-            var rw = CreateRewriter(bytes);
-
             button1.Enabled = false;
-            TimeSpan nInstrs = await Task.Run<TimeSpan>(() =>
+            var(nDasm, nRewrite) = await Task.Run<(TimeSpan,TimeSpan)>(() =>
             {
-                int instrs = 0;
-                var watch = new Stopwatch();
-                var addrEnd = bytes.EndAddress;
+                var bytes = CreateBytes();
+                if (bytes == null)
+                    return (new TimeSpan(), new TimeSpan());
+                var tsDasm = MeasureTime(DasmInstructions,bytes);
+                var tsRewr = MeasureTime(RewriteA32Instructions, bytes);
+                return (tsDasm, tsRewr);
+            });
+            lblDasm.Text = nDasm.ToString();
+            lblRw.Text = nRewrite.ToString();
+            button1.Enabled = true;
+        }
+
+        private TimeSpan MeasureTime(Action<MemoryArea> task, MemoryArea mem)
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+            task(mem);
+            watch.Stop();
+            return watch.Elapsed;
+        }
+
+        private void RewriteT32Instructions(MemoryArea mem)
+        {
+            var rw = CreateT32Rewriter(mem);
+            int instrs = 0;
+            var addrEnd = mem.EndAddress;
+
+            var ei = rw.GetEnumerator();
+            while (SafeMoveNext(ei) && ei.Current.Address < addrEnd)
+            {
+                var i = ei.Current;
+                ++instrs;
+            }
+        }
+
+        private void RewriteA32Instructions(MemoryArea mem)
+        {
+            var rw = CreateA32Rewriter(mem);
+            var addrEnd = mem.EndAddress;
+
+            var rtl = new List<RtlInstructionCluster>();
+            var ei = rw.GetEnumerator();
+            while (SafeMoveNext(ei) && ei.Current.Address < addrEnd)
+            {
+                rtl.Add(ei.Current);
+            }
+        }
+
+        private void DasmInstructions(MemoryArea mem)
+        {
+            var dasm = CreateA32Disassembler(mem);
+            var addrEnd = mem.EndAddress;
+            var ei = dasm.GetEnumerator();
+            var mis = new List<MachineInstruction>();
+            while (ei.MoveNext() && ei.Current != null)
+            {
+                mis.Add(ei.Current);
+            }
+        }
+
+        private bool SafeMoveNext(IEnumerator<RtlInstructionCluster> ei)
+        {
+            for (; ; )
+            {
                 try
                 {
-                    watch.Start();
-                    var ei = rw.GetEnumerator();
-                    while (ei.MoveNext() && ei.Current.Address < addrEnd)
-                    {
-                        var i = ei.Current;
-                        ++instrs;
-                    }
+                    return ei.MoveNext();
                 }
-                catch (Exception ex)
+                catch
                 {
 
                 }
-                watch.Stop();
-                return watch.Elapsed;
-            });
-            lblTime.Text = nInstrs.ToString();
-            button1.Enabled = true;
+            }
         }
 
         private MemoryArea CreateBytes()
         {
-            var buf = new byte[10000001];    // 1e6 bytes
-            var rnd = new Random(0x42);
+            if (!long.TryParse(textBox1.Text, out var cb))
+                return null;
+            var buf = new byte[cb];  
+            var rnd = new Random(0x4242);
             rnd.NextBytes(buf);
             var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
             return mem;
         }
 
-        private IEnumerable<RtlInstructionCluster> CreateRewriter(MemoryArea mem)
+        private IEnumerable<RtlInstructionCluster> CreateT32Rewriter(MemoryArea mem)
         {
             var arch = new ThumbArchitecture("arm-thumb");
             var rdr = new LeImageReader(mem, mem.BaseAddress);
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(), new RewriterHost(new Dictionary<Address, ImportReference>()));
             return rw;
+        }
+
+        private IEnumerable<RtlInstructionCluster> CreateA32Rewriter(MemoryArea mem)
+        {
+            var arch = new Arm32Architecture("arm");
+            var rdr = new LeImageReader(mem, mem.BaseAddress);
+            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(), new RewriterHost(new Dictionary<Address, ImportReference>()));
+            return rw;
+        }
+
+        private IEnumerable<AArch32Instruction> CreateA32Disassembler(MemoryArea mem)
+        {
+            var arch = new Arm32Architecture("arm");
+            var rdr = new LeImageReader(mem, mem.BaseAddress);
+            var dasm = new A32Disassembler(arch, rdr);
+            return dasm;
         }
 
         private void RewriterPerformanceDialog_Load(object sender, EventArgs e)

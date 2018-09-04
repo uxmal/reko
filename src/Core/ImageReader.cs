@@ -291,10 +291,10 @@ namespace Reko.Core
         public short ReadBeInt16() { return (short)ReadBeUInt16(); }
         public short ReadLeInt16() { return (short)ReadLeUInt16(); }
 
-        public ushort PeekLeUInt16(uint offset) { return MemoryArea.ReadLeUInt16(bytes, offset + (uint)off); }
-        public ushort PeekBeUInt16(uint offset) { return MemoryArea.ReadBeUInt16(bytes, offset + (uint) off); }
-        public short PeekLeInt16(uint offset) { return (short)MemoryArea.ReadLeUInt16(bytes, offset + (uint) off); }
-        public short PeekBeInt16(uint offset) { return (short)MemoryArea.ReadBeUInt16(bytes, offset + (uint) off); }
+        public ushort PeekLeUInt16(int offset) { return MemoryArea.ReadLeUInt16(bytes, offset + (uint)off); }
+        public ushort PeekBeUInt16(int offset) { return MemoryArea.ReadBeUInt16(bytes, offset + (uint) off); }
+        public short PeekLeInt16(int offset) { return (short)MemoryArea.ReadLeUInt16(bytes, offset + (uint) off); }
+        public short PeekBeInt16(int offset) { return (short)MemoryArea.ReadBeUInt16(bytes, offset + (uint) off); }
 
         public bool TryPeekByte(int offset, out byte value) { return MemoryArea.TryReadByte(bytes, offset + off, out value); }
         public bool TryPeekBeUInt16(int offset, out ushort value) { return MemoryArea.TryReadBeUInt16(bytes, offset + off, out value); }
@@ -392,10 +392,10 @@ namespace Reko.Core
         public int ReadBeInt32() { return (int)ReadBeUInt32(); }
         public int ReadLeInt32() { return (int)ReadLeUInt32(); }
 
-        public uint PeekLeUInt32(uint offset) { return MemoryArea.ReadLeUInt32(bytes, offset + off); }
-        public uint PeekBeUInt32(uint offset) { return MemoryArea.ReadBeUInt32(bytes, offset + off); }
-        public int PeekLeInt32(uint offset) { return (int)MemoryArea.ReadLeUInt32(bytes, offset + off); }
-        public int PeekBeInt32(uint offset) { return (int)MemoryArea.ReadBeUInt32(bytes, offset + off); }
+        public uint PeekLeUInt32(int offset) { return MemoryArea.ReadLeUInt32(bytes, offset + off); }
+        public uint PeekBeUInt32(int offset) { return MemoryArea.ReadBeUInt32(bytes, offset + off); }
+        public int PeekLeInt32(int offset) { return (int)MemoryArea.ReadLeUInt32(bytes, offset + off); }
+        public int PeekBeInt32(int offset) { return (int)MemoryArea.ReadBeUInt32(bytes, offset + off); }
 
         public ulong ReadLeUInt64()
         {
@@ -414,10 +414,10 @@ namespace Reko.Core
         public long ReadBeInt64() { return (long)ReadBeUInt64(); }
         public long ReadLeInt64() { return (long)ReadLeUInt64(); }
 
-        public ulong PeekLeUInt64(uint offset) { return MemoryArea.ReadLeUInt64(bytes, off); }
-        public ulong PeekBeUInt64(uint offset) { return MemoryArea.ReadBeUInt64(bytes, off); }
-        public long PeekLeInt64(uint offset) { return (long)MemoryArea.ReadLeUInt64(bytes, off); }
-        public long PeekBeInt64(uint offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
+        public ulong PeekLeUInt64(int offset) { return MemoryArea.ReadLeUInt64(bytes, off); }
+        public ulong PeekBeUInt64(int offset) { return MemoryArea.ReadBeUInt64(bytes, off); }
+        public long PeekLeInt64(int offset) { return (long)MemoryArea.ReadLeUInt64(bytes, off); }
+        public long PeekBeInt64(int offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
 
 
         public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)

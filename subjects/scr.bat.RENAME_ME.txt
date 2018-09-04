@@ -1,0 +1,22 @@
+@echo off
+
+call :probe ADVAPI32.dll
+call :probe    api-ms-win-crt-convert-l1-1-0.dll
+call :probe    api-ms-win-crt-heap-l1-1-0.dll
+call :probe    api-ms-win-crt-runtime-l1-1-0.dll
+call :probe    api-ms-win-crt-string-l1-1-0.dll
+call :probe    KERNEL32.dll
+call :probe    loadperf.dll
+call :probe    msi.dll
+call :probe    ole32.dll
+call :probe    OLEAUT32.dll
+call :probe    SHELL32.dll
+call :probe    SHLWAPI.dll
+call :probe    VCRUNTIME140.dll
+exit /b
+
+:probe 
+where %1 > nul 2> nul || echo %1 not found
+exit /b
+
+:eof

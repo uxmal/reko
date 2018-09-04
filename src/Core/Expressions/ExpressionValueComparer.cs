@@ -139,6 +139,17 @@ namespace Reko.Core.Expressions
                 (ea, eb) =>
                 {
                     Constant a = (Constant) ea, b = (Constant) eb;
+                    if (a.IsReal)
+                    {
+                        if (b.IsReal)
+                        {
+                            return a.ToReal64() == b.ToReal64();
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                     return object.Equals(a.ToUInt64(), b.ToUInt64());
                 },
                 obj =>
