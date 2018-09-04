@@ -126,72 +126,624 @@ fn092A: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+=== Elf\ARM64\bash\elf-Linux-ARM64-bash
+*** Elf\ARM64\bash\elf-Linux-ARM64-bash
+000000000041C270: warning: Unable to resolve imported reference getcwd.
+000000000041C3F0: warning: Unable to resolve imported reference pipe.
+000000000041CA00: warning: Unable to resolve imported reference strtold.
+00000000004A8EAC: warning: Unable to resolve imported reference sbrk.
+00000000004A8F8C: warning: Unable to resolve imported reference sbrk.
+00000000004A9048: warning: Unable to resolve imported reference sigfillset.
+00000000004A8F70: error: Cannot chop image map item of type word16.
+00000000004A9288: warning: Unable to resolve imported reference sbrk.
+000000000046C52C: warning: Unable to resolve imported reference sbrk.
+000000000046C29C: warning: Unable to resolve imported reference sbrk.
+000000000046C2B4: warning: Unable to resolve imported reference sbrk.
+000000000046C2CC: warning: Unable to resolve imported reference sbrk.
+000000000048A118: warning: Unable to resolve imported reference __fpurge.
+000000000046E7D4: warning: Unable to resolve imported reference clearerr.
+00000000004A9860: error: Cannot chop image map item of type word16.
+00000000004A9704: warning: Unable to resolve imported reference sbrk.
+00000000004A9758: warning: Unable to resolve imported reference sbrk.
+000000000046C3E4: warning: Unable to resolve imported reference sbrk.
+000000000046C47C: warning: Unable to resolve imported reference sbrk.
+00000000004A19A4: warning: Unable to resolve imported reference __memmove_chk.
+00000000004A8A1C: warning: Unable to resolve imported reference __fdelt_chk.
+00000000004A8AB8: warning: Unable to resolve imported reference select.
+000000000041F228: warning: Unable to resolve imported reference endpwent.
+00000000004A8530: warning: Unable to resolve imported reference endpwent.
+00000000004A7F6C: warning: Unable to resolve imported reference __mbrlen.
+00000000004A7D94: warning: Unable to resolve imported reference __mbrlen.
+00000000004A142C: warning: Unable to resolve imported reference tputs.
+0000000000499FC0: warning: Unable to resolve imported reference __vsnprintf_chk.
+000000000049FFBC: warning: Unable to resolve imported reference __fdelt_chk.
+000000000049FFF4: warning: Unable to resolve imported reference __fdelt_chk.
+00000000004A0058: warning: Unable to resolve imported reference select.
+0000000000499C10: warning: Unable to resolve imported reference tputs.
+0000000000499C70: warning: Unable to resolve imported reference tputs.
+0000000000490C84: warning: Unable to resolve imported reference tcflow.
+000000000049DA50: warning: Unable to resolve imported reference sigdelset.
+000000000049DA54: warning: Unable to resolve imported reference getpid.
+000000000049DA5C: warning: Unable to resolve imported reference kill.
+000000000049FD20: warning: Unable to resolve imported reference __fdelt_chk.
+000000000049FD54: warning: Unable to resolve imported reference __fdelt_chk.
+000000000049FD94: warning: Unable to resolve imported reference select.
+000000000049DBE8: warning: Unable to resolve imported reference __longjmp_chk.
+000000000049DB44: warning: Unable to resolve imported reference iswalnum.
+00000000004A25B8: warning: Unable to resolve imported reference iswupper.
+00000000004A25C4: warning: Unable to resolve imported reference towlower.
+00000000004A25DC: warning: Unable to resolve imported reference wcrtomb.
+00000000004A262C: warning: Unable to resolve imported reference iswlower.
+00000000004A2638: warning: Unable to resolve imported reference towupper.
+00000000004A1354: warning: Unable to resolve imported reference tputs.
+0000000000499AA0: warning: Unable to resolve imported reference tputs.
+0000000000499B60: warning: Unable to resolve imported reference tputs.
+0000000000499A48: warning: Unable to resolve imported reference tputs.
+000000000049A300: warning: Unable to resolve imported reference tputs.
+0000000000492334: warning: Unable to resolve imported reference qsort.
+0000000000492438: warning: Unable to resolve imported reference towlower.
+0000000000492448: warning: Unable to resolve imported reference towlower.
+00000000004928B8: warning: Unable to resolve imported reference qsort.
+00000000004932A8: warning: Unable to resolve imported reference qsort.
+0000000000498E60: warning: Unable to resolve imported reference tputs.
+000000000049077C: warning: Unable to resolve imported reference tcgetattr.
+000000000049CF70: warning: Unable to resolve imported reference tputs.
+00000000004A1504: warning: Unable to resolve imported reference tputs.
+00000000004A152C: warning: Unable to resolve imported reference tputs.
+00000000004A14BC: warning: Unable to resolve imported reference tputs.
+00000000004A1494: warning: Unable to resolve imported reference tputs.
+00000000004A0F70: warning: Unable to resolve imported reference tgetent.
+00000000004A0F98: warning: Unable to resolve imported reference tgetstr.
+00000000004A1000: warning: Unable to resolve imported reference tgetflag.
+00000000004A1058: warning: Unable to resolve imported reference tgetflag.
+00000000004A0B20: warning: Unable to resolve imported reference tgetnum.
+000000000043F344: warning: Unable to resolve imported reference __sigsetjmp.
+000000000046C5F0: warning: Unable to resolve imported reference sbrk.
+000000000043D954: warning: Unable to resolve imported reference __longjmp_chk.
+000000000042FC3C: error: Cannot chop image map item of type word16.
+000000000043ACF0: warning: Unable to resolve imported reference qsort.
+00000000004558DC: warning: Unable to resolve imported reference __sigsetjmp.
+00000000004558FC: warning: Unable to resolve imported reference __sigsetjmp.
+00000000004715FC: warning: Unable to resolve imported reference __sigsetjmp.
+00000000004578E8: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000454B24: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000454B48: warning: Unable to resolve imported reference __sigsetjmp.
+0000000000455064: warning: Unable to resolve imported reference getpid.
+000000000045506C: warning: Unable to resolve imported reference kill.
+0000000000444FD0: warning: Unable to resolve imported reference setpgid.
+00000000004418D0: warning: Unable to resolve imported reference killpg.
+00000000004418E8: warning: Unable to resolve imported reference killpg.
+0000000000457BA0: warning: Unable to resolve imported reference getpid.
+0000000000457BB0: warning: Unable to resolve imported reference kill.
+0000000000441970: warning: Unable to resolve imported reference killpg.
+0000000000441990: warning: Unable to resolve imported reference killpg.
+000000000042AA9C: warning: Unable to resolve imported reference __strtol_internal.
+000000000048475C: warning: Unable to resolve imported reference strchrnul.
+00000000004847A0: warning: Unable to resolve imported reference mbsnrtowcs.
+00000000004847E8: warning: Unable to resolve imported reference mbsnrtowcs.
+00000000004842D4: warning: Unable to resolve imported reference wcslen.
+00000000004842E4: warning: Unable to resolve imported reference wcslen.
+0000000000483300: warning: Unable to resolve imported reference iswupper.
+000000000048330C: warning: Unable to resolve imported reference towlower.
+000000000048337C: warning: Unable to resolve imported reference iswupper.
+0000000000483388: warning: Unable to resolve imported reference towlower.
+0000000000483458: warning: Unable to resolve imported reference iswupper.
+0000000000483464: warning: Unable to resolve imported reference towlower.
+0000000000483394: warning: Unable to resolve imported reference iswupper.
+00000000004833A4: warning: Unable to resolve imported reference towlower.
+00000000004834A4: warning: Unable to resolve imported reference iswupper.
+00000000004834B0: warning: Unable to resolve imported reference towlower.
+0000000000483CBC: warning: Unable to resolve imported reference wcschr.
+0000000000483CD8: warning: Unable to resolve imported reference iswupper.
+0000000000484228: warning: Unable to resolve imported reference wcscoll.
+00000000004837F0: warning: Unable to resolve imported reference iswupper.
+0000000000483620: warning: Unable to resolve imported reference iswupper.
+000000000048362C: warning: Unable to resolve imported reference towlower.
+0000000000483660: warning: Unable to resolve imported reference iswupper.
+000000000048366C: warning: Unable to resolve imported reference towlower.
+00000000004836D0: warning: Unable to resolve imported reference iswupper.
+00000000004836DC: warning: Unable to resolve imported reference towlower.
+00000000004836FC: warning: Unable to resolve imported reference iswupper.
+0000000000483708: warning: Unable to resolve imported reference towlower.
+000000000048374C: warning: Unable to resolve imported reference wcscoll.
+000000000048214C: warning: Unable to resolve imported reference wcsncmp.
+00000000004839E8: warning: Unable to resolve imported reference iswupper.
+00000000004839F4: warning: Unable to resolve imported reference towlower.
+0000000000483A1C: warning: Unable to resolve imported reference iswupper.
+0000000000483A28: warning: Unable to resolve imported reference towlower.
+0000000000483AB4: warning: Unable to resolve imported reference wctype.
+0000000000483AD8: warning: Unable to resolve imported reference wcscmp.
+0000000000483B08: warning: Unable to resolve imported reference wcslen.
+0000000000483B30: warning: Unable to resolve imported reference wcslen.
+0000000000483B54: warning: Unable to resolve imported reference wcsrtombs.
+0000000000483B70: warning: Unable to resolve imported reference wctype.
+0000000000483BAC: warning: Unable to resolve imported reference iswctype.
+0000000000483D78: warning: Unable to resolve imported reference wcscmp.
+0000000000483D8C: warning: Unable to resolve imported reference wctob.
+0000000000483DCC: warning: Unable to resolve imported reference iswctype.
+00000000004839B0: warning: Unable to resolve imported reference wcscoll.
+0000000000483890: warning: Unable to resolve imported reference iswupper.
+00000000004838A4: warning: Unable to resolve imported reference towlower.
+00000000004838D8: warning: Unable to resolve imported reference wcscoll.
+000000000044D294: error: Cannot chop image map item of type word16.
+0000000000471B74: warning: Unable to resolve imported reference __sigsetjmp.
+000000000044AD00: warning: Unable to resolve imported reference pipe.
+0000000000441300: warning: Unable to resolve imported reference pipe.
+0000000000442D24: warning: Unable to resolve imported reference fork.
+0000000000442D70: warning: Unable to resolve imported reference setpgid.
+0000000000442160: warning: Unable to resolve imported reference waitpid.
+0000000000455A80: warning: Unable to resolve imported reference __longjmp_chk.
+000000000045518C: warning: Unable to resolve imported reference __longjmp_chk.
+00000000004427D0: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000442D18: warning: Unable to resolve imported reference sleep.
+0000000000441840: warning: Unable to resolve imported reference killpg.
+0000000000441854: warning: Unable to resolve imported reference killpg.
+0000000000442F4C: warning: Unable to resolve imported reference getpid.
+0000000000442FB4: warning: Unable to resolve imported reference setpgid.
+0000000000443358: warning: Unable to resolve imported reference getpid.
+0000000000443360: warning: Unable to resolve imported reference kill.
+0000000000441C6C: warning: Unable to resolve imported reference getpid.
+0000000000441BB8: warning: Unable to resolve imported reference tcgetattr.
+000000000044B268: warning: Unable to resolve imported reference getpid.
+000000000044B270: warning: Unable to resolve imported reference kill.
+000000000044B038: warning: Unable to resolve imported reference dup2.
+000000000044B12C: warning: Unable to resolve imported reference __sigsetjmp.
+000000000043C798: error: Cannot chop image map item of type word16.
+000000000042D888: error: Cannot chop image map item of type word16.
+000000000042ECD8: error: Cannot chop image map item of type word16.
+000000000044B2FC: warning: Unable to resolve imported reference __sigsetjmp.
+000000000045060C: warning: Unable to resolve imported reference pipe.
+000000000042B0F4: warning: Unable to resolve imported reference getdtablesize.
+000000000042B0B0: warning: Unable to resolve imported reference dup2.
+00000000004506D4: warning: Unable to resolve imported reference getdtablesize.
+00000000004512BC: warning: Unable to resolve imported reference dup2.
+000000000044594C: warning: Unable to resolve imported reference mblen.
+0000000000445988: warning: Unable to resolve imported reference wcschr.
+0000000000421FB0: warning: Unable to resolve imported reference clearerr.
+0000000000421F90: warning: Unable to resolve imported reference clearerr.
+0000000000425CBC: error: Cannot chop image map item of type word16.
+0000000000422340: warning: Unable to resolve imported reference clearerr.
+0000000000427958: error: Cannot chop image map item of type word16.
+000000000046EBE0: warning: Unable to resolve imported reference getcwd.
+0000000000430814: warning: Unable to resolve imported reference dup2.
+0000000000430844: warning: Unable to resolve imported reference dup2.
+000000000043086C: warning: Unable to resolve imported reference dup2.
+000000000042E298: warning: Unable to resolve imported reference strnlen.
+000000000042E2B4: warning: Unable to resolve imported reference mblen.
+000000000044CFD8: warning: Unable to resolve imported reference strnlen.
+000000000044CFF4: warning: Unable to resolve imported reference mblen.
+0000000000438B1C: warning: Unable to resolve imported reference qsort.
+0000000000480B58: warning: Unable to resolve imported reference wcsrtombs.
+00000000004880A4: warning: Unable to resolve imported reference qsort.
+000000000045E654: warning: Unable to resolve imported reference __strtol_internal.
+000000000045ED4C: warning: Unable to resolve imported reference __strtol_internal.
+00000000004686B4: error: Cannot chop image map item of type word16.
+0000000000468C48: error: Cannot chop image map item of type word16.
+0000000000468451: warning: Call target address FFFFFFFFFC2B8499 is invalid.
+00000000004308F4: warning: Unable to resolve imported reference dup2.
+00000000004350B8: warning: Unable to resolve imported reference __sigsetjmp.
+0000000000435274: warning: Unable to resolve imported reference __sigsetjmp.
+0000000000435338: warning: Unable to resolve imported reference getrusage.
+0000000000435344: warning: Unable to resolve imported reference getrusage.
+00000000004353B4: warning: Unable to resolve imported reference getrusage.
+00000000004353C0: warning: Unable to resolve imported reference getrusage.
+0000000000432EC4: error: Cannot chop image map item of type word16.
+000000000042B1B8: warning: Unable to resolve imported reference pipe.
+000000000048A574: warning: Unable to resolve imported reference iswalnum.
+000000000048A8BC: error: Cannot chop image map item of type word16.
+000000000048A7F4: warning: Unable to resolve imported reference iswalnum.
+00000000004A0C68: warning: Unable to resolve imported reference tgetnum.
+00000000004A10F8: warning: Unable to resolve imported reference tgetflag.
+000000000049D0D0: warning: Unable to resolve imported reference tputs.
+000000000049D0EC: warning: Unable to resolve imported reference tputs.
+00000000004A0684: warning: Unable to resolve imported reference __sigsetjmp.
+0000000000498348: error: Cannot chop image map item of type word16.
+000000000048BA40: warning: Unable to resolve imported reference __sigsetjmp.
+000000000049E2C0: warning: Unable to resolve imported reference getpid.
+000000000049AA74: warning: Unable to resolve imported reference tputs.
+000000000049B1DC: warning: Unable to resolve imported reference tputs.
+000000000049B304: warning: Unable to resolve imported reference tgoto.
+000000000049B318: warning: Unable to resolve imported reference tputs.
+000000000049B2C0: warning: Unable to resolve imported reference tgoto.
+000000000049B2D0: warning: Unable to resolve imported reference tputs.
+000000000049B498: warning: Unable to resolve imported reference tputs.
+000000000049B4D4: warning: Unable to resolve imported reference tputs.
+000000000049B53C: warning: Unable to resolve imported reference tputs.
+000000000049CAB0: warning: Unable to resolve imported reference tputs.
+000000000048FAD0: warning: Unable to resolve imported reference qsort.
+0000000000494450: warning: Unable to resolve imported reference getpwent.
+0000000000494504: warning: Unable to resolve imported reference endpwent.
+0000000000494448: warning: Unable to resolve imported reference setpwent.
+0000000000490CAC: warning: Unable to resolve imported reference tcflow.
+000000000048EDD0: warning: Unable to resolve imported reference iswupper.
+000000000048EDDC: warning: Unable to resolve imported reference towlower.
+000000000048EDF8: warning: Unable to resolve imported reference wcrtomb.
+000000000048EE60: warning: Unable to resolve imported reference iswlower.
+000000000048EE6C: warning: Unable to resolve imported reference towupper.
+000000000048ACCC: warning: Unable to resolve imported reference wctomb.
+000000000048AB48: warning: Unable to resolve imported reference __fdelt_chk.
+000000000048AB6C: warning: Unable to resolve imported reference __fdelt_chk.
+000000000048ABA0: warning: Unable to resolve imported reference select.
+000000000048A47C: warning: Unable to resolve imported reference select.
+000000000048A428: warning: Unable to resolve imported reference setitimer.
+0000000000488434: warning: Unable to resolve imported reference __strcpy_chk.
+0000000000485D48: warning: Unable to resolve imported reference faccessat.
+000000000042A704: warning: Unable to resolve imported reference getgroups.
+0000000000487010: warning: Unable to resolve imported reference pathconf.
+0000000000437808: warning: Unable to resolve imported reference getpid.
+0000000000436914: warning: Unable to resolve imported reference getpid.
+0000000000486B80: warning: Unable to resolve imported reference __strcpy_chk.
+0000000000485F8C: warning: Unable to resolve imported reference getaddrinfo.
+000000000048605C: warning: Unable to resolve imported reference freeaddrinfo.
+000000000048602C: warning: Unable to resolve imported reference freeaddrinfo.
+0000000000486020: warning: Unable to resolve imported reference freeaddrinfo.
+0000000000486070: warning: Unable to resolve imported reference gai_strerror.
+00000000004860A4: warning: Unable to resolve imported reference gai_strerror.
+0000000000485EB0: warning: Unable to resolve imported reference getpeername.
+0000000000485AB0: warning: Unable to resolve imported reference regcomp.
+0000000000485B10: warning: Unable to resolve imported reference regexec.
+0000000000485C0C: warning: Unable to resolve imported reference regfree.
+00000000004855D4: warning: Unable to resolve imported reference tcgetattr.
+00000000004855E0: warning: Unable to resolve imported reference tcgetattr.
+00000000004855A4: warning: Unable to resolve imported reference tcgetattr.
+00000000004845A4: warning: Unable to resolve imported reference mbsrtowcs.
+0000000000435B1C: warning: Unable to resolve imported reference __sigsetjmp.
+0000000000436030: warning: Unable to resolve imported reference __sigsetjmp.
+00000000004360A8: warning: Unable to resolve imported reference __sigsetjmp.
+00000000004778F8: warning: Unable to resolve imported reference __longjmp_chk.
+000000000047C62C: error: Cannot chop image map item of type word16.
+000000000047CC40: warning: Unable to resolve imported reference __strtol_internal.
+000000000047CB70: warning: Unable to resolve imported reference mblen.
+000000000047D694: error: Cannot chop image map item of type word16.
+000000000047D654: warning: Unable to resolve imported reference clearerr.
+000000000047E574: warning: Unable to resolve imported reference clearerr.
+000000000047B384: warning: Unable to resolve imported reference __sigsetjmp.
+000000000046EE20: warning: Unable to resolve imported reference strcasestr.
+000000000047B1FC: warning: Unable to resolve imported reference umask.
+000000000047B23C: warning: Unable to resolve imported reference umask.
+000000000047B244: warning: Unable to resolve imported reference umask.
+000000000047B280: warning: Unable to resolve imported reference umask.
+000000000047B288: warning: Unable to resolve imported reference umask.
+000000000047A5F4: warning: Unable to resolve imported reference getrlimit.
+000000000047AD74: warning: Unable to resolve imported reference getrlimit.
+000000000047ADB4: warning: Unable to resolve imported reference setrlimit.
+0000000000467618: warning: Unable to resolve imported reference eaccess.
+0000000000467630: warning: Unable to resolve imported reference eaccess.
+0000000000479844: warning: Unable to resolve imported reference getrusage.
+0000000000479854: warning: Unable to resolve imported reference getrusage.
+0000000000458F28: warning: Unable to resolve imported reference __sigsetjmp.
+0000000000457DDC: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000458314: error: Cannot chop image map item of type word16.
+0000000000459028: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000459134: warning: Unable to resolve imported reference __longjmp_chk.
+000000000045911C: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000479708: warning: Unable to resolve imported reference killpg.
+0000000000470F9C: warning: Unable to resolve imported reference __sigsetjmp.
+00000000004768D0: warning: Unable to resolve imported reference __sigsetjmp.
+000000000046D328: warning: Unable to resolve imported reference chdir.
+000000000046D420: warning: Unable to resolve imported reference chdir.
+000000000046D438: warning: Unable to resolve imported reference chdir.
+000000000046D3DC: warning: Unable to resolve imported reference chdir.
+0000000000441D10: warning: Unable to resolve imported reference kill.
+0000000000441DC4: warning: Unable to resolve imported reference killpg.
+0000000000441EB8: warning: Unable to resolve imported reference killpg.
+0000000000441F18: warning: Unable to resolve imported reference killpg.
+0000000000441E5C: warning: Unable to resolve imported reference kill.
+0000000000441EC8: warning: Unable to resolve imported reference kill.
+0000000000440784: warning: Unable to resolve imported reference __strcpy_chk.
+0000000000440108: warning: Unable to resolve imported reference strsignal.
+000000000043FDFC: warning: Unable to resolve imported reference getcwd.
+0000000000473718: warning: Unable to resolve imported reference dcngettext.
+0000000000473EE0: warning: Unable to resolve imported reference __strncpy_chk.
+0000000000473F9C: warning: Unable to resolve imported reference __strncpy_chk.
+0000000000443ECC: warning: Unable to resolve imported reference killpg.
+0000000000431408: warning: Unable to resolve imported reference execve.
+0000000000431740: warning: Unable to resolve imported reference __longjmp_chk.
+0000000000457D44: warning: Unable to resolve imported reference sigdelset.
+0000000000444010: warning: Unable to resolve imported reference getpgrp.
+00000000004440AC: warning: Unable to resolve imported reference kill.
+00000000004440EC: warning: Unable to resolve imported reference getpid.
+0000000000444108: warning: Unable to resolve imported reference setpgid.
+0000000000444348: warning: Unable to resolve imported reference setpgid.
+0000000000444270: warning: Unable to resolve imported reference getpid.
+0000000000444284: warning: Unable to resolve imported reference setpgid.
+000000000046F46C: warning: Unable to resolve imported reference qsort.
+000000000047025C: warning: Unable to resolve imported reference clearerr.
+0000000000470104: warning: Unable to resolve imported reference clearerr.
+0000000000470308: warning: Unable to resolve imported reference clearerr.
+000000000046DD78: warning: Unable to resolve imported reference confstr.
+000000000046DDA8: warning: Unable to resolve imported reference confstr.
+0000000000459734: warning: Unable to resolve imported reference qsort.
+0000000000465CAC: warning: Unable to resolve imported reference getgrent.
+0000000000465D28: warning: Unable to resolve imported reference endgrent.
+0000000000465CA4: warning: Unable to resolve imported reference setgrent.
+0000000000465B1C: warning: Unable to resolve imported reference getservent.
+0000000000465C1C: warning: Unable to resolve imported reference endservent.
+0000000000465B14: warning: Unable to resolve imported reference setservent.
+0000000000461E28: warning: Unable to resolve imported reference __strncpy_chk.
+00000000004627A0: error: Cannot chop image map item of type word16.
+000000000044B4B0: warning: Unable to resolve imported reference wcslen.
+000000000043B264: warning: Unable to resolve imported reference getpid.
+000000000043A184: warning: Unable to resolve imported reference getppid.
+000000000043B494: warning: Unable to resolve imported reference __strcpy_chk.
+000000000043A5E0: warning: Unable to resolve imported reference tzset.
+000000000042AF7C: warning: Unable to resolve imported reference ttyname.
+000000000041F6F0: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041F680: warning: Unable to resolve imported reference alarm.
+000000000041F5F0: warning: Unable to resolve imported reference alarm.
+000000000041F098: warning: Unable to resolve imported reference setuid.
+000000000041F0A0: warning: Unable to resolve imported reference setgid.
+000000000041D0C4: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041D0EC: warning: Unable to resolve imported reference sleep.
+000000000041D190: warning: Unable to resolve imported reference getgid.
+000000000041D1A0: warning: Unable to resolve imported reference getegid.
+000000000041D1F4: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041D38C: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041F408: warning: Unable to resolve imported reference gethostname.
+000000000041D950: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041EC6C: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041E604: warning: Unable to resolve imported reference dup2.
+000000000041CEB0: warning: Unable to resolve imported reference iswlower.
+000000000041CEA0: warning: Unable to resolve imported reference wcrtomb.
+000000000041CE60: warning: Unable to resolve imported reference tcflow.
+000000000041CE50: warning: Unable to resolve imported reference strcasestr.
+000000000041CE30: warning: Unable to resolve imported reference towlower.
+000000000041CE20: warning: Unable to resolve imported reference getdtablesize.
+000000000041CE00: warning: Unable to resolve imported reference waitpid.
+000000000041CDF0: warning: Unable to resolve imported reference mblen.
+000000000041CDE0: warning: Unable to resolve imported reference alarm.
+000000000041CDD0: warning: Unable to resolve imported reference __memmove_chk.
+000000000041CD90: warning: Unable to resolve imported reference faccessat.
+000000000041CD80: warning: Unable to resolve imported reference umask.
+000000000041CD70: warning: Unable to resolve imported reference wcscoll.
+000000000041CD60: warning: Unable to resolve imported reference towupper.
+000000000041CD40: warning: Unable to resolve imported reference strsignal.
+000000000041CD20: warning: Unable to resolve imported reference regcomp.
+000000000041CD10: warning: Unable to resolve imported reference dup2.
+000000000041CD00: warning: Unable to resolve imported reference regfree.
+000000000041CCF0: warning: Unable to resolve imported reference sigdelset.
+000000000041CCD0: warning: Unable to resolve imported reference regexec.
+000000000041CCC0: warning: Unable to resolve imported reference wcscmp.
+000000000041CC90: warning: Unable to resolve imported reference strchrnul.
+000000000041CC70: warning: Unable to resolve imported reference setservent.
+000000000041CC60: warning: Unable to resolve imported reference iswalnum.
+000000000041CC50: warning: Unable to resolve imported reference tgetstr.
+000000000041CC40: warning: Unable to resolve imported reference select.
+000000000041CC30: warning: Unable to resolve imported reference getpwent.
+000000000041CC20: warning: Unable to resolve imported reference gethostname.
+000000000041CC00: warning: Unable to resolve imported reference iswupper.
+000000000041CBC0: warning: Unable to resolve imported reference getaddrinfo.
+000000000041CBB0: warning: Unable to resolve imported reference mbsrtowcs.
+000000000041CB90: warning: Unable to resolve imported reference confstr.
+000000000041CB80: warning: Unable to resolve imported reference endpwent.
+000000000041CB70: warning: Unable to resolve imported reference getservent.
+000000000041CB60: warning: Unable to resolve imported reference getrlimit.
+000000000041CB20: warning: Unable to resolve imported reference dcngettext.
+000000000041CB10: warning: Unable to resolve imported reference clearerr.
+000000000041CB00: warning: Unable to resolve imported reference setgrent.
+000000000041CAE0: warning: Unable to resolve imported reference __longjmp_chk.
+000000000041CAD0: warning: Unable to resolve imported reference wcsdup.
+000000000041CAB0: warning: Unable to resolve imported reference execve.
+000000000041CAA0: warning: Unable to resolve imported reference setitimer.
+000000000041CA80: warning: Unable to resolve imported reference killpg.
+000000000041CA70: warning: Unable to resolve imported reference mbsnrtowcs.
+000000000041CA40: warning: Unable to resolve imported reference getpgrp.
+000000000041CA30: warning: Unable to resolve imported reference getgid.
+000000000041CA10: warning: Unable to resolve imported reference chdir.
+000000000041C9F0: warning: Unable to resolve imported reference setpgid.
+000000000041C9E0: warning: Unable to resolve imported reference wctomb.
+000000000041C950: warning: Unable to resolve imported reference getrusage.
+000000000041C920: warning: Unable to resolve imported reference __mbrlen.
+000000000041C910: warning: Unable to resolve imported reference wcsrtombs.
+000000000041C8E0: warning: Unable to resolve imported reference setgid.
+000000000041C840: warning: Unable to resolve imported reference setpwent.
+000000000041C7F0: warning: Unable to resolve imported reference getgrent.
+000000000041C7E0: warning: Unable to resolve imported reference tgetnum.
+000000000041C7B0: warning: Unable to resolve imported reference tgetent.
+000000000041C7A0: warning: Unable to resolve imported reference sleep.
+000000000041C790: warning: Unable to resolve imported reference getgroups.
+000000000041C780: warning: Unable to resolve imported reference wcslen.
+000000000041C720: warning: Unable to resolve imported reference tgetflag.
+000000000041C710: warning: Unable to resolve imported reference __fpurge.
+000000000041C6C0: warning: Unable to resolve imported reference wcsncmp.
+000000000041C690: warning: Unable to resolve imported reference __strtol_internal.
+000000000041C680: warning: Unable to resolve imported reference getppid.
+000000000041C660: warning: Unable to resolve imported reference __strcpy_chk.
+000000000041C650: warning: Unable to resolve imported reference tzset.
+000000000041C640: warning: Unable to resolve imported reference __strncpy_chk.
+000000000041C630: warning: Unable to resolve imported reference __fdelt_chk.
+000000000041C5E0: warning: Unable to resolve imported reference iswctype.
+000000000041C5C0: warning: Unable to resolve imported reference __vsnprintf_chk.
+000000000041C5A0: warning: Unable to resolve imported reference getpid.
+000000000041C590: warning: Unable to resolve imported reference wctob.
+000000000041C570: warning: Unable to resolve imported reference wcschr.
+000000000041C510: warning: Unable to resolve imported reference tcgetattr.
+000000000041C4E0: warning: Unable to resolve imported reference sigfillset.
+000000000041C4D0: warning: Unable to resolve imported reference tgoto.
+000000000041C4C0: warning: Unable to resolve imported reference eaccess.
+000000000041C4A0: warning: Unable to resolve imported reference endgrent.
+000000000041C490: warning: Unable to resolve imported reference fork.
+000000000041C480: warning: Unable to resolve imported reference pathconf.
+000000000041C470: warning: Unable to resolve imported reference kill.
+000000000041C440: warning: Unable to resolve imported reference qsort.
+000000000041C430: warning: Unable to resolve imported reference setrlimit.
+000000000041C3C0: warning: Unable to resolve imported reference ttyname.
+000000000041C3B0: warning: Unable to resolve imported reference __sigsetjmp.
+000000000041C3A0: warning: Unable to resolve imported reference tputs.
+000000000041C380: warning: Unable to resolve imported reference strnlen.
+000000000041C360: warning: Unable to resolve imported reference wctype.
+000000000041C350: warning: Unable to resolve imported reference sbrk.
+000000000041C340: warning: Unable to resolve imported reference getegid.
+000000000041C2C0: warning: Unable to resolve imported reference getpeername.
+000000000041C290: warning: Unable to resolve imported reference setuid.
+000000000041C280: warning: Unable to resolve imported reference freeaddrinfo.
+000000000041C260: warning: Unable to resolve imported reference gai_strerror.
+000000000041C240: warning: Unable to resolve imported reference endservent.
+error: An error occurred during decompilation. System.NotImplementedException: Invalid
+   at Reko.Arch.Arm.AArch64.VectorRegisterOperand.WriteName(Int32 bitSize, RegisterStorage VectorRegister, VectorData ElementType, Int32 Index, MachineInstructionWriter writer) in C:\dev\uxmal\reko\master\src\Arch\Arm\AArch64\VectorRegisterOperand.cs:line 94
+   at Reko.Arch.Arm.AArch64.VectorRegisterOperand.Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options) in C:\dev\uxmal\reko\master\src\Arch\Arm\AArch64\VectorRegisterOperand.cs:line 46
+   at Reko.Arch.Arm.AArch64.AArch64Instruction.RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options) in C:\dev\uxmal\reko\master\src\Arch\Arm\AArch64\AArch64Instruction.cs:line 160
+   at Reko.Arch.Arm.AArch64.AArch64Instruction.Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options) in C:\dev\uxmal\reko\master\src\Arch\Arm\AArch64\AArch64Instruction.cs:line 106
+   at Reko.Core.Machine.MachineInstruction.ToString() in C:\dev\uxmal\reko\master\src\Core\Machine\MachineInstruction.cs:line 80
+   at Reko.Arch.Arm.AArch64.A64Rewriter.EmitUnitTest() in C:\dev\uxmal\reko\master\src\Arch\Arm\AArch64\A64Rewriter.cs:line 244
+   at Reko.Arch.Arm.AArch64.A64Rewriter.<GetEnumerator>d__46.MoveNext() in C:\dev\uxmal\reko\master\src\Arch\Arm\AArch64\A64Rewriter.cs:line 68
+   at Reko.Scanning.ShingledScanner.ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, UInt64 workToDo) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 185
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 164
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 115
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1022
+   at Reko.Scanning.Scanner.ScanImage() in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 773
+   at Reko.DecompilerDriver.ScanProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 420
+   at Reko.DecompilerDriver.ScanPrograms() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 408
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 164
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 0000800D: warning: Call target address FF48A91D is invalid.
 00008019: warning: Call target address 00C89029 is invalid.
 00008021: warning: Call target address 010ACC97 is invalid.
 00008025: warning: Call target address FFC08371 is invalid.
+00000079: warning: Call target address FEC5AF49 is invalid.
+00000081: warning: Call target address FFC001A1 is invalid.
 0000016D: warning: Call target address FEC5AB25 is invalid.
-00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+00000179: error: Rewriting ARM opcode 'crc32w' (C142A144) is not supported yet.
+00000185: warning: Call target address 0118647D is invalid.
+00000199: error: Rewriting ARM opcode 'crc32cw' (1468A46) is not supported yet.
+000016C9: warning: Call target address 0000F8E8 is invalid.
+0000173D: warning: Call target address 012C5729 is invalid.
+00001759: error: Rewriting ARM opcode 'mcrr' (8C45C0F8) is not supported yet.
+00001775: warning: Call target address 0008373D is invalid.
 0000A5C9: warning: Call target address FF656279 is invalid.
 0000A5CD: warning: Call target address 010CB1D5 is invalid.
-0000A631: error: Rewriting ARM opcode 'mrrc' is not supported yet.
+0000A631: error: Rewriting ARM opcode 'mrrc' (EC5CCC23) is not supported yet.
 0000A259: warning: Call target address 018E3801 is invalid.
 0000A045: warning: Call target address 001B0DF1 is invalid.
+00009F59: warning: Call target address 0010C323 is invalid.
+00009F61: warning: Call target address 000CE329 is invalid.
+00009F6D: warning: Call target address 0008A735 is invalid.
+00009F7D: warning: Call target address 000CEB71 is invalid.
+00009F29: error: Rewriting ARM opcode 'bxj' (1220021) is not supported yet.
+00009F29: error: Rewriting ARM opcode 'bxj' (1220021) is not supported yet.
+00009F2D: warning: Call target address 01810461 is invalid.
 00009E8D: warning: Call target address 0130C965 is invalid.
 00009E91: warning: Call target address 01A12BBD is invalid.
 00009EA5: warning: Call target address 010CAC39 is invalid.
+00009DFD: warning: Call target address FF412EAD is invalid.
+00009D19: error: Rewriting ARM opcode 'mcrr' (5C477060) is not supported yet.
 00009CD1: warning: Call target address 0128A605 is invalid.
-00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
-00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
+00009C41: error: Rewriting ARM opcode 'mcrr' (2C4601B5) is not supported yet.
+00009C41: error: Rewriting ARM opcode 'mcrr' (2C4601B5) is not supported yet.
 00009C0D: warning: Call target address 000EA7C1 is invalid.
 00009BF1: warning: Call target address 000EA7A5 is invalid.
 00009BD5: warning: Call target address 000EA789 is invalid.
 00009BB9: warning: Call target address 000EA76D is invalid.
 00009B9D: warning: Call target address 000EA751 is invalid.
 00009B81: warning: Call target address 000EA735 is invalid.
+00009B45: warning: Call target address 000EA6F9 is invalid.
 00009B29: warning: Call target address 01025EF1 is invalid.
 00009AF5: warning: Call target address 0120AC29 is invalid.
 00009ADD: warning: Call target address 0120AC11 is invalid.
+0000101B: warning: Call target address 00200000 is invalid.
+0000102F: warning: Call target address 00C24417 is invalid.
+0000104B: warning: Call target address 000213FF is invalid.
+00001057: warning: Call target address FFC02DFB is invalid.
+0000105B: warning: Call target address 01A1A047 is invalid.
+00009AD1: warning: Call target address 0080A079 is invalid.
 000099F5: warning: Call target address FFC09C73 is invalid.
-000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-000096C9: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+000099C9: warning: Call target address FFE09651 is invalid.
+000099E1: warning: Call target address 0100BD89 is invalid.
+000098E5: warning: Call target address 010B34E9 is invalid.
+000097CD: error: Rewriting ARM opcode 'mcrr' (C4616B5) is not supported yet.
+000097CD: error: Rewriting ARM opcode 'mcrr' (C4616B5) is not supported yet.
+0000980D: warning: Call target address FFFE83F1 is invalid.
+00009811: warning: Call target address FECEA5F9 is invalid.
+00009815: warning: Call target address 0138F8CD is invalid.
+00009825: warning: Call target address FFFE5409 is invalid.
+00009829: warning: Call target address FECD0611 is invalid.
+0000979D: warning: Call target address FFE094BD is invalid.
+00009731: error: Rewriting ARM opcode 'mcrr' (7C400200) is not supported yet.
+000096C9: error: Rewriting ARM opcode 'mcrr' (C4F0C46) is not supported yet.
+00009655: error: Rewriting ARM opcode 'mcrr' (C477060) is not supported yet.
+00009661: warning: Call target address 011E57E9 is invalid.
+000095F9: error: Rewriting ARM opcode 'mcrr' (C477060) is not supported yet.
+00009605: warning: Call target address 011E578D is invalid.
 000095C1: warning: Call target address 0110E1D1 is invalid.
-00009599: error: Rewriting ARM opcode 'mcrrne' is not supported yet.
-00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
-00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
+00009599: error: Rewriting ARM opcode 'mcrr' (1C442304) is not supported yet.
+00009569: error: Rewriting ARM opcode 'uqsub8' (663E0F4) is not supported yet.
+00009569: error: Rewriting ARM opcode 'uqsub8' (663E0F4) is not supported yet.
 00009579: warning: Call target address 00ECA961 is invalid.
 00009505: warning: Call target address FED15639 is invalid.
 00009501: warning: Call target address FEF858C9 is invalid.
-000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
-000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
 000094A9: warning: Call target address 00909891 is invalid.
 00009485: warning: Call target address 0090986D is invalid.
-000091E5: error: Rewriting ARM opcode 'mcrrhi' is not supported yet.
+000092BD: error: Rewriting ARM opcode 'bxj' (31240024) is not supported yet.
+000092C5: error: Rewriting ARM opcode 'bxj' (11200020) is not supported yet.
+000092D5: warning: Call target address 010CBBE9 is invalid.
+000091E5: error: Rewriting ARM opcode 'mcrr' (8C430CBF) is not supported yet.
 00009209: warning: Call target address 010CBD0D is invalid.
+00009219: warning: Call target address 010CBD1D is invalid.
+00009229: warning: Call target address 010CBD2D is invalid.
+00009239: warning: Call target address 010CBD3D is invalid.
+000091A1: warning: Call target address 00D0A589 is invalid.
+000091AD: warning: Call target address 0088923D is invalid.
 00009165: warning: Call target address 010CC069 is invalid.
 00009175: warning: Call target address FEFCE1B9 is invalid.
+00009149: warning: Call target address 008C944D is invalid.
 00009115: warning: Call target address 010CC019 is invalid.
+000090D5: warning: Call target address 010AF229 is invalid.
+000090AD: warning: Call target address FFE51491 is invalid.
+000090B1: warning: Call target address 01AC1259 is invalid.
 00008F31: warning: Call target address 01B63C6D is invalid.
 00008F49: warning: Call target address FE3DCF1D is invalid.
-00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00008F79: warning: Call target address FFE77B5D is invalid.
+00008F85: warning: Call target address 009C937D is invalid.
+00008F99: warning: Call target address 00E0946D is invalid.
+00008FA1: warning: Call target address FF41DC55 is invalid.
+00008FB5: warning: Call target address FFA04705 is invalid.
+00008FBD: warning: Call target address 01A21965 is invalid.
+00009001: warning: Call target address FFE66BE5 is invalid.
+00009009: warning: Call target address FF47E4B9 is invalid.
+00009015: warning: Call target address 019F3DD9 is invalid.
+00009025: warning: Call target address FECDF771 is invalid.
+00009035: warning: Call target address FEC55B21 is invalid.
+0000905D: warning: Call target address 01A2B8C5 is invalid.
+00009065: warning: Call target address 010AF97D is invalid.
+00008EF1: error: Rewriting ARM opcode 'mcrr' (C460EB5) is not supported yet.
+00008EF1: error: Rewriting ARM opcode 'mcrr' (C460EB5) is not supported yet.
 00008F11: warning: Call target address FFE08BDF is invalid.
-00008F21: error: Rewriting ARM opcode 'vcvt.u32.f32' is not supported yet.
+00008DF5: warning: Call target address 01189F15 is invalid.
+00008DFD: warning: Call target address FFE06F1D is invalid.
+00008D5D: warning: Call target address FFF09941 is invalid.
 00008D29: warning: Call target address FFE08C05 is invalid.
 00008BA9: warning: Call target address FFE088C9 is invalid.
+00008B7D: warning: Call target address 01189C9D is invalid.
+00008AF5: warning: Call target address 01189C15 is invalid.
+00008A91: warning: Call target address FFF62E75 is invalid.
+00008A95: error: Rewriting ARM opcode 'crc32w' (31460446) is not supported yet.
+00008A0D: warning: Call target address 01189B2D is invalid.
+000089D5: warning: Call target address 01189AF5 is invalid.
+000089DD: warning: Call target address FFE06AFD is invalid.
 00008929: warning: Call target address FFE08805 is invalid.
 00008811: warning: Call target address 011ACD31 is invalid.
 00008815: warning: Call target address FE7CB135 is invalid.
 00008795: warning: Call target address FFE66B5D is invalid.
+000087A5: error: Rewriting ARM opcode 'crc32h' (1210046) is not supported yet.
+00008715: warning: Call target address FFD75611 is invalid.
+00008735: warning: Call target address 012CCFC5 is invalid.
+0000874D: warning: Call target address FEF4CA15 is invalid.
 00008679: warning: Call target address 0118987D is invalid.
+00008645: warning: Call target address FECB902D is invalid.
+0000864D: warning: Call target address 010CB035 is invalid.
+00008609: warning: Call target address FECB873D is invalid.
 00008569: warning: Call target address 003C8D31 is invalid.
+00008505: warning: Call target address FFE200CD is invalid.
 0000837D: warning: Call target address FFE47745 is invalid.
 00008381: warning: Call target address 01B03135 is invalid.
+000083A1: warning: Call target address 01AF2DE5 is invalid.
+000083A5: warning: Call target address 010AED59 is invalid.
+0000834D: warning: Call target address 010B04F5 is invalid.
 0000830D: warning: Call target address 01A0B9E5 is invalid.
+00008329: warning: Call target address 0182E801 is invalid.
 0000829D: warning: Call target address 0118B979 is invalid.
+00008245: warning: Call target address FFFE0E0D is invalid.
 00008211: warning: Call target address FFC084ED is invalid.
 0000818D: warning: Call target address 002CAD55 is invalid.
 00008195: warning: Call target address 00048D61 is invalid.
@@ -205,11 +757,21 @@ fn092A: error: An error occurred during data flow analysis.
 000081B5: warning: Call target address 0024AD81 is invalid.
 000081B9: warning: Call target address 0028B185 is invalid.
 000081BD: warning: Call target address 0030B589 is invalid.
-00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-0000188D: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+000081C5: warning: Call target address 00A0B111 is invalid.
+0000811D: error: Rewriting ARM opcode 'crc32w' (1462846) is not supported yet.
+00008129: warning: Call target address 01A0EE5D is invalid.
+00008135: warning: Call target address 01E0CE65 is invalid.
+00008149: warning: Call target address FEF64411 is invalid.
+000080B5: warning: Call target address FFC085D5 is invalid.
+000080C1: error: Rewriting ARM opcode 'crc32ch' (1223B49) is not supported yet.
+000080E5: error: Rewriting ARM opcode 'crc32cw' (1480746) is not supported yet.
+00001925: warning: Call target address FE07DCCD is invalid.
+0000193D: warning: Call target address 012C5E8D is invalid.
+00001891: error: Rewriting ARM opcode 'mcrr' (C4605B5) is not supported yet.
+00001891: error: Rewriting ARM opcode 'mcrr' (C4605B5) is not supported yet.
+000018D1: warning: Call target address 010A1899 is invalid.
+00001875: error: Rewriting ARM opcode 'mcrr' (C4606B5) is not supported yet.
+00001875: error: Rewriting ARM opcode 'mcrr' (C4606B5) is not supported yet.
 000013B1: warning: Call target address FED1D4E5 is invalid.
 000013B9: warning: Call target address 000A1391 is invalid.
 000013C1: warning: Call target address 010A1389 is invalid.
@@ -218,55 +780,860 @@ fn092A: error: An error occurred during data flow analysis.
 000012DD: warning: Call target address 00C81899 is invalid.
 0000115D: warning: Call target address FFC02E7D is invalid.
 00001121: warning: Call target address 01A17655 is invalid.
+000010F1: warning: Call target address 000E20A5 is invalid.
+00001105: warning: Call target address 01A13809 is invalid.
+00001001: warning: Call target address 01A1850D is invalid.
+00000FA9: warning: Call target address 012C3CF9 is invalid.
+00000FB5: warning: Call target address FEF451F9 is invalid.
+00000FB9: warning: Call target address FF6014C9 is invalid.
+00000F71: warning: Call target address 00A01375 is invalid.
 00000E89: warning: Call target address 00AC1031 is invalid.
-00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
-00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+00000EC5: warning: Call target address 01A19EB5 is invalid.
+00000D6D: error: Rewriting ARM opcode 'mcrr' (3C47F0E9) is not supported yet.
+00000D6D: error: Rewriting ARM opcode 'mcrr' (3C47F0E9) is not supported yet.
+00000DD5: warning: Call target address 0000F1A1 is invalid.
+00000DF9: warning: Call target address 01B3B7A1 is invalid.
+00000E1D: warning: Call target address 000E1DD1 is invalid.
+00000D2D: warning: Call target address 0079B6D5 is invalid.
 00000BF1: warning: Call target address 01A19079 is invalid.
+00000C0D: warning: Call target address 01A19AD9 is invalid.
+00000C19: warning: Call target address 00AC10E1 is invalid.
+00000C45: warning: Call target address 012C2195 is invalid.
 00000B21: warning: Call target address FE3D4AF5 is invalid.
+00000B3D: warning: Call target address FFC016E5 is invalid.
+00000B49: warning: Call target address 00B010E9 is invalid.
+00000B61: warning: Call target address FF47DD01 is invalid.
+00000B75: warning: Call target address FFC0277D is invalid.
+00000B79: warning: Call target address 01A1DB6D is invalid.
+00000B7D: warning: Call target address 01B37935 is invalid.
 000009FD: warning: Call target address 012C128D is invalid.
-00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00000981: warning: Call target address 00C01A15 is invalid.
+00000875: warning: Call target address 01B32E39 is invalid.
+00000885: warning: Call target address 01897D95 is invalid.
+000007D5: warning: Call target address FFC02579 is invalid.
+000007E1: warning: Call target address 01A192AD is invalid.
+000007E5: warning: Call target address 01B3519D is invalid.
+00000801: warning: Call target address 01B3A9A9 is invalid.
+00000835: warning: Call target address FFC02555 is invalid.
+000006F1: warning: Call target address 01831479 is invalid.
+00000679: warning: Call target address 014A0A41 is invalid.
 00000619: warning: Call target address 0183930D is invalid.
 00000621: warning: Call target address 0118891D is invalid.
-00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+000004E5: warning: Call target address 00C809AD is invalid.
+000004E9: warning: Call target address 018E0FB9 is invalid.
+000002E1: error: Rewriting ARM opcode 'crc32cw' (1468A46) is not supported yet.
+0000037D: warning: Call target address FFE0009D is invalid.
+000002B9: warning: Call target address 01AE10FD is invalid.
 00000109: warning: Call target address FFC02AB1 is invalid.
 00000111: warning: Call target address 01A18AC9 is invalid.
 00000129: warning: Call target address FFC02AD1 is invalid.
-0000A4EC: error: Rewriting ARM opcode 'usateq' is not supported yet.
-000094FD: error: An error occurred while processing instruction at address 000094FD.
-    Expected stack depth to be known.
-       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 159
+00000135: warning: Call target address 01104EDD is invalid.
+0000013D: warning: Call target address 01A1908D is invalid.
+0000014D: error: Rewriting ARM opcode 'rrx' (1BD7063) is not supported yet.
+0000A35C: error: Rewriting ARM opcode 'crc32w' (61420040) is not supported yet.
+0000A364: error: Rewriting ARM opcode 'crc32w' (314B4541) is not supported yet.
+0000A3B0: error: Rewriting ARM opcode 'vsub' (3E364949) is not supported yet.
+0000A3B0: error: Rewriting ARM opcode 'vsub' (3E364949) is not supported yet.
+0000A3C4: error: Rewriting ARM opcode 'vmla' (3E010909) is not supported yet.
+0000A3C4: error: Rewriting ARM opcode 'vmla' (3E010909) is not supported yet.
+0000A404: error: Rewriting ARM opcode 'crc32w' (31494949) is not supported yet.
+0000A4B8: error: Rewriting ARM opcode 'mcrr' (3C403040) is not supported yet.
+0000101B: error: An error occurred while processing instruction at address 0000101B.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-: error: Error when reconstructing types.
-    Parameter count must match.
-       at Reko.Typing.EquivalenceClassBuilder.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 138
-   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
+0000102F: error: An error occurred while processing instruction at address 0000102F.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000102F: error: An error occurred while processing instruction at address 0000102F.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000103F: error: An error occurred while processing instruction at address 0000103F.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000104B: error: An error occurred while processing instruction at address 0000104B.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00001057: error: An error occurred while processing instruction at address 00001057.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000105B: error: An error occurred while processing instruction at address 0000105B.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008008: error: An error occurred while processing instruction at address 00008008.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008008: error: An error occurred while processing instruction at address 00008008.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000800D: error: An error occurred while processing instruction at address 0000800D.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008019: error: An error occurred while processing instruction at address 00008019.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008021: error: An error occurred while processing instruction at address 00008021.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008025: error: An error occurred while processing instruction at address 00008025.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000A28D: error: An error occurred while processing instruction at address 0000A28D.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+fn00001001: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001005: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001009: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn0000100D: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001011: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001015: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001019: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001021: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001025: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001029: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn0000102D: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001031: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001039: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn0000103D: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001041: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001049: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn0000104D: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00001051: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00007FF8: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00007FF9: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00007FFD: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn0000800C: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00008010: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00008014: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+00000121: error: An error occurred while processing the statement Mem264[r0 - 838 + 0x00000000:byte] = (byte) r10.
+    Not handling (ptr32 (struct (0 T_242 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+0000038D: error: An error occurred while processing the statement ip = (r3 >> r8) - r8 - C.
+    Pulling difference int32 and (ptr32 (struct (0 T_656 t0000) (4BF T_734 t04BF)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00000805: error: An error occurred while processing the statement r5_152 = Mem0[r1_141 - 4 + 0x00000000:word32].
+    Not handling (ptr32 (struct (0 T_2181 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 131
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00000B2D: error: An error occurred while processing the statement Mem263[r0 - 72 + 0x00000000:word64] = r7_r6.
+    Not handling (ptr32 (struct (0 T_3222 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+fn00008010_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+000080E1: error: An error occurred while processing the statement Mem72[r6 - 44 + 0x00000000:word64] = r3_r2.
+    Not handling (ptr32 (struct (0 T_15528 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009335: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
+    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009355: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
+    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009369: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
+    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+0000938D: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
+    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009415: error: An error occurred while processing the statement __stc(p0, c2, Mem0[r6 - 996 + 0x00000000:word32]).
+    Not handling (ptr32 (struct (0 T_21466 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
+   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
+   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 219
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.EquivalenceClassBuilder.Build(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 75
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 86
-   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 308
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+000094DD: error: An error occurred while processing the statement Mem32[r2 - 356 + 0x00000000:word32] = r0.
+    Not handling (ptr32 (struct (0 T_21841 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+000095AD: error: An error occurred while processing the statement r1 = Mem0[r0 - -4 + 0x00000000:word32].
+    Not handling (ptr32 (struct (0 T_22067 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 131
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009801: error: An error occurred while processing the statement byte NZCV_288 = cond((r0 << r0) - r0 - C).
+    Pulling difference ui32 and (ptr32 (struct (0 T_22713 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 167
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009921: error: An error occurred while processing the statement Mem39[r0 - (r5 >> 20) + 0x00000000:byte] = (byte) r1.
+    Not handling (ptr32 (struct (0 T_23258 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009B1D: error: An error occurred while processing the statement Mem19[r0 - 4064 + 0x00000000:byte] = (byte) r0.
+    Not handling (ptr32 (struct (0 T_23896 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009BB1: error: An error occurred while processing the statement Mem35[r0_33 - 165 + 0x00000000:word32] = r0_33.
+    Not handling (ptr32 (struct (0 T_24121 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009BE9: error: An error occurred while processing the statement Mem35[r0_33 - 165 + 0x00000000:word32] = r0_33.
+    Not handling (ptr32 (struct (0 T_24251 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009C21: error: An error occurred while processing the statement Mem33[r0_31 - 165 + 0x00000000:word32] = r0_31.
+    Not handling (ptr32 (struct (0 T_24362 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009C31: error: An error occurred while processing the statement r4 = (r7 >> 6) - r0 - C.
+    Pulling difference int32 and (ptr32 (struct (0 T_24391 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009EDD: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
+    Pulling difference ui32 and (ptr32 (struct (0 T_25427 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009EE5: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
+    Pulling difference ui32 and (ptr32 (struct (0 T_10 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009EF9: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
+    Pulling difference ui32 and (ptr32 (struct (0 T_25538 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009F01: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
+    Pulling difference ui32 and (ptr32 (struct (0 T_25538 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+00009F19: error: An error occurred while processing the statement byte NZCV_48 = cond((r7 >> 6) - r4 - C).
+    Pulling difference int32 and (ptr32 (struct (0 T_25607 t0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 167
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+prvCopyDataToQueue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+prvCopyDataFromQueue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xQueueGenericSend: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+xQueueGiveFromISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xQueueGiveMutexRecursive: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xQueueGenericReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xQueueCreateMutex: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+prvAddNewTaskToReadyList: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+prvAddCurrentTaskToDelayedList.isra.0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+vTaskAllocateMPURegions: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xTaskNotifyWait: error: An error occurred while rewriting procedure to high-level language.
+xTaskGenericNotifyFromISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xTaskNotifyWait: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+ulTaskNotifyTake: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
    at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-uxTaskResetEventItemValue: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+vTaskDelayUntil: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn00000FFF: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001001: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001005: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001009: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn0000100D: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001011: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001015: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001019: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001021: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001025: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001029: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001031: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001039: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001041: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00001049: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn0000104D: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+uxTaskResetEventItemValue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 pvTaskIncrementMutexHeldCount: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xPortStartScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-ResetISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+pvPortMalloc: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xEventGroupSync: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn00007FF8: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00007FF9: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+ResetISR: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+fn00008010: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+vUART_ISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+prvSetAndCheckRegisters: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+PDCInit: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 PDCWrite: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
@@ -274,9 +1641,25 @@ PDCWrite: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+vListInsert: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xQueueCRSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xPortRaisePrivilege: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-vStartFlashCoRoutines: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+vParTestSetLED: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+vParTestToggleLED: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+prvFixedDelayCoRoutine: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+vStartFlashCoRoutines: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 MPU_xTaskCreate: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
@@ -284,32 +1667,63 @@ MPU_xTaskCreate: error: An error occurred while rewriting procedure to high-leve
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+MPU_xTaskGenericNotify: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+MPU_xTaskNotifyWait: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+MPU_xQueueGenericCreate: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+MPU_xQueueGenericSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+MPU_xQueueGenericReceive: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+MPU_xEventGroupSync: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+vCoRoutineSchedule: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+GPIOGetIntNumber: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+GPIODirModeGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+GPIOIntTypeGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 GPIOPadConfigSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+GPIOPadConfigGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralDisable: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-SysCtlPeripheralSleepDisable: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-SysCtlPeripheralDeepSleepDisable: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+IntEnable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+IntDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+OSRAMStringDraw: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+OSRAMDisplayOff: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralDeepSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 SysCtlReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlClockGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlClkVerificationClear: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+UARTConfigSet: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
 UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === Elf\ARM\switch\switch
 === Elf\MIPS\redir\redir
@@ -2445,15 +3859,15 @@ fn1483_1BB8: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 fn1483_1BB9: error: An error occurred during data flow analysis.
     Index was outside the bounds of the array.
-       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 396
+       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 397
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitReturnInstruction(ReturnInstruction ret) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 115
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 283
-   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 107
-   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 135
-   at Reko.Analysis.SsaTransform.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 216
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 66
+   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 284
+   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 108
+   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 136
+   at Reko.Analysis.SsaTransform.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 217
+   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 67
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 163
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0800_9F92_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
@@ -2508,4 +3922,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 93.39 seconds ---
+Decompiled 55 binaries in 85.95 seconds ---

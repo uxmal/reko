@@ -201,7 +201,7 @@ void prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, w
 
 // MayUse:  NZCV fp ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r8 r9 spsr
 // LiveOut:
-// Trashed: NZCV fp ip lr pc r0 r1 r10 r3 r5 r6 r7 r8 r9
+// Trashed: NZCV fp ip lr pc r0 r1 r10 r2 r3 r5 r6 r7 r8 r9
 // Preserved: sp
 // Stack args: Stack +0063(32)
 prvCopyDataToQueue_entry:
@@ -749,7 +749,7 @@ l00000169_thunk_prvCopyDataFromQueue:
 prvCopyDataToQueue_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid> r5:r5 - 25 ip:<invalid> pc:<invalid>
+// SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid> r5:r5 - 25 ip:<invalid> r2:<invalid> pc:<invalid>
 
 l00000165_1:
 // DataOut:
@@ -773,7 +773,7 @@ void prvCopyDataFromQueue(word32 r0, word32 r1, word32 r4, word32 r6, word32 r7,
 
 // MayUse:  ZCV fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZC ip pc r0 r1 r10 r8
+// Trashed: NZC ip pc r0 r1 r10 r2 r8
 // Preserved: sp
 prvCopyDataFromQueue_entry:
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
@@ -787,22 +787,23 @@ l0000016D:
 // SymbolicIn: sp:fp
 
 l0000016D_1:
-	word32 sp_92
-	word32 r1_95
-	byte NZC_97
-	word32 ip_98
-	byte V_101
-	word32 r10_102
-	byte C_103
-	word32 pc_104
-	word32 r7_105
-	word32 r9_106
-	byte NV_107
-	word32 r4_108
-	word32 fp_109
+	word32 sp_108
+	word32 r1_111
+	byte NZC_113
+	word32 r2_114
+	word32 ip_116
+	byte V_118
+	word32 r10_119
+	byte C_120
+	word32 pc_121
+	word32 r7_122
+	word32 r9_123
+	byte NV_124
+	word32 r4_125
+	word32 fp_126
 	call fnFEC5AB25 (retsize: 0;)
-		uses: C,fp,ip,NV,NZC,NZV,pc,r0,r1,r10,r4,r6,r7,r8,r9,sp_1,V,Z
-		defs: C_103,fp_109,ip_98,NV_107,NZC_97,NZV_94,pc_104,r0_99,r1_95,r10_102,r4_108,r6_96,r7_105,r8_100,r9_106,sp_92,V_101,Z_93
+		uses: C,fp,ip,NV,NZC,NZV,pc,r0,r1,r10,r2,r4,r6,r7,r8,r9,sp_1,V,Z
+		defs: C_120,fp_126,ip_116,NV_124,NZC_113,NZV_110,pc_121,r0_115,r1_111,r10_119,r2_114,r4_125,r6_112,r7_122,r8_117,r9_123,sp_108,V_118,Z_109
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
@@ -814,9 +815,9 @@ l00000171:
 // SymbolicIn: sp:fp
 
 l00000171_1:
-	byte NZC_87 = cond(r6 >> 32)
-	Z = NZC_87 (alias)
-	NZV = NZC_87 (alias)
+	byte NZC_103 = cond(r6 >> 32)
+	Z = NZC_103 (alias)
+	NZV = NZC_103 (alias)
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
@@ -839,86 +840,88 @@ l0000017D:
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r1:r6 >> 32
 
+l0000017D_1:
+	Z = cond(__ror(r0, 8)) (alias)
+// DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
+// DataOut (flags): NZCV
+// SymbolicIn: sp:fp r1:r6 >> 32
+
 l00000181:
 	branch Z l00000185
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r1:r6 >> 32
+// SymbolicIn: sp:fp r1:r6 >> 32 r2:<invalid>
 
 l00000181_1:
-	word32 ip_85 = __ror(r8, 2) - r0
+	word32 ip_95 = __ror(r8, 2) - r0
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r1:r6 >> 32
+// SymbolicIn: sp:fp r1:r6 >> 32 r2:<invalid>
 
 l00000185:
 	branch Z l00000185_then
-	word32 sp_61
-	byte Z_62
-	byte NZV_63
-	word32 r6_65
-	byte NZC_66
-	word32 ip_67
-	word32 r0_68
-	word32 r8_69
-	byte V_70
-	byte C_72
-	word32 pc_73
-	word32 r7_74
-	word32 r9_75
-	byte NV_76
-	word32 r4_77
-	word32 fp_78
-	word32 r10_71
-	word32 r1_64
+	word32 sp_70
+	byte Z_71
+	byte NZV_72
+	word32 r6_74
+	byte NZC_75
+	word32 r2_76
+	word32 r0_77
+	word32 ip_78
+	word32 r8_79
+	byte V_80
+	byte C_82
+	word32 pc_83
+	word32 r7_84
+	word32 r9_85
+	byte NV_86
+	word32 r4_87
+	word32 fp_88
+	word32 r10_81
+	word32 r1_73
 	call fn0118647D (retsize: 0;)
-		uses: C_38,fp_19,ip_29,NV_37,NZC_39,NZV_40,pc_24,r0_28,r1_42,r10_35,r4_20,r6_31,r7_23,r8_27,r9_22,sp_34,V_26,Z_41
-		defs: C_72,fp_78,ip_67,NV_76,NZC_66,NZV_63,pc_73,r0_68,r1_64,r10_71,r4_77,r6_65,r7_74,r8_69,r9_75,sp_61,V_70,Z_62
+		uses: C_65,fp_20,ip_29,NV_64,NZC_67,NZV_68,pc_25,r0_30,r1_44,r10_37,r2_66,r4_21,r6_33,r7_24,r8_28,r9_23,sp_36,V_27,Z_69
+		defs: C_82,fp_88,ip_78,NV_86,NZC_75,NZV_72,pc_83,r0_77,r1_73,r10_81,r2_76,r4_87,r6_74,r7_84,r8_79,r9_85,sp_70,V_80,Z_71
 	return
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r1:r6 >> 32 ip:<invalid>
+// SymbolicIn: sp:fp r1:r6 >> 32 r2:<invalid> ip:<invalid>
 
 l00000185_then:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r1:r6 >> 32 ip:<invalid>
+// SymbolicIn: sp:fp r1:r6 >> 32 r2:<invalid> ip:<invalid>
 
 l00000189:
-	branch V_70 l0000018D
+	branch V_80 l0000018D
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r1:r6 >> 32 ip:<invalid>
+// SymbolicIn: sp:fp r1:r6 >> 32 r2:<invalid> ip:<invalid>
 
 l00000189_1:
-	r10_71 = r10_71 + 192
-	r1_64 = (word32) Mem0[r10_71:int16]
+	r10_81 = r10_81 + 192
+	r1_73 = (word32) Mem0[r10_81:int16]
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r1:r6 >> 32 ip:<invalid>
+// SymbolicIn: sp:fp r1:r6 >> 32 r2:<invalid> ip:<invalid>
 
 l0000018D:
-	branch C_72 l00000191
+	branch C_82 l00000191
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): NZV
-// SymbolicIn: sp:fp r1:<invalid> ip:<invalid> r10:r10 + 192
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> ip:<invalid> r10:r10 + 192
 
 l0000018D_thunk_xQueueGenericSend:
-	xQueueGenericSend(r0_68, r1_64, r4_77, r6_65, r7_74, r8_69, r9_75, r10_71, fp_78, ip_67)
+	xQueueGenericSend(r0_77, r1_73, r4_87, r6_74, r7_84, r8_79, r9_85, r10_81, fp_88, ip_78)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r1:<invalid> ip:<invalid> r10:r10 + 192
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> ip:<invalid> r10:r10 + 192
 
 l0000018D_1:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r1:<invalid> ip:<invalid> r10:r10 + 192
-
-l0000017D_1:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r1:r6 >> 32
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> ip:<invalid> r10:r10 + 192
 
 l00000179_1:
 // DataOut:
@@ -934,7 +937,7 @@ l00000175_1:
 prvCopyDataFromQueue_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r1:<invalid> ip:<invalid> r10:r10 + 192 pc:<invalid> r0:<invalid> r8:<invalid>
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> ip:<invalid> r10:r10 + 192 pc:<invalid> r0:<invalid> r8:<invalid>
 
 
 
@@ -12195,12 +12198,12 @@ l000010DD:
 
 l000010DD_1:
 	ip = r9 + 0xC0000000 + C
-	byte NZCV_225 = cond(ip)
-	ZC = NZCV_225 (alias)
-	NZV = NZCV_225 (alias)
-	NZV = NZCV_225 (alias)
-	Z = NZCV_225 (alias)
-	V = NZCV_225 (alias)
+	byte NZCV_241 = cond(ip)
+	ZC = NZCV_241 (alias)
+	NZV = NZCV_241 (alias)
+	NZV = NZCV_241 (alias)
+	Z = NZCV_241 (alias)
+	V = NZCV_241 (alias)
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
@@ -12212,11 +12215,11 @@ l000010E1:
 // SymbolicIn: sp:fp ip:<invalid>
 
 l000010E1_1:
-	byte NZCV_216 = cond(r0 ^ 0x000000F8)
-	ZC = NZCV_216 (alias)
-	NZV = NZCV_216 (alias)
-	Z = NZCV_216 (alias)
-	V = NZCV_216 (alias)
+	byte NZCV_232 = cond(r0 ^ 0x000000F8)
+	ZC = NZCV_232 (alias)
+	NZV = NZCV_232 (alias)
+	Z = NZCV_232 (alias)
+	V = NZCV_232 (alias)
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp ip:<invalid>
@@ -12229,11 +12232,11 @@ l000010E5:
 
 l000010E5_1:
 	fp = ~0xBC000001
-	byte NZCV_208 = cond(fp)
-	ZC = NZCV_208 (alias)
-	NZV = NZCV_208 (alias)
-	Z = NZCV_208 (alias)
-	V = NZCV_208 (alias)
+	byte NZCV_224 = cond(fp)
+	ZC = NZCV_224 (alias)
+	NZV = NZCV_224 (alias)
+	Z = NZCV_224 (alias)
+	V = NZCV_224 (alias)
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp ip:<invalid>
@@ -12267,15 +12270,15 @@ l000010F1:
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
 
 l000010F1_1:
-	word32 sp_179
-	bool C_184
-	byte NZCV_185
-	byte NZV_186
-	word32 r1_190
-	byte NZC_192
+	word32 sp_195
+	bool C_200
+	byte NZCV_201
+	byte NZV_202
+	word32 r1_206
+	byte NZC_208
 	call fn000E20A5 (retsize: 0;)
-		uses: C_35,cpsr,fp_32,ip_17,lr,NZC_30,NZCV_34,NZV_33,NZV_36,pc,r0,r1_40,r10,r2,r3,r4,r5,r6,r7,r8,r9,sp_38,spsr,V_29,Z_31,ZC_37
-		defs: C_184,cpsr_203,fp_188,ip_182,lr_196,NZC_192,NZCV_185,NZV_181,NZV_186,pc_197,r0_187,r1_190,r10_202,r2_200,r3_199,r4_194,r5_195,r6_193,r7_201,r8_191,r9_183,sp_179,spsr_204,V_198,Z_189,ZC_180
+		uses: C_32,cpsr,fp_30,ip_12,lr,NZC_31,NZCV_35,NZV_34,NZV_36,pc,r0,r1_40,r10,r2,r3,r4,r5,r6,r7,r8,r9,sp_38,spsr,V_29,Z_37,ZC_33
+		defs: C_200,cpsr_219,fp_204,ip_198,lr_212,NZC_208,NZCV_201,NZV_197,NZV_202,pc_213,r0_203,r1_206,r10_218,r2_216,r3_215,r4_210,r5_211,r6_209,r7_217,r8_207,r9_199,sp_195,spsr_220,V_214,Z_205,ZC_196
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
@@ -12287,10 +12290,10 @@ l000010F5:
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
 
 l000010F5_1:
-	byte NZC_172 = cond(r8 & 0x00000000)
-	ZC = NZC_172 (alias)
-	NZV = NZC_172 (alias)
-	Z = NZC_172 (alias)
+	byte NZC_188 = cond(r8 & 0x00000000)
+	ZC = NZC_188 (alias)
+	NZV = NZC_188 (alias)
+	Z = NZC_188 (alias)
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
@@ -12314,13 +12317,13 @@ l000010FD:
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
 
 l000010FD_1:
-	Mem164[r8:word32] = r0
-	Mem165[r8 + 4:word32] = 0x00003FF1
-	Mem166[r8 + 8:word32] = r4
-	Mem167[r8 + 12:word32] = r5
-	Mem168[r8 + 16:word32] = r8
-	Mem169[r8 + 20:word32] = fp
-	Mem170[r8 + 24:word32] = lr
+	Mem180[r8:word32] = r0
+	Mem181[r8 + 4:word32] = 0x00003FF1
+	Mem182[r8 + 8:word32] = r4
+	Mem183[r8 + 12:word32] = r5
+	Mem184[r8 + 16:word32] = r8
+	Mem185[r8 + 20:word32] = fp
+	Mem186[r8 + 24:word32] = lr
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
@@ -12332,11 +12335,11 @@ l00001101:
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1
 
 l00001101_1:
-	Mem158[r0:word32] = 0x00003FF1
-	Mem159[r0 + 4:word32] = r6
-	Mem160[r0 + 8:word32] = r8
-	Mem161[r0 + 12:word32] = lr
-	Mem162[r0 + 16:word32] = pc
+	Mem174[r0:word32] = 0x00003FF1
+	Mem175[r0 + 4:word32] = r6
+	Mem176[r0 + 8:word32] = r8
+	Mem177[r0 + 12:word32] = lr
+	Mem178[r0 + 16:word32] = pc
 	r0 = r0 + 20
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
@@ -12349,17 +12352,17 @@ l00001105:
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
 
 l00001105_1:
-	word32 sp_132
-	byte ZC_133
-	bool C_137
-	byte NZCV_138
-	byte NZV_139
-	word32 r1_143
-	byte NZC_145
-	word32 r4_147
+	word32 sp_148
+	byte ZC_149
+	bool C_153
+	byte NZCV_154
+	byte NZV_155
+	word32 r1_159
+	byte NZC_161
+	word32 r4_163
 	call fn01A13809 (retsize: 0;)
-		uses: C_85,cpsr_56,fp_69,ip_88,lr_62,NZC_81,NZCV_84,NZV_83,NZV_86,pc_79,r0_89,r1_67,r10_57,r2_59,r3_60,r4_63,r5_77,r6_64,r7_58,r8_66,r9_78,sp_76,spsr_55,V_61,Z_82,ZC_87
-		defs: C_137,cpsr_156,fp_141,ip_135,lr_149,NZC_145,NZCV_138,NZV_134,NZV_139,pc_150,r0_140,r1_143,r10_155,r2_153,r3_152,r4_147,r5_148,r6_146,r7_154,r8_144,r9_136,sp_132,spsr_157,V_151,Z_142,ZC_133
+		uses: C_82,cpsr_56,fp_67,ip_88,lr_62,NZC_81,NZCV_85,NZV_84,NZV_86,pc_79,r0_89,r1_66,r10_57,r2_59,r3_60,r4_63,r5_77,r6_64,r7_58,r8_65,r9_78,sp_69,spsr_55,V_61,Z_87,ZC_83
+		defs: C_153,cpsr_172,fp_157,ip_151,lr_165,NZC_161,NZCV_154,NZV_150,NZV_155,pc_166,r0_156,r1_159,r10_171,r2_169,r3_168,r4_163,r5_164,r6_162,r7_170,r8_160,r9_152,sp_148,spsr_173,V_167,Z_158,ZC_149
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
@@ -12370,29 +12373,38 @@ l00001109:
 // DataOut (flags): NZCV
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
 
+l00001109_1:
+	r0 = __ror(r8, 16)
+	byte NZC_141 = cond(r0)
+	NZV = NZC_141 (alias)
+	Z = NZC_141 (alias)
+// DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
+// DataOut (flags): NZCV
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
+
 l0000110D:
 	branch V l00001111
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:<invalid>
 
 l0000110D_1:
 	r5 = __ror(r0, 6) - r0
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:<invalid>
 
 l00001111:
 	branch NZV l00001115
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20 r5:<invalid>
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:<invalid> r5:<invalid>
 
 l00001111_1:
 	r0 = r3 ^ 0xC0000011
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20 r5:<invalid>
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:<invalid> r5:<invalid>
 
 l00001115:
 	branch V l00001119
@@ -12434,7 +12446,7 @@ l0000111D_thunk_uxTaskResetEventItemValue:
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:<invalid> r5:<invalid> r9:<invalid> pc:pc + 71
 
 l0000111D_1:
-	Mem122[r0:word32] = r0
+	Mem130[r0:word32] = r0
 // DataOut: cpsr fp ip lr pc r0 r10 r2 r3 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:<invalid> r5:<invalid> r9:<invalid> pc:pc + 71
@@ -12450,11 +12462,6 @@ vTaskSwitchContext_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:0x000032F1 r5:<invalid> r9:<invalid> pc:pc + 71 r8:<invalid> r7:<invalid>
-
-l00001109_1:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:~0xBC000001 r1:0x00003FF1 r0:r0 + 20
 
 l000010D9_1:
 // DataOut:
@@ -92373,7 +92380,7 @@ void uxListRemove(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 
 
 // MayUse:  NZCV cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // LiveOut:
-// Trashed: NZCV fp ip pc r1 r3 r4 r5 r6 r7 r8 r9
+// Trashed: NZCV fp ip pc r0 r1 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 uxListRemove_entry:
 // DataOut: cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
@@ -92414,13 +92421,14 @@ l0000834D:
 // SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
 
 l0000834D_1:
-	word32 sp_73
-	byte ZC_74
-	word32 ip_79
-	word32 lr_86
+	word32 sp_86
+	byte ZC_87
+	word32 ip_92
+	byte NZC_95
+	word32 lr_100
 	call fn010B04F5 (retsize: 0;)
-		uses: cpsr,ip_39,lr,N,pc,r0,r1,r2,r3_42,r4_43,r5_41,r6_40,r7,r8,r9,sp_1,V,Z,ZC
-		defs: cpsr_82,ip_79,lr_86,N_80,pc_91,r0_85,r1_83,r2_89,r3_76,r4_75,r5_77,r6_78,r7_88,r8_84,r9_90,sp_73,V_87,Z_81,ZC_74
+		uses: cpsr,ip_41,lr,N,NZC,pc,r0,r1,r2,r3_44,r4_45,r5_43,r6_42,r7,r8,r9,sp_1,V,Z,ZC
+		defs: cpsr_97,ip_92,lr_100,N_93,NZC_95,pc_105,r0_94,r1_98,r2_103,r3_89,r4_88,r5_90,r6_91,r7_102,r8_99,r9_104,sp_86,V_101,Z_96,ZC_87
 // DataOut: cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
@@ -92431,74 +92439,78 @@ l00008351:
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
 
+l00008351_1:
+	r0 = __ror(r0, 16)
+	byte NZC_82 = cond(r0)
+	N = NZC_82 (alias)
+	Z = NZC_82 (alias)
+// DataOut: cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
+// DataOut (flags): NZCV
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
+
 l00008355:
 	branch Z l00008359
 // DataOut: cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid>
 
 l00008355_1:
 	__msr(cpsr, 0x00000060)
 // DataOut: cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid>
 
 l00008359:
 	branch N l0000835D
 // DataOut: cpsr lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid>
 
 l00008359_1:
-	Mem68[r1:word32] = r3
-	Mem69[r1 + 4:word32] = r5
-	Mem70[r1 + 8:word32] = r6
-	Mem71[r1 + 12:word32] = r8
+	Mem76[r1:word32] = r3
+	Mem77[r1 + 4:word32] = r5
+	Mem78[r1 + 8:word32] = r6
+	Mem79[r1 + 12:word32] = r8
 // DataOut: cpsr lr pc r0 r2 r3 r4 r5 r7 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid>
 
 l0000835D:
 	branch Z l00008361
 // DataOut: cpsr lr pc r0 r2 r3 r4 r5 r7 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:r1 + 16
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:r1 + 16
 
 l0000835D_1:
 // DataOut: cpsr pc r0 r2 r3 r4 r5 r7 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:r1 + 16
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:r1 + 16
 
 l00008361:
 	branch V l00008361_thunk_xQueueCRSend
 // DataOut: cpsr pc r0 r2 r3 r4 r5 r7 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:<invalid>
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:<invalid>
 
 l00008361_thunk_xQueueCRSend:
 	xQueueCRSend(r0, r2, r3, r4, r5, r9, pc, cpsr)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:<invalid>
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:<invalid>
 
 l00008361_1:
-	Mem65[r7:word16] = (uint16) r7
+	Mem73[r7:word16] = (uint16) r7
 // DataOut: cpsr pc r0 r2 r3 r4 r5 r9
 // DataOut (flags): NZCV
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:<invalid>
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:<invalid>
 
 l00008361_thunk_xQueueCRSend:
 	xQueueCRSend(r0, r2, r3, r4, r5, r9, pc, cpsr)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:<invalid> r7:r7 - 12
-
-l00008351_1:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:<invalid> r7:r7 - 12
 
 l00008349_1:
 	return
@@ -92515,7 +92527,7 @@ l00008341_1:
 uxListRemove_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r1:<invalid> r7:r7 - 12 fp:0x00003FF0 pc:<invalid> r9:<invalid> r8:<invalid>
+// SymbolicIn: sp:fp r3:<invalid> r5:<invalid> r6:<invalid> ip:<invalid> r4:r4 + 20 r0:<invalid> r1:<invalid> r7:r7 - 12 fp:0x00003FF0 pc:<invalid> r9:<invalid> r8:<invalid>
 
 
 
@@ -93234,7 +93246,7 @@ void xQueueCRReceiveFromISR(word32 r0, word32 r1, word32 r2, word32 r3, word32 r
 
 // MayUse:  NZCV ip lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 spsr
 // LiveOut:
-// Trashed: fp ip lr r0 r10 r4 r5 r6 r7 r8 r9 sp
+// Trashed: NZC fp ip lr r0 r1 r10 r4 r5 r6 r7 r8 r9 sp
 // Preserved: sp
 // Stack args: Stack +0000(32) Stack +000C(32)
 xQueueCRReceiveFromISR_entry:
@@ -93252,7 +93264,7 @@ l000084D5:
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084D9_1:
-	Mem188[r8:word16] = (uint16) ip
+	Mem209[r8:word16] = (uint16) ip
 	r8 = r8 - 49
 // DataOut: lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
@@ -93267,7 +93279,7 @@ l000084DD:
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084DD_1:
-	Mem186[r0:byte] = (byte) r4
+	Mem207[r0:byte] = (byte) r4
 	r0 = r0 + 248
 // DataOut: lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
@@ -93296,7 +93308,7 @@ l000084E5:
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084E5_1:
-	Mem183[r6:byte] = (byte) r0
+	Mem204[r6:byte] = (byte) r0
 	r6 = r6 - 3650
 // DataOut: lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZC
@@ -93311,7 +93323,7 @@ l000084E9:
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084E9_1:
-	Mem182[r6 - (r6 >> 10):byte] = (byte) r1
+	Mem203[r6 - (r6 >> 10):byte] = (byte) r1
 // DataOut: lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:r0 + 248 r7:DPB(r7, 0x4368, 16) r6:r6 - 3650
@@ -93325,15 +93337,15 @@ l000084ED:
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084ED_1:
-	Mem172[r0:word32] = r0
-	Mem173[r0 + 4:word32] = r1
-	Mem174[r0 + 8:word32] = r3
-	Mem175[r0 + 12:word32] = r5
-	Mem176[r0 + 16:word32] = r6
-	Mem177[r0 + 20:word32] = r8
-	Mem178[r0 + 24:word32] = r9
-	Mem179[r0 + 28:word32] = lr
-	Mem180[r0 + 32:word32] = pc
+	Mem193[r0:word32] = r0
+	Mem194[r0 + 4:word32] = r1
+	Mem195[r0 + 8:word32] = r3
+	Mem196[r0 + 12:word32] = r5
+	Mem197[r0 + 16:word32] = r6
+	Mem198[r0 + 20:word32] = r8
+	Mem199[r0 + 24:word32] = r9
+	Mem200[r0 + 28:word32] = lr
+	Mem201[r0 + 32:word32] = pc
 	r0 = r0 + 36
 // DataOut: lr pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZC
@@ -93362,100 +93374,107 @@ l000084F9:
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084F9_1:
-	Mem161[r0:word32] = r0
-	Mem162[r0 + 4:word32] = r1
-	Mem163[r0 + 8:word32] = r2
-	Mem164[r0 + 12:word32] = r3
-	Mem165[r0 + 16:word32] = r4
-	Mem166[r0 + 20:word32] = r5
-	Mem167[r0 + 24:word32] = r7
-	Mem168[r0 + 28:word32] = r8
-	Mem169[r0 + 32:word32] = r9
-	Mem170[r0 + 36:word32] = lr
-	Mem171[r0 + 40:word32] = pc
-// DataOut: r0 r3 r6 r8
+	Mem182[r0:word32] = r0
+	Mem183[r0 + 4:word32] = r1
+	Mem184[r0 + 8:word32] = r2
+	Mem185[r0 + 12:word32] = r3
+	Mem186[r0 + 16:word32] = r4
+	Mem187[r0 + 20:word32] = r5
+	Mem188[r0 + 24:word32] = r7
+	Mem189[r0 + 28:word32] = r8
+	Mem190[r0 + 32:word32] = r9
+	Mem191[r0 + 36:word32] = lr
+	Mem192[r0 + 40:word32] = pc
+// DataOut: r0 r3 r6 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:DPB(r7, 0x4368, 16) r6:r6 - 3650
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084FD:
 	branch C l00008501
-// DataOut: r0 r3 r6 r8
+// DataOut: r0 r3 r6 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:DPB(r7, 0x4368, 16) r6:r6 - 3650
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l000084FD_1:
-// DataOut: r0 r3 r8
+// DataOut: r0 r3 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:DPB(r7, 0x4368, 16) r6:r6 - 3650
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008501:
 	branch Z l00008505
-// DataOut: r0 r3 r8
+// DataOut: r0 r3 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008501_1:
-// DataOut: r0 r8
+// DataOut: r0 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008505:
 	branch C l00008509
-// DataOut: r0 r8
+// DataOut: r0 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008505_1:
-	word32 sp_136
-	word32 spsr_137
-	byte NZV_138
-	word32 ip_139
-	word32 r8_140
-	byte N_141
-	word32 r4_142
-	word32 r0_143
-	byte NV_144
-	word32 r7_145
-	word32 r6_147
-	byte ZC_148
-	word32 r1_149
-	word32 r3_151
-	word32 r5_152
-	word32 r9_153
-	word32 lr_154
-	word32 pc_155
-	word32 r10_156
-	word32 fp_157
-	word32 r2_158
+	word32 sp_156
+	word32 spsr_157
+	byte NZV_158
+	word32 ip_159
+	word32 r8_160
+	byte N_161
+	word32 r4_162
+	word32 r0_163
+	byte NV_164
+	word32 r7_165
+	word32 r6_167
+	byte ZC_168
+	word32 r1_169
+	word32 r3_171
+	word32 r5_172
+	word32 lr_174
+	word32 pc_175
+	word32 r10_176
+	word32 fp_177
+	word32 r2_178
+	byte NZC_179
 	call fnFFE200CD (retsize: 0;)
-		uses: C,fp,ip,lr,N,NV,NZV,pc,r0_17,r1,r10_61,r2,r3,r4,r5,r6_14,r7_59,r8_5,r9,sp_1,spsr,Z,ZC
-		defs: C_150,fp_157,ip_139,lr_154,N_141,NV_144,NZV_138,pc_155,r0_143,r1_149,r10_156,r2_158,r3_151,r4_142,r5_152,r6_147,r7_145,r8_140,r9_153,sp_136,spsr_137,Z_146,ZC_148
-// DataOut: r0 r8
+		uses: C,fp,ip,lr,N,NV,NZC,NZV,pc,r0_17,r1,r10_63,r2,r3,r4,r5,r6_14,r7_61,r8_5,r9,sp_1,spsr,Z,ZC
+		defs: C_170,fp_177,ip_159,lr_174,N_161,NV_164,NZC_179,NZV_158,pc_175,r0_163,r1_169,r10_176,r2_178,r3_171,r4_162,r5_172,r6_167,r7_165,r8_160,r9_173,sp_156,spsr_157,Z_166,ZC_168
+// DataOut: r0 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008509:
 	branch C l0000850D
-// DataOut: r0 r8
+// DataOut: r0 r8 r9
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008509_1:
-// DataOut: r0 r8
+// DataOut: r0 r8 r9
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l0000850D:
 	branch Z l00008511
+// DataOut: r0 r8 r9
+// DataOut (flags): Z
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
+
+l0000850D_1:
+	Z = cond(__ror(r9, 22)) (alias)
 // DataOut: r0 r8
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
@@ -93465,98 +93484,94 @@ l00008511:
 	branch Z l00008515
 // DataOut: r0 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 // LocalsOut: fp(32) Stack +0000(32) Stack +000C(32)
 
 l00008515:
 	branch Z l00008519
 // DataOut: r0 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00008519:
 	branch Z l0000851D
 // DataOut: r0 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 // LocalsOut: fp(32) Stack +0000(32)
 
 l0000851D:
 	branch Z l00008521
 // DataOut: r0 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 // LocalsOut: fp(32) Stack +0000(32)
 
 l0000851D_1:
 // DataOut: r0 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 
 l00008521:
 	branch Z l00008525
 // DataOut: r0 r8
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 fp:<invalid>
+// SymbolicIn: sp:<invalid> r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid> fp:<invalid>
 
 l00008521_1:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 fp:<invalid>
+// SymbolicIn: sp:<invalid> r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid> fp:<invalid>
 
 l00008525:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 fp:<invalid> pc:<invalid>
+// SymbolicIn: sp:<invalid> r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid> fp:<invalid> pc:<invalid>
 
 l00008519_1:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 
 l00008515_1:
-	word32 sp_104
-	word32 spsr_105
-	byte NZV_106
-	word32 ip_107
-	word32 r8_108
-	byte N_109
-	word32 r4_110
-	word32 r0_111
-	byte NV_112
-	word32 r7_113
-	byte Z_114
-	word32 r6_115
-	byte ZC_116
-	word32 r1_117
-	byte C_118
-	word32 r3_119
-	word32 r5_120
-	word32 r9_121
-	word32 lr_122
-	word32 pc_123
-	word32 r10_124
-	word32 fp_125
-	word32 r2_126
+	word32 sp_115
+	word32 spsr_116
+	byte NZV_117
+	word32 ip_118
+	word32 r8_119
+	byte N_120
+	word32 r4_121
+	word32 r0_122
+	byte NV_123
+	word32 r7_124
+	byte Z_125
+	word32 r6_126
+	byte ZC_127
+	word32 r1_128
+	byte C_129
+	word32 r3_130
+	word32 r5_131
+	word32 r9_132
+	word32 lr_133
+	word32 pc_134
+	word32 r10_135
+	word32 fp_136
+	word32 r2_137
+	byte NZC_138
 	call dwArg00 (retsize: 0; depth: -2118)
-		uses: C_71,fp_86,ip_87,lr_89,N_76,NV_75,NZV_77,pc_69,r0_91,r1_72,r10_85,r2_68,r3_70,r4_80,r5_81,r6_82,r7_90,r8_83,r9_84,sp_103,spsr_78,Z_74,ZC_73
-		defs: C_118,fp_125,ip_107,lr_122,N_109,NV_112,NZV_106,pc_123,r0_111,r1_117,r10_124,r2_126,r3_119,r4_110,r5_120,r6_115,r7_113,r8_108,r9_121,sp_104,spsr_105,Z_114,ZC_116
+		uses: C_96,fp_89,ip_90,lr_92,N_101,NV_100,NZC_95,NZV_102,pc_72,r0_94,r1_97,r10_88,r2_71,r3_73,r4_83,r5_84,r6_85,r7_93,r8_86,r9_87,sp_114,spsr_81,Z_99,ZC_98
+		defs: C_129,fp_136,ip_118,lr_133,N_120,NV_123,NZC_138,NZV_117,pc_134,r0_122,r1_128,r10_135,r2_137,r3_130,r4_121,r5_131,r6_126,r7_124,r8_119,r9_132,sp_115,spsr_116,Z_125,ZC_127
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 
 l00008511_1:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
-
-l0000850D_1:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3
+// SymbolicIn: sp:fp r8:r8 - 49 r0:<invalid> r7:<invalid> r6:r6 - 3650 r10:0x01180000 - r3 r1:<invalid>
 
 l000084F5_1:
 	return
@@ -93567,7 +93582,7 @@ l000084F5_1:
 xQueueCRReceiveFromISR_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r7:<invalid> r6:<invalid> r4:<invalid> r5:<invalid> r9:<invalid> r10:<invalid> fp:<invalid> ip:<invalid> lr:<invalid>
+// SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r7:<invalid> r6:<invalid> r4:<invalid> r5:<invalid> r9:<invalid> r10:<invalid> fp:<invalid> ip:<invalid> lr:<invalid> r1:<invalid>
 
 l000084F1_1:
 // DataOut:
