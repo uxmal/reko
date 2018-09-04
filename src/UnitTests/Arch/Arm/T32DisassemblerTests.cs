@@ -665,5 +665,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vcvt.f32.u32\td11,d24,#&1C");
         }
 
+        [Test]
+        public void ThumbDis_vshl()
+        {
+            Given_Instructions(0xEFFC, 0x3533);
+            Expect_Code("vshl.i32\td19,d19,#&1C");
+        }
     }
 }

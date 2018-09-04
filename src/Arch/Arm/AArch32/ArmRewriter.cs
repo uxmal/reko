@@ -309,7 +309,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.dcps2:
                 case Opcode.dcps3:
                 case Opcode.lsrs:
-                case Opcode.ror:
                 case Opcode.rrx:
                 case Opcode.subs:
                 case Opcode.tbb:
@@ -398,6 +397,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
                 case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
                 case Opcode.push: case Opcode.push_w: RewritePush(); break;
+                case Opcode.ror: RewriteShift(Ror); break;
                 case Opcode.rev: RewriteRev(); break;
                 case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
                 case Opcode.rsc: RewriteAdcSbc(m.ISub, true); break;

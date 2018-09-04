@@ -6031,13 +6031,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_ror()
         {
             RewriteCode("E041");	// rors r0, r4
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r0 = __ror(r0, r4)",
+                "2|L--|NZC = cond(r0)");
         }
 
         [Test]
@@ -7063,13 +7063,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vshl()
         {
             RewriteCode("FCEF3335");	// vshl.i32 d19, d19, #0x1c
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d19 = __vshl_i32(d19, 28)");
         }
 
         [Test]
@@ -7913,7 +7912,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_yield()
         {
             RewriteCode("10BF");	// yield 

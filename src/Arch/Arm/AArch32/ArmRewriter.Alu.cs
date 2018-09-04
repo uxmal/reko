@@ -16,6 +16,7 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -425,12 +426,27 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src1 = Operand(Src1());
-            var src2 = Operand(Src2());
+            Expression src2;
+            if (instr.ops.Length == 2)
+            {
+                src2 = src1;
+                src1 = dst;
+            }
+            else
+            {
+                src2 = Operand(Src2());
+            }
             m.Assign(dst, ctor(src1, src2));
             if (instr.SetFlags)
             {
                 m.Assign(this.NZC(), m.Cond(dst));
             }
+        }
+
+        private Expression Ror(Expression left, Expression right)
+        {
+            var intrinsic = host.PseudoProcedure(PseudoProcedure.Ror, left.DataType, left, right);
+            return intrinsic;
         }
 
         private void RewriteMla(bool hiLeft, bool hiRight, PrimitiveType dt, Func<Expression, Expression, Expression> op)
@@ -808,9 +824,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteYield()
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var ppp = host.EnsurePseudoProcedure("__yield", PrimitiveType.Word32, 0);
-            m.Assign(opDst, m.Fn(ppp));
+            var intrinsic = host.PseudoProcedure("__yield", VoidType.Instance);
+            m.SideEffect(intrinsic);
         }
     }
 }

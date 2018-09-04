@@ -84,6 +84,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private class DasmState
         {
+            public Opcode opcode;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public ArmCondition cc = ArmCondition.AL;
             public bool updateFlags = false;
@@ -92,7 +93,6 @@ namespace Reko.Arch.Arm.AArch32
             public MachineOperand shiftValue = null;
             public ArmVectorData vectorData = ArmVectorData.INVALID;
             public uint n;
-            internal Opcode opcode;
 
             internal void Invalid()
             {
@@ -101,7 +101,17 @@ namespace Reko.Arch.Arm.AArch32
 
             public AArch32Instruction MakeInstruction()
             {
-                throw new NotImplementedException();
+                return new AArch32Instruction
+                {
+                    opcode = opcode,
+                    ops = ops.ToArray(),
+                    condition = cc,
+                    SetFlags = updateFlags,
+                    Writeback = writeback,
+                    ShiftType = shiftType,
+                    ShiftValue = shiftValue,
+                    vector_data = vectorData,
+                };
             }
         }
 
@@ -871,6 +881,74 @@ namespace Reko.Arch.Arm.AArch32
         private static Decoder DecodeBfcBfi(Opcode opcode, string format)
         {
             return new BfcBfiDecoder(opcode, format);
+        }
+
+        // Mutators
+
+        private static bool D22_12(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[
+                ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF)]));
+            return true;
+        }
+
+        private static bool Q22_12(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[
+                ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF)]));
+            return true;
+        }
+
+        private static bool D5_0(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[
+                ((wInstr >> 1) & 0x10) | (wInstr & 0xF)]));
+            return true;
+        }
+
+        private static bool Q5_0(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[
+                ((wInstr >> 1) & 0x10) | (wInstr & 0xF)]));
+            return true;
+        }
+
+        private static (ArmVectorData, uint)[] vectorImmediateShiftSize = new[]
+        {
+           (ArmVectorData.INVALID, 0u),
+           (ArmVectorData.I8,  8u),
+
+           (ArmVectorData.I16, 16u),
+           (ArmVectorData.I16, 16u),
+
+           (ArmVectorData.I32, 32u),
+           (ArmVectorData.I32, 32u),
+           (ArmVectorData.I32, 32u),
+           (ArmVectorData.I32, 32u),
+
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+           (ArmVectorData.I64, 0u),
+        };
+
+        private static bool VshImmSize(uint wInstr, T32Disassembler dasm)
+        {
+            var immL_6 = ((wInstr >> 1) & 0x40) | (wInstr >> 16) & 0b111111;
+            dasm.state.vectorData = vectorImmediateShiftSize[immL_6 >> 3].Item1;
+            return true;
+        }
+
+        private static bool VshImm(uint wInstr, T32Disassembler dasm)
+        {
+            var immL_6 = ((wInstr >> 1) & 0x40) | (wInstr >> 16) & 0b111111;
+            var imm = immL_6 - vectorImmediateShiftSize[immL_6 >> 3].Item2;
+            dasm.state.ops.Add(ImmediateOperand.Int32((int)imm));
+            return true;
         }
 
         // Factory methods
@@ -2118,7 +2196,11 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc3"),
 
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc4"),
-                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc5"),
+                Mask(12+16,1,   // U
+                    Mask(6, 1, // Q
+                        Instr(Opcode.vshl, VshImmSize, D22_12, D5_0, VshImm),
+                        Instr(Opcode.vshl, VshImmSize,Q22_12,Q5_0,VshImm)),
+                    Instr(Opcode.vsli, "*immediate")),
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc6"),
                 Mask(6, 1, // Q
                     Instr(Opcode.vqshl, "@ vqshlu (immediate)"),
