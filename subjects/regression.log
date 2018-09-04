@@ -118,7 +118,7 @@ fn092A: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
    at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
@@ -1172,7 +1172,7 @@ fn0AF6: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
    at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -1528,7 +1528,7 @@ fn0AE6: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 213
    at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -1542,7 +1542,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 213
    at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -2001,7 +2001,7 @@ fn0351: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
    at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -2023,7 +2023,7 @@ fn0807: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
    at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
@@ -2037,7 +2037,7 @@ fn0B2C: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 156
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -2049,7 +2049,7 @@ fn0B5A: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
    at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
@@ -2063,7 +2063,7 @@ fn13B5: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
    at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -2077,7 +2077,7 @@ fn13C2: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
    at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
    at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
@@ -2091,7 +2091,7 @@ fn14A1: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
    at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
@@ -2393,7 +2393,7 @@ fn0800_9F92: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitSegmentedAccess(SegmentedAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 258
    at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 130
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -2407,7 +2407,7 @@ fn1483_0CA1: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitSegmentedAccess(SegmentedAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 258
    at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 130
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -2421,7 +2421,7 @@ fn1483_0CFC: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitSegmentedAccess(SegmentedAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 258
    at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 130
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
@@ -2435,7 +2435,7 @@ fn1483_1BB8: error: An error occurred during data flow analysis.
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
    at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
    at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
@@ -2446,7 +2446,7 @@ fn1483_1BB8: error: An error occurred during data flow analysis.
 fn1483_1BB9: error: An error occurred during data flow analysis.
     Index was outside the bounds of the array.
        at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 396
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 93
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
    at Reko.Core.Code.InstructionVisitorBase.VisitReturnInstruction(ReturnInstruction ret) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 115
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 283
@@ -2508,4 +2508,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 112.34 seconds ---
+Decompiled 54 binaries in 93.39 seconds ---
