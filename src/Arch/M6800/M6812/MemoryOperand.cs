@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System;
 
 namespace Reko.Arch.M6800.M6812
 {
@@ -31,17 +32,43 @@ namespace Reko.Arch.M6800.M6812
         }
 
         public RegisterStorage Base { get; set; }
+        public RegisterStorage Index { get; set; }
         public short? Offset { get; set; }
+        public bool PreIncrement { get; internal set; }
+        public bool PostIncrement { get; internal set; }
+        public bool Indirect { get; internal set; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (Base != null)
             {
-                if (Offset != null)
+                if (Indirect)
+                    writer.WriteChar('[');
+                if (PreIncrement)
+                {
+                    writer.WriteFormat("${0:X2},{1}{2}",
+                        Math.Abs(Offset.Value),
+                        Offset.Value > 0 ? "+" : "-",
+                        Base.Name);
+                }
+                else if (PostIncrement)
+                {
+                    writer.WriteFormat("${0:X2},{1}{2}",
+                        Math.Abs(Offset.Value),
+                        Base.Name,
+                        Offset.Value > 0 ? "+" : "-");
+                }
+                else if (Offset != null)
                 {
                     writer.WriteFormat("${0:X4},{1}", Offset.Value, Base.Name);
-                    return;
+                } 
+                else
+                {
+                    writer.WriteFormat("{0},{1}", Index.Name, Base.Name);
                 }
+                if (Indirect)
+                    writer.WriteChar(']');
+                return;
             }
             else if (Offset != null)
             {

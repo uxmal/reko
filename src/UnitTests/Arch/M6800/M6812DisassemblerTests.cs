@@ -146,5 +146,40 @@ namespace Reko.UnitTests.Arch.M6800
             Given_Code("041403");
             Expect_Instruction("dbeq\td,0000");
         }
+
+        [Test]
+        public void M6812Dis_oraa_predec()
+        {
+            Given_Code("AA2C");
+            Expect_Instruction("oraa\t$04,-x");
+        }
+
+        [Test]
+        public void M6812Dis_suba_postinc()
+        {
+            Given_Code("A033");
+            Expect_Instruction("suba\t$04,x+");
+        }
+
+        [Test]
+        public void M6812Dis_eora_9_bit_offset()
+        {
+            Given_Code("A8E1FF");
+            Expect_Instruction("eora\t$FFFF,x");
+        }
+
+        [Test]
+        public void M6812Dis_andb_accumulator_offset()
+        {
+            Given_Code("E4F4");
+            Expect_Instruction("andb\ta,sp");
+        }
+
+        [Test]
+        public void M6812Dis_jmp_indirect()
+        {
+            Given_Code("05FF");
+            Expect_Instruction("jmp\t[d,pc]");
+        }
     }
 }

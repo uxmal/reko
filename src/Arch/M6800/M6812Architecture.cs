@@ -91,7 +91,7 @@ namespace Reko.Arch.M6800
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new M6812.M5812Rewriter(this, rdr, (M6812.M6812State)state, binder, host);
+            return new M6812.M6812Rewriter(this, rdr, (M6812.M6812State)state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)

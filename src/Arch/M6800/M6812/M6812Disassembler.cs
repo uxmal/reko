@@ -36,7 +36,7 @@ namespace Reko.Arch.M6800.M6812
         private readonly static Decoder[] decodersSecondByte;
         private readonly static Decoder[] decodersLoops;
         private readonly static Decoder[] decodersRegisters;
-        private readonly static RegisterStorage[] IndexRegisters;
+        private readonly static RegisterStorage[] BaseRegisters;
         private readonly static HashSet<byte> seen = new HashSet<byte>();
 
         private readonly EndianImageReader rdr;
@@ -203,6 +203,7 @@ namespace Reko.Arch.M6800.M6812
             {
                 Offset = imm
             };
+            dasm.operands.Add(mem);
             return true;
         }
 
@@ -219,21 +220,32 @@ namespace Reko.Arch.M6800.M6812
             return true;
         }
 
+        private static short[] prePostIncrementOffset = new short[16]
+        {
+            1, 2, 3, 4, 5, 6, 7, 8, -8, -7, -6, -5, -4, -3, -2, -1,
+        };
+
+
         public static bool XB(byte bInstr, M6812Disassembler dasm)
         {
-            if (!dasm.rdr.TryReadByte(out bInstr))
+            if (!dasm.rdr.TryReadByte(out var bExtraByte))
                 return false;
-            switch ((bInstr >> 5) & 7)
+            RegisterStorage baseReg;
+            RegisterStorage idxReg;
+            MemoryOperand mem;
+            short? offset = null;
+            switch ((bExtraByte >> 5) & 0x7)
             {
             case 0:
             case 2:
             case 4:
             case 6:
-                var idxReg = IndexRegisters[(bInstr >> 6) & 3];
-                var offset = (short)Bits.SignExtend(bInstr, 5);
-                var mem = new MemoryOperand(PrimitiveType.Byte)
+                // 5-bit constant offset.
+                baseReg = BaseRegisters[(bExtraByte >> 6) & 3];
+                offset = (short)Bits.SignExtend(bExtraByte, 5);
+                mem = new MemoryOperand(PrimitiveType.Byte)
                 {
-                    Base = idxReg,
+                    Base = baseReg,
                     Offset = offset
                 };
                 dasm.operands.Add(mem);
@@ -241,10 +253,65 @@ namespace Reko.Arch.M6800.M6812
             case 1:
             case 3:
             case 5:
+                // Auto (pre|post)(dec|inc)rement 
+                baseReg = BaseRegisters[(bExtraByte >> 6) & 3];
+                offset = prePostIncrementOffset[bExtraByte & 0xF];
+                mem = new MemoryOperand(PrimitiveType.Byte)
+                {
+                    Base = baseReg,
+                    Offset = offset,
+                    PreIncrement = (bExtraByte & 0x10) == 0,
+                    PostIncrement = (bExtraByte & 0x10) != 0,
+                };
+                break;
             default:
-                Debug.Assert(false, "not implemented yet!");
-                return false;
+                baseReg = BaseRegisters[(bExtraByte >> 3) & 3];
+                idxReg = null;
+                bool indirect;
+                switch (bExtraByte & 0b111)
+                {
+                case 0:
+                case 1:
+                    // 9-bit constant offset
+                    indirect = false;
+                    if (!dasm.rdr.TryReadByte(out var bOffset))
+                        return false;
+                    var q = (uint)((bExtraByte << 8) | bOffset);
+                    offset = (short)Bits.SignExtend(q, 9);
+                    break;
+                case 2:
+                    // 16-bit constant offset;
+                    indirect = false;
+                    if (!dasm.rdr.TryReadBeInt16(out var wOffset))
+                        return false;
+                    offset = wOffset;
+                    break;
+                case 3:
+                    // 16-bit indexed indirect.
+                    if (!dasm.rdr.TryReadBeInt16(out var o))
+                        return false;
+                    offset = o;
+                    indirect = true;
+                    break;
+                case 4: idxReg = Registers.a; indirect = false; break;
+                case 5: idxReg = Registers.b; indirect = false; break;
+                case 6: idxReg = Registers.d; indirect = false; break;
+                default:
+                    idxReg = Registers.d;
+                    indirect = true;
+                    break;
+                }
+                mem = new MemoryOperand(PrimitiveType.Byte)
+                {
+                    Base = baseReg,
+                    Index = idxReg,
+                    Offset = offset,
+                    Indirect = indirect
+                };
+                break;
             }
+            dasm.operands.Add(mem);
+            return true;
         }
 
         private static bool R(byte bInstr, M6812Disassembler dasm)
@@ -302,7 +369,7 @@ namespace Reko.Arch.M6800.M6812
 
         static M6812Disassembler()
         {
-            IndexRegisters = new RegisterStorage[4]
+            BaseRegisters = new RegisterStorage[4]
             {
                 Registers.x,
                 Registers.y,
