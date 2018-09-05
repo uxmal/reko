@@ -303,9 +303,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void SHDis_flds()
+        public void SHDis_flds_dr()
         {
-            AssertCode("flds\tfr8,fpul", "1DF8");
+            AssertCode("flds\tdr8,fpul", "1DF8");
         }
 
         [Test]
@@ -780,16 +780,11 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("lds.l\t@r0+,mach", "0640");
         }
 
-        // @@@@@@
-
-        public void ShDis_F23D()
+        [Test]
+        public void ShDis_ftrc()
         {
-            AssertCode("@@@", "3DF2");
+            AssertCode("ftrc\tdr2,fpul", "3DF2");
         }
-        
-
-
-
 
 #if NYI
         //$TODO: DSP instructions

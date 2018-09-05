@@ -650,7 +650,8 @@ namespace Reko.Arch.SuperH
             public override SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr)
             {
                 var mask = (1 << bitcount) - 1;
-                return decoders[(uInstr >> shift) & mask].Decode(dasm, uInstr);
+                var code = (uInstr >> shift) & mask;
+                return decoders[code].Decode(dasm, uInstr);
             }
         }
 
@@ -702,6 +703,27 @@ namespace Reko.Arch.SuperH
             Instr(Opcode.fsca, fpul, f1),
             invalid);
 
+        private static FieldDecoder decode_FxxD = Sparse(4, 5,
+            (0x01, Instr(Opcode.flds, d1, fpul)),
+            (0x02, Instr(Opcode.@float, fpul, d1)),
+            (0x03, Instr(Opcode.ftrc, d1, fpul)),
+            (0x04, Instr(Opcode.fneg, d1)),
+            (0x05, Instr(Opcode.fabs, d1)),
+            (0x06, Instr(Opcode.fsqrt, f1)),
+            (0x08, Instr(Opcode.fldi0, f1)),
+            (0x09, Instr(Opcode.fldi1, f1)),
+            (0x0A, Instr(Opcode.fcnvsd, fpul, d1)),
+            (0x0B, Instr(Opcode.fcnvds, d1, fpul)),
+            (0x0E, Instr(Opcode.fipr, v2, v1)),
+            (0x0F, decode_FxFD),
+
+            (0x11, Instr(Opcode.flds, f1, fpul)),
+            (0x15, Instr(Opcode.fabs, f1)),
+            (0x18, Instr(Opcode.fldi0, f1)),
+            (0x19, Instr(Opcode.fldi1, f1)),
+            (0x1E, Instr(Opcode.fipr, v2, v1)),
+            (0x1F, decode_FxFD));
+
         private static readonly Decoder[] decoders = new Decoder[]
         {
             // 0...
@@ -739,27 +761,26 @@ namespace Reko.Arch.SuperH
                 { 0x7, Instr(Opcode.mul_l, r2,r1) },
                 { 0x8, Cond(8, 4, Ne0,
                     invalid,
-                    Sparse(8, 4, new Dictionary<int, Decoder> {
-                        { 0x0, Sparse(4, 4, new Dictionary<int, Decoder>
-                            {
-                                { 0x0, Instr(Opcode.clrt) },
-                                { 0x1, Instr(Opcode.sett) },
-                                { 0x2, Instr(Opcode.clrmac) },
-                                { 0x3, Instr(Opcode.ldtlb) },
-                                { 0x4, Instr(Opcode.clrs) },
-                                { 0xC, invalid },
-                            })
-                        },
-                        { 0x7, invalid },
-                        { 0x8, invalid },
-                        { 0x9, invalid },
-                        { 0xA, invalid },
-                        { 0xB, invalid },
-                        { 0xC, invalid },
-                        { 0xD, invalid },
-                        { 0xE, invalid },
-                        { 0xF, invalid },
-                    }))
+                    Mask(4, 4,
+                        Instr(Opcode.clrt),
+                        Instr(Opcode.sett),
+                        Instr(Opcode.clrmac),
+                        Instr(Opcode.ldtlb),
+
+                        Instr(Opcode.clrs),
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid))
                 },
                 { 0x9, Sparse(4, 4,
                         ( 0x0, Cond(8,4,Ne0,invalid, Instr(Opcode.nop))),
@@ -1113,31 +1134,12 @@ namespace Reko.Arch.SuperH
                     Instr(Opcode.fmov, d2,d1),
                     Instr(Opcode.fmov, f2,f1))
                 },
-                { 0xD, Sparse(4, 5, 
-                    ( 0x02, Instr(Opcode.@float, fpul,f1) ),
-                    ( 0x08, Instr(Opcode.fldi0, f1) ),
-                    ( 0x0A, Instr(Opcode.fcnvsd, fpul,d1) ),
-                    ( 0x0E, Instr(Opcode.fipr, v2,v1) ),
-                    ( 0x18, Instr(Opcode.fldi0, f1) ),
-                    ( 0x1E, Instr(Opcode.fipr, v2,v1) ))
-                },
+                { 0xD, decode_FxxD },
+                
                 { 0x0E, Instr(Opcode.fmac, F0,f2,f1) },
                 { 0x0F, invalid },
                 { 0x14, Instr(Opcode.fcmp_eq, f2,f1) },
-                { 0x1D, Sparse(4, 5, new Dictionary<int, Decoder>
-                    {
-                        { 0x01, Instr(Opcode.flds, f1,fpul) },
-                        { 0x05, Instr(Opcode.fabs, d1) },
-                        { 0x09, Instr(Opcode.fldi1, f1) },
-                        { 0x0A, Instr(Opcode.fcnvsd, fpul,d1) },
-                        { 0x0B, Instr(Opcode.fcnvds, d1,fpul) },
-                        { 0x0F, decode_FxFD },
-                        { 0x11, Instr(Opcode.flds, f1,fpul) },
-                        { 0x15, Instr(Opcode.fabs, f1) },
-                        { 0x19, Instr(Opcode.fldi1, f1) },
-                        { 0x1F, decode_FxFD }
-                    })
-                },
+                { 0x1D, decode_FxxD },
                 { 0x1E, Instr(Opcode.fmac, F0,f2,f1) },
                 { 0x1F, invalid },
             })

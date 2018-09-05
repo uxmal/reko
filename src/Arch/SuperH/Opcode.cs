@@ -149,5 +149,8 @@ namespace Reko.Arch.SuperH
         ftrv,
         frchg,
         fschg,
+        ftrc,
+        fneg,
+        fsqrt,
     }
 }
