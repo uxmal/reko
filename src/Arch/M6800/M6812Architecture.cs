@@ -94,7 +94,7 @@ namespace Reko.Arch.M6800
             return new M6812.M6812Rewriter(this, rdr, (M6812.M6812State)state, binder, host);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagGroups.TryGetValue(grf, out var f))
             {
@@ -103,7 +103,7 @@ namespace Reko.Arch.M6800
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var flagregister = M6812.Registers.ccr;
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -138,7 +138,7 @@ namespace Reko.Arch.M6800
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var sb = new StringBuilder();
             if ((grf & (uint)FlagM.NF) != 0) sb.Append('N');

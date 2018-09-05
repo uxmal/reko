@@ -235,7 +235,7 @@ namespace Reko.Arch.Arm
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var flagregister = Registers.ByName["pstate"];
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }

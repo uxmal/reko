@@ -344,44 +344,44 @@ namespace Reko.Arch.M6800.M6812
 
         private void NZV_(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
         }
 
         private void NZVC(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
         }
 
         private void NZ_C(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.CF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.NF | FlagM.ZF | FlagM.CF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
         }
 
         private void _ZVC(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.ZF | FlagM.VF | FlagM.CF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.ZF | FlagM.VF | FlagM.CF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
         }
 
         private void _Z_C(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.ZF | FlagM.CF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.ZF | FlagM.CF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
         }
 
         private void NZ0_(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.NF | FlagM.ZF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
             AssignFlag(FlagM.VF, false);
         }
 
         private void NZ00(Expression e)
         {
-            var grf = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF));
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)(FlagM.NF | FlagM.ZF));
             m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
             AssignFlag(FlagM.VF, false);
             AssignFlag(FlagM.CF, false);
@@ -389,7 +389,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void AssignFlag(FlagM flag, bool value)
         {
-            var grf = arch.GetFlagGroup((uint)flag);
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)flag);
             m.Assign(binder.EnsureFlagGroup(grf), Constant.Bool(value));
         }
 
@@ -406,7 +406,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var left = binder.EnsureRegister(reg);
             var right = RewriteOp(instr.Operands[0]);
-            var C = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.ccr, (uint)FlagM.CF));
             m.Assign(left, fn(fn(left, right), C));
             NZVC(left);
         }
@@ -438,7 +438,7 @@ namespace Reko.Arch.M6800.M6812
         private void RewriteBcc(ConditionCode cc, FlagM flags)
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var grf = arch.GetFlagGroup((uint)flags);
+            var grf = arch.GetFlagGroup(Registers.ccr, (uint)flags);
             var addr = ((AddressOperand)instr.Operands[0]).Address;
             m.Branch(
                 m.Test(cc, binder.EnsureFlagGroup(grf)),
@@ -700,7 +700,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var r = binder.EnsureRegister(reg);
             m.Assign(r, fn(r, m.Int8(1)));
-            var Z = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.ZF));
+            var Z = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.ccr, (uint)FlagM.ZF));
             m.Assign(Z, m.Cond(r));
         }
 
@@ -778,7 +778,7 @@ namespace Reko.Arch.M6800.M6812
             var a = binder.EnsureRegister(Registers.a);
             var b = binder.EnsureRegister(Registers.b);
             var d = binder.EnsureRegister(Registers.d);
-            var C = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.ccr, (uint)FlagM.CF));
             m.Assign(d, m.UMul(a, b));
             m.Assign(C, m.Cond(d));
         }

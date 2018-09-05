@@ -304,7 +304,7 @@ namespace Reko.Arch.Arm.AArch64
         }
         private Identifier NZCV()
         {
-            var nzcv = arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.VF));
+            var nzcv = arch.GetFlagGroup(Registers.pstate, (uint)(FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.VF));
             return binder.EnsureFlagGroup(nzcv);
         }
 
@@ -316,9 +316,9 @@ namespace Reko.Arch.Arm.AArch64
 
         private void NZ00(Expression test)
         {
-            var nz = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF)));
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
-            var v = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.VF));
+            var nz = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.pstate, (uint)(FlagM.NF | FlagM.ZF)));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.pstate, (uint)FlagM.CF));
+            var v = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.pstate, (uint)FlagM.VF));
             m.Assign(nz, test);
             m.Assign(c, Constant.False());
             m.Assign(v, Constant.False());
@@ -326,7 +326,7 @@ namespace Reko.Arch.Arm.AArch64
 
         Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
         {
-            var grf = arch.GetFlagGroup((uint)bits);
+            var grf = arch.GetFlagGroup(Registers.pstate, (uint)bits);
             return binder.EnsureFlagGroup(grf);
         }
 

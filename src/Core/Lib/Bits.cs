@@ -114,6 +114,7 @@ namespace Reko.Core.Lib
             value |= value >> 8;
             value |= value >> 16;
             return log2_tab[(uint)(value * 0x07C4ACDD) >> 27];
+        }
 
         public static uint RotateR32(uint u, int s)
         {
@@ -160,8 +161,5 @@ namespace Reko.Core.Lib
                 ((u & 0xFF) << 24);
             return uNew;
         }
-
-  
-    }
     }
 }
