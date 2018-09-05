@@ -126,5 +126,18 @@ namespace Reko.Arch.SuperH
         tst,
         xor,
         xtrct,
+        pref,
+        ocbp,
+        rte,
+        sleep,
+        movco_l,
+        movca_l,
+        movmu_l,
+        shal,
+        ldc_l,
+        tas_b,
+        mulr,
+        divs,
+        mac_w,
     }
 }

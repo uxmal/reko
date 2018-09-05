@@ -529,18 +529,177 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void ShDis_stc_gbr_r1()
         {
-            AssertCode("stc\tgbr,r1", "1200");
+            AssertCode("stc\tgbr,r1", "1201");
         }
 
         [Test]
         public void ShDis_stc_spc_reg()
         {
-            AssertCode("stc\tspc,r4", "4200");
+            AssertCode("stc\tspc,r4", "4204");
+        }
+
+        [Test]
+        public void ShDis_stc_mod()
+        {
+            AssertCode("stc\tmod,r0", "5200");
+        }
+
+        [Test]
+        public void ShDis_stc_rs()
+        {
+            AssertCode("stc\trs,r6", "6206");
+        }
+
+        [Test]
+        public void ShDis_sts_dsr()
+        {
+            AssertCode("sts\tdsr,r6", "6A06");
+        }
+
+        [Test]
+        public void ShDis_stc_r0bank()
+        {
+            AssertCode("stc\tr0_bank,r0", "8200");
+        }
+
+        [Test]
+        public void ShDis_ocbp()
+        {
+            AssertCode("ocbp\t@r14", "A30E");
+        }
+
+        [Test]
+        public void ShDis_std_dbr()
+        {
+            AssertCode("stc\tdbr,r10", "FA0A");
+        }
+
+        [Test]
+        public void ShDis_stc_ssr()
+        {
+            AssertCode("stc\tssr,r1", "3201");
+        }
+
+        [Test]
+        public void ShDis_sts_pr()
+        {
+            AssertCode("sts\tpr,r1", "2A01");
+        }
+
+        [Test]
+        public void ShDis_movco_l()
+        {
+            AssertCode("movco.l\tr0,@r1", "7301");
+        }
+
+        [Test]
+        public void ShDis_movca_l()
+        {
+            AssertCode("movca.l\tr0,@r1", "C301");
+        }
+
+
+
+        [Test]
+        public void ShDis_shal()
+        {
+            AssertCode("shal\tr2", "2042");
+        }
+
+        [Test]
+        public void ShDis_ldc_sgr()
+        {
+            AssertCode("ldc.l\t@r2+,sgr", "3642");
+        }
+
+        [Test]
+        public void ShDis_tas_b()
+        {
+            AssertCode("tas.b\t@r3", "1B43");
+        }
+
+        [Test]
+        public void ShDis_divs()
+        {
+            AssertCode("divs\tr0,r3", "9443");
+        }
+
+        [Test]
+        public void ShDis_stc_gbr()
+        {
+            AssertCode("stc.l\tgbr,@-r4", "1344");
+        }
+
+ 
+
+        [Test]
+        public void ShDis_sts_fpul()
+        {
+            AssertCode("sts\tfpul,r1", "5A01");
+        }
+
+        [Test]
+        public void ShDis_lds_fpul()
+        {
+            AssertCode("lds\tr4,fpul", "5A44");
+        }
+
+        [Test]
+        public void ShDis_mulr()
+        {
+            AssertCode("mulr\tr0,r6", "8046");
+        }
+
+        [Test]
+        public void ShDis_ldc_tbr()
+        {
+            AssertCode("ldc\tr10,tbr", "4A4A");
+        }
+
+        [Test]
+        public void ShDis_movmu_l_to_regs()
+        {
+            AssertCode("movmu.l\t@r15+,r1", "F448");
+        }
+
+        [Test]
+        public void ShDis_movmu_l()
+        {
+            AssertCode("movmu.l\tr1,@-r15", "F041");
+        }
+
+        [Test]
+        public void ShDis_stc_l_bank()
+        {
+            AssertCode("stc.l\tr5_bank,r13", "D34D");
+        }
+
+        [Test]
+        public void ShDis_mac_w()
+        {
+            AssertCode("mac.w\t@r3+,@r10+", "3F4A");
+        }
+
+        [Test]
+        public void ShDis_ldc_l_bank()
+        {
+            AssertCode("ldc.l\t@r10+,r2_bank", "A74A");
+        }
+
+        [Test]
+        public void ShDis_lds_l_dsr_post()
+        {
+            AssertCode("lds.l\t@r12+,dsr", "664C");
+        }
+
+        [Test]
+        public void ShDis_lds_l_dsr_reg()
+        {
+            AssertCode("lds\tr12,dsr", "6A4C");
         }
 
         // @@@@@@
 
-        /*
         // A SuperH decoder for the instruction FB0A has not been implemented yet.
         [Test]
         public void ShDis_FB0A()
@@ -1038,12 +1197,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "F0F4");
         }
 
-        // A SuperH decoder for the instruction 4F52 has not been implemented yet.
-        [Test]
-        public void ShDis_4F52()
-        {
-            AssertCode("@@@", "524F");
-        }
+
 
         // A SuperH decoder for the instruction FC3C has not been implemented yet.
         [Test]
@@ -1066,26 +1220,11 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "A8F4");
         }
 
-        // A SuperH decoder for the instruction 4341 has not been implemented yet.
-        [Test]
-        public void ShDis_4341()
-        {
-            AssertCode("@@@", "4143");
-        }
 
-        // A SuperH decoder for the instruction 4441 has not been implemented yet.
-        [Test]
-        public void ShDis_4441()
-        {
-            AssertCode("@@@", "4144");
-        }
 
-        // A SuperH decoder for the instruction 4152 has not been implemented yet.
-        [Test]
-        public void ShDis_4152()
-        {
-            AssertCode("@@@", "5241");
-        }
+
+
+
 
         [Test]
         public void ShDis_stc_spc()
@@ -1093,12 +1232,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("stc.l\tspc,r1", "4341");
         }
 
-        // A SuperH decoder for the instruction 4D44 has not been implemented yet.
-        [Test]
-        public void ShDis_4D44()
-        {
-            AssertCode("@@@", "444D");
-        }
+
 
         // A SuperH decoder for the instruction FBE8 has not been implemented yet.
         [Test]
@@ -1218,12 +1352,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "8CF8");
         }
 
-        // A SuperH decoder for the instruction 4920 has not been implemented yet.
-        [Test]
-        public void ShDis_4920()
-        {
-            AssertCode("@@@", "2049");
-        }
+ 
 
         // A SuperH decoder for the instruction FA68 has not been implemented yet.
         [Test]
@@ -1281,12 +1410,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "A8F6");
         }
 
-        // A SuperH decoder for the instruction 4E20 has not been implemented yet.
-        [Test]
-        public void ShDis_4E20()
-        {
-            AssertCode("@@@", "204E");
-        }
+
 
         // A SuperH decoder for the instruction F6BC has not been implemented yet.
         [Test]
@@ -1309,12 +1433,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "F0F6");
         }
 
-        // A SuperH decoder for the instruction 4320 has not been implemented yet.
-        [Test]
-        public void ShDis_4320()
-        {
-            AssertCode("@@@", "2043");
-        }
+
 
         // A SuperH decoder for the instruction FA5C has not been implemented yet.
         [Test]
@@ -1506,11 +1625,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         // A SuperH decoder for the instruction 445A has not been implemented yet.
-        [Test]
-        public void ShDis_445A()
-        {
-            AssertCode("@@@", "5A44");
-        }
+   
 
         // A SuperH decoder for the instruction F42D has not been implemented yet.
         [Test]
@@ -1533,18 +1648,10 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "3DF2");
         }
 
-        [Test]
-        public void ShDis_sts_fpul()
-        {
-            AssertCode("sts\tfpul,r1", "5A01");
-        }
+
 
         // A SuperH decoder for the instruction 4DD3 has not been implemented yet.
-        [Test]
-        public void ShDis_4DD3()
-        {
-            AssertCode("@@@", "D34D");
-        }
+
 
         [Test]
         public void ShDis_ldc_vbr()
@@ -1553,11 +1660,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         // A SuperH decoder for the instruction 41F0 has not been implemented yet.
-        [Test]
-        public void ShDis_41F0()
-        {
-            AssertCode("@@@", "F041");
-        }
+
 
         [Test]
         public void ShDis_lds_l_mach()
@@ -1607,201 +1710,44 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "50FE");
         }
 
-        // A SuperH decoder for the instruction 4270 has not been implemented yet.
-        [Test]
-        public void ShDis_4270()
-        {
-            AssertCode("@@@", "7042");
-        }
 
-        // A SuperH decoder for the instruction 4E64 has not been implemented yet.
-        [Test]
-        public void ShDis_4E64()
-        {
-            AssertCode("@@@", "644E");
-        }
 
-        // A SuperH decoder for the instruction 0078 has not been implemented yet.
-        [Test]
-        public void ShDis_0078()
-        {
-            AssertCode("@@@", "7800");
-        }
 
-        // A SuperH decoder for the instruction 00A8 has not been implemented yet.
-        [Test]
-        public void ShDis_00A8()
-        {
-            AssertCode("@@@", "A800");
-        }
 
-        // A SuperH decoder for the instruction 00D8 has not been implemented yet.
-        [Test]
-        public void ShDis_00D8()
-        {
-            AssertCode("@@@", "D800");
-        }
+    
+   
 
-        // A SuperH decoder for the instruction 0108 has not been implemented yet.
-        [Test]
-        public void ShDis_0108()
-        {
-            AssertCode("@@@", "0801");
-        }
 
-        // A SuperH decoder for the instruction 0138 has not been implemented yet.
-        [Test]
-        public void ShDis_0138()
-        {
-            AssertCode("@@@", "3801");
-        }
+   
 
-        // A SuperH decoder for the instruction 0168 has not been implemented yet.
-        [Test]
-        public void ShDis_0168()
-        {
-            AssertCode("@@@", "6801");
-        }
 
-        // A SuperH decoder for the instruction 0198 has not been implemented yet.
-        [Test]
-        public void ShDis_0198()
-        {
-            AssertCode("@@@", "9801");
-        }
 
-        // A SuperH decoder for the instruction 01C8 has not been implemented yet.
-        [Test]
-        public void ShDis_01C8()
-        {
-            AssertCode("@@@", "C801");
-        }
+   
 
-        // A SuperH decoder for the instruction 01F8 has not been implemented yet.
-        [Test]
-        public void ShDis_01F8()
-        {
-            AssertCode("@@@", "F801");
-        }
+   
 
-        // A SuperH decoder for the instruction 0228 has not been implemented yet.
-        [Test]
-        public void ShDis_0228()
-        {
-            AssertCode("@@@", "2802");
-        }
+    
 
-        // A SuperH decoder for the instruction 0258 has not been implemented yet.
-        [Test]
-        public void ShDis_0258()
-        {
-            AssertCode("@@@", "5802");
-        }
 
-        // A SuperH decoder for the instruction 0288 has not been implemented yet.
-        [Test]
-        public void ShDis_0288()
-        {
-            AssertCode("@@@", "8802");
-        }
+ 
 
-        // A SuperH decoder for the instruction 02B8 has not been implemented yet.
-        [Test]
-        public void ShDis_02B8()
-        {
-            AssertCode("@@@", "B802");
-        }
 
-        // A SuperH decoder for the instruction 02E8 has not been implemented yet.
-        [Test]
-        public void ShDis_02E8()
-        {
-            AssertCode("@@@", "E802");
-        }
 
-        // A SuperH decoder for the instruction 0318 has not been implemented yet.
-        [Test]
-        public void ShDis_0318()
-        {
-            AssertCode("@@@", "1803");
-        }
 
-        // A SuperH decoder for the instruction 0348 has not been implemented yet.
-        [Test]
-        public void ShDis_0348()
-        {
-            AssertCode("@@@", "4803");
-        }
 
-        // A SuperH decoder for the instruction 0378 has not been implemented yet.
-        [Test]
-        public void ShDis_0378()
-        {
-            AssertCode("@@@", "7803");
-        }
 
-        // A SuperH decoder for the instruction 03A8 has not been implemented yet.
-        [Test]
-        public void ShDis_03A8()
-        {
-            AssertCode("@@@", "A803");
-        }
 
-        // A SuperH decoder for the instruction 03D8 has not been implemented yet.
-        [Test]
-        public void ShDis_03D8()
-        {
-            AssertCode("@@@", "D803");
-        }
 
-        // A SuperH decoder for the instruction 0408 has not been implemented yet.
-        [Test]
-        public void ShDis_0408()
-        {
-            AssertCode("@@@", "0804");
-        }
 
-        // A SuperH decoder for the instruction 0438 has not been implemented yet.
-        [Test]
-        public void ShDis_0438()
-        {
-            AssertCode("@@@", "3804");
-        }
 
-        // A SuperH decoder for the instruction 0468 has not been implemented yet.
-        [Test]
-        public void ShDis_0468()
-        {
-            AssertCode("@@@", "6804");
-        }
 
-        // A SuperH decoder for the instruction 0498 has not been implemented yet.
-        [Test]
-        public void ShDis_0498()
-        {
-            AssertCode("@@@", "9804");
-        }
 
-        // A SuperH decoder for the instruction 04C8 has not been implemented yet.
-        [Test]
-        public void ShDis_04C8()
-        {
-            AssertCode("@@@", "C804");
-        }
 
-        // A SuperH decoder for the instruction 04F8 has not been implemented yet.
-        [Test]
-        public void ShDis_04F8()
-        {
-            AssertCode("@@@", "F804");
-        }
 
-        // A SuperH decoder for the instruction 0528 has not been implemented yet.
-        [Test]
-        public void ShDis_0528()
-        {
-            AssertCode("@@@", "2805");
-        }
+
+
+
+
 
 
 
@@ -1814,12 +1760,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
 
 
-        // A SuperH decoder for the instruction 01D8 has not been implemented yet.
-        [Test]
-        public void ShDis_01D8()
-        {
-            AssertCode("@@@", "D801");
-        }
+   
 
 
         // A SuperH decoder for the instruction F8B6 has not been implemented yet.
@@ -1876,120 +1817,42 @@ namespace Reko.UnitTests.Arch.Tlcs
 
  
 
-        // A SuperH decoder for the instruction 4168 has not been implemented yet.
-        [Test]
-        public void ShDis_4168()
-        {
-            AssertCode("@@@", "6841");
-        }
 
 
-        // A SuperH decoder for the instruction 4E88 has not been implemented yet.
-        [Test]
-        public void ShDis_4E88()
-        {
-            AssertCode("@@@", "884E");
-        }
 
-        // A SuperH decoder for the instruction 01F9 has not been implemented yet.
-        [Test]
-        public void ShDis_01F9()
-        {
-            AssertCode("@@@", "F901");
-        }
 
-        // A SuperH decoder for the instruction 4E30 has not been implemented yet.
-        [Test]
-        public void ShDis_4E30()
-        {
-            AssertCode("@@@", "304E");
-        }
+
+
+ 
 
         // A SuperH decoder for the instruction 4220 has not been implemented yet.
-        [Test]
-        public void ShDis_4220()
-        {
-            AssertCode("@@@", "2042");
-        }
+   
 
-        // A SuperH decoder for the instruction 49F0 has not been implemented yet.
-        [Test]
-        public void ShDis_49F0()
-        {
-            AssertCode("@@@", "F049");
-        }
+ 
 
 
-        // A SuperH decoder for the instruction 0818 has not been implemented yet.
-        [Test]
-        public void ShDis_0818()
-        {
-            AssertCode("@@@", "1808");
-        }
+
 
 
         // A SuperH decoder for the instruction 4380 has not been implemented yet.
         [Test]
         public void ShDis_4380()
         {
-            AssertCode("@@@", "8043");
+            AssertCode("mulr\tr0,r3", "8043");
         }
 
-        // A SuperH decoder for the instruction 4598 has not been implemented yet.
-        [Test]
-        public void ShDis_4598()
-        {
-            AssertCode("@@@", "9845");
-        }
 
-        // A SuperH decoder for the instruction 4A88 has not been implemented yet.
-        [Test]
-        public void ShDis_4A88()
-        {
-            AssertCode("@@@", "884A");
-        }
+
 
         // A SuperH decoder for the instruction 4EF8 has not been implemented yet.
-        [Test]
-        public void ShDis_4EF8()
-        {
-            AssertCode("@@@", "F84E");
-        }
 
-        // A SuperH decoder for the instruction 0088 has not been implemented yet.
-        [Test]
-        public void ShDis_0088()
-        {
-            AssertCode("@@@", "8800");
-        }
 
-        // A SuperH decoder for the instruction 4ED8 has not been implemented yet.
-        [Test]
-        public void ShDis_4ED8()
-        {
-            AssertCode("@@@", "D84E");
-        }
-
-        // A SuperH decoder for the instruction 0062 has not been implemented yet.
-        [Test]
-        public void ShDis_0062()
-        {
-            AssertCode("@@@", "6200");
-        }
+ 
 
         // A SuperH decoder for the instruction 4236 has not been implemented yet.
-        [Test]
-        public void ShDis_4236()
-        {
-            AssertCode("@@@", "3642");
-        }
+        
 
-        // A SuperH decoder for the instruction 0098 has not been implemented yet.
-        [Test]
-        public void ShDis_0098()
-        {
-            AssertCode("@@@", "9800");
-        }
+   
 
         // A SuperH decoder for the instruction F958 has not been implemented yet.
         [Test]
@@ -2005,19 +1868,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "DCF6");
         }
 
-        // A SuperH decoder for the instruction 0082 has not been implemented yet.
-        [Test]
-        public void ShDis_0082()
-        {
-            AssertCode("@@@", "8200");
-        }
+     
 
-        // A SuperH decoder for the instruction 4DA8 has not been implemented yet.
-        [Test]
-        public void ShDis_4DA8()
-        {
-            AssertCode("@@@", "A84D");
-        }
+
 
         // A SuperH decoder for the instruction F01C has not been implemented yet.
         [Test]
@@ -2028,9 +1881,9 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         // A SuperH decoder for the instruction 0083 has not been implemented yet.
         [Test]
-        public void ShDis_0083()
+        public void ShDis_pref()
         {
-            AssertCode("@@@", "8300");
+            AssertCode("pref\t@r10", "830A");
         }
 
         // A SuperH decoder for the instruction F60C has not been implemented yet.
@@ -2209,11 +2062,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         // A SuperH decoder for the instruction 4680 has not been implemented yet.
-        [Test]
-        public void ShDis_4680()
-        {
-            AssertCode("@@@", "8046");
-        }
+
 
         // A SuperH decoder for the instruction F9A8 has not been implemented yet.
         [Test]
@@ -2334,12 +2183,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "DCFB");
         }
 
-        // A SuperH decoder for the instruction 008A has not been implemented yet.
-        [Test]
-        public void ShDis_008A()
-        {
-            AssertCode("@@@", "8A00");
-        }
+    
 
         // A SuperH decoder for the instruction FCCC has not been implemented yet.
         [Test]
@@ -2362,19 +2206,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "08FC");
         }
 
-        // A SuperH decoder for the instruction 01D9 has not been implemented yet.
-        [Test]
-        public void ShDis_01D9()
-        {
-            AssertCode("@@@", "D901");
-        }
+ 
 
-        // A SuperH decoder for the instruction 01E2 has not been implemented yet.
-        [Test]
-        public void ShDis_01E2()
-        {
-            AssertCode("@@@", "E201");
-        }
+
 
         // A SuperH decoder for the instruction FC90 has not been implemented yet.
         [Test]
@@ -2425,19 +2259,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "ECFE");
         }
 
-        // A SuperH decoder for the instruction 01AB has not been implemented yet.
-        [Test]
-        public void ShDis_01AB()
-        {
-            AssertCode("@@@", "AB01");
-        }
+   
 
-        // A SuperH decoder for the instruction 0452 has not been implemented yet.
-        [Test]
-        public void ShDis_0452()
-        {
-            AssertCode("@@@", "5204");
-        }
+
 
         // A SuperH decoder for the instruction FD6C has not been implemented yet.
         [Test]
@@ -2460,12 +2284,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "B8FD");
         }
 
-        // A SuperH decoder for the instruction 4FF0 has not been implemented yet.
-        [Test]
-        public void ShDis_4FF0()
-        {
-            AssertCode("@@@", "F04F");
-        }
+
 
         // A SuperH decoder for the instruction FDD0 has not been implemented yet.
         [Test]
@@ -2544,13 +2363,6 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "ACFF");
         }
 
-        // A SuperH decoder for the instruction 00B8 has not been implemented yet.
-        [Test]
-        public void ShDis_00B8()
-        {
-            AssertCode("@@@", "B800");
-        }
-
         // A SuperH decoder for the instruction F098 has not been implemented yet.
         [Test]
         public void ShDis_F098()
@@ -2558,496 +2370,132 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "98F0");
         }
 
-        // A SuperH decoder for the instruction 0158 has not been implemented yet.
-        [Test]
-        public void ShDis_0158()
-        {
-            AssertCode("@@@", "5801");
-        }
-
-        // A SuperH decoder for the instruction 0178 has not been implemented yet.
-        [Test]
-        public void ShDis_0178()
-        {
-            AssertCode("@@@", "7801");
-        }
-
-        // A SuperH decoder for the instruction 01A8 has not been implemented yet.
-        [Test]
-        public void ShDis_01A8()
-        {
-            AssertCode("@@@", "A801");
-        }
-
-        // A SuperH decoder for the instruction 01B8 has not been implemented yet.
-        [Test]
-        public void ShDis_01B8()
-        {
-            AssertCode("@@@", "B801");
-        }
-
-        // A SuperH decoder for the instruction 0173 has not been implemented yet.
-        [Test]
-        public void ShDis_0173()
-        {
-            AssertCode("@@@", "7301");
-        }
-
-        // A SuperH decoder for the instruction 0183 has not been implemented yet.
-        [Test]
-        public void ShDis_0183()
-        {
-            AssertCode("@@@", "8301");
-        }
-
-        // A SuperH decoder for the instruction 0398 has not been implemented yet.
-        [Test]
-        public void ShDis_0398()
-        {
-            AssertCode("@@@", "9803");
-        }
-
-        // A SuperH decoder for the instruction 05C8 has not been implemented yet.
-        [Test]
-        public void ShDis_05C8()
-        {
-            AssertCode("@@@", "C805");
-        }
-
-        // A SuperH decoder for the instruction 05F8 has not been implemented yet.
-        [Test]
-        public void ShDis_05F8()
-        {
-            AssertCode("@@@", "F805");
-        }
-
-        // A SuperH decoder for the instruction 0608 has not been implemented yet.
-        [Test]
-        public void ShDis_0608()
-        {
-            AssertCode("@@@", "0806");
-        }
-
-        // A SuperH decoder for the instruction 0618 has not been implemented yet.
-        [Test]
-        public void ShDis_0618()
-        {
-            AssertCode("@@@", "1806");
-        }
-
-        // A SuperH decoder for the instruction 0628 has not been implemented yet.
-        [Test]
-        public void ShDis_0628()
-        {
-            AssertCode("@@@", "2806");
-        }
-
-        // A SuperH decoder for the instruction 0678 has not been implemented yet.
-        [Test]
-        public void ShDis_0678()
-        {
-            AssertCode("@@@", "7806");
-        }
-
-        // A SuperH decoder for the instruction 0698 has not been implemented yet.
-        [Test]
-        public void ShDis_0698()
-        {
-            AssertCode("@@@", "9806");
-        }
-
-        // A SuperH decoder for the instruction 06A8 has not been implemented yet.
-        [Test]
-        public void ShDis_06A8()
-        {
-            AssertCode("@@@", "A806");
-        }
-
-        // A SuperH decoder for the instruction 0A88 has not been implemented yet.
-        [Test]
-        public void ShDis_0A88()
-        {
-            AssertCode("@@@", "880A");
-        }
-
-        // A SuperH decoder for the instruction 06E8 has not been implemented yet.
-        [Test]
-        public void ShDis_06E8()
-        {
-            AssertCode("@@@", "E806");
-        }
-
-        // A SuperH decoder for the instruction 0798 has not been implemented yet.
-        [Test]
-        public void ShDis_0798()
-        {
-            AssertCode("@@@", "9807");
-        }
-
-        // A SuperH decoder for the instruction 07A8 has not been implemented yet.
-        [Test]
-        public void ShDis_07A8()
-        {
-            AssertCode("@@@", "A807");
-        }
-
-        // A SuperH decoder for the instruction 06D8 has not been implemented yet.
-        [Test]
-        public void ShDis_06D8()
-        {
-            AssertCode("@@@", "D806");
-        }
-
-        // A SuperH decoder for the instruction 07C8 has not been implemented yet.
-        [Test]
-        public void ShDis_07C8()
-        {
-            AssertCode("@@@", "C807");
-        }
-
-        // A SuperH decoder for the instruction 0868 has not been implemented yet.
-        [Test]
-        public void ShDis_0868()
-        {
-            AssertCode("@@@", "6808");
-        }
-
-        // A SuperH decoder for the instruction 0888 has not been implemented yet.
-        [Test]
-        public void ShDis_0888()
-        {
-            AssertCode("@@@", "8808");
-        }
-
-        // A SuperH decoder for the instruction 0898 has not been implemented yet.
-        [Test]
-        public void ShDis_0898()
-        {
-            AssertCode("@@@", "9808");
-        }
-
-        // A SuperH decoder for the instruction 08D8 has not been implemented yet.
-        [Test]
-        public void ShDis_08D8()
-        {
-            AssertCode("@@@", "D808");
-        }
-
-        // A SuperH decoder for the instruction 08E8 has not been implemented yet.
-        [Test]
-        public void ShDis_08E8()
-        {
-            AssertCode("@@@", "E808");
-        }
-
-        // A SuperH decoder for the instruction 08F8 has not been implemented yet.
-        [Test]
-        public void ShDis_08F8()
-        {
-            AssertCode("@@@", "F808");
-        }
-
-        // A SuperH decoder for the instruction 0928 has not been implemented yet.
-        [Test]
-        public void ShDis_0928()
-        {
-            AssertCode("@@@", "2809");
-        }
-
-        // A SuperH decoder for the instruction 0958 has not been implemented yet.
-        [Test]
-        public void ShDis_0958()
-        {
-            AssertCode("@@@", "5809");
-        }
-
-        // A SuperH decoder for the instruction 09D8 has not been implemented yet.
-        [Test]
-        public void ShDis_09D8()
-        {
-            AssertCode("@@@", "D809");
-        }
-
-
-        // A SuperH decoder for the instruction 0A18 has not been implemented yet.
-        [Test]
-        public void ShDis_0A18()
-        {
-            AssertCode("@@@", "180A");
-        }
-
-
-        // A SuperH decoder for the instruction 0A48 has not been implemented yet.
-        [Test]
-        public void ShDis_0A48()
-        {
-            AssertCode("@@@", "480A");
-        }
-
-        // A SuperH decoder for the instruction 0848 has not been implemented yet.
-        [Test]
-        public void ShDis_0848()
-        {
-            AssertCode("@@@", "4808");
-        }
-
-        // A SuperH decoder for the instruction 0AC8 has not been implemented yet.
-        [Test]
-        public void ShDis_0AC8()
-        {
-            AssertCode("@@@", "C80A");
-        }
-
-        // A SuperH decoder for the instruction 0AF8 has not been implemented yet.
-        [Test]
-        public void ShDis_0AF8()
-        {
-            AssertCode("@@@", "F80A");
-        }
-
-        // A SuperH decoder for the instruction 0B38 has not been implemented yet.
-        [Test]
-        public void ShDis_0B38()
-        {
-            AssertCode("@@@", "380B");
-        }
-
-        // A SuperH decoder for the instruction 0B68 has not been implemented yet.
-        [Test]
-        public void ShDis_0B68()
-        {
-            AssertCode("@@@", "680B");
-        }
-
-        // A SuperH decoder for the instruction 0B88 has not been implemented yet.
-        [Test]
-        public void ShDis_0B88()
-        {
-            AssertCode("@@@", "880B");
-        }
-
-        // A SuperH decoder for the instruction 0BE8 has not been implemented yet.
-        [Test]
-        public void ShDis_0BE8()
-        {
-            AssertCode("@@@", "E80B");
-        }
-
-        // A SuperH decoder for the instruction 0C58 has not been implemented yet.
-        [Test]
-        public void ShDis_0C58()
-        {
-            AssertCode("@@@", "580C");
-        }
-
-        // A SuperH decoder for the instruction 0C98 has not been implemented yet.
-        [Test]
-        public void ShDis_0C98()
-        {
-            AssertCode("@@@", "980C");
-        }
-
-        // A SuperH decoder for the instruction 0CA8 has not been implemented yet.
-        [Test]
-        public void ShDis_0CA8()
-        {
-            AssertCode("@@@", "A80C");
-        }
-
-        // A SuperH decoder for the instruction 0D48 has not been implemented yet.
-        [Test]
-        public void ShDis_0D48()
-        {
-            AssertCode("@@@", "480D");
-        }
-
-        // A SuperH decoder for the instruction 0DA8 has not been implemented yet.
-        [Test]
-        public void ShDis_0DA8()
-        {
-            AssertCode("@@@", "A80D");
-        }
-
-        // A SuperH decoder for the instruction 01E8 has not been implemented yet.
-        [Test]
-        public void ShDis_01E8()
-        {
-            AssertCode("@@@", "E801");
-        }
-
-        // A SuperH decoder for the instruction 03B2 has not been implemented yet.
-        [Test]
-        public void ShDis_03B2()
-        {
-            AssertCode("@@@", "B203");
-        }
-
-        // A SuperH decoder for the instruction 0492 has not been implemented yet.
-        [Test]
-        public void ShDis_0492()
-        {
-            AssertCode("@@@", "9204");
-        }
-
-        // A SuperH decoder for the instruction 04A8 has not been implemented yet.
-        [Test]
-        public void ShDis_04A8()
-        {
-            AssertCode("@@@", "A804");
-        }
-
-        // A SuperH decoder for the instruction 04F2 has not been implemented yet.
-        [Test]
-        public void ShDis_04F2()
-        {
-            AssertCode("@@@", "F204");
-        }
-
-        // A SuperH decoder for the instruction 056A has not been implemented yet.
-        [Test]
-        public void ShDis_056A()
-        {
-            AssertCode("@@@", "6A05");
-        }
-
-        // A SuperH decoder for the instruction 0B28 has not been implemented yet.
-        [Test]
-        public void ShDis_0B28()
-        {
-            AssertCode("@@@", "280B");
-        }
-
-        // A SuperH decoder for the instruction 0632 has not been implemented yet.
-        [Test]
-        public void ShDis_0632()
-        {
-            AssertCode("@@@", "3206");
-        }
-
-        // A SuperH decoder for the instruction 062A has not been implemented yet.
-        [Test]
-        public void ShDis_062A()
-        {
-            AssertCode("@@@", "2A06");
-        }
-
-        // A SuperH decoder for the instruction 067A has not been implemented yet.
-        [Test]
-        public void ShDis_067A()
-        {
-            AssertCode("@@@", "7A06");
-        }
-
-        // A SuperH decoder for the instruction 06F8 has not been implemented yet.
-        [Test]
-        public void ShDis_06F8()
-        {
-            AssertCode("@@@", "F806");
-        }
-
-        // A SuperH decoder for the instruction 0778 has not been implemented yet.
-        [Test]
-        public void ShDis_0778()
-        {
-            AssertCode("@@@", "7807");
-        }
-
-        // A SuperH decoder for the instruction 082A has not been implemented yet.
-        [Test]
-        public void ShDis_082A()
-        {
-            AssertCode("@@@", "2A08");
-        }
-
-        // A SuperH decoder for the instruction 08A8 has not been implemented yet.
-        [Test]
-        public void ShDis_08A8()
-        {
-            AssertCode("@@@", "A808");
-        }
-
-        // A SuperH decoder for the instruction 0962 has not been implemented yet.
-        [Test]
-        public void ShDis_0962()
-        {
-            AssertCode("@@@", "6209");
-        }
-
-        // A SuperH decoder for the instruction 09CA has not been implemented yet.
-        [Test]
-        public void ShDis_09CA()
-        {
-            AssertCode("@@@", "CA09");
-        }
-
-        // A SuperH decoder for the instruction 0B52 has not been implemented yet.
-        [Test]
-        public void ShDis_0B52()
-        {
-            AssertCode("@@@", "520B");
-        }
-
-        // A SuperH decoder for the instruction 0B92 has not been implemented yet.
-        [Test]
-        public void ShDis_0B92()
-        {
-            AssertCode("@@@", "920B");
-        }
-
-        // A SuperH decoder for the instruction 0DD8 has not been implemented yet.
-        [Test]
-        public void ShDis_0DD8()
-        {
-            AssertCode("@@@", "D80D");
-        }
-
-        // A SuperH decoder for the instruction 4A38 has not been implemented yet.
-        [Test]
-        public void ShDis_4A38()
-        {
-            AssertCode("@@@", "384A");
-        }
-
-        // A SuperH decoder for the instruction 0E18 has not been implemented yet.
-        [Test]
-        public void ShDis_0E18()
-        {
-            AssertCode("@@@", "180E");
-        }
-
-        // A SuperH decoder for the instruction 0E28 has not been implemented yet.
-        [Test]
-        public void ShDis_0E28()
-        {
-            AssertCode("@@@", "280E");
-        }
-
-        // A SuperH decoder for the instruction 0E48 has not been implemented yet.
-        [Test]
-        public void ShDis_0E48()
-        {
-            AssertCode("@@@", "480E");
-        }
-
-        // A SuperH decoder for the instruction 0E58 has not been implemented yet.
-        [Test]
-        public void ShDis_0E58()
-        {
-            AssertCode("@@@", "580E");
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 
         // A SuperH decoder for the instruction F048 has not been implemented yet.
         [Test]
         public void ShDis_F048()
         {
             AssertCode("@@@", "48F0");
-        }
-
-        // A SuperH decoder for the instruction 00F8 has not been implemented yet.
-        [Test]
-        public void ShDis_00F8()
-        {
-            AssertCode("@@@", "F800");
         }
 
         // A SuperH decoder for the instruction F0D8 has not been implemented yet.
@@ -3057,54 +2505,18 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "D8F0");
         }
 
-        // A SuperH decoder for the instruction 46A8 has not been implemented yet.
-        [Test]
-        public void ShDis_46A8()
-        {
-            AssertCode("@@@", "A846");
-        }
 
-        // A SuperH decoder for the instruction 4AC8 has not been implemented yet.
-        [Test]
-        public void ShDis_4AC8()
-        {
-            AssertCode("@@@", "C84A");
-        }
 
-        // A SuperH decoder for the instruction 4CA0 has not been implemented yet.
-        [Test]
-        public void ShDis_4CA0()
-        {
-            AssertCode("@@@", "A04C");
-        }
 
-        // A SuperH decoder for the instruction 4858 has not been implemented yet.
-        [Test]
-        public void ShDis_4858()
-        {
-            AssertCode("@@@", "5848");
-        }
 
-        // A SuperH decoder for the instruction 47D0 has not been implemented yet.
-        [Test]
-        public void ShDis_47D0()
-        {
-            AssertCode("@@@", "D047");
-        }
 
-        // A SuperH decoder for the instruction 0128 has not been implemented yet.
-        [Test]
-        public void ShDis_0128()
-        {
-            AssertCode("@@@", "2801");
-        }
+
+
+
+
 
         // A SuperH decoder for the instruction 48E4 has not been implemented yet.
-        [Test]
-        public void ShDis_48E4()
-        {
-            AssertCode("@@@", "E448");
-        }
+ 
 
         // A SuperH decoder for the instruction F3F8 has not been implemented yet.
         [Test]
@@ -3113,54 +2525,17 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "F8F3");
         }
 
-        // A SuperH decoder for the instruction 0F08 has not been implemented yet.
-        [Test]
-        public void ShDis_0F08()
-        {
-            AssertCode("@@@", "080F");
-        }
 
-        // A SuperH decoder for the instruction 0F28 has not been implemented yet.
-        [Test]
-        public void ShDis_0F28()
-        {
-            AssertCode("@@@", "280F");
-        }
 
-        // A SuperH decoder for the instruction 0E98 has not been implemented yet.
-        [Test]
-        public void ShDis_0E98()
-        {
-            AssertCode("@@@", "980E");
-        }
 
-        // A SuperH decoder for the instruction 0159 has not been implemented yet.
-        [Test]
-        public void ShDis_0159()
-        {
-            AssertCode("@@@", "5901");
-        }
 
-        // A SuperH decoder for the instruction 4548 has not been implemented yet.
-        [Test]
-        public void ShDis_4548()
-        {
-            AssertCode("@@@", "4845");
-        }
 
-        // A SuperH decoder for the instruction 45B4 has not been implemented yet.
-        [Test]
-        public void ShDis_45B4()
-        {
-            AssertCode("@@@", "B445");
-        }
 
-        // A SuperH decoder for the instruction 4B40 has not been implemented yet.
-        [Test]
-        public void ShDis_4B40()
-        {
-            AssertCode("@@@", "404B");
-        }
+
+
+
+
+
 
         // A SuperH decoder for the instruction FFC8 has not been implemented yet.
         [Test]
@@ -3169,323 +2544,89 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "C8FF");
         }
 
-        // A SuperH decoder for the instruction 0272 has not been implemented yet.
-        [Test]
-        public void ShDis_0272()
-        {
-            AssertCode("@@@", "7202");
-        }
+ 
 
-        // A SuperH decoder for the instruction 02EA has not been implemented yet.
-        [Test]
-        public void ShDis_02EA()
-        {
-            AssertCode("@@@", "EA02");
-        }
 
-        // A SuperH decoder for the instruction 01C3 has not been implemented yet.
-        [Test]
-        public void ShDis_01C3()
-        {
-            AssertCode("@@@", "C301");
-        }
+
+        
 
         // A SuperH decoder for the instruction 4394 has not been implemented yet.
-        [Test]
-        public void ShDis_4394()
-        {
-            AssertCode("@@@", "9443");
-        }
 
-        // A SuperH decoder for the instruction 42D2 has not been implemented yet.
-        [Test]
-        public void ShDis_42D2()
-        {
-            AssertCode("@@@", "D242");
-        }
-
-        // A SuperH decoder for the instruction 4458 has not been implemented yet.
-        [Test]
-        public void ShDis_4458()
-        {
-            AssertCode("@@@", "5844");
-        }
-
-        // A SuperH decoder for the instruction 4148 has not been implemented yet.
-        [Test]
-        public void ShDis_4148()
-        {
-            AssertCode("@@@", "4841");
-        }
-
-        // A SuperH decoder for the instruction 44A4 has not been implemented yet.
-        [Test]
-        public void ShDis_44A4()
-        {
-            AssertCode("@@@", "A444");
-        }
-
-        // A SuperH decoder for the instruction 48A4 has not been implemented yet.
-        [Test]
-        public void ShDis_48A4()
-        {
-            AssertCode("@@@", "A448");
-        }
-
-        // A SuperH decoder for the instruction 00F2 has not been implemented yet.
-        [Test]
-        public void ShDis_00F2()
-        {
-            AssertCode("@@@", "F200");
-        }
-
-        // A SuperH decoder for the instruction 00FA has not been implemented yet.
-        [Test]
-        public void ShDis_00FA()
-        {
-            AssertCode("@@@", "FA00");
-        }
-
-        // A SuperH decoder for the instruction 0172 has not been implemented yet.
-        [Test]
-        public void ShDis_0172()
-        {
-            AssertCode("@@@", "7201");
-        }
-
-        // A SuperH decoder for the instruction 0DB8 has not been implemented yet.
-        [Test]
-        public void ShDis_0DB8()
-        {
-            AssertCode("@@@", "B80D");
-        }
-
-        // A SuperH decoder for the instruction 4980 has not been implemented yet.
-        [Test]
-        public void ShDis_4980()
-        {
-            AssertCode("@@@", "8049");
-        }
-
-        // A SuperH decoder for the instruction 49B4 has not been implemented yet.
-        [Test]
-        public void ShDis_49B4()
-        {
-            AssertCode("@@@", "B449");
-        }
-
-        // A SuperH decoder for the instruction 0242 has not been implemented yet.
-        [Test]
-        public void ShDis_0242()
-        {
-            AssertCode("@@@", "4202");
-        }
-
-
-        // A SuperH decoder for the instruction 0152 has not been implemented yet.
-        [Test]
-        public void ShDis_0152()
-        {
-            AssertCode("@@@", "5201");
-        }
-
-        // A SuperH decoder for the instruction 08AA has not been implemented yet.
-        [Test]
-        public void ShDis_08AA()
-        {
-            AssertCode("@@@", "AA08");
-        }
-
-        // A SuperH decoder for the instruction 08E2 has not been implemented yet.
-        [Test]
-        public void ShDis_08E2()
-        {
-            AssertCode("@@@", "E208");
-        }
-
-        // A SuperH decoder for the instruction 49E4 has not been implemented yet.
-        [Test]
-        public void ShDis_49E4()
-        {
-            AssertCode("@@@", "E449");
-        }
 
 
 
-        // A SuperH decoder for the instruction 0113 has not been implemented yet.
-        [Test]
-        public void ShDis_0113()
-        {
-            AssertCode("@@@", "1301");
-        }
+        // A SuperH decoder for the instruction 4458 has not been implemented yet.
 
-        // A SuperH decoder for the instruction 0118 has not been implemented yet.
-        [Test]
-        public void ShDis_0118()
-        {
-            AssertCode("@@@", "1801");
-        }
 
-        // A SuperH decoder for the instruction 011B has not been implemented yet.
-        [Test]
-        public void ShDis_011B()
-        {
-            AssertCode("@@@", "1B01");
-        }
 
-        // A SuperH decoder for the instruction 0122 has not been implemented yet.
-        [Test]
-        public void ShDis_0122()
-        {
-            AssertCode("@@@", "2201");
-        }
 
-        // A SuperH decoder for the instruction 4A14 has not been implemented yet.
-        [Test]
-        public void ShDis_4A14()
-        {
-            AssertCode("@@@", "144A");
-        }
+
+ 
+
+
+   
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
         // A SuperH decoder for the instruction 4A3F has not been implemented yet.
-        [Test]
-        public void ShDis_4A3F()
-        {
-            AssertCode("@@@", "3F4A");
-        }
+  
 
-        // A SuperH decoder for the instruction 4A40 has not been implemented yet.
-        [Test]
-        public void ShDis_4A40()
-        {
-            AssertCode("@@@", "404A");
-        }
 
         // A SuperH decoder for the instruction 4A4A has not been implemented yet.
-        [Test]
-        public void ShDis_4A4A()
-        {
-            AssertCode("@@@", "4A4A");
-        }
+  
 
-        // A SuperH decoder for the instruction 4A58 has not been implemented yet.
-        [Test]
-        public void ShDis_4A58()
-        {
-            AssertCode("@@@", "584A");
-        }
 
-        // A SuperH decoder for the instruction 4A6F has not been implemented yet.
-        [Test]
-        public void ShDis_4A6F()
-        {
-            AssertCode("@@@", "6F4A");
-        }
 
-        // A SuperH decoder for the instruction 4A70 has not been implemented yet.
-        [Test]
-        public void ShDis_4A70()
-        {
-            AssertCode("@@@", "704A");
-        }
 
-        // A SuperH decoder for the instruction 4A80 has not been implemented yet.
-        [Test]
-        public void ShDis_4A80()
-        {
-            AssertCode("@@@", "804A");
-        }
 
-        // A SuperH decoder for the instruction 4A90 has not been implemented yet.
-        [Test]
-        public void ShDis_4A90()
-        {
-            AssertCode("@@@", "904A");
-        }
 
-        // A SuperH decoder for the instruction 4A94 has not been implemented yet.
-        [Test]
-        public void ShDis_4A94()
-        {
-            AssertCode("@@@", "944A");
-        }
 
-        // A SuperH decoder for the instruction 4AA0 has not been implemented yet.
-        [Test]
-        public void ShDis_4AA0()
-        {
-            AssertCode("@@@", "A04A");
-        }
+ 
+
+
+
+  
+
+
 
         // A SuperH decoder for the instruction 4AA7 has not been implemented yet.
-        [Test]
-        public void ShDis_4AA7()
-        {
-            AssertCode("@@@", "A74A");
-        }
 
-        // A SuperH decoder for the instruction 4AA8 has not been implemented yet.
-        [Test]
-        public void ShDis_4AA8()
-        {
-            AssertCode("@@@", "A84A");
-        }
 
-        // A SuperH decoder for the instruction 4AB4 has not been implemented yet.
-        [Test]
-        public void ShDis_4AB4()
-        {
-            AssertCode("@@@", "B44A");
-        }
 
-        // A SuperH decoder for the instruction 4AB8 has not been implemented yet.
-        [Test]
-        public void ShDis_4AB8()
-        {
-            AssertCode("@@@", "B84A");
-        }
 
-        // A SuperH decoder for the instruction 4AC4 has not been implemented yet.
-        [Test]
-        public void ShDis_4AC4()
-        {
-            AssertCode("@@@", "C44A");
-        }
 
-        // A SuperH decoder for the instruction 012B has not been implemented yet.
-        [Test]
-        public void ShDis_012B()
-        {
-            AssertCode("@@@", "2B01");
-        }
 
-        // A SuperH decoder for the instruction 4AE0 has not been implemented yet.
-        [Test]
-        public void ShDis_4AE0()
-        {
-            AssertCode("@@@", "E04A");
-        }
+  
 
-        // A SuperH decoder for the instruction 0133 has not been implemented yet.
-        [Test]
-        public void ShDis_0133()
-        {
-            AssertCode("@@@", "3301");
-        }
 
-        // A SuperH decoder for the instruction 4AF8 has not been implemented yet.
-        [Test]
-        public void ShDis_4AF8()
-        {
-            AssertCode("@@@", "F84A");
-        }
 
-        // A SuperH decoder for the instruction 4B20 has not been implemented yet.
-        [Test]
-        public void ShDis_4B20()
-        {
-            AssertCode("@@@", "204B");
-        }
+   
+
+ 
+
+
 
         // A SuperH decoder for the instruction 4B38 has not been implemented yet.
         [Test]
@@ -3494,117 +2635,36 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "384B");
         }
 
-        // A SuperH decoder for the instruction 4B64 has not been implemented yet.
-        [Test]
-        public void ShDis_4B64()
-        {
-            AssertCode("@@@", "644B");
-        }
 
-        // A SuperH decoder for the instruction 4BA0 has not been implemented yet.
-        [Test]
-        public void ShDis_4BA0()
-        {
-            AssertCode("@@@", "A04B");
-        }
 
-        // A SuperH decoder for the instruction 4BE4 has not been implemented yet.
-        [Test]
-        public void ShDis_4BE4()
-        {
-            AssertCode("@@@", "E44B");
-        }
 
-        // A SuperH decoder for the instruction 4BC8 has not been implemented yet.
-        [Test]
-        public void ShDis_4BC8()
-        {
-            AssertCode("@@@", "C84B");
-        }
 
-        // A SuperH decoder for the instruction 0132 has not been implemented yet.
-        [Test]
-        public void ShDis_0132()
-        {
-            AssertCode("@@@", "3201");
-        }
 
-        // A SuperH decoder for the instruction 4C44 has not been implemented yet.
-        [Test]
-        public void ShDis_4C44()
-        {
-            AssertCode("@@@", "444C");
-        }
 
-        // A SuperH decoder for the instruction 4C68 has not been implemented yet.
-        [Test]
-        public void ShDis_4C68()
-        {
-            AssertCode("@@@", "684C");
-        }
 
-        // A SuperH decoder for the instruction 4BE8 has not been implemented yet.
-        [Test]
-        public void ShDis_4BE8()
-        {
-            AssertCode("@@@", "E84B");
-        }
+  
 
-        // A SuperH decoder for the instruction 4C90 has not been implemented yet.
-        [Test]
-        public void ShDis_4C90()
-        {
-            AssertCode("@@@", "904C");
-        }
+
+
+
+
+  
+
+
 
         // A SuperH decoder for the instruction 012A has not been implemented yet.
-        [Test]
-        public void ShDis_012A()
-        {
-            AssertCode("@@@", "2A01");
-        }
+    
 
-        // A SuperH decoder for the instruction 4C94 has not been implemented yet.
-        [Test]
-        public void ShDis_4C94()
-        {
-            AssertCode("@@@", "944C");
-        }
 
-        // A SuperH decoder for the instruction 4C98 has not been implemented yet.
-        [Test]
-        public void ShDis_4C98()
-        {
-            AssertCode("@@@", "984C");
-        }
 
-        // A SuperH decoder for the instruction 4CC8 has not been implemented yet.
-        [Test]
-        public void ShDis_4CC8()
-        {
-            AssertCode("@@@", "C84C");
-        }
 
-        // A SuperH decoder for the instruction 4CF4 has not been implemented yet.
-        [Test]
-        public void ShDis_4CF4()
-        {
-            AssertCode("@@@", "F44C");
-        }
 
-        // A SuperH decoder for the instruction 4F20 has not been implemented yet.
-        [Test]
-        public void ShDis_4F20()
-        {
-            AssertCode("@@@", "204F");
-        }
 
-        // A SuperH decoder for the instruction 0052 has not been implemented yet.
-        [Test]
-        public void ShDis_0052()
-        {
-            AssertCode("@@@", "5200");
-        }
+
+ 
+
+
+   
 
         // A SuperH decoder for the instruction FE30 has not been implemented yet.
         [Test]
@@ -3613,76 +2673,17 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "30FE");
         }
 
-        // A SuperH decoder for the instruction 006A has not been implemented yet.
-        [Test]
-        public void ShDis_006A()
-        {
-            AssertCode("@@@", "6A00");
-        }
-
-        // A SuperH decoder for the instruction 0252 has not been implemented yet.
-        [Test]
-        public void ShDis_0252()
-        {
-            AssertCode("@@@", "5202");
-        }
-
-        // A SuperH decoder for the instruction 0292 has not been implemented yet.
-        [Test]
-        public void ShDis_0292()
-        {
-            AssertCode("@@@", "9202");
-        }
-
-        // A SuperH decoder for the instruction 0298 has not been implemented yet.
-        [Test]
-        public void ShDis_0298()
-        {
-            AssertCode("@@@", "9802");
-        }
-
-        // A SuperH decoder for the instruction 00E2 has not been implemented yet.
-        [Test]
-        public void ShDis_00E2()
-        {
-            AssertCode("@@@", "E200");
-        }
-
-        // A SuperH decoder for the instruction 0278 has not been implemented yet.
-        [Test]
-        public void ShDis_0278()
-        {
-            AssertCode("@@@", "7802");
-        }
 
 
-        // A SuperH decoder for the instruction 00A3 has not been implemented yet.
-        [Test]
-        public void ShDis_00A3()
-        {
-            AssertCode("@@@", "A300");
-        }
+   
 
-        // A SuperH decoder for the instruction 00D9 has not been implemented yet.
-        [Test]
-        public void ShDis_00D9()
-        {
-            AssertCode("@@@", "D900");
-        }
+     
 
-        // A SuperH decoder for the instruction 00CB has not been implemented yet.
-        [Test]
-        public void ShDis_00CB()
-        {
-            AssertCode("@@@", "CB00");
-        }
 
-        // A SuperH decoder for the instruction 00D2 has not been implemented yet.
-        [Test]
-        public void ShDis_00D2()
-        {
-            AssertCode("@@@", "D200");
-        }
+
+
+
+ 
 
         // A SuperH decoder for the instruction FABC has not been implemented yet.
         [Test]
@@ -3692,173 +2693,77 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
 
-        // A SuperH decoder for the instruction 02A3 has not been implemented yet.
-        [Test]
-        public void ShDis_02A3()
-        {
-            AssertCode("@@@", "A302");
-        }
 
-        // A SuperH decoder for the instruction 02A8 has not been implemented yet.
-        [Test]
-        public void ShDis_02A8()
-        {
-            AssertCode("@@@", "A802");
-        }
 
-        // A SuperH decoder for the instruction 0A58 has not been implemented yet.
-        [Test]
-        public void ShDis_0A58()
-        {
-            AssertCode("@@@", "580A");
-        }
 
-        // A SuperH decoder for the instruction 0C18 has not been implemented yet.
-        [Test]
-        public void ShDis_0C18()
-        {
-            AssertCode("@@@", "180C");
-        }
 
-        // A SuperH decoder for the instruction 0F98 has not been implemented yet.
-        [Test]
-        public void ShDis_0F98()
-        {
-            AssertCode("@@@", "980F");
-        }
 
-        // A SuperH decoder for the instruction 4F80 has not been implemented yet.
-        [Test]
-        public void ShDis_4F80()
-        {
-            AssertCode("@@@", "804F");
-        }
 
-        // A SuperH decoder for the instruction 4059 has not been implemented yet.
-        [Test]
-        public void ShDis_4059()
-        {
-            AssertCode("@@@", "5940");
-        }
 
-        // A SuperH decoder for the instruction 009A has not been implemented yet.
+
+
+
+
+
+
+
+#if NYI
+        //$TODO: DSP instructions
+        [Test]
+        public void ShDis_008A()
+        {
+        AssertCode("@@@", "8A00");
+        }
         [Test]
         public void ShDis_009A()
         {
             AssertCode("@@@", "9A00");
         }
-
-        // A SuperH decoder for the instruction 4C66 has not been implemented yet.
-        [Test]
-        public void ShDis_4C66()
-        {
-            AssertCode("@@@", "664C");
-        }
-
-        // A SuperH decoder for the instruction 4C6A has not been implemented yet.
-        [Test]
-        public void ShDis_4C6A()
-        {
-            AssertCode("@@@", "6A4C");
-        }
-
-        // A SuperH decoder for the instruction 4413 has not been implemented yet.
-        [Test]
-        public void ShDis_4413()
-        {
-            AssertCode("@@@", "1344");
-        }
-
-        // A SuperH decoder for the instruction 48E8 has not been implemented yet.
-        [Test]
-        public void ShDis_48E8()
-        {
-            AssertCode("@@@", "E848");
-        }
-
-        // A SuperH decoder for the instruction 4034 has not been implemented yet.
-        [Test]
-        public void ShDis_4034()
-        {
-            AssertCode("@@@", "3440");
-        }
-
-        // A SuperH decoder for the instruction 4D54 has not been implemented yet.
-        [Test]
-        public void ShDis_4D54()
-        {
-            AssertCode("@@@", "544D");
-        }
-
-        // A SuperH decoder for the instruction 42C8 has not been implemented yet.
-        [Test]
-        public void ShDis_42C8()
-        {
-            AssertCode("@@@", "C842");
-        }
-
-        // A SuperH decoder for the instruction 431B has not been implemented yet.
-        [Test]
-        public void ShDis_431B()
-        {
-            AssertCode("@@@", "1B43");
-        }
-
-        // A SuperH decoder for the instruction 4240 has not been implemented yet.
-        [Test]
-        public void ShDis_4240()
-        {
-            AssertCode("@@@", "4042");
-        }
-
-        // A SuperH decoder for the instruction 07D8 has not been implemented yet.
-        [Test]
-        public void ShDis_07D8()
-        {
-            AssertCode("@@@", "D807");
-        }
-
-        // A SuperH decoder for the instruction 0FE8 has not been implemented yet.
-        [Test]
-        public void ShDis_0FE8()
-        {
-            AssertCode("@@@", "E80F");
-        }
-
-        // A SuperH decoder for the instruction 04B8 has not been implemented yet.
-        [Test]
-        public void ShDis_04B8()
-        {
-            AssertCode("@@@", "B804");
-        }
-
-        // A SuperH decoder for the instruction 4030 has not been implemented yet.
-        [Test]
-        public void ShDis_4030()
-        {
-            AssertCode("@@@", "3040");
-        }
-
-        // A SuperH decoder for the instruction 0283 has not been implemented yet.
-        [Test]
-        public void ShDis_0283()
-        {
-            AssertCode("@@@", "8302");
-        }
-
-        // A SuperH decoder for the instruction 01BA has not been implemented yet.
+         A SuperH decoder for the instruction 01BA has not been implemented yet.
         [Test]
         public void ShDis_01BA()
         {
             AssertCode("@@@", "BA01");
         }
-
-        // A SuperH decoder for the instruction 014A has not been implemented yet.
+              // A SuperH decoder for the instruction 4A14 has not been implemented yet.
         [Test]
-        public void ShDis_014A()
+        public void ShDis_4A14()
         {
-            AssertCode("@@@", "4A01");
+            AssertCode("@@@", "144A");
         }
+#endif
+
+        // A SuperH decoder for the instruction 4C66 has not been implemented yet.
+
+
+        // A SuperH decoder for the instruction 4C6A has not been implemented yet.
+
+
+        // A SuperH decoder for the instruction 4413 has not been implemented yet.
+ 
+
+
+
+
+
+
+
+
+
+        // A SuperH decoder for the instruction 431B has not been implemented yet.
+
+
+
+
+
+
+
+ 
+
+
+
+
+    
 
         // A SuperH decoder for the instruction FC02 has not been implemented yet.
         [Test]
@@ -3867,19 +2772,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "02FC");
         }
 
-        // A SuperH decoder for the instruction 4ED2 has not been implemented yet.
-        [Test]
-        public void ShDis_4ED2()
-        {
-            AssertCode("@@@", "D24E");
-        }
 
-        // A SuperH decoder for the instruction 41E0 has not been implemented yet.
-        [Test]
-        public void ShDis_41E0()
-        {
-            AssertCode("@@@", "E041");
-        }
+
+
 
         // A SuperH decoder for the instruction FFE8 has not been implemented yet.
         [Test]
@@ -3902,28 +2797,12 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("@@@", "DCFE");
         }
 
-        // A SuperH decoder for the instruction 4340 has not been implemented yet.
-        [Test]
-        public void ShDis_4340()
-        {
-            AssertCode("@@@", "4043");
-        }
-
-        // A SuperH decoder for the instruction 4C40 has not been implemented yet.
-        [Test]
-        public void ShDis_4C40()
-        {
-            AssertCode("@@@", "404C");
-        }
+ 
 
 
-        // A SuperH decoder for the instruction 4E74 has not been implemented yet.
-        [Test]
-        public void ShDis_4E74()
-        {
-            AssertCode("@@@", "744E");
-        }
-        */
+
+
+
     }
 }
 
