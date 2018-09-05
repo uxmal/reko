@@ -619,7 +619,7 @@ namespace Reko.Core
 
         public Expression GetSlice(Expression value)
         {
-            if (value is Constant c && c.IsValid)
+            if (value is Constant c && c.IsValid && !c.IsReal)
             {
                 var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
                 return Constant.Create(this.DataType, newValue);

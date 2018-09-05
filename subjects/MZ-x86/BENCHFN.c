@@ -34,7 +34,7 @@ void __exit()
 	do
 	{
 		al_22 = al_22 + ds_6->*si_27;
-		ah_23 = ah_23 + (al_22 <u 0x00);
+		ah_23 = (bool) (al_22 < 0x00) + ah_23;
 		ax_21 = DPB(ax_21, ah_23, 8);
 		si_27 = si_27 + 0x01;
 		cx_28 = cx_28 - 0x01;

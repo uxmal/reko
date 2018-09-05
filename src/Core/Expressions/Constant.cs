@@ -220,6 +220,10 @@ namespace Reko.Core.Expressions
 
         public abstract object GetValue();
 
+        // Get the hash code of the value. We do it this way to avoid incurring the
+        // cost of a boxing operation.
+        public abstract int GetHashOfValue();
+
         private static double IntPow(double b, int e)
 		{
 			double acc = 1.0;
@@ -275,7 +279,7 @@ namespace Reko.Core.Expressions
 			}
 		}
 
-		public bool IsReal
+        public bool IsReal
 		{
 			get 
 			{
@@ -384,6 +388,19 @@ namespace Reko.Core.Expressions
         public static Constant SByte(sbyte p)
         {
             return new ConstantSByte(PrimitiveType.SByte, p);
+        }
+
+        /// <summary>
+        /// Creates a constant signed integer whose bit size is the same
+        /// as <paramref name="dt"/>'s bit size.
+        /// </summary>
+        /// <param name="dt">Data type whose bit size is used to build 
+        /// the constant.</param>
+        /// <param name="l">Constant value.</param>
+        public static Constant Int(DataType dt, long l)
+        {
+            var dtInt = PrimitiveType.Create(Domain.SignedInt, dt.BitSize);
+            return Create(dtInt, l);
         }
 
         public static Constant Int16(short s)
@@ -500,6 +517,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override Constant Complement()
         {
             return new ConstantBool(DataType, !value);
@@ -576,6 +598,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -637,6 +664,10 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
         public override byte ToByte()
         {
             return (byte)value;
@@ -697,6 +728,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -761,6 +797,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -822,6 +863,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -881,6 +927,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -945,6 +996,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1005,6 +1061,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -1068,6 +1129,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1127,6 +1193,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -1190,6 +1261,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1249,6 +1325,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override byte ToByte()
@@ -1312,6 +1393,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override byte ToByte()
         {
             return (byte)value;
@@ -1360,10 +1446,98 @@ namespace Reko.Core.Expressions
             var pt = PrimitiveType.Create(Domain.Real, dt.BitSize);
             switch (dt.BitSize)
             {
+            case 16: return new ConstantReal16(pt, value);
             case 32: return new ConstantReal32(pt, (float)value);
             case 64: return new ConstantReal64(pt, value);
             }
             throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
+        }
+    }
+
+    public class ConstantReal16 : ConstantReal
+    {
+        private readonly Float16 value;
+
+        public ConstantReal16(DataType dt, double value)
+            : base(dt)
+        {
+            this.value = new Float16(value);
+        }
+
+        public ConstantReal16(DataType dt, Float16 value)
+           : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Constant Complement()
+        {
+            throw new NotSupportedException("Cannot complement a real value.");
+        }
+
+        public override object GetValue()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
+        public override Constant Negate()
+        {
+            return new ConstantReal16(this.DataType, -value);
+        }
+
+        public override byte ToByte()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override uint ToUInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ulong ToUInt64()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override short ToInt16()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int ToInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long ToInt64()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override float ToFloat()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ToReal64()
+        {
+            return value.ToDouble(CultureInfo.InvariantCulture);
         }
     }
 
@@ -1390,6 +1564,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override Constant Negate()
@@ -1462,6 +1641,11 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
+        }
+
         public override Constant Negate()
         {
             return new ConstantReal80(DataType, -value);
@@ -1521,6 +1705,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return value.GetHashCode();
         }
 
         public override Constant Complement()
@@ -1593,6 +1782,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return str;
+        }
+
+        public override int GetHashOfValue()
+        {
+            return str.GetHashCode();
         }
 
         public override Constant Negate()

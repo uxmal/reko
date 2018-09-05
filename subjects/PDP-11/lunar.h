@@ -71,11 +71,11 @@ Eq_2: (union "Eq_2" (wchar_t u0) (int16 u1))
 	T_664 (in Mem33[0x006E + 0x0000:word16] : word16)
 	T_668 (in r3_50 : Eq_2)
 	T_673 (in r3_47 + globals->w0056 : word16)
-	T_675 (in r2_56 : word16)
+	T_675 (in r2_56 : Eq_2)
 	T_677 (in 0x0258 : word16)
 	T_678 (in 0x0000 : word16)
 	T_680 (in r2_46 + (r3_50 <u 0x0000) : word16)
-	T_682 (in fn126C(0x0258, r2_46 + (r3_50 <u 0x0000), r3_50, out r3_149) : word16)
+	T_682 (in fn126C(0x0258, (bool) (r3_50 < 0x0000) + r2_46, r3_50, out r3_149) : word16)
 	T_683 (in 0x0000 : word16)
 	T_685 (in -r3_31 : word16)
 	T_698 (in Mem70[0x0056 + 0x0000:word16] : word16)
@@ -3713,7 +3713,7 @@ T_674: (in r3_149 : word16)
   Class: Eq_674
   DataType: word16
   OrigDataType: word16
-T_675: (in r2_56 : word16)
+T_675: (in r2_56 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word16
@@ -3741,7 +3741,7 @@ T_681: (in out r3_149 : ptr16)
   Class: Eq_268
   DataType: Eq_268
   OrigDataType: ptr16
-T_682: (in fn126C(0x0258, r2_46 + (r3_50 <u 0x0000), r3_50, out r3_149) : word16)
+T_682: (in fn126C(0x0258, (bool) (r3_50 < 0x0000) + r2_46, r3_50, out r3_149) : word16)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word16

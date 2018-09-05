@@ -28,22 +28,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
-    public class ArmProcessorState : ProcessorState
+    public class AArch32ProcessorState : ProcessorState
     {
         private IProcessorArchitecture arch;
         private Dictionary<int, ulong> regData;
         private RegisterStorage pc;
 
-        public ArmProcessorState(IProcessorArchitecture arch)
+        public AArch32ProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.regData = new Dictionary<int, ulong>();
-            this.pc = arch.GetRegister("pc");
+            this.pc = Registers.pc;
         }
 
-        public ArmProcessorState(ArmProcessorState that): base(that)
+        public AArch32ProcessorState(AArch32ProcessorState that): base(that)
         {
             this.arch = that.arch;
             this.regData = new Dictionary<int, ulong>(that.regData);
@@ -54,7 +54,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState Clone()
         {
-            var state = new ArmProcessorState(this);
+            var state = new AArch32ProcessorState(this);
             return state;
         }
 

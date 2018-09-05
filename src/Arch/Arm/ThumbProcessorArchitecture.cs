@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -36,7 +37,6 @@ namespace Reko.Arch.Arm
 {
     public class ThumbArchitecture : ProcessorArchitecture
     {
-
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
@@ -50,11 +50,15 @@ namespace Reko.Arch.Arm
             this.InstructionBitSize = 16;
 
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+#if NATIVE
 
             var unk = CreateNativeArchitecture("arm-thumb");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
-
             GetRegistersFromNative();
+#else
+            this.regsByNumber = Registers.GpRegs.ToDictionary(r => r.Number);
+            this.regsByName = regsByNumber.ToDictionary(r => r.Value.Name, r => r.Value);
+#endif
             StackRegister = regsByName["sp"];
         }
 
@@ -88,6 +92,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new T32Disassembler(this, rdr);
+            /*
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -115,12 +121,13 @@ namespace Reko.Arch.Arm
                 {
                     hBytes.Free();
                 }
-            }
+            }*/
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new ThumbRewriterNew(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
+            return new ThumbRewriter(this, rdr, host, binder);
+            //return new ThumbRewriterRetired(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
@@ -160,7 +167,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this);
+            return new AArch32ProcessorState(this);
         }
  
 

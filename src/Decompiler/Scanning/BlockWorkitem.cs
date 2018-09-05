@@ -132,7 +132,6 @@ namespace Reko.Scanning
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
-
                 if (!ri.Accept(this))
                 {
                     return false;
@@ -1086,6 +1085,8 @@ namespace Reko.Scanning
         {
             foreach (Address addr in vector)
             {
+                if (!program.SegmentMap.IsValidAddress(addr))
+                    continue;
                 var st = state.Clone();
                 var pbase = scanner.ScanProcedure(addr, null, st);
                 if (pbase is Procedure pcallee)
@@ -1100,9 +1101,9 @@ namespace Reko.Scanning
             var blocks = new List<Block>();
             foreach (Address addr in vector)
             {
-                var st = state.Clone();
                 if (!program.SegmentMap.IsValidAddress(addr))
                     break;
+                var st = state.Clone();
                 blocks.Add(BlockFromAddress(ric.Address, addr, blockCur.Procedure, state));
             }
             return blocks;

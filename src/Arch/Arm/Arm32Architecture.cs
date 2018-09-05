@@ -34,15 +34,18 @@ using System.Diagnostics;
 using System.Collections;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
+using Reko.Arch.Arm.AArch32;
 
 namespace Reko.Arch.Arm
 {
     // https://wiki.ubuntu.com/ARM/Thumb2PortingHowto
     public class Arm32Architecture : ProcessorArchitecture
     {
+#if NATIVE
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
+#endif
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm32Architecture(string archId) : base(archId)
@@ -51,15 +54,19 @@ namespace Reko.Arch.Arm
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
+            StackRegister = Registers.sp;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+#if NATIVE
 
             var unk = CreateNativeArchitecture("arm");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
             GetRegistersFromNative();
             StackRegister = regsByName["sp"];
+#endif
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             this.regsByName = new Dictionary<string, RegisterStorage>();
@@ -92,9 +99,12 @@ namespace Reko.Arch.Arm
                 --cRegs;
             }
         }
+#endif
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new A32Disassembler(this, rdr);
+#if NATIVE
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -123,6 +133,7 @@ namespace Reko.Arch.Arm
                      hBytes.Free();
                 }
             }
+#endif
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
@@ -157,7 +168,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this);
+            return new AArch32ProcessorState(this);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -181,20 +192,20 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new ArmRewriter(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
+            return new ArmRewriter(this, rdr, host, binder);
+#if NATIVE
+            return new ArmRewriterRetired(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
+#endif
         }
 
         public override RegisterStorage GetRegister(int i)
         {
-            if (regsByNumber.TryGetValue(i, out var reg))
-                return reg;
-            else 
-                return null;
+            throw new NotImplementedException();
         }
 
         public override RegisterStorage GetRegister(string name)
         {
-            if (regsByName.TryGetValue(name, out var reg))
+            if (Registers.RegistersByName.TryGetValue(name, out var reg))
             return reg;
             else
                 return null;
@@ -202,14 +213,19 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage[] GetRegisters()
         {
+#if NATIVE
             // First element is "Invalid".
             return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
+#else
+            return Registers.GpRegs;
+#endif
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            //$TOD: write a dictionary mapping ARM instructions to ARM_INS_xxx.
-            return null; 
+            if (!Enum.TryParse(name, true, out Opcode result))
+                return null;
+            return (int)result;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -220,7 +236,11 @@ namespace Reko.Arch.Arm
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            return regsByName.TryGetValue(name, out reg);
+#if NATIVE
+            return regsByName.TryGetValue(name, out reg);'
+#else
+            return Registers.RegistersByName.TryGetValue(name, out reg);
+#endif
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -231,7 +251,12 @@ namespace Reko.Arch.Arm
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var flagregister = this.regsByName["cpsr"];
+            var flagregister =
+#if NATIVE
+                this.regsByName["cpsr"];
+#else
+                Registers.cpsr;
+#endif
             var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;

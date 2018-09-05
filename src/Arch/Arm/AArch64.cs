@@ -18,28 +18,29 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Registers64 = Reko.Arch.Arm.AArch64.Registers;
 
 namespace Reko.Arch.Arm
 {
     public class Arm64Architecture : ProcessorArchitecture
     {
-
+#if NATIVE
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;
+#endif
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm64Architecture(string archId) : base(archId)
@@ -50,13 +51,15 @@ namespace Reko.Arch.Arm
             this.WordWidth = PrimitiveType.Word64;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
             this.CarryFlagMask = 0;
+#if NATIVE
             var unk = CreateNativeArchitecture("arm-64");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
-
             GetRegistersFromNative();
-            StackRegister = regsByName["sp"];
+#endif
+            StackRegister = Registers.sp;
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             int cRegs;
@@ -89,6 +92,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new AArch64Disassembler(this, rdr);
+            /*
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -116,7 +121,12 @@ namespace Reko.Arch.Arm
                 {
                     hBytes.Free();
                 }
-            }
+            }*/
+        }
+#endif
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+        {
+            return new AArch64Disassembler(this, rdr);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
@@ -151,7 +161,7 @@ namespace Reko.Arch.Arm
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override ProcessorState CreateProcessorState()
@@ -161,7 +171,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new A64Rewriter(this, rdr, state, binder, host);
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -171,7 +181,7 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-                return null;
+            return null;
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -181,8 +191,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (regsByName.TryGetValue(name, out reg))
+            if (Registers64.ByName.TryGetValue(name, out var reg))
                 return reg;
             else
                 return null;
@@ -190,17 +199,26 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage[] GetRegisters()
         {
+#if NATIVE
             return regsByNumber.ToArray();
+#else
+            return Registers.GpRegs64;
+#endif
         }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotSupportedException();
+            return reg;
         }
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -210,7 +228,16 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var flagregister = Registers.ByName["pstate"];
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -225,7 +252,7 @@ namespace Reko.Arch.Arm
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr64(c.ToUInt64());
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -235,7 +262,7 @@ namespace Reko.Arch.Arm
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
-            throw new NotImplementedException("Endianness is BE or LE");
+            return mem.TryReadLe(addr, dt, out value);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

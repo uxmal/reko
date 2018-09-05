@@ -120,7 +120,7 @@ namespace Reko.Core.Types
         }
 
         private static PrimitiveType Create(Domain dom, int bitSize, string name)
-		{
+        {
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
                 dom &= domainMask;
@@ -321,9 +321,7 @@ namespace Reko.Core.Types
             mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
             {
                 { 0, Domain.Any },
-#if ISSUE_651
-                //{ 1, Domain.Boolean|Domain.Integer },
-#endif
+                { 1, Domain.Boolean },
                 { 8, Domain.Boolean|Domain.Character|Domain.Integer },
                 { 16, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
                 { 32, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
@@ -348,6 +346,7 @@ namespace Reko.Core.Types
             SegmentSelector = Create(Domain.Selector, 16);
             WChar = Create(Domain.Character, 16);
             Offset16 = Create(Domain.Offset, 16);
+            Real16 = Create(Domain.Real, 16);
 
             Word32 = CreateWord(32);
             Int32 = Create(Domain.SignedInt, 32);
@@ -389,6 +388,7 @@ namespace Reko.Core.Types
 		public static PrimitiveType UInt16 { get; private set; }
         public static PrimitiveType Ptr16 { get; private set; }
         public static PrimitiveType Offset16 { get; private set; }
+        public static PrimitiveType Real16 { get; private set; }
 
 		public static PrimitiveType SegmentSelector  {get; private set; }
 

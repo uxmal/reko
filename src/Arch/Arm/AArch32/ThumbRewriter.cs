@@ -30,9 +30,34 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.Arm.AArch32
 {
-    public class ThumbRewriterNew : IEnumerable<RtlInstructionCluster>
+    public class ThumbRewriter : ArmRewriter
+    {
+        public ThumbRewriter(
+            ThumbArchitecture arch,
+            EndianImageReader rdr,
+            IRewriterHost host,
+            IStorageBinder binder) :
+            base(arch, rdr, host, binder, new T32Disassembler(arch, rdr).GetEnumerator())
+        {
+            base.pcValueOffset = 4;
+        }
+
+        protected override void ConditionalSkip(bool force)
+        {
+            if (instr.opcode == Opcode.it)
+                return;
+            base.ConditionalSkip(force);
+        }
+
+        protected override void RewriteIt()
+        {
+            m.Nop();
+        }
+    }
+
+    public class ThumbRewriterRetired : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
         private INativeArchitecture nArch;
@@ -40,7 +65,7 @@ namespace Reko.Arch.Arm
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ThumbRewriterNew(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public ThumbRewriterRetired(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, AArch32ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.nArch = nArch;
@@ -75,7 +100,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterNew outer)
+            public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterRetired outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
@@ -154,7 +179,7 @@ namespace Reko.Arch.Arm
         }
         }
 
-        static ThumbRewriterNew()
+        static ThumbRewriterRetired()
         {
             IID_INativeRewriter = typeof(INativeRewriter).GUID;
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;

@@ -594,7 +594,7 @@ Eq_1079 fn0AF8(Eq_1079 r3, Eq_1060 * r4, ptr16 & r4Out)
 // 0B02: Register Eq_1079 fn0B02(Register Eq_1079 r3, Register (ptr16 Eq_1060) r4, Register out ptr16 r4Out)
 Eq_1079 fn0B02(Eq_1079 r3, Eq_1060 * r4, ptr16 & r4Out)
 {
-	Mem7[v3 + 0x00:word16] = Mem0[v3 + 0x00:word16] + (Mem0[v3 + 0x05:word16] - Mem0[v3 + 0x04:word16] <u 0x00);
+	v3->w0000 = (word16) ((bool) (v3->w0005 - v3->w0004 < 0x00) + v3->w0000);
 	*((word16) r3 + 0x00A4) = v3->w0000;
 	if (*((word16) r3 + 116) == 0x00)
 	{

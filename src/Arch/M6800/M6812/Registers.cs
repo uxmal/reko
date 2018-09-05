@@ -18,20 +18,28 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Arm
+namespace Reko.Arch.M6800.M6812
 {
-    [Flags]
-    public enum FlagM
+    public static class Registers
     {
-        NF = 8,
-        ZF = 4,
-        CF = 2,
-        VF = 1
+        public static RegisterStorage d = new RegisterStorage("d", 0, 0, PrimitiveType.Word16);
+        public static RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Byte);
+        public static RegisterStorage b = new RegisterStorage("b", 0, 0, PrimitiveType.Byte);
+
+        public static RegisterStorage x = new RegisterStorage("x", 1, 0, PrimitiveType.Word16);
+        public static RegisterStorage y = new RegisterStorage("y", 2, 0, PrimitiveType.Word16);
+        public static RegisterStorage sp = new RegisterStorage("sp", 3, 0, PrimitiveType.Word16);
+        public static RegisterStorage pc = new RegisterStorage("pc", 4, 0, PrimitiveType.Word16);
+
+        public static RegisterStorage ccr = new RegisterStorage("ccr", 5, 0, PrimitiveType.Byte);
+
     }
 }
