@@ -75,12 +75,12 @@ namespace Reko.Arch.SuperH
             public void Clear()
             {
                 ops.Clear();
-                
+
             }
 
             internal SuperHInstruction MakeInstruction()
             {
-                var instr =  new SuperHInstruction
+                var instr = new SuperHInstruction
                 {
                     Opcode = this.opcode,
                 };
@@ -111,7 +111,7 @@ namespace Reko.Arch.SuperH
                 Console.WriteLine("[Test]");
                 Console.WriteLine($"public void ShDis_{wInstr:X4}()");
                 Console.WriteLine("{");
-                Console.WriteLine($"    AssertCode(\"@@@\", \"{wInstr&0xFF:X2}{wInstr>>8:X2}\");");
+                Console.WriteLine($"    AssertCode(\"@@@\", \"{wInstr & 0xFF:X2}{wInstr >> 8:X2}\");");
                 Console.WriteLine("}");
                 Console.WriteLine("");
             }
@@ -178,13 +178,13 @@ namespace Reko.Arch.SuperH
 
         private static bool d1(ushort uInstr, SuperHDisassembler dasm)
         {
-            var reg = (uInstr >> (1+8)) & 0x7;
+            var reg = (uInstr >> (1 + 8)) & 0x7;
             dasm.state.ops.Add(new RegisterOperand(Registers.dfpregs[reg]));
             return true;
         }
         private static bool d2(ushort uInstr, SuperHDisassembler dasm)
         {
-            var reg = (uInstr >> (1+4)) & 0x7;
+            var reg = (uInstr >> (1 + 4)) & 0x7;
             dasm.state.ops.Add(new RegisterOperand(Registers.dfpregs[reg]));
             return true;
         }
@@ -266,8 +266,14 @@ namespace Reko.Arch.SuperH
             return true;
         }
         private static bool fpul(ushort uInstr, SuperHDisassembler dasm)
-        { 
+        {
             dasm.state.ops.Add(new RegisterOperand(Registers.fpul));
+            return true;
+        }
+
+        private static bool xmtrx(ushort uInstr, SuperHDisassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.xmtrx));
             return true;
         }
         private static bool dsr(ushort uInstr, SuperHDisassembler dasm)
@@ -322,6 +328,12 @@ namespace Reko.Arch.SuperH
         {
             var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
             dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word32, reg));
+            return true;
+        }
+        private static bool Ind1d(ushort uInstr, SuperHDisassembler dasm)
+        {
+            var reg = Registers.gpregs[(uInstr >> 8) & 0x0F];
+            dasm.state.ops.Add(MemoryOperand.Indirect(PrimitiveType.Word64, reg));
             return true;
         }
 
@@ -426,6 +438,12 @@ namespace Reko.Arch.SuperH
             dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Word32, Registers.gpregs[iReg]));
             return true;
         }
+        private static bool X1d(ushort uInstr, SuperHDisassembler dasm)
+        {
+            var iReg = (uInstr >> 8) & 0xF;
+            dasm.state.ops.Add(MemoryOperand.IndexedIndirect(PrimitiveType.Word64, Registers.gpregs[iReg]));
+            return true;
+        }
         private static bool X2b(ushort uInstr, SuperHDisassembler dasm)
         {
             var iReg = (uInstr >> 4) & 0xF;
@@ -506,12 +524,12 @@ namespace Reko.Arch.SuperH
             return new InstrDecoder(opcode, mutators);
         }
 
-        private static OprecField Mask(int pos, int length, params Decoder[] decoders)
+        private static FieldDecoder Mask(int pos, int length, params Decoder[] decoders)
         {
-            return new OprecField(pos, length, decoders);
+            return new FieldDecoder(pos, length, decoders);
         }
 
-        private static OprecField Sparse(int pos, int length, params (int, Decoder) [] sparseDecoders)
+        private static FieldDecoder Sparse(int pos, int length, params (int, Decoder)[] sparseDecoders)
         {
             var decoders = Enumerable.Range(0, 1 << length)
                 .Select(n => (Decoder)new NyiDecoder())
@@ -520,14 +538,14 @@ namespace Reko.Arch.SuperH
             {
                 decoders[decoder.Item1] = decoder.Item2;
             }
-            return new OprecField(pos, length, decoders);
+            return new FieldDecoder(pos, length, decoders);
         }
         private static ConditionalDecoder Cond(int pos, int length, Predicate<uint> pred, Decoder trueDecoder, Decoder falseDecoder)
         {
             return new ConditionalDecoder(pos, length, pred, trueDecoder, falseDecoder);
         }
 
-        private static OprecField Sparse(int pos, int length, Dictionary<int, Decoder> sparseDecoders)
+        private static FieldDecoder Sparse(int pos, int length, Dictionary<int, Decoder> sparseDecoders)
         {
             var decoders = new Decoder[1 << length];
             for (int i = 0; i < decoders.Length; ++i)
@@ -541,7 +559,7 @@ namespace Reko.Arch.SuperH
                     decoders[i] = new NyiDecoder();
                 }
             }
-            return new OprecField(pos, length, decoders);
+            return new FieldDecoder(pos, length, decoders);
         }
 
         // Predicates
@@ -563,7 +581,7 @@ namespace Reko.Arch.SuperH
             public abstract SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr);
         }
 
-        private class InstrDecoder  : Decoder
+        private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
             private readonly Mutator[] mutators;
@@ -616,13 +634,13 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        private class OprecField : Decoder
+        private class FieldDecoder : Decoder
         {
             private readonly int shift;
             private readonly int bitcount;
             private readonly Decoder[] decoders;
 
-            public OprecField(int shift, int bitcount, Decoder [] decoders)
+            public FieldDecoder(int shift, int bitcount, Decoder[] decoders)
             {
                 this.shift = shift;
                 this.bitcount = bitcount;
@@ -638,12 +656,11 @@ namespace Reko.Arch.SuperH
 
         private class ConditionalDecoder : Decoder
         {
-            private int pos;
-            private uint mask;
-            private int length;
-            private Predicate<uint> pred;
-            private Decoder trueDecoder;
-            private Decoder falseDecoder;
+            private readonly int pos;
+            private readonly uint mask;
+            private readonly Predicate<uint> pred;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
 
             public ConditionalDecoder(int pos, int length, Predicate<uint> pred, Decoder trueDecoder, Decoder falseDecoder)
             {
@@ -656,7 +673,7 @@ namespace Reko.Arch.SuperH
 
             public override SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr)
             {
-                var bits = (uInstr>>pos) & mask;
+                var bits = (uInstr >> pos) & mask;
                 var decoder = (pred((uint)bits)) ? trueDecoder : falseDecoder;
                 return decoder.Decode(dasm, uInstr);
             }
@@ -664,7 +681,28 @@ namespace Reko.Arch.SuperH
 
         private static Decoder invalid = Instr(Opcode.invalid);
 
-        private static Decoder[] decoders = new Decoder[]
+        private static FieldDecoder decode_FxFD = Mask(8, 4,
+            Instr(Opcode.fsca, fpul, f1),
+            Instr(Opcode.ftrv, xmtrx, v2),
+            Instr(Opcode.fsca, fpul, f1),
+            Instr(Opcode.fschg),
+
+            Instr(Opcode.fsca, fpul, f1),
+            Instr(Opcode.ftrv, xmtrx, v2),
+            Instr(Opcode.fsca, fpul, f1),
+            invalid,
+
+            Instr(Opcode.fsca, fpul, f1),
+            Instr(Opcode.ftrv, xmtrx, v2),
+            Instr(Opcode.fsca, fpul, f1),
+            Instr(Opcode.frchg),
+
+            Instr(Opcode.fsca, fpul, f1),
+            Instr(Opcode.ftrv, xmtrx, v2),
+            Instr(Opcode.fsca, fpul, f1),
+            invalid);
+
+        private static readonly Decoder[] decoders = new Decoder[]
         {
             // 0...
             Sparse(0, 4, new Dictionary<int, Decoder>
@@ -746,7 +784,7 @@ namespace Reko.Arch.SuperH
                 },
                 { 0xB, Cond(8, 4, Ne0,
                     invalid,
-                    Sparse(4, 4, 
+                    Sparse(4, 4,
                         (0x0, Instr(Opcode.rts)),
                         (0x1, Instr(Opcode.sleep)),
                         (0x2, Instr(Opcode.rte)),
@@ -1024,6 +1062,22 @@ namespace Reko.Arch.SuperH
                         Instr(Opcode.fadd, d2,d1),
                         Instr(Opcode.fadd, f2,f1))
                 },
+                { 0x10, Mask(8, 1,
+                        Instr(Opcode.fadd, d2,d1),
+                        Instr(Opcode.fadd, f2,f1))
+                },
+                { 0x01, Mask(8, 1,
+                        Instr(Opcode.fsub, d2,d1),
+                        Instr(Opcode.fsub, f2,f1))
+                },
+                { 0x11, Instr(Opcode.fsub, f2,f1) },
+
+                { 0x02, Mask(8, 1,
+                        Instr(Opcode.fmul, d2,d1),
+                        Instr(Opcode.fmul, f2,f1))
+                },
+                { 0x12, Instr(Opcode.fmul, f2,f1) },
+
                 { 0x3, Mask(8, 1,
                         Instr(Opcode.fdiv, d2,d1),
                         Instr(Opcode.fdiv, f2,f1))
@@ -1032,23 +1086,40 @@ namespace Reko.Arch.SuperH
                         Instr(Opcode.fcmp_eq, d2,d1),
                         Instr(Opcode.fcmp_eq, f2,f1))
                 },
-                { 0x5, Mask(8, 1, 
+                { 0x5, Mask(8, 1,
                         Instr(Opcode.fcmp_gt, d2,d1),
                         Instr(Opcode.fcmp_gt, f2,f1))
                 },
+
+                { 0x06, Instr(Opcode.fmov_d, X1d,d2) },
+                { 0x16, Instr(Opcode.fmov_s, X1l,f2) },
+
+                { 0x08, Instr(Opcode.fmov_d, Ind1d,d2) },
+                { 0x18, Instr(Opcode.fmov_s, Ind1l,f2) },
+
                 { 0x9, Mask(8, 1,
                     Instr(Opcode.fcmp_gt, d2,d1),
                     Instr(Opcode.fcmp_gt, f2,f1))
                 },
 
-                { 0xD, Sparse(4, 5, new Dictionary<int, Decoder>
-                    {
-                        { 0x08, Instr(Opcode.fldi0, f1) },
-                        { 0x0A, Instr(Opcode.fcnvsd, fpul,d1) },
-                        { 0x0E, Instr(Opcode.fipr, v2,v1) },
-                        { 0x18, Instr(Opcode.fldi0, f1) },
-                        { 0x1E, Instr(Opcode.fipr, v2,v1) },
-                    })
+                { 0x0A, Instr(Opcode.fmov_d, Ind1d,d2) },
+                { 0x1A, Instr(Opcode.fmov_s, Ind1l,f2) },
+
+                { 0xC, Mask(8, 1,
+                    Instr(Opcode.fmov, d2,d1),
+                    Instr(Opcode.fmov, f2,f1))
+                },
+                { 0x1C, Mask(8, 1,
+                    Instr(Opcode.fmov, d2,d1),
+                    Instr(Opcode.fmov, f2,f1))
+                },
+                { 0xD, Sparse(4, 5, 
+                    ( 0x02, Instr(Opcode.@float, fpul,f1) ),
+                    ( 0x08, Instr(Opcode.fldi0, f1) ),
+                    ( 0x0A, Instr(Opcode.fcnvsd, fpul,d1) ),
+                    ( 0x0E, Instr(Opcode.fipr, v2,v1) ),
+                    ( 0x18, Instr(Opcode.fldi0, f1) ),
+                    ( 0x1E, Instr(Opcode.fipr, v2,v1) ))
                 },
                 { 0x0E, Instr(Opcode.fmac, F0,f2,f1) },
                 { 0x0F, invalid },
@@ -1060,9 +1131,11 @@ namespace Reko.Arch.SuperH
                         { 0x09, Instr(Opcode.fldi1, f1) },
                         { 0x0A, Instr(Opcode.fcnvsd, fpul,d1) },
                         { 0x0B, Instr(Opcode.fcnvds, d1,fpul) },
+                        { 0x0F, decode_FxFD },
                         { 0x11, Instr(Opcode.flds, f1,fpul) },
                         { 0x15, Instr(Opcode.fabs, f1) },
                         { 0x19, Instr(Opcode.fldi1, f1) },
+                        { 0x1F, decode_FxFD }
                     })
                 },
                 { 0x1E, Instr(Opcode.fmac, F0,f2,f1) },

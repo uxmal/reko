@@ -139,5 +139,15 @@ namespace Reko.Arch.SuperH
         mulr,
         divs,
         mac_w,
+        fsub,
+        fmul,
+        fmov,
+        fmov_s,
+        fmov_d,
+        @float,
+        fsca,
+        ftrv,
+        frchg,
+        fschg,
     }
 }

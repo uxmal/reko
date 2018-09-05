@@ -120,6 +120,8 @@ namespace Reko.Arch.SuperH
         public static RegisterStorage r14_bank = new RegisterStorage("r14_bank", 46, 0, PrimitiveType.Word32);
         public static RegisterStorage r15_bank = new RegisterStorage("r15_bank", 47, 0, PrimitiveType.Word32);
 
+        public static RegisterStorage xmtrx = new RegisterStorage("xmtrx", 48, 0, PrimitiveType.CreateWord(512));
+
         public static FlagGroupStorage T = new FlagGroupStorage(sr, 1, "T", PrimitiveType.Bool);
 
         public static RegisterStorage[] gpregs = new[]

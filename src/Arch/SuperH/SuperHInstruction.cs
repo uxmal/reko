@@ -73,6 +73,8 @@ namespace Reko.Arch.SuperH
             { Opcode.extu_w, "extu.w" },
             { Opcode.fcmp_eq, "fcmp/eq" },
             { Opcode.fcmp_gt, "fcmp/gt" },
+            { Opcode.fmov_d, "fmov.d" },
+            { Opcode.fmov_s, "fmov.s" },
             { Opcode.ldc_l, "ldc.l" },
             { Opcode.lds_l, "lds.l" },
             { Opcode.mac_l, "mac.l" },
