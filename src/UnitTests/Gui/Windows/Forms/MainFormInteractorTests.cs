@@ -206,7 +206,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
 		}
 
-        [Ignore("REvisit this after Gui-development merge 2018-03-12")]
         [Test]
         public void Mfi_FinishDecompilation()
         {
@@ -214,14 +213,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_LoadPreferences();
             Given_DecompilerInstance();
             Given_XmlWriter();
-            Given_SavePrompt(true);
-            dcSvc.Stub(d => d.Decompiler = null);
+            Given_SavePrompt(false);
+            dcSvc.Stub(d => d.Decompiler = null).IgnoreArguments();
+            decompiler.Stub(d => d.AnalyzeDataFlow());
+            decompiler.Stub(d => d.ReconstructTypes());
+            decompiler.Stub(d => d.StructureProgram());
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             brSvc.Expect(b => b.Reload());
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            interactor.OpenBinary(null);
+            interactor.OpenBinary("foo.exe");
+
             Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
             interactor.FinishDecompilation();
             Assert.AreSame(interactor.FinalPageInteractor, interactor.CurrentPhase);
