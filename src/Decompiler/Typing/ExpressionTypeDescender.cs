@@ -522,6 +522,14 @@ namespace Reko.Typing
                 offset = 0;
                 MemoryAccessCommon(null, globals, OffsetOf(c), tvAccess, eaBitSize);
             }
+            else if (effectiveAddress is Address addr)
+            {
+                // Mem[addr]
+                p = effectiveAddress;
+                offset = 0;
+                //$TODO: offsets need to be int64, as addresses can be 64-bit
+                MemoryAccessCommon(null, globals, (int)addr.ToLinear(), tvAccess, eaBitSize);
+            }
             else if (IsArrayAccess(effectiveAddress))
             {
                 // Mem[p + i] where i is integer type.

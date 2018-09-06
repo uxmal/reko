@@ -79,7 +79,7 @@ namespace Reko.Typing
                 return aem.Transform(null, access.DataType);
             }
             if (!(ea is BinaryExpression bin && bin.Operator == Operator.IAdd) &&
-                !(ea is Constant))
+                !(ea is Constant) && !(ea is Address))
             {
                 ea = AddZeroToEffectiveAddress(ea);
             }

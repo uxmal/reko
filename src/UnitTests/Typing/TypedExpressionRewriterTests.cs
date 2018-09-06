@@ -360,8 +360,8 @@ namespace Reko.UnitTests.Typing
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");
         }
 
-        [Ignore("scanning-development")]
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void TerReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TerReg00012.txt");

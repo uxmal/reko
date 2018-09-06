@@ -49,7 +49,6 @@ namespace Reko.Core
 
 		public void AddFlagGroupReturnValue(KeyValuePair<RegisterStorage, uint> bits, IStorageBinder binder)
 		{
-			PrimitiveType dt = Bits.IsSingleBitSet(bits.Value) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var grf = arch.GetFlagGroup(bits.Key, bits.Value);
 			ret = binder.EnsureFlagGroup(grf);
 		}

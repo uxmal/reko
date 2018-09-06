@@ -225,13 +225,12 @@ namespace Reko.UnitTests.Typing
 
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void TycoCallFunctionWithArraySize()
         {
             var m = new ProcedureBuilder();
             var sig = FunctionType.Func(
-                new Identifier("", new Pointer(VoidType.Instance, 4), null),
+                new Identifier("", new Pointer(VoidType.Instance, 32), null),
                 m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
             var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
             {

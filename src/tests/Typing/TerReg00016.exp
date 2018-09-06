@@ -1,21 +1,28 @@
 // Before ///////
 // fn0000131C
-void fn0000131C()
+// Return size: 0
+void fn0000131C(word32 a2, word32 a3)
 fn0000131C_entry:
 	// succ:  l0000131C
 l0000131C:
-	branch Mem0[0x000013F8:word32] != 0x00000000 l00001346
+	word32 a7_23 = fp - 8
+	branch Mem8[0x000013F8:word32] != 0x00000000 l00001346
 	// succ:  l00001328 l00001346
 l00001328:
-	word32 a3_31 = Mem0[0x0000140C:word32]
-	Mem34[0x000013F8:word32] = 1
-	branch a3_31 == 0x00000000 l00001346
+	word32 a3_13 = Mem8[0x0000140C:word32]
+	Mem16[0x000013F8:word32] = 1
+        word32 d0_17 = a3_13
+	branch a3_13 == 0x00000000 l00001346
 	// succ:  l0000133A l00001346
 l0000133A:
-	word32 a2_39 = Mem34[a3_31 + 4:word32]
-	call Mem34[a2_39:word32] (retsize: 4; depth: 12)
-	a3_31 = Mem34[a3_31:word32]
-	branch a3_31 != 0x00000000 l0000133A
+	word32 a2_22 = Mem16[a3_13 + 4:word32]
+	word32 a3_25
+	call a2_22(retsize: 4;)
+		uses: a2:a2_22,a3:a3_20,a7:a7_23,d0:d0_27,Stack +0000:a3,Stack +FFFFFFFC:a2
+		defs: a3:a3_25,a7:a7_24
+	a3_13 = Mem16[a3_25:word32]
+	d0_17 = a3_13
+	branch a3_13 != 0x00000000 l0000133A
 	// succ:  l00001346 l0000133A
 l00001346:
 	return
@@ -24,7 +31,8 @@ fn0000131C_exit:
 
 // After ///////
 // fn0000131C
-void fn0000131C()
+// Return size: 0
+void fn0000131C(word32 a2, word32 a3)
 fn0000131C_entry:
 	// succ:  l0000131C
 l0000131C:
@@ -47,10 +55,10 @@ l00001346:
 fn0000131C_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (13F8 word32 dw13F8) (140C (ptr32 Eq_6) ptr140C))
+Eq_1: (struct "Globals" (13F8 int32 dw13F8) (140C (ptr32 Eq_12) ptr140C))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_6: (struct "Eq_6" (0 (ptr32 Eq_6) ptr0000) (4 (ptr32 (ptr32 code)) ptr0004))
-	T_6 (in a3_31 : (ptr32 Eq_6))
+Eq_14: (struct "Eq_12" (0 (ptr32 Eq_6) ptr0000) (4 (ptr32 (ptr32 code)) ptr0004))
+	T_14 (in a3_31 : (ptr32 Eq_6))
 	T_8 (in Mem0[0x0000140C:word32] : word32)
 	T_12 (in 0x00000000 : word32)
 	T_23 (in Mem34[a3_31 + 0x00000000:word32] : word32)
