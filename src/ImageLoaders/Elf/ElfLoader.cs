@@ -427,6 +427,8 @@ namespace Reko.ImageLoaders.Elf
             var imgSymbols = new SortedList<Address, ImageSymbol>();
             foreach (var sym in Symbols.Values.SelectMany(seg => seg.Values).OrderBy(s => s.Value))
             {
+                if (sym.Name != null && sym.Name.Contains("crypt")) //$DEBUG
+                    sym.ToString();
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
                     continue;
@@ -474,10 +476,13 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
                     {
+                        if (symbol.Name.Contains("crypto")) //$DEBUG
+                            symbol.Name.ToString();
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
                         Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
-                        if (symbol.Type == SymbolType.ExternalProcedure)
+                        if (symbol.Type == SymbolType.ExternalProcedure ||
+                            symbol.Type == SymbolType.Procedure)
                         {
                             program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
                         }

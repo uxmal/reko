@@ -31,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using Reko.UnitTests.Mocks;
 using System.Linq;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -52,7 +53,10 @@ namespace Reko.UnitTests.Evaluation
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            simplifier = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(null, ssaIds), listener);
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+            var ssaCtx = new SsaEvaluationContext(null, ssaIds, importResolver);
+            simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
         }
 
         private SsaIdentifierCollection BuildSsaIdentifiers()
