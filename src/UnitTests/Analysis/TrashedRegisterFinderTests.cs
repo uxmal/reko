@@ -647,32 +647,6 @@ const eax:<invalid>
             RunTest(p, sExp);
         }
 
-        [Test]
-        [Ignore("scanning-development")]
-        public void TrfConstNonConst()
-        {
-            // Constant in one branch, not constant in other.
-            p.Add("main", m =>
-            {
-                var ax = m.Frame.EnsureRegister(Registers.ax);
-                var cl = m.Frame.EnsureRegister(Registers.cl);
-                var cx = m.Frame.EnsureRegister(Registers.cx);
-                m.BranchIf(m.Eq0(ax), "zero");
-                m.Assign(cl, 0);
-                m.Return();
-
-                m.Label("zero");
-                m.Assign(cx, m.Mem16(ax));
-                m.Return();
-            });
-            var sExp =
-@"main ax cx al cl ah ch
-const ax:0x0000 cx:<invalid>
-    main_entry:esp:fp
-    
-";
-            RunTest(p, sExp);
-        }
 
         [Test]
         public void TrfFactorial()
