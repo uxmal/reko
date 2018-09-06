@@ -358,7 +358,6 @@ test:
         }
 
         [Test(Description = "Processes a self-recursive program")]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void Regp_Factorial()
         {
@@ -387,8 +386,8 @@ l2:
 	Mem8[r63_7:word32] = r2_4
 	r1_9 = r2_4 - r1_5
 	call fact (retsize: 0;)
-		uses: r1:r1_9,f2:r2_4,f3:r3,f63:r63_7
-		defs: cc_15,r1_11,r2_12,r3_14,r63_10
+		uses: r1:r1_9,r2:r2_4,r3:r3,r63:r63_7
+		defs: cc:cc_15,r1:r1_11,r2:r2_12,r3:r3_14,r63:r63_10
 	r2_16 = Mem8[r63_10:word32]
 	r63_17 = r63_10 + 0x00000004
 	r1_18 = r1_11 * r2_16
@@ -410,7 +409,7 @@ fact_exit:
 
 fact:
     Preserved: 
-    Trashed:   Flags r1 r2 r3 r63
+    Trashed:   cc r1 r2 r3 r63
 ";
             #endregion
             AssertProgram(sExp, program.Procedures.Values.Take(1));
