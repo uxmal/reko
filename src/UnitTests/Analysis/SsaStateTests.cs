@@ -233,5 +233,32 @@ m3: [r2:r2_3,r1:r1_2]
             #endregion
             AssertOutput(sExp, dict);
         }
+
+        [Test(Description = "Get all identifiers for procedure whose exit block only has one predecessor")]
+        public void SsaState_GenerateStrips_NoPhis()
+        {
+            BuildTest(m =>
+            {
+                var r0 = m.Reg32("r0", 0);
+                m.Label("m1");
+                m.BranchIf(m.Eq0(r0), "m3");
+                m.Label("m2");
+                m.SideEffect(m.Fn("foo", r0));
+                m.Goto("mDone");
+                m.Label("m3");
+                m.SideEffect(m.Fn("bar"));
+                m.Label("mDone");
+                m.Return();
+            });
+
+            var block = FindBlock("mDone");
+
+            var dict = this.ssa.PredecessorPhiIdentifiers(block);
+            var sExp =
+            #region Expected
+               @"";
+            #endregion
+            AssertOutput(sExp, dict);
+        }
     }
 }

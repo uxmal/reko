@@ -326,10 +326,12 @@ namespace Reko.Analysis
                     .Select(phi => phi.Src.Arguments
                         .Select(a => new CallBinding(
                             phi.Dst.Storage,
-                            a)));
+                            a)).ToArray()).ToArray();
                 var arrs = Reko.Core.EnumerableEx.ZipMany(
                     phis,
                     ids => ids.ToArray()).ToArray();
+                if (arrs.Length == 0)
+                    return dict;
                 for (int p = 0; p < block.Pred.Count; ++p)
                 {
                     dict.Add(block.Pred[p], arrs[p]);

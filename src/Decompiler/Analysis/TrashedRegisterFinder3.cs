@@ -212,7 +212,15 @@ namespace Reko.Analysis
                 procCtx.Add(proc, procFlow);
                 var idState = new Dictionary<Identifier, Tuple<Expression,BitRange>>();
                 //$REVIEW: this assumes the existence of a frame pointer.
-                var fp = sst.SsaState.Identifiers[proc.Frame.FramePointer].Identifier;
+                Identifier fp;
+                if (sst.SsaState.Identifiers.TryGetValue(proc.Frame.FramePointer, out var sidFp))
+                {
+                    fp = sidFp.Identifier;
+                }
+                else
+                {
+                    fp = null;
+                }
                 var block = proc.EntryBlock;
                 blockCtx.Add(block, new Context(sst.SsaState, fp, idState, procFlow));
 
@@ -499,86 +507,90 @@ namespace Reko.Analysis
         /// </summary>
         public bool VisitUseInstruction(UseInstruction use)
         {
-            var id = use.Expression as Identifier;
-            if (id == null)
+            if (!(use.Expression is Identifier id))
                 return true;
             var sid = ssas[block.Procedure].Identifiers[id];
-            if (id.Storage is RegisterStorage)
+            switch (id.Storage)
             {
-                var value = ctx.GetValue(id);
-                var range = ctx.GetBitRange(id);
-                var stg = arch.GetRegister(id.Storage.Domain, range) ?? id.Storage;
-                if (value == Constant.Invalid)
+            case RegisterStorage reg:
                 {
-                    ctx.ProcFlow.Trashed.Add(stg);
-                    ctx.ProcFlow.Preserved.Remove(stg);
-                    ctx.ProcFlow.Constants.Remove(stg);
-                    return true;
-                }
-                if (value is Constant c)
-                {
-                    ctx.ProcFlow.Constants[stg] = c;
-                    ctx.ProcFlow.Preserved.Remove(stg);
-                    ctx.ProcFlow.Trashed.Add(stg);
-                    return true;
-                }
-                if (value is Identifier idV)
-                {
-                    if (id.Storage == arch.StackRegister)
+                    var value = ctx.GetValue(id);
+                    var range = ctx.GetBitRange(id);
+                    var stg = arch.GetRegister(id.Storage.Domain, range) ?? id.Storage;
+                    if (value == Constant.Invalid)
                     {
-                        if (idV == ctx.FramePointer)
+                        ctx.ProcFlow.Trashed.Add(stg);
+                        ctx.ProcFlow.Preserved.Remove(stg);
+                        ctx.ProcFlow.Constants.Remove(stg);
+                        return true;
+                    }
+                    if (value is Constant c)
+                    {
+                        ctx.ProcFlow.Constants[stg] = c;
+                        ctx.ProcFlow.Preserved.Remove(stg);
+                        ctx.ProcFlow.Trashed.Add(stg);
+                        return true;
+                    }
+                    if (value is Identifier idV)
+                    {
+                        if (id.Storage == arch.StackRegister)
                         {
-                            // Special case: if we deduce that the CPU stack
-                            // register is equal to the pseudo-register FP
-                            // (frame pointer), we make note that the stack
-                            // register is preserved.
-                            ctx.ProcFlow.Preserved.Add(arch.StackRegister);
+                            if (idV == ctx.FramePointer)
+                            {
+                                // Special case: if we deduce that the CPU stack
+                                // register is equal to the pseudo-register FP
+                                // (frame pointer), we make note that the stack
+                                // register is preserved.
+                                ctx.ProcFlow.Preserved.Add(arch.StackRegister);
+                                return true;
+                            }
+                        }
+                        else if (idV.Storage == id.Storage)
+                        {
+                            if (sid.OriginalIdentifier == idV &&
+                                sid.OriginalIdentifier != id)
+                            {
+                                ctx.ProcFlow.Preserved.Add(stg);
+                            }
                             return true;
                         }
                     }
-                    else if (idV.Storage == id.Storage)
+                    ctx.ProcFlow.Trashed.Add(stg);
+                }
+                break;
+            case FlagGroupStorage grfStorage:
+                {
+                    var value = ctx.GetValue(id);
+                    if (value is Identifier idV && idV == sid.OriginalIdentifier)
                     {
-                        if (sid.OriginalIdentifier == idV &&
-                            sid.OriginalIdentifier != id)
-                        {
-                            ctx.ProcFlow.Preserved.Add(stg);
-                        }
-                        return true;
+                        ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
+                        ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
                     }
+                    else
+                    {
+                        ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
+                        ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
+                            ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
+                    }
+                    return true;
                 }
-                ctx.ProcFlow.Trashed.Add(stg);
-            }
-            else if (id.Storage is FlagGroupStorage grfStorage)
-            {
-                var value = ctx.GetValue(id);
-                if (value is Identifier idV && idV == sid.OriginalIdentifier)
+                break;
+            case FpuStackStorage fpuStg:
                 {
-                    ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
-                        ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
-                    ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
-                        ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
+                    var value = ctx.GetValue(id);
+                    if (value is Identifier idV && idV == sid.OriginalIdentifier)
+                    {
+                        ctx.ProcFlow.Preserved.Add(fpuStg);
+                    }
+                    else
+                    {
+                        ctx.ProcFlow.Trashed.Add(fpuStg);
+                    }
+                    return true;
                 }
-                else
-                {
-                    ctx.ProcFlow.grfTrashed[grfStorage.FlagRegister] =
-                        ctx.ProcFlow.grfTrashed.Get(grfStorage.FlagRegister) | grfStorage.FlagGroupBits;
-                    ctx.ProcFlow.grfPreserved[grfStorage.FlagRegister] =
-                        ctx.ProcFlow.grfPreserved.Get(grfStorage.FlagRegister) & ~grfStorage.FlagGroupBits;
-                }
-                return true;
-            }
-            else if (id.Storage is FpuStackStorage fpuStg)
-            {
-                var value = ctx.GetValue(id);
-                if (value is Identifier idV && idV == sid.OriginalIdentifier)
-                {
-                    ctx.ProcFlow.Preserved.Add(fpuStg);
-                }
-                else
-                {
-                    ctx.ProcFlow.Trashed.Add(fpuStg);
-                }
-                return true;
             }
             return true;
         }

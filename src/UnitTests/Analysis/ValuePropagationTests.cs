@@ -1031,6 +1031,40 @@ ProcedureBuilder_exit:
             var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, bx_3));
             RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1:word16]", instr.ToString());
-    }
+        }
+
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void VpConstantHighByte()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("sum", m =>
+            {
+                var _ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+                var _al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
+                var _ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
+                var _dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
+                var _si = new RegisterStorage("si", 6, 0, PrimitiveType.Word16);
+                var ax = m.Frame.EnsureRegister(_ax);
+                var ah = m.Frame.EnsureRegister(_ah);
+                var al = m.Frame.EnsureRegister(_al);
+                var dx = m.Frame.EnsureRegister(_dx);
+                var si = m.Frame.EnsureRegister(_si);
+
+                m.Assign(ah, 0);
+
+                m.Label("m0");
+                m.BranchIf(m.Eq0(m.Mem8(si)), "m3done");
+
+                m.Label("m1");
+                m.Assign(al, m.Mem8(si));
+                m.Assign(dx, m.IAdd(dx, ax));
+                m.Goto("m0");
+
+                m.Label("m3done");
+                m.Return();
+            });
+            RunFileTest(pb.BuildProgram(), "Analysis/VpConstantHighByte.txt");
+        }
     }
 }

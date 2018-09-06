@@ -105,6 +105,7 @@ namespace Reko.Arch.Arm.AArch32
             .ToArray();
 
         public static readonly Dictionary<string, RegisterStorage> RegistersByName;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
 
         static Registers()
         {
@@ -115,6 +116,7 @@ namespace Reko.Arch.Arm.AArch32
                 .Concat(DRegs)
                 .Concat(SRegs)
                 .ToDictionary(r => r.Name);
+            RegistersByDomain = new Dictionary<StorageDomain, RegisterStorage>();
         }
     }
 }
