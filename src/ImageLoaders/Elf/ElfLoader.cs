@@ -91,6 +91,7 @@ namespace Reko.ImageLoaders.Elf
             this.machine = (ElfMachine) machine;
             this.Architecture = CreateArchitecture(machine, endianness);
             this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
+            this.DynamicSymbols = new Dictionary<int, ElfSymbol>();
             this.Sections = new List<ElfSection>();
             this.Segments = new List<ElfSegment>();
             this.DynamicEntries = new Dictionary<long, ElfDynamicEntry>();
@@ -104,6 +105,7 @@ namespace Reko.ImageLoaders.Elf
         public List<ElfSection> Sections { get; private set; }
         public List<ElfSegment> Segments { get; private set; }
         public Dictionary<ulong, Dictionary<int, ElfSymbol>> Symbols { get; private set; }
+        public Dictionary<int, ElfSymbol> DynamicSymbols { get; private set; }
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
         public List<string> Dependencies { get; private set; }
 
@@ -443,6 +445,7 @@ namespace Reko.ImageLoaders.Elf
 
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
         {
+            Debug.Print("== Constructing GOT entries ==");
             var rdr = program.CreateImageReader(gotStart);
             while (rdr.Address < gotEnd)
             {
@@ -457,12 +460,9 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
-                        if (symbol.Type == SymbolType.ExternalProcedure ||
-                            symbol.Type == SymbolType.Procedure)
-                        {
-                            program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
-                        }
+                        Debug.Print("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
+                            gotStart, addrGot-gotStart, gotSym, symbol);
+                        program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
                     }
                 }
             }
@@ -707,10 +707,15 @@ namespace Reko.ImageLoaders.Elf
                 s.Type == SectionHeaderType.SHT_SYMTAB ||
                 s.Type == SectionHeaderType.SHT_DYNSYM)
                 .ToList();
-                foreach (var section in symbolSections)
+            foreach (var section in symbolSections)
+            {
+                var symtab = LoadSymbolsSection(section);
+                Symbols[section.FileOffset] = symtab;
+                if (section.Type == SectionHeaderType.SHT_DYNSYM)
                 {
-                    Symbols[section.FileOffset] = LoadSymbolsSection(section);
+                    this.DynamicSymbols = symtab;
                 }
+            }
         }
 
         public string ReadAsciiString(ulong v)
@@ -1163,7 +1168,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override ElfSymbol LoadSymbol(ulong offsetSymtab,  ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
+        public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             var sym = Elf64_Sym.Load(rdr);
@@ -1784,7 +1789,7 @@ namespace Reko.ImageLoaders.Elf
         {
             if (!rdr.TryReadUInt32(out uint uAddr))
                 return null;
-            var addr = Address.Ptr64(uAddr);
+            var addr = Address.Ptr32(uAddr);
             return addr; 
         }
     }

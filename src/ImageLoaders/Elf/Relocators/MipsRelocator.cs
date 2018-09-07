@@ -147,32 +147,29 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// </remarks>
         private void LocateGlobalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            var allSymbols = new Dictionary<int, ElfSymbol>();
-            foreach (var symbolIndex in loader.Symbols.Values.SelectMany(x => x))
-            {
-                allSymbols[symbolIndex.Key] = symbolIndex.Value;
-            }
-
             var dynamic = loader.DynamicEntries;
-            var numberoflocalsymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_GOTSYM].SValue;
-            var totalnumberofSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO].SValue;
-            var numberofglobalsymbls = totalnumberofSymbols - numberoflocalsymbols;
+            var uAddrSymtab = (uint)dynamic[ElfDynamicEntry.DT_SYMTAB].UValue;
+            var allSymbols = loader.DynamicSymbols;
+
+            var cLocalSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_GOTSYM].SValue;
+            var cTotalSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO].SValue;
+            var cGlobalSymbols = cTotalSymbols - cLocalSymbols;
 
             var numberoflocalPointers = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO].SValue;
             var uAddrBeginningOfGot = (uint)dynamic[ElfDynamicEntry.DT_PLTGOT].UValue;
             var uAddrBeginningOfGlobalPointers = uAddrBeginningOfGot + (uint)numberoflocalPointers * PointerByteSize;
 
-            for (int i = 0; i < numberofglobalsymbls; ++i)
+            for (int i = 0; i < cGlobalSymbols; ++i)
             {
                 var addrGot = Address.Ptr32(uAddrBeginningOfGlobalPointers + PointerByteSize * (uint)i);
-                var iSymbol = numberoflocalsymbols + i;
-                var symbol = allSymbols[iSymbol];
-
-                // This GOT entry is a known symbol!
-                if (symbol.Type == ElfSymbolType.STT_FUNC)
+                var iSymbol = cLocalSymbols + i;
+                if (allSymbols.TryGetValue(iSymbol, out var symbol) &&
+                    symbol.Type == ElfSymbolType.STT_FUNC)
                 {
-                    ImageSymbol gotSym = loader.CreateGotSymbol(addrGot, symbol.Name);
-                    Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, addrGot);
+                    // This GOT entry is a known symbol!
+                    ImageSymbol symGotEntry = loader.CreateGotSymbol(addrGot, symbol.Name);
+                    symbols[addrGot] = symGotEntry;
+                    Debug.Print("Found GOT entry at {0}, changing symbol at {1}", symGotEntry, addrGot);
                     program.ImportReferences[addrGot] = new NamedImportReference(addrGot, null, symbol.Name);
                 }
             }
