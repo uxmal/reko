@@ -66,43 +66,6 @@ namespace Reko.ImageLoaders.Elf
         public const uint SHF_EXECINSTR = 0x4;
         public const uint SHF_REKOCOMMON = 0x08000000;  // A hack until we determine what should happen with SHN_COMMON symbols
 
-        // Dynamic entry tags
-        public const int DT_NULL = 0;
-        public const int DT_NEEDED = 1;
-        public const int DT_PLTRELSZ = 2;
-        public const int DT_PLTGOT = 3;
-        public const int DT_HASH = 4;
-        public const int DT_STRTAB = 5;
-        public const int DT_SYMTAB = 6;
-        public const int DT_RELA = 7;
-        public const int DT_RELASZ = 8;
-        public const int DT_RELAENT = 9;
-        public const int DT_STRSZ = 10;
-        public const int DT_SYMENT = 11;
-        public const int DT_INIT = 12;
-        public const int DT_FINI = 13;
-        public const int DT_SONAME = 14;
-        public const int DT_RPATH = 15;
-        public const int DT_SYMBOLIC = 16;
-        public const int DT_REL = 17;
-        public const int DT_RELSZ = 18;
-        public const int DT_RELENT = 19;
-        public const int DT_PLTREL = 20;
-        public const int DT_DEBUG = 21;
-        public const int DT_TEXTREL = 22;
-        public const int DT_JMPREL = 23;
-        public const int DT_BIND_NOW = 24;
-        public const int DT_INIT_ARRAY = 25;
-        public const int DT_FINI_ARRAY = 26;
-        public const int DT_INIT_ARRAYSZ = 27;
-        public const int DT_FINI_ARRAYSZ = 28;
-        public const int DT_RUNPATH = 29;
-        public const int DT_FLAGS = 30;
-        public const int DT_ENCODING = 32;
-        public const int DT_PREINIT_ARRAY = 32;
-        public const int DT_PREINIT_ARRAYSZ = 33;
-        public const int DT_MAXPOSTAGS = 34;
-
         public const int STT_NOTYPE = 0;			// Symbol table type: none
         public const int STT_FUNC = 2;				// Symbol table type: function
         public const int STT_SECTION = 3;
@@ -396,7 +359,7 @@ namespace Reko.ImageLoaders.Elf
             if (dynSeg == null)
                 return;
             var dynEntries = GetDynamicEntries(dynSeg.p_offset).ToList();
-            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == DT_STRTAB);
+            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == ElfDynamicEntry.DT_STRTAB);
             if (deStrTab == null)
             {
                 //$REVIEW: is missing a string table worth a warning?
@@ -405,7 +368,7 @@ namespace Reko.ImageLoaders.Elf
             var offStrtab = AddressToFileOffset(deStrTab.UValue);
             foreach (var de in dynEntries)
             {
-                if (de.Tag == DT_NEEDED)
+                if (de.Tag == ElfDynamicEntry.DT_NEEDED)
                 {
                     Dependencies.Add(imgLoader.ReadAsciiString(offStrtab + de.UValue));
                 }
@@ -427,8 +390,6 @@ namespace Reko.ImageLoaders.Elf
             var imgSymbols = new SortedList<Address, ImageSymbol>();
             foreach (var sym in Symbols.Values.SelectMany(seg => seg.Values).OrderBy(s => s.Value))
             {
-                if (sym.Name != null && sym.Name.Contains("crypt")) //$DEBUG
-                    sym.ToString();
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
                     continue;
@@ -451,21 +412,39 @@ namespace Reko.ImageLoaders.Elf
         public abstract int LoadSegments();
         public abstract void LoadSectionHeaders();
         public abstract Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection);
+
         /// <summary>
         /// The GOT table contains an array of pointers. Some of these
         /// pointers may be pointing to the symbols in the symbol table(s).
         /// </summary>
+        /// <remarks>
+        /// Assumes that the binary has a valid .got section present. If the 
+        /// .got sections has been stripped away, we will not recover any 
+        /// GOT entries.
+        /// <para>
+        /// Because of this assumption, we use it as a fall back. If the 
+        /// ELF specification for a particular processor specifies how
+        /// to obtain GOT pointers in a safe way, then override the 
+        /// ElfRelocatior.LocateGotPointers and do the right thing there.
+        /// </para>
+        /// </remarks>
         public void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            // Locate the GOT
-            //$REVIEW: there doesn't seem to be a reliable way to get that
-            // information.
+            // Locate the GOT. It's fully possible that the binary doesn't have a 
+            // .got section.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
             if (got == null)
                 return;
 
-            var rdr = program.CreateImageReader(got.Address);
-            while (rdr.Address < got.EndAddress)
+            var gotStart = got.Address;
+            var gotEnd = got.EndAddress;
+            ConstructGotEntries(program, symbols, gotStart, gotEnd);
+        }
+
+        public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
+        {
+            var rdr = program.CreateImageReader(gotStart);
+            while (rdr.Address < gotEnd)
             {
                 var addrGot = rdr.Address;
                 var addrSym = ReadAddress(rdr);
@@ -476,8 +455,6 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
                     {
-                        if (symbol.Name.Contains("crypto")) //$DEBUG
-                            symbol.Name.ToString();
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
                         Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
@@ -748,7 +725,7 @@ namespace Reko.ImageLoaders.Elf
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
             var relocator = CreateRelocator(this.machine, symbols);
             relocator.Relocate(program);
-            LocateGotPointers(program, symbols);
+            relocator.LocateGotPointers(program, symbols);
             var entryPoints = new List<ImageSymbol>();
             var addrEntry = GetEntryPointAddress(addrLoad);
             EnsureEntryPoint(entryPoints, symbols, addrEntry);
@@ -939,7 +916,7 @@ namespace Reko.ImageLoaders.Elf
                 var dyn = new Elf64_Dyn();
                 if (!rdr.TryReadInt64(out dyn.d_tag))
                     break;
-                if (dyn.d_tag == DT_NULL)
+                if (dyn.d_tag == ElfDynamicEntry.DT_NULL)
                     break;
                 if (!rdr.TryReadInt64(out long val))
                     break;
@@ -1513,7 +1490,7 @@ namespace Reko.ImageLoaders.Elf
                 var dyn = new Elf32_Dyn();
                 if (!rdr.TryReadInt32(out dyn.d_tag))
                     break;
-                if (dyn.d_tag == DT_NULL)
+                if (dyn.d_tag == ElfDynamicEntry.DT_NULL)
                     break;
                 if (!rdr.TryReadInt32(out int val))
                     break;

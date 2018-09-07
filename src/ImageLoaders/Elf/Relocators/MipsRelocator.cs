@@ -22,12 +22,16 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
-    // https://gcc.gnu.org/ml/gcc/2008-07/txt00000.txt - MIPS non-PIC ABI specification
+    // https://gcc.gnu.org/ml/gcc/2008-07/txt00000.txt - MIPS non-PIC ABI 
+    // https://dmz-portal.mips.com/wiki/MIPS_Multi_GOT - Understanding the layout of the MIPS got table
     public class MipsRelocator : ElfRelocator32
     {
+        const int PointerByteSize = 4;
+
         public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
@@ -39,84 +43,139 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var dynsect = loader.GetSectionInfoByName(".dynamic");
             if (dynsect == null)
                 return;
+        }
 
-            // $TODO: Fix the relocation code (it's crashing right now)
-            /*
-            var dynentries = loader.GetDynEntries(dynsect.FileOffset).ToDictionary(k => k.d_tag);
-            var symtab = dynentries[DynamicSectionRenderer.DT_SYMTAB];
-            var pltgot = dynentries[DynamicSectionRenderer.DT_PLTGOT].d_val;
-            var mips_local_gotno = dynentries[DynamicSectionRenderer.Mips.DT_MIPS_LOCAL_GOTNO].d_val;
-            var mips_gotsym = dynentries[DynamicSectionRenderer.Mips.DT_MIPS_GOTSYM].d_val;
-            var dyngot = pltgot + (mips_local_gotno - mips_gotsym) * 4;
-            //loader.CreateReader()
-            for (int i = mips_gotsym; i < loader.Symbols.Count; ++i)
+        #region Long tirade about global pointer in MIPS ELF
+
+        // https://www.cr0.org/paper/mips.elf.external.resolution.txt
+        /*Linux MIPS ELF reverse engineering tips
+        ---------------------------------------
+
+        Julien TINNES <julien at cr0.org>
+
+        You may have been surprised that while reverse engineering MIPS ELF executables with IDA, you don't get any XREF for local procedure calls, nor for external procedure calls.
+        This is due to the way the functions are called, using a classic GOT/PLT mecanism.
+
+        The ABI states that every function must be called through jalr $t9. This means that at the begining of a given function, $t9 holds the current virtual address. The very first instructions of the function will be something like:
+
+        lui	$gp, 0xFC0
+        addiu	$gp, 0x76E0
+        addu	$gp, t9
+
+        which IDA will simplify as:
+
+        li	$gp, 0xFC076E0
+        addu	$gp, $t9
+
+        the value 0xFC076E0 is calculated by the compiler in such a way that $gp will hold a "global pointer" value which is constant in the program.
+        This value is always OFFSET_GP_GOT bytes after the program's GOT (global offset table), OFFSET_GP_GOT is always 0x7ff0.
+
+        So, if you need to calculate $gp's value, you can add OFFSET_GP_GOT to the address of the GOT (which you can retrieve through the ELF dynamic table, under the entry: MIPS_RLD_VERSION). Or you can look at the begining of the function and add the function's virtual address and the magic value (see li).
+
+        Here on my executable, GOT is at 0x10000030, so general $gp's value is 0x10008020
+
+        Now if we need to call an internal function (in the same ELF file), we'll do something like:
+        lw	$t9, -0x7Fb4($gp)
+        nop
+        jalr $t9
+
+        in my GOT, at address 0x1000006c I have a pointer to my local function.
+
+        Now how does it work if we call an external function ? Well it's pretty similar to the way it works on Intel with PLT/GOT. The pointer in the GOT will point to a 4 instructions stub in .text section which is:
+
+        lw	$t9, -0x7FF0($gp)
+        move	$t7, $ra
+        jalr	$t9
+        li	$t8, SYM_INDEX
+
+        where SYM_INDEX depends on the external function you want to call. What it does is load the first entry of the GOT (always) into $t9, save the return address in $t7, load an index in $t8 (remember the delay slot ;), and call $t9 which now points to dl_linux_resolve (in ld.so) (also called _dl_runtime_resolve). This first entry in the GOT is initialized at runtime by the dynamic loader.
+        dl_linux_resolve will call __dl_runtime_resolve with $t8 and (the program's) $gp as arguments. dl_runtime_resolve will patch the corresonding (to $t8, which is an index) GOT entry, then it'll put $t7 (the saved return address, remember) in $ra and jump to the now resolved function (returned by __dl_runtime_resolve in $v0).
+
+        What is really interesting is to know how dl_runtime_resolve works, this would allow us to write an IDA plugin:
+
+        Here's an algorithm you can use:
+
+        Search DT_SYMTAB in the dynamic section (you can try with readelf -d)
+
+        Read this symbol table (readelf -s)
+
+        Read DT_PLTGOT, DT_MIPS_LOCAL_GOTNO et DT_MIPS_GOTSYM in dynamic section.
+
+        now, dyngot=DT_PLTGOT + (DT_MIPS_LOCAL_GOTNO - DT_MIPS_GOTSYM)*(POINTER_SIZE (4 on 32 bits))
+
+        Now in the dynamic symbol table (found with DT_SYMTAB) (his name is probably
+        .dynsym anyway), from index DT_MIPS_GOTSYM, the names are corresponding to the
+        functions' PLT stubs pointed to by dyngot[index-DT_MIPS_GOTSYM] entries. Make
+        each dyngot entry an offset and change his name to the name found in the
+        dynamic symbol table and you're done.
+        */
+        #endregion
+
+        //$TODO: this will likely not work at all for MIPS64 
+        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            LocateLocalGotEntries(program, symbols);
+            LocateGlobalGotEntries(program, symbols);
+        }
+
+        /// <summary>
+        /// Generate GOT entries for local symbols of the ELF binary.
+        /// </summary>
+        /// <remarks>
+        /// The first DT_MIPS_LOCAL_GOTNO pointers in the GOT have their pointer values
+        /// already filled in, so we do a reverse lookup to find their corresponding symbols.
+        /// </remarks>
+        private void LocateLocalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            var dynamic = loader.DynamicEntries;
+
+            var numberoflocalPointers = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO].SValue;
+            var uAddrBeginningOfGot = (uint)dynamic[ElfDynamicEntry.DT_PLTGOT].UValue;
+
+            var addrGot = Address.Ptr32(uAddrBeginningOfGot);
+            var addrLocalGotEnd = addrGot + numberoflocalPointers * PointerByteSize;
+            loader.ConstructGotEntries(program, symbols, addrGot, addrLocalGotEnd);
+        }
+
+        /// <summary>
+        /// Generate GOT entries for the global (imported) symbols of the MIPS ELF binary
+        /// </summary>
+        /// <remarks>
+        /// The Elf MIPS ABI specifies that the GOT entries for import symbols are located after
+        /// the GOT entries for the local functions. In addition they are orderd in the same order
+        /// as the corresponding symbols in the symbol table.
+        /// </remarks>
+        private void LocateGlobalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            var allSymbols = new Dictionary<int, ElfSymbol>();
+            foreach (var symbolIndex in loader.Symbols.Values.SelectMany(x => x))
             {
+                allSymbols[symbolIndex.Key] = symbolIndex.Value;
             }
-            */
 
-            // https://www.cr0.org/paper/mips.elf.external.resolution.txt
-            /*Linux MIPS ELF reverse engineering tips
-            ---------------------------------------
+            var dynamic = loader.DynamicEntries;
+            var numberoflocalsymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_GOTSYM].SValue;
+            var totalnumberofSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO].SValue;
+            var numberofglobalsymbls = totalnumberofSymbols - numberoflocalsymbols;
 
-            Julien TINNES <julien at cr0.org>
+            var numberoflocalPointers = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO].SValue;
+            var uAddrBeginningOfGot = (uint)dynamic[ElfDynamicEntry.DT_PLTGOT].UValue;
+            var uAddrBeginningOfGlobalPointers = uAddrBeginningOfGot + (uint)numberoflocalPointers * PointerByteSize;
 
-            You may have been surprised that while reverse engineering MIPS ELF executables with IDA, you don't get any XREF for local procedure calls, nor for external procedure calls.
-            This is due to the way the functions are called, using a classic GOT/PLT mecanism.
+            for (int i = 0; i < numberofglobalsymbls; ++i)
+            {
+                var addrGot = Address.Ptr32(uAddrBeginningOfGlobalPointers + PointerByteSize * (uint)i);
+                var iSymbol = numberoflocalsymbols + i;
+                var symbol = allSymbols[iSymbol];
 
-            The ABI states that every function must be called through jalr $t9. This means that at the begining of a given function, $t9 holds the current virtual address. The very first instructions of the function will be something like:
-
-            lui	$gp, 0xFC0
-            addiu	$gp, 0x76E0
-            addu	$gp, t9
-
-            which IDA will simplify as:
-
-            li	$gp, 0xFC076E0
-            addu	$gp, $t9
-
-            the value 0xFC076E0 is calculated by the compiler in such a way that $gp will hold a "global pointer" value which is constant in the program.
-            This value is always OFFSET_GP_GOT bytes after the program's GOT (global offset table), OFFSET_GP_GOT is always 0x7ff0.
-
-            So, if you need to calculate $gp's value, you can add OFFSET_GP_GOT to the address of the GOT (which you can retrieve through the ELF dynamic table, under the entry: MIPS_RLD_VERSION). Or you can look at the begining of the function and add the function's virtual address and the magic value (see li).
-
-            Here on my executable, GOT is at 0x10000030, so general $gp's value is 0x10008020
-
-            Now if we need to call an internal function (in the same ELF file), we'll do something like:
-            lw	$t9, -0x7Fb4($gp)
-            nop
-            jalr $t9
-
-            in my GOT, at address 0x1000006c I have a pointer to my local function.
-
-            Now how does it work if we call an external function ? Well it's pretty similar to the way it works on Intel with PLT/GOT. The pointer in the GOT will point to a 4 instructions stub in .text section which is:
-
-            lw	$t9, -0x7FF0($gp)
-            move	$t7, $ra
-            jalr	$t9
-            li	$t8, SYM_INDEX
-
-            where SYM_INDEX depends on the external function you want to call. What it does is load the first entry of the GOT (always) into $t9, save the return address in $t7, load an index in $t8 (remember the delay slot ;), and call $t9 which now points to dl_linux_resolve (in ld.so) (also called _dl_runtime_resolve). This first entry in the GOT is initialized at runtime by the dynamic loader.
-            dl_linux_resolve will call __dl_runtime_resolve with $t8 and (the program's) $gp as arguments. dl_runtime_resolve will patch the corresonding (to $t8, which is an index) GOT entry, then it'll put $t7 (the saved return address, remember) in $ra and jump to the now resolved function (returned by __dl_runtime_resolve in $v0).
-
-            What is really interesting is to know how dl_runtime_resolve works, this would allow us to write an IDA plugin:
-
-            Here's an algorithm you can use:
-
-            Search DT_SYMTAB in the dynamic section (you can try with readelf -d)
-
-            Read this symbol table (readelf -s)
-
-            Read DT_PLTGOT, DT_MIPS_LOCAL_GOTNO et DT_MIPS_GOTSYM in dynamic section.
-
-            now, dyngot=DT_PLTGOT + (DT_MIPS_LOCAL_GOTNO - DT_MIPS_GOTSYM)*(POINTER_SIZE (4 on 32 bits))
-
-            Now in the dynamic symbol table (found with DT_SYMTAB) (his name is probably
-            .dynsym anyway), from index DT_MIPS_GOTSYM, the names are corresponding to the
-            functions' PLT stubs pointed to by dyngot[index-DT_MIPS_GOTSYM] entries. Make
-            each dyngot entry an offset and change his name to the name found in the
-            dynamic symbol table and you're done.
-            */
-
+                // This GOT entry is a known symbol!
+                if (symbol.Type == ElfSymbolType.STT_FUNC)
+                {
+                    ImageSymbol gotSym = loader.CreateGotSymbol(addrGot, symbol.Name);
+                    Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, addrGot);
+                    program.ImportReferences[addrGot] = new NamedImportReference(addrGot, null, symbol.Name);
+                }
+            }
         }
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
