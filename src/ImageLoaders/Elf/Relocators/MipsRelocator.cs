@@ -183,9 +183,19 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return;
             var symSection = loader.Sections[(int)symbol.SectionIndex];
 
-            var addr = referringSection.Address + rel.Offset;
+            Address addr;
+            uint P;
+            if (referringSection?.Address != null)
+            {
+                addr = referringSection.Address + rel.Offset;
+                P = (uint)addr.ToLinear();
+            }
+            else
+            {
+                addr = Address.Ptr64(rel.Offset);
+                P = 0;
+            }
             var S = symbol.Value;
-            uint P = (uint)addr.ToLinear();
             uint PP = P;
             var relR = program.CreateImageReader(addr);
             var relW = program.CreateImageWriter(addr);
