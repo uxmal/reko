@@ -3912,8 +3912,7 @@ l00400674_ds_f:
 // SymbolicIn: sp:fp + -32 r25:<invalid> r28:0x10008860 r2:<invalid> r3:<invalid> r1:<invalid> -16(fp):0x10008860 -4(fp):ra
 
 l004006B8:
-	word32 r25_34 = Mem0[0x100009B4:word32]
-	branch r25_34 == 0x00000000 l004006B8_ds_t
+	branch __deregister_frame_info == 0x00000000 l004006B8_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -32 r25:<invalid> r28:0x10008860 r2:<invalid> r3:<invalid> r1:<invalid> -16(fp):0x10008860 -4(fp):ra
@@ -3937,7 +3936,7 @@ l004006C8:
 	word32 r3_53
 	word32 r1_54
 	word32 r4_55
-	call r25_34 (retsize: 0; depth: 32)
+	call __deregister_frame_info (retsize: 0; depth: 32)
 		uses: dwLoc04_22,dwLoc10_7,r1_31,r2_45,r25_34,r28_29,r3_28,r4_47,ra_32,sp_33
 		defs: r1_54,r2_51,r25_50,r28_49,r3_53,r4_55,ra_52,sp_48
 // DataOut:
@@ -4003,8 +4002,7 @@ frame_dummy_entry:
 // LocalsOut: fp(32)
 
 l0040072C:
-	word32 r25_9 = Mem0[0x100008A4:word32]
-	branch r25_9 == 0x00000000 l0040072C_ds_t
+	branch __register_frame_info == 0x00000000 l0040072C_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -4026,8 +4024,8 @@ l00400750:
 	word32 ra_26
 	word32 r4_27
 	word32 r5_28
-	call r25_9 (retsize: 0; depth: 32)
-		uses: dwLoc04_18,dwLoc10_7,r25_9,r28_5,r4_20,r5_22,ra,sp_6
+	call __register_frame_info (retsize: 0; depth: 32)
+		uses: dwLoc04_17,dwLoc10_7,r25_8,r28_5,r4_20,r5_22,ra,sp_6
 		defs: r25_25,r28_24,r4_27,r5_28,ra_26,sp_23
 // DataOut:
 // DataOut (flags): 

@@ -524,7 +524,11 @@ memset_GOT		; 00010AD8
 	dd	0x000009E0
 __libc_start_main_GOT		; 00010ADC
 	dd	0x000009D0
-00010AE0 00 00 00 00 00 00 00 00 00 00 00 00             ............   
+__gmon_start___GOT		; 00010AE0
+	dd	0x00000000
+00010AE4             00 00 00 00                             ....       
+__cxa_finalize_GOT		; 00010AE8
+	dd	0x00000000
 ;;; Segment .sdata (00010AEC)
 00010AEC                                     00 01 0A EC             ....
 ;;; Segment .bss (00010AF0)
