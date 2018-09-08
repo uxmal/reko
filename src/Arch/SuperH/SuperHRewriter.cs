@@ -69,7 +69,7 @@ namespace Reko.Arch.SuperH
                     host.Error(
                         dasm.Current.Address,
                         string.Format(
-                            "Rewriting of SuperH instruction {0} not implemented yet.",
+                            "SuperH instruction {0} not supported yet.",
                         dasm.Current.Opcode));
                     EmitUnitTest();
                     goto case Opcode.invalid;

@@ -75,6 +75,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
             uint P = (uint)addr.ToLinear();
             uint PP = P;
+            uint B = 0;
 
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.Offset,
@@ -108,6 +109,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 P = ~P + 1;
                 sh = 2;
                 break;
+            case SparcRt.R_SPARC_RELATIVE:
+                A = (int)rela.Addend;
+                B = program.SegmentMap.BaseAddress.ToUInt32();
+                break;
             case SparcRt.R_SPARC_COPY:
                 Debug.Print("Relocation type {0} not handled yet.", rt);
                 return;
@@ -120,7 +125,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var relW = program.CreateImageWriter(addr);
 
             var w = relR.ReadBeUInt32();
-            w += ((uint)(S + A + P) >> sh) & mask;
+            w += ((uint)(B + S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
         }
 

@@ -560,7 +560,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 wInstr = rdr.PeekLeUInt16(-2);
             }
-            host.Error(instr.Address, "Rewriting ARM opcode '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
+            host.Error(instr.Address, "AArch32 instruction '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
             EmitUnitTest();
             Invalid();
         }

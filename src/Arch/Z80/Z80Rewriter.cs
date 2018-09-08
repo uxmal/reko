@@ -63,7 +63,7 @@ namespace Reko.Arch.Z80
                 {
                 default: throw new AddressCorrelatedException(
                     dasm.Current.Address,
-                    "Rewriting of Z80 instruction '{0}' not implemented yet.",
+                    "Z80 instruction '{0}' is not supported yet.",
                     dasm.Current.Code);
                 case Opcode.illegal: m.Invalid(); break;
                 case Opcode.adc: RewriteAdc(); break;

@@ -71,7 +71,7 @@ namespace Reko.Arch.Mips
                 default:
                     host.Error(
                         instr.Address,
-                        string.Format("Rewriting of MIPS instruction '{0}' is not implemented yet.", instr));
+                        string.Format("MIPS instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Opcode.illegal;
                 case Opcode.illegal:

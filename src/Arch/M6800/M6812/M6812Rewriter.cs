@@ -70,7 +70,7 @@ namespace Reko.Arch.M6800.M6812
                 case Opcode.tbl: 
                     host.Warn(
                         instr.Address,
-                        "Rewriting M6812 instruction '{0}' is not supported yet.",
+                        "M6812 instruction '{0}' is not supported yet.",
                         instr.Opcode);
                     goto case Opcode.invalid;
                 case Opcode.invalid:

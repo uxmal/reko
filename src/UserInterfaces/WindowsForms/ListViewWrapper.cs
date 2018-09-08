@@ -39,11 +39,6 @@ namespace Reko.UserInterfaces.WindowsForms
             this.list = list;
         }
 
-        public Color BackColor { get { return list.BackColor; } set { list.BackColor = value;  } }
-
-        public bool Enabled { get { return list.Enabled; } set { list.Enabled = value; } }
-
-        public Color ForeColor { get { return list.ForeColor; } set { list.ForeColor = value; } }
 
         public object DataSource
         {

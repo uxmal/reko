@@ -70,10 +70,10 @@ namespace Reko.Arch.Vax
                     //emitter.SideEffect(Constant.String(
                     //    dasm.Current.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
-                    //host.Warn(
-                    //    dasm.Current.Address,
-                    //    "Rewriting of VAX instruction {0} not implemented yet.",
-                    //    dasm.Current.Opcode);
+                    host.Warn(
+                        dasm.Current.Address,
+                        "VAX instruction {0} not supported yet.",
+                        dasm.Current.Opcode);
                     m.Invalid();
                     break;
                 case Opcode.Invalid: m.Invalid(); break;

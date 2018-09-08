@@ -78,10 +78,11 @@ namespace Reko.Arch.Sparc
                 switch (instrCur.Opcode)
                 {
                 default: 
-                    throw new AddressCorrelatedException(
+                    host.Warn(
                         instrCur.Address,
-                        "Rewriting SPARC opcode '{0}' is not supported yet.",
+                        "SPARC instruction '{0}' is not supported yet.",
                         instrCur.Opcode);
+                    goto case Opcode.illegal;
                 case Opcode.illegal:
                     rtlc = RtlClass.Invalid;
                     m.Invalid();
