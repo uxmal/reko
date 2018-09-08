@@ -1166,6 +1166,16 @@ means
         }
 
         [Test]
+        public void ArmRw_rrx()
+        {
+            BuildTest(0xE1B00061); // rrxs r0, r1
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r0 = __rcr(r1, 1, C)",
+                "2|L--|NZC = cond(r0)");
+        }
+
+        [Test]
         public void ArmRw_stc()
         {
             BuildTest(0xECCC5CED);  // stc p12, c12, [ip], {0xcd}
