@@ -285,7 +285,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// Allow processor specific location of the GOT pointers.
         /// </summary>
         /// <remarks>
-        /// It may be the case that a specific MIPS ABI dictates how you can
+        /// It may be the case that a specific ELF ABI dictates how you can
         /// recover GOT pointers safely from a binary. If there is no safe
         /// way to get GOT pointers, fallback to ElfLoader.LocateGotPointers which
         /// goes about it in a hacky way.
