@@ -50,11 +50,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint entries = rel_plt.EntryCount();
             for (uint i = 0; i < entries; ++i)
             {
-                uint offset;
-                if (!relRdr.TryReadUInt32(out offset))
+                if (!relRdr.TryReadUInt32(out uint offset))
                     return;
-                uint info;
-                if (!relRdr.TryReadUInt32(out info))
+                if (!relRdr.TryReadUInt32(out uint info))
                     return;
 
                 uint sym = info >> 8;
@@ -73,11 +71,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (sym.SectionIndex == 0)
                 return;
             var symSection = loader.Sections[(int)sym.SectionIndex];
-            uint S = (uint)sym.Value + symSection.Address.ToUInt32();
+            uint S = (uint)sym.Value;
             int A = 0;
             int sh = 0;
             uint mask = ~0u;
-            var addr = referringSection.Address + rela.Offset;
+            var addr = referringSection != null
+                ? referringSection.Address + rela.Offset
+                : loader.CreateAddress(rela.Offset);
             uint P = (uint)addr.ToLinear();
             uint PP = P;
             var relR = program.CreateImageReader(addr);
@@ -86,6 +86,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case i386Rt.R_386_NONE: //  just ignore (common)
+                break;
+            case i386Rt.R_386_COPY:
                 break;
             case i386Rt.R_386_32: // S + A
                                   // Read the symTabIndex'th symbol.
@@ -263,6 +265,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_386_NONE, // just ignore (common)
         R_386_32 = 1, // S + A
         R_386_PC32 = 2, // S + A - P
+        R_386_COPY = 5,         // seems to do nothing according to ELF spec.
         R_386_GLOB_DAT = 6,
         R_386_RELATIVE = 8
     }
