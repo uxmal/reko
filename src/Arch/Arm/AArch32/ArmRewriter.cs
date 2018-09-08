@@ -578,14 +578,14 @@ namespace Reko.Arch.Arm.AArch32
             return binder.EnsureFlagGroup(Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte);
         }
 
-        Expression Q()
-        {
-            return binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool);
-        }
-
         Expression C()
         {
             return binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+        }
+
+        Expression Q()
+        {
+            return binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool);
         }
 
         void MaybeUpdateFlags(Expression opDst)
@@ -893,8 +893,7 @@ namespace Reko.Arch.Arm.AArch32
             case Opcode.lsr: return m.Sar(exp, sh);
             case Opcode.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
             case Opcode.rrx:
-                var c = binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
-                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, c);
+                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, C());
             default: return exp;
             }
         }
