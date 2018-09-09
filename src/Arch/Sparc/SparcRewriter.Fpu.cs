@@ -65,6 +65,24 @@ namespace Reko.Arch.Sparc
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
+        private void RewriteFcmps()
+        {
+            var r1 = RewriteRegister(instrCur.Op1);
+            var r2 = RewriteRegister(instrCur.Op2);
+            m.SideEffect(host.PseudoProcedure("__fcmps", VoidType.Instance, m.FSub(r2, r1)));
+        }
+
+        private void RewriteFdivd()
+        {
+            var dst = (RegisterOperand)instrCur.Op3;
+            var src1 = (RegisterOperand)instrCur.Op1;
+            var src2 = (RegisterOperand)instrCur.Op2;
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc1 = binder.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
+            var fsrc2 = binder.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
+            m.Assign(fdst, m.FDiv(fsrc1, fsrc2));
+        }
+
         private void RewriteFdivs()
         {
             var dst = (RegisterOperand)instrCur.Op3;
@@ -85,6 +103,21 @@ namespace Reko.Arch.Sparc
             var fpDst = binder.EnsureSequence(r0.Storage, r1.Storage, dt);
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
+
+        private void RewriteFdtos()
+        {
+            var fpDst = RewriteOp(instrCur.Op2);
+            var dt = PrimitiveType.Real32;
+            m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
+        }
+
+        private void RewriteFstod()
+        {
+            var fpDst = RewriteOp(instrCur.Op2);
+            var dt = PrimitiveType.Real64;
+            m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
+        }
+
 
         private void RewriteFitoq()
         {

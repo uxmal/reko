@@ -57,6 +57,13 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage l4;
         public static RegisterStorage l5;
         public static RegisterStorage l6;
+
+        public static bool IsGpRegister(RegisterStorage reg)
+        {
+            var iReg = reg.Number;
+            return 0 <= iReg && iReg < 32;
+        }
+
         public static RegisterStorage l7;
 
         public static RegisterStorage i0;   // incoming parameters / return value to caller
@@ -162,49 +169,48 @@ namespace Reko.Arch.Sparc
             i6 = RegisterStorage.Reg32("i6", 30);   // frame pointer
             i7 = RegisterStorage.Reg32("i7", 31);   // return address - 8
 
-            y =  RegisterStorage.Reg32("y", 32);
-
             // Sparc floating point registers can contain integers, which is 
             // why they can't be real32. This also forces our hand into
             // making float-point versions of add, sub, mul, div. 
 
-            f0 = RegisterStorage.Reg32("f0", 0);
-            f1 = RegisterStorage.Reg32("f1", 1);
-            f2 = RegisterStorage.Reg32("f2", 2);
-            f3 = RegisterStorage.Reg32("f3", 3);
-            f4 = RegisterStorage.Reg32("f4", 4);
-            f5 = RegisterStorage.Reg32("f5", 5);
-            f6 = RegisterStorage.Reg32("f6", 6);
-            f7 = RegisterStorage.Reg32("f7", 7);
+            f0 = RegisterStorage.Reg32("f0", 32);
+            f1 = RegisterStorage.Reg32("f1", 33);
+            f2 = RegisterStorage.Reg32("f2", 34);
+            f3 = RegisterStorage.Reg32("f3", 35);
+            f4 = RegisterStorage.Reg32("f4", 36);
+            f5 = RegisterStorage.Reg32("f5", 37);
+            f6 = RegisterStorage.Reg32("f6", 38);
+            f7 = RegisterStorage.Reg32("f7", 39);
 
-            f8 = RegisterStorage.Reg32("f8", 8);
-            f9 = RegisterStorage.Reg32("f9", 9);
-            f10= RegisterStorage.Reg32("f10", 10);
-            f11= RegisterStorage.Reg32("f11", 11);
-            f12= RegisterStorage.Reg32("f12", 12);
-            f13= RegisterStorage.Reg32("f13", 13);
-            f14= RegisterStorage.Reg32("f14", 14);
-            f15= RegisterStorage.Reg32("f15", 15);
+            f8 = RegisterStorage.Reg32("f8", 40);
+            f9 = RegisterStorage.Reg32("f9", 41);
+            f10= RegisterStorage.Reg32("f10", 42);
+            f11= RegisterStorage.Reg32("f11", 43);
+            f12= RegisterStorage.Reg32("f12", 44);
+            f13= RegisterStorage.Reg32("f13", 45);
+            f14= RegisterStorage.Reg32("f14", 46);
+            f15= RegisterStorage.Reg32("f15", 47);
 
-            f16 =RegisterStorage.Reg32("f16", 16);
-            f17= RegisterStorage.Reg32("f17", 17);
-            f18= RegisterStorage.Reg32("f18", 18);
-            f19= RegisterStorage.Reg32("f19", 19);
-            f20= RegisterStorage.Reg32("f20", 20);
-            f21= RegisterStorage.Reg32("f21", 21);
-            f22= RegisterStorage.Reg32("f22", 22);
-            f23= RegisterStorage.Reg32("f23", 23);
+            f16 =RegisterStorage.Reg32("f16", 48);
+            f17= RegisterStorage.Reg32("f17", 49);
+            f18= RegisterStorage.Reg32("f18", 50);
+            f19= RegisterStorage.Reg32("f19", 51);
+            f20= RegisterStorage.Reg32("f20", 52);
+            f21= RegisterStorage.Reg32("f21", 53);
+            f22= RegisterStorage.Reg32("f22", 54);
+            f23= RegisterStorage.Reg32("f23", 55);
 
-            f24= RegisterStorage.Reg32("f24", 24);
-            f25= RegisterStorage.Reg32("f25", 25);
-            f26= RegisterStorage.Reg32("f26", 26);
-            f27= RegisterStorage.Reg32("f27", 27);
-            f28= RegisterStorage.Reg32("f28", 28);
-            f29= RegisterStorage.Reg32("f29", 29);
-            f30= RegisterStorage.Reg32("f30", 30);
-            f31= RegisterStorage.Reg32("f31", 31);
+            f24= RegisterStorage.Reg32("f24", 56);
+            f25= RegisterStorage.Reg32("f25", 57);
+            f26= RegisterStorage.Reg32("f26", 58);
+            f27= RegisterStorage.Reg32("f27", 59);
+            f28= RegisterStorage.Reg32("f28", 60);
+            f29= RegisterStorage.Reg32("f29", 61);
+            f30= RegisterStorage.Reg32("f30", 62);
+            f31= RegisterStorage.Reg32("f31", 63);
 
-            psr = new RegisterStorage("psr", 40, 0, PrimitiveType.Word32);
+            psr = new RegisterStorage("psr", 64, 0, PrimitiveType.Word32);
+            y = RegisterStorage.Reg32("y", 65);
 
             N = new FlagGroupStorage(psr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
             Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
@@ -216,7 +222,7 @@ namespace Reko.Arch.Sparc
             G = new FlagGroupStorage(psr, (uint) FlagM.GF, "G", PrimitiveType.Bool);
             U = new FlagGroupStorage(psr, (uint) FlagM.UF, "U", PrimitiveType.Bool);
 
-            fsr = new RegisterStorage("fsr", 41, 32, PrimitiveType.Word32);
+            fsr = new RegisterStorage("fsr", 64, 32, PrimitiveType.Word32);
 
             IntegerRegisters = new RegisterStorage[]
             {
@@ -308,7 +314,7 @@ namespace Reko.Arch.Sparc
 
         public static RegisterStorage GetFpuRegister(int f)
         {
-            return FloatRegisters[f];
+            return FloatRegisters[f - 0x20];
         }
 
         public static RegisterStorage GetFpuRegister(uint f)

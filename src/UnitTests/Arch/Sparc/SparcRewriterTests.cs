@@ -495,5 +495,15 @@ namespace Reko.UnitTests.Arch.Sparc
                "0|L--|00100000(4): 1 instructions",
                "1|L--|g2 = o3 >>u 0x00000010");
         }
+
+        [Test]
+        public void SparcRw_fcmpd()
+        {
+            BuildTest(0x81A90A46);	// fcmpd	%f4,%f6
+            AssertCode(
+                "0|L--|00014C34(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
     }
 }

@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -40,6 +41,7 @@ namespace Reko.Arch.Sparc
         private IStorageBinder binder;
         private IRewriterHost host;
         private LookaheadEnumerator<SparcInstruction> dasm;
+        private EndianImageReader rdr;
         private SparcInstruction instrCur;
         private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
@@ -50,6 +52,7 @@ namespace Reko.Arch.Sparc
             this.arch = arch;
             this.binder = binder;
             this.host = host;
+            this.rdr = rdr;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
         }
 
@@ -77,7 +80,8 @@ namespace Reko.Arch.Sparc
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Opcode)
                 {
-                default: 
+                default:
+                    EmitUnitTest();
                     host.Warn(
                         instrCur.Address,
                         "SPARC instruction '{0}' is not supported yet.",
@@ -135,33 +139,37 @@ namespace Reko.Arch.Sparc
                 //case Opcode.fblg  : on Less or Greater L or G
                 //case Opcode.fbne  : on Not Equal L or G or U
                 //case Opcode.fbe   : on Equal E
-                //case Opcode.fbue  : on Unordered or Equal E or U
-                //case Opcode.fbge  : on Greater or Equal E or G
-                //case Opcode.fbuge : on Unordered or Greater or Equal E or G or U
+                case Opcode.fbue : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF | FlagM.UF))); break;
                 case Opcode.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
 
                 //case Opcode.fble  : on Less or Equal E or L
                 //case Opcode.fbule : on Unordered or Less or Equal E or L or U
                 case Opcode.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
+                case Opcode.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
                 //                case Opcode.FBO   : on Ordered E or L or G
 
 
                 case Opcode.fcmpes: RewriteFcmpes(); break;
-                case Opcode.fdivs: RewriteFdivs(); break;
+                case Opcode.fcmps: RewriteFcmps(); break;
+                case Opcode.fdivd: RewriteFdivs(); break;
+                case Opcode.fdivs: RewriteFdivd(); break;
+                case Opcode.fdtos: RewriteFdtos(); break;
                 case Opcode.fitod: RewriteFitod(); break;
                 case Opcode.fitoq: RewriteFitoq(); break;
                 case Opcode.fitos: RewriteFitos(); break;
                 case Opcode.fmovs: RewriteFmovs(); break;
                 case Opcode.fmuls: RewriteFmuls(); break;
                 case Opcode.fnegs: RewriteFmovs(); break;
+                case Opcode.fstod: RewriteFstod(); break;
                 case Opcode.fsubs: RewriteFsubs(); break;
                 case Opcode.jmpl: RewriteJmpl(); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word32); break;
-                case Opcode.lddf: RewriteDLoad(PrimitiveType.Real64); break;
+                case Opcode.lddf: RewriteLoad(PrimitiveType.Real64); break;
                 case Opcode.ldf: RewriteLoad(PrimitiveType.Real32); break;
                 case Opcode.ldd: RewriteLoad(PrimitiveType.Word64); break;
                 case Opcode.ldsb: RewriteLoad(PrimitiveType.SByte); break;
                 case Opcode.ldsh: RewriteLoad(PrimitiveType.Int16); break;
+                case Opcode.ldstub: RewriteLdstub(); break;
                 case Opcode.ldub: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.lduh: RewriteLoad(PrimitiveType.Word16); break;
                 case Opcode.ldfsr: RewriteLoad(PrimitiveType.Word32); break;
@@ -182,6 +190,7 @@ namespace Reko.Arch.Sparc
                 case Opcode.st: RewriteStore(PrimitiveType.Word32); break;
                 case Opcode.stb: RewriteStore(PrimitiveType.Byte); break;
                 case Opcode.std: RewriteStore(PrimitiveType.Word64); break;
+                case Opcode.stdf: RewriteStore(PrimitiveType.Real64); break;
                 case Opcode.stf: RewriteStore(PrimitiveType.Real32); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
                 case Opcode.stfsr: RewriteStore(PrimitiveType.Word32); break;
@@ -200,6 +209,10 @@ namespace Reko.Arch.Sparc
                 case Opcode.umulcc: RewriteAluCc(m.UMul, false); break;
                 case Opcode.unimp: m.Invalid(); break;
                 case Opcode.xor: RewriteAlu(m.Xor, false); break;
+                case Opcode.xorcc: RewriteAlu(m.Xor, true); break;
+                case Opcode.xnor: RewriteAlu(XNor, false); break;
+                case Opcode.xnorcc: RewriteAlu(XNor, true); break;
+
                 }
                 yield return new RtlInstructionCluster(addr, 4, rtlInstructions.ToArray())
                 {
@@ -211,6 +224,30 @@ namespace Reko.Arch.Sparc
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+
+        //[Conditional("DEBUG")]
+        public void EmitUnitTest()
+        {
+            if (seen.Contains(instrCur.Opcode))
+                return;
+            seen.Add(instrCur.Opcode);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var wInstr = r2.ReadUInt32();
+            Console.WriteLine("        [Test]");
+            Console.WriteLine("        public void SparcRw_" + dasm.Current.Opcode + "()");
+            Console.WriteLine("        {");
+            Console.Write($"            BuildTest(0x{wInstr:X8}");
+            Console.WriteLine(");\t// " + dasm.Current.ToString());
+            Console.WriteLine("            AssertCode(");
+            Console.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instrCur.Address, instrCur.Length);
+            Console.WriteLine("                \"1|L--|@@@\");");
+            Console.WriteLine("        }");
+            Console.WriteLine("");
         }
 
         private void EmitCc(Expression dst)
@@ -288,6 +325,11 @@ namespace Reko.Arch.Sparc
                 return srcLeft;
             else
                 return m.IAdd(srcLeft, srcRight);
+        }
+
+        private Expression XNor(Expression left, Expression right)
+        {
+            return m.Comp(m.Xor(left, right));
         }
     }
 }

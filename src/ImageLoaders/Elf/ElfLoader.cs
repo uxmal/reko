@@ -547,7 +547,10 @@ namespace Reko.ImageLoaders.Elf
             Debug.Assert(Sections != null);
             if (st_shndx < 0xFF00)
             {
-                return Sections[st_shndx].Name;
+                if (st_shndx < Sections.Count)
+                    return Sections[st_shndx].Name;
+                else
+                    return $"?section{st_shndx}?";
             }
             else
             {

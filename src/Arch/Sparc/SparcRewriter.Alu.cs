@@ -71,6 +71,16 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException();
         }
 
+        private void RewriteLdstub()
+        {
+            var mem = (MemoryAccess)RewriteOp(instrCur.Op1);
+            var dst = RewriteOp(instrCur.Op2);
+            var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
+            var intrinsic = host.PseudoProcedure("__ldstub", bTmp.DataType, m.AddrOf(mem));
+            m.Assign(bTmp, intrinsic);
+            m.Assign(dst, m.Dpb(dst, bTmp, 0));
+        }
+
         private void RewriteLoad(PrimitiveType size)
         {
             var dst = RewriteOp(instrCur.Op2);
