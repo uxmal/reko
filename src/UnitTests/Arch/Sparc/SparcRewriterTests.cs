@@ -497,6 +497,7 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        [Ignore("Implement this!")]
         public void SparcRw_fcmpd()
         {
             BuildTest(0x81A90A46);	// fcmpd	%f4,%f6
