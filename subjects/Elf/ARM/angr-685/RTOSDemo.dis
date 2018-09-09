@@ -218,7 +218,7 @@ l000000ED:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l000000ED_1:
-	Mem350[r6:word16] = (uint16) r0
+	Mem366[r6:word16] = (uint16) r0
 	r6 = r6 - 69
 // DataOut: fp ip lr pc r0 r1 r10 r2 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NZCV
@@ -233,14 +233,14 @@ l000000F1:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l000000F1_1:
-	Mem341[fp:word32] = r2
-	Mem342[fp + 4:word32] = r3
-	Mem343[fp + 8:word32] = r5
-	Mem344[fp + 12:word32] = r6
-	Mem345[fp + 16:word32] = r8
-	Mem346[fp + 20:word32] = r10
-	Mem347[fp + 24:word32] = fp
-	Mem348[fp + 28:word32] = pc
+	Mem357[fp:word32] = r2
+	Mem358[fp + 4:word32] = r3
+	Mem359[fp + 8:word32] = r5
+	Mem360[fp + 12:word32] = r6
+	Mem361[fp + 16:word32] = r8
+	Mem362[fp + 20:word32] = r10
+	Mem363[fp + 24:word32] = fp
+	Mem364[fp + 28:word32] = pc
 // DataOut: fp ip lr r0 r1 r10 r2 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69
@@ -254,7 +254,7 @@ l000000F5:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l000000F5_1:
-	Mem339[r8:word16] = (uint16) r2
+	Mem355[r8:word16] = (uint16) r2
 	r8 = r8 - 105
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NZCV
@@ -310,11 +310,11 @@ l00000105:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000105_1:
-	byte NZCV_328 = cond(r9 + (r6 >> 28) + C)
-	C = NZCV_328 (alias)
-	NV = NZCV_328 (alias)
-	Z = NZCV_328 (alias)
-	N = NZCV_328 (alias)
+	byte NZCV_344 = cond(r9 + (r6 >> 28) + C)
+	C = NZCV_344 (alias)
+	NV = NZCV_344 (alias)
+	Z = NZCV_344 (alias)
+	N = NZCV_344 (alias)
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:r8 - 105 r3:r0 & ~(lr >> 2) r10:(r5 >> r5) - (r0 & ~(lr >> 2)) r1:r6 - 0x0BD0008A
@@ -328,25 +328,25 @@ l00000109:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000109_1:
-	word32 sp_302
-	word32 r6_305
-	word32 fp_307
-	word32 r2_308
-	word32 pc_313
-	word32 lr_314
-	byte V_315
-	word32 r1_316
-	word32 r7_318
-	word32 r9_319
-	byte NZCV_320
-	byte N_321
-	byte NZC_322
-	byte ZC_324
-	word32 ip_325
-	word32 r4_326
+	word32 sp_318
+	word32 r6_321
+	word32 fp_323
+	word32 r2_324
+	word32 pc_329
+	word32 lr_330
+	byte V_331
+	word32 r1_332
+	word32 r7_334
+	word32 r9_335
+	byte NZCV_336
+	byte N_337
+	byte NZC_338
+	byte ZC_340
+	word32 ip_341
+	word32 r4_342
 	call fnFFC02AB1 (retsize: 0;)
-		uses: C_29,fp_7,ip,lr,N_25,NV_27,NZC_24,NZCV_26,pc,r0,r1_16,r10_14,r2,r3_11,r4,r5,r6_4,r7_31,r8_9,r9,sp_1,spsr,V_28,Z_30,ZC_23
-		defs: C_306,fp_307,ip_325,lr_314,N_321,NV_317,NZC_322,NZCV_320,pc_313,r0_304,r1_316,r10_312,r2_308,r3_309,r4_326,r5_310,r6_305,r7_318,r8_311,r9_319,sp_302,spsr_323,V_315,Z_303,ZC_324
+		uses: C_25,fp_7,ip,lr,N_27,NV_26,NZC_24,NZCV_29,pc,r0,r1_16,r10_14,r2,r3_11,r4,r5,r6_4,r7_31,r8_9,r9,sp_1,spsr,V_23,Z_28,ZC_30
+		defs: C_322,fp_323,ip_341,lr_330,N_337,NV_333,NZC_338,NZCV_336,pc_329,r0_320,r1_332,r10_328,r2_324,r3_325,r4_342,r5_326,r6_321,r7_334,r8_327,r9_335,sp_318,spsr_339,V_331,Z_319,ZC_340
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:r8 - 105 r3:r0 & ~(lr >> 2) r10:(r5 >> r5) - (r0 & ~(lr >> 2)) r1:r6 - 0x0BD0008A r7:<invalid>
@@ -375,26 +375,26 @@ l00000111:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000111_1:
-	word32 sp_275
-	byte Z_276
-	word32 r6_278
-	word32 fp_280
-	word32 r2_281
-	word32 pc_286
-	word32 lr_287
-	byte V_288
-	word32 r1_289
-	word32 r7_291
-	word32 r9_292
-	byte NZCV_293
-	byte N_294
-	byte NZC_295
-	byte ZC_297
-	word32 ip_298
-	word32 r4_299
+	word32 sp_291
+	byte Z_292
+	word32 r6_294
+	word32 fp_296
+	word32 r2_297
+	word32 pc_302
+	word32 lr_303
+	byte V_304
+	word32 r1_305
+	word32 r7_307
+	word32 r9_308
+	byte NZCV_309
+	byte N_310
+	byte NZC_311
+	byte ZC_313
+	word32 ip_314
+	word32 r4_315
 	call fn01A18AC9 (retsize: 0;)
-		uses: C_57,fp_56,ip_65,lr_60,N_45,NV_48,NZC_44,NZCV_46,pc_51,r0_64,r1_49,r10_66,r2_55,r3_54,r4_41,r5_63,r6_58,r7_62,r8_67,r9_47,sp_61,spsr_43,V_50,Z_59,ZC_42
-		defs: C_279,fp_280,ip_298,lr_287,N_294,NV_290,NZC_295,NZCV_293,pc_286,r0_277,r1_289,r10_285,r2_281,r3_282,r4_299,r5_283,r6_278,r7_291,r8_284,r9_292,sp_275,spsr_296,V_288,Z_276,ZC_297
+		uses: C_55,fp_51,ip_65,lr_53,N_57,NV_56,NZC_54,NZCV_59,pc_46,r0_64,r1_44,r10_66,r2_50,r3_49,r4_41,r5_63,r6_52,r7_62,r8_67,r9_43,sp_61,spsr_42,V_45,Z_58,ZC_60
+		defs: C_295,fp_296,ip_314,lr_303,N_310,NV_306,NZC_311,NZCV_309,pc_302,r0_293,r1_305,r10_301,r2_297,r3_298,r4_315,r5_299,r6_294,r7_307,r8_300,r9_308,sp_291,spsr_312,V_304,Z_292,ZC_313
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:r6 - 0x0BD0008A r7:<invalid>
@@ -435,9 +435,9 @@ l0000011D:
 
 l0000011D_1:
 	r0 = r5 ^ __ror(r8, 2)
-	byte NZC_266 = cond(r0)
-	C = NZC_266 (alias)
-	NV = NZC_266 (alias)
+	byte NZC_282 = cond(r0)
+	C = NZC_282 (alias)
+	NV = NZC_282 (alias)
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): NCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16)
@@ -451,7 +451,7 @@ l00000121:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000121_1:
-	Mem264[r0 - 838:byte] = (byte) r10
+	Mem280[r0 - 838:byte] = (byte) r10
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r8 r9 spsr
 // DataOut (flags): C
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid>
@@ -470,30 +470,30 @@ l00000125:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000129_1:
-	word32 sp_238
-	word32 r0_240
-	word32 r6_241
-	word32 fp_243
-	word32 r2_244
-	word32 r3_245
-	word32 r5_246
-	word32 r8_247
-	word32 r10_248
-	word32 pc_249
-	word32 lr_250
-	byte V_251
-	word32 r1_252
-	byte NV_253
-	word32 r7_254
-	word32 r9_255
-	byte NZCV_256
-	byte N_257
-	byte NZC_258
-	word32 ip_261
-	word32 r4_262
+	word32 sp_254
+	word32 r0_256
+	word32 r6_257
+	word32 fp_259
+	word32 r2_260
+	word32 r3_261
+	word32 r5_262
+	word32 r8_263
+	word32 r10_264
+	word32 pc_265
+	word32 lr_266
+	byte V_267
+	word32 r1_268
+	byte NV_269
+	word32 r7_270
+	word32 r9_271
+	byte NZCV_272
+	byte N_273
+	byte NZC_274
+	word32 ip_277
+	word32 r4_278
 	call fnFFC02AD1 (retsize: 0;)
-		uses: C_106,fp_83,ip_92,lr_87,N_111,NV_107,NZC_112,NZCV_105,pc_78,r0_103,r1_94,r10_79,r2_82,r3_81,r4_68,r5_90,r6_85,r7_104,r8_80,r9_93,sp_88,spsr_70,V_109,Z_108,ZC_110
-		defs: C_242,fp_243,ip_261,lr_250,N_257,NV_253,NZC_258,NZCV_256,pc_249,r0_240,r1_252,r10_248,r2_244,r3_245,r4_262,r5_246,r6_241,r7_254,r8_247,r9_255,sp_238,spsr_259,V_251,Z_239,ZC_260
+		uses: C_106,fp_78,ip_92,lr_80,N_111,NV_107,NZC_112,NZCV_105,pc_73,r0_103,r1_94,r10_74,r2_77,r3_76,r4_68,r5_90,r6_79,r7_104,r8_75,r9_93,sp_88,spsr_69,V_109,Z_108,ZC_110
+		defs: C_258,fp_259,ip_277,lr_266,N_273,NV_269,NZC_274,NZCV_272,pc_265,r0_256,r1_268,r10_264,r2_260,r3_261,r4_278,r5_262,r6_257,r7_270,r8_263,r9_271,sp_254,spsr_275,V_267,Z_255,ZC_276
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r7 r8 r9 spsr
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid>
@@ -515,33 +515,33 @@ l00000135:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000135_1:
-	word32 sp_213
-	word32 r0_215
-	word32 r6_216
-	byte C_217
-	word32 fp_218
-	word32 r2_219
-	word32 r3_220
-	word32 r5_221
-	word32 r8_222
-	word32 r10_223
-	word32 pc_224
-	word32 lr_225
-	byte V_226
-	word32 r1_227
-	byte NV_228
-	word32 r7_229
-	word32 r9_230
-	byte NZCV_231
-	byte N_232
-	byte NZC_233
-	word32 spsr_234
-	byte ZC_235
-	word32 ip_236
-	word32 r4_237
+	word32 sp_229
+	word32 r0_231
+	word32 r6_232
+	byte C_233
+	word32 fp_234
+	word32 r2_235
+	word32 r3_236
+	word32 r5_237
+	word32 r8_238
+	word32 r10_239
+	word32 pc_240
+	word32 lr_241
+	byte V_242
+	word32 r1_243
+	byte NV_244
+	word32 r7_245
+	word32 r9_246
+	byte NZCV_247
+	byte N_248
+	byte NZC_249
+	word32 spsr_250
+	byte ZC_251
+	word32 ip_252
+	word32 r4_253
 	call fn01104EDD (retsize: 0;)
-		uses: C_129,fp_128,ip_137,lr_132,N_117,NV_120,NZC_116,NZCV_118,pc_123,r0_136,r1_121,r10_124,r2_127,r3_126,r4_113,r5_135,r6_130,r7_134,r8_125,r9_119,sp_133,spsr_115,V_122,Z_131,ZC_114
-		defs: C_217,fp_218,ip_236,lr_225,N_232,NV_228,NZC_233,NZCV_231,pc_224,r0_215,r1_227,r10_223,r2_219,r3_220,r4_237,r5_221,r6_216,r7_229,r8_222,r9_230,sp_213,spsr_234,V_226,Z_214,ZC_235
+		uses: C_127,fp_123,ip_137,lr_125,N_129,NV_128,NZC_126,NZCV_131,pc_118,r0_136,r1_116,r10_119,r2_122,r3_121,r4_113,r5_135,r6_124,r7_134,r8_120,r9_115,sp_133,spsr_114,V_117,Z_130,ZC_132
+		defs: C_233,fp_234,ip_252,lr_241,N_248,NV_244,NZC_249,NZCV_247,pc_240,r0_231,r1_243,r10_239,r2_235,r3_236,r4_253,r5_237,r6_232,r7_245,r8_238,r9_246,sp_229,spsr_250,V_242,Z_230,ZC_251
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid>
@@ -563,9 +563,7 @@ l00000139_1:
 l0000013D:
 	branch Z_108 l0000013D_then
 	word32 sp_163
-	byte Z_164
 	word32 r6_166
-	byte C_167
 	word32 fp_168
 	word32 r2_169
 	word32 r3_170
@@ -575,7 +573,6 @@ l0000013D:
 	word32 pc_174
 	byte V_176
 	word32 r1_177
-	byte NV_178
 	word32 r9_180
 	byte NZCV_181
 	byte N_182
@@ -584,11 +581,14 @@ l0000013D:
 	byte ZC_185
 	word32 r4_187
 	word32 lr_175
+	byte C_167
+	byte NV_178
+	byte Z_164
 	word32 r7_179
 	word32 ip_186
 	word32 r0_165
 	call fn01A1908D (retsize: 0;)
-		uses: C_154,fp_153,ip_162,lr_157,N_142,NV_145,NZC_141,NZCV_143,pc_148,r0_161,r1_146,r10_149,r2_152,r3_151,r4_138,r5_160,r6_155,r7_159,r8_150,r9_144,sp_158,spsr_140,V_147,Z_156,ZC_139
+		uses: C_152,fp_148,ip_162,lr_150,N_154,NV_153,NZC_151,NZCV_156,pc_143,r0_161,r1_141,r10_144,r2_147,r3_146,r4_138,r5_160,r6_149,r7_159,r8_145,r9_140,sp_158,spsr_139,V_142,Z_155,ZC_157
 		defs: C_167,fp_168,ip_186,lr_175,N_182,NV_178,NZC_183,NZCV_181,pc_174,r0_165,r1_177,r10_173,r2_169,r3_170,r4_187,r5_171,r6_166,r7_179,r8_172,r9_180,sp_163,spsr_184,V_176,Z_164,ZC_185
 	return
 // DataOut: fp ip lr r0 r1 r10 r3 r4 r5 r6 r7 r8 r9
@@ -638,7 +638,7 @@ l00000149:
 
 l00000149_1:
 	r0_165 = r0_165 - 53
-	Mem209[r0_165:word32] = r0_165
+	Mem225[r0_165:word32] = r0_165
 // DataOut: fp ip r0 r1 r10 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
@@ -646,6 +646,17 @@ l00000149_1:
 
 l0000014D:
 	branch Z_164 l00000151
+// DataOut: fp ip r0 r1 r10 r3 r4 r5 r6 r7 r8 r9
+// DataOut (flags): NZCV
+// SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
+// LocalsOut: fp(32) Stack +0063(32)
+
+l0000014D_1:
+	r7_179 = __rcr(r3_170, 1, C_167)
+	byte NZC_217 = cond(r7_179)
+	C_167 = NZC_217 (alias)
+	NV_178 = NZC_217 (alias)
+	Z_164 = NZC_217 (alias)
 // DataOut: fp ip r0 r1 r10 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
@@ -659,7 +670,7 @@ l00000151:
 // LocalsOut: fp(32) Stack +0063(32)
 
 l00000151_1:
-	Mem207[r6_166 - 53:byte] = (byte) r3_170
+	Mem215[r6_166 - 53:byte] = (byte) r3_170
 // DataOut: fp ip r0 r1 r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
@@ -685,7 +696,7 @@ l00000159:
 // SymbolicIn: sp:<invalid> r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
 
 l00000159_1:
-	Mem202[r5_171:word16] = (uint16) r0_165
+	Mem210[r5_171:word16] = (uint16) r0_165
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
@@ -734,13 +745,13 @@ l00000169_thunk_prvCopyDataFromQueue:
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid> r5:r5 - 25 ip:<invalid>
 
 l00000169_1:
-	word32 ip_197 = 0x00600000 - r7_179 - C_167
+	word32 ip_205 = 0x00600000 - r7_179 - C_167
 // DataOut: fp ip r0 r1 r10 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid> r5:r5 - 25 ip:<invalid>
 
 l00000169_thunk_prvCopyDataFromQueue:
-	prvCopyDataFromQueue(r0_165, r1_177, r4_187, r6_166, r7_179, r8_172, r9_180, r10_173, fp_168, ip_197)
+	prvCopyDataFromQueue(r0_165, r1_177, r4_187, r6_166, r7_179, r8_172, r9_180, r10_173, fp_168, ip_205)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -755,11 +766,6 @@ l00000165_1:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid> r5:r5 - 25 ip:<invalid>
-
-l0000014D_1:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp r6:r6 - 69 fp:fp + 32 r8:<invalid> r3:r0 & ~(lr >> 2) r10:<invalid> r1:<invalid> r7:<invalid> r9:DPB(r9, 0x2344, 16) r0:<invalid> lr:<invalid>
 
 l00000131_1:
 // DataOut:

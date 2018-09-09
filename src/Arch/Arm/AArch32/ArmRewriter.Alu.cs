@@ -449,6 +449,12 @@ namespace Reko.Arch.Arm.AArch32
             return intrinsic;
         }
 
+        private Expression Rrx(Expression left, Expression right)
+        {
+            var intrinsic = host.PseudoProcedure(PseudoProcedure.RorC, left.DataType, left, right, C());
+            return intrinsic;
+        }
+
         private void RewriteMla(bool hiLeft, bool hiRight, PrimitiveType dt, Func<Expression, Expression, Expression> op)
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
