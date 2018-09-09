@@ -360,7 +360,6 @@ fn092A: error: An error occurred during data flow analysis.
 00000129: warning: Call target address FFC02AD1 is invalid.
 00000135: warning: Call target address 01104EDD is invalid.
 0000013D: warning: Call target address 01A1908D is invalid.
-0000014D: error: AArch32 instruction 'rrx' (1BD7063) is not supported yet.
 0000A35C: error: AArch32 instruction 'crc32w' (61420040) is not supported yet.
 0000A364: error: AArch32 instruction 'crc32w' (314B4541) is not supported yet.
 0000A3B0: error: AArch32 instruction 'vsub' (3E364949) is not supported yet.
@@ -679,7 +678,7 @@ fn00008014: error: An error occurred during data flow analysis.
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-00000121: error: An error occurred while processing the statement Mem264[r0 - 838 + 0x00000000:byte] = (byte) r10.
+00000121: error: An error occurred while processing the statement Mem280[r0 - 838 + 0x00000000:byte] = (byte) r10.
     Not handling (ptr32 (struct (0 T_242 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
@@ -691,7 +690,7 @@ fn00008014: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 0000038D: error: An error occurred while processing the statement ip = (r3 >> r8) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_656 t0000) (4BF T_734 t04BF)))
+    Pulling difference int32 and (ptr32 (struct (0 T_661 t0000) (4BF T_739 t04BF)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -701,7 +700,7 @@ fn00008014: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00000805: error: An error occurred while processing the statement r5_152 = Mem0[r1_141 - 4 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_2181 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_2186 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -712,7 +711,7 @@ fn00008014: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00000B2D: error: An error occurred while processing the statement Mem263[r0 - 72 + 0x00000000:word64] = r7_r6.
-    Not handling (ptr32 (struct (0 T_3222 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_3227 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -724,7 +723,7 @@ fn00008014: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 fn00008010_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 000080E1: error: An error occurred while processing the statement Mem72[r6 - 44 + 0x00000000:word64] = r3_r2.
-    Not handling (ptr32 (struct (0 T_15528 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_15533 t0000))) and (union (int32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -735,7 +734,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009335: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -745,7 +744,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009355: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -755,7 +754,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009369: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -765,7 +764,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 0000938D: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21154 t0000)))
+    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -775,7 +774,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009415: error: An error occurred while processing the statement __stc(p0, c2, Mem0[r6 - 996 + 0x00000000:word32]).
-    Not handling (ptr32 (struct (0 T_21466 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_21471 t0000))) and (union (int32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -788,7 +787,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 000094DD: error: An error occurred while processing the statement Mem32[r2 - 356 + 0x00000000:word32] = r0.
-    Not handling (ptr32 (struct (0 T_21841 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_21846 t0000))) and (union (int32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -799,7 +798,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 000095AD: error: An error occurred while processing the statement r1 = Mem0[r0 - -4 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_22067 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_22072 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -810,7 +809,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009801: error: An error occurred while processing the statement byte NZCV_288 = cond((r0 << r0) - r0 - C).
-    Pulling difference ui32 and (ptr32 (struct (0 T_22713 t0000)))
+    Pulling difference ui32 and (ptr32 (struct (0 T_22718 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -822,7 +821,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009921: error: An error occurred while processing the statement Mem39[r0 - (r5 >> 20) + 0x00000000:byte] = (byte) r1.
-    Not handling (ptr32 (struct (0 T_23258 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_23263 t0000))) and (union (int32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -833,7 +832,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009B1D: error: An error occurred while processing the statement Mem19[r0 - 4064 + 0x00000000:byte] = (byte) r0.
-    Not handling (ptr32 (struct (0 T_23896 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_23901 t0000))) and (union (int32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -844,7 +843,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009BB1: error: An error occurred while processing the statement Mem35[r0_33 - 165 + 0x00000000:word32] = r0_33.
-    Not handling (ptr32 (struct (0 T_24121 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_24126 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -855,7 +854,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009BE9: error: An error occurred while processing the statement Mem35[r0_33 - 165 + 0x00000000:word32] = r0_33.
-    Not handling (ptr32 (struct (0 T_24251 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_24256 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -866,7 +865,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009C21: error: An error occurred while processing the statement Mem33[r0_31 - 165 + 0x00000000:word32] = r0_31.
-    Not handling (ptr32 (struct (0 T_24362 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct (0 T_24367 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -877,7 +876,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009C31: error: An error occurred while processing the statement r4 = (r7 >> 6) - r0 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_24391 t0000)))
+    Pulling difference int32 and (ptr32 (struct (0 T_24396 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -887,7 +886,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009EDD: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_25427 t0000)))
+    Pulling difference ui32 and (ptr32 (struct (0 T_25432 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -903,7 +902,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009EF9: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_25538 t0000)))
+    Pulling difference ui32 and (ptr32 (struct (0 T_25543 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -911,7 +910,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009F01: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_25538 t0000)))
+    Pulling difference ui32 and (ptr32 (struct (0 T_25543 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -919,7 +918,7 @@ fn00008010_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
 00009F19: error: An error occurred while processing the statement byte NZCV_48 = cond((r7 >> 6) - r4 - C).
-    Pulling difference int32 and (ptr32 (struct (0 T_25607 t0000)))
+    Pulling difference int32 and (ptr32 (struct (0 T_25612 t0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -3453,4 +3452,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 98.13 seconds ---
+Decompiled 54 binaries in 96.33 seconds ---

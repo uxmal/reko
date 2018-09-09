@@ -309,7 +309,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.dcps2:
                 case Opcode.dcps3:
                 case Opcode.lsrs:
-                case Opcode.rrx:
                 case Opcode.subs:
                 case Opcode.tbb:
                 case Opcode.tbh:
@@ -398,6 +397,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
                 case Opcode.push: case Opcode.push_w: RewritePush(); break;
                 case Opcode.ror: RewriteShift(Ror); break;
+                case Opcode.rrx: RewriteShift(Rrx); break;
                 case Opcode.rev: RewriteRev(); break;
                 case Opcode.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
                 case Opcode.rsc: RewriteAdcSbc(m.ISub, true); break;
@@ -576,6 +576,11 @@ namespace Reko.Arch.Arm.AArch32
         Expression NZCV()
         {
             return binder.EnsureFlagGroup(Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte);
+        }
+
+        Expression C()
+        {
+            return binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
         }
 
         Expression Q()
@@ -888,8 +893,7 @@ namespace Reko.Arch.Arm.AArch32
             case Opcode.lsr: return m.Sar(exp, sh);
             case Opcode.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
             case Opcode.rrx:
-                var c = binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
-                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, c);
+                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, C());
             default: return exp;
             }
         }
