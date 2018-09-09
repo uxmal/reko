@@ -135,33 +135,33 @@ fn092A: error: An error occurred during data flow analysis.
 00000079: warning: Call target address FEC5AF49 is invalid.
 00000081: warning: Call target address FFC001A1 is invalid.
 0000016D: warning: Call target address FEC5AB25 is invalid.
-00000179: error: Rewriting ARM opcode 'crc32w' (C142A144) is not supported yet.
+00000179: error: AArch32 instruction 'crc32w' (C142A144) is not supported yet.
 00000185: warning: Call target address 0118647D is invalid.
-00000199: error: Rewriting ARM opcode 'crc32cw' (1468A46) is not supported yet.
+00000199: error: AArch32 instruction 'crc32cw' (1468A46) is not supported yet.
 000016C9: warning: Call target address 0000F8E8 is invalid.
 0000173D: warning: Call target address 012C5729 is invalid.
-00001759: error: Rewriting ARM opcode 'mcrr' (8C45C0F8) is not supported yet.
+00001759: error: AArch32 instruction 'mcrr' (8C45C0F8) is not supported yet.
 00001775: warning: Call target address 0008373D is invalid.
 0000A5C9: warning: Call target address FF656279 is invalid.
 0000A5CD: warning: Call target address 010CB1D5 is invalid.
-0000A631: error: Rewriting ARM opcode 'mrrc' (EC5CCC23) is not supported yet.
+0000A631: error: AArch32 instruction 'mrrc' (EC5CCC23) is not supported yet.
 0000A259: warning: Call target address 018E3801 is invalid.
 0000A045: warning: Call target address 001B0DF1 is invalid.
 00009F59: warning: Call target address 0010C323 is invalid.
 00009F61: warning: Call target address 000CE329 is invalid.
 00009F6D: warning: Call target address 0008A735 is invalid.
 00009F7D: warning: Call target address 000CEB71 is invalid.
-00009F29: error: Rewriting ARM opcode 'bxj' (1220021) is not supported yet.
-00009F29: error: Rewriting ARM opcode 'bxj' (1220021) is not supported yet.
+00009F29: error: AArch32 instruction 'bxj' (1220021) is not supported yet.
+00009F29: error: AArch32 instruction 'bxj' (1220021) is not supported yet.
 00009F2D: warning: Call target address 01810461 is invalid.
 00009E8D: warning: Call target address 0130C965 is invalid.
 00009E91: warning: Call target address 01A12BBD is invalid.
 00009EA5: warning: Call target address 010CAC39 is invalid.
 00009DFD: warning: Call target address FF412EAD is invalid.
-00009D19: error: Rewriting ARM opcode 'mcrr' (5C477060) is not supported yet.
+00009D19: error: AArch32 instruction 'mcrr' (5C477060) is not supported yet.
 00009CD1: warning: Call target address 0128A605 is invalid.
-00009C41: error: Rewriting ARM opcode 'mcrr' (2C4601B5) is not supported yet.
-00009C41: error: Rewriting ARM opcode 'mcrr' (2C4601B5) is not supported yet.
+00009C41: error: AArch32 instruction 'mcrr' (2C4601B5) is not supported yet.
+00009C41: error: AArch32 instruction 'mcrr' (2C4601B5) is not supported yet.
 00009C0D: warning: Call target address 000EA7C1 is invalid.
 00009BF1: warning: Call target address 000EA7A5 is invalid.
 00009BD5: warning: Call target address 000EA789 is invalid.
@@ -182,33 +182,33 @@ fn092A: error: An error occurred during data flow analysis.
 000099C9: warning: Call target address FFE09651 is invalid.
 000099E1: warning: Call target address 0100BD89 is invalid.
 000098E5: warning: Call target address 010B34E9 is invalid.
-000097CD: error: Rewriting ARM opcode 'mcrr' (C4616B5) is not supported yet.
-000097CD: error: Rewriting ARM opcode 'mcrr' (C4616B5) is not supported yet.
+000097CD: error: AArch32 instruction 'mcrr' (C4616B5) is not supported yet.
+000097CD: error: AArch32 instruction 'mcrr' (C4616B5) is not supported yet.
 0000980D: warning: Call target address FFFE83F1 is invalid.
 00009811: warning: Call target address FECEA5F9 is invalid.
 00009815: warning: Call target address 0138F8CD is invalid.
 00009825: warning: Call target address FFFE5409 is invalid.
 00009829: warning: Call target address FECD0611 is invalid.
 0000979D: warning: Call target address FFE094BD is invalid.
-00009731: error: Rewriting ARM opcode 'mcrr' (7C400200) is not supported yet.
-000096C9: error: Rewriting ARM opcode 'mcrr' (C4F0C46) is not supported yet.
-00009655: error: Rewriting ARM opcode 'mcrr' (C477060) is not supported yet.
+00009731: error: AArch32 instruction 'mcrr' (7C400200) is not supported yet.
+000096C9: error: AArch32 instruction 'mcrr' (C4F0C46) is not supported yet.
+00009655: error: AArch32 instruction 'mcrr' (C477060) is not supported yet.
 00009661: warning: Call target address 011E57E9 is invalid.
-000095F9: error: Rewriting ARM opcode 'mcrr' (C477060) is not supported yet.
+000095F9: error: AArch32 instruction 'mcrr' (C477060) is not supported yet.
 00009605: warning: Call target address 011E578D is invalid.
 000095C1: warning: Call target address 0110E1D1 is invalid.
-00009599: error: Rewriting ARM opcode 'mcrr' (1C442304) is not supported yet.
-00009569: error: Rewriting ARM opcode 'uqsub8' (663E0F4) is not supported yet.
-00009569: error: Rewriting ARM opcode 'uqsub8' (663E0F4) is not supported yet.
+00009599: error: AArch32 instruction 'mcrr' (1C442304) is not supported yet.
+00009569: error: AArch32 instruction 'uqsub8' (663E0F4) is not supported yet.
+00009569: error: AArch32 instruction 'uqsub8' (663E0F4) is not supported yet.
 00009579: warning: Call target address 00ECA961 is invalid.
 00009505: warning: Call target address FED15639 is invalid.
 00009501: warning: Call target address FEF858C9 is invalid.
 000094A9: warning: Call target address 00909891 is invalid.
 00009485: warning: Call target address 0090986D is invalid.
-000092BD: error: Rewriting ARM opcode 'bxj' (31240024) is not supported yet.
-000092C5: error: Rewriting ARM opcode 'bxj' (11200020) is not supported yet.
+000092BD: error: AArch32 instruction 'bxj' (31240024) is not supported yet.
+000092C5: error: AArch32 instruction 'bxj' (11200020) is not supported yet.
 000092D5: warning: Call target address 010CBBE9 is invalid.
-000091E5: error: Rewriting ARM opcode 'mcrr' (8C430CBF) is not supported yet.
+000091E5: error: AArch32 instruction 'mcrr' (8C430CBF) is not supported yet.
 00009209: warning: Call target address 010CBD0D is invalid.
 00009219: warning: Call target address 010CBD1D is invalid.
 00009229: warning: Call target address 010CBD2D is invalid.
@@ -237,8 +237,8 @@ fn092A: error: An error occurred during data flow analysis.
 00009035: warning: Call target address FEC55B21 is invalid.
 0000905D: warning: Call target address 01A2B8C5 is invalid.
 00009065: warning: Call target address 010AF97D is invalid.
-00008EF1: error: Rewriting ARM opcode 'mcrr' (C460EB5) is not supported yet.
-00008EF1: error: Rewriting ARM opcode 'mcrr' (C460EB5) is not supported yet.
+00008EF1: error: AArch32 instruction 'mcrr' (C460EB5) is not supported yet.
+00008EF1: error: AArch32 instruction 'mcrr' (C460EB5) is not supported yet.
 00008F11: warning: Call target address FFE08BDF is invalid.
 00008DF5: warning: Call target address 01189F15 is invalid.
 00008DFD: warning: Call target address FFE06F1D is invalid.
@@ -248,7 +248,7 @@ fn092A: error: An error occurred during data flow analysis.
 00008B7D: warning: Call target address 01189C9D is invalid.
 00008AF5: warning: Call target address 01189C15 is invalid.
 00008A91: warning: Call target address FFF62E75 is invalid.
-00008A95: error: Rewriting ARM opcode 'crc32w' (31460446) is not supported yet.
+00008A95: error: AArch32 instruction 'crc32w' (31460446) is not supported yet.
 00008A0D: warning: Call target address 01189B2D is invalid.
 000089D5: warning: Call target address 01189AF5 is invalid.
 000089DD: warning: Call target address FFE06AFD is invalid.
@@ -256,7 +256,7 @@ fn092A: error: An error occurred during data flow analysis.
 00008811: warning: Call target address 011ACD31 is invalid.
 00008815: warning: Call target address FE7CB135 is invalid.
 00008795: warning: Call target address FFE66B5D is invalid.
-000087A5: error: Rewriting ARM opcode 'crc32h' (1210046) is not supported yet.
+000087A5: error: AArch32 instruction 'crc32h' (1210046) is not supported yet.
 00008715: warning: Call target address FFD75611 is invalid.
 00008735: warning: Call target address 012CCFC5 is invalid.
 0000874D: warning: Call target address FEF4CA15 is invalid.
@@ -289,20 +289,20 @@ fn092A: error: An error occurred during data flow analysis.
 000081B9: warning: Call target address 0028B185 is invalid.
 000081BD: warning: Call target address 0030B589 is invalid.
 000081C5: warning: Call target address 00A0B111 is invalid.
-0000811D: error: Rewriting ARM opcode 'crc32w' (1462846) is not supported yet.
+0000811D: error: AArch32 instruction 'crc32w' (1462846) is not supported yet.
 00008129: warning: Call target address 01A0EE5D is invalid.
 00008135: warning: Call target address 01E0CE65 is invalid.
 00008149: warning: Call target address FEF64411 is invalid.
 000080B5: warning: Call target address FFC085D5 is invalid.
-000080C1: error: Rewriting ARM opcode 'crc32ch' (1223B49) is not supported yet.
-000080E5: error: Rewriting ARM opcode 'crc32cw' (1480746) is not supported yet.
+000080C1: error: AArch32 instruction 'crc32ch' (1223B49) is not supported yet.
+000080E5: error: AArch32 instruction 'crc32cw' (1480746) is not supported yet.
 00001925: warning: Call target address FE07DCCD is invalid.
 0000193D: warning: Call target address 012C5E8D is invalid.
-00001891: error: Rewriting ARM opcode 'mcrr' (C4605B5) is not supported yet.
-00001891: error: Rewriting ARM opcode 'mcrr' (C4605B5) is not supported yet.
+00001891: error: AArch32 instruction 'mcrr' (C4605B5) is not supported yet.
+00001891: error: AArch32 instruction 'mcrr' (C4605B5) is not supported yet.
 000018D1: warning: Call target address 010A1899 is invalid.
-00001875: error: Rewriting ARM opcode 'mcrr' (C4606B5) is not supported yet.
-00001875: error: Rewriting ARM opcode 'mcrr' (C4606B5) is not supported yet.
+00001875: error: AArch32 instruction 'mcrr' (C4606B5) is not supported yet.
+00001875: error: AArch32 instruction 'mcrr' (C4606B5) is not supported yet.
 000013B1: warning: Call target address FED1D4E5 is invalid.
 000013B9: warning: Call target address 000A1391 is invalid.
 000013C1: warning: Call target address 010A1389 is invalid.
@@ -320,8 +320,8 @@ fn092A: error: An error occurred during data flow analysis.
 00000F71: warning: Call target address 00A01375 is invalid.
 00000E89: warning: Call target address 00AC1031 is invalid.
 00000EC5: warning: Call target address 01A19EB5 is invalid.
-00000D6D: error: Rewriting ARM opcode 'mcrr' (3C47F0E9) is not supported yet.
-00000D6D: error: Rewriting ARM opcode 'mcrr' (3C47F0E9) is not supported yet.
+00000D6D: error: AArch32 instruction 'mcrr' (3C47F0E9) is not supported yet.
+00000D6D: error: AArch32 instruction 'mcrr' (3C47F0E9) is not supported yet.
 00000DD5: warning: Call target address 0000F1A1 is invalid.
 00000DF9: warning: Call target address 01B3B7A1 is invalid.
 00000E1D: warning: Call target address 000E1DD1 is invalid.
@@ -352,7 +352,7 @@ fn092A: error: An error occurred during data flow analysis.
 00000621: warning: Call target address 0118891D is invalid.
 000004E5: warning: Call target address 00C809AD is invalid.
 000004E9: warning: Call target address 018E0FB9 is invalid.
-000002E1: error: Rewriting ARM opcode 'crc32cw' (1468A46) is not supported yet.
+000002E1: error: AArch32 instruction 'crc32cw' (1468A46) is not supported yet.
 0000037D: warning: Call target address FFE0009D is invalid.
 000002B9: warning: Call target address 01AE10FD is invalid.
 00000109: warning: Call target address FFC02AB1 is invalid.
@@ -360,15 +360,15 @@ fn092A: error: An error occurred during data flow analysis.
 00000129: warning: Call target address FFC02AD1 is invalid.
 00000135: warning: Call target address 01104EDD is invalid.
 0000013D: warning: Call target address 01A1908D is invalid.
-0000014D: error: Rewriting ARM opcode 'rrx' (1BD7063) is not supported yet.
-0000A35C: error: Rewriting ARM opcode 'crc32w' (61420040) is not supported yet.
-0000A364: error: Rewriting ARM opcode 'crc32w' (314B4541) is not supported yet.
-0000A3B0: error: Rewriting ARM opcode 'vsub' (3E364949) is not supported yet.
-0000A3B0: error: Rewriting ARM opcode 'vsub' (3E364949) is not supported yet.
-0000A3C4: error: Rewriting ARM opcode 'vmla' (3E010909) is not supported yet.
-0000A3C4: error: Rewriting ARM opcode 'vmla' (3E010909) is not supported yet.
-0000A404: error: Rewriting ARM opcode 'crc32w' (31494949) is not supported yet.
-0000A4B8: error: Rewriting ARM opcode 'mcrr' (3C403040) is not supported yet.
+0000014D: error: AArch32 instruction 'rrx' (1BD7063) is not supported yet.
+0000A35C: error: AArch32 instruction 'crc32w' (61420040) is not supported yet.
+0000A364: error: AArch32 instruction 'crc32w' (314B4541) is not supported yet.
+0000A3B0: error: AArch32 instruction 'vsub' (3E364949) is not supported yet.
+0000A3B0: error: AArch32 instruction 'vsub' (3E364949) is not supported yet.
+0000A3C4: error: AArch32 instruction 'vmla' (3E010909) is not supported yet.
+0000A3C4: error: AArch32 instruction 'vmla' (3E010909) is not supported yet.
+0000A404: error: AArch32 instruction 'crc32w' (31494949) is not supported yet.
+0000A4B8: error: AArch32 instruction 'mcrr' (3C403040) is not supported yet.
 0000101B: error: An error occurred while processing instruction at address 0000101B.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1325,6 +1325,7 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
+00016E9C: warning: Call target address 00000014 is invalid.
 00015318: warning: Unable to resolve imported reference stat.
 00015334: warning: Unable to resolve imported reference stat.
 00011650: warning: Unable to resolve imported reference vfprintf.
@@ -1333,15 +1334,13 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 00016A58: warning: Unable to resolve imported reference pipe.
 00016AD8: warning: Unable to resolve imported reference vfork.
 00016AA8: warning: Unable to resolve imported reference sleep.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
+00016B94: warning: Call target address 00000001 is invalid.
 00016C30: warning: Unable to resolve imported reference wait.
 00013154: warning: Unable to resolve imported reference stat.
 000131A0: warning: Unable to resolve imported reference stat.
 00027E48: warning: Unable to resolve imported reference execv.
 00027EB4: warning: Unable to resolve imported reference __udiv64.
 00027EA8: warning: Unable to resolve imported reference __urem64.
-00027E9C: warning: Unable to resolve imported reference getpid.
 00027E84: warning: Unable to resolve imported reference wait.
 00027E6C: warning: Unable to resolve imported reference vfork.
 00027E60: warning: Unable to resolve imported reference sleep.
@@ -1354,8 +1353,8 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 00027DB8: warning: Unable to resolve imported reference longjmp.
 00027D40: warning: Unable to resolve imported reference stat.
 00027CA4: warning: Unable to resolve imported reference vfprintf.
+00011570: warning: Call target address 02800019 is invalid.
 000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
-00016C9C: warning: Unable to resolve imported reference getpid.
 00016D1C: warning: Unable to resolve imported reference __urem64.
 00016D38: warning: Unable to resolve imported reference __udiv64.
 00016D4C: warning: Unable to resolve imported reference __urem64.
@@ -1367,6 +1366,8 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 00016DDC: warning: Unable to resolve imported reference __urem64.
 00016DF8: warning: Unable to resolve imported reference __udiv64.
 00016E04: warning: Unable to resolve imported reference __urem64.
+00015508: warning: Call target address 00000FE8 is invalid.
+00015440: warning: Call target address 00000FE8 is invalid.
 000136D8: warning: Unable to resolve imported reference longjmp.
 0001465C: warning: Unable to resolve imported reference setjmp.
 00013EFC: warning: Unable to resolve imported reference setjmp.
@@ -1375,7 +1376,6 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 00027CA4: warning: Unable to resolve imported reference vfprintf.
 00027EB4: warning: Unable to resolve imported reference __udiv64.
 00027EA8: warning: Unable to resolve imported reference __urem64.
-00027E9C: warning: Unable to resolve imported reference getpid.
 00027E84: warning: Unable to resolve imported reference wait.
 00027E6C: warning: Unable to resolve imported reference vfork.
 00027E60: warning: Unable to resolve imported reference sleep.
@@ -3453,4 +3453,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 102.02 seconds ---
+Decompiled 54 binaries in 98.13 seconds ---

@@ -4322,7 +4322,7 @@ l00400A74_ds_f:
 // LocalsOut: fp(32) Local -0138(32) Stack +0004(32)
 
 l00400A8C:
-	word32 r3_1449 = fopen(r4_1422, r5_1424)
+	fopen(r4_1422, r5_1424)
 	branch r2_1446 == 0x00000000 l00400A8C_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -4342,22 +4342,7 @@ l00400A8C_ds_f:
 // LocalsOut: fp(32) Local -0138(32) Stack +0004(32)
 
 l00400AC4:
-	word32 sp_1455
-	word32 r28_1456
-	word32 r25_1457
-	word32 ra_1458
-	word32 r30_1459
-	word32 r16_1460
-	word32 r4_1461
-	word32 r5_1462
-	word32 r2_1463
-	word32 r1_1464
-	word32 r6_1465
-	word32 r3_1466
-	word32 r7_1467
-	call getpid (retsize: 0; depth: 416)
-		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1452,dwLoc30,r1_1447,r16_1443,r2_1453,r25_1454,r28_1451,r3_1449,r30_1442,r4_1444,r5_1445,r6_1448,r7_1450,ra_1441,sp_1438,wLoc0146,wLoc0148
-		defs: r1_1464,r16_1460,r2_1463,r25_1457,r28_1456,r3_1466,r30_1459,r4_1461,r5_1462,r6_1465,r7_1467,ra_1458,sp_1455
+	getpid()
 	fprintf(r4_1469, r5_1471, Mem1587[sp_1455:<unknown>])
 	fclose(r4_1488)
 // DataOut:
@@ -13404,9 +13389,7 @@ l00406B10:
 // LocalsOut: fp(32) Local -0020(32)
 
 l00406B20:
-	word32 r3_176 = Mem147[Mem147[0x10000878:word32] + 2084:word32]
-	word32 r2_177 = (word32) (dwLoc20_169 >> 0x0A < r3_176)
-	branch r2_177 == 0x00000000 l00406B20_ds_t
+	branch (word32) (dwLoc20_169 >> 0x0A < Mem147[Mem147[0x10000878:word32] + 2084:word32]) == 0x00000000 l00406B20_ds_t
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -104 r25:<invalid> r28:0x10008860 r30:fp + -104 r16:r5 r17:r7 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> r3:<invalid> Sequence hi:lo:<invalid> r1:<invalid> -88(fp):<invalid> -84(fp):r7 -80(fp):0x10008860 -32(fp):<invalid> -20(fp):r16 -16(fp):r17 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -13425,24 +13408,7 @@ l00406B20_ds_f:
 // LocalsOut: fp(32)
 
 l00406B4C:
-	word32 sp_180
-	word32 r28_181
-	word32 r25_182
-	word32 ra_183
-	word32 r30_184
-	word32 r17_185
-	word32 r16_186
-	word32 r4_187
-	word32 r5_188
-	word32 r6_189
-	word32 r2_190
-	word32 r7_191
-	word32 r3_192
-	word32 hi_193
-	word32 r1_194
-	call ftell (retsize: 0; depth: 104)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc20_171,dwLoc24,dwLoc50_7,dwLoc54_100,dwLoc58_99,hi_138,r1_146,r16_131,r17_130,r2_177,r25_179,r28_140,r3_176,r30_129,r4_178,r5_133,r6_134,r7_136,ra_128,sp_125
-		defs: hi_193,r1_194,r16_186,r17_185,r2_190,r25_182,r28_181,r3_192,r30_184,r4_187,r5_188,r6_189,r7_191,ra_183,sp_180
+	ftell(r4_178)
 	word32 r3_197 = Mem147[Mem147[0x10000A28:word32]:word32]
 	word32 r2_198 = (word32) (r2_190 < r3_197)
 	branch r2_198 != 0x00000000 l00406B4C_ds_t
