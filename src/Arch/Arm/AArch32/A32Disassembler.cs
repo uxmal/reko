@@ -234,6 +234,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
+#if DEBUG
             if (false && !seen.Contains(wInstr))
             {
                 seen.Add(wInstr);
@@ -246,11 +247,8 @@ namespace Reko.Arch.Arm.AArch32
                 Console.WriteLine("}");
                 Console.WriteLine();
             }
-#if !DEBUG
-                throw new NotImplementedException($"An A32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-#else
-            return Invalid();
 #endif
+            return Invalid();
         }
 
         private AArch32Instruction Invalid()
