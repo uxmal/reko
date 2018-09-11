@@ -88,12 +88,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return;
+                return sym;
             if (sym.SectionIndex == 0)
-                return;
+                return sym;
             var symSection = loader.Sections[(int)sym.SectionIndex];
             uint S = (uint)sym.Value;
             uint A = (uint)rela.Addend;
@@ -129,7 +129,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 break;
             case PpcRt.R_PPC_ADDR16_LO:
                 if (prevPpcHi16 == null)
-                    return;
+                    return sym;
                 uint valueHi = prevRelR.ReadUInt16();
                 uint valueLo = relR.ReadUInt16();
 
@@ -152,6 +152,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 missedRelocations[rt] = count + 1;
                 break;
             }
+            return sym;
         }
 
         public override string RelocationTypeToString(uint type)
@@ -167,9 +168,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.loader = loader;
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             //$TODO: implement me :)
+            throw new NotImplementedException();
         }
 
         public override string RelocationTypeToString(uint type)

@@ -79,17 +79,23 @@ namespace Reko.ImageLoaders.Elf
 
         protected ElfMachine machine;
         protected ElfImageLoader imgLoader;
+        protected byte endianness;
         protected Address m_uPltMin;
         protected Address m_uPltMax;
         protected IPlatform platform;
         protected byte[] rawImage;
         private SegmentMap segmentMap;
 
-        protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
+        protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness) : this()
         {
             this.imgLoader = imgLoader;
             this.machine = (ElfMachine) machine;
+            this.endianness = endianness;
             this.Architecture = CreateArchitecture(machine, endianness);
+        }
+
+        protected ElfLoader()
+        {
             this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
             this.DynamicSymbols = new Dictionary<int, ElfSymbol>();
             this.Sections = new List<ElfSection>();
@@ -702,6 +708,15 @@ namespace Reko.ImageLoaders.Elf
                 return s;
             return s.Remove(i);
         }
+
+        protected string rwx(uint flags)
+        {
+            var sb = new StringBuilder();
+            sb.Append((flags & 4) != 0 ? 'r' : '-');
+            sb.Append((flags & 2) != 0 ? 'w' : '-');
+            sb.Append((flags & 1) != 0 ? 'x' : '-');
+            return sb.ToString();
+        }
     }
 
     public class ElfLoader64 : ElfLoader
@@ -830,13 +845,14 @@ namespace Reko.ImageLoaders.Elf
             writer.WriteLine("Program headers:");
             foreach (var ph in Segments)
             {
-                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6} {7:X8} p_align:{8:X8}",
                     ph.p_type,
                     ph.p_offset,
                     ph.p_vaddr,
                     ph.p_paddr,
                     ph.p_filesz,
                     ph.p_pmemsz,
+                    rwx(ph.p_flags & 7),
                     ph.p_flags,
                     ph.p_align);
             }
@@ -1160,6 +1176,8 @@ namespace Reko.ImageLoaders.Elf
             this.rawImage = rawImage;
         }
 
+        public ElfLoader32() : base() { }
+
         public Elf32_EHdr Header { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
 
@@ -1259,13 +1277,14 @@ namespace Reko.ImageLoaders.Elf
             writer.WriteLine("Program headers:");
             foreach (var ph in Segments)
             {
-                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6} {7:X8} p_align:{8:X8}",
                     ph.p_type,
                     ph.p_offset,
                     ph.p_vaddr,
                     ph.p_paddr,
                     ph.p_filesz,
                     ph.p_pmemsz,
+                    rwx(ph.p_flags & 7),
                     ph.p_flags,
                     ph.p_align);
             }

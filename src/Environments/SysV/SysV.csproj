@@ -81,6 +81,7 @@
     <TranslateHeader Include="lp32.inc" />
     <TranslateHeader Include="libc.so.inc" />
     <TranslateHeader Include="Xlib.inc" />
+    <TranslateHeader Include="opengl.inc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="linux-syscalls-i386.xml" />

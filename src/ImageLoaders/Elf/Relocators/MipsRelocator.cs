@@ -175,12 +175,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
         {
             if (loader.Sections.Count <= symbol.SectionIndex)
-                return;
+                return symbol;
             if (symbol.SectionIndex == 0)
-                return;
+                return symbol;
             var symSection = loader.Sections[(int)symbol.SectionIndex];
 
             Address addr;
@@ -205,7 +205,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             switch ((MIPSrt)(rel.Info & 0xFF))
             {
-            case MIPSrt.R_MIPS_NONE: return;
+            case MIPSrt.R_MIPS_NONE: return symbol;
             case MIPSrt.R_MIPS_REL32:
                 break;
                 /*
@@ -244,6 +244,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var w = relR.ReadUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteUInt32(w);
+
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)
@@ -312,7 +314,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.elfLoader = elfLoader;
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             throw new NotImplementedException();
         }

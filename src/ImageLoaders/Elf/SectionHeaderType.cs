@@ -39,6 +39,18 @@ namespace Reko.ImageLoaders.Elf
         SHT_REL = 9,
         SHT_SHLIB = 10,
         SHT_DYNSYM = 11,
+        SHT_INIT_ARRAY = 14,
+        SHT_FINI_ARRAY = 15,
+        SHT_PREINIT_ARRAY = 16,
+        SHT_GROUP = 17,
+        SHT_SYMTAB_SHNDX = 18,
+
+        SHT_GNU_ATTRIBUTES = 0x6FFFFFF5,
+        SHT_GNU_HASH = 0x6FFFFFF6, 
+        SHT_GNU_verdef = 0x6FFFFFFD,
+        SHT_GNU_verneed = 0x6FFFFFFE,
+        SHT_GNU_versym = 0x6FFFFFFF,
+
         SHT_LOPROC = 0x70000000,
         SHT_HIPROC = 0x7FFFFFFF,
         SHT_LOUSER = 0x80000000,

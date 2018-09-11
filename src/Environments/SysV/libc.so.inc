@@ -5,7 +5,6 @@ typedef __int64 off64_t;
 typedef int wint_t;
 typedef int int32_t;
 
-
 struct timespec
 {
 	long	tv_sec;
@@ -55,6 +54,22 @@ struct acl_entry
 };
 typedef struct acl_entry acl_entry_t;
 typedef char *security_context_t;
+struct addrinfo
+{
+    int              ai_flags;
+    int              ai_family;
+    int              ai_socktype;
+    int              ai_protocol;
+    socklen_t        ai_addrlen;
+    struct sockaddr *ai_addr;
+    char            *ai_canonname;
+    struct addrinfo *ai_next;
+};
+
+
+
+
+
 
 const unsigned short * * __ctype_b_loc (void);
 size_t __ctype_get_mb_cur_max(void);
@@ -66,7 +81,6 @@ int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp
 void _exit(int );
 int _obstack_begin(struct obstack *, int, int, void *(*) (long), void (*) (void *));
 void _obstack_newchunk(struct obstack *, int);
-int _setjmp(jmp_buf env); 
 
 int __isoc99_scanf(char * format, ...);
 int printf(char * format, ...);
@@ -264,9 +278,6 @@ int acl_extended_file(const char *path_p);
 int acl_get_entry(acl_t acl, int entry_id, acl_entry_t *entry_p); 
 int acl_get_tag_type(acl_entry_t entry_d, acl_tag_t *tag_type_p); 
 long int atol(const char *);
-char * bindtextdomain (const char * domainname, const char * dirname);
-int closedir(DIR *dirp);
-int dirfd(DIR *dirp);
 void error(int status, int errnum, const char *format, ...);
 int fflush_unlocked(FILE *stream);
 int fgetfilecon(int fd, security_context_t *con); 
@@ -276,21 +287,45 @@ int fscanf( FILE * stream, const char * format, ... );
 int fseek( FILE * stream, long int offset, int origin);
 int fseeko(FILE *stream, off_t offset, int whence);
 long ftell(FILE * stream);
-
 size_t fwrite_unlocked(const void *ptr, size_t size, size_t n, FILE *stream);
-int getfilecon(const char *path, security_context_t *con);
-struct group *getgrgid(gid_t gid);
-struct group *getgrnam(const char *name);
-struct passwd *getpwnam(const char *name);
+int snprintf ( char * s, size_t n, const char * format, ... );
+int vfprintf ( FILE * stream, const char * format, va_list arg );
 
+
+char * bindtextdomain (const char * domainname, const char * dirname);
+int closedir(DIR *dirp);
+int dirfd(DIR *dirp);
 void *dlopen(const char *filename, int flag);
 char *dlerror(void);
 void *dlsym(void *handle, const char *symbol);
 int dlclose(void *handle);
-int ftruncate(int fd, off_t length);
+int execv(const char *path, char *const argv[]);
+int execvp(const char *file, char *const argv[]);
+void freeaddrinfo(struct addrinfo *res);
 int fstat(int fd, struct stat * buf);
+int ftruncate(int fd, off_t length);
+int getfilecon(const char *path, security_context_t *con);
+struct group *getgrgid(gid_t gid);
+struct group *getgrnam(const char *name);
+struct passwd *getpwnam(const char *name);
+char *getcwd(char *buf, size_t size);
 gid_t getgid();
+int getaddrinfo(const char *node, const char *service, const struct addrinfo *hints, struct addrinfo **res);
+int getnameinfo(const struct sockaddr *addr, socklen_t addrlen, char *host, socklen_t hostlen, char *serv, socklen_t servlen, int flags);
 int getopt(int argc, char * const argv[],  char *optstring);
 int getopt_long(int argc, char * const argv[], const char *optstring, const struct option *longopts, int *longindex);
-int gettimeofday(struct timeval *tv, struct timezone *tz);
 pid_t getpid();
+int gettimeofday(struct timeval *tv, struct timezone *tz);
+void herror(const char *string);
+const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
+int inet_pton(int af, const char *src, void *dst);
+int link(const char *oldpath, const char *newpath);
+void longjmp(jmp_buf env, int val);
+char *mktemp(char *template);
+int pipe(int pipefd[2]);
+int setjmp(jmp_buf env);
+int _setjmp(jmp_buf env); 
+unsigned int sleep(unsigned int seconds);
+int stat(const char *path, struct stat *buf);
+pid_t vfork();
+pid_t wait(int * wstatus);

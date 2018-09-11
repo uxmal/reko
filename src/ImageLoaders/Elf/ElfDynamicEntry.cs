@@ -18,7 +18,7 @@
  */
 #endregion
 
- using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,6 +63,17 @@ namespace Reko.ImageLoaders.Elf
         public const int DT_PREINIT_ARRAY = 32;
         public const int DT_PREINIT_ARRAYSZ = 33;
         public const int DT_MAXPOSTAGS = 34;
+
+        public const int DT_GNU_HASH = 0x6FFFFEF5;
+        public const int DT_RELACOUNT = 0x6FFFFFF9;
+        public const int DT_RELCOUNT = 0x6FFFFFFA;
+        public const int DT_FLAGS_1 = 0x6FFFFFFB;
+        public const int DT_VERSYM = 0x6FFFFFF0;
+        public const int DT_VERDEF = 0x6FFFFFFC;
+        public const int DT_VERDEFNUM = 0x6FFFFFFD;
+        public const int DT_VERNEED = 0x6FFFFFFE;
+        public const int DT_VERNEEDNUM = 0x6FFFFFFF;
+
 
         public ElfDynamicEntry(long tag, ulong value)
         {
@@ -122,6 +133,16 @@ namespace Reko.ImageLoaders.Elf
             { DT_FINI_ARRAY,  new TagInfo { Name = "DT_FINI_ARRAY", Format = DtFormat.Address} },
             { DT_INIT_ARRAYSZ,  new TagInfo { Name = "DT_INIT_ARRAYSZ", Format = DtFormat.Hexadecimal} },
             { DT_FINI_ARRAYSZ,  new TagInfo { Name = "DT_FINI_ARRAYSZ", Format = DtFormat.Hexadecimal} },
+
+            { DT_GNU_HASH,   new TagInfo { Name = "DT_GNU_HASH", Format = DtFormat.Hexadecimal} },
+            { DT_RELACOUNT,   new TagInfo { Name = "DT_RELACOUNT", Format = DtFormat.Decimal} },
+            { DT_RELCOUNT,   new TagInfo { Name = "DT_RELCOUNT", Format = DtFormat.Decimal} },
+            { DT_FLAGS_1,   new TagInfo { Name = "DT_FLAGS_1", Format = DtFormat.Hexadecimal } },
+            { DT_VERSYM,   new TagInfo { Name = "DT_VERSYM", Format = DtFormat.Hexadecimal } },
+            { DT_VERDEF,   new TagInfo { Name = "DT_VERDEF", Format = DtFormat.Address } },
+            { DT_VERDEFNUM,   new TagInfo { Name = "DT_VERDEFNUM", Format = DtFormat.Decimal } },
+            { DT_VERNEED,   new TagInfo { Name = "DT_VERNEED", Format = DtFormat.Address } },
+            { DT_VERNEEDNUM,   new TagInfo { Name = "DT_VERNEEDNUM", Format = DtFormat.Decimal } },
         };
 
         public static Dictionary<ElfMachine, Dictionary<long, TagInfo>> MachineSpecificInfos = new Dictionary<ElfMachine, Dictionary<long, TagInfo>>

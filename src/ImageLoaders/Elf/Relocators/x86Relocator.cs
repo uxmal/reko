@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
-    class x86Relocator : ElfRelocator32
+    public class x86Relocator : ElfRelocator32
     {
         public x86Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
@@ -64,12 +64,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return;
+                return sym;
             if (sym.SectionIndex == 0)
-                return;
+                return sym;
             var symSection = loader.Sections[(int)sym.SectionIndex];
             uint S = (uint)sym.Value;
             int A = 0;
@@ -80,6 +80,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 : loader.CreateAddress(rela.Offset);
             uint P = (uint)addr.ToLinear();
             uint PP = P;
+            uint B = 0;
             var relR = program.CreateImageReader(addr);
             var relW = program.CreateImageWriter(addr);
             var rt = (i386Rt)(rela.Info & 0xFF);
@@ -88,6 +89,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case i386Rt.R_386_NONE: //  just ignore (common)
                 break;
             case i386Rt.R_386_COPY:
+                break;
+            case i386Rt.R_386_RELATIVE: // B + A
+                A = (int)rela.Addend;
+                B = program.SegmentMap.BaseAddress.ToUInt32();
                 break;
             case i386Rt.R_386_32: // S + A
                                   // Read the symTabIndex'th symbol.
@@ -122,8 +127,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     rt));
             }
             var w = relR.ReadBeUInt32();
-            w += ((uint)(S + A + P) >> sh) & mask;
+            w += ((uint)(B + S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
+            return sym;
         }
 
         public override string RelocationTypeToString(uint type)
@@ -134,12 +140,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public enum i386Rt
     {
-
-        R_386_NONE, // just ignore (common)
-        R_386_32 = 1, // S + A
-        R_386_PC32 = 2, // S + A - P
+        R_386_NONE,             // just ignore (common)
+        R_386_32 = 1,           // S + A
+        R_386_PC32 = 2,         // S + A - P
         R_386_COPY = 5,         // seems to do nothing according to ELF spec.
         R_386_GLOB_DAT = 6,
+        R_386_JMP_SLOT = 7,     // S
         R_386_RELATIVE = 8
     }
 }

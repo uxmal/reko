@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="IBM437"?>
+<library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="GLenum">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="GLuint">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="GLfloat">
+      <prim domain="Real" size="4" />
+    </typedef>
+    <typedef name="GLint">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="GLsizei">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="GLubyte">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="Display">
+      <ptr size="4">
+        <void />
+      </ptr>
+    </typedef>
+    <struct name="_XVisualInfo" />
+    <typedef name="XVisualInfo">
+      <struct name="_XVisualInfo" />
+    </typedef>
+  </Types>
+  <procedure name="glBegin">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glBindTexture">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="texture">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glBitmap">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="xorig">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="yorig">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="xmove">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="ymove">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="bitmap">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEnable">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="cap">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEnd">
+    <signature>
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3f">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glViewport">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glXGetConfig">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="dpy">
+        <ptr size="4">
+          <type>Display</type>
+        </ptr>
+      </arg>
+      <arg name="vis">
+        <ptr size="4">
+          <type>XVisualInfo</type>
+        </ptr>
+      </arg>
+      <arg name="attrib">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+</library>

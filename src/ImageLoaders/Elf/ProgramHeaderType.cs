@@ -34,8 +34,12 @@ namespace Reko.ImageLoaders.Elf
         PT_NOTE = 4,
         PT_SHLIB = 5,
         PT_PHDR = 6,
+
+        PT_GNU_EH_FRAME = 0x6474e550,
+        PT_GNU_STACK = 0x6474E551,
+        PT_GNU_RELRO = 0x6474e552,
+
         PT_LOPROC = 0x70000000,
         PT_HIPROC = 0x7FFFFFFF,
-        PT_GNU_STACK = 0x6474E551
     }
 }

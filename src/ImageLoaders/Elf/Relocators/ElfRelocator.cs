@@ -50,7 +50,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public abstract void Relocate(Program program);
 
-        public abstract void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
+        public abstract ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
 
         public abstract string RelocationTypeToString(uint type);
 
@@ -147,6 +147,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
 
                 // Generate a symbol for each relocation.
+                Debug.Print("Relocating entries in .dynamic:");
                 foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                 {
                     symbols.Add(elfSym);
@@ -176,6 +177,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         continue;
                     }
 
+                    Debug.Print("Relocating entries in DT_JMPREL:");
                     foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
@@ -237,7 +239,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
-                Debug.Print("Relocating entries:");
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
