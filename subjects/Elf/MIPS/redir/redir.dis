@@ -6488,21 +6488,7 @@ l00402028:
 	call inet_ntoa (retsize: 0; depth: 320)
 		uses: dwLoc0120_7,dwLoc0130_23,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_18,r16_58,r2_59,r25_61,r28_57,r3_53,r30_49,r4_60,r5_55,r6_56,r7_54,ra_48,sp_45
 		defs: r16_67,r2_69,r25_64,r28_63,r3_70,r30_66,r4_68,r5_72,r6_73,r7_71,ra_65,sp_62
-	word32 sp_89
-	word32 r28_90
-	word32 r25_91
-	word32 ra_92
-	word32 r30_93
-	word32 r16_94
-	word32 r4_95
-	word32 r2_96
-	word32 r3_97
-	word32 r7_98
-	word32 r5_99
-	word32 r6_100
-	call snprintf (retsize: 0; depth: 320)
-		uses: dwLoc0120_7,dwLoc0128_82,dwLoc012C_79,dwLoc0130_78,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_18,r16_67,r2_81,r25_88,r28_74,r3_75,r30_66,r4_83,r5_84,r6_86,r7_87,ra_65,sp_62
-		defs: r16_94,r2_96,r25_91,r28_90,r3_97,r30_93,r4_95,r5_99,r6_100,r7_98,ra_92,sp_89
+	word32 r3_97 = snprintf(r4_83, r5_84, r6_86, Mem136[sp_62:<unknown>])
 	branch (word32) (r2_96 < 256) != 0x00000000 l00402028_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -10419,20 +10405,7 @@ l004047D4_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l0040485C:
-	word32 sp_150
-	word32 r28_151
-	word32 r25_152
-	word32 ra_153
-	word32 r30_154
-	word32 r4_155
-	word32 r2_156
-	word32 r5_157
-	word32 r6_158
-	word32 r7_159
-	word32 r3_160
-	call snprintf (retsize: 0; depth: 56)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_143,dwLoc24_140,dwLoc28_137,r2_142,r25_149,r28_74,r3_134,r30_67,r4_144,r5_145,r6_147,r7_148,ra_66,sp_63
-		defs: r2_156,r25_152,r28_151,r3_160,r30_154,r4_155,r5_157,r6_158,r7_159,ra_153,sp_150
+	snprintf(r4_144, r5_145, r6_147, Mem163[sp_63:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:47 r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -10445,20 +10418,7 @@ l004047D4_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004047EC:
-	word32 sp_121
-	word32 r28_122
-	word32 r25_123
-	word32 ra_124
-	word32 r30_125
-	word32 r4_126
-	word32 r2_127
-	word32 r5_128
-	word32 r6_129
-	word32 r7_130
-	word32 r3_131
-	call snprintf (retsize: 0; depth: 56)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_114,dwLoc24_111,dwLoc28_108,r2_113,r25_120,r28_74,r3_105,r30_67,r4_115,r5_116,r6_118,r7_119,ra_66,sp_63
-		defs: r2_127,r25_123,r28_122,r3_131,r30_125,r4_126,r5_128,r6_129,r7_130,ra_124,sp_121
+	snprintf(r4_115, r5_116, r6_118, Mem164[sp_63:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:47 r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -10471,20 +10431,7 @@ l00404738_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00404774:
-	word32 sp_89
-	word32 r28_90
-	word32 r25_91
-	word32 ra_92
-	word32 r30_93
-	word32 r4_94
-	word32 r2_95
-	word32 r5_96
-	word32 r6_97
-	word32 r7_98
-	word32 r3_99
-	call snprintf (retsize: 0; depth: 56)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20,dwLoc24_82,dwLoc28_79,r2_81,r25_88,r28_74,r3_76,r30_67,r4_83,r5_84,r6_86,r7_87,ra_66,sp_63
-		defs: r2_95,r25_91,r28_90,r3_99,r30_93,r4_94,r5_96,r6_97,r7_98,ra_92,sp_89
+	snprintf(r4_83, r5_84, r6_86, Mem162[sp_63:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:r4 + 276 r4:<invalid> r5:<invalid> r6:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4

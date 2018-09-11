@@ -1259,99 +1259,14 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 === Elf\MIPS\redir\redir
 === Elf\MIPS\swlswr\test
 === Elf\RiscV\ipcalc\ipcalc.dcproject
-*** Elf\RiscV\ipcalc\ipcalc.dcproject
-0000000000016748: warning: Unable to resolve imported reference inet_pton.
-00000000000154D0: warning: Unable to resolve imported reference inet_ntop.
-0000000000016A2C: warning: Unable to resolve imported reference getaddrinfo.
-0000000000016A80: warning: Unable to resolve imported reference inet_ntop.
-0000000000016A8C: warning: Unable to resolve imported reference freeaddrinfo.
-0000000000016A94: warning: Unable to resolve imported reference __strdup.
-0000000000016AA4: warning: Unable to resolve imported reference freeaddrinfo.
-0000000000016A58: warning: Unable to resolve imported reference inet_ntop.
-0000000000017620: warning: Unable to resolve imported reference inet_pton.
-0000000000016474: warning: Unable to resolve imported reference __strdup.
-0000000000017648: warning: Unable to resolve imported reference inet_ntop.
-0000000000017654: warning: Unable to resolve imported reference __strdup.
-000000000001737C: warning: Unable to resolve imported reference inet_ntop.
-0000000000017398: warning: Unable to resolve imported reference __strdup.
-00000000000176CC: warning: Unable to resolve imported reference inet_ntop.
-00000000000176D8: warning: Unable to resolve imported reference __strdup.
-0000000000018244: warning: Unable to resolve imported reference __strdup.
-000000000001774C: warning: Unable to resolve imported reference snprintf.
-0000000000017DEC: warning: Unable to resolve imported reference __strdup.
-0000000000017E70: warning: Unable to resolve imported reference __strdup.
-0000000000017E04: warning: Unable to resolve imported reference __strdup.
-00000000000169CC: warning: Unable to resolve imported reference getnameinfo.
-000000000001697C: warning: Unable to resolve imported reference __strdup.
-0000000000016970: warning: Unable to resolve imported reference getnameinfo.
-0000000000017860: warning: Unable to resolve imported reference herror.
-0000000000017874: warning: Unable to resolve imported reference __strdup.
-00000000000178AC: warning: Unable to resolve imported reference inet_ntop.
-00000000000178B8: warning: Unable to resolve imported reference __strdup.
-0000000000016DD4: warning: Unable to resolve imported reference inet_pton.
-0000000000016ECC: warning: Unable to resolve imported reference inet_ntop.
-0000000000016ED8: warning: Unable to resolve imported reference __strdup.
-0000000000016F1C: warning: Unable to resolve imported reference inet_ntop.
-0000000000016F28: warning: Unable to resolve imported reference __strdup.
-0000000000016F7C: warning: Unable to resolve imported reference inet_ntop.
-0000000000016F88: warning: Unable to resolve imported reference __strdup.
-0000000000016FEC: warning: Unable to resolve imported reference inet_ntop.
-0000000000016FF8: warning: Unable to resolve imported reference __strdup.
-00000000000170D4: warning: Unable to resolve imported reference inet_ntop.
-00000000000170E0: warning: Unable to resolve imported reference __strdup.
-0000000000017118: warning: Unable to resolve imported reference inet_ntop.
-0000000000017124: warning: Unable to resolve imported reference __strdup.
-0000000000017220: warning: Unable to resolve imported reference inet_ntop.
-000000000001722C: warning: Unable to resolve imported reference __strdup.
-0000000000017258: warning: Unable to resolve imported reference inet_ntop.
-0000000000017264: warning: Unable to resolve imported reference __strdup.
-0000000000017204: warning: Unable to resolve imported reference herror.
-0000000000017C10: warning: Unable to resolve imported reference __strdup.
-0000000000017C7C: warning: Unable to resolve imported reference __strdup.
-0000000000017C28: warning: Unable to resolve imported reference __strdup.
-00000000000165A0: warning: Unable to resolve imported reference __vasprintf_chk.
-0000000000015CA4: warning: Unable to resolve imported reference inet_ntop.
-0000000000014F70: warning: Unable to resolve imported reference inet_ntop.
-0000000000015170: warning: Unable to resolve imported reference freeaddrinfo.
-0000000000015040: warning: Unable to resolve imported reference inet_pton.
-0000000000015020: warning: Unable to resolve imported reference getnameinfo.
-0000000000015000: warning: Unable to resolve imported reference __vasprintf_chk.
-0000000000014F90: warning: Unable to resolve imported reference getaddrinfo.
-0000000000014F80: warning: Unable to resolve imported reference snprintf.
-0000000000014F30: warning: Unable to resolve imported reference __strdup.
-0000000000014F20: warning: Unable to resolve imported reference herror.
 === Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
 00016E9C: warning: Call target address 00000014 is invalid.
-00015318: warning: Unable to resolve imported reference stat.
-00015334: warning: Unable to resolve imported reference stat.
-00011650: warning: Unable to resolve imported reference vfprintf.
-00015388: warning: Unable to resolve imported reference getcwd.
-00015A50: warning: Unable to resolve imported reference mktemp.
-00016A58: warning: Unable to resolve imported reference pipe.
-00016AD8: warning: Unable to resolve imported reference vfork.
-00016AA8: warning: Unable to resolve imported reference sleep.
 00016B94: warning: Call target address 00000001 is invalid.
-00016C30: warning: Unable to resolve imported reference wait.
-00013154: warning: Unable to resolve imported reference stat.
-000131A0: warning: Unable to resolve imported reference stat.
-00027E48: warning: Unable to resolve imported reference execv.
 00027EB4: warning: Unable to resolve imported reference __udiv64.
 00027EA8: warning: Unable to resolve imported reference __urem64.
-00027E84: warning: Unable to resolve imported reference wait.
-00027E6C: warning: Unable to resolve imported reference vfork.
-00027E60: warning: Unable to resolve imported reference sleep.
-00027E54: warning: Unable to resolve imported reference pipe.
-00027E3C: warning: Unable to resolve imported reference execvp.
-00027E30: warning: Unable to resolve imported reference mktemp.
-00027E18: warning: Unable to resolve imported reference getcwd.
-00027DDC: warning: Unable to resolve imported reference link.
-00027DC4: warning: Unable to resolve imported reference setjmp.
-00027DB8: warning: Unable to resolve imported reference longjmp.
-00027D40: warning: Unable to resolve imported reference stat.
-00027CA4: warning: Unable to resolve imported reference vfprintf.
 00011570: warning: Call target address 02800019 is invalid.
 000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
 00016D1C: warning: Unable to resolve imported reference __urem64.
@@ -1367,26 +1282,8 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 00016E04: warning: Unable to resolve imported reference __urem64.
 00015508: warning: Call target address 00000FE8 is invalid.
 00015440: warning: Call target address 00000FE8 is invalid.
-000136D8: warning: Unable to resolve imported reference longjmp.
-0001465C: warning: Unable to resolve imported reference setjmp.
-00013EFC: warning: Unable to resolve imported reference setjmp.
-0001393C: warning: Unable to resolve imported reference setjmp.
-00012350: warning: Unable to resolve imported reference stat.
-00027CA4: warning: Unable to resolve imported reference vfprintf.
 00027EB4: warning: Unable to resolve imported reference __udiv64.
 00027EA8: warning: Unable to resolve imported reference __urem64.
-00027E84: warning: Unable to resolve imported reference wait.
-00027E6C: warning: Unable to resolve imported reference vfork.
-00027E60: warning: Unable to resolve imported reference sleep.
-00027E54: warning: Unable to resolve imported reference pipe.
-00027E48: warning: Unable to resolve imported reference execv.
-00027E3C: warning: Unable to resolve imported reference execvp.
-00027E30: warning: Unable to resolve imported reference mktemp.
-00027E18: warning: Unable to resolve imported reference getcwd.
-00027DDC: warning: Unable to resolve imported reference link.
-00027DC4: warning: Unable to resolve imported reference setjmp.
-00027DB8: warning: Unable to resolve imported reference longjmp.
-00027D40: warning: Unable to resolve imported reference stat.
 000122C0: error: An error occurred while processing the statement branch o3_129 - l1_122 <=u 0x00000000 l000122B8_ds_t.
     Pulling difference uint32 and (ptr32 (struct 0001 (0 byte b0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
@@ -3452,4 +3349,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 54 binaries in 96.33 seconds ---
+Decompiled 54 binaries in 90.89 seconds ---

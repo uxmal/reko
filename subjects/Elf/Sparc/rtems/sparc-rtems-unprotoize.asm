@@ -7404,8 +7404,8 @@ _fini proc
 ; DT_NEEDED            libc.so.1
 ; DT_INIT              00016EC8
 ; DT_DEBUG             00016EE4
-; 6FFFFFFE             000111E4
-; 6FFFFFFF             00000001
+; DT_VERNEED           000111E4
+; DT_VERNEEDNUM               1
 ; DT_HASH              000100E8
 ; DT_STRTAB            00010DC4
 ; DT_STRSZ             0000041F

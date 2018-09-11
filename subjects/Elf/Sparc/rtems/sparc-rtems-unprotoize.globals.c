@@ -8,7 +8,7 @@ Eq_667 g_tFFFFFFFF;
 char g_b0002;
 char g_b0004;
 char g_b0022;
-Eq_5099 g_t007B;
+Eq_4983 g_t007B;
 Eq_845 g_t2FF4;
 Eq_2 g_t16EE4 = Unexpected function type (fn void ())
 ;
@@ -17,7 +17,7 @@ Eq_212 g_t16F14 =
 	{
 		&g_t16F30
 	};
-Eq_9647 g_t16F30 = 
+Eq_9371 g_t16F30 = 
 	{
 		
 		{
@@ -26,7 +26,7 @@ Eq_9647 g_t16F30 =
 		116,
 		114,
 	};
-Eq_9647 g_t17040 = 
+Eq_9371 g_t17040 = 
 	{
 		
 		{
@@ -35,10 +35,20 @@ Eq_9647 g_t17040 =
 		111,
 		112,
 	};
+char g_str170A8[] = "\n%s: virtual memory exceeded\n";
+char g_str170C8[] = "%s: internal abort\n";
+char g_str17108[] = "%s: usage '%s [ -VqfnkN ] [ -i <istring> ] [ filename ... ]'\n";
+char g_str17148[] = "%s: invalid file name: %s\n";
+char g_str17190[] = "\n%s: fatal error: aux info file corrupted at line %d\n";
+char g_str171D8[] = "%s:%d: declaration of function `%s' takes different forms\n";
 char g_str17218[] = "";
+char g_str17250[] = "%s: compiling `%s'\n";
 char g_str17268[] = "%s: ";
 char g_str17270[] = ": %s\n";
+char g_str172D0[] = "%s: warning: missing SYSCALLS file `%s'\n";
 int8 g_b17468 = 46;
+char g_str17470[] = "%s: declaration of function `%s' not converted\n";
+char g_str174D0[] = "%s: definition of function `%s' not converted\n";
 Eq_212 g_t1753C = 
 	{
 		&g_t17598
@@ -46,7 +56,7 @@ Eq_212 g_t1753C =
 Eq_212 g_a17540[] = 
 	{
 	};
-Eq_9647 g_t17598 = 
+Eq_9371 g_t17598 = 
 	{
 		
 		{
@@ -55,8 +65,11 @@ Eq_9647 g_t17598 =
 		102,
 		0,
 	};
+char g_str175D8[] = "%s: function definition not converted\n";
 char g_str17800[] = "e";
+char g_str17810[] = "%s: cannot get working directory: %s\n";
 int8 g_b17838 = 99;
+char g_str17850[] = "%s: input file names must have .c suffixes: %s\n";
 char g_str17880[] = "%s: %s\n";
 char g_str17888[] = "PWD";
 char g_str178B0[] = "2.95.2 19991024 (release)";
@@ -111,7 +124,7 @@ Eq_212 g_t27F54 =
 	{
 		null
 	};
-Eq_4282 g_t28000 = 
+Eq_4188 g_t28000 = 
 	{
 		0x00000000,
 	};
@@ -125,12 +138,12 @@ Eq_212 g_t28064 =
 int32 g_dw28068 = 1;
 word32 g_dw2806C = 0x00000000;
 word32 g_dw28070 = 0x00000001;
-Eq_7238 g_t28074 = 
+Eq_7024 g_t28074 = 
 	{
 		'\x00'
 	};
 char * g_ptr28078 = &g_str17AF0;
-Eq_3781 g_t28120 = 
+Eq_3723 g_t28120 = 
 	{
 		null
 	};
@@ -138,11 +151,11 @@ Eq_212 g_t28130 =
 	{
 		null
 	};
-Eq_3781 g_t28140 = 
+Eq_3723 g_t28140 = 
 	{
 		null
 	};
-Eq_4697 g_t28150 = 
+Eq_4603 g_t28150 = 
 	{
 		0
 	};
@@ -159,7 +172,7 @@ Eq_212 g_t28190 =
 		null
 	};
 word32 g_dw281A0 = 0x00000000;
-Eq_3781 g_t281C0 = 
+Eq_3723 g_t281C0 = 
 	{
 		null
 	};
@@ -203,13 +216,13 @@ Eq_212 g_t2B310 =
 	{
 		null
 	};
-Eq_9107 g_t2B400 = 
+Eq_8831 g_t2B400 = 
 	{
 		0x0000000000000000
 	};
 struct Eq_778 * g_ptr2B408 = null;
 ptr32 g_ptr2B40C = 0x00000000;
-Eq_3373 g_t2B640 = 
+Eq_191 g_t2B640 = 
 	{
 	};
 char * g_ptr2B760 = null;

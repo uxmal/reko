@@ -40,10 +40,10 @@
 ; DT_MIPS_SYMTABNO           16
 ; DT_MIPS_UNREFEXTNO         30
 ; DT_MIPS_GOTSYM              9
-; 6FFFFFFB             08000000
-; 6FFFFFFE             00000548
-; 6FFFFFFF             00000001
-; 6FFFFFF0             00000526
+; DT_FLAGS_1           08000000
+; DT_VERNEED           00000548
+; DT_VERNEEDNUM               1
+; DT_VERSYM            00000526
 ;;; Segment .hash (000002F4)
 000002F4             00 00 00 03 00 00 00 10 00 00 00 08     ............
 00000300 00 00 00 09 00 00 00 05 00 00 00 00 00 00 00 00 ................
