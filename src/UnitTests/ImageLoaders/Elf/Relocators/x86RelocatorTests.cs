@@ -43,10 +43,13 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
         public void Setup()
         {
             this.program = new Program();
+            this.program.SegmentMap = new SegmentMap(Address.Ptr32(0x1000));
+            this.program.Architecture = new Reko.Arch.X86.X86ArchitectureFlat32("x86-flat-32");
             this.symbols = new Dictionary<int, ElfSymbol>();
             var services = new ServiceContainer();
             var elfImgLoader = new ElfImageLoader(services, "foo.elf", new byte[0]);
             this.loader = new ElfLoader32();
+            loader.Sections.Add(new ElfSection { Name = "" });   // section 0
         }
 
         private void Given_x86Relocator()
@@ -65,33 +68,50 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             return rel;
         }
 
-        private void Given_section(string name, uint uAddress)
+        private ImageWriter Given_section(string name, uint uAddress, int len)
         {
+            var addr = Address.Ptr32(uAddress);
+            var mem = new MemoryArea(addr, new byte[len]);
+            var writer = new LeImageWriter(mem, 0);
             var section = new ElfSection
             {
                 Name = name,
                 Address = Address.Ptr32(uAddress)
             };
+            loader.Sections.Add(section);
+            var seg = new ImageSegment(section.Name, mem, AccessMode.ReadWriteExecute);
+            program.SegmentMap.AddSegment(seg);
+            return writer;
         }
 
-        private ElfSymbol Given_symbol(int index, string name, uint uAddr)
+        private ElfSymbol Given_symbol(int index, string name, ElfSymbolType type, uint iSection, uint uAddr)
         {
             var sym = new ElfSymbol
             {
                 Name = name,
-                Value = uAddr
+                Value = uAddr,
+                Type = type,
+                SectionIndex = iSection,
             };
             symbols.Add(index, sym);
             return sym;
         }
 
         [Test]
-        [Ignore("Wait for it...")]
         public void ElfRel_x86_NullSymbolValue()
         {
-            var sym = Given_symbol(3, "puts", 0);
+            var sym = Given_symbol(3, "puts", ElfSymbolType.STT_FUNC, 0, 0);
 
-            Given_section(".plt", 0x1030);
+            Given_section(".plt", 0x1000, 0x100);
+
+            Given_section(".got.plt", 0x4000, 0x100)
+                .WriteLeUInt32(0x00123400)
+                .WriteLeUInt32(0x00123400)
+                .WriteLeUInt32(0x00123400)
+                .WriteLeUInt32(0x00001036)  // Points 6 bytes into PLT stub at 0x1030
+                .WriteLeUInt32(0x00123400)
+                .WriteLeUInt32(0x00123400)
+                .WriteLeUInt32(0x00123400);
 
             var rel = Given_rel(0x400C, sym: 3, type: i386Rt.R_386_JMP_SLOT);
 
@@ -99,7 +119,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
             var symNew = relocator.RelocateEntry(program, sym, null, rel);
 
-            Assert.AreEqual((uint)symNew.Value, 0x1030u);
+            Assert.AreEqual(0x1030u, (uint)symNew.Value);
         }
     }
 }

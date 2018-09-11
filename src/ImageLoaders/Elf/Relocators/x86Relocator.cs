@@ -68,9 +68,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return sym;
-            if (sym.SectionIndex == 0)
-                return sym;
-            var symSection = loader.Sections[(int)sym.SectionIndex];
             uint S = (uint)sym.Value;
             int A = 0;
             int sh = 0;
@@ -93,6 +90,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case i386Rt.R_386_RELATIVE: // B + A
                 A = (int)rela.Addend;
                 B = program.SegmentMap.BaseAddress.ToUInt32();
+                break;
+            case i386Rt.R_386_JMP_SLOT:
+                if (sym.Value == 0)
+                {
+                    // Broken GCC compilers generate relocations referring to symbols 
+                    // whose value is 0 instead of the expected address of the PLT stub.
+                    var gotEntry = relR.PeekLeUInt32(0);
+                    return CreatePltStubSymbolFromRelocation(sym, gotEntry);
+                }
                 break;
             case i386Rt.R_386_32: // S + A
                                   // Read the symTabIndex'th symbol.
@@ -126,9 +132,25 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     "i386 ELF relocation type {0} not implemented yet.",
                     rt));
             }
-            var w = relR.ReadBeUInt32();
+            var w = relR.ReadLeUInt32();
             w += ((uint)(B + S + A + P) >> sh) & mask;
-            relW.WriteBeUInt32(w);
+            relW.WriteLeUInt32(w);
+            return sym;
+        }
+
+        /// <summary>
+        /// Creates a symbol that refers to the location of a PLT stub functon, based on the value
+        /// found in the GOT for that PLT stub.
+        /// </summary>
+        /// <remarks>
+        /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
+        /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
+        /// versions of GCC put, in the GOT entry for the relication, a pointer to the PLT stub + 6 bytes.
+        /// We remove those 6 bytes to obtain a pointer to the PLT stub.
+        /// </remarks>
+        private ElfSymbol CreatePltStubSymbolFromRelocation(ElfSymbol sym, uint gotEntry)
+        {
+            sym.Value = gotEntry - 6;   // skip past the Jmp [ebx+xxxxxxxx]
             return sym;
         }
 
