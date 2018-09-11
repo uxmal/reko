@@ -182,7 +182,7 @@ Eq_29: (union "Eq_29" ((ptr64 char) u0) ((ptr64 (ptr64 char)) u1) ((ptr64 FILE) 
 	T_572 (in DPB(a0, isatty(a0), 0) : word64)
 	T_630 (in a0 : (ptr64 char))
 	T_633 (in DPB(a0, strcmp(a0_194, a1), 0) : word64)
-	T_723 (in ch : int32)
+	T_723 (in c : int32)
 	T_725 (in DPB(a0_194, putchar(a0_194), 0) : word64)
 	T_863 (in DPB(a0, __printf_chk(a0_194, "NETMASK=%s\n", sp_1020->t0000), 0) : word64)
 	T_876 (in DPB(a0_194, __printf_chk(a0_194, "PREFIX=%u\n", sp_1020->t0000), 0) : word64)
@@ -5899,7 +5899,7 @@ T_722: (in signature of putchar : void)
   Class: Eq_721
   DataType: (ptr64 Eq_721)
   OrigDataType: 
-T_723: (in ch : int32)
+T_723: (in c : int32)
   Class: Eq_29
   DataType: Eq_29
   OrigDataType: 

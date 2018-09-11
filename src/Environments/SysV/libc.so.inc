@@ -78,10 +78,12 @@ int32_t * * __ctype_tolower_loc(void);
 int32_t * * __ctype_toupper_loc(void);
 int __cxa_atexit(void (*func) (void *), void * arg, void * dso_handle);
 int __isoc99_scanf(char * format, ...);
-
 int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));
 int __printf_chk(int flag, const char * format, ...);
 int __fprintf_chk(FILE *, int flag, const char * format, ...);
+int __fxstat (int vers, int fd, struct stat *buf);
+void _exit(int status);
+int _setjmp(jmp_buf env); 
 int __sprintf_chk(char * str, int flag, size_t strlen, const char * format, ...);
 int __snprintf_chk(char * str, size_t maxlen, int flag, size_t strlen, const char * format, ...);
 int __asprintf_chk (char **result_ptr, int flags, const char *format, ...);
@@ -89,18 +91,19 @@ int * __errno_location();
 void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function);
 size_t __fpending(FILE *stream);
 int __freading(FILE *stream);
+int __lxstat(int version, char * __path, struct stat * __statbuf);
+void * __memcpy_chk(void * dest, const void * src, size_t len, size_t destlen);
+void * __mempcpy_chk(void * dest, const void * src, size_t len, size_t destlen);
 int __overflow(FILE *, int c);
 void * __rawmemchr(const void * s, int c);
 void __stack_chk_fail(void);
 unsigned long int __strtoul_internal(const char * __nptr, char * * __endptr, int __base, int __group);
 int __uflow(FILE *f);
 int __vfprintf_chk(FILE * fp, int flag, const char * format, va_list ap);
+void _exit(int );
 int _IO_getc(FILE * fp);
-
 int _IO_getc(FILE * fp);
 int _IO_putc(int __c, _IO_FILE * __fp);
-
-void _exit(int );
 int _obstack_begin(struct obstack *, int, int, void *(*) (long), void (*) (void *));
 void _obstack_newchunk(struct obstack *, int);
 
@@ -117,11 +120,13 @@ int fflush_unlocked(FILE *stream);
 int fgetc(FILE *);
 char * fgets(char *, int, FILE *);
 int fileno(FILE*);
+int fnmatch(const char *pattern, const char *string, int flags);
 FILE * fopen(const char * file, const char * mode);
 FILE * fopen64(char * filename, char * mode);
 int fprintf(FILE * fp, char * format,...);
 int fputc(int char, FILE * stream);
 int fputs(const char * s, FILE * stream);
+int fputs_unlocked(const char *s, FILE *stream);
 size_t fread ( void * ptr, size_t size, size_t count, FILE * stream );
 void free(void * p);
 void freecon(security_context_t con); 
@@ -132,9 +137,6 @@ int fseeko(FILE *stream, off_t offset, int whence);
 long ftell(FILE * stream);
 size_t fwrite (void * ptr, size_t size, size_t count, FILE * stream );
 size_t fwrite_unlocked(const void *ptr, size_t size, size_t n, FILE *stream);
-
-
-
 int getc(FILE *);
 char * getenv(char *);
 void * malloc(size_t size);
@@ -147,7 +149,6 @@ void * memcpy(void *, void *, size_t);
 void * memset(void *, int value, size_t num);
 int memcmp(void *, void *, size_t);
 void *mempcpy(void *dest, const void *src, size_t n);
-
 int printf(char * format, ...);
 int putc(int c, FILE * stream);
 int putchar(int c);
@@ -172,6 +173,7 @@ int strncmp(char * dst, char * src, int n);
 int strncpy(char *, char *, int n);
 char * strpbrk(char *, char *);
 char * strrchr(char *, char);
+char * strstr(char *, char *);
 char * strtok(char * str, const char * delimiters);
 int strtol(char * s);
 unsigned long int strtoul(const char *nptr, char **endptr, int base);
@@ -180,28 +182,17 @@ int vfprintf ( FILE * stream, const char * format, va_list arg );
 size_t wcstombs(char *dest, const wchar_t *src, size_t n);
 int wcswidth(const wchar_t *s, size_t n);
 int wcwidth(wchar_t c);
+int __xstat(int ver, const char * path, struct stat * stat_buf);
 
 
 int clock_gettime(clockid_t, struct timespec *);
 long sysconf(int name);
-
 char * strerror ( int errnum );
 void error(int status, int errnum, const char *format, ...);
-char * strstr(char *, char *);
-int tcsetattr(int fd, int optional_actions, struct termios *termios_p);
-int ferror(FILE *);
-int fileno(FILE*);
-int fnmatch(const char *pattern, const char *string, int flags);
-int fputs_unlocked(const char *s, FILE *stream);
 void atexit(void(*func)(void));
-uid_t getuid(void);
-uid_t geteuid(void);
-struct passwd *getpwuid(uid_t uid);
-
 int iswcntrl(wint_t ch);
 int iswprint( wint_t ch );
 struct lconv* localeconv (void);
-
 int mbsinit(const mbstate_t *ps);
 time_t mktime(struct tm *tm);
 char *nl_langinfo(nl_item item);
@@ -210,15 +201,6 @@ int raise(int sig);
 char *setlocale(int category, const char *locale);
 size_t strftime(char *s, size_t max, const char *format, const struct tm *tm);
 char * textdomain (const char * domainname);
-
-int __fxstat (int vers, int fd, struct stat *buf);
-void * __memcpy_chk(void * dest, const void * src, size_t len, size_t destlen);
-void * __mempcpy_chk(void * dest, const void * src, size_t len, size_t destlen);
-int __lxstat(int version, char * __path, struct stat * __statbuf);
-int __xstat(int ver, const char * path, struct stat * stat_buf);
-void _exit(int status);
-int _setjmp(jmp_buf env); 
-void error(int status, int errnum, const char *format, ...);
 
 
 void abort();
@@ -261,7 +243,10 @@ int getnameinfo(const struct sockaddr *addr, socklen_t addrlen, char *host, sock
 int getopt(int argc, char * const argv[],  char *optstring);
 int getopt_long(int argc, char * const argv[], const char *optstring, const struct option *longopts, int *longindex);
 pid_t getpid();
+struct passwd *getpwuid(uid_t uid);
 int gettimeofday(struct timeval *tv, struct timezone *tz);
+uid_t getuid(void);
+uid_t geteuid(void);
 void herror(const char *string);
 const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 int inet_pton(int af, const char *src, void *dst);
@@ -303,6 +288,7 @@ unsigned int sleep(unsigned int seconds);
 int socket(int dom, int type, int proto);
 int stat(const char *path, struct stat *buf);
 pid_t tcgetpgrp(int fd);
+int tcsetattr(int fd, int optional_actions, struct termios *termios_p);
 int tcsetpgrp(int fd, pid_t pgrp);
 time_t time (time_t *result);
 int unlink(char * path);
