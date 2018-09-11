@@ -22,17 +22,13 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
-using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.SysV
 {
