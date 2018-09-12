@@ -107,6 +107,7 @@ int _IO_putc(int __c, _IO_FILE * __fp);
 int _obstack_begin(struct obstack *, int, int, void *(*) (long), void (*) (void *));
 void _obstack_newchunk(struct obstack *, int);
 
+int asprintf(char **strp, const char *fmt, ...); 
 int atoi(const char *);
 long atol(const char *);
 void bzero(void *s, size_t n);
@@ -171,6 +172,7 @@ char * strcpy(char * dst, char * src);
 char * strdup(const char *);
 size_t strlen(char *);
 int strncasecmp(char *, char *, int n);
+char * strncat(char * destination, const char * source, size_t num );
 int strncmp(char * dst, char * src, int n);
 int strncpy(char *, char *, int n);
 char * strpbrk(char *, char *);
