@@ -233,6 +233,14 @@ namespace Reko.Core
                 {
                     //$TODO: remove the try-catch when done.
                     dt = pointer.DataType.Accept(this);
+                    //$HACK: this is a dangerous assumption, not all
+                    // pointers to char are pointing to strings -- 
+                    // but most (90% or more) do. With const char
+                    // this rises to 99%
+                    if (dt is PrimitiveType pt && pt.Domain == Domain.Character)
+                    {
+                        dt = StringType.NullTerminated(dt);
+                    }
                 }
                 catch
                 {
