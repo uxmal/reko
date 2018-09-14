@@ -236,7 +236,8 @@ namespace Reko.Analysis
 
                 // We have a call statement that calls `proc`. Make sure 
                 // that only arguments present in the procedure flow are present.
-                var call = (CallInstruction)stm.Instruction;
+                if (!(stm.Instruction is CallInstruction call))
+                    continue;
                 var filteredUses = ProcedureFlow.IntersectCallBindingsWithUses(call.Uses, flow.BitsUsed)
                     .ToArray();
                 ssa.RemoveUses(stm);
