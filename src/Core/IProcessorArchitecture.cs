@@ -146,6 +146,33 @@ namespace Reko.Core
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bit flags.
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
+
+        /// <summary>
+        /// Attempt to inline the instructions at <paramref name="addrCallee"/>. If the instructions
+        /// can be inlined, return them as a list of RtlInstructions.
+        /// </summary>
+        /// <remarks>
+        /// This call is used to inline very short procedures. A specific application
+        /// is to handle idioms like:
+        /// <code>
+        /// call foo
+        /// ...
+        /// foo proc
+        ///    mov ebx,[esp+0]
+        ///    ret
+        /// </code>
+        /// whose purpose is to collect the return address into a register. This idiom is 
+        /// commonly used in position independent (PIC) code.
+        /// </remarks>
+        /// <param name="addrCallee">Address of a procedure that might need inlining.</param>
+        /// <param name="addrContinuation">The address at which control should resume after 
+        /// the call.</param>
+        /// <param name="rdr">Image reader primed to start at <paramref name="addrCallee"/>.
+        /// </param>
+        /// <returns>null if no inlining was performed, otherwise a list of the inlined
+        /// instructions.</returns>
+        List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
+
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -335,6 +362,12 @@ namespace Reko.Core
         public abstract FlagGroupStorage GetFlagGroup(uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(uint grf);
+
+        public virtual List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
+        }
+
         public virtual void LoadUserOptions(Dictionary<string, object> options) { }
         public abstract Address MakeAddressFromConstant(Constant c);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }

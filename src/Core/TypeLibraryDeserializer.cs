@@ -233,6 +233,7 @@ namespace Reko.Core
                 {
                     //$TODO: remove the try-catch when done.
                     dt = pointer.DataType.Accept(this);
+#if FUTURE
                     //$HACK: this is a dangerous assumption, not all
                     // pointers to char are pointing to strings -- 
                     // but most (90% or more) do. With const char
@@ -241,6 +242,7 @@ namespace Reko.Core
                     {
                         dt = StringType.NullTerminated(dt);
                     }
+#endif
                 }
                 catch
                 {

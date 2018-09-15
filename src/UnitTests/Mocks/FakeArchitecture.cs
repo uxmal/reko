@@ -296,6 +296,11 @@ namespace Reko.UnitTests.Mocks
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public RegisterStorage StackRegister { get; set; }
 
+        public List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
+        }
+
         public Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
