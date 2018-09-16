@@ -72,7 +72,9 @@ namespace Reko.Analysis
 
         public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
         {
-            if (access.EffectiveAddress is Constant c)
+            if (access.EffectiveAddress is Constant c &&
+                // Search imported procedures only in Global Memory
+                access.MemoryId.Storage == MemoryStorage.Instance)
             {
                 var pc = importResolver.ResolveToImportedProcedureConstant(this.Statement, c);
                 if (pc != null)
