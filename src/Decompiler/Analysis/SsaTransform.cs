@@ -1783,7 +1783,9 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval);
+                var ints = bs.currentStackDef
+                    .GetIntervalsOverlappingWith(offsetInterval)
+                    .ToArray();
                 foreach (var i in ints)
                 {
                     if (this.offsetInterval.Covers(i.Key))
