@@ -3488,5 +3488,41 @@ main_exit:
             #endregion
             AssertProcedureCode(expected);
         }
+
+        [Test]
+        public void SsaOverlappingStackDefs()
+        {
+            var proc = Given_Procedure("proc", m =>
+            {
+                var fp = m.Frame.FramePointer;
+
+                m.Label("body");
+                m.MStore(m.ISub(fp, 8), m.Word64(0x5678));
+                m.MStore(m.ISub(fp, 8), m.Word32(0x1234));
+                m.MStore(m.ISub(fp, 8), m.IAdd(m.Mem32(m.ISub(fp, 8)), 1));
+                m.MStore(m.Word32(0x567C), m.Mem64(m.ISub(fp, 8)));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def fp
+body:
+	qwLoc08_6 = 0x0000000000005678
+	dwLoc08_7 = 0x00001234
+	dwLoc08_8 = dwLoc08_7 + 0x00000001
+	qwLoc08_9 = DPB(qwLoc08_6, dwLoc08_8, 0) (alias)
+	Mem5[0x0000567C:word64] = qwLoc08_9
+	return
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+
+        }
     }
 }
