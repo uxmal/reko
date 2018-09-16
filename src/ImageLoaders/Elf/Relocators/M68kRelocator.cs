@@ -32,10 +32,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            return;
-            throw new NotImplementedException();
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)

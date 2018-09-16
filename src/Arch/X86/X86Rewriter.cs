@@ -91,7 +91,7 @@ namespace Reko.Arch.X86
                     EmitUnitTest();
                     host.Warn(
                         dasm.Current.Address,
-                        "Rewriting x86 opcode '{0}' is not supported yet.",
+                        "x86 instruction '{0}' is not supported yet.",
                         instrCur.code);
                     goto case Opcode.illegal;
                 case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;

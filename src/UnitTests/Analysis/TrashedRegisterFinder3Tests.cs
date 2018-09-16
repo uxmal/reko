@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Analysis
                     dataFlow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
-                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, NullDecompilerEventListener.Instance);
+                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, importResolver, NullDecompilerEventListener.Instance);
                 vp.Transform();
                 sstSet.Add(sst);
             }

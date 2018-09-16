@@ -68,6 +68,12 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 default:
                     EmitUnitTest();
                     Invalid();
+                    host.Warn(
+                       instr.Address,
+                       string.Format(
+                           "TLCS-90 instruction '{0}' not supported yet.",
+                           instr.Opcode));
+
                     break;
                 case Opcode.invalid: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd, "**-**V0*"); break;

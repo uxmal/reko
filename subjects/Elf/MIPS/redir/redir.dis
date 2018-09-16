@@ -3912,8 +3912,7 @@ l00400674_ds_f:
 // SymbolicIn: sp:fp + -32 r25:<invalid> r28:0x10008860 r2:<invalid> r3:<invalid> r1:<invalid> -16(fp):0x10008860 -4(fp):ra
 
 l004006B8:
-	word32 r25_34 = Mem0[0x100009B4:word32]
-	branch r25_34 == 0x00000000 l004006B8_ds_t
+	branch __deregister_frame_info == 0x00000000 l004006B8_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -32 r25:<invalid> r28:0x10008860 r2:<invalid> r3:<invalid> r1:<invalid> -16(fp):0x10008860 -4(fp):ra
@@ -3937,7 +3936,7 @@ l004006C8:
 	word32 r3_53
 	word32 r1_54
 	word32 r4_55
-	call r25_34 (retsize: 0; depth: 32)
+	call __deregister_frame_info (retsize: 0; depth: 32)
 		uses: dwLoc04_22,dwLoc10_7,r1_31,r2_45,r25_34,r28_29,r3_28,r4_47,ra_32,sp_33
 		defs: r1_54,r2_51,r25_50,r28_49,r3_53,r4_55,ra_52,sp_48
 // DataOut:
@@ -4003,8 +4002,7 @@ frame_dummy_entry:
 // LocalsOut: fp(32)
 
 l0040072C:
-	word32 r25_9 = Mem0[0x100008A4:word32]
-	branch r25_9 == 0x00000000 l0040072C_ds_t
+	branch __register_frame_info == 0x00000000 l0040072C_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -4026,8 +4024,8 @@ l00400750:
 	word32 ra_26
 	word32 r4_27
 	word32 r5_28
-	call r25_9 (retsize: 0; depth: 32)
-		uses: dwLoc04_18,dwLoc10_7,r25_9,r28_5,r4_20,r5_22,ra,sp_6
+	call __register_frame_info (retsize: 0; depth: 32)
+		uses: dwLoc04_17,dwLoc10_7,r25_8,r28_5,r4_20,r5_22,ra,sp_6
 		defs: r25_25,r28_24,r4_27,r5_28,ra_26,sp_23
 // DataOut:
 // DataOut (flags): 
@@ -4086,7 +4084,6 @@ handle_stop_entry:
 // LocalsOut: fp(32)
 
 l004007B0:
-	word32 r25_24 = Mem0[0x100009EC:word32]
 	word32 sp_25
 	word32 r28_26
 	word32 r25_27
@@ -4098,7 +4095,7 @@ l004007B0:
 	word32 r6_33
 	word32 r7_34
 	word32 r1_35
-	call r25_24 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_16,r2_15,r25_24,r28_5,r30_12,r4_17,r5_20,r6_22,r7_23,ra,sp_6
 		defs: r1_35,r2_31,r25_27,r28_26,r30_29,r4_30,r5_32,r6_33,r7_34,ra_28,sp_25
 	Mem39[Mem0[0x100008C0:word32]:word32] = 1
@@ -4128,7 +4125,6 @@ handle_log_rotate_entry:
 // LocalsOut: fp(32)
 
 l0040083C:
-	word32 r25_24 = Mem0[0x100009EC:word32]
 	word32 sp_25
 	word32 r28_26
 	word32 r25_27
@@ -4139,10 +4135,9 @@ l0040083C:
 	word32 r5_32
 	word32 r6_33
 	word32 r7_34
-	call r25_24 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_16,r2_15,r25_24,r28_5,r30_12,r4_17,r5_20,r6_22,r7_23,ra,sp_6
 		defs: r2_31,r25_27,r28_26,r30_29,r4_30,r5_32,r6_33,r7_34,ra_28,sp_25
-	word32 r25_36 = Mem0[0x10000A70:word32]
 	word32 sp_37
 	word32 r28_38
 	word32 r25_39
@@ -4153,7 +4148,7 @@ l0040083C:
 	word32 r5_44
 	word32 r6_45
 	word32 r7_46
-	call r25_36 (retsize: 0; depth: 48)
+	call log_rotate (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_16,r2_31,r25_36,r28_35,r30_29,r4_30,r5_32,r6_33,r7_34,ra_28,sp_25
 		defs: r2_43,r25_39,r28_38,r30_41,r4_42,r5_44,r6_45,r7_46,ra_40,sp_37
 	return
@@ -4185,7 +4180,6 @@ l004008D0:
 	Mem25[Mem0[0x10000A20:word32]:word32] = Mem0[Mem0[0x10000914:word32]:word32]
 	signal(r4_26, r5_27)
 	word32 r3_57 = signal(r4_43, r5_44)
-	word32 r25_63 = Mem25[0x100009A8:word32]
 	word32 sp_64
 	word32 r28_65
 	word32 r25_66
@@ -4199,10 +4193,9 @@ l004008D0:
 	word32 r6_74
 	word32 r3_75
 	word32 r7_76
-	call r25_63 (retsize: 0; depth: 416)
+	call properties_load (retsize: 0; depth: 416)
 		uses: dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,r1_55,r16_51,r2_60,r25_63,r28_59,r3_57,r30_50,r4_61,r5_62,r6_56,r7_58,ra_49,sp_46
 		defs: r1_73,r16_69,r2_72,r25_66,r28_65,r3_75,r30_68,r4_70,r5_71,r6_74,r7_76,ra_67,sp_64
-	word32 r25_80 = Mem25[0x10000A5C:word32]
 	word32 sp_81
 	word32 r28_82
 	word32 r25_83
@@ -4216,7 +4209,7 @@ l004008D0:
 	word32 r6_91
 	word32 r3_92
 	word32 r7_93
-	call r25_80 (retsize: 0; depth: 416)
+	call properties_parse_command_line (retsize: 0; depth: 416)
 		uses: dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,r1_73,r16_69,r2_72,r25_80,r28_77,r3_75,r30_68,r4_78,r5_79,r6_74,r7_76,ra_67,sp_64
 		defs: r1_90,r16_86,r2_89,r25_83,r28_82,r3_92,r30_85,r4_87,r5_88,r6_91,r7_93,ra_84,sp_81
 	word32 r2_96 = Mem25[Mem25[0x10000A40:word32] + 0x000004BC:word32]
@@ -4329,7 +4322,7 @@ l00400A74_ds_f:
 // LocalsOut: fp(32) Local -0138(32) Stack +0004(32)
 
 l00400A8C:
-	word32 r3_1449 = fopen(r4_1422, r5_1424)
+	fopen(r4_1422, r5_1424)
 	branch r2_1446 == 0x00000000 l00400A8C_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -4349,22 +4342,7 @@ l00400A8C_ds_f:
 // LocalsOut: fp(32) Local -0138(32) Stack +0004(32)
 
 l00400AC4:
-	word32 sp_1455
-	word32 r28_1456
-	word32 r25_1457
-	word32 ra_1458
-	word32 r30_1459
-	word32 r16_1460
-	word32 r4_1461
-	word32 r5_1462
-	word32 r2_1463
-	word32 r1_1464
-	word32 r6_1465
-	word32 r3_1466
-	word32 r7_1467
-	call getpid (retsize: 0; depth: 416)
-		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1452,dwLoc30,r1_1447,r16_1443,r2_1453,r25_1454,r28_1451,r3_1449,r30_1442,r4_1444,r5_1445,r6_1448,r7_1450,ra_1441,sp_1438,wLoc0146,wLoc0148
-		defs: r1_1464,r16_1460,r2_1463,r25_1457,r28_1456,r3_1466,r30_1459,r4_1461,r5_1462,r6_1465,r7_1467,ra_1458,sp_1455
+	getpid()
 	fprintf(r4_1469, r5_1471, Mem1587[sp_1455:<unknown>])
 	fclose(r4_1488)
 // DataOut:
@@ -4379,7 +4357,6 @@ l00400B20:
 	word32 r2_129 = Mem127[Mem127[0x10000A40:word32] + 0x000005EC:word32]
 	word32 r1_130 = Mem127[0x1000090C:word32]
 	Mem131[r1_130:word32] = r2_129
-	word32 r25_134 = Mem131[0x100008D0:word32]
 	word32 sp_135
 	word32 r28_136
 	word32 r25_137
@@ -4393,7 +4370,7 @@ l00400B20:
 	word32 r6_145
 	word32 r3_146
 	word32 r7_147
-	call r25_134 (retsize: 0; depth: 416)
+	call open_log (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc2C_114,r1_130,r16_104,r2_129,r25_134,r28_109,r3_99,r30_105,r4_133,r5_102,r6_100,r7_98,ra_106,sp_108
 		defs: r1_144,r16_140,r2_143,r25_137,r28_136,r3_146,r30_139,r4_141,r5_142,r6_145,r7_147,ra_138,sp_135
 	word32 sp_152
@@ -4437,7 +4414,6 @@ l00400C78:
 // LocalsOut: fp(32) Local -0020(32) Local -0138(32)
 
 l00400C88:
-	word32 r25_205 = Mem131[0x100009EC:word32]
 	word32 sp_206
 	word32 r28_207
 	word32 r25_208
@@ -4451,10 +4427,9 @@ l00400C88:
 	word32 r6_216
 	word32 r3_217
 	word32 r7_218
-	call r25_205 (retsize: 0; depth: 416)
+	call print_log (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_161,r16_157,r2_197,r25_205,r28_165,r3_163,r30_156,r4_199,r5_201,r6_202,r7_204,ra_155,sp_152
 		defs: r1_215,r16_211,r2_214,r25_208,r28_207,r3_217,r30_210,r4_212,r5_213,r6_216,r7_218,ra_209,sp_206
-	word32 r25_220 = Mem131[0x10000908:word32]
 	word32 sp_221
 	word32 r28_222
 	word32 r25_223
@@ -4468,7 +4443,7 @@ l00400C88:
 	word32 r6_231
 	word32 r3_232
 	word32 r7_233
-	call r25_220 (retsize: 0; depth: 416)
+	call clist_new (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_215,r16_211,r2_214,r25_220,r28_219,r3_217,r30_210,r4_212,r5_213,r6_216,r7_218,ra_209,sp_206
 		defs: r1_230,r16_226,r2_229,r25_223,r28_222,r3_232,r30_225,r4_227,r5_228,r6_231,r7_233,ra_224,sp_221
 	branch r2_229 != 0x00000000 l00400C88_ds_t
@@ -4497,7 +4472,6 @@ l00400D0C:
 // LocalsOut: fp(32) Local -0138(32) Local -0154(32)
 
 l00400D28:
-	word32 r25_237 = Mem131[0x100009CC:word32]
 	word32 sp_238
 	word32 r28_239
 	word32 r25_240
@@ -4511,7 +4485,7 @@ l00400D28:
 	word32 r6_248
 	word32 r3_249
 	word32 r7_250
-	call r25_237 (retsize: 0; depth: 416)
+	call slist_new (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_230,r16_226,r2_236,r25_237,r28_234,r3_232,r30_225,r4_227,r5_228,r6_231,r7_233,ra_224,sp_221
 		defs: r1_247,r16_243,r2_246,r25_240,r28_239,r3_249,r30_242,r4_244,r5_245,r6_248,r7_250,ra_241,sp_238
 	branch r2_246 != 0x00000000 l00400D28_ds_t
@@ -4540,7 +4514,6 @@ l00400D50:
 // LocalsOut: fp(32) Local -0138(32) Local -014C(32) Local -0154(32)
 
 l00400D6C:
-	word32 r25_261 = Mem131[0x10000A08:word32]
 	word32 sp_262
 	word32 r28_263
 	word32 r25_264
@@ -4554,10 +4527,9 @@ l00400D6C:
 	word32 r6_272
 	word32 r3_273
 	word32 r7_274
-	call r25_261 (retsize: 0; depth: 416)
+	call server_new (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc014C_252,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_247,r16_243,r2_253,r25_261,r28_251,r3_249,r30_242,r4_255,r5_257,r6_259,r7_260,ra_241,sp_238
 		defs: r1_271,r16_267,r2_270,r25_264,r28_263,r3_273,r30_266,r4_268,r5_269,r6_272,r7_274,ra_265,sp_262
-	word32 r25_279 = Mem131[0x100008B0:word32]
 	word32 sp_280
 	word32 r28_281
 	word32 r25_282
@@ -4571,10 +4543,9 @@ l00400D6C:
 	word32 r6_290
 	word32 r3_291
 	word32 r7_292
-	call r25_279 (retsize: 0; depth: 416)
+	call slist_add (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc014C_252,dwLoc0150_276,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_271,r16_267,r2_270,r25_279,r28_275,r3_273,r30_266,r4_277,r5_278,r6_272,r7_274,ra_265,sp_262
 		defs: r1_289,r16_285,r2_288,r25_282,r28_281,r3_291,r30_284,r4_286,r5_287,r6_290,r7_292,ra_283,sp_280
-	word32 r25_301 = Mem131[0x10000A08:word32]
 	word32 sp_302
 	word32 r28_303
 	word32 r25_304
@@ -4588,10 +4559,9 @@ l00400D6C:
 	word32 r6_312
 	word32 r3_313
 	word32 r7_314
-	call r25_301 (retsize: 0; depth: 416)
+	call server_new (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc014C_252,dwLoc0150_276,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_289,r16_285,r2_288,r25_301,r28_293,r3_291,r30_284,r4_295,r5_297,r6_299,r7_300,ra_283,sp_280
 		defs: r1_311,r16_307,r2_310,r25_304,r28_303,r3_313,r30_306,r4_308,r5_309,r6_312,r7_314,ra_305,sp_302
-	word32 r25_319 = Mem131[0x100008B0:word32]
 	word32 sp_320
 	word32 r28_321
 	word32 r25_322
@@ -4605,7 +4575,7 @@ l00400D6C:
 	word32 r6_330
 	word32 r3_331
 	word32 r7_332
-	call r25_319 (retsize: 0; depth: 416)
+	call slist_add (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc014C_252,dwLoc0150_316,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_311,r16_307,r2_310,r25_319,r28_315,r3_313,r30_306,r4_317,r5_318,r6_312,r7_314,ra_305,sp_302
 		defs: r1_329,r16_325,r2_328,r25_322,r28_321,r3_331,r30_324,r4_326,r5_327,r6_330,r7_332,ra_323,sp_320
 	bzero(r4_335, r5_336)
@@ -4645,7 +4615,6 @@ l00400D6C_ds_t:
 // LocalsOut: fp(32) Local -0138(32) Local -014C(32) Local -0150(32) Local -0154(32)
 
 l00400EBC:
-	word32 r25_1334 = Mem131[0x10000A84:word32]
 	word32 sp_1335
 	word32 r28_1336
 	word32 r25_1337
@@ -4659,7 +4628,7 @@ l00400EBC:
 	word32 r6_1345
 	word32 r3_1346
 	word32 r7_1347
-	call r25_1334 (retsize: 0; depth: 416)
+	call server_open (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_378,dwLoc0154_235,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20_192,dwLoc24_166,dwLoc28,dwLoc2C_114,dwLoc30,r1_382,r16_385,r2_391,r25_1334,r28_390,r3_380,r30_386,r4_1333,r5_383,r6_381,r7_379,ra_387,sp_389,wLoc0146_356,wLoc0148_353
 		defs: r1_1344,r16_1340,r2_1343,r25_1337,r28_1336,r3_1346,r30_1339,r4_1341,r5_1342,r6_1345,r7_1347,ra_1338,sp_1335
 	branch r2_1343 != 0x00000000 l00400EBC_ds_t
@@ -5121,7 +5090,6 @@ l004013C4:
 	__errno_location()
 	__errno_location()
 	word32 r3_1137 = strerror(r4_1124)
-	word32 r25_1145 = Mem131[0x100009EC:word32]
 	word32 sp_1146
 	word32 r28_1147
 	word32 r25_1148
@@ -5135,7 +5103,7 @@ l004013C4:
 	word32 r6_1156
 	word32 r3_1157
 	word32 r7_1158
-	call r25_1145 (retsize: 0; depth: 416)
+	call print_log (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_531,dwLoc0154_235,dwLoc0158_540,dwLoc015C_404,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_1135,r16_1131,r2_1134,r25_1145,r28_1139,r3_1137,r30_1130,r4_1140,r5_1142,r6_1143,r7_1144,ra_1129,sp_1126,wLoc0146_356,wLoc0148_353
 		defs: r1_1155,r16_1151,r2_1154,r25_1148,r28_1147,r3_1157,r30_1150,r4_1152,r5_1153,r6_1156,r7_1158,ra_1149,sp_1146
 	exit(r4_1160)
@@ -5184,7 +5152,6 @@ l00401480_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0150(32) Local -0154(32)
 
 l004014CC:
-	word32 r25_1005 = Mem131[0x10000938:word32]
 	word32 sp_1006
 	word32 r28_1007
 	word32 r25_1008
@@ -5198,7 +5165,7 @@ l004014CC:
 	word32 r6_1016
 	word32 r3_1017
 	word32 r7_1018
-	call r25_1005 (retsize: 0; depth: 416)
+	call client_new (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_540,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_588,r16_591,r2_997,r25_1005,r28_596,r3_998,r30_592,r4_1001,r5_1002,r6_1003,r7_1004,ra_593,sp_595,wLoc0146_356,wLoc0148_353
 		defs: r1_1015,r16_1011,r2_1014,r25_1008,r28_1007,r3_1017,r30_1010,r4_1012,r5_1013,r6_1016,r7_1018,ra_1009,sp_1006
 	branch r2_1014 != 0x00000000 l004014CC_ds_t
@@ -5214,7 +5181,6 @@ l004014CC_ds_t:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0150(32) Local -0154(32) Local -015C(32)
 
 l00401524:
-	word32 r25_1024 = Mem131[0x10000918:word32]
 	word32 sp_1025
 	word32 r28_1026
 	word32 r25_1027
@@ -5228,7 +5194,7 @@ l00401524:
 	word32 r6_1035
 	word32 r3_1036
 	word32 r7_1037
-	call r25_1024 (retsize: 0; depth: 416)
+	call clist_add (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_540,dwLoc015C_1020,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_1015,r16_1011,r2_1021,r25_1024,r28_1019,r3_1017,r30_1010,r4_1022,r5_1023,r6_1016,r7_1018,ra_1009,sp_1006,wLoc0146_356,wLoc0148_353
 		defs: r1_1034,r16_1030,r2_1033,r25_1027,r28_1026,r3_1036,r30_1029,r4_1031,r5_1032,r6_1035,r7_1037,ra_1028,sp_1025
 	branch r2_1033 != 0x00000000 l00401524_ds_t
@@ -5250,7 +5216,6 @@ l00401524_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0150(32) Local -0154(32)
 
 l00401548:
-	word32 r25_1045 = Mem131[0x100009EC:word32]
 	word32 sp_1046
 	word32 r28_1047
 	word32 r25_1048
@@ -5264,10 +5229,9 @@ l00401548:
 	word32 r6_1056
 	word32 r3_1057
 	word32 r7_1058
-	call r25_1045 (retsize: 0; depth: 416)
+	call print_log (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_540,dwLoc015C_1020,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_1034,r16_1030,r2_1033,r25_1045,r28_1038,r3_1036,r30_1029,r4_1039,r5_1041,r6_1043,r7_1044,ra_1028,sp_1025,wLoc0146_356,wLoc0148_353
 		defs: r1_1055,r16_1051,r2_1054,r25_1048,r28_1047,r3_1057,r30_1050,r4_1052,r5_1053,r6_1056,r7_1058,ra_1049,sp_1046
-	word32 r25_1061 = Mem131[0x100008DC:word32]
 	word32 sp_1062
 	word32 r28_1063
 	word32 r25_1064
@@ -5281,7 +5245,7 @@ l00401548:
 	word32 r6_1072
 	word32 r3_1073
 	word32 r7_1074
-	call r25_1061 (retsize: 0; depth: 416)
+	call client_destroy (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_540,dwLoc015C_1020,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_1055,r16_1051,r2_1054,r25_1061,r28_1059,r3_1057,r30_1050,r4_1060,r5_1053,r6_1056,r7_1058,ra_1049,sp_1046,wLoc0146_356,wLoc0148_353
 		defs: r1_1071,r16_1067,r2_1070,r25_1064,r28_1063,r3_1073,r30_1066,r4_1068,r5_1069,r6_1072,r7_1074,ra_1065,sp_1062
 // DataOut: r5 r7
@@ -5398,7 +5362,6 @@ l00401608_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0154(32) Local -0158(32)
 
 l00401654:
-	word32 r25_894 = Mem131[0x10000968:word32]
 	word32 sp_895
 	word32 r28_896
 	word32 r25_897
@@ -5412,7 +5375,7 @@ l00401654:
 	word32 r6_905
 	word32 r3_906
 	word32 r7_907
-	call r25_894 (retsize: 0; depth: 416)
+	call client_read_request (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_603,dwLoc18_602,dwLoc1C_601,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_608,r16_611,r2_892,r25_894,r28_616,r3_889,r30_612,r4_893,r5_609,r6_607,r7_605,ra_613,sp_615,wLoc0146_356,wLoc0148_353
 		defs: r1_904,r16_900,r2_903,r25_897,r28_896,r3_906,r30_899,r4_901,r5_902,r6_905,r7_907,ra_898,sp_895
 	branch Mem131[dwLoc0158_600 + 0x000007D8:word32] > 0x00000000 l00401654_ds_t
@@ -5445,7 +5408,6 @@ l004016D8:
 	call r2_934 (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_603,dwLoc18_602,dwLoc1C_935,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_904,r16_900,r2_934,r25_937,r28_908,r3_906,r30_899,r4_936,r5_902,r6_905,r7_907,ra_898,sp_895,wLoc0146_356,wLoc0148_353
 		defs: r1_947,r16_943,r2_946,r25_940,r28_939,r3_949,r30_942,r4_944,r5_945,r6_948,r7_950,ra_941,sp_938
-	word32 r25_953 = Mem131[0x100009B0:word32]
 	word32 sp_954
 	word32 r28_955
 	word32 r25_956
@@ -5459,7 +5421,7 @@ l004016D8:
 	word32 r6_964
 	word32 r3_965
 	word32 r7_966
-	call r25_953 (retsize: 0; depth: 416)
+	call client_send_request (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_603,dwLoc18_602,dwLoc1C_935,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_947,r16_943,r2_946,r25_953,r28_951,r3_949,r30_942,r4_952,r5_945,r6_948,r7_950,ra_941,sp_938,wLoc0146_356,wLoc0148_353
 		defs: r1_963,r16_959,r2_962,r25_956,r28_955,r3_965,r30_958,r4_960,r5_961,r6_964,r7_966,ra_957,sp_954
 // DataOut: r5 r7
@@ -5558,7 +5520,6 @@ l0040174C_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0154(32) Local -0158(32)
 
 l00401798:
-	word32 r25_821 = Mem131[0x10000A50:word32]
 	word32 sp_822
 	word32 r28_823
 	word32 r25_824
@@ -5572,7 +5533,7 @@ l00401798:
 	word32 r6_832
 	word32 r3_833
 	word32 r7_834
-	call r25_821 (retsize: 0; depth: 416)
+	call client_read_reply (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_603,dwLoc18_602,dwLoc1C_619,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_623,r16_626,r2_819,r25_821,r28_631,r3_816,r30_627,r4_820,r5_624,r6_622,r7_620,ra_628,sp_630,wLoc0146_356,wLoc0148_353
 		defs: r1_831,r16_827,r2_830,r25_824,r28_823,r3_833,r30_826,r4_828,r5_829,r6_832,r7_834,ra_825,sp_822
 	branch Mem131[dwLoc0158_600 + 0x0000178C:word32] > 0x00000000 l00401798_ds_t
@@ -5781,7 +5742,6 @@ l00401918_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0154(32) Local -0158(32)
 
 l00401964:
-	word32 r25_758 = Mem131[0x100009B0:word32]
 	word32 sp_759
 	word32 r28_760
 	word32 r25_761
@@ -5795,7 +5755,7 @@ l00401964:
 	word32 r6_769
 	word32 r3_770
 	word32 r7_771
-	call r25_758 (retsize: 0; depth: 416)
+	call client_send_request (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_647,dwLoc18_633,dwLoc1C_619,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_651,r16_654,r2_756,r25_758,r28_659,r3_753,r30_655,r4_757,r5_652,r6_650,r7_648,ra_656,sp_658,wLoc0146_356,wLoc0148_353
 		defs: r1_768,r16_764,r2_767,r25_761,r28_760,r3_770,r30_763,r4_765,r5_766,r6_769,r7_771,ra_762,sp_759
 // DataOut: r5 r7
@@ -5977,7 +5937,6 @@ l00401A38_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0154(32) Local -0158(32)
 
 l00401A50:
-	word32 r25_717 = Mem131[0x10000898:word32]
 	word32 sp_718
 	word32 r28_719
 	word32 r25_720
@@ -5991,7 +5950,7 @@ l00401A50:
 	word32 r6_728
 	word32 r3_729
 	word32 r7_730
-	call r25_717 (retsize: 0; depth: 416)
+	call client_check_activ (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_647,dwLoc18_633,dwLoc1C_619,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_664,r16_667,r2_714,r25_717,r28_672,r3_662,r30_668,r4_715,r5_716,r6_663,r7_661,ra_669,sp_671,wLoc0146_356,wLoc0148_353
 		defs: r1_727,r16_723,r2_726,r25_720,r28_719,r3_729,r30_722,r4_724,r5_725,r6_728,r7_730,ra_721,sp_718
 	branch (word32) (r2_726 < 3) == 0x00000000 l00401A50_ds_t
@@ -6007,7 +5966,6 @@ l00401A50_ds_t:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0154(32) Local -0158(32)
 
 l00401A80:
-	word32 r25_695 = Mem131[0x10000A14:word32]
 	word32 sp_696
 	word32 r28_697
 	word32 r25_698
@@ -6021,7 +5979,7 @@ l00401A80:
 	word32 r6_706
 	word32 r3_707
 	word32 r7_708
-	call r25_695 (retsize: 0; depth: 416)
+	call clist_delete (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_584,dwLoc0154_235,dwLoc0158_604,dwLoc015C_583,dwLoc0160_539,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_548,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_647,dwLoc18_633,dwLoc1C_619,dwLoc20_192,dwLoc24_166,dwLoc28_523,dwLoc2C_521,dwLoc30_512,r1_664,r16_667,r2_692,r25_695,r28_672,r3_662,r30_668,r4_693,r5_694,r6_663,r7_661,ra_669,sp_671,wLoc0146_356,wLoc0148_353
 		defs: r1_705,r16_701,r2_704,r25_698,r28_697,r3_707,r30_700,r4_702,r5_703,r6_706,r7_708,ra_699,sp_696
 	dwLoc0158_600 = 0x00000000
@@ -6111,7 +6069,6 @@ l00400F28:
 // LocalsOut: Local -0138(32)
 
 l00401AD4:
-	word32 r25_425 = Mem131[0x10000990:word32]
 	word32 sp_426
 	word32 r28_427
 	word32 r25_428
@@ -6125,10 +6082,9 @@ l00401AD4:
 	word32 r6_436
 	word32 r3_437
 	word32 r7_438
-	call r25_425 (retsize: 0; depth: 416)
+	call clist_destroy (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_405,dwLoc0154_235,dwLoc0158_409,dwLoc015C_404,dwLoc0160_402,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_403,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_401,dwLoc2C_400,dwLoc30_399,r1_413,r16_416,r2_423,r25_425,r28_421,r3_411,r30_417,r4_424,r5_414,r6_412,r7_410,ra_418,sp_420,wLoc0146_356,wLoc0148_353
 		defs: r1_435,r16_431,r2_434,r25_428,r28_427,r3_437,r30_430,r4_432,r5_433,r6_436,r7_438,ra_429,sp_426
-	word32 r25_441 = Mem131[0x100008A8:word32]
 	word32 sp_442
 	word32 r28_443
 	word32 r25_444
@@ -6142,7 +6098,7 @@ l00401AD4:
 	word32 r6_452
 	word32 r3_453
 	word32 r7_454
-	call r25_441 (retsize: 0; depth: 416)
+	call slist_destroy (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc0144_374,dwLoc014C_252,dwLoc0150_405,dwLoc0154_235,dwLoc0158_409,dwLoc015C_404,dwLoc0160_402,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_403,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_408,dwLoc18_407,dwLoc1C_406,dwLoc20_192,dwLoc24_166,dwLoc28_401,dwLoc2C_400,dwLoc30_399,r1_435,r16_431,r2_434,r25_441,r28_439,r3_437,r30_430,r4_440,r5_433,r6_436,r7_438,ra_429,sp_426,wLoc0146_356,wLoc0148_353
 		defs: r1_451,r16_447,r2_450,r25_444,r28_443,r3_453,r30_446,r4_448,r5_449,r6_452,r7_454,ra_445,sp_442
 	branch r2_110 == 0x00000695 l00401AD4_ds_t
@@ -6242,7 +6198,6 @@ l00401BFC:
 	Mem139[r2_32 + 0x000017AA:word16] = (word16) (word32) Mem135[r5 + 0x00000002:uint16]
 	Mem143[r2_32 + 0x000017AC:word32] = Mem139[r5 + 0x00000004:word32]
 	Mem146[r2_32 + 0x00001790:word32] = r7
-	word32 r25_150 = Mem146[0x100008E4:word32]
 	word32 sp_151
 	word32 r28_152
 	word32 r25_153
@@ -6254,7 +6209,7 @@ l00401BFC:
 	word32 r7_159
 	word32 r2_160
 	word32 r3_161
-	call r25_150 (retsize: 0; depth: 72)
+	call open_destination (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_132,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38,r2_148,r25_150,r28_127,r3_144,r30_120,r4_149,r5_122,r6_123,r7_124,ra_119,sp_116
 		defs: r2_160,r25_153,r28_152,r3_161,r30_155,r4_156,r5_157,r6_158,r7_159,ra_154,sp_151
 	Mem165[r2_32 + 0x00000004:word32] = r2_160
@@ -6285,7 +6240,6 @@ l00401DDC:
 	call inet_ntoa (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_132,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38,r2_220,r25_222,r28_162,r3_163,r30_155,r4_221,r5_157,r6_158,r7_159,ra_154,sp_151
 		defs: r2_232,r25_225,r28_224,r3_233,r30_227,r4_228,r5_229,r6_230,r7_231,ra_226,sp_223
-	word32 r25_248 = Mem165[0x100009EC:word32]
 	word32 sp_249
 	word32 r28_250
 	word32 r25_251
@@ -6297,7 +6251,7 @@ l00401DDC:
 	word32 r7_257
 	word32 r2_258
 	word32 r3_259
-	call r25_248 (retsize: 0; depth: 72)
+	call print_log (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_132,dwLoc28_7,dwLoc30_241,dwLoc34_238,dwLoc38_235,r2_240,r25_248,r28_234,r3_233,r30_227,r4_242,r5_244,r6_246,r7_247,ra_226,sp_223
 		defs: r2_258,r25_251,r28_250,r3_259,r30_253,r4_254,r5_255,r6_256,r7_257,ra_252,sp_249
 	Mem262[r2_32 + 0x000007D8:word32] = 0x00000000
@@ -6328,8 +6282,8 @@ l00401DDC_ds_t:
 // LocalsOut: fp(32) Local -001C(32)
 
 l00401F8C:
-	Mem386[r2_32 + 0x000017C0:word32] = Mem333[0x10000964:word32]
-	Mem389[r2_32 + 0x000017C4:word32] = Mem386[0x10000958:word32]
+	Mem386[r2_32 + 0x000017C0:word32] = client_parse_request
+	Mem389[r2_32 + 0x000017C4:word32] = client_copy_reply
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -72 r25:<invalid> r28:0x10008860 r30:fp + -72 r4:<invalid> r2:r7 r5:<invalid> r3:r7 r6:<invalid> r7:<invalid> -56(fp):r2 -52(fp):<invalid> -48(fp):<invalid> -40(fp):0x10008860 -32(fp):16 -28(fp):r2 -24(fp):r7 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5 8(fp):r6 12(fp):r7
@@ -6355,10 +6309,8 @@ l00401F70_ds_t:
 // LocalsOut: fp(32) Local -001C(32)
 
 l00401FB4:
-	Mem352[r2_32 + 0x000017C0:word32] = Mem333[0x100009D0:word32]
-	word32 r2_354 = Mem352[0x100009A4:word32]
-	Mem355[r2_32 + 0x000017C4:word32] = r2_354
-	word32 r25_357 = Mem355[0x10000A58:word32]
+	Mem352[r2_32 + 0x000017C0:word32] = client_copy_request
+	Mem355[r2_32 + 0x000017C4:word32] = client_parse_reply
 	word32 sp_358
 	word32 r28_359
 	word32 r25_360
@@ -6370,10 +6322,9 @@ l00401FB4:
 	word32 r7_366
 	word32 r2_367
 	word32 r3_368
-	call r25_357 (retsize: 0; depth: 72)
+	call client_prepare_connect (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_335,dwLoc1C_79,dwLoc20_132,dwLoc28_7,dwLoc30_241,dwLoc34_238,dwLoc38_235,r2_354,r25_357,r28_330,r3_353,r30_323,r4_356,r5_325,r6_326,r7_327,ra_322,sp_319
 		defs: r2_367,r25_360,r28_359,r3_368,r30_362,r4_363,r5_364,r6_365,r7_366,ra_361,sp_358
-	word32 r25_371 = Mem355[0x100009B0:word32]
 	word32 sp_372
 	word32 r28_373
 	word32 r25_374
@@ -6385,7 +6336,7 @@ l00401FB4:
 	word32 r7_380
 	word32 r2_381
 	word32 r3_382
-	call r25_371 (retsize: 0; depth: 72)
+	call client_send_request (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_335,dwLoc1C_79,dwLoc20_132,dwLoc28_7,dwLoc30_241,dwLoc34_238,dwLoc38_235,r2_367,r25_371,r28_369,r3_368,r30_362,r4_370,r5_364,r6_365,r7_366,ra_361,sp_358
 		defs: r2_381,r25_374,r28_373,r3_382,r30_376,r4_377,r5_378,r6_379,r7_380,ra_375,sp_372
 // DataOut:
@@ -6418,7 +6369,6 @@ l00401BFC_ds_f:
 // LocalsOut: fp(32) Local -001C(32)
 
 l00401D48:
-	word32 r25_177 = Mem165[0x100009EC:word32]
 	word32 sp_178
 	word32 r28_179
 	word32 r25_180
@@ -6430,7 +6380,7 @@ l00401D48:
 	word32 r7_186
 	word32 r2_187
 	word32 r3_188
-	call r25_177 (retsize: 0; depth: 72)
+	call print_log (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_132,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38_170,r2_169,r25_177,r28_162,r3_163,r30_155,r4_171,r5_173,r6_175,r7_176,ra_154,sp_151
 		defs: r2_187,r25_180,r28_179,r3_188,r30_182,r4_183,r5_184,r6_185,r7_186,ra_181,sp_178
 	close(r4_191)
@@ -6447,7 +6397,6 @@ l00401B70_ds_f:
 // LocalsOut: fp(32)
 
 l00401BCC:
-	word32 r25_60 = Mem0[0x100009EC:word32]
 	word32 sp_66
 	word32 r28_67
 	word32 r25_68
@@ -6459,7 +6408,7 @@ l00401BCC:
 	word32 r7_74
 	word32 r2_75
 	word32 r3_76
-	call r25_60 (retsize: 0; depth: 72)
+	call print_log (retsize: 0; depth: 72)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_55,dwLoc20,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38,r2_36,r25_60,r28_34,r3_33,r30_27,r4_56,r5_59,r6_30,r7_31,ra_26,sp_23
 		defs: r2_75,r25_68,r28_67,r3_76,r30_70,r4_71,r5_72,r6_73,r7_74,ra_69,sp_66
 // DataOut:
@@ -6539,21 +6488,7 @@ l00402028:
 	call inet_ntoa (retsize: 0; depth: 320)
 		uses: dwLoc0120_7,dwLoc0130_23,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_18,r16_58,r2_59,r25_61,r28_57,r3_53,r30_49,r4_60,r5_55,r6_56,r7_54,ra_48,sp_45
 		defs: r16_67,r2_69,r25_64,r28_63,r3_70,r30_66,r4_68,r5_72,r6_73,r7_71,ra_65,sp_62
-	word32 sp_89
-	word32 r28_90
-	word32 r25_91
-	word32 ra_92
-	word32 r30_93
-	word32 r16_94
-	word32 r4_95
-	word32 r2_96
-	word32 r3_97
-	word32 r7_98
-	word32 r5_99
-	word32 r6_100
-	call snprintf (retsize: 0; depth: 320)
-		uses: dwLoc0120_7,dwLoc0128_82,dwLoc012C_79,dwLoc0130_78,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_18,r16_67,r2_81,r25_88,r28_74,r3_75,r30_66,r4_83,r5_84,r6_86,r7_87,ra_65,sp_62
-		defs: r16_94,r2_96,r25_91,r28_90,r3_97,r30_93,r4_95,r5_99,r6_100,r7_98,ra_92,sp_89
+	word32 r3_97 = snprintf(r4_83, r5_84, r6_86, Mem136[sp_62:<unknown>])
 	branch (word32) (r2_96 < 256) != 0x00000000 l00402028_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -6579,7 +6514,6 @@ l0040214C:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00402158:
-	word32 r25_112 = Mem0[0x100009E0:word32]
 	word32 sp_113
 	word32 r28_114
 	word32 r25_115
@@ -6592,7 +6526,7 @@ l00402158:
 	word32 r7_122
 	word32 r5_123
 	word32 r6_124
-	call r25_112 (retsize: 0; depth: 320)
+	call add_to_request (retsize: 0; depth: 320)
 		uses: bLoc19_105,dwLoc0120_7,dwLoc0128_82,dwLoc012C_79,dwLoc0130_78,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_106,r16_94,r2_107,r25_112,r28_101,r3_97,r30_93,r4_108,r5_109,r6_110,r7_111,ra_92,sp_89
 		defs: r16_118,r2_120,r25_115,r28_114,r3_121,r30_117,r4_119,r5_123,r6_124,r7_122,ra_116,sp_113
 	return
@@ -6671,7 +6605,6 @@ l00402244_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004022DC:
-	word32 r25_91 = Mem0[0x100008AC:word32]
 	word32 sp_92
 	word32 r28_93
 	word32 r25_94
@@ -6683,7 +6616,7 @@ l004022DC:
 	word32 r6_100
 	word32 r3_101
 	word32 r7_102
-	call r25_91 (retsize: 0; depth: 2104)
+	call get_a_line (retsize: 0; depth: 2104)
 		uses: dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_49,dwLoc1C_47,dwLoc20_51,dwLoc24_48,dwLoc28_50,dwLoc2C_86,dwLoc30_45,dwLoc34_28,dwLoc38_46,dwLoc3C_44,dwLoc40_60,r2_87,r25_91,r28_58,r3_59,r30_62,r4_88,r5_89,r6_90,r7_53,ra_61,sp_63
 		defs: r2_98,r25_94,r28_93,r3_101,r30_96,r4_97,r5_99,r6_100,r7_102,ra_95,sp_92
 	word32 dwLoc1C_111 = 0x00000000
@@ -6831,7 +6764,6 @@ l0040280C_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402894:
-	word32 r25_448 = Mem0[0x10000954:word32]
 	word32 sp_449
 	word32 r28_450
 	word32 r25_451
@@ -6843,7 +6775,7 @@ l00402894:
 	word32 r6_457
 	word32 r3_458
 	word32 r7_459
-	call r25_448 (retsize: 0; depth: 2104)
+	call request_save_line (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_444,r25_448,r28_437,r3_438,r30_440,r4_445,r5_446,r6_447,r7_432,ra_439,sp_441
 		defs: r2_455,r25_451,r28_450,r3_458,r30_453,r4_454,r5_456,r6_457,r7_459,ra_452,sp_449
 // DataOut:
@@ -6858,7 +6790,6 @@ l0040280C_ds_f:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402840:
-	word32 r25_482 = Mem0[0x100009FC:word32]
 	word32 sp_483
 	word32 r28_484
 	word32 r25_485
@@ -6870,10 +6801,9 @@ l00402840:
 	word32 r6_491
 	word32 r3_492
 	word32 r7_493
-	call r25_482 (retsize: 0; depth: 2104)
+	call request_get_content_length (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_479,r25_482,r28_478,r3_476,r30_471,r4_480,r5_481,r6_475,r7_477,ra_470,sp_467
 		defs: r2_489,r25_485,r28_484,r3_492,r30_487,r4_488,r5_490,r6_491,r7_493,ra_486,sp_483
-	word32 r25_499 = Mem0[0x10000954:word32]
 	word32 sp_500
 	word32 r28_501
 	word32 r25_502
@@ -6885,7 +6815,7 @@ l00402840:
 	word32 r6_508
 	word32 r3_509
 	word32 r7_510
-	call r25_499 (retsize: 0; depth: 2104)
+	call request_save_line (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_495,r25_499,r28_494,r3_492,r30_487,r4_496,r5_497,r6_498,r7_493,ra_486,sp_483
 		defs: r2_506,r25_502,r28_501,r3_509,r30_504,r4_505,r5_507,r6_508,r7_510,ra_503,sp_500
 // DataOut:
@@ -6913,7 +6843,6 @@ l004026A8_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004026F8:
-	word32 r25_553 = Mem0[0x100008B4:word32]
 	word32 sp_554
 	word32 r28_555
 	word32 r25_556
@@ -6925,10 +6854,9 @@ l004026F8:
 	word32 r6_562
 	word32 r3_563
 	word32 r7_564
-	call r25_553 (retsize: 0; depth: 2104)
+	call request_get_host (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_550,r25_553,r28_529,r3_527,r30_522,r4_551,r5_552,r6_526,r7_528,ra_521,sp_518
 		defs: r2_560,r25_556,r28_555,r3_563,r30_558,r4_559,r5_561,r6_562,r7_564,ra_557,sp_554
-	word32 r25_567 = Mem0[0x10000A38:word32]
 	word32 sp_568
 	word32 r28_569
 	word32 r25_570
@@ -6940,11 +6868,10 @@ l004026F8:
 	word32 r6_576
 	word32 r3_577
 	word32 r7_578
-	call r25_567 (retsize: 0; depth: 2104)
+	call request_make_url (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_560,r25_567,r28_565,r3_563,r30_558,r4_566,r5_561,r6_562,r7_564,ra_557,sp_554
 		defs: r2_574,r25_570,r28_569,r3_577,r30_572,r4_573,r5_575,r6_576,r7_578,ra_571,sp_568
 	strlen(r4_582)
-	word32 r25_603 = Mem0[0x100009E0:word32]
 	word32 sp_604
 	word32 r28_605
 	word32 r25_606
@@ -6956,10 +6883,9 @@ l004026F8:
 	word32 r6_612
 	word32 r3_613
 	word32 r7_614
-	call r25_603 (retsize: 0; depth: 2104)
+	call add_to_request (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_598,r25_603,r28_595,r3_596,r30_588,r4_599,r5_600,r6_601,r7_602,ra_587,sp_584
 		defs: r2_610,r25_606,r28_605,r3_613,r30_608,r4_609,r5_611,r6_612,r7_614,ra_607,sp_604
-	word32 r25_620 = Mem0[0x100008EC:word32]
 	word32 sp_621
 	word32 r28_622
 	word32 r25_623
@@ -6971,10 +6897,9 @@ l004026F8:
 	word32 r6_629
 	word32 r3_630
 	word32 r7_631
-	call r25_620 (retsize: 0; depth: 2104)
+	call request_add_lines (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_616,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_610,r25_620,r28_615,r3_613,r30_608,r4_617,r5_618,r6_619,r7_614,ra_607,sp_604
 		defs: r2_627,r25_623,r28_622,r3_630,r30_625,r4_626,r5_628,r6_629,r7_631,ra_624,sp_621
-	word32 r25_639 = Mem0[0x100009E0:word32]
 	word32 sp_640
 	word32 r28_641
 	word32 r25_642
@@ -6986,7 +6911,7 @@ l004026F8:
 	word32 r6_648
 	word32 r3_649
 	word32 r7_650
-	call r25_639 (retsize: 0; depth: 2104)
+	call add_to_request (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_633,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_634,r25_639,r28_632,r3_630,r30_625,r4_635,r5_636,r6_637,r7_638,ra_624,sp_621
 		defs: r2_646,r25_642,r28_641,r3_649,r30_644,r4_645,r5_647,r6_648,r7_650,ra_643,sp_640
 	Mem655[r4 + 0x00001794:word32] = 2
@@ -7002,7 +6927,6 @@ l004026A8_ds_f:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004026B8:
-	word32 r25_537 = Mem0[0x100009EC:word32]
 	word32 sp_538
 	word32 r28_539
 	word32 r25_540
@@ -7014,7 +6938,7 @@ l004026B8:
 	word32 r6_546
 	word32 r3_547
 	word32 r7_548
-	call r25_537 (retsize: 0; depth: 2104)
+	call print_log (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_530,r25_537,r28_529,r3_527,r30_522,r4_531,r5_533,r6_535,r7_536,ra_521,sp_518
 		defs: r2_544,r25_540,r28_539,r3_547,r30_542,r4_543,r5_545,r6_546,r7_548,ra_541,sp_538
 // DataOut:
@@ -7029,7 +6953,6 @@ l00402604_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00402614:
-	word32 r25_414 = Mem0[0x100009EC:word32]
 	word32 sp_415
 	word32 r28_416
 	word32 r25_417
@@ -7041,7 +6964,7 @@ l00402614:
 	word32 r6_423
 	word32 r3_424
 	word32 r7_425
-	call r25_414 (retsize: 0; depth: 2104)
+	call print_log (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_407,r25_414,r28_103,r3_123,r30_96,r4_408,r5_410,r6_412,r7_413,ra_95,sp_92
 		defs: r2_421,r25_417,r28_416,r3_424,r30_419,r4_420,r5_422,r6_423,r7_425,ra_418,sp_415
 	Mem428[r4 + 0x00001794:word32] = 0x00000000
@@ -7083,7 +7006,6 @@ l004023D0_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0030(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004028C4:
-	word32 r25_348 = Mem0[0x100009E0:word32]
 	word32 sp_349
 	word32 r28_350
 	word32 r25_351
@@ -7095,7 +7017,7 @@ l004028C4:
 	word32 r6_357
 	word32 r3_358
 	word32 r7_359
-	call r25_348 (retsize: 0; depth: 2104)
+	call add_to_request (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_343,r25_348,r28_103,r3_311,r30_96,r4_344,r5_345,r6_346,r7_347,ra_95,sp_92
 		defs: r2_355,r25_351,r28_350,r3_358,r30_353,r4_354,r5_356,r6_357,r7_359,ra_352,sp_349
 	branch dwLoc1C_111 == 0x00000000 l004028C4_ds_t
@@ -7150,7 +7072,6 @@ l00402964_ds_f:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402998:
-	word32 r25_394 = Mem0[0x100009FC:word32]
 	word32 sp_395
 	word32 r28_396
 	word32 r25_397
@@ -7162,7 +7083,7 @@ l00402998:
 	word32 r6_403
 	word32 r3_404
 	word32 r7_405
-	call r25_394 (retsize: 0; depth: 2104)
+	call request_get_content_length (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_361,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_391,r25_394,r28_390,r3_388,r30_383,r4_392,r5_393,r6_387,r7_389,ra_382,sp_379
 		defs: r2_401,r25_397,r28_396,r3_404,r30_399,r4_400,r5_402,r6_403,r7_405,ra_398,sp_395
 // DataOut:
@@ -7248,7 +7169,6 @@ l004023E4_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0030(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004029C4:
-	word32 r25_319 = Mem0[0x100009E0:word32]
 	word32 sp_320
 	word32 r28_321
 	word32 r25_322
@@ -7260,7 +7180,7 @@ l004029C4:
 	word32 r6_328
 	word32 r3_329
 	word32 r7_330
-	call r25_319 (retsize: 0; depth: 2104)
+	call add_to_request (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_314,r25_319,r28_103,r3_313,r30_96,r4_315,r5_316,r6_317,r7_318,ra_95,sp_92
 		defs: r2_326,r25_322,r28_321,r3_329,r30_324,r4_325,r5_327,r6_328,r7_330,ra_323,sp_320
 	Mem338[dwLoc20_125 + 0x00000554:word32] = Mem0[dwLoc20_125 + 0x00000554:word32]
@@ -7334,7 +7254,6 @@ l00402400_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004025D0:
-	word32 r25_297 = Mem0[0x100009E0:word32]
 	word32 sp_298
 	word32 r28_299
 	word32 r25_300
@@ -7346,7 +7265,7 @@ l004025D0:
 	word32 r6_306
 	word32 r3_307
 	word32 r7_308
-	call r25_297 (retsize: 0; depth: 2104)
+	call add_to_request (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_292,r25_297,r28_103,r3_139,r30_96,r4_293,r5_294,r6_295,r7_296,ra_95,sp_92
 		defs: r2_304,r25_300,r28_299,r3_307,r30_302,r4_303,r5_305,r6_306,r7_308,ra_301,sp_298
 // DataOut:
@@ -7375,7 +7294,6 @@ l00402410_ds_t:
 // LocalsOut: fp(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004024FC:
-	word32 r25_278 = Mem0[0x10000A94:word32]
 	word32 sp_279
 	word32 r28_280
 	word32 r25_281
@@ -7387,7 +7305,7 @@ l004024FC:
 	word32 r6_287
 	word32 r3_288
 	word32 r7_289
-	call r25_278 (retsize: 0; depth: 2104)
+	call request_new (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_276,r25_278,r28_103,r3_139,r30_96,r4_277,r5_99,r6_100,r7_102,ra_95,sp_92
 		defs: r2_285,r25_281,r28_280,r3_288,r30_283,r4_284,r5_286,r6_287,r7_289,ra_282,sp_279
 	dwLoc20_125 = fp + -2064
@@ -7403,7 +7321,6 @@ l00402410_ds_f:
 // LocalsOut: fp(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402428:
-	word32 r25_210 = Mem0[0x100009EC:word32]
 	word32 sp_211
 	word32 r28_212
 	word32 r25_213
@@ -7415,11 +7332,10 @@ l00402428:
 	word32 r6_219
 	word32 r3_220
 	word32 r7_221
-	call r25_210 (retsize: 0; depth: 2104)
+	call print_log (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_51,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_144,r25_210,r28_103,r3_139,r30_96,r4_204,r5_206,r6_208,r7_209,ra_95,sp_92
 		defs: r2_217,r25_213,r28_212,r3_220,r30_215,r4_216,r5_218,r6_219,r7_221,ra_214,sp_211
 	dwLoc20_125 = Mem0[r4 + 0x00000FB4:word32]
-	word32 r25_229 = Mem0[0x1000097C:word32]
 	word32 sp_230
 	word32 r28_231
 	word32 r25_232
@@ -7431,7 +7347,7 @@ l00402428:
 	word32 r6_238
 	word32 r3_239
 	word32 r7_240
-	call r25_229 (retsize: 0; depth: 2104)
+	call request_parse_line (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_225,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_226,r25_229,r28_222,r3_220,r30_215,r4_227,r5_228,r6_219,r7_221,ra_214,sp_211
 		defs: r2_236,r25_232,r28_231,r3_239,r30_234,r4_235,r5_237,r6_238,r7_240,ra_233,sp_230
 	branch fp != 0xFFFFF7F0 l00402428_ds_t
@@ -7453,7 +7369,6 @@ l00402428_ds_f:
 // LocalsOut: fp(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l0040249C:
-	word32 r25_248 = Mem0[0x100009EC:word32]
 	word32 sp_249
 	word32 r28_250
 	word32 r25_251
@@ -7465,10 +7380,9 @@ l0040249C:
 	word32 r6_257
 	word32 r3_258
 	word32 r7_259
-	call r25_248 (retsize: 0; depth: 2104)
+	call print_log (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_225,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_236,r25_248,r28_241,r3_239,r30_234,r4_242,r5_244,r6_246,r7_247,ra_233,sp_230
 		defs: r2_255,r25_251,r28_250,r3_258,r30_253,r4_254,r5_256,r6_257,r7_259,ra_252,sp_249
-	word32 r25_262 = Mem0[0x10000A80:word32]
 	word32 sp_263
 	word32 r28_264
 	word32 r25_265
@@ -7480,7 +7394,7 @@ l0040249C:
 	word32 r6_271
 	word32 r3_272
 	word32 r7_273
-	call r25_262 (retsize: 0; depth: 2104)
+	call request_destroy (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_52,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_225,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_255,r25_262,r28_260,r3_258,r30_253,r4_261,r5_256,r6_257,r7_259,ra_252,sp_249
 		defs: r2_269,r25_265,r28_264,r3_272,r30_267,r4_268,r5_270,r6_271,r7_273,ra_266,sp_263
 	dwLoc20_125 = 0x00000000
@@ -7504,7 +7418,6 @@ l0040251C_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402550:
-	word32 r25_170 = Mem157[0x100009EC:word32]
 	word32 sp_171
 	word32 r28_172
 	word32 r25_173
@@ -7516,10 +7429,9 @@ l00402550:
 	word32 r6_179
 	word32 r3_180
 	word32 r7_181
-	call r25_170 (retsize: 0; depth: 2104)
+	call print_log (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_163,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_145,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_162,r25_170,r28_151,r3_156,r30_153,r4_164,r5_166,r6_168,r7_169,ra_152,sp_154
 		defs: r2_177,r25_173,r28_172,r3_180,r30_175,r4_176,r5_178,r6_179,r7_181,ra_174,sp_171
-	word32 r25_188 = Mem157[0x100009E0:word32]
 	word32 sp_189
 	word32 r28_190
 	word32 r25_191
@@ -7531,7 +7443,7 @@ l00402550:
 	word32 r6_197
 	word32 r3_198
 	word32 r7_199
-	call r25_188 (retsize: 0; depth: 2104)
+	call add_to_request (retsize: 0; depth: 2104)
 		uses: bLoc0810,dwLoc08_9,dwLoc0818_22,dwLoc0820_7,dwLoc0828_163,dwLoc0C_11,dwLoc18_121,dwLoc1C_116,dwLoc20_145,dwLoc24_118,dwLoc28_50,dwLoc2C_86,dwLoc30_108,dwLoc34_28,dwLoc38_110,dwLoc3C_104,dwLoc40_60,r2_183,r25_188,r28_182,r3_180,r30_175,r4_184,r5_185,r6_186,r7_187,ra_174,sp_171
 		defs: r2_195,r25_191,r28_190,r3_198,r30_193,r4_194,r5_196,r6_197,r7_199,ra_192,sp_189
 	Mem203[r4 + 0x00001794:word32] = 2
@@ -7661,7 +7573,6 @@ l00402AF0_ds_t:
 // LocalsOut: fp(32)
 
 l00402B08:
-	word32 r25_63 = Mem0[0x100009EC:word32]
 	word32 sp_64
 	word32 r28_65
 	word32 r25_66
@@ -7673,7 +7584,7 @@ l00402B08:
 	word32 r7_72
 	word32 r2_73
 	word32 r3_74
-	call r25_63 (retsize: 0; depth: 40)
+	call print_log (retsize: 0; depth: 40)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_56,r25_63,r28_5,r3,r30_12,r4_57,r5_59,r6_61,r7_62,ra,sp_6
 		defs: r2_73,r25_66,r28_65,r3_74,r30_68,r4_69,r5_70,r6_71,r7_72,ra_67,sp_64
 // DataOut:
@@ -7710,7 +7621,6 @@ l00402B4C_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00402BC0:
-	word32 r25_112 = Mem83[0x100009EC:word32]
 	word32 sp_113
 	word32 r28_114
 	word32 r25_115
@@ -7722,7 +7632,7 @@ l00402BC0:
 	word32 r7_121
 	word32 r2_122
 	word32 r3_123
-	call r25_112 (retsize: 0; depth: 40)
+	call print_log (retsize: 0; depth: 40)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_86,r25_112,r28_5,r3_80,r30_12,r4_106,r5_108,r6_110,r7_111,ra,sp_6
 		defs: r2_122,r25_115,r28_114,r3_123,r30_117,r4_118,r5_119,r6_120,r7_121,ra_116,sp_113
 	Mem126[r4 + 0x00000FAC:word32] = 0x00000000
@@ -7751,7 +7661,6 @@ l00402A60_ds_f:
 // LocalsOut: fp(32)
 
 l00402AA0:
-	word32 r25_41 = Mem0[0x100009EC:word32]
 	word32 sp_43
 	word32 r28_44
 	word32 r25_45
@@ -7763,7 +7672,7 @@ l00402AA0:
 	word32 r7_51
 	word32 r2_52
 	word32 r3_53
-	call r25_41 (retsize: 0; depth: 40)
+	call print_log (retsize: 0; depth: 40)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_21,r25_41,r28_5,r3,r30_12,r4_34,r5_37,r6_39,r7_40,ra,sp_6
 		defs: r2_52,r25_45,r28_44,r3_53,r30_47,r4_48,r5_49,r6_50,r7_51,ra_46,sp_43
 // DataOut:
@@ -8139,7 +8048,6 @@ l00402FDC:
 	Mem98[r4 + 0x00000FB0:word32] = Mem32[r4 + 0x00000FB0:word32] + r2_65
 	word32 r3_101 = Mem98[r4 + 0x00000FAC:word32]
 	Mem104[r4 + 0x00000FAC:word32] = r3_101 - r2_65
-	word32 r25_113 = Mem104[0x100009EC:word32]
 	word32 sp_114
 	word32 r28_115
 	word32 r25_116
@@ -8151,7 +8059,7 @@ l00402FDC:
 	word32 r6_122
 	word32 r5_123
 	word32 r7_124
-	call r25_113 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_71,dwLoc20_7,dwLoc28_106,r2_105,r25_113,r28_70,r3_101,r30_63,r4_107,r5_109,r6_111,r7_112,ra_62,sp_59
 		defs: r2_120,r25_116,r28_115,r3_121,r30_118,r4_119,r5_123,r6_122,r7_124,ra_117,sp_114
 // DataOut:
@@ -8263,7 +8171,6 @@ l00403140_ds_t:
 // LocalsOut: fp(32)
 
 l00403184:
-	word32 r25_28 = Mem0[0x10000A98:word32]
 	word32 sp_29
 	word32 r28_30
 	word32 r25_31
@@ -8271,7 +8178,7 @@ l00403184:
 	word32 r30_33
 	word32 r4_34
 	word32 r2_35
-	call r25_28 (retsize: 0; depth: 40)
+	call client_check_reply_http (retsize: 0; depth: 40)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_17,r25_28,r28_5,r30_12,r4_27,ra,sp_6
 		defs: r2_35,r25_31,r28_30,r30_33,r4_34,ra_32,sp_29
 	branch r2_35 == 0x00000000 l00403184_ds_t
@@ -8287,7 +8194,6 @@ l00403184_ds_t:
 // LocalsOut: fp(32)
 
 l004031AC:
-	word32 r25_39 = Mem0[0x10000958:word32]
 	word32 sp_40
 	word32 r28_41
 	word32 r25_42
@@ -8295,7 +8201,7 @@ l004031AC:
 	word32 r30_44
 	word32 r4_45
 	word32 r2_46
-	call r25_39 (retsize: 0; depth: 40)
+	call client_copy_reply (retsize: 0; depth: 40)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_35,r25_39,r28_36,r30_33,r4_38,ra_32,sp_29
 		defs: r2_46,r25_42,r28_41,r30_44,r4_45,ra_43,sp_40
 // DataOut:
@@ -8586,7 +8492,7 @@ l004033E4_ds_f:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32) Stack +0000(32)
 
 l00403414:
-	Mem71[r4 + 0x000017C4:word32] = Mem0[0x10000958:word32]
+	Mem71[r4 + 0x000017C4:word32] = client_copy_reply
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -9069,17 +8975,16 @@ client_destroy_entry:
 // LocalsOut: fp(32)
 
 l00403794:
-	word32 r25_17 = Mem0[0x100008BC:word32]
-	word32 sp_18
-	word32 r28_19
-	word32 r25_20
-	word32 ra_21
-	word32 r30_22
-	word32 r4_23
-	word32 r2_24
-	call r25_17 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_17,r28_5,r30_12,r4_15,ra,sp_6
-		defs: r2_24,r25_20,r28_19,r30_22,r4_23,ra_21,sp_18
+	word32 sp_17
+	word32 r28_18
+	word32 r25_19
+	word32 ra_20
+	word32 r30_21
+	word32 r4_22
+	word32 r2_23
+	call client_close (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_16,r28_5,r30_12,r4_15,ra,sp_6
+		defs: r2_23,r25_19,r28_18,r30_21,r4_22,ra_20,sp_17
 	branch Mem0[r4 + 0x00000FB4:word32] == 0x00000000 l00403794_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -9099,7 +9004,6 @@ l00403794_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004037EC:
-	word32 r25_44 = Mem0[0x10000A80:word32]
 	word32 sp_45
 	word32 r28_46
 	word32 r25_47
@@ -9107,8 +9011,8 @@ l004037EC:
 	word32 r30_49
 	word32 r4_50
 	word32 r2_51
-	call r25_44 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_42,r25_44,r28_25,r30_22,r4_43,ra_21,sp_18
+	call request_destroy (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r2_42,r25_44,r28_24,r30_21,r4_43,ra_20,sp_17
 		defs: r2_51,r25_47,r28_46,r30_49,r4_50,ra_48,sp_45
 // DataOut:
 // DataOut (flags): 
@@ -9190,7 +9094,6 @@ l00403898_ds_f:
 // LocalsOut: fp(32) Stack +0000(32) Stack +0004(32)
 
 l004038C8:
-	word32 r25_123 = Mem0[0x100009EC:word32]
 	word32 sp_124
 	word32 r28_125
 	word32 r25_126
@@ -9202,7 +9105,7 @@ l004038C8:
 	word32 r3_132
 	word32 r6_133
 	word32 r7_134
-	call r25_123 (retsize: 0; depth: 64)
+	call print_log (retsize: 0; depth: 64)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_17,dwLoc20_7,dwLoc28_116,dwLoc2C_111,dwLoc30_108,r2_115,r25_123,r28_25,r3_113,r30_27,r4_117,r5_119,r6_121,r7_122,ra_26,sp_28
 		defs: r2_131,r25_126,r28_125,r3_132,r30_128,r4_129,r5_130,r6_133,r7_134,ra_127,sp_124
 // DataOut:
@@ -9230,7 +9133,6 @@ l00403948_ds_f:
 // LocalsOut: fp(32) Local -0018(32) Stack +0000(32) Stack +0004(32)
 
 l00403978:
-	word32 r25_90 = Mem0[0x100009EC:word32]
 	word32 sp_91
 	word32 r28_92
 	word32 r25_93
@@ -9242,7 +9144,7 @@ l00403978:
 	word32 r3_99
 	word32 r6_100
 	word32 r7_101
-	call r25_90 (retsize: 0; depth: 64)
+	call print_log (retsize: 0; depth: 64)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_46,dwLoc20_7,dwLoc28_83,dwLoc2C_78,dwLoc30_75,r2_82,r25_90,r28_45,r3_80,r30_48,r4_84,r5_86,r6_88,r7_89,ra_47,sp_49
 		defs: r2_98,r25_93,r28_92,r3_99,r30_95,r4_96,r5_97,r6_100,r7_101,ra_94,sp_91
 // DataOut:
@@ -9320,7 +9222,6 @@ l00403B3C:
 	__errno_location()
 	__errno_location()
 	strerror(r4_170)
-	word32 r25_195 = Mem0[0x100009EC:word32]
 	word32 sp_196
 	word32 r28_197
 	word32 r25_198
@@ -9333,7 +9234,7 @@ l00403B3C:
 	word32 r2_205
 	word32 r3_206
 	word32 r7_207
-	call r25_195 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24_188,dwLoc28_187,r16_177,r2_186,r25_195,r28_184,r3_185,r30_176,r4_189,r5_191,r6_193,r7_194,ra_175,sp_172
 		defs: r16_201,r2_205,r25_198,r28_197,r3_206,r30_200,r4_202,r5_203,r6_204,r7_207,ra_199,sp_196
 // DataOut:
@@ -9351,7 +9252,6 @@ l00403A78:
 	__errno_location()
 	__errno_location()
 	strerror(r4_83)
-	word32 r25_108 = Mem0[0x100009EC:word32]
 	word32 sp_109
 	word32 r28_110
 	word32 r25_111
@@ -9364,7 +9264,7 @@ l00403A78:
 	word32 r2_118
 	word32 r3_119
 	word32 r7_120
-	call r25_108 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24_101,dwLoc28_100,r16_90,r2_99,r25_108,r28_97,r3_98,r30_89,r4_102,r5_104,r6_106,r7_107,ra_88,sp_85
 		defs: r16_114,r2_118,r25_111,r28_110,r3_119,r30_113,r4_115,r5_116,r6_117,r7_120,ra_112,sp_109
 // DataOut:
@@ -9428,7 +9328,6 @@ l00403C00_ds_f:
 // LocalsOut: fp(32)
 
 l00403C4C:
-	word32 r25_41 = Mem0[0x100009EC:word32]
 	word32 sp_42
 	word32 r28_43
 	word32 r25_44
@@ -9437,7 +9336,7 @@ l00403C4C:
 	word32 r4_47
 	word32 r2_48
 	word32 r5_49
-	call r25_41 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_36,dwLoc20_7,r2_25,r25_41,r28_23,r30_19,r4_37,r5_40,ra_18,sp_15
 		defs: r2_48,r25_44,r28_43,r30_46,r4_47,r5_49,ra_45,sp_42
 // DataOut:
@@ -9833,28 +9732,26 @@ clist_delete_entry:
 // LocalsOut: fp(32)
 
 l00403FF8:
-	word32 r25_20 = Mem0[0x10000A44:word32]
-	word32 sp_21
-	word32 r28_22
-	word32 r25_23
-	word32 ra_24
-	word32 r30_25
-	word32 r4_26
-	word32 r5_27
-	call r25_20 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_20,r28_5,r30_12,r4_17,r5_18,ra,sp_6
-		defs: r25_23,r28_22,r30_25,r4_26,r5_27,ra_24,sp_21
-	word32 r25_30 = Mem0[0x100008DC:word32]
-	word32 sp_31
-	word32 r28_32
-	word32 r25_33
-	word32 ra_34
-	word32 r30_35
-	word32 r4_36
-	word32 r5_37
-	call r25_30 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_30,r28_28,r30_25,r4_29,r5_27,ra_24,sp_21
-		defs: r25_33,r28_32,r30_35,r4_36,r5_37,ra_34,sp_31
+	word32 sp_20
+	word32 r28_21
+	word32 r25_22
+	word32 ra_23
+	word32 r30_24
+	word32 r4_25
+	word32 r5_26
+	call clist_remove (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_19,r28_5,r30_12,r4_17,r5_18,ra,sp_6
+		defs: r25_22,r28_21,r30_24,r4_25,r5_26,ra_23,sp_20
+	word32 sp_30
+	word32 r28_31
+	word32 r25_32
+	word32 ra_33
+	word32 r30_34
+	word32 r4_35
+	word32 r5_36
+	call client_destroy (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_29,r28_27,r30_24,r4_28,r5_26,ra_23,sp_20
+		defs: r25_32,r28_31,r30_34,r4_35,r5_36,ra_33,sp_30
 	return
 // DataOut:
 // DataOut (flags): 
@@ -9901,7 +9798,6 @@ l00404070_ds_t:
 // LocalsOut: fp(32) Local -0018(32)
 
 l004040C0:
-	word32 r25_32 = Mem0[0x100008BC:word32]
 	word32 sp_33
 	word32 r28_34
 	word32 r25_35
@@ -9909,7 +9805,7 @@ l004040C0:
 	word32 r30_37
 	word32 r4_38
 	word32 r2_39
-	call r25_32 (retsize: 0; depth: 48)
+	call client_close (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_22,dwLoc20_7,r2_26,r25_32,r28_21,r30_24,r4_31,ra_23,sp_25
 		defs: r2_39,r25_35,r28_34,r30_37,r4_38,ra_36,sp_33
 	dwLoc18_18 = Mem0[dwLoc18_18 + 0x000017B8:word32]
@@ -9976,7 +9872,6 @@ l00404108_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00404160:
-	word32 r25_39 = Mem0[0x10000A14:word32]
 	word32 sp_40
 	word32 r28_41
 	word32 r25_42
@@ -9985,7 +9880,7 @@ l00404160:
 	word32 r4_45
 	word32 r2_46
 	word32 r5_47
-	call r25_39 (retsize: 0; depth: 48)
+	call clist_delete (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_36,dwLoc20_7,r2_35,r25_39,r28_24,r30_26,r4_37,r5_38,ra_25,sp_27
 		defs: r2_46,r25_42,r28_41,r30_44,r4_45,r5_47,ra_43,sp_40
 // DataOut:
@@ -10032,27 +9927,25 @@ clist_destroy_entry:
 // LocalsOut: fp(32)
 
 l004041B0:
-	word32 r25_17 = Mem0[0x10000928:word32]
-	word32 sp_18
-	word32 r28_19
-	word32 r25_20
-	word32 ra_21
-	word32 r30_22
-	word32 r4_23
-	call r25_17 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_17,r28_5,r30_12,r4_15,ra,sp_6
-		defs: r25_20,r28_19,r30_22,r4_23,ra_21,sp_18
-	word32 r25_26 = Mem0[0x1000092C:word32]
-	word32 sp_27
-	word32 r28_28
-	word32 r25_29
-	word32 ra_30
-	word32 r30_31
-	word32 r4_32
-	call r25_26 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_26,r28_24,r30_22,r4_25,ra_21,sp_18
-		defs: r25_29,r28_28,r30_31,r4_32,ra_30,sp_27
-	free(r4_34)
+	word32 sp_17
+	word32 r28_18
+	word32 r25_19
+	word32 ra_20
+	word32 r30_21
+	word32 r4_22
+	call clist_close_all (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_16,r28_5,r30_12,r4_15,ra,sp_6
+		defs: r25_19,r28_18,r30_21,r4_22,ra_20,sp_17
+	word32 sp_26
+	word32 r28_27
+	word32 r25_28
+	word32 ra_29
+	word32 r30_30
+	word32 r4_31
+	call clist_destroy_all (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_25,r28_23,r30_21,r4_24,ra_20,sp_17
+		defs: r25_28,r28_27,r30_30,r4_31,ra_29,sp_26
+	free(r4_33)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -10120,7 +10013,6 @@ l004042C0_ds_f:
 // LocalsOut: fp(32)
 
 l00404330:
-	word32 r25_87 = Mem74[0x1000097C:word32]
 	word32 sp_88
 	word32 r28_89
 	word32 r25_90
@@ -10130,7 +10022,7 @@ l00404330:
 	word32 r2_94
 	word32 r5_95
 	word32 r3_96
-	call r25_87 (retsize: 0; depth: 48)
+	call request_parse_line (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_57,dwLoc20_7,r2_75,r25_87,r28_26,r3_70,r30_21,r4_85,r5_86,ra_20,sp_17
 		defs: r2_94,r25_90,r28_89,r3_96,r30_92,r4_93,r5_95,ra_91,sp_88
 	branch r2_94 != 0x00000000 l00404330_ds_t
@@ -10170,7 +10062,6 @@ l00404240_ds_f:
 // LocalsOut: fp(32)
 
 l00404290:
-	word32 r25_45 = Mem0[0x100009EC:word32]
 	word32 sp_46
 	word32 r28_47
 	word32 r25_48
@@ -10180,7 +10071,7 @@ l00404290:
 	word32 r2_52
 	word32 r5_53
 	word32 r3_54
-	call r25_45 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_40,dwLoc20_7,r2_28,r25_45,r28_26,r3_25,r30_21,r4_41,r5_44,ra_20,sp_17
 		defs: r2_52,r25_48,r28_47,r3_54,r30_50,r4_51,r5_53,ra_49,sp_46
 // DataOut:
@@ -10215,31 +10106,29 @@ request_parse_line_entry:
 // LocalsOut: fp(32)
 
 l00404378:
-	word32 r25_20 = Mem0[0x10000998:word32]
-	word32 sp_21
-	word32 r28_22
-	word32 r25_23
-	word32 ra_24
-	word32 r30_25
-	word32 r4_26
-	word32 r5_27
-	word32 r2_28
-	call r25_20 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc20_7,r25_20,r28_5,r30_12,r4_17,r5_18,ra,sp_6
-		defs: r2_28,r25_23,r28_22,r30_25,r4_26,r5_27,ra_24,sp_21
-	word32 r25_32 = Mem0[0x10000AA0:word32]
-	word32 sp_33
-	word32 r28_34
-	word32 r25_35
-	word32 ra_36
-	word32 r30_37
-	word32 r4_38
-	word32 r5_39
-	word32 r2_40
-	call r25_32 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_30,dwLoc20_7,r2_28,r25_32,r28_29,r30_25,r4_31,r5_27,ra_24,sp_21
-		defs: r2_40,r25_35,r28_34,r30_37,r4_38,r5_39,ra_36,sp_33
-	branch r2_40 != 0x00000000 l00404378_ds_t
+	word32 sp_20
+	word32 r28_21
+	word32 r25_22
+	word32 ra_23
+	word32 r30_24
+	word32 r4_25
+	word32 r5_26
+	word32 r2_27
+	call get_method (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc20_7,r25_19,r28_5,r30_12,r4_17,r5_18,ra,sp_6
+		defs: r2_27,r25_22,r28_21,r30_24,r4_25,r5_26,ra_23,sp_20
+	word32 sp_32
+	word32 r28_33
+	word32 r25_34
+	word32 ra_35
+	word32 r30_36
+	word32 r4_37
+	word32 r5_38
+	word32 r2_39
+	call is_a_method (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_29,dwLoc20_7,r2_27,r25_31,r28_28,r30_24,r4_30,r5_26,ra_23,sp_20
+		defs: r2_39,r25_34,r28_33,r30_36,r4_37,r5_38,ra_35,sp_32
+	branch r2_39 != 0x00000000 l00404378_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -10252,30 +10141,28 @@ l00404378_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004043E8:
-	word32 r25_57 = Mem0[0x10000940:word32]
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 ra_61
-	word32 r30_62
-	word32 r4_63
-	word32 r5_64
-	word32 r2_65
-	call r25_57 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_30,dwLoc20_7,r2_54,r25_57,r28_41,r30_37,r4_55,r5_56,ra_36,sp_33
-		defs: r2_65,r25_60,r28_59,r30_62,r4_63,r5_64,ra_61,sp_58
-	word32 r25_72 = Mem0[0x100008E8:word32]
-	word32 sp_73
-	word32 r28_74
-	word32 r25_75
-	word32 ra_76
-	word32 r30_77
-	word32 r4_78
-	word32 r5_79
-	word32 r2_80
-	call r25_72 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_67,dwLoc20_7,r2_69,r25_72,r28_66,r30_62,r4_70,r5_71,ra_61,sp_58
-		defs: r2_80,r25_75,r28_74,r30_77,r4_78,r5_79,ra_76,sp_73
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 ra_60
+	word32 r30_61
+	word32 r4_62
+	word32 r5_63
+	word32 r2_64
+	call get_uri (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_29,dwLoc20_7,r2_53,r25_56,r28_40,r30_36,r4_54,r5_55,ra_35,sp_32
+		defs: r2_64,r25_59,r28_58,r30_61,r4_62,r5_63,ra_60,sp_57
+	word32 sp_72
+	word32 r28_73
+	word32 r25_74
+	word32 ra_75
+	word32 r30_76
+	word32 r4_77
+	word32 r5_78
+	word32 r2_79
+	call get_version (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_66,dwLoc20_7,r2_68,r25_71,r28_65,r30_61,r4_69,r5_70,ra_60,sp_57
+		defs: r2_79,r25_74,r28_73,r30_76,r4_77,r5_78,ra_75,sp_72
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):r2 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -10379,7 +10266,6 @@ l00404544_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004045DC:
-	word32 r25_124 = Mem109[0x100009EC:word32]
 	word32 sp_125
 	word32 r28_126
 	word32 r25_127
@@ -10391,7 +10277,7 @@ l004045DC:
 	word32 r2_133
 	word32 r7_134
 	word32 r3_135
-	call r25_124 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20,r2_117,r25_124,r28_100,r3_114,r30_93,r4_118,r5_120,r6_122,r7_123,ra_92,sp_89
 		defs: r2_133,r25_127,r28_126,r3_135,r30_129,r4_130,r5_131,r6_132,r7_134,ra_128,sp_125
 	Mem142[r4 + 0x00000558:word32] = Mem109[r4 + 0x00000558:word32] + -1
@@ -10407,7 +10293,6 @@ l004044D4_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004044F0:
-	word32 r25_67 = Mem0[0x100009EC:word32]
 	word32 sp_68
 	word32 r28_69
 	word32 r25_70
@@ -10419,7 +10304,7 @@ l004044F0:
 	word32 r2_76
 	word32 r7_77
 	word32 r3_78
-	call r25_67 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_60,r2_59,r25_67,r28_5,r3,r30_12,r4_61,r5_63,r6_65,r7_66,ra,sp_6
 		defs: r2_76,r25_70,r28_69,r3_78,r30_72,r4_73,r5_74,r6_75,r7_77,ra_71,sp_68
 // DataOut:
@@ -10434,7 +10319,6 @@ l00404458_ds_f:
 // LocalsOut: fp(32)
 
 l00404494:
-	word32 r25_40 = Mem0[0x100009EC:word32]
 	word32 sp_43
 	word32 r28_44
 	word32 r25_45
@@ -10446,7 +10330,7 @@ l00404494:
 	word32 r2_51
 	word32 r7_52
 	word32 r3_53
-	call r25_40 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20,r2_19,r25_40,r28_5,r3,r30_12,r4_33,r5_36,r6_38,r7_39,ra,sp_6
 		defs: r2_51,r25_45,r28_44,r3_53,r30_47,r4_48,r5_49,r6_50,r7_52,ra_46,sp_43
 // DataOut:
@@ -10521,20 +10405,7 @@ l004047D4_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l0040485C:
-	word32 sp_150
-	word32 r28_151
-	word32 r25_152
-	word32 ra_153
-	word32 r30_154
-	word32 r4_155
-	word32 r2_156
-	word32 r5_157
-	word32 r6_158
-	word32 r7_159
-	word32 r3_160
-	call snprintf (retsize: 0; depth: 56)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_143,dwLoc24_140,dwLoc28_137,r2_142,r25_149,r28_74,r3_134,r30_67,r4_144,r5_145,r6_147,r7_148,ra_66,sp_63
-		defs: r2_156,r25_152,r28_151,r3_160,r30_154,r4_155,r5_157,r6_158,r7_159,ra_153,sp_150
+	snprintf(r4_144, r5_145, r6_147, Mem163[sp_63:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:47 r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -10547,20 +10418,7 @@ l004047D4_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004047EC:
-	word32 sp_121
-	word32 r28_122
-	word32 r25_123
-	word32 ra_124
-	word32 r30_125
-	word32 r4_126
-	word32 r2_127
-	word32 r5_128
-	word32 r6_129
-	word32 r7_130
-	word32 r3_131
-	call snprintf (retsize: 0; depth: 56)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_114,dwLoc24_111,dwLoc28_108,r2_113,r25_120,r28_74,r3_105,r30_67,r4_115,r5_116,r6_118,r7_119,ra_66,sp_63
-		defs: r2_127,r25_123,r28_122,r3_131,r30_125,r4_126,r5_128,r6_129,r7_130,ra_124,sp_121
+	snprintf(r4_115, r5_116, r6_118, Mem164[sp_63:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:47 r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -10573,20 +10431,7 @@ l00404738_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00404774:
-	word32 sp_89
-	word32 r28_90
-	word32 r25_91
-	word32 ra_92
-	word32 r30_93
-	word32 r4_94
-	word32 r2_95
-	word32 r5_96
-	word32 r6_97
-	word32 r7_98
-	word32 r3_99
-	call snprintf (retsize: 0; depth: 56)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20,dwLoc24_82,dwLoc28_79,r2_81,r25_88,r28_74,r3_76,r30_67,r4_83,r5_84,r6_86,r7_87,ra_66,sp_63
-		defs: r2_95,r25_91,r28_90,r3_99,r30_93,r4_94,r5_96,r6_97,r7_98,ra_92,sp_89
+	snprintf(r4_83, r5_84, r6_86, Mem162[sp_63:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:r4 + 276 r4:<invalid> r5:<invalid> r6:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -10599,7 +10444,6 @@ l004046C4_ds_f:
 // LocalsOut: fp(32)
 
 l004046F8:
-	word32 r25_38 = Mem0[0x100009EC:word32]
 	word32 sp_43
 	word32 r28_44
 	word32 r25_45
@@ -10611,7 +10455,7 @@ l004046F8:
 	word32 r6_51
 	word32 r7_52
 	word32 r3_53
-	call r25_38 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20,dwLoc24,dwLoc28,r2_15,r25_38,r28_5,r3,r30_12,r4_31,r5_34,r6_36,r7_37,ra,sp_6
 		defs: r2_49,r25_45,r28_44,r3_53,r30_47,r4_48,r5_50,r6_51,r7_52,ra_46,sp_43
 // DataOut:
@@ -10700,7 +10544,6 @@ l0040495C_ds_t:
 // LocalsOut: fp(32) Local -0018(32) Stack +0000(32) Stack +0004(32) Stack +0008(32)
 
 l00404A58:
-	word32 r25_164 = Mem0[0x100009EC:word32]
 	word32 sp_165
 	word32 r28_166
 	word32 r25_167
@@ -10712,7 +10555,7 @@ l00404A58:
 	word32 r2_173
 	word32 r3_174
 	word32 r7_175
-	call r25_164 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_22,dwLoc20_7,r2_109,r25_164,r28_28,r3_106,r30_30,r4_158,r5_160,r6_162,r7_163,ra_29,sp_31
 		defs: r2_173,r25_167,r28_166,r3_174,r30_169,r4_170,r5_171,r6_172,r7_175,ra_168,sp_165
 // DataOut:
@@ -10962,7 +10805,6 @@ l00404D28_ds_t:
 // LocalsOut: fp(32)
 
 l00404F6C:
-	word32 r25_54 = Mem0[0x100009EC:word32]
 	word32 sp_58
 	word32 r28_59
 	word32 r25_60
@@ -10974,7 +10816,7 @@ l00404F6C:
 	word32 r3_66
 	word32 r6_67
 	word32 r7_68
-	call r25_54 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14,dwLoc18,dwLoc20_7,dwLoc28,r2_17,r25_54,r28_5,r3,r30_12,r4_47,r5_50,r6_52,r7_53,ra,sp_6
 		defs: r2_65,r25_60,r28_59,r3_66,r30_62,r4_63,r5_64,r6_67,r7_68,ra_61,sp_58
 // DataOut:
@@ -11121,7 +10963,6 @@ l00404E94_ds_f:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32)
 
 l00404EB0:
-	word32 r25_169 = Mem0[0x100009EC:word32]
 	word32 sp_170
 	word32 r28_171
 	word32 r25_172
@@ -11133,7 +10974,7 @@ l00404EB0:
 	word32 r3_178
 	word32 r6_179
 	word32 r7_180
-	call r25_169 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14_133,dwLoc18_112,dwLoc20_7,dwLoc28_162,r2_161,r25_169,r28_132,r3_160,r30_125,r4_163,r5_165,r6_167,r7_168,ra_124,sp_121
 		defs: r2_177,r25_172,r28_171,r3_178,r30_174,r4_175,r5_176,r6_179,r7_180,ra_173,sp_170
 // DataOut:
@@ -11148,7 +10989,6 @@ l00404E1C_ds_f:
 // LocalsOut: fp(32)
 
 l00404E54:
-	word32 r25_141 = Mem0[0x100009EC:word32]
 	word32 sp_142
 	word32 r28_143
 	word32 r25_144
@@ -11160,7 +11000,7 @@ l00404E54:
 	word32 r3_150
 	word32 r6_151
 	word32 r7_152
-	call r25_141 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14_133,dwLoc18_112,dwLoc20_7,dwLoc28,r2_134,r25_141,r28_132,r3_129,r30_125,r4_135,r5_137,r6_139,r7_140,ra_124,sp_121
 		defs: r2_149,r25_144,r28_143,r3_150,r30_146,r4_147,r5_148,r6_151,r7_152,ra_145,sp_142
 // DataOut:
@@ -11175,7 +11015,6 @@ l00404D38_ds_f:
 // LocalsOut: fp(32)
 
 l00404D70:
-	word32 r25_98 = Mem0[0x100009EC:word32]
 	word32 sp_99
 	word32 r28_100
 	word32 r25_101
@@ -11187,7 +11026,7 @@ l00404D70:
 	word32 r3_107
 	word32 r6_108
 	word32 r7_109
-	call r25_98 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14,dwLoc18_90,dwLoc20_7,dwLoc28,r2_91,r25_98,r28_89,r3_86,r30_82,r4_92,r5_94,r6_96,r7_97,ra_81,sp_78
 		defs: r2_106,r25_101,r28_100,r3_107,r30_103,r4_104,r5_105,r6_108,r7_109,ra_102,sp_99
 // DataOut:
@@ -11254,7 +11093,6 @@ l00404FF8_ds_t:
 // LocalsOut: fp(32)
 
 l00405210:
-	word32 r25_54 = Mem0[0x100009EC:word32]
 	word32 sp_58
 	word32 r28_59
 	word32 r25_60
@@ -11266,7 +11104,7 @@ l00405210:
 	word32 r3_66
 	word32 r6_67
 	word32 r7_68
-	call r25_54 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14,dwLoc18,dwLoc20_7,dwLoc28,r2_17,r25_54,r28_5,r3,r30_12,r4_47,r5_50,r6_52,r7_53,ra,sp_6
 		defs: r2_65,r25_60,r28_59,r3_66,r30_62,r4_63,r5_64,r6_67,r7_68,ra_61,sp_58
 // DataOut:
@@ -11413,7 +11251,6 @@ l00405164_ds_f:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32)
 
 l00405180:
-	word32 r25_169 = Mem0[0x100009EC:word32]
 	word32 sp_170
 	word32 r28_171
 	word32 r25_172
@@ -11425,7 +11262,7 @@ l00405180:
 	word32 r3_178
 	word32 r6_179
 	word32 r7_180
-	call r25_169 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14_133,dwLoc18_112,dwLoc20_7,dwLoc28_162,r2_161,r25_169,r28_132,r3_160,r30_125,r4_163,r5_165,r6_167,r7_168,ra_124,sp_121
 		defs: r2_177,r25_172,r28_171,r3_178,r30_174,r4_175,r5_176,r6_179,r7_180,ra_173,sp_170
 // DataOut:
@@ -11440,7 +11277,6 @@ l004050EC_ds_f:
 // LocalsOut: fp(32)
 
 l00405124:
-	word32 r25_141 = Mem0[0x100009EC:word32]
 	word32 sp_142
 	word32 r28_143
 	word32 r25_144
@@ -11452,7 +11288,7 @@ l00405124:
 	word32 r3_150
 	word32 r6_151
 	word32 r7_152
-	call r25_141 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14_133,dwLoc18_112,dwLoc20_7,dwLoc28,r2_134,r25_141,r28_132,r3_129,r30_125,r4_135,r5_137,r6_139,r7_140,ra_124,sp_121
 		defs: r2_149,r25_144,r28_143,r3_150,r30_146,r4_147,r5_148,r6_151,r7_152,ra_145,sp_142
 // DataOut:
@@ -11467,7 +11303,6 @@ l00405008_ds_f:
 // LocalsOut: fp(32)
 
 l00405040:
-	word32 r25_98 = Mem0[0x100009EC:word32]
 	word32 sp_99
 	word32 r28_100
 	word32 r25_101
@@ -11479,7 +11314,7 @@ l00405040:
 	word32 r3_107
 	word32 r6_108
 	word32 r7_109
-	call r25_98 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14,dwLoc18_90,dwLoc20_7,dwLoc28,r2_91,r25_98,r28_89,r3_86,r30_82,r4_92,r5_94,r6_96,r7_97,ra_81,sp_78
 		defs: r2_106,r25_101,r28_100,r3_107,r30_103,r4_104,r5_105,r6_108,r7_109,ra_102,sp_99
 // DataOut:
@@ -11716,7 +11551,6 @@ l00405454_ds_f:
 // LocalsOut: fp(32)
 
 l00405468:
-	word32 r25_64 = Mem0[0x100009EC:word32]
 	word32 sp_65
 	word32 r28_66
 	word32 r25_67
@@ -11728,7 +11562,7 @@ l00405468:
 	word32 r2_73
 	word32 r3_74
 	word32 r7_75
-	call r25_64 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc14_33,dwLoc18,dwLoc20_7,dwLoc28_57,r2_56,r25_64,r28_32,r3_54,r30_25,r4_58,r5_60,r6_62,r7_63,ra_24,sp_21
 		defs: r2_73,r25_67,r28_66,r3_74,r30_69,r4_70,r5_71,r6_72,r7_75,ra_68,sp_65
 // DataOut:
@@ -12106,7 +11940,6 @@ l00405C40_ds_f:
 // LocalsOut: fp(32)
 
 l00405C50:
-	word32 r25_368 = Mem332[0x100009EC:word32]
 	word32 sp_369
 	word32 r28_370
 	word32 r25_371
@@ -12118,7 +11951,7 @@ l00405C50:
 	word32 r3_377
 	word32 r6_378
 	word32 r7_379
-	call r25_368 (retsize: 0; depth: 368)
+	call print_log (retsize: 0; depth: 368)
 		uses: bLoc0148_199,bLoc37_36,bLoc38_35,dwLoc014C_337,dwLoc0150_96,dwLoc0158_7,dwLoc0160_361,dwLoc08_9,dwLoc0C_11,dwLoc18_336,dwLoc1C_308,dwLoc20_245,dwLoc24_223,dwLoc28_197,dwLoc2C_335,dwLoc30_78,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_328,r2_360,r25_368,r28_343,r3_357,r30_345,r4_362,r5_364,r6_366,r7_367,ra_344,sp_346
 		defs: r2_376,r25_371,r28_370,r3_377,r30_373,r4_374,r5_375,r6_378,r7_379,ra_372,sp_369
 // DataOut:
@@ -12267,7 +12100,6 @@ l00405858_ds_f:
 // LocalsOut: fp(32)
 
 l004058D8:
-	word32 r25_271 = Mem0[0x100009EC:word32]
 	word32 sp_272
 	word32 r28_273
 	word32 r25_274
@@ -12279,7 +12111,7 @@ l004058D8:
 	word32 r3_280
 	word32 r6_281
 	word32 r7_282
-	call r25_271 (retsize: 0; depth: 368)
+	call print_log (retsize: 0; depth: 368)
 		uses: bLoc0148_199,bLoc37_36,bLoc38_35,dwLoc014C_128,dwLoc0150_96,dwLoc0158_7,dwLoc0160_264,dwLoc08_9,dwLoc0C_11,dwLoc18_127,dwLoc1C_125,dwLoc20_245,dwLoc24_223,dwLoc28_197,dwLoc2C_126,dwLoc30_78,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_261,r2_263,r25_271,r28_260,r3_257,r30_253,r4_265,r5_267,r6_269,r7_270,ra_252,sp_249
 		defs: r2_279,r25_274,r28_273,r3_280,r30_276,r4_277,r5_278,r6_281,r7_282,ra_275,sp_272
 // DataOut:
@@ -12325,7 +12157,6 @@ l00405698_ds_f:
 // LocalsOut: fp(32)
 
 l004056D0:
-	word32 r25_106 = Mem0[0x100009EC:word32]
 	word32 sp_107
 	word32 r28_108
 	word32 r25_109
@@ -12337,7 +12168,7 @@ l004056D0:
 	word32 r3_115
 	word32 r6_116
 	word32 r7_117
-	call r25_106 (retsize: 0; depth: 368)
+	call print_log (retsize: 0; depth: 368)
 		uses: bLoc0148,bLoc37_36,bLoc38_35,dwLoc014C,dwLoc0150_96,dwLoc0158_7,dwLoc0160_99,dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C,dwLoc30_78,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_79,r2_98,r25_106,r28_95,r3_92,r30_88,r4_100,r5_102,r6_104,r7_105,ra_87,sp_84
 		defs: r2_114,r25_109,r28_108,r3_115,r30_111,r4_112,r5_113,r6_116,r7_117,ra_110,sp_107
 // DataOut:
@@ -12352,7 +12183,6 @@ l0040556C_ds_f:
 // LocalsOut: fp(32)
 
 l004055B4:
-	word32 r25_584 = Mem0[0x100009EC:word32]
 	word32 sp_585
 	word32 r28_586
 	word32 r25_587
@@ -12364,7 +12194,7 @@ l004055B4:
 	word32 r3_593
 	word32 r6_594
 	word32 r7_595
-	call r25_584 (retsize: 0; depth: 368)
+	call print_log (retsize: 0; depth: 368)
 		uses: bLoc0148,bLoc37_36,bLoc38_35,dwLoc014C,dwLoc0150,dwLoc0158_7,dwLoc0160,dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C,dwLoc30_37,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48,r2_577,r25_584,r28_575,r3_572,r30_568,r4_578,r5_580,r6_582,r7_583,ra_567,sp_564
 		defs: r2_592,r25_587,r28_586,r3_593,r30_589,r4_590,r5_591,r6_594,r7_595,ra_588,sp_585
 // DataOut:
@@ -12547,7 +12377,6 @@ l00405E54_ds_f:
 // LocalsOut: fp(32) Local -001C(32) Local -0028(32) Stack +0000(32) Stack +0004(32)
 
 l00405E64:
-	word32 r25_400 = Mem0[0x10000A9C:word32]
 	word32 sp_401
 	word32 r28_402
 	word32 r25_403
@@ -12561,7 +12390,7 @@ l00405E64:
 	word32 r1_411
 	word32 r6_412
 	word32 r7_413
-	call r25_400 (retsize: 0; depth: 72)
+	call properties_print_usage (retsize: 0; depth: 72)
 		uses: bLoc1C_107,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_31,dwLoc18_109,dwLoc20_30,dwLoc24_40,dwLoc28_110,dwLoc30_7,dwLoc38,r1_34,r16_43,r2_398,r25_400,r28_37,r3_111,r30_42,r4_399,r5_35,r6_33,r7_32,ra_41,sp_44
 		defs: r1_411,r16_406,r2_409,r25_403,r28_402,r3_410,r30_405,r4_407,r5_408,r6_412,r7_413,ra_404,sp_401
 	exit(r4_415)
@@ -12638,7 +12467,6 @@ l004061DC_ds_f:
 // LocalsOut: fp(32) Local -001C(32) Stack +0004(32)
 
 l004061EC:
-	word32 r25_164 = Mem0[0x100009EC:word32]
 	word32 sp_165
 	word32 r28_166
 	word32 r25_167
@@ -12652,10 +12480,9 @@ l004061EC:
 	word32 r1_175
 	word32 r6_176
 	word32 r7_177
-	call r25_164 (retsize: 0; depth: 72)
+	call print_log (retsize: 0; depth: 72)
 		uses: bLoc1C_107,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_129,dwLoc18_109,dwLoc20_128,dwLoc24_138,dwLoc28_137,dwLoc30_7,dwLoc38_157,r1_132,r16_141,r2_156,r25_164,r28_135,r3_153,r30_140,r4_158,r5_160,r6_162,r7_163,ra_139,sp_142
 		defs: r1_175,r16_170,r2_173,r25_167,r28_166,r3_174,r30_169,r4_171,r5_172,r6_176,r7_177,ra_168,sp_165
-	word32 r25_181 = Mem0[0x10000A9C:word32]
 	word32 sp_182
 	word32 r28_183
 	word32 r25_184
@@ -12669,7 +12496,7 @@ l004061EC:
 	word32 r1_192
 	word32 r6_193
 	word32 r7_194
-	call r25_181 (retsize: 0; depth: 72)
+	call properties_print_usage (retsize: 0; depth: 72)
 		uses: bLoc1C_107,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_129,dwLoc18_109,dwLoc20_128,dwLoc24_138,dwLoc28_137,dwLoc30_7,dwLoc38_157,r1_175,r16_170,r2_179,r25_181,r28_178,r3_174,r30_169,r4_180,r5_172,r6_176,r7_177,ra_168,sp_165
 		defs: r1_192,r16_187,r2_190,r25_184,r28_183,r3_191,r30_186,r4_188,r5_189,r6_193,r7_194,ra_185,sp_182
 // DataOut:
@@ -13295,7 +13122,6 @@ l00406798:
 	word32 r2_80 = Mem76[Mem76[0x10000914:word32]:word32]
 	word32 r1_81 = Mem76[0x10000A20:word32]
 	Mem82[r1_81:word32] = r2_80
-	word32 r25_88 = Mem82[0x100009EC:word32]
 	word32 sp_89
 	word32 r28_90
 	word32 r25_91
@@ -13307,7 +13133,7 @@ l00406798:
 	word32 r5_97
 	word32 r1_98
 	word32 r6_99
-	call r25_88 (retsize: 0; depth: 40)
+	call print_log (retsize: 0; depth: 40)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r1_81,r2_80,r25_88,r28_74,r3_70,r30_67,r4_83,r5_85,r6_87,ra_66,sp_63
 		defs: r1_98,r2_95,r25_91,r28_90,r3_96,r30_93,r4_94,r5_97,r6_99,ra_92,sp_89
 // DataOut:
@@ -13402,7 +13228,6 @@ l004068CC:
 // LocalsOut: fp(32)
 
 l00406944:
-	word32 r25_32 = Mem0[0x100008D0:word32]
 	word32 sp_33
 	word32 r28_34
 	word32 r25_35
@@ -13412,7 +13237,7 @@ l00406944:
 	word32 r2_39
 	word32 r3_40
 	word32 r5_41
-	call r25_32 (retsize: 0; depth: 296)
+	call open_log (retsize: 0; depth: 296)
 		uses: dwLoc0118_7,dwLoc08_9,dwLoc0C_11,r2_29,r25_32,r28_26,r3_24,r30_21,r4_31,r5_25,ra_20,sp_17
 		defs: r2_39,r25_35,r28_34,r3_40,r30_37,r4_38,r5_41,ra_36,sp_33
 	return
@@ -13511,9 +13336,7 @@ l00406B10:
 // LocalsOut: fp(32) Local -0020(32)
 
 l00406B20:
-	word32 r3_176 = Mem147[Mem147[0x10000878:word32] + 2084:word32]
-	word32 r2_177 = (word32) (dwLoc20_169 >> 0x0A < r3_176)
-	branch r2_177 == 0x00000000 l00406B20_ds_t
+	branch (word32) (dwLoc20_169 >> 0x0A < Mem147[Mem147[0x10000878:word32] + 2084:word32]) == 0x00000000 l00406B20_ds_t
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -104 r25:<invalid> r28:0x10008860 r30:fp + -104 r16:r5 r17:r7 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> r3:<invalid> Sequence hi:lo:<invalid> r1:<invalid> -88(fp):<invalid> -84(fp):r7 -80(fp):0x10008860 -32(fp):<invalid> -20(fp):r16 -16(fp):r17 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -13532,24 +13355,7 @@ l00406B20_ds_f:
 // LocalsOut: fp(32)
 
 l00406B4C:
-	word32 sp_180
-	word32 r28_181
-	word32 r25_182
-	word32 ra_183
-	word32 r30_184
-	word32 r17_185
-	word32 r16_186
-	word32 r4_187
-	word32 r5_188
-	word32 r6_189
-	word32 r2_190
-	word32 r7_191
-	word32 r3_192
-	word32 hi_193
-	word32 r1_194
-	call ftell (retsize: 0; depth: 104)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc20_171,dwLoc24,dwLoc50_7,dwLoc54_100,dwLoc58_99,hi_138,r1_146,r16_131,r17_130,r2_177,r25_179,r28_140,r3_176,r30_129,r4_178,r5_133,r6_134,r7_136,ra_128,sp_125
-		defs: hi_193,r1_194,r16_186,r17_185,r2_190,r25_182,r28_181,r3_192,r30_184,r4_187,r5_188,r6_189,r7_191,ra_183,sp_180
+	ftell(r4_178)
 	word32 r3_197 = Mem147[Mem147[0x10000A28:word32]:word32]
 	word32 r2_198 = (word32) (r2_190 < r3_197)
 	branch r2_198 != 0x00000000 l00406B4C_ds_t
@@ -13578,7 +13384,6 @@ l00406B4C_ds_f:
 // LocalsOut: fp(32)
 
 l00406B84:
-	word32 r25_200 = Mem147[0x10000A70:word32]
 	word32 sp_201
 	word32 r28_202
 	word32 r25_203
@@ -13594,7 +13399,7 @@ l00406B84:
 	word32 r3_213
 	word32 hi_214
 	word32 r1_215
-	call r25_200 (retsize: 0; depth: 104)
+	call log_rotate (retsize: 0; depth: 104)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc20_171,dwLoc24,dwLoc50_7,dwLoc54_100,dwLoc58_99,hi_193,r1_194,r16_186,r17_185,r2_198,r25_200,r28_195,r3_197,r30_184,r4_199,r5_188,r6_189,r7_191,ra_183,sp_180
 		defs: hi_214,r1_215,r16_207,r17_206,r2_211,r25_203,r28_202,r3_213,r30_205,r4_208,r5_209,r6_210,r7_212,ra_204,sp_201
 // DataOut:
@@ -13680,7 +13485,6 @@ l00406BF0_ds_f:
 // LocalsOut: fp(32)
 
 l00406C4C:
-	word32 r25_55 = Mem0[0x100009EC:word32]
 	word32 sp_56
 	word32 r28_57
 	word32 r25_58
@@ -13692,7 +13496,7 @@ l00406C4C:
 	word32 r7_64
 	word32 r2_65
 	word32 r3_66
-	call r25_55 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_50,dwLoc20_7,r2_36,r25_55,r28_34,r3_33,r30_27,r4_51,r5_54,r6_30,r7_31,ra_26,sp_23
 		defs: r2_65,r25_58,r28_57,r3_66,r30_60,r4_61,r5_62,r6_63,r7_64,ra_59,sp_56
 // DataOut:
@@ -13799,7 +13603,6 @@ l00406F34:
 	__errno_location()
 	__errno_location()
 	strerror(r4_257)
-	word32 r25_282 = Mem0[0x100009EC:word32]
 	word32 sp_283
 	word32 r28_284
 	word32 r25_285
@@ -13812,7 +13615,7 @@ l00406F34:
 	word32 r2_292
 	word32 r3_293
 	word32 r7_294
-	call r25_282 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24_275,dwLoc28_274,r16_264,r2_273,r25_282,r28_271,r3_272,r30_263,r4_276,r5_278,r6_280,r7_281,ra_262,sp_259
 		defs: r16_288,r2_292,r25_285,r28_284,r3_293,r30_287,r4_289,r5_290,r6_291,r7_294,ra_286,sp_283
 // DataOut:
@@ -13830,7 +13633,6 @@ l00406E74:
 	__errno_location()
 	__errno_location()
 	strerror(r4_171)
-	word32 r25_196 = Mem0[0x100009EC:word32]
 	word32 sp_197
 	word32 r28_198
 	word32 r25_199
@@ -13843,7 +13645,7 @@ l00406E74:
 	word32 r2_206
 	word32 r3_207
 	word32 r7_208
-	call r25_196 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24_189,dwLoc28_188,r16_178,r2_187,r25_196,r28_185,r3_186,r30_177,r4_190,r5_192,r6_194,r7_195,ra_176,sp_173
 		defs: r16_202,r2_206,r25_199,r28_198,r3_207,r30_201,r4_203,r5_204,r6_205,r7_208,ra_200,sp_197
 // DataOut:
@@ -13861,7 +13663,6 @@ l00406DA8:
 	__errno_location()
 	__errno_location()
 	strerror(r4_83)
-	word32 r25_108 = Mem0[0x100009EC:word32]
 	word32 sp_109
 	word32 r28_110
 	word32 r25_111
@@ -13874,7 +13675,7 @@ l00406DA8:
 	word32 r2_118
 	word32 r3_119
 	word32 r7_120
-	call r25_108 (retsize: 0; depth: 56)
+	call print_log (retsize: 0; depth: 56)
 		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24_101,dwLoc28_100,r16_90,r2_99,r25_108,r28_97,r3_98,r30_89,r4_102,r5_104,r6_106,r7_107,ra_88,sp_85
 		defs: r16_114,r2_118,r25_111,r28_110,r3_119,r30_113,r4_115,r5_116,r6_117,r7_120,ra_112,sp_109
 // DataOut:
@@ -13981,7 +13782,6 @@ server_destroy_entry:
 // LocalsOut: fp(32)
 
 l0040708C:
-	word32 r25_25 = Mem0[0x100009EC:word32]
 	word32 sp_26
 	word32 r28_27
 	word32 r25_28
@@ -13992,10 +13792,9 @@ l0040708C:
 	word32 r5_33
 	word32 r6_34
 	word32 r7_35
-	call r25_25 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_18,r2_17,r25_25,r28_5,r30_12,r4_19,r5_21,r6_23,r7_24,ra,sp_6
 		defs: r2_32,r25_28,r28_27,r30_30,r4_31,r5_33,r6_34,r7_35,ra_29,sp_26
-	word32 r25_38 = Mem0[0x10000974:word32]
 	word32 sp_39
 	word32 r28_40
 	word32 r25_41
@@ -14006,7 +13805,7 @@ l0040708C:
 	word32 r5_46
 	word32 r6_47
 	word32 r7_48
-	call r25_38 (retsize: 0; depth: 48)
+	call server_close (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_18,r2_32,r25_38,r28_36,r30_30,r4_37,r5_33,r6_34,r7_35,ra_29,sp_26
 		defs: r2_45,r25_41,r28_40,r30_43,r4_44,r5_46,r6_47,r7_48,ra_42,sp_39
 	free(r4_50)
@@ -14065,7 +13864,6 @@ l00407150_ds_f:
 // LocalsOut: fp(32)
 
 l0040719C:
-	word32 r25_41 = Mem0[0x100009EC:word32]
 	word32 sp_42
 	word32 r28_43
 	word32 r25_44
@@ -14074,7 +13872,7 @@ l0040719C:
 	word32 r4_47
 	word32 r2_48
 	word32 r5_49
-	call r25_41 (retsize: 0; depth: 48)
+	call print_log (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_36,dwLoc20_7,r2_25,r25_41,r28_23,r30_19,r4_37,r5_40,ra_18,sp_15
 		defs: r2_48,r25_44,r28_43,r30_46,r4_47,r5_49,ra_45,sp_42
 // DataOut:
@@ -14386,21 +14184,19 @@ slist_delete_entry:
 // LocalsOut: fp(32)
 
 l004074AC:
-	word32 r25_20 = Mem0[0x10000970:word32]
-	word32 sp_21
-	word32 r28_22
-	word32 r25_23
-	word32 ra_24
-	word32 r30_25
-	word32 r4_26
-	word32 r5_27
-	word32 r2_28
-	word32 r6_29
-	word32 r7_30
-	call r25_20 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_20,r28_5,r30_12,r4_17,r5_18,ra,sp_6
-		defs: r2_28,r25_23,r28_22,r30_25,r4_26,r5_27,r6_29,r7_30,ra_24,sp_21
-	word32 r25_40 = Mem0[0x100009EC:word32]
+	word32 sp_20
+	word32 r28_21
+	word32 r25_22
+	word32 ra_23
+	word32 r30_24
+	word32 r4_25
+	word32 r5_26
+	word32 r2_27
+	word32 r6_28
+	word32 r7_29
+	call slist_remove (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_19,r28_5,r30_12,r4_17,r5_18,ra,sp_6
+		defs: r2_27,r25_22,r28_21,r30_24,r4_25,r5_26,r6_28,r7_29,ra_23,sp_20
 	word32 sp_41
 	word32 r28_42
 	word32 r25_43
@@ -14411,10 +14207,9 @@ l004074AC:
 	word32 r2_48
 	word32 r6_49
 	word32 r7_50
-	call r25_40 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_33,r2_32,r25_40,r28_31,r30_25,r4_34,r5_36,r6_38,r7_39,ra_24,sp_21
+	call print_log (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_32,r2_31,r25_40,r28_30,r30_24,r4_33,r5_36,r6_38,r7_39,ra_23,sp_20
 		defs: r2_48,r25_43,r28_42,r30_45,r4_46,r5_47,r6_49,r7_50,ra_44,sp_41
-	word32 r25_53 = Mem0[0x10000A00:word32]
 	word32 sp_54
 	word32 r28_55
 	word32 r25_56
@@ -14425,8 +14220,8 @@ l004074AC:
 	word32 r2_61
 	word32 r6_62
 	word32 r7_63
-	call r25_53 (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_33,r2_48,r25_53,r28_51,r30_45,r4_52,r5_47,r6_49,r7_50,ra_44,sp_41
+	call server_destroy (retsize: 0; depth: 48)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,dwLoc20_32,r2_48,r25_53,r28_51,r30_45,r4_52,r5_47,r6_49,r7_50,ra_44,sp_41
 		defs: r2_61,r25_56,r28_55,r30_58,r4_59,r5_60,r6_62,r7_63,ra_57,sp_54
 	return
 // DataOut:
@@ -14474,7 +14269,6 @@ l00407568_ds_t:
 // LocalsOut: fp(32) Local -0018(32)
 
 l004075B8:
-	word32 r25_32 = Mem0[0x10000974:word32]
 	word32 sp_33
 	word32 r28_34
 	word32 r25_35
@@ -14482,7 +14276,7 @@ l004075B8:
 	word32 r30_37
 	word32 r4_38
 	word32 r2_39
-	call r25_32 (retsize: 0; depth: 48)
+	call server_close (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_22,dwLoc20_7,r2_26,r25_32,r28_21,r30_24,r4_31,ra_23,sp_25
 		defs: r2_39,r25_35,r28_34,r30_37,r4_38,ra_36,sp_33
 	dwLoc18_18 = Mem0[dwLoc18_18 + 0x00000018:word32]
@@ -14549,7 +14343,6 @@ l00407600_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00407658:
-	word32 r25_39 = Mem0[0x100008E0:word32]
 	word32 sp_40
 	word32 r28_41
 	word32 r25_42
@@ -14558,7 +14351,7 @@ l00407658:
 	word32 r4_45
 	word32 r2_46
 	word32 r5_47
-	call r25_39 (retsize: 0; depth: 48)
+	call slist_delete (retsize: 0; depth: 48)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_36,dwLoc20_7,r2_35,r25_39,r28_24,r30_26,r4_37,r5_38,ra_25,sp_27
 		defs: r2_46,r25_42,r28_41,r30_44,r4_45,r5_47,ra_43,sp_40
 // DataOut:
@@ -14605,27 +14398,25 @@ slist_destroy_entry:
 // LocalsOut: fp(32)
 
 l004076A8:
-	word32 r25_17 = Mem0[0x10000984:word32]
-	word32 sp_18
-	word32 r28_19
-	word32 r25_20
-	word32 ra_21
-	word32 r30_22
-	word32 r4_23
-	call r25_17 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_17,r28_5,r30_12,r4_15,ra,sp_6
-		defs: r25_20,r28_19,r30_22,r4_23,ra_21,sp_18
-	word32 r25_26 = Mem0[0x10000A04:word32]
-	word32 sp_27
-	word32 r28_28
-	word32 r25_29
-	word32 ra_30
-	word32 r30_31
-	word32 r4_32
-	call r25_26 (retsize: 0; depth: 40)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_26,r28_24,r30_22,r4_25,ra_21,sp_18
-		defs: r25_29,r28_28,r30_31,r4_32,ra_30,sp_27
-	free(r4_34)
+	word32 sp_17
+	word32 r28_18
+	word32 r25_19
+	word32 ra_20
+	word32 r30_21
+	word32 r4_22
+	call slist_close_all (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_16,r28_5,r30_12,r4_15,ra,sp_6
+		defs: r25_19,r28_18,r30_21,r4_22,ra_20,sp_17
+	word32 sp_26
+	word32 r28_27
+	word32 r25_28
+	word32 ra_29
+	word32 r30_30
+	word32 r4_31
+	call slist_destroy_all (retsize: 0; depth: 40)
+		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_7,r25_25,r28_23,r30_21,r4_24,ra_20,sp_17
+		defs: r25_28,r28_27,r30_30,r4_31,ra_29,sp_26
+	free(r4_33)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -15218,37 +15009,36 @@ __addsf3_entry:
 // LocalsOut: fp(32)
 
 l00407A38:
-	word32 r17_11 = Mem0[0x100009DC:word32]
-	word32 sp_23
-	word32 r28_24
-	word32 r25_25
-	word32 r17_26
-	word32 ra_27
-	word32 r16_28
-	word32 r4_29
-	word32 r5_30
-	word64 f12_31
-	word64 f14_32
-	word32 r6_33
-	word32 r2_34
-	call r17_11 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12,f14,r16,r17_11,r25_20,r28_5,r4_16,r5_17,ra,sp_6
-		defs: f12_31,f14_32,r16_28,r17_26,r2_34,r25_25,r28_24,r4_29,r5_30,r6_33,ra_27,sp_23
-	word32 sp_40
-	word32 r28_41
-	word32 r25_42
-	word32 r17_43
-	word32 ra_44
-	word32 r16_45
-	word32 r4_46
-	word32 r5_47
-	word64 f12_48
-	word64 f14_49
-	word32 r6_50
-	word32 r2_51
-	call r17_26 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_31,f14_32,r16_36,r17_26,r2_34,r25_38,r28_35,r4_37,r5_39,r6_33,ra_27,sp_23
-		defs: f12_48,f14_49,r16_45,r17_43,r2_51,r25_42,r28_41,r4_46,r5_47,r6_50,ra_44,sp_40
+	word32 sp_22
+	word32 r28_23
+	word32 r25_24
+	word32 r17_25
+	word32 ra_26
+	word32 r16_27
+	word32 r4_28
+	word32 r5_29
+	word64 f12_30
+	word64 f14_31
+	word32 r6_32
+	word32 r2_33
+	call __unpack_f (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12,f14,r16,r17_10,r25_19,r28_5,r4_15,r5_16,ra,sp_6
+		defs: f12_30,f14_31,r16_27,r17_25,r2_33,r25_24,r28_23,r4_28,r5_29,r6_32,ra_26,sp_22
+	word32 sp_39
+	word32 r28_40
+	word32 r25_41
+	word32 r17_42
+	word32 ra_43
+	word32 r16_44
+	word32 r4_45
+	word32 r5_46
+	word64 f12_47
+	word64 f14_48
+	word32 r6_49
+	word32 r2_50
+	call r17_25 (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12_30,f14_31,r16_35,r17_25,r2_33,r25_37,r28_34,r4_36,r5_38,r6_32,ra_26,sp_22
+		defs: f12_47,f14_48,r16_44,r17_42,r2_50,r25_41,r28_40,r4_45,r5_46,r6_49,ra_43,sp_39
 	word32 sp_58
 	word32 r28_59
 	word32 r25_60
@@ -15262,9 +15052,8 @@ l00407A38:
 	word32 r6_68
 	word32 r2_69
 	call Mem0[0x1000087C:word32] + 30688 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_48,f14_49,r16_45,r17_43,r2_51,r25_54,r28_52,r4_56,r5_55,r6_57,ra_44,sp_40
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12_47,f14_48,r16_44,r17_42,r2_50,r25_54,r28_51,r4_56,r5_55,r6_57,ra_43,sp_39
 		defs: f12_66,f14_67,r16_63,r17_61,r2_69,r25_60,r28_59,r4_64,r5_65,r6_68,ra_62,sp_58
-	word32 r25_71 = Mem0[0x100009AC:word32]
 	word32 sp_73
 	word32 r28_74
 	word32 r25_75
@@ -15277,8 +15066,8 @@ l00407A38:
 	word64 f14_82
 	word32 r6_83
 	word32 r2_84
-	call r25_71 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_66,f14_67,r16_63,r17_61,r2_69,r25_71,r28_70,r4_72,r5_65,r6_68,ra_62,sp_58
+	call __pack_f (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12_66,f14_67,r16_63,r17_61,r2_69,r25_71,r28_70,r4_72,r5_65,r6_68,ra_62,sp_58
 		defs: f12_81,f14_82,r16_78,r17_76,r2_84,r25_75,r28_74,r4_79,r5_80,r6_83,ra_77,sp_73
 	return
 // DataOut:
@@ -15306,37 +15095,36 @@ __subsf3_entry:
 // LocalsOut: fp(32) Local -0034(32)
 
 l00407AE0:
-	word32 r17_11 = Mem0[0x100009DC:word32]
-	word32 sp_23
-	word32 r28_24
-	word32 r25_25
-	word32 r17_26
-	word32 ra_27
-	word32 r16_28
-	word32 r4_29
-	word32 r5_30
-	word64 f12_31
-	word64 f14_32
-	word32 r2_33
-	word32 r6_34
-	call r17_11 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12,f14,r16,r17_11,r25_20,r28_5,r4_16,r5_17,ra,sp_6
-		defs: f12_31,f14_32,r16_28,r17_26,r2_33,r25_25,r28_24,r4_29,r5_30,r6_34,ra_27,sp_23
-	word32 sp_40
-	word32 r28_41
-	word32 r25_42
-	word32 r17_43
-	word32 ra_44
-	word32 r16_45
-	word32 r4_46
-	word32 r5_47
-	word64 f12_48
-	word64 f14_49
-	word32 r2_50
-	word32 r6_51
-	call r17_26 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_31,f14_32,r16_36,r17_26,r2_33,r25_38,r28_35,r4_37,r5_39,r6_34,ra_27,sp_23
-		defs: f12_48,f14_49,r16_45,r17_43,r2_50,r25_42,r28_41,r4_46,r5_47,r6_51,ra_44,sp_40
+	word32 sp_22
+	word32 r28_23
+	word32 r25_24
+	word32 r17_25
+	word32 ra_26
+	word32 r16_27
+	word32 r4_28
+	word32 r5_29
+	word64 f12_30
+	word64 f14_31
+	word32 r2_32
+	word32 r6_33
+	call __unpack_f (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12,f14,r16,r17_10,r25_19,r28_5,r4_15,r5_16,ra,sp_6
+		defs: f12_30,f14_31,r16_27,r17_25,r2_32,r25_24,r28_23,r4_28,r5_29,r6_33,ra_26,sp_22
+	word32 sp_39
+	word32 r28_40
+	word32 r25_41
+	word32 r17_42
+	word32 ra_43
+	word32 r16_44
+	word32 r4_45
+	word32 r5_46
+	word64 f12_47
+	word64 f14_48
+	word32 r2_49
+	word32 r6_50
+	call r17_25 (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12_30,f14_31,r16_35,r17_25,r2_32,r25_37,r28_34,r4_36,r5_38,r6_33,ra_26,sp_22
+		defs: f12_47,f14_48,r16_44,r17_42,r2_49,r25_41,r28_40,r4_45,r5_46,r6_50,ra_43,sp_39
 	word32 sp_62
 	word32 r28_63
 	word32 r25_64
@@ -15350,9 +15138,8 @@ l00407AE0:
 	word32 r2_72
 	word32 r6_73
 	call Mem0[0x1000087C:word32] + 30688 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc34_61,dwLoc50_7,f12_48,f14_49,r16_45,r17_43,r2_58,r25_54,r28_52,r4_59,r5_57,r6_60,ra_44,sp_40
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc34_61,dwLoc50_7,f12_47,f14_48,r16_44,r17_42,r2_58,r25_54,r28_51,r4_59,r5_57,r6_60,ra_43,sp_39
 		defs: f12_70,f14_71,r16_67,r17_65,r2_72,r25_64,r28_63,r4_68,r5_69,r6_73,ra_66,sp_62
-	word32 r25_75 = Mem0[0x100009AC:word32]
 	word32 sp_77
 	word32 r28_78
 	word32 r25_79
@@ -15365,8 +15152,8 @@ l00407AE0:
 	word64 f14_86
 	word32 r2_87
 	word32 r6_88
-	call r25_75 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc34_61,dwLoc50_7,f12_70,f14_71,r16_67,r17_65,r2_72,r25_75,r28_74,r4_76,r5_69,r6_73,ra_66,sp_62
+	call __pack_f (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc34_61,dwLoc50_7,f12_70,f14_71,r16_67,r17_65,r2_72,r25_75,r28_74,r4_76,r5_69,r6_73,ra_66,sp_62
 		defs: f12_85,f14_86,r16_82,r17_80,r2_87,r25_79,r28_78,r4_83,r5_84,r6_88,ra_81,sp_77
 	return
 // DataOut:
@@ -15394,47 +15181,46 @@ __mulsf3_entry:
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -0038(32) Local -003C(32) Local -0040(32) Local -0044(32) Local -0048(32)
 
 l00407BA0:
-	word32 r17_11 = Mem0[0x100009DC:word32]
-	word32 sp_23
-	word32 r28_24
-	word32 r25_25
-	word32 r17_26
-	word32 ra_27
-	word32 r16_28
-	word32 r4_29
-	word32 r5_30
-	word64 f12_31
-	word64 f14_32
-	word32 r2_33
-	word32 r7_34
-	word32 r3_35
-	word32 r6_36
-	word32 hi_37
-	word32 lo_38
-	call r17_11 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12,f14,r16,r17_11,r25_20,r28_5,r4_16,r5_17,ra,sp_6
-		defs: f12_31,f14_32,hi_37,lo_38,r16_28,r17_26,r2_33,r25_25,r28_24,r3_35,r4_29,r5_30,r6_36,r7_34,ra_27,sp_23
-	word32 sp_44
-	word32 r28_45
-	word32 r25_46
-	word32 r17_47
-	word32 ra_48
-	word32 r16_49
-	word32 r4_50
-	word32 r5_51
-	word64 f12_52
-	word64 f14_53
-	word32 r2_54
-	word32 r7_55
-	word32 r3_56
-	word32 r6_57
-	word32 hi_58
-	word32 lo_59
-	call r17_26 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_31,f14_32,hi_37,lo_38,r16_40,r17_26,r2_33,r25_42,r28_39,r3_35,r4_41,r5_43,r6_36,r7_34,ra_27,sp_23
-		defs: f12_52,f14_53,hi_58,lo_59,r16_49,r17_47,r2_54,r25_46,r28_45,r3_56,r4_50,r5_51,r6_57,r7_55,ra_48,sp_44
-	word32 r2_63 = (word32) (dwLoc48 <u 2)
-	branch r2_63 != 0x00000000 l00407BA0_ds_t
+	word32 sp_22
+	word32 r28_23
+	word32 r25_24
+	word32 r17_25
+	word32 ra_26
+	word32 r16_27
+	word32 r4_28
+	word32 r5_29
+	word64 f12_30
+	word64 f14_31
+	word32 r2_32
+	word32 r7_33
+	word32 r3_34
+	word32 r6_35
+	word32 hi_36
+	word32 lo_37
+	call __unpack_f (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12,f14,r16,r17_10,r25_19,r28_5,r4_15,r5_16,ra,sp_6
+		defs: f12_30,f14_31,hi_36,lo_37,r16_27,r17_25,r2_32,r25_24,r28_23,r3_34,r4_28,r5_29,r6_35,r7_33,ra_26,sp_22
+	word32 sp_43
+	word32 r28_44
+	word32 r25_45
+	word32 r17_46
+	word32 ra_47
+	word32 r16_48
+	word32 r4_49
+	word32 r5_50
+	word64 f12_51
+	word64 f14_52
+	word32 r2_53
+	word32 r7_54
+	word32 r3_55
+	word32 r6_56
+	word32 hi_57
+	word32 lo_58
+	call r17_25 (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc50_7,f12_30,f14_31,hi_36,lo_37,r16_39,r17_25,r2_32,r25_41,r28_38,r3_34,r4_40,r5_42,r6_35,r7_33,ra_26,sp_22
+		defs: f12_51,f14_52,hi_57,lo_58,r16_48,r17_46,r2_53,r25_45,r28_44,r3_55,r4_49,r5_50,r6_56,r7_54,ra_47,sp_43
+	word32 r2_62 = (word32) (dwLoc48 <u 2)
+	branch r2_62 != 0x00000000 l00407BA0_ds_t
 // DataOut: r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -15840,26 +15626,25 @@ l00407C64:
 // SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407DA4:
-	word32 r25_71 = Mem0[0x100009AC:word32]
-	word32 sp_72
-	word32 r28_73
-	word32 r25_74
-	word32 r17_75
-	word32 ra_76
-	word32 r16_77
-	word32 r4_78
-	word32 r5_79
-	word64 f12_80
-	word64 f14_81
-	word32 r2_82
-	word32 r7_83
-	word32 r3_84
-	word32 r6_85
-	word32 hi_86
-	word32 lo_87
-	call r25_71 (retsize: 0; depth: 96)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc1C_67,dwLoc20_66,dwLoc24_65,dwLoc28_68,dwLoc34_69,dwLoc44_70,dwLoc48,dwLoc50_7,f12_52,f14_53,hi_58,lo_59,r16_49,r17_47,r2_63,r25_71,r28_60,r3_56,r4_62,r5_51,r6_57,r7_55,ra_48,sp_44
-		defs: f12_80,f14_81,hi_86,lo_87,r16_77,r17_75,r2_82,r25_74,r28_73,r3_84,r4_78,r5_79,r6_85,r7_83,ra_76,sp_72
+	word32 sp_71
+	word32 r28_72
+	word32 r25_73
+	word32 r17_74
+	word32 ra_75
+	word32 r16_76
+	word32 r4_77
+	word32 r5_78
+	word64 f12_79
+	word64 f14_80
+	word32 r2_81
+	word32 r7_82
+	word32 r3_83
+	word32 r6_84
+	word32 hi_85
+	word32 lo_86
+	call __pack_f (retsize: 0; depth: 96)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc1C_66,dwLoc20_65,dwLoc24_64,dwLoc28_67,dwLoc34_68,dwLoc44_69,dwLoc48,dwLoc50_7,f12_51,f14_52,hi_57,lo_58,r16_48,r17_46,r2_62,r25_70,r28_59,r3_55,r4_61,r5_50,r6_56,r7_54,ra_47,sp_43
+		defs: f12_79,f14_80,hi_85,lo_86,r16_76,r17_74,r2_81,r25_73,r28_72,r3_83,r4_77,r5_78,r6_84,r7_82,ra_75,sp_71
 	return
 // DataOut:
 // DataOut (flags): 
@@ -15886,45 +15671,44 @@ __divsf3_entry:
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -0028(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -0038(32)
 
 l00407DD0:
-	word32 r17_11 = Mem0[0x100009DC:word32]
-	word32 sp_23
-	word32 r28_24
-	word32 r25_25
-	word32 r17_26
-	word32 ra_27
-	word32 r16_28
-	word32 r4_29
-	word32 r5_30
-	word64 f12_31
-	word64 f14_32
-	word32 r6_33
-	word32 r8_34
-	word32 r2_35
-	word32 r3_36
-	word32 r7_37
-	call r17_11 (retsize: 0; depth: 80)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc40_7,f12,f14,r16,r17_11,r25_20,r28_5,r4_16,r5_17,ra,sp_6
-		defs: f12_31,f14_32,r16_28,r17_26,r2_35,r25_25,r28_24,r3_36,r4_29,r5_30,r6_33,r7_37,r8_34,ra_27,sp_23
-	word32 sp_43
-	word32 r28_44
-	word32 r25_45
-	word32 r17_46
-	word32 ra_47
-	word32 r16_48
-	word32 r4_49
-	word32 r5_50
-	word64 f12_51
-	word64 f14_52
-	word32 r6_53
-	word32 r8_54
-	word32 r2_55
-	word32 r3_56
-	word32 r7_57
-	call r17_26 (retsize: 0; depth: 80)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc40_7,f12_31,f14_32,r16_39,r17_26,r2_35,r25_41,r28_38,r3_36,r4_40,r5_42,r6_33,r7_37,r8_34,ra_27,sp_23
-		defs: f12_51,f14_52,r16_48,r17_46,r2_55,r25_45,r28_44,r3_56,r4_49,r5_50,r6_53,r7_57,r8_54,ra_47,sp_43
-	word32 r2_62 = (word32) (dwLoc38 <u 2)
-	branch r2_62 != 0x00000000 l00407DD0_ds_t
+	word32 sp_22
+	word32 r28_23
+	word32 r25_24
+	word32 r17_25
+	word32 ra_26
+	word32 r16_27
+	word32 r4_28
+	word32 r5_29
+	word64 f12_30
+	word64 f14_31
+	word32 r6_32
+	word32 r8_33
+	word32 r2_34
+	word32 r3_35
+	word32 r7_36
+	call __unpack_f (retsize: 0; depth: 80)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc40_7,f12,f14,r16,r17_10,r25_19,r28_5,r4_15,r5_16,ra,sp_6
+		defs: f12_30,f14_31,r16_27,r17_25,r2_34,r25_24,r28_23,r3_35,r4_28,r5_29,r6_32,r7_36,r8_33,ra_26,sp_22
+	word32 sp_42
+	word32 r28_43
+	word32 r25_44
+	word32 r17_45
+	word32 ra_46
+	word32 r16_47
+	word32 r4_48
+	word32 r5_49
+	word64 f12_50
+	word64 f14_51
+	word32 r6_52
+	word32 r8_53
+	word32 r2_54
+	word32 r3_55
+	word32 r7_56
+	call r17_25 (retsize: 0; depth: 80)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc40_7,f12_30,f14_31,r16_38,r17_25,r2_34,r25_40,r28_37,r3_35,r4_39,r5_41,r6_32,r7_36,r8_33,ra_26,sp_22
+		defs: f12_50,f14_51,r16_47,r17_45,r2_54,r25_44,r28_43,r3_55,r4_48,r5_49,r6_52,r7_56,r8_53,ra_46,sp_42
+	word32 r2_61 = (word32) (dwLoc38 <u 2)
+	branch r2_61 != 0x00000000 l00407DD0_ds_t
 // DataOut: r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -16224,25 +16008,24 @@ l00407E80:
 // SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407F3C:
-	word32 r25_67 = Mem0[0x100009AC:word32]
-	word32 sp_68
-	word32 r28_69
-	word32 r25_70
-	word32 r17_71
-	word32 ra_72
-	word32 r16_73
-	word32 r4_74
-	word32 r5_75
-	word64 f12_76
-	word64 f14_77
-	word32 r6_78
-	word32 r8_79
-	word32 r2_80
-	word32 r3_81
-	word32 r7_82
-	call r25_67 (retsize: 0; depth: 80)
-		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc2C_65,dwLoc30_66,dwLoc34_63,dwLoc38_64,dwLoc40_7,f12_51,f14_52,r16_48,r17_46,r2_62,r25_67,r28_58,r3_56,r4_49,r5_50,r6_60,r7_57,r8_61,ra_47,sp_43
-		defs: f12_76,f14_77,r16_73,r17_71,r2_80,r25_70,r28_69,r3_81,r4_74,r5_75,r6_78,r7_82,r8_79,ra_72,sp_68
+	word32 sp_67
+	word32 r28_68
+	word32 r25_69
+	word32 r17_70
+	word32 ra_71
+	word32 r16_72
+	word32 r4_73
+	word32 r5_74
+	word64 f12_75
+	word64 f14_76
+	word32 r6_77
+	word32 r8_78
+	word32 r2_79
+	word32 r3_80
+	word32 r7_81
+	call __pack_f (retsize: 0; depth: 80)
+		uses: dwLoc04_12,dwLoc08_9,dwLoc0C_14,dwLoc14_21,dwLoc18_18,dwLoc2C_64,dwLoc30_65,dwLoc34_62,dwLoc38_63,dwLoc40_7,f12_50,f14_51,r16_47,r17_45,r2_61,r25_66,r28_57,r3_55,r4_48,r5_49,r6_59,r7_56,r8_60,ra_46,sp_42
+		defs: f12_75,f14_76,r16_72,r17_70,r2_79,r25_69,r28_68,r3_80,r4_73,r5_74,r6_77,r7_81,r8_78,ra_71,sp_67
 	return
 // DataOut:
 // DataOut (flags): 
@@ -16282,7 +16065,7 @@ l00407F70_ds_t:
 // LocalsOut: fp(32)
 
 l00407FA8:
-	word32 dwLoc0C_60
+	word32 dwLoc0C_59
 	branch r4 >>u 0x1F == 0x00000000 l00407FA8_ds_t
 // DataOut: r4
 // DataOut (flags): 
@@ -16296,7 +16079,7 @@ l00407FA8_ds_t:
 // LocalsOut: fp(32)
 
 l00407FD0:
-	dwLoc0C_60 = r4
+	dwLoc0C_59 = r4
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:30 r3:r4 >>u 0x1F -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
@@ -16321,22 +16104,22 @@ l00407FB4_ds_t:
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
 
 l00407FB4_ds_f:
-	word32 r2_83 = -r4
+	word32 r2_82 = -r4
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407FC8:
-	dwLoc0C_60 = r2_83
+	dwLoc0C_59 = r2_82
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:-r4 r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -4(fp):ra
 // LocalsOut: fp(32) Local -000C(32)
 
 l00407FD4:
-	word32 r6_63 = dwLoc0C_60
-	branch (word32) (0x3FFFFFFF <u dwLoc0C_60) != 0x00000000 l00407FD4_ds_t
+	word32 r6_62 = dwLoc0C_59
+	branch (word32) (0x3FFFFFFF <u dwLoc0C_59) != 0x00000000 l00407FD4_ds_t
 // DataOut: r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:<invalid> r3:r4 >>u 0x1F r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -12(fp):<invalid> -4(fp):ra
@@ -16361,15 +16144,15 @@ l00407FEC:
 // LocalsOut: fp(32)
 
 l00407FF8:
-	word32 r3_72 = r6_63 << 0x01
-	branch (word32) (0x3FFFFFFF <u r3_72) == 0x00000000 l00407FF8_ds_t
+	word32 r3_71 = r6_62 << 0x01
+	branch (word32) (0x3FFFFFFF <u r3_71) == 0x00000000 l00407FF8_ds_t
 // DataOut: r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:<invalid> r3:<invalid> r6:<invalid> r5:0x3FFFFFFF r4:<invalid> r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -12(fp):<invalid> -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407FF8_ds_t:
-	r6_63 = r3_72
+	r6_62 = r3_71
 // DataOut: r4 r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:<invalid> r3:<invalid> r6:<invalid> r5:0x3FFFFFFF r4:<invalid> r1:0xCF000000 f0:0xCF000000 -32(fp):0x10008860 -24(fp):3 -20(fp):r4 >>u 0x1F -16(fp):30 -12(fp):<invalid> -4(fp):ra
@@ -16400,21 +16183,20 @@ l00407F9C:
 // LocalsOut: fp(32)
 
 l00408014:
-	word32 r25_34 = Mem0[0x100009AC:word32]
-	word32 sp_40
-	word32 r28_41
-	word32 r25_42
-	word32 r2_43
-	word32 r3_44
-	word32 r4_45
-	word32 ra_46
-	word32 r1_47
-	word64 f0_48
-	word32 r6_49
-	word32 r5_50
-	call r25_34 (retsize: 0; depth: 48)
-		uses: dwLoc04_12,dwLoc0C_30,dwLoc10_29,dwLoc14_31,dwLoc18_32,dwLoc20_7,f0,r1,r2_8,r25_34,r28_5,r3_10,r4_35,r5,r6,ra,sp_6
-		defs: f0_48,r1_47,r2_43,r25_42,r28_41,r3_44,r4_45,r5_50,r6_49,ra_46,sp_40
+	word32 sp_39
+	word32 r28_40
+	word32 r25_41
+	word32 r2_42
+	word32 r3_43
+	word32 r4_44
+	word32 ra_45
+	word32 r1_46
+	word64 f0_47
+	word32 r6_48
+	word32 r5_49
+	call __pack_f (retsize: 0; depth: 48)
+		uses: dwLoc04_12,dwLoc0C_30,dwLoc10_29,dwLoc14_31,dwLoc18_32,dwLoc20_7,f0,r1,r2_8,r25_33,r28_5,r3_10,r4_34,r5,r6,ra,sp_6
+		defs: f0_47,r1_46,r2_42,r25_41,r28_40,r3_43,r4_44,r5_49,r6_48,ra_45,sp_39
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x00407F70 r28:0x10008860 r2:<invalid> r3:<invalid> r6:<invalid> r1:0xCF000000 f0:0xCF000000 r5:0x3FFFFFFF r4:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):r4 >>u 0x1F -16(fp):<invalid> -12(fp):<invalid> -4(fp):ra
@@ -16446,19 +16228,18 @@ __fixsfsi_entry:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32) Local -001C(32) Local -0020(32)
 
 l00408040:
-	word32 r25_9 = Mem0[0x100009DC:word32]
-	word32 sp_16
-	word32 r28_17
-	word32 r25_18
-	word32 r4_19
-	word32 r5_20
-	word32 ra_21
-	word64 f12_22
-	word32 r3_23
-	word32 r2_24
-	call r25_9 (retsize: 0; depth: 56)
-		uses: dwLoc04_13,dwLoc10_15,dwLoc28_7,f12,r25_9,r28_5,r4_10,r5_11,ra,sp_6
-		defs: f12_22,r2_24,r25_18,r28_17,r3_23,r4_19,r5_20,ra_21,sp_16
+	word32 sp_15
+	word32 r28_16
+	word32 r25_17
+	word32 r4_18
+	word32 r5_19
+	word32 ra_20
+	word64 f12_21
+	word32 r3_22
+	word32 r2_23
+	call __unpack_f (retsize: 0; depth: 56)
+		uses: dwLoc04_12,dwLoc10_14,dwLoc28_7,f12,r25_8,r28_5,r4_9,r5_10,ra,sp_6
+		defs: f12_21,r2_23,r25_17,r28_16,r3_22,r4_18,r5_19,ra_20,sp_15
 	branch (dwLoc20 ^ 0x00000002) == 0x00000000 l00408040_ds_t
 // DataOut: r4
 // DataOut (flags): 
@@ -16603,36 +16384,34 @@ __extendsfdf2_entry:
 // LocalsOut: fp(32) Local -0014(32)
 
 l00408100:
-	word32 r25_11 = Mem0[0x100009DC:word32]
-	word32 sp_16
-	word32 r28_17
-	word32 r25_18
-	word32 ra_19
-	word32 r4_20
-	word32 r5_21
-	word64 f12_22
-	word32 r2_23
-	word32 r3_24
-	word32 r7_25
-	word32 r6_26
-	call r25_11 (retsize: 0; depth: 64)
-		uses: dwLoc04_9,dwLoc10_15,dwLoc28_7,f12,r25_11,r28_5,r4_12,r5_13,ra,sp_6
-		defs: f12_22,r2_23,r25_18,r28_17,r3_24,r4_20,r5_21,r6_26,r7_25,ra_19,sp_16
-	word32 r25_41 = Mem0[0x10000A68:word32]
-	word32 sp_44
-	word32 r28_45
-	word32 r25_46
-	word32 ra_47
-	word32 r4_48
-	word32 r5_49
-	word64 f12_50
-	word32 r2_51
-	word32 r3_52
-	word32 r7_53
-	word32 r6_54
-	call r25_41 (retsize: 0; depth: 64)
-		uses: dwLoc04_9,dwLoc10_15,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc28_7,dwLoc2C_43,dwLoc30_42,f12_22,r2_35,r25_41,r28_27,r3_36,r4_32,r5_38,r6_40,r7_34,ra_19,sp_16
-		defs: f12_50,r2_51,r25_46,r28_45,r3_52,r4_48,r5_49,r6_54,r7_53,ra_47,sp_44
+	word32 sp_15
+	word32 r28_16
+	word32 r25_17
+	word32 ra_18
+	word32 r4_19
+	word32 r5_20
+	word64 f12_21
+	word32 r2_22
+	word32 r3_23
+	word32 r7_24
+	word32 r6_25
+	call __unpack_f (retsize: 0; depth: 64)
+		uses: dwLoc04_9,dwLoc10_14,dwLoc28_7,f12,r25_10,r28_5,r4_11,r5_12,ra,sp_6
+		defs: f12_21,r2_22,r25_17,r28_16,r3_23,r4_19,r5_20,r6_25,r7_24,ra_18,sp_15
+	word32 sp_43
+	word32 r28_44
+	word32 r25_45
+	word32 ra_46
+	word32 r4_47
+	word32 r5_48
+	word64 f12_49
+	word32 r2_50
+	word32 r3_51
+	word32 r7_52
+	word32 r6_53
+	call __make_dp (retsize: 0; depth: 64)
+		uses: dwLoc04_9,dwLoc10_14,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc28_7,dwLoc2C_42,dwLoc30_41,f12_21,r2_34,r25_40,r28_26,r3_35,r4_31,r5_37,r6_39,r7_33,ra_18,sp_15
+		defs: f12_49,r2_50,r25_45,r28_44,r3_51,r4_47,r5_48,r6_53,r7_52,ra_46,sp_43
 	return
 // DataOut:
 // DataOut (flags): 
@@ -17288,49 +17067,48 @@ __adddf3_entry:
 // LocalsOut: fp(32)
 
 l004084FC:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r17_48
-	word32 ra_49
-	word32 r16_50
-	word32 r4_51
-	word32 r5_52
-	call r18_22 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12,f13,f14,f15,r16,r17_23,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r16_50,r17_48,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 r3_61
-	word64 f12_62
-	word32 r2_63
-	word64 f13_64
-	word32 r7_65
-	word64 f14_66
-	word32 r6_67
-	word64 f15_68
-	word32 r8_69
-	word32 r18_70
-	word32 r17_71
-	word32 ra_72
-	word32 r16_73
-	word32 r4_74
-	word32 r5_75
-	call r18_47 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_39,f13_41,f14_43,f15_45,r16_54,r17_48,r18_47,r2_40,r25_56,r28_53,r3_38,r4_55,r5_57,r6_44,r7_42,r8_46,ra_49,sp_35
-		defs: f12_62,f13_64,f14_66,f15_68,r16_73,r17_71,r18_70,r2_63,r25_60,r28_59,r3_61,r4_74,r5_75,r6_67,r7_65,r8_69,ra_72,sp_58
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r17_47
+	word32 ra_48
+	word32 r16_49
+	word32 r4_50
+	word32 r5_51
+	call __unpack_d (retsize: 0; depth: 136)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc78_7,f12,f13,f14,f15,r16,r17_22,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r16_49,r17_47,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,ra_48,sp_34
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 r3_60
+	word64 f12_61
+	word32 r2_62
+	word64 f13_63
+	word32 r7_64
+	word64 f14_65
+	word32 r6_66
+	word64 f15_67
+	word32 r8_68
+	word32 r18_69
+	word32 r17_70
+	word32 ra_71
+	word32 r16_72
+	word32 r4_73
+	word32 r5_74
+	call r18_46 (retsize: 0; depth: 136)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc78_7,f12_38,f13_40,f14_42,f15_44,r16_53,r17_47,r18_46,r2_39,r25_55,r28_52,r3_37,r4_54,r5_56,r6_43,r7_41,r8_45,ra_48,sp_34
+		defs: f12_61,f13_63,f14_65,f15_67,r16_72,r17_70,r18_69,r2_62,r25_59,r28_58,r3_60,r4_73,r5_74,r6_66,r7_64,r8_68,ra_71,sp_57
 	word32 sp_82
 	word32 r28_83
 	word32 r25_84
@@ -17350,9 +17128,8 @@ l004084FC:
 	word32 r4_98
 	word32 r5_99
 	call Mem0[0x10000880:word32] + -32384 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_62,f13_64,f14_66,f15_68,r16_73,r17_71,r18_70,r2_63,r25_78,r28_76,r3_61,r4_80,r5_79,r6_81,r7_65,r8_69,ra_72,sp_58
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc78_7,f12_61,f13_63,f14_65,f15_67,r16_72,r17_70,r18_69,r2_62,r25_78,r28_75,r3_60,r4_80,r5_79,r6_81,r7_64,r8_68,ra_71,sp_57
 		defs: f12_86,f13_88,f14_90,f15_92,r16_97,r17_95,r18_94,r2_87,r25_84,r28_83,r3_85,r4_98,r5_99,r6_91,r7_89,r8_93,ra_96,sp_82
-	word32 r25_101 = Mem0[0x10000894:word32]
 	word32 sp_103
 	word32 r28_104
 	word32 r25_105
@@ -17371,8 +17148,8 @@ l004084FC:
 	word32 r16_118
 	word32 r4_119
 	word32 r5_120
-	call r25_101 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_86,f13_88,f14_90,f15_92,r16_97,r17_95,r18_94,r2_87,r25_101,r28_100,r3_85,r4_102,r5_99,r6_91,r7_89,r8_93,ra_96,sp_82
+	call __pack_d (retsize: 0; depth: 136)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc78_7,f12_86,f13_88,f14_90,f15_92,r16_97,r17_95,r18_94,r2_87,r25_101,r28_100,r3_85,r4_102,r5_99,r6_91,r7_89,r8_93,ra_96,sp_82
 		defs: f12_107,f13_109,f14_111,f15_113,r16_118,r17_116,r18_115,r2_108,r25_105,r28_104,r3_106,r4_119,r5_120,r6_112,r7_110,r8_114,ra_117,sp_103
 	return
 // DataOut:
@@ -17400,49 +17177,48 @@ __subdf3_entry:
 // LocalsOut: fp(32) Local -0054(32)
 
 l004085CC:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r17_48
-	word32 ra_49
-	word32 r16_50
-	word32 r4_51
-	word32 r5_52
-	call r18_22 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12,f13,f14,f15,r16,r17_23,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r16_50,r17_48,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 r3_61
-	word64 f12_62
-	word32 r2_63
-	word64 f13_64
-	word32 r7_65
-	word64 f14_66
-	word32 r6_67
-	word64 f15_68
-	word32 r8_69
-	word32 r18_70
-	word32 r17_71
-	word32 ra_72
-	word32 r16_73
-	word32 r4_74
-	word32 r5_75
-	call r18_47 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_39,f13_41,f14_43,f15_45,r16_54,r17_48,r18_47,r2_40,r25_56,r28_53,r3_38,r4_55,r5_57,r6_44,r7_42,r8_46,ra_49,sp_35
-		defs: f12_62,f13_64,f14_66,f15_68,r16_73,r17_71,r18_70,r2_63,r25_60,r28_59,r3_61,r4_74,r5_75,r6_67,r7_65,r8_69,ra_72,sp_58
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r17_47
+	word32 ra_48
+	word32 r16_49
+	word32 r4_50
+	word32 r5_51
+	call __unpack_d (retsize: 0; depth: 136)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc78_7,f12,f13,f14,f15,r16,r17_22,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r16_49,r17_47,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,ra_48,sp_34
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 r3_60
+	word64 f12_61
+	word32 r2_62
+	word64 f13_63
+	word32 r7_64
+	word64 f14_65
+	word32 r6_66
+	word64 f15_67
+	word32 r8_68
+	word32 r18_69
+	word32 r17_70
+	word32 ra_71
+	word32 r16_72
+	word32 r4_73
+	word32 r5_74
+	call r18_46 (retsize: 0; depth: 136)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc78_7,f12_38,f13_40,f14_42,f15_44,r16_53,r17_47,r18_46,r2_39,r25_55,r28_52,r3_37,r4_54,r5_56,r6_43,r7_41,r8_45,ra_48,sp_34
+		defs: f12_61,f13_63,f14_65,f15_67,r16_72,r17_70,r18_69,r2_62,r25_59,r28_58,r3_60,r4_73,r5_74,r6_66,r7_64,r8_68,ra_71,sp_57
 	word32 sp_86
 	word32 r28_87
 	word32 r25_88
@@ -17462,9 +17238,8 @@ l004085CC:
 	word32 r4_102
 	word32 r5_103
 	call Mem0[0x10000880:word32] + -32384 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc54_85,dwLoc78_7,f12_62,f13_64,f14_66,f15_68,r16_73,r17_71,r18_70,r2_82,r25_78,r28_76,r3_61,r4_83,r5_81,r6_84,r7_65,r8_69,ra_72,sp_58
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc54_85,dwLoc78_7,f12_61,f13_63,f14_65,f15_67,r16_72,r17_70,r18_69,r2_82,r25_78,r28_75,r3_60,r4_83,r5_81,r6_84,r7_64,r8_68,ra_71,sp_57
 		defs: f12_90,f13_92,f14_94,f15_96,r16_101,r17_99,r18_98,r2_91,r25_88,r28_87,r3_89,r4_102,r5_103,r6_95,r7_93,r8_97,ra_100,sp_86
-	word32 r25_105 = Mem0[0x10000894:word32]
 	word32 sp_107
 	word32 r28_108
 	word32 r25_109
@@ -17483,8 +17258,8 @@ l004085CC:
 	word32 r16_122
 	word32 r4_123
 	word32 r5_124
-	call r25_105 (retsize: 0; depth: 136)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc54_85,dwLoc78_7,f12_90,f13_92,f14_94,f15_96,r16_101,r17_99,r18_98,r2_91,r25_105,r28_104,r3_89,r4_106,r5_103,r6_95,r7_93,r8_97,ra_100,sp_86
+	call __pack_d (retsize: 0; depth: 136)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_20,dwLoc14_29,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc54_85,dwLoc78_7,f12_90,f13_92,f14_94,f15_96,r16_101,r17_99,r18_98,r2_91,r25_105,r28_104,r3_89,r4_106,r5_103,r6_95,r7_93,r8_97,ra_100,sp_86
 		defs: f12_111,f13_113,f14_115,f15_117,r16_122,r17_120,r18_119,r2_112,r25_109,r28_108,r3_110,r4_123,r5_124,r6_116,r7_114,r8_118,ra_121,sp_107
 	return
 // DataOut:
@@ -17512,79 +17287,78 @@ __muldf3_entry:
 // LocalsOut: fp(32) Local -005C(32) Local -0060(32) Local -0068(32) Local -006C(32) Local -0070(32) Local -0074(32) Local -0078(32) Local -0080(32) Local -0084(32) Local -0088(32)
 
 l004086B0:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_43
-	word32 r28_44
-	word32 r25_45
-	word32 r3_46
-	word64 f12_47
-	word32 r2_48
-	word64 f13_49
-	word32 r7_50
-	word64 f14_51
-	word32 r6_52
-	word64 f15_53
-	word32 r8_54
-	word32 r18_55
-	word32 r16_56
-	word32 ra_57
-	word32 r22_58
-	word32 r21_59
-	word32 r20_60
-	word32 r19_61
-	word32 r17_62
-	word32 r4_63
-	word32 r5_64
-	word32 r11_65
-	word32 r9_66
-	word32 r10_67
-	word32 r13_68
-	word32 lo_69
-	word32 r14_70
-	word32 r24_71
-	word32 hi_72
-	word32 r12_73
-	word32 r15_74
-	call r18_22 (retsize: 0; depth: 160)
-		uses: dwLoc08_27,dwLoc0C_30,dwLoc10_32,dwLoc14_34,dwLoc18_36,dwLoc1C_18,dwLoc20_38,dwLoc24_20,dwLoc34_42,dwLoc38_25,dwLoc3C_28,dwLoc40_24,dwLoc90_7,f12,f13,f14,f15,r16_23,r17,r18_22,r19,r2_11,r20,r21,r22,r25_41,r28_5,r3_9,r4_39,r5_40,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_47,f13_49,f14_51,f15_53,hi_72,lo_69,r10_67,r11_65,r12_73,r13_68,r14_70,r15_74,r16_56,r17_62,r18_55,r19_61,r2_48,r20_60,r21_59,r22_58,r24_71,r25_45,r28_44,r3_46,r4_63,r5_64,r6_52,r7_50,r8_54,r9_66,ra_57,sp_43
-	word32 sp_80
-	word32 r28_81
-	word32 r25_82
-	word32 r3_83
-	word64 f12_84
-	word32 r2_85
-	word64 f13_86
-	word32 r7_87
-	word64 f14_88
-	word32 r6_89
-	word64 f15_90
-	word32 r8_91
-	word32 r18_92
-	word32 r16_93
-	word32 ra_94
-	word32 r22_95
-	word32 r21_96
-	word32 r20_97
-	word32 r19_98
-	word32 r17_99
-	word32 r4_100
-	word32 r5_101
-	word32 r11_102
-	word32 r9_103
-	word32 r10_104
-	word32 r13_105
-	word32 lo_106
-	word32 r14_107
-	word32 r24_108
-	word32 hi_109
-	word32 r12_110
-	word32 r15_111
-	call r18_55 (retsize: 0; depth: 160)
-		uses: dwLoc08_27,dwLoc0C_30,dwLoc10_32,dwLoc14_34,dwLoc18_36,dwLoc1C_18,dwLoc20_38,dwLoc24_20,dwLoc34_42,dwLoc38_25,dwLoc3C_28,dwLoc40_24,dwLoc90_7,f12_47,f13_49,f14_51,f15_53,hi_72,lo_69,r10_67,r11_65,r12_73,r13_68,r14_70,r15_74,r16_56,r17_76,r18_55,r19_61,r2_48,r20_60,r21_59,r22_58,r24_71,r25_78,r28_75,r3_46,r4_77,r5_79,r6_52,r7_50,r8_54,r9_66,ra_57,sp_43
-		defs: f12_84,f13_86,f14_88,f15_90,hi_109,lo_106,r10_104,r11_102,r12_110,r13_105,r14_107,r15_111,r16_93,r17_99,r18_92,r19_98,r2_85,r20_97,r21_96,r22_95,r24_108,r25_82,r28_81,r3_83,r4_100,r5_101,r6_89,r7_87,r8_91,r9_103,ra_94,sp_80
-	word32 r2_115 = (word32) (dwLoc88 <u 2)
-	branch r2_115 != 0x00000000 l004086B0_ds_t
+	word32 sp_42
+	word32 r28_43
+	word32 r25_44
+	word32 r3_45
+	word64 f12_46
+	word32 r2_47
+	word64 f13_48
+	word32 r7_49
+	word64 f14_50
+	word32 r6_51
+	word64 f15_52
+	word32 r8_53
+	word32 r18_54
+	word32 r16_55
+	word32 ra_56
+	word32 r22_57
+	word32 r21_58
+	word32 r20_59
+	word32 r19_60
+	word32 r17_61
+	word32 r4_62
+	word32 r5_63
+	word32 r11_64
+	word32 r9_65
+	word32 r10_66
+	word32 r13_67
+	word32 lo_68
+	word32 r14_69
+	word32 r24_70
+	word32 hi_71
+	word32 r12_72
+	word32 r15_73
+	call __unpack_d (retsize: 0; depth: 160)
+		uses: dwLoc08_26,dwLoc0C_29,dwLoc10_31,dwLoc14_33,dwLoc18_35,dwLoc1C_18,dwLoc20_37,dwLoc24_20,dwLoc34_41,dwLoc38_24,dwLoc3C_27,dwLoc40_23,dwLoc90_7,f12,f13,f14,f15,r16_22,r17,r18_21,r19,r2_11,r20,r21,r22,r25_40,r28_5,r3_9,r4_38,r5_39,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_46,f13_48,f14_50,f15_52,hi_71,lo_68,r10_66,r11_64,r12_72,r13_67,r14_69,r15_73,r16_55,r17_61,r18_54,r19_60,r2_47,r20_59,r21_58,r22_57,r24_70,r25_44,r28_43,r3_45,r4_62,r5_63,r6_51,r7_49,r8_53,r9_65,ra_56,sp_42
+	word32 sp_79
+	word32 r28_80
+	word32 r25_81
+	word32 r3_82
+	word64 f12_83
+	word32 r2_84
+	word64 f13_85
+	word32 r7_86
+	word64 f14_87
+	word32 r6_88
+	word64 f15_89
+	word32 r8_90
+	word32 r18_91
+	word32 r16_92
+	word32 ra_93
+	word32 r22_94
+	word32 r21_95
+	word32 r20_96
+	word32 r19_97
+	word32 r17_98
+	word32 r4_99
+	word32 r5_100
+	word32 r11_101
+	word32 r9_102
+	word32 r10_103
+	word32 r13_104
+	word32 lo_105
+	word32 r14_106
+	word32 r24_107
+	word32 hi_108
+	word32 r12_109
+	word32 r15_110
+	call r18_54 (retsize: 0; depth: 160)
+		uses: dwLoc08_26,dwLoc0C_29,dwLoc10_31,dwLoc14_33,dwLoc18_35,dwLoc1C_18,dwLoc20_37,dwLoc24_20,dwLoc34_41,dwLoc38_24,dwLoc3C_27,dwLoc40_23,dwLoc90_7,f12_46,f13_48,f14_50,f15_52,hi_71,lo_68,r10_66,r11_64,r12_72,r13_67,r14_69,r15_73,r16_55,r17_75,r18_54,r19_60,r2_47,r20_59,r21_58,r22_57,r24_70,r25_77,r28_74,r3_45,r4_76,r5_78,r6_51,r7_49,r8_53,r9_65,ra_56,sp_42
+		defs: f12_83,f13_85,f14_87,f15_89,hi_108,lo_105,r10_103,r11_101,r12_109,r13_104,r14_106,r15_110,r16_92,r17_98,r18_91,r19_97,r2_84,r20_96,r21_95,r22_94,r24_107,r25_81,r28_80,r3_82,r4_99,r5_100,r6_88,r7_86,r8_90,r9_102,ra_93,sp_79
+	word32 r2_114 = (word32) (dwLoc88 <u 2)
+	branch r2_114 != 0x00000000 l004086B0_ds_t
 // DataOut: r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -18172,42 +17946,41 @@ l004087A8:
 // SymbolicIn: sp:fp + -160 r25:<invalid> r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -56 r4:<invalid> r5:<invalid> r17:fp + -112 r22:fp + -136 -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
 
 l00408B58:
-	word32 r25_126 = Mem0[0x10000894:word32]
-	word32 sp_127
-	word32 r28_128
-	word32 r25_129
-	word32 r3_130
-	word64 f12_131
-	word32 r2_132
-	word64 f13_133
-	word32 r7_134
-	word64 f14_135
-	word32 r6_136
-	word64 f15_137
-	word32 r8_138
-	word32 r18_139
-	word32 r16_140
-	word32 ra_141
-	word32 r22_142
-	word32 r21_143
-	word32 r20_144
-	word32 r19_145
-	word32 r17_146
-	word32 r4_147
-	word32 r5_148
-	word32 r11_149
-	word32 r9_150
-	word32 r10_151
-	word32 r13_152
-	word32 lo_153
-	word32 r14_154
-	word32 r24_155
-	word32 hi_156
-	word32 r12_157
-	word32 r15_158
-	call r25_126 (retsize: 0; depth: 160)
-		uses: dwLoc08_27,dwLoc0C_30,dwLoc10_32,dwLoc14_34,dwLoc18_36,dwLoc1C_18,dwLoc20_38,dwLoc24_20,dwLoc2C_118,dwLoc30_117,dwLoc34_42,dwLoc38_25,dwLoc3C_28,dwLoc40_24,dwLoc44_122,dwLoc48_121,dwLoc50_120,dwLoc54_119,dwLoc58_123,dwLoc6C_124,dwLoc84_125,dwLoc88,dwLoc90_7,f12_84,f13_86,f14_88,f15_90,hi_109,lo_106,r10_104,r11_102,r12_110,r13_105,r14_107,r15_111,r16_93,r17_99,r18_92,r19_98,r2_115,r20_97,r21_96,r22_95,r24_108,r25_126,r28_112,r3_83,r4_114,r5_101,r6_89,r7_87,r8_91,r9_103,ra_94,sp_80
-		defs: f12_131,f13_133,f14_135,f15_137,hi_156,lo_153,r10_151,r11_149,r12_157,r13_152,r14_154,r15_158,r16_140,r17_146,r18_139,r19_145,r2_132,r20_144,r21_143,r22_142,r24_155,r25_129,r28_128,r3_130,r4_147,r5_148,r6_136,r7_134,r8_138,r9_150,ra_141,sp_127
+	word32 sp_126
+	word32 r28_127
+	word32 r25_128
+	word32 r3_129
+	word64 f12_130
+	word32 r2_131
+	word64 f13_132
+	word32 r7_133
+	word64 f14_134
+	word32 r6_135
+	word64 f15_136
+	word32 r8_137
+	word32 r18_138
+	word32 r16_139
+	word32 ra_140
+	word32 r22_141
+	word32 r21_142
+	word32 r20_143
+	word32 r19_144
+	word32 r17_145
+	word32 r4_146
+	word32 r5_147
+	word32 r11_148
+	word32 r9_149
+	word32 r10_150
+	word32 r13_151
+	word32 lo_152
+	word32 r14_153
+	word32 r24_154
+	word32 hi_155
+	word32 r12_156
+	word32 r15_157
+	call __pack_d (retsize: 0; depth: 160)
+		uses: dwLoc08_26,dwLoc0C_29,dwLoc10_31,dwLoc14_33,dwLoc18_35,dwLoc1C_18,dwLoc20_37,dwLoc24_20,dwLoc2C_117,dwLoc30_116,dwLoc34_41,dwLoc38_24,dwLoc3C_27,dwLoc40_23,dwLoc44_121,dwLoc48_120,dwLoc50_119,dwLoc54_118,dwLoc58_122,dwLoc6C_123,dwLoc84_124,dwLoc88,dwLoc90_7,f12_83,f13_85,f14_87,f15_89,hi_108,lo_105,r10_103,r11_101,r12_109,r13_104,r14_106,r15_110,r16_92,r17_98,r18_91,r19_97,r2_114,r20_96,r21_95,r22_94,r24_107,r25_125,r28_111,r3_82,r4_113,r5_100,r6_88,r7_86,r8_90,r9_102,ra_93,sp_79
+		defs: f12_130,f13_132,f14_134,f15_136,hi_155,lo_152,r10_150,r11_148,r12_156,r13_151,r14_153,r15_157,r16_139,r17_145,r18_138,r19_144,r2_131,r20_143,r21_142,r22_141,r24_154,r25_128,r28_127,r3_129,r4_146,r5_147,r6_135,r7_133,r8_137,r9_149,ra_140,sp_126
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18234,65 +18007,64 @@ __divdf3_entry:
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0038(32) Local -003C(32) Local -0040(32) Local -0044(32) Local -0048(32) Local -0050(32) Local -0054(32) Local -0058(32)
 
 l00408BA0:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r16_48
-	word32 ra_49
-	word32 r17_50
-	word32 r4_51
-	word32 r5_52
-	word32 r15_53
-	word32 r9_54
-	word32 r14_55
-	word32 r10_56
-	word32 r11_57
-	word32 r12_58
-	word32 r13_59
-	call r18_22 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12,f13,f14,f15,r16_23,r17,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r10_56,r11_57,r12_58,r13_59,r14_55,r15_53,r16_48,r17_50,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,r9_54,ra_49,sp_35
-	word32 sp_65
-	word32 r28_66
-	word32 r25_67
-	word32 r3_68
-	word64 f12_69
-	word32 r2_70
-	word64 f13_71
-	word32 r7_72
-	word64 f14_73
-	word32 r6_74
-	word64 f15_75
-	word32 r8_76
-	word32 r18_77
-	word32 r16_78
-	word32 ra_79
-	word32 r17_80
-	word32 r4_81
-	word32 r5_82
-	word32 r15_83
-	word32 r9_84
-	word32 r14_85
-	word32 r10_86
-	word32 r11_87
-	word32 r12_88
-	word32 r13_89
-	call r18_47 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12_39,f13_41,f14_43,f15_45,r10_56,r11_57,r12_58,r13_59,r14_55,r15_53,r16_48,r17_61,r18_47,r2_40,r25_63,r28_60,r3_38,r4_62,r5_64,r6_44,r7_42,r8_46,r9_54,ra_49,sp_35
-		defs: f12_69,f13_71,f14_73,f15_75,r10_86,r11_87,r12_88,r13_89,r14_85,r15_83,r16_78,r17_80,r18_77,r2_70,r25_67,r28_66,r3_68,r4_81,r5_82,r6_74,r7_72,r8_76,r9_84,ra_79,sp_65
-	word32 r2_94 = (word32) (dwLoc58 <u 2)
-	branch r2_94 != 0x00000000 l00408BA0_ds_t
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r16_47
+	word32 ra_48
+	word32 r17_49
+	word32 r4_50
+	word32 r5_51
+	word32 r15_52
+	word32 r9_53
+	word32 r14_54
+	word32 r10_55
+	word32 r11_56
+	word32 r12_57
+	word32 r13_58
+	call __unpack_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12,f13,f14,f15,r16_22,r17,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r10_55,r11_56,r12_57,r13_58,r14_54,r15_52,r16_47,r17_49,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,r9_53,ra_48,sp_34
+	word32 sp_64
+	word32 r28_65
+	word32 r25_66
+	word32 r3_67
+	word64 f12_68
+	word32 r2_69
+	word64 f13_70
+	word32 r7_71
+	word64 f14_72
+	word32 r6_73
+	word64 f15_74
+	word32 r8_75
+	word32 r18_76
+	word32 r16_77
+	word32 ra_78
+	word32 r17_79
+	word32 r4_80
+	word32 r5_81
+	word32 r15_82
+	word32 r9_83
+	word32 r14_84
+	word32 r10_85
+	word32 r11_86
+	word32 r12_87
+	word32 r13_88
+	call r18_46 (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12_38,f13_40,f14_42,f15_44,r10_55,r11_56,r12_57,r13_58,r14_54,r15_52,r16_47,r17_60,r18_46,r2_39,r25_62,r28_59,r3_37,r4_61,r5_63,r6_43,r7_41,r8_45,r9_53,ra_48,sp_34
+		defs: f12_68,f13_70,f14_72,f15_74,r10_85,r11_86,r12_87,r13_88,r14_84,r15_82,r16_77,r17_79,r18_76,r2_69,r25_66,r28_65,r3_67,r4_80,r5_81,r6_73,r7_71,r8_75,r9_83,ra_78,sp_64
+	word32 r2_93 = (word32) (dwLoc58 <u 2)
+	branch r2_93 != 0x00000000 l00408BA0_ds_t
 // DataOut: r6
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -18702,35 +18474,34 @@ l00408C74:
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:<invalid> r5:<invalid> r17:fp + -64 r15:fp + -88 -96(fp):0x10008860 -84(fp):<invalid> -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
 
 l00408DDC:
-	word32 r25_100 = Mem0[0x10000894:word32]
-	word32 sp_101
-	word32 r28_102
-	word32 r25_103
-	word32 r3_104
-	word64 f12_105
-	word32 r2_106
-	word64 f13_107
-	word32 r7_108
-	word64 f14_109
-	word32 r6_110
-	word64 f15_111
-	word32 r8_112
-	word32 r18_113
-	word32 r16_114
-	word32 ra_115
-	word32 r17_116
-	word32 r4_117
-	word32 r5_118
-	word32 r15_119
-	word32 r9_120
-	word32 r14_121
-	word32 r10_122
-	word32 r11_123
-	word32 r12_124
-	word32 r13_125
-	call r25_100 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc44_98,dwLoc48_97,dwLoc50_99,dwLoc54_95,dwLoc58_96,dwLoc60_7,f12_69,f13_71,f14_73,f15_75,r10_86,r11_87,r12_88,r13_89,r14_85,r15_93,r16_78,r17_80,r18_77,r2_94,r25_100,r28_90,r3_68,r4_81,r5_82,r6_92,r7_72,r8_76,r9_84,ra_79,sp_65
-		defs: f12_105,f13_107,f14_109,f15_111,r10_122,r11_123,r12_124,r13_125,r14_121,r15_119,r16_114,r17_116,r18_113,r2_106,r25_103,r28_102,r3_104,r4_117,r5_118,r6_110,r7_108,r8_112,r9_120,ra_115,sp_101
+	word32 sp_100
+	word32 r28_101
+	word32 r25_102
+	word32 r3_103
+	word64 f12_104
+	word32 r2_105
+	word64 f13_106
+	word32 r7_107
+	word64 f14_108
+	word32 r6_109
+	word64 f15_110
+	word32 r8_111
+	word32 r18_112
+	word32 r16_113
+	word32 ra_114
+	word32 r17_115
+	word32 r4_116
+	word32 r5_117
+	word32 r15_118
+	word32 r9_119
+	word32 r14_120
+	word32 r10_121
+	word32 r11_122
+	word32 r12_123
+	word32 r13_124
+	call __pack_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc44_97,dwLoc48_96,dwLoc50_98,dwLoc54_94,dwLoc58_95,dwLoc60_7,f12_68,f13_70,f14_72,f15_74,r10_85,r11_86,r12_87,r13_88,r14_84,r15_92,r16_77,r17_79,r18_76,r2_93,r25_99,r28_89,r3_67,r4_80,r5_81,r6_91,r7_71,r8_75,r9_83,ra_78,sp_64
+		defs: f12_104,f13_106,f14_108,f15_110,r10_121,r11_122,r12_123,r13_124,r14_120,r15_118,r16_113,r17_115,r18_112,r2_105,r25_102,r28_101,r3_103,r4_116,r5_117,r6_109,r7_107,r8_111,r9_119,ra_114,sp_100
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18757,49 +18528,48 @@ __eqdf2_entry:
 // LocalsOut: fp(32) Local -0040(32) Local -0058(32)
 
 l00408E10:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r16_48
-	word32 ra_49
-	word32 r17_50
-	word32 r4_51
-	word32 r5_52
-	call r18_22 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12,f13,f14,f15,r16_23,r17,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r16_48,r17_50,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 r3_61
-	word64 f12_62
-	word32 r2_63
-	word64 f13_64
-	word32 r7_65
-	word64 f14_66
-	word32 r6_67
-	word64 f15_68
-	word32 r8_69
-	word32 r18_70
-	word32 r16_71
-	word32 ra_72
-	word32 r17_73
-	word32 r4_74
-	word32 r5_75
-	call r18_47 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12_39,f13_41,f14_43,f15_45,r16_48,r17_54,r18_47,r2_40,r25_56,r28_53,r3_38,r4_55,r5_57,r6_44,r7_42,r8_46,ra_49,sp_35
-		defs: f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_63,r25_60,r28_59,r3_61,r4_74,r5_75,r6_67,r7_65,r8_69,ra_72,sp_58
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r16_47
+	word32 ra_48
+	word32 r17_49
+	word32 r4_50
+	word32 r5_51
+	call __unpack_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12,f13,f14,f15,r16_22,r17,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r16_47,r17_49,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,ra_48,sp_34
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 r3_60
+	word64 f12_61
+	word32 r2_62
+	word64 f13_63
+	word32 r7_64
+	word64 f14_65
+	word32 r6_66
+	word64 f15_67
+	word32 r8_68
+	word32 r18_69
+	word32 r16_70
+	word32 ra_71
+	word32 r17_72
+	word32 r4_73
+	word32 r5_74
+	call r18_46 (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12_38,f13_40,f14_42,f15_44,r16_47,r17_53,r18_46,r2_39,r25_55,r28_52,r3_37,r4_54,r5_56,r6_43,r7_41,r8_45,ra_48,sp_34
+		defs: f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_62,r25_59,r28_58,r3_60,r4_73,r5_74,r6_66,r7_64,r8_68,ra_71,sp_57
 	branch (word32) (dwLoc58 <u 2) != 0x00000000 l00408E10_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -18818,8 +18588,8 @@ l00408E10_ds_f:
 // LocalsOut: fp(32) Local -0040(32)
 
 l00408EA0:
-	word32 r3_101 = (word32) (dwLoc40 <u 2)
-	branch r3_101 != 0x00000000 l00408EA0_ds_t
+	word32 r3_100 = (word32) (dwLoc40 <u 2)
+	branch r3_100 != 0x00000000 l00408EA0_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:<invalid> r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -18837,28 +18607,27 @@ l00408EA0_ds_f:
 // LocalsOut: fp(32)
 
 l00408EB4:
-	word32 r25_103 = Mem0[0x10000978:word32]
-	word32 sp_105
-	word32 r28_106
-	word32 r25_107
-	word32 r3_108
-	word64 f12_109
-	word32 r2_110
-	word64 f13_111
-	word32 r7_112
-	word64 f14_113
-	word32 r6_114
-	word64 f15_115
-	word32 r8_116
-	word32 r18_117
-	word32 r16_118
-	word32 ra_119
-	word32 r17_120
-	word32 r4_121
-	word32 r5_122
-	call r25_103 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc40,dwLoc58,dwLoc60_7,f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_98,r25_103,r28_76,r3_101,r4_102,r5_104,r6_67,r7_65,r8_69,ra_72,sp_58
-		defs: f12_109,f13_111,f14_113,f15_115,r16_118,r17_120,r18_117,r2_110,r25_107,r28_106,r3_108,r4_121,r5_122,r6_114,r7_112,r8_116,ra_119,sp_105
+	word32 sp_104
+	word32 r28_105
+	word32 r25_106
+	word32 r3_107
+	word64 f12_108
+	word32 r2_109
+	word64 f13_110
+	word32 r7_111
+	word64 f14_112
+	word32 r6_113
+	word64 f15_114
+	word32 r8_115
+	word32 r18_116
+	word32 r16_117
+	word32 ra_118
+	word32 r17_119
+	word32 r4_120
+	word32 r5_121
+	call __fpcmp_parts_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc40,dwLoc58,dwLoc60_7,f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_97,r25_102,r28_75,r3_100,r4_101,r5_103,r6_66,r7_64,r8_68,ra_71,sp_57
+		defs: f12_108,f13_110,f14_112,f15_114,r16_117,r17_119,r18_116,r2_109,r25_106,r28_105,r3_107,r4_120,r5_121,r6_113,r7_111,r8_115,ra_118,sp_104
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:fp + -88 r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -18890,49 +18659,48 @@ __nedf2_entry:
 // LocalsOut: fp(32) Local -0040(32) Local -0058(32)
 
 l00408EE0:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r16_48
-	word32 ra_49
-	word32 r17_50
-	word32 r4_51
-	word32 r5_52
-	call r18_22 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12,f13,f14,f15,r16_23,r17,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r16_48,r17_50,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 r3_61
-	word64 f12_62
-	word32 r2_63
-	word64 f13_64
-	word32 r7_65
-	word64 f14_66
-	word32 r6_67
-	word64 f15_68
-	word32 r8_69
-	word32 r18_70
-	word32 r16_71
-	word32 ra_72
-	word32 r17_73
-	word32 r4_74
-	word32 r5_75
-	call r18_47 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12_39,f13_41,f14_43,f15_45,r16_48,r17_54,r18_47,r2_40,r25_56,r28_53,r3_38,r4_55,r5_57,r6_44,r7_42,r8_46,ra_49,sp_35
-		defs: f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_63,r25_60,r28_59,r3_61,r4_74,r5_75,r6_67,r7_65,r8_69,ra_72,sp_58
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r16_47
+	word32 ra_48
+	word32 r17_49
+	word32 r4_50
+	word32 r5_51
+	call __unpack_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12,f13,f14,f15,r16_22,r17,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r16_47,r17_49,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,ra_48,sp_34
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 r3_60
+	word64 f12_61
+	word32 r2_62
+	word64 f13_63
+	word32 r7_64
+	word64 f14_65
+	word32 r6_66
+	word64 f15_67
+	word32 r8_68
+	word32 r18_69
+	word32 r16_70
+	word32 ra_71
+	word32 r17_72
+	word32 r4_73
+	word32 r5_74
+	call r18_46 (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12_38,f13_40,f14_42,f15_44,r16_47,r17_53,r18_46,r2_39,r25_55,r28_52,r3_37,r4_54,r5_56,r6_43,r7_41,r8_45,ra_48,sp_34
+		defs: f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_62,r25_59,r28_58,r3_60,r4_73,r5_74,r6_66,r7_64,r8_68,ra_71,sp_57
 	branch (word32) (dwLoc58 <u 2) != 0x00000000 l00408EE0_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -18951,8 +18719,8 @@ l00408EE0_ds_f:
 // LocalsOut: fp(32) Local -0040(32)
 
 l00408F70:
-	word32 r3_101 = (word32) (dwLoc40 <u 2)
-	branch r3_101 != 0x00000000 l00408F70_ds_t
+	word32 r3_100 = (word32) (dwLoc40 <u 2)
+	branch r3_100 != 0x00000000 l00408F70_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:<invalid> r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -18970,28 +18738,27 @@ l00408F70_ds_f:
 // LocalsOut: fp(32)
 
 l00408F84:
-	word32 r25_103 = Mem0[0x10000978:word32]
-	word32 sp_105
-	word32 r28_106
-	word32 r25_107
-	word32 r3_108
-	word64 f12_109
-	word32 r2_110
-	word64 f13_111
-	word32 r7_112
-	word64 f14_113
-	word32 r6_114
-	word64 f15_115
-	word32 r8_116
-	word32 r18_117
-	word32 r16_118
-	word32 ra_119
-	word32 r17_120
-	word32 r4_121
-	word32 r5_122
-	call r25_103 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc40,dwLoc58,dwLoc60_7,f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_98,r25_103,r28_76,r3_101,r4_102,r5_104,r6_67,r7_65,r8_69,ra_72,sp_58
-		defs: f12_109,f13_111,f14_113,f15_115,r16_118,r17_120,r18_117,r2_110,r25_107,r28_106,r3_108,r4_121,r5_122,r6_114,r7_112,r8_116,ra_119,sp_105
+	word32 sp_104
+	word32 r28_105
+	word32 r25_106
+	word32 r3_107
+	word64 f12_108
+	word32 r2_109
+	word64 f13_110
+	word32 r7_111
+	word64 f14_112
+	word32 r6_113
+	word64 f15_114
+	word32 r8_115
+	word32 r18_116
+	word32 r16_117
+	word32 ra_118
+	word32 r17_119
+	word32 r4_120
+	word32 r5_121
+	call __fpcmp_parts_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc40,dwLoc58,dwLoc60_7,f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_97,r25_102,r28_75,r3_100,r4_101,r5_103,r6_66,r7_64,r8_68,ra_71,sp_57
+		defs: f12_108,f13_110,f14_112,f15_114,r16_117,r17_119,r18_116,r2_109,r25_106,r28_105,r3_107,r4_120,r5_121,r6_113,r7_111,r8_115,ra_118,sp_104
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:fp + -88 r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -19023,49 +18790,48 @@ __gedf2_entry:
 // LocalsOut: fp(32) Local -0040(32) Local -0058(32)
 
 l00408FB0:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r16_48
-	word32 ra_49
-	word32 r17_50
-	word32 r4_51
-	word32 r5_52
-	call r18_22 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12,f13,f14,f15,r16_23,r17,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r16_48,r17_50,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 r3_61
-	word64 f12_62
-	word32 r2_63
-	word64 f13_64
-	word32 r7_65
-	word64 f14_66
-	word32 r6_67
-	word64 f15_68
-	word32 r8_69
-	word32 r18_70
-	word32 r16_71
-	word32 ra_72
-	word32 r17_73
-	word32 r4_74
-	word32 r5_75
-	call r18_47 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12_39,f13_41,f14_43,f15_45,r16_48,r17_54,r18_47,r2_40,r25_56,r28_53,r3_38,r4_55,r5_57,r6_44,r7_42,r8_46,ra_49,sp_35
-		defs: f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_63,r25_60,r28_59,r3_61,r4_74,r5_75,r6_67,r7_65,r8_69,ra_72,sp_58
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r16_47
+	word32 ra_48
+	word32 r17_49
+	word32 r4_50
+	word32 r5_51
+	call __unpack_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12,f13,f14,f15,r16_22,r17,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r16_47,r17_49,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,ra_48,sp_34
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 r3_60
+	word64 f12_61
+	word32 r2_62
+	word64 f13_63
+	word32 r7_64
+	word64 f14_65
+	word32 r6_66
+	word64 f15_67
+	word32 r8_68
+	word32 r18_69
+	word32 r16_70
+	word32 ra_71
+	word32 r17_72
+	word32 r4_73
+	word32 r5_74
+	call r18_46 (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12_38,f13_40,f14_42,f15_44,r16_47,r17_53,r18_46,r2_39,r25_55,r28_52,r3_37,r4_54,r5_56,r6_43,r7_41,r8_45,ra_48,sp_34
+		defs: f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_62,r25_59,r28_58,r3_60,r4_73,r5_74,r6_66,r7_64,r8_68,ra_71,sp_57
 	branch (word32) (dwLoc58 <u 2) != 0x00000000 l00408FB0_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -19084,8 +18850,8 @@ l00408FB0_ds_f:
 // LocalsOut: fp(32) Local -0040(32)
 
 l00409040:
-	word32 r3_101 = (word32) (dwLoc40 <u 2)
-	branch r3_101 != 0x00000000 l00409040_ds_t
+	word32 r3_100 = (word32) (dwLoc40 <u 2)
+	branch r3_100 != 0x00000000 l00409040_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:-1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:<invalid> r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -19103,28 +18869,27 @@ l00409040_ds_f:
 // LocalsOut: fp(32)
 
 l00409054:
-	word32 r25_103 = Mem0[0x10000978:word32]
-	word32 sp_105
-	word32 r28_106
-	word32 r25_107
-	word32 r3_108
-	word64 f12_109
-	word32 r2_110
-	word64 f13_111
-	word32 r7_112
-	word64 f14_113
-	word32 r6_114
-	word64 f15_115
-	word32 r8_116
-	word32 r18_117
-	word32 r16_118
-	word32 ra_119
-	word32 r17_120
-	word32 r4_121
-	word32 r5_122
-	call r25_103 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc40,dwLoc58,dwLoc60_7,f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_98,r25_103,r28_76,r3_101,r4_102,r5_104,r6_67,r7_65,r8_69,ra_72,sp_58
-		defs: f12_109,f13_111,f14_113,f15_115,r16_118,r17_120,r18_117,r2_110,r25_107,r28_106,r3_108,r4_121,r5_122,r6_114,r7_112,r8_116,ra_119,sp_105
+	word32 sp_104
+	word32 r28_105
+	word32 r25_106
+	word32 r3_107
+	word64 f12_108
+	word32 r2_109
+	word64 f13_110
+	word32 r7_111
+	word64 f14_112
+	word32 r6_113
+	word64 f15_114
+	word32 r8_115
+	word32 r18_116
+	word32 r16_117
+	word32 ra_118
+	word32 r17_119
+	word32 r4_120
+	word32 r5_121
+	call __fpcmp_parts_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc40,dwLoc58,dwLoc60_7,f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_97,r25_102,r28_75,r3_100,r4_101,r5_103,r6_66,r7_64,r8_68,ra_71,sp_57
+		defs: f12_108,f13_110,f14_112,f15_114,r16_117,r17_119,r18_116,r2_109,r25_106,r28_105,r3_107,r4_120,r5_121,r6_113,r7_111,r8_115,ra_118,sp_104
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:-1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:fp + -88 r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -19156,49 +18921,48 @@ __ltdf2_entry:
 // LocalsOut: fp(32) Local -0040(32) Local -0058(32)
 
 l00409080:
-	word32 r18_22 = Mem0[0x10000A10:word32]
-	word32 sp_35
-	word32 r28_36
-	word32 r25_37
-	word32 r3_38
-	word64 f12_39
-	word32 r2_40
-	word64 f13_41
-	word32 r7_42
-	word64 f14_43
-	word32 r6_44
-	word64 f15_45
-	word32 r8_46
-	word32 r18_47
-	word32 r16_48
-	word32 ra_49
-	word32 r17_50
-	word32 r4_51
-	word32 r5_52
-	call r18_22 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12,f13,f14,f15,r16_23,r17,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
-		defs: f12_39,f13_41,f14_43,f15_45,r16_48,r17_50,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
-	word32 sp_58
-	word32 r28_59
-	word32 r25_60
-	word32 r3_61
-	word64 f12_62
-	word32 r2_63
-	word64 f13_64
-	word32 r7_65
-	word64 f14_66
-	word32 r6_67
-	word64 f15_68
-	word32 r8_69
-	word32 r18_70
-	word32 r16_71
-	word32 ra_72
-	word32 r17_73
-	word32 r4_74
-	word32 r5_75
-	call r18_47 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12_39,f13_41,f14_43,f15_45,r16_48,r17_54,r18_47,r2_40,r25_56,r28_53,r3_38,r4_55,r5_57,r6_44,r7_42,r8_46,ra_49,sp_35
-		defs: f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_63,r25_60,r28_59,r3_61,r4_74,r5_75,r6_67,r7_65,r8_69,ra_72,sp_58
+	word32 sp_34
+	word32 r28_35
+	word32 r25_36
+	word32 r3_37
+	word64 f12_38
+	word32 r2_39
+	word64 f13_40
+	word32 r7_41
+	word64 f14_42
+	word32 r6_43
+	word64 f15_44
+	word32 r8_45
+	word32 r18_46
+	word32 r16_47
+	word32 ra_48
+	word32 r17_49
+	word32 r4_50
+	word32 r5_51
+	call __unpack_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12,f13,f14,f15,r16_22,r17,r18_21,r2_11,r25_32,r28_5,r3_9,r4_30,r5_31,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_38,f13_40,f14_42,f15_44,r16_47,r17_49,r18_46,r2_39,r25_36,r28_35,r3_37,r4_50,r5_51,r6_43,r7_41,r8_45,ra_48,sp_34
+	word32 sp_57
+	word32 r28_58
+	word32 r25_59
+	word32 r3_60
+	word64 f12_61
+	word32 r2_62
+	word64 f13_63
+	word32 r7_64
+	word64 f14_65
+	word32 r6_66
+	word64 f15_67
+	word32 r8_68
+	word32 r18_69
+	word32 r16_70
+	word32 ra_71
+	word32 r17_72
+	word32 r4_73
+	word32 r5_74
+	call r18_46 (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc60_7,f12_38,f13_40,f14_42,f15_44,r16_47,r17_53,r18_46,r2_39,r25_55,r28_52,r3_37,r4_54,r5_56,r6_43,r7_41,r8_45,ra_48,sp_34
+		defs: f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_62,r25_59,r28_58,r3_60,r4_73,r5_74,r6_66,r7_64,r8_68,ra_71,sp_57
 	branch (word32) (dwLoc58 <u 2) != 0x00000000 l00409080_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -19217,8 +18981,8 @@ l00409080_ds_f:
 // LocalsOut: fp(32) Local -0040(32)
 
 l00409110:
-	word32 r3_101 = (word32) (dwLoc40 <u 2)
-	branch r3_101 != 0x00000000 l00409110_ds_t
+	word32 r3_100 = (word32) (dwLoc40 <u 2)
+	branch r3_100 != 0x00000000 l00409110_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:<invalid> r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -19236,28 +19000,27 @@ l00409110_ds_f:
 // LocalsOut: fp(32)
 
 l00409124:
-	word32 r25_103 = Mem0[0x10000978:word32]
-	word32 sp_105
-	word32 r28_106
-	word32 r25_107
-	word32 r3_108
-	word64 f12_109
-	word32 r2_110
-	word64 f13_111
-	word32 r7_112
-	word64 f14_113
-	word32 r6_114
-	word64 f15_115
-	word32 r8_116
-	word32 r18_117
-	word32 r16_118
-	word32 ra_119
-	word32 r17_120
-	word32 r4_121
-	word32 r5_122
-	call r25_103 (retsize: 0; depth: 112)
-		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc40,dwLoc58,dwLoc60_7,f12_62,f13_64,f14_66,f15_68,r16_71,r17_73,r18_70,r2_98,r25_103,r28_76,r3_101,r4_102,r5_104,r6_67,r7_65,r8_69,ra_72,sp_58
-		defs: f12_109,f13_111,f14_113,f15_115,r16_118,r17_120,r18_117,r2_110,r25_107,r28_106,r3_108,r4_121,r5_122,r6_114,r7_112,r8_116,ra_119,sp_105
+	word32 sp_104
+	word32 r28_105
+	word32 r25_106
+	word32 r3_107
+	word64 f12_108
+	word32 r2_109
+	word64 f13_110
+	word32 r7_111
+	word64 f14_112
+	word32 r6_113
+	word64 f15_114
+	word32 r8_115
+	word32 r18_116
+	word32 r16_117
+	word32 ra_118
+	word32 r17_119
+	word32 r4_120
+	word32 r5_121
+	call __fpcmp_parts_d (retsize: 0; depth: 112)
+		uses: dwLoc08_26,dwLoc0C_18,dwLoc10_29,dwLoc14_20,dwLoc1C_33,dwLoc20_24,dwLoc24_27,dwLoc28_23,dwLoc40,dwLoc58,dwLoc60_7,f12_61,f13_63,f14_65,f15_67,r16_70,r17_72,r18_69,r2_97,r25_102,r28_75,r3_100,r4_101,r5_103,r6_66,r7_64,r8_68,ra_71,sp_57
+		defs: f12_108,f13_110,f14_112,f15_114,r16_117,r17_119,r18_116,r2_109,r25_106,r28_105,r3_107,r4_120,r5_121,r6_113,r7_111,r8_115,ra_118,sp_104
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -112 r25:<invalid> r28:0x10008860 r3:<invalid> r2:1 r7:<invalid> r6:<invalid> r8:<invalid> r18:<invalid> r16:fp + -32 r4:fp + -88 r5:<invalid> r17:fp + -64 -96(fp):0x10008860 -40(fp):f13 -36(fp):f12 -32(fp):f15 -28(fp):f14 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):ra
@@ -19302,8 +19065,8 @@ l00409150_ds_t:
 // LocalsOut: fp(32)
 
 l00409188:
-	word32 dwLoc0C_103
-	word32 dwLoc10_102
+	word32 dwLoc0C_102
+	word32 dwLoc10_101
 	branch r4 >>u 0x1F == 0x00000000 l00409188_ds_t
 // DataOut: r4
 // DataOut (flags): 
@@ -19317,8 +19080,8 @@ l00409188_ds_t:
 // LocalsOut: fp(32)
 
 l004091C0:
-	dwLoc10_102 = r4 >> 0x1F
-	dwLoc0C_103 = r4
+	dwLoc10_101 = r4 >> 0x1F
+	dwLoc0C_102 = r4
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:60 r3:r4 >>u 0x1F -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
@@ -19343,22 +19106,22 @@ l00409194_ds_t:
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
 
 l00409194_ds_f:
-	word32 r2_99 = -r4
+	word32 r2_98 = -r4
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:0x80000000 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
 // LocalsOut: fp(32)
 
 l004091AC:
-	dwLoc10_102 = r2_99 >> 0x1F
-	dwLoc0C_103 = r2_99
+	dwLoc10_101 = r2_98 >> 0x1F
+	dwLoc0C_102 = r2_98
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:-r4 r3:r4 >>u 0x1F r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -4(fp):ra
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l004091D0:
-	branch (word32) (0x0FFFFFFF <u dwLoc10_102) != 0x00000000 l004091D0_ds_t
+	branch (word32) (0x0FFFFFFF <u dwLoc10_101) != 0x00000000 l004091D0_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:<invalid> r3:<invalid> r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -16(fp):<invalid> -12(fp):<invalid> -4(fp):ra
@@ -19383,10 +19146,10 @@ l004091E8:
 // LocalsOut: fp(32) Local -000C(32) Local -0010(32)
 
 l004091F4:
-	word32 r2_85 = dwLoc10_102 << 0x01 | dwLoc0C_103 >>u 0x1F
-	dwLoc10_102 = r2_85
-	dwLoc0C_103 = dwLoc0C_103 << 0x01
-	branch (word32) (0x0FFFFFFF <u r2_85) == 0x00000000 l004091F4_ds_t
+	word32 r2_84 = dwLoc10_101 << 0x01 | dwLoc0C_102 >>u 0x1F
+	dwLoc10_101 = r2_84
+	dwLoc0C_102 = dwLoc0C_102 << 0x01
+	branch (word32) (0x0FFFFFFF <u r2_84) == 0x00000000 l004091F4_ds_t
 // DataOut: r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:<invalid> r3:<invalid> r6:0x0FFFFFFF r5:<invalid> r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 r4:<invalid> -40(fp):0x10008860 -32(fp):3 -28(fp):r4 >>u 0x1F -24(fp):60 -16(fp):<invalid> -12(fp):<invalid> -4(fp):ra
@@ -19423,22 +19186,21 @@ l0040917C:
 // LocalsOut: fp(32)
 
 l0040922C:
-	word32 r25_37 = Mem0[0x10000894:word32]
-	word32 sp_44
-	word32 r28_45
-	word32 r25_46
-	word32 r2_47
-	word32 r3_48
-	word32 r4_49
-	word32 ra_50
-	word32 r1_51
-	word64 f1_52
-	word64 f0_53
-	word32 r6_54
-	word32 r5_55
-	call r25_37 (retsize: 0; depth: 56)
-		uses: dwLoc04_12,dwLoc0C_32,dwLoc10_31,dwLoc18_33,dwLoc1C_34,dwLoc20_35,dwLoc28_7,f0,f1,r1,r2_8,r25_37,r28_5,r3_10,r4_38,r5,r6,ra,sp_6
-		defs: f0_53,f1_52,r1_51,r2_47,r25_46,r28_45,r3_48,r4_49,r5_55,r6_54,ra_50,sp_44
+	word32 sp_43
+	word32 r28_44
+	word32 r25_45
+	word32 r2_46
+	word32 r3_47
+	word32 r4_48
+	word32 ra_49
+	word32 r1_50
+	word64 f1_51
+	word64 f0_52
+	word32 r6_53
+	word32 r5_54
+	call __pack_d (retsize: 0; depth: 56)
+		uses: dwLoc04_12,dwLoc0C_32,dwLoc10_31,dwLoc18_33,dwLoc1C_34,dwLoc20_35,dwLoc28_7,f0,f1,r1,r2_8,r25_36,r28_5,r3_10,r4_37,r5,r6,ra,sp_6
+		defs: f0_52,f1_51,r1_50,r2_46,r25_45,r28_44,r3_47,r4_48,r5_54,r6_53,ra_49,sp_43
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:0x00409150 r28:0x10008860 r2:<invalid> r3:<invalid> r1:0xC1E00000 f1:0xC1E00000 f0:0x00000000 r6:0x0FFFFFFF r5:<invalid> r4:<invalid> -40(fp):0x10008860 -32(fp):<invalid> -28(fp):r4 >>u 0x1F -24(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -4(fp):ra
@@ -19470,36 +19232,34 @@ __negdf2_entry:
 // LocalsOut: fp(32) Local -0024(32)
 
 l00409250:
-	word32 r25_18 = Mem0[0x10000A10:word32]
-	word32 sp_21
-	word32 r28_22
-	word32 r25_23
-	word32 r3_24
-	word64 f12_25
-	word32 r2_26
-	word64 f13_27
-	word32 r6_28
-	word32 ra_29
-	word32 r4_30
-	word32 r5_31
-	call r25_18 (retsize: 0; depth: 64)
-		uses: dwLoc04_15,dwLoc0C_20,dwLoc10_13,dwLoc30_7,f12,f13,r2_11,r25_18,r28_5,r3_9,r4_16,r5_19,r6_12,ra,sp_6
-		defs: f12_25,f13_27,r2_26,r25_23,r28_22,r3_24,r4_30,r5_31,r6_28,ra_29,sp_21
-	word32 r25_33 = Mem0[0x10000894:word32]
-	word32 sp_40
-	word32 r28_41
-	word32 r25_42
-	word32 r3_43
-	word64 f12_44
-	word32 r2_45
-	word64 f13_46
-	word32 r6_47
-	word32 ra_48
-	word32 r4_49
-	word32 r5_50
-	call r25_33 (retsize: 0; depth: 64)
-		uses: dwLoc04_15,dwLoc0C_20,dwLoc10_13,dwLoc24_39,dwLoc30_7,f12_25,f13_27,r2_38,r25_33,r28_32,r3_34,r4_37,r5_31,r6_28,ra_29,sp_21
-		defs: f12_44,f13_46,r2_45,r25_42,r28_41,r3_43,r4_49,r5_50,r6_47,ra_48,sp_40
+	word32 sp_20
+	word32 r28_21
+	word32 r25_22
+	word32 r3_23
+	word64 f12_24
+	word32 r2_25
+	word64 f13_26
+	word32 r6_27
+	word32 ra_28
+	word32 r4_29
+	word32 r5_30
+	call __unpack_d (retsize: 0; depth: 64)
+		uses: dwLoc04_15,dwLoc0C_19,dwLoc10_13,dwLoc30_7,f12,f13,r2_11,r25_17,r28_5,r3_9,r4_16,r5_18,r6_12,ra,sp_6
+		defs: f12_24,f13_26,r2_25,r25_22,r28_21,r3_23,r4_29,r5_30,r6_27,ra_28,sp_20
+	word32 sp_39
+	word32 r28_40
+	word32 r25_41
+	word32 r3_42
+	word64 f12_43
+	word32 r2_44
+	word64 f13_45
+	word32 r6_46
+	word32 ra_47
+	word32 r4_48
+	word32 r5_49
+	call __pack_d (retsize: 0; depth: 64)
+		uses: dwLoc04_15,dwLoc0C_19,dwLoc10_13,dwLoc24_38,dwLoc30_7,f12_24,f13_26,r2_37,r25_32,r28_31,r3_33,r4_36,r5_30,r6_27,ra_28,sp_20
+		defs: f12_43,f13_45,r2_44,r25_41,r28_40,r3_42,r4_48,r5_49,r6_46,ra_47,sp_39
 	return
 // DataOut:
 // DataOut (flags): 
@@ -19526,19 +19286,18 @@ __make_dp_entry:
 // LocalsOut: fp(32)
 
 l004092D0:
-	word32 r25_15 = Mem0[0x10000894:word32]
-	word32 sp_25
-	word32 r28_26
-	word32 r25_27
-	word32 r2_28
-	word32 r3_29
-	word32 r4_30
-	word32 ra_31
-	word32 r5_32
-	word32 r6_33
-	call r25_15 (retsize: 0; depth: 56)
-		uses: dwLoc04_17,dwLoc0C_23,dwLoc10_22,dwLoc18_21,dwLoc1C_19,dwLoc20_13,dwLoc28_7,r2_9,r25_15,r28_5,r3_11,r4_24,r5,r6,ra,sp_6
-		defs: r2_28,r25_27,r28_26,r3_29,r4_30,r5_32,r6_33,ra_31,sp_25
+	word32 sp_24
+	word32 r28_25
+	word32 r25_26
+	word32 r2_27
+	word32 r3_28
+	word32 r4_29
+	word32 ra_30
+	word32 r5_31
+	word32 r6_32
+	call __pack_d (retsize: 0; depth: 56)
+		uses: dwLoc04_16,dwLoc0C_22,dwLoc10_21,dwLoc18_20,dwLoc1C_18,dwLoc20_13,dwLoc28_7,r2_9,r25_14,r28_5,r3_11,r4_23,r5,r6,ra,sp_6
+		defs: r2_27,r25_26,r28_25,r3_28,r4_29,r5_31,r6_32,ra_30,sp_24
 	return
 // DataOut:
 // DataOut (flags): 
@@ -19565,25 +19324,23 @@ __truncdfsf2_entry:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32)
 
 l00409330:
-	word32 r25_18 = Mem0[0x10000A10:word32]
-	word32 sp_21
-	word32 r28_22
-	word32 r25_23
-	word32 r3_24
-	word64 f12_25
-	word32 r2_26
-	word64 f13_27
-	word32 r6_28
-	word32 ra_29
-	word32 r4_30
-	word32 r5_31
-	word32 r7_32
-	call r25_18 (retsize: 0; depth: 64)
-		uses: dwLoc04_15,dwLoc0C_20,dwLoc10_13,dwLoc30_7,f12,f13,r2_11,r25_18,r28_5,r3_9,r4_16,r5_19,r6_12,ra,sp_6
-		defs: f12_25,f13_27,r2_26,r25_23,r28_22,r3_24,r4_30,r5_31,r6_28,r7_32,ra_29,sp_21
-	word32 r25_41 = Mem0[0x10000A64:word32]
-	word32 r2_48 = dwLoc14 + 0x3FFFFFFF | dwLoc18
-	branch r2_48 == 0x00000000 l00409330_ds_t
+	word32 sp_20
+	word32 r28_21
+	word32 r25_22
+	word32 r3_23
+	word64 f12_24
+	word32 r2_25
+	word64 f13_26
+	word32 r6_27
+	word32 ra_28
+	word32 r4_29
+	word32 r5_30
+	word32 r7_31
+	call __unpack_d (retsize: 0; depth: 64)
+		uses: dwLoc04_15,dwLoc0C_19,dwLoc10_13,dwLoc30_7,f12,f13,r2_11,r25_17,r28_5,r3_9,r4_16,r5_18,r6_12,ra,sp_6
+		defs: f12_24,f13_26,r2_25,r25_22,r28_21,r3_23,r4_29,r5_30,r6_27,r7_31,ra_28,sp_20
+	word32 r2_47 = dwLoc14 + 0x3FFFFFFF | dwLoc18
+	branch r2_47 == 0x00000000 l00409330_ds_t
 // DataOut: r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -19604,21 +19361,21 @@ l004093AC:
 // SymbolicIn: sp:fp + -64 r25:<invalid> r28:0x10008860 r3:<invalid> r2:<invalid> r6:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> -48(fp):0x10008860 -16(fp):f13 -12(fp):f12 -4(fp):ra
 
 l004093B0:
-	word32 sp_55
-	word32 r28_56
-	word32 r25_57
-	word32 r3_58
-	word64 f12_59
-	word32 r2_60
-	word64 f13_61
-	word32 r6_62
-	word32 ra_63
-	word32 r4_64
-	word32 r5_65
-	word32 r7_66
-	call r25_41 (retsize: 0; depth: 64)
-		uses: dwLoc04_15,dwLoc0C_20,dwLoc10_13,dwLoc14,dwLoc18,dwLoc20,dwLoc24,dwLoc28,dwLoc30_7,f12_25,f13_27,r2_48,r25_41,r28_33,r3_43,r4_50,r5_52,r6_54,r7_32,ra_29,sp_21
-		defs: f12_59,f13_61,r2_60,r25_57,r28_56,r3_58,r4_64,r5_65,r6_62,r7_66,ra_63,sp_55
+	word32 sp_54
+	word32 r28_55
+	word32 r25_56
+	word32 r3_57
+	word64 f12_58
+	word32 r2_59
+	word64 f13_60
+	word32 r6_61
+	word32 ra_62
+	word32 r4_63
+	word32 r5_64
+	word32 r7_65
+	call __make_fp (retsize: 0; depth: 64)
+		uses: dwLoc04_15,dwLoc0C_19,dwLoc10_13,dwLoc14,dwLoc18,dwLoc20,dwLoc24,dwLoc28,dwLoc30_7,f12_24,f13_26,r2_47,r25_40,r28_32,r3_42,r4_49,r5_51,r6_53,r7_31,ra_28,sp_20
+		defs: f12_58,f13_60,r2_59,r25_56,r28_55,r3_57,r4_63,r5_64,r6_61,r7_65,ra_62,sp_54
 	return
 // DataOut:
 // DataOut (flags): 
@@ -20136,18 +19893,17 @@ __make_fp_entry:
 // LocalsOut: fp(32)
 
 l00409630:
-	word32 r25_11 = Mem0[0x100009AC:word32]
-	word32 sp_21
-	word32 r28_22
-	word32 r25_23
-	word32 r4_24
-	word32 ra_25
-	word32 r5_26
-	word32 r6_27
-	word32 r7_28
-	call r25_11 (retsize: 0; depth: 48)
-		uses: dwLoc04_14,dwLoc0C_20,dwLoc10_18,dwLoc14_16,dwLoc18_9,dwLoc20_7,r25_11,r28_5,r4_12,r5,r6,r7,ra,sp_6
-		defs: r25_23,r28_22,r4_24,r5_26,r6_27,r7_28,ra_25,sp_21
+	word32 sp_20
+	word32 r28_21
+	word32 r25_22
+	word32 r4_23
+	word32 ra_24
+	word32 r5_25
+	word32 r6_26
+	word32 r7_27
+	call __pack_f (retsize: 0; depth: 48)
+		uses: dwLoc04_13,dwLoc0C_19,dwLoc10_17,dwLoc14_15,dwLoc18_9,dwLoc20_7,r25_10,r28_5,r4_11,r5,r6,r7,ra,sp_6
+		defs: r25_22,r28_21,r4_23,r5_25,r6_26,r7_27,ra_24,sp_20
 	return
 // DataOut:
 // DataOut (flags): 

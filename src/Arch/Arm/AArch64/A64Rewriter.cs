@@ -66,6 +66,10 @@ namespace Reko.Arch.Arm.AArch64
                 {
                 default:
                     EmitUnitTest();
+                    host.Warn(
+                        instr.Address,
+                        "AArch64 instruction {0} is not supported yet.",
+                        instr);
                     goto case Opcode.Invalid;
                 case Opcode.Invalid:
                     rtlc = RtlClass.Invalid;

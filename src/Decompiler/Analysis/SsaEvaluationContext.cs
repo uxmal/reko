@@ -33,11 +33,16 @@ namespace Reko.Analysis
     {
         private IProcessorArchitecture arch;
         private SsaIdentifierCollection ssaIds;
+        private IImportResolver importResolver;
 
-        public SsaEvaluationContext(IProcessorArchitecture arch, SsaIdentifierCollection ssaIds)
+        public SsaEvaluationContext(
+            IProcessorArchitecture arch, 
+            SsaIdentifierCollection ssaIds, 
+            IImportResolver importResolver)
         {
             this.arch = arch;
             this.ssaIds = ssaIds;
+            this.importResolver = importResolver;
         }
 
         public Statement Statement { get; set; }
@@ -67,6 +72,12 @@ namespace Reko.Analysis
 
         public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
         {
+            if (access.EffectiveAddress is Constant c)
+            {
+                var pc = importResolver.ResolveToImportedProcedureConstant(this.Statement, c);
+                if (pc != null)
+                    return pc;
+            }
             return access;
         }
 

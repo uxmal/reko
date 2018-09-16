@@ -149,6 +149,7 @@
     <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.750.cs" />
+    <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
     <Compile Include="Core\CriticalInstructionTests.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
+    <Compile Include="ImageLoaders\Elf\Relocators\x86RelocatorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
@@ -390,7 +392,6 @@
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\RewriterTestBase.cs" />
     <Compile Include="Arch\Sparc\RtlTranslator.cs" />
-    <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Sparc\SparcRewriterTests.cs" />
     <Compile Include="Arch\Z80\DisassemblerTests.cs" />
     <Compile Include="Arch\Z80\RewriterTests.cs" />

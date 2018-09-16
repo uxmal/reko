@@ -477,8 +477,8 @@ l00010CE8:
 ; DT_NEEDED            libc.so.1
 ; DT_INIT              00010C80
 ; DT_DEBUG             00010CB8
-; 6FFFFFFE             000108F0
-; 6FFFFFFF             00000001
+; DT_VERNEED           000108F0
+; DT_VERNEEDNUM               1
 ; DT_HASH              000100E8
 ; DT_STRTAB            00010660
 ; DT_STRSZ             0000028D

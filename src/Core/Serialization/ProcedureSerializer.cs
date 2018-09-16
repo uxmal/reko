@@ -137,7 +137,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                var dtRet = ss.ReturnValue != null
+                var dtRet = ss.ReturnValue != null && ss.ReturnValue.Type != null
                     ? ss.ReturnValue.Type.Accept(TypeLoader)
                     : null;
                 var dtThis = ss.EnclosingType != null

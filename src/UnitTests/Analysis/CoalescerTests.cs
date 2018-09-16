@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Analysis
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 
-                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, listener);
                 vp.Transform();
                 DeadCode.Eliminate(ssa);
                 Coalescer co = new Coalescer(ssa);

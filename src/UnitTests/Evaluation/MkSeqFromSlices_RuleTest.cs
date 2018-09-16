@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Evaluation
                 null,
                 flow);
             this.ssa = sst.Transform();
-            this.ctx = new SsaEvaluationContext(m.Architecture, ssa.Identifiers);
+            this.ctx = new SsaEvaluationContext(m.Architecture, ssa.Identifiers,  null);
         }
 
         [Test]

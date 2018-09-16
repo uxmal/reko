@@ -55,13 +55,14 @@ namespace Reko.Analysis
         public ValuePropagator(
             SegmentMap segmentMap,
             SsaState ssa,
+            IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
-            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
+            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
 

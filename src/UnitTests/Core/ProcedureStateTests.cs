@@ -216,6 +216,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+            {
+                throw new NotImplementedException();
+            }
+
             public Address MakeAddressFromConstant(Constant c)
             {
                 return Address.Ptr32(c.ToUInt32());

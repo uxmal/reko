@@ -297,6 +297,11 @@ namespace Reko.UnitTests.Mocks
         public RegisterStorage FpuStackRegister { get; set; }
         public MemoryIdentifier FpuStackBase { get; set; }
 
+        public List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
+        }
+
         public Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());

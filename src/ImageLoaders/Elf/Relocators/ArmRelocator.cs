@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             /*
             S (when used on its own) is the address of the symbol
@@ -74,6 +74,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
             }
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)

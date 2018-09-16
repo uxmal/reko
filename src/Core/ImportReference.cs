@@ -119,7 +119,7 @@ namespace Reko.Core
         public override string ToString()
         {
             return string.Format(
-                ModuleName != null ? "{0}!{1}" : "{1}",
+                string.IsNullOrEmpty(ModuleName) ? "{1}" : "{0}!{1}",
                 ModuleName, 
                 ImportName);
         }

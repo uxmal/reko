@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Evaluation
             ((SideEffect)use.Instruction).Expression = sid_ds.Identifier;
 			sid_ds.Uses.Add(use);
 
-			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa), new Unifier(null), listener);
+			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa, null), new Unifier(null), listener);
             Assert.IsTrue(ic.Match(sid_ds.Identifier));
 			Expression e = ic.Transform();
 			Assert.AreEqual("selector", e.DataType.ToString());

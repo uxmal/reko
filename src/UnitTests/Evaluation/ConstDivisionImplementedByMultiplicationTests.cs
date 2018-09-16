@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Evaluation
 
             proc.Dump(true);
 
-            var ctx = new SsaEvaluationContext(m.Architecture, sst.SsaState.Identifiers);
+            var ctx = new SsaEvaluationContext(m.Architecture, sst.SsaState.Identifiers, null);
             var rule = new ConstDivisionImplementedByMultiplication(sst.SsaState);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
             Assert.IsTrue(rule.Match(ctx.Statement.Instruction));
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Evaluation
                 null,
                 null).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, null);
+            var vp = new ValuePropagator(segmentMap, ssa, null, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

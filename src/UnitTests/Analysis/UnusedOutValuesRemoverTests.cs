@@ -78,6 +78,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssaStates,
                 dataFlow,
+                import,
                 eventListener);
             uvr.Transform();
         }
@@ -109,6 +110,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
+                import,
                 eventListener);
             uvr.Transform();
 

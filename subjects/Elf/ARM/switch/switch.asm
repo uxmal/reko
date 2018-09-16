@@ -468,9 +468,9 @@ _fini proc
 ; DT_REL               000082B8
 ; DT_RELSZ                   40
 ; DT_RELENT                   8
-; 6FFFFFFE             00008298
-; 6FFFFFFF             00000001
-; 6FFFFFF0             00008284
+; DT_VERNEED           00008298
+; DT_VERNEEDNUM               1
+; DT_VERSYM            00008284
 ;;; Segment .ctors (00010834)
 00010834             FF FF FF FF 00 00 00 00                 ........   
 ;;; Segment .dtors (0001083C)

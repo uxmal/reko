@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Analysis
                     null, 
                     new ProgramDataFlow());
                 sst.Transform();
-                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, null, eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();

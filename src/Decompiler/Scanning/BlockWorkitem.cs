@@ -104,6 +104,8 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
+                if (ric.Address.ToLinear() == 0x0001DD90)
+                    ric.ToString(); //$DEBUG
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
@@ -545,7 +547,10 @@ namespace Reko.Scanning
                     return GenerateCallToOutsideProcedure(site, addr);
                 }
 
-
+                if (InlineCall(addr))
+                {
+                    return true;
+                }
 
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
@@ -609,6 +614,25 @@ namespace Reko.Scanning
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             return OnAfterCall(sig, chr);
+        }
+
+
+        /// <summary>
+        /// If the architecture can inline this call, do so.
+        /// </summary>
+        /// <param name="addCallee">Address to which the call is made.</param>
+        /// <returns>True if the call was successfully inlined, false if not.</returns>
+        private bool InlineCall(Address addCallee)
+        {
+            var rdr = program.CreateImageReader(addCallee);
+            List<RtlInstruction> inlinedInstructions = arch.InlineCall(addCallee, ric.Address + ric.Length, rdr, frame);
+            if (inlinedInstructions == null)
+                return false;
+            foreach (var instr in inlinedInstructions)
+            {
+                instr.Accept(this);
+            }
+            return true;
         }
 
         private Address CallTargetAsAddress(RtlCall call)

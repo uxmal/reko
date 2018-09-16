@@ -44,17 +44,20 @@ namespace Reko.Analysis
         private Program program;
         private Dictionary<Procedure, SsaState> procToSsa;
         private ProgramDataFlow dataFlow;
+        private IImportResolver importResolver;
         private DecompilerEventListener eventListener;
 
         public UnusedOutValuesRemover(
             Program program,
             IEnumerable<SsaState> ssaStates,
             ProgramDataFlow dataFlow,
+            IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.dataFlow = dataFlow;
             this.program = program;
             this.ssaStates = ssaStates;
+            this.importResolver = importResolver;
             this.eventListener = eventListener;
             this.procToSsa = ssaStates
                 .ToDictionary(s => s.Procedure);
@@ -75,7 +78,7 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                 }

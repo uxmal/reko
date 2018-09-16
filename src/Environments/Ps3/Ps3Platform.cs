@@ -103,11 +103,11 @@ namespace Reko.Environments.Ps3
             if (dasm.Length < 8)
                 return null;
              
+            //ImmediateOperand immOp;
+            //MemoryOperand memOp;
 
             throw new NotImplementedException();
             /*
-            ImmediateOperand immOp;
-            MemoryOperand memOp;
             //addi r12,r0,0000
             instr = dasm[0].Instructions[0];
             if (instr.Opcode != Opcode.addi)

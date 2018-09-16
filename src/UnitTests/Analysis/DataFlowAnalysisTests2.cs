@@ -155,7 +155,7 @@ test_exit:
                 m.MStore(m.Word32(0x010008), r1);
                 m.Return();
             });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0

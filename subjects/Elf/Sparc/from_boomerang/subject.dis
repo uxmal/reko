@@ -827,7 +827,7 @@ l00010CA8:
 	word32 o5_28
 	word32 i5_29
 	word32 i6_30
-	call l0_6 (retsize: 0;)
+	call fn81C7E008 (retsize: 0;)
 		uses: g0_7,l0_6,NZVC_8,o0_5,o7_10,sp_1,Z_9
 		defs: g0_15,i0_19,i1_21,i2_23,i3_25,i4_27,i5_29,i6_30,i7_18,l0_14,NZVC_16,o0_12,o1_20,o2_22,o3_24,o4_26,o5_28,o7_13,sp_11,Z_17
 // DataOut:

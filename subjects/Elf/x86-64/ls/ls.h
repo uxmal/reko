@@ -2879,9 +2879,9 @@ Eq_17: (union "Eq_17" (char u0) (real32 u1) ((ptr64 char) u2) ((ptr64 wchar_t) u
 	T_17035 (in r15_558 - r14_557 : word64)
 	T_17036 (in r15_565 : word64)
 	T_17039 (in rdi_567 : word64)
-	T_17042 (in dest : (ptr64 void))
+	T_17042 (in rdi : (ptr64 void))
 	T_17043 (in src : (ptr64 void))
-	T_17044 (in n : size_t)
+	T_17044 (in cb : size_t)
 	T_17045 (in memmove(rdi_567, rsi_561, rdx_562) : (ptr64 void))
 	T_17046 (in rax_568 : word64)
 	T_17047 (in r12_563 + r15_565 : word64)
@@ -77408,7 +77408,7 @@ T_17041: (in signature of memmove : void)
   Class: Eq_17040
   DataType: (ptr64 Eq_17040)
   OrigDataType: 
-T_17042: (in dest : (ptr64 void))
+T_17042: (in rdi : (ptr64 void))
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: 
@@ -77416,7 +77416,7 @@ T_17043: (in src : (ptr64 void))
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: 
-T_17044: (in n : size_t)
+T_17044: (in cb : size_t)
   Class: Eq_17
   DataType: Eq_17
   OrigDataType: 

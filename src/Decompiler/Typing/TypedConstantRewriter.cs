@@ -261,10 +261,11 @@ namespace Reko.Typing
                 }
                 
                 var dt = ptr.Pointee.ResolveAs<DataType>();
-                if (IsCharPtrToReadonlySection(c, dt))
+                var charType = MaybeCharType(dt);
+                if (charType != null && IsPtrToReadonlySection(c, dt))
                 {
-                    PromoteToCString(c, dt);
-                    return ReadNullTerminatedString(c, dt);
+                    PromoteToCString(c, charType);
+                    return ReadNullTerminatedString(c, charType);
                 }
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
                 var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.BitSize);
@@ -291,6 +292,25 @@ namespace Reko.Typing
 			return e;
 		}
 
+        /// <summary>
+        /// Drill into dt to see if it could be the beginning of a character string.
+        /// </summary>
+        private PrimitiveType MaybeCharType(DataType dt)
+        {
+            var pr = dt as PrimitiveType;
+            if (pr == null)
+            {
+                if (!(dt is ArrayType at))
+                    return null;
+                pr = at.ElementType as PrimitiveType;
+                if (pr == null)
+                    return null;
+            }
+            if (pr.Domain != Domain.Character)
+                return null;
+            return pr;
+        }
+
         public Expression VisitQualifiedType(QualifiedType qt)
         {
             return qt.DataType.Accept(this);
@@ -301,16 +321,12 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        private bool IsCharPtrToReadonlySection(Constant c, DataType dt)
+        private bool IsPtrToReadonlySection(Constant c, DataType dt)
         {
-            var pr = dt as PrimitiveType;
-            if (pr == null || pr.Domain != Domain.Character)
-                return false;
             var addr = platform.MakeAddressFromConstant(c);
             if (addr == null)
                 return false;
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(addr, out seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
         }

@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (SuperHrt)(byte)rela.Info;
             if (rt == SuperHrt.R_SH_GLOB_DAT ||
@@ -43,9 +43,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var addrPfn = Address.Ptr32((uint)rela.Offset);
                 Debug.Print("Import reference {0} - {1}", addrPfn, symbol.Name);
                 program.ImportReferences[addrPfn] = new NamedImportReference(addrPfn, null, symbol.Name);
-                return;
+                return symbol;
             }
-            return;
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)

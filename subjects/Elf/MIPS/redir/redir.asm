@@ -12810,7 +12810,9 @@ client_check_activ_GOT		; 10000898
 	dd	0x00403840
 close_GOT		; 1000089C
 	dd	0x004005E0
-100008A0 10 00 0A AC 08 11 F2 60                         .......`       
+100008A0 10 00 0A AC                                     ....           
+__register_frame_info_GOT		; 100008A4
+	dd	0x0811F260
 slist_destroy_GOT		; 100008A8
 	dd	0x004076A8
 get_a_line_GOT		; 100008AC
@@ -12938,7 +12940,8 @@ __pack_f_GOT		; 100009AC
 	dd	0x004093E0
 client_send_request_GOT		; 100009B0
 	dd	0x00402EF8
-100009B4             08 11 F2 60                             ...`       
+__deregister_frame_info_GOT		; 100009B4
+	dd	0x0811F260
 inet_addr_GOT		; 100009B8
 	dd	0x00400430
 bind_GOT		; 100009BC

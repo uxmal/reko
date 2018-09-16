@@ -66,7 +66,7 @@ namespace Reko.Arch.Pdp11
                 default:
                     host.Warn(
                         instr.Address,
-                        "Rewriting of PDP-11 instruction {0} not supported yet.", 
+                        "PDP-11 instruction {0} is not supported yet.", 
                         instr.Opcode);
                     rtlc = RtlClass.Invalid;
                     m.Invalid();

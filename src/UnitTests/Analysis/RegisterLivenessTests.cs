@@ -28,6 +28,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Rhino.Mocks;
 using Reko.Core.Serialization;
 using System.Linq;
 
@@ -41,18 +42,22 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
+        private MockRepository mr;
         private SortedList<Address, Procedure_v1> userSigs;
+        private IImportResolver importResolver;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
             userSigs = new SortedList<Address, Procedure_v1>();
+            this.importResolver = mr.Stub<IImportResolver>();
         }
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			var eventListener = new FakeDecompilerEventListener();
-			var dfa = new DataFlowAnalysis(program, null, eventListener);
+			var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
             program.User.Procedures = userSigs;
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);
@@ -67,6 +72,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
+                importResolver,
                 eventListener);
             uvr.Transform();
             DumpProcedureFlows(program, dfa, writer);

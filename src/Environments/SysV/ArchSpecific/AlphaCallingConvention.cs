@@ -44,9 +44,9 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .Select(r => arch.GetRegister(r))
                 .ToArray();
             this.iRet = arch.GetRegister("r0");
-            //this.fregs = new[] { "f12", "f13", "f14", "f15" }
-            //    .Select(r => arch.GetRegister(r))
-            //    .ToArray();
+            this.fRegs = new[] { "f12", "f13", "f14", "f15" }
+                .Select(r => arch.GetRegister(r))
+                .ToArray();
 
         }
 

@@ -252,7 +252,5 @@ namespace Reko.Core
                 new AddressContext(program, addrInstruction, this.eventListener));
             return new ProcedureConstant(program.Platform.PointerType, extProc);
         }
-
-       
     }
 }

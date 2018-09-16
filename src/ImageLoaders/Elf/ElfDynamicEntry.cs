@@ -18,7 +18,7 @@
  */
 #endregion
 
- using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +28,53 @@ namespace Reko.ImageLoaders.Elf
 {
     public class ElfDynamicEntry
     {
+        public const int DT_NULL = 0;
+        public const int DT_NEEDED = 1;
+        public const int DT_PLTRELSZ = 2;
+        public const int DT_PLTGOT = 3;
+        public const int DT_HASH = 4;
+        public const int DT_STRTAB = 5;
+        public const int DT_SYMTAB = 6;
+        public const int DT_RELA = 7;
+        public const int DT_RELASZ = 8;
+        public const int DT_RELAENT = 9;
+        public const int DT_STRSZ = 10;
+        public const int DT_SYMENT = 11;
+        public const int DT_INIT = 12;
+        public const int DT_FINI = 13;
+        public const int DT_SONAME = 14;
+        public const int DT_RPATH = 15;
+        public const int DT_SYMBOLIC = 16;
+        public const int DT_REL = 17;
+        public const int DT_RELSZ = 18;
+        public const int DT_RELENT = 19;
+        public const int DT_PLTREL = 20;
+        public const int DT_DEBUG = 21;
+        public const int DT_TEXTREL = 22;
+        public const int DT_JMPREL = 23;
+        public const int DT_BIND_NOW = 24;
+        public const int DT_INIT_ARRAY = 25;
+        public const int DT_FINI_ARRAY = 26;
+        public const int DT_INIT_ARRAYSZ = 27;
+        public const int DT_FINI_ARRAYSZ = 28;
+        public const int DT_RUNPATH = 29;
+        public const int DT_FLAGS = 30;
+        public const int DT_ENCODING = 32;
+        public const int DT_PREINIT_ARRAY = 32;
+        public const int DT_PREINIT_ARRAYSZ = 33;
+        public const int DT_MAXPOSTAGS = 34;
+
+        public const int DT_GNU_HASH = 0x6FFFFEF5;
+        public const int DT_RELACOUNT = 0x6FFFFFF9;
+        public const int DT_RELCOUNT = 0x6FFFFFFA;
+        public const int DT_FLAGS_1 = 0x6FFFFFFB;
+        public const int DT_VERSYM = 0x6FFFFFF0;
+        public const int DT_VERDEF = 0x6FFFFFFC;
+        public const int DT_VERDEFNUM = 0x6FFFFFFD;
+        public const int DT_VERNEED = 0x6FFFFFFE;
+        public const int DT_VERNEEDNUM = 0x6FFFFFFF;
+
+
         public ElfDynamicEntry(long tag, ulong value)
         {
             this.Tag = (int)tag;
@@ -60,32 +107,42 @@ namespace Reko.ImageLoaders.Elf
 
         public static Dictionary<long, TagInfo> TagInfos = new Dictionary<long, TagInfo>
         {
-            { ElfLoader.DT_DEBUG,   new TagInfo { Name = "DT_DEBUG", Format= DtFormat.Hexadecimal } },
-            { ElfLoader.DT_FINI,    new TagInfo { Name="DT_DEBUG", Format = DtFormat.Address } },
-            { ElfLoader.DT_HASH,    new TagInfo { Name = "DT_HASH", Format = DtFormat.Address} },
-            { ElfLoader.DT_INIT,    new TagInfo { Name = "DT_INIT", Format = DtFormat.Address} },
-            { ElfLoader.DT_RELA,    new TagInfo { Name = "DT_RELA", Format = DtFormat.Address} },
-            { ElfLoader.DT_RELASZ,  new TagInfo { Name = "DT_RELASZ", Format = DtFormat.Decimal } },
-            { ElfLoader.DT_RELAENT, new TagInfo { Name = "DT_RELAENT", Format = DtFormat.Decimal } },
-            { ElfLoader.DT_PLTGOT,  new TagInfo { Name = "DT_PLTGOT", Format = DtFormat.Address} },
-            { ElfLoader.DT_PLTREL,  new TagInfo { Name = "DT_PLTREL", Format = DtFormat.Hexadecimal } },
-            { ElfLoader.DT_PLTRELSZ, new TagInfo { Name = "DT_PLTRELSZ", Format = DtFormat.Decimal } },
+            { DT_DEBUG,   new TagInfo { Name = "DT_DEBUG", Format= DtFormat.Hexadecimal } },
+            { DT_FINI,    new TagInfo { Name="DT_DEBUG", Format = DtFormat.Address } },
+            { DT_HASH,    new TagInfo { Name = "DT_HASH", Format = DtFormat.Address} },
+            { DT_INIT,    new TagInfo { Name = "DT_INIT", Format = DtFormat.Address} },
+            { DT_RELA,    new TagInfo { Name = "DT_RELA", Format = DtFormat.Address} },
+            { DT_RELASZ,  new TagInfo { Name = "DT_RELASZ", Format = DtFormat.Decimal } },
+            { DT_RELAENT, new TagInfo { Name = "DT_RELAENT", Format = DtFormat.Decimal } },
+            { DT_PLTGOT,  new TagInfo { Name = "DT_PLTGOT", Format = DtFormat.Address} },
+            { DT_PLTREL,  new TagInfo { Name = "DT_PLTREL", Format = DtFormat.Hexadecimal } },
+            { DT_PLTRELSZ, new TagInfo { Name = "DT_PLTRELSZ", Format = DtFormat.Decimal } },
 
-            { ElfLoader.DT_REL,     new TagInfo { Name="DT_REL", Format = DtFormat.Address } },
-            { ElfLoader.DT_RELSZ,   new TagInfo { Name="DT_RELSZ", Format = DtFormat.Decimal } },
-            { ElfLoader.DT_RELENT,  new TagInfo { Name="DT_RELENT", Format = DtFormat.Decimal } },
+            { DT_REL,     new TagInfo { Name="DT_REL", Format = DtFormat.Address } },
+            { DT_RELSZ,   new TagInfo { Name="DT_RELSZ", Format = DtFormat.Decimal } },
+            { DT_RELENT,  new TagInfo { Name="DT_RELENT", Format = DtFormat.Decimal } },
 
-            { ElfLoader.DT_RPATH,   new TagInfo { Name="DT_RPATH", Format = DtFormat.Hexadecimal } },
-            { ElfLoader.DT_JMPREL,  new TagInfo { Name = "DT_JMPREL", Format = DtFormat.Address} },
-            { ElfLoader.DT_NEEDED,  new TagInfo { Name ="DT_NEEDED",  Format = DtFormat.String } },
-            { ElfLoader.DT_STRSZ,   new TagInfo { Name = "DT_STRSZ", Format= DtFormat.Hexadecimal } },
-            { ElfLoader.DT_STRTAB,  new TagInfo { Name = "DT_STRTAB", Format = DtFormat.Address} },
-            { ElfLoader.DT_SYMENT,  new TagInfo { Name = "DT_SYMENT", Format = DtFormat.Decimal } },
-            { ElfLoader.DT_SYMTAB,  new TagInfo { Name = "DT_SYMTAB", Format = DtFormat.Address} },
-            { ElfLoader.DT_INIT_ARRAY,  new TagInfo { Name = "DT_INIT_ARRAY", Format = DtFormat.Address} },
-            { ElfLoader.DT_FINI_ARRAY,  new TagInfo { Name = "DT_FINI_ARRAY", Format = DtFormat.Address} },
-            { ElfLoader.DT_INIT_ARRAYSZ,  new TagInfo { Name = "DT_INIT_ARRAYSZ", Format = DtFormat.Hexadecimal} },
-            { ElfLoader.DT_FINI_ARRAYSZ,  new TagInfo { Name = "DT_FINI_ARRAYSZ", Format = DtFormat.Hexadecimal} },
+            { DT_RPATH,   new TagInfo { Name="DT_RPATH", Format = DtFormat.Hexadecimal } },
+            { DT_JMPREL,  new TagInfo { Name = "DT_JMPREL", Format = DtFormat.Address} },
+            { DT_NEEDED,  new TagInfo { Name ="DT_NEEDED",  Format = DtFormat.String } },
+            { DT_STRSZ,   new TagInfo { Name = "DT_STRSZ", Format= DtFormat.Hexadecimal } },
+            { DT_STRTAB,  new TagInfo { Name = "DT_STRTAB", Format = DtFormat.Address} },
+            { DT_SYMENT,  new TagInfo { Name = "DT_SYMENT", Format = DtFormat.Decimal } },
+            { DT_SYMTAB,  new TagInfo { Name = "DT_SYMTAB", Format = DtFormat.Address} },
+            { DT_INIT_ARRAY,  new TagInfo { Name = "DT_INIT_ARRAY", Format = DtFormat.Address} },
+            { DT_FINI_ARRAY,  new TagInfo { Name = "DT_FINI_ARRAY", Format = DtFormat.Address} },
+            { DT_INIT_ARRAYSZ,  new TagInfo { Name = "DT_INIT_ARRAYSZ", Format = DtFormat.Hexadecimal} },
+            { DT_FINI_ARRAYSZ,  new TagInfo { Name = "DT_FINI_ARRAYSZ", Format = DtFormat.Hexadecimal} },
+
+            { DT_GNU_HASH,   new TagInfo { Name = "DT_GNU_HASH", Format = DtFormat.Hexadecimal} },
+            { DT_RELACOUNT,   new TagInfo { Name = "DT_RELACOUNT", Format = DtFormat.Decimal} },
+            { DT_RELCOUNT,   new TagInfo { Name = "DT_RELCOUNT", Format = DtFormat.Decimal} },
+            { DT_FLAGS_1,   new TagInfo { Name = "DT_FLAGS_1", Format = DtFormat.Hexadecimal } },
+            { DT_VERSYM,   new TagInfo { Name = "DT_VERSYM", Format = DtFormat.Hexadecimal } },
+            { DT_VERDEF,   new TagInfo { Name = "DT_VERDEF", Format = DtFormat.Address } },
+            { DT_VERDEFNUM,   new TagInfo { Name = "DT_VERDEFNUM", Format = DtFormat.Decimal } },
+            { DT_VERNEED,   new TagInfo { Name = "DT_VERNEED", Format = DtFormat.Address } },
+            { DT_VERNEEDNUM,   new TagInfo { Name = "DT_VERNEEDNUM", Format = DtFormat.Decimal } },
         };
 
         public static Dictionary<ElfMachine, Dictionary<long, TagInfo>> MachineSpecificInfos = new Dictionary<ElfMachine, Dictionary<long, TagInfo>>

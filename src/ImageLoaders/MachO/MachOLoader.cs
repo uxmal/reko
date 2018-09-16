@@ -155,6 +155,7 @@ namespace Reko.ImageLoaders.MachO
                 case CPU_TYPE_I386: arch = "x86-protected-32"; break;
                 case CPU_TYPE_X86_64: arch = "x86-protected-64"; break;
                 case CPU_TYPE_MIPS: arch = "mips"; break;
+                case CPU_TYPE_POWERPC: arch = "ppc-be-32"; break;
                 default:
                     throw new NotSupportedException(string.Format("Processor format {0} is not supported.", cputype));
                 }

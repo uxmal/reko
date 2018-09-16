@@ -20,15 +20,9 @@
 
 using NUnit.Framework;
 using Reko.Arch.Arm;
-using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Machine;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Arm
 {

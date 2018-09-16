@@ -103,6 +103,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
+                importResolver,
                 eventListener);
             uvr.Transform();
 

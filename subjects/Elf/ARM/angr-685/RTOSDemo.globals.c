@@ -13,7 +13,7 @@ Eq_10 g_tFFFFFFF0;
 word32 g_dwFFFFFFF4;
 Eq_10 g_tFFFFFFF8;
 Eq_10 g_tFFFFFFFC;
-Eq_2251 g_t0000 = 
+Eq_2256 g_t0000 = 
 	{
 		0x2C
 	};
@@ -29,7 +29,7 @@ union Eq_10 g_u000C =
 	{
 		5
 	};
-union Eq_22020 g_u0010 = 
+union Eq_22025 g_u0010 = 
 	{
 		0
 	};
@@ -403,7 +403,7 @@ Eq_47 g_t076C =
 		0x2E,
 	};
 int16 g_w07C0 = 16515;
-union Eq_2472 g_u08B6 = 
+union Eq_2477 g_u08B6 = 
 	{
 		0x47F0
 	};
@@ -439,7 +439,7 @@ Eq_47 g_t0A02 =
 		0x6E,
 		0x02,
 	};
-union Eq_2743 g_u0A4E = 
+union Eq_2748 g_u0A4E = 
 	{
 		1198534740
 	};
@@ -547,11 +547,11 @@ Eq_47 g_t0FF0 =
 		0x67,
 		0x70,
 	};
-union Eq_4492 g_u1096 = 
+union Eq_4497 g_u1096 = 
 	{
 		0x38
 	};
-union Eq_4492 g_u10DD = 
+union Eq_4497 g_u10DD = 
 	{
 		0x30
 	};
@@ -592,7 +592,7 @@ union Eq_10 g_u9309 =
 	{
 		71
 	};
-union Eq_20275 g_u9359 = 
+union Eq_20280 g_u9359 = 
 	{
 		1072693312
 	};
@@ -606,26 +606,26 @@ union Eq_10 g_u94D9 =
 	{
 		36
 	};
-union Eq_20438 g_u9603 = 
+union Eq_20443 g_u9603 = 
 	{
 		1885344515
 	};
-union Eq_22020 g_u9624 = 
+union Eq_22025 g_u9624 = 
 	{
 		-3005
 	};
 int16 g_w98EC = -30736;
 int16 g_w9940 = 17472;
-union Eq_19466 g_u9B29 = 
+union Eq_19471 g_u9B29 = 
 	{
 		0xF0
 	};
 ptr32 g_ptr9BE0 = 0x0000EA23;
-union Eq_24072 g_u9C18 = 
+union Eq_24077 g_u9C18 = 
 	{
 		0x0000EA23
 	};
-union Eq_22856 g_u9C50 = 
+union Eq_22861 g_u9C50 = 
 	{
 		0xBCC4F7FF
 	};
