@@ -164,8 +164,10 @@ namespace Reko.UnitTests.Structure
                 "WhileLoopFragment()" + nl + 
                 "{" + nl + 
                 "	sum = 0;" + nl + 
-                "	for (i = 0; i < 100; i = i + 1)" + nl + 
-                "		sum = sum + i;" + nl + 
+                "	for (i = 0; i < 100; ++i)" + nl +
+                "	{" + nl + 
+                "		sum += i;" + nl + 
+                "	}" + nl +
                 "	return sum;" + nl + 
                 "}" + nl );
         }
@@ -270,7 +272,7 @@ namespace Reko.UnitTests.Structure
                 "	while (r1 != 0)" + nl +
                 "	{" + nl +
                 "		r3 = Mem0[r1:word32];" + nl +
-                "		r2 = r2 + r3;" + nl +
+                "		r2 += r3;" + nl +
                 "		r3 = Mem0[r1 + 4:word32];" + nl +
                 "		if (r3 == 0)" + nl +
                 "			return r2;" + nl +
@@ -296,7 +298,7 @@ namespace Reko.UnitTests.Structure
                 "		print(n);" + nl +
                 "		break;" + nl +
                 "	case 0x00000001:" + nl +
-                "		n = n + 0x00000001;" + nl +
+                "		++n;" + nl +
                 "		goto JumpBack;" + nl +
                 "	case 0x00000002:" + nl +
                 "		print(n);" + nl +
@@ -335,10 +337,10 @@ namespace Reko.UnitTests.Structure
                 "MockNestedWhileLoops()" + nl +
                 "{" + nl +
                 "	int32 i = 0;" + nl +
-                "	for (; i < 10; i = i + 1)" + nl +
+                "	for (; i < 10; ++i)" + nl +
                 "	{" + nl +
                 "		int32 j = 0;" + nl +
-                "		for (; j < 10; j = j + 1)" + nl +
+                "		for (; j < 10; ++j)" + nl +
                 "			Mem0[0x00001234:word32] = Mem0[0x00001234:int32] + j;" + nl +
                 "	}" + nl +
                 "}" + nl);
@@ -385,7 +387,7 @@ namespace Reko.UnitTests.Structure
                 "	while (true)" + nl +
                 "	{" + nl +
                 "		byte v = Mem0[i:byte];" + nl +
-                "		i = i + 0x00000001;" + nl +
+                "		++i;" + nl +
                 "		if (v == 0x20)" + nl +
                 "			break;" + nl +
                 "		Mem0[0x00300000:byte] = v;" + nl +

@@ -73,7 +73,7 @@ void loop_test9(real32 rArg04, real64 rArg0)
 	while (globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_10, (real64) rArg04) > (real64) dwLoc08_10)
 	{
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, (real64) rArg04);
-		dwLoc08_10 = dwLoc08_10 + 0x01;
+		++dwLoc08_10;
 	}
 }
 
@@ -95,7 +95,7 @@ void const_div_test10(word32 dwArg04)
 void loop_test11(real64 rArg04)
 {
 	int32 dwLoc08_28 = 0x05;
-	for (; dwLoc08_28 > 0x00; dwLoc08_28 = dwLoc08_28 - 0x01)
+	for (; dwLoc08_28 > 0x00; --dwLoc08_28)
 	{
 		int32 eax_32 = dwLoc08_28 & 0x80000001;
 		if (eax_32 < 0x00)

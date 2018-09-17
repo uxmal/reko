@@ -26,7 +26,9 @@ void prvUnlockQueue(byte * r0, word32 r1, word32 r2, word32 r4, word32 r5, Eq_7 
 		if (!NV)
 			__msr(spsr, &globals->t0BDD);
 		if (!C)
-			r1 = r1 + 0x05B1;
+		{
+			r1 += 0x05B1;
+		}
 		if (N)
 		{
 			if (!V)
@@ -83,7 +85,7 @@ void prvCopyDataToQueue(Eq_101 r0, word32 r1, word32 r2, Eq_10 r3, word32 r4, in
 	if (!Z)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 0x0045;
+		r6 -= 0x0045;
 	}
 	if (!C)
 	{
@@ -99,7 +101,7 @@ void prvCopyDataToQueue(Eq_101 r0, word32 r1, word32 r2, Eq_10 r3, word32 r4, in
 	if (!Z)
 	{
 		*r8 = (uint16) r2;
-		r8 = r8 - 0x0069;
+		r8 -= 0x0069;
 	}
 	if (!Z)
 		r3 = r0 & ~(lr >> 0x02);
@@ -135,7 +137,7 @@ void prvCopyDataToQueue(Eq_101 r0, word32 r1, word32 r2, Eq_10 r3, word32 r4, in
 	}
 	if (!C)
 	{
-		r8 = r8 - 0x003A;
+		r8 -= 0x003A;
 		r10 = (word32) *r8;
 	}
 	if (!Z)
@@ -365,7 +367,7 @@ void xQueuePeekFromISR(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_10 
 				__syscall(0x00F7FF68);
 			if (!Z)
 			{
-				r0 = r0 - 111;
+				r0 -= 111;
 				lr = (word32) *r0;
 			}
 			if (!Z)
@@ -418,7 +420,7 @@ void xQueueGenericReceive(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_
 		}
 		if (!C)
 		{
-			fp = fp - __rcr(fp, 0x01, C);
+			fp -= __rcr(fp, 0x01, C);
 			*fp = r0;
 		}
 		if (!N)
@@ -448,7 +450,7 @@ void xQueueGenericReceive(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_
 			if (!N)
 			{
 				*fp = r0;
-				fp = fp - 155;
+				fp -= 155;
 			}
 			if (C)
 			{
@@ -486,7 +488,7 @@ void xQueueGenericReceive(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_
 						*((word64) fp - 0x08) = sp_1;
 						*((word64) fp - 0x04) = lr;
 						*fp = pc;
-						fp = fp - 0x0028;
+						fp -= 0x0028;
 					}
 					if (!N)
 						r8 = (word32) *r8.u3;
@@ -507,7 +509,7 @@ void xQueueGenericReceive(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_
 						*((word64) fp - 0x08) = sp_1;
 						*((word64) fp - 0x04) = lr;
 						*fp = pc;
-						fp = fp - 0x0028;
+						fp -= 0x0028;
 					}
 					if (!N)
 						r8 = (word32) *((word64) r8.u3 + 1215);
@@ -566,7 +568,7 @@ void xQueueGenericReceive(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_
 							if (!Z)
 							{
 								*r0 = r3_r2;
-								r0 = r0 - __ror(r1, 0x09);
+								r0 -= __ror(r1, 0x09);
 							}
 							if (!C)
 								r3 = (word32) *lr.u3;
@@ -654,7 +656,7 @@ void xQueueGenericReceive(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_
 									if (!NV)
 									{
 										*lr_156 = r0;
-										lr_156 = lr_156 - __ror(r8, 0x02);
+										lr_156 -= __ror(r8, 0x02);
 									}
 									if (!Z)
 									{
@@ -734,7 +736,7 @@ void uxQueueMessagesWaiting(Eq_953 r0, Eq_954 * r2, Eq_953 r3, Eq_954 * r4, Eq_9
 	}
 	if (!NV)
 	{
-		r8 = r8 + 0x04F0;
+		r8 += 0x04F0;
 		r10 = (word32) *r8;
 	}
 	if (NZV)
@@ -742,7 +744,7 @@ void uxQueueMessagesWaiting(Eq_953 r0, Eq_954 * r2, Eq_953 r3, Eq_954 * r4, Eq_9
 		if (!Z)
 		{
 			r6->t0000 = r3_r2;
-			r6 = r6 - 0x08;
+			r6 -= 0x08;
 		}
 		if (C)
 			uxQueueSpacesAvailable(r0, r2, r3, r4, r5, r6, r7, r8, r10, fp, lr, pc);
@@ -835,7 +837,9 @@ void xQueueGenericSendFromISR(ptr32 r2, word32 r3, ui32 r4, ui32 r8, word32 r10,
 void xQueueGiveFromISR(word32 r0, word32 r2, ui32 r3, word32 r8, word32 fp, word32 ip, word32 spsr, word32 s4, word32 s23)
 {
 	if (!Z)
-		r3 = r3 + 0x00F5;
+	{
+		r3 += 0x00F5;
+	}
 	if (!NZV)
 		__syscall(0x00F04F84);
 	if (!Z)
@@ -915,7 +919,7 @@ void xQueueReceiveFromISR(Eq_10 * r4, word32 r6, word32 r9, Eq_10 fp, word32 pc)
 	if (!ZC)
 	{
 		*r4 = (union Eq_10 *) fp;
-		r4 = r4 - 0x0FF0;
+		r4 -= 0x0FF0;
 	}
 	if (!NZV)
 		__syscall(0x008811F3);
@@ -940,7 +944,7 @@ void xQueueIsQueueEmptyFromISR(Eq_10 r0, word32 r4, word32 r5, word32 r7, word64
 	if (!V)
 	{
 		*r9 = r5_r4;
-		r9 = r9 - __ror(r0, 0x01);
+		r9 -= __ror(r0, 0x01);
 	}
 	if (ZC)
 		xQueueIsQueueFullFromISR(r0, r4, r5, r7, r9, r10, fp);
@@ -965,7 +969,7 @@ void xQueueIsQueueFullFromISR(Eq_10 r0, word32 r4, word32 r5, word32 r7, word64 
 	if (!V)
 	{
 		*r9 = r5_r4;
-		r9 = r9 - __ror(r0, 0x01);
+		r9 -= __ror(r0, 0x01);
 	}
 	if (ZC)
 		uxQueueMessagesWaitingFromISR(r7, r9, fp);
@@ -1002,7 +1006,7 @@ void xQueueTakeMutexRecursive(Eq_1381 r0, word32 r1, Eq_1383 r2, int32 r3, word3
 	if (!Z)
 	{
 		r8->t0000 = (byte) r4;
-		r8 = r8 - 0x05B5;
+		r8 -= 0x05B5;
 	}
 	if (!Z)
 		r0 = r6 - (r6 >> 0x001C);
@@ -1036,7 +1040,7 @@ void xQueueTakeMutexRecursive(Eq_1381 r0, word32 r1, Eq_1383 r2, int32 r3, word3
 	}
 	if (!Z)
 	{
-		r8 = r8 - 0x0031;
+		r8 -= 0x0031;
 		r8->t0000 = (uint16) lr;
 	}
 	if (!V)
@@ -1060,7 +1064,7 @@ void xQueueGiveMutexRecursive(Eq_1456 * r0, word32 r1, Eq_1383 r2, int32 r3, wor
 	if (!Z)
 	{
 		r8->t0000 = (byte) r4;
-		r8 = r8 - 0x05B5;
+		r8 -= 0x05B5;
 		r9_r8 = SEQ(r9, r8 - 0x05B5);
 	}
 	if (!ZC)
@@ -1072,11 +1076,11 @@ void xQueueGiveMutexRecursive(Eq_1456 * r0, word32 r1, Eq_1383 r2, int32 r3, wor
 		r0->dwFFFFFFF8 = r4;
 		r0->ptrFFFFFFFC = r6;
 		r0->ptr0000 = r7;
-		r0 = r0 - 0x0C;
+		r0 -= 0x0C;
 	}
 	if (!Z)
 	{
-		r8 = r8 - 0x003D;
+		r8 -= 0x003D;
 		r8->t0000 = (uint16) lr;
 	}
 	if (!Z)
@@ -1189,7 +1193,7 @@ void xQueueGenericCreate(Eq_1667 * r0, Eq_1667 r1, word32 r2, ui32 r3, word32 r5
 	if (!Z)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 101;
+		r6 -= 101;
 	}
 	if (!N)
 	{
@@ -1205,7 +1209,7 @@ void xQueueGenericCreate(Eq_1667 * r0, Eq_1667 r1, word32 r2, ui32 r3, word32 r5
 	{
 		if (!Z)
 		{
-			r8 = r8 + 2288;
+			r8 += 2288;
 			r3 = (word32) *r8;
 		}
 		if (!N)
@@ -1223,7 +1227,7 @@ void xQueueGenericCreate(Eq_1667 * r0, Eq_1667 r1, word32 r2, ui32 r3, word32 r5
 		__syscall(4595745);
 		if (!C)
 		{
-			pc = pc + 0x00E7;
+			pc += 0x00E7;
 			r10 = (word32) globals->w07C0;
 		}
 		if (!C)
@@ -1249,7 +1253,7 @@ void xQueueCreateMutex(Eq_10 r0, Eq_1667 r1, word32 r2, word32 r5, uint16 * r6, 
 	if (!Z)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 0x0025;
+		r6 -= 0x0025;
 	}
 	__syscall(0x00200121);
 	if (!Z)
@@ -1590,7 +1594,7 @@ void xTaskCreate(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r4, Eq_10 r5, Eq_10 r6, Eq_
 		if (!Z)
 		{
 			*(r7 - 177) = (union Eq_10 *) r0;
-			r7 = r7 - 177;
+			r7 -= 177;
 		}
 		if (!ZC)
 		{
@@ -1599,7 +1603,7 @@ void xTaskCreate(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r4, Eq_10 r5, Eq_10 r6, Eq_
 		}
 		if (!Z)
 		{
-			r0 = r0 - 88;
+			r0 -= 88;
 			r6 = (word32) *r0;
 		}
 		if (!N)
@@ -1768,7 +1772,7 @@ void vTaskStartScheduler(Eq_2748 r0, Eq_10 r1, ptr32 r2, Eq_10 r3, word32 r4, wo
 	}
 	if (!Z)
 	{
-		r8 = r8 - __ror(pc, 0x03);
+		r8 -= __ror(pc, 0x03);
 		*r8 = r1_r0;
 	}
 	if (!Z)
@@ -1795,7 +1799,7 @@ void vTaskStartScheduler(Eq_2748 r0, Eq_10 r1, ptr32 r2, Eq_10 r3, word32 r4, wo
 	if (!NZV)
 	{
 		*r3.u3 = r0;
-		r3 = r3 - 0x0032;
+		r3 -= 0x0032;
 	}
 	if (V)
 	{
@@ -1882,7 +1886,7 @@ void vTaskSuspendAll(Eq_47 * r0, int32 r1, word32 r2, word32 r3, word32 r6, byte
 		}
 		if (!NZV)
 		{
-			pc = pc + 0x0047;
+			pc += 0x0047;
 			r0 = globals->ptr0A68;
 		}
 		if (Z)
@@ -1942,7 +1946,7 @@ void uxTaskGetNumberOfTasks(Eq_47 * r0, int32 r1, word32 r2, word32 r6, Eq_10 r8
 		r1 = (fp >> 0x0010) - r8;
 	if (!NZV)
 	{
-		pc = pc + 0x0047;
+		pc += 0x0047;
 		r0 = globals->ptr0A8C;
 	}
 	if (Z)
@@ -1986,7 +1990,7 @@ void xTaskGenericNotify(Eq_3118 * r0, word32 r1, word32 r3, ptr32 r6, byte * r8,
 			if (!Z)
 			{
 				ip->dw0000 = r3;
-				ip = ip - 2800;
+				ip -= 2800;
 			}
 			if (!C)
 			{
@@ -2206,12 +2210,12 @@ void xTaskIncrementTick(Eq_10 r0, word32 r2, Eq_10 * r3, word32 r5, Eq_10 * r6, 
 							((word64) r8.u3 - 0x0018)->u3 = d29;
 							((word64) r8.u3 - 0x0010)->u3 = d30;
 							((word64) r8.u3 - 0x08)->u3 = d31;
-							r8 = r8 - 0x0018;
+							r8 -= 0x0018;
 						}
 						if (!Z_127)
 						{
 							*(r10 - 2920) = (byte) r6;
-							r10 = r10 - 2920;
+							r10 -= 2920;
 						}
 						if (!ZC_131)
 							__syscall(664817);
@@ -2231,7 +2235,7 @@ void xTaskIncrementTick(Eq_10 r0, word32 r2, Eq_10 * r3, word32 r5, Eq_10 * r6, 
 						if (!Z_127)
 						{
 							*(ip - 3066) = (byte) r10;
-							ip = ip - 3066;
+							ip -= 3066;
 						}
 						if (!Z_127)
 						{
@@ -2270,7 +2274,7 @@ void xTaskIncrementTick(Eq_10 r0, word32 r2, Eq_10 * r3, word32 r5, Eq_10 * r6, 
 								r0_117 = (r6 >> 0x0010) - fp - C_132;
 							if (!Z_127)
 							{
-								r7 = r7 - (r0_117 << 0x06);
+								r7 -= r0_117 << 0x06;
 								*r7 = (union Eq_10 *) (byte) lr_183;
 							}
 							if (!V_125)
@@ -2333,7 +2337,7 @@ void xTaskIncrementTick(Eq_10 r0, word32 r2, Eq_10 * r3, word32 r5, Eq_10 * r6, 
 								if (!Z_127)
 								{
 									*r3 = (union Eq_10 *) r8;
-									r3 = r3 - 1003;
+									r3 -= 1003;
 								}
 								if (!ZC_131)
 								{
@@ -2364,12 +2368,12 @@ void xTaskIncrementTick(Eq_10 r0, word32 r2, Eq_10 * r3, word32 r5, Eq_10 * r6, 
 									fp->dwFFFFFFF8 = r5;
 									fp->ptrFFFFFFFC = r6;
 									fp->dw0000 = r9;
-									fp = fp - 0x0010;
+									fp -= 0x0010;
 								}
 								if (!NZV_126)
 								{
 									*r6 = (union Eq_10 *) r0_117;
-									r6 = r6 - 447;
+									r6 -= 447;
 								}
 								if (!Z_127)
 								{
@@ -2486,9 +2490,13 @@ void xTaskResumeAll(int32 r0, ptr32 r1, int32 r3, int32 * r6, ptr32 r10, int32 *
 		if (!NZV)
 			r0 = *fp;
 		if (!NZV)
-			r0 = r0 + 3320;
+		{
+			r0 += 3320;
+		}
 		if (!Z)
-			r0 = r0 + 200;
+		{
+			r0 += 200;
+		}
 		if (!N)
 		{
 			word32 sp_132;
@@ -2509,7 +2517,9 @@ void xTaskResumeAll(int32 r0, ptr32 r1, int32 r3, int32 * r6, ptr32 r10, int32 *
 		if (!NZV)
 			__stc(p3, c6, *(lr - 0x0380));
 		if (!C)
-			r1 = r1 + 0x0568;
+		{
+			r1 += 0x0568;
+		}
 		if (!C)
 		{
 			r3 = *(r1 - -0x04);
@@ -2528,7 +2538,9 @@ void xTaskResumeAll(int32 r0, ptr32 r1, int32 r3, int32 * r6, ptr32 r10, int32 *
 					word32 pc_121 = pc - __ror(ip, 0x04);
 				}
 				if (!Z)
-					r3 = r3 + 0x0A;
+				{
+					r3 += 0x0A;
+				}
 				if (!Z)
 					*(r6_78 - (r3 >> 0x02)) = (byte) r4_76;
 				word32 sp_88;
@@ -2700,7 +2712,7 @@ void vTaskPlaceOnEventList(Eq_4497 r0, Eq_4467 * r1, int32 r2, Eq_4470 * r3, byt
 	if (!Z)
 	{
 		r6->w0000 = (int16) (byte) r0;
-		r6 = r6 - 3253;
+		r6 -= 3253;
 	}
 	if (!C)
 	{
@@ -2727,11 +2739,11 @@ void vTaskPlaceOnEventList(Eq_4497 r0, Eq_4467 * r1, int32 r2, Eq_4470 * r3, byt
 	if (!C)
 	{
 		*r0 = (byte) r1;
-		r0 = r0 - 232;
+		r0 -= 232;
 	}
 	if (!NZV)
 	{
-		pc = pc + 228;
+		pc += 228;
 		r0 = globals->u10DD;
 	}
 	if (C)
@@ -3124,7 +3136,7 @@ void fn0000103D(Eq_10 r0, Eq_10 r1, word64 * r2, Eq_4951 * r3, word32 r4, Eq_495
 	r3->ptrFFFFFFF8 = r6;
 	r3->dwFFFFFFFC = r7;
 	r3->ptr0000 = r8;
-	r3 = r3 - 0x001C;
+	r3 -= 0x001C;
 	fn00001041(r0, r1, r2, r6, fp, spsr);
 }
 
@@ -3400,7 +3412,7 @@ void xTaskGetCurrentTaskHandle(Eq_47 * r0, word32 r2, word32 r3, Eq_10 r5, Eq_10
 		r5 = (fp >> 0x0010) - r8;
 	if (!NZV)
 	{
-		pc = pc + 0x0047;
+		pc += 0x0047;
 		r0 = globals->ptr118C;
 	}
 	if (Z)
@@ -3521,7 +3533,7 @@ void xTaskCheckForTimeOut(Eq_47 * r0, word32 r2, word32 r3, Eq_10 r5, Eq_10 r6, 
 				if (!ZC)
 				{
 					r0->t0000 = (byte) r3;
-					r0 = r0 - 0x0244;
+					r0 -= 0x0244;
 				}
 				if (!Z)
 					*(r0 - __ror(r8, 0x0015)) = (struct Eq_47 **) r0;
@@ -3542,7 +3554,7 @@ void xTaskCheckForTimeOut(Eq_47 * r0, word32 r2, word32 r3, Eq_10 r5, Eq_10 r6, 
 					r6->u3 = r3_r2;
 				if (!NZV)
 				{
-					pc = pc + 0x00BD;
+					pc += 0x00BD;
 					r0 = globals->ptr126A;
 				}
 				if (Z)
@@ -3731,31 +3743,31 @@ void pxPortInitialiseStack(Eq_10 r0, Eq_10 r1, Eq_5966 * r2, Eq_10 r3, Eq_5902 *
 	if (!N)
 	{
 		*r3 = (uint16) r0;
-		r3 = r3 - 0x003F;
+		r3 -= 0x003F;
 		r3_r2 = SEQ(r3, r2);
 	}
 	if (!C)
 	{
-		ip = ip - __ror(r8, 0x01);
+		ip -= __ror(r8, 0x01);
 		*ip = (union Eq_10 *) r3_r2;
 	}
 	if (!NV)
 	{
 		*r1 = r1_r0;
-		r1 = r1 - __ror(r0, 0x03);
+		r1 -= __ror(r0, 0x03);
 		r1_r0 = SEQ(r1, r0);
 	}
 	if (!Z)
 	{
 		*r2 = (union Eq_5966 *) r5_r4;
-		r2 = r2 - __ror(r1, 0x09);
+		r2 -= __ror(r1, 0x09);
 	}
 	if (!N)
 		r2 = r0 & __ror(r9, 0x05);
 	if (!N)
 	{
 		*ip = (union Eq_10 *) r1_r0;
-		ip = ip - 200;
+		ip -= 200;
 	}
 	if (!C)
 	{
@@ -3765,7 +3777,7 @@ void pxPortInitialiseStack(Eq_10 r0, Eq_10 r1, Eq_5966 * r2, Eq_10 r3, Eq_5902 *
 	if (!V)
 	{
 		*r6 = (uint16) r1;
-		r6 = r6 - 0x0C;
+		r6 -= 0x0C;
 	}
 	if (N)
 		xPortStartScheduler(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, fp, ip, pc, spsr);
@@ -3913,7 +3925,7 @@ void xPortPendSVHandler(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_10
 					if (!V)
 					{
 						*r8 = r1_r0;
-						r8 = r8 + __ror(r3, 0x0013);
+						r8 += __ror(r3, 0x0013);
 					}
 					if (!NV)
 						__syscall(0x00BF0047);
@@ -4042,7 +4054,7 @@ void xPortSysTickHandler(Eq_10 r0, Eq_10 r1, word32 r2, Eq_10 r3, Eq_10 r4, Eq_1
 		if (!ZC)
 		{
 			*r0 = (byte) r1;
-			r0 = r0 - 0x0A4B;
+			r0 -= 0x0A4B;
 		}
 		if (Z)
 		{
@@ -4238,7 +4250,7 @@ void xEventGroupCreate(Eq_10 r0, Eq_10 r1, word32 r2, word32 r3, word64 * r6, in
 	__syscall(0x002018B5);
 	if (!Z)
 	{
-		pc = pc + 3831;
+		pc += 3831;
 		fp = (word32) globals->b26AC;
 	}
 	if (!Z)
@@ -4261,7 +4273,7 @@ void xEventGroupCreate(Eq_10 r0, Eq_10 r1, word32 r2, word32 r3, word64 * r6, in
 	if (!Z)
 	{
 		*r6 = r3_r2;
-		r6 = r6 - 0x0D;
+		r6 -= 0x0D;
 	}
 	if (C)
 		xEventGroupWaitBits(r0, r1, r2, r6, r9, r10, fp, pc, p15, c1);
@@ -4407,7 +4419,7 @@ void xEventGroupSync(word32 r0, Eq_7256 * r1, word32 r2, word32 r3, word32 r4, w
 	if (!Z)
 	{
 		*r6 = (byte) r0;
-		r6 = r6 - (r6 >> 0x0A);
+		r6 -= r6 >> 0x0A;
 	}
 	__syscall(4595526);
 	if (!N)
@@ -4744,7 +4756,7 @@ void vPrintTask(Eq_15311 * r0, word32 r1, Eq_15311 * * r2, word16 * r3, Eq_15315
 		r4->ptrFFFFFFF4 = r4;
 		r4->dwFFFFFFF8 = r5;
 		r4->tFFFFFFFC = r7;
-		r4 = r4 - 0x0014;
+		r4 -= 0x0014;
 	}
 	if (!Z)
 	{
@@ -4772,7 +4784,7 @@ void vPrintTask(Eq_15311 * r0, word32 r1, Eq_15311 * * r2, word16 * r3, Eq_15315
 	if (!Z)
 	{
 		*r2 = (struct Eq_15311 **) r0;
-		r2 = r2 - 0x01F0;
+		r2 -= 0x01F0;
 	}
 	if (Z)
 	{
@@ -4892,7 +4904,7 @@ void vUART_ISR(Eq_15534 * r0, word32 r1, word32 r2, word32 r3, word32 r4, word32
 		r6->dwFFFFFFF4 = r4;
 		r6->dwFFFFFFF8 = r5;
 		r6->dwFFFFFFFC = r7;
-		r6 = r6 - 0x0014;
+		r6 -= 0x0014;
 	}
 	if (!Z)
 	{
@@ -5487,11 +5499,13 @@ void vListInitialiseItem(Eq_10 r0, Eq_10 r1, word64 * r2, int32 r3, Eq_10 r5, wo
 void vListInsertEnd(Eq_10 r0, Eq_10 r1, word64 * r2, Eq_10 r5, word32 r6, int32 r7, Eq_10 r8, word32 r9, ui32 ip, word32 lr, byte p12, word32 c8)
 {
 	if (!Z)
-		r0 = r0 & __ror(r8, 0x0019);
+	{
+		r0 &= __ror(r8, 0x0019);
+	}
 	if (!Z)
 	{
 		*(r8 - 0x00C4) = (uint16) r9;
-		r8 = r8 - 0x00C4;
+		r8 -= 0x00C4;
 	}
 	if (!ZC)
 		__stc(p12, c8, *r0);
@@ -5540,7 +5554,7 @@ void vListInsert(Eq_10 r0, Eq_10 r1, word64 * r2, Eq_10 r5, word32 r6, int32 r7,
 	if (!Z)
 	{
 		*r2 = r1_r0;
-		r2 = r2 - __ror(r1, 0x0011);
+		r2 -= __ror(r1, 0x0011);
 	}
 	if (!N)
 		r1 = DPB(r1, 0x6AE0, 16);
@@ -5771,7 +5785,7 @@ void xQueueCRReceiveFromISR(Eq_16912 r0, word32 r1, uint16 * r2, uint16 * r3, by
 	if (!NZV)
 	{
 		*r8 = (uint16) ip;
-		r8 = r8 - 0x0031;
+		r8 -= 0x0031;
 	}
 	if (!N)
 	{
@@ -5783,7 +5797,7 @@ void xQueueCRReceiveFromISR(Eq_16912 r0, word32 r1, uint16 * r2, uint16 * r3, by
 	if (!Z)
 	{
 		*r6 = (byte) r0;
-		r6 = r6 - 0x0E42;
+		r6 -= 0x0E42;
 	}
 	if (!ZC)
 		*(r6 - (r6 >> 0x0A)) = (byte) r1;
@@ -5913,11 +5927,15 @@ void prvIdleTask(int16 * r0, word32 r1, word32 r2, ptr32 r3, word32 r4, int16 * 
 void xTaskNotifyStateClear(int16 * r0, word32 r1, word32 r2, ptr32 r3, int16 * * r5, int32 r6, ptr32 r8, ptr32 fp, ui32 pc, byte p12, word32 c5)
 {
 	if (!Z)
-		r1 = r1 + 2229;
+	{
+		r1 += 2229;
+	}
 	if (Z)
 	{
 		if (!V)
-			r8 = r8 + 1272;
+		{
+			r8 += 1272;
+		}
 		if (!Z)
 			*(fp - 0x0230) = (int16 **) r0;
 		if (!Z)
@@ -5926,7 +5944,7 @@ void xTaskNotifyStateClear(int16 * r0, word32 r1, word32 r2, ptr32 r3, int16 * *
 			*r5 = (int16 **) r0;
 		if (!Z)
 		{
-			r0 = r0 + 0x0024;
+			r0 += 0x0024;
 			r6 = (word32) *r0;
 		}
 		if (!C)
@@ -5993,7 +6011,7 @@ void vPortExitCritical(Eq_10 r0, word32 r1, word32 r4, word32 r5, word32 r6, wor
 				if (!ZC)
 				{
 					*r0.u0 = r1_r0;
-					r0 = r0 - __ror(r0, 0x03);
+					r0 -= __ror(r0, 0x03);
 				}
 				if (!Z)
 				{
@@ -6367,7 +6385,9 @@ Eq_18017 fn0000895D(ui32 r0, byte * r3, Eq_15697 * r6, word32 r7, word32 fp, wor
 	if (!Z)
 		*(r6 - 0x032C) = (byte) r0;
 	if (!Z)
-		r3 = r3 + 4048;
+	{
+		r3 += 4048;
+	}
 	if (!Z)
 	{
 		ui32 r4_56 = ~(r0 << 0x01);
@@ -6477,7 +6497,9 @@ void MPU_xTaskNotifyStateClear(ui32 r0, word32 r3, Eq_18369 * r6, word32 r7, wor
 	if (!Z)
 		*(r6 - 0x032C) = (byte) r0;
 	if (!Z)
-		r3 = r3 + 4048;
+	{
+		r3 += 4048;
+	}
 	if (!Z)
 	{
 		Eq_18379 NZCV_35 = cond(~(r0 << 0x01));
@@ -6763,7 +6785,7 @@ void vCoRoutineAddToDelayedList(Eq_10 r0, word32 r1, ptr32 r2, word32 r3, Eq_189
 		if (!V)
 		{
 			*(r8 - 844) = (byte) r2;
-			r8 = r8 - 844;
+			r8 -= 844;
 		}
 		if (!Z)
 		{
@@ -6850,7 +6872,7 @@ void vCoRoutineSchedule(Eq_19116 * r0, ptr32 r1, word32 r2, word32 r3, word32 r4
 	}
 	if (!Z)
 	{
-		r7 = r7 - 0x00B3;
+		r7 -= 0x00B3;
 		r7->ptr0000 = r0;
 	}
 	if (!N)
@@ -6879,7 +6901,7 @@ void vCoRoutineSchedule(Eq_19116 * r0, ptr32 r1, word32 r2, word32 r3, word32 r4
 	if (!Z)
 	{
 		*r8 = (byte) fp;
-		r8 = r8 - 0x0C6E;
+		r8 -= 0x0C6E;
 	}
 	__syscall(0x18F1);
 	if (ZC)
@@ -7076,7 +7098,7 @@ void GPIODirModeSet(Eq_10 r0, byte * r1, Eq_20049 * r2, Eq_20050 r3, Eq_20062 * 
 	if (!Z)
 	{
 		globals->u9309 = r0;
-		pc = pc - 0x01F0;
+		pc -= 0x01F0;
 	}
 	if (!ZC)
 	{
@@ -7181,7 +7203,7 @@ void GPIOIntTypeSet(Eq_20280 r0, ptr32 r1, int32 r2, uint16 * r3, int16 * r4, wo
 	if (!Z)
 	{
 		globals->u9359 = r0;
-		pc = pc - 0x01F0;
+		pc -= 0x01F0;
 	}
 	if (!ZC)
 	{
@@ -7197,7 +7219,9 @@ void GPIOIntTypeSet(Eq_20280 r0, ptr32 r1, int32 r2, uint16 * r3, int16 * r4, wo
 	if (!Z)
 		return;
 	if (!Z)
-		r8 = r8 + 0x0034;
+	{
+		r8 += 0x0034;
+	}
 	if (!Z)
 	{
 		r1 = 0x40000003 - r0 - C;
@@ -7223,7 +7247,7 @@ void GPIOIntTypeSet(Eq_20280 r0, ptr32 r1, int32 r2, uint16 * r3, int16 * r4, wo
 		r8 = r3 - (r3 >> 22);
 	if (!NZV)
 	{
-		r4 = r4 + 0x0024;
+		r4 += 0x0024;
 		r0 = (word32) *r4;
 	}
 	if (!N)
@@ -7299,7 +7323,7 @@ void GPIOPadConfigSet(Eq_10 r0, Eq_20443 r1, Eq_20441 * r3, Eq_20443 * r5, word3
 		if (!NZV)
 		{
 			*r5 = (union Eq_20443 *) r1_r0;
-			r5 = r5 - 0x08;
+			r5 -= 0x08;
 		}
 		if (!Z)
 		{
@@ -7309,7 +7333,7 @@ void GPIOPadConfigSet(Eq_10 r0, Eq_20443 r1, Eq_20441 * r3, Eq_20443 * r5, word3
 		if (!Z)
 		{
 			globals->u94D9 = r0;
-			pc = pc - 0x02F0;
+			pc -= 0x02F0;
 		}
 		if (ZC)
 		{
@@ -7318,7 +7342,7 @@ void GPIOPadConfigSet(Eq_10 r0, Eq_20443 r1, Eq_20441 * r3, Eq_20443 * r5, word3
 			if (!Z)
 			{
 				Eq_20443 v21_250 = (word32) *r0;
-				r0 = r0 + 0x0245;
+				r0 += 0x0245;
 				r1 = v21_250;
 				r1_r0 = SEQ(v21_250, r0);
 			}
@@ -7369,7 +7393,7 @@ void GPIOPadConfigGet(Eq_20683 r0, Eq_20684 * r1, Eq_20683 * r2, Eq_20686 r3, ui
 	if (!NZV)
 	{
 		*r4 = (uint16) r0;
-		r4 = r4 - 0x0014;
+		r4 -= 0x0014;
 	}
 	if (!Z)
 	{
@@ -7387,7 +7411,9 @@ void GPIOPadConfigGet(Eq_20683 r0, Eq_20684 * r1, Eq_20683 * r2, Eq_20686 r3, ui
 		r8 = r1->dw001C;
 	}
 	if (!Z)
-		r8 = r8 + 0x00B2;
+	{
+		r8 += 0x00B2;
+	}
 	if (!NZV)
 		r0 = r2 - (r5 >> 0x001A);
 	if (!Z)
@@ -7398,46 +7424,46 @@ void GPIOPadConfigGet(Eq_20683 r0, Eq_20684 * r1, Eq_20683 * r2, Eq_20686 r3, ui
 	if (!Z)
 	{
 		*r7 = (uint16) r0;
-		r7 = r7 - 0x001F;
+		r7 -= 0x001F;
 	}
 	if (!NZV)
 		r0 = r2 - (r7 >> 0x0018);
 	if (!Z)
 	{
 		r5->t0000 = (byte) r1;
-		r5 = r5 - 0x08F8;
+		r5 -= 0x08F8;
 	}
 	if (!Z)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 0x002F;
+		r6 -= 0x002F;
 	}
 	if (!Z)
 	{
 		*r2 = (union Eq_20683 *) (byte) r0;
-		r2 = r2 - 3366;
+		r2 -= 3366;
 	}
 	if (!Z)
 	{
 		r5->t0000 = (uint16) r0;
-		r5 = r5 - 0x004F;
+		r5 -= 0x004F;
 	}
 	if (!Z)
 	{
 		*r2 = (union Eq_20683 *) (byte) r0;
-		r2 = r2 - 0x0C25;
+		r2 -= 0x0C25;
 	}
 	if (!Z)
 	{
 		*r4 = (uint16) r0;
-		r4 = r4 - 0x008F;
+		r4 -= 0x008F;
 	}
 	if (!C)
 		*(r3 - 0x0E24) = (byte) r3;
 	if (!Z)
 	{
 		r3->u1 = (byte) r2;
-		r3 = r3 - 3139;
+		r3 -= 3139;
 	}
 	if (Z)
 	{
@@ -7463,7 +7489,7 @@ void GPIOPadConfigGet(Eq_20683 r0, Eq_20684 * r1, Eq_20683 * r2, Eq_20686 r3, ui
 		if (!NZV)
 		{
 			r5->t0000 = (uint16) r0;
-			r5 = r5 - 0x001F;
+			r5 -= 0x001F;
 		}
 		if (!Z)
 		{
@@ -7475,7 +7501,7 @@ void GPIOPadConfigGet(Eq_20683 r0, Eq_20684 * r1, Eq_20683 * r2, Eq_20686 r3, ui
 			r5->dwFFFFFFF8 = r10;
 			r5->dwFFFFFFFC = fp;
 			r5->t0000 = ip;
-			r5 = r5 - 0x0020;
+			r5 -= 0x0020;
 		}
 		if (!C)
 			*(r5 - pc) = (uint16) r0;
@@ -7577,7 +7603,9 @@ void GPIOPinIntStatus(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 
 	if (!Z)
 		r8 = (word32) r8 + 0x00B9;
 	if (!NZV)
-		r7 = r7 - r4;
+	{
+		r7 -= r4;
+	}
 	if (V)
 	{
 		if (NZV)
@@ -7628,7 +7656,9 @@ void GPIOPortIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_
 	if (!ZC)
 		return;
 	if (!Z)
-		r1 = r1 & ~(r2 >> 0x0010);
+	{
+		r1 &= ~(r2 >> 0x0010);
+	}
 	if (!Z)
 		r2 = r6 - (r4 >> 0x0020);
 	if (!C)
@@ -7684,7 +7714,7 @@ void GPIOPortIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_
 	if (!C)
 	{
 		*r4 = (uint16) r1;
-		r4 = r4 - 0x0039;
+		r4 -= 0x0039;
 	}
 	if (!NZV)
 		r0 = (word32) *((word32) r0 + 0x0046);
@@ -7717,7 +7747,7 @@ void GPIOPortIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_
 	if (!C)
 	{
 		*r4 = (uint16) r1;
-		r4 = r4 - 0x0029;
+		r4 -= 0x0029;
 	}
 	if (!NZV)
 	{
@@ -7737,7 +7767,9 @@ void GPIOPortIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_
 		r1 = (word32) *r9;
 	}
 	if (!Z)
-		r0 = r0 - __rcr(r0, 0x01, C);
+	{
+		r0 -= __rcr(r0, 0x01, C);
+	}
 	if (C)
 		GPIOPortIntUnregister(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip, lr, pc, p0, c2);
 	else
@@ -7772,7 +7804,9 @@ void GPIOPortIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, E
 	if (!ZC)
 		return;
 	if (!Z)
-		r1 = r1 & ~(r2 >> 0x0010);
+	{
+		r1 &= ~(r2 >> 0x0010);
+	}
 	if (!Z)
 		r2 = r6 - (r4 >> 0x0020);
 	if (!C)
@@ -7826,7 +7860,7 @@ void GPIOPortIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, E
 	if (!C)
 	{
 		*r4 = (uint16) r1;
-		r4 = r4 - 0x0038;
+		r4 -= 0x0038;
 	}
 	if (!Z)
 	{
@@ -7860,7 +7894,7 @@ void GPIOPortIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, E
 	if (!C)
 	{
 		*r4 = (uint16) r1;
-		r4 = r4 - 0x0028;
+		r4 -= 0x0028;
 	}
 	__syscall(0x00F00046);
 	if (!NZV)
@@ -7875,7 +7909,9 @@ void GPIOPortIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, E
 		r7 = (word32) *r8;
 	}
 	if (!Z)
-		r0 = r0 - __rcr(r0, 0x01, C);
+	{
+		r0 -= __rcr(r0, 0x01, C);
+	}
 	if (N)
 		GPIOPinRead(r0, r2, r3, r4, r5, r6, r7, r8, ip, lr, pc);
 	else
@@ -7891,7 +7927,7 @@ void GPIOPinRead(Eq_10 r0, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6, E
 	if (!V)
 	{
 		*r0 = r3_r2;
-		r0 = r0 - __ror(r8, 0x03);
+		r0 -= __ror(r8, 0x03);
 	}
 	if (N)
 		GPIOPinWrite(r0, r2, r3, r4, r5, r6, r7, r8, ip, lr, pc);
@@ -7923,7 +7959,7 @@ void GPIOPinTypeComparator(Eq_10 r0, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, E
 	if (!NZV)
 	{
 		*r3 = (uint16) ip;
-		r3 = r3 - 212;
+		r3 -= 212;
 	}
 	if (Z)
 	{
@@ -7933,7 +7969,7 @@ void GPIOPinTypeComparator(Eq_10 r0, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, E
 		{
 			if (!Z)
 			{
-				r4 = r4 - 0x08;
+				r4 -= 0x08;
 				r2 = (word32) *(r4 - 0x08);
 			}
 			if (!NZV)
@@ -7984,7 +8020,7 @@ void GPIOPinTypeI2C(Eq_10 r0, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6
 	if (!NZV)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 212;
+		r6 -= 212;
 	}
 	if (!Z)
 	{
@@ -8011,7 +8047,7 @@ void GPIOPinTypeI2C(Eq_10 r0, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6
 	}
 	if (!C)
 	{
-		r2 = r2 - 0x0164;
+		r2 -= 0x0164;
 		*r2 = (union Eq_10 *) r0;
 	}
 	if (!C)
@@ -8056,7 +8092,7 @@ void GPIOPinTypeUART(word32 r0, word32 * r2, int32 r3, Eq_21744 * r4, word32 r5,
 	if (!NZV)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 212;
+		r6 -= 212;
 	}
 	if (!Z)
 	{
@@ -8065,7 +8101,7 @@ void GPIOPinTypeUART(word32 r0, word32 * r2, int32 r3, Eq_21744 * r4, word32 r5,
 		r4->dwFFFFFFF8 = r5;
 		r4->ptrFFFFFFFC = r6;
 		r4->dw0000 = r7;
-		r4 = r4 - 0x0014;
+		r4 -= 0x0014;
 	}
 	if (!Z)
 		r2 = ~(r3 >> 0x04);
@@ -8275,7 +8311,7 @@ void IntPrioritySet(Eq_22025 r0, ui32 r1, int16 * r2, Eq_22025 r3, Eq_22025 r5, 
 		if (!NV)
 		{
 			*r7 = (byte) r7;
-			r7 = r7 - 188;
+			r7 -= 188;
 		}
 		if (Z)
 			IntPriorityGet(r0, r1, r2, r3, r5, r6, r7, r8, r9, r10, fp, ip, pc, cpsr, spsr);
@@ -8331,7 +8367,7 @@ void IntPriorityGet(Eq_22025 r0, ui32 r1, int16 * r2, Eq_22025 r3, Eq_22025 r5, 
 		ip = (word32) *r2;
 	if (!NV)
 	{
-		pc = pc + 0x0047;
+		pc += 0x0047;
 		r0 = globals->u9624;
 	}
 	if (Z)
@@ -8536,7 +8572,7 @@ void OSRAMWriteByte(Eq_22598 r0[], int32 r1, uint16 * r6, int32 r8, word32 ip, i
 	if (!Z)
 	{
 		*r6 = (uint16) r0;
-		r6 = r6 - 0x0045;
+		r6 -= 0x0045;
 	}
 	if (!Z)
 	{
@@ -8663,7 +8699,7 @@ void OSRAMStringDraw(uint16 * r0, byte * r1, word32 r2, word32 r3, word32 r4, wo
 			__stc(p0, c0, *lr);
 		if (!NZV)
 		{
-			r0 = r0 - pc;
+			r0 -= pc;
 			*r0 = (uint16) fp;
 		}
 		if (!ZC)
@@ -8778,7 +8814,7 @@ void OSRAMImageDraw(int32 r0, word32 r1, word32 r2, word32 r3, int32 r4, word32 
 	}
 	if (!Z)
 	{
-		r3 = r3 + 0x069E;
+		r3 += 0x069E;
 		r3_r2 = SEQ(r3 + 0x069E, r2);
 	}
 	if (!ZC)
@@ -8975,7 +9011,7 @@ void OSRAMInit(Eq_23196 r0, byte * r1, word32 r4, word32 r5, word32 * r6, word32
 	if (!Z)
 	{
 		*r1 = (byte) pc;
-		r1 = r1 - 233;
+		r1 -= 233;
 	}
 	if (!Z)
 	{
@@ -9151,7 +9187,7 @@ void SSIConfig(word32 r0, Eq_23348 r1, word32 r2, word32 r3, word32 r4, word32 r
 		pc_19->ptrFFFFFFF8 = r6_10;
 		pc_19->ptrFFFFFFFC = r7_17;
 		pc_19->ptr0000 = r9_8;
-		pc_19 = pc_19 - 0x001C;
+		pc_19 -= 0x001C;
 	}
 	if (!Z_5)
 	{
@@ -9395,7 +9431,9 @@ void SysCtlSRAMSizeGet(Eq_10 r0, int32 r1, byte * r2, word32 r3, Eq_23704 r4, Eq
 		r7->ptr0014 = lr;
 	}
 	if (!Z)
-		r0 = r0 - __ror(r0, 0x001F);
+	{
+		r0 -= __ror(r0, 0x001F);
+	}
 	if (Z)
 		SysCtlFlashSizeGet(r0, r1, r2, r3, r5, r6, r7, r8, r9, fp, ip, lr, pc, spsr);
 	else
@@ -9427,7 +9465,9 @@ void SysCtlFlashSizeGet(Eq_10 r0, int32 r1, byte * r2, word32 r3, Eq_23704 r5, E
 		r7->ptr0010 = lr;
 	}
 	if (!Z)
-		r0 = r0 - __ror(r0, 0x001F);
+	{
+		r0 -= __ror(r0, 0x001F);
+	}
 	if (Z)
 		SysCtlPinPresent(r0, r1, r2, r3, r5, r7, r8, r9, fp, pc, spsr);
 	else
@@ -9482,7 +9522,7 @@ void SysCtlPeripheralPresent(Eq_10 r0, int32 r1, byte * r2, word32 r3, Eq_23704 
 	if (!Z)
 	{
 		*r0.u0 = (uint16) r0;
-		r0 = r0 - 0x001F;
+		r0 -= 0x001F;
 	}
 	if (!N)
 		r7->t0000 = (byte) r7;
@@ -9542,7 +9582,7 @@ void SysCtlPeripheralEnable(ptr32 r0, int32 r1, word32 r2, int32 r3, word32 r4, 
 		r1 = (r3 >> 0x0010) - 62027;
 	if (!N)
 	{
-		pc = pc + 0x0047;
+		pc += 0x0047;
 		r0 = globals->ptr9BE0;
 	}
 	if (Z)
@@ -9608,7 +9648,7 @@ void SysCtlPeripheralSleepEnable(Eq_24077 r0, int32 r1, word32 r2, int32 r3, wor
 		r1 = (r3 >> 0x0010) - 62027;
 	if (!N)
 	{
-		pc = pc + 0x0047;
+		pc += 0x0047;
 		r0 = globals->u9C18;
 	}
 	if (Z)
@@ -9673,7 +9713,7 @@ void SysCtlPeripheralDeepSleepEnable(Eq_22861 r0, int32 r1, word32 r2, int32 r3,
 		r1 = (r3 >> 0x0010) - 62027;
 	if (!N)
 	{
-		pc = pc + 0x0047;
+		pc += 0x0047;
 		r0 = globals->u9C50;
 	}
 	if (Z)
@@ -9849,13 +9889,13 @@ void SysCtlIntDisable(Eq_10 r0, Eq_10 r1, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6
 		__msr(spsr, &globals->t034A);
 	if (!Z)
 	{
-		r0 = r0 & __ror(r10, 0x01);
+		r0 &= __ror(r10, 0x01);
 		r0_r0 = SEQ(r0, r0);
 	}
 	if (!N)
 	{
 		*r7 = (byte) r7;
-		r7 = r7 - 0x0060;
+		r7 -= 0x0060;
 	}
 	if (Z)
 		SysCtlIntClear(r0, r1, r3, r4, r5, r6, r7, r8, r9, r10, fp, pc, spsr);
@@ -9901,7 +9941,9 @@ void SysCtlIntStatus(Eq_10 r0, Eq_10 r1, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6,
 		*((word32) fp + 0x0018) = r9;
 	}
 	if (!Z)
-		r7 = r7 - 0x68;
+	{
+		r7 -= 0x68;
+	}
 	if (!V)
 		r1 = (fp >> 0x0010) - r8;
 	if (!N)
@@ -10029,11 +10071,15 @@ void SysCtlDeepSleep(byte * r0, int32 r1, word32 r3, int32 r7, int32 r8, Eq_10 r
 	if (!C)
 		r0 = DPB(r0, ~0x394A, 16);
 	if (!Z)
-		r0 = r0 + 0x0368;
+	{
+		r0 += 0x0368;
+	}
 	if (!C)
 		Z = cond(~0xF000);
 	if (!Z)
-		r0 = r0 + 0x0368;
+	{
+		r0 += 0x0368;
+	}
 	if (!Z)
 		r0 = (word32) globals->w9D12;
 	if (Z)
@@ -10065,7 +10111,9 @@ void SysCtlResetCauseClear(byte * r0, int32 r1, int32 r7, Eq_10 r10, int32 fp, w
 	if (!C)
 		__msr(spsr, &globals->t034A);
 	if (!Z)
-		r0 = r0 & __ror(r10, 0x01);
+	{
+		r0 &= __ror(r10, 0x01);
+	}
 	if (N)
 	{
 		if (Z)
@@ -10407,7 +10455,7 @@ void UARTParityModeSet(Eq_10 r0, Eq_10 r2, word32 r7, Eq_10 r10, Eq_10 spsr)
 	if (!ZC)
 	{
 		*r0 = (byte) r2;
-		r0 = r0 + __ror(r10, 0x06);
+		r0 += __ror(r10, 0x06);
 	}
 	if (!NZV)
 		__mrs(spsr);
@@ -10445,7 +10493,7 @@ void UARTConfigGet(word32 * r0, word32 r1, word32 r2, ui32 r5, byte * r6, Eq_10 
 	if (!Z)
 	{
 		*r0 = r2;
-		r0 = r0 + 0x013E;
+		r0 += 0x013E;
 	}
 	if (!Z)
 		*r6 = (byte) r0;
@@ -10614,7 +10662,7 @@ void UARTIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 r5,
 	if (!NV)
 	{
 		*ip = (uint16) r0;
-		ip = ip - 101;
+		ip -= 101;
 	}
 	if (!Z)
 	{
@@ -10646,7 +10694,7 @@ void UARTIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 r
 	if (!NV)
 	{
 		*ip = (uint16) r0;
-		ip = ip - 101;
+		ip -= 101;
 	}
 	if (!Z)
 	{
@@ -10766,7 +10814,7 @@ void CPUcpsie(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 
 	if (!V)
 	{
 		r7->w0000 = (uint16) r7;
-		r7 = r7 - 0x06;
+		r7 -= 0x06;
 	}
 	if (V)
 		CPUcpsid(r0, r1, r2, r3, r4, r5, r6, r7, r8, r10, lr, pc, spsr);
@@ -10783,7 +10831,7 @@ void CPUcpsid(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 
 	if (!V)
 	{
 		r7->w0000 = (uint16) r7;
-		r7 = r7 - 0x06;
+		r7 -= 0x06;
 	}
 	if (C)
 		CPUwfi(r0, r1, r2, r3, r4, r5, r6, r7, r8, r10, lr, pc, spsr);
@@ -10800,7 +10848,7 @@ void CPUwfi(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6
 	if (!V)
 	{
 		r7->w0000 = (uint16) r7;
-		r7 = r7 - 0x0F;
+		r7 -= 0x0F;
 	}
 	if (C)
 		I2CMasterInit(r0, r1, r2, r3, r4, r5, r6, r7, r8, r10, lr, pc, spsr);
@@ -10943,7 +10991,7 @@ void I2CSlaveInit(Eq_10 r0, Eq_10 r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_26026 * r
 	if (!N)
 	{
 		*r0 = (byte) r1;
-		r0 = r0 - 0x0303;
+		r0 -= 0x0303;
 	}
 	if (!Z)
 		r0 = __ror(r0, 0x02) - r0;
@@ -11133,12 +11181,14 @@ void I2CMasterIntStatus(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5
 	if (!Z)
 	{
 		*r9 = (uint16) r4;
-		r9 = r9 - 0x09;
+		r9 -= 0x09;
 	}
 	if (Z)
 	{
 		if (!ZC)
-			r7 = r7 - (r0 >> 0x0020);
+		{
+			r7 -= r0 >> 0x0020;
+		}
 		if (!Z)
 		{
 			Eq_10 r0_76 = *r0;
@@ -11150,7 +11200,7 @@ void I2CMasterIntStatus(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5
 		if (!V)
 		{
 			*r0 = (uint16) r0;
-			r0 = r0 - 0x001F;
+			r0 -= 0x001F;
 		}
 		if (C)
 			I2CSlaveIntStatus(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, ip, lr, spsr);
@@ -11194,7 +11244,9 @@ void I2CSlaveIntStatus(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5,
 	if (Z)
 	{
 		if (!N)
-			r7 = r7 - (r0 >> 0x0020);
+		{
+			r7 -= r0 >> 0x0020;
+		}
 		if (!Z)
 		{
 			Eq_10 r0_72 = *r0;
@@ -11206,7 +11258,7 @@ void I2CSlaveIntStatus(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5,
 		if (!V)
 		{
 			*r0 = (uint16) r0;
-			r0 = r0 - 0x001F;
+			r0 -= 0x001F;
 		}
 		if (Z)
 			I2CMasterIntClear(r0, r1, r2, r3, r4, r5, r6, r7, r8, r10, ip, lr, spsr);
@@ -11333,7 +11385,9 @@ void I2CMasterErr(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5, Eq_1
 		ZC = NZCV_44;
 	}
 	if (!Z)
-		r0 = r0 & ~0x00;
+	{
+		r0 &= ~0x00;
+	}
 	if (V)
 	{
 		if (!V)
@@ -11416,7 +11470,7 @@ void I2CSlaveDataGet(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5, E
 	if (!V)
 	{
 		*lr = (byte) r6;
-		lr = lr - 0x0972;
+		lr -= 0x0972;
 	}
 	if (!N)
 		r0.u0 = 0x00;
@@ -11431,7 +11485,7 @@ void I2CSlaveDataGet(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5, E
 		}
 		if (!V)
 		{
-			r8 = r8 - 0x0420;
+			r8 -= 0x0420;
 			*r8 = (byte) r7;
 		}
 		if (!N)
@@ -11501,7 +11555,7 @@ void memcpy(byte * r0, byte * r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 * r5, Eq_1
 		r1_173 = (byte *) *lr;
 	if (!C)
 	{
-		r5 = r5 - 0x0024;
+		r5 -= 0x0024;
 		__ldc(c0, *r5);
 	}
 	if (!C)
@@ -11513,7 +11567,7 @@ void memcpy(byte * r0, byte * r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 * r5, Eq_1
 	}
 	if (!NV)
 	{
-		r0 = r0 - __ror(r8, 0x001E);
+		r0 -= __ror(r8, 0x001E);
 		*r0 = (byte) r5;
 	}
 	Eq_10 r0_100 = r0 - __ror(r8, 0x001E);
@@ -11522,7 +11576,7 @@ void memcpy(byte * r0, byte * r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 * r5, Eq_1
 		sp_1 = __ror(r8, 0x001E) - r0_100;
 	if (!ZC)
 	{
-		r4 = r4 - 0x00CC;
+		r4 -= 0x00CC;
 		__ldc(c1, *r4);
 	}
 	if (!Z)
@@ -11536,7 +11590,7 @@ void memcpy(byte * r0, byte * r1, Eq_10 r2, Eq_10 r3, Eq_10 r4, Eq_10 * r5, Eq_1
 		if (!NZV)
 		{
 			*r3 = r0_100;
-			r3 = r3 - 0x001F;
+			r3 -= 0x001F;
 		}
 		if (!NV)
 		{

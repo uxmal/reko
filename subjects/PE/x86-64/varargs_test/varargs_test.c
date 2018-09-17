@@ -745,7 +745,7 @@ Eq_1069 * fn0000000140001718(code * * rcx)
 				struct Eq_1111 * rax_114 = DPB(rax_61, (word32) rcx_51->w0006, 0);
 				struct Eq_1111 * r8_59 = rcx - 0x140000000;
 				word64 r9_69 = rdx_116 + rax_114 * 0x28;
-				for (; rdx_116 != r9_69; rdx_116 = rdx_116 + 0x28)
+				for (; rdx_116 != r9_69; rdx_116 += 0x28)
 				{
 					struct Eq_1111 * rcx_109 = (uint64) rdx_116->dw000C;
 					word32 ecx_110 = (word32) rcx_109;
@@ -932,9 +932,9 @@ void fn0000000140001938()
 void fn000000014000193C()
 {
 	ui64 * rax_4 = fn0000000140001130();
-	*rax_4 = *rax_4 | 0x04;
+	*rax_4 |= 0x04;
 	ui64 * rax_10 = fn00000001400010C0();
-	*rax_10 = *rax_10 | 0x02;
+	*rax_10 |= 0x02;
 }
 
 // 0000000140001958: Register word32 fn0000000140001958()
@@ -962,7 +962,7 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 	word32 ebx_11 = (word32) rbx_10;
 	if (IsProcessorFeaturePresent(tLoc05C8) == 0x00)
 	{
-		globals->dw40003610 = globals->dw40003610 & 0x00;
+		globals->dw40003610 &= 0x00;
 		Eq_1398 eax_33 = memset(ptrLoc05C8, dwLoc05C0, tLoc05B8);
 		word64 rsp_37;
 		word64 rbx_38;
@@ -1083,7 +1083,9 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		byte bl_177;
 		fn0000000000002CD2();
 		if (eax_167 == 0x00)
-			globals->dw40003610 = globals->dw40003610 & (word32) ((uint64) (0x00 - (-bl_177 == 0x00)));
+		{
+			globals->dw40003610 &= (word32) (uint64) (0x00 - (-bl_177 == 0x00));
+		}
 		byte bl_187;
 		*blOut = (byte) rbx;
 		return rcx_166;
@@ -1167,7 +1169,7 @@ void fn0000000140001B5C(word64 qwArg08, word64 qwArg10)
 {
 	word64 * rbx_11 = &globals->qw40002680;
 	word64 * rsi_12 = &globals->qw40002680;
-	for (; rbx_11 < rsi_12; rbx_11 = rbx_11 + 0x01)
+	for (; rbx_11 < rsi_12; ++rbx_11)
 	{
 		<anonymous> * rdi_32 = *rbx_11;
 		if (rdi_32 != null)
@@ -1190,7 +1192,7 @@ void fn0000000140001BA8(word64 qwArg08, word64 qwArg10)
 {
 	word64 * rbx_11 = &globals->qw40002690;
 	word64 * rsi_12 = &globals->qw40002690;
-	for (; rbx_11 < rsi_12; rbx_11 = rbx_11 + 0x01)
+	for (; rbx_11 < rsi_12; ++rbx_11)
 	{
 		<anonymous> * rdi_32 = *rbx_11;
 		if (rdi_32 != null)
@@ -1238,7 +1240,7 @@ byte fn0000000140001BFC(word32 edx, word32 ebx, ptr64 r13, word64 qwArg08, word6
 	ui32 ecx_75 = (word32) (uint64) eax_65;
 	if ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) edx_23 ^ 0x49656E69) | (word32) ((uint64) ((word32) ((uint64) ecx_22) ^ 1818588270))) | (word32) ((uint64) ((word32) ((uint64) ebx_21) ^ 1970169159))) == 0x00)
 	{
-		globals->qw40003020 = globals->qw40003020 | ~0x00;
+		globals->qw40003020 |= ~0x00;
 		r8d_100 = (word32) (uint64) (r8d_100 | 0x04);
 		globals->dw40003614 = r8d_100;
 		word32 eax_210 = (word32) (uint64) (eax_65 & 0x0FFF3FF0);

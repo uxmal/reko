@@ -40,20 +40,20 @@ void ManyIncrements()
 		while (true)
 		{
 			r1 = Mem0[r0:byte];
-			r0 = r0 + 0x00000001;
+			++r0;
 			if (r1 != 1)
 				break;
 			r1 = Mem0[r0:byte];
-			r0 = r0 + 0x00000001;
+			++r0;
 			Mem0[0x33333330:word32] = r1;
 			r1 = Mem0[r0:byte];
-			r0 = r0 + 0x00000001;
+			++r0;
 			Mem0[0x33333331:word32] = r1;
 		}
 		if (r1 != 2)
 			break;
 		r1 = Mem0[r0:byte];
-		r0 = r0 + 0x00000001;
+		++r0;
 		Mem0[0x33333330:word32] = r1;
 	}
 }

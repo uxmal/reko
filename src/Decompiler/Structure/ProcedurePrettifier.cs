@@ -118,7 +118,10 @@ namespace Reko.Structure
 
         public AbsynStatement VisitFor(AbsynFor forLoop)
         {
-            forLoop.Initialization = (AbsynAssignment) forLoop.Initialization.Accept(this);
+            if (forLoop.Initialization != null)
+            {
+                forLoop.Initialization = (AbsynAssignment)forLoop.Initialization.Accept(this);
+            }
             forLoop.Iteration = (AbsynAssignment)forLoop.Iteration.Accept(this);
             for (int i = 0; i < forLoop.Body.Count; ++i)
             {

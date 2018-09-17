@@ -57,7 +57,7 @@ Reg00011Mock_exit:
 
 void Reg00011Mock()
 {
-	Mem0[0x8416:word16] = Mem0[0x8416:word16] + 0x0001;
+	++Mem0[0x8416:word16];
 	loc02_26 = Mem0[0x53BA:word16];
 	do
 	{
@@ -77,7 +77,7 @@ void Reg00011Mock()
 				continue;
 		}
 		ax_80 = Mem0[0x840E:word16];
-		Mem0[0x8414:word16] = Mem0[0x8414:word16] | ax_80;
+		Mem0[0x8414:word16] |= ax_80;
 	} while (ax_80 != 0x0000);
 	ax_88 = fn1B96_0540(loc02_26, ds);
 	v19_89 = Mem0[0x8416:word16] - 0x0001;

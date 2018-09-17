@@ -66,7 +66,7 @@ l000080:
 		__tblrd(TBLPTR, 0x01);
 		*FSR0 = TABLAT;
 		0x00->b00C3 = 0x00->b00C3 - 0x01;
-		FSR0 = FSR0 + 0x01;
+		++FSR0;
 		Z_57 = cond(0x00->b00C3);
 		if (0x00->b00C3 < 0x00)
 			break;
@@ -85,9 +85,13 @@ void fn0000D0(byte LATB, byte FSR2L, ptr16 FSR2, byte * FSR1)
 		{
 			0x00->b00CA = 0x00->b00CA & ~0x01;
 			if ((LATB & 0x01) != 0x00)
-				LATB = LATB | 0x80;
+			{
+				LATB |= 0x80;
+			}
 			else
-				LATB = LATB & 0x7F;
+			{
+				LATB &= 0x7F;
+			}
 		}
 	}
 }

@@ -162,7 +162,9 @@ void factorial(int32 dwArg04)
 {
 	int32 dwLoc08_15 = 0x02;
 	while (dwLoc08_15 - dwArg04 <= 0x00)
-		dwLoc08_15 = dwLoc08_15 + 0x01;
+	{
+		++dwLoc08_15;
+	}
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -170,7 +172,9 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 {
 	int32 dwLoc08_16 = 0x00;
 	while (dwLoc08_16 - dwArg0C < 0x00)
-		dwLoc08_16 = dwLoc08_16 + 0x01;
+	{
+		++dwLoc08_16;
+	}
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -183,7 +187,7 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
 		pow_int(rLoc28, dwLoc08_24);
 		factorial(dwLoc08_24);
-		dwLoc08_24 = dwLoc08_24 + 0x04;
+		dwLoc08_24 += 0x04;
 	}
 	int32 dwLoc08_133 = 0x05;
 	while (dwLoc08_133 - dwArg0C <= 0x00)
@@ -191,7 +195,7 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
 		pow_int(rLoc28, dwLoc08_133);
 		factorial(dwLoc08_133);
-		dwLoc08_133 = dwLoc08_133 + 0x04;
+		dwLoc08_133 += 0x04;
 	}
 }
 

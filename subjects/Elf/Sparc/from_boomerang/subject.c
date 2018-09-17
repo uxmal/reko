@@ -12,7 +12,7 @@ void _start( * g1, Eq_3 * o7, ui32 fsr, int32 dwArg40)
 	if (0x00 != 0x00)
 	{
 		globals->dw20E58 = fsr;
-		globals->dw20E58 = globals->dw20E58 & 0x303FFFFF;
+		globals->dw20E58 &= 0x303FFFFF;
 		if (false)
 			globals->dw20E5C = 0x01;
 	}

@@ -8,13 +8,13 @@
 void fn00200089(word16 de)
 {
 	fn0020060C();
-	*(ui32 *) 0x6F86 = *(ui32 *) 0x6F86 | 0x40;
+	*(ui32 *) 0x6F86 |= 0x40;
 	word32 * xiy_10 = (word32 *) 28600;
 	byte b_11 = 0x12;
-	for (; b_11 != 0x00; b_11 = b_11 - 0x01)
+	for (; b_11 != 0x00; --b_11)
 	{
 		*xiy_10 = globals->dw200040;
-		xiy_10 = xiy_10 + 0x01;
+		++xiy_10;
 	}
 	*(byte *) 0x8002 = 0x00;
 	*(byte *) 0x8003 = 0x00;
@@ -22,30 +22,30 @@ void fn00200089(word16 de)
 	*(byte *) 0x8005 = 0x98;
 	word16 * xhl_32 = (word16 *) 0xA000;
 	word16 bc_34 = 0x0200;
-	for (; bc_34 != 0x00; bc_34 = bc_34 - 0x01)
+	for (; bc_34 != 0x00; --bc_34)
 	{
 		*xhl_32 = 0x00;
-		xhl_32 = xhl_32 + 0x01;
+		++xhl_32;
 	}
 	word16 bc_46 = 0x0250;
 	word16 * xde_49 = (word16 *) 0xA400;
 	word16 * xhl_52 = globals->a20061D;
-	for (; bc_46 != 0x00; bc_46 = bc_46 - 0x01)
+	for (; bc_46 != 0x00; --bc_46)
 	{
 		*xde_49 = *xhl_52;
-		xhl_52 = xhl_52 + 0x01;
-		xde_49 = xde_49 + 0x01;
+		++xhl_52;
+		++xde_49;
 	}
 	fn002005B8();
 	__ei(0x00);
 	word16 bc_70 = 0x10;
 	word16 * xde_73 = (word16 *) 0x8300;
 	word16 * xhl_76 = globals->a200ABD;
-	for (; bc_70 != 0x00; bc_70 = bc_70 - 0x01)
+	for (; bc_70 != 0x00; --bc_70)
 	{
 		*xde_73 = *xhl_76;
-		xhl_76 = xhl_76 + 0x01;
-		xde_73 = xde_73 + 0x01;
+		++xhl_76;
+		++xde_73;
 	}
 	*(byte *) 0x83E0 = 0x33;
 	*(byte *) 33761 = 0x07;
@@ -58,11 +58,11 @@ void fn00200089(word16 de)
 	byte * xde_153 = (byte *) 0x7000;
 	byte * xhl_156 = globals->a200363;
 	word16 bc_158 = 303;
-	for (; bc_158 != 0x00; bc_158 = bc_158 - 0x01)
+	for (; bc_158 != 0x00; --bc_158)
 	{
 		*xde_153 = *xhl_156;
-		xde_153 = xde_153 + 0x01;
-		xhl_156 = xhl_156 + 0x01;
+		++xde_153;
+		++xhl_156;
 		word16 de_170 = (word16) xde_153;
 	}
 	fn002004F2(0x01);
@@ -108,11 +108,11 @@ void fn00200089(word16 de)
 	byte * xde_254 = (byte *) 0x7000;
 	byte * xhl_257 = globals->a200492;
 	word16 bc_259 = 0x23;
-	for (; bc_259 != 0x00; bc_259 = bc_259 - 0x01)
+	for (; bc_259 != 0x00; --bc_259)
 	{
 		*xde_254 = *xhl_257;
-		xde_254 = xde_254 + 0x01;
-		xhl_257 = xhl_257 + 0x01;
+		++xde_254;
+		++xhl_257;
 		word16 de_271 = (word16) xde_254;
 	}
 	fn002004F2(0x01);
@@ -158,11 +158,11 @@ void fn00200089(word16 de)
 	byte * xde_355 = (byte *) 0x7000;
 	byte * xhl_358 = globals->a2004B5;
 	word16 bc_360 = 0x2B;
-	for (; bc_360 != 0x00; bc_360 = bc_360 - 0x01)
+	for (; bc_360 != 0x00; --bc_360)
 	{
 		*xde_355 = *xhl_358;
-		xde_355 = xde_355 + 0x01;
-		xhl_358 = xhl_358 + 0x01;
+		++xde_355;
+		++xhl_358;
 		word16 de_372 = (word16) xde_355;
 	}
 	fn002004F2(0x01);
@@ -239,13 +239,13 @@ word16 fn00200557(word16 wa, word16 bc, byte d, byte * xhl)
 	word16 wa_100 = DPB(wa, c * 0x02, 0);
 	byte * xde_29 = (word16) (DPB(bc, 0x00, 8) * 0x40) + ((word32) (c * 0x02) + 0x9800);
 	byte b_33 = 0x13;
-	for (; b_33 != 0x00; b_33 = b_33 - 0x01)
+	for (; b_33 != 0x00; --b_33)
 	{
 		cu8 v17_47 = *xhl;
 		wa_100 = DPB(wa_100, v17_47, 0);
 		if (v17_47 == 0x00)
 			return wa_100;
-		xhl = xhl + 0x01;
+		++xhl;
 		if (v17_47 >= 0x5B)
 			wa_100 = DPB(wa_100, v17_47 + 0xE0, 0);
 		word16 wa_77 = DPB(wa_100, 0x00, 8);
@@ -264,17 +264,17 @@ void fn002005B8()
 {
 	byte * xbc_2 = (byte *) 0x9000;
 	word16 hl_3 = 0x04C0;
-	for (; hl_3 != 0x00; hl_3 = hl_3 - 0x01)
+	for (; hl_3 != 0x00; --hl_3)
 	{
 		*xbc_2 = 0x00;
-		xbc_2 = xbc_2 + 0x01;
+		++xbc_2;
 	}
 	byte * xbc_13 = (byte *) 0x9800;
 	word16 hl_14 = 0x04C0;
-	for (; hl_14 != 0x00; hl_14 = hl_14 - 0x01)
+	for (; hl_14 != 0x00; --hl_14)
 	{
 		*xbc_13 = 0x00;
-		xbc_13 = xbc_13 + 0x01;
+		++xbc_13;
 	}
 }
 
@@ -302,7 +302,7 @@ void fn0020060C()
 {
 	if (*(byte *) 0x6F91 == 0x00)
 	{
-		*(ui32 *) 0x6F83 = *(ui32 *) 0x6F83 & ~0x08;
+		*(ui32 *) 0x6F83 &= ~0x08;
 		*(byte *) 0x6DA0 = 0x00;
 	}
 }

@@ -77,12 +77,12 @@ DWORD Win32CrtStartup()
 	if (fn0040146F(edx, 0x01) == 0x00)
 	{
 l00401172:
-		esp_16 = esp_16 - 0x04;
+		esp_16 -= 0x04;
 		*esp_16 = 0x07;
 		fn0040176D(0x14, dwArg00);
 	}
 	*(ebp_10 - 0x19) = 0x00;
-	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
+	*(ebp_10 - 0x04) &= 0x00;
 	*(ebp_10 - 0x24) = fn0040143A();
 	ebx = DPB(ebx, 0x00, 0);
 	word32 eax_35 = globals->dw403334;
@@ -279,7 +279,7 @@ Eq_518 * fn004013F6(Eq_519 * dwArg04, uint32 dwArg08)
 	struct Eq_518 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{
-		for (; edx_16 != esi_19; edx_16 = edx_16 + 0x01)
+		for (; edx_16 != esi_19; ++edx_16)
 		{
 			if (dwArg08 >= edx_16->dw000C && dwArg08 < edx_16->dw0008 + edx_16->dw000C)
 			{
@@ -330,7 +330,7 @@ Eq_615 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & eb
 {
 	struct Eq_615 * eax_34;
 	struct Eq_68 * ebp_10 = fn00401980(ebx, esi, edi, dwLoc0C, 0x00402528, 0x08);
-	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
+	*(ebp_10 - 0x04) &= 0x00;
 	struct Eq_635 * eax_15 = (struct Eq_635 *) 23117;
 	if (globals->w400000 == 23117)
 	{
@@ -391,7 +391,9 @@ void fn0040165E()
 		if (ecx_69 == 0xBB40E64E)
 			ecx_69 = ~0x44BF19B0;
 		else if ((ecx_69 & 0xFFFF0000) == 0x00)
-			ecx_69 = ecx_69 | (ecx_69 | 0x4711) << 0x10;
+		{
+			ecx_69 |= (ecx_69 | 0x4711) << 0x10;
+		}
 		globals->dw403004 = ecx_69;
 		globals->dw403000 = ~ecx_69;
 	}
@@ -419,7 +421,9 @@ void fn0040176D(word32 dwArg00, word32 dwArg04)
 		byte bl_90 = 0x00 - (0x01 - IsDebuggerPresent() == 0x00);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
-			globals->dw403368 = globals->dw403368 & 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
+		{
+			globals->dw403368 &= 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
+		}
 	}
 	else
 		__fastfail(dwArg04);
@@ -474,12 +478,12 @@ word32 fn004019C6(Eq_68 * ebp, ui32 dwArg00, word32 dwArg04, word32 dwArg08, wor
 // 004019FE: void fn004019FE(Register word32 edx)
 void fn004019FE(word32 edx)
 {
-	globals->dw40336C = globals->dw40336C & 0x00;
-	globals->dw403010 = globals->dw403010 | 0x01;
+	globals->dw40336C &= 0x00;
+	globals->dw403010 |= 0x01;
 	if (IsProcessorFeaturePresent(0x0A) != 0x00)
 	{
 		ui32 edi_135;
-		globals->dw403010 = globals->dw403010 | 0x02;
+		globals->dw403010 |= 0x02;
 		globals->dw40336C = 0x01;
 		int32 eax_89;
 		word32 ebx_90;
@@ -511,7 +515,7 @@ void fn004019FE(word32 edx)
 		}
 		if ((ecx_126 & 0x00100000) != 0x00)
 		{
-			globals->dw403010 = globals->dw403010 | 0x04;
+			globals->dw403010 |= 0x04;
 			globals->dw40336C = 0x02;
 			if ((ecx_126 & 0x08000000) != 0x00 && ((ecx_126 & 0x10000000) != 0x00 && (((word32) __xgetbv(0x00) & 0x06) == 0x06 && true)))
 			{
