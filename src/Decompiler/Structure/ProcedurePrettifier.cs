@@ -19,8 +19,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Absyn;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
 
 namespace Reko.Structure
 {
@@ -29,15 +32,48 @@ namespace Reko.Structure
     /// </summary>
     public class ProcedurePrettifier : IAbsynVisitor<AbsynStatement>
     {
+        private static HashSet<Operator> compoundableOperators = new HashSet<Operator>
+        {
+            Operator.And,
+            Operator.FAdd,
+            Operator.FDiv,
+            Operator.FMul,
+            Operator.FSub,
+            Operator.IAdd,
+            Operator.IMod,
+            Operator.IMul,
+            Operator.ISub,
+            Operator.Or,
+            Operator.Sar,
+            Operator.SDiv,
+            Operator.Shl,
+            Operator.Shr,
+            Operator.SMul,
+            Operator.UDiv,
+            Operator.USub,
+        };
+
         private Procedure proc;
+        private ExpressionValueComparer cmp;
 
         public ProcedurePrettifier(Procedure proc)
         {
             this.proc = proc;
+            this.cmp = new ExpressionValueComparer();
         }
 
         public AbsynStatement VisitAssignment(AbsynAssignment ass)
         {
+            //$TODO: this only makes sense for C/C++; if the output
+            // language is different, don't do this.
+            if (ass.Src is BinaryExpression bin && 
+                cmp.Equals(ass.Dst, bin.Left))
+            {
+                if (compoundableOperators.Contains(bin.Operator))
+                {
+                    return new AbsynCompoundAssignment(ass.Dst, bin);
+                }
+            }
             return ass;
         }
 
@@ -49,6 +85,11 @@ namespace Reko.Structure
         public AbsynStatement VisitCase(AbsynCase absynCase)
         {
             return absynCase;
+        }
+
+        public AbsynStatement VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            return compound;
         }
 
         public AbsynStatement VisitContinue(AbsynContinue cont)
@@ -77,6 +118,8 @@ namespace Reko.Structure
 
         public AbsynStatement VisitFor(AbsynFor forLoop)
         {
+            forLoop.Initialization = (AbsynAssignment) forLoop.Initialization.Accept(this);
+            forLoop.Iteration = (AbsynAssignment)forLoop.Iteration.Accept(this);
             for (int i = 0; i < forLoop.Body.Count; ++i)
             {
                 forLoop.Body[i] = forLoop.Body[i].Accept(this);

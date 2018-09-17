@@ -29,9 +29,9 @@ namespace Reko.Core.Absyn
 {
     public class AbsynFor : AbsynStatement
     {
-        public AbsynAssignment Initialization { get; }
+        public AbsynAssignment Initialization { get; set; }
         public Expression Condition { get; }
-        public AbsynAssignment Iteration { get; }
+        public AbsynAssignment Iteration { get; set; }
         public List<AbsynStatement> Body { get; }
 
         public AbsynFor(AbsynAssignment init, Expression condition, AbsynAssignment iteration, List<AbsynStatement> body)

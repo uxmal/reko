@@ -776,17 +776,29 @@ namespace Reko.Core.Output
             writer.Indent();
             writer.WriteKeyword("for");
             writer.Write(" (");
-            if (forLoop.Initialization != null)
-            {
-                WriteAssignment(forLoop.Initialization);
-            }
+            MaybeWriteAssignment(forLoop.Initialization);
             writer.Write("; ");
             forLoop.Condition.Accept(this);
             writer.Write("; ");
-            WriteAssignment(forLoop.Iteration);
+            MaybeWriteAssignment(forLoop.Iteration);
             writer.Terminate(")");
 
             WriteIndentedStatements(forLoop.Body, false);
+        }
+
+        private void MaybeWriteAssignment(AbsynAssignment ass)
+        {
+            if (ass != null)
+            {
+                if (ass is AbsynCompoundAssignment cass)
+                {
+                    WriteCompoundAssignment(cass);
+                }
+                else
+                {
+                    WriteAssignment(ass);
+                }
+            }
         }
 
         public void VisitGoto(AbsynGoto g)

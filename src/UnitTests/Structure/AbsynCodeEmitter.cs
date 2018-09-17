@@ -36,10 +36,11 @@ namespace Reko.UnitTests.Structure
             this.stmts = stmts;
         }
 
-        public void Assign(Expression dst, Expression src)
+        public AbsynAssignment Assign(Expression dst, Expression src)
         {
             var ass = new AbsynAssignment(dst, src);
             stmts.Add(ass);
+            return ass;
         }
 
         public void Declare(Identifier id, Expression initializer=null)
@@ -52,6 +53,23 @@ namespace Reko.UnitTests.Structure
         {
             var ret = new AbsynReturn(expr);
             stmts.Add(ret);
+        }
+
+        public void For(
+            Func<AbsynCodeEmitter, AbsynAssignment> init,
+            Func<AbsynCodeEmitter, Expression> cond,
+            Func<AbsynCodeEmitter, AbsynAssignment> update,
+            Action<AbsynCodeEmitter> body)
+        {
+            var initStms = new List<AbsynStatement>();
+            var initEmitter = new AbsynCodeEmitter(initStms);
+            var initStm = init(initEmitter);
+            var condExp = cond(initEmitter);
+            var updateStm = update(initEmitter);
+            var bodyStms = new List<AbsynStatement>();
+            var bodyEmitter = new AbsynCodeEmitter(bodyStms);
+            body(bodyEmitter);
+            this.stmts.Add(new AbsynFor(initStm, condExp, updateStm, bodyStms));
         }
 
         public void If(Expression id, Action<AbsynCodeEmitter> then)

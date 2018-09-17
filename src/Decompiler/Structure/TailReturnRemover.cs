@@ -65,6 +65,11 @@ namespace Reko.Structure
             return false;
         }
 
+        public bool VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            return false;
+        }
+
         public bool VisitContinue(AbsynContinue cont)
         {
             return false;

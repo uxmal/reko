@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Absyn
 {
-    public class AbsynCompoundAssignment : AbsynStatement
+    public class AbsynCompoundAssignment : AbsynAssignment
     {
-        public AbsynCompoundAssignment(Expression dst, BinaryExpression src)
+        public AbsynCompoundAssignment(Expression dst, BinaryExpression src) : base(dst, src)
         {
-            this.Dst = dst;
             this.Src = src;
         }
 
-        public Expression Dst { get; private set; }
-        public BinaryExpression Src { get; private set; }
+        public new BinaryExpression Src { get; private set; }
 
 
         public override void Accept(IAbsynVisitor visitor)
