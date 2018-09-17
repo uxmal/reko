@@ -189,6 +189,7 @@
     <Compile Include="Absyn\AbsynDoWhile.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Absyn\AbsynFor.cs" />
     <Compile Include="Absyn\AbsynGoto.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -647,18 +647,23 @@ namespace Reko.Core.Output
 			}
 			writer.Terminate();
 		}
-#endregion
+        #endregion
 
 
-		#region IAbsynStatementVisitor //////////////////////
+        #region IAbsynStatementVisitor //////////////////////
 
-		public void VisitAssignment(AbsynAssignment a)
-		{
-			writer.Indent();
+        public void VisitAssignment(AbsynAssignment a)
+        {
+            writer.Indent();
+            WriteAssignment(a);
+			writer.Terminate(";");
+        }
+
+        private void WriteAssignment(AbsynAssignment a)
+        { 
 			a.Dst.Accept(this);
 			writer.Write(" = ");
 			a.Src.Accept(this);
-			writer.Terminate(";");
 		}
 
 		public void VisitBreak(AbsynBreak brk)
@@ -732,7 +737,25 @@ namespace Reko.Core.Output
 			writer.Terminate(");");
 		}
 
-		public void VisitGoto(AbsynGoto g)
+        public void VisitFor(AbsynFor forLoop)
+        {
+            writer.Indent();
+            writer.WriteKeyword("for");
+            writer.Write(" (");
+            if (forLoop.Initialization != null)
+            {
+                WriteAssignment(forLoop.Initialization);
+            }
+            writer.Write("; ");
+            forLoop.Condition.Accept(this);
+            writer.Write("; ");
+            WriteAssignment(forLoop.Iteration);
+            writer.Terminate(")");
+
+            WriteIndentedStatements(forLoop.Body, false);
+        }
+
+        public void VisitGoto(AbsynGoto g)
 		{
 			writer.Indent();
 			writer.WriteKeyword("goto");

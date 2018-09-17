@@ -75,6 +75,15 @@ namespace Reko.Structure
             return loop;
         }
 
+        public AbsynStatement VisitFor(AbsynFor forLoop)
+        {
+            for (int i = 0; i < forLoop.Body.Count; ++i)
+            {
+                forLoop.Body[i] = forLoop.Body[i].Accept(this);
+            }
+            return forLoop;
+        }
+
         public AbsynStatement VisitGoto(AbsynGoto gotoStm)
         {
             return gotoStm;

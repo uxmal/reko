@@ -195,6 +195,11 @@ namespace Reko.Structure
             stms.Add(loop);
         }
 
+        public void VisitFor(AbsynFor forLoop)
+        {
+            stms.Add(forLoop);
+        }
+
         public void VisitGoto(AbsynGoto gotoStm)
         {
             stms.Add(gotoStm);

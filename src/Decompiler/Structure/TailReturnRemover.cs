@@ -85,6 +85,11 @@ namespace Reko.Structure
             return false;
         }
 
+        public bool VisitFor(AbsynFor forLoop)
+        {
+            return false;
+        }
+
         public bool VisitGoto(AbsynGoto gotoStm)
         {
             return false;

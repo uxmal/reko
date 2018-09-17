@@ -42,9 +42,15 @@ namespace Reko.UnitTests.Structure
             stmts.Add(ass);
         }
 
-        public void Return()
+        public void Declare(Identifier id, Expression initializer=null)
         {
-            var ret = new AbsynReturn(null);
+            var decl = new AbsynDeclaration(id, initializer);
+            stmts.Add(decl);
+        }
+
+        public void Return(Expression expr = null)
+        {
+            var ret = new AbsynReturn(expr);
             stmts.Add(ret);
         }
 
@@ -73,6 +79,13 @@ namespace Reko.UnitTests.Structure
             stmts.Add(s);
         }
 
+        public void While(Expression cond, Action<AbsynCodeEmitter> bodyGen)
+        {
+            var bodyStmts = new List<AbsynStatement>();
+            var m = new AbsynCodeEmitter(bodyStmts);
+            bodyGen(m);
+            stmts.Add(new AbsynWhile(cond, bodyStmts));
+        }
       
     }
 }
