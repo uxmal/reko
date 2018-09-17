@@ -538,7 +538,41 @@ namespace Reko.Core.Output
             }
         }
 
-		public void VisitDeclaration(Declaration decl)
+        /// <summary>
+        /// //$REVIEW: naturally for non-C++ like languages, this needs to be 
+        /// done differently. 
+        /// </summary>
+        /// <param name="compound"></param>
+        public void VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            writer.Indent();
+            WriteCompoundAssignment(compound);
+            writer.Terminate(";");
+        }
+
+        public void WriteCompoundAssignment(AbsynCompoundAssignment compound)
+        { 
+            if (compound.Src.Right is Constant c &&
+                !c.IsReal && c.ToInt64() == 1)
+            {
+                if (compound.Src.Operator == Operator.IAdd)
+                {
+                    writer.Write("++");
+                    compound.Dst.Accept(this);
+                    return;
+                } else if (compound.Src.Operator == Operator.ISub)
+                {
+                    writer.Write("--");
+                    compound.Dst.Accept(this);
+                    return;
+                }
+            }
+            compound.Dst.Accept(this);
+            writer.Write(compound.Src.Operator.AsCompound());
+            compound.Src.Right.Accept(this);
+        }
+
+        public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();
             Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");

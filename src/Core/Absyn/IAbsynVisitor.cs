@@ -28,7 +28,8 @@ namespace Reko.Core.Absyn
 	public interface IAbsynVisitor
 	{
 		void VisitAssignment(AbsynAssignment ass);
-		void VisitBreak(AbsynBreak brk);
+        void VisitCompoundAssignment(AbsynCompoundAssignment compound);
+        void VisitBreak(AbsynBreak brk);
         void VisitCase(AbsynCase absynCase);
 		void VisitContinue(AbsynContinue cont);
         void VisitDeclaration(AbsynDeclaration decl);
@@ -50,6 +51,7 @@ namespace Reko.Core.Absyn
         T VisitAssignment(AbsynAssignment ass);
         T VisitBreak(AbsynBreak brk);
         T VisitCase(AbsynCase absynCase);
+        T VisitCompoundAssignment(AbsynCompoundAssignment compound);
         T VisitContinue(AbsynContinue cont);
         T VisitDeclaration(AbsynDeclaration decl);
         T VisitDefault(AbsynDefault decl);
