@@ -135,5 +135,128 @@ namespace Reko.UnitTests.Structure
                 m.Return(m.Int32(1));
             });
         }
+
+        /// <summary>
+        /// If the loop increment doesn't postdominate the loop body statements,
+        /// don't rewrite.
+        /// </summary>
+        [Test]
+        public void Flr_WhileWithPrematureExit_DontRewrite()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    int32 limit = isqrt(x) + 1;
+    i = 2;
+    while (i < limit)
+    {
+        i = i + 1;
+        if (x % i == 0)
+            return 0;
+    }
+    return 1;
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var x = Id("x", PrimitiveType.Int32);
+                var isqrt = Id("isqrt", PrimitiveType.Ptr32);
+                var limit = Id("limit", PrimitiveType.Int32);
+                m.Declare(limit, m.IAdd(m.Fn(isqrt, x), m.Int32(1)));
+                m.Assign(i, m.Int32(2));
+                m.While(m.Lt(i, limit), w =>
+                {
+                    w.Assign(i, w.IAdd(i, w.Int32(1)));
+                    w.If(w.Eq0(m.Mod(x, i)), wif =>
+                    {
+                        wif.Return(m.Int32(0));
+                    });
+                });
+                m.Return(m.Int32(1));
+            });
+        }
+
+        /// <summary>
+        /// If there is a use of the loop variable after it is incremented,
+        /// don't rewrite.
+        /// </summary>
+        [Test]
+        public void Flr_WhileWithUsesAfterIncrement_DontRewrite()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    i = 2;
+    while (i < limit)
+    {
+        i = i + 1;
+        sum = i;
+    }
+    return 1;
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var x = Id("x", PrimitiveType.Int32);
+                var sum = Id("sum", PrimitiveType.Int32);
+                var isqrt = Id("isqrt", PrimitiveType.Ptr32);
+                var limit = Id("limit", PrimitiveType.Int32);
+                m.Assign(i, m.Int32(2));
+                m.While(m.Lt(i, limit), w =>
+                {
+                    w.Assign(i, w.IAdd(i, w.Int32(1)));
+                    w.Assign(sum, i);       // uses i after it was incremented.
+                });
+                m.Return(m.Int32(1));
+            });
+        }
+
+        /// <summary>
+        /// If the loop variable is used between its initialization and the 
+        /// is a use of the loop variable after it is incremented,
+        /// don't rewrite.
+        /// </summary>
+        [Test]
+        public void Flr_InitializerUsedOutsideLoop()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    i = 2;
+    a = i;
+    for (; i < limit; i = i + 1)
+        foo(i);
+    return 1;
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var a = Id("a", PrimitiveType.Int32);
+                var sum = Id("sum", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+                var limit = Id("limit", PrimitiveType.Int32);
+                m.Assign(i, m.Int32(2));
+                m.Assign(a, i);
+                m.While(m.Lt(i, limit), w =>
+                {
+                    w.SideEffect(m.Fn(foo, i));
+                    w.Assign(i, m.IAdd(i, 1));  
+                });
+                m.Return(m.Int32(1));
+            });
+        }
+
     }
 }

@@ -29,18 +29,16 @@ fn0C00_0000_exit:
 void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 {
 	word16 dx_15 = 0x0004;
-	do
+	for (; dx_15 != 0x0000; dx_15 = dx_15 - 0x0001)
 	{
 		word16 cx_18 = 0x0004;
-		do
+		for (; cx_18 != 0x0000; cx_18 = cx_18 - 0x0001)
 		{
 			Mem28[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32];
 			si = si + 0x0004;
 			bx = bx + 0x0004;
 			di = di + 0x0004;
-			cx_18 = cx_18 - 0x0001;
-		} while (cx_18 != 0x0000);
-		dx_15 = dx_15 - 0x0001;
-	} while (dx_15 != 0x0000);
+		}
+	}
 }
 ===========================

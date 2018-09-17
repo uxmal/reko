@@ -156,6 +156,10 @@ namespace Reko.Structure
                     return null;
                 if (ass.Dst == loopVariable)
                     return ass;
+                if (UsedIdentifierFinder.Contains(ass.Dst, loopVariable))
+                    return null;
+                if (UsedIdentifierFinder.Contains(ass.Src, loopVariable))
+                    return null;
             }
             return null;
         }
@@ -165,12 +169,20 @@ namespace Reko.Structure
             var updates = new List<AbsynAssignment>();
             if (id == null)
                 return updates;
-            foreach (var stm in stmts)
+            for (int i = stmts.Count - 1; i >= 0; --i)
             {
+                var stm = stmts[i];
                 if (!(stm is AbsynAssignment ass))
-                    continue;
+                    return updates;
                 if (id != ass.Dst)
+                {
+                    if (UsedIdentifierFinder.Contains(ass.Src, id) ||
+                        UsedIdentifierFinder.Contains(ass.Dst, id))
+                    {
+                        return updates;
+                    }
                     continue;
+                }
                 if (ass.Src is BinaryExpression bin)
                 {
                     if (id == bin.Left)
@@ -202,6 +214,24 @@ namespace Reko.Structure
                 candidate.Update,
                 candidate.LoopBody);
             return forLoop;
+        }
+
+        private class UsedIdentifierFinder : ExpressionVisitorBase
+        {
+            private Identifier id;
+            private bool found;
+
+            public static bool Contains(Expression expr, Identifier id)
+            {
+                var uif = new UsedIdentifierFinder { id = id };
+                expr.Accept(uif);
+                return uif.found;
+            }
+
+            public override void VisitIdentifier(Identifier id)
+            {
+                this.found |= (id == this.id);
+            }
         }
     }
 

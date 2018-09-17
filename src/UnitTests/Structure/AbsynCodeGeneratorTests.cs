@@ -163,13 +163,9 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "WhileLoopFragment()" + nl + 
                 "{" + nl + 
-                "	i = 0;" + nl + 
                 "	sum = 0;" + nl + 
-                "	while (i < 100)" + nl + 
-                "	{" + nl + 
+                "	for (i = 0; i < 100; i = i + 1)" + nl + 
                 "		sum = sum + i;" + nl + 
-                "		i = i + 1;" + nl + 
-                "	}" + nl + 
                 "	return sum;" + nl + 
                 "}" + nl );
         }
@@ -339,15 +335,11 @@ namespace Reko.UnitTests.Structure
                 "MockNestedWhileLoops()" + nl +
                 "{" + nl +
                 "	int32 i = 0;" + nl +
-                "	while (i < 10)" + nl +
+                "	for (; i < 10; i = i + 1)" + nl +
                 "	{" + nl +
                 "		int32 j = 0;" + nl +
-                "		while (j < 10)" + nl +
-                "		{" + nl +
+                "		for (; j < 10; j = j + 1)" + nl +
                 "			Mem0[0x00001234:word32] = Mem0[0x00001234:int32] + j;" + nl +
-                "			j = j + 1;" + nl +
-                "		}" + nl +
-                "		i = i + 1;" + nl +
                 "	}" + nl +
                 "}" + nl);
         }
