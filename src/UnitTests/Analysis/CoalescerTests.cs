@@ -242,6 +242,6 @@ b = a + 0x00000004
 b = Mem3[Mem2[0x00123400:word32]:word32]
 ";
             AssertProcedureCode(sExp);
-    }
+        }
     }
 }

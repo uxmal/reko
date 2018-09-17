@@ -142,7 +142,7 @@ namespace Reko.Arch.Sparc
             g6 = RegisterStorage.Reg32("g6", 6);
             g7 = RegisterStorage.Reg32("g7", 7);
 
-            o0 = RegisterStorage.Reg32("o0", 8);   // outgoing paramter 0 / return valie from callee
+            o0 = RegisterStorage.Reg32("o0", 8);   // outgoing paramter 0 / return value from callee
             o1 = RegisterStorage.Reg32("o1", 9);
             o2 = RegisterStorage.Reg32("o2", 10);
             o3 = RegisterStorage.Reg32("o3", 11);
