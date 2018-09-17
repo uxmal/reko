@@ -258,15 +258,14 @@ void fn02F9(byte a, byte b, byte c, Eq_18 de, word16 hl, Eq_20 * ix)
 // 0341: Register word16 fn0341(Register byte a, Register Eq_16 b, Register Eq_16 c, Register Eq_18 de, Register ui16 hl, Register (ptr16 Eq_20) ix, Register out Eq_447 bcOut, Register out Eq_448 deOut, Register out Eq_449 hlOut, Register out Eq_450 ixOut)
 word16 fn0341(byte a, Eq_16 b, Eq_16 c, Eq_18 de, ui16 hl, Eq_20 * ix, Eq_447 & bcOut, Eq_448 & deOut, Eq_449 & hlOut, Eq_450 & ixOut)
 {
-	do
+	for (; a != 0x00; a = a - 0x01)
 	{
 		c = c << 0x01;
 		b = __rcl(b, 0x01, (bool) cond(c));
 		hl = hl * 0x02 + (b < 0x00);
 		Eq_16 l_22 = (byte) hl;
 		Eq_16 h_23 = SLICE(hl, byte, 8);
-		a = a - 0x01;
-	} while (a != 0x00);
+	}
 	word16 bc_32;
 	word16 de_33;
 	word16 hl_34;
@@ -530,13 +529,12 @@ bool fn0434(Eq_18 de, Eq_20 * ix, Eq_1568 & bcOut, Eq_1569 & deOut, Eq_1570 & hl
 {
 	Eq_1818 hl_14 = (char *) v3 + 0x001C;
 	word16 bc_10 = 0x04;
-	do
+	for (; bc_10 != 0x00; bc_10 = bc_10 - 0x01)
 	{
 		*de = *hl_14;
 		hl_14 = (word32) hl_14 + 0x01;
 		de = (word32) de + 0x01;
-		bc_10 = bc_10 - 0x01;
-	} while (bc_10 != 0x00);
+	}
 	Eq_1838 de_22 = v3->t0024;
 	Eq_1842 hl_24 = (char *) v3 + 0x0018;
 	bool C_29 = (bool) cond((char *) v3 + 0x0018);
@@ -730,13 +728,12 @@ word16 fn060E(word16 af, cu8 c, Eq_18 de, Eq_20 * ix, Eq_2286 & cOut, Eq_2287 & 
 	} while (a != 0x00);
 	Eq_2596 hl_240 = (char *) v3 + 0x0C;
 	word16 bc_245 = 0x04;
-	do
+	for (; bc_245 != 0x00; bc_245 = bc_245 - 0x01)
 	{
 		*de = *hl_240;
 		hl_240 = (word32) hl_240 + 0x01;
 		de = de + 0x01;
-		bc_245 = bc_245 - 0x01;
-	} while (bc_245 != 0x00);
+	}
 	Eq_2615 de_266 = v3->t0020;
 	Eq_2619 hl_268 = (char *) v3 + 0x04;
 	word16 bc_273 = 0x04;
@@ -815,33 +812,30 @@ void fn0823(word16 wArg00)
 // 0914: void fn0914(Register word16 af, Register word16 bc, Register (ptr32 byte) de, Register (ptr32 byte) hl, Register (ptr16 Eq_20) ix, Stack word16 wArg00, Stack Eq_18 wArg02)
 void fn0914(word16 af, word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg00, Eq_18 wArg02)
 {
-	do
+	for (; bc != 0x00; bc = bc - 0x01)
 	{
 		*de = *hl;
 		hl = hl + 0x01;
 		de = de + 0x01;
-		bc = bc - 0x01;
-	} while (bc != 0x00);
+	}
 	Eq_2783 de_37 = fp + 0x08;
 	Eq_2787 hl_38 = wArg00 + 0x08;
 	word16 bc_41 = 0x04;
-	do
+	for (; bc_41 != 0x00; bc_41 = bc_41 - 0x01)
 	{
 		*de_37 = *hl_38;
 		hl_38 = hl_38 + 0x01;
 		de_37 = (word32) de_37 + 0x01;
-		bc_41 = bc_41 - 0x01;
-	} while (bc_41 != 0x00);
+	}
 	Eq_2806 de_71 = fp + 0x04;
 	Eq_2809 hl_72 = wArg00 + 0x0C;
 	word16 bc_75 = 0x04;
-	do
+	for (; bc_75 != 0x00; bc_75 = bc_75 - 0x01)
 	{
 		*de_71 = *hl_72;
 		hl_72 = (word32) hl_72 + 0x01;
 		de_71 = (word32) de_71 + 0x01;
-		bc_75 = bc_75 - 0x01;
-	} while (bc_75 != 0x00);
+	}
 	ix->tFFFFFFEA.u0 = 0x20;
 	ix->tFFFFFFEB.u0 = 0x00;
 	ix->tFFFFFFEC.u0 = 0x00;
@@ -973,15 +967,14 @@ void fn0AA6(word16 af, cu8 b, cu8 c, Eq_18 de, byte h, Eq_16 l, Eq_20 * ix)
 	Eq_16 l_36 = ix->tFFFFFFF8;
 	Eq_16 h_38 = ix->tFFFFFFF9;
 	byte a_41 = 0x05;
-	do
+	for (; a_41 != 0x00; a_41 = a_41 - 0x01)
 	{
 		h_38 = h_38 >> 0x01;
 		Eq_303 C_53 = (bool) cond(h_38);
 		l_36 = __rcr(l_36, 0x01, C_53);
 		b_34 = __rcr(b_34, 0x01, (bool) cond(l_36));
 		c_32 = __rcr(c_32, 0x01, (bool) cond(b_34));
-		a_41 = a_41 - 0x01;
-	} while (a_41 != 0x00);
+	}
 	cu8 a_74 = (word16) c_32 + ix->bFFFFFFDA;
 	cu8 a_80 = (bool) (a_74 < 0x00) + ((word16) b_34 + ix->bFFFFFFDB);
 	cu8 a_86 = (bool) (a_80 < 0x00) + ((word16) l_36 + ix->bFFFFFFDC);
@@ -1184,25 +1177,23 @@ void fn0B5A(Eq_18 de, Eq_4143 hl, Eq_20 * ix)
 // 0B5D: Register word16 fn0B5D(Register word16 bc, Register Eq_18 de, Register Eq_4143 hl, Register (ptr16 Eq_20) ix, Register out Eq_4173 deOut, Register out Eq_4174 hlOut, Register out Eq_4175 ixOut)
 word16 fn0B5D(word16 bc, Eq_18 de, Eq_4143 hl, Eq_20 * ix, Eq_4173 & deOut, Eq_4174 & hlOut, Eq_4175 & ixOut)
 {
-	do
+	for (; bc != 0x00; bc = bc - 0x01)
 	{
 		*de = *hl;
 		hl = hl + 0x01;
 		de = de + 0x01;
-		bc = bc - 0x01;
-	} while (bc != 0x00);
+	}
 	Eq_4204 de_19 = v3->t0024;
 	Eq_4209 hl_21 = (char *) v3 + 0x0018;
 	word16 bc_24 = 0x04;
-	do
+	for (; bc_24 != 0x00; bc_24 = bc_24 - 0x01)
 	{
 		*de_19 = *hl_21;
 		hl_21 = (word32) hl_21 + 0x01;
 		*hlOut = hl_21;
 		de_19 = de_19 + 0x01;
 		*deOut = de_19;
-		bc_24 = bc_24 - 0x01;
-	} while (bc_24 != 0x00);
+	}
 	word16 ix_38;
 	*ixOut = ix->w0000;
 	return bc_24;
@@ -1211,33 +1202,30 @@ word16 fn0B5D(word16 bc, Eq_18 de, Eq_4143 hl, Eq_20 * ix, Eq_4173 & deOut, Eq_4
 // 0BD0: void fn0BD0(Register word16 bc, Register (ptr32 byte) de, Register (ptr32 byte) hl, Register (ptr16 Eq_20) ix, Stack word16 wArg00, Stack Eq_18 wArg02)
 void fn0BD0(word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg00, Eq_18 wArg02)
 {
-	do
+	for (; bc != 0x00; bc = bc - 0x01)
 	{
 		*de = *hl;
 		hl = hl + 0x01;
 		de = de + 0x01;
-		bc = bc - 0x01;
-	} while (bc != 0x00);
+	}
 	Eq_4255 de_33 = fp + 0x20;
 	Eq_4259 hl_34 = wArg00 + 0x08;
 	word16 bc_35 = 0x04;
-	do
+	for (; bc_35 != 0x00; bc_35 = bc_35 - 0x01)
 	{
 		*de_33 = *hl_34;
 		hl_34 = hl_34 + 0x01;
 		de_33 = (word32) de_33 + 0x01;
-		bc_35 = bc_35 - 0x01;
-	} while (bc_35 != 0x00);
+	}
 	Eq_4278 de_59 = fp + 0x14;
 	Eq_4281 hl_60 = wArg00 + 0x0C;
 	word16 bc_61 = 0x04;
-	do
+	for (; bc_61 != 0x00; bc_61 = bc_61 - 0x01)
 	{
 		*de_59 = *hl_60;
 		hl_60 = (word32) hl_60 + 0x01;
 		de_59 = (word32) de_59 + 0x01;
-		bc_61 = bc_61 - 0x01;
-	} while (bc_61 != 0x00);
+	}
 	ix->bFFFFFFE2 = 0x20;
 	ix->bFFFFFFE3 = 0x00;
 	ix->bFFFFFFE4 = 0x00;
@@ -1489,13 +1477,12 @@ word16 fn0DFC(word16 af, cu8 c, cu8 b, Eq_18 de, byte h, cu8 l, Eq_20 * ix, Eq_5
 	{
 		Eq_5331 hl_46 = fp + 0x0C;
 		word16 bc_51 = 0x04;
-		do
+		for (; bc_51 != 0x00; bc_51 = bc_51 - 0x01)
 		{
 			*de = *hl_46;
 			hl_46 = (word32) hl_46 + 0x01;
 			de = de + 0x01;
-			bc_51 = bc_51 - 0x01;
-		} while (bc_51 != 0x00);
+		}
 		Eq_5284 de_73 = wArg20;
 		Eq_5352 hl_75 = fp + 0x04;
 		word16 bc_80 = 0x04;

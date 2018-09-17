@@ -149,15 +149,14 @@ void fn03CE(word16 * r0)
 	ci16 r4_19 = 0x0C;
 	byte * r5_20 = globals->a27B0;
 	byte * r3_21 = (globals->w008C & ~~0x03) + 10131;
-	do
+	for (; r4_19 > 0x00; r4_19 = r4_19 - 0x01)
 	{
 		*r5_20 = *r3_21;
 		union Eq_420 * r5_30 = r5_20 + 0x01;
 		*r5_30 = (union Eq_420 *) r2_14;
 		r3_21 = r3_21 + 0x01;
 		r5_20 = (char *) r5_30 + 0x07;
-		r4_19 = r4_19 - 0x01;
-	} while (r4_19 > 0x00);
+	}
 	globals->w0090 = globals->w0090 + 0x01;
 	globals->w0090 = globals->w0090 & ~~0x03;
 	globals->w008E = globals->w008E + 0x0180;
@@ -884,14 +883,13 @@ void fn0C36(ci16 r2, ci16 r3, word16 pc)
 		}
 	}
 	word16 r0_27 = globals->w267A;
-	do
+	for (; r3 > 0x00; r3 = r3 - 0x01)
 	{
 		fn0C72();
 		globals->w267A = r0_27;
 		globals->w267C = globals->w267C + r5_15;
 		fn0C76(pc);
-		r3 = r3 - 0x01;
-	} while (r3 > 0x00);
+	}
 }
 
 // 0C72: void fn0C72()
@@ -1176,7 +1174,7 @@ void fn0F04()
 			fn126C(0x0C, 0x00, r1_58 + 0x06, out r3_116);
 		ci16 r2_65 = 0x0C;
 		r0_36 = *(fp - 0x02);
-		do
+		for (; r2_65 > 0x00; r2_65 = r2_65 - 0x01)
 		{
 			globals->w00AA = globals->w00AA + 0x01;
 			if (0x03 - globals->w00AA >= 0x00)
@@ -1187,8 +1185,7 @@ void fn0F04()
 			*(fp - 0x02) = (union Eq_2665 *) r4_84;
 			r5_29 = fn0D78(r4_84, r5_29, ptrLoc02);
 			r4_11 = *(fp - 0x02);
-			r2_65 = r2_65 - 0x01;
-		} while (r2_65 > 0x00);
+		}
 	}
 }
 
@@ -1778,9 +1775,8 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 	r0_11 = r0_4;
 	if (r0_4 <= 0x00)
 		r0_11 = -r0_4;
-	do
-		r0_11 = r0_11 - 0x01;
-	while (r0_11 > 0x00);
+	for (; r0_11 > 0x00; r0_11 = r0_11 - 0x01)
+		;
 	do
 	{
 		__wait();
@@ -1791,24 +1787,22 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 	__reset();
 	word16 * r0_30 = globals->a182A;
 	ci16 r1_34 = 500;
-	do
+	for (; r1_34 > 0x00; r1_34 = r1_34 - 0x01)
 	{
 		*r0_30 = 0xF700;
 		word16 * r0_40 = r0_30 + 0x01;
 		*r0_40 = 0x00;
 		r0_30 = r0_40 + 0x01;
-		r1_34 = r1_34 - 0x01;
-	} while (r1_34 > 0x00);
+	}
 	word16 * r0_47 = globals->a34E0;
 	ci16 r1_51 = 711;
-	do
+	for (; r1_51 > 0x00; r1_51 = r1_51 - 0x01)
 	{
 		*r0_47 = 0xF700;
 		word16 * r0_57 = r0_47 + 0x01;
 		*r0_57 = 0x00;
 		r0_47 = r0_57 + 0x01;
-		r1_51 = r1_51 - 0x01;
-	} while (r1_51 > 0x00);
+	}
 	*(word16 *) ~0x01 = 0x00;
 	word16 * r0_67 = globals->a013E;
 	while (true)

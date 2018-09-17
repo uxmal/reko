@@ -259,15 +259,14 @@ Eq_518 * fn004013FB(Eq_519 * dwArg04, uint32 dwArg08)
 	struct Eq_518 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{
-		do
+		for (; edx_16 != esi_19; edx_16 = edx_16 + 0x01)
 		{
 			if (dwArg08 >= edx_16->dw000C && dwArg08 < edx_16->dw0008 + edx_16->dw000C)
 			{
 				eax_26 = edx_16;
 				return eax_26;
 			}
-			edx_16 = edx_16 + 0x01;
-		} while (edx_16 != esi_19);
+		}
 	}
 	eax_26 = null;
 	return eax_26;
@@ -597,7 +596,7 @@ void fn00401920()
 	word32 * esi_34 = &globals->dw4024C8;
 	if (false)
 	{
-		do
+		for (; esi_34 < &globals->dw4024C8; esi_34 = esi_34 + 0x01)
 		{
 			word32 edi_37 = *esi_34;
 			if (edi_37 != 0x00)
@@ -613,8 +612,7 @@ void fn00401920()
 				word32 ecx_62;
 				fn00000000();
 			}
-			esi_34 = esi_34 + 0x01;
-		} while (esi_34 < &globals->dw4024C8);
+		}
 	}
 }
 

@@ -646,7 +646,7 @@ void main(Eq_754 * rsi, word32 edi, word64 r13, Eq_757 * fs)
 					dwLoc5C_570 = 0x01;
 				}
 				up32 dwLoc54_585 = (word32) (uint64) dwLoc64_568;
-				while (dwLoc54_585 < (word32) ((uint64) dwLoc84))
+				for (; dwLoc54_585 < (word32) ((uint64) dwLoc84); dwLoc54_585 = dwLoc54_585 + (word32) ((uint64) dwLoc5C_570))
 				{
 					int32 eax_614 = puts("png_read_row");
 					word64 rsp_620;
@@ -677,18 +677,16 @@ void main(Eq_754 * rsi, word32 edi, word64 r13, Eq_757 * fs)
 					{
 						up32 dwLoc50_657 = (word32) (uint64) dwLoc60_567;
 						word32 dwLoc4C_658 = 0x00;
-						while (dwLoc50_657 < (word32) ((uint64) dwLoc88))
+						for (; dwLoc50_657 < (word32) ((uint64) dwLoc88); dwLoc50_657 = dwLoc50_657 + (word32) ((uint64) dwLoc58_569))
 						{
 							if ((uint64) dwLoc50_657 == rax_70)
 							{
 								print_pixel((word32) (uint64) dwLoc4C_658, rax_337, (word32) rax_125, r13_637, fs_626);
 								goto l000000000040167F;
 							}
-							dwLoc50_657 = dwLoc50_657 + (word32) ((uint64) dwLoc58_569);
 							dwLoc4C_658 = dwLoc4C_658 + 0x01;
 						}
 					}
-					dwLoc54_585 = dwLoc54_585 + (word32) ((uint64) dwLoc5C_570);
 				}
 l000000000040166F:
 				dwLoc68_437 = dwLoc68_437 + 0x01;

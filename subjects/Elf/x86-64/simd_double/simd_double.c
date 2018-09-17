@@ -163,7 +163,7 @@ void main(Eq_184 xmm0)
 		qwLoc10_163 = (word64) qwLoc10_163 + 0x01;
 	}
 	uint64 qwLoc18_133 = 0x01;
-	while (qwLoc18_133 < 0x03FF)
+	for (; qwLoc18_133 < 0x03FF; qwLoc18_133 = qwLoc18_133 + 0x01)
 	{
 		Eq_235 rax_117 = qwLoc18_133 + 0x00;
 		ui32 eax_118 = (word32) rax_117;
@@ -176,7 +176,6 @@ void main(Eq_184 xmm0)
 			xmm0 = DPB(xmm0, v19_143 + v19_143, 0);
 		}
 		*rcx_122 = (real64) xmm0;
-		qwLoc18_133 = qwLoc18_133 + 0x01;
 	}
 	Eq_201 qwLoc20_114 = 0x00;
 	while (qwLoc20_114 < 0x0400)

@@ -95,7 +95,7 @@ void const_div_test10(word32 dwArg04)
 void loop_test11(real64 rArg04)
 {
 	int32 dwLoc08_28 = 0x05;
-	while (dwLoc08_28 > 0x00)
+	for (; dwLoc08_28 > 0x00; dwLoc08_28 = dwLoc08_28 - 0x01)
 	{
 		int32 eax_32 = dwLoc08_28 & 0x80000001;
 		if (eax_32 < 0x00)
@@ -104,7 +104,6 @@ void loop_test11(real64 rArg04)
 			loop_test9((real32) rArg04, rArg0);
 		else
 			nested_if_blocks_test8(rArg04, rArg0);
-		dwLoc08_28 = dwLoc08_28 - 0x01;
 	}
 }
 

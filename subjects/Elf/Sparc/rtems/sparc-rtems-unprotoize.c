@@ -596,11 +596,8 @@ Eq_845 * visit_each_hash_node(Eq_846 * o0)
 			if (o0_41 != 0x00)
 			{
 				l0 = i0_4 + 0x01;
-				do
-				{
+				for (; i0_4 != null; i0_4 = i0_4->dw0000)
 					reverse_def_dec_list(i0_4);
-					i0_4 = i0_4->dw0000;
-				} while (i0_4 != null);
 			}
 			else
 				l0 = &i0_4->dw0000;
@@ -3300,7 +3297,7 @@ void _obstack_newchunk(Eq_6122 * o0, word32 o1)
 void _obstack_allocated_p(Eq_6430 * o0, up32 o1)
 {
 	struct Eq_6432 * g3_28 = o0->ptr0004;
-	while (g3_28 != null)
+	for (; g3_28 != null; g3_28 = g3_28->ptr0004)
 	{
 		up32 g0_20 = g3_28 - o1;
 		if (g0_20 < 0x00)
@@ -3310,7 +3307,6 @@ void _obstack_allocated_p(Eq_6430 * o0, up32 o1)
 			g3_28 = g3_28->ptr0004;
 			continue;
 		}
-		g3_28 = g3_28->ptr0004;
 	}
 }
 
@@ -3498,9 +3494,8 @@ void _obstack_memory_used(Eq_6674 * o0)
 	struct Eq_6675 * g3_15 = o0->ptr0004;
 	if (g3_15 != null)
 	{
-		do
-			g3_15 = g3_15->ptr0004;
-		while (g3_15 != null);
+		for (; g3_15 != null; g3_15 = g3_15->ptr0004)
+			;
 	}
 }
 

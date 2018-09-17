@@ -745,7 +745,7 @@ Eq_1069 * fn0000000140001718(code * * rcx)
 				struct Eq_1111 * rax_114 = DPB(rax_61, (word32) rcx_51->w0006, 0);
 				struct Eq_1111 * r8_59 = rcx - 0x140000000;
 				word64 r9_69 = rdx_116 + rax_114 * 0x28;
-				while (rdx_116 != r9_69)
+				for (; rdx_116 != r9_69; rdx_116 = rdx_116 + 0x28)
 				{
 					struct Eq_1111 * rcx_109 = (uint64) rdx_116->dw000C;
 					word32 ecx_110 = (word32) rcx_109;
@@ -755,7 +755,6 @@ Eq_1069 * fn0000000140001718(code * * rcx)
 						if (r8_59 < rax_114)
 							goto l000000014000178F;
 					}
-					rdx_116 = rdx_116 + 0x28;
 				}
 				rdx_116 = null;
 l000000014000178F:
@@ -1168,7 +1167,7 @@ void fn0000000140001B5C(word64 qwArg08, word64 qwArg10)
 {
 	word64 * rbx_11 = &globals->qw40002680;
 	word64 * rsi_12 = &globals->qw40002680;
-	while (rbx_11 < rsi_12)
+	for (; rbx_11 < rsi_12; rbx_11 = rbx_11 + 0x01)
 	{
 		<anonymous> * rdi_32 = *rbx_11;
 		if (rdi_32 != null)
@@ -1183,7 +1182,6 @@ void fn0000000140001B5C(word64 qwArg08, word64 qwArg10)
 			word64 rcx_55;
 			rdi_32();
 		}
-		rbx_11 = rbx_11 + 0x01;
 	}
 }
 
@@ -1192,7 +1190,7 @@ void fn0000000140001BA8(word64 qwArg08, word64 qwArg10)
 {
 	word64 * rbx_11 = &globals->qw40002690;
 	word64 * rsi_12 = &globals->qw40002690;
-	while (rbx_11 < rsi_12)
+	for (; rbx_11 < rsi_12; rbx_11 = rbx_11 + 0x01)
 	{
 		<anonymous> * rdi_32 = *rbx_11;
 		if (rdi_32 != null)
@@ -1207,7 +1205,6 @@ void fn0000000140001BA8(word64 qwArg08, word64 qwArg10)
 			word64 rcx_55;
 			rdi_32();
 		}
-		rbx_11 = rbx_11 + 0x01;
 	}
 }
 

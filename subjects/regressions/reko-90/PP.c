@@ -64,7 +64,7 @@ void fn0800_01E6(byte al, Eq_8 Eq_10::*si, Eq_8 Eq_10::*di, Eq_10 * es)
 			ah_111 = ~0x00;
 		struct Eq_8 Eq_10::* dx_31 = di;
 		struct Eq_8 Eq_10::* bx_32 = si;
-		while (bx_32 != di)
+		for (; bx_32 != di; bx_32 = bx_32 + 0x01)
 		{
 			if ((es->*bx_32).b0000 != ~0x00)
 			{
@@ -79,7 +79,6 @@ void fn0800_01E6(byte al, Eq_8 Eq_10::*si, Eq_8 Eq_10::*di, Eq_10 * es)
 					dx_31 = bx_32;
 				}
 			}
-			bx_32 = bx_32 + 0x01;
 		}
 		if (dx_31 == di)
 			break;
@@ -388,12 +387,11 @@ Eq_81 fn0800_0402(Eq_81 ds)
 			}
 			byte Eq_81::* di_284 = di_270 - 0x01;
 			word16 cx_286 = 0x05;
-			while (cx_286 != 0x00)
+			for (; cx_286 != 0x00; cx_286 = cx_286 - 0x01)
 			{
 				ds->*di_284 = ds->*si_271;
 				si_271 = si_271 + 0x01;
 				di_284 = di_284 + 0x01;
-				cx_286 = cx_286 - 0x01;
 			}
 		}
 		*((word32) ds + 10777) = 0x01;
@@ -578,20 +576,18 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 				cu16 cx_418 = ~cx_410;
 				uint16 cx_420 = cx_418 >> 0x01;
 				struct Eq_1873 Eq_81::* si_427 = di_1128 - cx_418;
-				while (cx_420 != 0x00)
+				for (; cx_420 != 0x00; cx_420 = cx_420 - 0x01)
 				{
 					es_431->*di_428 = (es_400->*si_427).t0000;
 					si_427 = si_427 + 0x02;
 					di_428 = (word32) di_428 + 0x02;
-					cx_420 = cx_420 - 0x01;
 				}
 				ui16 cx_448 = cx_420 * 0x02 + (cx_418 >> 0x01 < 0x00);
-				while (cx_448 != 0x00)
+				for (; cx_448 != 0x00; cx_448 = cx_448 - 0x01)
 				{
 					es_431->*di_428 = (es_400->*si_427).t0000;
 					si_427 = si_427 + 0x01;
 					di_428 = (word32) di_428 + 0x01;
-					cx_448 = cx_448 - 0x01;
 				}
 				ds = ss->*(fp - 0x0C);
 				*dsOut = ds;
@@ -623,12 +619,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 					}
 					di = di_1130 - 0x01;
 					word16 cx_512 = 0x02;
-					while (cx_512 != 0x00)
+					for (; cx_512 != 0x00; cx_512 = cx_512 - 0x01)
 					{
 						es_472->*di.u0 = ds->*si_499;
 						si_499 = si_499 + 0x01;
 						di.u0 = (byte) di.u0 + 0x01;
-						cx_512 = cx_512 - 0x01;
 					}
 				}
 				break;
@@ -652,20 +647,18 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 				cu16 cx_563 = ~cx_555;
 				uint16 cx_565 = cx_563 >> 0x01;
 				struct Eq_1819 Eq_81::* si_572 = di_1131 - cx_563;
-				while (cx_565 != 0x00)
+				for (; cx_565 != 0x00; cx_565 = cx_565 - 0x01)
 				{
 					es_576->*di_573 = (es_545->*si_572).t0000;
 					si_572 = si_572 + 0x02;
 					di_573 = (word32) di_573 + 0x02;
-					cx_565 = cx_565 - 0x01;
 				}
 				ui16 cx_593 = cx_565 * 0x02 + (cx_563 >> 0x01 < 0x00);
-				while (cx_593 != 0x00)
+				for (; cx_593 != 0x00; cx_593 = cx_593 - 0x01)
 				{
 					es_576->*di_573 = (es_545->*si_572).t0000;
 					si_572 = si_572 + 0x01;
 					di_573 = (word32) di_573 + 0x01;
-					cx_593 = cx_593 - 0x01;
 				}
 				ds = ss->*(fp - 0x0C);
 				*dsOut = ds;
@@ -697,12 +690,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 					}
 					di = di_1133 - 0x01;
 					word16 cx_657 = 0x02;
-					while (cx_657 != 0x00)
+					for (; cx_657 != 0x00; cx_657 = cx_657 - 0x01)
 					{
 						es_617->*di.u0 = ds->*si_644;
 						si_644 = si_644 + 0x01;
 						di.u0 = (byte) di.u0 + 0x01;
-						cx_657 = cx_657 - 0x01;
 					}
 				}
 				break;
@@ -754,12 +746,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 			}
 			byte Eq_81::* di_1043 = di_1027 - 0x01;
 			word16 cx_1046 = 0x02;
-			while (cx_1046 != 0x00)
+			for (; cx_1046 != 0x00; cx_1046 = cx_1046 - 0x01)
 			{
 				es_1024->*di_1043 = ds->*si_1029;
 				si_1029 = si_1029 + 0x01;
 				di_1043 = di_1043 + 0x01;
-				cx_1046 = cx_1046 - 0x01;
 			}
 			if (*((word32) ds + 11825) > 0x1000)
 				*((word32) ds + 11825) = 0x1000;
@@ -782,12 +773,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 		}
 		byte Eq_81::* di_1087 = di_1071 - 0x01;
 		word16 cx_1090 = 0x02;
-		while (cx_1090 != 0x00)
+		for (; cx_1090 != 0x00; cx_1090 = cx_1090 - 0x01)
 		{
 			es_1068->*di_1087 = ds->*si_1073;
 			si_1073 = si_1073 + 0x01;
 			di_1087 = di_1087 + 0x01;
-			cx_1090 = cx_1090 - 0x01;
 		}
 		if (*((word32) ds + 11825) > 0x8000)
 			*((word32) ds + 11825) = 0x8000;
@@ -814,12 +804,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 		}
 		byte Eq_81::* di_1002 = di_1012 - 0x01;
 		word16 cx_1001 = 0x02;
-		while (cx_1001 != 0x00)
+		for (; cx_1001 != 0x00; cx_1001 = cx_1001 - 0x01)
 		{
 			es_977->*di_1002 = ds->*si_1003;
 			si_1003 = si_1003 + 0x01;
 			di_1002 = di_1002 + 0x01;
-			cx_1001 = cx_1001 - 0x01;
 		}
 	}
 	if (*((word32) ds + 10781) != 0x00)
@@ -838,12 +827,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 		}
 		byte Eq_81::* di_956 = di_1135 - 0x01;
 		word16 cx_959 = 0x02;
-		while (cx_959 != 0x00)
+		for (; cx_959 != 0x00; cx_959 = cx_959 - 0x01)
 		{
 			es_937->*di_956 = ds->*si_942;
 			si_942 = si_942 + 0x01;
 			di_956 = di_956 + 0x01;
-			cx_959 = cx_959 - 0x01;
 		}
 	}
 	ss->*(fp - 0x0C) = ds;
@@ -860,12 +848,11 @@ byte fn0800_0541(mp16 bp, Eq_81 di, Eq_81 ds, Eq_297 * & dsOut)
 	}
 	byte Eq_81::* di_891 = di_1134 - 0x01;
 	word16 cx_894 = 0x05;
-	while (cx_894 != 0x00)
+	for (; cx_894 != 0x00; cx_894 = cx_894 - 0x01)
 	{
 		es_872->*di_891 = ds->*si_877;
 		si_877 = si_877 + 0x01;
 		di_891 = di_891 + 0x01;
-		cx_894 = cx_894 - 0x01;
 	}
 	if (*((word32) ds + 0x00002A25) == 0x00 && Mem871[SEQ(ds, 0x0545)[Mem871[ds:0x2A23:word16] * 0x04] + 0x00:byte] != 0x00)
 	{
@@ -1190,20 +1177,18 @@ void fn0800_0C93(Eq_81 ds, Eq_81 wArg02, Eq_81 wArg04)
 		uint16 cx_153 = cx_151 >> 0x01;
 		struct Eq_3611 Eq_81::* si_158 = di_132 - cx_151;
 		word16 di_159 = 10004;
-		while (cx_153 != 0x00)
+		for (; cx_153 != 0x00; cx_153 = cx_153 - 0x01)
 		{
 			(ds->*di_159).t0000 = (ss->*si_158).t0000;
 			si_158 = si_158 + 0x02;
 			di_159 = di_159 + 0x02;
-			cx_153 = cx_153 - 0x01;
 		}
 		ui16 cx_176 = cx_153 * 0x02 + (cx_151 >> 0x01 < 0x00);
-		while (cx_176 != 0x00)
+		for (; cx_176 != 0x00; cx_176 = cx_176 - 0x01)
 		{
 			(ds->*di_159).t0000 = (ss->*si_158).t0000;
 			si_158 = si_158 + 0x01;
 			di_159 = di_159 + 0x01;
-			cx_176 = cx_176 - 0x01;
 		}
 	}
 	word16 di_94;
@@ -2351,20 +2336,18 @@ byte fn0800_19EE(Eq_81 Eq_308::*bp, Eq_81 ds, Eq_848 * & dsOut)
 			cu16 cx_522 = ~cx_512;
 			uint16 cx_524 = cx_522 >> 0x01;
 			struct Eq_7560 Eq_81::* si_530 = di_1044 - cx_522;
-			while (cx_524 != 0x00)
+			for (; cx_524 != 0x00; cx_524 = cx_524 - 0x01)
 			{
 				es_534->*di_531 = (es_497->*si_530).t0000;
 				si_530 = si_530 + 0x02;
 				di_531 = (word32) di_531 + 0x02;
-				cx_524 = cx_524 - 0x01;
 			}
 			ui16 cx_553 = cx_524 * 0x02 + (cx_522 >> 0x01 < 0x00);
-			while (cx_553 != 0x00)
+			for (; cx_553 != 0x00; cx_553 = cx_553 - 0x01)
 			{
 				es_534->*di_531 = (es_497->*si_530).t0000;
 				si_530 = si_530 + 0x01;
 				di_531 = (word32) di_531 + 0x01;
-				cx_553 = cx_553 - 0x01;
 			}
 			Eq_81 ds_568 = ss->*(fp - 122);
 			if (*((word32) ds_568 + 0x00002A25) == 0x08)
@@ -2740,20 +2723,18 @@ word16 fn0800_1F5C(Eq_81 bp, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, ptr16 & 
 	uint16 cx_175 = ~cx_165;
 	uint16 cx_177 = cx_175 >> 0x01;
 	struct Eq_8611 Eq_81::* si_183 = di_158 - cx_175;
-	while (cx_177 != 0x00)
+	for (; cx_177 != 0x00; cx_177 = cx_177 - 0x01)
 	{
 		es_187->*di_184 = (0x00->*si_183).t0000;
 		si_183 = si_183 + 0x02;
 		di_184 = (word32) di_184 + 0x02;
-		cx_177 = cx_177 - 0x01;
 	}
 	ui16 cx_206 = cx_177 * 0x02 + (cx_175 >> 0x01 < 0x00);
-	while (cx_206 != 0x00)
+	for (; cx_206 != 0x00; cx_206 = cx_206 - 0x01)
 	{
 		es_187->*di_184 = (0x00->*si_183).t0000;
 		si_183 = si_183 + 0x01;
 		di_184 = (word32) di_184 + 0x01;
-		cx_206 = cx_206 - 0x01;
 	}
 	Eq_81 ds_221 = ss->*(fp - 0x10);
 	*dsOut = ds_221;
@@ -2805,20 +2786,18 @@ void fn0800_2085(Eq_81 ds, Eq_870 * ptrArg02, Eq_81 psegArg04, byte * ptrArg06)
 	uint16 cx_131 = cx_129 >> 0x01;
 	struct Eq_8805 Eq_81::* si_137 = di_113 - cx_129;
 	struct Eq_8807 Eq_8782::* di_138 = bx_73 - 0x01;
-	while (cx_131 != 0x00)
+	for (; cx_131 != 0x00; cx_131 = cx_131 - 0x01)
 	{
 		(es_104->*di_138).t0000 = (psegArg04->*si_137).t0000;
 		si_137 = si_137 + 0x02;
 		di_138 = di_138 + 0x02;
-		cx_131 = cx_131 - 0x01;
 	}
 	ui16 cx_160 = cx_131 * 0x02 + (cx_129 >> 0x01 < 0x00);
-	while (cx_160 != 0x00)
+	for (; cx_160 != 0x00; cx_160 = cx_160 - 0x01)
 	{
 		(es_104->*di_138).t0000 = (psegArg04->*si_137).t0000;
 		si_137 = si_137 + 0x01;
 		di_138 = di_138 + 0x01;
-		cx_160 = cx_160 - 0x01;
 	}
 	byte Eq_8843::* di_178 = bx_73 - 0x01;
 	struct Eq_8843 * es_179 = SLICE(ptrLoc06_78, selector, 16);
@@ -3623,20 +3602,18 @@ word16 fn0800_29C5(Eq_81 si, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, Eq_6650 
 					uint16 cx_629 = cx_627 >> 0x01;
 					struct Eq_10904 Eq_10838::* si_635 = di_602 - cx_627;
 					struct Eq_10611 Eq_6653::* di_636 = wArg0A;
-					while (cx_629 != 0x00)
+					for (; cx_629 != 0x00; cx_629 = cx_629 - 0x01)
 					{
 						(psegArg0C->*di_636).t0000 = (es_591->*si_635).t0000;
 						si_635 = si_635 + 0x02;
 						di_636 = di_636 + 0x02;
-						cx_629 = cx_629 - 0x01;
 					}
 					ui16 cx_658 = cx_629 * 0x02 + (cx_627 >> 0x01 < 0x00);
-					while (cx_658 != 0x00)
+					for (; cx_658 != 0x00; cx_658 = cx_658 - 0x01)
 					{
 						(psegArg0C->*di_636).t0000 = (es_591->*si_635).t0000;
 						si_635 = si_635 + 0x01;
 						di_636 = di_636 + 0x01;
-						cx_658 = cx_658 - 0x01;
 					}
 					byte Eq_10941::* di_677 = (word16) ptrArg0A;
 					struct Eq_10941 * es_678 = SLICE(ptrArg0A, selector, 16);
@@ -3663,12 +3640,11 @@ word16 fn0800_29C5(Eq_81 si, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, Eq_6650 
 					}
 					byte Eq_10941::* di_734 = di_706 - 0x01;
 					word16 cx_737 = cx_703;
-					while (cx_737 != 0x00)
+					for (; cx_737 != 0x00; cx_737 = cx_737 - 0x01)
 					{
 						es_678->*di_734 = es_681->*si_705;
 						si_705 = si_705 + 0x01;
 						di_734 = di_734 + 0x01;
-						cx_737 = cx_737 - 0x01;
 					}
 					Eq_81 es_di_753 = *((word32) ds + 0x000045AA);
 					struct Eq_11001 * ds_752;
@@ -3845,11 +3821,11 @@ void fn0800_2C9A(Eq_81 ds)
 {
 	uint16 cx_15 = 0x00;
 	word16 si_18 = 0x2A29;
-	do
+	for (; cx_15 < 0x0100; cx_15 = cx_15 + 0x01)
 	{
 		uint16 dx_19 = cx_15;
 		word16 bx_20 = 0x08;
-		while (bx_20 != 0x00)
+		for (; bx_20 != 0x00; bx_20 = bx_20 - 0x01)
 		{
 			uint16 ax_40;
 			if ((dx_19 & 0x01) != 0x00)
@@ -3857,12 +3833,10 @@ void fn0800_2C9A(Eq_81 ds)
 			else
 				ax_40 = dx_19 >> 0x01;
 			dx_19 = ax_40;
-			bx_20 = bx_20 - 0x01;
 		}
 		ds->*si_18 = dx_19;
 		si_18 = si_18 + 0x01;
-		cx_15 = cx_15 + 0x01;
-	} while (cx_15 < 0x0100);
+	}
 }
 
 // 0800:2CCF: Register Eq_81 fn0800_2CCF(Register Eq_81 ds, Stack (ptr32 Eq_870) ptrArg02, Stack Eq_81 wArg06, Stack Eq_81 wArg08)
@@ -4071,20 +4045,18 @@ word16 fn0800_2DE2(Eq_81 si, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, Eq_3864 
 			uint16 cx_1024 = cx_1022 >> 0x01;
 			struct Eq_12048 Eq_81::* si_1029 = di_1008 - cx_1022;
 			struct Eq_12035 Eq_12037::* di_1030 = di_997;
-			while (cx_1024 != 0x00)
+			for (; cx_1024 != 0x00; cx_1024 = cx_1024 - 0x01)
 			{
 				(es_998->*di_1030).t0000 = (ds_832->*si_1029).t0000;
 				si_1029 = si_1029 + 0x02;
 				di_1030 = di_1030 + 0x02;
-				cx_1024 = cx_1024 - 0x01;
 			}
 			ui16 cx_1050 = cx_1024 * 0x02 + (cx_1022 >> 0x01 < 0x00);
-			while (cx_1050 != 0x00)
+			for (; cx_1050 != 0x00; cx_1050 = cx_1050 - 0x01)
 			{
 				(es_998->*di_1030).t0000 = (ds_832->*si_1029).t0000;
 				si_1029 = si_1029 + 0x01;
 				di_1030 = di_1030 + 0x01;
-				cx_1050 = cx_1050 - 0x01;
 			}
 			*((word32) ds_832 + 0x00004617) = *((word32) ds_832 + 0x00004617) + 0x01;
 			struct Eq_12186 * ds_1062;
@@ -4153,20 +4125,18 @@ word16 fn0800_2DE2(Eq_81 si, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, Eq_3864 
 			uint16 cx_721 = cx_719 >> 0x01;
 			struct Eq_12226 Eq_81::* si_726 = di_1228 - cx_719;
 			struct Eq_12213 Eq_12215::* di_727 = di_694;
-			while (cx_721 != 0x00)
+			for (; cx_721 != 0x00; cx_721 = cx_721 - 0x01)
 			{
 				(es_695->*di_727).t0000 = (ds->*si_726).t0000;
 				si_726 = si_726 + 0x02;
 				di_727 = di_727 + 0x02;
-				cx_721 = cx_721 - 0x01;
 			}
 			ui16 cx_747 = cx_721 * 0x02 + (cx_719 >> 0x01 < 0x00);
-			while (cx_747 != 0x00)
+			for (; cx_747 != 0x00; cx_747 = cx_747 - 0x01)
 			{
 				(es_695->*di_727).t0000 = (ds->*si_726).t0000;
 				si_726 = si_726 + 0x01;
 				di_727 = di_727 + 0x01;
-				cx_747 = cx_747 - 0x01;
 			}
 			*((word32) ds + 0x00004617) = *((word32) ds + 0x00004617) + 0x01;
 			*((word32) ds + 18002) = *((word32) ds + 18002) + 0x01;
@@ -4231,12 +4201,11 @@ word16 fn0800_2DE2(Eq_81 si, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, Eq_3864 
 	}
 	byte Eq_81::* di_201 = di_1220 - 0x01;
 	ui16 cx_204 = cx_175;
-	while (cx_204 != 0x00)
+	for (; cx_204 != 0x00; cx_204 = cx_204 - 0x01)
 	{
 		wArg04->*di_201 = ss->*si_177;
 		si_177 = si_177 + 0x01;
 		di_201 = di_201 + 0x01;
-		cx_204 = cx_204 - 0x01;
 	}
 	byte dl_224;
 	*dlOut = fn0800_0C6C(ds, DPB(ptrLoc1A, wArg02, 0));
@@ -4370,12 +4339,11 @@ word16 fn0800_31B4(Eq_81 ds, Eq_81 wArg02, Eq_81 wArg04, Eq_11814 * & dsOut)
 		}
 		byte Eq_81::* di_269 = di_248 - 0x01;
 		Eq_12356 cx_271 = cx_245;
-		while (cx_271 != 0x00)
+		for (; cx_271 != 0x00; cx_271 = cx_271 - 0x01)
 		{
 			wArg04->*di_269 = ss->*si_247;
 			si_247 = (word32) si_247 + 0x01;
 			di_269 = di_269 + 0x01;
-			cx_271 = cx_271 - 0x01;
 		}
 		*((word16) ds_72 + 0x09AC) = *((word16) ds_72 + 0x09AC) - 0x01;
 		ui16 bx_284 = *((word16) ds_72 + 0x09AC);
@@ -4406,20 +4374,18 @@ word16 fn0800_32CD(Eq_81 ds, Eq_12434 wArg02, Eq_81 wArg04, Eq_12436 wArg06, Eq_
 	uint16 cx_42 = cx_40 >> 0x01;
 	struct Eq_12464 Eq_81::* si_47 = di_218 - cx_40;
 	struct Eq_12466 Eq_81::* di_48 = fp - 0x68;
-	while (cx_42 != 0x00)
+	for (; cx_42 != 0x00; cx_42 = cx_42 - 0x01)
 	{
 		(ss->*di_48).t0000 = (psegArg08->*si_47).t0000;
 		si_47 = si_47 + 0x02;
 		di_48 = di_48 + 0x02;
-		cx_42 = cx_42 - 0x01;
 	}
 	ui16 cx_66 = cx_42 * 0x02 + (cx_40 >> 0x01 < 0x00);
-	while (cx_66 != 0x00)
+	for (; cx_66 != 0x00; cx_66 = cx_66 - 0x01)
 	{
 		(ss->*di_48).t0000 = (psegArg08->*si_47).t0000;
 		si_47 = si_47 + 0x01;
 		di_48 = di_48 + 0x01;
-		cx_66 = cx_66 - 0x01;
 	}
 	byte Eq_81::* di_214 = fp - 0x68;
 	word16 si_104 = 0x0A32;
@@ -4433,24 +4399,22 @@ word16 fn0800_32CD(Eq_81 ds, Eq_12434 wArg02, Eq_81 wArg04, Eq_12436 wArg06, Eq_
 	}
 	byte Eq_81::* di_100 = di_214 - 0x01;
 	word16 cx_101 = 0x04;
-	while (cx_101 != 0x00)
+	for (; cx_101 != 0x00; cx_101 = cx_101 - 0x01)
 	{
 		ss->*di_100 = ds->*si_104;
 		si_104 = si_104 + 0x01;
 		di_100 = di_100 + 0x01;
-		cx_101 = cx_101 - 0x01;
 	}
 	byte dl_125;
 	Eq_81 ds_126;
 	if (fn0800_33CD(ds, DPB(ptrLoc76, wArg02, 0), wArg04, 0x10, fp - 0x68, ss, out dl_125, out ds_126) != 0x00)
 		return 0x01;
-	while (wArg0A != 0x00)
+	for (; wArg0A != 0x00; wArg0A = wArg0A - 0x01)
 	{
 		ptrLoc72 = DPB(ptrLoc72, wArg02, 0);
 		byte dl_201;
 		if (fn0800_3479(ds_126, ptrLoc72, wArg04, 0x10, out dl_201, out ds_126) != 0x00)
 			return wArg0A;
-		wArg0A = wArg0A - 0x01;
 	}
 	return wArg0A;
 }
@@ -4512,12 +4476,11 @@ byte fn0800_335C(Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04)
 			}
 			byte Eq_12674::* di_153 = di_137 - 0x01;
 			word16 cx_156 = 0x05;
-			while (cx_156 != 0x00)
+			for (; cx_156 != 0x00; cx_156 = cx_156 - 0x01)
 			{
 				es_138->*di_153 = ds_35->*si_139;
 				si_139 = si_139 + 0x01;
 				di_153 = di_153 + 0x01;
-				cx_156 = cx_156 - 0x01;
 			}
 		}
 	}
@@ -4600,20 +4563,18 @@ Eq_81 fn0800_33CD(Eq_81 ds, segptr32 ptrArg02, Eq_81 wArg04, cui16 wArg06, Eq_81
 				uint16 cx_236 = cx_234 >> 0x01;
 				struct Eq_12868 Eq_81::* si_241 = di_220 - cx_234;
 				struct Eq_12855 Eq_12857::* di_242 = di_210;
-				while (cx_236 != 0x00)
+				for (; cx_236 != 0x00; cx_236 = cx_236 - 0x01)
 				{
 					(es_211->*di_242).t0000 = (ds->*si_241).t0000;
 					si_241 = si_241 + 0x02;
 					di_242 = di_242 + 0x02;
-					cx_236 = cx_236 - 0x01;
 				}
 				ui16 cx_261 = cx_236 * 0x02 + (cx_234 >> 0x01 < 0x00);
-				while (cx_261 != 0x00)
+				for (; cx_261 != 0x00; cx_261 = cx_261 - 0x01)
 				{
 					(es_211->*di_242).t0000 = (ds->*si_241).t0000;
 					si_241 = si_241 + 0x01;
 					di_242 = di_242 + 0x01;
-					cx_261 = cx_261 - 0x01;
 				}
 			}
 			struct Eq_12852 * ds_196;
@@ -4705,20 +4666,18 @@ word16 fn0800_3479(Eq_81 ds, segptr32 ptrArg02, Eq_81 wArg04, cui16 wArg06, Eq_1
 		uint16 cx_204 = cx_202 >> 0x01;
 		struct Eq_13064 Eq_81::* si_209 = di_188 - cx_202;
 		struct Eq_13051 Eq_13053::* di_210 = di_178;
-		while (cx_204 != 0x00)
+		for (; cx_204 != 0x00; cx_204 = cx_204 - 0x01)
 		{
 			(es_179->*di_210).t0000 = (ds->*si_209).t0000;
 			si_209 = si_209 + 0x02;
 			di_210 = di_210 + 0x02;
-			cx_204 = cx_204 - 0x01;
 		}
 		ui16 cx_229 = cx_204 * 0x02 + (cx_202 >> 0x01 < 0x00);
-		while (cx_229 != 0x00)
+		for (; cx_229 != 0x00; cx_229 = cx_229 - 0x01)
 		{
 			(es_179->*di_210).t0000 = (ds->*si_209).t0000;
 			si_209 = si_209 + 0x01;
 			di_210 = di_210 + 0x01;
-			cx_229 = cx_229 - 0x01;
 		}
 	}
 	return 0x00;
@@ -4741,20 +4700,18 @@ void fn0800_3509(Eq_81 wArg02, Eq_81 psegArg04, Eq_81 wArg06, Eq_81 wArg08)
 	uint16 cx_104 = cx_79 >> 0x01;
 	struct Eq_13146 Eq_13118::* si_102 = di_203 - cx_79;
 	Eq_81 di_103 = wArg02;
-	while (cx_104 != 0x00)
+	for (; cx_104 != 0x00; cx_104 = cx_104 - 0x01)
 	{
 		psegArg04->*di_103 = (ss->*si_102).t0000;
 		si_102 = si_102 + 0x02;
 		di_103 = (word32) di_103 + 0x02;
-		cx_104 = cx_104 - 0x01;
 	}
 	ui16 cx_105 = cx_104 * 0x02 + (cx_79 >> 0x01 < 0x00);
-	while (cx_105 != 0x00)
+	for (; cx_105 != 0x00; cx_105 = cx_105 - 0x01)
 	{
 		psegArg04->*di_103 = (ss->*si_102).t0000;
 		si_102 = si_102 + 0x01;
 		di_103 = (word32) di_103 + 0x01;
-		cx_105 = cx_105 - 0x01;
 	}
 	byte Eq_13118::* di_129 = fp - 0x5A;
 	word16 cx_142 = ~0x00;
@@ -4778,12 +4735,11 @@ void fn0800_3509(Eq_81 wArg02, Eq_81 psegArg04, Eq_81 wArg06, Eq_81 wArg08)
 	}
 	byte Eq_81::* di_174 = di_154 - 0x01;
 	ui16 cx_176 = cx_151;
-	while (cx_176 != 0x00)
+	for (; cx_176 != 0x00; cx_176 = cx_176 - 0x01)
 	{
 		psegArg04->*di_174 = ss->*si_153;
 		si_153 = si_153 + 0x01;
 		di_174 = di_174 + 0x01;
-		cx_176 = cx_176 - 0x01;
 	}
 }
 
@@ -4804,20 +4760,18 @@ byte fn0800_35A3(Eq_81 wArg02, Eq_81 psegArg04, Eq_81 wArg06, Eq_81 wArg08)
 	uint16 cx_104 = cx_79 >> 0x01;
 	struct Eq_13270 Eq_13118::* si_102 = di_204 - cx_79;
 	Eq_81 di_103 = wArg02;
-	while (cx_104 != 0x00)
+	for (; cx_104 != 0x00; cx_104 = cx_104 - 0x01)
 	{
 		psegArg04->*di_103 = (ss->*si_102).t0000;
 		si_102 = si_102 + 0x02;
 		di_103 = (word32) di_103 + 0x02;
-		cx_104 = cx_104 - 0x01;
 	}
 	ui16 cx_105 = cx_104 * 0x02 + (cx_79 >> 0x01 < 0x00);
-	while (cx_105 != 0x00)
+	for (; cx_105 != 0x00; cx_105 = cx_105 - 0x01)
 	{
 		psegArg04->*di_103 = (ss->*si_102).t0000;
 		si_102 = si_102 + 0x01;
 		di_103 = (word32) di_103 + 0x01;
-		cx_105 = cx_105 - 0x01;
 	}
 	byte Eq_13118::* di_129 = fp - 22;
 	byte dl_132 = (byte) psegArg04;
@@ -4842,12 +4796,11 @@ byte fn0800_35A3(Eq_81 wArg02, Eq_81 psegArg04, Eq_81 wArg06, Eq_81 wArg08)
 	}
 	byte Eq_81::* di_175 = di_155 - 0x01;
 	ui16 cx_177 = cx_152;
-	while (cx_177 != 0x00)
+	for (; cx_177 != 0x00; cx_177 = cx_177 - 0x01)
 	{
 		psegArg04->*di_175 = ss->*si_154;
 		si_154 = si_154 + 0x01;
 		di_175 = di_175 + 0x01;
-		cx_177 = cx_177 - 0x01;
 	}
 	return dl_132;
 }
@@ -4961,20 +4914,18 @@ void fn0800_3764(Eq_81 ds)
 		uint16 cx_78 = cx_76 >> 0x01;
 		struct Eq_13571 Eq_81::* si_102 = di_116 - cx_76;
 		word16 di_103 = 0x44DC;
-		while (cx_78 != 0x00)
+		for (; cx_78 != 0x00; cx_78 = cx_78 - 0x01)
 		{
 			(ds->*di_103).t0000 = (ds->*si_102).t0000;
 			si_102 = si_102 + 0x02;
 			di_103 = di_103 + 0x02;
-			cx_78 = cx_78 - 0x01;
 		}
 		ui16 cx_100 = cx_78 * 0x02 + (cx_76 >> 0x01 < 0x00);
-		while (cx_100 != 0x00)
+		for (; cx_100 != 0x00; cx_100 = cx_100 - 0x01)
 		{
 			(ds->*di_103).t0000 = (ds->*si_102).t0000;
 			si_102 = si_102 + 0x01;
 			di_103 = di_103 + 0x01;
-			cx_100 = cx_100 - 0x01;
 		}
 	}
 	else
@@ -4991,12 +4942,11 @@ void fn0800_3764(Eq_81 ds)
 	}
 	byte Eq_81::* di_36 = di_130 - 0x01;
 	word16 cx_38 = 0x0D;
-	while (cx_38 != 0x00)
+	for (; cx_38 != 0x00; cx_38 = cx_38 - 0x01)
 	{
 		ds->*di_36 = ds->*si_23;
 		si_23 = si_23 + 0x01;
 		di_36 = di_36 + 0x01;
-		cx_38 = cx_38 - 0x01;
 	}
 }
 
@@ -5379,12 +5329,11 @@ Eq_81 fn0800_3C99(Eq_81 bp, Eq_81 ds, Eq_81 wArg02, Eq_81 wArg04, Eq_81 wArg06, 
 	}
 	Eq_81 di_48 = di_307 - 0x01;
 	word16 cx_50 = 0x0D;
-	while (cx_50 != 0x00)
+	for (; cx_50 != 0x00; cx_50 = cx_50 - 0x01)
 	{
 		ss->*di_48 = ds->*si_32;
 		si_32 = (word32) si_32 + 0x01;
 		di_48 = (word32) di_48 + 0x01;
-		cx_50 = cx_50 - 0x01;
 	}
 	word16 di_73;
 	Eq_81 ds_74;
@@ -6356,7 +6305,7 @@ word16 fn0800_4C55(Eq_81 bp, Eq_81 ds, Eq_4733 * & dsOut)
 		return 0x07;
 	Eq_81 ax_108 = 0x00;
 	Eq_81 ds_116 = fn0800_409C(ds_16, 1011, 0x00, *((word32) ds_16 + 10719), *((word32) ds_16 + 10721));
-	do
+	for (; ax_108 != 0x00; ax_108 = ax_108 | dx_133)
 	{
 		Eq_81 ds_132;
 		Eq_81 dx_133 = fn0800_3E5D(ds_116, *((word32) ds_116 + 0x000029E3), *((word32) ds_116 + 0x000029E5), out ds_132);
@@ -6376,8 +6325,7 @@ word16 fn0800_4C55(Eq_81 bp, Eq_81 ds, Eq_4733 * & dsOut)
 			Eq_81 dx_563 = fn0800_3E5D(ds_116, *((word32) ds_116 + 0x000029E3), *((word32) ds_116 + 0x000029E5), out ds_562);
 			ds_116 = fn0800_409C(ds_562, ax_171, dx_563, v42_553, v41_550);
 		}
-		ax_108 = ax_108 | dx_133;
-	} while (ax_108 != 0x00);
+	}
 	Eq_81 v23_180 = *((word32) ds_116 + 10721);
 	Eq_81 v24_183 = *((word32) ds_116 + 10719);
 	Eq_81 ds_192;
@@ -6452,7 +6400,7 @@ word16 fn0800_4C55(Eq_81 bp, Eq_81 ds, Eq_4733 * & dsOut)
 	*dsOut = ds_457;
 	word16 cx_466 = 0x04;
 	struct Eq_18308 Eq_2::* bx_468 = Eq_2::a4F14;
-	do
+	for (; cx_466 != 0x00; cx_466 = cx_466 - 0x01)
 	{
 		if ((seg0800->*bx_468).w0000 == ax_422)
 		{
@@ -6477,8 +6425,7 @@ word16 fn0800_4C55(Eq_81 bp, Eq_81 ds, Eq_4733 * & dsOut)
 			}
 		}
 		bx_468 = bx_468 + 0x01;
-		cx_466 = cx_466 - 0x01;
-	} while (cx_466 != 0x00);
+	}
 	return 0x09;
 }
 
@@ -6684,7 +6631,7 @@ Eq_81 fn0800_51A9(Eq_81 bp, Eq_81 ds, Eq_4765 * & dsOut)
 				if (ax_85 == 0x03)
 				{
 					word16 si_104 = 0x00;
-					while (si_104 != 0x03)
+					for (; si_104 != 0x03; si_104 = si_104 + 0x01)
 					{
 						ss->*(fp - 0x0A) = *((word32) ds + 10721);
 						ss->*(fp - 0x0C) = *((word32) ds + 10719);
@@ -6694,7 +6641,6 @@ Eq_81 fn0800_51A9(Eq_81 bp, Eq_81 ds, Eq_4765 * & dsOut)
 						Eq_81 ds_121;
 						ss->*(fp - 0x0E) = fn0800_3DCF(ds, ptrArg00, wArg02, out di_120, out ds_121);
 						fn0800_4047(ds_121, bArg00, ptrArg02, wArg04, out ds);
-						si_104 = si_104 + 0x01;
 					}
 				}
 				else
@@ -7479,7 +7425,7 @@ cui16 fn0800_5DCE(Eq_81 ds, Eq_81 wArg02, Eq_81 wArg04, Eq_17766 * & dsOut)
 	else
 		ax_165 = fn0800_4194(ds_151, wArg02, wArg04, out ds_151) & ~0x03;
 	cui16 si_100 = ax_165;
-	while (si_100 != 0x00)
+	for (; si_100 != 0x00; si_100 = si_100 - 0x02)
 	{
 		word16 di_82;
 		if (fn0800_3E27(ds_151, wArg02, wArg04, out di_82, out ds_151) == 21070)
@@ -7495,7 +7441,6 @@ cui16 fn0800_5DCE(Eq_81 ds, Eq_81 wArg02, Eq_81 wArg04, Eq_17766 * & dsOut)
 			ptrLoc0E = DPB(ptrLoc0E, wArg02, 0);
 			fn0800_ACB3(ds_109, ptrLoc0E, wArg04, ~0x01, ~0x00, 0x01, out ds_151);
 		}
-		si_100 = si_100 - 0x02;
 	}
 	return si_100;
 }
@@ -7556,19 +7501,17 @@ word16 fn0800_5E64(Eq_81 bp, Eq_81 ds, Eq_4311 * & dsOut)
 			cx_1600 = cx_1600 - 0x01;
 		}
 		ui16 cx_1610 = cx_1600 * 0x02 + (cx_1590 < 0x00);
-		while (cx_1610 != 0x00)
+		for (; cx_1610 != 0x00; cx_1610 = cx_1610 - 0x01)
 		{
 			(ds->*di_1569).t0000 = (ds->*si_1570).t0000;
 			si_1570 = si_1570 + 0x01;
 			di_1569 = di_1569 + 0x01;
-			cx_1610 = cx_1610 - 0x01;
 		}
 		word16 cx_1626 = dx_1575;
-		while (cx_1626 != 0x00)
+		for (; cx_1626 != 0x00; cx_1626 = cx_1626 - 0x01)
 		{
 			(ds->*di_1569).t0000 = 0x00;
 			di_1569 = di_1569 + 0x01;
-			cx_1626 = cx_1626 - 0x01;
 		}
 		fn0800_09A3(fp - 0x02, ds, out ds);
 		ax_1651 = 17009;
@@ -8132,19 +8075,17 @@ word16 fn0800_669C(Eq_81 bp, Eq_81 ds, Eq_4304 * & dsOut)
 			cx_260 = cx_260 - 0x01;
 		}
 		ui16 cx_270 = cx_260 * 0x02 + (cx_253 < 0x00);
-		while (cx_270 != 0x00)
+		for (; cx_270 != 0x00; cx_270 = cx_270 - 0x01)
 		{
 			(ds->*di_236).t0000 = (ds->*si_237).t0000;
 			si_237 = si_237 + 0x01;
 			di_236 = di_236 + 0x01;
-			cx_270 = cx_270 - 0x01;
 		}
 		word16 cx_283 = dx_102;
-		while (cx_283 != 0x00)
+		for (; cx_283 != 0x00; cx_283 = cx_283 - 0x01)
 		{
 			(ds->*di_236).t0000 = 0x00;
 			di_236 = di_236 + 0x01;
-			cx_283 = cx_283 - 0x01;
 		}
 		fn0800_09A3(fp - 0x02, ds, out ds);
 		ax_106 = 17009;
@@ -8361,7 +8302,7 @@ word16 fn0800_6AD4(Eq_81 ds, Eq_4206 * & dsOut)
 		return 0x03;
 	Eq_81 ax_137 = 0x00;
 	Eq_81 ds_145 = fn0800_409C(ds_84, 1011, 0x00, *((word32) ds_84 + 10719), *((word32) ds_84 + 10721));
-	do
+	for (; ax_137 != 0x00; ax_137 = ax_137 | dx_162)
 	{
 		Eq_81 ds_161;
 		Eq_81 dx_162 = fn0800_3E5D(ds_145, *((word32) ds_145 + 0x000029E3), *((word32) ds_145 + 0x000029E5), out ds_161);
@@ -8381,8 +8322,7 @@ word16 fn0800_6AD4(Eq_81 ds, Eq_4206 * & dsOut)
 			Eq_81 dx_560 = fn0800_3E5D(ds_145, *((word32) ds_145 + 0x000029E3), *((word32) ds_145 + 0x000029E5), out ds_559);
 			ds_145 = fn0800_409C(ds_559, ax_200, dx_560, v49_550, v48_547);
 		}
-		ax_137 = ax_137 | dx_162;
-	} while (ax_137 != 0x00);
+	}
 	Eq_81 v29_209 = *((word32) ds_145 + 10721);
 	Eq_81 v30_212 = *((word32) ds_145 + 10719);
 	Eq_81 ds_221;
@@ -8431,7 +8371,7 @@ word16 fn0800_6AD4(Eq_81 ds, Eq_4206 * & dsOut)
 	Eq_81 dx_435 = fn0800_3E5D(ds_404, *((word32) ds_404 + 0x000029E3), *((word32) ds_404 + 0x000029E5), out ds_434);
 	word16 cx_446 = 0x07;
 	struct Eq_26217 Eq_2::* bx_448 = Eq_2::a6EBC;
-	do
+	for (; cx_446 != 0x00; cx_446 = cx_446 - 0x01)
 	{
 		if ((seg0800->*bx_448).w0000 == ax_417)
 		{
@@ -8461,8 +8401,7 @@ word16 fn0800_6AD4(Eq_81 ds, Eq_4206 * & dsOut)
 			}
 		}
 		bx_448 = bx_448 + 0x01;
-		cx_446 = cx_446 - 0x01;
-	} while (cx_446 != 0x00);
+	}
 	return 0x09;
 }
 
@@ -8828,7 +8767,7 @@ word16 fn0800_741D(Eq_81 bp, Eq_81 ds, Eq_4217 * & dsOut)
 				if (ax_51 == 0x03)
 				{
 					word16 si_100 = 0x00;
-					while (si_100 != 0x03)
+					for (; si_100 != 0x03; si_100 = si_100 + 0x01)
 					{
 						ss->*(fp - 0x0A) = *((word32) ds + 10721);
 						ss->*(fp - 0x0C) = *((word32) ds + 10719);
@@ -8838,7 +8777,6 @@ word16 fn0800_741D(Eq_81 bp, Eq_81 ds, Eq_4217 * & dsOut)
 						Eq_81 ds_87;
 						ss->*(fp - 0x0E) = fn0800_3DCF(ds, ptrArg00, wArg02, out di_86, out ds_87);
 						fn0800_4047(ds_87, bArg00, ptrArg02, wArg04, out ds);
-						si_100 = si_100 + 0x01;
 					}
 				}
 				else
@@ -10088,7 +10026,7 @@ l0800_8751:
 				if (cl_430 == 0x09)
 				{
 					word16 cx_435 = DPB(cx_117, 0x04, 0);
-					do
+					for (; cx_435 != 0x00; cx_435 = cx_435 - 0x01)
 					{
 						al_109 = al_109 * 0x02;
 						ax_110 = DPB(ax_110, al_109, 0);
@@ -10102,15 +10040,13 @@ l0800_8751:
 						}
 						bh_438 = bh_438 * 0x02 + C_448;
 						bx_115 = DPB(bx_115, bh_438, 8);
-						cx_435 = cx_435 - 0x01;
-					} while (cx_435 != 0x00);
+					}
 					word16 cx_463 = DPB(cx_435, (bh_438 + 0x03) * 0x02, 0);
-					while (cx_463 != 0x00)
+					for (; cx_463 != 0x00; cx_463 = cx_463 - 0x01)
 					{
 						es_23->*di_128 = ds_19->*si_108;
 						si_108 = (word32) si_108 + 0x02;
 						di_128 = (word32) di_128 + 0x02;
-						cx_463 = cx_463 - 0x01;
 					}
 					continue;
 				}
@@ -10228,12 +10164,11 @@ l0800_8728:
 			__cli();
 			Eq_32260 si_121 = (word32) si_108 + 0x01;
 			byte Eq_81::* si_125 = di_128 - 0x01 - bx_115;
-			while (cx_117 != 0x00)
+			for (; cx_117 != 0x00; cx_117 = cx_117 - 0x01)
 			{
 				es_23->*di_128 = ds_19->*si_125;
 				si_125 = si_125 + 0x01;
 				di_128 = (word32) di_128 + 0x01;
-				cx_117 = cx_117 - 0x01;
 			}
 			__sti();
 			si_108 = si_121;
@@ -10288,45 +10223,41 @@ void fn0800_87F8(Eq_81 ds)
 	struct Eq_32789 * es_10 = SLICE(es_di_8, selector, 16);
 	uint16 ax_11 = *((word32) ds + 11825);
 	word16 cx_12 = 0x8000;
-	while (cx_12 != 0x00)
+	for (; cx_12 != 0x00; cx_12 = cx_12 - 0x01)
 	{
 		es_10->*di_13 = ax_11;
 		di_13 = di_13 + 0x01;
-		cx_12 = cx_12 - 0x01;
 	}
 	Eq_28649 es_di_20 = *((word32) ds + 0x00002E33);
 	word16 Eq_32801::* di_21 = (word16) es_di_20;
 	struct Eq_32801 * es_22 = SLICE(es_di_20, selector, 16);
 	uint16 ax_23 = *((word32) ds + 11825);
 	word16 cx_24 = 0x8000;
-	while (cx_24 != 0x00)
+	for (; cx_24 != 0x00; cx_24 = cx_24 - 0x01)
 	{
 		es_22->*di_21 = ax_23;
 		di_21 = di_21 + 0x01;
-		cx_24 = cx_24 - 0x01;
 	}
 	Eq_28719 es_di_32 = *((word32) ds + 11835);
 	word16 Eq_32822::* di_33 = (word16) es_di_32;
 	struct Eq_32822 * es_34 = SLICE(es_di_32, selector, 16);
 	uint16 cx_35 = *((word32) ds + 11825);
-	while (cx_35 != 0x00)
+	for (; cx_35 != 0x00; cx_35 = cx_35 - 0x01)
 	{
 		es_34->*di_33 = 0x00;
 		di_33 = di_33 + 0x01;
-		cx_35 = cx_35 - 0x01;
 	}
 	Eq_28684 es_di_46 = *((word32) ds + 11839);
 	word16 Eq_32841::* di_47 = (word16) es_di_46;
 	struct Eq_32841 * es_48 = SLICE(es_di_46, selector, 16);
 	word16 ax_49 = 0x00;
 	uint16 cx_52 = *((word32) ds + 11825);
-	do
+	for (; cx_52 != 0x00; cx_52 = cx_52 - 0x01)
 	{
 		es_48->*di_47 = ax_49;
 		di_47 = di_47 + 0x01;
 		ax_49 = ax_49 + 0x01;
-		cx_52 = cx_52 - 0x01;
-	} while (cx_52 != 0x00);
+	}
 	*((word32) ds + 11821) = cx_52;
 }
 
@@ -10739,7 +10670,7 @@ l0800_8C56:
 	word16 cx_107 = 0x20;
 	Eq_16277 di_104 = 0x00;
 	Eq_16277 si_105 = 0x00;
-	do
+	for (; cx_107 != 0x00; cx_107 = cx_107 - 0x01)
 	{
 		ax_100 = ax_100 << 0x01;
 		dx_116 = __rcl(dx_116, 0x01, (bool) cond(ax_100));
@@ -10753,8 +10684,7 @@ l0800_8C56:
 			si_105 = (word16) di_si_139;
 			ax_100 = (word16) ax_100.u1 + 0x01;
 		}
-		cx_107 = cx_107 - 0x01;
-	} while (cx_107 != 0x00);
+	}
 	Eq_81 bx_108 = (ss->*(v3 - 0x08)).t0000;
 	if ((bx_108 & 0x02) != 0x00)
 	{
@@ -10932,7 +10862,7 @@ l0800_8DD9:
 		if (ax_103 == 0x00)
 		{
 			word16 cx_113 = si_104 + (0x24 - fp);
-			do
+			for (; cx_113 != 0x00; cx_113 = cx_113 - 0x01)
 			{
 				byte al_132;
 				si_104 = si_104 - 0x01;
@@ -10943,8 +10873,7 @@ l0800_8DD9:
 					al_132 = al_124 - 0x0A + bArg02;
 				es_19->*di_120 = al_132;
 				di_120 = di_120 + 0x01;
-				cx_113 = cx_113 - 0x01;
-			} while (cx_113 != 0x00);
+			}
 			goto l0800_8DF7;
 		}
 	}
@@ -13118,7 +13047,7 @@ l0800_9BCC:
 								if (cx_584 != 0x00)
 								{
 									bx_565 = bx_565 - cx_584;
-									do
+									for (; cx_584 != 0x00; cx_584 = cx_584 - 0x01)
 									{
 										ss->*di_128 = ds->*si_561;
 										ci8 v45_701 = bLoc16 - 0x01;
@@ -13131,8 +13060,7 @@ l0800_9BCC:
 											struct Eq_37304 * es_715;
 											cx_584 = fn0800_9858(fp - 0x02, di_128, out dx_712, out bx_565, out di_128, out es_715);
 										}
-										cx_584 = cx_584 - 0x01;
-									} while (cx_584 != 0x00);
+									}
 								}
 								if (bx_565 > 0x00)
 								{
@@ -13652,12 +13580,11 @@ void fn0800_A006(word16 bx, Eq_15520 * bp, Eq_81 ds)
 	word16 Eq_38181::* di_65 = Eq_38181::a0004;
 	word16 Eq_38181::* si_66 = Eq_38181::a0004;
 	word16 cx_67 = 0x06;
-	while (cx_67 != 0x00)
+	for (; cx_67 != 0x00; cx_67 = cx_67 - 0x01)
 	{
 		dx_14->*di_65 = ds_51->*si_66;
 		si_66 = si_66 + 0x01;
 		di_65 = di_65 + 0x01;
-		cx_67 = cx_67 - 0x01;
 	}
 	cu16 dx_104 = dx_60 - 0x01;
 	if (dx_60 != 0x01)
@@ -13672,12 +13599,11 @@ void fn0800_A006(word16 bx, Eq_15520 * bp, Eq_81 ds)
 			if (dx_104 > 0x1000)
 				cx_110 = 0x1000;
 			ui16 cx_116 = cx_110 << 0x03;
-			while (cx_116 != 0x00)
+			for (; cx_116 != 0x00; cx_116 = cx_116 - 0x01)
 			{
 				es_105->*di_108 = ds_102->*si_109;
 				si_109 = si_109 + 0x01;
 				di_108 = di_108 + 0x01;
-				cx_116 = cx_116 - 0x01;
 			}
 			dx_104 = dx_104 - 0x1000;
 			if (dx_104 <= 0x00)
@@ -14508,11 +14434,8 @@ Eq_81 fn0800_AAB3(Eq_81 dx, Eq_81 ds, Eq_39621 * ptrArg02, Eq_81 wArg04, Eq_81 w
 		}
 		wArg06 = v10_92 - 0x01;
 		Eq_81 di_256 = 0x00;
-		while (ptrArg02->t0006 <= wArg06)
-		{
+		for (; ptrArg02->t0006 <= wArg06; wArg06 = wArg06 - ptrArg02->t0006)
 			di_256 = di_256 + Mem0[ptrArg02 + 0x06:word16];
-			wArg06 = wArg06 - ptrArg02->t0006;
-		}
 		Eq_34048 ax_278 = (int16) ptrArg02->b0004;
 		ptrLoc0C = DPB(ptrLoc0C, wArg08, 0);
 		Eq_81 ax_282 = fn0800_8F50((byte) ax_278, ds, ax_278, ptrLoc0C, di_256);
@@ -14915,12 +14838,11 @@ void fn0800_B03B(segptr32 ptrArg02, Eq_81 wArg04, segptr32 ptrArg06, Eq_81 wArg0
 	struct Eq_40522 * ds_20 = SLICE(ptrArg06, selector, 16);
 	struct Eq_40524 Eq_40522::* si_21 = (word16) ptrArg06;
 	uint16 cx_24 = wArg0A >> 0x01;
-	while (cx_24 != 0x00)
+	for (; cx_24 != 0x00; cx_24 = cx_24 - 0x01)
 	{
 		(es_17->*di_16).t0000 = (ds_20->*si_21).t0000;
 		si_21 = si_21 + 0x01;
 		di_16 = di_16 + 0x01;
-		cx_24 = cx_24 - 0x01;
 	}
 	if (wArg0A >> 0x01 < 0x00)
 		(es_17->*di_16).t0000 = (ds_20->*si_21).t0000;
@@ -15391,15 +15313,14 @@ word16 fn0800_B6A8(Eq_81 ds, byte * ptrArg02, byte * ptrArg06)
 		if (cx_17 >> 0x01 == 0x00)
 			return ax_30;
 	}
-	do
+	for (; cx_26 != 0x00; cx_26 = cx_26 - 0x01)
 	{
 		ax_30 = es_21->*di_20;
 		es_21->*di_20 = ds_24->*si_25;
 		si_25 = si_25 + 0x01;
 		ds_24->*(si_25 - 0x02) = ax_30;
 		di_20 = di_20 + 0x01;
-		cx_26 = cx_26 - 0x01;
-	} while (cx_26 != 0x00);
+	}
 	return ax_30;
 }
 
@@ -15766,7 +15687,7 @@ Eq_81 fn0800_B97F(Eq_81 ds, Eq_34048 wArg02, segptr32 ptrArg04, Eq_81 wArg06, Eq
 				struct Eq_42760 * es_139 = SLICE(ptrArg04, selector, 16);
 				Eq_42757 di_140 = si_138;
 				si_146 = si_138;
-				do
+				for (; cx_135 != 0x00; cx_135 = cx_135 - 0x01)
 				{
 					Eq_42757 si_146;
 					al_100 = ds->*si_146;
@@ -15789,8 +15710,7 @@ Eq_81 fn0800_B97F(Eq_81 ds, Eq_34048 wArg02, segptr32 ptrArg04, Eq_81 wArg06, Eq
 							goto l0800_BA19;
 						continue;
 					}
-					cx_135 = cx_135 - 0x01;
-				} while (cx_135 != 0x00);
+				}
 				ptrLoc14 = DPB(ptrLoc14, fp - 0x05, 0);
 				fn0800_8F50((byte) (fp - 0x05), ds, wArg02, ptrLoc14, 0x01);
 				es_139->*di_140 = bLoc05;
@@ -15922,7 +15842,7 @@ void fn0800_BBE9(Eq_43072 ptrArg02)
 	int16 ax_24 = (int16) al_23;
 	word16 cx_26 = 0x04;
 	struct Eq_43095 Eq_2::* bx_27 = Eq_2::aFFFFBC39;
-	do
+	for (; cx_26 != 0x00; cx_26 = cx_26 - 0x01)
 	{
 		int16 ax_32 = (seg0800->*bx_27).w0000;
 		if (ax_32 == ax_24)
@@ -15943,8 +15863,7 @@ void fn0800_BBE9(Eq_43072 ptrArg02)
 			return;
 		}
 		bx_27 = bx_27 + 0x01;
-		cx_26 = cx_26 - 0x01;
-	} while (cx_26 != 0x00);
+	}
 }
 
 // 0800:BC49: void fn0800_BC49(Stack (ptr32 byte) ptrArg02, Stack Eq_81 wArg04, Stack (ptr32 byte) ptrArg06, Stack (ptr16 Eq_13118) wArg08, Stack (ptr32 byte) ptrArg0A, Stack (ptr16 Eq_13118) wArg0C, Stack (ptr32 byte) ptrArg0E, Stack (ptr16 Eq_13118) wArg10, Stack (ptr32 byte) ptrArg12, Stack (ptr16 Eq_13118) wArg14)
@@ -15988,7 +15907,7 @@ void fn0800_BC49(byte * ptrArg02, Eq_81 wArg04, byte * ptrArg06, Eq_13118 * wArg
 		int16 ax_137 = (int16) al_136;
 		word16 cx_139 = 0x07;
 		struct Eq_43229 Eq_2::* bx_140 = Eq_2::aFFFFBE1F;
-		do
+		for (; cx_139 != 0x00; cx_139 = cx_139 - 0x01)
 		{
 			int16 ax_145 = (seg0800->*bx_140).w0000;
 			if (ax_145 == ax_137)
@@ -16011,8 +15930,7 @@ void fn0800_BC49(byte * ptrArg02, Eq_81 wArg04, byte * ptrArg06, Eq_13118 * wArg
 				return;
 			}
 			bx_140 = bx_140 + 0x01;
-			cx_139 = cx_139 - 0x01;
-		} while (cx_139 != 0x00);
+		}
 	}
 }
 
@@ -16107,12 +16025,11 @@ void fn0800_BF9E(segptr32 ptrArg02, Eq_81 wArg04, segptr32 ptrArg06)
 	word16 cx_32 = ~cx_21;
 	byte Eq_43400::* di_40 = (word16) ptrArg02;
 	struct Eq_43400 * es_41 = SLICE(ptrArg02, selector, 16);
-	while (cx_32 != 0x00)
+	for (; cx_32 != 0x00; cx_32 = cx_32 - 0x01)
 	{
 		es_41->*di_40 = es_16->*si_17;
 		si_17 = si_17 + 0x01;
 		di_40 = di_40 + 0x01;
-		cx_32 = cx_32 - 0x01;
 	}
 }
 
@@ -16195,19 +16112,17 @@ void fn0800_C01E(segptr32 ptrArg02, Eq_81 wArg04, segptr32 ptrArg06, Eq_883 wArg
 	byte Eq_43516::* di_42 = (word16) ptrArg02;
 	struct Eq_43516 * es_43 = SLICE(ptrArg02, selector, 16);
 	word16 cx_46 = wArg0A - cx_23;
-	while (cx_46 != 0x00)
+	for (; cx_46 != 0x00; cx_46 = cx_46 - 0x01)
 	{
 		es_43->*di_42 = es_16->*si_17;
 		si_17 = si_17 + 0x01;
 		di_42 = di_42 + 0x01;
-		cx_46 = cx_46 - 0x01;
 	}
 	Eq_883 cx_58 = cx_23;
-	while (cx_58 != 0x00)
+	for (; cx_58 != 0x00; cx_58 = cx_58 - 0x01)
 	{
 		es_43->*di_42 = 0x00;
 		di_42 = di_42 + 0x01;
-		cx_58 = cx_58 - 0x01;
 	}
 }
 
