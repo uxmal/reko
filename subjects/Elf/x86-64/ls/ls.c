@@ -1892,10 +1892,10 @@ Eq_17 fn0000000000404E80(Eq_17 rsi, Eq_21 * r11, Eq_17 r15, Eq_1682 * & r8Out, D
 	}
 	if (rbp_12 != 0x00)
 	{
-		word64 * rax_205;
+		word64 * rax_205 = globals->ptr61B1A8;
 		word64 rdx_209 = globals->u61B1C0;
 		word64 * rcx_211 = rax_205 + rbp_12 * 0x08;
-		for (rax_205 = globals->ptr61B1A8; rax_205 != rcx_211; ++rax_205)
+		for (; rax_205 != rcx_211; ++rax_205)
 		{
 			*rax_205 = rdx_209;
 			rdx_209 += 0x00C0;

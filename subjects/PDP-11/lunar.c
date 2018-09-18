@@ -1782,9 +1782,10 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 	ci16 r0_11;
 	globals->w25C0 = 0xF700;
 	ci16 r0_4 = *ptrArg00;
+	r0_11 = r0_4;
 	if (r0_4 <= 0x00)
 		r0_11 = -r0_4;
-	for (r0_11 = r0_4; r0_11 > 0x00; --r0_11)
+	for (; r0_11 > 0x00; --r0_11)
 		;
 	do
 	{

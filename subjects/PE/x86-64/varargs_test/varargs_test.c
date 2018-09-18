@@ -741,11 +741,11 @@ Eq_1069 * fn0000000140001718(code * * rcx)
 			if (rcx_51->w0018 == 0x020B)
 			{
 				struct Eq_1100 * rax_61 = DPB(0x020B, (word32) rcx_51->w0014, 0);
-				word64 rdx_116;
+				word64 rdx_116 = rcx_51 + 0x18 + rax_61;
 				struct Eq_1111 * rax_114 = DPB(rax_61, (word32) rcx_51->w0006, 0);
 				struct Eq_1111 * r8_59 = rcx - 0x140000000;
 				word64 r9_69 = rdx_116 + rax_114 * 0x28;
-				for (rdx_116 = rcx_51 + 0x18 + rax_61; rdx_116 != r9_69; rdx_116 += 0x28)
+				for (; rdx_116 != r9_69; rdx_116 += 0x28)
 				{
 					struct Eq_1111 * rcx_109 = (uint64) rdx_116->dw000C;
 					word32 ecx_110 = (word32) rcx_109;

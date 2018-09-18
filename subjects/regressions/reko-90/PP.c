@@ -10110,6 +10110,7 @@ l0800_8751:
 		word16 cx_313 = DPB(0x03, cl_310, 0);
 		if (cl_310 != 0x00)
 		{
+			cx_117 = cx_313 + 0x08;
 l0800_8701:
 			al_109 *= 0x02;
 			ax_110 = DPB(ax_110, al_109, 0);
@@ -10190,7 +10191,7 @@ l0800_8728:
 			__cli();
 			Eq_32260 si_121 = (word32) si_108 + 0x01;
 			byte Eq_81::* si_125 = di_128 - 0x01 - bx_115;
-			for (cx_117 = cx_313 + 0x08; cx_117 != 0x00; --cx_117)
+			for (; cx_117 != 0x00; --cx_117)
 			{
 				es_23->*di_128 = ds_19->*si_125;
 				++si_125;
@@ -15348,7 +15349,7 @@ word16 fn0800_B6A8(Eq_81 ds, byte * ptrArg02, byte * ptrArg06)
 	struct Eq_41500 * es_21 = SLICE(ptrArg02, selector, 16);
 	struct Eq_41502 * ds_24 = SLICE(ptrArg06, selector, 16);
 	word16 Eq_41502::* si_25 = (word16) ptrArg06;
-	uint16 cx_26;
+	uint16 cx_26 = cx_17 >> 0x01;
 	if (cx_17 >> 0x01 < 0x00)
 	{
 		byte al_56 = *ptrArg02;
@@ -15360,7 +15361,7 @@ word16 fn0800_B6A8(Eq_81 ds, byte * ptrArg02, byte * ptrArg06)
 		if (cx_17 >> 0x01 == 0x00)
 			return ax_30;
 	}
-	for (cx_26 = cx_17 >> 0x01; cx_26 != 0x00; --cx_26)
+	for (; cx_26 != 0x00; --cx_26)
 	{
 		ax_30 = es_21->*di_20;
 		es_21->*di_20 = ds_24->*si_25;
