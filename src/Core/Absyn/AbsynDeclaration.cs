@@ -33,7 +33,7 @@ namespace Reko.Core.Absyn
 		}
 
         public Identifier Identifier { get; private set; }
-        public Expression Expression { get; private set; }
+        public Expression Expression { get; set; }
         
         public override void Accept(IAbsynVisitor visitor)
 		{

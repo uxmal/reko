@@ -258,5 +258,43 @@ namespace Reko.UnitTests.Structure
             });
         }
 
+        /// <summary>
+        /// If the loop variable is used between its initialization and the 
+        /// is a use of the loop variable after it is incremented,
+        /// don't rewrite.
+        /// </summary>
+        [Test]
+        public void Flr_InitializedByDeclaration()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    int32 i;
+    for (i = 2; i < limit; i = i + 1)
+        foo(i);
+    return 1;
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var sum = Id("sum", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+                var limit = Id("limit", PrimitiveType.Int32);
+                m.Declare(i, m.Int32(2));
+                m.While(m.Lt(i, limit), w =>
+                {
+                    w.SideEffect(m.Fn(foo, i));
+                    w.Assign(i, m.IAdd(i, 1));
+                });
+                m.Return(m.Int32(1));
+            });
+        }
+
+
+
     }
 }

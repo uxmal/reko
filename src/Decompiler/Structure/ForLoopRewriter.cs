@@ -152,13 +152,27 @@ namespace Reko.Structure
         {
             for (i = i - 1; i >= 0; --i)
             {
-                if (!(stmts[i] is AbsynAssignment ass))
-                    return null;
-                if (ass.Dst == loopVariable)
-                    return ass;
-                if (UsedIdentifierFinder.Contains(ass.Dst, loopVariable))
-                    return null;
-                if (UsedIdentifierFinder.Contains(ass.Src, loopVariable))
+                if (stmts[i] is AbsynAssignment ass)
+                {
+                    if (ass.Dst == loopVariable)
+                        return ass;
+                    if (UsedIdentifierFinder.Contains(ass.Dst, loopVariable))
+                        return null;
+                    if (UsedIdentifierFinder.Contains(ass.Src, loopVariable))
+                        return null;
+                }
+                else if (stmts[i] is AbsynDeclaration decl)
+                {
+                    if (decl.Identifier == loopVariable)
+                    {
+                        if (decl.Expression == null)
+                            return null;
+                        var init = new AbsynAssignment(decl.Identifier, decl.Expression);
+                        decl.Expression = null;
+                        return init;
+                    }
+                }
+                else
                     return null;
             }
             return null;
