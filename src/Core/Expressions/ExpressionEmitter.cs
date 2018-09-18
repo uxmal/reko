@@ -515,8 +515,7 @@ namespace Reko.Core.Expressions
         /// ('>' in the C language family).
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
-
-        public Expression Gt(Expression a, Expression b)
+        public BinaryExpression Gt(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Gt, PrimitiveType.Bool, a, b);
         }
@@ -527,7 +526,7 @@ namespace Reko.Core.Expressions
         /// to a Constant.
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
-        public Expression Gt(Expression a, int b)
+        public BinaryExpression Gt(Expression a, int b)
         {
             return Gt(a, Int32(b));
         }

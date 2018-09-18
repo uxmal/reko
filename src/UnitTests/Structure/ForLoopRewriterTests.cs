@@ -365,7 +365,6 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore("Re-enable this once issue https://github.com/uxmal/reko/issues/689 is resolved")]
         public void Flr_DoWhile_CantProveLoopTraversedOnce()
         {
             var sExp =
@@ -426,5 +425,71 @@ namespace Reko.UnitTests.Structure
                     m.Ne(i, m.Int32(42)));
             });
         }
+
+        [Test]
+        public void Flr_RewriteIfGuardedDoWhile_Type1()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (; i != n; i = i + 1)
+        foo(i);
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var n = Id("n", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+
+                m.If(m.Ne(i, n), t =>
+                {
+                    t.DoWhile(d =>
+                    {
+                        d.SideEffect(d.Fn(foo, i));
+                        d.Assign(i, d.IAdd(i, 1));
+                    },
+                    t.Ne(i, n));
+                });
+            });
+        }
+
+        [Test]
+        public void Flr_RewriteIfGuardedDoWhile_Type2()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (i = 0; i < ptr.Limit; i = i + 1)
+        foo(i);
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var ptr = Id("ptr", PrimitiveType.Ptr32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+                var field = new StructureField(4, PrimitiveType.Int32, "Limit");
+                var complex = m.Field(PrimitiveType.Int32, ptr, field);
+
+                m.Assign(i, m.Int32(0));
+                m.If(m.Ne0(complex), t =>
+                {
+                    t.DoWhile(d =>
+                    {
+                        d.SideEffect(d.Fn(foo, i));
+                        d.Assign(i, d.IAdd(i, 1));
+                    },
+                    t.Gt(complex, i));
+                });
+            });
+        }
+
     }
 }

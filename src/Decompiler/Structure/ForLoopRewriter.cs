@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +34,12 @@ namespace Reko.Structure
     public class ForLoopRewriter
     {
         private Procedure proc;
+        private readonly ExpressionValueComparer cmp;
 
         public ForLoopRewriter(Procedure proc)
         {
             this.proc = proc;
+            this.cmp = new ExpressionValueComparer();
         }
 
         public void Transform()
@@ -53,14 +56,14 @@ namespace Reko.Structure
             for (int i = 0; i < stmts.Count; ++i)
             {
                 ForLoopCandidate candidate;
+                AbsynFor forLoop;
                 switch (stmts[i])
                 {
                 case AbsynWhile whi:
-                    RewriteForLoops(whi.Body);
-                    candidate = TryMakeLoopCandidate(whi.Condition, whi.Body, stmts, i);
-                    if (candidate != null)
+                    forLoop = TryRewriteWhileLoop(whi, stmts, i);
+                    if (forLoop != null)
                     {
-                        stmts[i] = MakeForLoop(candidate, stmts);
+                        stmts[i] = forLoop;
                     }
                     break;
                 case AbsynDoWhile dow:
@@ -74,6 +77,12 @@ namespace Reko.Structure
                 case AbsynIf ifStm:
                     RewriteForLoops(ifStm.Then);
                     RewriteForLoops(ifStm.Else);
+                    var whileLoop = TryRewriteGuardedDoWhile(ifStm);
+                    if (whileLoop != null)
+                    {
+                        forLoop = TryRewriteWhileLoop(whileLoop, stmts, i);
+                        stmts[i] = (forLoop != null) ? forLoop : (AbsynStatement) whileLoop;
+                    }
                     break;
                 case AbsynSwitch sw:
                     RewriteForLoops(sw.Statements);
@@ -83,6 +92,59 @@ namespace Reko.Structure
                 }
             }
             stmts.RemoveAll(s => s == null);
+        }
+
+ 
+
+        private AbsynFor TryRewriteWhileLoop(AbsynWhile whi, List<AbsynStatement> stmts, int i)
+        {
+            RewriteForLoops(whi.Body);
+            var candidate = TryMakeLoopCandidate(whi.Condition, whi.Body, stmts, i);
+            if (candidate != null)
+            {
+                return MakeForLoop(candidate, stmts);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Attempt to undo the if / do-while pattern that many compilers emit when
+        /// compiling while loops.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        private AbsynWhile TryRewriteGuardedDoWhile(AbsynIf ifStm)
+        {
+            if (ifStm.Then.Count == 1 && ifStm.Then[0] is AbsynDoWhile doWhile)
+            {
+                var ifCond = ifStm.Condition;
+                var doCond = doWhile.Condition;
+                if (cmp.Equals(ifCond, doCond))
+                {
+                    // Pattern 1
+                    return new AbsynWhile(doCond, doWhile.Body);
+                }
+                var ifCondBin = ifStm.Condition as BinaryExpression;
+                var doCondBin = doWhile.Condition as BinaryExpression;
+                if (ifCondBin == null || doCondBin == null)
+                    return null;
+
+                if (ifCondBin.Operator == Operator.Ne && 
+                    ifCondBin.Right is Constant ifConst && ifConst.IsZero &&
+                    doCondBin.Operator == Operator.Gt)
+                {
+                    if (cmp.Equals(ifCondBin.Left, doCondBin.Left))
+                    {
+                        // Flip the condition.
+                        var condNew = new BinaryExpression(Operator.Lt, PrimitiveType.Bool, doCondBin.Right, doCondBin.Left);
+                        return new AbsynWhile(condNew, doWhile.Body);
+                    }
+                }
+            }
+            return null;
         }
 
         /// <summary>
