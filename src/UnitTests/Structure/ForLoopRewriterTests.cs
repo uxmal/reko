@@ -252,7 +252,7 @@ namespace Reko.UnitTests.Structure
                 m.While(m.Lt(i, limit), w =>
                 {
                     w.SideEffect(m.Fn(foo, i));
-                    w.Assign(i, m.IAdd(i, 1));  
+                    w.Assign(i, m.IAdd(i, 1));
                 });
                 m.Return(m.Int32(1));
             });
@@ -361,6 +361,69 @@ namespace Reko.UnitTests.Structure
                     w.Assign(i, w.IAdd(i, 1));
                     w.SideEffect(w.Fn(foo));
                 });
+            });
+        }
+
+        [Test]
+        [Ignore("Re-enable this once issue https://github.com/uxmal/reko/issues/689 is resolved")]
+        public void Flr_DoWhile_CantProveLoopTraversedOnce()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    i = 0;
+    do
+    {
+        foo();
+        i = i + 1;
+    } while (i < n);
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var n = Id("n", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+
+                m.Assign(i, m.Int32(0));
+                m.DoWhile(w =>
+                    {
+                        w.SideEffect(w.Fn(foo));
+                        w.Assign(i, w.IAdd(i, 1));
+                    },
+                    m.Lt(i, n));
+            });
+        }
+
+        [Test]
+        public void Flr_DoWhile_ProveLoopTraversedOnce()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (i = 0; i != 42; i = i + 1)
+        foo();
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var n = Id("n", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+
+                m.Assign(i, m.Int32(0));
+                m.DoWhile(w =>
+                {
+                    w.SideEffect(w.Fn(foo));
+                    w.Assign(i, w.IAdd(i, 1));
+                },
+                    m.Ne(i, m.Int32(42)));
             });
         }
     }

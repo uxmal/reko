@@ -49,10 +49,12 @@ namespace Reko.UnitTests.Structure
             stmts.Add(decl);
         }
 
-        public void Return(Expression expr = null)
+        public void DoWhile(Action<AbsynCodeEmitter> bodyGen, BinaryExpression cond)
         {
-            var ret = new AbsynReturn(expr);
-            stmts.Add(ret);
+            var bodyStmts = new List<AbsynStatement>();
+            var m = new AbsynCodeEmitter(bodyStmts);
+            bodyGen(m);
+            stmts.Add(new AbsynDoWhile(bodyStmts, cond));
         }
 
         public void For(
@@ -91,6 +93,12 @@ namespace Reko.UnitTests.Structure
             stmts.Add(new AbsynIf(id, thenStmts, elseStmts));
         }
 
+        public void Return(Expression expr = null)
+        {
+            var ret = new AbsynReturn(expr);
+            stmts.Add(ret);
+        }
+
         public void SideEffect(Expression e)
         {
             var s = new AbsynSideEffect(e);
@@ -104,6 +112,7 @@ namespace Reko.UnitTests.Structure
             bodyGen(m);
             stmts.Add(new AbsynWhile(cond, bodyStmts));
         }
-      
+
+   
     }
 }

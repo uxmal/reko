@@ -64,11 +64,9 @@ namespace Reko.Structure
                     }
                     break;
                 case AbsynDoWhile dow:
-                    //$TODO: only do for loop if we can prove that the loop body must be
-                    // executed at least once.
                     RewriteForLoops(dow.Body);
                     candidate = TryMakeLoopCandidate(dow.Condition, dow.Body, stmts, i);
-                    if (candidate != null)
+                    if (candidate != null && LoopsAtLeastOnce(candidate))
                     {
                         stmts[i] = MakeForLoop(candidate, stmts);
                     }
@@ -219,6 +217,30 @@ namespace Reko.Structure
                 }
             }
             return updates;
+        }
+
+        /// <summary>
+        /// Attempt to prove that the condition of the for-loop candidate is 
+        /// true at least once. If it isn't, the rewriting of do-while to
+        /// for-loop can't be done safely.
+        /// </summary>
+        private bool LoopsAtLeastOnce(ForLoopCandidate candidate)
+        {
+            //$REVIEW: enabling this logic makes the majority of the 
+            // do-while loops that match the for-loop pattern fail, which
+            // is regrettable since we know that the great majority of such
+            // loops actually do loop at least once. For now, I'm leaving
+            // this in, pending the outcome of https://github.com/uxmal/reko/issues/689
+            return true;
+#if DO_THE_CORRECT_THING
+            if (!(candidate.Condition is BinaryExpression cond))
+                return false;
+            if (!(cond.Right is Constant cRight))
+                return false;
+            if (!(candidate.Initializer.Src is Constant cInit))
+                return false;
+            return cond.Operator.ApplyConstants(cInit, cRight).ToBoolean();
+#endif
         }
 
         private AbsynFor MakeForLoop(ForLoopCandidate candidate, List<AbsynStatement> stmts)
