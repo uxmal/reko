@@ -339,8 +339,8 @@ namespace Reko.UnitTests.Structure
                 "	int32 i;" + nl +
                 "	for (i = 0; i < 10; ++i)" + nl +
                 "	{" + nl +
-                "		int32 j = 0;" + nl +
-                "		for (; j < 10; ++j)" + nl +
+                "		int32 j;" + nl +
+                "		for (j = 0; j < 10; ++j)" + nl +
                 "			Mem0[0x00001234:word32] = Mem0[0x00001234:int32] + j;" + nl +
                 "	}" + nl +
                 "}" + nl);
