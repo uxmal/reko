@@ -308,12 +308,12 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 	word32 ecx_12 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04;
 	word32 esi_20 = (word32) Mem0[ecx_12 + 0x00000006:word16];
 	word32 edx_21 = 0x00000000;
-	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C;
+	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12;
 	if (!DPB(CZ, false, 0))
 	{
 		do
 		{
-			word32 ecx_57 = Mem0[eax_24 + 0x00000000:word32];
+			word32 ecx_57 = Mem0[eax_24 + 0x0000000C:word32];
 			if (dwArg08 >=u ecx_57 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_57)
 				return eax_24;
 			++edx_21;

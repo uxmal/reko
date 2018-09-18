@@ -116,9 +116,9 @@ namespace Reko.UnitTests.Mocks
         {
             Block b = EnsureBlock(null);
             branchBlock = BlockOf(label);
-            TerminateBlock();
 
-            b.Statements.Add(LinearAddress++, new Branch(expr, branchBlock));
+            Emit(new Branch(expr, branchBlock));
+            TerminateBlock();
             return b.Statements.Last;
         }
 
