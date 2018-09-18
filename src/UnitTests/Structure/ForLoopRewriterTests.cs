@@ -294,7 +294,74 @@ namespace Reko.UnitTests.Structure
             });
         }
 
+        [Test]
+        public void Flr_SideEffectBlocksInitializer()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    i = 0;
+    foo();
+    for (; i < n; i = i + 1)
+        ;
+}
+";
+            #endregion
 
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var n = Id("n", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
 
+                m.Assign(i, m.Int32(0));
+                m.SideEffect(m.Fn(foo));
+                m.While(m.Lt(i, n), w =>
+                {
+                    w.Assign(i, w.IAdd(i, 1));
+                });
+            });
+            /*i = 0;
+            foo();
+            while(i < n)
+            {
+            i++;
+            }
+            can not be rewritten to For.
+            */
+        }
+
+        [Test]
+        public void Flr_SideEffectBlocksUpdate()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    i = 0;
+    while (i < n)
+    {
+        i = i + 1;
+        foo();
+    }
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var n = Id("n", PrimitiveType.Int32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+
+                m.Assign(i, m.Int32(0));
+                m.While(m.Lt(i, n), w =>
+                {
+                    w.Assign(i, w.IAdd(i, 1));
+                    w.SideEffect(w.Fn(foo));
+                });
+            });
+        }
     }
 }

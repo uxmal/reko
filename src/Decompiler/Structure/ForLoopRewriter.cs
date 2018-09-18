@@ -64,6 +64,8 @@ namespace Reko.Structure
                     }
                     break;
                 case AbsynDoWhile dow:
+                    //$TODO: only do for loop if we can prove that the loop body must be
+                    // executed at least once.
                     RewriteForLoops(dow.Body);
                     candidate = TryMakeLoopCandidate(dow.Condition, dow.Body, stmts, i);
                     if (candidate != null)
@@ -171,6 +173,11 @@ namespace Reko.Structure
                         decl.Expression = null;
                         return init;
                     }
+                    else
+                    {
+                        if (UsedIdentifierFinder.Contains(decl.Expression, loopVariable))
+                            return null;
+                    }
                 }
                 else
                     return null;
@@ -237,6 +244,8 @@ namespace Reko.Structure
 
             public static bool Contains(Expression expr, Identifier id)
             {
+                if (expr == null)
+                    return false;
                 var uif = new UsedIdentifierFinder { id = id };
                 expr.Accept(uif);
                 return uif.found;
