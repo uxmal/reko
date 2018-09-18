@@ -528,8 +528,8 @@ void fn03CD(byte a, byte b, byte c, Eq_18 de, byte l, Eq_20 * ix)
 bool fn0434(Eq_18 de, Eq_20 * ix, Eq_1568 & bcOut, Eq_1569 & deOut, Eq_1570 & hlOut, Eq_1571 & ixOut)
 {
 	Eq_1818 hl_14 = (char *) v3 + 0x001C;
-	word16 bc_10 = 0x04;
-	for (; bc_10 != 0x00; --bc_10)
+	word16 bc_10;
+	for (bc_10 = 0x04; bc_10 != 0x00; --bc_10)
 	{
 		*de = *hl_14;
 		hl_14 = (word32) hl_14 + 0x01;
@@ -727,8 +727,8 @@ word16 fn060E(word16 af, cu8 c, Eq_18 de, Eq_20 * ix, Eq_2286 & cOut, Eq_2287 & 
 		C.u0 = false;
 	} while (a != 0x00);
 	Eq_2596 hl_240 = (char *) v3 + 0x0C;
-	word16 bc_245 = 0x04;
-	for (; bc_245 != 0x00; --bc_245)
+	word16 bc_245;
+	for (bc_245 = 0x04; bc_245 != 0x00; --bc_245)
 	{
 		*de = *hl_240;
 		hl_240 = (word32) hl_240 + 0x01;
@@ -820,8 +820,8 @@ void fn0914(word16 af, word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg0
 	}
 	Eq_2783 de_37 = fp + 0x08;
 	Eq_2787 hl_38 = wArg00 + 0x08;
-	word16 bc_41 = 0x04;
-	for (; bc_41 != 0x00; --bc_41)
+	word16 bc_41;
+	for (bc_41 = 0x04; bc_41 != 0x00; --bc_41)
 	{
 		*de_37 = *hl_38;
 		++hl_38;
@@ -829,8 +829,8 @@ void fn0914(word16 af, word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg0
 	}
 	Eq_2806 de_71 = fp + 0x04;
 	Eq_2809 hl_72 = wArg00 + 0x0C;
-	word16 bc_75 = 0x04;
-	for (; bc_75 != 0x00; --bc_75)
+	word16 bc_75;
+	for (bc_75 = 0x04; bc_75 != 0x00; --bc_75)
 	{
 		*de_71 = *hl_72;
 		hl_72 = (word32) hl_72 + 0x01;
@@ -966,8 +966,8 @@ void fn0AA6(word16 af, cu8 b, cu8 c, Eq_18 de, byte h, Eq_16 l, Eq_20 * ix)
 	Eq_16 b_34 = ix->tFFFFFFF7;
 	Eq_16 l_36 = ix->tFFFFFFF8;
 	Eq_16 h_38 = ix->tFFFFFFF9;
-	byte a_41 = 0x05;
-	for (; a_41 != 0x00; --a_41)
+	byte a_41;
+	for (a_41 = 0x05; a_41 != 0x00; --a_41)
 	{
 		h_38 >>= 0x01;
 		Eq_303 C_53 = (bool) cond(h_38);
@@ -1185,8 +1185,8 @@ word16 fn0B5D(word16 bc, Eq_18 de, Eq_4143 hl, Eq_20 * ix, Eq_4173 & deOut, Eq_4
 	}
 	Eq_4204 de_19 = v3->t0024;
 	Eq_4209 hl_21 = (char *) v3 + 0x0018;
-	word16 bc_24 = 0x04;
-	for (; bc_24 != 0x00; --bc_24)
+	word16 bc_24;
+	for (bc_24 = 0x04; bc_24 != 0x00; --bc_24)
 	{
 		*de_19 = *hl_21;
 		hl_21 = (word32) hl_21 + 0x01;
@@ -1210,8 +1210,8 @@ void fn0BD0(word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg00, Eq_18 wA
 	}
 	Eq_4255 de_33 = fp + 0x20;
 	Eq_4259 hl_34 = wArg00 + 0x08;
-	word16 bc_35 = 0x04;
-	for (; bc_35 != 0x00; --bc_35)
+	word16 bc_35;
+	for (bc_35 = 0x04; bc_35 != 0x00; --bc_35)
 	{
 		*de_33 = *hl_34;
 		++hl_34;
@@ -1219,8 +1219,8 @@ void fn0BD0(word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg00, Eq_18 wA
 	}
 	Eq_4278 de_59 = fp + 0x14;
 	Eq_4281 hl_60 = wArg00 + 0x0C;
-	word16 bc_61 = 0x04;
-	for (; bc_61 != 0x00; --bc_61)
+	word16 bc_61;
+	for (bc_61 = 0x04; bc_61 != 0x00; --bc_61)
 	{
 		*de_59 = *hl_60;
 		hl_60 = (word32) hl_60 + 0x01;
@@ -1476,8 +1476,8 @@ word16 fn0DFC(word16 af, cu8 c, cu8 b, Eq_18 de, byte h, cu8 l, Eq_20 * ix, Eq_5
 	else
 	{
 		Eq_5331 hl_46 = fp + 0x0C;
-		word16 bc_51 = 0x04;
-		for (; bc_51 != 0x00; --bc_51)
+		word16 bc_51;
+		for (bc_51 = 0x04; bc_51 != 0x00; --bc_51)
 		{
 			*de = *hl_46;
 			hl_46 = (word32) hl_46 + 0x01;

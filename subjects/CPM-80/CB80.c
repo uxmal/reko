@@ -1005,8 +1005,8 @@ Eq_1915 fn0990(word16 af, word16 bc, Eq_1576 e, byte d, byte h, byte l, Eq_1580 
 		Mem392[sp_31 - 0x04 + 0x00:word16] = Mem382[5778:word16] + DPB(Mem382[0x1697:word16], 0x00, 8);
 		byte * de_397 = (word16) globals->t168B + 0x09;
 		bc_189 = (byte *) *(sp_31 - 0x04);
-		byte l_405 = (byte) *(sp_31 - 0x02);
-		for (; l_405 != 0x00; --l_405)
+		byte l_405;
+		for (l_405 = (byte) *(sp_31 - 0x02); l_405 != 0x00; --l_405)
 		{
 			*de_397 = *bc_189;
 			++bc_189;
@@ -1040,8 +1040,8 @@ Eq_1915 fn0990(word16 af, word16 bc, Eq_1576 e, byte d, byte h, byte l, Eq_1580 
 		*(sp_31 - 0x04) = (word16) globals->t1694 + 0x01;
 		byte * de_482 = (word16) globals->t168B + 0x09;
 		bc_189 = (byte *) *(sp_31 - 0x04);
-		byte l_490 = (byte) *(sp_31 - 0x02);
-		for (; l_490 != 0x00; --l_490)
+		byte l_490;
+		for (l_490 = (byte) *(sp_31 - 0x02); l_490 != 0x00; --l_490)
 		{
 			*de_482 = *bc_189;
 			++bc_189;

@@ -162,8 +162,8 @@ void main(Eq_184 xmm0)
 		*rcx_150 = (real64) xmm0;
 		qwLoc10_163 = (word64) qwLoc10_163 + 0x01;
 	}
-	uint64 qwLoc18_133 = 0x01;
-	for (; qwLoc18_133 < 0x03FF; ++qwLoc18_133)
+	uint64 qwLoc18_133;
+	for (qwLoc18_133 = 0x01; qwLoc18_133 < 0x03FF; ++qwLoc18_133)
 	{
 		Eq_235 rax_117 = qwLoc18_133 + 0x00;
 		ui32 eax_118 = (word32) rax_117;

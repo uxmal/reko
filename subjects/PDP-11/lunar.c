@@ -146,10 +146,10 @@ void fn03CE(word16 * r0)
 	++globals->w008A;
 	Eq_420 r2_14 = r2_9 + (int16) (globals->w008A & ~~0x1F)->b2773;
 	globals->w008C = (word16) r2_14.u0 + globals->w008C;
-	ci16 r4_19 = 0x0C;
+	ci16 r4_19;
 	byte * r5_20 = globals->a27B0;
 	byte * r3_21 = (globals->w008C & ~~0x03) + 10131;
-	for (; r4_19 > 0x00; --r4_19)
+	for (r4_19 = 0x0C; r4_19 > 0x00; --r4_19)
 	{
 		*r5_20 = *r3_21;
 		union Eq_420 * r5_30 = r5_20 + 0x01;
@@ -1178,9 +1178,9 @@ void fn0F04()
 		}
 		else
 			fn126C(0x0C, 0x00, r1_58 + 0x06, out r3_116);
-		ci16 r2_65 = 0x0C;
+		ci16 r2_65;
 		r0_36 = *(fp - 0x02);
-		for (; r2_65 > 0x00; --r2_65)
+		for (r2_65 = 0x0C; r2_65 > 0x00; --r2_65)
 		{
 			++globals->w00AA;
 			if (0x03 - globals->w00AA >= 0x00)
@@ -1782,10 +1782,9 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 	ci16 r0_11;
 	globals->w25C0 = 0xF700;
 	ci16 r0_4 = *ptrArg00;
-	r0_11 = r0_4;
 	if (r0_4 <= 0x00)
 		r0_11 = -r0_4;
-	for (; r0_11 > 0x00; --r0_11)
+	for (r0_11 = r0_4; r0_11 > 0x00; --r0_11)
 		;
 	do
 	{
@@ -1796,8 +1795,8 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 		return r4_17;
 	__reset();
 	word16 * r0_30 = globals->a182A;
-	ci16 r1_34 = 500;
-	for (; r1_34 > 0x00; --r1_34)
+	ci16 r1_34;
+	for (r1_34 = 500; r1_34 > 0x00; --r1_34)
 	{
 		*r0_30 = 0xF700;
 		word16 * r0_40 = r0_30 + 0x01;
@@ -1805,8 +1804,8 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 		r0_30 = r0_40 + 0x01;
 	}
 	word16 * r0_47 = globals->a34E0;
-	ci16 r1_51 = 711;
-	for (; r1_51 > 0x00; --r1_51)
+	ci16 r1_51;
+	for (r1_51 = 711; r1_51 > 0x00; --r1_51)
 	{
 		*r0_47 = 0xF700;
 		word16 * r0_57 = r0_47 + 0x01;

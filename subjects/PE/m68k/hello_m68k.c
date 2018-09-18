@@ -718,8 +718,8 @@ void fn000021F0(Eq_1252 * a5)
 	struct Eq_1253 * a1_22 = d0_19;
 	if (d0_19 != null)
 	{
-		int32 d1_48 = 0x00;
-		for (; d1_48 < 0x03; ++d1_48)
+		int32 d1_48;
+		for (d1_48 = 0x00; d1_48 < 0x03; ++d1_48)
 		{
 			word32 d0_55 = *a1_22->ptr0004;
 			if (d0_55 != 0x45434F4E)
@@ -1247,8 +1247,8 @@ l000029B4:
 	a5->tFFFFFADC = a0;
 l00002974:
 	a0 = (word32) *a5->tFFFFFADC + (a5->dwFFFFFAE0 << 0x04);
-	int32 d0_144 = 0x07;
-	for (; d0_144 != ~0x00; --d0_144)
+	int32 d0_144;
+	for (d0_144 = 0x07; d0_144 != ~0x00; --d0_144)
 	{
 		*a0 = 0x00;
 		struct Eq_2325 * a0_150 = (word32) a0 + 0x04;

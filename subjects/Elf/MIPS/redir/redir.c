@@ -2512,8 +2512,8 @@ void main(word32 r5, word32 dwArg00, word32 dwArg04)
 	word32 r3_371;
 	word32 r7_372;
 	inet_addr();
-	struct Eq_3358 * dwLoc0150_1363 = r2_246->ptr0008;
-	for (; dwLoc0150_1363 != null; dwLoc0150_1363 = dwLoc0150_1363->ptr0018)
+	struct Eq_3358 * dwLoc0150_1363;
+	for (dwLoc0150_1363 = r2_246->ptr0008; dwLoc0150_1363 != null; dwLoc0150_1363 = dwLoc0150_1363->ptr0018)
 	{
 		word32 sp_1335;
 		word32 r28_1336;
@@ -2551,16 +2551,16 @@ void main(word32 r5, word32 dwArg00, word32 dwArg04)
 			fp->aFFFFFF50[dwLoc28_1324] = 0x00;
 			dwLoc28_1324 = (word32) dwLoc28_1324.u1 + 0x01;
 		}
-		struct Eq_3358 * dwLoc0150_1313 = r2_246->ptr0008;
-		for (; dwLoc0150_1313 != null; dwLoc0150_1313 = dwLoc0150_1313->ptr0018)
+		struct Eq_3358 * dwLoc0150_1313;
+		for (dwLoc0150_1313 = r2_246->ptr0008; dwLoc0150_1313 != null; dwLoc0150_1313 = dwLoc0150_1313->ptr0018)
 		{
 			Eq_3401 r2_1288 = dwLoc0150_1313->t0000;
 			fp->aFFFFFED0[r2_1288 >> 0x05] |= 0x01 << (word32) dwLoc0150_1313->t0000 + 0x001F;
 			if ((word32) (dwLoc0160_1178 < dwLoc0150_1313->t0000) != 0x00)
 				dwLoc0160_1178 = dwLoc0150_1313->t0000;
 		}
-		struct Eq_3510 * dwLoc0158_1190 = r2_229->ptr0008;
-		for (; dwLoc0158_1190 != null; dwLoc0158_1190 = dwLoc0158_1190->ptr17B8)
+		struct Eq_3510 * dwLoc0158_1190;
+		for (dwLoc0158_1190 = r2_229->ptr0008; dwLoc0158_1190 != null; dwLoc0158_1190 = dwLoc0158_1190->ptr17B8)
 		{
 			if (dwLoc0158_1190->t0000 >= 0x00)
 			{
@@ -2631,8 +2631,8 @@ void main(word32 r5, word32 dwArg00, word32 dwArg04)
 			print_log();
 			exit(r4_1160);
 		}
-		struct Eq_3358 * dwLoc0150_582 = r2_246->ptr0008;
-		for (; dwLoc0150_582 != null; dwLoc0150_582 = dwLoc0150_582->ptr0018)
+		struct Eq_3358 * dwLoc0150_582;
+		for (dwLoc0150_582 = r2_246->ptr0008; dwLoc0150_582 != null; dwLoc0150_582 = dwLoc0150_582->ptr0018)
 		{
 			if (fp->aFFFFFED0[dwLoc0150_582->t0000 >> 0x05] >> (word32) dwLoc0150_582->t0000 + 0x001F != 0x01)
 			{
@@ -2700,8 +2700,8 @@ void main(word32 r5, word32 dwArg00, word32 dwArg04)
 				}
 			}
 		}
-		struct Eq_3510 * dwLoc0158_600 = r2_229->ptr0008;
-		for (; dwLoc0158_600 != null; dwLoc0158_600 = dwLoc0158_600->ptr17B8)
+		struct Eq_3510 * dwLoc0158_600;
+		for (dwLoc0158_600 = r2_229->ptr0008; dwLoc0158_600 != null; dwLoc0158_600 = dwLoc0158_600->ptr17B8)
 		{
 			if (dwLoc0158_600 != null && (dwLoc0158_600->t0000 >= 0x00 && (fp->aFFFFFED0)[dwLoc0158_600->t0000 >> 0x05] >> (word32) dwLoc0158_600->t0000 + 0x001F != 0x01))
 			{
@@ -3997,8 +3997,8 @@ void clist_delete(word32 dwArg00, word32 dwArg04)
 // 00404070: void clist_close_all(Register (ptr32 Eq_5912) r4, Stack word32 dwArg00)
 void clist_close_all(Eq_5912 * r4, word32 dwArg00)
 {
-	struct Eq_5914 * dwLoc18_18 = r4->ptr0008;
-	for (; dwLoc18_18 != null; dwLoc18_18 = dwLoc18_18->ptr17B8)
+	struct Eq_5914 * dwLoc18_18;
+	for (dwLoc18_18 = r4->ptr0008; dwLoc18_18 != null; dwLoc18_18 = dwLoc18_18->ptr17B8)
 	{
 		word32 sp_33;
 		word32 r28_34;
@@ -5365,8 +5365,8 @@ void slist_delete(word32 dwArg00, word32 dwArg04)
 // 00407568: void slist_close_all(Register (ptr32 Eq_8176) r4, Stack word32 dwArg00)
 void slist_close_all(Eq_8176 * r4, word32 dwArg00)
 {
-	struct Eq_8178 * dwLoc18_18 = r4->ptr0008;
-	for (; dwLoc18_18 != null; dwLoc18_18 = dwLoc18_18->ptr0018)
+	struct Eq_8178 * dwLoc18_18;
+	for (dwLoc18_18 = r4->ptr0008; dwLoc18_18 != null; dwLoc18_18 = dwLoc18_18->ptr0018)
 	{
 		word32 sp_33;
 		word32 r28_34;

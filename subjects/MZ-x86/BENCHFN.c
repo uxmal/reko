@@ -30,8 +30,8 @@ void __exit()
 	cu8 al_22 = 0x00;
 	byte ah_23 = 0x00;
 	byte Eq_3::* si_27 = Eq_3::a0000;
-	word16 cx_28 = 0x2F;
-	for (; cx_28 != 0x00; --cx_28)
+	word16 cx_28;
+	for (cx_28 = 0x2F; cx_28 != 0x00; --cx_28)
 	{
 		al_22 += ds_6->*si_27;
 		ah_23 = (bool) (al_22 < 0x00) + ah_23;
@@ -864,10 +864,10 @@ byte Eq_334::*_read(Eq_334 * ds, int16 wArg02, Eq_791 wArg04, cu16 wArg06)
 				ax_101 = &Eq_334::bFFFFFFFF;
 				return ax_101;
 			}
-			word16 cx_108 = ~0x00;
+			word16 cx_108;
 			Eq_791 si_109 = wArg04;
 			Eq_791 di_114 = wArg04;
-			for (; cx_108 != 0x00; --cx_108)
+			for (cx_108 = ~0x00; cx_108 != 0x00; --cx_108)
 			{
 				al_121 = ds->*si_109;
 				si_109 = (word32) si_109 + 0x01;
@@ -1054,8 +1054,8 @@ l0800_0CC1:
 l0800_0CA4:
 		if (ax_103 == 0x00)
 		{
-			word16 cx_113 = si_104 + (0x24 - fp);
-			for (; cx_113 != 0x00; --cx_113)
+			word16 cx_113;
+			for (cx_113 = si_104 + (0x24 - fp); cx_113 != 0x00; --cx_113)
 			{
 				byte al_131;
 				--si_104;
@@ -2121,8 +2121,8 @@ l0800_17E6:
 					es = ss->*sp_780;
 					sp_1011 = (struct Eq_3578 Eq_283::*) ((char *) sp_780 + 0x02);
 					word16 Eq_283::* di_784 = fp - 0x22;
-					word16 cx_785 = 0x10;
-					for (; cx_785 != 0x00; --cx_785)
+					word16 cx_785;
+					for (cx_785 = 0x10; cx_785 != 0x00; --cx_785)
 					{
 						es->*di_784 = 0x00;
 						++di_784;

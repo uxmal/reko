@@ -522,8 +522,8 @@ void fn06A2()
 {
 	if (globals->ptr0F0A != 0x00)
 	{
-		struct Eq_1332 * r5_25 = globals->ptr0F04;
-		for (; r5_25 >= null; --r5_25)
+		struct Eq_1332 * r5_25;
+		for (r5_25 = globals->ptr0F04; r5_25 >= null; --r5_25)
 		{
 			if (r5_25[0x0EF0] == 0x00)
 			{
@@ -661,8 +661,8 @@ Eq_1645 * fn07A6(Eq_2 r4, Eq_4 * pc, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out
 				if (globals->w0EFC != 0x00)
 				{
 					struct Eq_1645 * r1_398 = r2_184->ptr0DAC;
-					Eq_14 r3_399 = 0x08;
-					for (; r3_399 != 0x00; --r3_399)
+					Eq_14 r3_399;
+					for (r3_399 = 0x08; r3_399 != 0x00; --r3_399)
 					{
 						if (r1_398->t0000 != 0x00)
 						{
@@ -1155,8 +1155,8 @@ ptr16 fn0BD6(ptr16 & r2Out)
 	globals->w0F0E = 0xF800;
 	globals->w0F10 = 0xE000;
 	byte * r1_14 = &globals->b0E56;
-	word16 r0_18 = 0x06;
-	for (; r0_18 != 0x00; --r0_18)
+	word16 r0_18;
+	for (r0_18 = 0x06; r0_18 != 0x00; --r0_18)
 	{
 		word16 r2_19 = 0x0A;
 		do
@@ -1179,18 +1179,18 @@ ptr16 fn0BD6(ptr16 & r2Out)
 void fn0C20(Eq_14 r3, Eq_3 * r5, Eq_4 * pc)
 {
 	word16 * r1_12 = globals->a0DB8;
-	word16 r0_15 = 0x06;
+	word16 r0_15;
 	Eq_768 r2_13 = 0x05;
-	for (; r0_15 != 0x00; --r0_15)
+	for (r0_15 = 0x06; r0_15 != 0x00; --r0_15)
 	{
 		*r1_12 = (word16) r2_13;
 		++r1_12;
 		r2_13.u1 = (word16) r2_13.u1 + 0x02;
 	}
 	struct Eq_2869 * r1_18 = null;
-	word16 r0_20 = 0x08;
+	word16 r0_20;
 	ptr16 r2_21 = 11;
-	for (; r0_20 != 0x00; --r0_20)
+	for (r0_20 = 0x08; r0_20 != 0x00; --r0_20)
 	{
 		r1_18[1776] = (struct Eq_2869) r2_21;
 		r1_18[0x06F8] = (struct Eq_2869) r2_21;
@@ -1203,8 +1203,8 @@ void fn0C20(Eq_14 r3, Eq_3 * r5, Eq_4 * pc)
 		r2_21 += 0x08;
 	}
 	word16 * r1_43 = globals->a0EE6;
-	word16 r0_44 = 0x10;
-	for (; r0_44 != 0x00; --r0_44)
+	word16 r0_44;
+	for (r0_44 = 0x10; r0_44 != 0x00; --r0_44)
 	{
 		*r1_43 = (word16) 0x00;
 		++r1_43;

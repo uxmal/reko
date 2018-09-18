@@ -94,8 +94,8 @@ void const_div_test10(word32 dwArg04)
 // 004012D0: void loop_test11(Stack real64 rArg04)
 void loop_test11(real64 rArg04)
 {
-	int32 dwLoc08_28 = 0x05;
-	for (; dwLoc08_28 > 0x00; --dwLoc08_28)
+	int32 dwLoc08_28;
+	for (dwLoc08_28 = 0x05; dwLoc08_28 > 0x00; --dwLoc08_28)
 	{
 		int32 eax_32 = dwLoc08_28 & 0x80000001;
 		if (eax_32 < 0x00)

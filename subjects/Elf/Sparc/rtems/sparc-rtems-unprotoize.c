@@ -3322,8 +3322,8 @@ void _obstack_newchunk(Eq_6122 * o0, word32 o1)
 // 000156F0: void _obstack_allocated_p(Register (ptr32 Eq_6430) o0, Register up32 o1)
 void _obstack_allocated_p(Eq_6430 * o0, up32 o1)
 {
-	struct Eq_6432 * g3_28 = o0->ptr0004;
-	for (; g3_28 != null; g3_28 = g3_28->ptr0004)
+	struct Eq_6432 * g3_28;
+	for (g3_28 = o0->ptr0004; g3_28 != null; g3_28 = g3_28->ptr0004)
 	{
 		up32 g0_20 = g3_28 - o1;
 		if (g0_20 < 0x00)

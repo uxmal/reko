@@ -990,8 +990,8 @@ l0000000000403AE2:
 					if (tcgetpgrp(0x01) >= 0x00)
 					{
 						sigemptyset(globals->a61B040);
-						word32 * r13_2106 = globals->a412CC0;
-						for (; r13_2106 != (word32 *) ~0x00412C8F; ++r13_2106)
+						word32 * r13_2106;
+						for (r13_2106 = globals->a412CC0; r13_2106 != (word32 *) ~0x00412C8F; ++r13_2106)
 						{
 							word32 r14d_2116 = (word32) (uint64) *r13_2106;
 							sigaction((uint64) r14d_2116, 0x00, rsp_2050->qw0020);
@@ -1000,17 +1000,17 @@ l0000000000403AE2:
 						}
 						word32 * rdi_2132 = &rsp_2050->qw0048;
 						word32 * rsi_2134 = globals->a61B040;
-						uint64 rcx_2137 = 0x20;
-						for (; rcx_2137 != 0x00; --rcx_2137)
+						uint64 rcx_2137;
+						for (rcx_2137 = 0x20; rcx_2137 != 0x00; --rcx_2137)
 						{
 							*rdi_2132 = *rsi_2134;
 							++rsi_2134;
 							++rdi_2132;
 						}
 						rsp_2050->dw00C8 = 0x10000000;
-						word32 * r13_2160 = DPB(r13_2106, 0x00, 0) + 0x00104B30;
+						word32 * r13_2160;
 						r14.u0 = 0x004049B0;
-						for (; r13_2160 != (word32 *) ~0x00412C8F; ++r13_2160)
+						for (r13_2160 = DPB(r13_2106, 0x00, 0) + 0x00104B30; r13_2160 != (word32 *) ~0x00412C8F; ++r13_2160)
 						{
 							r15 = (uint64) *r13_2160;
 							word32 r15d_2177 = (word32) r15;
@@ -1135,8 +1135,8 @@ l00000000004034D2:
 								fn0000000000406440(&globals->t61A3F0);
 							}
 							fflush_unlocked(globals->ptr61A610);
-							word32 * rbx_1709 = globals->a412CC0;
-							for (; rbx_1709 != &globals->dw412CF0; ++rbx_1709)
+							word32 * rbx_1709;
+							for (rbx_1709 = globals->a412CC0; rbx_1709 != &globals->dw412CF0; ++rbx_1709)
 							{
 								word32 ebp_1717 = (word32) (uint64) *rbx_1709;
 								if (sigismember(globals->a61B040, (uint64) ebp_1717) != 0x00)
@@ -1892,10 +1892,10 @@ Eq_17 fn0000000000404E80(Eq_17 rsi, Eq_21 * r11, Eq_17 r15, Eq_1682 * & r8Out, D
 	}
 	if (rbp_12 != 0x00)
 	{
-		word64 * rax_205 = globals->ptr61B1A8;
+		word64 * rax_205;
 		word64 rdx_209 = globals->u61B1C0;
 		word64 * rcx_211 = rax_205 + rbp_12 * 0x08;
-		for (; rax_205 != rcx_211; ++rax_205)
+		for (rax_205 = globals->ptr61B1A8; rax_205 != rcx_211; ++rax_205)
 		{
 			*rax_205 = rdx_209;
 			rdx_209 += 0x00C0;
@@ -1949,8 +1949,8 @@ Eq_17 fn0000000000405090(byte sil, Eq_17 rdi, Eq_21 * r11)
 	word32 r14d_106 = (word32) sil;
 	if (rdi != 0x00 && globals->qw61B1C8 != 0x00)
 		rsi = fn0000000000404D20(0x00, rdi, 0x00, r11);
-	word64 rbx_45 = globals->qw61B1B0;
-	for (; rbx_45 != 0x00; --rbx_45)
+	word64 rbx_45;
+	for (rbx_45 = globals->qw61B1B0; rbx_45 != 0x00; --rbx_45)
 	{
 		struct Eq_4836 * rbp_71 = *globals->ptr61B1A8;
 		word32 eax_73 = (word32) (uint64) rbp_71->dw00A0;
@@ -1995,8 +1995,8 @@ l0000000000405100:
 	{
 		rsi = globals->ptr61B1A8;
 		rdx_195 = 0x00;
-		uint64 rax_220 = 0x00;
-		for (; rax_220 != rdi_181; ++rax_220)
+		uint64 rax_220;
+		for (rax_220 = 0x00; rax_220 != rdi_181; ++rax_220)
 		{
 			struct Eq_5238 * rcx_227 = *((word64) rsi + rax_220 * 0x08);
 			*((word64) rsi + rdx_195 * 0x08) = rcx_227;
@@ -2285,8 +2285,8 @@ void fn0000000000405630(Eq_3672 * rsi, Eq_17 rdi)
 		rsi->qw0018 = rcx_81;
 	rsi->qw0010 = rsi->qw0018;
 	fputs_unlocked(rdi, globals->ptr61A610);
-	uint64 rbx_102 = 0x00;
-	for (; r12_19 > rbx_102; ++rbx_102)
+	uint64 rbx_102;
+	for (rbx_102 = 0x00; r12_19 > rbx_102; ++rbx_102)
 		__printf_chk(0x01, 4274009, tLoc20);
 	FILE * rdi_113 = globals->ptr61A610;
 	byte * rax_115 = rdi_113->ptr0028;
@@ -2598,9 +2598,9 @@ Eq_17 fn0000000000405ED0(Eq_17 rsi, word32 edi, Eq_17 r8, Eq_21 * r11, Eq_25 * f
 		{
 			word64 rsi_431 = globals->ptr61B028;
 			ui64 rcx_434 = rcx_411 * 0x08 + 0x08;
-			struct Eq_6604 * rdx_436 = rsi_431 + rcx_411 * 0x18 + 0x10;
+			struct Eq_6604 * rdx_436;
 			struct Eq_6604 * rsi_439 = rsi_431 + rbp_381 * 0x18;
-			for (; rdx_436 != rsi_439; ++rdx_436)
+			for (rdx_436 = rsi_431 + rcx_411 * 0x18 + 0x10; rdx_436 != rsi_439; ++rdx_436)
 			{
 				rdx_436->qw0000 = (word64) rax_407;
 				rax_407 = (word64) rax_407 + rcx_434;
@@ -9790,9 +9790,9 @@ void fn000000000040D6A0(Eq_17 rdi)
 // 000000000040D740: void fn000000000040D740(Register word32 esi, Register (ptr64 Eq_20007) rdi)
 void fn000000000040D740(word32 esi, Eq_20007 * rdi)
 {
-	uint64 rcx_16 = 0x07;
+	uint64 rcx_16;
 	word64 * rdi_15 = fp - 0x48;
-	for (; rcx_16 != 0x00; --rcx_16)
+	for (rcx_16 = 0x07; rcx_16 != 0x00; --rcx_16)
 	{
 		*rdi_15 = 0x00;
 		++rdi_15;
@@ -10896,8 +10896,8 @@ ptr64 fn0000000000410630(uint64 rsi, Eq_17 rdi, ptr64 r8, uint64 r9, Eq_21 * r11
 // 0000000000410AC0: void fn0000000000410AC0(Register (ptr64 word32) rax, Register (ptr64 Eq_3871) rdx, Register uint64 rsi, Register Eq_17 rdi, Register ptr64 r8, Register (ptr64 Eq_21) r11)
 void fn0000000000410AC0(word32 * rax, Eq_3871 * rdx, uint64 rsi, Eq_17 rdi, ptr64 r8, Eq_21 * r11)
 {
-	uint64 r9_13 = 0x00;
-	for (; r9_13 != 0x0A; ++r9_13)
+	uint64 r9_13;
+	for (r9_13 = 0x00; r9_13 != 0x0A; ++r9_13)
 	{
 		up32 eax_18 = (word32) (uint64) *rax;
 		if (eax_18 >= 0x30)
