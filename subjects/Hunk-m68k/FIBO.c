@@ -316,26 +316,23 @@ word32 fn0000131C(ptr32 dwArg04, ptr32 & d1Out, ptr32 & a1Out, ptr32 & a5Out)
 	{
 		struct Eq_619 * a3_36 = *(struct Eq_619 **) 16364;
 		globals->dw3EC4 = 0x01;
-		if (a3_36 != null)
+		while (a3_36 != null)
 		{
-			do
-			{
-				<anonymous> * a2_61 = a3_36->ptr0004;
-				word32 a7_62;
-				struct Eq_619 ** a3_63;
-				word32 a2_64;
-				byte ZN_65;
-				bool C_66;
-				bool V_67;
-				bool Z_68;
-				word32 d0_69;
-				byte CVZN_70;
-				word32 d1_71;
-				word32 a1_72;
-				word32 a5_73;
-				a2_61();
-				a3_36 = (struct Eq_619 *) *a3_63;
-			} while (a3_36 != null);
+			<anonymous> * a2_61 = a3_36->ptr0004;
+			word32 a7_62;
+			struct Eq_619 ** a3_63;
+			word32 a2_64;
+			byte ZN_65;
+			bool C_66;
+			bool V_67;
+			bool Z_68;
+			word32 d0_69;
+			byte CVZN_70;
+			word32 d1_71;
+			word32 a1_72;
+			word32 a5_73;
+			a2_61();
+			a3_36 = (struct Eq_619 *) *a3_63;
 		}
 		word32 d1_55;
 		word32 a1_56;
@@ -1922,18 +1919,15 @@ void fn00002B98(Eq_706 dwArg04)
 	else
 	{
 		Eq_706 a2_36 = *(union Eq_706 *) 0x3FFC;
-		if (a2_36 != 0x00)
+		while (a2_36 != 0x00)
 		{
-			do
+			if ((*((word32) a2_36 + 0x0018) & 0x02) != 0x00)
 			{
-				if ((*((word32) a2_36 + 0x0018) & 0x02) != 0x00)
-				{
-					word32 a1_69;
-					word32 a5_70;
-					fn00001FA4(a2_36, out a1_69, out a5_70);
-				}
-				a2_36 = *((word32) a2_36 + 0x0C);
-			} while (a2_36 != 0x00);
+				word32 a1_69;
+				word32 a5_70;
+				fn00001FA4(a2_36, out a1_69, out a5_70);
+			}
+			a2_36 = *((word32) a2_36 + 0x0C);
 		}
 	}
 }
@@ -3314,19 +3308,16 @@ Eq_706 fn00003DC8(ptr32 & a1Out, ptr32 & a5Out)
 	*a5Out = a5;
 	Eq_706 a2_40 = *(union Eq_706 *) 0x3FFC;
 	Eq_706 d0_24 = a2_40;
-	if (a2_40 != 0x00)
+	while (a2_40 != 0x00)
 	{
-		do
+		if ((*((word32) a2_40 + 0x0018) & 0x0202) == 0x0202 && *a2_40 != 0x00)
 		{
-			if ((*((word32) a2_40 + 0x0018) & 0x0202) == 0x0202 && *a2_40 != 0x00)
-			{
-				word32 a1_66;
-				word32 a5_67;
-				fn00001FA4(a2_40, out a1_66, out a5_67);
-			}
-			a2_40 = *((word32) a2_40 + 0x0C);
-			d0_24 = a2_40;
-		} while (a2_40 != 0x00);
+			word32 a1_66;
+			word32 a5_67;
+			fn00001FA4(a2_40, out a1_66, out a5_67);
+		}
+		a2_40 = *((word32) a2_40 + 0x0C);
+		d0_24 = a2_40;
 	}
 	return d0_24;
 }

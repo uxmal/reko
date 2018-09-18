@@ -291,23 +291,20 @@ void fn0000131C(word32 dwArg04)
 	{
 		struct Eq_563 * a3_27 = *(struct Eq_563 **) 0x140C;
 		*(int32 *) 5112 = 0x01;
-		if (a3_27 != null)
+		while (a3_27 != null)
 		{
-			do
-			{
-				<anonymous> * a2_49 = a3_27->ptr0004;
-				word32 a7_50;
-				struct Eq_563 ** a3_51;
-				word32 a2_52;
-				byte ZN_53;
-				bool C_54;
-				bool V_55;
-				bool Z_56;
-				word32 d0_57;
-				byte CVZN_58;
-				a2_49();
-				a3_27 = (struct Eq_563 *) *a3_51;
-			} while (a3_27 != null);
+			<anonymous> * a2_49 = a3_27->ptr0004;
+			word32 a7_50;
+			struct Eq_563 ** a3_51;
+			word32 a2_52;
+			byte ZN_53;
+			bool C_54;
+			bool V_55;
+			bool Z_56;
+			word32 d0_57;
+			byte CVZN_58;
+			a2_49();
+			a3_27 = (struct Eq_563 *) *a3_51;
 		}
 		fn000012D0(dwArg04);
 	}

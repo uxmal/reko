@@ -293,24 +293,21 @@ word32 fn0000131C(ptr32 dwArg04)
 	{
 		struct Eq_568 * a3_29 = *(struct Eq_568 **) 11488;
 		globals->dw2BB8 = 0x01;
-		if (a3_29 != null)
+		while (a3_29 != null)
 		{
-			do
-			{
-				<anonymous> * a2_52 = a3_29->ptr0004;
-				word32 a7_53;
-				struct Eq_568 ** a3_54;
-				word32 a2_55;
-				byte ZN_56;
-				bool C_57;
-				bool V_58;
-				bool Z_59;
-				word32 d0_60;
-				byte CVZN_61;
-				word32 a5_62;
-				a2_52();
-				a3_29 = (struct Eq_568 *) *a3_54;
-			} while (a3_29 != null);
+			<anonymous> * a2_52 = a3_29->ptr0004;
+			word32 a7_53;
+			struct Eq_568 ** a3_54;
+			word32 a2_55;
+			byte ZN_56;
+			bool C_57;
+			bool V_58;
+			bool Z_59;
+			word32 d0_60;
+			byte CVZN_61;
+			word32 a5_62;
+			a2_52();
+			a3_29 = (struct Eq_568 *) *a3_54;
 		}
 		a5 = fn000012D0(dwArg04);
 	}
@@ -1750,17 +1747,14 @@ void fn00002A44(Eq_647 dwArg04)
 	else
 	{
 		Eq_647 a2_34 = *(union Eq_647 *) 0x2CF0;
-		if (a2_34 != 0x00)
+		while (a2_34 != 0x00)
 		{
-			do
+			if ((*((word32) a2_34 + 0x0018) & 0x02) != 0x00)
 			{
-				if ((*((word32) a2_34 + 0x0018) & 0x02) != 0x00)
-				{
-					word32 a5_64;
-					fn00001F48(a2_34, out a5_64);
-				}
-				a2_34 = *((word32) a2_34 + 0x0C);
-			} while (a2_34 != 0x00);
+				word32 a5_64;
+				fn00001F48(a2_34, out a5_64);
+			}
+			a2_34 = *((word32) a2_34 + 0x0C);
 		}
 	}
 }

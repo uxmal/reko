@@ -3520,13 +3520,9 @@ void obstack_free(Eq_6564 * o0, up32 o1)
 // 00015884: void _obstack_memory_used(Register (ptr32 Eq_6674) o0)
 void _obstack_memory_used(Eq_6674 * o0)
 {
-	struct Eq_6675 * g3_15 = o0->ptr0004;
-	if (g3_15 != null)
-	{
-		do
-			g3_15 = g3_15->ptr0004;
-		while (g3_15 != null);
-	}
+	struct Eq_6675 * g3_15;
+	for (g3_15 = o0->ptr0004; g3_15 != null; g3_15 = g3_15->ptr0004)
+		;
 }
 
 // 000158B4: void print_and_abort()

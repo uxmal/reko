@@ -55,29 +55,26 @@ void __do_global_dtors_aux()
 	{
 		up32 d0_100 = globals->dw80002726;
 		<anonymous> * a2_101[] = globals->a80002714;
-		if (0x00 - d0_100 > 0x00)
+		while (0x00 - d0_100 > 0x00)
 		{
-			do
-			{
-				uint32 d0_102 = d0_100 + 0x01;
-				globals->dw80002726 = d0_102;
-				<anonymous> * a0_107 = a2_101[d0_102];
-				word32 a7_108;
-				word32 a6_109;
-				byte CVZN_111;
-				word32 d2_112;
-				byte ZN_113;
-				bool C_114;
-				bool V_115;
-				bool Z_116;
-				word32 d0_117;
-				byte CVZNX_118;
-				byte VZ_119;
-				word32 a0_120;
-				byte CZ_121;
-				a0_107();
-				d0_100 = globals->dw80002726;
-			} while (0x00 - d0_100 > 0x00);
+			uint32 d0_102 = d0_100 + 0x01;
+			globals->dw80002726 = d0_102;
+			<anonymous> * a0_107 = a2_101[d0_102];
+			word32 a7_108;
+			word32 a6_109;
+			byte CVZN_111;
+			word32 d2_112;
+			byte ZN_113;
+			bool C_114;
+			bool V_115;
+			bool Z_116;
+			word32 d0_117;
+			byte CVZNX_118;
+			byte VZ_119;
+			word32 a0_120;
+			byte CZ_121;
+			a0_107();
+			d0_100 = globals->dw80002726;
 		}
 		deregister_tm_clones();
 		if (0x00 != 0x00)
