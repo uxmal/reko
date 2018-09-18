@@ -274,8 +274,8 @@ void fn0C00_0000(selector ds)
 			word16 di_76 = 0x0000;
 			selector ds_79 = Mem78[ss:sp_13 - 0x0002:selector];
 			word16 si_83 = 0x0000;
-			word16 cx_86 = 0x4000;
-			for (; cx_86 != 0x0000; --cx_86)
+			word16 cx_86;
+			for (cx_86 = 0x4000; cx_86 != 0x0000; --cx_86)
 			{
 				Mem91[es_75:di_76:word32] = Mem78[ds_79:si_83:word32];
 				si_83 += 0x0004;
@@ -289,8 +289,8 @@ void fn0C00_0000(selector ds)
 			word16 di_101 = 0x0000;
 			selector ds_104 = Mem103[ss:sp_13 - 0x0002:selector];
 			word16 si_108 = 0x0000;
-			word16 cx_111 = 0x4000;
-			for (; cx_111 != 0x0000; --cx_111)
+			word16 cx_111;
+			for (cx_111 = 0x4000; cx_111 != 0x0000; --cx_111)
 			{
 				Mem116[es_100:di_101:word32] = Mem103[ds_104:si_108:word32];
 				si_108 += 0x0004;

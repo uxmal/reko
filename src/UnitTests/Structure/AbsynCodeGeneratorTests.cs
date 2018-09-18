@@ -336,8 +336,8 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "MockNestedWhileLoops()" + nl +
                 "{" + nl +
-                "	int32 i = 0;" + nl +
-                "	for (; i < 10; ++i)" + nl +
+                "	int32 i;" + nl +
+                "	for (i = 0; i < 10; ++i)" + nl +
                 "	{" + nl +
                 "		int32 j = 0;" + nl +
                 "		for (; j < 10; ++j)" + nl +
