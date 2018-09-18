@@ -395,7 +395,7 @@ void fn10001680()
 	word32 * esi_12 = &globals->dw100021D8;
 	if (false)
 	{
-		for (; esi_12 < &globals->dw100021D8; ++esi_12)
+		do
 		{
 			word32 eax_30 = *esi_12;
 			if (eax_30 != 0x00)
@@ -409,7 +409,8 @@ void fn10001680()
 				bool Z_50;
 				fn00000000();
 			}
-		}
+			++esi_12;
+		} while (esi_12 < &globals->dw100021D8);
 	}
 }
 
@@ -433,13 +434,14 @@ Eq_945 * fn10001700(Eq_946 * dwArg04, uint32 dwArg08)
 	struct Eq_945 * eax_23 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
 	if (!DPB(CZ, false, 0))
 	{
-		for (; edx_15 < esi_14; ++edx_15)
+		do
 		{
 			uint32 ecx_50 = eax_23->dw0000;
 			if (dwArg08 >= ecx_50 && dwArg08 < eax_23->dw0008 + ecx_50)
 				return eax_23;
+			++edx_15;
 			++eax_23;
-		}
+		} while (edx_15 < esi_14);
 	}
 	eax_23 = null;
 	return eax_23;

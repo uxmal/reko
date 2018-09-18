@@ -279,14 +279,15 @@ Eq_518 * fn004013F6(Eq_519 * dwArg04, uint32 dwArg08)
 	struct Eq_518 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{
-		for (; edx_16 != esi_19; ++edx_16)
+		do
 		{
 			if (dwArg08 >= edx_16->dw000C && dwArg08 < edx_16->dw0008 + edx_16->dw000C)
 			{
 				eax_26 = edx_16;
 				return eax_26;
 			}
-		}
+			++edx_16;
+		} while (edx_16 != esi_19);
 	}
 	eax_26 = null;
 	return eax_26;

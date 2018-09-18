@@ -1006,12 +1006,13 @@ Eq_1915 fn0990(word16 af, word16 bc, Eq_1576 e, byte d, byte h, byte l, Eq_1580 
 		byte * de_397 = (word16) globals->t168B + 0x09;
 		bc_189 = (byte *) *(sp_31 - 0x04);
 		byte l_405;
-		for (l_405 = (byte) *(sp_31 - 0x02); l_405 != 0x00; --l_405)
+		do
 		{
 			*de_397 = *bc_189;
 			++bc_189;
 			++de_397;
-		}
+			--l_405;
+		} while (l_405 != 0x00);
 	}
 	else
 	{
@@ -1041,12 +1042,13 @@ Eq_1915 fn0990(word16 af, word16 bc, Eq_1576 e, byte d, byte h, byte l, Eq_1580 
 		byte * de_482 = (word16) globals->t168B + 0x09;
 		bc_189 = (byte *) *(sp_31 - 0x04);
 		byte l_490;
-		for (l_490 = (byte) *(sp_31 - 0x02); l_490 != 0x00; --l_490)
+		do
 		{
 			*de_482 = *bc_189;
 			++bc_189;
 			++de_482;
-		}
+			--l_490;
+		} while (l_490 != 0x00);
 	}
 	*(sp_31 - 0x02) = (byte **) DPB(bc_189, 0x03, 0);
 	Eq_1430 hl_204 = globals->t168B;
@@ -1846,14 +1848,15 @@ void fn1315(word16 de, byte h, byte l)
 // 1326: Register byte fn1326(Register byte c, Register cu8 l, Register cu8 h, Register out Eq_248 lOut, Register out Eq_249 hOut)
 byte fn1326(byte c, cu8 l, cu8 h, Eq_248 & lOut, Eq_249 & hOut)
 {
-	for (; c != 0x00; --c)
+	do
 	{
 		cu8 a_11 = __ror(h, 0x01, false);
 		h = a_11;
 		*hOut = h;
 		l = __ror(l, 0x01, cond(a_11));
 		*lOut = l;
-	}
+		--c;
+	} while (c != 0x00);
 	return c;
 }
 

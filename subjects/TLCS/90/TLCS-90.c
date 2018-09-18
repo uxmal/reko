@@ -258,14 +258,15 @@ void fn02F9(byte a, byte b, byte c, Eq_18 de, word16 hl, Eq_20 * ix)
 // 0341: Register word16 fn0341(Register byte a, Register Eq_16 b, Register Eq_16 c, Register Eq_18 de, Register ui16 hl, Register (ptr16 Eq_20) ix, Register out Eq_447 bcOut, Register out Eq_448 deOut, Register out Eq_449 hlOut, Register out Eq_450 ixOut)
 word16 fn0341(byte a, Eq_16 b, Eq_16 c, Eq_18 de, ui16 hl, Eq_20 * ix, Eq_447 & bcOut, Eq_448 & deOut, Eq_449 & hlOut, Eq_450 & ixOut)
 {
-	for (; a != 0x00; --a)
+	do
 	{
 		c <<= 0x01;
 		b = __rcl(b, 0x01, (bool) cond(c));
 		hl = hl * 0x02 + (b < 0x00);
 		Eq_16 l_22 = (byte) hl;
 		Eq_16 h_23 = SLICE(hl, byte, 8);
-	}
+		--a;
+	} while (a != 0x00);
 	word16 bc_32;
 	word16 de_33;
 	word16 hl_34;
@@ -812,12 +813,13 @@ void fn0823(word16 wArg00)
 // 0914: void fn0914(Register word16 af, Register word16 bc, Register (ptr32 byte) de, Register (ptr32 byte) hl, Register (ptr16 Eq_20) ix, Stack word16 wArg00, Stack Eq_18 wArg02)
 void fn0914(word16 af, word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg00, Eq_18 wArg02)
 {
-	for (; bc != 0x00; --bc)
+	do
 	{
 		*de = *hl;
 		++hl;
 		++de;
-	}
+		--bc;
+	} while (bc != 0x00);
 	Eq_2783 de_37 = fp + 0x08;
 	Eq_2787 hl_38 = wArg00 + 0x08;
 	word16 bc_41;
@@ -1177,12 +1179,13 @@ void fn0B5A(Eq_18 de, Eq_4143 hl, Eq_20 * ix)
 // 0B5D: Register word16 fn0B5D(Register word16 bc, Register Eq_18 de, Register Eq_4143 hl, Register (ptr16 Eq_20) ix, Register out Eq_4173 deOut, Register out Eq_4174 hlOut, Register out Eq_4175 ixOut)
 word16 fn0B5D(word16 bc, Eq_18 de, Eq_4143 hl, Eq_20 * ix, Eq_4173 & deOut, Eq_4174 & hlOut, Eq_4175 & ixOut)
 {
-	for (; bc != 0x00; --bc)
+	do
 	{
 		*de = *hl;
 		++hl;
 		++de;
-	}
+		--bc;
+	} while (bc != 0x00);
 	Eq_4204 de_19 = v3->t0024;
 	Eq_4209 hl_21 = (char *) v3 + 0x0018;
 	word16 bc_24;
@@ -1202,12 +1205,13 @@ word16 fn0B5D(word16 bc, Eq_18 de, Eq_4143 hl, Eq_20 * ix, Eq_4173 & deOut, Eq_4
 // 0BD0: void fn0BD0(Register word16 bc, Register (ptr32 byte) de, Register (ptr32 byte) hl, Register (ptr16 Eq_20) ix, Stack word16 wArg00, Stack Eq_18 wArg02)
 void fn0BD0(word16 bc, byte * de, byte * hl, Eq_20 * ix, word16 wArg00, Eq_18 wArg02)
 {
-	for (; bc != 0x00; --bc)
+	do
 	{
 		*de = *hl;
 		++hl;
 		++de;
-	}
+		--bc;
+	} while (bc != 0x00);
 	Eq_4255 de_33 = fp + 0x20;
 	Eq_4259 hl_34 = wArg00 + 0x08;
 	word16 bc_35;

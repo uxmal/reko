@@ -598,8 +598,11 @@ Eq_845 * visit_each_hash_node(Eq_846 * o0)
 			if (o0_41 != 0x00)
 			{
 				l0 = i0_4 + 0x01;
-				for (; i0_4 != null; i0_4 = i0_4->dw0000)
+				do
+				{
 					reverse_def_dec_list(i0_4);
+					i0_4 = i0_4->dw0000;
+				} while (i0_4 != null);
 			}
 			else
 				l0 = &i0_4->dw0000;
@@ -3520,8 +3523,9 @@ void _obstack_memory_used(Eq_6674 * o0)
 	struct Eq_6675 * g3_15 = o0->ptr0004;
 	if (g3_15 != null)
 	{
-		for (; g3_15 != null; g3_15 = g3_15->ptr0004)
-			;
+		do
+			g3_15 = g3_15->ptr0004;
+		while (g3_15 != null);
 	}
 }
 

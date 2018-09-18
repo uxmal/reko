@@ -296,7 +296,7 @@ l0584:
 l0524:
 					Eq_429 r0_222 = r2_159[0x06D6];
 					r1.u0 = 0x08;
-					for (; r1 != 0x00; --r1)
+					do
 					{
 						Eq_14 r3_235 = *r0_222;
 						NV.u0 = DPB(NV, false, 0);
@@ -355,7 +355,8 @@ l0524:
 							}
 						}
 						r0_222 = (word32) r0_222 + 0x02;
-					}
+						--r1;
+					} while (r1 != 0x00);
 					break;
 				}
 				cup16 v43_337 = r2_159[0x06DC] - r1;
@@ -523,7 +524,7 @@ void fn06A2()
 	if (globals->ptr0F0A != 0x00)
 	{
 		struct Eq_1332 * r5_25;
-		for (r5_25 = globals->ptr0F04; r5_25 >= null; --r5_25)
+		do
 		{
 			if (r5_25[0x0EF0] == 0x00)
 			{
@@ -536,7 +537,8 @@ void fn06A2()
 				}
 				return;
 			}
-		}
+			--r5_25;
+		} while (r5_25 >= null);
 	}
 }
 
@@ -1108,7 +1110,7 @@ Eq_14 fn0B60(Eq_429 r0, Eq_14 r3, byte * r4, ptr16 & r4Out)
 	if (r3 != 0x00)
 	{
 		word16 * r2_55 = 0x0BD4 - (r3 << 0x01);
-		for (; r3 != 0x00; --r3)
+		do
 		{
 			word16 r5_64 = 0x30;
 			cup16 v22_67 = *r2_55;
@@ -1142,7 +1144,8 @@ l0BB4:
 			}
 			*r4 = (byte) r5_106;
 			*r4Out = r4 + 0x01;
-		}
+			--r3;
+		} while (r3 != 0x00);
 	}
 	return r3;
 }

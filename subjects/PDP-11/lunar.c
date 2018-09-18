@@ -889,13 +889,14 @@ void fn0C36(ci16 r2, ci16 r3, word16 pc)
 		}
 	}
 	word16 r0_27 = globals->w267A;
-	for (; r3 > 0x00; --r3)
+	do
 	{
 		fn0C72();
 		globals->w267A = r0_27;
 		globals->w267C += r5_15;
 		fn0C76(pc);
-	}
+		--r3;
+	} while (r3 > 0x00);
 }
 
 // 0C72: void fn0C72()
@@ -1785,8 +1786,10 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 	r0_11 = r0_4;
 	if (r0_4 <= 0x00)
 		r0_11 = -r0_4;
-	for (; r0_11 > 0x00; --r0_11)
-		;
+	do
+	{
+		--r0_11;
+	} while (r0_11 > 0x00);
 	do
 	{
 		__wait();
