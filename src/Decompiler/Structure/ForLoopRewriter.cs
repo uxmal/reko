@@ -231,16 +231,15 @@ namespace Reko.Structure
             // is regrettable since we know that the great majority of such
             // loops actually do loop at least once. For now, I'm leaving
             // this in, pending the outcome of https://github.com/uxmal/reko/issues/689
-            return true;
-#if DO_THE_CORRECT_THING
             if (!(candidate.Condition is BinaryExpression cond))
                 return false;
             if (!(cond.Right is Constant cRight))
                 return false;
+            if (candidate.Initializer == null)
+                return false;
             if (!(candidate.Initializer.Src is Constant cInit))
                 return false;
             return cond.Operator.ApplyConstants(cInit, cRight).ToBoolean();
-#endif
         }
 
         private AbsynFor MakeForLoop(ForLoopCandidate candidate, List<AbsynStatement> stmts)
