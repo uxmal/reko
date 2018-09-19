@@ -315,16 +315,16 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 	word32 ecx_11 = Mem7[dwArg04 + 0x0000003C:word32] + dwArg04;
 	word32 esi_19 = (word32) Mem18[ecx_11 + 0x00000006:word16];
 	word32 edx_20 = 0x00000000;
-	word32 eax_23 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11 + 0x0000000C;
+	word32 eax_23 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11;
 	if (esi_19 >u 0x00000000)
 	{
 		do
 		{
-			word32 ecx_31 = Mem22[eax_23 + 0x00000000:word32];
+			word32 ecx_31 = Mem22[eax_23 + 0x0000000C:word32];
 			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 0x00000008:word32] + ecx_31)
 				return eax_23;
-			edx_20 = edx_20 + 0x00000001;
-			eax_23 = eax_23 + 0x00000028;
+			++edx_20;
+			eax_23 += 0x00000028;
 		} while (edx_20 <u esi_19);
 	}
 	eax_23 = 0x00000000;

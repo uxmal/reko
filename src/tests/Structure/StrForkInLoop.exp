@@ -32,9 +32,13 @@ void fn0C00_0000(word16 bx, selector ds)
 	{
 		word16 si_13 = Mem0[ds:0x0300:word16];
 		if (si_13 != 0x0000)
-			ax_19 = ax_19 + Mem0[ds:si_13:word16];
+		{
+			ax_19 += Mem0[ds:si_13:word16];
+		}
 		else
-			ax_19 = ax_19 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
+		{
+			ax_19 += Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
+		}
 	}
 }
 ===========================

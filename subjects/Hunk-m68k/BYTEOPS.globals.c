@@ -19,13 +19,13 @@ ui32 g_dw2BA4 = 0x05050505;
 word32 g_dw2BB0 = 0x05050505;
 ptr32 g_ptr2BB4 = 0x06060606;
 word32 g_dw2BB8 = 0x06060606;
-struct Eq_2804 * g_ptr2BBC = &g_t6060606;
+struct Eq_2802 * g_ptr2BBC = &g_t6060606;
 word32 g_dw2BC0 = 0x06060606;
-Eq_3285 g_a2BC4[] = 
+Eq_3283 g_a2BC4[] = 
 	{
 	};
 Eq_4 g_t4000;
 Eq_67 g_t10202;
 Eq_67 g_t3030303;
-Eq_2804 g_t6060606;
+Eq_2802 g_t6060606;
 

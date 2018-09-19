@@ -690,6 +690,7 @@
     <Compile Include="Structure\AbsynCodeEmitter.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
+    <Compile Include="Structure\ForLoopRewriterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
     <Compile Include="Structure\MockCaseStatement.cs" />
     <Compile Include="Structure\MockInfiniteLoop.cs" />

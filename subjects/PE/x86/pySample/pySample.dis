@@ -1149,7 +1149,7 @@ l10001700:
 	word32 ecx_6 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04
 	word32 esi_14 = (word32) Mem0[ecx_6 + 0x00000006:word16]
 	word32 edx_15 = 0x00000000
-	word32 eax_23 = (word32) Mem0[ecx_6 + 0x00000014:word16] + 0x00000018 + ecx_6 + 0x0000000C
+	word32 eax_23 = (word32) Mem0[ecx_6 + 0x00000014:word16] + 0x00000018 + ecx_6
 	branch DPB(CZ, false, 0) l1000173C
 // DataOut: eax ebp edx esi fs
 // DataOut (flags): 
@@ -1163,7 +1163,7 @@ l1000171E:
 // LocalsOut: fp(32)
 
 l10001722:
-	word32 ecx_50 = Mem0[eax_23 + 0x00000000:word32]
+	word32 ecx_50 = Mem0[eax_23 + 0x0000000C:word32]
 	branch dwArg08 <u ecx_50 l10001732
 // DataOut: eax ebp ecx edi edx esi fs
 // DataOut (flags): 

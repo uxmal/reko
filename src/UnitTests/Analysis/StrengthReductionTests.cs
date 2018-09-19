@@ -42,6 +42,30 @@ namespace Reko.UnitTests.Analysis
             sids = new SsaIdentifierCollection();
         }
 
+        private Procedure BuildSimpleLoop()
+        {
+            ProcedureBuilder m = new ProcedureBuilder();
+            Identifier p = m.Local32("p");
+            m.Assign(p, 0);
+
+            m.Label("loop");
+            m.BranchIf(m.Eq(p, 0x4000), "done");
+            m.MStore(m.IAdd(p, 0x3000), m.Int32(0));
+            m.Assign(p, m.IAdd(p, 4));
+            m.Goto("loop");
+
+            m.Label("done");
+            m.Return();
+            return m.Procedure;
+        }
+
+        private SsaIdentifier AddSid(string name)
+        {
+            Identifier id = new Identifier(name, null, null);
+            SsaIdentifier sid = sids.Add(id, new Statement(0, new DefInstruction(id), null), null, false);
+            return sid;
+        }
+
         [Test]
         public void SrtSimpleLoop()
         {
@@ -74,28 +98,38 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private Procedure BuildSimpleLoop()
+        [Test]
+        public void SrtReg685()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier p = m.Local32("p");
-            m.Assign(p, 0);
+            var m = new SsaProcedureBuilder(nameof(SrtReg685));
+            var i_1 = m.Reg32("i_1");
+            var i_2 = m.Reg32("i_2");
+            var i_3 = m.Reg32("i_3");
+            
+            m.Assign(i_1, m.Int32(0));
 
-            m.Label("loop");
-            m.BranchIf(m.Eq(p, 0x4000), "done");
-            m.MStore(m.IAdd(p, 0x3000), m.Int32(0));
-            m.Assign(p, m.IAdd(p, 4));
-            m.Goto("loop");
+            m.Label("m1");
+            m.Phi(i_2, i_1, i_3);
+            m.SideEffect(m.Fn("foo", i_2));
+            m.SideEffect(m.Fn("foo", m.IAdd(i_2, 1)));
+            m.Assign(i_3, m.IAdd(i_2, 2));
+            m.BranchIf(m.Eq(i_3, 10), "m1");
 
-            m.Label("done");
+            m.Label("m2");
             m.Return();
-            return m.Procedure;
-        }
 
-        private SsaIdentifier AddSid(string name)
-        {
-            Identifier id = new Identifier(name, null, null);
-            SsaIdentifier sid = sids.Add(id, new Statement(0, new DefInstruction(id), null), null, false);
-            return sid;
+            var dom = m.Procedure.CreateBlockDominatorGraph();
+            var lif = new LinearInductionVariableFinder(m.Ssa, dom);
+            lif.Find();
+            Assert.AreEqual("(0 0x00000002 0x0000000C)", lif.InductionVariables[0].ToString());
+
+            var ctx = lif.Contexts[lif.InductionVariables[0]];
+
+            var str = new StrengthReduction(m.Ssa, lif.InductionVariables[0], ctx);
+            str.ClassifyUses();
+            Assert.AreEqual(2, str.IncrementedUses.Count);
+            str.ModifyUses();
+
         }
     }
 }

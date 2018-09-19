@@ -35,8 +35,6 @@ namespace Reko.Arch.Mips
     {
         private void RewriteBgezal(MipsInstruction instr)
         {
-            if (instr.Address.ToLinear() == 0x5B8)  //$DEBUG
-                instr.ToString();
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
             // We handle that case here explicitly.
             if (((RegisterOperand)instr.op1).Register.Number == 0)

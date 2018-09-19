@@ -333,6 +333,7 @@
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
     <Compile Include="Structure\AbsynStatementEmitter.cs" />
+    <Compile Include="Structure\ForLoopRewriter.cs" />
     <Compile Include="Structure\IStructureAnalysis.cs" />
     <Compile Include="Structure\CompoundConditionCoalescer.cs">
       <SubType>Code</SubType>

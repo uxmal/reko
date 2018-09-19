@@ -4228,7 +4228,7 @@ l0800_1645:
 	Mem521[es_1134:di_1130:byte] = (byte) Mem466[ss:fp - 0x008C:word16]
 	ptr32 es_di_525 = Mem521[ss:bp_215 - 0x0008:segptr32]
 	Mem529[ss:fp - 0x008C:word16] = (word16) (int32) Mem521[ds_444:0x29E9:word16]
-	word16 di_1126 = (word16) es_di_525 + 0x0001
+	word16 di_1126 = (word16) es_di_525
 	selector es_1112 = SLICE(es_di_525, selector, 16)
 	word16 cx_1128 = 0xFFFF
 // DataOut: al bp cx di ds es sp ss
@@ -4244,7 +4244,7 @@ l0800_165C:
 // LocalsOut: Local -0002(0)
 
 l0800_165C_1:
-	di_1126 = di_1126 + 0x0000
+	di_1126 = di_1126 + 0x0001
 	cx_1128 = cx_1128 - 0x0001
 	branch 0x00 == Mem529[es_1112:di_1126:byte] l0800_165C
 // DataOut: al bp cx di ds es sp ss
@@ -14698,7 +14698,7 @@ l0800_463B:
 	word16 wLoc08_105 = 0xFFFF
 	word16 wLoc0A_106 = 0xFFFF
 	word16 cx_111 = 0x0000
-	word16 si_110 = wArg02 + 0x0002
+	word16 si_110 = wArg02
 	branch 0x0000 >=u wArg06 l0800_46D5
 // DataOut: cx di ds si ss
 // DataOut (flags): 
@@ -14706,7 +14706,7 @@ l0800_463B:
 // LocalsOut: fp(16) Local -0008(0) Local -000A(0) Local -000C(0) Local -000E(0) Stack +0004(16)
 
 l0800_4661:
-	word16 ax_93 = Mem0[psegArg04:si_110 + 0x0000:word16]
+	word16 ax_93 = Mem0[psegArg04:si_110 + 0x0002:word16]
 	word16 dx_94 = Mem0[psegArg04:si_110:word16]
 	branch (dx_94 | ax_93) == 0x0000 l0800_46CD
 // DataOut: cx di ds si ss
@@ -23477,8 +23477,8 @@ l0800_8745:
 l0800_8749:
 	Mem522[es_23:di_128:byte] = Mem0[ds_19:si_108:byte]
 	byte SCZO_527 = cond(al_109 * 0x02)
-	si_108 = si_108 + 0x0001 + 0x0001
-	di_128 = di_128 + 0x0001 + 0x0001
+	si_108 = si_108 + 0x0001
+	di_128 = di_128 + 0x0001
 	al_109 = al_109 * 0x02
 	ax_110 = DPB(ax_110, al_109 * 0x02, 0) (alias)
 	Z_528 = (bool) SCZO_527 (alias)
@@ -23514,8 +23514,8 @@ l0800_8741:
 
 l0800_8744:
 	Mem78[es_23:di_128:byte] = Mem0[ds_19:si_108:byte]
-	si_108 = si_108 + 0x0000
-	di_128 = di_128 + 0x0000
+	si_108 = si_108 + 0x0001
+	di_128 = di_128 + 0x0001
 // DataOut: al bl di ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000E bp:<invalid> si:<invalid> ds:<invalid> di:<invalid> es:<invalid> al:<invalid> bx:<invalid> ax:<invalid> cx:<invalid> bh:<invalid> bl:<invalid> cl:<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -8(fp):ds -6(fp):di -4(fp):si -2(fp):bp

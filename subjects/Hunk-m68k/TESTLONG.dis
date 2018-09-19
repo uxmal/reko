@@ -1114,7 +1114,7 @@ l0000153C:
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:-1 d4:105 a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
 
 l00001544:
-	a2_1561 = a2_1561 + 1 + 1
+	a2_1561 = a2_1561 + 1
 	branch Mem229[a2_1561:byte] != 0x2A l0000156A
 // DataOut: a2 a3 a4 a5 a7 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
@@ -1135,7 +1135,7 @@ l00001588:
 	Mem1631[a7_1629:word32] = d2_1134
 	word32 d1_1636 = __swap(10) *u (word16) d5_1608
 	word32 d0_1643 = (word16) d5_1608 *u 10 + DPB(__swap(DPB(d1_1636, (word16) (d1_1636 + __swap(d5_1608) *u 0x000A), 0)), 0x0000, 0)
-	a2_1561 = a2_1561 + 0
+	a2_1561 = a2_1561 + 1
 	a0_1014 = 0x00002815 + (DPB(d0_1643, Mem1631[a2_1561:byte], 0) & 0x000000FF)
 	word32 d1_1651 = (int32) (int16) Mem1631[a2_1561:byte]
 	word32 d0_1663 = (int32) Mem1631[a0_1014:byte]

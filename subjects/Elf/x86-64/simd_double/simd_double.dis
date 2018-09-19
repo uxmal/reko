@@ -517,21 +517,21 @@ l0000000000000936:
 // LocalsOut: fp(64) Local -0010(64) Local -0038(64) Local -0040(64) Local -0048(64)
 
 l0000000000000949:
-	word64 qwLoc18_133 = 0x0000000000000001
+	word64 qwLoc18_133 = 0x0000000000000000
 // DataOut: xmm0
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000058 rbp:fp - 0x0000000000000008 rax:<invalid> rsi:<invalid> rdi:<invalid> rdx:<invalid> rcx:<invalid> xmm0:<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):0x0000000000000400 -16(fp):<invalid> -8(fp):rbp
 // LocalsOut: fp(64) Local -0018(64) Local -0038(64) Local -0040(64) Local -0048(64)
 
 l0000000000000998:
-	branch qwLoc18_133 <u 0x00000000000003FF l0000000000000953
+	branch qwLoc18_133 <u 0x0000000000000400 l0000000000000953
 // DataOut: xmm0
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000058 rbp:fp - 0x0000000000000008 rax:<invalid> rsi:<invalid> rdi:<invalid> rdx:<invalid> rcx:<invalid> xmm0:<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):0x0000000000000400 -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
 // LocalsOut: fp(64) Local -0018(64) Local -0038(64) Local -0040(64) Local -0048(64)
 
 l0000000000000953:
-	word64 rax_117 = qwLoc18_133 + 0x0000000000000000
+	word64 rax_117 = qwLoc18_133 + 0x0000000000000001
 	word32 eax_118 = (word32) rax_117
 	word64 rcx_122 = qwLoc18_133 * 0x0000000000000008 + rax_20
 	branch rax_117 < 0x0000000000000000 l000000000000097A

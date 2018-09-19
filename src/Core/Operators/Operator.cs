@@ -84,9 +84,16 @@ namespace Reko.Core.Operators
             throw new NotSupportedException();
         }
 
+        public virtual string AsCompound()
+        {
+            throw new NotSupportedException($"The {this} operator can't be used in a compound assignment.");
+        }
+
         public virtual Operator Invert()
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+
+    }
 }

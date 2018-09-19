@@ -238,7 +238,7 @@ namespace Reko.Analysis
                 if (sid.DefStatement.Instruction is PhiAssignment phi)
                 {
                     ctx.PhiStatement = sid.DefStatement;
-                    ctx.PhiIdentifier = (Identifier)phi.Dst;
+                    ctx.PhiIdentifier = phi.Dst;
                     return phi.Src;
                 }
             }

@@ -15,7 +15,9 @@ real80 fn80000132(real96 rArg04, real96 rArg10)
 {
 	word32 dwLoc14_16 = 0x00;
 	while ((real96) (real80) dwLoc14_16 < rArg10)
-		dwLoc14_16 = dwLoc14_16 + 0x01;
+	{
+		++dwLoc14_16;
+	}
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
@@ -24,7 +26,9 @@ real80 fn8000018E(real96 rArg04)
 {
 	int32 dwLoc14_18 = 0x01;
 	while ((real96) (real80) dwLoc14_18 <= rArg04)
-		dwLoc14_18 = dwLoc14_18 + 0x01;
+	{
+		++dwLoc14_18;
+	}
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
@@ -36,7 +40,7 @@ void fn800001F2(real96 rArg04)
 	{
 		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_25);
 		fn8000018E((real96) (real80) dwLoc20_25);
-		dwLoc20_25 = dwLoc20_25 + 0x02;
+		dwLoc20_25 += 0x02;
 	}
 }
 
@@ -50,7 +54,7 @@ real80 fn800002AE(real96 rArg04, Eq_55 & fp2Out)
 		real96 v19_59 = (real96) (real80) dwLoc20_24;
 		fn8000018E(v19_59);
 		rLoc3C = v19_59;
-		dwLoc20_24 = dwLoc20_24 + 0x02;
+		dwLoc20_24 += 0x02;
 	}
 	real80 fp2_102;
 	*fp2Out = fp2;

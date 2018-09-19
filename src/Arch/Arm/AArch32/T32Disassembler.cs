@@ -883,7 +883,35 @@ namespace Reko.Arch.Arm.AArch32
             return new BfcBfiDecoder(opcode, format);
         }
 
-        // Mutators
+        #region Mutators
+
+        private static bool R0(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
+                (wInstr & 0xF)]));
+            return true;
+        }
+
+        private static bool R8(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
+                ((wInstr >> 8) & 0xF)]));
+            return true;
+        }
+
+        private static bool R12(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
+                ((wInstr >> 12) & 0xF)]));
+            return true;
+        }
+
+        private static bool R16(uint wInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
+                ((wInstr >> 16) & 0xF)]));
+            return true;
+        }
 
         private static bool D22_12(uint wInstr, T32Disassembler dasm)
         {
@@ -911,6 +939,53 @@ namespace Reko.Arch.Arm.AArch32
             dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[
                 ((wInstr >> 1) & 0x10) | (wInstr & 0xF)]));
             return true;
+        }
+
+        // Immediate mutators
+
+        private static Mutator Imm(int pos1, int length1, int pos2, int length2)
+        {
+            var bitfields = new []
+            {
+                new Bitfield(pos1, length1),
+                new Bitfield(pos2, length2),
+            };
+            return (u,d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfields, u);
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+                return true;
+            };
+        }
+
+        private static Mutator ImmM1(int pos, int length)
+        {
+            var bitfield = new Bitfield(pos, length);
+            return (u, d) =>
+            {
+                var n = bitfield.Read(u);
+                d.state.ops.Add(ImmediateOperand.Word32(n + 1));
+                return true;
+            };
+        }
+
+        private static Mutator LslImm(int pos1, int length1, int pos2, int length2)
+        {
+            var bitfields = new[]
+            {
+                new Bitfield(pos1, length1),
+                new Bitfield(pos2, length2),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(bitfields, u);
+                if (imm != 0)
+                {
+                    d.state.shiftType = Opcode.lsl;
+                    d.state.shiftValue = ImmediateOperand.Int32((int)imm);
+                }
+                return true;
+            };
         }
 
         private static (ArmVectorData, uint)[] vectorImmediateShiftSize = new[]
@@ -951,6 +1026,26 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        // Memory access mutators
+
+        private static Mutator MemIdx(int posBaseReg, int posIdxReg, PrimitiveType dt)
+        {
+            return (u, d) =>
+            {
+                var baseReg = Registers.GpRegs[(u >> posBaseReg) & 0xF];
+                var idxReg = Registers.GpRegs[(u >> posIdxReg) & 0xF];
+                var mem = new MemoryOperand(dt)
+                {
+                    BaseRegister = baseReg,
+                    Index = idxReg
+                };
+                d.state.ops.Add(mem);
+                return true;
+            };
+        }
+        #endregion
+
+
         // Factory methods
         private static InstrDecoder Instr(Opcode opcode, string format)
         {
@@ -967,6 +1062,11 @@ namespace Reko.Arch.Arm.AArch32
             return new MaskDecoder(shift, mask, decoders);
         }
 
+        private static MaskDecoder Mask(int shift, uint mask, string debugString, params Decoder[] decoders)
+        {
+            return new MaskDecoder(shift, mask, debugString, decoders);
+        }
+
         private static BitFieldsDecoder Bitfields(string fieldSpecifier, params Decoder[] decoders)
         {
             return new BitFieldsDecoder(fieldSpecifier, decoders);
@@ -977,9 +1077,23 @@ namespace Reko.Arch.Arm.AArch32
             return new SelectDecoder(predicate, decoderTrue, decoderFalse);
         }
 
-        private static SelectFieldDecoder Select(string fieldSpecifier, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
+        private static SelectFieldDecoder Select((int,int) fieldSpecifier, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
         {
-            return new SelectFieldDecoder(fieldSpecifier, predicate, decoderTrue, decoderFalse);
+            var fields = new[]
+            {
+                new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2)
+            };
+            return new SelectFieldDecoder(fields, predicate, decoderTrue, decoderFalse);
+        }
+
+        private static SelectFieldDecoder Select((int,int,int,int) fieldSpecifier, Func<uint, bool> predicate, Decoder decoderTrue, Decoder decoderFalse)
+        {
+            var fields = new[]
+            {
+                new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2),
+                new Bitfield(fieldSpecifier.Item3, fieldSpecifier.Item4),
+            };
+            return new SelectFieldDecoder(fields, predicate, decoderTrue, decoderFalse);
         }
 
         private static NyiDecoder Nyi(string msg)
@@ -1019,11 +1133,11 @@ namespace Reko.Arch.Arm.AArch32
             var decAlu = CreateAluDecoder();
             var decDataLowRegisters = CreateDataLowRegisters();
             var decDataHiRegisters = Mask(8, 0x03, // Add, subtract, compare, move (two high registers)
-                Select("7:1:0:3", n => n != 13, 
-                    Select("3:4", n => n != 13,
+                Select((7,1,0,3), n => n != 13, 
+                    Select((3,4), n => n != 13,
                         Instr(Opcode.add, ".T,R3"),
                         AddSpRegisterT1),
-                    Select("3:4", n => n != 13,
+                    Select((3,4), n => n != 13,
                         AddSpRegisterT2, 
                         AddSpRegisterT1)),
                 Instr(Opcode.cmp, ".T,R3"),
@@ -1118,7 +1232,7 @@ namespace Reko.Arch.Arm.AArch32
             var decAddSub3 = Nyi("addsub3");
             var decAddSub3Imm = Nyi("AddSub3Imm");
             var decMovMovs = Mask(11, 3,
-                Select("6:5", n => n != 0,
+                Select((6,5), n => n != 0,
                     new MovMovsDecoder(Opcode.lsl, ".r0,r3,S6:5"),
                     Instr(Opcode.mov, "r0,r3")),
                 new MovMovsDecoder(Opcode.lsr, ".r0,r3,S6:5"),
@@ -1351,20 +1465,20 @@ namespace Reko.Arch.Arm.AArch32
                             Nyi("ADR - T2")))));
 
             var SaturateBitfield = Mask(5 + 16, 0x7,
-                Nyi("SsatLslVariant"),
+                Instr(Opcode.ssat, R8, ImmM1(0,5), R16, LslImm(12, 3, 6, 2)),
                 Select(w => SBitfield(w, 12, 3) != 0 || SBitfield(w, 6, 2) != 0,
                     Nyi("ssatAsrVariant"),
                     Nyi("ssat16")),
-                Nyi("sfbx"),
+                Instr(Opcode.sbfx, R8, R16,Imm(12,3,6,2), ImmM1(0, 5)),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
                     DecodeBfcBfi(Opcode.bfi, "R8,R16,i12:3:6:2,i0:5"),
                     DecodeBfcBfi(Opcode.bfc, "R8,i12:3:6:2,i0:5")),
                 // 4
-                Instr(Opcode.usat, "*"),
+                Instr(Opcode.usat, R8, ImmM1(0,5), R16, LslImm(12, 3, 6, 2)),
                 Select(w => SBitfield(w, 12, 3) != 0 || SBitfield(w, 6, 2) != 0,
                     Nyi("usatAsrVariant"),
                     Nyi("usat16")),
-                Nyi("ufbx"),
+                Instr(Opcode.ubfx, R8, R16,Imm(12,3,6,2), ImmM1(0, 5)),
                 invalid);
 
             var MoveWide16BitImm = Mask(7 + 16, 1,
@@ -1442,7 +1556,7 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
-            var LoadUnsignedLiteral = Select("12:4", n => n != 0xF,
+            var LoadUnsignedLiteral = Select((12,4), n => n != 0xF,
                 Mask(5 + 16, 3,
                     Instr(Opcode.ldrb, "R12,[P,i0:12,b]"),
                     Instr(Opcode.ldrh, "R12,[P,i0:12,h]"),
@@ -1454,7 +1568,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid));
 
-            var LoadSignedLiteral = Select("12:4", n => n != 0xF,
+            var LoadSignedLiteral = Select((12,4), n => n != 0xF,
                 Mask(5 + 16, 3,
                     Instr(Opcode.ldrsb, "R12,[P,i8:4:0:4,B]"),
                     Instr(Opcode.ldrsh, "R12,[P,i8:4:0:4,H]"),
@@ -1466,7 +1580,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid,
                     invalid));
 
-            var LoadStoreSignedRegisterOffset = Select("12:4", n => n != 0xF,
+            var LoadStoreSignedRegisterOffset = Select((12,4), n => n != 0xF,
                 Mask(5 + 16, 3,
                     Instr(Opcode.ldrsb, "*register"),
                     Instr(Opcode.ldrsh, "*register"),
@@ -1479,7 +1593,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var LoadStoreSingle = Mask(7 + 16, 3,
-                Select("16:4", n => n != 0xF,
+                Select((16,4), n => n != 0xF,
                     Mask(10, 3,
                         Select(w => SBitfield(w, 6, 6) == 0,
                             Nyi("LoadStoreUnsignedRegisterOffset"),
@@ -1494,7 +1608,7 @@ namespace Reko.Arch.Arm.AArch32
                             LoadStoreUnsignedUnprivileged,
                             LoadStoreUnsignedImmediatePreIndexed)),
                     LoadUnsignedLiteral),
-                Select("16:4", n => n != 0xF,
+                Select((16,4), n => n != 0xF,
                     LoadStoreUnsignedPositiveImm,
                     LoadUnsignedLiteral),
                 Select(w => SBitfield(w, 16, 4) != 0xF,
@@ -1518,46 +1632,46 @@ namespace Reko.Arch.Arm.AArch32
 
             var ldc_literal = Nyi("LDC (literal)");
 
-            var SystemRegisterLdSt = Select("8:1", n => n != 0,
+            var SystemRegisterLdSt = Select((8,1), n => n != 0,
                 invalid,
-                Select("12:4", n => n != 5,
+                Select((12,4), n => n != 5,
                     invalid,
-                    Select("22:1", n => n != 0,
+                    Select((22,1), n => n != 0,
                         invalid,
                         Bitfields("23:2:20:2", // PU-WL 
                             invalid,
                             invalid,
                             Instr(Opcode.stc, "*post-indexed"),
-                            Select("16:4", n => n != 15,
+                            Select((16,4), n => n != 15,
                                 Instr(Opcode.ldc, "*imm"),
                                 ldc_literal),
 
                             Instr(Opcode.stc, "*unindexed variant"),
-                            Select("16:4", n => n != 15,
+                            Select((16,4), n => n != 15,
                                 Instr(Opcode.ldc, "*immediate - unindexed variant"),
                                 ldc_literal),
                             invalid,
                             invalid, 
 
                             Instr(Opcode.stc, "*offset variant"),
-                            Select("16:4", n => n != 15,
+                            Select((16,4), n => n != 15,
                                 Instr(Opcode.ldc, "*offset variant"),
                                 ldc_literal),
                             Instr(Opcode.stc, "*preindexed variant"),
-                            Select("16:4", n => n != 15,
+                            Select((16,4), n => n != 15,
                                 Instr(Opcode.ldc, "*preindexed variant"),
                                 ldc_literal),
 
                             Instr(Opcode.stc, "CP#14,CR12,[R16,I0:8,w]"),
-                            Select("16:4", n => n != 15,
+                            Select((16,4), n => n != 15,
                                 Instr(Opcode.ldc, "*offset variant"),
                                 ldc_literal),
                             Instr(Opcode.stc, "*preindexed variant"),
-                            Select("16:4", n => n != 15,
+                            Select((16,4), n => n != 15,
                                 Instr(Opcode.ldc, "*preindexed variant"),
                                 ldc_literal)))));
 
-            var SystemRegisterLdStAnd64bitMove = Select("23:2:21:1", n => (n & 0xD) == 0,
+            var SystemRegisterLdStAnd64bitMove = Select((23,2,21,1), n => (n & 0xD) == 0,
                 Nyi("SystemRegister64bitMove"),
                 SystemRegisterLdSt);
 
@@ -1652,7 +1766,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var FloatingPointMoveImm = Nyi("FloatingPointMoveImm");
 
-            var FloatingPointConditionalSelect = Select("8:2", n => n == 1,
+            var FloatingPointConditionalSelect = Select((8,2), n => n == 1,
                 invalid,
                 Mask(20, 3,
                     Instr(Opcode.vseleq, "vfd D22:1:12:4,D7:1:16:4,D5:1:0:4"),
@@ -1701,7 +1815,7 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(6, 1,
                         FloatingPointMoveImm,
                         FloatingPointDataProcessing3Regs)),
-                Select("8:2", n => n != 0,
+                Select((8,2), n => n != 0,
                     Mask(4 + 16, 0xF, // op1
                         FloatingPointConditionalSelect,
                         FloatingPointConditionalSelect,
@@ -1718,7 +1832,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         Mask(6, 1,
                             invalid,
-                            Select("16:4", n => n == 0,
+                            Select((16,4), n => n == 0,
                                 FloatingPointExtIns,
                                 Mask(19, 1,
                                     invalid,
@@ -1729,7 +1843,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         Mask(6, 1,
                             invalid,
-                            Select("16:4", n => n == 0,
+                            Select((16,4), n => n == 0,
                                 FloatingPointExtIns,
                                 Mask(19, 1,
                                     invalid,
@@ -1737,9 +1851,9 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var AdvancedSimdAndFloatingPoint32bitMove = Mask(8, 1,
-                Select("21:3", n => n == 0,
+                Select((21,3), n => n == 0,
                     Instr(Opcode.vmov, "*between GPR and single prec"),
-                    Select("21:3", n => n == 7,
+                    Select((21,3), n => n == 7,
                         Mask(20, 1,
                             Instr(Opcode.vmsr, "*"),
                             Instr(Opcode.vmrs, "*")),
@@ -2190,8 +2304,12 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var AdvancedSimdTwoRegistersAndShiftAmount = Mask(8, 0xF, // Opc
-                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc0"),
-                Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc1"),
+                Mask(6, 1, // Q
+                    Instr(Opcode.vshr, VshImmSize, D22_12, D5_0, VshImm),
+                    Instr(Opcode.vshr, VshImmSize, Q22_12, Q5_0, VshImm)),
+                Mask(6, 1, // Q
+                    Instr(Opcode.vsra, VshImmSize, D22_12, D5_0, VshImm),
+                    Instr(Opcode.vsra, VshImmSize, Q22_12, Q5_0, VshImm)),
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc2"),
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc3"),
 
@@ -2231,7 +2349,7 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opcF"));
 
 
-            var AdvancedSimdShiftImm = Select("19:3:7:1", n => n == 0,
+            var AdvancedSimdShiftImm = Select((19,3,7,1), n => n == 0,
                 AdvancedSimdOneRegisterAndModifiedImmediate,
                 AdvancedSimdTwoRegistersAndShiftAmount);
 
@@ -2492,8 +2610,8 @@ namespace Reko.Arch.Arm.AArch32
                     invalid),
                 Mask(4, 3,      // op1 = 0b011
                     Select(w => SBitfield(w, 12, 4) != 0xF,
-                        Instr(Opcode.smlawb, "*"),
-                        Instr(Opcode.smulwb, "*")),
+                        Instr(Opcode.smlawb, R8,R16,R0,R12),
+                        Instr(Opcode.smulwb, R8,R16,R0)),
                     Select(w => SBitfield(w, 12, 4) != 0xF,
                         Instr(Opcode.smlawt, "*"),
                         Instr(Opcode.smulwt, "*")),
@@ -2510,16 +2628,16 @@ namespace Reko.Arch.Arm.AArch32
                     invalid),
                 Mask(4, 3,      // op1 = 0b101
                     Select(w => SBitfield(w, 12, 4) != 0xF,
-                        Instr(Opcode.smmla, "*"),
-                        Instr(Opcode.smmul, "*")),
+                        Instr(Opcode.smmla, R8,R16,R0,R12),
+                        Instr(Opcode.smmul, R8, R16, R0)),
                     Select(w => SBitfield(w, 12, 4) != 0xF,
-                        Instr(Opcode.smmlar, "*"),
-                        Instr(Opcode.smmulr, "*")),
+                        Instr(Opcode.smmlar, R8, R16, R0, R12),
+                        Instr(Opcode.smmulr, R8, R16, R0)),
                     invalid,
                     invalid),
                 Mask(4, 3,      // op1 = 0b110
-                    Instr(Opcode.smmls, "*"),
-                    Instr(Opcode.smmlsr, "*"),
+                    Instr(Opcode.smmls, R8, R16, R0, R12),
+                    Instr(Opcode.smmlsr, R8, R16, R0, R12),
                     invalid,
                     invalid),
                 Mask(4, 3,      // op1 = 0b111
@@ -2614,17 +2732,17 @@ namespace Reko.Arch.Arm.AArch32
                 Nyi("DataProcessingShiftedRegister_opc0"),
                 Nyi("DataProcessingShiftedRegister_opc1"),
                 Mask(20, 1,
-                    Select("16:4", n => n != 15,
+                    Select((16,4), n => n != 15,
                         Instr(Opcode.orr, "R8,R16,R0,Si4:2;12:3:6:2"),
                         Instr(Opcode.mov, "*")),
-                    Select("16:4", n => n != 15,
+                    Select((16,4), n => n != 15,
                         Instr(Opcode.orr, "*."),
                         Instr(Opcode.mov, "*."))),
                 Mask(20, 1,
-                    Select("16:4", n => n != 15,
+                    Select((16,4), n => n != 15,
                         Instr(Opcode.orn, "R8,R16,R0,Si4:2;12:3:6:2"),
                         Instr(Opcode.mvn, ".R8,R16,R0,Si4:2;12:3:6:2")),
-                    Select("16:4", n => n != 15,
+                    Select((16,4), n => n != 15,
                         Instr(Opcode.orn, "*."),
                         Instr(Opcode.mvn, "*."))),
 
@@ -2641,8 +2759,8 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(20, 1,
                     Nyi("DataProcessingShiftedRegister_opc8 s=0"),
-                    Select("8:4", n => n != 15,
-                        Select("16:4", n => n != 13,
+                    Select((8,4), n => n != 15,
+                        Select((16,4), n => n != 13,
                             Instr(Opcode.add, ".*"),
                             Instr(Opcode.add, ".S*")),
                         Instr(Opcode.cmn, "*register"))),
@@ -2688,7 +2806,7 @@ namespace Reko.Arch.Arm.AArch32
                     DataProcessingPlainImm,
                     branchesMiscControl),
 
-                Select("24:1:20:1", n => n != 2,
+                Select((24,1,20,1), n => n != 2,
                     LoadStoreSingle,
                     AdvancedSimdElementOrStructureLdSt),
                 Mask(7 + 16, 3,
@@ -2741,39 +2859,39 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.strd, "R12,R8,[R16,I0:8,dX]"),
                 Instr(Opcode.ldrd, "R12,R8,[R16,I0:8,dX]"));
 
-            return Mask(5 + 16, 0xF, // Load/store (multiple, dual, exclusive) table branch");
+            return Mask(5 + 16, 0xF, "Load/store (multiple, dual, exclusive) table branch",
                 invalid,
                 invalid,
-                Select("16:4", n => n != 15, ldStExclusive, ldrd),
-                Select("16:4", n => n != 15, ldStDual, ldrd),
+                ldStExclusive,
+                Select((16,4), n => n != 15, ldStDual, ldrd),
 
                 invalid,
                 invalid,
-                Select("16:4", n => n != 15,
-                    Mask(5, 7, // op0 = 0b0110, op3 
-                        Mask(20, 1,
-                            invalid,
-                            Nyi("TBB,TBH")),
+                Mask(5, 7, // op0 = 0b0110, op3 
+                    Mask(20, 1,
                         invalid,
-                        Nyi("load/store exclusive byte/half/dual"),
-                        Nyi("load/store exclusive byte/half/dual"),
+                        Mask(4, 1,
+                            Instr(Opcode.tbb, MemIdx(16,0, PrimitiveType.Byte)),
+                            Instr(Opcode.tbh, MemIdx(16, 0, PrimitiveType.Word16)))),
+                    invalid,
+                    Nyi("load/store exclusive byte/half/dual"),
+                    Nyi("load/store exclusive byte/half/dual"),
 
-                        LoadAcquireStoreRelease,
-                        LoadAcquireStoreRelease,
-                        LoadAcquireStoreRelease,
-                        LoadAcquireStoreRelease),
-                    ldrd),
-                Select("16:4", n => n != 15, ldStDual,ldrd),
+                    LoadAcquireStoreRelease,
+                    LoadAcquireStoreRelease,
+                    LoadAcquireStoreRelease,
+                    LoadAcquireStoreRelease),
+                Select((16,4), n => n != 15, ldStDual,ldrd),
 
-                Select("16:4", n => n != 15, invalid, ldrd),
-                Select("16:4", n => n != 15, invalid, ldrd),
-                Select("16:4", n => n != 15, ldStDualImm, ldrd),
-                Select("16:4", n => n != 15, ldStDualPre, ldrd),
+                Select((16,4), n => n != 15, invalid, ldrd),
+                Select((16,4), n => n != 15, invalid, ldrd),
+                Select((16,4), n => n != 15, ldStDualImm, ldrd),
+                Select((16,4), n => n != 15, ldStDualPre, ldrd),
 
-                Select("16:4", n => n != 15, invalid, ldrd),
-                Select("16:4", n => n != 15, invalid, ldrd),
-                Select("16:4", n => n != 15, ldStDualImm, ldrd),
-                Select("16:4", n => n != 15, ldStDualPre, ldrd));
+                Select((16,4), n => n != 15, invalid, ldrd),
+                Select((16,4), n => n != 15, invalid, ldrd),
+                Select((16,4), n => n != 15, ldStDualImm, ldrd),
+                Select((16,4), n => n != 15, ldStDualPre, ldrd));
         }
 
         private static Decoder CreateBranchesMiscControl()
@@ -2831,12 +2949,12 @@ namespace Reko.Arch.Arm.AArch32
                         Mask(5, 1,  // op5
                             Instr(Opcode.msr, "*register"),
                             Instr(Opcode.msr, "*banked register")),
-                        Select("8:3", n => n == 0,
+                        Select((8,3), n => n == 0,
                             Nyi("CreateBranchesMiscControl - hints"),
                             Nyi("ChangeProcessorState")),
                         MiscellaneousSystem),
                     Mask(20, 3,     // op2
-                        Select("12:7", n => n == 0,
+                        Select((12,7), n => n == 0,
                             Nyi("Dcps"),
                             invalid),
                         invalid,

@@ -7707,8 +7707,8 @@ get_a_line_entry:
 // LocalsOut: fp(32)
 
 l00402C1C:
-	word32 dwArg00_103 = r4 + 1
-	word32 dwArg04_101 = r5 + 1
+	word32 dwArg00_103 = r4
+	word32 dwArg04_101 = r5
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -7841,8 +7841,8 @@ l00402D18_ds_t:
 l00402D38:
 	Mem75[dwArg00_103:byte] = (byte) (word32) Mem0[dwArg04_101:byte]
 	Mem85[r6:word32] = Mem75[r6:word32] + -1
-	dwArg04_101 = dwArg04_101 + 0
-	dwArg00_103 = dwArg00_103 + 0
+	dwArg04_101 = dwArg04_101 + 1
+	dwArg00_103 = dwArg00_103 + 1
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -16 r25:0x00402C1C r28:0x10008860 r30:fp + -16 r2:<invalid> r3:<invalid> r4:<invalid> r5:fp + 4 -16(fp):0x10008860 -4(fp):r30 0(fp):<invalid> 4(fp):<invalid> 8(fp):r6

@@ -35,6 +35,11 @@ namespace Reko.Core.Operators
                 c1.ToUInt64() >> c2.ToInt32());
 		}
 
+        public override string AsCompound()
+        {
+            return " >>= ";
+        }
+
 		public override string ToString()
 		{
 			return " >>u ";

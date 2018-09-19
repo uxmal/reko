@@ -53,6 +53,10 @@ namespace Reko.Analysis
             incrUses = new List<IncrementedUse>();
         }
 
+        /// <summary>
+        /// Find all places where phi identifiers are used except the statements
+        /// that test the phi variable and increment the variable
+        /// </summary>
         public void ClassifyUses()
         {
             foreach (Statement stm in ssa.Identifiers[ctx.PhiIdentifier].Uses)
@@ -77,6 +81,8 @@ namespace Reko.Analysis
             if (incrUses.Count != 1)
                 return;
             IncrementedUse use = incrUses[0];
+            if (use.Increment == null)
+                return;
             if (ModifyInitialAssigment(use))
             {
                 use.Expression.Right = Constant.Create(use.Increment.DataType, 0);
@@ -171,14 +177,25 @@ namespace Reko.Analysis
 
             public override void VisitBinaryExpression(BinaryExpression binExp)
             {
-                base.VisitBinaryExpression(binExp);
-                if (binExp.Operator != Operator.IAdd)
-                    return;
-                if (binExp.Left != id)
-                    return;
-                if (binExp.Right is Constant c)
+                if (binExp.Operator == Operator.IAdd
+                    &&
+                    binExp.Left == id
+                    &&
+                    binExp.Right is Constant c)
                 {
                     uses.Add(new IncrementedUse(stmCur, binExp, c));
+                }
+                else
+                {
+                    base.VisitBinaryExpression(binExp);
+                }
+            }
+
+            public override void VisitIdentifier(Identifier id)
+            {
+                if (this.id == id)
+                {
+                    uses.Add(new IncrementedUse(stmCur, null, null));
                 }
             }
         }

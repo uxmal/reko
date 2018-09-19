@@ -1903,7 +1903,7 @@ fn0800_075B_entry:
 
 l0800_075B:
 	word16 di_16 = 0x0014
-	word16 si_17 = 0x0344
+	word16 si_17 = 0x0342
 // DataOut: di ds si
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1918,7 +1918,7 @@ l0800_0778:
 // LocalsOut: fp(16)
 
 l0800_0765:
-	branch (Mem0[ds:si_17 + 0x0000:word16] & 0x0300) != 0x0300 l0800_0775
+	branch (Mem0[ds:si_17 + 0x0002:word16] & 0x0300) != 0x0300 l0800_0775
 // DataOut: di ds si
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 di:<invalid> si:<invalid> ax:<invalid> cx:<invalid> al:<invalid> dx:<invalid> bx:<invalid> ah:<invalid> -6(fp):<invalid> -4(fp):di -2(fp):si

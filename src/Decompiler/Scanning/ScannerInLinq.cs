@@ -32,7 +32,11 @@ using Reko.Core.Types;
 
 namespace Reko.Scanning
 {
-    public class ScannerInLinq : ScanResults
+    using block = ScanResults.block;
+    using instr = ScanResults.instr;
+    using link = ScanResults.link;
+
+    public class ScannerInLinq //: ScanResults
     {
         // change @binary_size to simulate a large executable
         //private const int binary_size = 10;

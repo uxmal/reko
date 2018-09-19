@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
@@ -42,11 +43,25 @@ namespace Reko.Arch.Arm.AArch32
         {
             public abstract AArch32Instruction Decode(T32Disassembler dasm, uint wInstr);
 
+
             [Conditional("DEBUG")]
-            public static void TraceDecoder(uint wInstr, int shift, uint mask)
+            public static void TraceDecoder(uint wInstr, Bitfield[] bitfields, string debugString)
             {
-                return;
+                var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
+                TraceDecoder(wInstr, shMask, debugString);
+            }
+
+            [Conditional("DEBUG")]
+            public static void TraceDecoder(uint wInstr, int shift, uint mask, string debugString)
+            {
                 var shMask = mask << shift;
+                TraceDecoder(wInstr, shMask, debugString);
+            }
+
+            [Conditional("DEBUG")]
+            public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
+            {
+                //return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -62,6 +77,10 @@ namespace Reko.Arch.Arm.AArch32
                     shMask <<= 1;
                     wInstr <<= 1;
                 }
+                if (!string.IsNullOrEmpty(debugString))
+                {
+                    sb.AppendFormat(" {0}", debugString);
+                }
                 Debug.Print(sb.ToString());
             }
         }
@@ -76,6 +95,7 @@ namespace Reko.Arch.Arm.AArch32
             private readonly Decoder[] decoders;
             private readonly int shift;
             private readonly uint mask;
+            private readonly string debugString;
 
             public MaskDecoder(int shift, uint mask, params Decoder[] decoders)
             {
@@ -85,9 +105,15 @@ namespace Reko.Arch.Arm.AArch32
                 this.decoders = decoders;
             }
 
+            public MaskDecoder(int shift, uint mask, string debugString, params Decoder[] decoders) 
+                : this(shift, mask, decoders)
+            {
+                this.debugString = debugString;
+            }
+
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                TraceDecoder(wInstr, shift, mask);
+                TraceDecoder(wInstr, shift, mask, debugString);
                 var op = (wInstr >> shift) & mask;
                 return decoders[op].Decode(dasm, wInstr);
             }
@@ -152,13 +178,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private class SelectFieldDecoder : Decoder
         {
-            private readonly string fieldSpecifier;
+            private readonly Bitfield[] fieldSpecifier;
             private readonly Func<uint, bool> predicate;
             private readonly Decoder trueDecoder;
             private readonly Decoder falseDecoder;
 
             public SelectFieldDecoder(
-                string fieldSpecifier,
+                Bitfield[] fieldSpecifier,
                 Func<uint, bool> predicate,
                 Decoder trueDecoder,
                 Decoder falseDecoder)
@@ -171,8 +197,8 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                int i = 0;
-                var n = dasm.ReadBitfields(wInstr, fieldSpecifier, ref i);
+                TraceDecoder(wInstr, fieldSpecifier, null);
+                var n = Bitfield.ReadFields(fieldSpecifier, wInstr);
                 var decoder = (predicate(n) ? trueDecoder : falseDecoder);
                 return decoder.Decode(dasm, wInstr);
             }
@@ -195,7 +221,7 @@ namespace Reko.Arch.Arm.AArch32
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
                 wInstr = (wInstr << 16) | wNext;
-                TraceDecoder(wInstr, 9 + 16, 0xF);
+                TraceDecoder(wInstr, 9 + 16, 0xF, null);
                 return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(dasm, wInstr);
             }
         }

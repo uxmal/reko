@@ -159,7 +159,7 @@ void fn0001147C(word32 * r4, word32 * r5, UINT dwArg00, int32 dwArg04)
 			word32 r8_23;
 			fn00000000();
 		}
-		dwArg00_26 = dwArg00_26 + 0x01;
+		++dwArg00_26;
 	}
 }
 

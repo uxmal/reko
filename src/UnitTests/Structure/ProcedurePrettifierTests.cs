@@ -92,5 +92,41 @@ namespace Reko.UnitTests.Structure
                     });
             });
         }
+
+        [Test]
+        public void PP_CompoundAddition()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var pp = new ProcedurePrettifier(null);
+            var m = new AbsynCodeEmitter(new List<AbsynStatement>());
+            Assert.AreEqual("id += 0x00000002;", m.Assign(id, m.IAdd(id, 2)).Accept(pp).ToString());
+        }
+
+        [Test]
+        public void PP_ForLoop()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (id = 0x00000000; id != 0x000003E8; ++id)
+        foo(id);
+}
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var id = new Identifier("id", PrimitiveType.Word32, null);
+                var foo = new Identifier("foo", PrimitiveType.Ptr32, null);
+                m.For(
+                    n => n.Assign(id, m.Word32(0)),
+                    n => n.Ne(id, 1000),
+                    n => n.Assign(id, n.IAdd(id, 1)),
+                    b =>
+                    {
+                        b.SideEffect(m.Fn(foo, id));
+                    });
+            });
+        }
     }
 }

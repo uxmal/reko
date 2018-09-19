@@ -76,6 +76,8 @@ namespace Reko.Structure
             proc.Body.AddRange(reg.Statements);
 
             // Post processing steps
+            var flr = new ForLoopRewriter(proc);
+            flr.Transform();
             var trrm = new TailReturnRemover(proc);
             trrm.Transform();
             var pp = new ProcedurePrettifier(proc);

@@ -152,9 +152,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.shadd8:
                 case Opcode.shasx:
                 case Opcode.shsax:
-                case Opcode.smmla:
                 case Opcode.smmlar:
-                case Opcode.smmls:
                 case Opcode.smmlsr:
                 case Opcode.smmul:
                 case Opcode.smmulr:
@@ -166,7 +164,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.srsdb:
                 case Opcode.srsia:
                 case Opcode.srsib:
-                case Opcode.ssat:
                 case Opcode.ssat16:
                 case Opcode.ssax:
                 case Opcode.stl:
@@ -195,7 +192,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uqsub8:
                 case Opcode.usad8:
                 case Opcode.usada8:
-                case Opcode.usat:
                 case Opcode.usat16:
                 case Opcode.uxtab16:
                 case Opcode.uxtb16:
@@ -237,8 +233,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vldmdb:
                 case Opcode.vmaxnm:
                 case Opcode.vminnm:
-                case Opcode.vmlal:
-                case Opcode.vmlsl:
                 case Opcode.vmovl:
                 case Opcode.vmovn:
                 case Opcode.vmsr:
@@ -286,9 +280,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vselvs:
                 case Opcode.vshll:
                 case Opcode.vshrn:
-                case Opcode.vshr:
                 case Opcode.vsli:
-                case Opcode.vsra:
                 case Opcode.vsri:
                 case Opcode.vst1:
                 case Opcode.vst2:
@@ -310,8 +302,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.dcps3:
                 case Opcode.lsrs:
                 case Opcode.subs:
-                case Opcode.tbb:
-                case Opcode.tbh:
                 case Opcode.movs:
                 case Opcode.wfe:
                 case Opcode.wfi:
@@ -429,6 +419,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smlsdx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Opcode.smlsld: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Opcode.smlsldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
+                case Opcode.smmla: RewriteSmml(m.IAdd); break;
+                case Opcode.smmls: RewriteSmml(m.ISub); break;
                 case Opcode.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smulbt: RewriteMulbb(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smulwb: RewriteMulw(false); break;
@@ -436,6 +428,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smultb: RewriteMulbb(true, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smultt: RewriteMulbb(true, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
+                case Opcode.ssat: RewriteSsat(); break;
                 case Opcode.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
                 case Opcode.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
                 case Opcode.stc2l: RewriteStc("__stc2l"); break;
@@ -463,6 +456,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.sxtah: RewriteXtab(PrimitiveType.Int16); break;
                 case Opcode.sxtb: RewriteXtb(PrimitiveType.SByte, PrimitiveType.Int32); break;
                 case Opcode.sxth: RewriteXtb(PrimitiveType.Int16, PrimitiveType.Int32); break;
+                case Opcode.tbb: RewriteTableBranch(PrimitiveType.Byte); break;
+                case Opcode.tbh: RewriteTableBranch(PrimitiveType.Word16); break;
                 case Opcode.teq: RewriteTeq(); break;
                 case Opcode.trap: RewriteTrap(); break;
                 case Opcode.tst: RewriteTst(); break;
@@ -475,6 +470,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.umlal: RewriteUmlal(); break;
                 case Opcode.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
                 case Opcode.uqasx: RewriteVectorBinOp("__uqasx_{0}", ArmVectorData.U16); break;
+                case Opcode.usat: RewriteUsat(); break;
                 case Opcode.usax: RewriteUsax(); break;
                 case Opcode.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
                 case Opcode.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
@@ -505,6 +501,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vmov: RewriteVmov(); break;
                 case Opcode.vmla: RewriteVectorBinOp("__vmla_{0}"); break;
                 case Opcode.vmls: RewriteVectorBinOp("__vmls_{0}"); break;
+                case Opcode.vmlal: RewriteVectorBinOp("__vmlal_{0}"); break;
+                case Opcode.vmlsl: RewriteVectorBinOp("__vmlsl_{0}"); break;
                 case Opcode.vmrs: RewriteVmrs(); break;
                 case Opcode.vmvn: RewriteVmvn(); break;
                 case Opcode.vmul: RewriteVectorBinOp("__vmul_{0}"); break;
@@ -528,6 +526,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vstmia: RewriteVstmia(true, true); break;
                 case Opcode.vsqrt: RewriteVsqrt(); break;
                 case Opcode.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
+                case Opcode.vshr: RewriteVectorBinOp("__vshr_{0}"); break;
+                case Opcode.vsra: RewriteVectorBinOp("__vsra_{0}"); break;
                 case Opcode.vstr: RewriteVstr(); break;
                 case Opcode.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
                 }

@@ -1034,6 +1034,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void VpConstantHighByte()
         {
