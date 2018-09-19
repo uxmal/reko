@@ -99,7 +99,12 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override SortedList<string, int> GetOpcodeNames()
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SortedList<string, int> GetOpcodeNames()
 		{
 			throw new NotImplementedException();
 		}

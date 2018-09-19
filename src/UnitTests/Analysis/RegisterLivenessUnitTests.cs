@@ -36,6 +36,7 @@ using System.IO;
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
+    [Obsolete]
 	public class RegisterLivenessUnitTests
 	{
 		private Program program;

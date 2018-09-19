@@ -3155,17 +3155,17 @@ proc1_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
-                var flags = m.Frame.EnsureFlagGroup(new RegisterStorage("FLAGS", 142, 0, PrimitiveType.Word32), 7, "SZC", PrimitiveType.Byte);
+                var SZC = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZC"));
 
                 m.Assign(eax, 4);
                 m.MStore(m.Word32(0x00123400), eax);
                 m.Assign(al, m.Mem8(m.Word32(0x00123408)));
-                m.Assign(flags, m.Cond(m.ISub(al, 0x30)));
-                m.BranchIf(m.Test(ConditionCode.LT, flags), "m4_not_number");
+                m.Assign(SZC, m.Cond(m.ISub(al, 0x30)));
+                m.BranchIf(m.Test(ConditionCode.LT, SZC), "m4_not_number");
 
                 m.Label("m1_maybe_number");
-                m.Assign(flags, m.Cond(m.ISub(al, 0x39)));
-                m.BranchIf(m.Test(ConditionCode.GT, flags), "m4_not_number");
+                m.Assign(SZC, m.Cond(m.ISub(al, 0x39)));
+                m.BranchIf(m.Test(ConditionCode.GT, SZC), "m4_not_number");
 
                 m.Label("m2_number");
                 m.Assign(al, 1);

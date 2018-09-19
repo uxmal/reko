@@ -271,6 +271,17 @@ namespace Reko.Arch.X86
             return subreg;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.D.FlagGroupBits) != 0) yield return Registers.D;
+            if ((grf & Registers.O.FlagGroupBits) != 0) yield return Registers.O;
+            if ((grf & Registers.P.FlagGroupBits) != 0) yield return Registers.P;
+        }
+
         private static RegisterStorage GetSubregisterUsingMask(StorageDomain domain, ulong mask)
         {
             RegisterStorage[] subregs;

@@ -104,8 +104,6 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
-                if (ric.Address.ToLinear() == 0x0001DD90)
-                    ric.ToString(); //$DEBUG
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))

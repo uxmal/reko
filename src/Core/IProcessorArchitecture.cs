@@ -149,6 +149,12 @@ namespace Reko.Core
         RegisterStorage GetRegister(StorageDomain domain, BitRange range);  
 
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        /// <summary>
+        /// If the <paramref name="flags"/> parameter consists of multiple sub fields, separate them
+        /// into distinct fields.
+        /// </summary>
+        /// <param name="flags"></param>
+        IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags);
         void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
 
         /// <summary>
@@ -413,6 +419,12 @@ namespace Reko.Core
         {
             return (offset == 0 && reg.BitSize == (ulong)width) ? reg : null;
         }
+
+        public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            throw new NotImplementedException("Your architecture must implement this.");
+        }
+
 
         public virtual RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
         public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }

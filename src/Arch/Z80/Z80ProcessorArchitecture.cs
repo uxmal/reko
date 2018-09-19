@@ -141,6 +141,16 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.P.FlagGroupBits) != 0) yield return Registers.P;
+            if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+        }
+
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             if (offset == 0 && reg.BitSize == (ulong)width)
@@ -226,13 +236,13 @@ namespace Reko.Arch.Z80
 
 		public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
 		{
-			StringBuilder s = new StringBuilder();
-			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)
-			{
-				if ((grf & 1) != 0)
-					s.Append(Registers.GetRegister(r).Name);
-			}
-			return s.ToString();
+			StringBuilder sb = new StringBuilder();
+            if ((grf & Registers.S.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+            if ((grf & Registers.Z.FlagGroupBits) != 0) sb.Append(Registers.Z.Name);
+            if ((grf & Registers.P.FlagGroupBits) != 0) sb.Append(Registers.P.Name);
+            if ((grf & Registers.N.FlagGroupBits) != 0) sb.Append(Registers.N.Name);
+            if ((grf & Registers.C.FlagGroupBits) != 0) sb.Append(Registers.C.Name);
+			return sb.ToString();
 		}
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -274,10 +284,11 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage hl_ = new RegisterStorage("hl'", 14, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage af_ = new RegisterStorage("af'", 15, 0, PrimitiveType.Word16);
 
-        public static readonly RegisterStorage S = new RegisterStorage("S", 24, 0, PrimitiveType.Bool);
-        public static readonly RegisterStorage Z = new RegisterStorage("Z", 25, 0, PrimitiveType.Bool);
-        public static readonly RegisterStorage P = new RegisterStorage("P", 26, 0, PrimitiveType.Bool);
-        public static readonly RegisterStorage C = new RegisterStorage("C", 27, 0, PrimitiveType.Bool);
+        public static readonly FlagGroupStorage S = new FlagGroupStorage(f, (uint)FlagM.SF, "S", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(f, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage P = new FlagGroupStorage(f, (uint)FlagM.PF, "P", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint)FlagM.NF, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint)FlagM.CF, "C", PrimitiveType.Bool);
 
         internal static RegisterStorage[] All;
         internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
@@ -316,10 +327,6 @@ namespace Reko.Arch.Z80
              hl_,
              null,
 
-             S ,
-             Z ,
-             P ,
-             C ,
             };
 
             Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg.Name);
@@ -376,10 +383,11 @@ namespace Reko.Arch.Z80
     [Flags]
     public enum FlagM : byte
     {
-        SF = 1,             // sign
-        ZF = 2,             // zero
-        PF = 4,             // overflow / parity
-        CF = 8,             // carry
+        SF = 0x80,             // sign
+        ZF = 0x40,             // zero
+        PF = 0x04,             // overflow / parity
+        NF = 0x02,             // carry
+        CF = 0x01,             // carry
     }
 
     public enum CondCode

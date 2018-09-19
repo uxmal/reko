@@ -77,7 +77,7 @@ namespace Reko.Arch.M68k
         {
             return binder.EnsureFlagGroup(
                 Registers.fpsr,
-                0xF0000000u,
+                0xFF000000u,
                 "FPUFLAGS",
                 PrimitiveType.Byte);
         }

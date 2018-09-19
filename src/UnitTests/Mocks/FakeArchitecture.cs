@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Mocks
     public class FakeArchitecture : IProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
-        private static RegisterStorage flags = new RegisterStorage("flags", 70, 0, PrimitiveType.Word32);
+        private static RegisterStorage FlagRegister = new RegisterStorage("flags", 70, 0, PrimitiveType.Word32);
         private RtlTraceBuilder rewriters;
 
 		internal const int RegisterCount = 64;
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Mocks
                 }
             }
             if (grf != 0)
-                return new FlagGroupStorage(flags, grf, s,
+                return new FlagGroupStorage(FlagRegister, grf, s,
                     Bits.IsSingleBitSet(grf)
                         ? PrimitiveType.Bool
                         : PrimitiveType.Byte);
@@ -208,6 +208,17 @@ namespace Reko.UnitTests.Mocks
         public RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             return GetRegister(domain - StorageDomain.Register);
+        }
+
+        public IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            for (uint bitMask = 1; bitMask <= flags.FlagGroupBits; bitMask <<= 1)
+            {
+                if ((flags.FlagGroupBits & bitMask) != 0)
+                {
+                    yield return GetFlagGroup(FakeArchitecture.FlagRegister, bitMask);
+                }
+            }
         }
 
         public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)

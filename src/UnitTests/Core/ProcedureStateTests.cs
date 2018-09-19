@@ -211,6 +211,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+            {
+                throw new NotImplementedException();
+            }
+
             public Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
             {
                 throw new NotImplementedException();

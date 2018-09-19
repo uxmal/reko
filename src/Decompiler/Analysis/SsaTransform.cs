@@ -314,9 +314,8 @@ namespace Reko.Analysis
             {
                 if (id.Storage is FlagGroupStorage grf)
                 {
-                    foreach (var bit in grf.GetFlagBitMasks())
+                    foreach (var singleFlag in arch.GetSubFlags(grf))
                     {
-                        var singleFlag = arch.GetFlagGroup(grf.FlagRegister, bit);
                         yield return ssa.Procedure.Frame.EnsureFlagGroup(singleFlag);
                     }
                 }
@@ -478,9 +477,8 @@ namespace Reko.Analysis
                 foreach (var de in calleeFlow.grfTrashed)
                 {
                     var grfs = arch.GetFlagGroup(de.Key, de.Value);
-                    foreach (var bit in grfs.GetFlagBitMasks())
+                    foreach (var grf in arch.GetSubFlags(grfs))
                     {
-                        var grf = arch.GetFlagGroup(grfs.FlagRegister, bit);
                         var d = ssa.Procedure.Frame.EnsureFlagGroup(grf);
                         ci.Definitions.Add(
                             new CallBinding(

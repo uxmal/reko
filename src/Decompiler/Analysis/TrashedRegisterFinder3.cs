@@ -556,6 +556,8 @@ namespace Reko.Analysis
                         }
                     }
                     ctx.ProcFlow.Trashed.Add(stg);
+                    ctx.ProcFlow.Preserved.Remove(stg);
+                    ctx.ProcFlow.Constants.Remove(stg);
                 }
                 break;
             case FlagGroupStorage grfStorage:

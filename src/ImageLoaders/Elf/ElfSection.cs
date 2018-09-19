@@ -47,6 +47,11 @@ namespace Reko.ImageLoaders.Elf
             else
                 return (uint)(Size / EntrySize);
         }
+
+        public override string ToString()
+        {
+            return $"{Name}: {Address}-{Size:X8}";
+        }
     }
 
     public class Elf32_SHdr

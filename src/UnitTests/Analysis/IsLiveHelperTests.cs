@@ -24,11 +24,13 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Types;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
+    [Obsolete]
 	public class IsLiveHelperTests
 	{
 		private IStorageBinder f;

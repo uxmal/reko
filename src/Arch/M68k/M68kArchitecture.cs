@@ -136,6 +136,16 @@ namespace Reko.Arch.M68k
             return Registers.regs;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            foreach (var cc in flagRegisters)
+            {
+                if ((grf & cc.FlagGroupBits) != 0)
+                    yield return cc;
+            }
+        }
+
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             return Registers.regsByName.TryGetValue(name, out reg);
@@ -194,26 +204,27 @@ namespace Reko.Arch.M68k
             }
         }
 
-        //$REVIEW: shouldn't this be flaggroup?
-        private static RegisterStorage[] flagRegisters = {
-            new RegisterStorage("C", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("V", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("Z", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("N", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("X", 0, 0, PrimitiveType.Bool),
+        private static FlagGroupStorage[] flagRegisters = {
+            Registers.C,
+            Registers.V,
+            Registers.Z,
+            Registers.N,
+            Registers.X,
         };
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
-            if ((grf & 0xF0000000u) == 0xF0000000u) //$HACK: grftostring needs a FlagRegister
-                return "FPUFLAGS";
-            StringBuilder s = new StringBuilder();
-            for (int r = 0; grf != 0; ++r, grf >>= 1)
+            if (flagregister == Registers.fpsr)
             {
-                if ((grf & 1) != 0)
-                    s.Append(flagRegisters[r].Name);
+                return "FPUFLAGS";
             }
-            return s.ToString();
+            StringBuilder sb = new StringBuilder();
+            if ((grf & Registers.C.FlagGroupBits) != 0) sb.Append(Registers.C.Name);
+            if ((grf & Registers.V.FlagGroupBits) != 0) sb.Append(Registers.V.Name);
+            if ((grf & Registers.Z.FlagGroupBits) != 0) sb.Append(Registers.Z.Name);
+            if ((grf & Registers.N.FlagGroupBits) != 0) sb.Append(Registers.N.Name);
+            if ((grf & Registers.X.FlagGroupBits) != 0) sb.Append(Registers.X.Name);
+            return sb.ToString();
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

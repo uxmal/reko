@@ -63,6 +63,12 @@ namespace Reko.Arch.M68k
         public static readonly AddressRegister pc;
         public static readonly RegisterStorage fpsr;
 
+        public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage V;
+        public static readonly FlagGroupStorage Z;
+        public static readonly FlagGroupStorage N;
+        public static readonly FlagGroupStorage X;
+
         internal static RegisterStorage[] regs;
         internal static int Max;
         internal static readonly Dictionary<string, RegisterStorage> regsByName;
@@ -101,6 +107,12 @@ namespace Reko.Arch.M68k
             usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Ptr32);
             fpsr = new RegisterStorage("fpsr", 28, 0, PrimitiveType.Word32);
+
+            C = new FlagGroupStorage(ccr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(ccr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(ccr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            N = new FlagGroupStorage(ccr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            X = new FlagGroupStorage(ccr, (uint) FlagM.XF, "X", PrimitiveType.Bool);
 
             Max = 29;
 
