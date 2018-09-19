@@ -1,122 +1,62 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
-	BypassIn: 
-	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	BitsUsed:  dx:[0..15]
+	Trashed:   SCZO ax dx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def dx
 l0C00_0000:
-	sp = fp
-	call fn0C00_0004 (retsize: 2; depth: 2)
+	call fn0C00_0004 (retsize: 2;)
+		uses: dx:dx
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0004 /////////////////////
-	LiveOut:   ax dx
-	BitsUsed: 
-	BypassIn: 
-	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	LiveOut:   ax:[0..15] dx:[0..15]
+	BitsUsed:  dx:[0..15]
+	Trashed:   SCZO ax dx Top
 	Preserved: sp
 // fn0C00_0004
 define fn0C00_0004
-// SymbolicIn: sp:fp
 fn0C00_0004_entry:
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def dx
 l0C00_0004:
-	sp = fp
-	SCZO = cond(dx - 0x001E)
-	branch Test(NE,Z) l0C00_000F
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	branch dx != 0x001E l0C00_000F
 l0C00_0009:
-	call fn0C00_0013 (retsize: 2; depth: 2)
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	call fn0C00_0013 (retsize: 2;)
+		uses: dx:dx
+		defs: dx:dx_10,SCZO:SCZO_14
 l0C00_000F:
-	dx = dx - 0x0001
-	SZO = cond(dx)
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+	dx_7 = dx - 0x0001
 l0C00_0010:
-	ax = dx
+	dx_15 = PHI(dx_10, dx_7)
+	ax_16 = dx_15
 	return
-// DataOut: ax dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
 fn0C00_0004_exit:
-// DataOut: ax dx
-// DataOut (flags): 
-
+	use ax_16
+	use dx_15
 // fn0C00_0013 /////////////////////
-	LiveOut:   dx
-	BitsUsed: 
-	BypassIn: 
-	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	LiveOut:   dx:[0..15]
+	BitsUsed:  dx:[0..15]
+	Trashed:   SCZO ax dx Top
 	Preserved: sp
 // fn0C00_0013
 define fn0C00_0013
-// SymbolicIn: sp:fp
 fn0C00_0013_entry:
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def dx
 l0C00_0013:
-	sp = fp
-	SCZO = cond(dx - 0x0014)
-	branch Test(LT,SO) l0C00_001F
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	branch dx < 0x0014 l0C00_001F
 l0C00_0018:
-	dx = dx - 0x0001
-	SZO = cond(dx)
-	call fn0C00_0004 (retsize: 2; depth: 2)
-// DataOut: ax dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	call fn0C00_0004 (retsize: 2;)
+		uses: dx:dx - 0x0001
+		defs: ax:ax_19,dx:dx_18,SCZO:SCZO_21
 l0C00_001F:
-	dx = dx - 0x000A
-	SCZO = cond(dx)
-	call fn0C00_0004 (retsize: 2; depth: 2)
-// DataOut: ax dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+	call fn0C00_0004 (retsize: 2;)
+		uses: dx:dx - 0x000A
+		defs: ax:ax_12,dx:dx_10,SCZO:SCZO_14
 l0C00_0025:
-	ax = ax + 0x0001
-	SZO = cond(ax)
+	dx_28 = PHI(dx_18, dx_10)
 	return
-// DataOut: dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
 fn0C00_0013_exit:
-// DataOut: dx
-// DataOut (flags): 
-
+	use dx_28

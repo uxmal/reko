@@ -237,32 +237,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("Won't be needed when class obsoleted")]
-		public void Rl_CallToProcedureWithStackArgs()
-		{
-			Procedure callee = new Procedure(program.Architecture, "callee", null);
-			callee.Signature = FunctionType.Func(
-				f.EnsureRegister(Registers.eax),
-				new Identifier[] {
-                    new Identifier("arg04", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-					new Identifier("arg08", PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))
-                });
-
-			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
-			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
-			new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, callee), new CallSite(4, 0)).Accept(rl);
-
-			foreach (object o in rl.IdentifierLiveness.LiveStorages.Keys)
-			{
-				Console.WriteLine("{0} {1} {2}", o, Object.Equals(o, b04.Storage), Object.Equals(o, b04.Storage));
-			}
-            Assert.AreEqual(2, rl.IdentifierLiveness.LiveStorages.Count, "Should have two accesses");
-
-			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(b04.Storage), "Should have storage for b04");
-			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(w08.Storage), "Should have storage for w08");
-		}
-
-		[Test]
 		public void Rl_MarkLiveStackParameters()
 		{
             var callee = new Procedure(program.Architecture, "callee", program.Architecture.CreateFrame());

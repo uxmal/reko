@@ -297,7 +297,6 @@ ret
         }
 
         [Test]
-        //[Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void StrReg00001()
         {

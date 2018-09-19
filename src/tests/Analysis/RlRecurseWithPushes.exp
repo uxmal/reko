@@ -1,102 +1,55 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
-	BypassIn: 
-	Trashed:   SCZO ah al ax di dil eax edi esi rax rdi rsi si sil
+	BitsUsed:  di:[0..15] ds:[0..15] si:[0..15]
+	Trashed:   SCZO ax di esi Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def si
+	def ds
+	def di
 l0C00_0000:
-	sp = fp
-	si = 0x1230
-	call fn0C00_0007 (retsize: 2; depth: 2)
+	call fn0C00_0004 (retsize: 2;)
+		uses: di:di,ds:ds,si:si
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:0x1230 ax:<invalid> di:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
-// fn0C00_0007 /////////////////////
+// fn0C00_0004 /////////////////////
 	LiveOut:  
-	BitsUsed: 
-	BypassIn: 
-	Trashed:   SCZO ah al ax di dil eax edi rax rdi
-	Preserved: si sp
-// fn0C00_0007
-define fn0C00_0007
-// SymbolicIn: sp:fp
-fn0C00_0007_entry:
-// DataOut: di ds si
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
-l0C00_0007:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = si
-	call fn0C00_0020 (retsize: 2; depth: 4)
-	si = wLoc02
-	sp = fp
-	ax = Mem0[ds:si + 0x0028:word16]
-	v7 = Mem0[ds:0x1444:word16] + ax
-	Mem0[ds:0x1444:word16] = v7
-	SCZO = cond(v7)
-	SCZO = cond(Mem0[ds:di + 0x0030:byte] - 0x00)
-	branch Test(EQ,Z) l0C00_001F
-// DataOut: di ds si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:si ax:<invalid> -2(fp):si
-l0C00_0019:
-	di = Mem0[ds:di + 0x0030:word16]
-	call fn0C00_0007 (retsize: 2; depth: 2)
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:si ax:<invalid> di:<invalid> -2(fp):si
-l0C00_001F:
+	BitsUsed:  di:[0..15] ds:[0..15] si:[0..15]
+	Trashed:   SCZO ax di esi Top
+	Preserved: sp
+// fn0C00_0004
+define fn0C00_0004
+fn0C00_0004_entry:
+	def si
+	def ds
+	def di
+l0C00_0004:
+	call fn0C00_001D (retsize: 2;)
+		uses: ds:ds
+	ax_12 = Mem7[ds:si + 0x0028:word16]
+	v7_13 = Mem7[ds:0x1444:word16] + ax_12
+	Mem14[ds:0x1444:word16] = v7_13
+	branch Mem14[ds:di + 0x0030:byte] == 0x00 l0C00_001C
+l0C00_0016:
+	di_18 = Mem14[ds:di + 0x0030:word16]
+	call fn0C00_0004 (retsize: 2;)
+		uses: di:di_18,ds:ds,si:si
+		defs: SCZO:SCZO_23
+l0C00_001C:
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:si ax:<invalid> di:<invalid> -2(fp):si
-fn0C00_0007_exit:
-// DataOut:
-// DataOut (flags): 
-
-// fn0C00_0020 /////////////////////
-	LiveOut:   di ds
-	BitsUsed: 
-	BypassIn: 
-	Trashed:  
-	Preserved:
-// fn0C00_0020
-define fn0C00_0020
-// SymbolicIn: sp:fp
-fn0C00_0020_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
-l0C00_0020:
-	sp = fp
-	esi = 0x00001234
-	Mem0[ds:0x4321:word32] = 0x00001234
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn:
-fn0C00_0020_exit:
-// DataOut: di ds
-// DataOut (flags): 
-
+fn0C00_0004_exit:
+// fn0C00_001D /////////////////////
+	LiveOut:  
+	BitsUsed:  ds:[0..15]
+	Trashed:   esi Top
+	Preserved: sp
+// fn0C00_001D
+define fn0C00_001D
+fn0C00_001D_entry:
+	def ds
+l0C00_001D:
+	Mem6[ds:0x4321:word32] = 0x00001234
+	return
+fn0C00_001D_exit:

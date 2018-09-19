@@ -89,14 +89,16 @@ namespace Reko.UnitTests.Analysis
         }
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RlDataConstraint()
 		{
 			RunFileTest_x86_real("Fragments/data_constraint.asm", "Analysis/RlDataConstraint.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RlOneProcedure()
-		{
+        {
 			RunFileTest_x86_real("Fragments/one_procedure.asm", "Analysis/RlOneProcedure.txt");
 		}
 
@@ -104,34 +106,36 @@ namespace Reko.UnitTests.Analysis
 		/// Test that self-recursive functions are handled correctly.
 		/// </summary>
 		[Test]
-        [Category(Categories.UnitTests)]
+        [Category(Categories.IntegrationTests)]
         public void RlFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/RlFactorialReg.txt");
 		}
 
 		[Test]
-        [Category(Categories.UnitTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void RlFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/RlFactorial.txt");
 		}
 
 		[Test]
-		public void RlCalleeSave()
+        [Category(Categories.IntegrationTests)]
+        public void RlCalleeSave()
 		{
 			RunFileTest_x86_real("Fragments/callee_save.asm", "Analysis/RlCalleeSave.txt");
 		}
 
 		[Test]
-		public void RlDeepNest()
+        [Category(Categories.IntegrationTests)]
+        public void RlDeepNest()
 		{
 			RunFileTest_x86_real("Fragments/deep_nest.asm", "Analysis/RlDeepNest.txt");
 		}
 
 		[Test]
-		public void RlSequence()
+        [Category(Categories.IntegrationTests)]
+        public void RlSequence()
 		{
 			RunFileTest_x86_real("Fragments/sequence_calls_reg.asm", "Analysis/RlSequence.txt");
 		}
@@ -150,15 +154,16 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
 		public void RlConditionals()
-		{
+        {
 			RunFileTest_x86_real("Fragments/multiple/conditionals.asm", "Analysis/RlConditionals.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RlFpuOps()
-		{
+        {
 			RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/RlFpuOps.txt");
 		}
 
@@ -169,37 +174,42 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("The source file mutual.asm looks incorrect.")]
+        [Category(Categories.IntegrationTests)]
 		public void RlMutual()
 		{
 			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/RlMutual.txt");
 		}
 
 		[Test]
-		public void RlStackVariables()
+        [Category(Categories.IntegrationTests)]
+        public void RlStackVariables()
 		{
 			RunFileTest_x86_real("Fragments/stackvars.asm", "Analysis/RlStackVariables.txt");
 		}
 
 		[Test]
-		public void RlProcIsolation()
+        [Category(Categories.IntegrationTests)]
+        public void RlProcIsolation()
 		{
 			RunFileTest_x86_real("Fragments/multiple/procisolation.asm", "Analysis/RlProcIsolation.txt");
 		}
 
 		[Test]
-		public void RlLeakyLiveness()
+        [Category(Categories.IntegrationTests)]
+        public void RlLeakyLiveness()
 		{
 			RunFileTest_x86_real("Fragments/multiple/leaky_liveness.asm", "Analysis/RlLeakyLiveness.txt");
 		}
 
 		[Test]
-		public void RlStringInstructions()
+        [Category(Categories.IntegrationTests)]
+        public void RlStringInstructions()
 		{
 			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/RlStringInstructions.txt");
 		}
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void RlTermination()
         {
             Given_Signature(
@@ -218,19 +228,21 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void RlLivenessAfterCall()
  		{
 			RunFileTest_x86_real("Fragments/multiple/livenessaftercall.asm", "Analysis/RlLivenessAfterCall.txt");
 		}
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void RlPushedRegisters()
         {
             RunFileTest_x86_real("Fragments/multiple/pushed_registers.asm", "Analysis/RlPushedRegisters.txt");
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         [Ignore(Categories.AnalysisDevelopment)]
         public void RlReg00005()
         {
@@ -238,13 +250,14 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void RlReg00007()
         {
             RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
+        [Category(Categories.IntegrationTests)]
         public void RlReg00010()
         {
             RunFileTest_x86_real("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
@@ -259,29 +272,28 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
+        [Category(Categories.IntegrationTests)]
         public void RlPushPop()
         {
             RunFileTest_x86_real("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
+        [Category(Categories.IntegrationTests)]
         public void RlChainTest()
         {
             RunFileTest_x86_real("Fragments/multiple/chaincalls.asm", "Analysis/RlChainTest.txt");
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
+        [Category(Categories.IntegrationTests)]
         public void RlSliceReturn()
         {
             RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/RlSliceReturn.txt");
         }
 
         [Test]
-        [Category(Categories.UnitTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void RlRecurseWithPushes()
         {
             RunFileTest_x86_real("Fragments/multiple/recurse_with_pushes.asm", "Analysis/RlRecurseWithPushes.txt");

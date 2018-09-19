@@ -32,8 +32,11 @@ using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
-    [TestFixture]
-    [Ignore("May not be needed after all")]
+    /// <summary>
+    /// It doesn't seem like value numbering is useful to us yet,
+    /// but I'm leaving the code in. Add [TextFixture] and [Test]
+    /// to the methods to re-enable it.
+    /// </summary>
     public class ValueNumberingTests : AnalysisTestBase
 	{
         private Program program;
@@ -42,7 +45,6 @@ namespace Reko.UnitTests.Analysis
         private FakeDecompilerEventListener listener;
         private SegmentMap segmentMap;
 
-        [SetUp]
         public void Setup()
         {
             this.listener = new FakeDecompilerEventListener();
@@ -117,7 +119,6 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		[Test]
 		public void VnSumTest()
 		{
 			Program prog = RewriteCodeFragment(
@@ -156,7 +157,6 @@ namespace Reko.UnitTests.Analysis
 			ssa.Procedure.Write(false, writer);
 		}
 
-		[Test]
 		public void VnMemoryTest()
 		{
 			Program program = RewriteCodeFragment(
@@ -182,7 +182,6 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		[Test]
 		public void VnLoopTest()
 		{
 			Program program = this.RewriteCodeFragment(
@@ -225,7 +224,6 @@ done:
 			}
 		}
 
-		[Test]
 		public void VnRedundantStore()
 		{
 			Program program = RewriteCodeFragment(
@@ -260,7 +258,6 @@ done:
 			}
 		}
 
-		[Test]
 		public void VnLoop()
 		{
 			Program program = RewriteCodeFragment(@".i86
@@ -299,25 +296,21 @@ looptest:
 			}
 		}
 
-		[Test]
 		public void VnFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/VnFactorial.txt");
 		}
 
-		[Test]
 		public void VnReg00001()
 		{
             RunFileTest_x86_real("Fragments/regression00001.asm", "Analysis/VnReg00001.txt");
 		}
 
-		[Test]
 		public void VnStringInstructions()
 		{
             RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
 		}
 
-        [Test]
         public void VnFactorial_CalleeCleanup()
         {
             var pb = new ProgramBuilder();
@@ -462,7 +455,6 @@ Identifiers:
             RunTest(pb, sExp);
         }
 
-        [Test]
         public void VnPhiLoop()
         {
             var pb = new ProgramBuilder();
@@ -493,7 +485,6 @@ Identifiers:
         }
 
 
-        [Test]
         public void VnPhiLoop_UselessConstant()
         {
             var pb = new ProgramBuilder();
