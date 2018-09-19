@@ -173,30 +173,6 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteUnaryOp(Func<Expression, Expression> op)
-        {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var opSrc = this.Operand(Src1());
-            m.Assign(opDst, op(opSrc));
-            if (instr.SetFlags)
-            {
-                m.Assign(NZCV(), m.Cond(opDst));
-            }
-        }
-
-        private void RewriteUsax()
-        {
-            var sum = binder.CreateTemporary(PrimitiveType.UInt16);
-            var diff = binder.CreateTemporary(PrimitiveType.UInt16);
-            var rn = Operand(instr.ops[1]);
-            var rm = Operand(instr.ops[2]);
-            m.Assign(sum, m.IAdd(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
-            m.Assign(diff, m.ISub(m.Slice(rn, 16, 16), m.Slice(rm, 0, 16)));
-            var rd = Operand(Dst());
-            m.Assign(rd, m.Seq(diff, sum));
-            //$REVIEW: flags?
-        }
-
         private void RewriteBic()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
@@ -228,6 +204,33 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             m.Assign(dst, op(src1, src2));
+        }
+
+        private void RewriteTableBranch(DataType elemSize)
+        {
+            this.rtlClass = RtlClass.Transfer;
+            var mem = (MemoryOperand) instr.ops[0];
+            Expression tableBase;
+            if (mem.BaseRegister == Registers.pc)
+            {
+                // If the base register is PC, the table starts right after the instruction.
+                tableBase = instr.Address + instr.Length;
+            }
+            else
+            {
+                tableBase = binder.EnsureRegister(mem.BaseRegister);
+            }
+            var idxReg = binder.EnsureRegister(mem.Index);
+            Expression ea;
+            if (elemSize.Size != 1)
+            {
+                ea = m.IAdd(tableBase, m.IMul(idxReg, elemSize.Size));
+            }
+            else
+            {
+                ea = m.IAdd(tableBase, idxReg);
+            }
+            m.Goto(m.IAdd(instr.Address, m.IMul(m.Mem(elemSize, ea), 2)));
         }
 
         private void RewriteTeq()
@@ -684,6 +687,20 @@ namespace Reko.Arch.Arm.AArch32
                 acc));
         }
 
+        private void RewriteSmml(Func<Expression,Expression,Expression> fn)
+        {
+            var src1 = Operand(Src1());
+            var src2 = Operand(Src2());
+            var src3 = Operand(Src3());
+            var dst = Operand(Dst());
+                
+            var mul = m.SMul(src1, src2);
+            mul.DataType = PrimitiveType.Int64;
+            m.Assign(dst, fn(
+                m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))),
+                src3));
+        }
+
         private void RewriteMulw(bool highPart)
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
@@ -695,6 +712,15 @@ namespace Reko.Arch.Arm.AArch32
                 m.Int32(16)));
         }
 
+        private void RewriteSsat()
+        {
+            var dst = this.Operand(Dst());
+            var src1 = this.Operand(Src1());
+            var src2 = this.Operand(Src2());
+            var intrinsic = host.PseudoProcedure("__ssat", PrimitiveType.Int32, src1, src2);
+            m.Assign(dst, intrinsic);
+            m.Assign(Q(), m.Cond(dst));
+        }
 
         private void RewriteStm(bool add, bool updateAfter)
         {
@@ -801,6 +827,40 @@ namespace Reko.Arch.Arm.AArch32
             var right = this.Operand(Src3());
             m.Assign(dst, m.IAdd(m.UMul(left, right), dst));
             MaybeUpdateFlags(dst);
+        }
+
+        private void RewriteUnaryOp(Func<Expression, Expression> op)
+        {
+            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
+            var opSrc = this.Operand(Src1());
+            m.Assign(opDst, op(opSrc));
+            if (instr.SetFlags)
+            {
+                m.Assign(NZCV(), m.Cond(opDst));
+            }
+        }
+
+        private void RewriteUsat()
+        {
+            var dst = this.Operand(Dst());
+            var src1 = this.Operand(Src1());
+            var src2 = this.Operand(Src2());
+            var intrinsic = host.PseudoProcedure("__usat", PrimitiveType.UInt32, src1, src2);
+            m.Assign(dst, intrinsic);
+            m.Assign(Q(), m.Cond(dst));
+        }
+
+        private void RewriteUsax()
+        {
+            var sum = binder.CreateTemporary(PrimitiveType.UInt16);
+            var diff = binder.CreateTemporary(PrimitiveType.UInt16);
+            var rn = Operand(instr.ops[1]);
+            var rm = Operand(instr.ops[2]);
+            m.Assign(sum, m.IAdd(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
+            m.Assign(diff, m.ISub(m.Slice(rn, 16, 16), m.Slice(rm, 0, 16)));
+            var rd = Operand(Dst());
+            m.Assign(rd, m.Seq(diff, sum));
+            //$REVIEW: flags?
         }
 
         private void RewriteXtab(PrimitiveType dt)
