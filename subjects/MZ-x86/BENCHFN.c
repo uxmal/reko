@@ -699,13 +699,13 @@ void _fseek(Eq_334 * ds, Eq_1091 Eq_334::*wArg02, word16 wArg04, word16 wArg06, 
 void fn0800_075B(Eq_334 * ds)
 {
 	word16 di_16 = 0x14;
-	struct Eq_1091 Eq_334::* si_17 = Eq_334::a0344;
+	struct Eq_1091 Eq_334::* si_17 = &Eq_334::t0342;
 	while (true)
 	{
 		--di_16;
 		if (di_16 == 0x00)
 			break;
-		if (((ds->*si_17).w0000 & 0x0300) == 0x0300)
+		if (((ds->*si_17).w0002 & 0x0300) == 0x0300)
 			_fflush(ds, si_17);
 		++si_17;
 	}

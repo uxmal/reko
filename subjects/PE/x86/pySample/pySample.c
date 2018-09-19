@@ -431,12 +431,12 @@ Eq_945 * fn10001700(Eq_946 * dwArg04, uint32 dwArg08)
 	struct Eq_948 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
 	up32 esi_14 = (word32) ecx_6->w0006;
 	up32 edx_15 = 0x00;
-	struct Eq_945 * eax_23 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
+	struct Eq_945 * eax_23 = ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22;
 	if (!DPB(CZ, false, 0))
 	{
 		do
 		{
-			uint32 ecx_50 = eax_23->dw0000;
+			uint32 ecx_50 = eax_23->dw000C;
 			if (dwArg08 >= ecx_50 && dwArg08 < eax_23->dw0008 + ecx_50)
 				return eax_23;
 			++edx_15;
@@ -458,7 +458,7 @@ ui32 fn10001742( * ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 	{
 		Eq_413 eax_50 = ebp_10->t0008;
 		dwLoc0C_18 = eax_50 - 0x10000000;
-		struct Eq_1030 * eax_57 = fn10001700(&globals->t10000000, eax_50 - 0x10000000);
+		struct Eq_1028 * eax_57 = fn10001700(&globals->t10000000, eax_50 - 0x10000000);
 		if (eax_57 != null)
 		{
 			eax_33 = ~(eax_57->dw0024 >> 0x1F) & 0x01;

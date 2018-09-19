@@ -162,10 +162,10 @@ void main(Eq_184 xmm0)
 		*rcx_150 = (real64) xmm0;
 		qwLoc10_163 = (word64) qwLoc10_163 + 0x01;
 	}
-	uint64 qwLoc18_133;
-	for (qwLoc18_133 = 0x01; qwLoc18_133 < 0x03FF; ++qwLoc18_133)
+	Eq_201 qwLoc18_133 = 0x00;
+	while (qwLoc18_133 < 0x0400)
 	{
-		Eq_235 rax_117 = qwLoc18_133 + 0x00;
+		Eq_234 rax_117 = (word64) qwLoc18_133.u1 + 0x01;
 		ui32 eax_118 = (word32) rax_117;
 		real64 * rcx_122 = rax_20 + qwLoc18_133;
 		if (rax_117 >= 0x00)
@@ -176,6 +176,7 @@ void main(Eq_184 xmm0)
 			xmm0 = DPB(xmm0, v19_143 + v19_143, 0);
 		}
 		*rcx_122 = (real64) xmm0;
+		qwLoc18_133 = (word64) qwLoc18_133.u1 + 0x01;
 	}
 	Eq_201 qwLoc20_114 = 0x00;
 	while (qwLoc20_114 < 0x0400)
@@ -184,7 +185,7 @@ void main(Eq_184 xmm0)
 		rax_27[qwLoc20_114] = (real64) xmm0;
 		qwLoc20_114 = (word64) qwLoc20_114.u1 + 0x01;
 	}
-	struct Eq_278 * rsp_69 = vec_add(rax_20, rax_13, rax_27, 0x0400);
+	struct Eq_277 * rsp_69 = vec_add(rax_20, rax_13, rax_27, 0x0400);
 	Eq_201 qwLoc28_103 = 0x00;
 	while (qwLoc28_103 < 0x0400)
 	{

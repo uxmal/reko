@@ -3778,7 +3778,7 @@ l0000000000016DE0:
 
 l0000000000016DF0:
 	a0_114 = strchr(a0_114, a1)
-	sp_105 = sp_105 + 0xFFFFFFFFFFFFFFF8 + 48
+	sp_105 = sp_105 + 0xFFFFFFFFFFFFFFF8
 	Mem642[sp_105 + 48:word64] = a0_632
 	branch a0_632 == 0x0000000000000000 l0000000000017194
 // DataOut: a0 gp s0 s10 s2 s5 s6 s8 sp
@@ -3794,7 +3794,7 @@ l0000000000017194:
 l00000000000171A0:
 	a0_114 = DPB(a0_114, __asprintf_chk(a0_114, a1, 0x00000000000117A8, Mem642[sp_105:<unknown>]), 0)
 	sp_105 = sp_105 + 0xFFFFFFFFFFFFFFF8
-	branch sp_105 + 0 == s2_670 l00000000000172BC
+	branch sp_105 + 48 == s2_670 l00000000000172BC
 // DataOut: gp s0 s10 s2 s3 s5 s6 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a5:<invalid> s6:a2 s1:<invalid> a2:<invalid> s5:a1 a0:<invalid> a1:<invalid> s8:a3 s0:<invalid> s2:-1 s4:0x0000000000011000 s3:1 a3:<invalid> -424(fp):<invalid> -416(fp):a0 -88(fp):<invalid> -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra

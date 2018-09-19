@@ -24,7 +24,7 @@ ptr32 g_ptr3DBC = 0x06060606;
 word32 g_dw3DC0 = 0x06060606;
 struct Eq_4625 * g_ptr3DC4 = &g_t6060606;
 word32 g_dw3DC8 = 0x06060606;
-Eq_7361 g_a3DCC[] = 
+Eq_7359 g_a3DCC[] = 
 	{
 	};
 Eq_4 g_t4000;

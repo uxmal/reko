@@ -12,7 +12,7 @@ byte g_b0000;
 int32 * g_ptr0001;
 ui32 g_dw0004;
 byte g_b000A;
-Eq_21739 g_t000C;
+Eq_21737 g_t000C;
 word32 g_dw0029;
 byte g_b0031;
 byte g_b00C0;
@@ -120,7 +120,7 @@ char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1";
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })";
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0";
 byte g_b415E6A = 0x50;
-Eq_13632 g_t415EE0 = 
+Eq_13630 g_t415EE0 = 
 	{
 		
 		{
@@ -129,28 +129,28 @@ Eq_13632 g_t415EE0 =
 		
 		{
 			;
-union Eq_13642 g_u415EF4 = 
+union Eq_13640 g_u415EF4 = 
 			{
 				;
-union Eq_13638 g_u415EF8 = 
+union Eq_13636 g_u415EF8 = 
 				{
 					;
-union Eq_13663 g_u415EFC = 
+union Eq_13661 g_u415EFC = 
 					{
 						1.1F
 					};
-union Eq_13671 g_u415F00 = 
+union Eq_13669 g_u415F00 = 
 					{
 						0.0F
 					};
-union Eq_13688 g_u415F04 = 
+union Eq_13686 g_u415F04 = 
 					{
 						;
-union Eq_13960 g_u415F08 = 
+union Eq_13958 g_u415F08 = 
 						{
 							1.844674e+19F
 						};
-union Eq_13960 g_u415F0C = 
+union Eq_13958 g_u415F0C = 
 						{
 							9.223372e+18F
 						};
@@ -161,7 +161,7 @@ char g_str415F2E[] = "POSIXLY_CORRECT";
 ui32 g_a415F50[] = 
 						{
 						};
-union Eq_16402 g_u415F84 = 
+union Eq_16400 g_u415F84 = 
 						{
 							10.0F
 						};
@@ -203,7 +203,7 @@ union Eq_17 g_u61A3D8 =
 						{
 							'û'
 						};
-Eq_23703 g_a61A3E0[] = 
+Eq_23701 g_a61A3E0[] = 
 						{
 						};
 union Eq_17 g_u61A3E8 = 
@@ -282,7 +282,7 @@ union Eq_17 g_u61A578 =
 							'@'
 						};
 word32 g_dw61A580 = 0x00000001;
-Eq_20910 g_t61A5A0 = 
+Eq_20908 g_t61A5A0 = 
 						{
 							0x00000000,
 							0x0000000000000000,
@@ -297,7 +297,7 @@ union Eq_17 g_u61A5E8 =
 						{
 							' '
 						};
-union Eq_20994 g_u61A5F0 = 
+union Eq_20992 g_u61A5F0 = 
 						{
 							1
 						};
@@ -327,7 +327,7 @@ union Eq_17 g_u61A670 =
 						{
 							'\x00'
 						};
-union Eq_11666 g_u61A678 = 
+union Eq_11664 g_u61A678 = 
 						{
 							null
 						};
