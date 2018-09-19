@@ -34,15 +34,19 @@ namespace Reko.Analysis
     /// </summary>
     public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
-        private IProcessorArchitecture arch;
-        private int stackDepthOnEntry;
-        private Dictionary<StorageDomain, CallBinding> defs;
-        private Dictionary<StorageDomain, CallBinding> uses;
+        private readonly SsaState ssaCaller;
+        private readonly Statement stmCall;
+        private readonly IProcessorArchitecture arch;
+        private readonly int stackDepthOnEntry;
+        private readonly Dictionary<StorageDomain, CallBinding> defs;
+        private readonly Dictionary<StorageDomain, CallBinding> uses;
         private Dictionary<StorageDomain, CallBinding> map;
 
-        public CallApplicationBuilder(IProcessorArchitecture arch, CallInstruction call, Expression callee) : base(call.CallSite, callee)
+        public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) : base(call.CallSite, callee)
         {
-            this.arch = arch;
+            this.ssaCaller = ssaCaller;
+            this.stmCall = stmCall;
+            this.arch = ssaCaller.Procedure.Architecture;
             this.defs = call.Definitions.ToDictionary(u => u.Storage.Domain);
             var uses = new Dictionary<StorageDomain, CallBinding>();
             foreach (var u in call.Uses)
@@ -100,7 +104,17 @@ namespace Reko.Analysis
 
         public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
         {
-            return defs[arg.OriginalIdentifier.Storage.Domain].Expression;
+            if (defs.TryGetValue(arg.OriginalIdentifier.Storage.Domain, out var binding))
+            {
+                return binding.Expression;
+            }
+            else
+            {
+                // This out variable is dead, but we need to create a dummy identifier
+                // for it to maintain the consistency of the SSA graph.
+                var sid = ssaCaller.Identifiers.Add(arg.OriginalIdentifier, stmCall, null, true);
+                return sid.Identifier;
+            }
         }
 
         public Expression VisitRegisterStorage(RegisterStorage reg)

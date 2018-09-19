@@ -45,12 +45,13 @@ namespace Reko.Analysis
     {
         private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
-        private IProcessorArchitecture arch;
-        private SsaState ssa;
-        private ExpressionSimplifier eval;
-        private SsaEvaluationContext evalCtx;
-        private SsaIdentifierTransformer ssaIdTransformer;
-        private DecompilerEventListener eventListener;
+        private readonly IProcessorArchitecture arch;
+        private readonly SsaState ssa;
+        private readonly ExpressionSimplifier eval;
+        private readonly SsaEvaluationContext evalCtx;
+        private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly DecompilerEventListener eventListener;
+        private Statement stmCur;
 
         public ValuePropagator(
             SegmentMap segmentMap,
@@ -75,6 +76,7 @@ namespace Reko.Analysis
                 Changed = false;
                 foreach (Statement stm in ssa.Procedure.Statements)
                 {
+                    this.stmCur = stm;
                     Transform(stm);
                 }
             } while (Changed);
@@ -109,7 +111,7 @@ namespace Reko.Analysis
             if (ci.Callee is ProcedureConstant pc &&
                 pc.Procedure.Signature.ParametersValid)
             {
-                var ab = new CallApplicationBuilder(arch, ci, ci.Callee);
+                var ab = new CallApplicationBuilder(this.ssa, this.stmCur, ci, ci.Callee);
                 evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
                 ssaIdTransformer.Transform(evalCtx.Statement, ci);
                 return evalCtx.Statement.Instruction;

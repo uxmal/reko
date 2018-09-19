@@ -152,9 +152,9 @@ namespace Reko.Analysis
                 idCur = idOld;
                 return n;
             }
-            if (ass.Src is DepositBits dpb)
+            else if (ass.Src is DepositBits dpb)
             {
-                // a = DPB(a', b) is also a copy, so we must chase the uses of a.
+                // a = DPB(a', b) is also a copy, so we must chase the uses of a'.
                 var idOld = idCur;
                 idCur = ass.Dst;
                 var n = Classify(ssa.Identifiers[ass.Dst]);
@@ -162,6 +162,14 @@ namespace Reko.Analysis
                 n -= new BitRange(
                     dpb.BitPosition,
                     dpb.InsertedBits.DataType.BitSize + dpb.BitPosition);
+                return n;
+            }
+            else if (ass.Src is Slice slice)
+            {
+                // a = SLICE(a', b) is also a copy, so we must chase the uses of a'.
+                var idOld = idCur;
+                var n = Classify(ssa.Identifiers[ass.Dst]);
+                idCur = idOld;
                 return n;
             }
             return ass.Src.Accept(this);

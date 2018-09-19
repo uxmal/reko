@@ -100,7 +100,7 @@ namespace Reko.Analysis
 			{
                 if (eventListener.IsCanceled())
                     return;
-                crw.RewriteCalls(sst.SsaState.Procedure);
+                crw.RewriteCalls(sst.SsaState);
 				crw.RewriteReturns(sst.SsaState);
                 crw.RemoveStatementsFromExitBlock(sst.SsaState);
 			}
@@ -254,9 +254,9 @@ namespace Reko.Analysis
 			return false;
 		}
 
-        private ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
+        private ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn)
         {
-            return new CallApplicationBuilder(platform.Architecture, call, fn);
+            return new CallApplicationBuilder(ssaCaller, stmCaller, call, fn);
         }
 
         public void RemoveStatementsFromExitBlock(SsaState ssa)
@@ -281,12 +281,12 @@ namespace Reko.Analysis
         ///  procEexpr(bindings);
         /// </code>
         /// </remarks>
-        /// <param name="proc">Procedure in which the CALL instruction exists</param>
+        /// <param name="ssaCaller">SSA state of the procedure in which the CALL instruction exists</param>
         /// <param name="stm">The particular statement of the call instruction</param>
         /// <param name="call">The actuall CALL instruction.</param>
         /// <returns>True if the conversion was possible, false if the procedure didn't have
         /// a signature yet.</returns>
-        public bool RewriteCall(Procedure proc, Statement stm, CallInstruction call)
+        public bool RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call)
         {
             if (!(call.Callee is ProcedureConstant callee))
                 return false;          //$REVIEW: what happens with indirect calls?
@@ -295,7 +295,7 @@ namespace Reko.Analysis
             var fn = new ProcedureConstant(platform.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ParametersValid)
                 return false;
-            ApplicationBuilder ab = CreateApplicationBuilder(proc, call, fn);
+            ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
             var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
             stm.Instruction = instr;
             return true;
@@ -303,22 +303,22 @@ namespace Reko.Analysis
 
         /// <summary>
         // Statements of the form:
-        //		call	<proc-operand>
+        //		call	<ssaCaller-operand>
         // become redefined to 
-        //		ret = <proc-operand>(bindings)
+        //		ret = <ssaCaller-operand>(bindings)
         // where ret is the return register (if any) and the
         // bindings are the bindings of the procedure.
         /// </summary>
-        /// <param name="proc"></param>
+        /// <param name="ssaCeller">SSA state of the calling procedure.</param>
         /// <returns>The number of calls that couldn't be converted</returns>
-        public int RewriteCalls(Procedure proc)
+        public int RewriteCalls(SsaState ssaCaller)
         {
             int unConverted = 0;
-            foreach (Statement stm in proc.Statements)
+            foreach (Statement stm in ssaCaller.Procedure.Statements)
             {
                 if (stm.Instruction is CallInstruction ci)
                 {
-                    if (!RewriteCall(proc, stm, ci))
+                    if (!RewriteCall(ssaCaller, stm, ci))
                         ++unConverted;
                 }
             }
@@ -363,11 +363,6 @@ namespace Reko.Analysis
                     ++insertPos;
                 }
             }
-
-            // Find the returned identifier
-                // Delete the phi statement
-                //ssa.DeleteStatement(sid.DefStatement);
-            //ssa.DeleteStatement(stmUse);
         }
 
         private void SetReturnExpression(Block block, Identifier idRet, SsaIdentifier sid)
