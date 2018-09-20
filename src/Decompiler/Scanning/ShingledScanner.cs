@@ -276,6 +276,8 @@ namespace Reko.Scanning
 
         public void AddInstruction(RtlInstructionCluster i)
         {
+            if (i.Address.ToString() == "1796:0F63")    //$DEBUG
+                i.ToString();
             //sr.Instructions.Add(i.Address, i);
             sr.FlatInstructions.Add(i.Address, new ScanResults.instr
             {
@@ -352,8 +354,8 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Get a rewriter for the specified address. If a rewriter is already
-        /// available from the rewriter pool, remove it and use it, otherwise
-        /// create a new one.
+        /// available from the rewriter pool, remove it from the pool and use it,
+        /// otherwise create a new one.
         /// </summary>
         /// <param name="addr"></param>
         /// <returns></returns>
