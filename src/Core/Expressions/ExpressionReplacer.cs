@@ -96,7 +96,10 @@ namespace Reko.Core.Expressions
 
         public Expression VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(cof, original))
+                return replacement;
+            var expr = cof.Expression.Accept(this);
+            return new ConditionOf(expr);
         }
 
         public Expression VisitConstant(Constant c)

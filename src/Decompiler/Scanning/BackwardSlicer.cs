@@ -255,7 +255,9 @@ namespace Reko.Scanning
 
             public Expression MakeSegmentedAddress(Constant c1, Constant c2)
             {
-                throw new NotImplementedException();
+                return Address.SegPtr(
+                    c1.ToUInt16(),
+                    c2.ToUInt16());
             }
 
             public void RemoveExpressionUse(Expression expr)

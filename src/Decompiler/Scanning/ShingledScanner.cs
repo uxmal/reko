@@ -188,7 +188,6 @@ namespace Reko.Scanning
                     continue;
                 }
                 var i = dasm.Current;
-
                 if (IsInvalid(mem, i))
                 {
                     AddEdge(G, Bad, i.Address);
@@ -276,7 +275,6 @@ namespace Reko.Scanning
 
         public void AddInstruction(RtlInstructionCluster i)
         {
-            //sr.Instructions.Add(i.Address, i);
             sr.FlatInstructions.Add(i.Address, new ScanResults.instr
             {
                 addr = i.Address,
@@ -352,8 +350,8 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Get a rewriter for the specified address. If a rewriter is already
-        /// available from the rewriter pool, remove it and use it, otherwise
-        /// create a new one.
+        /// available from the rewriter pool, remove it from the pool and use it,
+        /// otherwise create a new one.
         /// </summary>
         /// <param name="addr"></param>
         /// <returns></returns>
