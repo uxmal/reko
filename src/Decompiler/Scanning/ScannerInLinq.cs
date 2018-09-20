@@ -279,8 +279,7 @@ namespace Reko.Scanning
                     group link by link.first into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                instr instr;
-                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr))
+                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out var instr))
                     instr.succ = cSucc.Count;
             }
             foreach (var cPred in

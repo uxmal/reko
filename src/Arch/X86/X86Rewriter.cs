@@ -505,7 +505,7 @@ namespace Reko.Arch.X86
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }
-                var len = (int)(dasm.Current.Address - instrCur.Address) + dasm.Current.Length;
+                var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
                 {
                     Class = rtlc
