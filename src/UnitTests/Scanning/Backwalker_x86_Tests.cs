@@ -61,6 +61,8 @@ namespace Reko.UnitTests.Scanning
                 this.arch = arch;
             }
 
+            public IProcessorArchitecture Architecture => throw new NotImplementedException();
+            public Program Program => throw new NotImplementedException();
             public SegmentMap SegmentMap => throw new NotImplementedException();
 
             public Tuple<Expression, Expression> AsAssignment(Instruction instr)

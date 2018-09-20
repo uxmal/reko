@@ -32,17 +32,22 @@ namespace Reko.Scanning
 {
     public class BackwardSlicerHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
+        private Program program;
         private Dictionary<Block, RtlBlock> cache;
         private Dictionary<RtlBlock, Block> invCache;
 
-        public BackwardSlicerHost(SegmentMap segmentMap)
+        public BackwardSlicerHost(Program program)
         {
-            this.SegmentMap = segmentMap;
+            this.program = program;
             this.cache = new Dictionary<Block, RtlBlock>();
             this.invCache = new Dictionary<RtlBlock, Block>();
         }
 
-        public SegmentMap SegmentMap { get; }
+        public IProcessorArchitecture Architecture => program.Architecture;
+
+        public Program Program => program;
+
+        public SegmentMap SegmentMap => program.SegmentMap;
 
         public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
         {

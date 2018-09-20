@@ -104,8 +104,6 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
-                if (ric.Address.ToLinear() == 0x0001DD90)
-                    ric.ToString(); //$DEBUG
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
@@ -995,64 +993,13 @@ namespace Reko.Scanning
             imgVector = null;
             switchExp = null;
 
-            var bwsHost = new BackwardSlicerHost(program.SegmentMap);
-            var bws = new BackwardSlicer(bwsHost);
+            var bwsHost = new BackwardSlicerHost(program);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur);
-            if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
-            {
-                // No registers were found, so we can't trace back. 
+            var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
+            var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
+            if (te == null)
                 return false;
-            }
-            while (bws.Step())
-                ;
-
-            var jumpExpr = bws.JumpTableFormat;
-            var interval = bws.JumpTableIndexInterval;
-            var index = bws.JumpTableIndexToUse;
-            var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
-            if (index == null)
-            {
-                // Weren't able to find the index register,
-                // try finding it by blind pattern matching.
-                index = bws.FindIndexWithPatternMatch(bws.JumpTableFormat);
-                if (index == null)
-                {
-                    // This is likely an indirect call like a C++
-                    // vtable dispatch. Since these are common, we don't 
-                    // spam the user with warnings.
-                    return false;
-                }
-
-                // We have a jump table, and we've guessed the index expression.
-                // At this point we've given up on knowing the exact size 
-                // of the table, but we do know that it must be at least
-                // more than one entry. The safest assumption is that it
-                // has two entries.
-                listener.Warn(
-                    listener.CreateAddressNavigator(program, addrSwitch),
-                    "Unable to determine size of call or jump table; there may be more than 2 entries.");
-                ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
-            }
-            else if (interval.IsEmpty)
-            {
-                return false;
-            }
-            else
-            {
-                ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
-            }
-            var vse = new ValueSetEvaluator(arch, program.SegmentMap, ctx, state);
-            var (values, accesses) = vse.Evaluate(jumpExpr);
-            vector = values.Values
-                .TakeWhile(c => c != Constant.Invalid)
-                .Take(2000)             // Arbitrary limit
-                .Select(ForceToAddress)
-                .TakeWhile(a => a != null)
-                .ToList();
-            if (vector.Count == 0)
-                return false;
-
-            foreach (var de in accesses)
+            foreach (var de in te.Accesses)
             {
                 var item = new ImageMapItem((uint)de.Value.Size)
                 {
@@ -1063,36 +1010,13 @@ namespace Reko.Scanning
             }
             imgVector = new ImageMapVectorTable(
                 null, // bw.VectorAddress,
-                vector.ToArray(),
+                te.Targets.ToArray(),
                 4); // builder.TableByteSize);
-            switchExp = index;
+            vector = te.Targets;
+            switchExp = te.Index;
             return true;
         }
 
-        private Address ForceToAddress(Expression arg)
-        {
-            if (arg is Address addr)
-                return addr;
-            if (arg is Constant c)
-            {
-                if (c.DataType.Size < arch.PointerType.Size &&
-                    arch.PointerType == PrimitiveType.SegPtr32) 
-                {
-                    var sel = blockCur.Address.Selector.Value;
-                    return program.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
-                }
-                return program.Architecture.MakeAddressFromConstant(c);
-            }
-            if (arg is MkSequence seq)
-            {
-                if (seq.Expressions.Length == 2 && 
-                    seq.Expressions[0] is Constant hd && seq.Expressions[1] is Constant tl)
-                {
-                    return program.Architecture.MakeSegmentedAddress(hd, tl);
-                }
-            }
-            return null;
-        }
 
         private void ScanCallVectorTargets(List<Address> vector)
         {
@@ -1309,6 +1233,7 @@ namespace Reko.Scanning
             private IScannerQueue scanner;
             private SegmentMap segmentMap;
             private IPlatform platform;
+            private Program program;
             private IProcessorArchitecture arch;
 
             public BackwalkerHost(BlockWorkitem item)
@@ -1317,9 +1242,14 @@ namespace Reko.Scanning
                 this.segmentMap = item.program.SegmentMap;
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
+                this.program = item.program;
             }
 
-            public SegmentMap SegmentMap => segmentMap;
+            public IProcessorArchitecture Architecture => arch;
+
+            public Program Program => program;
+                
+                public SegmentMap SegmentMap => segmentMap;
 
             public Tuple<Expression,Expression> AsAssignment(Instruction instr)
             {
