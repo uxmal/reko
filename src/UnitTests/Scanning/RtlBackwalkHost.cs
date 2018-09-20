@@ -61,6 +61,11 @@ namespace Reko.UnitTests.Scanning
             throw new NotImplementedException();
         }
 
+        public int BlockInstructionCount(RtlBlock block)
+        {
+            return block.Instructions.Sum(b => b.Instructions.Length);
+        }
+
         public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock block)
         {
             return block.Instructions.SelectMany(rtlc => rtlc.Instructions);

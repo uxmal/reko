@@ -34,7 +34,8 @@ namespace Reko.Core
         SegmentMap SegmentMap { get; }
 
 		AddressRange GetSinglePredecessorAddressRange(Address block);
-		Address GetBlockStartAddress(Address addr);
+        int BlockInstructionCount(TBlock rtlBlock);
+        Address GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 

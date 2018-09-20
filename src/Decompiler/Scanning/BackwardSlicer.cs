@@ -91,7 +91,7 @@ namespace Reko.Scanning
 
         public TableExtent DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, DecompilerEventListener listener)
         {
-            if (!Start(rtlBlock, rtlBlock.Instructions.Count - 1, xfer.Target))
+            if (!Start(rtlBlock, host.BlockInstructionCount(rtlBlock) - 1, xfer.Target))
             {
                 // No registers were found, so we can't trace back. 
                 return null;

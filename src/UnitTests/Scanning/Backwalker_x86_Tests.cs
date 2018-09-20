@@ -139,6 +139,10 @@ namespace Reko.UnitTests.Scanning
                 return block.Statements.Select(s => s.Instruction);
             }
 
+            public int BlockInstructionCount(Block block)
+            {
+                return block.Statements.Count;
+            }
             #endregion
         }
 

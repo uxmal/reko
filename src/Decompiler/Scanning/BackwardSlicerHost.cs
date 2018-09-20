@@ -71,6 +71,12 @@ namespace Reko.Scanning
                 .ToList();
         }
 
+        public int BlockInstructionCount(RtlBlock rtlBlock)
+        {
+            var block = invCache[rtlBlock];
+            return block.Statements.Count;
+        }
+
         public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
