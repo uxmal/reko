@@ -141,6 +141,12 @@ namespace Reko.Scanning
 
         public override ValueSet IMul(Constant cRight)
         {
+            if (SI.IsEmpty)
+            {
+                return new IntervalValueSet(
+                    this.DataType,
+                    StridedInterval.Empty);
+            }
             long v = cRight.ToInt64();
             return new IntervalValueSet(
                 this.DataType,
