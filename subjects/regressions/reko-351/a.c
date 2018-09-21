@@ -159,9 +159,7 @@ void factorial(int32 dwArg04)
 {
 	int32 dwLoc08_15 = 0x02;
 	while (dwLoc08_15 - dwArg04 <= 0x00)
-	{
 		++dwLoc08_15;
-	}
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -169,9 +167,7 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 {
 	int32 dwLoc08_16 = 0x00;
 	while (dwLoc08_16 - dwArg0C < 0x00)
-	{
 		++dwLoc08_16;
-	}
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)

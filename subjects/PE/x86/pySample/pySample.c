@@ -270,9 +270,7 @@ l1000147A:
 		*(esp_86 - 0x08) = (_onexit_t *) ebx_16;
 		ui32 eax_92 = fn100011E9(dwArg04);
 		if (eax_92 == 0x00)
-		{
 			*(ebp_10 - 0x1C) &= eax_92;
-		}
 		if (*(ebp_10 - 0x1C) != 0x00)
 		{
 			word32 eax_101 = globals->dw100020CC;
@@ -518,9 +516,7 @@ void fn10001864()
 		if (esi_68 == 0xBB40E64E)
 			esi_68 = ~0x44BF19B0;
 		else if ((esi_68 & 0xFFFF0000) == 0x00)
-		{
 			esi_68 |= esi_68 << 0x10;
-		}
 		globals->dw10003000 = esi_68;
 		globals->dw10003004 = ~esi_68;
 	}

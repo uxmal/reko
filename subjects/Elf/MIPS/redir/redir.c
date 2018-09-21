@@ -4343,9 +4343,7 @@ void request_get_host(Eq_6399 * r4, up32 r5, word32 dwArg00, word32 dwArg04)
 		if (true)
 		{
 			while ((word32) (dwLoc18_112 < r5 + 0x0100) != 0x00 && ((word32) (*dwLoc18_112) == 0x0020 || (word32) (*dwLoc18_112) == 0x09))
-			{
 				++dwLoc18_112;
-			}
 			char * r3_129 = strpbrk(r4_117, r5_119);
 			if (r2_128 != 0x00)
 			{
@@ -4429,9 +4427,7 @@ void request_get_content_length(Eq_6517 * r4, up32 r5, word32 dwArg00, word32 dw
 		if (true)
 		{
 			while ((word32) (dwLoc18_112 < r5 + 0x0100) != 0x00 && ((word32) (*dwLoc18_112) == 0x0020 || (word32) (*dwLoc18_112) == 0x09))
-			{
 				++dwLoc18_112;
-			}
 			char * r3_129 = strpbrk(r4_117, r5_119);
 			if (r2_128 != 0x00)
 			{
@@ -4743,9 +4739,7 @@ void properties_parse_command_line(int32 r4, Eq_7050 * r5[], word32 dwArg00, wor
 		{
 			byte bLoc1C_107 = (byte) (word32) (r5[dwLoc28_110].b0000 + 0x01);
 			if (((word32) bLoc1C_107 == 0x00 || (word32) ((r5)[dwLoc28_110].b0000 + 0x02) == 0x00) && (word32) (dwLoc28_110 < r4) != 0x00)
-			{
 				++dwLoc28_110;
-			}
 			int32 r3_111 = (word32) bLoc1C_107;
 			if (r3_111 == 0x0068)
 			{
@@ -5086,9 +5080,7 @@ void log_string(word32 r5, word32 dwArg00)
 				log_rotate();
 			}
 			else
-			{
 				globals->ptr10000878->dw0824 += -0x0A;
-			}
 		}
 	}
 }
@@ -5756,9 +5748,7 @@ l00407C64:
 							r4_155 = r4_155 >> 0x01 | 0x80000000;
 						}
 						else
-						{
 							r6_150 >>= 0x01;
-						}
 						if (r6_150 >= 0x00)
 							break;
 						r2_199 = (word32) r6_150 + 0x01;
@@ -5772,9 +5762,7 @@ l00407C64:
 					{
 						r6_150 <<= 0x01;
 						if (r4_155 != 0x80000000)
-						{
 							r6_150 |= 0x01;
-						}
 						if ((word32) (0x3FFFFFFF < r6_150) != 0x00)
 							break;
 						r4_155 <<= 0x01;
@@ -6513,9 +6501,7 @@ l00408998:
 					Eq_9801 r12_408 = r12_322 << 0x01 | r13_316 >> 0x1F;
 					r13_316 <<= 0x01;
 					if ((r7_342 | r6_330 + 0x80000000) != 0x00)
-					{
 						r13_316 |= 0x01;
-					}
 					r12_322 = r12_408;
 					r6_330 = r6_330 << 0x01 | r7_342 >> 0x1F;
 					if ((word32) (0x0FFFFFFF < r12_408) != 0x00)
@@ -7266,9 +7252,7 @@ void __pack_d(Eq_10689 * r4)
 		if (r2_158 == 0x00)
 			return;
 		if (r10_163 != 0x00 || r11_10 != 0x007F)
-		{
 			r10_163 += (word32) (r11_10 < 0x00);
-		}
 		else
 		{
 			if (((word32) r11_10.u1 + 0x0100 | r10_163) == 0x00)

@@ -1083,9 +1083,7 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg08, word64 qwA
 		byte bl_177;
 		fn0000000000002CD2();
 		if (eax_167 == 0x00)
-		{
 			globals->dw40003610 &= (word32) (uint64) (0x00 - (-bl_177 == 0x00));
-		}
 		byte bl_187;
 		*blOut = (byte) rbx;
 		return rcx_166;

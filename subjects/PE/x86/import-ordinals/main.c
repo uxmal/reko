@@ -388,9 +388,7 @@ void fn0040165E()
 		if (ecx_69 == 0xBB40E64E)
 			ecx_69 = ~0x44BF19B0;
 		else if ((ecx_69 & 0xFFFF0000) == 0x00)
-		{
 			ecx_69 |= (ecx_69 | 0x4711) << 0x10;
-		}
 		globals->dw403004 = ecx_69;
 		globals->dw403000 = ~ecx_69;
 	}
@@ -418,9 +416,7 @@ void fn0040176D(word32 dwArg00, word32 dwArg04)
 		byte bl_90 = 0x00 - (0x01 - IsDebuggerPresent() == 0x00);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
-		{
 			globals->dw403368 &= 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
-		}
 	}
 	else
 		__fastfail(dwArg04);

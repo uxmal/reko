@@ -420,9 +420,7 @@ bool fn05D4(Eq_269 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, Eq_4 * pc, byte bArg00, Eq_
 		Eq_1096 v25_65 = pc->t090A >> 0x01;
 		pc->t090A = v25_65;
 		if (v25_65 >= 0x00)
-		{
 			r0_124 += 200;
-		}
 		pc->w054A += r0_124;
 		*(fp - 0x02) = globals->w0F02;
 		*(fp - 0x01) = 0x04;
@@ -1225,9 +1223,7 @@ void fn0C20(Eq_14 r3, Eq_3 * r5, Eq_4 * pc)
 	ui16 v35_68 = pc->w025C << 0x01;
 	pc->w025C = v35_68;
 	if (v35_68 == 0x00)
-	{
 		pc->w0256 >>= 0x01;
-	}
 	Eq_2 r4_78;
 	struct Eq_3 * r5_79;
 	fn0AE8(0x1178, r5, wLoc02, out r4_78, out r5_79);

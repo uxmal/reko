@@ -165,9 +165,7 @@ namespace Reko.UnitTests.Structure
                 "{" + nl + 
                 "	sum = 0;" + nl + 
                 "	for (i = 0; i < 100; ++i)" + nl +
-                "	{" + nl + 
                 "		sum += i;" + nl + 
-                "	}" + nl +
                 "	return sum;" + nl + 
                 "}" + nl );
         }

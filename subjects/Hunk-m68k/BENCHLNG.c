@@ -269,9 +269,8 @@ word32 fn000012D0(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 		if (*(word32 *) 16236 != 0x00)
 		{
 			do
-			{
 				++d2_43;
-			} while (((word32[]) 16232)[d2_43] != 0x00);
+			while (((word32[]) 16232)[d2_43] != 0x00);
 		}
 		int32 d2_54 = d2_43 - 0x01;
 		if (d2_54 != 0x00)
@@ -732,9 +731,7 @@ Eq_695 fn000015C0(Eq_695 d0, Eq_81 dwArg04, Eq_81 dwArg08, Eq_81 dwArg0C, ptr32 
 									if (v97_1359 == 117 || v97_1359 == 0x78)
 										goto l0000183E;
 									if (v84_291 == 0x00)
-									{
 										a2_1374 -= (byte *) 0x01;
-									}
 									d0_1377 = a2_1374 - a4_147;
 									a7_150->t0066.u2 = d0_1377;
 									a7_150[0x0010] = (struct Eq_1025) 0x00;
@@ -1120,9 +1117,7 @@ l00001ADC:
 					if (d5_1381 == ~0x00)
 						d5_1381.u0 = 0x00;
 					else
-					{
 						a7_788->dw004C &= ~0x02;
-					}
 				}
 				else
 				{
@@ -2171,9 +2166,7 @@ Eq_81 fn00002C3C(Eq_81 d1, Eq_31 * a1, Eq_31 * a5, Eq_81 dwArg04, Eq_81 dwArg08,
 									a7_150[0x0B] = (struct Eq_4359) 0x00;
 									a7_150->dw006E = 0x00;
 									if (v71_229 == 0x00)
-									{
 										--a3_1634;
-									}
 									if (v71_229 == 0x70)
 									{
 										a7_150[0x0012] = (struct Eq_4359) 0x6C;
@@ -3298,9 +3291,7 @@ uint32 fn00003C60(Eq_81 dwArg04, Eq_81 dwArg08, Eq_81 dwArg0C, Eq_81 dwArg10, pt
 	uint32 d1_32 = d1_26 * (word16) d0_24;
 	Eq_81 d2_38 = (word32) __swap(DPB(d4_29, (word16) d4_29 ^ (word16) d4_29, 0)) + dwArg08 * (word16) d1_26 + dwArg10 * (word16) d0_24;
 	if (d2_38 < 0x00)
-	{
 		d1_32 += 0x00010000;
-	}
 	Eq_81 d2_42 = __swap(d2_38);
 	uint32 d3_56 = __swap(dwArg0C) * (word16) dwArg08;
 	Eq_81 d3_61 = __swap(DPB(d3_56, (word16) (d3_56 + __swap(dwArg08) * (word16) dwArg0C), 0));
@@ -3372,13 +3363,9 @@ int32 fn00003CE0(Eq_81 dwArg04, Eq_4366 * * & d1Out, byte * * & a1Out, byte * & 
 			if (v26_128 < 0x00)
 			{
 				if (-0x01 - *((word32) dwArg04 + 0x0014) == 0x00)
-				{
 					*((word32) dwArg04 + 0x0018) |= 0x08;
-				}
 				else
-				{
 					*((word32) dwArg04 + 0x0018) |= 0x0010;
-				}
 				*((word32) dwArg04 + 0x0014) = 0x00;
 				d0_141 = -0x01;
 			}

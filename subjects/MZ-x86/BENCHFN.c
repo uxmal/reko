@@ -665,9 +665,7 @@ ci16 fn0800_065B(Eq_334 * ds, Eq_1091 Eq_334::*wArg02)
 			di_40 = (word16) di_60 + 0x01;
 			Eq_791 di_60 = di_40;
 			if (ds->*di_60 == 0x0A)
-			{
 				++wLoc04_19;
-			}
 		}
 		ax_30 = wLoc04_19;
 	}
@@ -776,9 +774,7 @@ void _fgetc(Eq_334 * ds, Eq_1091 Eq_334::*wArg02)
 					if (~0x01 != 0x00)
 					{
 						if (_eof(ds, (int16) (ds->*wArg02).b0004) != 0x01)
-						{
 							(ds->*wArg02).w0002 |= 0x10;
-						}
 						else
 							(ds->*wArg02).w0002 = (ds->*wArg02).w0002 & 65151 | 0x20;
 						return;
@@ -788,9 +784,7 @@ void _fgetc(Eq_334 * ds, Eq_1091 Eq_334::*wArg02)
 				return;
 			}
 			if (_isatty((int16) (ds->*wArg02).b0004) == 0x00)
-			{
 				(ds->*wArg02).w0002 &= ~0x0200;
-			}
 			ci16 ax_184;
 			if (((ds->*wArg02).w0002 & 0x0200) != 0x00)
 				ax_184 = 0x01;
@@ -844,9 +838,7 @@ void _setvbuf(Eq_334 * ds, Eq_1091 Eq_334::*wArg02, Eq_791 wArg04, ci16 wArg06, 
 	(ds->*wArg02).t0008 = wArg04;
 	(ds->*wArg02).w0006 = wArg08;
 	if (wArg06 == 0x01)
-	{
 		(ds->*wArg02).w0002 |= 0x08;
-	}
 }
 
 // 0800:09F7: Register (memptr (ptr16 Eq_334) byte) _read(Register (ptr16 Eq_334) ds, Stack int16 wArg02, Stack Eq_791 wArg04, Stack cu16 wArg06)
@@ -1450,9 +1442,7 @@ l0800_12A2:
 							}
 						}
 						else
-						{
 							wLoc9A_1039 |= 0x04;
-						}
 						union Eq_281 Eq_281::* sp_1001 = sp_1027 - 0x02;
 						ss->*sp_1001 = dx_1095;
 						ss->*(sp_1001 - 0x02) = ax_1111;
@@ -1536,9 +1526,7 @@ l0800_1427:
 l0800_1437:
 								Eq_281 cx_911 = fn0800_108C(di_1182, es_1025);
 								if (es_1025->*di_1182.u0 == 0x2D)
-								{
 									--cx_911;
-								}
 								wchar_t dx_919 = dx_1029 - cx_911;
 								if (dx_919 > 0x00)
 									wLoc8E_241 = dx_919;
@@ -2304,9 +2292,7 @@ l0800_1AD3:
 					si_1185.u0 = 0x10;
 l0800_1844:
 					if ((ax_404 & 0x20) == 0x00)
-					{
 						bLoc2B_1194 |= 0x04;
-					}
 					union Eq_283 Eq_283::* sp_621 = sp_1011 - 0x02;
 					ss->*sp_621 = fp - 0x26;
 					ss->*(sp_621 - 0x02) = fp - 0x28;

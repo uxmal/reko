@@ -191,15 +191,11 @@ void fn0444()
 	}
 	globals->w0046 = r0_15;
 	if (v12 <= 0x00)
-	{
 		r0_15 += 0x0168;
-	}
 	struct Eq_583 * r0_16 = r0_15 << 0x01;
 	globals->u004A = r0_16->w31DC;
 	if (0x021C - r0_16 >= 0x00)
-	{
 		r0_16 -= 0x02D0;
-	}
 	globals->u004C = r0_16->w3290;
 }
 
@@ -607,9 +603,7 @@ l097C:
 			word16 * sp_55 = sp_144 - 0x02;
 			*sp_55 = 0x03;
 			if (r0_145 >= 0x00)
-			{
 				++*sp_55;
-			}
 			*(sp_55 - 0x02) = r1_54;
 			fn0C90(wLoc02, wArg00, wArg02);
 			ui16 r2_73 = *((char *) globals->a28F2 + r1_54 * 0x02) - *((char *) globals->a28F0 + r1_54 * 0x02);
@@ -1219,13 +1213,9 @@ void fn103C(word16 r0, Eq_3395 * r3, Eq_3396 * r5, Eq_3397 * wArg00)
 		if (v39_88 != 0x00)
 		{
 			if (v39_88 <= 0x00)
-			{
 				globals->w0046 += ~0x15;
-			}
 			else
-			{
 				globals->w0046 += 22;
-			}
 		}
 		fn0444();
 		fn0242(9944, &r5->w0004 + 0x01);
@@ -1787,9 +1777,8 @@ Eq_2 fn13AA(word16 pc, word16 * ptrArg00)
 	if (r0_4 <= 0x00)
 		r0_11 = -r0_4;
 	do
-	{
 		--r0_11;
-	} while (r0_11 > 0x00);
+	while (r0_11 > 0x00);
 	do
 	{
 		__wait();
@@ -1931,9 +1920,8 @@ void fn1674(Eq_2 r0, Eq_4239 * r1, word16 pc)
 	{
 		word16 * r0_21 = fn15F2(-r0, r1, pc);
 		do
-		{
 			r0_21 -= 0x02;
-		} while (*r0_21 != 0x20);
+		while (*r0_21 != 0x20);
 		*r0_21 = (word16) 0x2D;
 	}
 }

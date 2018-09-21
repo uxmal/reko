@@ -267,9 +267,8 @@ word32 fn000012D0(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 		if (*(word32 *) 0x3EDC != 0x00)
 		{
 			do
-			{
 				++d2_43;
-			} while (((word32[]) 16088)[d2_43] != 0x00);
+			while (((word32[]) 16088)[d2_43] != 0x00);
 		}
 		int32 d2_54 = d2_43 - 0x01;
 		if (d2_54 != 0x00)
@@ -537,9 +536,7 @@ void fn00001468(Eq_686 d1, byte * * a1, Eq_31 * a5, Eq_686 dwArg04, Eq_686 dwArg
 									a7_149[0x0B] = (struct Eq_780) 0x00;
 									a7_149->dw006E = 0x00;
 									if (v71_228 == 0x00)
-									{
 										--a3_1633;
-									}
 									if (v71_228 == 0x70)
 									{
 										a7_149[0x0012] = (struct Eq_780) 0x6C;
@@ -1649,9 +1646,7 @@ uint32 fn0000248C(Eq_686 dwArg04, Eq_686 dwArg08, Eq_686 dwArg0C, Eq_686 dwArg10
 	uint32 d1_32 = d1_26 * (word16) d0_24;
 	Eq_686 d2_38 = (word32) __swap(DPB(d4_29, (word16) d4_29 ^ (word16) d4_29, 0)) + dwArg08 * (word16) d1_26 + dwArg10 * (word16) d0_24;
 	if (d2_38 < 0x00)
-	{
 		d1_32 += 0x00010000;
-	}
 	Eq_686 d2_42 = __swap(d2_38);
 	uint32 d3_56 = __swap(dwArg0C) * (word16) dwArg08;
 	Eq_686 d3_61 = __swap(DPB(d3_56, (word16) (d3_56 + __swap(dwArg08) * (word16) dwArg0C), 0));
@@ -1824,13 +1819,9 @@ int32 fn00002604(Eq_686 dwArg04, Eq_787 * * & d1Out, byte * * & a1Out, byte * & 
 			if (v26_128 < 0x00)
 			{
 				if (-0x01 - *((word32) dwArg04 + 0x0014) == 0x00)
-				{
 					*((word32) dwArg04 + 0x0018) |= 0x08;
-				}
 				else
-				{
 					*((word32) dwArg04 + 0x0018) |= 0x0010;
-				}
 				*((word32) dwArg04 + 0x0014) = 0x00;
 				d0_141 = -0x01;
 			}
@@ -2378,9 +2369,7 @@ Eq_646 fn00002F34(Eq_646 d0, Eq_686 dwArg04, Eq_686 dwArg08, Eq_686 dwArg0C, ptr
 									if (v97_1359 == 117 || v97_1359 == 0x78)
 										goto l000031B2;
 									if (v84_291 == 0x00)
-									{
 										a2_1374 -= (byte *) 0x01;
-									}
 									d0_1377 = a2_1374 - a4_147;
 									a7_150->t0066.u2 = d0_1377;
 									a7_150[0x0010] = (struct Eq_5286) 0x00;
@@ -2766,9 +2755,7 @@ l00003450:
 					if (d5_1381 == ~0x00)
 						d5_1381.u0 = 0x00;
 					else
-					{
 						a7_788->dw004C &= ~0x02;
-					}
 				}
 				else
 				{

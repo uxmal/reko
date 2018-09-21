@@ -26,9 +26,7 @@ void prvUnlockQueue(byte * r0, word32 r1, word32 r2, word32 r4, word32 r5, Eq_7 
 		if (!NV)
 			__msr(spsr, &globals->t0BDD);
 		if (!C)
-		{
 			r1 += 0x05B1;
-		}
 		if (N)
 		{
 			if (!V)
@@ -837,9 +835,7 @@ void xQueueGenericSendFromISR(ptr32 r2, word32 r3, ui32 r4, ui32 r8, word32 r10,
 void xQueueGiveFromISR(word32 r0, word32 r2, ui32 r3, word32 r8, word32 fp, word32 ip, word32 spsr, word32 s4, word32 s23)
 {
 	if (!Z)
-	{
 		r3 += 0x00F5;
-	}
 	if (!NZV)
 		__syscall(0x00F04F84);
 	if (!Z)
@@ -2490,13 +2486,9 @@ void xTaskResumeAll(int32 r0, ptr32 r1, int32 r3, int32 * r6, ptr32 r10, int32 *
 		if (!NZV)
 			r0 = *fp;
 		if (!NZV)
-		{
 			r0 += 3320;
-		}
 		if (!Z)
-		{
 			r0 += 200;
-		}
 		if (!N)
 		{
 			word32 sp_132;
@@ -2517,9 +2509,7 @@ void xTaskResumeAll(int32 r0, ptr32 r1, int32 r3, int32 * r6, ptr32 r10, int32 *
 		if (!NZV)
 			__stc(p3, c6, *(lr - 0x0380));
 		if (!C)
-		{
 			r1 += 0x0568;
-		}
 		if (!C)
 		{
 			r3 = *(r1 - -0x04);
@@ -2538,9 +2528,7 @@ void xTaskResumeAll(int32 r0, ptr32 r1, int32 r3, int32 * r6, ptr32 r10, int32 *
 					word32 pc_121 = pc - __ror(ip, 0x04);
 				}
 				if (!Z)
-				{
 					r3 += 0x0A;
-				}
 				if (!Z)
 					*(r6_78 - (r3 >> 0x02)) = (byte) r4_76;
 				word32 sp_88;
@@ -5499,9 +5487,7 @@ void vListInitialiseItem(Eq_10 r0, Eq_10 r1, word64 * r2, int32 r3, Eq_10 r5, wo
 void vListInsertEnd(Eq_10 r0, Eq_10 r1, word64 * r2, Eq_10 r5, word32 r6, int32 r7, Eq_10 r8, word32 r9, ui32 ip, word32 lr, byte p12, word32 c8)
 {
 	if (!Z)
-	{
 		r0 &= __ror(r8, 0x0019);
-	}
 	if (!Z)
 	{
 		*(r8 - 0x00C4) = (uint16) r9;
@@ -5927,15 +5913,11 @@ void prvIdleTask(int16 * r0, word32 r1, word32 r2, ptr32 r3, word32 r4, int16 * 
 void xTaskNotifyStateClear(int16 * r0, word32 r1, word32 r2, ptr32 r3, int16 * * r5, int32 r6, ptr32 r8, ptr32 fp, ui32 pc, byte p12, word32 c5)
 {
 	if (!Z)
-	{
 		r1 += 2229;
-	}
 	if (Z)
 	{
 		if (!V)
-		{
 			r8 += 1272;
-		}
 		if (!Z)
 			*(fp - 0x0230) = (int16 **) r0;
 		if (!Z)
@@ -6385,9 +6367,7 @@ Eq_18017 fn0000895D(ui32 r0, byte * r3, Eq_15697 * r6, word32 r7, word32 fp, wor
 	if (!Z)
 		*(r6 - 0x032C) = (byte) r0;
 	if (!Z)
-	{
 		r3 += 4048;
-	}
 	if (!Z)
 	{
 		ui32 r4_56 = ~(r0 << 0x01);
@@ -6497,9 +6477,7 @@ void MPU_xTaskNotifyStateClear(ui32 r0, word32 r3, Eq_18369 * r6, word32 r7, wor
 	if (!Z)
 		*(r6 - 0x032C) = (byte) r0;
 	if (!Z)
-	{
 		r3 += 4048;
-	}
 	if (!Z)
 	{
 		Eq_18379 NZCV_35 = cond(~(r0 << 0x01));
@@ -7219,9 +7197,7 @@ void GPIOIntTypeSet(Eq_20280 r0, ptr32 r1, int32 r2, uint16 * r3, int16 * r4, wo
 	if (!Z)
 		return;
 	if (!Z)
-	{
 		r8 += 0x0034;
-	}
 	if (!Z)
 	{
 		r1 = 0x40000003 - r0 - C;
@@ -7411,9 +7387,7 @@ void GPIOPadConfigGet(Eq_20683 r0, Eq_20684 * r1, Eq_20683 * r2, Eq_20686 r3, ui
 		r8 = r1->dw001C;
 	}
 	if (!Z)
-	{
 		r8 += 0x00B2;
-	}
 	if (!NZV)
 		r0 = r2 - (r5 >> 0x001A);
 	if (!Z)
@@ -7603,9 +7577,7 @@ void GPIOPinIntStatus(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_10 
 	if (!Z)
 		r8 = (word32) r8 + 0x00B9;
 	if (!NZV)
-	{
 		r7 -= r4;
-	}
 	if (V)
 	{
 		if (NZV)
@@ -7656,9 +7628,7 @@ void GPIOPortIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_
 	if (!ZC)
 		return;
 	if (!Z)
-	{
 		r1 &= ~(r2 >> 0x0010);
-	}
 	if (!Z)
 		r2 = r6 - (r4 >> 0x0020);
 	if (!C)
@@ -7767,9 +7737,7 @@ void GPIOPortIntRegister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, Eq_
 		r1 = (word32) *r9;
 	}
 	if (!Z)
-	{
 		r0 -= __rcr(r0, 0x01, C);
-	}
 	if (C)
 		GPIOPortIntUnregister(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip, lr, pc, p0, c2);
 	else
@@ -7804,9 +7772,7 @@ void GPIOPortIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, E
 	if (!ZC)
 		return;
 	if (!Z)
-	{
 		r1 &= ~(r2 >> 0x0010);
-	}
 	if (!Z)
 		r2 = r6 - (r4 >> 0x0020);
 	if (!C)
@@ -7909,9 +7875,7 @@ void GPIOPortIntUnregister(Eq_10 r0, Eq_10 r1, Eq_10 * r2, Eq_10 r3, Eq_10 r4, E
 		r7 = (word32) *r8;
 	}
 	if (!Z)
-	{
 		r0 -= __rcr(r0, 0x01, C);
-	}
 	if (N)
 		GPIOPinRead(r0, r2, r3, r4, r5, r6, r7, r8, ip, lr, pc);
 	else
@@ -9431,9 +9395,7 @@ void SysCtlSRAMSizeGet(Eq_10 r0, int32 r1, byte * r2, word32 r3, Eq_23704 r4, Eq
 		r7->ptr0014 = lr;
 	}
 	if (!Z)
-	{
 		r0 -= __ror(r0, 0x001F);
-	}
 	if (Z)
 		SysCtlFlashSizeGet(r0, r1, r2, r3, r5, r6, r7, r8, r9, fp, ip, lr, pc, spsr);
 	else
@@ -9465,9 +9427,7 @@ void SysCtlFlashSizeGet(Eq_10 r0, int32 r1, byte * r2, word32 r3, Eq_23704 r5, E
 		r7->ptr0010 = lr;
 	}
 	if (!Z)
-	{
 		r0 -= __ror(r0, 0x001F);
-	}
 	if (Z)
 		SysCtlPinPresent(r0, r1, r2, r3, r5, r7, r8, r9, fp, pc, spsr);
 	else
@@ -9941,9 +9901,7 @@ void SysCtlIntStatus(Eq_10 r0, Eq_10 r1, Eq_10 r3, Eq_10 r4, Eq_10 r5, Eq_10 r6,
 		*((word32) fp + 0x0018) = r9;
 	}
 	if (!Z)
-	{
 		r7 -= 0x68;
-	}
 	if (!V)
 		r1 = (fp >> 0x0010) - r8;
 	if (!N)
@@ -10071,15 +10029,11 @@ void SysCtlDeepSleep(byte * r0, int32 r1, word32 r3, int32 r7, int32 r8, Eq_10 r
 	if (!C)
 		r0 = DPB(r0, ~0x394A, 16);
 	if (!Z)
-	{
 		r0 += 0x0368;
-	}
 	if (!C)
 		Z = cond(~0xF000);
 	if (!Z)
-	{
 		r0 += 0x0368;
-	}
 	if (!Z)
 		r0 = (word32) globals->w9D12;
 	if (Z)
@@ -10111,9 +10065,7 @@ void SysCtlResetCauseClear(byte * r0, int32 r1, int32 r7, Eq_10 r10, int32 fp, w
 	if (!C)
 		__msr(spsr, &globals->t034A);
 	if (!Z)
-	{
 		r0 &= __ror(r10, 0x01);
-	}
 	if (N)
 	{
 		if (Z)
@@ -11186,9 +11138,7 @@ void I2CMasterIntStatus(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5
 	if (Z)
 	{
 		if (!ZC)
-		{
 			r7 -= r0 >> 0x0020;
-		}
 		if (!Z)
 		{
 			Eq_10 r0_76 = *r0;
@@ -11244,9 +11194,7 @@ void I2CSlaveIntStatus(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5,
 	if (Z)
 	{
 		if (!N)
-		{
 			r7 -= r0 >> 0x0020;
-		}
 		if (!Z)
 		{
 			Eq_10 r0_72 = *r0;
@@ -11385,9 +11333,7 @@ void I2CMasterErr(Eq_10 r0, int32 r1, ui32 r2, Eq_10 r3, ui32 r4, Eq_10 r5, Eq_1
 		ZC = NZCV_44;
 	}
 	if (!Z)
-	{
 		r0 &= ~0x00;
-	}
 	if (V)
 	{
 		if (!V)

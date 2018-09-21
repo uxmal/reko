@@ -86,13 +86,9 @@ void fn0000D0(byte LATB, byte FSR2L, Eq_194 * FSR2, Eq_195 * FSR1)
 		{
 			0x00->b00CA = 0x00->b00CA & ~0x01;
 			if ((LATB & 0x01) != 0x00)
-			{
 				LATB |= 0x80;
-			}
 			else
-			{
 				LATB &= 0x7F;
-			}
 		}
 	}
 	FSR1->b0001 = FSR1->b0001;

@@ -2257,9 +2257,7 @@ void fn0000000000405630(Eq_3672 * rsi, Eq_17 rdi)
 	if (r12_19 == 0x00)
 		return;
 	if (rax_13 == rbp_15)
-	{
 		rsi->b0050 |= 0x02;
-	}
 	int64 rcx_76 = (int64) rsi->dw0030;
 	int64 rcx_81 = rsi->qw0020;
 	int64 rdx_86 = (int64) (word32) (uint64) ~(word32) (uint64) (word32) rcx_76 & rax_13 + rcx_76;
@@ -10899,9 +10897,7 @@ Eq_17 fn0000000000410C40(Eq_17 rsi, Eq_17 rdi)
 		fn0000000000410E50();
 		Eq_17 rax_32 = (uint64) (0xFFFFFFFFFFFFFFFF /u rsi);
 		if (rax_32 >= rdi)
-		{
 			rdi *= rsi;
-		}
 		else
 		{
 			*(fp - 0x10) = (union Eq_17 *) rax_32;

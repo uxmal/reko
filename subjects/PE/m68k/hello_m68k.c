@@ -99,9 +99,7 @@ l00001578:
 					if (dwArg02 != 0x00 && DPB(CVZN_80, false, 0))
 						*a2_60 = (*a2_60 + dwArg02)->ptr0002;
 					else
-					{
 						*a2_60 += dwLoc02;
-					}
 					goto l00001556;
 				}
 l0000159A:
@@ -264,9 +262,7 @@ void fn00001C40(Eq_459 * a5, int32 dwArg04, byte bArg07, Eq_462 * dwArg08, int32
 	else
 		d0_17 = fn00001E94(a5, dwArg04, SLICE(dwArg04, byte, 24), dwArg08);
 	if (-0x01 - d0_17 != 0x00)
-	{
 		++*dwArg0C;
-	}
 	else
 		*dwArg0C = d0_17;
 }
@@ -402,9 +398,7 @@ int32 fn00001E04(Eq_566 * a5, int32 dwArg04)
 			if (dwArg04 == 0x01 && ((word16) a2_104->dw000C & 131) != 0x00)
 			{
 				if (fn00001D24(a5, a2_104) != ~0x00)
-				{
 					++d4_101;
-				}
 			}
 			else if (dwArg04 == 0x00 && !__btst(a2_104->dw000F, 0x01))
 			{

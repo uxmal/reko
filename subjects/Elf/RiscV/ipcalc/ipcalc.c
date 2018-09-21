@@ -485,9 +485,7 @@ l00000000000153D8:
 				goto l00000000000153DC;
 			}
 			if ((s0_1025 & 0xFFFABFFF) == 0x00)
-			{
 				s0_1025 |= 0x08;
-			}
 			Eq_29 a0_194 = DPB(a0, isatty(a0), 0);
 			sp_1020 = &sp_1020->qwFFFFFFF8;
 			if (0x01 != 0x00)

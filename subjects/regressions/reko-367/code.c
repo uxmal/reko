@@ -15,9 +15,7 @@ real80 fn80000132(real96 rArg04, real96 rArg10)
 {
 	word32 dwLoc14_16 = 0x00;
 	while ((real96) (real80) dwLoc14_16 < rArg10)
-	{
 		++dwLoc14_16;
-	}
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
@@ -26,9 +24,7 @@ real80 fn8000018E(real96 rArg04)
 {
 	int32 dwLoc14_18 = 0x01;
 	while ((real96) (real80) dwLoc14_18 <= rArg04)
-	{
 		++dwLoc14_18;
-	}
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 

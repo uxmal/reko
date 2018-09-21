@@ -255,9 +255,8 @@ void fn000012D0(int32 dwArg04)
 		if (*(word32 *) 0x14D4 != 0x00)
 		{
 			do
-			{
 				++d2_38;
-			} while (((word32[]) 0x14D0)[d2_38] != 0x00);
+			while (((word32[]) 0x14D0)[d2_38] != 0x00);
 		}
 		int32 d2_49 = d2_38 - 0x01;
 		if (d2_49 != 0x00)
