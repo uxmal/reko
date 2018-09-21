@@ -223,7 +223,6 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
             var scseg = sh.ScanRange(seg.MemoryArea, seg.Address, seg.EndAddress, 0);
-            sh.RemoveBadInstructionsFromGraph();
             Assert.AreEqual(new byte[] { 1, 1, 1, 0, }, TakeEach(scseg, 4));
         }
 

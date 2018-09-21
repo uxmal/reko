@@ -63,7 +63,6 @@ namespace Reko.Scanning
         private IRewriterHost host;
         private IStorageBinder storageBinder;
         private DecompilerEventListener eventListener;
-        private DiGraph<Address> G;
 
         public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
         {
@@ -72,14 +71,7 @@ namespace Reko.Scanning
             this.storageBinder = storageBinder;
             this.sr = sr;
             this.eventListener = eventListener;
-            this.sr.TransferTargets = new HashSet<Address>();
-            this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
-            this.sr.Instructions = new SortedList<Address, RtlInstructionCluster>();
-            this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
-            this.sr.FlatEdges = new List<ScanResults.link>();
-            this.G = new DiGraph<Address>();
             this.Bad = program.Platform.MakeAddressFromLinear(~0ul);
-            G.AddNode(Bad);
         }
 
         /// <summary>
@@ -184,13 +176,15 @@ namespace Reko.Scanning
                 var dasm = GetRewriter(addr, rewriterCache);
                 if (!dasm.MoveNext())
                 {
-                    AddEdge(G, Bad, addr);
+                    sr.Invalid.Add(addr);
+                    AddEdge(Bad, addr);
                     continue;
                 }
                 var i = dasm.Current;
                 if (IsInvalid(mem, i))
                 {
-                    AddEdge(G, Bad, i.Address);
+                    sr.Invalid.Add(addr);
+                    AddEdge(Bad, i.Address);
                     i.Class = RtlClass.Invalid;
                     AddInstruction(i);
                     delaySlot = RtlClass.None;
@@ -205,12 +199,12 @@ namespace Reko.Scanning
                             if (a + i.Length < y.Length)
                             {
                                 // Still inside the segment.
-                                AddEdge(G, i.Address + i.Length, i.Address);
+                                AddEdge(i.Address + i.Length, i.Address);
                             }
                             else
                             {
                                 // Fell off segment, i must be a bad instruction.
-                                AddEdge(G, Bad, i.Address);
+                                AddEdge(Bad, i.Address);
                                 i.Class = RtlClass.Invalid;
                                 AddInstruction(i);
                                 y[a] = Data;
@@ -234,13 +228,13 @@ namespace Reko.Scanning
                                 }
                                 else
                                 {
-                                    AddEdge(G, addrDest, i.Address);
+                                    AddEdge(addrDest, i.Address);
                                 }
                             }
                             else
                             {
                                 // Jump to data / hyperspace.
-                                AddEdge(G, Bad, i.Address);
+                                AddEdge(Bad, i.Address);
                                 i.Class = RtlClass.Invalid;
                                 AddInstruction(i);
                                 y[a] = Data;
@@ -288,9 +282,8 @@ namespace Reko.Scanning
         }
 
 
-        public void AddEdge(DiGraph<Address> g, Address from, Address to)
+        public void AddEdge(Address from, Address to)
         {
-#if !not_LinQ
             if (from == Bad)
                 return;
             sr.FlatEdges.Add(new ScanResults.link
@@ -298,12 +291,7 @@ namespace Reko.Scanning
                 first = to,
                 second = from,
             });
-#else
-        g.AddNode(from);
-        g.AddNode(to);
-        g.AddEdge(from, to);
-#endif
-    }
+        }
 
         // Remove blocks that fall off the end of the segment
         // or into data.
@@ -327,13 +315,14 @@ namespace Reko.Scanning
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
             var deadNodes = new HashSet<Address>();
-            foreach (var a in new DfsIterator<Address>(G).PreOrder(Bad))
-            {
-                if (a != Bad)
-                {
-                    deadNodes.Add(a);
-                }
-            }
+            throw new NotImplementedException();
+            //foreach (var a in new DfsIterator<Address>(G).PreOrder(Bad))
+            //{
+            //    if (a != Bad)
+            //    {
+            //        deadNodes.Add(a);
+            //    }
+            //}
 
             var oldinstrs = sr.Instructions;
             sr.Instructions = oldinstrs
@@ -390,10 +379,11 @@ namespace Reko.Scanning
 
         public DiGraph<RtlBlock> BuildIcfg(HashSet<Address> deadNodes)
         {
-            var icb = BuildBlocks(G);
-            BuildEdges(icb);
-            sr.ICFG = icb.Blocks;
-            return sr.ICFG;
+            throw new NotImplementedException();
+            //var icb = BuildBlocks(G);
+            //BuildEdges(icb);
+            //sr.ICFG = icb.Blocks;
+            //return sr.ICFG;
         }
 
         /// <summary>

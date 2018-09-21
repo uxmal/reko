@@ -35,8 +35,15 @@ namespace Reko.Scanning
     /// Given a heuristically discovered procedure, attempt to discard as 
     /// many basic blocks as possible.
     /// </summary>
+    /// <remarks>   
+    /// The heuristics for discarding conflicting blocks are inspired by
+    /// Static Disassembly of Obfuscated Binaries
+    /// Christopher Kruegel, William Robertson, Fredrik Valeur and Giovanni Vigna
+    /// </remarks>
     public class HeuristicProcedureScanner
     {
+        private static TraceSwitch trace = new TraceSwitch("HeuristicProcedureScanner", "Display progress of scanner", "Error");
+
         private Program program;
         private IRewriterHost host;
         private ScanResults sr;
@@ -62,17 +69,17 @@ namespace Reko.Scanning
         {
             var reachable = TraceReachableBlocks(procedureStarts);
             ComputeStatistics(reachable);
-            this.sr.Dump("Before conflict resolution");
+            Dump("Before conflict resolution");
             RemoveBlocksEndingWithInvalidInstruction();
-            this.sr.Dump("After invalid instruction eliminiation");
+            Dump("After invalid instruction elimination");
             RemoveBlocksConflictingWithValidBlocks(reachable);
-            this.sr.Dump("After conflicting block removal");
+            Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
-            this.sr.Dump("After parents of conflicting blocks removed");
-            //RemoveBlocksWithFewPredecessors();
-            //DumpGraph();
+            Dump("After parents of conflicting blocks removed");
+            //RemoveBlocksWithFewAncestors();
+            //Dump("After few ancestors removal");
             RemoveBlocksWithFewSuccessors();
-            this.sr.Dump("After few successor removal");
+            Dump("After few successor removal");
             RemoveConflictsRandomly();
         }
 
@@ -84,18 +91,24 @@ namespace Reko.Scanning
         {
             var valid = TraceReachableBlocks(new[] { addrProcedureStart });
             ComputeStatistics(valid);
-            this.sr.Dump();
+            Dump("Before conflict resolution");
             RemoveBlocksEndingWithInvalidInstruction();
-            this.sr.Dump();
+            Dump("After invalid instruction elimination");
             RemoveBlocksConflictingWithValidBlocks(valid);
-            this.sr.Dump();
+            Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
-            this.sr.Dump();
-            RemoveBlocksWithFewPredecessors();
-            this.sr.Dump();
+            Dump("After parents of conflicting blocks removed");
+            RemoveBlocksWithFewAncestors();
+            Dump("After few ancestors removal");
             RemoveBlocksWithFewSuccessors();
-            this.sr.Dump();
+            Dump("After few successor removal");
             RemoveConflictsRandomly();
+        }
+
+        private void Dump(string message)
+        {
+            Debug.WriteLineIf(trace.TraceInfo, message);
+            DebugEx.PrintIf(trace.TraceInfo, "  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
         }
 
         /// <summary>
@@ -239,19 +252,17 @@ namespace Reko.Scanning
             }
         }
 
-        private void RemoveBlocksWithFewPredecessors()
+        private void RemoveBlocksWithFewAncestors()
         {
             conflicts = BuildConflictGraph(blocks.Nodes);
-            //    if (u.pred.Count < v.pred.Count)
-            //      remove u
-            //    else if (u.pred.Count > v.pred.count)
-            //      remove v
             foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
-                var uCount = blocks.Predecessors(conflict.Item1).Count;
-                var vCount = blocks.Predecessors(conflict.Item2).Count;
+                var uCount = GetAncestors(conflict.Item1).Count;
+                var vCount = GetAncestors(conflict.Item2).Count;
                 if (uCount < vCount)
                     RemoveBlockFromGraph(conflict.Item1);
+                if (uCount > vCount)
+                    RemoveBlockFromGraph(conflict.Item2);
             }
         }
 
@@ -263,30 +274,7 @@ namespace Reko.Scanning
                 nodes.Contains(c.Item2);
         }
         
-        public ISet<RtlBlock> GetAncestors(RtlBlock n)
-        {
-            var anc = new HashSet<RtlBlock>();
-            foreach (var p in blocks.Predecessors(n))
-            {
-                GetAncestorsAux(p, n, anc);
-            }
-            return anc;
-        }
 
-        private ISet<RtlBlock> GetAncestorsAux(
-            RtlBlock n, 
-            RtlBlock orig, 
-            ISet<RtlBlock> ancestors)
-        {
-            if (ancestors.Contains(n) || n == orig)
-                return ancestors;
-            ancestors.Add(n);
-            foreach (var p in blocks.Predecessors(n))
-            {
-                GetAncestorsAux(p, orig, ancestors);
-            }
-            return ancestors;
-        }
 
         private void RemoveParentsOfConflictingBlocks()
         {
@@ -424,22 +412,33 @@ namespace Reko.Scanning
         // Block conflict resolution
 
         /// <summary>
-        /// Collects all the ancestors of a node 
+        /// Collect all ancestors of the block <paramref name="n"/> in a set.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="graph"></param>
-        /// <param name="node"></param>
-        /// <param name="visited"></param>
-        public void GetAllAncestors<T>(DirectedGraph<T> graph, T node, HashSet<T> visited)
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public ISet<RtlBlock> GetAncestors(RtlBlock n)
         {
-            foreach (var p in graph.Predecessors(node))
+            var anc = new HashSet<RtlBlock>();
+            foreach (var p in blocks.Predecessors(n))
             {
-                if (!visited.Contains(p))
-                {
-                    visited.Add(p);
-                    GetAllAncestors(graph, p, visited);
-                }
+                GetAncestorsAux(p, n, anc);
             }
+            return anc;
+        }
+
+        ISet<RtlBlock> GetAncestorsAux(
+            RtlBlock n,
+            RtlBlock orig,
+            ISet<RtlBlock> ancestors)
+        {
+            if (ancestors.Contains(n) || n == orig)
+                return ancestors;
+            ancestors.Add(n);
+            foreach (var p in blocks.Predecessors(n))
+            {
+                GetAncestorsAux(p, orig, ancestors);
+            }
+            return ancestors;
         }
 
         private class CollisionComparer : IEqualityComparer<Tuple<RtlBlock, RtlBlock>>
