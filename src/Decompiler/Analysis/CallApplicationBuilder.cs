@@ -138,9 +138,7 @@ namespace Reko.Analysis
                 if (((StackStorage)de.Value.Storage).StackOffset == localOff)
                     return de.Value.Expression;
             }
-            throw new NotImplementedException(string.Format("Argument {0} not found in map: {1}",
-                stack,
-                string.Join(",",map.Select(de => string.Format("{0}{1}: {2}{3}", "{", de.Key, de.Value, "}")))));
+            return FallbackArgument($"stackArg{localOff}", stack.DataType);
         }
 
         public Expression VisitStackLocalStorage(StackLocalStorage local)
@@ -151,6 +149,54 @@ namespace Reko.Analysis
         public Expression VisitTemporaryStorage(TemporaryStorage temp)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Argument was not found in the map due to bugs at previous stages.
+        /// Create '<paramref name="name"/> = Constant.Invalid' statement.
+        /// </summary>
+        /// <param name="name">Argument name</param>
+        /// <param name="dt">Argument type</param>
+        /// <returns>
+        /// Identifier with name '<paramref name="name"/>' as fallback argument
+        /// </returns>
+        private Identifier FallbackArgument(string name, DataType dt)
+        {
+            var id = ssaCaller.Procedure.Frame.CreateTemporary(name, dt);
+            var sid = ssaCaller.Identifiers.Add(id, null, null, false);
+            DefineUninitializedIdentifier(stmCall, sid);
+            sid.Uses.Add(stmCall);
+            return sid.Identifier;
+        }
+
+        private void DefineUninitializedIdentifier(
+            Statement stm,
+            SsaIdentifier sid)
+        {
+            var value = Constant.Invalid;
+            var ass = new Assignment(sid.Identifier, value);
+            var newStm = InsertStatementBefore(ass, stm);
+            sid.DefExpression = value;
+            sid.DefStatement = newStm;
+            var comment =
+@"Failed to bind call argument.
+Please report this issue at https://github.com/uxmal/reko";
+            InsertStatementBefore(new CodeComment(comment), newStm);
+        }
+
+        /// <summary>
+        /// Inserts the instruction <paramref name="instr"/> into a
+        /// Block before the statement <paramref name="stmBefore"/>.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <param name="stmBefore"></param>
+        /// <returns></returns>
+        private Statement InsertStatementBefore(Instruction instr, Statement stmBefore)
+        {
+            var block = stmBefore.Block;
+            var iPos = block.Statements.IndexOf(stmBefore);
+            var linAddr = stmBefore.LinearAddress;
+            return block.Statements.Insert(iPos, linAddr, instr);
         }
     }
 }

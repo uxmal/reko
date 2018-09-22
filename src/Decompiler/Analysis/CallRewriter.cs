@@ -314,7 +314,7 @@ namespace Reko.Analysis
         public int RewriteCalls(SsaState ssaCaller)
         {
             int unConverted = 0;
-            foreach (Statement stm in ssaCaller.Procedure.Statements)
+            foreach (Statement stm in ssaCaller.Procedure.Statements.ToList())
             {
                 if (stm.Instruction is CallInstruction ci)
                 {
