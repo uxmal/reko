@@ -40,10 +40,10 @@ using Reko.UserInterfaces.WindowsForms.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
-	[TestFixture]
+    [TestFixture]
     [Category(Categories.UserInterface)]
-	public class MainFormInteractorTests
-	{
+    public class MainFormInteractorTests
+    {
         private MockRepository mr;
         private MockFactory mockFactory;
         private IMainForm form;
@@ -78,19 +78,19 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ISelectionService selSvc;
 
         [SetUp]
-		public void Setup()
-		{
+        public void Setup()
+        {
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
             services = new ServiceContainer();
             configSvc = mr.Stub<IConfigurationService>();
             services.AddService<IConfigurationService>(configSvc);
             uiSvc = mr.Stub<IDecompilerShellUiService>();
-		}
+        }
 
-		[Test]
-		public void Mfi_OpenBinary_SwitchToInitialPhase()
-		{
+        [Test]
+        public void Mfi_OpenBinary_SwitchToInitialPhase()
+        {
             Given_Loader();
             Given_MainFormInteractor();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
@@ -107,12 +107,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-			interactor.OpenBinary("floxie.exe");
+            interactor.OpenBinary("floxie.exe");
 
             mr.VerifyAll();
             Assert.AreSame(interactor.CurrentPhase, interactor.InitialPageInteractor);
             Assert.IsTrue(((FakeInitialPageInteractor)interactor.InitialPageInteractor).OpenBinaryCalled);
-		}
+        }
 
         [Test]
         public void Mfi_OpenBinary_ClearDiagnostics()
@@ -179,9 +179,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiPrefs.Stub(u => u.WindowSize).Return(new Size(1000, 700));
         }
 
-		[Test]
-		public void Mfi_NextPhase_AdvanceToNextInteractor()
-		{
+        [Test]
+        public void Mfi_NextPhase_AdvanceToNextInteractor()
+        {
             Given_Loader();
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
@@ -198,13 +198,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-			interactor.OpenBinary(null);
-			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
-			interactor.NextPhase();
-			Assert.AreSame(interactor.ScannedPageInteractor, interactor.CurrentPhase);
+            interactor.OpenBinary(null);
+            Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
+            interactor.NextPhase();
+            Assert.AreSame(interactor.ScannedPageInteractor, interactor.CurrentPhase);
 
             mr.VerifyAll();
-		}
+        }
 
         [Test]
         public void Mfi_FinishDecompilation()
@@ -383,7 +383,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             When_CreateMainFormInteractor();
             CommandStatus status;
             status = QueryStatus(CmdIds.ViewFindAllProcedures);
-            Assert.AreEqual(MenuStatus.Visible,  status.Status);
+            Assert.AreEqual(MenuStatus.Visible, status.Status);
         }
 
         private void Given_UiSvc_ReturnsFalseOnQueryStatus()
@@ -581,7 +581,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
-            return this.program; 
+            return this.program;
         }
 
         private void Given_MainFormInteractor()
@@ -699,5 +699,5 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             else
                 return null;
         }
-	}
+    }
 }
