@@ -622,6 +622,30 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
         }
 
+        [Test]
+        public void Bws_Rgression()
+        {
+            var b1 = Given_Block(0xA860);
+            Given_Instrs(b1, m =>
+                m.Assign(v12, m.Cast(PrimitiveType.Word16, d0), m.Word16(0x20)),m.ISub(d0,  0x2)))
+            @"
+	v12 = (word16) d0 - 0x0020
+	d0 = DPB(d0, v12, 0)
+	CVZNX = cond(v12)
+	branch Test(UGE,C) l0000A8AC
+	// succ:  l0000A87C l0000A8AC
+l0000A87C:
+    return
+l0000A8AC:
+	v16 = (word16) d0 + (word16) d0
+	d0 = DPB(d0, v16, 0)
+	CVZNX = cond(v16)
+	v17 = (word16) d0 + (word16) d0
+	d0 = DPB(d0, v17, 0)
+	CVZNX = cond(v17)
+ m.Goto(m.IAdd(r1, 0x00123400)   goto 
+"
+        }
         // Test cases
         // A one-level jump table from MySQL. JTT represents the jump table.
         // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5

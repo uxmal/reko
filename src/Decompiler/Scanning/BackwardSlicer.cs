@@ -258,7 +258,7 @@ namespace Reko.Scanning
             }
             else
             {
-                return false;
+                return worklist.Count > 0;
             }
         }
 
@@ -381,11 +381,12 @@ namespace Reko.Scanning
 
     }
 
+    [Flags]
     public enum ContextType
     {
-        None,
-        Jumptable,
-        Condition,
+        None = 0,
+        Jumptable = 1,
+        Condition = 2,
     }
 
     public class BackwardSlicerContext : IComparable<BackwardSlicerContext>
@@ -422,6 +423,13 @@ namespace Reko.Scanning
         public int CompareTo(BackwardSlicerContext that)
         {
             return this.BitRange.CompareTo(that.BitRange);
+        }
+
+        public BackwardSlicerContext Merge(BackwardSlicerContext that)
+        {
+            var type = this.Type | that.Type;
+            var range = this.BitRange | that.BitRange;
+            return new BackwardSlicerContext(type, range);
         }
 
         public override string ToString()
@@ -461,7 +469,7 @@ namespace Reko.Scanning
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray();
             this.iInstr = iInstr;
-            DumpBlock(BackwardSlicer.trace.TraceVerbose);
+            // DumpBlock(BackwardSlicer.trace.TraceVerbose);
         }
 
         // The RTL expression in the executable that computes the destination addresses.
@@ -502,8 +510,12 @@ namespace Reko.Scanning
 
         public bool Step()
         {
+            BackwardSlicer.trace.Level = (block.Name.EndsWith("A872") ? TraceLevel.Verbose : TraceLevel.Off);
             var instr = this.instrs[this.iInstr];
             DebugEx.PrintIf(BackwardSlicer.trace.TraceInfo, "Bwslc: Stepping to instruction {0}", instr);
+            if (instr.ToString().Contains("v12 = (word16) d0 - 0x0020") ||
+                BackwardSlicer.trace.Level == TraceLevel.Verbose && instr.ToString() == "d0 = DPB(d0, v12, 0)") //$DEBUG
+                instr.ToString();
             var sr = instr.Accept(this);
             --this.iInstr;
             if (sr == null)
@@ -513,7 +525,14 @@ namespace Reko.Scanning
             }
             foreach (var de in sr.LiveExprs)
             {
-                this.Live[de.Key] = de.Value;
+                if (this.Live.ContainsKey(de.Key))
+                {
+                    this.Live[de.Key] = this.Live[de.Key].Merge(de.Value);
+                }
+                else
+                {
+                    this.Live[de.Key] = de.Value;
+                }
             }
             if (sr.Stop)
             {
@@ -630,9 +649,9 @@ namespace Reko.Scanning
                 // This assignment doesn't affect the end result.
                 return null;
             }
-            foreach (var deadReg in deadRegs)
+            foreach (var killedReg in deadRegs)
             {
-                Live.Remove(deadReg.Key);
+                Live.Remove(killedReg.Key);
             }
             this.assignLhs = deadRegs[0].Key;
             var se = ass.Src.Accept(this, deadRegs[0].Value);
@@ -685,28 +704,19 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if (binExp.Operator == Operator.ISub && Live != null && ctx.Type == ContextType.Condition)
+            if (binExp.Operator == Operator.ISub && Live != null && (ctx.Type & ContextType.Condition) != 0)
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
+                var seFound = TryFoundAllConditions(binExp, domLeft, this.assignLhs, ctx);
+                if (seFound != null)
+                    return seFound;
                 foreach (var live in Live)
                 {
                     if (live.Value.Type != ContextType.Jumptable)
                         continue;
-                    if ((domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
-                        ||
-                        (this.slicer.AreEqual(live.Key, binExp.Left)))
-                    {
-                        //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-                        this.JumpTableIndex = live.Key;
-                        this.JumpTableIndexToUse = binExp.Left;
-                        this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
-                        DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
-                        return new SlicerResult
-                        {
-                            SrcExpr = binExp,
-                            Stop = true
-                        };
-                    }
+                    seFound = TryFoundAllConditions(binExp, domLeft, live.Key, live.Value);
+                    if (seFound != null)
+                        return seFound;
                 }
             }
             else if (binExp.Operator == Operator.And)
@@ -731,6 +741,30 @@ namespace Reko.Scanning
                 SrcExpr = binExp,
             };
             return se;
+        }
+
+        private SlicerResult TryFoundAllConditions(
+            BinaryExpression subtraction, 
+            StorageDomain domLeft, 
+            Expression indexCandidate, 
+            BackwardSlicerContext ctx)
+        {
+            if ((domLeft != StorageDomain.Memory && DomainOf(indexCandidate) == domLeft)
+                ||
+                (this.slicer.AreEqual(indexCandidate, subtraction.Left)))
+            {
+                //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+                this.JumpTableIndex = indexCandidate;
+                this.JumpTableIndexToUse = subtraction.Left;
+                this.JumpTableIndexInterval = MakeInterval_ISub(indexCandidate, subtraction.Right as Constant);
+                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}:{1}: {2}", indexCandidate, ctx, JumpTableIndexInterval);
+                return new SlicerResult
+                {
+                    SrcExpr = subtraction,
+                    Stop = true
+                };
+            }
+            return null;
         }
 
         public SlicerResult VisitBranch(RtlBranch branch)
@@ -1056,7 +1090,13 @@ namespace Reko.Scanning
         public static bool operator !=(BitRange a, BitRange b)
         {
             return a.begin != b.begin || a.end != b.end;
-                
+        }
+
+        public static BitRange operator | (BitRange a, BitRange b)
+        {
+            return new BitRange(
+                Math.Min(a.begin, b.begin),
+                Math.Max(a.end, b.end));
         }
 
         public override string ToString()
