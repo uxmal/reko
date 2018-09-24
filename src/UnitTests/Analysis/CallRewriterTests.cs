@@ -45,6 +45,8 @@ namespace Reko.UnitTests.Analysis
         private CallRewriter crw;
         private Procedure proc;
         private ProcedureFlow flow;
+        ProgramBuilder pb;
+        private List<SsaState> ssaStates;
 
         [SetUp]
         public void Setup()
@@ -55,6 +57,8 @@ namespace Reko.UnitTests.Analysis
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
+            pb = new ProgramBuilder();
+            ssaStates = new List<SsaState>();
         }
 
         private class NestedProgram
@@ -132,6 +136,36 @@ namespace Reko.UnitTests.Analysis
             proc.ExitBlock.Statements.Add(0x10020, new UseInstruction(id));
         }
 
+        private SsaState Given_Procedure(
+            string name,
+            Action<SsaProcedureBuilder> builder)
+        {
+            var m = new SsaProcedureBuilder(name);
+            builder(m);
+            pb.Add(m);
+            ssaStates.Add(m.Ssa);
+            return m.Ssa;
+        }
+
+        private void Given_Signature(string name, FunctionType signature)
+        {
+            foreach(var ssa in ssaStates)
+            {
+                if (ssa.Procedure.Name == name)
+                {
+                    ssa.Procedure.Signature = signature;
+                }
+            }
+        }
+
+        private void When_RewriteCalls(SsaState ssa)
+        {
+            var program = pb.BuildProgram();
+            var flow = new ProgramDataFlow(program);
+            var crw = new CallRewriter(program.Platform, flow, new FakeDecompilerEventListener());
+            crw.RewriteCalls(ssa);
+        }
+
         private void AssertExpected(string sExp, SsaState ssa)
         {
             var sw = new StringWriter();
@@ -143,6 +177,18 @@ namespace Reko.UnitTests.Analysis
                 Debug.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
+        }
+
+        private void AssertProcedureCode(string expected, SsaState ssa)
+        {
+            var writer = new StringWriter();
+            ssa.Procedure.WriteBody(false, writer);
+            var actual = writer.ToString();
+            if (actual != expected)
+            {
+                Debug.Print(actual);
+            }
+            Assert.AreEqual(expected, actual);
         }
 
         private void AddUserProc(Program program, Address address, string name, SerializedSignature sSig)
@@ -704,6 +750,42 @@ fnOutParam_exit:
         public void CrwParameters()
         {
             RunFileTest_x86_real("Fragments/multiple/outparameters.asm", "Analysis/CrwParameters.txt");
+        }
+
+        [Test]
+        public void CrwStackArgumentNotFound()
+        {
+            var ssa = Given_Procedure("main", m =>
+            {
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { }, new Identifier[] { });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature(
+                "fn",
+                FunctionType.Action(
+                    new Identifier(
+                        "arg04",
+                        PrimitiveType.Word32,
+                        new StackArgumentStorage(
+                            4, PrimitiveType.Word32))));
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn(stackArg4)
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
         }
     }
 }
