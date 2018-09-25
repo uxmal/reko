@@ -33,6 +33,7 @@ namespace Reko.Arch.zSeries
     {
         public RegisterStorage Base;
         public RegisterStorage Index;
+        public int Length;
         public int Offset;
 
         public MemoryOperand(PrimitiveType dt) : base(dt)
@@ -41,7 +42,22 @@ namespace Reko.Arch.zSeries
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            throw new NotImplementedException();
+            if (Offset != 0)
+            {
+                writer.WriteFormat("{0}", Offset);
+            }
+            writer.WriteFormat("(");
+            if (Length != 0)
+            {
+                writer.WriteFormat("{0},", Length);
+            }
+            if (Index != null && Index.Number != 0)
+            {
+                writer.WriteString(Index.Name);
+                writer.WriteString(",");
+            }
+            writer.WriteString(Base.Name);
+            writer.WriteFormat(")");
         }
     }
 }

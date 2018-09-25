@@ -38,6 +38,7 @@ namespace Reko.Arch.zSeries
             this.InstructionBitSize = 16;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
+            this.FramePointerType = PrimitiveType.Ptr32;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -82,7 +83,7 @@ namespace Reko.Arch.zSeries
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new zSeriesState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -117,7 +118,10 @@ namespace Reko.Arch.zSeries
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            if (Registers.RegistersByName.TryGetValue(name, out var reg))
+                return reg;
+            else 
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()

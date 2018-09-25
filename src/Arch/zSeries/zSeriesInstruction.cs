@@ -58,7 +58,7 @@ namespace Reko.Arch.zSeries
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString(this.Opcode.ToString());
+            writer.WriteOpcode(this.Opcode.ToString());
             if (Ops.Length == 0)
                 return;
             writer.Tab();

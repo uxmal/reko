@@ -48,6 +48,7 @@
     <Compile Include="zSeriesArchitecture.cs" />
     <Compile Include="zSeriesDisassembler.cs" />
     <Compile Include="zSeriesInstruction.cs" />
+    <Compile Include="zSeriesState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

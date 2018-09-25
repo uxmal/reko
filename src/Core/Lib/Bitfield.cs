@@ -24,6 +24,11 @@ namespace Reko.Core.Lib
             return (u >> Position) & Mask;
         }
 
+        public uint Read(ulong u)
+        {
+            return (uint)((u >> Position) & Mask);
+        }
+
         public int ReadSigned(uint u)
         {
             var v = (u >> Position) & Mask;

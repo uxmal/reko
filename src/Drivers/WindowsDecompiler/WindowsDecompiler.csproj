@@ -220,6 +220,10 @@
       <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
       <Name>SuperH</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
+      <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
+      <Name>zSeries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
@@ -227,6 +231,10 @@
     <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
+      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Name>SysV</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
       <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>

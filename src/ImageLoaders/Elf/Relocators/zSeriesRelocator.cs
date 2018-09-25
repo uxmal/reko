@@ -35,12 +35,43 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            throw new NotImplementedException();
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)
         {
-            throw new NotImplementedException();
+            return ((zSeriesRt)type).ToString();
         }
+    }
+
+    public enum zSeriesRt
+    {
+        R_390_NONE = 0,         // none none
+        R_390_8 = 1,            // byte8 S + A
+        R_390_12 = 2,           // low12 S + A
+        R_390_16 = 3,           // half16 S + A
+        R_390_32 = 4,           // word32 S + A
+        R_390_PC32 = 5,         // word32 S+A-P
+        R_390_GOT12 = 6,        // low12 O + A
+        R_390_GOT32 = 7,        // word32 O + A
+        R_390_PLT32 = 8,        // word32 L + A
+        R_390_COPY = 9,         // none (see below)
+        R_390_GLOB_DAT = 10,    // quad64 S + A (see below)
+        R_390_JMP_SLOT = 11,    // none (see below)
+        R_390_RELATIVE = 12,    // quad64 B + A (see below)
+        R_390_GOTOFF = 13,      // quad64 S+A-G
+        R_390_GOTPC = 14,       // quad64 G+A-P
+        R_390_GOT16 = 15,       // half16 O + A
+        R_390_PC16 = 16,        // half16 S+A-P
+        R_390_PC16DBL = 17,     // pc16 (S + A - P) >> 1
+        R_390_PLT16DBL = 18,    // pc16 (L + A - P) >> 1
+        R_390_PC32DBL = 19,     // pc32 (S + A - P) >> 1
+        R_390_PLT32DBL = 20,    // pc32 (L + A - P) >> 1
+        R_390_GOTPCDBL = 21,    // pc32 (G + A - P) >> 1
+        R_390_64 = 22,          // quad64 S + A
+        R_390_PC64 = 23,        // quad64 S+A-P
+        R_390_GOT64 = 24,       // quad64 O + A
+        R_390_PLT64 = 25,       // quad64 L + A
+        R_390_GOTENT = 26,      // pc32 (G + O + A - P) >> 1
     }
 }

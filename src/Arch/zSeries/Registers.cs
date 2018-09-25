@@ -31,12 +31,20 @@ namespace Reko.Arch.zSeries
     public class Registers
     {
         public static RegisterStorage[] GpRegisters;
+        public static RegisterStorage[] FpRegisters;
+        public static Dictionary<string, RegisterStorage> RegistersByName;
 
         static Registers()
         {
             GpRegisters = Enumerable.Range(0, 16)
                 .Select(n => new RegisterStorage($"r{n}", n, 0, PrimitiveType.Word64))
                 .ToArray();
+            FpRegisters = Enumerable.Range(0, 16)
+                .Select(n => new RegisterStorage($"f{n}", n + 16, 0, PrimitiveType.Word64))
+                .ToArray();
+
+            RegistersByName = GpRegisters.Concat(FpRegisters)
+                .ToDictionary(r => r.Name);
         }
     }
 }

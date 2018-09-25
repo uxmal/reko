@@ -101,6 +101,8 @@ namespace Reko.Environments.SysV
                 return new SuperHCallingConvention(Architecture);
             case "alpha":
                 return new AlphaCallingConvention(Architecture);
+            case "zSeries":
+                return new zSeriesCallingConvention(Architecture);
             default:
                 throw new NotImplementedException(string.Format("Calling convention for {0} not implemented yet.", Architecture.Description));
             }
