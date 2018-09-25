@@ -151,6 +151,7 @@
     <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
+    <Compile Include="Arch\zSystem\zSystemDisassemblerTests.cs" />
     <Compile Include="Core\CriticalInstructionTests.cs" />
     <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
     <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
@@ -834,6 +835,10 @@
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
       <Name>Z80</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\zSystem\zSystem.csproj">
+      <Project>{33CE0D6A-8762-4505-975F-EE61C355FD04}</Project>
+      <Name>zSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
       <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
