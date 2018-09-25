@@ -48,7 +48,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private MockFactory mockFactory;
         private IMainForm form;
         private MainFormInteractor interactor;
-        private Program program;
         private MemoryStream xmlStm;
         private IArchiveBrowserService archSvc;
         private IDialogFactory dlgFactory;
@@ -573,20 +572,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             public string Title { get { return Text; } set { Text = value; } }
         }
 
-        private Program CreateFakeProgram()
-        {
-            Program program = new Program();
-            program.Architecture = new X86ArchitectureReal("x86-real-16");
-            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
-            program.SegmentMap = new SegmentMap(
-                mem.BaseAddress,
-                new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
-            return this.program;
-        }
-
         private void Given_MainFormInteractor()
         {
-            program = CreateFakeProgram();
             svcFactory = mr.StrictMock<IServiceFactory>();
             archSvc = mr.StrictMock<IArchiveBrowserService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
