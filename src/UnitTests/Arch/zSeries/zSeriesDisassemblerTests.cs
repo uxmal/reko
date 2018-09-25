@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.zSystem;
+using Reko.Arch.zSeries;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -27,14 +27,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.zSystem
+namespace Reko.UnitTests.Arch.zSeries
 {
     [TestFixture]
-    public class zSystemDisassemblerTests : DisassemblerTestBase<zSystemInstruction>
+    public class zSeriesDisassemblerTests : DisassemblerTestBase<zSeriesInstruction>
     {
-        private zSystemArchitecture arch;
+        private zSeriesArchitecture arch;
 
-        public zSystemDisassemblerTests()
+        public zSeriesDisassemblerTests()
         {
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.zSystem
         [SetUp]
         public void Setup()
         {
-            this.arch = new zSystemArchitecture("zSystem");
+            this.arch = new zSeriesArchitecture("zSeries");
         }
 
         public override IProcessorArchitecture Architecture {  get { return arch; } }

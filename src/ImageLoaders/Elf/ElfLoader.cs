@@ -255,7 +255,7 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ElfMachine.EM_S370:
             case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
-                arch = "zSystem";
+                arch = "zSeries";
                 break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));

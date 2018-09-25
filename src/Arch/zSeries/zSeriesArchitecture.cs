@@ -29,11 +29,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.zSystem
+namespace Reko.Arch.zSeries
 {
-    public class zSystemArchitecture : ProcessorArchitecture
+    public class zSeriesArchitecture : ProcessorArchitecture
     {
-        public zSystemArchitecture(string archId) : base(archId)
+        public zSeriesArchitecture(string archId) : base(archId)
         {
             this.InstructionBitSize = 16;
             this.WordWidth = PrimitiveType.Word32;
@@ -42,7 +42,7 @@ namespace Reko.Arch.zSystem
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new zSystemDisassembler(this, imageReader);
+            return new zSeriesDisassembler(this, imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)

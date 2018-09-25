@@ -417,7 +417,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPC.Design", "Arch\Powe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M6800", "Arch\M6800\M6800.csproj", "{54944B1E-7C12-4FB1-A208-996AD6D04B80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zSystem", "Arch\zSystem\zSystem.csproj", "{33CE0D6A-8762-4505-975F-EE61C355FD04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zSeries", "Arch\zSeries\zSeries.csproj", "{33CE0D6A-8762-4505-975F-EE61C355FD04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

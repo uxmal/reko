@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.zSystem
+namespace Reko.Arch.zSeries
 {
     public enum Opcode
     {

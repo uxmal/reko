@@ -20,9 +20,9 @@
 
 using Reko.Core.Machine;
 
-namespace Reko.Arch.zSystem
+namespace Reko.Arch.zSeries
 {
-    public class zSystemInstruction : MachineInstruction
+    public class zSeriesInstruction : MachineInstruction
     {
         internal Opcode Opcode;
         internal MachineOperand[] Ops;

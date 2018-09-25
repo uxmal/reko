@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -27,21 +26,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.zSystem
+namespace Reko.Arch.zSeries
 {
-    public class MemoryOperand : MachineOperand
+    public class Registers
     {
-        public RegisterStorage Base;
-        public RegisterStorage Index;
-        public int Offset;
+        public static RegisterStorage[] GpRegisters;
 
-        public MemoryOperand(PrimitiveType dt) : base(dt)
+        static Registers()
         {
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            throw new NotImplementedException();
+            GpRegisters = Enumerable.Range(0, 16)
+                .Select(n => new RegisterStorage($"r{n}", n, 0, PrimitiveType.Word64))
+                .ToArray();
         }
     }
 }

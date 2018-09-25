@@ -24,27 +24,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Arch.zSystem
+namespace Reko.Arch.zSeries
 {
-    using Mutator = Func<uint, zSystemDisassembler, bool>;
+    using Mutator = Func<uint, zSeriesDisassembler, bool>;
 
-    public class zSystemDisassembler : DisassemblerBase<zSystemInstruction>
+    public class zSeriesDisassembler : DisassemblerBase<zSeriesInstruction>
     {
         private readonly static Decoder[] decoders;
 
-        private readonly zSystemArchitecture arch;
+        private readonly zSeriesArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly State state;
         private Address addr;
 
-        public zSystemDisassembler(zSystemArchitecture arch, EndianImageReader rdr)
+        public zSeriesDisassembler(zSeriesArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = new State();
         }
 
-        public override zSystemInstruction DisassembleInstruction()
+        public override zSeriesInstruction DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out var opcode))
@@ -57,9 +57,9 @@ namespace Reko.Arch.zSystem
         }
 
 
-        private zSystemInstruction Invalid()
+        private zSeriesInstruction Invalid()
         {
-            return new zSystemInstruction
+            return new zSeriesInstruction
             {
                 Opcode = Opcode.invalid,
                 Ops = new MachineOperand[0]
@@ -81,7 +81,7 @@ namespace Reko.Arch.zSystem
                 var bytes = rdr2.ReadBytes(len);
                 var hexBytes = string.Join("", bytes
                         .Select(b => b.ToString("X2")));
-                Console.WriteLine($"// A zSystem decoder for the instruction {uInstr:X8} ({message}) has not been implemented yet.");
+                Console.WriteLine($"// A zSeries decoder for the instruction {uInstr:X8} ({message}) has not been implemented yet.");
                 Console.WriteLine("[Test]");
                 Console.WriteLine($"public void zSysDasm_{uInstr:X8}()");
                 Console.WriteLine("{");
@@ -103,9 +103,9 @@ namespace Reko.Arch.zSystem
                 this.ops.Clear();
             }
 
-            public zSystemInstruction MakeInstruction()
+            public zSeriesInstruction MakeInstruction()
             {
-                var instr = new zSystemInstruction
+                var instr = new zSeriesInstruction
                 {
                     Opcode = this.opcode,
                     Ops = this.ops.ToArray(),
@@ -116,7 +116,7 @@ namespace Reko.Arch.zSystem
 
         #region Mutators
 
-        public static bool RR(uint uInstr, zSystemDisassembler dasm)
+        public static bool RR(uint uInstr, zSeriesDisassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 4) & 0xF]));
             dasm.state.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr) & 0xF]));
@@ -127,7 +127,7 @@ namespace Reko.Arch.zSystem
 
         public abstract class Decoder
         {
-            public abstract zSystemInstruction Decode(uint uInstr, zSystemDisassembler dasm);
+            public abstract zSeriesInstruction Decode(uint uInstr, zSeriesDisassembler dasm);
         }
 
         public class InstrDecoder : Decoder
@@ -141,7 +141,7 @@ namespace Reko.Arch.zSystem
                 this.mutators = mutators;
             }
 
-            public override zSystemInstruction Decode(uint uInstr, zSystemDisassembler dasm)
+            public override zSeriesInstruction Decode(uint uInstr, zSeriesDisassembler dasm)
             {
                 dasm.state.opcode = opcode;
                 foreach (var m in mutators)
@@ -162,7 +162,7 @@ namespace Reko.Arch.zSystem
                 this.msg = msg;
             }
 
-            public override zSystemInstruction Decode(uint uInstr, zSystemDisassembler dasm)
+            public override zSeriesInstruction Decode(uint uInstr, zSeriesDisassembler dasm)
             {
                 dasm.Nyi(uInstr, msg);
                 return dasm.Invalid();
@@ -179,7 +179,7 @@ namespace Reko.Arch.zSystem
             return new NyiDecoder(msg);
         }
 
-        static zSystemDisassembler()
+        static zSeriesDisassembler()
         {
             decoders = new Decoder[256]
             {
