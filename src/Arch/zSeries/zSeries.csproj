@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="zSeriesRewriter.Control.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,6 +49,8 @@
     <Compile Include="zSeriesArchitecture.cs" />
     <Compile Include="zSeriesDisassembler.cs" />
     <Compile Include="zSeriesInstruction.cs" />
+    <Compile Include="zSeriesRewriter.Alu.cs" />
+    <Compile Include="zSeriesRewriter.cs" />
     <Compile Include="zSeriesState.cs" />
   </ItemGroup>
   <ItemGroup>

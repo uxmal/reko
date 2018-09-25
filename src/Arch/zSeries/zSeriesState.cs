@@ -69,7 +69,6 @@ namespace Reko.Arch.zSeries
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
@@ -79,12 +78,11 @@ namespace Reko.Arch.zSeries
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new System.NotImplementedException();
+            //$TODO: is the IP exposed, architecturally for s390 / zSeries?
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new System.NotImplementedException();
         }
     }
 }
