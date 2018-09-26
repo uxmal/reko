@@ -95,7 +95,7 @@ namespace Reko.Arch.zSeries
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            return Registers.CC;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -128,12 +128,13 @@ namespace Reko.Arch.zSeries
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.GpRegisters;
         }
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            //$BUG: this is clearly not correct.
+            return "CC";
         }
 
         public override Address MakeAddressFromConstant(Constant c)

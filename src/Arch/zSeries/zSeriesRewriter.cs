@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 
 namespace Reko.Arch.zSeries
 {
@@ -37,6 +38,7 @@ namespace Reko.Arch.zSeries
         private readonly IRewriterHost host;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<zSeriesInstruction> dasm;
+        private readonly ExpressionValueComparer cmp;
         private zSeriesInstruction instr;
         private RtlEmitter m;
         private RtlClass rtlc;
@@ -49,6 +51,7 @@ namespace Reko.Arch.zSeries
             this.binder = binder;
             this.host = host;
             this.dasm = new zSeriesDisassembler(arch, rdr).GetEnumerator();
+            this.cmp = new ExpressionValueComparer();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -68,9 +71,45 @@ namespace Reko.Arch.zSeries
                     rtlc = RtlClass.Invalid;
                     m.Invalid();
                     break;
+                case Opcode.aghi: RewriteAhi(PrimitiveType.Word64); break;
+                case Opcode.ahi: RewriteAhi(PrimitiveType.Word32); break;
+                case Opcode.agr: RewriteAgr(); break;
+                case Opcode.ar: RewriteAr(); break;
+                case Opcode.basr: RewriteBasr(); break;
+                case Opcode.ber: RewriteBranch(ConditionCode.EQ); break;
+                case Opcode.bler: RewriteBranch(ConditionCode.LE); break;
                 case Opcode.br: RewriteBr(); break;
+                case Opcode.brasl: RewriteBrasl(); break;
+                case Opcode.brctg: RewriteBrctg(); break;
+                case Opcode.chi: RewriteChi(); break;
+                case Opcode.clc: RewriteClc(); break;
+                case Opcode.clg: RewriteClg(); break;
+                case Opcode.cli: RewriteCli(); break;
+                case Opcode.j: RewriteJ(); break;
+                case Opcode.je: RewriteJcc(ConditionCode.EQ); break;
+                case Opcode.jg: RewriteJcc(ConditionCode.GT); break;
+                case Opcode.jh: RewriteJcc(ConditionCode.UGT); break;
+                case Opcode.jne: RewriteJcc(ConditionCode.NE); break;
+                case Opcode.la: RewriteLa(); break;
                 case Opcode.larl: RewriteLarl(); break;
+                case Opcode.l: RewriteL(PrimitiveType.Word32); break;
+                case Opcode.lg: RewriteL(PrimitiveType.Word64); break;
+                case Opcode.lgfr: RewriteLgfr(); break;
+                case Opcode.lghi: RewriteLghi(); break;
+                case Opcode.lgr: RewriteLgr(); break;
+                case Opcode.lmg: RewriteLmg(); break;
+                case Opcode.lr: RewriteLr(); break;
+                case Opcode.ltgr: RewriteLtgr(); break;
+                case Opcode.mvi: RewriteMvi(); break;
+                case Opcode.ngr: RewriteNgr(); break;
+                case Opcode.nopr: m.Nop(); break;
+                case Opcode.sgr: RewriteSgr(); break;
+                case Opcode.srag: RewriteSrag(); break;
+                case Opcode.srlg: RewriteSrlg(); break;
+                case Opcode.st: RewriteSt(PrimitiveType.Word32); break;
+                case Opcode.stg: RewriteSt(PrimitiveType.Word64); break;
                 case Opcode.stmg: RewriteStmg(); break;
+                case Opcode.xc: RewriteXc(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -116,8 +155,15 @@ namespace Reko.Arch.zSeries
             return ((AddressOperand)op).Address;
         }
 
+        private Constant Const(MachineOperand op)
+        {
+            return ((ImmediateOperand)op).Value;
+        }
+
         private Expression EffectiveAddress(MachineOperand op)
         {
+            if (op is AddressOperand aOp)
+                return aOp.Address;
             var mem = (MemoryOperand)op;
             if (mem.Base == null || mem.Base.Number == 0)
             {

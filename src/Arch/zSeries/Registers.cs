@@ -33,6 +33,7 @@ namespace Reko.Arch.zSeries
         public static RegisterStorage[] GpRegisters;
         public static RegisterStorage[] FpRegisters;
         public static Dictionary<string, RegisterStorage> RegistersByName;
+        public static FlagGroupStorage CC;
 
         static Registers()
         {
@@ -45,6 +46,10 @@ namespace Reko.Arch.zSeries
 
             RegistersByName = GpRegisters.Concat(FpRegisters)
                 .ToDictionary(r => r.Name);
+
+            //$REVIEW: this is probably not correct, but close enough to get us started.
+            var ccReg = new RegisterStorage("ccReg", 40, 0, PrimitiveType.Byte);
+            CC = new FlagGroupStorage(ccReg, 0xF, "CC", PrimitiveType.Byte);
         }
     }
 }

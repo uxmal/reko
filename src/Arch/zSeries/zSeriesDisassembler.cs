@@ -232,6 +232,15 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        public static bool RXb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var x2 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            return true;
+        }
+
         public static bool SSa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var l = (byte)(uInstr >> 32);
@@ -266,6 +275,7 @@ namespace Reko.Arch.zSeries
             new Bitfield(8, 8),
             new Bitfield(16, 12),
         };
+
         private static bool RXYa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
@@ -386,6 +396,12 @@ namespace Reko.Arch.zSeries
             private readonly Bitfield bitfield;
             private readonly Decoder[] decoders;
 
+            public ExtendMaskDecoder32(int pos, int len, params Decoder[] decoders)
+            {
+                this.bitfield = new Bitfield(pos, len);
+                this.decoders = decoders;
+            }
+
             public ExtendMaskDecoder32(int pos, int len, params (uint, Decoder)[] decoders)
             {
                 this.bitfield = new Bitfield(pos, len);
@@ -461,6 +477,11 @@ namespace Reko.Arch.zSeries
         public static MaskDecoder Mask(int pos, int len, params Decoder[] decoders)
         {
             return new MaskDecoder(pos, len, decoders);
+        }
+
+        public static ExtendMaskDecoder32 ExtendMask32(int pos, int len, params Decoder[] decoders)
+        {
+            return new ExtendMaskDecoder32(pos, len, decoders);
         }
 
         public static ExtendMaskDecoder32 ExtendMask32(int pos, int len, params (uint, Decoder)[] decoders)
@@ -569,7 +590,7 @@ namespace Reko.Arch.zSeries
 
                 Nyi("*"),
                 Nyi("*"),
-                Nyi("*"),
+                Instr(Opcode.awr, RR),
                 Instr(Opcode.swr, RR),
                 // 30
                 Nyi("*"),
@@ -577,7 +598,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
 
-                Nyi("*"),
+                Instr(Opcode.her, RR),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
@@ -600,7 +621,24 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
-                Nyi("*"),
+                ExtendMask32(20, 4,
+                    Instr(Opcode.nop),
+                    Instr(Opcode.bo, RXb),
+                    Instr(Opcode.bh, RXb),
+                    Instr(Opcode.bnle, RXb),
+                    Instr(Opcode.bl, RXb),
+                    Instr(Opcode.bnhe, RXb),
+                    Instr(Opcode.blh, RXb),
+                    Instr(Opcode.bne, RXb),
+                    Instr(Opcode.be, RXb),
+                    Instr(Opcode.bnlh, RXb),
+                    Instr(Opcode.bhe, RXb),
+                    Instr(Opcode.bnl, RXb),
+                    Instr(Opcode.ble, RXb),
+                    Instr(Opcode.bnh, RXb),
+                    Instr(Opcode.bno, RXb),
+                    Instr(Opcode.b, RXb),
+                    Nyi("*")),
 
                 Nyi("*"),
                 Nyi("*"),
@@ -618,7 +656,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
 
                 Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.cl, RXa),
                 Nyi("*"),
                 Nyi("*"),
 

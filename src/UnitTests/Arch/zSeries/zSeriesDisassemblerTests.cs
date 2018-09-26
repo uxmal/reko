@@ -313,9 +313,33 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        public void zSerDasm_00000CD4()
+        public void zSerDasm_bassm()
         {
             AssertCode("bassm\tr13,r4", "0CD4");
+        }
+
+        [Test]
+        public void zSerDasm_her()
+        {
+            AssertCode("her\tr2,r14", "342E");
+        }
+
+        [Test]
+        public void zSerDasm_awr()
+        {
+            AssertCode("awr\tr3,r1", "2E31");
+        }
+
+        [Test]
+        public void zSerDasm_bl()
+        {
+            AssertCode("bl\t(r14,r15)", "474EF000");
+        }
+
+        [Test]
+        public void zSerDasm_cl()
+        {
+            AssertCode("cl\tr0,4(r1)", "55001004");
         }
     }
 }
