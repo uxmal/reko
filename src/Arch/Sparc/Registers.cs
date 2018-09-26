@@ -66,6 +66,7 @@ namespace Reko.Arch.Sparc
             g0 = globRegs[0];
             // outgoing parameter 0 / return value from callee
             OutRegisters = stg.RangeOfReg(8, n => n == 6 ? "sp" : $"o{n}", PrimitiveType.Word32);
+            sp = OutRegisters[6];
             o7 = OutRegisters[7];
 
             var localRegs = stg.RangeOfReg32(8, "l{0}");
