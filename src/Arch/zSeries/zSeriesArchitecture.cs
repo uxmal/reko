@@ -93,8 +93,10 @@ namespace Reko.Arch.zSeries
             return new zSeriesRewriter(this, rdr, state, binder, host);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
+            //$BUG: not close to correct but it's a start.
             return Registers.CC;
         }
 
@@ -131,7 +133,7 @@ namespace Reko.Arch.zSeries
             return Registers.GpRegisters;
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             //$BUG: this is clearly not correct.
             return "CC";
