@@ -133,6 +133,10 @@
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
+      <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
+      <Name>zSeries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
