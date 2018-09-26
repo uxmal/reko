@@ -50,8 +50,10 @@ namespace Reko.Scanning
             this.jumpGraph = jumpGraph;
         }
 
+        public IProcessorArchitecture Architecture => program.Architecture;
         public SegmentMap SegmentMap => program.SegmentMap;
         public int TableByteSize { get; private set; }
+        public Program Program => program;
 
         public Tuple<Expression,Expression> AsAssignment(Instruction instr)
         {
@@ -272,6 +274,11 @@ namespace Reko.Scanning
         public IEnumerable<Instruction> GetBlockInstructions(Block block)
         {
             return block.Statements.Select(s => s.Instruction);
+        }
+
+        public int BlockInstructionCount(Block block)
+        {
+            return block.Statements.Count;
         }
     }
 }

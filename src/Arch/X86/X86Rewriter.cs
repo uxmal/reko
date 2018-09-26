@@ -80,7 +80,6 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                this.len = instrCur.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = RtlClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
@@ -506,6 +505,7 @@ namespace Reko.Arch.X86
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }
+                var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
                 {
                     Class = rtlc

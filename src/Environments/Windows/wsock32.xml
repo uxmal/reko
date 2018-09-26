@@ -201,7 +201,7 @@
           <prim domain="Character" size="1" />
         </arr>
       </field>
-      <field offset="272" name="szSystemStatus">
+      <field offset="272" name="szSeriesStatus">
         <arr length="129">
           <prim domain="Character" size="1" />
         </arr>

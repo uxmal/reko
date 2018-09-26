@@ -351,6 +351,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.S32: return "s32";
             case ArmVectorData.U32: return "u32";
             case ArmVectorData.F64: return "f64";
+            case ArmVectorData.I64: return "i64";
             case ArmVectorData.S64: return "s64";
             case ArmVectorData.U64: return "u64";
             default: NotImplementedYet(); return "(NYI)";
@@ -372,6 +373,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.S32: return PrimitiveType.Int32;
             case ArmVectorData.U32: return PrimitiveType.UInt32;
             case ArmVectorData.F64: return PrimitiveType.Real64;
+            case ArmVectorData.I64: return PrimitiveType.Int64;
             case ArmVectorData.S64: return PrimitiveType.Int64;
             case ArmVectorData.U64: return PrimitiveType.UInt64;
             default: NotImplementedYet(); return VoidType.Instance;

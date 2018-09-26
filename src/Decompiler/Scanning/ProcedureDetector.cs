@@ -112,9 +112,14 @@ namespace Reko.Scanning
         {
             foreach (var address in sr.IndirectJumps)
             {
-
+                /*
+                if (!mpAddrToBlock.TryGetValue(address, out var rtlBlock))
+                    continue;
+                var host = new BackwardSlicerHost(this.program);
+                var bws = new BackwardSlicer(host, rtlBlock, program.Architecture.CreateProcessorState());
+                var te = bws.DiscoverTableExtent(address, (RtlTransfer)rtlBlock.Instructions.Last().Instructions.Last(), listener);
+                */
             }
-            //$TODO: need some form of backwalking here.
         }
 
         /// <summary>

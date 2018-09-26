@@ -408,7 +408,7 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcRw_or_imm_g0()
         {
             BuildTest(
-                Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.g1));
+                Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.IntegerRegisters[1]));
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.

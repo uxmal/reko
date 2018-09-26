@@ -82,6 +82,22 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return null;
         }
 
+        /// <summary>
+        /// Creates a symbol that refers to the location of a PLT stub functon, based on the value
+        /// found in the GOT for that PLT stub.
+        /// </summary>
+        /// <remarks>
+        /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
+        /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
+        /// versions of GCC put, in the GOT entry for the relication, a pointer to the PLT stub + 6 bytes.
+        /// We remove those 6 bytes to obtain a pointer to the PLT stub.
+        /// </remarks>
+        protected ElfSymbol CreatePltStubSymbolFromRelocation(ElfSymbol sym, ulong gotEntry, int offset)
+        {
+            sym.Value = (ulong)((long)gotEntry - offset);   // skip past the Jmp [ebx+xxxxxxxx]
+            return sym;
+        }
+
         protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
         {
             return null;

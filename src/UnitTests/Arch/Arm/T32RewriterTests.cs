@@ -6702,13 +6702,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vqshl()
         {
-            RewriteCode("80EFFEE7");	// vqshl.s64 q7, q15, #0
+            RewriteCode("80EFFEE7");	// vqshl.s64 q7, q15, #64
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q7 = __vqshl_s64(q15, 0x00000000)");
+                "1|L--|q7 = __vqshl_i64(q15, 64)");
         }
 
         [Test]

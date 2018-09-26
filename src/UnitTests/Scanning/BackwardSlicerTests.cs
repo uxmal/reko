@@ -42,6 +42,7 @@ namespace Reko.UnitTests.Scanning
         private RtlBackwalkHost host;
         private Program program;
         private DirectedGraph<RtlBlock> graph;
+        private ProcessorState processorState;
 
         [SetUp]
         public void Setup()
@@ -59,6 +60,7 @@ namespace Reko.UnitTests.Scanning
             binder = new StorageBinder();
             graph = new DiGraph<RtlBlock>();
             host = new RtlBackwalkHost(program, graph);
+            processorState = arch.CreateProcessorState();
         }
 
         private Identifier Reg(int rn)
@@ -116,7 +118,7 @@ namespace Reko.UnitTests.Scanning
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(r1));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b, 0, Target(b)));
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live[r1].BitRange);
         }
@@ -128,7 +130,7 @@ namespace Reko.UnitTests.Scanning
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(Address.Ptr32(0x00123400)));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsFalse(bwslc.Start(b, 0, Target(b)));
             Assert.AreEqual(0, bwslc.Live.Count);
         }
@@ -140,7 +142,7 @@ namespace Reko.UnitTests.Scanning
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(r1));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             var result = bwslc.Start(b, 0, Target(b));
             Assert.IsTrue(result);
         }
@@ -152,7 +154,7 @@ namespace Reko.UnitTests.Scanning
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             var start = bwslc.Start(b, 0, Target(b));
             Assert.IsTrue(start);
             Assert.AreEqual(1, bwslc.Live.Count);
@@ -168,7 +170,7 @@ namespace Reko.UnitTests.Scanning
             Given_Instrs(b, m => { m.Assign(r1, m.Shl(r2, 2)); });
             Given_Instrs(b, m => { m.Goto(m.IAdd(r1, 0x00123400)); });
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b, 0, Target(b)));
             Assert.IsTrue(bwslc.Step());
             Assert.AreEqual(1, bwslc.Live.Count);
@@ -192,7 +194,7 @@ namespace Reko.UnitTests.Scanning
             graph.Nodes.Add(b2);
             graph.AddEdge(b, b2);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b2, processorState);
             Assert.IsTrue(bwslc.Start(b2, -1, Target(b2)));  // indirect jump
             Assert.IsTrue(bwslc.Step());    // direct jump
             Assert.IsTrue(bwslc.Step());    // shift left
@@ -218,7 +220,7 @@ namespace Reko.UnitTests.Scanning
             graph.Nodes.Add(b2);
             graph.AddEdge(b, b2);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b2, processorState);
             Assert.IsTrue(bwslc.Start(b2, 0, Target(b2)));  // indirect jump
             Assert.IsTrue(bwslc.Step());                    // shift left
             Assert.IsTrue(bwslc.Step());                    // branch
@@ -246,7 +248,7 @@ namespace Reko.UnitTests.Scanning
             graph.Nodes.Add(b2);
             graph.AddEdge(b, b2);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b2, processorState);
             Assert.IsTrue(bwslc.Start(b2, 0, Target(b2)));   // indirect jump
             Assert.IsTrue(bwslc.Step());    // shift left
             Assert.IsTrue(bwslc.Step());    // branch
@@ -271,7 +273,7 @@ namespace Reko.UnitTests.Scanning
 
             graph.Nodes.Add(b);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b, 1, Target(b)));   // indirect jump
             Assert.IsTrue(bwslc.Step());    // assign flags
             Assert.IsFalse(bwslc.Step());    // and
@@ -326,7 +328,7 @@ namespace Reko.UnitTests.Scanning
             graph.Nodes.Add(b2);
             graph.AddEdge(b, b2);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b2, 3, Target(b2)));   // indirect jump
             Assert.IsTrue(bwslc.Step());    // assign flags
             Assert.IsTrue(bwslc.Step());    // add bx,bx
@@ -390,7 +392,7 @@ namespace Reko.UnitTests.Scanning
             graph.AddEdge(b2, b3);
             graph.AddEdge(b2, b2);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b3, processorState);
             Assert.IsTrue(bwslc.Start(b3, -1, Target(b3)));   // indirect jump
             Assert.IsTrue(bwslc.Step());
             Assert.IsTrue(bwslc.Step());
@@ -433,7 +435,7 @@ namespace Reko.UnitTests.Scanning
 
             graph.Nodes.Add(b);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b2, processorState);
             Assert.IsTrue(bwslc.Start(b2, 0, Target(b2)));   // indirect jump
             Assert.IsTrue(bwslc.Step());
             Assert.IsTrue(bwslc.Step());
@@ -470,7 +472,7 @@ namespace Reko.UnitTests.Scanning
 
             graph.Nodes.Add(b);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b2, processorState);
             Assert.IsTrue(bwslc.Start(b2, 3, Target(b2)));  // indirect jump
             Assert.IsTrue(bwslc.Step());                    // dl = ...
             Assert.IsTrue(bwslc.Step());                    // edx = 0
@@ -491,7 +493,7 @@ namespace Reko.UnitTests.Scanning
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b, 0, Target(b)));
             Assert.IsTrue(bwslc.Step());
             Assert.AreEqual(1, bwslc.Live.Count);
@@ -508,7 +510,7 @@ namespace Reko.UnitTests.Scanning
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b, 1, Target(b)));
             Assert.IsTrue(bwslc.Step());
             Assert.IsTrue(bwslc.Step());
@@ -591,7 +593,7 @@ namespace Reko.UnitTests.Scanning
             graph.Nodes.Add(b2);
             graph.AddEdge(b, b2);
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b2, processorState);
             Assert.IsTrue(bwslc.Start(b2, 10, Target(b2)));
             while (bwslc.Step())
                 ;
@@ -611,7 +613,7 @@ namespace Reko.UnitTests.Scanning
             Given_Instrs(b, m => m.Assign(r1, m.Mem32(m.IAdd(r2, 8))));
             Given_Instrs(b, m => m.Goto(r1));
 
-            var bwslc = new BackwardSlicer(host);
+            var bwslc = new BackwardSlicer(host, b, processorState);
             Assert.IsTrue(bwslc.Start(b, 0, Target(b)));
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live[r1].BitRange);
             Assert.IsTrue(bwslc.Step());

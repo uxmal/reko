@@ -238,7 +238,7 @@ namespace Reko.Arch.Sparc
                 {
                     offset = offset * 10 + (fmt[i++] - '0');
                 }
-                return new RegisterOperand(Registers.GetFpuRegister((wInstr >> offset) & 0x1F));
+                return new RegisterOperand(Registers.GetFpuRegister((int)(wInstr >> offset) & 0x1F));
             }
 
             private RegisterStorage GetRegister(uint wInstr, ref int i)

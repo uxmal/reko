@@ -738,6 +738,7 @@
     <Compile Include="StatementCorrelatedException.cs" />
     <Compile Include="StatementList.cs" />
     <Compile Include="StorageBinder.cs" />
+    <Compile Include="StorageFactory.cs" />
     <Compile Include="StridedInterval.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />

@@ -103,6 +103,7 @@
     <Compile Include="Relocators\x86Relocator.cs" />
     <Compile Include="Relocators\x86_64Relocator.cs" />
     <Compile Include="Relocators\XtensaRelocator.cs" />
+    <Compile Include="Relocators\zSeriesRelocator.cs" />
     <Compile Include="RelSegmentRenderer.cs" />
     <Compile Include="SectionHeaderType.cs" />
     <Compile Include="SymtabSegmentRenderer.cs" />

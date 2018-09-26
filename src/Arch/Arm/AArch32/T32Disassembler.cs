@@ -927,6 +927,13 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        private static bool Q22_12_times2(uint wInstr, T32Disassembler dasm)
+        {
+            var q = ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF);
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            return true;
+        }
+
         private static bool D5_0(uint wInstr, T32Disassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[
@@ -936,8 +943,15 @@ namespace Reko.Arch.Arm.AArch32
 
         private static bool Q5_0(uint wInstr, T32Disassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[
-                ((wInstr >> 1) & 0x10) | (wInstr & 0xF)]));
+            var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q]));
+            return true;
+        }
+
+        private static bool Q5_0_times2(uint wInstr, T32Disassembler dasm)
+        {
+            var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
             return true;
         }
 
@@ -2317,12 +2331,12 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(12+16,1,   // U
                     Mask(6, 1, // Q
                         Instr(Opcode.vshl, VshImmSize, D22_12, D5_0, VshImm),
-                        Instr(Opcode.vshl, VshImmSize,Q22_12,Q5_0,VshImm)),
+                        Instr(Opcode.vshl, VshImmSize, Q22_12, Q5_0, VshImm)),
                     Instr(Opcode.vsli, "*immediate")),
                 Nyi("AdvancedSimdTwoRegistersAndShiftAmount_opc6"),
                 Mask(6, 1, // Q
-                    Instr(Opcode.vqshl, "@ vqshlu (immediate)"),
-                    Instr(Opcode.vqshl, "@ vqshlu (immediate)")),
+                    Instr(Opcode.vqshl, VshImmSize, D22_12, D5_0, VshImm),
+                    Instr(Opcode.vqshl, VshImmSize, Q22_12_times2, Q5_0_times2, VshImm)),
 
                 Mask(12+16,1,     // U
                     Mask(12+16,0b11,     // L:Q
