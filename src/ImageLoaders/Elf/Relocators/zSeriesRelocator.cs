@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,44 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
+            ulong S = (ulong)symbol.Value;
+            ulong A = 0;
+            ulong B = 0;
+            var rt = (zSeriesRt)(rela.Info & 0xFF);
+            var addr = referringSection != null
+                ? referringSection.Address + rela.Offset
+                : loader.CreateAddress(rela.Offset);
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
+
+            switch (rt)
+            {
+            case zSeriesRt.R_390_RELATIVE:  // B + A
+                A = (ulong)rela.Addend;
+                B = program.SegmentMap.BaseAddress.ToLinear();
+                S = 0;
+                break;
+            case zSeriesRt.R_390_GLOB_DAT:  // S + A
+                A = (ulong)rela.Addend;
+                break;
+            case zSeriesRt.R_390_JMP_SLOT:
+                if (symbol.Value == 0)
+                {
+                    // Broken GCC compilers generate relocations referring to symbols 
+                    // whose value is 0 instead of the expected address of the PLT stub.
+                    var gotEntry = relR.PeekBeUInt64(0);
+                    return CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0xE);
+                }
+                break;
+            default:
+                Debug.Print("Unhandled relocation {0}: {1}", rt, rela);
+                break;
+            }
+
+            var w = relR.ReadBeUInt64();
+            w += ((uint)(B + S + A));
+            relW.WriteBeUInt64(w);
+
             return symbol;
         }
 

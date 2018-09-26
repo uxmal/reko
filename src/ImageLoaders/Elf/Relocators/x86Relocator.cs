@@ -97,7 +97,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     // Broken GCC compilers generate relocations referring to symbols 
                     // whose value is 0 instead of the expected address of the PLT stub.
                     var gotEntry = relR.PeekLeUInt32(0);
-                    return CreatePltStubSymbolFromRelocation(sym, gotEntry);
+                    return CreatePltStubSymbolFromRelocation(sym, gotEntry, 6);
                 }
                 break;
             case i386Rt.R_386_32: // S + A
@@ -138,21 +138,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return sym;
         }
 
-        /// <summary>
-        /// Creates a symbol that refers to the location of a PLT stub functon, based on the value
-        /// found in the GOT for that PLT stub.
-        /// </summary>
-        /// <remarks>
-        /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
-        /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
-        /// versions of GCC put, in the GOT entry for the relication, a pointer to the PLT stub + 6 bytes.
-        /// We remove those 6 bytes to obtain a pointer to the PLT stub.
-        /// </remarks>
-        private ElfSymbol CreatePltStubSymbolFromRelocation(ElfSymbol sym, uint gotEntry)
-        {
-            sym.Value = gotEntry - 6;   // skip past the Jmp [ebx+xxxxxxxx]
-            return sym;
-        }
+
 
         public override string RelocationTypeToString(uint type)
         {

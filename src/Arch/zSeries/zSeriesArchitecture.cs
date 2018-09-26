@@ -154,7 +154,7 @@ namespace Reko.Arch.zSeries
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse64(txtAddr, out addr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
