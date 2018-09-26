@@ -133,7 +133,7 @@ namespace Reko.Arch.Sparc
         private void RewriteFitos()
         {
             var dst = (RegisterOperand) instrCur.Op2;
-            var fpDst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fpDst = binder.EnsureRegister(dst.Register);
             var dt = PrimitiveType.Real32;
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }

@@ -34,7 +34,7 @@ namespace Reko.Core
     {
         private int iReg;
 
-        public int Current { get { return iReg; } }
+        public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = new Dictionary<string, RegisterStorage>();
 
         public RegisterStorage Reg(string format, PrimitiveType size)
         {
@@ -45,6 +45,7 @@ namespace Reko.Core
         private RegisterStorage MakeReg(string name, PrimitiveType size)
         {
             var reg = new RegisterStorage(name, iReg, 0, size);
+            NamesToRegisters.Add(name, reg);
             ++iReg;
             return reg;
         }
@@ -54,17 +55,17 @@ namespace Reko.Core
             return Reg(format, PrimitiveType.Word32);
         }
 
-        public RegisterStorage[] RangeOfReg(int count, string format, PrimitiveType size)
+        public RegisterStorage[] RangeOfReg(int count, Func<int, string> formatter, PrimitiveType size)
         {
             return Enumerable.Range(0, count)
-                .Select(n => MakeReg(string.Format(format, n), size))
+                .Select(n => MakeReg(formatter(n), size))
                 .ToArray();
         }
 
         public RegisterStorage[] RangeOfReg32(int count, string format)
-            => RangeOfReg(count, format, PrimitiveType .Word32);
+            => RangeOfReg(count, n => string.Format(format, n), PrimitiveType .Word32);
 
         public RegisterStorage[] RangeOfReg64(int count, string format)
-            => RangeOfReg(count, format, PrimitiveType.Word64);
+            => RangeOfReg(count, n => string.Format(format, n), PrimitiveType.Word64);
     }
 }
