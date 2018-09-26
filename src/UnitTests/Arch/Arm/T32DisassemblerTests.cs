@@ -665,5 +665,12 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xEFFC, 0x3533);
             Expect_Code("vshl.i32\td19,d19,#&1C");
         }
+
+        [Test]
+        public void ThumbDis_EF80E7FE()
+        {
+            Given_Instructions(0xEF80, 0xE7FE);
+            Expect_Code("vqshl.i64\tq7,q15,#&40");
+        }
     }
 }
