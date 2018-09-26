@@ -33,34 +33,11 @@ namespace Reko.Arch.Sparc
     public static class Registers
     {
         public static RegisterStorage g0;
-
-        public static RegisterStorage o0;   // outgoing paramter 0 / return value from callee
-        public static RegisterStorage o1;
-        public static RegisterStorage o2;
-        public static RegisterStorage o3;
-        public static RegisterStorage o4;
-        public static RegisterStorage o5;
         public static RegisterStorage sp;   // stack pointer
         public static RegisterStorage o7;
 
-        public static RegisterStorage l0;
-        public static RegisterStorage l1;
-        public static RegisterStorage l2;
-        public static RegisterStorage l3;
-        public static RegisterStorage l4;
-        public static RegisterStorage l5;
-        public static RegisterStorage l6;
-        public static RegisterStorage l7;
-
-        public static RegisterStorage i0;   // incoming parameters / return value to caller
-        public static RegisterStorage i1;
-        public static RegisterStorage i2;
-        public static RegisterStorage i3;
-        public static RegisterStorage i4;
-        public static RegisterStorage i5;
-        public static RegisterStorage i6;   // frame pointer
-        public static RegisterStorage i7;   // return address - 8
-
+        public static RegisterStorage[] OutRegisters;
+        public static RegisterStorage[] InRegisters;
         public static RegisterStorage y;
 
         public static RegisterStorage psr;
@@ -88,33 +65,22 @@ namespace Reko.Arch.Sparc
             var globRegs = stg.RangeOfReg32(8, "g{0}");
             g0 = globRegs[0];
             // outgoing parameter 0 / return value from callee
-            var outRegs = stg.RangeOfReg(8, n => n == 6 ? "sp" : $"o{n}", PrimitiveType.Word32);
-            o0 = outRegs[0];
-            o1 = outRegs[1];
-            o2 = outRegs[2];
-            o3 = outRegs[3];
-            o4 = outRegs[4];
-            o5 = outRegs[5];
-            sp = outRegs[6];
-            o7 = outRegs[7];
+            OutRegisters = stg.RangeOfReg(8, n => n == 6 ? "sp" : $"o{n}", PrimitiveType.Word32);
+            o7 = OutRegisters[7];
+
             var localRegs = stg.RangeOfReg32(8, "l{0}");
             // incoming parameters / return value to caller
             // i6 = frame pointer
             // i7 = return address - 8
-            var inRegs = stg.RangeOfReg32(8, "i{0}");
-            i0 = inRegs[0];
-            i1 = inRegs[1];
-            i2 = inRegs[2];
-            i3 = inRegs[3];
-            i4 = inRegs[4];
-            i5 = inRegs[5];
-            i6 = inRegs[6];
-            i7 = inRegs[7];
+            InRegisters = stg.RangeOfReg32(8, "i{0}");
 
             y = RegisterStorage.Reg32("y", 65);
 
-            IntegerRegisters =
-                globRegs.Concat(outRegs).Concat(localRegs).Concat(inRegs).Concat(new[] { y })
+            IntegerRegisters = globRegs
+                .Concat(OutRegisters)
+                .Concat(localRegs)
+                .Concat(InRegisters)
+                .Concat(new[] { y })
                 .ToArray();
 
             // Sparc floating point registers can contain integers, which is 
@@ -152,8 +118,7 @@ namespace Reko.Arch.Sparc
 
         public static RegisterStorage GetRegister(string regName)
         {
-            RegisterStorage reg;
-            if (mpNameToReg.TryGetValue(regName, out reg))
+            if (mpNameToReg.TryGetValue(regName, out var reg))
                 return reg;
             else
                 return null;
