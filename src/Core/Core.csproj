@@ -283,6 +283,7 @@
     <Compile Include="Dfa\PatternParser.cs" />
     <Compile Include="Dfa\State.cs" />
     <Compile Include="Dfa\TreeNode.cs" />
+    <Compile Include="DispatchProcedure.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="Endianness.cs" />
     <Compile Include="EnumerableEx.cs" />
