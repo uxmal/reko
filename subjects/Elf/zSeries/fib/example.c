@@ -151,41 +151,40 @@ void __do_global_dtors_aux(word64 qwArg58, word64 qwArg60, word64 qwArg68, word6
 {
 	Eq_173 r13_16 = 0x08D0;
 	Eq_175 r11_18 = 0x2068;
-	if (*r11_18 == 0x00)
+	if (*r11_18 != 0x00)
 	{
-		if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028 + 0x00:byte])
-		{
-			word64 r15_58;
-			word64 r12_60;
-			word64 r13_61;
-			word64 r14_62;
-			byte CC_63;
-			word64 r1_64;
-			word64 r2_65;
-			word64 r4_66;
-			__cxa_finalize();
-		}
-		deregister_tm_clones();
-		*r11_18 = 0x01;
+		word64 r15_58;
+		word64 r11_59;
+		word64 r12_60;
+		word64 r13_61;
+		word64 r14_62;
+		byte CC_63;
+		word64 r1_64;
+		word64 r2_65;
+		word64 r4_66;
+		r14();
 	}
-	word64 r15_32;
-	word64 r11_33;
-	word64 r12_34;
-	word64 r13_35;
-	word64 r14_36;
-	byte CC_37;
-	word64 r1_38;
-	word64 r2_39;
-	word64 r4_40;
-	r14();
+	else if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028 + 0x00:byte])
+	{
+		word64 r15_37;
+		word64 r11_38;
+		word64 r12_39;
+		word64 r13_40;
+		word64 r14_41;
+		byte CC_42;
+		word64 r1_43;
+		word64 r2_44;
+		word64 r4_45;
+		__cxa_finalize();
+	}
 }
 
 // 00000720: void frame_dummy(Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
 void frame_dummy(word64 qwArg68, word64 qwArg70, word64 qwArg78)
 {
-	Eq_220 r13_10 = 0x08D8;
-	Eq_222 r2_12 = 0x1E18;
-	Eq_224 CC_14 = cond(*r13_10 - *r2_12);
+	Eq_214 r13_10 = 0x08D8;
+	Eq_216 r2_12 = 0x1E18;
+	Eq_218 CC_14 = cond(*r13_10 - *r2_12);
 	if (*r13_10 == *r2_12)
 	{
 l00000740:
@@ -236,31 +235,19 @@ int64 fib(int64 r2, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg
 // 000007E0: void main(Register word64 r2, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
 void main(word64 r2, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
 {
-	fib(0x0A, qwLoc60, qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38);
-	word64 r15_48;
-	word64 r11_49;
-	word64 r12_50;
-	word64 r13_51;
-	word64 r14_52;
-	byte CC_53;
-	word64 r2_54;
-	word64 r1_55;
-	word64 r3_56;
-	word64 r4_57;
-	r14();
 }
 
 // 00000820: void __libc_csu_init(Stack word64 qwArg38, Stack word64 qwArg40, Stack word64 qwArg48, Stack word64 qwArg50, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
 void __libc_csu_init(word64 qwArg38, word64 qwArg40, word64 qwArg48, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
 {
-	Eq_332 CC_47 = _init(qwLoc70, qwLoc68, qwLoc60, qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38, qwLoc30, qwLoc28);
-	Eq_346 r1_49 = 7688;
+	Eq_306 CC_47 = _init(qwLoc70, qwLoc68, qwLoc60, qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38, qwLoc30, qwLoc28);
+	Eq_320 r1_49 = 7688;
 	if (!CC_47)
 	{
-		Eq_346 r7_85 = r1_49;
+		Eq_320 r7_85 = r1_49;
 		do
 		{
-			Eq_364 r1_91 = *r7_85;
+			Eq_338 r1_91 = *r7_85;
 			word64 r15_98;
 			word64 r8_100;
 			word64 r9_101;
