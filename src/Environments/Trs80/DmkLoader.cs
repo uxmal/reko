@@ -194,8 +194,7 @@ namespace Reko.Environments.Trs80
         {
             Func<string, Address> ParseAddress = sAddr =>
              {
-                 Address addr;
-                 if (!program.Platform.TryParseAddress(sAddr, out addr))
+                 if (!program.Platform.TryParseAddress(sAddr, out Address addr))
                      return null;
                  return addr;
              };

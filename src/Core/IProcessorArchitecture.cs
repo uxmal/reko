@@ -107,8 +107,17 @@ namespace Reko.Core
         /// Creates an <see cref="ImageWriter" /> with the preferred 
         /// endianness of the processor.
         /// </summary>
-        /// <returns>An image writer of the appropriate endianness.</returns>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter();
+
+        /// <summary>
+        /// Creates an <see cref="ImageWriter"/> with the preferred endianness
+        /// of the processor, which will write into the given <paramref name="memoryArea"/>
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="memoryArea">Memory area to write to.</param>
+        /// <param name="addr">Address to start writing at.</param>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
 
         /// <summary>
@@ -120,18 +129,50 @@ namespace Reko.Core
         /// <returns></returns>
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
+        /// <summary>
+        /// Given a register <paramref name="reg"/>, retrieves all architectural
+        /// registers that overlap all or part of it.
+        /// </summary>
+        /// <param name="reg">Register whose alias we're interested in.</param>
+        /// <returns>A sequence of aliases.</returns>
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
-        /// Returns a list of all the available opcodes.
+        /// Returns a list of all the available opcodes as strings.
         /// </summary>
-        /// <returns></returns>
         SortedList<string, int> GetOpcodeNames();           // Returns all the processor opcode names and their internal Reko numbers.
-        int? GetOpcodeNumber(string name);                  // Returns an internal Reko opcode for an instruction, or null if none is available.
-        RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
-        RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
+        
+        /// <summary>
+        /// Returns an internal Reko opcode for a given instruction name, or
+        /// null if none is available.
+        /// </summary>
+        int? GetOpcodeNumber(string name);
+        
+        /// <summary>
+        /// Returns register corresponding to number i, or null if there is no
+        /// such register.
+        /// </summary>
+        RegisterStorage GetRegister(int i);
+
+        /// <summary>
+        /// Returns register whose name is 'name'
+        /// </summary>
+        RegisterStorage GetRegister(string name);
+
+        /// <summary>
+        /// Given a register, returns any sub register occupying the 
+        /// given bit range.
+        /// </summary>
+        /// <param name="reg">Register to examine</param>
+        /// <param name="offset">Bit offset of expected subregister.</param>
+        /// <param name="width">Bit size of subregister.</param>
+        /// <returns></returns>
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
-        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
+        
+        /// <summary>
+        /// Given a set, removes any aliases of reg from the set.
+        /// </summary>
+        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg); 
 
         /// <summary>
         /// Find the widest sub-register that covers the register reg.
@@ -141,7 +182,11 @@ namespace Reko.Core
         /// <returns></returns>
         RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
-        RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
+        /// <summary>
+        /// Returns all registers of this architecture.
+        /// </summary>
+        /// <returns></returns>
+        RegisterStorage[] GetRegisters(); 
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bit flags.
 		FlagGroupStorage GetFlagGroup(string name);
