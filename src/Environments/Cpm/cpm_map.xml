@@ -1,16 +1,151 @@
-﻿<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+﻿<memory xmlns:m="http://schemata.jklnet.org/Reko/MemoryMap/v1"
+        xmlns="http://schemata.jklnet.org/Decompiler/v4">
+  <types>
+    <typedef name="Fcb">
+      <!-- https://www.seasip.info/Cpm/fcb.html -->
+      <struct name="_fcb">
+<!--
+        FCB+00h DR - Drive. 0 for default, 1-16 for A-P. In DOSPLUS,
+             bit 7 can be set to indicate that the operation should work with
+             subdirectories rather than files.
 
+-->
+        <field offset="0" name="Drive" >
+          <prim domain="UnsignedInt" size="1" />
+        </field>
+        <!--
+        FCB+01h Fn - Filename, 7-bit ASCII. The top bits of the filename bytes
+             (usually referred to as F1' to F8') have the following
+             meanings:
+               F1'-F4' - User-defined attributes. Any program can use
+                        them in any way it likes. The filename in the
+                        disc directory has the corresponding bits set.
+               F5'-F8' - Interface attributes. They modify the 
+                        behaviour of various BDOS functions or 
+                        indicate error conditions. In the directory
+                        these bits are always zero.
+         -->
+        <field offset="1" name="Filename" >
+          <arr length="8">
+            <prim domain="Character" size="1" />
+          </arr>
+        </field>
+        <!--
+        FCB+09h Tn - Filetype, 7-bit ASCII. T1' to T3' have the following
+             meanings:
+               T1' - Read-Only. 
+               T2' - System (hidden). System files in user 0 can be
+                    opened from other user areas.
+               T3' - Archive. Set if the file has not been changed
+                    since it was last copied.
+         -->
+        <field offset="9" name="Filetype">
+          <arr length="3">
+            <prim domain="Character" size="1" />
+          </arr>
+        </field>
+        <!--
+FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
+            CP/M. You can rewind a file by setting EX, RC, S2 and CR to 0.
+        -->
+        <field offset="12" name="EX">
+          <prim domain="UnsignedInt" size="1"/>
+        </field>
+        <!--
+            FCB+0Dh S1 - Reserved.
+            FCB+0Eh S2 - Reserved.
+            FCB+0Fh RC - Set this to 0 when opening a file and then leave it to
+            CP/M.
+            -->
+        <field offset="15" name="RC">
+          <prim domain="UnsignedInt" size="1"/>
+        </field>
+        <!--
+        FCB+10h AL - Image of the second half of the directory entry,
+        containing the file's allocation (which disc blocks it
+        owns).
+        -->
+        <field offset="16" name="AL">
+          <arr length="16">
+            <prim domain="UnsignedInt" size="1"/>
+          </arr>
+        </field>
+        <!--
+        FCB+20h CR - Current record within extent. It is usually best to set
+        this to 0 immediately after a file has been opened and
+        then ignore it.
+        -->
+        <field offset="32" name="CR">
+          <prim domain="UnsignedInt" size="1"/>
+        </field>
+        <!--
+        FCB+21h Rn - Random access record number (not CP/M 1). A 16-bit
+        value in CP/M 2 (with R2 used for overflow); an 18-bit
+        value in CP/M 3.
+        -->
+        <field offset="33" name="Rn">
+          <prim domain="UnsignedInt" size="2"/>
+        </field>
+      </struct>
+    </typedef>
+  </types>
   <segment name="lma" addr="0" size="0100" attr="rwx">
     <description>Low memory area</description>
     <procedure address="0000" name="cpm_warm_boot"></procedure>
-    <dispatch-procedure address="0005">
+    
+    <!-- https://www.seasip.info/Cpm/bdos.html -->
+    <dispatch-procedure address="0005" name="BDOS">
       <service name="P_TERMCPM">
         <syscallinfo>
           <regvalue reg="c">0</regvalue>
         </syscallinfo>
         <signature></signature>
       </service>
+
+      <service name="L_WRITE">
+        <syscallinfo>
+          <regvalue reg="c">5</regvalue>
+        </syscallinfo>
+        <signature>
+          <arg name="chAscii">
+            <prim domain="Character" size="1" />
+            <reg>e</reg></arg>
+        </signature>
+      </service>
+
+      <service name="F_DMAOFF">
+        <syscallinfo>
+          <regvalue reg="c">1A</regvalue>
+        </syscallinfo>
+        <signature>
+          <arg name="pDma">
+            <reg>de</reg>
+            <arg name="ptr">
+              <ptr size="2"><void /></ptr>
+            </arg>
+          </arg>
+        </signature>
+      </service>
+
+      <service name="F_READ">
+        <syscallinfo>
+          <regvalue reg="c">20</regvalue>
+        </syscallinfo>
+        <signature>
+          <return>
+            <reg>a</reg>
+            <prim domain="UnsignedInt" size="1" />
+          </return>
+          <arg name="pFcb">
+            <reg>de</reg>
+            <ptr>
+              <type>Fcb</type>
+            </ptr>
+          </arg>
+        </signature>
+      </service>>
     </dispatch-procedure> 
+    
   </segment>
 </memory>
 <!--
