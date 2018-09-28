@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!-- http://www.trs-80.com/trs80-zaps-internals.htm -->
 <!-- http://www.classiccmp.org/cpmarchives/trs80/mirrors/trs-80.com/early/www.trs-80.com/trs80-p.htm#romaddr -->
-<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+<memory xmlns="http://schemata.jklnet.org/Reko/MemoryMap/v1">
   <segment name="ROM" addr="0" size="3000" attr="rx">
     <procedure name="VDCHAR">
       <address>0033</address>

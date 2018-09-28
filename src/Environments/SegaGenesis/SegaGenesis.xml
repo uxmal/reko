@@ -12,7 +12,7 @@
   ==68K Memory Map==
   The Motorola 68K processor provides a 24bit address bus on the Sega Genesis allowing contiguous addressing of up to 16MB.
 -->
-<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+<memory xmlns="http://schemata.jklnet.org/Reko/MemoryMap/v1">
 
   <segment name=".text" addr="0" size="400000" attr="rx" reserveOnly="true">
     <description> Cartridge Address Space</description>

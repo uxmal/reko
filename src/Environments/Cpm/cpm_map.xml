@@ -1,4 +1,4 @@
-﻿<memory xmlns:m="http://schemata.jklnet.org/Reko/MemoryMap/v1"
+﻿<m:memory xmlns:m="http://schemata.jklnet.org/Reko/MemoryMap/v1"
         xmlns="http://schemata.jklnet.org/Decompiler/v4">
   <types>
     <typedef name="Fcb">
@@ -89,12 +89,12 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
       </struct>
     </typedef>
   </types>
-  <segment name="lma" addr="0" size="0100" attr="rwx">
-    <description>Low memory area</description>
-    <procedure address="0000" name="cpm_warm_boot"></procedure>
+  <m:segment name="lma" addr="0" size="0100" attr="rwx">
+    <m:description>Low memory area</m:description>
+    <m:procedure address="0000" name="cpm_warm_boot" />
     
     <!-- https://www.seasip.info/Cpm/bdos.html -->
-    <dispatch-procedure address="0005" name="BDOS">
+    <m:dispatch-procedure address="0005" name="BDOS">
       <service name="P_TERMCPM">
         <syscallinfo>
           <regvalue reg="c">0</regvalue>
@@ -143,11 +143,11 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
             </ptr>
           </arg>
         </signature>
-      </service>>
-    </dispatch-procedure> 
+      </service>
+    </m:dispatch-procedure> 
     
-  </segment>
-</memory>
+  </m:segment>
+</m:memory>
 <!--
 0000 - Warm boot
 3 IO

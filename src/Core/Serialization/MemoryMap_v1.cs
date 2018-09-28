@@ -33,9 +33,16 @@ namespace Reko.Core.Serialization
     /// <summary>
     /// Describes the absolute memory layout of a particular platform.
     /// </summary>
-    [XmlRoot(ElementName = "memory", Namespace = SerializedLibrary.Namespace_v4)]
+    [XmlRoot(ElementName = "memory", Namespace = MemoryMap_v1.Namespace)]
     public class MemoryMap_v1
     {
+        public const string Namespace = "http://schemata.jklnet.org/Reko/MemoryMap/v1";
+
+        //$REVIEW: tantalizing similarity to SerializedLibrary. 
+
+        [XmlArray("types")]
+        public SerializedType[] Types;
+
         [XmlElement("segment")]
         public MemorySegment_v1[] Segments;
 
@@ -56,7 +63,7 @@ namespace Reko.Core.Serialization
                 var filePath = cfgSvc.GetInstallationRelativePath(mmapFileName);
                 var ser = SerializedLibrary.CreateSerializer(
                     typeof(MemoryMap_v1),
-                    SerializedLibrary.Namespace_v4);
+                    MemoryMap_v1.Namespace);
                 using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var mmap = (MemoryMap_v1)ser.Deserialize(stm);
@@ -72,8 +79,7 @@ namespace Reko.Core.Serialization
 
         public static ImageSegment LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
         {
-            Address addr;
-            if (!platform.TryParseAddress(segment.Address, out addr))
+            if (!platform.TryParseAddress(segment.Address, out var addr))
             {
                 diagSvc.Warn(
                     "Unable to parse address '{0}' in memory map segment {1}.",
@@ -81,8 +87,7 @@ namespace Reko.Core.Serialization
                     segment.Name);
                 return null;
             }
-            uint size;
-            if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out size))
+            if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var size))
             {
                 diagSvc.Warn(
                     "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
@@ -130,14 +135,10 @@ namespace Reko.Core.Serialization
         [XmlElement("description")]
         public string Description;
 
-        //$REVIEW: tantalizing similarity to 
-        // SerializedLibrary. 
-        [XmlArray("types")]
-        public SerializedType[] Types;
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
-        [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1))]
+        [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1), Namespace =SerializedLibrary.Namespace_v4)]
         public List<ProcedureBase_v1> Procedures;
 
         [XmlElement("global", typeof(GlobalVariable_v1))]
