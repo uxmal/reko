@@ -119,6 +119,7 @@ namespace Reko.Core.Serialization
             typeof(SerializedSignature),
             typeof(SerializedTypedef),
             typeof(SerializedLibrary),
+            typeof(MemoryMap_v1),
             typeof(Argument_v1),
             typeof(GlobalVariable_v1),
             typeof(GlobalDataItem_v2)

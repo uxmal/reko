@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<memory xmlns="http://schemata.jklnet.org/Reko/MemoryMap/v1">
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
 
   <!-- https://github.com/OpenEmu/NeoPop-Core/blob/master/Core/docs/Memory%20Map.txt -->
   <segment name="z80reserved" addr="A00000" size="10000">

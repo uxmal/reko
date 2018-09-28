@@ -2,5 +2,5 @@
 <!--
   Obtained from http://wiibrew.org/wiki/Memory_Map
 -->
-<memory xmlns="http://schemata.jklnet.org/Reko/MemoryMap/v1">
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
 </memory>

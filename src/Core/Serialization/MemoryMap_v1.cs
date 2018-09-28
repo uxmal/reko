@@ -23,6 +23,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -33,14 +34,14 @@ namespace Reko.Core.Serialization
     /// <summary>
     /// Describes the absolute memory layout of a particular platform.
     /// </summary>
-    [XmlRoot(ElementName = "memory", Namespace = MemoryMap_v1.Namespace)]
+    [XmlRoot(ElementName = "memory", Namespace = SerializedLibrary.Namespace_v4)]
     public class MemoryMap_v1
     {
-        public const string Namespace = "http://schemata.jklnet.org/Reko/MemoryMap/v1";
 
         //$REVIEW: tantalizing similarity to SerializedLibrary. 
 
-        [XmlArray("types")]
+        [XmlElement(ElementName = "types")]
+        [XmlArray( Namespace = SerializedLibrary.Namespace_v4)]
         public SerializedType[] Types;
 
         [XmlElement("segment")]
@@ -63,7 +64,7 @@ namespace Reko.Core.Serialization
                 var filePath = cfgSvc.GetInstallationRelativePath(mmapFileName);
                 var ser = SerializedLibrary.CreateSerializer(
                     typeof(MemoryMap_v1),
-                    MemoryMap_v1.Namespace);
+                    SerializedLibrary.Namespace_v4);
                 using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var mmap = (MemoryMap_v1)ser.Deserialize(stm);
@@ -138,7 +139,7 @@ namespace Reko.Core.Serialization
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
-        [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1), Namespace =SerializedLibrary.Namespace_v4)]
+        [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1))]
         public List<ProcedureBase_v1> Procedures;
 
         [XmlElement("global", typeof(GlobalVariable_v1))]

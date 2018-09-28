@@ -441,6 +441,10 @@ namespace Reko.Scanning
                 if (trampoline != null)
                 {
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    if (trampoline is DispatchProcedure disp)
+                    {
+                        trampoline = ResolveDispatchProcedureCall(disp, state);
+                    }
                     var sig = trampoline.Signature;
                     var chr = trampoline.Characteristics;
                     // Adjust stack to "hide" any pushed return value since
@@ -563,6 +567,10 @@ namespace Reko.Scanning
                 }
 
                 var callee = scanner.ScanProcedure(addr, null, state);
+                if (callee is DispatchProcedure disp)
+                {
+                    callee = ResolveDispatchProcedureCall(disp, state);
+                }
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
@@ -1200,6 +1208,22 @@ namespace Reko.Scanning
                 TrashVariable(seq.Tail);
                 break;
             }
+        }
+
+        /// <summary>
+        /// Attempt to resolve call to to dispatch procedure
+        /// into one of its sub-services. We do this by looking at 
+        /// the procedure state at the time of the call. If we can't 
+        /// resolve it, fall back on the dispatch procedure 
+        /// directly.
+        /// </summary>
+        private ProcedureBase ResolveDispatchProcedureCall(DispatchProcedure disp, ProcessorState state)
+        {
+            var callable = disp.FindService(state);
+            if (callable is null)
+                return disp;
+            else
+                return callable;
         }
 
         private SystemService MatchSyscallToService(RtlSideEffect side)

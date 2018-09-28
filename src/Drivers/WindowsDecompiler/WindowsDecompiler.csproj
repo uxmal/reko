@@ -232,6 +232,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj">
+      <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
+      <Name>Cpm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
       <Name>SysV</Name>
