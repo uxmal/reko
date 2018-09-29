@@ -178,15 +178,18 @@ namespace Reko.Analysis
             // If it can be improved, do so.
             foreach (var use in uses)
             {
+                CallBinding callBinding = null;
                 switch (use.Key)
                 {
                 case RegisterStorage reg:
-                    yield return IntersectRegisterBinding(reg, callBindings);
+                    callBinding = IntersectRegisterBinding(reg, callBindings);
                     break;
                 case StackArgumentStorage stArg:
-                    yield return IntersectStackRegisterBinding(stArg, callBindings);
+                    callBinding = IntersectStackRegisterBinding(stArg, callBindings);
                     break;
                 }
+                if (callBinding != null)
+                    yield return callBinding;
             }
         }
 
@@ -201,7 +204,7 @@ namespace Reko.Analysis
                         return binding;
                 }
             }
-            return new CallBinding(stArg, new StringConstant(new UnknownType(), "???unsatisfied???"));
+            return null;
         }
 
         private static CallBinding IntersectRegisterBinding(RegisterStorage regCallee, IEnumerable<CallBinding> callBindings)
@@ -223,7 +226,7 @@ namespace Reko.Analysis
                     }
                 }
             }
-            return new CallBinding(regCallee, new StringConstant(new UnknownType(), "???unsatisfied???"));
+            return null;
         }
     }
 }
