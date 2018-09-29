@@ -42,7 +42,7 @@ namespace Reko.Scanning
 
         public override void Process()
         {
-            scanner.ScanImageSymbol(program, sym, isEntryPoint);
+            scanner.ScanImageSymbol(sym, isEntryPoint);
         }
 
         public override string ToString()

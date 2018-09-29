@@ -42,9 +42,29 @@ namespace Reko.Scanning
     {
         IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Scans the image, locating blobs of data and procedures.
+        /// After completion, the program.ImageMap is populated with
+        /// chunks of data, and the program.Procedures dictionary contains
+        /// all procedures to decompile.
+        /// </summary>
         void ScanImage();
 
+        /// <summary>
+        /// Performs a scan of the blocks that constitute a procedure named <paramref name="procedureName"/>
+        /// </summary>
+        /// <param name="addr">Address of the code from which we will start scanning.</param>
+        /// <param name="procedureName"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
+
+/// <summary>
+/// Performs a scan starting at the address of the given image symbol
+/// </summary>
+/// <param name="sym"></param>
+/// <param name="isEntryPoint"></param>
+        void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint);
 
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         Address EnqueueUserProcedure(Procedure_v1 sp);
@@ -69,6 +89,5 @@ namespace Reko.Scanning
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
         IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder binder);
-        void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint);
     }
 }

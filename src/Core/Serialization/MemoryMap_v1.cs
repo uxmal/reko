@@ -23,6 +23,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -36,6 +37,13 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "memory", Namespace = SerializedLibrary.Namespace_v4)]
     public class MemoryMap_v1
     {
+
+        //$REVIEW: tantalizing similarity to SerializedLibrary. 
+
+        [XmlElement(ElementName = "types")]
+        [XmlArray( Namespace = SerializedLibrary.Namespace_v4)]
+        public SerializedType[] Types;
+
         [XmlElement("segment")]
         public MemorySegment_v1[] Segments;
 
@@ -72,8 +80,7 @@ namespace Reko.Core.Serialization
 
         public static ImageSegment LoadSegment(MemorySegment_v1 segment, IPlatform platform, IDiagnosticsService diagSvc)
         {
-            Address addr;
-            if (!platform.TryParseAddress(segment.Address, out addr))
+            if (!platform.TryParseAddress(segment.Address, out var addr))
             {
                 diagSvc.Warn(
                     "Unable to parse address '{0}' in memory map segment {1}.",
@@ -81,8 +88,7 @@ namespace Reko.Core.Serialization
                     segment.Name);
                 return null;
             }
-            uint size;
-            if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out size))
+            if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var size))
             {
                 diagSvc.Warn(
                     "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
@@ -130,10 +136,6 @@ namespace Reko.Core.Serialization
         [XmlElement("description")]
         public string Description;
 
-        //$REVIEW: tantalizing similarity to 
-        // SerializedLibrary. 
-        [XmlArray("types")]
-        public SerializedType[] Types;
 
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]

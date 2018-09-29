@@ -81,13 +81,13 @@ namespace Reko.Environments.SysV
                 return new X86_64CallingConvention(Architecture);
             case "xtensa":
                 return new XtensaCallingConvention(Architecture);
-            case "arm":                                        
+            case "arm":
                 return new Arm32CallingConvention(Architecture);
             case "arm-64":
                 return new Arm64CallingConvention(Architecture);
-            case "m68k":                                       
+            case "m68k":
                 return new M68kCallingConvention(Architecture);
-            case "avr8":                                       
+            case "avr8":
                 return new Avr8CallingConvention(Architecture);
             case "risc-v":
                 if (this.ccRiscV == null)
@@ -186,7 +186,7 @@ namespace Reko.Environments.SysV
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
                 m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint)addr.ToLinear()));
                 break;
-            case "zSystem":
+            case "zSeries":
                 // Stack parameters are passed in starting at offset +160 from the 
                 // stack; everything at lower addresses is local to the called procedure's
                 // frame.

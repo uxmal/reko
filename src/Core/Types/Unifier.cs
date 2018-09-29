@@ -27,7 +27,8 @@ using System.Diagnostics;
 namespace Reko.Core.Types
 {
 	/// <summary>
-	/// Performs type unification, returning a general unifier for the two parameters.
+	/// Performs type unification, returning a general unifier for the two
+    /// data type parameters.
 	/// </summary>
 	public class Unifier
 	{

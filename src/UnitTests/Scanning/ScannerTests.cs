@@ -846,7 +846,6 @@ fn00001200_exit:
             });
 
             scanner.ScanImageSymbol(
-                program, 
                 new ImageSymbol(Address.Ptr32(0x1000))
                 {
                     Name = "test",

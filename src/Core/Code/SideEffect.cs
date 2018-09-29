@@ -24,8 +24,8 @@ using System;
 namespace Reko.Core.Code
 {
 	/// <summary>
-	/// Represents an expression used only for its side effects. Typically, 
-    /// the expression is a function application of some kind.
+	/// Represents an expression used only for its side effects. Typically, the expression is
+	/// a function application which performs I/O or invokes system services.
 	/// </summary>
 	public class SideEffect : Instruction
 	{

@@ -87,7 +87,7 @@ namespace Reko.Core
             return Matches(state);
 		}
 
-        private bool Matches(ProcessorState state)
+        public bool Matches(ProcessorState state)
         {
             if (state == null &&
                 ((RegisterValues != null && RegisterValues.Length > 0) ||

@@ -460,7 +460,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint)
+        public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             try
             {
@@ -473,12 +473,12 @@ namespace Reko.Scanning
 
                 if (sym.Signature != null)
                 {
-                    var sser = program.CreateProcedureSerializer();
+                    var sser = Program.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
                 }
                 else if (sym.Name != null)
                 {
-                    var sProc = program.Platform.SignatureFromName(sym.Name);
+                    var sProc = Program.Platform.SignatureFromName(sym.Name);
                     if (sProc != null)
                     {
                         var loader = Program.CreateTypeLibraryDeserializer();
@@ -493,16 +493,11 @@ namespace Reko.Scanning
                     }
                 }
 
-                //if (sp.Characteristics != null)
-                //{
-                //    proc.Characteristics = sp.Characteristics;
-                //}
-
                 var pb = ScanProcedure(sym.Address, sym.Name, sym.ProcessorState);
                 proc = pb as Procedure;
                 if (isEntryPoint && proc != null)
                 {
-                    program.CallGraph.AddEntryPoint(proc);
+                    Program.CallGraph.AddEntryPoint(proc);
                 }
             }
             catch (AddressCorrelatedException aex)
@@ -512,13 +507,6 @@ namespace Reko.Scanning
         }
 
 
-        /// <summary>
-        /// Performs a scan of the blocks that constitute a procedure named <paramref name="procedureName"/>
-        /// </summary>
-        /// <param name="addr">Address of the code from which we will start scanning.</param>
-        /// <param name="procedureName"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
@@ -751,12 +739,6 @@ namespace Reko.Scanning
         }
 
 
-        /// <summary>
-        /// Scans the image, locating blobs of data and procedures.
-        /// After completion, the program.ImageMap is populated with
-        /// chunks of data, and the program.Procedures dictionary contains
-        /// all procedures to decompile.
-        /// </summary>
         public virtual void ScanImage()
         {
             // Find all blobs of data, and potentially pointers to code.

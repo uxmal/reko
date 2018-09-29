@@ -151,7 +151,7 @@ void deregister_tm_clones()
 // Trashed: CC r1 r2 r5
 // Preserved: r15
 deregister_tm_clones_entry:
-// DataOut: r11
+// DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
 
@@ -160,14 +160,14 @@ l00000648:
 	word64 r5_2 = 0x000008C8
 	word64 r1_6 = 0x0000206F - r2_4
 	branch r1_6 > Mem0[r5_2:byte] l0000066A
-// DataOut: r11
+// DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
 
 l0000066A:
 	word64 r1_23 = Mem0[0x00002030:word64]
 	branch r1_23 != 0x0000000000000000 l0000067C
-// DataOut: r11
+// DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp r5:000008C8 r1:0x0000206F - 0x00002068 r2:00002068
 
@@ -182,7 +182,7 @@ l0000067C:
 		uses: CC_25,r1_24,r14,r15_1,r2_4,r5_2
 		defs: CC_36,r1_34,r14_37,r15_32,r2_35,r5_33
 	return
-// DataOut: r11
+// DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp r5:000008C8 r1:<invalid> r2:00002068
 
@@ -197,7 +197,7 @@ l0000067A_1:
 		uses: CC_25,r1_24,r14,r15_1,r2_4,r5_2
 		defs: CC_30,r1_28,r14_31,r15_26,r2_29,r5_27
 	return
-// DataOut: r11
+// DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp r5:000008C8 r1:<invalid> r2:00002068
 
@@ -212,7 +212,7 @@ l00000668_1:
 		uses: CC_8,r1_6,r14,r15_1,r2_4,r5_2
 		defs: CC_20,r1_18,r14_21,r15_16,r2_19,r5_17
 	return
-// DataOut: r11
+// DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp r5:000008C8 r1:0x0000206F - 0x00002068 r2:00002068
 
@@ -307,7 +307,7 @@ void __do_global_dtors_aux(word64 qwArg58, word64 qwArg60, word64 qwArg68, word6
 
 // MayUse: 
 // LiveOut:
-// Trashed: CC r1 r2 r4 r5
+// Trashed: CC r4
 // Preserved: r11 r12 r13 r14 r15
 __do_global_dtors_aux_entry:
 // DataOut:
@@ -319,20 +319,14 @@ l000006C8:
 	word64 r13_16 = 0x000008D0
 	word64 r11_18 = 0x00002068
 	branch Mem0[r11_18:byte] != 0x00 l00000712
-// DataOut: r11 r13
+// DataOut: r13
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
 // LocalsOut: fp(64)
 
-l000006E6:
-	branch Mem0[r13_16:byte] == Mem0[0x00002028:byte] l00000708
-// DataOut: r11
-// DataOut (flags): CC
-// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
-// LocalsOut: fp(64)
-
-l000006F6:
+l00000712:
 	word64 r15_58
+	word64 r11_59
 	word64 r12_60
 	word64 r13_61
 	word64 r14_62
@@ -340,44 +334,46 @@ l000006F6:
 	word64 r1_64
 	word64 r2_65
 	word64 r4_66
-	call __cxa_finalize (retsize: 0; depth: 160)
-		uses: CC_42,r1_55,r11_18,r12,r13_16,r14_57,r15_17,r2_56,r4
-		defs: CC_63,r1_64,r11_59,r12_60,r13_61,r14_62,r15_58,r2_65,r4_66
-// DataOut: r11
-// DataOut (flags): CC
-// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 r1:00002028 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
-// LocalsOut: fp(64)
-
-l00000708:
-	deregister_tm_clones()
-	Mem54[r11_18:byte] = 0x01
-// DataOut:
-// DataOut (flags): CC
-// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 r1:<invalid> r2:<invalid> r14:00000708 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
-// LocalsOut: fp(64)
-
-l00000712:
-	word64 r15_32
-	word64 r11_33
-	word64 r12_34
-	word64 r13_35
-	word64 r14_36
-	byte CC_37
-	word64 r1_38
-	word64 r2_39
-	word64 r4_40
 	call r14 (retsize: 0;)
-		uses: CC_20,r11_23,r12_25,r13_27,r14_29,r15_31,r4_21
-		defs: CC_37,r1_38,r11_33,r12_34,r13_35,r14_36,r15_32,r2_39,r4_40
+		uses: CC_20,r1,r11_48,r12_50,r13_52,r14_54,r15_56,r2,r4_46
+		defs: CC_63,r1_64,r11_59,r12_60,r13_61,r14_62,r15_58,r2_65,r4_66
 	return
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 r1:<invalid> r2:<invalid> r14:0000070E r5:<invalid> 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
+// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
 
 __do_global_dtors_aux_exit:
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp r13:r13 r11:r11 r4:r14 r12:r12 r14:r14 r1:<invalid> r2:<invalid> r5:<invalid> 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
+// SymbolicIn: r15:fp r13:r13 r11:r11 r4:r14 r12:r12 r14:r14 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
+
+l000006E6:
+	branch Mem0[r13_16:byte] == Mem0[0x00002028:byte] l00000708
+// DataOut:
+// DataOut (flags): CC
+// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
+
+l000006F6:
+	word64 r15_37
+	word64 r11_38
+	word64 r12_39
+	word64 r13_40
+	word64 r14_41
+	byte CC_42
+	word64 r1_43
+	word64 r2_44
+	word64 r4_45
+	call __cxa_finalize (retsize: 0; depth: 160)
+		uses: CC_22,r1_34,r11_18,r12,r13_16,r14_36,r15_17,r2_35,r4
+		defs: CC_42,r1_43,r11_38,r12_39,r13_40,r14_41,r15_37,r2_44,r4_45
+// DataOut:
+// DataOut (flags): CC
+// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 r1:00002028 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
+
+l00000708:
+// DataOut:
+// DataOut (flags): CC
+// SymbolicIn: r15:fp - 160 r13:000008D0 r11:00002068 r1:<invalid> r2:<invalid> r14:00000708 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
 
 
 
@@ -511,8 +507,14 @@ void main(word64 r2, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwAr
 
 // MayUse:  r2
 // LiveOut:
-// Trashed: CC r1 r2 r4
-// Preserved: r11 r12 r13 r14 r15
+// Trashed:
+// Preserved:
+// Terminates process
+main_exit:
+// DataOut:
+// DataOut (flags): CC
+// SymbolicIn:
+
 main_entry:
 // DataOut: r2
 // DataOut (flags): CC
@@ -520,29 +522,9 @@ main_entry:
 // LocalsOut: fp(64)
 
 l000007E0:
-	fib(0x000000000000000A, qwLoc60, qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38)
-	word64 r15_48
-	word64 r11_49
-	word64 r12_50
-	word64 r13_51
-	word64 r14_52
-	byte CC_53
-	word64 r2_54
-	word64 r1_55
-	word64 r3_56
-	word64 r4_57
-	call r14 (retsize: 0;)
-		uses: CC_17,dwLoc04_23,qwLoc10_22,qwLoc38,qwLoc40,qwLoc48,qwLoc50,qwLoc58,qwLoc60,r1_35,r11_39,r12_41,r13_43,r14_45,r15_47,r2_36,r3,r4_37
-		defs: CC_53,r1_55,r11_49,r12_50,r13_51,r14_52,r15_48,r2_54,r3_56,r4_57
-	return
 // DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
-
-main_exit:
-// DataOut:
-// DataOut (flags): CC
-// SymbolicIn: r15:fp r11:r11 r1:<invalid> r2:<invalid> r14:r14 r4:r14 r12:r12 r13:r13 -16(fp):r3 -4(fp):(word32) r2 88(fp):r11 96(fp):r12 104(fp):r13 112(fp):r14 120(fp):fp
 
 
 

@@ -6,17 +6,20 @@
 
 word16 g_w0006 = 0x0000;
 byte g_b0080 = 0x00;
-Eq_846 g_t0103 = 
+Eq_874 g_t0103 = 
 	{
 		0x00,
 		0x5A,
 	};
 word16 g_w0108 = 0x1700;
-byte g_b02A3 = 0x64;
+Eq_209 g_t02A3 = 
+	{
+		0x64
+	};
 ptr16 g_ptr1388 = 0x0000;
 cu8 g_b138A = 0x00;
 cu8 g_b138B = 0x00;
-Eq_2998 g_t138C = 
+Eq_3197 g_t138C = 
 	{
 		0x00
 	};
@@ -30,12 +33,15 @@ byte g_b14F5 = 0x00;
 cu8 g_b14F6 = 0x01;
 cu8 g_b14F7 = 0x42;
 cu8 g_b14F8 = 0x50;
-cu8 g_b14F9 = 0x00;
+Eq_96 g_t14F9 = 
+	{
+		0x00
+	};
 byte g_b14FA = 0x00;
 byte g_b14FB = 0x00;
 byte g_b14FC = 0x00;
 cu8 g_b14FD = 0x00;
-Eq_1314 g_t14FE = 
+Eq_1317 g_t14FE = 
 	{
 		0x01
 	};
@@ -44,170 +50,197 @@ cu8 g_b151D = 0x00;
 cu8 g_b151E = 0x00;
 cu8 g_b151F = 0x00;
 cu8 g_b1520 = 0x00;
-struct Eq_2837 * g_ptr1521 = null;
+struct Eq_3038 * g_ptr1521 = null;
 byte g_b1529 = 0x00;
 word16 g_w1640 = 0x0000;
 byte g_b1645 = 0x30;
 <anonymous> * g_ptr1648 = null;
-struct Eq_131 * g_ptr164E = &g_t1A1A;
+struct Eq_125 * g_ptr164E = &g_t1A1A;
 byte g_b1653 = 0x1A;
-Eq_16 g_t1654 = 
+Eq_10 g_t1654 = 
 	{
 		0x1A
 	};
 byte g_b1655 = 0x1A;
 byte g_b1656 = 0x1A;
 cu8 g_b1657 = 0x1A;
-Eq_81 g_t1658 = 
+Eq_75 g_t1658 = 
 	{
 		0x1A
 	};
-Eq_96 g_t1659 = 
+Eq_90 g_t1659 = 
 	{
 		0x1A
 	};
-byte g_b165A = 0x1A;
+Eq_143 g_t165A = 
+	{
+		0x1A
+	};
 byte g_b165B = 0x1A;
-Eq_135 g_t165C = 
+Eq_129 g_t165C = 
 	{
 		0x1A
 	};
 byte g_b165D = 0x1A;
-cu8 g_b165E = 0x1A;
-byte g_b165F = 0x1A;
-Eq_234 g_t1660 = 
+Eq_96 g_t165E = 
+	{
+		0x1A
+	};
+Eq_209 g_t165F = 
+	{
+		0x1A
+	};
+Eq_250 g_t1660 = 
 	{
 		0x1A
 	};
 byte g_b1661 = 0x1A;
-Eq_213 g_t1662 = 
+Eq_129 g_t1662 = 
 	{
 		0x1A
 	};
 byte g_b1663 = 0x1A;
-Eq_215 g_t1664 = 
+Eq_231 g_t1664 = 
 	{
 		0x1A
 	};
 byte g_b1665 = 0x1A;
 cu8 g_b1667 = 0x1A;
-byte * g_ptr1668 = &g_t1A1A;
-byte g_b166A = 0x1A;
-byte g_b166B = 0x1A;
-Eq_434 g_t166C = 
+union Eq_209 * g_ptr1668 = &g_t1A1A;
+Eq_388 g_t166A = 
 	{
 		0x1A
 	};
-Eq_434 g_t166D = 
+byte g_b166B = 0x1A;
+Eq_479 g_t166C = 
+	{
+		0x1A
+	};
+Eq_479 g_t166D = 
 	{
 		0x1A
 	};
 byte g_b166E = 0x1A;
-Eq_621 g_t166F = 
+Eq_656 g_t166F = 
 	{
 		0x1A
 	};
 byte g_b1670 = 0x1A;
-Eq_637 g_t1671 = 
+Eq_671 g_t1671 = 
 	{
 		0x1A
 	};
-Eq_700 g_t1672 = 
+Eq_731 g_t1672 = 
 	{
 		0x1A
 	};
 byte g_b1673 = 0x1A;
-Eq_364 g_t1674 = 
+Eq_96 g_t1674 = 
 	{
 		0x1A
 	};
 byte g_b1675 = 0x1A;
-Eq_760 g_t1676 = 
+Eq_788 g_t1676 = 
 	{
 		0x1A
 	};
 byte g_b1677 = 0x1A;
-Eq_762 g_t1678 = 
+Eq_790 g_t1678 = 
 	{
 		0x1A
 	};
 byte g_b1679 = 0x1A;
-Eq_784 g_t167A = 
+Eq_812 g_t167A = 
 	{
 		0x1A
 	};
-cu8 g_b167B = 0x1A;
+Eq_96 g_t167B = 
+	{
+		0x1A
+	};
 byte g_b167C = 0x1A;
-Eq_926 g_t167D = 
+Eq_954 g_t167D = 
 	{
 		0x1A
 	};
 byte g_b167E = 0x1A;
 cu8 g_b1681 = 0xEC;
 cu8 g_b1682 = 0x08;
-Eq_1049 g_t1683 = 
+Eq_1069 g_t1683 = 
 	{
 		0xDA
 	};
 byte g_b1684 = 0x94;
-Eq_364 g_t1685 = 
+Eq_96 g_t1685 = 
 	{
 		0x14
 	};
 byte g_b1686 = 0xCD;
-Eq_1454 g_t1687 = 
+Eq_1449 g_t1687 = 
 	{
 		0x0B
 	};
 byte g_b1688 = 0x14;
-Eq_1448 g_t1689 = 
+Eq_1443 g_t1689 = 
 	{
 		0x2A
 	};
 byte g_b168A = 0x52;
-Eq_1430 g_t168B = 
+Eq_1424 g_t168B = 
 	{
 		0x17
 	};
 byte g_b168C = 0xEB;
-cu8 g_b168D = 0x3E;
+Eq_96 g_t168D = 
+	{
+		0x3E
+	};
 byte g_b168E = 0x82;
-cu8 g_b168F = 0xB7;
-cu8 g_b1690 = 0x37;
-cu8 g_b1691 = 0xC3;
-Eq_1923 g_t1692 = 
+Eq_96 g_t168F = 
+	{
+		0xB7
+	};
+Eq_96 g_t1690 = 
+	{
+		0x37
+	};
+Eq_96 g_t1691 = 
+	{
+		0xC3
+	};
+Eq_2042 g_t1692 = 
 	{
 		0x2A
 	};
 byte g_b1693 = 0x09;
-Eq_1576 g_t1694 = 
+Eq_1567 g_t1694 = 
 	{
 		0x3A
 	};
 byte g_b1695 = 0x25;
-Eq_81 g_t1696 = 
+Eq_75 g_t1696 = 
 	{
 		0x17
 	};
-Eq_2142 g_t1697 = 
+Eq_2265 g_t1697 = 
 	{
 		0xB7
 	};
 byte g_b16A6 = 0x23;
-Eq_2998 g_t16A7 = 
+Eq_3197 g_t16A7 = 
 	{
 		0x7E
 	};
-Eq_3064 g_t16A8 = 
+Eq_3263 g_t16A8 = 
 	{
 		0x23
 	};
-Eq_3064 g_t16A9 = 
+Eq_3263 g_t16A9 = 
 	{
 		0x56
 	};
 bui8 g_b16AA = 0x2A;
 cu8 g_b16AB = 0xE5;
 word16 g_w1752;
-Eq_131 g_t1A1A;
+Eq_125 g_t1A1A;
 
