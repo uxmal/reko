@@ -78,6 +78,25 @@ namespace Reko.Analysis
 			Procedure.ExitBlock.Statements.Clear();
 		}
 
+        /// <summary>
+        /// If there is no defined SSA identifier for <paramref name="id"/>
+        /// identifier, then create DefInstruction in the <paramref name="b"/>
+        /// block. Return existing SSA identifier otherwise
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="b"></param>
+        /// <returns>
+        /// New or existing SSA identifier for <paramref name="id"/>
+        /// </returns>
+        public SsaIdentifier EnsureSsaIdentifier(Identifier id, Block b)
+        {
+            if (Identifiers.TryGetValue(id, out var sid))
+                return sid;
+            sid = Identifiers.Add(id, null, null, false);
+            sid.DefStatement = b.Statements.Add(0, new DefInstruction(id));
+            return sid;
+        }
+
         [Conditional("DEBUG")]
 		public void Dump(bool trace)
 		{

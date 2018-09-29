@@ -1413,16 +1413,6 @@ namespace Reko.Analysis
                 }
             }
 
-            private SsaIdentifier EnsureSsaIdentifier(Identifier id, Block b)
-            {
-                if (ssaIds.TryGetValue(id, out var sid))
-                    return sid;
-                sid = ssaIds.Add(id, null, null, false);
-                sid.DefStatement = new Statement(0, new DefInstruction(id), b);
-                b.Statements.Add(sid.DefStatement);
-                return sid;
-            }
-
             /// <summary>
             /// Generate a 'def' instruction for identifiers that are used
             /// without any previous definitions inside the current procedure.
@@ -1444,7 +1434,7 @@ namespace Reko.Analysis
                     var param = sig.Parameters.FirstOrDefault(p => p.Storage.Covers(id.Storage));
                     if (param != null)
                     {
-                        var sidParam = EnsureSsaIdentifier(param, b);
+                        var sidParam = outer.ssa.EnsureSsaIdentifier(param, b);
                         //$TODO: make sure identifier sizes are observed here, use SLICE
                         //       when extracting smaller bitvectors out of larger values
                         var copy = new Assignment(id, sidParam.Identifier);
@@ -1457,10 +1447,7 @@ namespace Reko.Analysis
                         return sidCopy;
                     }
                 }
-                var sid = ssaIds.Add(id, null, null, false);
-                sid.DefStatement = new Statement(0, new DefInstruction(id), b);
-                b.Statements.Add(sid.DefStatement);
-                return sid;
+                return outer.ssa.EnsureSsaIdentifier(id, b);
             }
 
             private void ReplaceBy(SsaIdentifier sidOld, SsaIdentifier idNew)

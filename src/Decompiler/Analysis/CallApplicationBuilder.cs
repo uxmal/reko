@@ -217,20 +217,10 @@ Please report this issue at https://github.com/uxmal/reko";
         private Identifier EnsureRegister(RegisterStorage reg)
         {
             var id = ssaCaller.Procedure.Frame.EnsureRegister(reg);
-            var sid = EnsureSsaIdentifier(id);
+            var entryBlock = ssaCaller.Procedure.EntryBlock;
+            var sid = ssaCaller.EnsureSsaIdentifier(id, entryBlock);
             sid.Uses.Add(stmCall);
             return sid.Identifier;
-        }
-
-        private SsaIdentifier EnsureSsaIdentifier(Identifier id)
-        {
-            if (ssaCaller.Identifiers.TryGetValue(id, out var sid))
-                return sid;
-            sid = ssaCaller.Identifiers.Add(id, null, null, false);
-            var def = new DefInstruction(sid.Identifier);
-            var block = ssaCaller.Procedure.EntryBlock;
-            sid.DefStatement = block.Statements.Add(0, def);
-            return sid;
         }
     }
 }
