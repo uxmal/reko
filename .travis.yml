@@ -1,4 +1,4 @@
-language: csharp
+/language: csharp
 solution: src/Reko-decompiler.sln
 sudo: required
 
@@ -22,10 +22,11 @@ install:
   - nuget restore src/Reko-decompiler.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
+# If you want more build spew, change the /verbosity:minimal below
 script:
   - source .travis_env
   - msbuild /version
-  - msbuild /p:Configuration=UnixRelease /p:Platform=x64 src/Reko-decompiler.sln
+  - msbuild /p:Configuration=UnixRelease /p:Platform=x64 /verbosity:minimal src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/UnixRelease/c2xml.exe -exclude=UserInterface,FailedTests
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/x64/UnixRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests
   - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=UnixRelease

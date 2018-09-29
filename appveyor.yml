@@ -12,7 +12,7 @@ configuration: Release
 
 build:
   project: src/Reko-decompiler.sln
-  verbosity: normal
+  verbosity: minimal
 
 environment:
   artifacts_dir: bin
