@@ -99,5 +99,30 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(1, bindings.Length);
             Assert.AreEqual("Stack +0004:local", bindings[0].ToString());
         }
+
+        [Test]
+        public void Pflow_IntersectBinding_NotFoundUses()
+        {
+            var reg = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var stCallee = new StackArgumentStorage(4, PrimitiveType.Word32);
+            var id = new Identifier("r1", reg.DataType, reg);
+            var cbs = new CallBinding[] { } ;
+            var uses = new Dictionary<Storage, BitRange>
+            {
+                {
+                    reg,
+                    new BitRange(0, 31)
+                },
+                {
+                    stCallee,
+                    new BitRange(0, 31)
+                },
+            };
+
+            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses)
+                .ToArray();
+
+            Assert.AreEqual(0, bindings.Length);
+        }
     }
 } 
