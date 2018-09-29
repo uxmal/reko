@@ -1,4 +1,4 @@
-/language: csharp
+language: csharp
 solution: src/Reko-decompiler.sln
 sudo: required
 

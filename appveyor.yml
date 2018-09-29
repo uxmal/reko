@@ -10,6 +10,7 @@ platform: x64
 
 configuration: Release
 
+# If you want more build spew, change the verbosity below
 build:
   project: src/Reko-decompiler.sln
   verbosity: minimal
