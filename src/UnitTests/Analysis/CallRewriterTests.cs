@@ -787,5 +787,44 @@ main_exit:
             #endregion
             AssertProcedureCode(sExp, ssa);
         }
+
+        [Test]
+        public void CrwRegisterArgumentNotFound()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var arg = new RegisterStorage("arg", 2, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { }, new Identifier[] { });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature(
+                "fn",
+                FunctionType.Func(
+                    new Identifier(
+                        "ret",
+                        PrimitiveType.Word32,
+                        ret),
+                    new Identifier(
+                        "arg",
+                        PrimitiveType.Word32,
+                        arg)));
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+	def arg
+body:
+	fn(arg)
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
     }
 }
