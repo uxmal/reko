@@ -345,11 +345,13 @@ namespace Reko.Analysis
                 if (idRet != null && !(idRet.DataType is VoidType))
                 {
                     var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage.Covers(idRet.Storage)).First();
+                        .Where(cb => cb.Storage.Covers(idRet.Storage))
+                        .FirstOrDefault();
                     SetReturnExpression(
+                        ssa,
                         block,
                         idRet,
-                        ssa.Identifiers[(Identifier)idStg.Expression]);
+                        idStg?.Expression ?? Constant.Invalid);
                 }
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
                 Debug.Assert(insertPos >= 0);
@@ -357,38 +359,51 @@ namespace Reko.Analysis
                 {
                     var outStg = (OutArgumentStorage)p.Storage;
                     var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage).First();
-                    var sid = ssa.Identifiers[(Identifier)idStg.Expression];
-                    InsertOutArgumentAssignment(p, sid, block, insertPos);
+                        .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage)
+                        .FirstOrDefault();
+                    InsertOutArgumentAssignment(
+                        ssa,
+                        p,
+                        idStg?.Expression ?? Constant.Invalid,
+                        block,
+                        insertPos);
                     ++insertPos;
                 }
             }
         }
 
-        private void SetReturnExpression(Block block, Identifier idRet, SsaIdentifier sid)
+        private void SetReturnExpression(
+            SsaState ssa,
+            Block block,
+            Identifier idRet,
+            Expression e)
         {
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
                 var stm = block.Statements[i];
                 if (stm.Instruction is ReturnInstruction ret)
                 {
-                    Expression e = sid.Identifier;
                     if (idRet.DataType.BitSize < e.DataType.BitSize)
                     {
                         e = new Cast(idRet.DataType, e);
                     }
                     ret.Expression = e;
-                    sid.Uses.Add(stm);
+                    ssa.AddUses(stm);
                 }
             }
         }
 
-        private void InsertOutArgumentAssignment(Identifier parameter, SsaIdentifier sid, Block block, int insertPos)
+        private void InsertOutArgumentAssignment(
+            SsaState ssa,
+            Identifier parameter,
+            Expression e,
+            Block block,
+            int insertPos)
         {
             var stm = block.Statements.Insert(
                 insertPos, 0, 
-                new Store(parameter, sid.Identifier));
-            sid.Uses.Add(stm);
+                new Store(parameter, e));
+            ssa.AddUses(stm);
         }
     }
 }
