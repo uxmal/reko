@@ -155,14 +155,15 @@ namespace Reko.Arch.Z80
         {
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
-            //Dictionary<uint, RegisterStorage> dict;
-            //if (!Registers. SubRegisters.TryGetValue(reg.Domain, out dict))
-            //    return null;
-            //RegisterStorage subReg;
-            //if (!dict.TryGetValue((uint)(offset + width * 16), out subReg))
-            //    return null;
-            throw new NotImplementedException();
-            //return subReg;
+            var subregs = Registers.SubRegisters[reg.Domain];
+            var mask = ((1ul << width) - 1) << offset;
+            var result = reg;
+            foreach (var subreg in subregs)
+            {
+                if ((mask & ~subreg.BitMask) == 0)
+                    result = subreg;
+            }
+            return result;
         }
 
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
@@ -341,6 +342,9 @@ namespace Reko.Arch.Z80
                 RegisterStorage[]>
             {
                 {
+                    af.Domain, new [] { Registers.a, Registers.f }
+                },
+                {
                     bc.Domain, new [] { Registers.c, Registers.b }
                 },
                 {
@@ -364,9 +368,11 @@ namespace Reko.Arch.Z80
 
         internal static RegisterStorage GetRegister(StorageDomain domain, ulong mask)
         {
-            RegisterStorage[] subregs;
-            RegisterStorage regBest = regsByStorage[domain - StorageDomain.Register];
-            if (SubRegisters.TryGetValue(domain, out subregs))
+            var iReg = domain - StorageDomain.Register;
+            if (iReg < 0 || iReg >= regsByStorage.Length)
+                return null;
+            RegisterStorage regBest = regsByStorage[iReg];
+            if (SubRegisters.TryGetValue(domain, out var subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {

@@ -56,5 +56,11 @@ namespace Reko.UnitTests.Arch.Z80
         {
             Assert.AreEqual(Registers.bc, arch.GetRegister(Registers.bc.Domain, new Reko.Core.BitRange(0, 16)));
         }
+
+        [Test]
+        public void Z80Arch_GetSubRegister_hl()
+        {
+            Assert.AreEqual(Registers.h, arch.GetSubregister(Registers.hl, 8, 8));
+        }
     }
 }
