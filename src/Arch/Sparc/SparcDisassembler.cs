@@ -120,6 +120,15 @@ namespace Reko.Arch.Sparc
                     case 'f':       // FPU register
                         ops.Add(GetFpuRegisterOperand(wInstr, ref i));
                         break;
+                    case 'd':       // double FPU register encoding
+                        ops.Add(GetDoubleRegisterOperand(wInstr, ref i));
+                        break;
+                    case 'q':       // quad FPU register encoding
+                        var qreg = GetQuadRegisterOperand(wInstr, ref i);
+                        if (qreg == null)
+                            return new SparcInstruction { Opcode = Opcode.illegal };
+                        ops.Add(qreg);
+                        break;
                     case 'A':
                         ops.Add(GetAlternateSpaceOperand(wInstr, GetOperandSize(ref i)));
                         break;
@@ -239,6 +248,32 @@ namespace Reko.Arch.Sparc
                     offset = offset * 10 + (fmt[i++] - '0');
                 }
                 return new RegisterOperand(Registers.GetFpuRegister((int)(wInstr >> offset) & 0x1F));
+            }
+
+            private RegisterOperand GetDoubleRegisterOperand(uint wInstr, ref int i)
+            {
+                int offset = 0;
+                while (i < fmt.Length && Char.IsDigit(fmt[i]))
+                {
+                    offset = offset * 10 + (fmt[i++] - '0');
+                }
+                int encodedReg = (int)(wInstr >> offset) & 0x1F;
+                int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
+                return new RegisterOperand(Registers.GetFpuRegister(reg));
+            }
+
+            private RegisterOperand GetQuadRegisterOperand(uint wInstr, ref int i)
+            {
+                int offset = 0;
+                while (i < fmt.Length && Char.IsDigit(fmt[i]))
+                {
+                    offset = offset * 10 + (fmt[i++] - '0');
+                }
+                int encodedReg = (int)(wInstr >> offset) & 0x1F;
+                int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
+                if ((reg & 0x3) != 0)
+                    return null;
+                return new RegisterOperand(Registers.GetFpuRegister(reg));
             }
 
             private RegisterStorage GetRegister(uint wInstr, ref int i)
@@ -586,45 +621,45 @@ namespace Reko.Arch.Sparc
             { 0x05, new OpRec { code=Opcode.fnegs, fmt="f0,f25" } },
             { 0x09, new OpRec { code=Opcode.fabss, fmt="f0,f25" } },
             { 0x29, new OpRec { code=Opcode.fsqrts, fmt="f0,f25" } },
-            { 0x2A, new OpRec { code=Opcode.fsqrtd, fmt="f0,f25" } },
-            { 0x2B, new OpRec { code=Opcode.fsqrtq, fmt="f0,f25" } },
+            { 0x2A, new OpRec { code=Opcode.fsqrtd, fmt="d0,d25" } },
+            { 0x2B, new OpRec { code=Opcode.fsqrtq, fmt="q0,q25" } },
 
             { 0x41, new OpRec { code=Opcode.fadds, fmt="f14,f0,f25" } },
-            { 0x42, new OpRec { code=Opcode.faddd, fmt="f14,f0,f25" } },
-            { 0x43, new OpRec { code=Opcode.faddq, fmt="f14,f0,f25" } },
+            { 0x42, new OpRec { code=Opcode.faddd, fmt="d14,d0,d25" } },
+            { 0x43, new OpRec { code=Opcode.faddq, fmt="q14,q0,q25" } },
             { 0x45, new OpRec { code=Opcode.fsubs, fmt="f14,f0,f25" } },
-            { 0x46, new OpRec { code=Opcode.fsubd, fmt="f14,f0,f25" } },
-            { 0x47, new OpRec { code=Opcode.fsubq, fmt="f14,f0,f25" } },
+            { 0x46, new OpRec { code=Opcode.fsubd, fmt="d14,d0,d25" } },
+            { 0x47, new OpRec { code=Opcode.fsubq, fmt="q14,q0,q25" } },
 
             { 0xC4, new OpRec { code=Opcode.fitos, fmt="f0,f25" } },
-            { 0xC6, new OpRec { code=Opcode.fdtos, fmt="f0,f25" } },
-            { 0xC7, new OpRec { code=Opcode.fqtos, fmt="f0,f25" } },
-            { 0xC8, new OpRec { code=Opcode.fitod, fmt="f0,f25" } },
-            { 0xC9, new OpRec { code=Opcode.fstod, fmt="f0,f25" } },
-            { 0xCB, new OpRec { code=Opcode.fqtod, fmt="f0,f25" } },
-            { 0xCC, new OpRec { code=Opcode.fitoq, fmt="f0,f25" } },
-            { 0xCD, new OpRec { code=Opcode.fstoq, fmt="f0,f25" } },
-            { 0xCE, new OpRec { code=Opcode.fdtoq, fmt="f0,f25" } },
+            { 0xC6, new OpRec { code=Opcode.fdtos, fmt="d0,f25" } },
+            { 0xC7, new OpRec { code=Opcode.fqtos, fmt="q0,f25" } },
+            { 0xC8, new OpRec { code=Opcode.fitod, fmt="f0,d25" } },
+            { 0xC9, new OpRec { code=Opcode.fstod, fmt="f0,d25" } },
+            { 0xCB, new OpRec { code=Opcode.fqtod, fmt="q0,d25" } },
+            { 0xCC, new OpRec { code=Opcode.fitoq, fmt="f0,q25" } },
+            { 0xCD, new OpRec { code=Opcode.fstoq, fmt="f0,q25" } },
+            { 0xCE, new OpRec { code=Opcode.fdtoq, fmt="d0,q25" } },
             { 0xD1, new OpRec { code=Opcode.fstoi, fmt="f0,f25" } },
-            { 0xD2, new OpRec { code=Opcode.fdtoi, fmt="f0,f25" } },
-            { 0xD3, new OpRec { code=Opcode.fqtoi, fmt="f0,f25" } },
+            { 0xD2, new OpRec { code=Opcode.fdtoi, fmt="d0,f25" } },
+            { 0xD3, new OpRec { code=Opcode.fqtoi, fmt="q0,f25" } },
 
             { 0x49, new OpRec { code=Opcode.fmuls, fmt="f14,f0,f25" } },
-            { 0x4A, new OpRec { code=Opcode.fmuld, fmt="f14,f0,f25" } },
-            { 0x4B, new OpRec { code=Opcode.fmulq, fmt="f14,f0,f25" } },
+            { 0x4A, new OpRec { code=Opcode.fmuld, fmt="d14,d0,d25" } },
+            { 0x4B, new OpRec { code=Opcode.fmulq, fmt="q14,q0,q25" } },
             { 0x4D, new OpRec { code=Opcode.fdivs, fmt="f14,f0,f25" } },
-            { 0x4E, new OpRec { code=Opcode.fdivd, fmt="f14,f0,f25" } },
-            { 0x4F, new OpRec { code=Opcode.fdivq, fmt="f14,f0,f25" } },
+            { 0x4E, new OpRec { code=Opcode.fdivd, fmt="d14,d0,d25" } },
+            { 0x4F, new OpRec { code=Opcode.fdivq, fmt="q14,q0,q25" } },
 
-            { 0x69, new OpRec { code=Opcode.fsmuld, fmt="f14,f0,f25" } },
-            { 0x6E, new OpRec { code=Opcode.fdmulq, fmt="f14,f0,f25" } },
+            { 0x69, new OpRec { code=Opcode.fsmuld, fmt="f14,f0,d25" } },
+            { 0x6E, new OpRec { code=Opcode.fdmulq, fmt="d14,d0,q25" } },
 
             { 0x51, new OpRec { code=Opcode.fcmps, fmt="f14,f0" } },
-            { 0x52, new OpRec { code=Opcode.fcmpd, fmt="f14,f0" } },
+            { 0x52, new OpRec { code=Opcode.fcmpd, fmt="d14,d0" } },
             { 0x53, new OpRec { code=Opcode.fcmpq, fmt="f14,f0" } },
             { 0x55, new OpRec { code=Opcode.fcmpes, fmt="f14,f0" } },
-            { 0x56, new OpRec { code=Opcode.fcmped, fmt="f14,f0" } },
-            { 0x57, new OpRec { code=Opcode.fcmpeq, fmt="f14,f0" } },
+            { 0x56, new OpRec { code=Opcode.fcmped, fmt="d14,d0" } },
+            { 0x57, new OpRec { code=Opcode.fcmpeq, fmt="q14,q0" } },
         };
     }
 }
