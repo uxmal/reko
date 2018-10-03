@@ -763,7 +763,7 @@ namespace Reko.Scanning
             Expression indexCandidate, 
             BackwardSlicerContext ctx)
         {
-            if ((domLeft != StorageDomain.Memory && DomainOf(indexCandidate) == domLeft)
+            if ((domLeft != StorageDomain.Memory)
                 ||
                 (this.slicer.AreEqual(indexCandidate, subtraction.Left)))
             {
