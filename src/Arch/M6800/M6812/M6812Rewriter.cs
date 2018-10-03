@@ -810,7 +810,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var val = binder.EnsureRegister(reg);
             var sp = binder.EnsureRegister(Registers.sp);
-            m.Assign(sp, m.ISub(sp, m.Int16((short)val.DataType.Size)));
+            m.Assign(sp, m.ISubS(sp, (short)val.DataType.Size));
             m.Assign(m.Mem(val.DataType, sp), val);
         }
 

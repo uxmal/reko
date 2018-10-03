@@ -139,7 +139,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             rtlc = RtlClass.Transfer | RtlClass.Call;
             var sp = binder.EnsureRegister(Registers.sp);
             var af = binder.EnsureRegister(Registers.af);
-            m.Assign(sp, m.ISub(sp, m.Int32(2)));
+            m.Assign(sp, m.ISubS(sp, 2));
             m.Assign(m.Mem16(sp), af);
             m.Call(Address.Ptr16(0x0100), 2);
 

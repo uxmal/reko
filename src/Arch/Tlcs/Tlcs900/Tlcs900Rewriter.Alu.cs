@@ -153,7 +153,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             m.Assign(m.Mem(dt, dst), tmp);
             m.Assign(src, m.IAddS(src, dt.Size));
             m.Assign(dst, m.IAddS(dst, dt.Size));
-            m.Assign(cnt, m.ISub(cnt, m.Int16(1)));
+            m.Assign(cnt, m.ISubS(cnt, 1));
             m.Branch(m.Ne0(cnt), instr.Address, RtlClass.ConditionalTransfer);
             EmitCc(null, flags);
         }
@@ -177,7 +177,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             var op = RewriteSrc(instr.op1);
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);
-            m.Assign(xsp, m.ISub(xsp, m.Int32(op.DataType.Size)));
+            m.Assign(xsp, m.ISubS(xsp, op.DataType.Size));
             m.Assign(m.Mem(op.DataType, xsp), op);
         }
 

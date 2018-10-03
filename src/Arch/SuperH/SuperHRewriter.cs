@@ -341,7 +341,7 @@ namespace Reko.Arch.SuperH
                     return null;
                 case AddressingMode.IndirectPreDecr:
                     reg = binder.EnsureRegister(mem.reg);
-                    m.Assign(reg, m.ISub(reg, Constant.Int32(mem.Width.Size)));
+                    m.Assign(reg, m.ISubS(reg, mem.Width.Size));
                     m.Assign(
                         m.Mem(tmp.DataType, reg),
                         fn(src));

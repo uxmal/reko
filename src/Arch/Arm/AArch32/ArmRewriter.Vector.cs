@@ -242,7 +242,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    m.Assign(rSrc, m.ISub(rSrc, m.Int32(totalRegsize)));
+                    m.Assign(rSrc, m.ISubS(rSrc, totalRegsize));
                 }
             }
         }

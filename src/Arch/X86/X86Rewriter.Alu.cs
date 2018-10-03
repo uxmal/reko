@@ -687,7 +687,7 @@ namespace Reko.Arch.X86
                     dasm.Peek(1).op1.Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
-                    m.Assign(StackPointer(), m.ISub(StackPointer(), reg.Register.DataType.Size));
+                    m.Assign(StackPointer(), m.ISubS(StackPointer(), reg.Register.DataType.Size));
                     RewriteCall(dasm.Current.op1, dasm.Current.op1.Width);
                     this.len = (byte)(this.len + dasm.Current.Length);
                     return;

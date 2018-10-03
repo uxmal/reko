@@ -328,7 +328,7 @@ namespace Reko.Arch.Avr
             Expression ea = baseReg;
             if (mop.PreDecrement)
             {
-                m.Assign(baseReg, m.ISub(baseReg, Constant.Int16(1)));
+                m.Assign(baseReg, m.ISubS(baseReg, 1));
             } else if (mop.Displacement != 0)
             {
                 ea = m.IAddS(ea, mop.Displacement);
@@ -574,7 +574,7 @@ namespace Reko.Arch.Avr
         private void RewritePush()
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(sp, m.ISub(sp, Constant.Int16(1)));
+            m.Assign(sp, m.ISubS(sp, 1));
             m.Assign(m.Mem8(sp), RewriteOp(0));
         }
 

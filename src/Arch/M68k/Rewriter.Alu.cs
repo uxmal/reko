@@ -431,7 +431,7 @@ namespace Reko.Arch.M68k
                     this.m.Assign(t, opSrc);
                     opSrc = t;
                 }
-                this.m.Assign(reg, this.m.ISub(reg, this.m.Int32(this.di.dataWidth.Size)));
+                this.m.Assign(reg, this.m.ISubS(reg, this.di.dataWidth.Size));
                 var op = this.m.Mem(this.di.dataWidth, reg);
                 m(opSrc, op);
                 return op;
@@ -666,7 +666,7 @@ namespace Reko.Arch.M68k
                     var dstReg = binder.EnsureRegister(preDec.Register);
                     foreach (var reg in RegisterMaskDecreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                     {
-                        m.Assign(dstReg, m.ISub(dstReg, m.Int32(di.dataWidth.Size)));
+                        m.Assign(dstReg, m.ISubS(dstReg, di.dataWidth.Size));
                         m.Assign(m.Mem(di.dataWidth, dstReg), reg);
                     }
                 }
