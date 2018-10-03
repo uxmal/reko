@@ -1,7 +1,7 @@
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_3 = fp - 0x0002
+          sp_3 = fp - 2
           sp_6 = fp
           SCZO_7 = cond(fp)
 sp_1: orig: sp
@@ -9,7 +9,7 @@ sp_1: orig: sp
 cx_2: orig: cx
     def:  cx_2 = 0x0064
 sp_3: orig: sp
-    def:  sp_3 = fp - 0x0002
+    def:  sp_3 = fp - 2
 wLoc02_4: orig: wLoc02
     def:  wLoc02_4 = 0x0064
     uses: ax_5 = fn0C00_000F(wLoc02_4)
@@ -35,7 +35,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp_1 = fp
 	cx_2 = 0x0064
-	sp_3 = fp - 0x0002
+	sp_3 = fp - 2
 	wLoc02_4 = 0x0064
 	ax_5 = fn0C00_000F(wLoc02_4)
 	sp_6 = fp
@@ -48,10 +48,10 @@ fn0C00_0000_exit:
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_2 = fp - 0x0002
-          bp_5 = fp - 0x0002
+          sp_2 = fp - 2
+          bp_5 = fp - 2
           sp_22 = fp
-          sp_23 = fp - 0x0004
+          sp_23 = fp - 4
           sp_26 = fp - 0x0003
           SZO_27 = cond(fp - 0x0003)
           sp_28 = fp - 0x0002
@@ -59,7 +59,7 @@ fp:fp
 sp_1: orig: sp
     def:  sp_1 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp - 0x0002
+    def:  sp_2 = fp - 2
 bp:bp
     def:  def bp
     uses: wLoc02_4 = bp
@@ -67,7 +67,7 @@ wLoc02_4: orig: wLoc02
     def:  wLoc02_4 = bp
     uses: bp_21 = wLoc02_4
 bp_5: orig: bp
-    def:  bp_5 = fp - 0x0002
+    def:  bp_5 = fp - 2
 wArg02:Stack +0002
     def:  def wArg02
     uses: ax_7 = wArg02
@@ -119,7 +119,7 @@ bp_21: orig: bp
 sp_22: orig: sp
     def:  sp_22 = fp
 sp_23: orig: sp
-    def:  sp_23 = fp - 0x0004
+    def:  sp_23 = fp - 4
 wLoc04_24: orig: wLoc04
     def:  wLoc04_24 = ax_8
     uses: ax_25 = fn0C00_000F(wLoc04_24)
@@ -183,9 +183,9 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp_1 = fp
-	sp_2 = fp - 0x0002
+	sp_2 = fp - 2
 	wLoc02_4 = bp
-	bp_5 = fp - 0x0002
+	bp_5 = fp - 2
 	ax_7 = wArg02
 	ax_8 = ax_7 - 0x0001
 	dx_ax_10 = SEQ(dx, ax_8) (alias)
@@ -195,7 +195,7 @@ l0C00_000F:
 	branch Test(EQ,Z_12) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	sp_23 = fp - 0x0004
+	sp_23 = fp - 4
 	wLoc04_24 = ax_8
 	ax_25 = fn0C00_000F(wLoc04_24)
 	sp_26 = fp - 0x0003

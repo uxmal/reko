@@ -248,13 +248,13 @@ namespace Reko.Arch.SuperH
                     return m.Mem(mem.Width, binder.EnsureRegister(mem.reg));
                 case AddressingMode.IndirectPreDecr:
                     reg = binder.EnsureRegister(mem.reg);
-                    m.Assign(reg, m.IAddS(reg, mem.Width.Size));
+                    m.Assign(reg, m.ISubS(reg, mem.Width.Size));
                     return m.Mem(mem.Width, reg);
                 case AddressingMode.IndirectPostIncr:
                     var t = binder.CreateTemporary(mem.Width);
                     reg = binder.EnsureRegister(mem.reg);
                     m.Assign(t, m.Mem(mem.Width, reg));
-                    m.Assign(reg, m.IAdd(reg, t.DataType.Size));
+                    m.Assign(reg, m.IAddS(reg, t.DataType.Size));
                     return t;
                 case AddressingMode.IndirectDisplacement:
                     reg = binder.EnsureRegister(mem.reg);

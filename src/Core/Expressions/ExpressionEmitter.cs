@@ -1164,7 +1164,8 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Convenience method to generate an integer subtraction expression. 
-        /// The subtrahend is converted to a Constant of the same size as the augend.
+        /// The subtrahend is converted to a signed integer Constant of the same 
+        /// size as the augend.
         /// </summary>
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>

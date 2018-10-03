@@ -52,7 +52,7 @@ fn0C00_002A_entry:
 // SymbolicIn: sp:fp
 l0C00_002A:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = ax
 	Mem0[ds:0x0200:word16] = 0xFFFF
 	ax = wLoc02

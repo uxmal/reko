@@ -13,7 +13,7 @@ fn10000000_entry:
 l10000000:
 	esp = fp
 	eax = Mem0[0x10003420:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = eax
 	call fn10000017 (retsize: 4;)
 	esp = esp + 0x00000004
@@ -45,10 +45,10 @@ fn10000017_entry:
 	// succ:  l10000017
 l10000017:
 	esp = fp
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebp
 	ebp = esp
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ecx
 	Mem0[ebp - 0x00000004:word16] = 0x0000
 	SCZO = cond(Mem0[ebp + 0x00000008:word32] - 0x00000000)
@@ -86,7 +86,7 @@ l1000005A:
 l1000005E:
 	esp = ebp
 	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	return
 	// succ:  fn10000017_exit
 fn10000017_exit:

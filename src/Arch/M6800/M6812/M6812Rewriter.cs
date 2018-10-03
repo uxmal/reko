@@ -310,12 +310,12 @@ namespace Reko.Arch.M6800.M6812
                 {
                     var tmp = binder.CreateTemporary(baseReg.DataType);
                     m.Assign(tmp, ea);
-                    m.Assign(baseReg, m.IAdd(baseReg, memop.Offset.Value));
+                    m.Assign(baseReg, m.IAddS(baseReg, memop.Offset.Value));
                     ea = tmp;
                 }
                 else
                 {
-                    ea = m.IAdd(baseReg, m.Word16((ushort)memop.Offset.Value));
+                    ea = m.IAdd(baseReg, (ushort)memop.Offset.Value);
                 }
                 if (memop.Indirect)
                 {

@@ -23,7 +23,7 @@ l10000000:
 	goto l1000002F
 	// succ:  l1000002F
 l10000015:
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = 0x00000008
 	eax = malloc(Mem0[esp:size_t])
 	esp = esp + 0x00000004

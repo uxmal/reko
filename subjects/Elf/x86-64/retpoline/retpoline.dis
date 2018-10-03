@@ -66,8 +66,8 @@ _start_entry:
 // LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000400480:
-	__align(fp + 0x0000000000000008)
-	__libc_start_main(0x0000000000400660, qwArg00, fp + 0x0000000000000008, 0x0000000000400710, 0x0000000000400780, rdx, fp)
+	__align(fp + 8)
+	__libc_start_main(0x0000000000400660, qwArg00, fp + 8, 0x0000000000400710, 0x0000000000400780, rdx, fp)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -98,13 +98,13 @@ l00000000004004C1:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000601040 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000601040 rbp:fp - 8 -8(fp):rbp
 
 l00000000004004D8:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid> rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:<invalid> rbp:fp - 8 -8(fp):rbp
 
 l00000000004004CB:
 	word64 rsp_39
@@ -124,7 +124,7 @@ l00000000004004CB:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000000000 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000000000 rbp:fp - 8 -8(fp):rbp
 
 deregister_tm_clones_exit:
 // DataOut:
@@ -156,13 +156,13 @@ l0000000000400503:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400518
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rsi:0x0000000000000000 rbp:fp - 0x0000000000000008 rax:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rsi:0x0000000000000000 rbp:fp - 8 rax:0x0000000000000000 -8(fp):rbp
 
 l0000000000400518:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rsi:0x0000000000000000 rbp:fp - 0x0000000000000008 rax:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rsi:0x0000000000000000 rbp:fp - 8 rax:0x0000000000000000 -8(fp):rbp
 
 l000000000040050D:
 	word64 rsp_40
@@ -180,7 +180,7 @@ l000000000040050D:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rsi:0x0000000000000000 rbp:fp - 0x0000000000000008 rax:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rsi:0x0000000000000000 rbp:fp - 8 rax:0x0000000000000000 -8(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:
@@ -339,48 +339,48 @@ l00000000004005CA:
 	branch (word32) (uint64) ((word32) (uint64) edi << 0x00000001) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x00000001)) l000000000040064F
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
 // LocalsOut: fp(64) Local -0010(0) Local -0014(0)
 
 l00000000004005DE:
 	branch (word32) (uint64) (edi *s 0x00000003) >= (word32) ((uint64) (esi *s 0x00000003)) l000000000040064F
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> rax:<invalid> rcx:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> rax:<invalid> rcx:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
 // LocalsOut: fp(64) Local -0010(32) Local -0014(32)
 
 l00000000004005EE:
 	branch (word32) (uint64) ((word32) (uint64) edi << 0x00000002) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x00000002)) l000000000040064F
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> rax:<invalid> rcx:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> rax:<invalid> rcx:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
 // LocalsOut: fp(64) Local -0010(32) Local -0014(32)
 
 l0000000000400602:
 	branch (word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi / 0x00000002) >= (int32) ((int64) ((word32) ((uint64) ((word32) ((uint64) esi)))) / 0x00000002) l000000000040064F
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> rax:<invalid> rcx:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> rax:<invalid> rcx:<invalid> -20(fp):esi -16(fp):edi -8(fp):rbp
 // LocalsOut: fp(64) Local -0010(64) Local -0014(64)
 
 l000000000040064F:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> rax:<invalid> rcx:<invalid> Sequence edx:eax:<invalid> eax:<invalid> edx:<invalid> -40(fp):<invalid> -36(fp):eax -20(fp):esi -16(fp):edi -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> rax:<invalid> rcx:<invalid> Sequence edx:eax:<invalid> eax:<invalid> edx:<invalid> -40(fp):<invalid> -36(fp):eax -20(fp):esi -16(fp):edi -8(fp):rbp
 // LocalsOut: fp(64) Local -000C(64)
 
 l000000000040062B:
 	free(my1((word32) (uint64) esi, (word32) (uint64) edi))
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> rax:<invalid> rcx:<invalid> Sequence edx:eax:<invalid> eax:<invalid> edx:<invalid> -40(fp):<invalid> -36(fp):eax -20(fp):esi -16(fp):edi -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> rax:<invalid> rcx:<invalid> Sequence edx:eax:<invalid> eax:<invalid> edx:<invalid> -40(fp):<invalid> -36(fp):eax -20(fp):esi -16(fp):edi -8(fp):rbp
 // LocalsOut: fp(64) Local -000C(64)
 
 l0000000000400656:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 0x0000000000000008 rsi:<invalid> rax:<invalid> rcx:<invalid> Sequence edx:eax:<invalid> eax:<invalid> edx:<invalid> rdi:<invalid> -40(fp):<invalid> -36(fp):eax -32(fp):<invalid> -20(fp):esi -16(fp):edi -12(fp):<invalid> -8(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000028 rbp:fp - 8 rsi:<invalid> rax:<invalid> rcx:<invalid> Sequence edx:eax:<invalid> eax:<invalid> edx:<invalid> rdi:<invalid> -40(fp):<invalid> -36(fp):eax -32(fp):<invalid> -20(fp):esi -16(fp):edi -12(fp):<invalid> -8(fp):rbp
 
 branches_exit:
 // DataOut:

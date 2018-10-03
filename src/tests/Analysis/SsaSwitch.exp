@@ -1,12 +1,12 @@
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_2 = fp - 0x0002
+          sp_2 = fp - 2
           sp_6 = fp
 sp_1: orig: sp
     def:  sp_1 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp - 0x0002
+    def:  sp_2 = fp - 2
 cs:cs
     def:  def cs
     uses: wLoc02_4 = cs
@@ -149,7 +149,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_1 = fp
-	sp_2 = fp - 0x0002
+	sp_2 = fp - 2
 	wLoc02_4 = cs
 	ds_5 = wLoc02_4
 	sp_6 = fp

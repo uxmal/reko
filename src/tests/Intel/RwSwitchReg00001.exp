@@ -18,7 +18,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebp
 	ebp = esp
 	eax = Mem0[ebp + 0x00000008:word32]
@@ -54,7 +54,7 @@ l10000054:
 l10000059:
 	Mem0[0x10000061:word32] = eax
 	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

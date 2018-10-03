@@ -25,12 +25,12 @@ l10000000:
 	// succ:  l10000027
 l10000016:
 	v9 = Mem0[edi:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = v9
 	eax = GetDC(Mem0[esp:HWND])
 	esp = esp + 0x00000004
 	Mem0[edi:word32] = eax
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = 0x00000000
 	eax = GetDC(Mem0[esp:HWND])
 	esp = esp + 0x00000004

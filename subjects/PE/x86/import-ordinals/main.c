@@ -448,8 +448,8 @@ ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, ui32 dwArg00, word32 dwArg04,
 	*(esp_14 - 0x04) = ebx;
 	*(esp_14 - 0x08) = esi;
 	*(esp_14 - 0x0C) = edi;
-	*(esp_14 - 0x10) = globals->dw403004 ^ fp + 0x08;
-	*(esp_14 - 0x14) = dwArg00;
+	*(esp_14 - 0x0010) = globals->dw403004 ^ fp + 0x08;
+	*(esp_14 - 0x0014) = dwArg00;
 	fs->ptr0000 = fp - 0x08;
 	return fp + 0x08;
 }

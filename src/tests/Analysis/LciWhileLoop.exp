@@ -8,7 +8,7 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem4[ss:fp - 0x0002:word16] = bp
+	Mem4[ss:fp - 2:word16] = bp
 	ax_11 = Mem4[ss:fp + 0x0004:word16]
 	bx_8 = 0x0000
 	branch ax_11 <= 0x0000 l0C00_0015

@@ -43,14 +43,14 @@ fn0C00_000B_entry:
 // SymbolicIn: sp:fp
 l0C00_000B:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = si
 	SCZO = cond(cx - 0x0001)
 	branch Test(LE,SZO) l0C00_001C
 // DataOut: cx ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 -2(fp):si
+// SymbolicIn: sp:fp - 2 -2(fp):si
 l0C00_0011:
 	si = cx
 	cx = cx - 0x0001
@@ -61,13 +61,13 @@ l0C00_0011:
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 -2(fp):si
+// SymbolicIn: sp:fp - 2 -2(fp):si
 l0C00_001C:
 	ax = 0x0001
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 si:cx cx:<invalid> Sequence dx:ax:<invalid> ax:<invalid> dx:<invalid> -2(fp):si
+// SymbolicIn: sp:fp - 2 si:cx cx:<invalid> Sequence dx:ax:<invalid> ax:<invalid> dx:<invalid> -2(fp):si
 l0C00_001F:
 	si = wLoc02
 	sp = fp

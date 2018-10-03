@@ -12905,8 +12905,8 @@ l0800_9A32:
 						}
 						ss->*(sp_1257 - 0x0E) = ax_1282;
 						fn0800_A2CC();
-						ss->*(sp_1257 - 0x10) = ss;
-						es_1015 = ss->*(sp_1257 - 0x10);
+						ss->*(sp_1257 - 0x0010) = ss;
+						es_1015 = ss->*(sp_1257 - 0x0010);
 						sp_1010 = sp_1257 - 0x0E;
 						di_1014 = fp - 0x47;
 l0800_9B46:
@@ -16190,8 +16190,8 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 	(ss->*((word32) bp_48 + 0x0C))->b0003 = al_52;
 	(ss->*(fp - 0x0C)).u0 = 0x00;
 	(ss->*(fp - 0x0E)).u0 = 0x3C;
-	ss->*(fp - 0x10) = ss->*((word32) bp_48 + 0x06);
-	ss->*(fp - 0x12) = ss->*((word32) bp_48 + 0x04);
+	ss->*(fp - 0x0010) = ss->*((word32) bp_48 + 0x06);
+	ss->*(fp - 0x0012) = ss->*((word32) bp_48 + 0x04);
 	Eq_81 dx_72;
 	Eq_81 bp_73;
 	Eq_81 si_74;
@@ -16199,20 +16199,20 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 	Eq_81 ax_76 = fn0800_8BBB(bp_48, si_49, di_50, bp, out dx_72, out bp_73, out si_74, out di_75);
 	ss->*((word32) bp_73 + 0x06) = dx_72;
 	ss->*((word32) bp_73 + 0x04) = ax_76;
-	(ss->*(fp - 0x14)).u0 = 0x00;
+	(ss->*(fp - 0x0014)).u0 = 0x00;
 	(ss->*(fp - 22)).u0 = 0x3C;
-	ss->*(fp - 0x18) = ss->*((word32) bp_73 + 0x06);
-	ss->*(fp - 0x1A) = ss->*((word32) bp_73 + 0x04);
+	ss->*(fp - 0x0018) = ss->*((word32) bp_73 + 0x06);
+	ss->*(fp - 0x001A) = ss->*((word32) bp_73 + 0x04);
 	word16 dx_93;
 	Eq_81 bp_94;
 	Eq_81 si_95;
 	Eq_81 di_96;
 	byte al_98 = (byte) fn0800_8BCA(bp_73, si_74, di_75, bp, out dx_93, out bp_94, out si_95, out di_96);
 	(ss->*((word32) bp_94 + 0x0C))->b0000 = al_98;
-	(ss->*(fp - 0x1C)).u0 = 0x00;
-	(ss->*(fp - 0x1E)).u0 = 0x3C;
-	ss->*(fp - 0x20) = ss->*((word32) bp_94 + 0x06);
-	ss->*(fp - 0x22) = ss->*((word32) bp_94 + 0x04);
+	(ss->*(fp - 0x001C)).u0 = 0x00;
+	(ss->*(fp - 0x001E)).u0 = 0x3C;
+	ss->*(fp - 0x0020) = ss->*((word32) bp_94 + 0x06);
+	ss->*(fp - 0x0022) = ss->*((word32) bp_94 + 0x04);
 	Eq_81 dx_117;
 	Eq_81 bp_118;
 	Eq_81 si_119;
@@ -16220,10 +16220,10 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 	Eq_81 ax_121 = fn0800_8BBB(bp_94, si_95, di_96, bp, out dx_117, out bp_118, out si_119, out di_120);
 	ss->*((word32) bp_118 + 0x06) = dx_117;
 	ss->*((word32) bp_118 + 0x04) = ax_121;
-	(ss->*(fp - 0x24)).u0 = 0x00;
-	(ss->*(fp - 0x26)).u0 = 0x88F8;
-	ss->*(fp - 0x28) = ss->*((word32) bp_118 + 0x06);
-	ss->*(fp - 0x2A) = ss->*((word32) bp_118 + 0x04);
+	(ss->*(fp - 0x0024)).u0 = 0x00;
+	(ss->*(fp - 0x0026)).u0 = 0x88F8;
+	ss->*(fp - 0x0028) = ss->*((word32) bp_118 + 0x06);
+	ss->*(fp - 0x002A) = ss->*((word32) bp_118 + 0x04);
 	word16 dx_138;
 	Eq_81 bp_139;
 	Eq_81 si_140;
@@ -16231,9 +16231,9 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 	ui16 ax_145 = (fn0800_8BBB(bp_118, si_119, di_120, bp, out dx_138, out bp_139, out si_140, out di_141) << 0x02) + 0x07BC;
 	*(ss->*((word32) bp_139 + 0x08)) = ax_145;
 	(ss->*(fp - 44)).u0 = 0x00;
-	(ss->*(fp - 0x2E)).u0 = 0x88F8;
-	ss->*(fp - 0x30) = ss->*((word32) bp_139 + 0x06);
-	ss->*(fp - 0x32) = ss->*((word32) bp_139 + 0x04);
+	(ss->*(fp - 0x002E)).u0 = 0x88F8;
+	ss->*(fp - 0x0030) = ss->*((word32) bp_139 + 0x06);
+	ss->*(fp - 0x0032) = ss->*((word32) bp_139 + 0x04);
 	Eq_81 dx_164;
 	Eq_81 si_166;
 	Eq_81 di_167;
@@ -16241,17 +16241,17 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 	Eq_81 ax_168 = fn0800_8BCA(bp_139, si_140, di_141, bp, out dx_164, out bp_165, out si_166, out di_167);
 	ss->*((word32) bp_165 + 0x06) = dx_164;
 	ss->*((word32) bp_165 + 0x04) = ax_168;
-	union Eq_81 Eq_43768::* sp_162 = fp - 0x32;
+	union Eq_81 Eq_43768::* sp_162 = fp - 0x0032;
 	if (ss->*((word32) bp_165 + 0x06) >= 0x00 && (ss->*((word32) bp_165 + 0x06) != 0x00 || ss->*((word32) bp_165 + 0x04) >= 0x2250))
 	{
 		ss->*((word32) bp_165 + 0x04) -= 0x2250;
 		ss->*((word32) bp_165 + 0x06) = v32;
 		ui16 * es_bx_442 = ss->*((word32) bp_165 + 0x08);
 		++*es_bx_442;
-		(ss->*(fp - 0x34)).u0 = 0x00;
-		(ss->*(fp - 0x36)).u0 = 0x2238;
-		ss->*(fp - 0x38) = ss->*((word32) bp_165 + 0x06);
-		ss->*(fp - 0x3A) = ss->*((word32) bp_165 + 0x04);
+		(ss->*(fp - 0x0034)).u0 = 0x00;
+		(ss->*(fp - 0x0036)).u0 = 0x2238;
+		ss->*(fp - 0x0038) = ss->*((word32) bp_165 + 0x06);
+		ss->*(fp - 0x003A) = ss->*((word32) bp_165 + 0x04);
 		word16 dx_461;
 		Eq_81 bp_462;
 		Eq_81 si_463;
@@ -16259,9 +16259,9 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 		Eq_81 ax_465 = fn0800_8BBB(bp_165, si_166, di_167, bp, out dx_461, out bp_462, out si_463, out di_464);
 		ui16 * es_bx_466 = ss->*((word32) bp_462 + 0x08);
 		*es_bx_466 = (ui16) ((word32) ax_465 + *es_bx_466);
-		(ss->*(fp - 0x3C)).u0 = 0x00;
-		(ss->*(fp - 0x3E)).u0 = 0x2238;
-		ss->*(fp - 0x40) = ss->*((word32) bp_462 + 0x06);
+		(ss->*(fp - 0x003C)).u0 = 0x00;
+		(ss->*(fp - 0x003E)).u0 = 0x2238;
+		ss->*(fp - 0x0040) = ss->*((word32) bp_462 + 0x06);
 		ss->*(fp - 66) = ss->*((word32) bp_462 + 0x04);
 		Eq_81 dx_485;
 		Eq_81 ax_489 = fn0800_8BCA(bp_462, si_463, di_464, bp, out dx_485, out bp_165, out si_166, out di_167);
@@ -16284,10 +16284,10 @@ void fn0800_C177(Eq_213 Eq_41559::*bp, Eq_81 si, Eq_81 ds, word16 wArg02, word16
 		(ss->*(sp_372 - 0x0A)).u0 = 0x00;
 		(ss->*(sp_372 - 0x0C)).u0 = 0x18;
 		ss->*(sp_372 - 0x0E) = ss->*((word32) bp_383 + 0x06);
-		ss->*(sp_372 - 0x10) = ss->*((word32) bp_383 + 0x04);
+		ss->*(sp_372 - 0x0010) = ss->*((word32) bp_383 + 0x04);
 		word16 dx_403;
-		ss->*(sp_372 - 0x12) = fn0800_8BBB(bp_383, si_384, di_385, bp, out dx_403, out bp_165, out si_166, out di_167);
-		(ss->*(sp_372 - 0x14)).u0 = 0x00;
+		ss->*(sp_372 - 0x0012) = fn0800_8BBB(bp_383, si_384, di_385, bp, out dx_403, out bp_165, out si_166, out di_167);
+		(ss->*(sp_372 - 0x0014)).u0 = 0x00;
 		ss->*(sp_372 - 22) = *(ss->*((word32) bp_165 + 0x08)) + 63566;
 		sp_162 = sp_372 - 0x0E;
 		if (fn0800_C553(ds_7, wArg00, v10_18, v11, bArg06) != 0x00)
@@ -16618,7 +16618,7 @@ Eq_45079 fn1483_0ADC(Eq_45080 al, byte ah, Eq_45082 cx, Eq_45083 dx, byte bl, Eq
 	ss->*(fp - 0x0A) = fp;
 	ss->*(fp - 0x0C) = bp_21;
 	ss->*(fp - 0x0E) = si_22;
-	ss->*(fp - 0x10) = di_23;
+	ss->*(fp - 0x0010) = di_23;
 	return rArg0_28;
 }
 
