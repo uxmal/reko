@@ -71,6 +71,18 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Convenience method for addition. The addend is converted to a
+        /// Signed Int Constant.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <returns>A binary expression for the sum.</returns>
+        public BinaryExpression IAddS(Expression left, int right)
+        {
+            return IAdd(left, Constant.Int(left.DataType, right));
+        }
+
+        /// <summary>
         /// Creates an offset sum of <paramref name="e"/> and the
         /// signed integer <paramref name="c"/> interpreted as a word.
         /// </summary>

@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Fragments
             Identifier x = Local32("x");
             Identifier i = Local32("i");
             LoadId(x, IAdd(p, SMul(i, 8)));
-            LoadId(x, IAdd(p, IAdd(SMul(i, 8), 4)));
+            LoadId(x, IAdd(p, IAddS(SMul(i, 8), 4)));
         }
     }
 }
