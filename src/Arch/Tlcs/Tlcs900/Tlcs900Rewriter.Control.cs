@@ -118,7 +118,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var sr = binder.EnsureRegister(Registers.sr);
             var sp = binder.EnsureRegister(Registers.xsp);
             m.Assign(sr, m.Mem16(sp));
-            m.Assign(sp, m.IAdd(sp, m.Int32(2)));
+            m.Assign(sp, m.IAddS(sp, 2));
             m.Return(4, 0);
         }
     }

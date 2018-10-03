@@ -447,7 +447,7 @@ namespace Reko.Arch.M68k
                     opSrc = t;
                 }
                 m(opSrc, this.m.Mem(this.di.dataWidth, reg));
-                this.m.Assign(reg, this.m.IAdd(reg, this.m.Int32(this.di.dataWidth.Size)));
+                this.m.Assign(reg, this.m.IAddS(reg, this.di.dataWidth.Size));
                 return t;
             }
             return orw.RewriteSrc(mop, di.Address);
@@ -653,7 +653,7 @@ namespace Reko.Arch.M68k
                 foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                 {
                     m.Assign(reg, m.Mem(di.dataWidth, srcReg));
-                    m.Assign(srcReg, m.IAdd(srcReg, m.Int32(di.dataWidth.Size)));
+                    m.Assign(srcReg, m.IAddS(srcReg, di.dataWidth.Size));
                 }
                 return;
             }

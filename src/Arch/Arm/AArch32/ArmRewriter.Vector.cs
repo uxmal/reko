@@ -76,14 +76,14 @@ namespace Reko.Arch.Arm.AArch32
                 var dst = Reg(r);
                 Expression ea =
                     offset != 0
-                    ? m.IAdd(rSrc, m.Int32(offset))
+                    ? m.IAddS(rSrc, offset)
                     : rSrc;
                 m.Assign(dst, m.Mem(dst.DataType, ea));
                 offset += dst.DataType.Size;
             }
             if (instr.Writeback)
             {
-                m.Assign(rSrc, m.IAdd(rSrc, m.Int32(offset)));
+                m.Assign(rSrc, m.IAddS(rSrc, offset));
             }
         }
 
@@ -229,7 +229,7 @@ namespace Reko.Arch.Arm.AArch32
                 var dst = Reg(r);
                 Expression ea =
                     offset != 0
-                    ? m.IAdd(rSrc, m.Int32(offset))
+                    ? m.IAddS(rSrc, offset)
                     : rSrc;
                 m.Assign(m.Mem(r.DataType, ea), dst);
                 offset += r.DataType.Size;
@@ -238,7 +238,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (add)
                 {
-                    m.Assign(rSrc, m.IAdd(rSrc, m.Int32(totalRegsize)));
+                    m.Assign(rSrc, m.IAddS(rSrc, totalRegsize));
                 }
                 else
                 {

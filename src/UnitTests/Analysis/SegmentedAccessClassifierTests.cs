@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Analysis
 				Identifier ax = this.Local16("ax");
 				Identifier bx = this.Local16("bx");
 
-				LoadId(ax, SegMem(PrimitiveType.Word16, ds, IAdd(bx, Int16(4))));
+				LoadId(ax, SegMem(PrimitiveType.Word16, ds, IAddS(bx, 4)));
 			}
 		}
 
@@ -152,8 +152,8 @@ namespace Reko.UnitTests.Analysis
 				Identifier ax = this.Local16("ax");
 				Identifier bx = this.Local16("bx");
 
-				LoadId(ax, SegMem(PrimitiveType.Word16, ds, IAdd(bx, Int16(4))));
-				LoadId(ax, SegMem(PrimitiveType.Word16, ds, IAdd(bx, Int16(8))));
+				LoadId(ax, SegMem(PrimitiveType.Word16, ds, IAddS(bx, 4)));
+				LoadId(ax, SegMem(PrimitiveType.Word16, ds, IAddS(bx, 8)));
 			}
 		}
 
@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Analysis
 				Identifier ds = Local16("ds");
 				Identifier ax = Local16("ax");
 				Identifier bx = Local16("bx");
-				LoadId(ax, MembPtrW(ds, IAdd(bx, Int16(4))));
+				LoadId(ax, MembPtrW(ds, IAddS(bx, 4)));
 				LoadId(ax, MembPtrW(ds, Int16(0x3000)));
 			}
 		}

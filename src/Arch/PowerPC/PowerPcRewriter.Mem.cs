@@ -148,7 +148,7 @@ namespace Reko.Arch.PowerPC
                 {
                     m.Assign(reg, m.Mem32(tmp));
                 }
-                m.Assign(tmp, m.IAdd(tmp, m.Int32(4)));
+                m.Assign(tmp, m.IAddS(tmp, 4));
                 ++r;
             }
         }
@@ -325,7 +325,7 @@ namespace Reko.Arch.PowerPC
                     w = m.Slice(PrimitiveType.Word32, w, 0);
                 }
                 m.Assign(m.Mem32(tmp), w);
-                m.Assign(tmp, m.IAdd(tmp, m.Int32(4)));
+                m.Assign(tmp, m.IAddS(tmp, 4));
                 ++r;
             }
         }
