@@ -2060,7 +2060,7 @@ Eq_17 fn00000000004052D0(Eq_2953 * rdx, Eq_17 rsi, Eq_21 * r11, Eq_25 * fs, ptr6
 	Eq_17 rax_54 = &fp->qwFFFFDFA8 + 0x02;
 	if (rax_51 > 0x1FFF)
 	{
-		fp->tFFFFDF90 = fp - 0x2088 - ((word64) rax_51 + 0x001F & ~0x0F) + 0x0F;
+		fp->tFFFFDF90 = fp - 0x00002088 - ((word64) rax_51 + 0x001F & ~0x0F) + 0x0F;
 		fp->tFFFFDF90 &= ~0x0F;
 		rdi_255 = fp->tFFFFDF90;
 		*rdiOut = rdi_255;
@@ -2353,7 +2353,7 @@ Eq_17 fn0000000000405810(Eq_17 rdx, Eq_17 rbp, Eq_17 rsi, uint32 edi, Eq_21 * r1
 	word64 r15_31;
 	Eq_17 rbx_32 = fn000000000040EAB0(rsi, rbp, rdx, r11, r12_6, r13, r14, r15, fs, out rbp_23, out r8_24, out r9_25, out r10_26, out r11_27, out r12_28, out r13_29, out r14_30, out r15_31);
 	Eq_17 rsi_37 = (uint64) *__errno_location();
-	error(0x00, rsi_37, rbx_32, *(fp - 0x20));
+	error(0x00, rsi_37, rbx_32, *(fp - 0x0020));
 	if ((byte) r12_6 == 0x00)
 	{
 		if ((word32) (uint64) globals->dw61B030 != 0x00)
@@ -2717,7 +2717,7 @@ Eq_17 fn00000000004061B0(Eq_17 rsi, uint32 edi, Eq_17 r8, Eq_25 * fs, Eq_6829 & 
 	qwLoc08 = rbp;
 	rbp = (uint64) edi;
 	ebp = (word32) rbp;
-	rsp = fp - 0x10;
+	rsp = fp - 0x0010;
 	qwLoc10 = rbx;
 	rsp = fp - 0x38;
 	rax = fs->t0028;
@@ -3180,15 +3180,15 @@ Eq_17 fn0000000000406B70(Eq_17 rbp, Eq_17 rdi, Eq_21 * r11, Eq_17 r15, Eq_25 * f
 	rsp = fp;
 	rsp = fp - 0x08;
 	qwLoc08 = r15;
-	rsp = fp - 0x10;
+	rsp = fp - 0x0010;
 	qwLoc10 = r14;
-	rsp = fp - 0x18;
+	rsp = fp - 0x0018;
 	qwLoc18 = r13;
-	rsp = fp - 0x20;
+	rsp = fp - 0x0020;
 	qwLoc20 = r12;
-	rsp = fp - 0x28;
+	rsp = fp - 0x0028;
 	qwLoc28 = rbp;
-	rsp = fp - 0x30;
+	rsp = fp - 0x0030;
 	qwLoc30 = rbx;
 	rbx = rdi;
 	rsp = fp - 4840;
@@ -4212,16 +4212,16 @@ Eq_17 fn0000000000407EA0(Eq_17 rcx, Eq_17 edx, Eq_17 rsi, Eq_17 rdi, Eq_17 r8, b
 	rsp = fp - 0x08;
 	qwLoc08 = rbp;
 	rbp = fp - 0x08;
-	rsp = fp - 0x10;
+	rsp = fp - 0x0010;
 	qwLoc10 = r15;
-	rsp = fp - 0x18;
+	rsp = fp - 0x0018;
 	qwLoc18 = r14;
-	rsp = fp - 0x20;
+	rsp = fp - 0x0020;
 	qwLoc20 = r13;
 	r13 = (uint64) esi;
-	rsp = fp - 0x28;
+	rsp = fp - 0x0028;
 	qwLoc28 = r12;
-	rsp = fp - 0x30;
+	rsp = fp - 0x0030;
 	qwLoc30 = rbx;
 	rbx = rdi;
 	rsp = fp - 0x03A8;
@@ -6869,19 +6869,19 @@ Eq_17 fn000000000040BD70(Eq_17 rcx, Eq_17 edx, Eq_17 rbp, Eq_17 rsi, Eq_17 rdi, 
 	eax_7 = (word32) rax_6;
 	rax_8 = (uint64) (eax_7 & 0x03);
 	eax_9 = (word32) rax_8;
-	rsp_10 = fp - 0x10;
+	rsp_10 = fp - 0x0010;
 	qwLoc10_12 = r14;
 	r14_14 = rsi;
 	r14d_15 = (word32) r14_14;
-	rsp_16 = fp - 0x18;
+	rsp_16 = fp - 0x0018;
 	qwLoc18_18 = r13;
-	rsp_19 = fp - 0x20;
+	rsp_19 = fp - 0x0020;
 	qwLoc20_21 = r12;
 	r12_23 = rdi;
 	r12d_24 = (word32) r12_23;
-	rsp_25 = fp - 0x28;
+	rsp_25 = fp - 0x0028;
 	qwLoc28_27 = rbp;
-	rsp_28 = fp - 0x30;
+	rsp_28 = fp - 0x0030;
 	qwLoc30_30 = rbx;
 	rbx_32 = rcx;
 	ebx_33 = (word32) rbx_32;
@@ -8031,16 +8031,16 @@ l000000000040C2BA:
 				__stack_chk_fail();
 			else
 			{
-				rsp_215 = fp - 0x30;
-				SCZO_216 = cond(fp - 0x30);
+				rsp_215 = fp - 0x0030;
+				SCZO_216 = cond(fp - 0x0030);
 				rbx_217 = qwLoc30_30;
-				rsp_218 = fp - 0x28;
+				rsp_218 = fp - 0x0028;
 				rbp_219 = qwLoc28_27;
-				rsp_220 = fp - 0x20;
+				rsp_220 = fp - 0x0020;
 				r12_221 = qwLoc20_21;
-				rsp_222 = fp - 0x18;
+				rsp_222 = fp - 0x0018;
 				r13_223 = qwLoc18_18;
-				rsp_224 = fp - 0x10;
+				rsp_224 = fp - 0x0010;
 				r14_225 = qwLoc10_12;
 				rsp_226 = fp - 0x08;
 				r15_227 = qwLoc08_4;
@@ -9442,16 +9442,16 @@ ui32 fn000000000040D450(ui32 eax, Eq_17 rsi, Eq_17 rdi, Eq_17 * r8, Eq_21 * r11,
 	rsp = fp;
 	rsp = fp - 0x08;
 	qwLoc08 = r15;
-	rsp = fp - 0x10;
+	rsp = fp - 0x0010;
 	qwLoc10 = r14;
-	rsp = fp - 0x18;
+	rsp = fp - 0x0018;
 	qwLoc18 = r13;
-	rsp = fp - 0x20;
+	rsp = fp - 0x0020;
 	qwLoc20 = r12;
-	rsp = fp - 0x28;
+	rsp = fp - 0x0028;
 	qwLoc28 = rbp;
 	rbp = rcx;
-	rsp = fp - 0x30;
+	rsp = fp - 0x0030;
 	qwLoc30 = rbx;
 	rbx = rdi;
 	rsp = fp - 0x68;
@@ -9819,7 +9819,7 @@ Eq_17 fn000000000040D8A0(Eq_17 rcx, Eq_17 rdx, Eq_17 rsi, Eq_17 rdi, word32 * r8
 	byte al_59 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (word32) (uint64) r9d >> 0x01) & 0x01);
 	Eq_17 r15_1092 = rcx;
 	up32 r14d_12 = (word32) (uint64) r8d;
-	struct Eq_20232 * rsp_256 = fp - 0xF8;
+	struct Eq_20232 * rsp_256 = fp - 0x00F8;
 	word32 dwLocC4_1530 = r8d;
 	Eq_17 qwLoc88_1605 = qwArg10;
 	Eq_17 qwLoc90_1606 = qwArg18;
@@ -10900,7 +10900,7 @@ Eq_17 fn0000000000410C40(Eq_17 rsi, Eq_17 rdi)
 			rdi *= rsi;
 		else
 		{
-			*(fp - 0x10) = (union Eq_17 *) rax_32;
+			*(fp - 0x0010) = (union Eq_17 *) rax_32;
 			fn0000000000410E50();
 		}
 	}
@@ -10921,7 +10921,7 @@ Eq_17 fn0000000000410C90(Eq_17 rdx, Eq_17 rsi, Eq_17 rdi, Eq_6540 & r8Out)
 		Eq_17 rax_82 = (uint64) (0xFFFFFFFFFFFFFFFF /u rdx);
 		if (rax_82 < rsi)
 		{
-			*(fp - 0x10) = (union Eq_17 *) rax_82;
+			*(fp - 0x0010) = (union Eq_17 *) rax_82;
 			fn0000000000410E50();
 			word64 r8_95;
 			*r8Out = rdx;
@@ -10932,7 +10932,7 @@ Eq_17 fn0000000000410C90(Eq_17 rdx, Eq_17 rsi, Eq_17 rdi, Eq_6540 & r8Out)
 				Eq_17 rax_121 = (uint64) (0xFFFFFFFFAAAAAAAA /u rdx);
 				if (rcx_109 >= rax_121)
 				{
-					*(fp - 0x18) = (union Eq_17 *) rax_121;
+					*(fp - 0x0018) = (union Eq_17 *) rax_121;
 					fn0000000000410E50();
 					Eq_17 rax_138 = *rsi;
 					if (rdi == 0x00)
@@ -10946,9 +10946,9 @@ Eq_17 fn0000000000410C90(Eq_17 rdx, Eq_17 rsi, Eq_17 rdi, Eq_6540 & r8Out)
 					}
 					if (rax_138 > 0xAAAAAAA9)
 					{
-						*(fp - 0x20) = (union Eq_17 *) rax_138;
+						*(fp - 0x0020) = (union Eq_17 *) rax_138;
 						fn0000000000410E50();
-						*(fp - 0x28) = (union Eq_17 *) rsi;
+						*(fp - 0x0028) = (union Eq_17 *) rsi;
 						return memset(fn0000000000410C40(rsi, rdi), 0x00, rdi);
 					}
 					else
@@ -11429,17 +11429,17 @@ Eq_17 fn0000000000411900(Eq_17 rbp, Eq_17 rsi, word32 * r8, Eq_25 * fs, ptr64 & 
 	rsp = fp - 0x08;
 	qwLoc08 = r15;
 	rdi.u0 = 0x0E;
-	rsp = fp - 0x10;
+	rsp = fp - 0x0010;
 	qwLoc10 = r14;
-	rsp = fp - 0x18;
+	rsp = fp - 0x0018;
 	qwLoc18 = r13;
-	rsp = fp - 0x20;
+	rsp = fp - 0x0020;
 	qwLoc20 = r12;
-	rsp = fp - 0x28;
+	rsp = fp - 0x0028;
 	qwLoc28 = rbp;
-	rsp = fp - 0x30;
+	rsp = fp - 0x0030;
 	qwLoc30 = rbx;
-	rsp = fp - 0xD8;
+	rsp = fp - 0x00D8;
 	rax = fs->t0028;
 	qwLoc40 = rax;
 	rax.u0 = 0x00;
@@ -11503,16 +11503,16 @@ l000000000041198F:
 			__stack_chk_fail();
 		else
 		{
-			rsp = fp - 0x30;
-			SCZO = cond(fp - (FILE *) 0x30);
+			rsp = fp - 0x0030;
+			SCZO = cond(fp - (FILE *) 0x0030);
 			rbx = qwLoc30;
-			rsp = fp - 0x28;
+			rsp = fp - 0x0028;
 			rbp = qwLoc28;
-			rsp = fp - 0x20;
+			rsp = fp - 0x0020;
 			r12 = qwLoc20;
-			rsp = fp - 0x18;
+			rsp = fp - 0x0018;
 			r13 = qwLoc18;
-			rsp = fp - 0x10;
+			rsp = fp - 0x0010;
 			r14 = qwLoc10;
 			rsp = fp - 0x08;
 			r15 = qwLoc08;

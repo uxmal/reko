@@ -487,8 +487,8 @@ ptr32 fn100017E8( * ebx, ptr32 esi, word32 edi, word32 dwArg00, word32 dwArg04, 
 	*(esp_14 - 0x04) = (Eq_139 (**)(LONG *, Eq_139, Eq_139)) ebx;
 	*(esp_14 - 0x08) = esi;
 	*(esp_14 - 0x0C) = edi;
-	*(esp_14 - 0x10) = globals->dw10003000 ^ fp + 0x08;
-	*(esp_14 - 0x14) = dwArg00;
+	*(esp_14 - 0x0010) = globals->dw10003000 ^ fp + 0x08;
+	*(esp_14 - 0x0014) = dwArg00;
 	fs->ptr0000 = fp - 0x08;
 	return fp + 0x08;
 }

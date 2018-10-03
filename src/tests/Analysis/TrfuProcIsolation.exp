@@ -7,7 +7,7 @@ l0C00_0000:
 	sp = fp
 	Top = 0
 	call fn0C00_000F (retsize: 2; depth: 2)
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = di
 	ax = 0x0100
 	call fn0C00_0014 (retsize: 2; depth: 4)

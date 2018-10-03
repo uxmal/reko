@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
             // why they can't be real32. This also forces our hand into
             // making float-point versions of add, sub, mul, div. 
 
-            FloatRegisters = stg.RangeOfReg32(32, "f{0}");
+            FloatRegisters = stg.RangeOfReg32(64, "f{0}");
 
             psr = stg.Reg32("psr");
 

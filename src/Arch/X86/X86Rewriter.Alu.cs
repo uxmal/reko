@@ -446,7 +446,7 @@ namespace Reko.Arch.X86
                 ((ImmediateOperand)instrCur.op1).Value.ToInt32();
             if (cbExtraSavedBytes != 0)
             {
-                m.Assign(sp, m.ISub(sp, cbExtraSavedBytes));
+                m.Assign(sp, m.ISubS(sp, cbExtraSavedBytes));
             }
         }
 
@@ -613,7 +613,7 @@ namespace Reko.Arch.X86
             var bp = orw.AluRegister(arch.GetSubregister(Registers.rbp, 0, arch.StackRegister.DataType.BitSize));
             m.Assign(sp, bp);
             m.Assign(bp, orw.StackAccess(sp, bp.DataType));
-            m.Assign(sp, m.IAdd(sp, bp.DataType.Size));
+            m.Assign(sp, m.IAddS(sp, bp.DataType.Size));
         }
 
         private void RewriteLxs(RegisterStorage seg)
@@ -687,7 +687,7 @@ namespace Reko.Arch.X86
                     dasm.Peek(1).op1.Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
-                    m.Assign(StackPointer(), m.ISub(StackPointer(), reg.Register.DataType.Size));
+                    m.Assign(StackPointer(), m.ISubS(StackPointer(), reg.Register.DataType.Size));
                     RewriteCall(dasm.Current.op1, dasm.Current.op1.Width);
                     this.len = (byte)(this.len + dasm.Current.Length);
                     return;
@@ -792,7 +792,7 @@ namespace Reko.Arch.X86
         {
             var sp = StackPointer();
             m.Assign(SrcOp(op), orw.StackAccess(sp, width));
-            m.Assign(sp, m.IAdd(sp, width.Size));
+            m.Assign(sp, m.IAddS(sp, width.Size));
         }
 
         private void RewritePop(Identifier dst, PrimitiveType width)
@@ -845,7 +845,7 @@ namespace Reko.Arch.X86
                     "SCZDOP",
                     PrimitiveType.Byte),
                     orw.StackAccess(sp, width));
-            m.Assign(sp, m.IAdd(sp, width.Size));
+            m.Assign(sp, m.IAddS(sp, width.Size));
         }
 
         private void RewritePush(DataType dataWidth, Expression expr)
@@ -869,7 +869,7 @@ namespace Reko.Arch.X86
                 rhs = binder.CreateTemporary(sp.DataType);
                 m.Assign(rhs, expr);
             }
-            m.Assign(sp, m.ISub(sp, dataWidth.Size));
+            m.Assign(sp, m.ISubS(sp, dataWidth.Size));
             m.Assign(orw.StackAccess(sp, dataWidth), rhs);
         }
 

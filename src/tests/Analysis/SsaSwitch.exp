@@ -3,15 +3,15 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_4 = sp_2 - 0x0002
+    uses: sp_4 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: use Top_3
 sp_4: orig: sp
-    def:  sp_4 = sp_2 - 0x0002
+    def:  sp_4 = sp_2 - 2
     uses: Mem7[ss:sp_4:word16] = cs
           ds_8 = Mem7[ss:sp_4:selector]
-          sp_9 = sp_4 + 0x0002
+          sp_9 = sp_4 + 2
 cs:cs
     def:  def cs
     uses: Mem7[ss:sp_4:word16] = cs
@@ -28,7 +28,7 @@ ds_8: orig: ds
     uses: bl_11 = Mem7[ds_8:si:byte]
           use ds_8
 sp_9: orig: sp
-    def:  sp_9 = sp_4 + 0x0002
+    def:  sp_9 = sp_4 + 2
     uses: use sp_9
 si:si
     def:  def si
@@ -157,10 +157,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
-	sp_4 = sp_2 - 0x0002
+	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = cs
 	ds_8 = Mem7[ss:sp_4:selector]
-	sp_9 = sp_4 + 0x0002
+	sp_9 = sp_4 + 2
 	bl_11 = Mem7[ds_8:si:byte]
 	bx_19 = DPB(bx, bl_11, 0) (alias)
 	SCZO_12 = cond(bl_11 - 0x02)

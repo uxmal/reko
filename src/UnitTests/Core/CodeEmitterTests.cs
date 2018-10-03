@@ -65,6 +65,19 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
+        public void AddPointer()
+        {
+            var ptr = new Pointer(new StructureType("tmp", 16), 32);
+            var id = new Identifier("id", ptr, null);
+            var emitter = new CodeEmitterImpl();
+            var add = emitter.IAdd(id, 3);
+            Assert.AreEqual(PrimitiveType.Word32, add.DataType);
+            Assert.AreEqual(PrimitiveType.Word32, add.Right.DataType);
+            Assert.AreEqual("id + 0x00000003", add.ToString());
+        }
+
+
+        [Test]
         public void Cond()
         {
             var emitter = new CodeEmitterImpl();

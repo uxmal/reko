@@ -245,7 +245,7 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(m.Mem(dtDst, ea), reg1);
             }
 
-            m.Assign(ea, m.IAdd(ea, Constant.Int(ea.DataType,dtDst.Size)));
+            m.Assign(ea, m.IAddS(ea, dtDst.Size));
             if (load)
             {
                 Expression e = m.Mem(dtDst, ea);

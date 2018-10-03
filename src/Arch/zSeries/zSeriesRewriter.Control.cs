@@ -49,7 +49,7 @@ namespace Reko.Arch.zSeries
         {
             this.rtlc = RtlClass.ConditionalTransfer;
             var reg = Reg(instr.Ops[0]);
-            m.Assign(reg, m.ISub(reg, Constant.Int(reg.DataType, 1)));
+            m.Assign(reg, m.ISubS(reg, 1));
             var ea = EffectiveAddress(instr.Ops[1]);
             if (ea is Address addr)
             {

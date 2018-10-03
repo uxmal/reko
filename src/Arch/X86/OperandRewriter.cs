@@ -230,7 +230,7 @@ namespace Reko.Arch.X86
             Expression idx = binder.EnsureRegister(Registers.Top);
             if (reg != 0)
             {
-                idx = m.IAdd(idx, reg);
+                idx = m.IAddS(idx, reg);
             }
             return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
         }

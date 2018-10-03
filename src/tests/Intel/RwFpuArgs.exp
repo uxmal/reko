@@ -15,19 +15,19 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	Top = 0
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[ds:0x0300:real32]
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[ds:0x0304:real32]
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = 0x0308
 	call fn0C00_0024 (retsize: 2;)
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = 0.0
 	Mem0[ds:0x030C:real32] = (real32) ST[Top:real64]
 	Top = Top + 1
 	ax = Mem0[ds:0x0308:word16]
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = ax
 	call fn0C00_0031 (retsize: 2;)
 	Mem0[ds:0x030C:real32] = (real32) ST[Top:real64]
@@ -55,7 +55,7 @@ fn0C00_0024_entry:
 l0C00_0024:
 	sp = fp
 	Top = 0
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
@@ -64,7 +64,7 @@ l0C00_0024:
 	Mem0[ds:bx + 0x0004:real32] = (real32) ST[Top:real64]
 	Top = Top + 1
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	return
 	// succ:  fn0C00_0024_exit
 fn0C00_0024_exit:
@@ -86,14 +86,14 @@ fn0C00_0031_entry:
 l0C00_0031:
 	sp = fp
 	Top = 0
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[ds:bx:real32]
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	return
 	// succ:  fn0C00_0031_exit
 fn0C00_0031_exit:

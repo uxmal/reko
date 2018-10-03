@@ -25,10 +25,10 @@ l10000000:
 	esp = fp
 	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebx
 	ebx = Mem0[esp + 0x00000010:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebp
 	ecx = (int32) Mem0[eax + 0x00000006:word16]
 	edx = (int32) Mem0[eax + 0x00000002:word16]
@@ -48,11 +48,11 @@ l10000000:
 	branch Test(EQ,Z) l10000107
 	// succ:  l10000035 l10000107
 l10000035:
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[ebx:int32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = esi
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = edi
 	esi = esi ^ esi
 	SZO = cond(esi)
@@ -60,11 +60,11 @@ l10000035:
 	edi = 0x000186A0
 	Mem0[esp + 0x00000014:real32] = (real32) ST[Top:real64]
 	Top = Top + 1
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
 	// succ:  l10000048
 l10000048:
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x00000014:real32]
 	ST[Top:real64] = ST[Top:real64] * Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
@@ -73,7 +73,7 @@ l10000048:
 	call fn1000010A (retsize: 4;)
 	ecx = eax
 	Mem0[esp + 0x0000001C:word32] = ecx
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
 	FPUF = cond(ST[Top:real64] - Mem0[esp + 0x00000014:real32])
 	Top = Top + 1
@@ -84,21 +84,21 @@ l10000072:
 	ecx = ecx + 0x00000001
 	SZO = cond(ecx)
 	Mem0[esp + 0x00000014:word32] = ecx
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x00000014:int32]
 	Mem0[esp + 0x00000014:real32] = (real32) ST[Top:real64]
 	Top = Top + 1
 	// succ:  l1000007F
 l1000007F:
 	ST[Top:real64] = ST[Top:real64] * Mem0[0x10033290:real64]
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = ST[Top:real64]
 	call fn1000010A (retsize: 4;)
 	ecx = eax
 	Mem0[esp + 0x0000001C:word32] = ecx
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = ST[Top + 1:real64]
 	FPUF = cond(ST[Top:real64] - ST[Top + 1:real64])
 	Top = Top + 2
@@ -111,11 +111,11 @@ l100000A2:
 	ST[Top:real64] = ST[Top:real64]
 	Top = Top + 1
 	Mem0[esp + 0x0000001C:word32] = ecx
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
 	// succ:  l100000AD
 l100000AD:
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x00000014:real32]
 	FPUF = cond(ST[Top:real64] - Mem0[0x10033298:real64])
 	Top = Top + 1
@@ -140,7 +140,7 @@ l100000D7:
 	branch Test(LT,SO) l10000048
 	// succ:  l100000DF l10000048
 l100000DF:
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = (real64) Mem0[esp + 0x00000014:real32]
 	call fn1000010A (retsize: 4;)
 	Mem0[ebx:word32] = eax
@@ -148,9 +148,9 @@ l100000DF:
 	ecx = Mem0[esp + 0x00000020:word32]
 	SCZO = cond(ebp - edi)
 	edi = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	esi = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	Mem0[ecx:word32] = eax
 	branch Test(LE,SZO) l10000107
 	// succ:  l100000FB l10000107
@@ -160,9 +160,9 @@ l100000FB:
 	// succ:  l10000107
 l10000107:
 	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	ebx = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

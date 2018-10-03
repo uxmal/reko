@@ -6,10 +6,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	Top = 0
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = cs
 	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
+	sp = sp + 2
 	bl = Mem0[ds:si:byte]
 	SCZO = cond(bl - 0x02)
 	branch Test(UGT,CZ) l0C00_0023

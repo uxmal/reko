@@ -408,7 +408,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (writeback)
             {
-                m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
+                m.Assign(dst, m.IAddS(dst, offset));
             }
             if (pcRestored)
             {
@@ -554,13 +554,13 @@ namespace Reko.Arch.Arm.AArch32
         {
             Expression dst = Reg(Registers.sp);
             var regs = ((MultiRegisterOperand)instr.ops[0]).GetRegisters().ToArray();
-            m.Assign(dst, m.ISub(dst, m.Int32(regs.Length * 4)));
+            m.Assign(dst, m.ISubS(dst, regs.Length * 4));
 
             int offset = 0;
             foreach (var reg in regs)
             { 
                 var ea = offset != 0
-                    ? m.IAdd(dst, m.Int32(offset))
+                    ? m.IAddS(dst, offset)
                     : dst;
                 m.Assign(m.Mem32(ea), Reg(reg));
                 offset += 4;
@@ -749,7 +749,7 @@ namespace Reko.Arch.Arm.AArch32
                 var dst = Reg(r);
                 Expression ea =
                     offset != 0
-                    ? m.IAdd(rSrc, m.Int32(offset))
+                    ? m.IAddS(rSrc, offset)
                     : rSrc;
                 m.Assign(m.Mem(r.DataType, ea), dst);
                 offset += r.DataType.Size;
@@ -758,11 +758,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (add)
                 {
-                    m.Assign(rSrc, m.IAdd(rSrc, m.Int32(totalRegsize)));
+                    m.Assign(rSrc, m.IAddS(rSrc, totalRegsize));
                 }
                 else
                 {
-                    m.Assign(rSrc, m.ISub(rSrc, m.Int32(totalRegsize)));
+                    m.Assign(rSrc, m.ISubS(rSrc, totalRegsize));
                 }
             }
         }

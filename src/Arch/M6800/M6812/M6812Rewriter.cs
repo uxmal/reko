@@ -304,18 +304,18 @@ namespace Reko.Arch.M6800.M6812
                 }
                 else if (memop.PreIncrement)
                 {
-                    m.Assign(ea, m.IAdd(ea, m.Int16(memop.Offset.Value)));
+                    m.Assign(ea, m.IAddS(ea, memop.Offset.Value));
                 }
                 else if (memop.PostIncrement)
                 {
                     var tmp = binder.CreateTemporary(baseReg.DataType);
                     m.Assign(tmp, ea);
-                    m.Assign(baseReg, m.IAdd(baseReg, m.Int16(memop.Offset.Value)));
+                    m.Assign(baseReg, m.IAddS(baseReg, memop.Offset.Value));
                     ea = tmp;
                 }
                 else
                 {
-                    ea = m.IAdd(baseReg, m.Word16((ushort)memop.Offset.Value));
+                    ea = m.IAdd(baseReg, (ushort)memop.Offset.Value);
                 }
                 if (memop.Indirect)
                 {
@@ -810,7 +810,7 @@ namespace Reko.Arch.M6800.M6812
         {
             var val = binder.EnsureRegister(reg);
             var sp = binder.EnsureRegister(Registers.sp);
-            m.Assign(sp, m.ISub(sp, m.Int16((short)val.DataType.Size)));
+            m.Assign(sp, m.ISubS(sp, (short)val.DataType.Size));
             m.Assign(m.Mem(val.DataType, sp), val);
         }
 
@@ -819,7 +819,7 @@ namespace Reko.Arch.M6800.M6812
             var sp = binder.EnsureRegister(Registers.sp);
             var dst = binder.EnsureRegister(reg);
             m.Assign(dst, m.Mem(reg.DataType, sp));
-            m.Assign(sp, m.IAdd(sp, m.Int16((short)dst.DataType.Size)));
+            m.Assign(sp, m.IAdd(sp, (short)dst.DataType.Size));
         }
 
         private void RewriteRtc()

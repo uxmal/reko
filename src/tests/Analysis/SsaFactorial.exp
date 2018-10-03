@@ -3,7 +3,7 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_5 = sp_2 - 0x0002
+    uses: sp_5 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: call fn0C00_000F (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_12,cx:cx_9,SCZO:SCZO_14,sp:sp_8,Top:Top_13
@@ -12,7 +12,7 @@ cx_4: orig: cx
     uses: Mem7[ss:sp_5:word16] = cx_4
           call fn0C00_000F (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_12,cx:cx_9,SCZO:SCZO_14,sp:sp_8,Top:Top_13
 sp_5: orig: sp
-    def:  sp_5 = sp_2 - 0x0002
+    def:  sp_5 = sp_2 - 2
     uses: Mem7[ss:sp_5:word16] = cx_4
           call fn0C00_000F (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_12,cx:cx_9,SCZO:SCZO_14,sp:sp_8,Top:Top_13
 ss:ss
@@ -80,7 +80,7 @@ l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
 	cx_4 = 0x0064
-	sp_5 = sp_2 - 0x0002
+	sp_5 = sp_2 - 2
 	Mem7[ss:sp_5:word16] = cx_4
 	call fn0C00_000F (retsize: 2;)
 		uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3
@@ -109,16 +109,16 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_4 = sp_2 - 0x0002
+    uses: sp_4 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
           Top_47 = PHI(Top_20, Top_3)
 sp_4: orig: sp
-    def:  sp_4 = sp_2 - 0x0002
+    def:  sp_4 = sp_2 - 2
     uses: Mem7[ss:sp_4:word16] = bp
           bp_8 = sp_4
-          sp_14 = sp_4 - 0x0002
+          sp_14 = sp_4 - 2
           sp_32 = PHI(sp_24, sp_4)
 bp:bp
     def:  def bp
@@ -161,7 +161,7 @@ ax_13: orig: ax
     def:  ax_13 = 0x0001
     uses: ax_36 = PHI(ax_29, ax_13)
 sp_14: orig: sp
-    def:  sp_14 = sp_4 - 0x0002
+    def:  sp_14 = sp_4 - 2
     uses: Mem15[ss:sp_14:word16] = ax_10
           call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
 Mem15: orig: Mem0
@@ -223,7 +223,7 @@ ax_36: orig: ax
 sp_32: orig: sp
     def:  sp_32 = PHI(sp_24, sp_4)
     uses: bp_34 = Mem33[ss:sp_32:word16]
-          sp_35 = sp_32 + 0x0002
+          sp_35 = sp_32 + 2
 Mem33: orig: Mem0
     def:  Mem33 = PHI(Mem15, Mem7)
     uses: bp_34 = Mem33[ss:sp_32:word16]
@@ -231,7 +231,7 @@ bp_34: orig: bp
     def:  bp_34 = Mem33[ss:sp_32:word16]
     uses: use bp_34
 sp_35: orig: sp
-    def:  sp_35 = sp_32 + 0x0002
+    def:  sp_35 = sp_32 + 2
     uses: use sp_35
 C_37: orig: C
     def:  C_37 = PHI(C_38, C)
@@ -285,7 +285,7 @@ fn0C00_000F_entry:
 l0C00_000F:
 	sp_2 = fp
 	Top_3 = 0
-	sp_4 = sp_2 - 0x0002
+	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = bp
 	bp_8 = sp_4
 	ax_9 = Mem7[ss:bp_8 + 0x0004:word16]
@@ -297,7 +297,7 @@ l0C00_000F:
 	branch Test(EQ,Z_12) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	sp_14 = sp_4 - 0x0002
+	sp_14 = sp_4 - 2
 	Mem15[ss:sp_14:word16] = ax_10
 	call fn0C00_000F (retsize: 2;)
 		uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3
@@ -331,7 +331,7 @@ l0C00_0029:
 	Mem33 = PHI(Mem15, Mem7)
 	sp_32 = PHI(sp_24, sp_4)
 	bp_34 = Mem33[ss:sp_32:word16]
-	sp_35 = sp_32 + 0x0002
+	sp_35 = sp_32 + 2
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

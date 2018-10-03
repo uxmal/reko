@@ -60,14 +60,27 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Convenience method for addition. The addend is converted to a Constant.
+        /// Convenience method for addition. The addend is converted to a Constant
+        /// of the same size as the augend.
         /// </summary>
         /// <param name="left">Augend</param>
         /// <param name="right">Addend</param>
         /// <returns>A binary expression for the sum.</returns>
         public BinaryExpression IAdd(Expression left, int right)
         {
-            return new BinaryExpression(Operator.IAdd, left.DataType, left, Constant.Create(left.DataType, right));
+            return IAdd(left, Word(left.DataType.BitSize, right));
+        }
+
+        /// <summary>
+        /// Convenience method for addition. The addend is converted to a
+        /// signed integer Constant of the same size as the augend.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <returns>A binary expression for the sum.</returns>
+        public BinaryExpression IAddS(Expression left, int right)
+        {
+            return IAdd(left, Constant.Int(left.DataType, right));
         }
 
         /// <summary>
@@ -1150,7 +1163,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Convenience method to generate an integer subtraction expression. 
-        /// The subtrahend is converted to a Constant.
+        /// The subtrahend is converted to a Constant of the same size as the augend.
         /// </summary>
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
@@ -1158,6 +1171,19 @@ namespace Reko.Core.Expressions
         public BinaryExpression ISub(Expression left, int right)
         {
             return ISub(left, Word(left.DataType.BitSize, right));
+        }
+
+        /// <summary>
+        /// Convenience method to generate an integer subtraction expression. 
+        /// The subtrahend is converted to a signed integer Constant of the same 
+        /// size as the augend.
+        /// </summary>
+        /// <param name="left">Minuend.</param>
+        /// <param name="right">Subtrahend</param>
+        /// <returns>An integer subtraction expression.</returns>
+        public BinaryExpression ISubS(Expression left, int right)
+        {
+            return ISub(left, Constant.Int(left.DataType, right));
         }
 
         /// <summary>

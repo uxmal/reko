@@ -61,13 +61,13 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_4 = sp_2 - 0x0002
+    uses: sp_4 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
           Top_43 = PHI(Top_19, Top_3)
 sp_4: orig: sp
-    def:  sp_4 = sp_2 - 0x0002
+    def:  sp_4 = sp_2 - 2
     uses: Mem7[ss:sp_4:word16] = si
           call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_18,cx:cx_16,SCZO:SCZO_20,sp:sp_15,Top:Top_19
           sp_26 = PHI(sp_15, sp_4)
@@ -151,7 +151,7 @@ C_31: orig: C
 sp_26: orig: sp
     def:  sp_26 = PHI(sp_15, sp_4)
     uses: si_28 = Mem7[ss:sp_26:word16]
-          sp_29 = sp_26 + 0x0002
+          sp_29 = sp_26 + 2
 ax_30: orig: ax
     def:  ax_30 = PHI(ax_23, ax_11)
     uses: use ax_30
@@ -159,7 +159,7 @@ si_28: orig: si
     def:  si_28 = Mem7[ss:sp_26:word16]
     uses: use si_28
 sp_29: orig: sp
-    def:  sp_29 = sp_26 + 0x0002
+    def:  sp_29 = sp_26 + 2
     uses: use sp_29
 C_32: orig: C
     def:  C_32 = SLICE(SCZO_24, bool, 1) (alias)
@@ -220,7 +220,7 @@ fn0C00_000B_entry:
 l0C00_000B:
 	sp_2 = fp
 	Top_3 = 0
-	sp_4 = sp_2 - 0x0002
+	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = si
 	SCZO_9 = cond(cx - 0x0001)
 	SZO_10 = SLICE(SCZO_9, bool, 4) (alias)
@@ -261,7 +261,7 @@ l0C00_001F:
 	ax_30 = PHI(ax_23, ax_11)
 	sp_26 = PHI(sp_15, sp_4)
 	si_28 = Mem7[ss:sp_26:word16]
-	sp_29 = sp_26 + 0x0002
+	sp_29 = sp_26 + 2
 	return
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:

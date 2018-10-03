@@ -569,13 +569,13 @@ namespace Reko.Arch.X86
             //    Debug.WriteLine(string.Format("Possible FPU stack overflow at address {0}", addrInstr));    //$BUGBUG: should be an exception
             //}
             var top = binder.EnsureRegister(Registers.Top);
-            m.Assign(top, m.ISub(top, amount));
+            m.Assign(top, m.ISubS(top, amount));
         }
 
         private void ShrinkFpuStack(int amount)
         {
             var top = binder.EnsureRegister(Registers.Top);
-            m.Assign(top, m.IAdd(top, amount));
+            m.Assign(top, m.IAddS(top, amount));
         }
     }
 }

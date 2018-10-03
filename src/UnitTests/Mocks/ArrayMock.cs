@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Mocks
 			Goto("loopHdr");
 			
 			Label("loop");
-			Assign(i, ISub(i, Int32(1)));
+			Assign(i, ISubS(i, 1));
 			MStore(IAdd(a, IMul(i, 4)), Word32(0));
 			Label("loopHdr");
 			BranchIf(Gt(i, 0), "loop");

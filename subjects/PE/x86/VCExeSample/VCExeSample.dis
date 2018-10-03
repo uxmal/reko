@@ -80,13 +80,13 @@ l00401087:
 	test1(0x004020E0, 0x00000006, 0x004020DC, Mem0[0x004020E4:real32])
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -20(fp):0x004020D8 -16(fp):0x00000002 -12(fp):0x004020D4 -8(fp):(real32) rLoc1 -4(fp):ebp
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 4 -20(fp):0x004020D8 -16(fp):0x00000002 -12(fp):0x004020D4 -8(fp):(real32) rLoc1 -4(fp):ebp
 
 l004010A5:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):(real32) rLoc1 -4(fp):ebp
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 4 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):(real32) rLoc1 -4(fp):ebp
 
 test2_exit:
 // DataOut:
@@ -230,14 +230,14 @@ l0040116F:
 	Mem0[Mem0[Mem0[0x00403024:word32]:word32]:word32](Mem0[0x00403024:word32], rArg04)
 // DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -4(fp):ebp
+// SymbolicIn: esp:fp - 4 ebp:fp - 4 -4(fp):ebp
 
 l00401189:
 	Mem18[Mem18[Mem18[0x00403024:word32]:word32] + 0x00000004:word32](Mem18[0x00403024:word32], 0x0000000D, rArg04)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -12(fp):rLoc1 -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 eax:<invalid> edx:<invalid> ecx:<invalid> -12(fp):rLoc1 -4(fp):ebp
 
 test7_exit:
 // DataOut:
@@ -272,20 +272,20 @@ l004011E2:
 	branch Mem0[0x004020F0:real64] <= rArg04 l0040120D
 // DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 l004011F2:
 	Mem54[Mem54[Mem54[0x00403024:word32]:word32]:word32](Mem54[0x00403024:word32], rArg04)
 // DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 l0040120D:
 	test6(Mem40[0x00403018:word32], 0x00000006, 0x00000007)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 nested_if_blocks_test8_exit:
 // DataOut:
@@ -319,14 +319,14 @@ l00401248:
 	branch Mem19[Mem19[Mem19[0x00403024:word32]:word32] + 0x00000004:word32](Mem19[0x00403024:word32], dwLoc08_10, (real64) rArg04) <= (real64) dwLoc08_10 l00401294
 // DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l00401294:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 
 loop_test9_exit:
 // DataOut:
@@ -337,14 +337,14 @@ l00401278:
 	Mem40[Mem40[Mem40[0x00403024:word32]:word32]:word32](Mem40[0x00403024:word32], (real64) rArg04)
 // DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l0040123F:
 	dwLoc08_10 = dwLoc08_10 + 0x00000001
 // DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 
@@ -376,7 +376,7 @@ l004012B4:
 	ecx_19 = 0x00000001
 // DataOut: eax ecx
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 eax:0x0000000A ecx:0x00000003 edx:<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 4 ebp:fp - 4 eax:0x0000000A ecx:0x00000003 edx:<invalid> -4(fp):ebp
 
 l004012BA:
 	Mem20[0x0040301C:word32] = ecx_19
@@ -384,7 +384,7 @@ l004012BA:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 4 ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -4(fp):ebp
 
 const_div_test10_exit:
 // DataOut:
@@ -417,14 +417,14 @@ l004012DD:
 	branch dwLoc08_28 <= 0x00000000 l00401329
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 l00401329:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 
 loop_test11_exit:
 // DataOut:
@@ -436,42 +436,42 @@ l004012E3:
 	branch eax_32 >= 0x00000000 l004012F2
 // DataOut: eax
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 l004012ED:
 	eax_32 = (eax_32 - 0x00000001 | 0xFFFFFFFE) + 0x00000001
 // DataOut: eax
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 l004012F2:
 	branch eax_32 != 0x00000000 l0040130D
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 l0040130D:
 	nested_if_blocks_test8(rArg04, rArg0)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 l004012F6:
 	loop_test9((real32) rArg04, rArg0)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 l0040131E:
 	dwLoc08_28 = dwLoc08_28 - 0x00000001
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
+// SymbolicIn: esp:fp - 0x0000000C ebp:fp - 4 eax:<invalid> ecx:<invalid> edx:<invalid> -20(fp):rLoc1 -16(fp):(real32) rLoc1 -12(fp):(real32) rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Local -0010(32) Local -0014(32)
 
 

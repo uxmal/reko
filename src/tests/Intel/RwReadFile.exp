@@ -21,10 +21,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	Top = 0
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = 0x0D00
 	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
+	sp = sp + 2
 	dx = 0x3000
 	bx = Mem0[ds:0x0300:word16]
 	cx = 0x0100

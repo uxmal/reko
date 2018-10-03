@@ -150,6 +150,8 @@ namespace Reko.Arch.Sparc
 
 
                 case Opcode.fcmpes: RewriteFcmpes(); break;
+                case Opcode.fcmpd: RewriteFcmpd(); break;
+                case Opcode.fcmpq: RewriteFcmpq(); break;
                 case Opcode.fcmps: RewriteFcmps(); break;
                 case Opcode.fdivd: RewriteFdivs(); break;
                 case Opcode.fdivs: RewriteFdivd(); break;
@@ -290,7 +292,21 @@ namespace Reko.Arch.Sparc
         {
             return binder.EnsureRegister(((RegisterOperand)op).Register);
         }
-        
+
+        private Expression RewriteDoubleRegister(MachineOperand op)
+        {
+            var reg = ((RegisterOperand)op).Register;
+            var iReg = reg.Number - Registers.FloatRegisters[0].Number;
+            var regLo = Registers.FloatRegisters[iReg + 1];
+            return binder.EnsureSequence(reg, regLo, PrimitiveType.Word64);
+        }
+
+        private Expression RewriteQuadRegister(MachineOperand op)
+        {
+            throw new NotImplementedException("This will only work in the analys-development branch.");
+        }
+
+
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
         {
             var mem = op as MemoryOperand;

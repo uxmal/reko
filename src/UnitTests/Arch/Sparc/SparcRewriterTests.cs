@@ -497,14 +497,22 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore("Implement this!")]
         public void SparcRw_fcmpd()
         {
-            BuildTest(0x81A90A46);	// fcmpd	%f4,%f6
+            BuildTest(0x81A90A47);	// fcmpd	%f4,%f38
             AssertCode(
-                "0|L--|00014C34(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ELGU = cond(f38_f39 - f4_f5)");
         }
 
+        [Test]
+        [Ignore("analysis-development")]
+        public void SparcRw_fcmpq()
+        {
+            BuildTest(0x81A90A45);	// fcmpq %f4,%f36
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ELGU = cond(f36_f37 - f4_f5)");
+        }
     }
 }

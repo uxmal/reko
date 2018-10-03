@@ -58,15 +58,15 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_4 = sp_2 - 0x0002
+    uses: sp_4 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: use Top_3
 sp_4: orig: sp
-    def:  sp_4 = sp_2 - 0x0002
+    def:  sp_4 = sp_2 - 2
     uses: Mem7[ss:sp_4:word16] = ax
           ax_11 = Mem10[ss:sp_4:word16]
-          sp_12 = sp_4 + 0x0002
+          sp_12 = sp_4 + 2
 ax:ax
     def:  def ax
     uses: Mem7[ss:sp_4:word16] = ax
@@ -91,7 +91,7 @@ ax_11: orig: ax
     def:  ax_11 = Mem10[ss:sp_4:word16]
     uses: use ax_11
 sp_12: orig: sp
-    def:  sp_12 = sp_4 + 0x0002
+    def:  sp_12 = sp_4 + 2
     uses: use sp_12
 // fn0C00_000C
 // Return size: 2
@@ -105,12 +105,12 @@ fn0C00_000C_entry:
 l0C00_000C:
 	sp_2 = fp
 	Top_3 = 0
-	sp_4 = sp_2 - 0x0002
+	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = ax
 	al_9 = Mem7[ds:0x0104:byte]
 	Mem10[ds:0x0105:byte] = al_9
 	ax_11 = Mem10[ss:sp_4:word16]
-	sp_12 = sp_4 + 0x0002
+	sp_12 = sp_4 + 2
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

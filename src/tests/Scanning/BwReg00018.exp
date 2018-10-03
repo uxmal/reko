@@ -21,10 +21,10 @@ l1000000B:
 	// succ:  l10000012 l10000021
 l10000012:
 	eax = Mem0[esi + 0x0000007C:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebp
 	ecx = eax + eax * 0x00000002
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = esi
 	call Mem0[0x10000022 + ecx * 0x00000004:word32] (retsize: 4;)
 	// succ:  l10000021
