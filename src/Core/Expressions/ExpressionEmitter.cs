@@ -67,7 +67,19 @@ namespace Reko.Core.Expressions
         /// <returns>A binary expression for the sum.</returns>
         public BinaryExpression IAdd(Expression left, int right)
         {
-            return new BinaryExpression(Operator.IAdd, left.DataType, left, Constant.Create(left.DataType, right));
+            return IAdd(left, Word(left.DataType.BitSize, right));
+        }
+
+        /// <summary>
+        /// Convenience method for addition. The addend is converted to a
+        /// Signed Int Constant.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <returns>A binary expression for the sum.</returns>
+        public BinaryExpression IAddS(Expression left, int right)
+        {
+            return IAdd(left, Constant.Int(left.DataType, right));
         }
 
         /// <summary>
