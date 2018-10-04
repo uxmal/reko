@@ -241,6 +241,15 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        public static bool S(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+
+        }
+
         public static bool SSa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var l = (byte)(uInstr >> 32);
@@ -250,6 +259,67 @@ namespace Reko.Arch.zSeries
             var d2 = (int)Bits.SignExtend(uInstr, 12);
             dasm.state.ops.Add(dasm.CreateAccessLength(b1, d1, l + 1));
             dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+
+        public static bool SSb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var l1 = (byte)((uInstr >> 36) & 0xF);
+            var l2 = (byte)((uInstr >> 32) & 0xF);
+            var b1 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(dasm.CreateAccessLength(b1, d1, l1+ 1));
+            dasm.state.ops.Add(dasm.CreateAccessLength(b2, d2, l2+1));
+            return true;
+        }
+
+        public static bool SSc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var l = (byte)((uInstr >> 36) & 0xF);
+            var i3 = (byte)((uInstr >> 32) & 0xF);
+            var b1 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d1 = (int)Bits.SignExtend(uInstr >> 16, 12);
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(dasm.CreateAccessLength(b1, d1, l + 1));
+            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.state.ops.Add(ImmediateOperand.Byte(i3));
+            return true;
+        }
+
+        public static bool RSa(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(new RegisterOperand(r1));
+            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+
+        public static bool RSa3(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
+            var r3 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(new RegisterOperand(r1));
+            dasm.state.ops.Add(new RegisterOperand(r3));
+            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+
+        public static bool RSb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
+            var m3 = ImmediateOperand.Byte((byte)((uInstr >> 16) & 0xF));
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int)Bits.SignExtend(uInstr, 12);
+            dasm.state.ops.Add(new RegisterOperand(r1));
+            dasm.state.ops.Add(dasm.CreateAccess(b2, d2));
+            dasm.state.ops.Add(m3);
             return true;
         }
 
@@ -503,6 +573,10 @@ namespace Reko.Arch.zSeries
         {
             invalid = Instr(Opcode.invalid);
 
+            var b2_decoders = ExtendMask32(0, 8,
+                (0x04, Instr(Opcode.sck, S))
+                );
+
             var e3_decoders = ExtendMask48(0, 8,
                 (0x04, Instr(Opcode.lg, RXYa)),
                 (0x14, Instr(Opcode.lgf, RXYa)),
@@ -546,34 +620,34 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
-                Nyi("*"),
+                Instr(Opcode.bsm, RR),
 
                 Instr(Opcode.bassm, RR),
                 Instr(Opcode.basr, RR),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Opcode.mvcl, RR),
+                Instr(Opcode.clcl, RR),
                 // 10
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Opcode.lpr, RR),
+                Instr(Opcode.lnr, RR),
+                Instr(Opcode.ltr, RR),
+                Instr(Opcode.lcr, RR),
 
                 Instr(Opcode.nr, RR),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Opcode.clr, RR),
+                Instr(Opcode.or, RR),
+                Instr(Opcode.xr, RR),
 
                 Instr(Opcode.lr, RR),
-                Nyi("*"),
+                Instr(Opcode.cr, RR),
                 Instr(Opcode.ar, RR),
-                Nyi("*"),
+                Instr(Opcode.sr, RR),
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Opcode.mr, RR),
+                Instr(Opcode.dr, RR),
+                Instr(Opcode.alr, RR),
+                Instr(Opcode.slr, RR),
                 // 20
-                Nyi("*"),
+                Instr(Opcode.lpdr, RR),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
@@ -593,7 +667,7 @@ namespace Reko.Arch.zSeries
                 Instr(Opcode.awr, RR),
                 Instr(Opcode.swr, RR),
                 // 30
-                Nyi("*"),
+                Instr(Opcode.lper, RR),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
@@ -613,12 +687,12 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 // 40
-                Nyi("*"),
+                Extend32(Opcode.sth, RXa),
                 Extend32(Opcode.la, RXa),
-                Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.stc, RXa),
+                Extend32(Opcode.ic, RXa),
 
-                Nyi("*"),
+                Extend32(Opcode.ex, RXa),
                 Nyi("*"),
                 Nyi("*"),
                 ExtendMask32(20, 4,
@@ -640,7 +714,7 @@ namespace Reko.Arch.zSeries
                     Instr(Opcode.b, RXb),
                     Nyi("*")),
 
-                Nyi("*"),
+                Instr(Opcode.lh, RXa),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
@@ -652,25 +726,25 @@ namespace Reko.Arch.zSeries
                 // 50
                 Extend32(Opcode.st, RXa),
                 Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                invalid,
 
-                Nyi("*"),
+                Extend32(Opcode.n, RXa),
                 Extend32(Opcode.cl, RXa),
-                Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.o, RXa),
+                Extend32(Opcode.x, RXa),
 
                 Extend32(Opcode.l, RXa),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.c, RXa),
+                Extend32(Opcode.a, RXa),
+                Extend32(Opcode.s, RXa),
 
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
                 // 60
-                Nyi("*"),
+                Instr(Opcode.std, RXa),
                 invalid,
                 invalid,
                 invalid,
@@ -690,7 +764,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 // 70
-                Nyi("*"),
+                Instr(Opcode.ste, RXa),
                 Nyi("*"),
                 Nyi("*"),
                 invalid,
@@ -710,20 +784,20 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 // 80
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-
-                Nyi("*"),
+                Extend32(Opcode.ssm, S),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
 
                 Nyi("*"),
                 Nyi("*"),
+                Extend32(Opcode.sra, RSa),
                 Nyi("*"),
-                Nyi("*"),
+
+                Extend32(Opcode.srl, RSa),
+                Extend32(Opcode.sll, RSa),
+                Extend32(Opcode.sra, RSa),
+                Extend32(Opcode.sla, RSa),
 
                 Nyi("*"),
                 Nyi("*"),
@@ -737,8 +811,8 @@ namespace Reko.Arch.zSeries
 
                 Nyi("*"),
                 Extend32(Opcode.cli, SI),
-                Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.oi, SI),
+                Extend32(Opcode.xi, SI),
 
                 Nyi("*"),
                 Nyi("*"),
@@ -750,13 +824,21 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 // A0
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                ExtendMask32(16, 4, 
+                    (0x00, Instr(Opcode.iihh, RIa)),
+                    (0x01, Instr(Opcode.iihl, RIa)),
+                    (0x02, Instr(Opcode.iilh, RIa)),
+                    (0x03, Instr(Opcode.iill, RIa)),
+                    (0x08, Instr(Opcode.lhi, RIa)),
+                    (0x09, Instr(Opcode.lghi, RIa)),
+                    (0x0A, Instr(Opcode.ahi, RIa)),
+                    (0x0F, Instr(Opcode.llill, RIa))),
                 Nyi("*"),
                 ExtendMask32(16, 4,
                     (0x04, Mask(20, 4,
@@ -784,7 +866,7 @@ namespace Reko.Arch.zSeries
                     (0xE, Instr(Opcode.chi, RIa)),
                     (0xF, Instr(Opcode.cghi, RIa))),
 
-                Nyi("*"),
+                Extend32(Opcode.mvcle, RSa3),
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
@@ -795,8 +877,8 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 // B0
                 invalid,
-                Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.lra, RXa),
+                b2_decoders,
                 Nyi("*"),
 
                 Nyi("*"),
@@ -819,7 +901,7 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 Nyi("*"),
-                Nyi("*"),
+                Extend32(Opcode.icm, RSb),
                 // C0
                 ExtendMask48(32, 4,
                     (0x0, Instr(Opcode.larl, RILb)),
@@ -900,8 +982,8 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 // F0
-                Nyi("*"),
-                Nyi("*"),
+                Extend48(Opcode.srp, SSc),
+                Extend48(Opcode.mvo, SSb),
                 Nyi("*"),
                 Nyi("*"),
 

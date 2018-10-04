@@ -341,5 +341,191 @@ namespace Reko.UnitTests.Arch.zSeries
         {
             AssertCode("cl\tr0,4(r1)", "55001004");
         }
+
+        [Test]
+        public void zSerDasm_ltr()
+        {
+            AssertCode("ltr\tr11,r11", "12BB");
+        }
+
+        [Test]
+        public void zSerDasm_llill()
+        {
+            AssertCode("llill\tr1,+00004242", "A51F4242");
+        }
+
+        [Test]
+        public void zSerDasm_clr()
+        {
+            AssertCode("clr\tr1,r2", "1512");
+        }
+
+        [Test]
+        public void zSerDasm_cr()
+        {
+            AssertCode("cr\tr2,r10", "192A");
+        }
+
+        [Test]
+        public void zSerDasm_n()
+        {
+            AssertCode("n\tr1,578(r4)", "54104242");
+        }
+
+        [Test]
+        public void zSerDasm_lh()
+        {
+            AssertCode("lh\tr0,-2030(r4)", "48124242");
+        }
+
+        [Test]
+        public void zSerDasm_lper()
+        {
+            AssertCode("lper\tr0,r0", "3000");
+        }
+
+        [Test]
+        public void zSerDasm_iilh()
+        {
+            AssertCode("iilh\tr1,+00004242", "A5124242");
+        }
+
+        [Test]
+        public void zSerDasm_stc()
+        {
+            AssertCode("stc\tr12,578(r4)", "42C04242");
+        }
+
+        [Test]
+        public void zSerDasm_c()
+        {
+            AssertCode("c\tr1,-225(r11)", "5910BF1F");
+        }
+
+        [Test]
+        public void zSerDasm_lpr()
+        {
+            AssertCode("lpr\tr0,r0", "1000");
+        }
+
+        [Test]
+        public void zSerDasm_lcr()
+        {
+            AssertCode("lcr\tr4,r7", "1347");
+        }
+
+        [Test]
+        public void zSerDasm_sra()
+        {
+            AssertCode("sra\tr4,1602(r1)", "8A401642");
+        }
+
+        [Test]
+        public void zSerDasm_or()
+        {
+            AssertCode("or\tr4,r2", "1642");
+        }
+
+        [Test]
+        public void zSerDasm_sth()
+        {
+            AssertCode("sth\tr0,26(r1)", "4000101A");
+        }
+
+        [Test]
+        public void zSerDasm_lpdr()
+        {
+            AssertCode("lpdr\tr0,r0", "2000");
+        }
+
+        [Test]
+        public void zSerDasm_ex()
+        {
+            AssertCode("ex\tr12,1072(r4)", "44C04430");
+        }
+
+        [Test]
+        public void zSerDasm_std()
+        {
+            AssertCode("std\tr0,72(r6)", "60481022");
+        }
+
+        [Test]
+        public void zSerDasm_srl()
+        {
+            AssertCode("srl\tr2,00000122", "88200122");
+        }
+
+        [Test]
+        public void zSerDasm_s()
+        {
+            AssertCode("s\tr1,168(r15)", "5B10F0A8");
+        }
+
+        [Test]
+        public void zSerDasm_srp()
+        {
+            AssertCode("srp\t564(11,r1),1656(r5),08", "F0A812345678");
+        }
+
+        [Test]
+        public void zSerDasm_mvcle()
+        {
+            AssertCode("mvcle\tr4,r10,-1216(r1)", "A84A1B40");
+        }
+
+        [Test]
+        public void zSerDasm_sr()
+        {
+            AssertCode("sr\tr4,r7", "1B47");
+        }
+
+        [Test]
+        public void zSerDasm_oi()
+        {
+            AssertCode("oi\t000000FF,04", "960400FF");
+        }
+
+        [Test]
+        public void zSerDasm_ste()
+        {
+            AssertCode("ste\tr0,1(r7)", "70014242");
+        }
+
+        [Test]
+        public void zSerDasm_sll()
+        {
+            AssertCode("sll\tr4,578(r4)", "89404242");
+        }
+
+        [Test]
+        public void zSerDasm_icm()
+        {
+            AssertCode("icm\tr1,578(r4),0F", "BF1F4242");
+        }
+
+        [Test]
+        public void zSerDasm_mvo()
+        {
+            AssertCode("mvo\t578(4,r4),578(1,r4)", "F13042424242");
+        }
+
+        [Test]
+        public void zSerDasm_ssm()
+        {
+            AssertCode("ssm\t1552(r1)", "80001610");
+        }
+
+        [Test]
+        public void zSerDasm_lra()
+        {
+            AssertCode("lra\tr6,564(r1)", "B1601234");
+        }
+
+        [Test]
+        public void zSerDasm_x()
+        {
+            AssertCode("x\tr1,801(r4)", "57104321");
+        }
     }
 }
