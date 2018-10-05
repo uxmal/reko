@@ -85,13 +85,15 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Creates an offset sum of <paramref name="e"/> and the
-        /// signed integer <paramref name="c"/> interpreted as a word.
+        /// signed integer <paramref name="c"/>
         /// </summary>
         /// <param name="e">Expression forming the base of offset sum.</param>
-        /// <param name="size">Used only to determine the size of the constant to add.</param>
         /// <param name="c">Signed offset</param>
-        /// <returns></returns>
-        public Expression AddConstantWord(Expression e, DataType size, long c)
+        /// <returns>
+        /// Return addition if <paramref name="c"/> is positive
+        /// Return subtraction if <paramref name="c"/> is negative
+        /// </returns>
+        public Expression AddSubSignedInt(Expression e, int c)
         {
             if (c == 0)
             {
@@ -99,11 +101,11 @@ namespace Reko.Core.Expressions
             }
             else if (c > 0)
             {
-                return IAdd(e, Constant.Word(size.BitSize, c));
+                return IAddS(e, c);
             }
             else
             {
-                return ISub(e, Constant.Word(size.BitSize, -c));
+                return ISubS(e, -c);
             }
         }
 
