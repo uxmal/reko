@@ -3,7 +3,7 @@ fp:fp
     uses: r63_2 = fp
           r63_6 = fp - 0x00000004
           r63_8 = fp - 0x00000008
-          r63_10 = fp - 0x00000008 + 0x00000008
+          r63_10 = fp - 0x00000008 + 8
           Mem9[ecx_5 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
           Mem9[ecx_5 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 r63_2: orig: r63
@@ -25,7 +25,7 @@ r63_8: orig: r63
 Mem9: orig: Mem0
     uses: Mem9[ecx_5 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 r63_10: orig: r63
-    def:  r63_10 = fp - 0x00000008 + 0x00000008
+    def:  r63_10 = fp - 0x00000008 + 8
 eax_11: orig: eax
     def:  eax_11 = <invalid>
 ecx_12: orig: ecx
@@ -64,7 +64,7 @@ l1:
 	Mem9[ecx_5 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 	ecx_12 = <invalid>
 	eax_11 = <invalid>
-	r63_10 = fp - 0x00000008 + 0x00000008
+	r63_10 = fp - 0x00000008 + 8
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

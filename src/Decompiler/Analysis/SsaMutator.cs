@@ -94,7 +94,7 @@ namespace Reko.Analysis
 
             if (usedRegExp == null)
                 return;
-            var src = m.AddConstantWord(usedRegExp, register.DataType, delta);
+            var src = m.AddSubSignedInt(usedRegExp, delta);
             // Generate a statement that adjusts the register according to
             // the specified delta.
             var ass = new Assignment(defRegId, src);
