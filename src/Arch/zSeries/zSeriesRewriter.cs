@@ -95,7 +95,7 @@ namespace Reko.Arch.zSeries
                 case Opcode.l: RewriteL(PrimitiveType.Word32); break;
                 case Opcode.lg: RewriteL(PrimitiveType.Word64); break;
                 case Opcode.lgf: RewriteLgf(); break;
-                case Opcode.lgfr: RewriteLgf(); break;
+                case Opcode.lgfr: RewriteLgfr(); break;
                 case Opcode.lghi: RewriteLghi(); break;
                 case Opcode.lgr: RewriteLgr(); break;
                 case Opcode.lhi: RewriteLhi(); break;

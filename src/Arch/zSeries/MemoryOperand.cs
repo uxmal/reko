@@ -54,9 +54,16 @@ namespace Reko.Arch.zSeries
             if (Index != null && Index.Number != 0)
             {
                 writer.WriteString(Index.Name);
-                writer.WriteString(",");
+                if (Base != null && Base.Number != 0)
+                {
+                    writer.WriteString(",");
+                    writer.WriteString(Base.Name);
+                }
             }
-            writer.WriteString(Base.Name);
+            else
+            {
+                writer.WriteString(Base.Name);
+            }
             writer.WriteFormat(")");
         }
     }
