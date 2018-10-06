@@ -3479,7 +3479,7 @@ body:
 	call fn (retsize: 4;)
 		defs: FPU -1:rRet0_2
 	ST3[Top_1 - 0x01:real64] = rRet0_2
-	Top_4 = Top_1 - 0x01
+	Top_4 = Top_1 - 1
 	Mem5[0x00001234:real64] = ST3[Top_4:real64]
 	Top_6 = Top_4 + 0x01
 	return

@@ -62,6 +62,7 @@ namespace Reko.Analysis
         public readonly HashSet<SsaIdentifier> incompletePhis;
         private HashSet<SsaIdentifier> sidsToRemove;
         private HashSet<Procedure> sccProcs;
+        private ExpressionEmitter m;
 
         public SsaTransform(
             Program program,
@@ -79,6 +80,7 @@ namespace Reko.Analysis
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.factory = new TransformerFactory(this);
             this.incompletePhis = new HashSet<SsaIdentifier>();
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -500,25 +502,12 @@ namespace Reko.Analysis
             // a way to reuse it
             if (fpuStackDelta != 0)
             {
-                BinaryOperator op;
-                int dd = fpuStackDelta;
-                if (dd > 0)
-                {
-                    op = Operator.IAdd;
-                }
-                else
-                {
-                    op = Operator.ISub;
-                    dd = -dd;
-                }
                 var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(arch.FpuStackRegister);
-                var d = Constant.Create(fpuStackReg.DataType, dd);
+                var src = m.AddSubSignedInt(fpuStackReg, fpuStackDelta);
                 var iCur = stmCur.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(iCur + 1,
                     stmCur.LinearAddress,
-                    new Assignment(
-                        fpuStackReg,
-                        new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
+                    new Assignment(fpuStackReg, src));
 
                 stmCur.Instruction = stmCur.Instruction.Accept(this);
             }
