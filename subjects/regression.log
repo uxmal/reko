@@ -1759,18 +1759,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 === Elf\x86-64\simd_double\simd_double
 === Elf\zSeries\fib\example
 *** Elf\zSeries\fib\example
-00000600: error: The method or operation is not implemented.
-00000560: error: The method or operation is not implemented.
 00000702: warning: Unable to resolve imported reference __cxa_finalize.
-00000708: error: The method or operation is not implemented.
-000006C8: error: The method or operation is not implemented.
-00000890: error: The method or operation is not implemented.
-00000888: error: The method or operation is not implemented.
-00000820: error: The method or operation is not implemented.
-000007E0: error: The method or operation is not implemented.
-000007E0: error: The method or operation is not implemented.
-00000720: error: The method or operation is not implemented.
-00000680: error: The method or operation is not implemented.
 000005C0: warning: Unable to resolve imported reference __cxa_finalize.
 0000065E: error: An error occurred while processing the statement word64 r1_6 = 0x0000206F - r2_4.
     Pulling difference ptr32 and (union (ptr32 u1) (word64 u0))
@@ -3290,4 +3279,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 104.86 seconds ---
+Decompiled 55 binaries in 101.53 seconds ---

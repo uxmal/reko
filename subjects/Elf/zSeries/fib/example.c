@@ -4,8 +4,8 @@
 
 #include "example.h"
 
-// 00000560: FlagGroup byte _init(Stack word64 qwArg30, Stack word64 qwArg38, Stack word64 qwArg40, Stack word64 qwArg48, Stack word64 qwArg50, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-byte _init(word64 qwArg30, word64 qwArg38, word64 qwArg40, word64 qwArg48, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 00000560: FlagGroup byte _init()
+byte _init()
 {
 	word64 r1_37 = Mem0[0x00002038 + 0x00:word64];
 	if (r1_37 != 0x00)
@@ -52,23 +52,23 @@ void __libc_start_main()
 {
 }
 
-// 00000600: void _start(Register Eq_47 r14, Stack Eq_48 qwArg00)
-void _start(Eq_47 r14, Eq_48 qwArg00)
+// 00000600: void _start(Register Eq_37 r14)
+void _start(Eq_37 r14)
 {
-	Eq_49 r15_7 = (fp & ~0x0F) - 0x00B0;
-	*r15_7 = 0x00;
-	*((word64) r15_7 + 0x00A0) = r14;
-	*((word64) r15_7 + 0x00A8) = r15_7;
+	Eq_38 r15_6 = fp - 0x00A0 & ~0x0F;
+	*(r15_6 - 0x00B0) = 0x00;
+	*(r15_6 - 0x0010) = r14;
+	*(r15_6 - 0x08) = r15_6 - 0x00B0;
 	word64 r2_20 = Mem15[0x00002040 + 0x00:word64];
-	word64 r2_22 = DPB(r2_20, __libc_start_main(r2_20, qwArg00, (word32) fp + 0x08, 0x00000820, 0x00000888, Mem15[r15_7 + 0x00A0:(ptr32 (fn void ()))], Mem15[r15_7 + 0x00A8:(ptr32 void)]), 0);
+	word64 r2_22 = DPB(r2_20, __libc_start_main(r2_20, qwLocA0, fp - 0x0098, 0x00000820, 0x00000888, Mem15[r15_6 - 0x0010 + 0x00:(ptr32 (fn void ()))], Mem15[r15_6 - 0x08 + 0x00:(ptr32 void)]), 0);
 }
 
-// 00000648: void deregister_tm_clones()
-void deregister_tm_clones()
+// 00000648: Register word64 deregister_tm_clones()
+word64 deregister_tm_clones()
 {
-	Eq_92 r2_4 = 0x2068;
-	Eq_94 r5_2 = 0x08C8;
-	Eq_96 r1_6 = 8303 - r2_4;
+	Eq_94 r2_4 = 0x2068;
+	Eq_96 r5_2 = 0x08C8;
+	Eq_98 r1_6 = 8303 - r2_4;
 	if (r1_6 > *r5_2)
 	{
 		word64 r1_23 = Mem0[0x00002030 + 0x00:word64];
@@ -81,6 +81,7 @@ void deregister_tm_clones()
 			byte CC_36;
 			word64 r14_37;
 			r1_23();
+			return r15_32;
 		}
 		else
 		{
@@ -91,6 +92,7 @@ void deregister_tm_clones()
 			byte CC_30;
 			word64 r14_31;
 			r14();
+			return r15_26;
 		}
 	}
 	else
@@ -102,13 +104,14 @@ void deregister_tm_clones()
 		byte CC_20;
 		word64 r14_21;
 		r14();
+		return r15_16;
 	}
 }
 
 // 00000680: void register_tm_clones()
 void register_tm_clones()
 {
-	Eq_129 r3_4 = 0x2068 - 0x2068;
+	Eq_131 r3_4 = 0x2068 - 0x2068;
 	uint64 r1_6 = r3_4 >> 0x03 >> 0x003F;
 	if ((r3_4 >> 0x03) + r1_6 != 0x00)
 	{
@@ -146,45 +149,48 @@ void register_tm_clones()
 	}
 }
 
-// 000006C8: void __do_global_dtors_aux(Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-void __do_global_dtors_aux(word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 000006C8: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
-	Eq_173 r13_16 = 0x08D0;
-	Eq_175 r11_18 = 0x2068;
-	if (*r11_18 != 0x00)
+	Eq_170 r13_16 = 0x08D0;
+	Eq_172 r15_17 = fp - 0x0140;
+	Eq_176 r11_18 = 0x2068;
+	if (*r11_18 == 0x00)
 	{
-		word64 r15_58;
-		word64 r11_59;
-		word64 r12_60;
-		word64 r13_61;
-		word64 r14_62;
-		byte CC_63;
-		word64 r1_64;
-		word64 r2_65;
-		word64 r4_66;
-		r14();
+		if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028 + 0x00:byte])
+		{
+			word64 r15_59;
+			word64 r12_61;
+			word64 r13_62;
+			word64 r14_63;
+			byte CC_64;
+			word64 r1_65;
+			word64 r2_66;
+			word64 r4_67;
+			__cxa_finalize();
+		}
+		r15_17 = deregister_tm_clones();
+		*r11_18 = 0x01;
 	}
-	else if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028 + 0x00:byte])
-	{
-		word64 r15_37;
-		word64 r11_38;
-		word64 r12_39;
-		word64 r13_40;
-		word64 r14_41;
-		byte CC_42;
-		word64 r1_43;
-		word64 r2_44;
-		word64 r4_45;
-		__cxa_finalize();
-	}
+	Eq_183 r4_22 = *((word64) r15_17 + 0x0110);
+	word64 r15_33;
+	word64 r11_34;
+	word64 r12_35;
+	word64 r13_36;
+	word64 r14_37;
+	byte CC_38;
+	word64 r1_39;
+	word64 r2_40;
+	word64 r4_41;
+	r4_22();
 }
 
-// 00000720: void frame_dummy(Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-void frame_dummy(word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 00000720: void frame_dummy()
+void frame_dummy()
 {
-	Eq_214 r13_10 = 0x08D8;
-	Eq_216 r2_12 = 0x1E18;
-	Eq_218 CC_14 = cond(*r13_10 - *r2_12);
+	Eq_221 r13_10 = 0x08D8;
+	Eq_223 r2_12 = 0x1E18;
+	Eq_225 CC_14 = cond(*r13_10 - *r2_12);
 	if (*r13_10 == *r2_12)
 	{
 l00000740:
@@ -209,14 +215,14 @@ l00000740:
 	goto l00000740;
 }
 
-// 00000768: Register int64 fib(Register int64 r2, Stack word64 qwArg50, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-int64 fib(int64 r2, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 00000768: Register int64 fib(Register int64 r2)
+int64 fib(int64 r2)
 {
-	word32 dwLoc04_23 = (word32) r2;
-	if (DPB(r2, dwLoc04_23, 0) > 0x01)
+	word32 dwLocA4_23 = (word32) r2;
+	if (DPB(r2, dwLocA4_23, 0) > 0x01)
 	{
-		fib((int64) (dwLoc04_23 - 0x01), qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38, qwLoc30);
-		fib((int64) (dwLoc04_23 - 0x02), qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38, qwLoc30);
+		fib((int64) (dwLocA4_23 - 0x01));
+		fib((int64) (dwLocA4_23 - 0x02));
 	}
 	word64 r15_43;
 	word64 r10_44;
@@ -232,52 +238,64 @@ int64 fib(int64 r2, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg
 	return r2_50;
 }
 
-// 000007E0: void main(Register word64 r2, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-void main(word64 r2, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 000007E0: void main(Register word64 r2)
+void main(word64 r2)
 {
+	fib(0x0A);
+	word64 r15_42;
+	word64 r11_43;
+	word64 r12_44;
+	word64 r13_45;
+	word64 r14_46;
+	byte CC_47;
+	word64 r2_48;
+	word64 r1_49;
+	word64 r3_50;
+	word64 r4_51;
+	r14();
 }
 
-// 00000820: void __libc_csu_init(Stack word64 qwArg38, Stack word64 qwArg40, Stack word64 qwArg48, Stack word64 qwArg50, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-void __libc_csu_init(word64 qwArg38, word64 qwArg40, word64 qwArg48, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 00000820: void __libc_csu_init()
+void __libc_csu_init()
 {
-	Eq_306 CC_47 = _init(qwLoc70, qwLoc68, qwLoc60, qwLoc58, qwLoc50, qwLoc48, qwLoc40, qwLoc38, qwLoc30, qwLoc28);
-	Eq_320 r1_49 = 7688;
-	if (!CC_47)
+	Eq_301 CC_37 = _init();
+	Eq_305 r1_39 = 7688;
+	if (!CC_37)
 	{
-		Eq_320 r7_85 = r1_49;
+		Eq_305 r7_75 = r1_39;
 		do
 		{
-			Eq_338 r1_91 = *r7_85;
-			word64 r15_98;
-			word64 r8_100;
-			word64 r9_101;
-			word64 r10_102;
-			word64 r11_103;
-			word64 r12_104;
-			word64 r13_105;
-			word64 r14_106;
-			byte CC_107;
-			word64 r2_108;
-			word64 r3_109;
-			word64 r4_110;
-			word64 r1_111;
-			r1_91();
-		} while (r11_103 != 0x01);
+			Eq_323 r1_81 = *r7_75;
+			word64 r15_88;
+			word64 r8_90;
+			word64 r9_91;
+			word64 r10_92;
+			word64 r11_93;
+			word64 r12_94;
+			word64 r13_95;
+			word64 r14_96;
+			byte CC_97;
+			word64 r2_98;
+			word64 r3_99;
+			word64 r4_100;
+			word64 r1_101;
+			r1_81();
+		} while (r11_93 != 0x01);
 	}
-	word64 r15_71;
-	word64 r7_72;
-	word64 r8_73;
-	word64 r9_74;
-	word64 r10_75;
-	word64 r11_76;
-	word64 r12_77;
-	word64 r13_78;
-	word64 r14_79;
-	byte CC_80;
-	word64 r2_81;
-	word64 r3_82;
-	word64 r4_83;
-	word64 r1_84;
+	word64 r15_61;
+	word64 r7_62;
+	word64 r8_63;
+	word64 r9_64;
+	word64 r10_65;
+	word64 r11_66;
+	word64 r12_67;
+	word64 r13_68;
+	word64 r14_69;
+	byte CC_70;
+	word64 r2_71;
+	word64 r3_72;
+	word64 r4_73;
+	word64 r1_74;
 	r14();
 }
 
@@ -289,8 +307,8 @@ void __libc_csu_fini()
 	r14();
 }
 
-// 00000890: void _fini(Stack word64 qwArg30, Stack word64 qwArg38, Stack word64 qwArg40, Stack word64 qwArg48, Stack word64 qwArg50, Stack word64 qwArg58, Stack word64 qwArg60, Stack word64 qwArg68, Stack word64 qwArg70, Stack word64 qwArg78)
-void _fini(word64 qwArg30, word64 qwArg38, word64 qwArg40, word64 qwArg48, word64 qwArg50, word64 qwArg58, word64 qwArg60, word64 qwArg68, word64 qwArg70, word64 qwArg78)
+// 00000890: void _fini()
+void _fini()
 {
 	word64 r15_56;
 	word64 r6_57;
