@@ -50,6 +50,12 @@ namespace Reko.UnitTests.Analysis
 			flow = new ProcedureFlow(proc, program.Architecture);
 		}
 
+        private void Given_DummyBlock(Procedure proc)
+        {
+            var block = proc.AddBlock(Address.Ptr32(0x100), "0x100");
+            proc.ControlGraph.AddEdge(proc.EntryBlock, block);
+        }
+
 		[Test]
 		public void RegisterArgument()
 		{
@@ -100,7 +106,8 @@ namespace Reko.UnitTests.Analysis
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
             Procedure proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
-			proc.Signature = new FunctionType(
+            Given_DummyBlock(proc);
+            proc.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
 					new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),

@@ -60,6 +60,7 @@ namespace Reko.Core
         public Block EntryBlock { get; private set; }
         public Block ExitBlock { get; private set; }
         public Frame Frame { get; private set; }
+        public Address EntryAddress => EntryBlock.Succ.FirstOrDefault()?.Address;
 
         /// <summary>
         /// Returns the statements of the procedure, in no particular order.

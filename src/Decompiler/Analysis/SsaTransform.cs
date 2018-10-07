@@ -93,7 +93,7 @@ namespace Reko.Analysis
 		private Statement InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
-                0,
+                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
 				new PhiAssignment(v, b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
@@ -467,7 +467,10 @@ namespace Reko.Analysis
                 if (!existingDefs.Contains(id))
                 {
                     var sid = this.ssa.Identifiers.Add(id, null, null, false);
-                    sid.DefStatement = new Statement(0, new DefInstruction(id), entryBlock);
+                    sid.DefStatement = new Statement(
+                        proc.EntryAddress.ToLinear(),
+                        new DefInstruction(id),
+                        entryBlock);
                     entryBlock.Statements.Add(sid.DefStatement);
                     existingDefs.Add(id);
                     return sid;
@@ -559,7 +562,10 @@ namespace Reko.Analysis
                     .Where(id => !existing.Contains(id) &&
                                  !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
-                    .Select(id => new Statement(0, new UseInstruction(id), block))
+                    .Select(id => new Statement(
+                        //$TODO: should be procedure exit address here
+                        proc.EntryAddress.ToLinear(),
+                        new UseInstruction(id), block))
                     .ToList();
                 block.Statements.AddRange(stms);
                 stms.ForEach(u =>
@@ -1059,7 +1065,10 @@ namespace Reko.Analysis
         private SsaIdentifier NewPhi( Identifier id, Block b)
         {
             var phiAss = new PhiAssignment(id, 0);
-            var stm = new Statement(0, phiAss, b);
+            var stm = new Statement(
+                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                phiAss,
+                b);
             b.Statements.Insert(0, stm);
 
             var sid = ssa.Identifiers.Add(phiAss.Dst, stm, phiAss.Src, false);
@@ -1131,7 +1140,9 @@ namespace Reko.Analysis
         private SsaIdentifier NewDef(Identifier id, Block b)
         {
             var sid = ssa.Identifiers.Add(id, null, null, false);
-            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+            sid.DefStatement = new Statement(
+                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                new DefInstruction(id), b);
             b.Statements.Add(sid.DefStatement);
             return sid;
         }
