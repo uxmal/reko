@@ -253,6 +253,7 @@ namespace Reko.UnitTests.Mocks
                 name = string.Format("l{0}", ++numBlock);
             }
             Block = BlockOf(name);
+            Block.Address = Address.Ptr32(LinearAddress);
             if (Procedure.EntryBlock.Succ.Count == 0)
             {
                 Procedure.ControlGraph.AddEdge(Procedure.EntryBlock, Block);
