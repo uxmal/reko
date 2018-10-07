@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Analysis
 			ssaIds.Add(id1, new SsaIdentifier(id1, id1, null, null, false));
             ssaIds.Add(phi, new SsaIdentifier(phi, phi, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
-			liv.Context.PhiStatement = new Statement(0, null, null);
+			liv.Context.PhiStatement = new Statement(1, null, null);
             liv.Context.PhiIdentifier = phi;
 			liv.Context.DeltaValue = Constant.Word32(1);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
@@ -218,11 +218,11 @@ namespace Reko.UnitTests.Analysis
 			ssaIds = new SsaIdentifierCollection();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 			liv.Context.InitialValue = Constant.Word32(0);
-			liv.Context.PhiStatement = new Statement(0, null, null);
+			liv.Context.PhiStatement = new Statement(1, null, null);
 			liv.Context.PhiIdentifier = new Identifier("foo_0", PrimitiveType.Word32, null);
             ssaIds.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
-			liv.Context.DeltaStatement = new Statement(0, new Assignment(new Identifier("foo_1", PrimitiveType.Word32, null), 
+			liv.Context.DeltaStatement = new Statement(2, new Assignment(new Identifier("foo_1", PrimitiveType.Word32, null), 
 				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
 			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Analysis
 
 			liv.Context.InitialValue = Constant.Word32(0);
 			Identifier id2 = m.Local32("id_2");
-			SsaId(id2, new Statement(0, null, null), null, false);
+			SsaId(id2, new Statement(1, null, null), null, false);
 			Assert.AreEqual(3, ssaIds.Count);
 
 			Identifier id3 = m.Local32("id_3");
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Analysis
 			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment)liv.Context.PhiStatement.Instruction).Src, false);
 			Assert.AreEqual(4, ssaIds.Count);
 
-			Statement use = new Statement(0, null, null);
+			Statement use = new Statement(2, null, null);
 			ssaIds[id3].Uses.Add(use);
 
 			liv.Context.DeltaValue = m.Word32(1);

@@ -352,9 +352,9 @@ done:
 			Identifier Z = FlagGroup("Z");
 			Identifier f = Reg32("f");
 
-			Statement stmZ = new Statement(0, m.Assign(Z, m.Cond(m.ISub(r, 0))), null);
+			Statement stmZ = new Statement(1, m.Assign(Z, m.Cond(m.ISub(r, 0))), null);
 			ssaIds[Z].DefStatement = stmZ;
-			Statement stmF = new Statement(0, m.Assign(f, m.Test(ConditionCode.NE, Z)), null);
+			Statement stmF = new Statement(2, m.Assign(f, m.Test(ConditionCode.NE, Z)), null);
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 

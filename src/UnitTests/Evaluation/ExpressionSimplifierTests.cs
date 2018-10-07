@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Evaluation
 
             var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);
-            foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
+            foo = coll.Add(foo, new Statement(1, new Assignment(foo, src), null), src, false).Identifier;
             return coll;
         }
 
