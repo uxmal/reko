@@ -78,10 +78,10 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Cinj_OneComment()
         {
-            Given_Comment(0, "This is a comment");
+            Given_Comment(1, "This is a comment");
 
             var a = m.Reg32("a", 1);
-            m.MStore(m.Word32(0x00123400), a);
+            m.MStore(m.Word32(0x00123400), a);  // addr 1
 
             When_CreateInjector();
             cinj.InjectComments(m.Procedure);
@@ -102,12 +102,12 @@ ProcedureBuilder_exit:
         public void Cinj_CommentSecondItem()
         {
             // This is misaligned, we expect it to be injected at address 4
-            Given_Comment(1, "This is a comment");
+            Given_Comment(2, "This is a comment");
 
             var a = m.Reg32("a", 1);
-            m.MStore(m.Word32(0x00123400), a);  // addr 0
-            m.MStore(m.Word32(0x00123404), a);  // addr 1
-            m.MStore(m.Word32(0x00123408), a);  // addr 2
+            m.MStore(m.Word32(0x00123400), a);  // addr 1
+            m.MStore(m.Word32(0x00123404), a);  // addr 2
+            m.MStore(m.Word32(0x00123408), a);  // addr 3
 
             When_CreateInjector();
             cinj.InjectComments(m.Procedure);
