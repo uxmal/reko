@@ -467,7 +467,10 @@ namespace Reko.Analysis
                 if (!existingDefs.Contains(id))
                 {
                     var sid = this.ssa.Identifiers.Add(id, null, null, false);
-                    sid.DefStatement = new Statement(0, new DefInstruction(id), entryBlock);
+                    sid.DefStatement = new Statement(
+                        proc.EntryAddress.ToLinear(),
+                        new DefInstruction(id),
+                        entryBlock);
                     entryBlock.Statements.Add(sid.DefStatement);
                     existingDefs.Add(id);
                     return sid;
