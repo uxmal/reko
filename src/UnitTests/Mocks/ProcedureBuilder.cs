@@ -70,6 +70,7 @@ namespace Reko.UnitTests.Mocks
         {
             if (arch == null)
                 throw new ArgumentNullException("arch");
+            this.LinearAddress = 1;
             this.InstructionSize = 1;
             this.Architecture = arch;
             this.Procedure = new Procedure(arch, name, arch.CreateFrame());
