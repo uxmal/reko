@@ -1065,7 +1065,10 @@ namespace Reko.Analysis
         private SsaIdentifier NewPhi( Identifier id, Block b)
         {
             var phiAss = new PhiAssignment(id, 0);
-            var stm = new Statement(0, phiAss, b);
+            var stm = new Statement(
+                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                phiAss,
+                b);
             b.Statements.Insert(0, stm);
 
             var sid = ssa.Identifiers.Add(phiAss.Dst, stm, phiAss.Src, false);
@@ -1137,7 +1140,9 @@ namespace Reko.Analysis
         private SsaIdentifier NewDef(Identifier id, Block b)
         {
             var sid = ssa.Identifiers.Add(id, null, null, false);
-            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+            sid.DefStatement = new Statement(
+                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                new DefInstruction(id), b);
             b.Statements.Add(sid.DefStatement);
             return sid;
         }
