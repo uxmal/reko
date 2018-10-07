@@ -30,6 +30,8 @@ namespace Reko.Core
 	{
         public Statement(ulong linearAddress, Instruction instr, Block block)
         {
+            if (linearAddress == 0)
+                throw new ArgumentException("Statement must have valid address", nameof(linearAddress));
             this.LinearAddress = linearAddress;
             this.Instruction = instr;
             this.Block = block;
