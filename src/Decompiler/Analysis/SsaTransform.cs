@@ -93,7 +93,7 @@ namespace Reko.Analysis
 		private Statement InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
-                0,
+                b.Address.ToLinear(),
 				new PhiAssignment(v, b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
