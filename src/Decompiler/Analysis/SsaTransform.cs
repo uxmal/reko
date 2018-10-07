@@ -562,7 +562,10 @@ namespace Reko.Analysis
                     .Where(id => !existing.Contains(id) &&
                                  !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
-                    .Select(id => new Statement(0, new UseInstruction(id), block))
+                    .Select(id => new Statement(
+                        //$TODO: should be procedure exit address here
+                        proc.EntryAddress.ToLinear(),
+                        new UseInstruction(id), block))
                     .ToList();
                 block.Statements.AddRange(stms);
                 stms.ForEach(u =>

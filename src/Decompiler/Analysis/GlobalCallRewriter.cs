@@ -85,7 +85,10 @@ namespace Reko.Analysis
 				if (r == null)
 					continue;
 
-				proc.ExitBlock.Statements.Add(0, new UseInstruction(os.OriginalIdentifier, id));
+                proc.ExitBlock.Statements.Add(
+                    //$TODO: should be procedure exit address here
+                    proc.EntryAddress.ToLinear(),
+                    new UseInstruction(os.OriginalIdentifier, id));
 			}
 		}
 
