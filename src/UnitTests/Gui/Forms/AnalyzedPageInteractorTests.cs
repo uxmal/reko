@@ -137,12 +137,13 @@ namespace Reko.UnitTests.Gui.Forms
 
             Given_Interactor();
             form.Show();
-            Procedure p = new Procedure(program.Architecture, "foo_proc", program.Architecture.CreateFrame());
+            Procedure p = new Procedure(program.Architecture, "foo_proc", Address.Ptr32(0x12346), program.Architecture.CreateFrame());
             p.Signature = FunctionType.Func(
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                 new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32)));
-            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure(program.Architecture, "bar", program.Architecture.CreateFrame()));
-            program.Procedures.Add(Address.Ptr32(0x12346), p);
+            var p2 = new Procedure(program.Architecture, "bar", Address.Ptr32(0x12345), program.Architecture.CreateFrame());
+            program.Procedures.Add(p.EntryAddress, p);
+            program.Procedures.Add(p2.EntryAddress, p2);
             interactor.EnterPage();
 
             //form.BrowserList.Items[1].Selected = true;

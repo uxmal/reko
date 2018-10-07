@@ -117,7 +117,7 @@ namespace Reko.Arch.zSeries
 
         public override RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            return Registers.GpRegisters[i];
         }
 
         public override RegisterStorage GetRegister(string name)

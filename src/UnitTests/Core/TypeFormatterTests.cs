@@ -323,7 +323,7 @@ struct a {
             {
                 Protection = ClassProtection.Public,
                 Attribute = ClassMemberAttribute.Virtual,
-                Procedure = new Procedure(arch, "do_something", null),
+                Procedure = new Procedure(arch, "do_something", Address.Ptr32(0x00123400), null),
                 Name = "do_something",
             });
             tyfo.Write(ct, null);

@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Scanning
         {
             mr = new MockRepository();
             program = new Program();
-            proc = new Procedure(program.Architecture, "testProc", new Frame(PrimitiveType.Word32));
+            proc = new Procedure(program.Architecture, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             trace = new RtlTrace(0x00100000);
             r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
@@ -308,7 +308,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Address>.Matches(arg => arg.Offset == 0x102000),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
-                        .Return(new Procedure(program.Architecture, "fn102000", new Frame(PrimitiveType.Word32)));
+                        .Return(new Procedure(program.Architecture, "fn102000", Address.Ptr32(0x00102000), new Frame(PrimitiveType.Word32)));
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(
                     Arg<Procedure>.Is.NotNull,
@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallProcedureWithSignature()
         {
-            var proc2 = new Procedure(program.Architecture, "fn2000", new Frame(PrimitiveType.Ptr32));
+            var proc2 = new Procedure(program.Architecture, "fn2000", Address.Ptr32(0x2000), new Frame(PrimitiveType.Ptr32));
             var sig = FunctionType.Func(
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
@@ -736,7 +736,7 @@ testProc_exit:
             var addrCall = Address.Ptr32(0x00100000);
             var addrCallee = Address.Ptr32(0x00102000);
             var l00100000 = new Block(proc, "l00100000");
-            var procCallee = new Procedure(program.Architecture, null, new Frame(PrimitiveType.Ptr32))
+            var procCallee = new Procedure(program.Architecture, null, addrCallee, new Frame(PrimitiveType.Ptr32))
             {
                 Name = "testFn",
                 Signature = FunctionType.Func(

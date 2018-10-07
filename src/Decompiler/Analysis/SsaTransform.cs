@@ -189,7 +189,8 @@ namespace Reko.Analysis
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
 
-            var stms = sortedIds.Select(id => new Statement(0, new UseInstruction(id), block)).ToList();
+            var addr = block.Procedure.EntryAddress;
+            var stms = sortedIds.Select(id => new Statement(addr.ToLinear(), new UseInstruction(id), block)).ToList();
             block.Statements.AddRange(stms);
             DebugEx.PrintIf(trace.TraceVerbose, "AddUsesToExitBlock");
             stms.ForEach(u =>
@@ -287,7 +288,7 @@ namespace Reko.Analysis
                 if (id.Storage is FlagGroupStorage grf)
                 {
                     var grfTotal = grfs.Get(grf.FlagRegister);
-                    grfs[grf.FlagRegister] =  grfTotal | grf.FlagGroupBits;
+                    grfs[grf.FlagRegister] = grfTotal | grf.FlagGroupBits;
                 }
                 else
                 {
@@ -1278,7 +1279,8 @@ namespace Reko.Analysis
             private SsaIdentifier NewPhi(Identifier id, Block b)
             {
                 var phiAss = new PhiAssignment(id, 0);
-                var stm = new Statement(0, phiAss, b);
+                var addr = b.Address ?? b.Procedure.EntryAddress;
+                var stm = new Statement(addr.ToLinear(), phiAss, b);
                 b.Statements.Insert(0, stm);
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
                 phiAss.Dst = sid.Identifier;

@@ -43,6 +43,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         private Dictionary<string, Identifier> globals;
         private ServiceContainer sc;
         private IProcessorArchitecture arch;
+        private Address addrFn;
 
         [SetUp]
         public void Setup()
@@ -50,6 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.mr = new MockRepository();
             this.globals = new Dictionary<string, Identifier>();
             this.sc = new ServiceContainer();
+            this.addrFn = Address.Ptr32(0x00100000);
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var cfgSvc = mr.Stub<IConfigurationService>();
@@ -83,7 +85,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             {
                 pb.Globals.Add(de.Key, de.Value);
             }
-            var proc = pb.RegisterFunction(fn);
+            var proc = pb.RegisterFunction(fn, addrFn);
             pb.TranslateFunction(fn);
             return proc;
         }

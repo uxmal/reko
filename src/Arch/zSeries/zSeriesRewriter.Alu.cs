@@ -130,6 +130,13 @@ namespace Reko.Arch.zSeries
             }
         }
 
+        private void RewriteLgf()
+        {
+            var src = m.Mem(PrimitiveType.Int32, EffectiveAddress(instr.Ops[1]));
+            var dst = Reg(instr.Ops[0]);
+            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
+        }
+
         private void RewriteLgfr()
         {
             var src = Reg(instr.Ops[1]);
@@ -144,6 +151,14 @@ namespace Reko.Arch.zSeries
             var imm = Const(instr.Ops[1]).ToInt16();
             var dst = Reg(instr.Ops[0]);
             var src = Constant.Create(dst.DataType, imm);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLhi()
+        {
+            int imm = Const(instr.Ops[1]).ToInt16();
+            var dst = Reg(instr.Ops[0]);
+            var src = Constant.Create(PrimitiveType.Word32, imm);
             m.Assign(dst, src);
         }
 
@@ -194,6 +209,33 @@ namespace Reko.Arch.zSeries
             var src = Const(instr.Ops[1]);
             var ea = EffectiveAddress(instr.Ops[0]);
             m.Assign(m.Mem8(ea), src);
+        }
+
+        private void RewriteMvz()
+        {
+            var len = ((MemoryOperand)instr.Ops[0]).Length;
+            var dt = PrimitiveType.CreateWord(len);
+            var eaSrc = EffectiveAddress(instr.Ops[1]);
+            var tmp = binder.CreateTemporary(dt);
+            var eaDst = EffectiveAddress(instr.Ops[0]);
+
+            m.Assign(tmp, host.PseudoProcedure("__move_zones", dt, m.Mem(dt, eaDst), m.Mem(dt, eaSrc)));
+            m.Assign(m.Mem(dt, eaDst), tmp);
+        }
+
+        private void RewriteNc()
+        {
+            var len = ((MemoryOperand)instr.Ops[0]).Length;
+            var dt = PrimitiveType.CreateWord(len);
+            var eaSrc = EffectiveAddress(instr.Ops[1]);
+            var tmp = binder.CreateTemporary(dt);
+            var eaDst = EffectiveAddress(instr.Ops[0]);
+
+            m.Assign(tmp, m.And(m.Mem(dt, eaDst), m.Mem(dt, eaSrc)));
+            m.Assign(m.Mem(dt, eaDst), tmp);
+            
+            var cc = binder.EnsureFlagGroup(Registers.CC);
+            m.Assign(cc, m.Cond(tmp));
         }
 
         private void RewriteNgr()

@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Core
 			Procedure proc2 = Procedure.Create(arch, Address.Ptr32(0x0F000BA9), null);
 			Assert.AreEqual("fn0F000BA9", proc2.Name);
 			Assert.AreEqual("define fn0F000BA9", proc2.ToString());
-			Procedure proc3 = new Procedure(arch, "foo", null);
+			Procedure proc3 = new Procedure(arch, "foo",  Address.Ptr32(0x00123400), null);
 			Assert.AreEqual("foo", proc3.Name);
 			Assert.AreEqual("define foo", proc3.ToString());
 		}
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void ProcCharacteristicIsAlloca()
 		{
-			Procedure proc = new Procedure(null, "foo", null);
+			Procedure proc = new Procedure(null, "foo", Address.Ptr32(0x00123400), null);
 			Assert.IsFalse(proc.Characteristics.IsAlloca);
 		}
 

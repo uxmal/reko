@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var proc = new Procedure(null, "test", new Frame(PrimitiveType.Ptr32));
+            var proc = new Procedure(null, "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);

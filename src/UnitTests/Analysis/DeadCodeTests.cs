@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Analysis
         private Procedure Given_Procedure_With_Flow(ProcedureBuilder m, string name, Storage[] uses, Storage[] defs)
         {
             var sig = new FunctionType();
-            var proc = new Procedure(m.Architecture, name, m.Architecture.CreateFrame());
+            var proc = new Procedure(m.Architecture, name, Address.Ptr32(0x00123400), m.Architecture.CreateFrame());
             var flow = new ProcedureFlow(proc);
             flow.BitsUsed = uses.ToDictionary(u => u, u => new BitRange(0, (int)u.BitSize / 8));
             flow.Trashed = defs.ToHashSet();

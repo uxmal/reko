@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Analysis
             program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
-            proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
+            proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
             pb = new ProgramBuilder();
             ssaStates = new List<SsaState>();

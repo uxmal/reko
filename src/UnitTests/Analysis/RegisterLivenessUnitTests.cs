@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_CallToProcedureWithValidSignature()
 		{
-			Procedure callee = new Procedure(program.Architecture, "callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), null);
 			callee.Signature = FunctionType.Func(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_MarkLiveStackParameters()
 		{
-            var callee = new Procedure(program.Architecture, "callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
             callee.Frame.ReturnAddressKnown = true;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
@@ -264,7 +264,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_PredefinedSignature()
 		{
-			Procedure callee = new Procedure(program.Architecture, "callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), null);
 			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
-            var proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "test", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             var pf = new ProcedureFlow(proc);
 			mpprocflow[proc] = pf;
 			pf.Trashed.Add(Registers.eax);

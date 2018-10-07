@@ -124,8 +124,9 @@ namespace Reko.UnitTests.Gui.Forms
 
         private void AddProcedure(Address addr, string procName)
         {
-            program.Procedures.Add(addr,
-                new Procedure(null, procName, program.Architecture.CreateFrame()));
+            program.Procedures.Add(
+                addr,
+                new Procedure(null, procName, addr, program.Architecture.CreateFrame()));
         }
 
         [Test]

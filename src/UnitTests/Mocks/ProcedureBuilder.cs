@@ -43,36 +43,36 @@ namespace Reko.UnitTests.Mocks
 
         public ProcedureBuilder()
         {
-            Init(new FakeArchitecture(), this.GetType().Name, null);
+            Init(new FakeArchitecture(), this.GetType().Name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(new FakeArchitecture(), name, null);
+            Init(new FakeArchitecture(), name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch)
         {
-            Init(arch, this.GetType().Name, null);
+            Init(arch, this.GetType().Name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch, string name)
         {
-            Init(arch,name,null);
+            Init(arch,name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
         {
-            Init(arch, name, blocks);
+            Init(arch, name, Address.Ptr32(0x00123400), blocks);
         }
 
-        private void Init(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
+        private void Init(IProcessorArchitecture arch, string name, Address addr, Dictionary<string, Block> blocks)
         {
             if (arch == null)
                 throw new ArgumentNullException("arch");
             this.InstructionSize = 1;
             this.Architecture = arch;
-            this.Procedure = new Procedure(arch, name, arch.CreateFrame());
+            this.Procedure = new Procedure(arch, name, addr, arch.CreateFrame());
             this.blocks = blocks ?? new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
@@ -266,6 +266,7 @@ namespace Reko.UnitTests.Mocks
                 name = string.Format("l{0}", ++numBlock);
             }
             Block = BlockOf(name);
+            Block.Address = Address.Ptr32(LinearAddress);
             if (Procedure.EntryBlock.Succ.Count == 0)
             {
                 Procedure.ControlGraph.AddEdge(Procedure.EntryBlock, Block);
