@@ -48,22 +48,22 @@ namespace Reko.UnitTests.Core
             var pc3 = new ProcedureConstant(PrimitiveType.Ptr32, p3);
             var pc4 = new ProcedureConstant(PrimitiveType.Ptr32, p4);
 
-            Statement s11 = new Statement(1, CreateCall(pc2), p1.EntryBlock);
-            Statement s12 = new Statement(2, CreateCall(pc2), p1.EntryBlock);
-            Statement s13 = new Statement(3, CreateCall(pc3), p1.EntryBlock);
+            Statement s11 = new Statement(0, CreateCall(pc2), p1.EntryBlock);
+            Statement s12 = new Statement(0, CreateCall(pc2), p1.EntryBlock);
+            Statement s13 = new Statement(0, CreateCall(pc3), p1.EntryBlock);
 			p1.EntryBlock.Statements.Add(s11);
 			p1.EntryBlock.Statements.Add(s12);
 			p1.EntryBlock.Statements.Add(s13);
 
-            Statement s21 = new Statement(4, CreateCall(pc3), p2.EntryBlock);
-            Statement s22 = new Statement(5, CreateCall(pc4), p2.EntryBlock);
+            Statement s21 = new Statement(0, CreateCall(pc3), p2.EntryBlock);
+            Statement s22 = new Statement(0, CreateCall(pc4), p2.EntryBlock);
 			p2.EntryBlock.Statements.Add(s21);
 			p2.EntryBlock.Statements.Add(s22);
 
-            Statement s31 = new Statement(6, CreateCall(pc4), p3.EntryBlock);
+            Statement s31 = new Statement(0, CreateCall(pc4), p3.EntryBlock);
 			p3.EntryBlock.Statements.Add(s31);
 
-            Statement s41 = new Statement(7, CreateCall(pc4), p4.EntryBlock);
+            Statement s41 = new Statement(0, CreateCall(pc4), p4.EntryBlock);
 
 			g.AddEntryPoint(p1);
 			g.AddEdge(s11, p2);

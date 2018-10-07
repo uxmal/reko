@@ -255,7 +255,7 @@ namespace Reko.UnitTests.Analysis
         private ExpressionSimplifier CreatePropagatorWithDummyStatement()
         {
             var ctx = new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver);
-            ctx.Statement = new Statement(1, new SideEffect(Constant.Word32(32)), null);
+            ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
             return new ExpressionSimplifier(segmentMap, ctx, listener);
         }
 

@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.LLVM
         public override Statement Emit(IrInstruction instr)
         {
             EnsureBlock(null);
-            block.Statements.Add(++linearAddress, instr);
+            block.Statements.Add(linearAddress++, instr);
             return block.Statements.Last;
         }
 
@@ -106,10 +106,7 @@ namespace Reko.ImageLoaders.LLVM
             EnsureBlock(null);
             var trueBlock = BlockOf(labelTrue, true);
             var falseBlock = BlockOf(labelFalse, true);
-            var stm = new Statement(
-                ++linearAddress,
-                new Branch(expr, trueBlock),
-                b);
+            var stm = new Statement(0, new Branch(expr, trueBlock), b);
             b.Statements.Add(stm);
             proc.ControlGraph.AddEdge(b, falseBlock);
             proc.ControlGraph.AddEdge(b, trueBlock);
