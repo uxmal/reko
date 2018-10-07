@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 			program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
 			gcr = new GlobalCallRewriter(program, null, new FakeDecompilerEventListener());
-            proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
+            proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);
 		}
 
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
-            Procedure proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             Given_DummyBlock(proc);
             proc.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),

@@ -40,10 +40,11 @@ namespace Reko.Core
 	{
         private List<Block> blocks;
 
-		public Procedure(IProcessorArchitecture arch, string name, Frame frame) : base(name)
+		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name)
 		{
             //$REVIEW consider removing Body completely and use
             // AbsynProcedure instead.
+            this.EntryAddress = addrEntry;
             this.Architecture = arch;
             this.Body = null;
             this.blocks = new List<Block>();
@@ -60,7 +61,7 @@ namespace Reko.Core
         public Block EntryBlock { get; private set; }
         public Block ExitBlock { get; private set; }
         public Frame Frame { get; private set; }
-        public Address EntryAddress => EntryBlock.Succ.FirstOrDefault()?.Address;
+        public Address EntryAddress { get; }
 
         /// <summary>
         /// Returns the statements of the procedure, in no particular order.
@@ -84,12 +85,12 @@ namespace Reko.Core
 			{
 				name = GenerateName(addr);     //$TODO: should be a user option, move out of here.
 			}
-			return new Procedure(arch, name, f);
+			return new Procedure(arch, name, addr, f);
 		}
 
 		public static Procedure Create(IProcessorArchitecture arch, Address addr, Frame f)
 		{
-			return new Procedure(arch, GenerateName(addr), f);
+			return new Procedure(arch, GenerateName(addr), addr, f);
 		}
 
         [Conditional("DEBUG")]

@@ -84,11 +84,11 @@ namespace Reko.UnitTests.Core
         [Test]
         public void AppBld_BindToCallingFrame()
         {
-            var caller = new Procedure(arch, "caller", new Frame(PrimitiveType.Word16));
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word16));
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
             caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
 
-            var callee = new Procedure(arch,"callee", new Frame(PrimitiveType.Word16));
+            var callee = new Procedure(arch,"callee", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word16));
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
             callee.Signature = FunctionType.Action(
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Core
         [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
         public void AppBld_BindByteToRegister()
         {
-            var callee = new Procedure(arch, "callee", new Frame(PrimitiveType.Ptr32));
+            var callee = new Procedure(arch, "callee", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             var ab = new ApplicationBuilder(
                 arch, 
                 callee.Frame,
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue()
         {
-            var rand = new Procedure(arch, "rand", new Frame(PrimitiveType.Ptr32));
+            var rand = new Procedure(arch, "rand", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             var ab = new ApplicationBuilder(
                 arch,
                 rand.Frame,
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue_WithArgs()
         {
-            var fputs = new Procedure(arch, "fputs", new Frame(PrimitiveType.Ptr32));
+            var fputs = new Procedure(arch, "fputs", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             var ab = new ApplicationBuilder(
                 arch,
                 fputs.Frame,
