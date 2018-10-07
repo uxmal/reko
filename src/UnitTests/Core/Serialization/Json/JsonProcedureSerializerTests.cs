@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                      "'succ':['l0010']}," +
                     "{'name':'JpsTest_exit','exit':true}," +
                     "{'name':'l0010'," +
-                     "'linaddr':0," +
+                     "'linaddr':1," +
                      "'stms':[" +
                          "[0,'=','r1',[1,'w32']]," +
                          "[1,'ret']]," +
@@ -96,15 +96,15 @@ namespace Reko.UnitTests.Core.Serialization.Json
                     "{'name':'JpsTest_entry'," +
                      "'succ':['l0010']}," +
                     "{'name':'JpsTest_exit','exit':true}," +
-                    "{'name':'l0010','linaddr':0,'stms':[" +
+                    "{'name':'l0010','linaddr':1,'stms':[" +
                           "[0,'=','SZ','cof',['-f','f1','f3']]," +
                           "[1,'bra',['test','GE','SZ'],'l_nonneg']]," +
                      "'succ':['l_neg','l_nonneg']}," +
-                    "{'name':'l_nonneg','linaddr':4,'stms':[" +
+                    "{'name':'l_nonneg','linaddr':5,'stms':[" +
                           "[0,['st',['m','Mem0',['+','r9',[8,'w32']],'r64'],['*f','f3',[2,'r64']]]]," +
                           "[1,'ret']]," +
                    "'succ':['JpsTest_exit']}," +
-                "{'name':'l_neg','linaddr':2,'stms':[" +
+                "{'name':'l_neg','linaddr':3,'stms':[" +
                           "[0,'=','f3',[0,'r64']]," +
                           "[1,'=','r1',['neg','r1']]]," +
                   "'succ':['l_nonneg']}]}";
