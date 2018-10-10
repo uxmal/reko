@@ -463,7 +463,6 @@
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
     <Compile Include="Serialization\Project_v4.cs" />
-    <Compile Include="Serialization\QualifiedType_v1.cs" />
     <Compile Include="Serialization\ReferenceType_v1.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
     <Compile Include="Serialization\SerializedProject.cs" />
