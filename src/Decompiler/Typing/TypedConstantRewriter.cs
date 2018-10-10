@@ -311,11 +311,6 @@ namespace Reko.Typing
             return pr;
         }
 
-        public Expression VisitQualifiedType(QualifiedType qt)
-        {
-            return qt.DataType.Accept(this);
-        }
-
         public Expression VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();

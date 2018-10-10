@@ -49,6 +49,7 @@ namespace Reko.Core.Types
         public virtual int BitSize { get { return Size * BitsPerByte; } }		//$REVIEW: Wrong for 36-bit machines
         public virtual bool IsComplex { get { return false; } }
         public virtual string Name { get; set; }
+        public Qualifier Qualifier { get; set; }
         public virtual string Prefix { get { return "t"; } }            // Prefix to use when auto-generating field names.
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
         public abstract void Accept(IDataTypeVisitor v);

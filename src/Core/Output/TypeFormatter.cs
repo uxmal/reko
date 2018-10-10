@@ -455,16 +455,27 @@ namespace Reko.Core.Output
             return writer;
 		}
 
-        public Formatter VisitQualifiedType(QualifiedType qt)
+        public static Formatter WriteQualifier(Qualifier q, Formatter writer)
         {
-            switch (qt.Qualifier)
+            var sep = "";
+            if ((q & Qualifier.Const) != 0)
             {
-            case Qualifier.Const: writer.WriteKeyword("const"); break;
-            case Qualifier.Volatile: writer.WriteKeyword("volatile"); break;
-            case Qualifier.Restricted: writer.WriteKeyword("restricted"); break;
+                sep = " ";
+                writer.WriteKeyword("const");
             }
-            writer.Write(" ");
-            qt.DataType.Accept(this);
+            if ((q & Qualifier.Volatile) != 0)
+            {
+                writer.Write(sep);
+                sep = " ";
+                writer.WriteKeyword("volatile");
+            }
+            if ((q & Qualifier.Restricted) != 0)
+            {
+                writer.Write(sep);
+                sep = " ";
+                writer.WriteKeyword("restricted");
+            }
+            writer.Write(sep);
             return writer;
         }
 

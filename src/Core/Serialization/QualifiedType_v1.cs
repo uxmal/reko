@@ -28,6 +28,7 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    [Obsolete("", true)]
     public class QualifiedType_v1 : SerializedType
     {
         public SerializedType DataType;
@@ -37,7 +38,7 @@ namespace Reko.Core.Serialization
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
-            return visitor.VisitQualifiedType(this);
+            throw new NotImplementedException();
         }
     }
 }

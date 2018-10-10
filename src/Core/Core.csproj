@@ -791,7 +791,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Types\QualifiedType.cs" />
+    <Compile Include="Types\Qualifier.cs" />
     <Compile Include="Types\ReferenceTo.cs" />
     <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">

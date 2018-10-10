@@ -66,6 +66,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Msdos_ish_platform();
             Given_CTypeReferenceFormatter();
             formatter.Expect(f => f.WriteKeyword("int"));
+            formatter.Expect(f => f.Write(""));
             mr.ReplayAll();
 
             ctrf.WriteTypeReference(PrimitiveType.Int16);
@@ -78,6 +79,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Msdos_ish_platform();
             Given_CTypeReferenceFormatter();
             formatter.Expect(f => f.WriteKeyword("long"));
+            formatter.Expect(f => f.Write(""));
             mr.ReplayAll();
 
             ctrf.WriteTypeReference(PrimitiveType.Int32);
