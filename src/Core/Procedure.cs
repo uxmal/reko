@@ -231,6 +231,13 @@ namespace Reko.Core
             return block;
         }
 
+        public Block AddSyntheticBlock(Address addr, string name)
+        {
+            var block = AddBlock(addr, name);
+            block.IsSynthesized = true;
+            return block;
+        }
+
         public Block AddBlock(string name)
         {
             Block block = new Block(this, name);

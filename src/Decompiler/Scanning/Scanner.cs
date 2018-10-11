@@ -421,8 +421,9 @@ namespace Reko.Scanning
                 "{0}_thunk_{1}",
                 Block.GenerateName(addrFrom),
                 procNew.Name);
-            var callRetThunkBlock = procOld.AddBlock(blockName);
-            callRetThunkBlock.IsSynthesized = true;
+            var callRetThunkBlock = procOld.AddSyntheticBlock(
+                addrFrom,
+                blockName);
 
             var linFrom = addrFrom.ToLinear();
             callRetThunkBlock.Statements.Add(
