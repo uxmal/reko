@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -1083,11 +1083,8 @@ namespace Reko.Scanning
         private Block AddIntraStatementBlock(Procedure proc)
         {
             var label = ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels));
-            var fallthru = new Block(proc, label)
-            {
-                IsSynthesized = true
-            };
-            proc.ControlGraph.Blocks.Add(fallthru);
+            var fallthru = proc.AddBlock(ric.Address, label);
+            fallthru.IsSynthesized = true;
             return fallthru;
         }
 
