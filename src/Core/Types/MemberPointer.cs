@@ -55,7 +55,10 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), byteSize);
+            return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), byteSize)
+            {
+                Qualifier = this.Qualifier
+            };
 		}
 
 		public override bool IsComplex

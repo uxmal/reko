@@ -58,7 +58,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
-            return new EnumType(this);
+            return new EnumType(this) { Qualifier = this.Qualifier };
         }
     }
 }

@@ -52,7 +52,10 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			return new Pointer(Pointee.Clone(clonedTypes), bitSize);
+            return new Pointer(Pointee.Clone(clonedTypes), bitSize)
+            {
+                Qualifier = this.Qualifier,
+            };
 		}
 
 		public override bool IsComplex

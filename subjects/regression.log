@@ -1606,11 +1606,11 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 291
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
@@ -1623,7 +1623,7 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00415EF8: error: Failed to write global variable g_u415EF8.
@@ -1634,7 +1634,7 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00415F04: error: Failed to write global variable g_u415F04.
@@ -1645,7 +1645,7 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00415F50: warning: Expected sizes of arrays to have been determined by now
@@ -1675,11 +1675,11 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 291
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
@@ -1692,7 +1692,7 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00415EF8: error: Failed to write global variable g_u415EF8.
@@ -1703,7 +1703,7 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00415F04: error: Failed to write global variable g_u415F04.
@@ -1714,7 +1714,7 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
    at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in C:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 204
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 328
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00415F50: warning: Expected sizes of arrays to have been determined by now
@@ -3279,4 +3279,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 105.65 seconds ---
+Decompiled 55 binaries in 91.28 seconds ---

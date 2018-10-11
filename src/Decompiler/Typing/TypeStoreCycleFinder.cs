@@ -115,11 +115,6 @@ namespace Reko.Typing
             return false;
         }
 
-        public bool VisitQualifiedType(QualifiedType qt)
-        {
-            return Find(qt.DataType);
-        }
-
         public bool VisitReference(ReferenceTo refTo)
         {
             return Find(refTo.Referent);

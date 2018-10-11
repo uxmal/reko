@@ -219,7 +219,10 @@ namespace Reko.Core
             var bitSize = primitive.Domain != Domain.Boolean
                 ? DataType.BitsPerByte * primitive.ByteSize
                 : 1;
-            return PrimitiveType.Create(primitive.Domain, bitSize);
+
+            var pt = PrimitiveType.Create(primitive.Domain, bitSize);
+            pt.Qualifier = primitive.Qualifier;
+            return pt;
         }
 
         public DataType VisitPointer(PointerType_v1 pointer)
@@ -250,7 +253,7 @@ namespace Reko.Core
                     dt = new UnknownType(platform.PointerType.Size);
                 }
             }
-            return new Pointer(dt, platform.PointerType.BitSize);
+            return new Pointer(dt, platform.PointerType.BitSize) { Qualifier = pointer.Qualifier };
         }
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)
@@ -262,12 +265,6 @@ namespace Reko.Core
             else
                 dt = memptr.MemberType.Accept(this);
             return new MemberPointer(baseType, dt, platform.PointerType.Size);
-        }
-
-        public DataType VisitQualifiedType(QualifiedType_v1 qt)
-        {
-            var dt = qt.DataType.Accept(this);
-            return new QualifiedType(dt, qt.Qualifier);
         }
 
         public DataType VisitReference(ReferenceType_v1 reference)

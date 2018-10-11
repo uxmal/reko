@@ -67,7 +67,10 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
-            return new StringType(this.ElementType, this.LengthPrefixType, this.PrefixOffset);
+            return new StringType(this.ElementType, this.LengthPrefixType, this.PrefixOffset)
+            {
+                Qualifier = this.Qualifier
+            };
         }
 
         // The type of the length prefix, if any, otherwise null.

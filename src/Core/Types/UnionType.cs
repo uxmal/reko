@@ -95,6 +95,7 @@ namespace Reko.Core.Types
 		{
 			var pre = PreferredType != null ? PreferredType.Clone(clonedTypes) : null;
 			var u = new UnionType(Name, pre);
+            u.Qualifier = Qualifier;
             u.UserDefined = UserDefined;
             foreach (var a in this.Alternatives.Values)
 			{

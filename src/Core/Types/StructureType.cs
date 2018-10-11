@@ -67,6 +67,7 @@ namespace Reko.Core.Types
                 return clonedTypes[this];
 			var s = new StructureType(Name, Size);
             clonedTypes[this] = s;
+            s.Qualifier = Qualifier;
             s.UserDefined = UserDefined;
 			s.IsSegment = IsSegment;
             s.ForceStructure = ForceStructure;

@@ -401,11 +401,6 @@ namespace Reko.Core.Types
 			return Ptr;
 		}
 
-        public int VisitQualifiedType(QualifiedType qt)
-        {
-            return Qual;
-        }
-
         public int VisitReference(ReferenceTo refTo)
         {
             return Ref;
