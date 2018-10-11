@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ namespace Reko.Analysis
 		private Statement InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
-                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                b.Address.ToLinear(),
 				new PhiAssignment(v, b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
@@ -563,8 +563,7 @@ namespace Reko.Analysis
                                  !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
                     .Select(id => new Statement(
-                        //$TODO: should be procedure exit address here
-                        proc.EntryAddress.ToLinear(),
+                        block.Address.ToLinear(),
                         new UseInstruction(id), block))
                     .ToList();
                 block.Statements.AddRange(stms);
@@ -1066,7 +1065,7 @@ namespace Reko.Analysis
         {
             var phiAss = new PhiAssignment(id, 0);
             var stm = new Statement(
-                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                b.Address.ToLinear(),
                 phiAss,
                 b);
             b.Statements.Insert(0, stm);
@@ -1141,7 +1140,7 @@ namespace Reko.Analysis
         {
             var sid = ssa.Identifiers.Add(id, null, null, false);
             sid.DefStatement = new Statement(
-                (b.Address ?? b.Procedure.EntryAddress).ToLinear(),
+                b.Address.ToLinear(),
                 new DefInstruction(id), b);
             b.Statements.Add(sid.DefStatement);
             return sid;
