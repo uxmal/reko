@@ -98,7 +98,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             var segs = new[]
             {
-                null, // null segment.
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x17, 0) },
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x27, 0) },
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },
@@ -132,7 +131,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             var segs = new[]
             {
-                null,
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x17, 0) },
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x27, 0) },
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },
@@ -170,7 +168,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             var segs = new[]
             {
-                null,
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x17, 0) },
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x27, 0) },
                 new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },

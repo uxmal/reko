@@ -444,6 +444,7 @@ namespace Reko.ImageLoaders.MzExe
             Dictionary<int, string> names,
             IProcessorArchitecture arch)
         {
+            DebugEx.PrintIf(trace.TraceInfo, "== Loading entry points from offset {0:X}", offEntryTable);
             var rdr = new LeImageReader(RawImage, offEntryTable);
 
             var entries = new List<ImageSymbol>();
@@ -471,7 +472,7 @@ namespace Reko.ImageLoaders.MzExe
                         entry = ReadFixedSegmentEntry(rdr, segNum);
                     }
                     var state = arch.CreateProcessorState();
-                    var seg = segments[entry.iSeg];
+                    var seg = segments[entry.iSeg-1];
                     var addr = seg.Address + entry.offset;
                     ImageSymbol ep = new ImageSymbol(addr);
                     if (names.TryGetValue(bundleOrdinal + i, out string name))
@@ -482,6 +483,7 @@ namespace Reko.ImageLoaders.MzExe
                     ep.ProcessorState = state;
                     imageSymbols[ep.Address] = ep;
                     entries.Add(ep);
+                    DebugEx.PrintIf(trace.TraceVerbose, "   {0}", ep);
                 }
                 bundleOrdinal = nextbundleOrdinal;
             }
@@ -904,7 +906,6 @@ namespace Reko.ImageLoaders.MzExe
                     re.offset,
                     re.target1,
                     re.target2);
-
             }
 
         }
