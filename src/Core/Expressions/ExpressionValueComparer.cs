@@ -139,6 +139,17 @@ namespace Reko.Core.Expressions
                 (ea, eb) =>
                 {
                     Constant a = (Constant) ea, b = (Constant) eb;
+                    if (a.IsReal)
+                    {
+                        if (b.IsReal)
+                        {
+                            return a.ToReal64() == b.ToReal64();
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                     return object.Equals(a.ToUInt64(), b.ToUInt64());
                 },
                 obj =>
@@ -169,7 +180,20 @@ namespace Reko.Core.Expressions
                 {
                     return GetHashCodeImpl(((Dereference) obj).Expression) * 129;
                 });
-
+            Add(typeof(FieldAccess),
+                (a, b) =>
+                {
+                    var fa = (FieldAccess)a;
+                    var fb = (FieldAccess)b;
+                    return EqualsImpl(fa.Structure, fb.Structure) &&
+                        fa.Field == fb.Field;
+                },
+                obj =>
+                {
+                    var f = (FieldAccess)obj;
+                    return GetHashCodeImpl(f.Structure) * 23 ^
+                        f.Field.Name.GetHashCode();
+                });
             Add(
                 typeof(Identifier),
                 delegate(Expression x, Expression y)
@@ -179,6 +203,21 @@ namespace Reko.Core.Expressions
                 delegate(Expression x)
                 {
                     return ((Identifier) x).Name.GetHashCode();
+                });
+            Add(typeof(MemberPointerSelector),
+                (a, b) =>
+                {
+                    var mpsA = (MemberPointerSelector)a;
+                    var mpsB = (MemberPointerSelector)b;
+                    return
+                        EqualsImpl(mpsA.BasePointer, mpsB.BasePointer) &&
+                        EqualsImpl(mpsA.MemberPointer, mpsB.MemberPointer);
+                },
+                obj =>
+                {
+                    var mps = (MemberPointerSelector)obj;
+                    return GetHashCodeImpl(mps.BasePointer) * 29 ^
+                        GetHashCodeImpl(mps.MemberPointer);
                 });
             Add(typeof(MemoryAccess),
                 (ea, eb) =>
@@ -379,6 +418,8 @@ namespace Reko.Core.Expressions
             if (tx != ty)
                 return false;
 
+            if (!eqs.ContainsKey(tx))
+                throw new NotImplementedException($"No equality implemented for {tx.Name}");
             return eqs[tx](x, y);
         }
 
@@ -390,6 +431,8 @@ namespace Reko.Core.Expressions
             Type t = obj.GetType();
             if (tc.IsAssignableFrom(t))
                 t = tc;
+            if (!hashes.ContainsKey(t))
+                throw new NotImplementedException($"No hashing implemented for {t.Name}");
             return hashes[t](obj);
         }
 

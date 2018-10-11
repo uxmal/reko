@@ -251,20 +251,6 @@ namespace Reko.Arch.Pdp11
 			return s.ToString();
 		}
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            Expression ea = binder.EnsureRegister(this.StackRegister);
-            if (cbOffset > 0)
-            {
-                ea = new BinaryExpression(Operator.IAdd, PrimitiveType.Ptr16, ea, Constant.Int16((short)cbOffset));
-            }
-            else if (cbOffset < 0)
-            {
-                ea = new BinaryExpression(Operator.ISub, PrimitiveType.Ptr16, ea, Constant.Int16((short)cbOffset));
-            }
-            return new MemoryAccess(ea, dataType);
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), binder, host);

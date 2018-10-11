@@ -249,7 +249,7 @@ namespace Reko.Scanning
                 return; // Already scanned. Do nothing.
             if (IsNoDecompiledProcedure(addr))
                 return;
-            var proc = EnsureProcedure(addr, name);
+            var proc = Program.EnsureProcedure(addr, name);
             proc.Signature = sig;
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, addr, proc.Name));
         }
@@ -268,7 +268,8 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    block = AddBlock(addrDest, proc, Block.GenerateName(addrDest));
+                    var label = Program.NamingPolicy.BlockName(addrDest);
+                    block = AddBlock(addrDest, proc, label);
                 }
 
                 if (proc == block.Procedure)
@@ -326,7 +327,7 @@ namespace Reko.Scanning
                         // We jumped into a pre-existing block of another 
                         // procedure which was hairy enough that we need to 
                         // promote the block to a new procedure.
-                        procDest = EnsureProcedure(addrDest, null);
+                        procDest = Program.EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
                         EstablishInitialState(addrDest, Program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
@@ -356,7 +357,7 @@ namespace Reko.Scanning
 
         public void EnsureEntryPoint(ImageSymbol sym)
         {
-            var proc = EnsureProcedure(sym.Address, sym.Name);
+            var proc = Program.EnsureProcedure(sym.Address, sym.Name);
             if (sym.Signature != null && !proc.Signature.ParametersValid)
             {
                 var sser = Program.CreateProcedureSerializer();
@@ -374,7 +375,7 @@ namespace Reko.Scanning
                 return null; // Already scanned. Do nothing.
             if (!sp.Decompile)
                 return null;
-            proc = EnsureProcedure(addr, sp.Name);
+            proc = Program.EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
                 var sser = Program.CreateProcedureSerializer();
@@ -419,10 +420,11 @@ namespace Reko.Scanning
             // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
                 "{0}_thunk_{1}",
-                Block.GenerateName(addrFrom),
+                Program.NamingPolicy.BlockName(addrFrom),
                 procNew.Name);
-            var callRetThunkBlock = procOld.AddBlock(blockName);
-            callRetThunkBlock.IsSynthesized = true;
+            var callRetThunkBlock = procOld.AddSyntheticBlock(
+                addrFrom,
+                blockName);
 
             var linFrom = addrFrom.ToLinear();
             callRetThunkBlock.Statements.Add(
@@ -462,25 +464,25 @@ namespace Reko.Scanning
             }
         }
 
-        public void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint)
+        public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             try
             {
                 Address addr = sym.Address;
                 if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
-                Procedure proc = EnsureProcedure(addr, sym.Name);
+                Procedure proc = Program.EnsureProcedure(addr, sym.Name);
                 if (visitedProcs.Contains(proc))
                     return; // Already scanned. Do nothing.
 
                 if (sym.Signature != null)
                 {
-                    var sser = program.CreateProcedureSerializer();
+                    var sser = Program.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
                 }
                 else if (sym.Name != null)
                 {
-                    var sProc = program.Platform.SignatureFromName(sym.Name);
+                    var sProc = Program.Platform.SignatureFromName(sym.Name);
                     if (sProc != null)
                     {
                         var loader = Program.CreateTypeLibraryDeserializer();
@@ -495,16 +497,11 @@ namespace Reko.Scanning
                     }
                 }
 
-                //if (sp.Characteristics != null)
-                //{
-                //    proc.Characteristics = sp.Characteristics;
-                //}
-
                 var pb = ScanProcedure(sym.Address, sym.Name, sym.ProcessorState);
                 proc = pb as Procedure;
                 if (isEntryPoint && proc != null)
                 {
-                    program.CallGraph.AddEntryPoint(proc);
+                    Program.CallGraph.AddEntryPoint(proc);
                 }
             }
             catch (AddressCorrelatedException aex)
@@ -514,13 +511,6 @@ namespace Reko.Scanning
         }
 
 
-        /// <summary>
-        /// Performs a scan of the blocks that constitute a procedure named <paramref name="procedureName"/>
-        /// </summary>
-        /// <param name="addr">Address of the code from which we will start scanning.</param>
-        /// <param name="procedureName"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
@@ -535,7 +525,7 @@ namespace Reko.Scanning
             var imp = GetImportedProcedure(addr, addr);
             if (imp != null)
                 return imp;
-            Procedure proc = EnsureProcedure(addr, procedureName);
+            Procedure proc = Program.EnsureProcedure(addr, procedureName);
             if (visitedProcs.Contains(proc))
                 return proc;
 
@@ -642,6 +632,8 @@ namespace Reko.Scanning
         /// <returns>Null if there was no trampoline.</returns>
         public ProcedureBase GetTrampoline(Address addr)
         {
+            if (!Program.SegmentMap.IsValidAddress(addr))
+                return null;
             var rdr = Program.CreateImageReader(addr);
             var arch = Program.Architecture;
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), arch.CreateFrame(), this);
@@ -719,7 +711,8 @@ namespace Reko.Scanning
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
-            var blockNew = AddBlock(addr, blockToSplit.Procedure, Block.GenerateName(addr));
+            var label = Program.NamingPolicy.BlockName(addr);
+            var blockNew = AddBlock(addr, blockToSplit.Procedure, label);
             foreach (var succ in graph.Successors(blockToSplit))
             {
                 graph.AddEdge(blockNew, succ);
@@ -751,12 +744,6 @@ namespace Reko.Scanning
         }
 
 
-        /// <summary>
-        /// Scans the image, locating blobs of data and procedures.
-        /// After completion, the program.ImageMap is populated with
-        /// chunks of data, and the program.Procedures dictionary contains
-        /// all procedures to decompile.
-        /// </summary>
         public virtual void ScanImage()
         {
             // Find all blobs of data, and potentially pointers to code.
@@ -1000,7 +987,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    EnsureProcedure(sym.Address, sym.Name);
+                    Program.EnsureProcedure(sym.Address, sym.Name);
                     EnqueueImageSymbol(sym, false);
                 }
                 sr.KnownProcedures.Add(sym.Address);

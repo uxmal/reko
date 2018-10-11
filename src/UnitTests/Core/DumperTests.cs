@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -112,7 +112,8 @@ namespace Reko.UnitTests.Core
         private Procedure Given_ProcedureAt(Address address)
         {
             var proc = Procedure.Create(arch, address, arch.CreateFrame());
-            var block = new Block(proc, Block.GenerateName(address));
+            var label = program.NamingPolicy.BlockName(address);
+            var block = new Block(proc, label);
             program.Procedures.Add(address, proc);
 
             program.ImageMap.AddItemWithSize(

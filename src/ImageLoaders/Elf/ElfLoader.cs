@@ -66,43 +66,6 @@ namespace Reko.ImageLoaders.Elf
         public const uint SHF_EXECINSTR = 0x4;
         public const uint SHF_REKOCOMMON = 0x08000000;  // A hack until we determine what should happen with SHN_COMMON symbols
 
-        // Dynamic entry tags
-        public const int DT_NULL = 0;
-        public const int DT_NEEDED = 1;
-        public const int DT_PLTRELSZ = 2;
-        public const int DT_PLTGOT = 3;
-        public const int DT_HASH = 4;
-        public const int DT_STRTAB = 5;
-        public const int DT_SYMTAB = 6;
-        public const int DT_RELA = 7;
-        public const int DT_RELASZ = 8;
-        public const int DT_RELAENT = 9;
-        public const int DT_STRSZ = 10;
-        public const int DT_SYMENT = 11;
-        public const int DT_INIT = 12;
-        public const int DT_FINI = 13;
-        public const int DT_SONAME = 14;
-        public const int DT_RPATH = 15;
-        public const int DT_SYMBOLIC = 16;
-        public const int DT_REL = 17;
-        public const int DT_RELSZ = 18;
-        public const int DT_RELENT = 19;
-        public const int DT_PLTREL = 20;
-        public const int DT_DEBUG = 21;
-        public const int DT_TEXTREL = 22;
-        public const int DT_JMPREL = 23;
-        public const int DT_BIND_NOW = 24;
-        public const int DT_INIT_ARRAY = 25;
-        public const int DT_FINI_ARRAY = 26;
-        public const int DT_INIT_ARRAYSZ = 27;
-        public const int DT_FINI_ARRAYSZ = 28;
-        public const int DT_RUNPATH = 29;
-        public const int DT_FLAGS = 30;
-        public const int DT_ENCODING = 32;
-        public const int DT_PREINIT_ARRAY = 32;
-        public const int DT_PREINIT_ARRAYSZ = 33;
-        public const int DT_MAXPOSTAGS = 34;
-
         public const int STT_NOTYPE = 0;			// Symbol table type: none
         public const int STT_FUNC = 2;				// Symbol table type: function
         public const int STT_SECTION = 3;
@@ -116,18 +79,25 @@ namespace Reko.ImageLoaders.Elf
 
         protected ElfMachine machine;
         protected ElfImageLoader imgLoader;
+        protected byte endianness;
         protected Address m_uPltMin;
         protected Address m_uPltMax;
         protected IPlatform platform;
         protected byte[] rawImage;
         private SegmentMap segmentMap;
 
-        protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
+        protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness) : this()
         {
             this.imgLoader = imgLoader;
             this.machine = (ElfMachine) machine;
+            this.endianness = endianness;
             this.Architecture = CreateArchitecture(machine, endianness);
+        }
+
+        protected ElfLoader()
+        {
             this.Symbols = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
+            this.DynamicSymbols = new Dictionary<int, ElfSymbol>();
             this.Sections = new List<ElfSection>();
             this.Segments = new List<ElfSegment>();
             this.DynamicEntries = new Dictionary<long, ElfDynamicEntry>();
@@ -141,8 +111,48 @@ namespace Reko.ImageLoaders.Elf
         public List<ElfSection> Sections { get; private set; }
         public List<ElfSegment> Segments { get; private set; }
         public Dictionary<ulong, Dictionary<int, ElfSymbol>> Symbols { get; private set; }
+        public Dictionary<int, ElfSymbol> DynamicSymbols { get; private set; }
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
         public List<string> Dependencies { get; private set; }
+
+        public abstract ulong AddressToFileOffset(ulong addr);
+
+        public abstract Address ComputeBaseAddress(IPlatform platform);
+
+        public abstract Address CreateAddress(ulong uAddr);
+
+        public abstract ElfObjectLinker CreateLinker();
+
+        public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
+
+        public abstract int LoadSegments();
+
+        public abstract void LoadSectionHeaders();
+
+        public abstract ElfRelocation LoadRelEntry(EndianImageReader rdr);
+
+        public abstract ElfRelocation LoadRelaEntry(EndianImageReader rdr);
+
+        public abstract ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable);
+
+        public abstract Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection);
+
+        public abstract Address ReadAddress(EndianImageReader rdr);
+
+        protected abstract int GetSectionNameOffset(uint idxString);
+
+        public abstract void Dump(TextWriter writer);
+
+        public abstract Address GetEntryPointAddress(Address addrBase);
+
+        public abstract IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic);
+
+        /// <summary>
+        /// Find the names of all shared objects this image depends on.
+        /// </summary>
+        /// <returns></returns>
+        public abstract List<string> GetDependencyList(byte[] rawImage);
+
 
         public static AccessMode AccessModeOf(ulong sh_flags)
         {
@@ -158,9 +168,6 @@ namespace Reko.ImageLoaders.Elf
         {
             return Segments.FirstOrDefault(s => s.IsValidAddress(uAddr));
         }
-
-        public abstract ulong AddressToFileOffset(ulong addr);
-
 
         public static SortedList<Address, MemoryArea> AllocateMemoryAreas(IEnumerable<Tuple<Address, uint>> segments)
         {
@@ -194,8 +201,6 @@ namespace Reko.ImageLoaders.Elf
             return mems;
         }
 
-        public abstract Address CreateAddress(ulong uAddr);
-
         protected virtual IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -204,7 +209,10 @@ namespace Reko.ImageLoaders.Elf
             switch ((ElfMachine)machineType)
             {
             case ElfMachine.EM_NONE: return null; // No machine
-            case ElfMachine.EM_SPARC: arch = "sparc32"; break;
+            case ElfMachine.EM_SPARC:
+            case ElfMachine.EM_SPARC32PLUS:
+            case ElfMachine.EM_SPARCV9:
+                arch = "sparc32"; break;
             case ElfMachine.EM_386: arch = "x86-protected-32"; break;
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;
@@ -228,6 +236,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
             case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
+            case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
@@ -243,6 +252,10 @@ namespace Reko.ImageLoaders.Elf
                 // Alpha has no architecture-defined stack pointer. 
                 // Alpha-Linux uses r30.
                 stackRegName = "r30";
+                break;
+            case ElfMachine.EM_S370:
+            case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
+                arch = "zSeries";
                 break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
@@ -367,13 +380,11 @@ namespace Reko.ImageLoaders.Elf
                 machine));
         }
 
-
         public Program LoadImage(IPlatform platform, byte[] rawImage)
         {
             Debug.Assert(platform != null);
             this.platform = platform;
             this.rawImage = rawImage;
-            GetPltLimits();
             var addrPreferred = ComputeBaseAddress(platform);
             Dump();
             this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
@@ -395,7 +406,7 @@ namespace Reko.ImageLoaders.Elf
             if (dynSeg == null)
                 return;
             var dynEntries = GetDynamicEntries(dynSeg.p_offset).ToList();
-            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == DT_STRTAB);
+            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == ElfDynamicEntry.DT_STRTAB);
             if (deStrTab == null)
             {
                 //$REVIEW: is missing a string table worth a warning?
@@ -404,9 +415,9 @@ namespace Reko.ImageLoaders.Elf
             var offStrtab = AddressToFileOffset(deStrTab.UValue);
             foreach (var de in dynEntries)
             {
-                if (de.Tag == DT_NEEDED)
+                if (de.Tag == ElfDynamicEntry.DT_NEEDED)
                 {
-                    Dependencies.Add(imgLoader.ReadAsciiString(offStrtab + de.UValue));
+                    Dependencies.Add(ReadAsciiString(offStrtab + de.UValue));
                 }
                 else
                 {
@@ -414,12 +425,6 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
-
-        public abstract ElfObjectLinker CreateLinker();
-
-        public abstract void GetPltLimits();
-
-        public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
         public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(bool isExecutable)
         {
@@ -444,25 +449,49 @@ namespace Reko.ImageLoaders.Elf
             return imgLoader.CreateWriter(fileOffset);
         }
 
-        public abstract Address ComputeBaseAddress(IPlatform platform);
-        public abstract int LoadSegments();
-        public abstract void LoadSectionHeaders();
-        public abstract Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection);
+
         /// <summary>
         /// The GOT table contains an array of pointers. Some of these
         /// pointers may be pointing to the symbols in the symbol table(s).
         /// </summary>
+        /// <remarks>
+        /// Assumes that the binary has a valid .got section present. If the 
+        /// .got sections has been stripped away, we will not recover any 
+        /// GOT entries.
+        /// <para>
+        /// Because of this assumption, we use it as a fall back. If the 
+        /// ELF specification for a particular processor specifies how
+        /// to obtain GOT pointers in a safe way, then override the 
+        /// ElfRelocatior.LocateGotPointers and do the right thing there.
+        /// </para>
+        /// </remarks>
         public void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            // Locate the GOT
-            //$REVIEW: there doesn't seem to be a reliable way to get that
-            // information.
+            // Locate the GOT. It's fully possible that the binary doesn't have a 
+            // .got section.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
             if (got == null)
                 return;
 
-            var rdr = program.CreateImageReader(got.Address);
-            while (rdr.Address < got.EndAddress)
+            var gotStart = got.Address;
+            var gotEnd = got.EndAddress;
+            ConstructGotEntries(program, symbols, gotStart, gotEnd);
+        }
+
+        /// <summary>
+        /// Scans the addresses between <paramref name="gotStart"/> and <paramref name="gotEnd"/>, 
+        /// in the GOT, reading successive pointers. If a pointer coincides with the address of 
+        /// a symbol, generate a GOT symbol and an import reference.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="symbols"></param>
+        /// <param name="gotStart"></param>
+        /// <param name="gotEnd"></param>
+        public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
+        {
+            Debug.Print("== Constructing GOT entries ==");
+            var rdr = program.CreateImageReader(gotStart);
+            while (rdr.Address < gotEnd)
             {
                 var addrGot = rdr.Address;
                 var addrSym = ReadAddress(rdr);
@@ -475,11 +504,9 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
-                        if (symbol.Type == SymbolType.ExternalProcedure)
-                        {
-                            program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
-                        }
+                        Debug.Print("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
+                            gotStart, addrGot-gotStart, gotSym, symbol);
+                        program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
                     }
                 }
             }
@@ -522,7 +549,7 @@ namespace Reko.ImageLoaders.Elf
         protected string ReadSectionName(uint idxString)
         {
             ulong offset = (ulong)GetSectionNameOffset(idxString);
-            return imgLoader.ReadAsciiString(offset);
+            return ReadAsciiString(offset);
         }
 
         public string GetSectionName(ushort st_shndx)
@@ -530,7 +557,10 @@ namespace Reko.ImageLoaders.Elf
             Debug.Assert(Sections != null);
             if (st_shndx < 0xFF00)
             {
-                return Sections[st_shndx].Name;
+                if (st_shndx < Sections.Count)
+                    return Sections[st_shndx].Name;
+                else
+                    return $"?section{st_shndx}?";
             }
             else
             {
@@ -542,17 +572,16 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
-        protected abstract int GetSectionNameOffset(uint idxString);
 
-        public string GetStrPtr(ElfSection section, ulong offset)
+        public string GetStrPtr(ElfSection strSection, ulong offset)
         {
-            if (section == null)
+            if (strSection == null)
             {
                 // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-                throw new ArgumentNullException("section");
+                throw new ArgumentNullException(nameof(strSection));
             }
             // Get a pointer to the start of the string table and add the offset
-            return imgLoader.ReadAsciiString(section.FileOffset + offset);
+            return ReadAsciiString(strSection.FileOffset + offset);
         }
 
         public void Dump()
@@ -562,7 +591,6 @@ namespace Reko.ImageLoaders.Elf
             Debug.Print(sw.ToString());
         }
 
-        public abstract void Dump(TextWriter writer);
 
         protected string DumpShFlags(ulong shf)
         {
@@ -572,7 +600,6 @@ namespace Reko.ImageLoaders.Elf
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
 
-        public abstract Address GetEntryPointAddress(Address addrBase);
 
         protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
         {
@@ -617,93 +644,6 @@ namespace Reko.ImageLoaders.Elf
             return sym;
         }
 
-
-        // A map for extra symbols, those not in the usual Elf symbol tables
-
-        public void AddSymbol(uint uNative, string pName)
-        {
-            //m_SymTab[uNative] = pName;
-        }
-
-        public abstract IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic);
-
-        /// <summary>
-        /// Find the names of all shared objects this image depends on.
-        /// </summary>
-        /// <returns></returns>
-        public abstract List<string> GetDependencyList(byte[] rawImage);
-
-        /*==============================================================================
-         * FUNCTION:	  ElfBinaryFile::GetImportStubs
-         * OVERVIEW:	  Get an array of addresses of imported function stubs
-         *					This function relies on the fact that the symbols are sorted by address, and that Elf PLT
-         *					entries have successive addresses beginning soon after m_PltMin
-         * PARAMETERS:	  numImports - reference to integer set to the number of these
-         * RETURNS:		  An array of native ADDRESSes
-         *============================================================================*/
-        uint GetImportStubs(out int numImports)
-        {
-            int n = 0;
-#if NYI
-            ADDRESS a = m_uPltMin;
-            std_map<ADDRESS, string>.iterator aa = m_SymTab.find(a);
-            std_map<ADDRESS, string>.iterator ff = aa;
-            bool delDummy = false;
-            if (aa == m_SymTab.end())
-            {
-                // Need to insert a dummy entry at m_uPltMin
-                delDummy = true;
-                m_SymTab[a] = "";
-                ff = m_SymTab.find(a);
-                aa = ff;
-                aa++;
-            }
-            while ((aa != m_SymTab.end()) && (a < m_uPltMax))
-            {
-                n++;
-                a = aa.first;
-                aa++;
-            }
-            // Allocate an array of ADDRESSESes
-            m_pImportStubs = new ADDRESS[n];
-            aa = ff; // Start at first
-            a = aa.first;
-            int i = 0;
-            while ((aa != m_SymTab.end()) && (a < m_uPltMax))
-            {
-                m_pImportStubs[i++] = a;
-                a = aa.first;
-                aa++;
-            }
-            if (delDummy)
-                m_SymTab.erase(ff); // Delete dummy entry
-#endif
-            numImports = n;
-            return 0; //m_pImportStubs[];
-        }
-
-        public string GetStrPtr(Elf32_SHdr sect, uint offset)
-        {
-            if (sect == null)
-            {
-                // Most commonly, this will be an null, because a call to GetSectionByName() failed
-                throw new ArgumentException("GetStrPtr passed null section.");
-            }
-            // Get a pointer to the start of the string table and add the offset
-            return imgLoader.ReadAsciiString(sect.sh_offset + offset);
-        }
-
-        public string GetStrPtr64(Elf64_SHdr sect, uint offset)
-        {
-            if (sect == null)
-            {
-                // Most commonly, this will be an null, because a call to GetSectionByName() failed
-                throw new ArgumentException("GetStrPtr passed null section.");
-            }
-            // Get a pointer to the start of the string table and add the offset
-            return imgLoader.ReadAsciiString(sect.sh_offset + offset);
-        }
-
         protected bool IsLoadable(ulong p_pmemsz, ProgramHeaderType p_type)
         {
             if (p_pmemsz == 0)
@@ -712,37 +652,43 @@ namespace Reko.ImageLoaders.Elf
                     p_type == ProgramHeaderType.PT_DYNAMIC);
         }
 
-        public abstract ElfRelocation LoadRelEntry(EndianImageReader rdr);
-
-        public abstract ElfRelocation LoadRelaEntry(EndianImageReader rdr);
-
-        public abstract ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable);
-
         public void LoadSymbolsFromSections()
         {
             var symbolSections = Sections.Where(s =>
                 s.Type == SectionHeaderType.SHT_SYMTAB ||
                 s.Type == SectionHeaderType.SHT_DYNSYM)
                 .ToList();
-                foreach (var section in symbolSections)
+            foreach (var section in symbolSections)
+            {
+                var symtab = LoadSymbolsSection(section);
+                Symbols[section.FileOffset] = symtab;
+                if (section.Type == SectionHeaderType.SHT_DYNSYM)
                 {
-                    Symbols[section.FileOffset] = LoadSymbolsSection(section);
+                    this.DynamicSymbols = symtab;
                 }
+            }
         }
 
-        public string ReadAsciiString(ulong v)
+        public string ReadAsciiString(ulong fileOffset)
         {
-            return imgLoader.ReadAsciiString(v);
+            var bytes = this.rawImage;
+            if (fileOffset >= (ulong)bytes.Length)
+                return "";
+            int u = (int)fileOffset;
+            while (bytes[u] != 0)
+            {
+                ++u;
+            }
+            return Encoding.ASCII.GetString(bytes, (int)fileOffset, u - (int)fileOffset);
         }
 
-        public abstract Address ReadAddress(EndianImageReader rdr);
 
         public RelocationResults Relocate(Program program, Address addrLoad)
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
             var relocator = CreateRelocator(this.machine, symbols);
             relocator.Relocate(program);
-            LocateGotPointers(program, symbols);
+            relocator.LocateGotPointers(program, symbols);
             var entryPoints = new List<ImageSymbol>();
             var addrEntry = GetEntryPointAddress(addrLoad);
             EnsureEntryPoint(entryPoints, symbols, addrEntry);
@@ -766,6 +712,15 @@ namespace Reko.ImageLoaders.Elf
                 return s;
             return s.Remove(i);
         }
+
+        protected string rwx(uint flags)
+        {
+            var sb = new StringBuilder();
+            sb.Append((flags & 4) != 0 ? 'r' : '-');
+            sb.Append((flags & 2) != 0 ? 'w' : '-');
+            sb.Append((flags & 1) != 0 ? 'x' : '-');
+            return sb.ToString();
+        }
     }
 
     public class ElfLoader64 : ElfLoader
@@ -781,6 +736,7 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public Elf64_EHdr Header64 { get; set; }
+
         public override Address DefaultAddress { get { return Address.Ptr64(0x8048000); } }
 
         public override bool IsExecutableFile { get { return Header64.e_type != ElfImageLoader.ET_REL; } }
@@ -794,7 +750,6 @@ namespace Reko.ImageLoaders.Elf
             }
             return ~0ul;
         }
-
 
         public override Address ComputeBaseAddress(IPlatform platform)
         {
@@ -862,11 +817,13 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (machine)
             {
+            case ElfMachine.EM_AARCH64: return new Arm64Relocator(this, symbols);
             case ElfMachine.EM_X86_64: return new x86_64Relocator(this, symbols);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this, symbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator64(this, symbols);
             case ElfMachine.EM_RISCV: return new RiscVRelocator64(this, symbols);
             case ElfMachine.EM_ALPHA: return new AlphaRelocator(this, symbols);
+            case ElfMachine.EM_S390: return new zSeriesRelocator(this, symbols);
             }
             return base.CreateRelocator(machine, symbols);
         }
@@ -893,13 +850,14 @@ namespace Reko.ImageLoaders.Elf
             writer.WriteLine("Program headers:");
             foreach (var ph in Segments)
             {
-                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6} {7:X8} p_align:{8:X8}",
                     ph.p_type,
                     ph.p_offset,
                     ph.p_vaddr,
                     ph.p_paddr,
                     ph.p_filesz,
                     ph.p_pmemsz,
+                    rwx(ph.p_flags & 7),
                     ph.p_flags,
                     ph.p_align);
             }
@@ -932,7 +890,7 @@ namespace Reko.ImageLoaders.Elf
                 var dyn = new Elf64_Dyn();
                 if (!rdr.TryReadInt64(out dyn.d_tag))
                     break;
-                if (dyn.d_tag == DT_NULL)
+                if (dyn.d_tag == ElfDynamicEntry.DT_NULL)
                     break;
                 if (!rdr.TryReadInt64(out long val))
                     break;
@@ -962,17 +920,6 @@ namespace Reko.ImageLoaders.Elf
             return addr;
         }
 
-        // Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
-        public override void GetPltLimits()
-        {
-            var pPlt = GetSectionInfoByName(".plt");
-            if (pPlt != null)
-            {
-                m_uPltMin = pPlt.Address;
-                m_uPltMax = pPlt.Address + pPlt.Size;
-            }
-        }
-
         internal ElfSection GetSectionInfoByAddr64(ulong r_offset)
         {
             return
@@ -988,17 +935,6 @@ namespace Reko.ImageLoaders.Elf
         protected override int GetSectionNameOffset(uint idxString)
         {
             return (int)(Sections[Header64.e_shstrndx].FileOffset + idxString);
-        }
-
-        public string GetStrPtr64(int idx, uint offset)
-        {
-            if (idx < 0)
-            {
-                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-                throw new ArgumentException($"GetStrPtr passed index of {idx}.");
-            }
-            // Get a pointer to the start of the string table and add the offset
-            return imgLoader.ReadAsciiString(Sections[idx].FileOffset + offset);
         }
 
         public string GetSymbol64(int iSymbolSection, ulong symbolNo)
@@ -1179,7 +1115,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override ElfSymbol LoadSymbol(ulong offsetSymtab,  ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
+        public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             var sym = Elf64_Sym.Load(rdr);
@@ -1245,6 +1181,8 @@ namespace Reko.ImageLoaders.Elf
             this.rawImage = rawImage;
         }
 
+        public ElfLoader32() : base() { }
+
         public Elf32_EHdr Header { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
 
@@ -1263,110 +1201,6 @@ namespace Reko.ImageLoaders.Elf
                     return addr - ph.p_vaddr;
             }
             return ~0ul;
-        }
-
-        // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
-        private void AddSyms(Elf32_SHdr pSect)
-        {
-            int e_type = this.Header.e_type;
-            // Calc number of symbols
-            uint nSyms = pSect.sh_size / pSect.sh_entsize;
-            uint offSym = pSect.sh_offset;
-            //m_pSym = (Elf32_Sym*)pSect.uHostAddr; // Pointer to symbols
-            uint strIdx = pSect.sh_link; // sh_link points to the string table
-
-            var siPlt = GetSectionInfoByName(".plt");
-            Address addrPlt = siPlt?.Address;
-            var siRelPlt = GetSectionInfoByName(".rel.plt");
-            uint sizeRelPlt = 8; // Size of each entry in the .rel.plt table
-            if (siRelPlt == null)
-            {
-                siRelPlt = GetSectionInfoByName(".rela.plt");
-                sizeRelPlt = 12; // Size of each entry in the .rela.plt table is 12 bytes
-            }
-            Address addrRelPlt = null;
-            ulong numRelPlt = 0;
-            if (siRelPlt != null)
-            {
-                addrRelPlt = siRelPlt.Address;
-                numRelPlt = sizeRelPlt != 0 ? siRelPlt.Size / sizeRelPlt : 0u;
-            }
-            // Number of entries in the PLT:
-            // int max_i_for_hack = siPlt ? (int)siPlt.uSectionSize / 0x10 : 0;
-            // Index 0 is a dummy entry
-            var symRdr = imgLoader.CreateReader(offSym);
-            for (int i = 1; i < nSyms; i++)
-            {
-                if (!symRdr.TryReadUInt32(out uint name))
-                    break;
-                if (!symRdr.TryReadUInt32(out uint val)) //= (ADDRESS)elfRead4((int)m_pSym[i].st_value);
-                    break;
-                if (!symRdr.TryReadUInt32(out uint size))
-                    break;
-                if (!symRdr.TryReadByte(out byte info))
-                    break;
-                if (!symRdr.TryReadByte(out byte other))
-                    break;
-                if (!symRdr.TryReadLeUInt16(out ushort shndx))
-                    break;
-
-                if (name == 0)
-                    continue; // Weird: symbol w no name.
-
-                if (shndx >= Sections.Count)
-                {
-
-                }
-                else
-                {
-                    var otherSection = Sections[shndx];
-                }
-                string str = GetStrPtr((int)strIdx, name);
-                // Hack off the "@@GLIBC_2.0" of Linux, if present.
-                // Some Borland symbols could start with @@, so 
-                // don't remove the suffix if the string starts
-                // with '@@'.
-                int pos;
-                if ((pos = str.IndexOf("@@")) > 0)
-                    str = str.Remove(pos);
-                // Ensure no overwriting (except functions)
-#if Nilx
-                if (@m_SymTab.ContainsKey(val) || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
-                {
-                    if (val == 0 && siPlt != null)
-                    { //&& i < max_i_for_hack) {
-                        throw new NotImplementedException();
-                        // Special hack for gcc circa 3.3.3: (e.g. test/pentium/settest).  The value in the dynamic symbol table
-                        // is zero!  I was assuming that index i in the dynamic symbol table would always correspond to index i
-                        // in the .plt section, but for fedora2_true, this doesn't work. So we have to look in the .rel[a].plt
-                        // section. Thanks, gcc!  Note that this hack can cause strange symbol names to appear
-                        //val = findRelPltOffset(i, addrRelPlt, sizeRelPlt, numRelPlt, addrPlt);
-                    }
-                    else if (e_type == ET_REL)
-                    {
-                        throw new NotImplementedException();
-#if NYI
-                        int nsec = elfRead2(m_pSym[i].st_shndx);
-                        if (nsec >= 0 && nsec < m_iNumSections)
-                            val += GetSectionInfo(nsec)->uNativeAddr;
-#endif
-                    }
-
-                    m_SymTab[val] = str;
-                }
-#endif
-                Debug.Print("  Symbol {0} ({0:X}) with address {1:X} (segment {2} {2:X}): {3}", i, val, shndx, str);
-            }
-#if NYI
-            ADDRESS uMain = GetMainEntryPoint();
-            if (uMain != NO_ADDRESS && m_SymTab.find(uMain) == m_SymTab.end())
-            {
-                // Ugh - main mustn't have the STT_FUNC attribute. Add it
-                string sMain = "main";
-                m_SymTab[uMain] = sMain;
-            }
-            return;
-#endif
         }
 
         public override Address ComputeBaseAddress(IPlatform platform)
@@ -1399,6 +1233,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
+            case ElfMachine.EM_SPARC32PLUS:
             case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
             case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
@@ -1447,13 +1282,14 @@ namespace Reko.ImageLoaders.Elf
             writer.WriteLine("Program headers:");
             foreach (var ph in Segments)
             {
-                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6} {7:X8} p_align:{8:X8}",
                     ph.p_type,
                     ph.p_offset,
                     ph.p_vaddr,
                     ph.p_paddr,
                     ph.p_filesz,
                     ph.p_pmemsz,
+                    rwx(ph.p_flags & 7),
                     ph.p_flags,
                     ph.p_align);
             }
@@ -1489,7 +1325,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = GetStrPtr(symtab, sym);
-                Debug.Print("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -1506,7 +1342,7 @@ namespace Reko.ImageLoaders.Elf
                 var dyn = new Elf32_Dyn();
                 if (!rdr.TryReadInt32(out dyn.d_tag))
                     break;
-                if (dyn.d_tag == DT_NULL)
+                if (dyn.d_tag == ElfDynamicEntry.DT_NULL)
                     break;
                 if (!rdr.TryReadInt32(out int val))
                     break;
@@ -1522,16 +1358,6 @@ namespace Reko.ImageLoaders.Elf
                 return null;
             else
                 return Address.Ptr32(Header.e_entry);
-        }
-
-        public override void GetPltLimits()
-        {
-            var pPlt = GetSectionInfoByName(".plt");
-            if (pPlt != null)
-            {
-                m_uPltMin = pPlt.Address;
-                m_uPltMax = pPlt.Address + pPlt.Size; ;
-            }
         }
 
         internal ElfSection GetSectionInfoByAddr(uint r_offset)
@@ -1559,7 +1385,7 @@ namespace Reko.ImageLoaders.Elf
                 throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
             }
             // Get a pointer to the start of the string table and add the offset
-            return imgLoader.ReadAsciiString(Sections[idx].FileOffset + offset);
+            return ReadAsciiString(Sections[idx].FileOffset + offset);
         }
 
         public string GetSymbolName(int iSymbolSection, uint symbolNo)
@@ -1608,7 +1434,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 foreach (var section in Sections)
                 {
-                    if (section.Name == null || section.Address == null)
+                    if (string.IsNullOrEmpty(section.Name) || section.Address == null)
                         continue;
 
                     if (segMap.TryGetLowerBound(section.Address, out var mem) &&
@@ -1769,14 +1595,14 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            Debug.Print("== Symbols from {0} ==", symSection.Name);
+            DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo , "== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
-                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     (ElfSymbolType)(sym.st_info & 0xF),
@@ -1800,7 +1626,7 @@ namespace Reko.ImageLoaders.Elf
         {
             if (!rdr.TryReadUInt32(out uint uAddr))
                 return null;
-            var addr = Address.Ptr64(uAddr);
+            var addr = Address.Ptr32(uAddr);
             return addr; 
         }
     }

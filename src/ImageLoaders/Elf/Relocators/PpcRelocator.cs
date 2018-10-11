@@ -26,8 +26,15 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
+    // http://www.vxdev.com/docs/vx55man/diab5.0ppc/x-elf_fo.htm
+
     public class PpcRelocator : ElfRelocator32
     {
+        private ElfRelocation prevPpcHi16;
+        private EndianImageReader prevRelR;
+        private ImageWriter prevRelW;
+        private Dictionary<PpcRt, int> missedRelocations = new Dictionary<PpcRt, int>();
+
         public PpcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
@@ -81,17 +88,71 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
-            switch ((PpcRt)(rela.Info & 0xFF))
+            if (loader.Sections.Count <= sym.SectionIndex)
+                return sym;
+            if (sym.SectionIndex == 0)
+                return sym;
+            var symSection = loader.Sections[(int)sym.SectionIndex];
+            uint S = (uint)sym.Value;
+            uint A = (uint)rela.Addend;
+            uint P = (uint)rela.Offset;
+            var addr = Address.Ptr32(P);
+            uint PP = P;
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
+
+            var rt = (PpcRt)(rela.Info & 0xFF);
+            switch (rt)
             {
             case PpcRt.R_PPC_GLOB_DAT:
             case PpcRt.R_PPC_COPY:
             case PpcRt.R_PPC_JMP_SLOT:
                 break;
+            case PpcRt.R_PPC_ADDR32:
+                relW.WriteUInt32(S + A);
+                break;
+            case PpcRt.R_PPC_REL24:
+                uint wInstr = relR.ReadUInt32();
+                // 24 bit relocation where bits 3-29 are used for relocations
+                uint value = (S + A - P);
+                wInstr = (wInstr & 0xFC000003) | (value & 0x03FFFFFC);
+                relW.WriteUInt32(wInstr);
+                break;
+            case PpcRt.R_PPC_ADDR16_HI:
+            case PpcRt.R_PPC_ADDR16_HA:
+                // Wait for the following R_PPC_ADDR16_LO relocation.
+                prevPpcHi16 = rela;
+                prevRelR = relR;
+                prevRelW = relW;
+                break;
+            case PpcRt.R_PPC_ADDR16_LO:
+                if (prevPpcHi16 == null)
+                    return sym;
+                uint valueHi = prevRelR.ReadUInt16();
+                uint valueLo = relR.ReadUInt16();
+
+                if ((PpcRt)(prevPpcHi16.Info & 0xFF) == PpcRt.R_PPC_ADDR16_HA)
+                {
+                    valueHi += (valueHi & 0x8000u) != 0 ? 1u : 0u;
+                }
+
+                value = (valueHi << 16) | valueLo;
+                value += S;
+
+                valueHi = (value >> 16) & 0xFFFF;
+                valueLo = value & 0xFFFF;
+                prevRelW.WriteBeUInt16((ushort)valueHi);
+                relW.WriteBeUInt16((ushort)valueLo);
+                break;
             default:
-                throw new NotImplementedException();
+                if (!missedRelocations.TryGetValue(rt, out var count))
+                    count = 0;
+                missedRelocations[rt] = count + 1;
+                break;
             }
+            return sym;
         }
 
         public override string RelocationTypeToString(uint type)
@@ -107,9 +168,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.loader = loader;
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             //$TODO: implement me :)
+            throw new NotImplementedException();
         }
 
         public override string RelocationTypeToString(uint type)
@@ -148,5 +210,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_PPC_UADDR16 = 25,             // half16* S + A
         R_PPC_REL32 = 26,               // word32 S + A - P
         R_PPC_PLT32 = 27,               // word32 L + A
+
+
+        //An instruction with the lower 16 bits being the offset into a 64KB big Small Data Area (SDA). There are three SDAs:
+
+        //The absolute SDA (address 0) pointed to by r0
+        //The constant SDA2 (typically the .sdata2 section) pointed to by r2
+        //The normal SDA (typically the .sdata and .sbss sections) pointed to by r13
+        //Depending on which of these three SDA's the identifier is defined in, the linker will patch the instruction to use the correct register and offset:
+
+        //lwz    r3, var@sdarx(r0)  
+
+        R_PPC_EMB_SDA21 = 109,
     }
 }

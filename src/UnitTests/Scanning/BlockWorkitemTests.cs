@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Scanning
         {
             mr = new MockRepository();
             program = new Program();
-            proc = new Procedure(program.Architecture, "testProc", new Frame(PrimitiveType.Word32));
+            proc = new Procedure(program.Architecture, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             trace = new RtlTrace(0x00100000);
             r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
@@ -133,6 +133,16 @@ namespace Reko.UnitTests.Scanning
                         .Select(id => (RegisterStorage)id.Storage)
                         .ToHashSet()
             };
+        }
+
+        private void Given_NoInlinedCall()
+        {
+            arch.Stub(a => a.CreateImageReader(null, null))
+                .IgnoreArguments()
+                .Return(new LeImageReader(new byte[0]));
+            arch.Stub(a => a.InlineCall(null, null, null, null))
+                .IgnoreArguments()
+                .Return(null);
         }
 
         private Address Given_Trace(Action<RtlEmitter> generator)
@@ -286,6 +296,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<IStorageBinder>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 arch.Stub(x => x.PointerType).Return(PrimitiveType.Ptr32);
+                Given_NoInlinedCall();
                 scanner.Stub(x => x.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -293,7 +304,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Address>.Matches(arg => arg.Offset == 0x102000),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
-                        .Return(new Procedure(program.Architecture, "fn102000", new Frame(PrimitiveType.Word32)));
+                        .Return(new Procedure(program.Architecture, "fn102000", Address.Ptr32(0x00102000), new Frame(PrimitiveType.Word32)));
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(
                     Arg<Procedure>.Is.NotNull,
@@ -386,6 +397,7 @@ namespace Reko.UnitTests.Scanning
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Word32);
             scanner.Stub(s => s.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             scanner.Stub(s => s.GetImportedProcedure(Arg<Address>.Is.Anything, Arg<Address>.Is.NotNull)).Return(null);
+            Given_NoInlinedCall();
             scanner.Expect(s => s.ScanProcedure(
                 Arg<Address>.Is.Anything,
                 Arg<string>.Is.Anything,
@@ -409,7 +421,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallProcedureWithSignature()
         {
-            var proc2 = new Procedure(program.Architecture, "fn2000", new Frame(PrimitiveType.Ptr32));
+            var proc2 = new Procedure(program.Architecture, "fn2000", Address.Ptr32(0x2000), new Frame(PrimitiveType.Ptr32));
             var sig = new FunctionType(
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 new[] {
@@ -429,6 +441,7 @@ namespace Reko.UnitTests.Scanning
                 Arg<Procedure>.Is.NotNull,
                 Arg<ProcessorState>.Is.NotNull))
                 .Return(block3);
+            Given_NoInlinedCall();
             scanner.Expect(s => s.ScanProcedure(
                 Arg<Address>.Is.Equal(Address.Ptr32(0x102000)),
                 Arg<string>.Is.Null,
@@ -593,6 +606,7 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
             scanner.Stub(s => s.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+            Given_NoInlinedCall();
             scanner.Stub(s => s.ScanProcedure(null, null, null)).IgnoreArguments().Return(proc);
             scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
                 .IgnoreArguments()
@@ -720,7 +734,7 @@ testProc_exit:
             var addrCall = Address.Ptr32(0x00100000);
             var addrCallee = Address.Ptr32(0x00102000);
             var l00100000 = new Block(proc, "l00100000");
-            var procCallee = new Procedure(program.Architecture, null, new Frame(PrimitiveType.Ptr32))
+            var procCallee = new Procedure(program.Architecture, null, addrCallee, new Frame(PrimitiveType.Ptr32))
             {
                 Name = "testFn",
                 Signature = new FunctionType(
@@ -733,6 +747,7 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(f => f.FindContainingBlock(null)).IgnoreArguments().Return(l00100000);
             scanner.Stub(f => f.GetImportedProcedure(addrCallee, addrCall)).Return(null);
+            Given_NoInlinedCall();
             scanner.Stub(f => f.ScanProcedure(
                 Arg<Address>.Is.Equal(addrCallee),
                 Arg<string>.Is.Anything,
@@ -862,11 +877,12 @@ testProc_exit:
         {
             var addrStart = Address.Ptr32(0x00100000);
             var blockCallRet = new Block(proc, "jmpOut");
-            trace.Add(m => {
-                m.Assign(r1, 4); 
-                m.Assign(r1, m.Or(r1, 0x00100000)); 
+            trace.Add(m =>
+            {
+                m.Assign(r1, 4);
+                m.Assign(r1, m.Or(r1, 0x00100000));
                 m.Assign(r2, m.Mem32(r1));
-                m.Call(r2, 0); 
+                m.Call(r2, 0);
                 m.Return(0, 0);
             });
 
@@ -882,6 +898,7 @@ testProc_exit:
                 out Arg<Constant>.Out(Constant.Word32(0x00123400)).Dummy)).Return(true);
             arch.Stub(a => a.MakeAddressFromConstant(
                 Arg<Constant>.Matches(c => c.ToUInt32() == 0x00123400))).Return(Address.Ptr32(0x00123400));
+            Given_NoInlinedCall();
             scanner.Stub(s => s.SetProcedureReturnAddressBytes(
                 Arg<Procedure>.Is.Same(proc),
                 Arg<int>.Is.Equal(0),

@@ -68,7 +68,8 @@ namespace Reko.UnitTests.Gui
         public void Df_FormatAddress_ScannedProcedure()
         {
             var list = new List<TextSpan>();
-            program.Procedures.Add(Address.Ptr32(0x1234), new Procedure(program.Architecture, "fn_renamed", new Frame(PrimitiveType.Word32)));
+            var addr = Address.Ptr32(0x1234);
+            program.Procedures.Add(addr, new Procedure(program.Architecture, "fn_renamed", addr, new Frame(PrimitiveType.Word32)));
             var df = new DisassemblyFormatter(program, null, list);
             df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();

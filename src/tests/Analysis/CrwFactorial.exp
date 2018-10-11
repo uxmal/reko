@@ -21,7 +21,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	cx = 0x0064
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0064
 	ax = fn0C00_000F(wLoc02)
 	sp = fp
@@ -58,16 +58,16 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	ax = wArg02
 	ax = ax - 0x0001
 	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = ax
 	ax = fn0C00_000F(wLoc04)
 	sp = fp - 0x0003

@@ -62,7 +62,6 @@ namespace Reko.UnitTests.Core
         }
 
          [Test]
-         [Ignore("Issue 651")]
          public void CreateWord_NBitsTest()
          {
             var x1 = PrimitiveType.CreateWord(1);

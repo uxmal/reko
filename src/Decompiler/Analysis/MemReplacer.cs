@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,8 @@ namespace Reko.Analysis
 			Constant c = ea as Constant;
 			if (c != null)
 			{
-				return new Identifier(string.Format("g_{0}{1:X8}", type.Prefix, c.ToUInt32()), type, new MemoryStorage());
+                var prefix = program.NamingPolicy.Types.ShortPrefix(type);
+				return Identifier.Global(string.Format("g_{0}{1:X8}", prefix, c.ToUInt32()), type);
 			}
 			Identifier id = ea as Identifier;
 			if (id != null)

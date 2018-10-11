@@ -71,6 +71,16 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException();
         }
 
+        private void RewriteLdstub()
+        {
+            var mem = (MemoryAccess)RewriteOp(instrCur.Op1);
+            var dst = RewriteOp(instrCur.Op2);
+            var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
+            var intrinsic = host.PseudoProcedure("__ldstub", bTmp.DataType, m.AddrOf(mem));
+            m.Assign(bTmp, intrinsic);
+            m.Assign(dst, m.Dpb(dst, bTmp, 0));
+        }
+
         private void RewriteLoad(PrimitiveType size)
         {
             var dst = RewriteOp(instrCur.Op2);
@@ -105,14 +115,11 @@ namespace Reko.Arch.Sparc
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            Copy(Registers.i0, Registers.o0);
-            Copy(Registers.i1, Registers.o1);
-            Copy(Registers.i2, Registers.o2);
-            Copy(Registers.i3, Registers.o3);
-            Copy(Registers.i4, Registers.o4);
-            Copy(Registers.i5, Registers.o5);
-            Copy(Registers.i6, Registers.sp);
-            Copy(Registers.i7, Registers.o7);
+            for (int i = 0; i < Registers.OutRegisters.Length; ++i)
+            {
+                Copy(Registers.InRegisters[i], Registers.OutRegisters[i]);
+            }
+
             if (tmp != null)
             {
                 m.Assign(dst, tmp);
@@ -130,14 +137,10 @@ namespace Reko.Arch.Sparc
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            Copy(Registers.o0, Registers.i0);
-            Copy(Registers.o1, Registers.i1);
-            Copy(Registers.o2, Registers.i2);
-            Copy(Registers.o3, Registers.i3);
-            Copy(Registers.o4, Registers.i4);
-            Copy(Registers.o5, Registers.i5);
-            Copy(Registers.sp, Registers.i6);
-            Copy(Registers.o7, Registers.i7);
+            for (int i = 0; i < Registers.InRegisters.Length; ++i)
+            {
+                Copy(Registers.OutRegisters[i], Registers.InRegisters[i]);
+            }
             if (tmp != null)
             {
                 m.Assign(dst, tmp);

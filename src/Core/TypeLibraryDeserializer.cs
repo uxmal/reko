@@ -68,9 +68,8 @@ namespace Reko.Core
 
         private ModuleDescriptor EnsureModule(string moduleName, TypeLibrary dstLib)
         {
-            ModuleDescriptor mod;
             moduleName = moduleName ?? "";
-            if (!dstLib.Modules.TryGetValue(moduleName, out mod))
+            if (!dstLib.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
             {
                 mod = new ModuleDescriptor(moduleName);
                 dstLib.Modules.Add(moduleName, mod);
@@ -99,20 +98,18 @@ namespace Reko.Core
 
         private void LoadProcedures(SerializedLibrary serializedLibrary)
         {
-            if (serializedLibrary.Procedures != null)
+            if (serializedLibrary.Procedures == null)
+                return;
+
+            foreach (object o in serializedLibrary.Procedures)
             {
-                foreach (object o in serializedLibrary.Procedures)
+                if (o is Procedure_v1 sp)
                 {
-                    Procedure_v1 sp = o as Procedure_v1;
-                    if (sp != null)
-                    {
-                        LoadProcedure(sp);
-                    }
-                    SerializedService svc = o as SerializedService;
-                    if (svc != null)
-                    {
-                        LoadService(svc);
-                    }
+                    LoadProcedure(sp);
+                }
+                else if (o is SerializedService svc)
+                {
+                    LoadService(svc);
                 }
             }
         }
@@ -147,10 +144,11 @@ namespace Reko.Core
             }
         }
 
-        public void LoadService(SerializedService ssvc)
+        public SystemService LoadService(SerializedService ssvc)
         {
             var svc = ssvc.Build(platform, this.library);
             LoadService(svc.SyscallInfo.Vector, svc);
+            return svc;
         }
 
         public void LoadService(string entryName, SystemService svc)
@@ -162,7 +160,19 @@ namespace Reko.Core
         public void LoadService(int ordinal, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
-            mod.ServicesByOrdinal.Add(ordinal, svc);
+            if (ordinal != Serialization.Procedure_v1.NoOrdinal)
+            {
+                mod.ServicesByOrdinal.Add(ordinal, svc);
+            }
+            if (svc.SyscallInfo != null)
+            {
+                if (!mod.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out var services))
+                {
+                    services = new List<SystemService>();
+                    mod.ServicesByVector.Add(svc.SyscallInfo.Vector, services);
+                }
+                services.Add(svc);
+            }
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
@@ -206,7 +216,13 @@ namespace Reko.Core
 
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
-            return PrimitiveType.Create(primitive.Domain, (DataType.BitsPerByte * primitive.ByteSize));
+            var bitSize = primitive.Domain != Domain.Boolean
+                ? DataType.BitsPerByte * primitive.ByteSize
+                : 1;
+
+            var pt = PrimitiveType.Create(primitive.Domain, bitSize);
+            pt.Qualifier = primitive.Qualifier;
+            return pt;
         }
 
         public DataType VisitPointer(PointerType_v1 pointer)
@@ -220,6 +236,16 @@ namespace Reko.Core
                 {
                     //$TODO: remove the try-catch when done.
                     dt = pointer.DataType.Accept(this);
+#if FUTURE
+                    //$HACK: this is a dangerous assumption, not all
+                    // pointers to char are pointing to strings -- 
+                    // but most (90% or more) do. With const char
+                    // this rises to 99%
+                    if (dt is PrimitiveType pt && pt.Domain == Domain.Character)
+                    {
+                        dt = StringType.NullTerminated(dt);
+                    }
+#endif
                 }
                 catch
                 {
@@ -227,7 +253,7 @@ namespace Reko.Core
                     dt = new UnknownType(platform.PointerType.Size);
                 }
             }
-            return new Pointer(dt, platform.PointerType.BitSize);
+            return new Pointer(dt, platform.PointerType.BitSize) { Qualifier = pointer.Qualifier };
         }
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)
@@ -239,12 +265,6 @@ namespace Reko.Core
             else
                 dt = memptr.MemberType.Accept(this);
             return new MemberPointer(baseType, dt, platform.PointerType.Size);
-        }
-
-        public DataType VisitQualifiedType(QualifiedType_v1 qt)
-        {
-            var dt = qt.DataType.Accept(this);
-            return new QualifiedType(dt, qt.Qualifier);
         }
 
         public DataType VisitReference(ReferenceType_v1 reference)
@@ -286,8 +306,7 @@ namespace Reko.Core
 
         public DataType VisitStructure(StructType_v1 structure)
         {
-            StructureType str;
-            if (structure.Name == null || !structures.TryGetValue(structure.Name, out str))
+            if (structure.Name == null || !structures.TryGetValue(structure.Name, out var str))
             {
                 str = new StructureType(structure.Name, structure.ByteSize, true);
                 str.ForceStructure = structure.ForceStructure;
@@ -336,8 +355,7 @@ namespace Reko.Core
 
         public DataType VisitUnion(UnionType_v1 sUnion)
         {
-            UnionType union;
-            if (sUnion.Name == null || !unions.TryGetValue(sUnion.Name, out union))
+            if (sUnion.Name == null || !unions.TryGetValue(sUnion.Name, out var union))
             {
                 union = new UnionType (sUnion.Name, null, true);
                 if (sUnion.Name != null)

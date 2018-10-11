@@ -51,7 +51,7 @@ l00401084:
 fn00401084_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000028 ebx:0xBCB05000 -40(fp):0x00000BAD -36(fp):0xBCB05000 -32(fp):edi -28(fp):esi -24(fp):ebp -20(fp):fp -16(fp):ebx -12(fp):edx -8(fp):ecx -4(fp):eax
+// SymbolicIn: esp:fp - 40 ebx:0xBCB05000 -40(fp):0x00000BAD -36(fp):0xBCB05000 -32(fp):edi -28(fp):esi -24(fp):ebp -20(fp):fp -16(fp):ebx -12(fp):edx -8(fp):ecx -4(fp):eax
 
 
 
@@ -91,11 +91,11 @@ l00401114:
 // SymbolicIn: esp:fp
 
 l00401123:
-	Mem30[esp_19 - 0x00000004:word32] = eax_22
-	Mem32[esp_19 - 0x00000008:word32] = 0x00000008
-	Mem35[esp_19 - 0x0000000C:word32] = GetProcessHeap()
-	word32 eax_36 = HeapFree(Mem35[esp_19 - 0x0000000C:HANDLE], Mem35[esp_19 - 0x00000008:DWORD], Mem35[esp_19 - 0x00000004:LPVOID])
-	Mem40[esp_19 - 0x00000004:word32] = Mem35[0x0040208B:word32]
+	Mem30[esp_19 - 4:word32] = eax_22
+	Mem32[esp_19 - 8:word32] = 0x00000008
+	Mem35[esp_19 - 12:word32] = GetProcessHeap()
+	word32 eax_36 = HeapFree(Mem35[esp_19 - 12:HANDLE], Mem35[esp_19 - 8:DWORD], Mem35[esp_19 - 4:LPVOID])
+	Mem40[esp_19 - 4:word32] = Mem35[0x0040208B:word32]
 	word32 esp_41
 	byte SCZO_42
 	bool C_43
@@ -251,7 +251,7 @@ l004011C6:
 	branch dwArg04 != 0x00000000 l004011D7
 // DataOut: ebx esp fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 4 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32)
 
 l004011CA:
@@ -260,19 +260,19 @@ l004011CA:
 	ebx_11 = dwLoc08
 // DataOut: ebx esp fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 4 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
 
 l004011D7:
-	word32 esp_30 = esp_29 - 0x00000004
+	word32 esp_30 = esp_29 - 4
 	Mem31[esp_30:word32] = 0x0000009C
-	Mem33[esp_30 - 0x00000004:word32] = ebx_11
-	Mem37[esp_30 - 0x00000008:word32] = fn00401158()
-	memcpy(Mem37[esp_30 - 0x00000008:(ptr32 void)], Mem37[esp_30 - 0x00000004:(ptr32 void)], Mem37[esp_30:size_t])
+	Mem33[esp_30 - 4:word32] = ebx_11
+	Mem37[esp_30 - 8:word32] = fn00401158()
+	memcpy(Mem37[esp_30 - 8:(ptr32 void)], Mem37[esp_30 - 4:(ptr32 void)], Mem37[esp_30:size_t])
 	_InitTermAndUnexPtrs()
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:ebx -20(fp):fp - 0x0000000C -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:ebx -20(fp):fp - 0x0000000C -16(fp):ebx -4(fp):ebp
 
 fn004011B0_exit:
 // DataOut:

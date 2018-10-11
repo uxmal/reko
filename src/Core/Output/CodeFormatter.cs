@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,6 +129,7 @@ namespace Reko.Core.Output
                 typeof(AbsynBreak),
                 typeof(AbsynContinue),
                 typeof(AbsynAssignment),
+                typeof(AbsynCompoundAssignment),
                 typeof(AbsynSideEffect)
             };
 
@@ -538,7 +539,41 @@ namespace Reko.Core.Output
             }
         }
 
-		public void VisitDeclaration(Declaration decl)
+        /// <summary>
+        /// //$REVIEW: naturally for non-C++ like languages, this needs to be 
+        /// done differently. 
+        /// </summary>
+        /// <param name="compound"></param>
+        public void VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            writer.Indent();
+            WriteCompoundAssignment(compound);
+            writer.Terminate(";");
+        }
+
+        public void WriteCompoundAssignment(AbsynCompoundAssignment compound)
+        { 
+            if (compound.Src.Right is Constant c &&
+                !c.IsReal && c.ToInt64() == 1)
+            {
+                if (compound.Src.Operator == Operator.IAdd)
+                {
+                    writer.Write("++");
+                    compound.Dst.Accept(this);
+                    return;
+                } else if (compound.Src.Operator == Operator.ISub)
+                {
+                    writer.Write("--");
+                    compound.Dst.Accept(this);
+                    return;
+                }
+            }
+            compound.Dst.Accept(this);
+            writer.Write(compound.Src.Operator.AsCompound());
+            compound.Src.Right.Accept(this);
+        }
+
+        public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();
             Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");
@@ -647,18 +682,23 @@ namespace Reko.Core.Output
 			}
 			writer.Terminate();
 		}
-#endregion
+        #endregion
 
 
-		#region IAbsynStatementVisitor //////////////////////
+        #region IAbsynStatementVisitor //////////////////////
 
-		public void VisitAssignment(AbsynAssignment a)
-		{
-			writer.Indent();
+        public void VisitAssignment(AbsynAssignment a)
+        {
+            writer.Indent();
+            WriteAssignment(a);
+			writer.Terminate(";");
+        }
+
+        private void WriteAssignment(AbsynAssignment a)
+        { 
 			a.Dst.Accept(this);
 			writer.Write(" = ");
 			a.Src.Accept(this);
-			writer.Terminate(";");
 		}
 
 		public void VisitBreak(AbsynBreak brk)
@@ -732,7 +772,37 @@ namespace Reko.Core.Output
 			writer.Terminate(");");
 		}
 
-		public void VisitGoto(AbsynGoto g)
+        public void VisitFor(AbsynFor forLoop)
+        {
+            writer.Indent();
+            writer.WriteKeyword("for");
+            writer.Write(" (");
+            MaybeWriteAssignment(forLoop.Initialization);
+            writer.Write("; ");
+            forLoop.Condition.Accept(this);
+            writer.Write("; ");
+            MaybeWriteAssignment(forLoop.Iteration);
+            writer.Terminate(")");
+
+            WriteIndentedStatements(forLoop.Body, false);
+        }
+
+        private void MaybeWriteAssignment(AbsynAssignment ass)
+        {
+            if (ass != null)
+            {
+                if (ass is AbsynCompoundAssignment cass)
+                {
+                    WriteCompoundAssignment(cass);
+                }
+                else
+                {
+                    WriteAssignment(ass);
+                }
+            }
+        }
+
+        public void VisitGoto(AbsynGoto g)
 		{
 			writer.Indent();
 			writer.WriteKeyword("goto");

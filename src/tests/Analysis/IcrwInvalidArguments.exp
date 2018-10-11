@@ -10,7 +10,7 @@ fp:fp
     uses: esp_3 = fp
 esp_3: orig: esp
     def:  esp_3 = fp
-    uses: esp_7 = esp_3 + 0x00000004
+    uses: esp_7 = esp_3 + 4
           eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 eax_4: orig: eax
     def:  eax_4 = a_1
@@ -23,7 +23,7 @@ ecx_6: orig: ecx
     uses: eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
           eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 esp_7: orig: esp
-    def:  esp_7 = esp_3 + 0x00000004
+    def:  esp_7 = esp_3 + 4
 eax_8: orig: eax
     def:  eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 ecx_9: orig: ecx
@@ -45,7 +45,7 @@ l0C00_0000:
 	ecx_6 = Mem0[a:word32]
 	eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 	ecx_9 = <invalid>
-	esp_7 = esp_3 + 0x00000004
+	esp_7 = esp_3 + 4
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

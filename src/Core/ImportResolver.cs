@@ -159,7 +159,7 @@ namespace Reko.Core
                 var dt = (t.Item2 == null) ?
                     new UnknownType() :
                     t.Item2.Accept(dSer);
-                return new Identifier(t.Item1, dt, new MemoryStorage());
+                return Identifier.Global(t.Item1, dt);
             }
             else
                 return null;
@@ -189,7 +189,7 @@ namespace Reko.Core
                 DataType dt;
                 if (program.EnvironmentMetadata.Globals.TryGetValue(name, out dt))
                 {
-                    return new Identifier(name, dt, new MemoryStorage());
+                    return Identifier.Global(name, dt);
                 }
             }
             return platform.ResolveImportByName(moduleName, name);
@@ -232,7 +232,7 @@ namespace Reko.Core
             }
             else
             {
-                var id = new Identifier(sym.Name, sym.DataType, new MemoryStorage());
+                var id = Identifier.Global(sym.Name, sym.DataType);
                 return new UnaryExpression(Operator.AddrOf, program.Platform.PointerType, id);
             }
     }
@@ -252,7 +252,5 @@ namespace Reko.Core
                 new AddressContext(program, addrInstruction, this.eventListener));
             return new ProcedureConstant(program.Platform.PointerType, extProc);
         }
-
-       
     }
 }

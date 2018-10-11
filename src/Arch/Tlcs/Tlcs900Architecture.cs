@@ -98,11 +98,6 @@ namespace Reko.Arch.Tlcs
             return new Tlcs900.Tlcs900Rewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             uint grf = 0;

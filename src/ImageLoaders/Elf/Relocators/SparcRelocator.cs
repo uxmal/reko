@@ -42,10 +42,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return;
+                return sym;
             var rt = (SparcRt)(rela.Info & 0xFF);
             if (sym.SectionIndex == 0)
             {
@@ -55,7 +55,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var addrPfn = Address.Ptr32((uint)rela.Offset);
                     Debug.Print("Import reference {0} - {1}", addrPfn, sym.Name);
                     importReferences[addrPfn]= new NamedImportReference(addrPfn, null, sym.Name);
-                    return;
+                    return sym;
                 }
             }
 
@@ -75,6 +75,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
             uint P = (uint)addr.ToLinear();
             uint PP = P;
+            uint B = 0;
 
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.Offset,
@@ -87,7 +88,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case 0:
-                return;
+                return sym;
             case SparcRt.R_SPARC_HI22:
                 A = (int)rela.Addend;
                 sh = 10;
@@ -98,14 +99,23 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 mask = 0x3FF;
                 P = 0;
                 break;
+            case SparcRt.R_SPARC_32:
+                A = (int)rela.Addend;
+                mask = 0xFFFFFFFF;
+                P = 0;
+                break;
             case SparcRt.R_SPARC_WDISP30:
                 A = (int)rela.Addend;
                 P = ~P + 1;
                 sh = 2;
                 break;
+            case SparcRt.R_SPARC_RELATIVE:
+                A = (int)rela.Addend;
+                B = program.SegmentMap.BaseAddress.ToUInt32();
+                break;
             case SparcRt.R_SPARC_COPY:
                 Debug.Print("Relocation type {0} not handled yet.", rt);
-                return;
+                return sym;
             default:
                 throw new NotImplementedException(string.Format(
                     "SPARC ELF relocation type {0} not implemented yet.",
@@ -115,8 +125,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var relW = program.CreateImageWriter(addr);
 
             var w = relR.ReadBeUInt32();
-            w += ((uint)(S + A + P) >> sh) & mask;
+            w += ((uint)(B + S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
+
+            return sym;
         }
 
         private string LoadString(uint symtabOffset, uint sym)

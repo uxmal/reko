@@ -107,11 +107,11 @@ T_10: (in fp : ptr64)
   Class: Eq_10
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_11: (in 0x0000000000000008 : word64)
+T_11: (in 8 : int64)
   Class: Eq_11
   DataType: int64
   OrigDataType: int64
-T_12: (in fp + 0x0000000000000008 : word64)
+T_12: (in fp + 8 : word64)
   Class: Eq_9
   DataType: ptr64
   OrigDataType: ptr64
@@ -159,7 +159,7 @@ T_23: (in 0x00000000004005C5 : word64)
   Class: Eq_16
   DataType: (ptr64 Eq_16)
   OrigDataType: (ptr64 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))))
-T_24: (in fp + 0x0000000000000008 : word64)
+T_24: (in fp + 8 : word64)
   Class: Eq_18
   DataType: (ptr64 (ptr64 char))
   OrigDataType: (ptr64 (ptr64 char))

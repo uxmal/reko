@@ -43,6 +43,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         private Dictionary<string, Identifier> globals;
         private ServiceContainer sc;
         private IProcessorArchitecture arch;
+        private Address addrFn;
 
         [SetUp]
         public void Setup()
@@ -50,6 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.mr = new MockRepository();
             this.globals = new Dictionary<string, Identifier>();
             this.sc = new ServiceContainer();
+            this.addrFn = Address.Ptr32(0x00100000);
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var cfgSvc = mr.Stub<IConfigurationService>();
@@ -63,7 +65,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
 
         public void Global(string name, DataType dt)
         {
-            globals.Add(name, new Identifier(name, dt, new MemoryStorage()));
+            globals.Add(name, Identifier.Global(name, dt));
         }
 
         private Procedure RunFuncTest(params string[] lines)
@@ -83,7 +85,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             {
                 pb.Globals.Add(de.Key, de.Value);
             }
-            var proc = pb.RegisterFunction(fn);
+            var proc = pb.RegisterFunction(fn, addrFn);
             pb.TranslateFunction(fn);
             return proc;
         }
@@ -294,23 +296,6 @@ l7:
 foo_exit:
 ";
             AssertProc(sExp, proc);
-        }
-
-        [Ignore("Only works on @uxmal's machine right now")]
-        [Test]
-        public void LLPB_File()
-        {
-            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
-            {
-
-                var parser = new LLVMParser(new LLVMLexer(rdr));
-                var module = parser.ParseModule();
-                var program = new Program();
-                mr.ReplayAll();
-
-                var pb = new ProgramBuilder(sc, program);
-                program = pb.BuildProgram(module);
-            }
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Reko.Arch.RiscV
                 default:
                     host.Warn(
                         instr.Address, 
-                        "Rewriting of Risc-V instruction '{0}' not implemented yet.",
+                        "Risc-V instruction '{0}' not supported yet.",
                         instr.opcode);
                     rtlc = InstrClass.Invalid;
                     m.Invalid();

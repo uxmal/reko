@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Arch.Arm.AArch32;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Arch.Arm
             var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
 
             var rdr = mem.CreateLeReader(0);
-            var rw = arch.CreateRewriter(rdr, new ArmProcessorState(arch), new StorageBinder(), null);
+            var rw = arch.CreateRewriter(rdr, new AArch32ProcessorState(arch), new StorageBinder(), null);
             var rtl = rw.First().Instructions[0];
             Assert.AreEqual("r1 = r2 & r3", rtl.ToString());
         }

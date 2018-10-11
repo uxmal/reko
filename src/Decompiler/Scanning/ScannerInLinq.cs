@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,7 +32,11 @@ using Reko.Core.Types;
 
 namespace Reko.Scanning
 {
-    public class ScannerInLinq : ScanResults
+    using block = ScanResults.block;
+    using instr = ScanResults.instr;
+    using link = ScanResults.link;
+
+    public class ScannerInLinq
     {
         // change @binary_size to simulate a large executable
         //private const int binary_size = 10;
@@ -122,7 +126,7 @@ namespace Reko.Scanning
             // Remove blocks that fall off the end of the segment
             // or into data.
             Probe(sr);
-            sr.ICFG = BuildIcfg(sr, the_blocks);
+            sr.ICFG = BuildIcfg(sr, program.NamingPolicy, the_blocks);
             Probe(sr);
             sr.Dump("After shingle scan");
 
@@ -286,7 +290,7 @@ namespace Reko.Scanning
                     group link by link.first into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr instr))
+                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out var instr))
                     instr.succ = cSucc.Count;
             }
             // Count and save the # of predecessors for each instruction.
@@ -295,7 +299,7 @@ namespace Reko.Scanning
                     group link by link.second into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                if (sr.FlatInstructions.TryGetValue(cPred.addr, out instr instr))
+                if (sr.FlatInstructions.TryGetValue(cPred.addr, out var instr))
                     instr.pred = cPred.Count;
             }
 
@@ -415,7 +419,10 @@ namespace Reko.Scanning
             return false;
         }
 
-        public static DiGraph<RtlBlock> BuildIcfg(ScanResults sr, Dictionary<Address, block> blocks)
+        public static DiGraph<RtlBlock> BuildIcfg(
+            ScanResults sr,
+            NamingPolicy namingPolicy,
+            Dictionary<Address, block> blocks)
         {
             var icfg = new DiGraph<RtlBlock>();
             var map = new Dictionary<Address, RtlBlock>();
@@ -423,7 +430,7 @@ namespace Reko.Scanning
                 from b in blocks.Values
                 join i in sr.FlatInstructions.Values on b.id equals i.block_id into instrs
                 orderby b.id
-                select new RtlBlock(b.id, b.id.GenerateName("l", ""))
+                select new RtlBlock(b.id, namingPolicy.BlockName(b.id))
                 {
                     Instructions = instrs.Select(x => x.rtl).ToList()
                 };

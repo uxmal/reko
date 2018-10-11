@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Scanning
         {
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
-            sr.ICFG = ScannerInLinq.BuildIcfg(sr, blocks);
+            sr.ICFG = ScannerInLinq.BuildIcfg(sr, NamingPolicy.Instance, blocks);
         }
 
         private void RemoveConflictingBlocks(params uint[] wProcStarts)

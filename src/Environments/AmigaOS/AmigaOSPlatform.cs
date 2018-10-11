@@ -77,7 +77,11 @@ namespace Reko.Environments.AmigaOS
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
-            mapKickstartToListOfLibraries = (Dictionary<string,object>)env.Options["versionDependentLibraries"];
+            object option;
+            if (env.Options.TryGetValue("versionDependentLibraries", out option))
+            {
+                mapKickstartToListOfLibraries = (Dictionary<string, object>)option;
+            }
             return mapKickstartToListOfLibraries;
         }
 

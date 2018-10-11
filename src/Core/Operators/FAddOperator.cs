@@ -32,6 +32,11 @@ namespace Reko.Core.Operators
             return BuildConstant(c1.DataType, c2.DataType, c1.ToReal64() + c2.ToReal64());
         }
 
+        public override string AsCompound()
+        {
+            return " += ";
+        }
+
         public override string ToString()
         {
             return " + ";

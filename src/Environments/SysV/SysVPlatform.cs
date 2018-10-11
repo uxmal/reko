@@ -22,17 +22,13 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
-using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.SysV
 {
@@ -85,13 +81,13 @@ namespace Reko.Environments.SysV
                 return new X86_64CallingConvention(Architecture);
             case "xtensa":
                 return new XtensaCallingConvention(Architecture);
-            case "arm":                                        
+            case "arm":
                 return new Arm32CallingConvention(Architecture);
             case "arm-64":
                 return new Arm64CallingConvention(Architecture);
-            case "m68k":                                       
+            case "m68k":
                 return new M68kCallingConvention(Architecture);
-            case "avr8":                                       
+            case "avr8":
                 return new Avr8CallingConvention(Architecture);
             case "risc-v":
                 if (this.ccRiscV == null)
@@ -105,6 +101,8 @@ namespace Reko.Environments.SysV
                 return new SuperHCallingConvention(Architecture);
             case "alpha":
                 return new AlphaCallingConvention(Architecture);
+            case "zSeries":
+                return new zSeriesCallingConvention(Architecture);
             default:
                 throw new NotImplementedException(string.Format("Calling convention for {0} not implemented yet.", Architecture.Description));
             }
@@ -184,8 +182,19 @@ namespace Reko.Environments.SysV
             switch (Architecture.Name)
             {
             case "mips-be-32":
+            case "mips-le-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
                 m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint)addr.ToLinear()));
+                break;
+            case "zSeries":
+                // Stack parameters are passed in starting at offset +160 from the 
+                // stack; everything at lower addresses is local to the called procedure's
+                // frame.
+                m.Assign(
+                    proc.Frame.EnsureRegister(Architecture.GetRegister(15)),
+                    m.ISub(
+                        proc.Frame.FramePointer,
+                        Constant.Int(proc.Frame.FramePointer.DataType, 160)));
                 break;
             }
         }

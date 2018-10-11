@@ -268,6 +268,11 @@ namespace Reko.Arch.X86
             return Registers.All.Where(a => a != null).ToArray();
         }
 
+        public override List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return this.mode.InlineCall(addrCallee, addrContinuation, rdr, binder);
+        }
+
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
             if (options != null)

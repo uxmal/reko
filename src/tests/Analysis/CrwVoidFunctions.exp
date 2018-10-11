@@ -22,7 +22,7 @@ l0C00_0000:
 	sp = fp
 	si = 0x0100
 	fn0C00_0010(si, di, ds)
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0100
 	fn0C00_0017(di, ds, wLoc02)
 	sp = fp
@@ -82,12 +82,12 @@ fn0C00_0017_entry:
 	// succ:  l0C00_0017
 l0C00_0017:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	bx = wArg02
 	ax = Mem0[ds:bx + 0x0002:word16]
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = ax
 	fn0C00_002C(di, ds, wLoc04)
 	sp = fp - 0x0002
@@ -144,9 +144,9 @@ fn0C00_002C_entry:
 	// succ:  l0C00_002C
 l0C00_002C:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	ax = wArg02
 	Mem0[ds:di:word16] = ax
 	bp = wLoc02

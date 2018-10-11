@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -164,6 +165,15 @@ namespace Reko.Loading
                     throw new ApplicationException(
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
                 }
+            }
+            if (addrLoad.DataType.BitSize == 16 && image.Length > 65535)
+            {
+                //$HACK: this works around issues when a large ROM image is read
+                // for a 8- or 16-bit processor. Once we have a story for overlays
+                // this can go away.
+                var newImage = new byte[65535];
+                Array.Copy(image, newImage, newImage.Length);
+                image = newImage;
             }
 
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);

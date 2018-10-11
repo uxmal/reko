@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -26,12 +26,12 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaInstruction : MachineInstruction
     {
-        public override InstrClass InstructionClass {  get { return InstrClass.Invalid; } }
-
         public Opcode Opcode;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
+
+        public override InstrClass InstructionClass {  get { return InstrClass.Invalid; } }
 
         public override int OpcodeAsInteger {  get { return (int)Opcode;  } }
 

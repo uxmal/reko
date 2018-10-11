@@ -33,12 +33,12 @@ fn0C00_0000_exit:
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_2 = fp - 0x0002
+          sp_2 = fp - 2
           sp_14 = fp
 sp_1: orig: sp
     def:  sp_1 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp - 0x0002
+    def:  sp_2 = fp - 2
 si:si
     def:  def si
     uses: wLoc02_4 = si
@@ -123,7 +123,7 @@ fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
 	sp_1 = fp
-	sp_2 = fp - 0x0002
+	sp_2 = fp - 2
 	wLoc02_4 = si
 	SCZO_6 = cond(cx - 0x0001)
 	SZO_7 = SCZO_6 (alias)

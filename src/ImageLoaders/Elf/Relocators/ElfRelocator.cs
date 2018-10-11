@@ -50,7 +50,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public abstract void Relocate(Program program);
 
-        public abstract void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
+        public abstract ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
 
         public abstract string RelocationTypeToString(uint type);
 
@@ -82,6 +82,22 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return null;
         }
 
+        /// <summary>
+        /// Creates a symbol that refers to the location of a PLT stub functon, based on the value
+        /// found in the GOT for that PLT stub.
+        /// </summary>
+        /// <remarks>
+        /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
+        /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
+        /// versions of GCC put, in the GOT entry for the relication, a pointer to the PLT stub + 6 bytes.
+        /// We remove those 6 bytes to obtain a pointer to the PLT stub.
+        /// </remarks>
+        protected ElfSymbol CreatePltStubSymbolFromRelocation(ElfSymbol sym, ulong gotEntry, int offset)
+        {
+            sym.Value = (ulong)((long)gotEntry - offset);   // skip past the Jmp [ebx+xxxxxxxx]
+            return sym;
+        }
+
         protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
         {
             return null;
@@ -104,18 +120,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 DumpDynamicSegment(dynSeg);
 
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_STRTAB, out var strtab);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_SYMTAB, out var symtab);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_STRTAB, out var strtab);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var symtab);
 
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELA, out var rela);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELASZ, out var relasz);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELAENT, out var relaent);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELA, out var rela);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELASZ, out var relasz);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELAENT, out var relaent);
 
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_REL, out var rel);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELSZ, out var relsz);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_RELENT, out var relent);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_REL, out var rel);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELSZ, out var relsz);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELENT, out var relent);
 
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_SYMENT, out var syment);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMENT, out var syment);
                 if (symtab == null || (rela == null && rel == null))
                     continue;
                 if (strtab == null)
@@ -147,6 +163,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
 
                 // Generate a symbol for each relocation.
+                Debug.Print("Relocating entries in .dynamic:");
                 foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                 {
                     symbols.Add(elfSym);
@@ -157,9 +174,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 }
 
                 // Relocate the DT_JMPREL table.
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_JMPREL, out var jmprel);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_PLTRELSZ, out var pltrelsz);
-                Loader.DynamicEntries.TryGetValue(ElfLoader.DT_PLTREL, out var pltrel);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_JMPREL, out var jmprel);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTRELSZ, out var pltrelsz);
+                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTREL, out var pltrel);
                 if (jmprel != null && pltrelsz != null && pltrel != null)
                 {
                     if (pltrel.SValue == 7) // entries are in RELA format.
@@ -176,6 +193,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         continue;
                     }
 
+                    Debug.Print("Relocating entries in DT_JMPREL:");
                     foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
@@ -237,7 +255,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
-                Debug.Print("Relocating entries:");
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
@@ -247,7 +264,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    Debug.Print("  {0}: symbol {1}", relocation, elfSym);
+                    Debug.Print("  {0}: symbol {1} type: {2}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info));
                     relocator.RelocateEntry(program, elfSym, null, relocation);
                     symbols.Add(elfSym);
                 }
@@ -279,6 +296,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 return relocator.Loader.LoadRelEntry(rdr);
             }
+        }
+
+        /// <summary>
+        /// Allow processor specific location of the GOT pointers.
+        /// </summary>
+        /// <remarks>
+        /// It may be the case that a specific ELF ABI dictates how you can
+        /// recover GOT pointers safely from a binary. If there is no safe
+        /// way to get GOT pointers, fallback to ElfLoader.LocateGotPointers which
+        /// goes about it in a hacky way.
+        /// </remarks>
+        public virtual void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+             Loader.LocateGotPointers(program, symbols);
         }
     }
 
@@ -348,7 +379,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
-                Debug.Print("REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo, "REL: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
                     section.RelocatedSection.Name);
@@ -357,11 +388,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rel = Elf32_Rel.Read(rdr);
-                    Debug.Print("  off:{0:X8} type:{1,-16} {3,3} {2}",
-                                    rel.r_offset,
-                                    RelocationTypeToString(rel.r_info & 0xFF),
-                                    symbols[(int)(rel.r_info >> 8)].Name,
-                                    (int)(rel.r_info >> 8));
+                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose,
+                        "  off:{0:X8} type:{1,-16} {3,3} {2}",
+                        rel.r_offset,
+                        RelocationTypeToString(rel.r_info & 0xFF),
+                        symbols[(int)(rel.r_info >> 8)].Name,
+                        (int)(rel.r_info >> 8));
                 }
             }
         }
@@ -371,7 +403,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
-                Debug.Print("RELA: offset {0:X} symbol section {1}, relocating in section {2}",
+                DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo, 
+                    "RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
                     section.RelocatedSection.Name);
@@ -381,7 +414,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
-                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
+                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose,
+                        "  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
                         rela.r_offset,
                         RelocationTypeToString(rela.r_info & 0xFF),
                         symbols[(int)(rela.r_info >> 8)].Name,

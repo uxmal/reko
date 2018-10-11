@@ -99,7 +99,7 @@ namespace Reko.Arch.M68k
             if (pre != null)
             {
                 var ea = binder.EnsureRegister(pre.Register);
-                m.Assign(ea, m.ISub(ea, m.Int32(DataWidth.Size)));
+                m.Assign(ea, m.ISubS(ea, DataWidth.Size));
                 return m.Mem(DataWidth, ea);
             }
             var post = operand as PostIncrementMemoryOperand;
@@ -108,7 +108,7 @@ namespace Reko.Arch.M68k
                 var r = binder.EnsureRegister(post.Register);
                 var tmp = binder.CreateTemporary(DataWidth);
                 m.Assign(tmp, m.Mem(DataWidth, r));
-                m.Assign(r, m.IAdd(r, m.Int32(DataWidth.Size)));
+                m.Assign(r, m.IAddS(r, DataWidth.Size));
                 return tmp;
             }
             var indidx = operand as IndirectIndexedOperand;
@@ -158,7 +158,7 @@ namespace Reko.Arch.M68k
             }
             Expression ea = binder.EnsureRegister(indidx.ARegister);
             if (indidx.Imm8 != 0)
-                ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                ea = m.IAddS(ea, indidx.Imm8);
             return ea;
         }
 
@@ -257,7 +257,7 @@ namespace Reko.Arch.M68k
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(src, m.Mem(dataWidth, r))); 
                 m.Assign(m.Mem(dataWidth, r), tmp);
-                m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
+                m.Assign(r, m.IAddS(r, dataWidth.Size));
                 return tmp;
             }
             var pre = operand as PredecrementMemoryOperand;
@@ -265,7 +265,7 @@ namespace Reko.Arch.M68k
             {
                 var r = binder.EnsureRegister(pre.Register);
                 src = Spill(src, r);
-                m.Assign(r, m.ISub(r, m.Int32(dataWidth.Size)));
+                m.Assign(r, m.ISubS(r, dataWidth.Size));
                 var load = m.Mem(dataWidth, r);
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(src, load));
@@ -277,7 +277,7 @@ namespace Reko.Arch.M68k
             {
                 Expression ea = binder.EnsureRegister(indidx.ARegister);
                 if (indidx.Imm8 != 0)
-                    ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                    ea = m.IAddS(ea, indidx.Imm8);
                 Expression ix = binder.EnsureRegister(indidx.XRegister);
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
@@ -303,7 +303,7 @@ namespace Reko.Arch.M68k
                 ea = bReg;
                 if (mem.Offset != null)
                 {
-                    ea = m.IAdd(bReg, Constant.Int32(mem.Offset.ToInt32()));
+                    ea = m.IAddS(bReg, mem.Offset.ToInt32());
                 }
             }
             return m.Mem(dataWidth, ea);
@@ -357,14 +357,14 @@ namespace Reko.Arch.M68k
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(m.Mem(dataWidth, r)));
                 m.Assign(m.Mem(dataWidth, r), tmp);
-                m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
+                m.Assign(r, m.IAddS(r, dataWidth.Size));
                 return tmp;
             }
             var pre = operand as PredecrementMemoryOperand;
             if (pre != null)
             {
                 var r = binder.EnsureRegister(pre.Register);
-                m.Assign(r, m.ISub(r, m.Int32(dataWidth.Size)));
+                m.Assign(r, m.ISubS(r, dataWidth.Size));
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(m.Mem(dataWidth, r)));
                 m.Assign(m.Mem(dataWidth, r), tmp);
@@ -375,7 +375,7 @@ namespace Reko.Arch.M68k
             {
                 Expression ea = binder.EnsureRegister(indidx.ARegister);
                 if (indidx.Imm8 != 0)
-                    ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                    ea = m.IAddS(ea, indidx.Imm8);
                 Expression ix = binder.EnsureRegister(indidx.XRegister);
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
@@ -456,14 +456,14 @@ namespace Reko.Arch.M68k
                 var rExp = Spill(src, r);
                 var load = m.Mem(dataWidth, r);
                 m.Assign(load, rExp);
-                m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
+                m.Assign(r, m.IAddS(r, dataWidth.Size));
                 return src;
             }
             var pre = opDst as PredecrementMemoryOperand;
             if (pre != null)
             {
                 var r = binder.EnsureRegister(pre.Register);
-                m.Assign(r, m.ISub(r, m.Int32(dataWidth.Size)));
+                m.Assign(r, m.ISubS(r, dataWidth.Size));
                 var rExp = Spill(src, r);
                 var load = m.Mem(dataWidth, rExp);
                 m.Assign(load, src);

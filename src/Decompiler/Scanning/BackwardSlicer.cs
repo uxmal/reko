@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using System;
@@ -54,15 +55,19 @@ namespace Reko.Scanning
         internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Warning };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
+        private RtlBlock rtlBlock;
+        private ProcessorState processorState;
         private SliceState state;
         private WorkList<SliceState> worklist;
         private HashSet<RtlBlock> visited;
         private ExpressionValueComparer cmp;
         private ExpressionSimplifier simp;
 
-        public BackwardSlicer(IBackWalkHost<RtlBlock, RtlInstruction> host)
+        public BackwardSlicer(IBackWalkHost<RtlBlock, RtlInstruction> host, RtlBlock rtlBlock, ProcessorState state)
         {
             this.host = host;
+            this.rtlBlock = rtlBlock;
+            this.processorState = state;
             this.worklist = new WorkList<SliceState>();
             this.visited = new HashSet<RtlBlock>();
             this.cmp = new ExpressionValueComparer();
@@ -83,6 +88,95 @@ namespace Reko.Scanning
         // The set of values the index expression may have, expressed as strided interval.
         public StridedInterval JumpTableIndexInterval { get { return state.JumpTableIndexInterval; } }    
         public Expression JumpTableIndexToUse { get { return state.JumpTableIndexToUse; } }
+
+        public TableExtent DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, DecompilerEventListener listener)
+        {
+            if (!Start(rtlBlock, host.BlockInstructionCount(rtlBlock) - 1, xfer.Target))
+            {
+                // No registers were found, so we can't trace back. 
+                return null;
+            }
+            while (Step())
+                ;
+
+            var jumpExpr = this.JumpTableFormat;
+            var interval = this.JumpTableIndexInterval;
+            var index = this.JumpTableIndexToUse;
+            var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
+            if (index == null)
+            {
+                // Weren't able to find the index register,
+                // try finding it by blind pattern matching.
+                index = this.FindIndexWithPatternMatch(this.JumpTableFormat);
+                if (index == null)
+                {
+                    // This is likely an indirect call like a C++
+                    // vtable dispatch. Since these are common, we don't 
+                    // spam the user with warnings.
+                    return null;
+                }
+
+                // We have a jump table, and we've guessed the index expression.
+                // At this point we've given up on knowing the exact size 
+                // of the table, but we do know that it must be at least
+                // more than one entry. The safest assumption is that it
+                // has two entries.
+                listener.Warn(
+                    listener.CreateAddressNavigator(host.Program, addrSwitch),
+                    "Unable to determine size of call or jump table; there may be more than 2 entries.");
+                ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
+            }
+            else if (interval.IsEmpty)
+            {
+                return null;
+            }
+            else
+            {
+                ctx.Add(this.JumpTableIndex, new IntervalValueSet(this.JumpTableIndex.DataType, interval));
+            }
+            var vse = new ValueSetEvaluator(host.Architecture, host.SegmentMap, ctx, this.processorState);
+            var (values, accesses) = vse.Evaluate(jumpExpr);
+            var vector = values.Values
+                .TakeWhile(c => c != Constant.Invalid)
+                .Take(2000)             // Arbitrary limit
+                .Select(ForceToAddress)
+                .TakeWhile(a => a != null)
+                .ToList();
+            if (vector.Count == 0)
+                return null;
+            return new TableExtent
+            {
+                Targets = vector,
+                Accesses = accesses,
+                Index = index,
+            };
+        }
+
+        private Address ForceToAddress(Expression arg)
+        {
+            if (arg is Address addr)
+                return addr;
+            if (arg is Constant c)
+            {
+                if (c.DataType.Size < host.Architecture.PointerType.Size &&
+                    host.Architecture.PointerType == PrimitiveType.SegPtr32)
+                {
+                    var sel = rtlBlock.Address.Selector.Value;
+                    return host.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
+                }
+                return host.Architecture.MakeAddressFromConstant(c);
+            }
+            if (arg is MkSequence seq)
+            {
+                if (seq.Expressions.Length == 2 &&
+                    seq.Expressions[0] is Constant hd && seq.Expressions[1] is Constant tl)
+                {
+                    return host.Architecture.MakeSegmentedAddress(hd, tl);
+                }
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Start a slice by examining any variables in the indirect jump
@@ -255,7 +349,9 @@ namespace Reko.Scanning
 
             public Expression MakeSegmentedAddress(Constant c1, Constant c2)
             {
-                throw new NotImplementedException();
+                return Address.SegPtr(
+                    c1.ToUInt16(),
+                    c2.ToUInt16());
             }
 
             public void RemoveExpressionUse(Expression expr)
@@ -470,10 +566,10 @@ namespace Reko.Scanning
             // make the mistake and use LE/LT for boundary checking in indirect transfers.
             case ConditionCode.LE: return StridedInterval.Create(1, 0, right.ToInt64());
             case ConditionCode.LT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
-            case ConditionCode.ULE: return StridedInterval.Create(1, 0, right.ToInt64());
-            case ConditionCode.ULT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
-            case ConditionCode.UGE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
-            case ConditionCode.UGT: return StridedInterval.Create(1, right.ToInt64() + 1, long.MaxValue);
+            case ConditionCode.ULE: return StridedInterval.Create(1, 0, (long) right.ToUInt64());
+            case ConditionCode.ULT: return StridedInterval.Create(1, 0, (long) right.ToUInt64() - 1);
+            case ConditionCode.UGE: return StridedInterval.Create(1, (long)right.ToUInt64(), long.MaxValue);
+            case ConditionCode.UGT: return StridedInterval.Create(1, (long)right.ToUInt64() + 1, long.MaxValue);
             case ConditionCode.EQ:
             case ConditionCode.NE:
             case ConditionCode.None:
@@ -522,8 +618,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitAssignment(RtlAssignment ass)
         {
-            var id = ass.Dst as Identifier;
-            if (id == null)
+            if (!(ass.Dst is Identifier id))
             {
                 // Ignore writes to memory.
                 return null;
@@ -541,6 +636,8 @@ namespace Reko.Scanning
             }
             this.assignLhs = deadRegs[0].Key;
             var se = ass.Src.Accept(this, deadRegs[0].Value);
+            if (se == null)
+                return se;
             var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
             this.JumpTableFormat = slicer.Simplify(newJt);
             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
@@ -666,7 +763,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitConditionalExpression(ConditionalExpression c, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public SlicerResult VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)
@@ -974,5 +1071,12 @@ namespace Reko.Scanning
         public Dictionary<Expression, BackwardSlicerContext> LiveExprs = new Dictionary<Expression, BackwardSlicerContext>();
         public Expression SrcExpr;
         public bool Stop;       // Set to true if the analysis should stop.
+    }
+
+    public class TableExtent
+    {
+        public List<Address> Targets;
+        public Dictionary<Address, DataType> Accesses;
+        public Expression Index;
     }
 }

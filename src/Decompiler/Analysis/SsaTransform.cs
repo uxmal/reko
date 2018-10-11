@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Analysis
 {
@@ -92,7 +93,7 @@ namespace Reko.Analysis
 		private Statement InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
-                0,
+                b.Address.ToLinear(),
 				new PhiAssignment(v, b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
@@ -422,6 +423,7 @@ namespace Reko.Analysis
             private IImportResolver importResolver;
             private HashSet<Identifier> existingDefs;
             private HashSet<Statement> newPhiStatements;
+            private int recursionGuard;
 
             /// <summary>
             /// Walks the dominator tree, renaming the different definitions of variables
@@ -465,7 +467,10 @@ namespace Reko.Analysis
                 if (!existingDefs.Contains(id))
                 {
                     var sid = this.ssa.Identifiers.Add(id, null, null, false);
-                    sid.DefStatement = new Statement(0, new DefInstruction(id), entryBlock);
+                    sid.DefStatement = new Statement(
+                        proc.EntryAddress.ToLinear(),
+                        new DefInstruction(id),
+                        entryBlock);
                     entryBlock.Statements.Add(sid.DefStatement);
                     existingDefs.Add(id);
                     return sid;
@@ -482,6 +487,12 @@ namespace Reko.Analysis
 			/// <param name="n">Block to rename</param>
 			public void RenameBlock(Block n)
 			{
+                if (this.recursionGuard > 1000)
+                {
+                    Debug.Print("Stopping recursion in SsaTransform.RenameBlock");
+                    return;
+                }
+                ++this.recursionGuard;
 				var wasonentry = new Dictionary<Identifier, Identifier>(rename);
 
 				// Rename variables in all blocks except the starting block which
@@ -529,6 +540,7 @@ namespace Reko.Analysis
 						RenameBlock(c);
 				}
 				rename = wasonentry;
+                --this.recursionGuard;
 			}
 
             /// <summary>
@@ -550,7 +562,9 @@ namespace Reko.Analysis
                     .Where(id => !existing.Contains(id) &&
                                  !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
-                    .Select(id => new Statement(0, new UseInstruction(id), block))
+                    .Select(id => new Statement(
+                        block.Address.ToLinear(),
+                        new UseInstruction(id), block))
                     .ToList();
                 block.Statements.AddRange(stms);
                 stms.ForEach(u =>
@@ -1050,7 +1064,10 @@ namespace Reko.Analysis
         private SsaIdentifier NewPhi( Identifier id, Block b)
         {
             var phiAss = new PhiAssignment(id, 0);
-            var stm = new Statement(0, phiAss, b);
+            var stm = new Statement(
+                b.Address.ToLinear(),
+                phiAss,
+                b);
             b.Statements.Insert(0, stm);
 
             var sid = ssa.Identifiers.Add(phiAss.Dst, stm, phiAss.Src, false);
@@ -1122,7 +1139,9 @@ namespace Reko.Analysis
         private SsaIdentifier NewDef(Identifier id, Block b)
         {
             var sid = ssa.Identifiers.Add(id, null, null, false);
-            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+            sid.DefStatement = new Statement(
+                b.Address.ToLinear(),
+                new DefInstruction(id), b);
             b.Statements.Add(sid.DefStatement);
             return sid;
         }

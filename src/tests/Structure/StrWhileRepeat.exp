@@ -34,7 +34,7 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 	word16 ax_2 = 0x0000;
 	while (bx != 0x0000)
 	{
-		ax_2 = ax_2 + Mem0[ds:bx:word16];
+		ax_2 += Mem0[ds:bx:word16];
 		bx = Mem0[ds:bx + 0x0002:word16];
 	}
 	Mem14[ds:0x0300:word16] = ax_2;
@@ -42,7 +42,7 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 	do
 	{
 		word16 si_23 = Mem14[ds:si + 0x0002:word16];
-		ax_16 = ax_16 + Mem14[ds:si:word16];
+		ax_16 += Mem14[ds:si:word16];
 		si = si_23;
 	} while (si_23 != 0x0000);
 	Mem28[ds:0x0302:word16] = ax_16;

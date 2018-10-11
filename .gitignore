@@ -2,7 +2,7 @@
 [Bb]in
 TestResults
 /.vs
-/src/Samples/TravisRelease
+/src/Samples/UnixRelease
 /src/.vs
 *.csproj.user
 *.vcxproj.user

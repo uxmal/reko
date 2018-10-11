@@ -6039,14 +6039,14 @@ fn00403C20_entry:
 
 l00403C20:
 	word32 r10_5 = Mem0[r2 + 244:word32]
-	word32 r11_10 = r10_5 + 4
+	word32 r11_10 = r10_5
 	word32 r10_9 = Mem0[Mem0[r2 + 240:word32]:word32] * 12 + r10_5
 // DataOut: r0 r10 r11 r2 r3 r30
 // DataOut (flags): crX
 // SymbolicIn: r1:fp
 
 l00403C38:
-	branch Mem0[r11_10 + 0:word32] == r3 l00403C50
+	branch Mem0[r11_10 + 4:word32] == r3 l00403C50
 // DataOut: r0 r10 r11 r2 r3 r30
 // DataOut (flags): crX
 // SymbolicIn: r1:fp r4:<invalid> r10:<invalid> r11:<invalid>

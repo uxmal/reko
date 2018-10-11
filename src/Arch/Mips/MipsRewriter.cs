@@ -71,7 +71,7 @@ namespace Reko.Arch.Mips
                 default:
                     host.Error(
                         instr.Address,
-                        string.Format("Rewriting of MIPS instruction '{0}' is not implemented yet.", instr));
+                        string.Format("MIPS instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Opcode.illegal;
                 case Opcode.illegal:
@@ -95,7 +95,7 @@ namespace Reko.Arch.Mips
                 case Opcode.bgezl:
                     RewriteBranch0(instr, m.Ge, true); break;
                 case Opcode.bgezal:
-                    RewriteBranch0(instr, m.Ge, false); break;
+                    RewriteBgezal(instr); break;
                 case Opcode.bgezall:
                     RewriteBranch0(instr, m.Ge, true); break;
                 case Opcode.bgtz:
@@ -192,6 +192,7 @@ namespace Reko.Arch.Mips
                 case Opcode.mov_d: RewriteCopy(instr); break;
                 case Opcode.mov_s: RewriteCopy(instr); break;
                 case Opcode.mtc1: RewriteMtc1(instr); break;
+                case Opcode.mul: RewriteMul(instr, m.SMul, PrimitiveType.Int32); break;
                 case Opcode.mult: RewriteMul(instr, m.SMul, PrimitiveType.Int64); break;
                 case Opcode.multu: RewriteMul(instr, m.UMul, PrimitiveType.UInt64); break;
                 case Opcode.mul_s: RewriteMul(instr, m.FMul, PrimitiveType.Real32); break;

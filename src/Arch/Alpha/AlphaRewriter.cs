@@ -65,6 +65,12 @@ namespace Reko.Arch.Alpha
                 default:
                     EmitUnitTest();
                     Invalid();
+                    host.Warn(
+                       instr.Address,
+                       string.Format(
+                           "Alpha AXP instruction '{0}' not supported yet.",
+                           instr.Opcode));
+
                     break;
                 case Opcode.invalid:
                     Invalid();

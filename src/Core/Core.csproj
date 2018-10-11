@@ -73,8 +73,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -108,8 +108,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
-    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
+    <OutputPath>bin\x86\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -142,8 +142,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
-    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
+    <OutputPath>bin\x64\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -180,6 +180,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Absyn\AbsynCase.cs" />
+    <Compile Include="Absyn\AbsynCompoundAssignment.cs" />
     <Compile Include="Absyn\AbsynContinue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -189,6 +190,7 @@
     <Compile Include="Absyn\AbsynDoWhile.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Absyn\AbsynFor.cs" />
     <Compile Include="Absyn\AbsynGoto.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -281,6 +283,7 @@
     <Compile Include="Dfa\PatternParser.cs" />
     <Compile Include="Dfa\State.cs" />
     <Compile Include="Dfa\TreeNode.cs" />
+    <Compile Include="DispatchProcedure.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="Endianness.cs" />
     <Compile Include="EnumerableEx.cs" />
@@ -328,8 +331,10 @@
     <Compile Include="IRFormat\IRToken.cs" />
     <Compile Include="IStorageBinder.cs" />
     <Compile Include="Lib\ArticulationPointFinder.cs" />
+    <Compile Include="Lib\Bitfield.cs" />
     <Compile Include="Lib\Dijkstra.cs" />
     <Compile Include="Lib\FibonacciHeap.cs" />
+    <Compile Include="Lib\Float16.cs" />
     <Compile Include="Lib\LinqAlgorithms.cs" />
     <Compile Include="Lib\LTDominatorGraph.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
@@ -449,6 +454,7 @@
     <Compile Include="Serialization\Json\JsonSymbols.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
     <Compile Include="Serialization\MemoryMap_v1.cs" />
+    <Compile Include="NamingPolicy.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectPersister.cs" />
@@ -458,7 +464,6 @@
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
     <Compile Include="Serialization\Project_v4.cs" />
-    <Compile Include="Serialization\QualifiedType_v1.cs" />
     <Compile Include="Serialization\ReferenceType_v1.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
     <Compile Include="Serialization\SerializedProject.cs" />
@@ -733,6 +738,7 @@
     <Compile Include="StatementCorrelatedException.cs" />
     <Compile Include="StatementList.cs" />
     <Compile Include="StorageBinder.cs" />
+    <Compile Include="StorageFactory.cs" />
     <Compile Include="StridedInterval.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
@@ -749,6 +755,7 @@
     <Compile Include="TypedServiceProvider.cs" />
     <Compile Include="TypeLibraryDeserializer.cs" />
     <Compile Include="TypeLibraryLoader.cs" />
+    <Compile Include="TypeNamingPolicy.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -785,7 +792,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Types\QualifiedType.cs" />
+    <Compile Include="Types\Qualifier.cs" />
     <Compile Include="Types\ReferenceTo.cs" />
     <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">

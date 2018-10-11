@@ -11,9 +11,9 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = 0x0320
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = 0x0300
 	call fn0C00_0010 (retsize: 2;)
 	call fn0C00_0037 (retsize: 2;)
@@ -40,7 +40,7 @@ fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
 	sp = fp
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
@@ -58,7 +58,7 @@ l0C00_0010:
 	Mem0[ds:bx + 0x0028:real64] = rLoc1
 	sp = bp
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:

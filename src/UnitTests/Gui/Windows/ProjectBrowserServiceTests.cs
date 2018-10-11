@@ -207,6 +207,16 @@ namespace Reko.UnitTests.Gui.Windows
                 MouseWheel(this, e);
             }
 
+            public void PerformGotFocus(EventArgs e)
+            {
+                GotFocus(this, e);
+            }
+
+            public void PerformLostFocus(EventArgs e)
+            {
+                LostFocus(this, e);
+            }
+
             public void Invoke(Action action)
             {
                 throw new NotImplementedException();

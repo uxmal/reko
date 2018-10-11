@@ -26,10 +26,10 @@ fn10000000_entry:
 l10000000:
 	esp = fp
 	eax = Mem0[esp + 0x00000004:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebx
 	ebx = Mem0[esp + 0x00000010:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = ebp
 	ecx = (int32) Mem0[eax + 0x00000006:word16]
 	edx = (int32) Mem0[eax + 0x00000002:word16]
@@ -50,9 +50,9 @@ l10000000:
 	// succ:  l10000035 l10000107
 l10000035:
 	rLoc1 = (real64) Mem0[ebx:int32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = esi
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = edi
 	esi = esi ^ esi
 	SZO = cond(esi)
@@ -131,9 +131,9 @@ l100000DF:
 	ecx = Mem0[esp + 0x00000020:word32]
 	SCZO = cond(ebp - edi)
 	edi = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	esi = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	Mem0[ecx:word32] = eax
 	branch Test(LE,SZO) l10000107
 	// succ:  l100000FB l10000107
@@ -143,9 +143,9 @@ l100000FB:
 	// succ:  l10000107
 l10000107:
 	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	ebx = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

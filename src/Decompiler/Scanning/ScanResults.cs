@@ -39,9 +39,15 @@ namespace Reko.Scanning
     {
         public ScanResults()
         {
+            this.TransferTargets = new HashSet<Address>();
+            this.DirectlyCalledAddresses = new Dictionary<Address, int>();
+            this.Instructions = new SortedList<Address, RtlInstructionCluster>();
+            this.FlatInstructions = new SortedList<Address, ScanResults.instr>();
+            this.FlatEdges = new List<link>();
             this.IndirectCalls = new HashSet<Address>();
             this.IndirectJumps = new HashSet<Address>();
             this.Procedures = new List<RtlProcedure>();
+            this.Invalid = new HashSet<Address>();
             this.WatchedAddresses = new HashSet<Address>();
         }
 
@@ -118,6 +124,10 @@ namespace Reko.Scanning
         /// </summary>
         public HashSet<Address> IndirectCalls;
 
+        /// <summary>
+        /// Addresses which cannot possibly be valid instructions.
+        /// </summary>
+        public HashSet<Address> Invalid;
         /// <summary>
         /// Useful for debugging.
         /// </summary>

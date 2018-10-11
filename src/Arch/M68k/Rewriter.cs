@@ -76,7 +76,7 @@ namespace Reko.Arch.M68k
                 default:
                     host.Warn(
                         di.Address,
-                        "Rewriting M68k opcode '{0}' is not supported yet.",
+                        "M68k instruction '{0}' is not supported yet.",
                         di.code);
                     m.Invalid();
                     break;

@@ -21,6 +21,7 @@
 using Reko.Core.Types;
 using System;
 using System.ComponentModel;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -118,7 +119,11 @@ namespace Reko.Core.Serialization
 
 		public override string ToString()
 		{
-			return string.Format("prim({0},{1})", Domain, ByteSize);
+            var sb = new StringBuilder();
+			sb.AppendFormat("prim({0},{1}", Domain, ByteSize);
+            base.WriteQualifier(Qualifier, sb);
+            sb.Append(")");
+            return sb.ToString();
 		}
     }
 }

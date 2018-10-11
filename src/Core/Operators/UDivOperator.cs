@@ -34,7 +34,11 @@ namespace Reko.Core.Operators
             return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt32() / c2.ToUInt32()));
 		}
 
-		public override string ToString()
+        public override string AsCompound()
+        {
+            return " /= ";
+        }
+        public override string ToString()
 		{
 			return " /u ";
 		}

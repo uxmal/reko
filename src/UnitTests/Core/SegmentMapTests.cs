@@ -98,5 +98,34 @@ namespace Reko.UnitTests.Core
             ImageSegment s = segmentMap.Segments.Values[1];
             Assert.AreEqual(0x1000, s.Size);
         }
+
+        [Test]
+        public void Sm_MapLinearAddress()
+        {
+            var mem = new MemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
+            var segmentMap = new SegmentMap(mem.BaseAddress,
+                new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
+
+            var addr = segmentMap.MapLinearAddressToAddress(0x30);
+
+            Assert.AreEqual("00000030", addr.ToString());
+        }
+
+        [Test]
+        public void Sm_MapZeroLinearAddress()
+        {
+            var mem = new MemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
+            var segmentMap = new SegmentMap(mem.BaseAddress,
+                new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
+
+            try
+            {
+                var addr = segmentMap.MapLinearAddressToAddress(0);
+                Assert.Fail("Should have thrown an ArgumentOutOfRangeException");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
+        }
     }
 }

@@ -73,9 +73,9 @@ namespace Reko.Core
                 if (that.ModuleName != null)
                     return -1;
             }
-            else if (this.ModuleName == null)
+            else if (this.ModuleName != null)
             {
-                if (that.ModuleName != null)
+                if (that.ModuleName == null)
                     return 1;
             }
             else
@@ -119,7 +119,7 @@ namespace Reko.Core
         public override string ToString()
         {
             return string.Format(
-                ModuleName != null ? "{0}!{1}" : "{1}",
+                string.IsNullOrEmpty(ModuleName) ? "{1}" : "{0}!{1}",
                 ModuleName, 
                 ImportName);
         }

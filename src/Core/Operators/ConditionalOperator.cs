@@ -81,7 +81,6 @@ namespace Reko.Core.Operators
             return c1.ToInt32() != c2.ToInt32()
 				? Constant.True() 
 				: Constant.False();
-
 		}
 
 		public override string ToString()

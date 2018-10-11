@@ -48,7 +48,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private MockFactory mockFactory;
         private IMainForm form;
         private MainFormInteractor interactor;
-        private Program program;
         private MemoryStream xmlStm;
         private IArchiveBrowserService archSvc;
         private IDialogFactory dlgFactory;
@@ -206,7 +205,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        [Ignore("REvisit this after Gui-development merge 2018-03-12")]
         [Test]
         public void Mfi_FinishDecompilation()
         {
@@ -214,14 +212,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_LoadPreferences();
             Given_DecompilerInstance();
             Given_XmlWriter();
-            Given_SavePrompt(true);
-            dcSvc.Stub(d => d.Decompiler = null);
+            Given_SavePrompt(false);
+            dcSvc.Stub(d => d.Decompiler = null).IgnoreArguments();
+            decompiler.Stub(d => d.AnalyzeDataFlow());
+            decompiler.Stub(d => d.ReconstructTypes());
+            decompiler.Stub(d => d.StructureProgram());
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             brSvc.Expect(b => b.Reload());
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            interactor.OpenBinary(null);
+            interactor.OpenBinary("foo.exe");
+
             Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
             interactor.FinishDecompilation();
             Assert.AreSame(interactor.FinalPageInteractor, interactor.CurrentPhase);
@@ -570,20 +572,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             public string Title { get { return Text; } set { Text = value; } }
         }
 
-        private Program CreateFakeProgram()
-        {
-            Program prog = new Program();
-            prog.Architecture = new X86ArchitectureReal("x86-real-16");
-            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
-            prog.SegmentMap = new SegmentMap(
-                mem.BaseAddress,
-                new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
-            return prog;
-        }
-
         private void Given_MainFormInteractor()
         {
-            program = CreateFakeProgram();
             svcFactory = mr.StrictMock<IServiceFactory>();
             archSvc = mr.StrictMock<IArchiveBrowserService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();

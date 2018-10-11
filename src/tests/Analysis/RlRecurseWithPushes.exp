@@ -42,7 +42,7 @@ fn0C00_0007_entry:
 // SymbolicIn: sp:fp
 l0C00_0007:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = si
 	call fn0C00_0020 (retsize: 2; depth: 4)
 	si = wLoc02

@@ -66,6 +66,13 @@ namespace Reko.Arch.i8051
                 this.rtlc = InstrClass.Linear;
                 switch (instr.Opcode)
                 {
+                default:
+                    host.Warn(
+                       instr.Address,
+                       string.Format(
+                           "i8051 instruction '{0}' not supported yet.",
+                           instr.Opcode));
+                    goto case Opcode.Invalid;
                 case Opcode.Invalid:
                 case Opcode.reserved:
                     Invalid();

@@ -79,8 +79,8 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -113,8 +113,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
-    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
+    <OutputPath>bin\x86\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -147,8 +147,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
-    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
+    <OutputPath>bin\x64\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -196,6 +196,10 @@
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\M6800\M6800.csproj">
+      <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
+      <Name>M6800</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
       <Name>Mips</Name>
@@ -208,6 +212,18 @@
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\arch\PowerPC.Design\PowerPC.Design.csproj">
+      <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
+      <Name>PowerPC.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\SuperH\SuperH.csproj">
+      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
+      <Name>SuperH</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
+      <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
+      <Name>zSeries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
@@ -215,6 +231,14 @@
     <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj">
+      <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
+      <Name>Cpm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
+      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Name>SysV</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
       <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>

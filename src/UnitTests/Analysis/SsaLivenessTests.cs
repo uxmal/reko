@@ -29,6 +29,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -124,17 +125,19 @@ namespace Reko.UnitTests.Analysis
 			this.proc = proc;
 			Aliases alias = new Aliases(proc);
 			alias.Transform();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
 			SsaTransform sst = new SsaTransform(
                 new ProgramDataFlow(),
                 proc,
-                null,
+                importResolver,
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
 			ssa = sst.SsaState;
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new FakeDecompilerEventListener());
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, importResolver, new FakeDecompilerEventListener());
 			vp.Transform();
 			DeadCode.Eliminate(proc, ssa);
 			Coalescer coa = new Coalescer(proc, ssa);

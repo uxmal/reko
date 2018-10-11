@@ -36,8 +36,7 @@ namespace Reko.Arch.Vax
         {
             get
             {
-                InstrClass c;
-                if (!classOf.TryGetValue(Opcode, out c))
+                if (!classOf.TryGetValue(Opcode, out InstrClass c))
                 {
                     c = InstrClass.Linear;
                 }
@@ -74,9 +73,13 @@ namespace Reko.Arch.Vax
                     writer.WriteChar('#');
                     op.Write(writer, options);
                 }
-                else if (op is MemoryOperand && ((MemoryOperand)op).Base == Registers.pc)
+                else if (op is MemoryOperand mop && mop.Base == Registers.pc)
                 {
-                    var addr = this.Address + (this.Length + ((MemoryOperand)op).Offset.ToInt32());
+                    var addr = this.Address + this.Length;
+                    if (mop.Offset != null)
+                    {
+                        addr += mop.Offset.ToInt32();
+                    } 
                     if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                     {
                         writer.WriteAddress(addr.ToString(), addr);

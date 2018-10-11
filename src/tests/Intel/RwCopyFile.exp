@@ -22,7 +22,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	sp = sp - 0x0004
@@ -60,7 +60,7 @@ l0C00_003A:
 l0C00_003E:
 	sp = bp
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -99,7 +99,10 @@ namespace Reko.Analysis
 				}
 				else
 				{
-					var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
+					var stm = stmDef.Block.Statements.Insert(
+                        iStmDef + 1,
+                        stmDef.LinearAddress,
+                        new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
                     ssa.Uses.Add(stm);
 				}
 			}
@@ -113,7 +116,10 @@ namespace Reko.Analysis
 
 		public override Instruction TransformDefInstruction(DefInstruction def)
 		{
-            var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Identifier.DataType), def.Identifier));
+            var stm = stmDef.Block.Statements.Insert(
+                iStmDef + 1,
+                stmDef.LinearAddress,
+                new Store(Dereference(idOut, def.Identifier.DataType), def.Identifier));
             ssa.Uses.Add(stm);
             return def;
 		}

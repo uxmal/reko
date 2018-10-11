@@ -1,14 +1,14 @@
 fp:fp
     def:  def fp
     uses: esp_1 = fp
-          esp_4 = fp - 0x00000004
-          esp_9 = fp - 0x00000008
-          esp_59 = fp - 0x00000004
+          esp_4 = fp - 4
+          esp_9 = fp - 8
+          esp_59 = fp - 4
           esp_61 = fp
-          esp_63 = fp - 0x0000000C
-          esp_65 = fp - 0x00000010
-          esp_139 = fp - 0x0000000C
-          esp_141 = fp - 0x00000008
+          esp_63 = fp - 12
+          esp_65 = fp - 16
+          esp_139 = fp - 12
+          esp_141 = fp - 8
 esp_1: orig: esp
     def:  esp_1 = fp
 dwArg04:Stack +0004
@@ -22,7 +22,7 @@ eax_3: orig: eax
           ecx_22 = (int32) Mem21[eax_3 + 0x00000004:word16]
           eax_23 = (int32) Mem21[eax_3:word16]
 esp_4: orig: esp
-    def:  esp_4 = fp - 0x00000004
+    def:  esp_4 = fp - 4
 ebx:ebx
     def:  def ebx
     uses: dwLoc04_6 = ebx
@@ -39,7 +39,7 @@ ebx_8: orig: ebx
           Mem130[ebx_8:word32] = eax_129
           Mem143[ebx_8:word32] = 0x00000000
 esp_9: orig: esp
-    def:  esp_9 = fp - 0x00000008
+    def:  esp_9 = fp - 8
 ebp:ebp
     def:  def ebp
     uses: dwLoc08_11 = ebp
@@ -193,7 +193,7 @@ esi_57: orig: esi
 ebp_58: orig: ebp
     def:  ebp_58 = dwLoc08_11
 esp_59: orig: esp
-    def:  esp_59 = fp - 0x00000004
+    def:  esp_59 = fp - 4
 ebx_60: orig: ebx
     def:  ebx_60 = dwLoc04_6
 esp_61: orig: esp
@@ -202,14 +202,14 @@ rLoc1_62: orig: rLoc1
     def:  rLoc1_62 = (real64) Mem32[ebx_8:int32]
     uses: dwArg04_74 = (real32) rLoc1_62
 esp_63: orig: esp
-    def:  esp_63 = fp - 0x0000000C
+    def:  esp_63 = fp - 12
 dwLoc0C_64: orig: dwLoc0C
     def:  dwLoc0C_64 = esi
     uses: esi_140 = dwLoc0C_64
           dwLoc0C_41 = PHI(dwLoc0C, dwLoc0C_64, dwLoc0C_64)
           dwLoc0C_41 = PHI(dwLoc0C, dwLoc0C_64, dwLoc0C_64)
 esp_65: orig: esp
-    def:  esp_65 = fp - 0x00000010
+    def:  esp_65 = fp - 16
 dwLoc10_66: orig: dwLoc10
     def:  dwLoc10_66 = edi
     uses: edi_138 = dwLoc10_66
@@ -474,13 +474,13 @@ edi_138: orig: edi
     uses: edi_56 = PHI(edi, edi_138, edi_138)
           edi_56 = PHI(edi, edi_138, edi_138)
 esp_139: orig: esp
-    def:  esp_139 = fp - 0x0000000C
+    def:  esp_139 = fp - 12
 esi_140: orig: esi
     def:  esi_140 = dwLoc0C_64
     uses: esi_57 = PHI(esi, esi_140, esi_140)
           esi_57 = PHI(esi, esi_140, esi_140)
 esp_141: orig: esp
-    def:  esp_141 = fp - 0x00000008
+    def:  esp_141 = fp - 8
 Mem142: orig: Mem0
     def:  Mem142[ecx_132:word32] = eax_131
 Mem143: orig: Mem0
@@ -600,10 +600,10 @@ fn10000000_entry:
 l10000000:
 	esp_1 = fp
 	eax_3 = dwArg04
-	esp_4 = fp - 0x00000004
+	esp_4 = fp - 4
 	dwLoc04_6 = ebx
 	ebx_8 = dwArg0C
-	esp_9 = fp - 0x00000008
+	esp_9 = fp - 8
 	dwLoc08_11 = ebp
 	ecx_13 = (int32) Mem0[eax_3 + 0x00000006:word16]
 	edx_14 = (int32) Mem0[eax_3 + 0x00000002:word16]
@@ -627,9 +627,9 @@ l10000000:
 	// succ:  l10000035 l10000107
 l10000035:
 	rLoc1_62 = (real64) Mem32[ebx_8:int32]
-	esp_63 = fp - 0x0000000C
+	esp_63 = fp - 12
 	dwLoc0C_64 = esi
-	esp_65 = fp - 0x00000010
+	esp_65 = fp - 16
 	dwLoc10_66 = edi
 	esi_67 = 0x00000000
 	SZO_68 = cond(0x00000000)
@@ -757,9 +757,9 @@ l100000DF:
 	SO_136 = SCZO_133 (alias)
 	C_137 = (bool) SCZO_133 (alias)
 	edi_138 = dwLoc10_66
-	esp_139 = fp - 0x0000000C
+	esp_139 = fp - 12
 	esi_140 = dwLoc0C_64
-	esp_141 = fp - 0x00000008
+	esp_141 = fp - 8
 	Mem142[ecx_132:word32] = eax_131
 	branch Test(LE,SZO_134) l10000107
 	// succ:  l100000FB l10000107
@@ -786,7 +786,7 @@ l10000107:
 	edi_56 = PHI(edi, edi_138, edi_138)
 	esi_57 = PHI(esi, esi_140, esi_140)
 	ebp_58 = dwLoc08_11
-	esp_59 = fp - 0x00000004
+	esp_59 = fp - 4
 	ebx_60 = dwLoc04_6
 	esp_61 = fp
 	return

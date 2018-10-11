@@ -392,7 +392,17 @@ namespace Reko.Core.Expressions
                 return new WildConstant(Label);
             }
 
+            public override Constant Complement()
+            {
+                throw new InvalidOperationException();
+            }
+
             public override object GetValue()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override int GetHashOfValue()
             {
                 throw new InvalidOperationException();
             }

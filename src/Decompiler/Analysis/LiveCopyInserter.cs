@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,10 @@ namespace Reko.Analysis
 
 		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
-			Statement stm = new Statement(0, null, b);
+            var stm = new Statement(
+                b.Address.ToLinear(),
+                null,
+                b);
             SsaIdentifier sidNew = ssaIds.Add((Identifier)ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
 			stm.Instruction = new Assignment(sidNew.Identifier, idOld);
 			b.Statements.Insert(i, stm);
@@ -64,7 +67,10 @@ namespace Reko.Analysis
 
 		public Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
 		{
-			b.Statements.Insert(i, 0, new Assignment(idDst, idSrc));
+            b.Statements.Insert(
+                i,
+                b.Address.ToLinear(),
+                new Assignment(idDst, idSrc));
 			return idDst;
 		}
 

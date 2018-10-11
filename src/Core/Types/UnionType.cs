@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,6 +95,7 @@ namespace Reko.Core.Types
 		{
 			var pre = PreferredType != null ? PreferredType.Clone(clonedTypes) : null;
 			var u = new UnionType(Name, pre);
+            u.Qualifier = Qualifier;
             u.UserDefined = UserDefined;
             foreach (var a in this.Alternatives.Values)
 			{
@@ -116,11 +117,6 @@ namespace Reko.Core.Types
 		public override bool IsComplex
 		{
 			get { return true; }
-		}
-
-		public override string Prefix
-		{
-			get { return "u"; }
 		}
 
         private static int nestoMatic;
@@ -156,32 +152,33 @@ namespace Reko.Core.Types
 
 	public class UnionAlternative : Field
 	{
-        private int index;
-
         public UnionAlternative(DataType t, int index)
 		{
 			this.DataType = t;
-            this.index = index;
+            this.Index = index;
 		}
 
 		public UnionAlternative(string name, DataType dt, int index)
 		{
 			DataType = dt;
 			Name = name;
-            this.index = index;
+            Index = index;
         }
 
         public override string Name { get { if (name == null) return GenerateDefaultName(); return name; } set { name = value; } }
+
+        public int Index { get; }
+
         private string name;
 
         private string GenerateDefaultName()
         {
-            return string.Format("u{0}", index);
+            return string.Format("u{0}", Index);
         }
 
         public UnionAlternative Clone()
         {
-            return new UnionAlternative(name, DataType, index);
+            return new UnionAlternative(name, DataType, Index);
         }
     }
 

@@ -41,7 +41,7 @@ Eq_124: (fn int32 (Eq_126))
 	T_124 (in putchar : ptr64)
 	T_125 (in signature of putchar : void)
 Eq_126: (union "Eq_126" (int32 u0) (uint64 u1))
-	T_126 (in ch : int32)
+	T_126 (in c : int32)
 	T_127 (in 0x0000000000000078 : uint64)
 Eq_129: (fn void ())
 	T_129 (in f : ptr64)
@@ -142,11 +142,11 @@ T_22: (in fp : ptr64)
   Class: Eq_22
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_23: (in 0x0000000000000008 : word64)
+T_23: (in 8 : int64)
   Class: Eq_23
   DataType: int64
   OrigDataType: int64
-T_24: (in fp + 0x0000000000000008 : word64)
+T_24: (in fp + 8 : word64)
   Class: Eq_21
   DataType: ptr64
   OrigDataType: ptr64
@@ -194,7 +194,7 @@ T_35: (in 0x000000000040053D : word64)
   Class: Eq_28
   DataType: (ptr64 Eq_28)
   OrigDataType: (ptr64 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))))
-T_36: (in fp + 0x0000000000000008 : word64)
+T_36: (in fp + 8 : word64)
   Class: Eq_30
   DataType: (ptr64 (ptr64 char))
   OrigDataType: (ptr64 (ptr64 char))
@@ -554,7 +554,7 @@ T_125: (in signature of putchar : void)
   Class: Eq_124
   DataType: (ptr64 Eq_124)
   OrigDataType: 
-T_126: (in ch : int32)
+T_126: (in c : int32)
   Class: Eq_126
   DataType: Eq_126
   OrigDataType: 
