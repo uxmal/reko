@@ -273,7 +273,8 @@ namespace Reko.Scanning
             Block blockThen;
             if (!program.SegmentMap.IsValidAddress((Address)b.Target))
             {
-                blockThen = proc.AddBlock(this.ric.Address.GenerateName("l", "_then"));
+                var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
+                blockThen = proc.AddBlock(label);
                 var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                 GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
                 Emit(new ReturnInstruction());
@@ -679,7 +680,7 @@ namespace Reko.Scanning
             scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
             var sig = new FunctionType();
             ProcedureCharacteristics chr = null;
-            var name = NamingPolicy.Instance.GenerateProcedureName(addr);
+            var name = NamingPolicy.Instance.ProcedureName(addr);
             EmitCall(
                 CreateProcedureConstant(new ExternalProcedure(name, sig)),
                 sig,
@@ -1081,7 +1082,8 @@ namespace Reko.Scanning
 
         private Block AddIntraStatementBlock(Procedure proc)
         {
-            var label = ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels));
+            ++extraLabels;
+            var label = program.NamingPolicy.BlockName(ric.Address);
             return proc.AddSyntheticBlock(ric.Address, label);
         }
 

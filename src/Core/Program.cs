@@ -498,7 +498,7 @@ namespace Reko.Core
             if (this.Procedures.TryGetValue(addr, out Procedure proc))
                 return proc;
 
-            var generatedName = procedureName ?? this.NamingPolicy.GenerateProcedureName(addr);
+            var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
             proc = new Procedure(this.Architecture, generatedName, addr, this.Architecture.CreateFrame());
             if (procedureName == null && this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {

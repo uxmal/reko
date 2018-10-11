@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -544,8 +544,7 @@ namespace Reko.Core.Types
 				else
 				{
                     var fieldType = Unify(fa.DataType, fb.DataType);
-                    string fieldName;
-                    if (!TryMakeFieldName(fa, fb, out fieldName))
+                    if (!TryMakeFieldName(fa, fb, out string fieldName))
                         throw new NotSupportedException(
                             string.Format(
                                 "Failed to unify field '{0}' in structure '{1}' with field '{2}' in structure '{3}'.",

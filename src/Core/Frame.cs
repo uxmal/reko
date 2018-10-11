@@ -266,7 +266,7 @@ namespace Reko.Core
 			Identifier id = FindStackLocal(cbOffset, type.Size);
 			if (id == null)
 			{
-				id = new Identifier(namingPolicy.GenerateStackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
+				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
 				identifiers.Add(id);
 			}
 			return id;
@@ -283,7 +283,7 @@ namespace Reko.Core
 			if (id == null)
 			{
 				id = new Identifier(
-					namingPolicy.GenerateStackArgumentName(type, cbOffset, argName), 
+					namingPolicy.StackArgumentName(type, cbOffset, argName), 
 					type, 
 					new StackArgumentStorage(cbOffset, type));
 				identifiers.Add(id);

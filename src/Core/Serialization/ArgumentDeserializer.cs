@@ -95,7 +95,7 @@ namespace Reko.Core.Serialization
             {
                 return null;
             }
-            var name = NamingPolicy.Instance.GenerateStackArgumentName(
+            var name = NamingPolicy.Instance.StackArgumentName(
                 dt,
                 procSer.StackOffset + retAddressOnStack,
                 argCur.Name);

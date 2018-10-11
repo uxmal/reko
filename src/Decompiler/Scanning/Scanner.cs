@@ -268,7 +268,8 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    block = AddBlock(addrDest, proc, Block.GenerateName(addrDest));
+                    var label = Program.NamingPolicy.BlockName(addrDest);
+                    block = AddBlock(addrDest, proc, label);
                 }
 
                 if (proc == block.Procedure)
@@ -419,7 +420,7 @@ namespace Reko.Scanning
             // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
                 "{0}_thunk_{1}",
-                Block.GenerateName(addrFrom),
+                Program.NamingPolicy.BlockName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddSyntheticBlock(
                 addrFrom,
@@ -710,7 +711,8 @@ namespace Reko.Scanning
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
-            var blockNew = AddBlock(addr, blockToSplit.Procedure, Block.GenerateName(addr));
+            var label = Program.NamingPolicy.BlockName(addr);
+            var blockNew = AddBlock(addr, blockToSplit.Procedure, label);
             foreach (var succ in graph.Successors(blockToSplit))
             {
                 graph.AddEdge(blockNew, succ);

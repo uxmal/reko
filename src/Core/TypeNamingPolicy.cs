@@ -150,7 +150,7 @@ namespace Reko.Core
             }
         }
 
-        public virtual string GetStructureFieldName(StructureField field, string userGivenName)
+        public virtual string StructureFieldName(StructureField field, string userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))
                 return userGivenName;
@@ -158,7 +158,7 @@ namespace Reko.Core
             return $"{prefix}{field.Offset:X4}";
         }
 
-        public virtual string GetUnionAlternativeName(UnionAlternative alt, string userGivenName)
+        public virtual string UnionAlternativeName(UnionAlternative alt, string userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))
                 return userGivenName;

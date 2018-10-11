@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -402,7 +402,7 @@ namespace Reko.Scanning
                 from b in blocks.Values
                 join i in sr.FlatInstructions.Values on b.id equals i.block_id into instrs
                 orderby b.id
-                select new RtlBlock(b.id, b.id.GenerateName("l", ""))
+                select new RtlBlock(b.id, program.NamingPolicy.BlockName(b.id))
                 {
                     Instructions = instrs.Select(x => x.rtl).ToList()
                 };

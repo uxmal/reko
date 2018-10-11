@@ -50,7 +50,7 @@ namespace Reko.Core.Types
 
         public override string Name
         {
-            get { if (name == null) return GenerateDefaultName(); return name; }
+            get { if (name == null) return DefaultName(); return name; }
             set { name = value; }
         }
 
@@ -65,9 +65,9 @@ namespace Reko.Core.Types
 			return new StructureField(Offset, DataType.Clone(clonedTypes), name);
 		}
 
-        private string GenerateDefaultName()
+        private string DefaultName()
         {
-            return NamingPolicy.Instance.Types.GetStructureFieldName(this, this.name);
+            return NamingPolicy.Instance.Types.StructureFieldName(this, this.name);
         }
 
         public static int ToOffset(Constant offset)

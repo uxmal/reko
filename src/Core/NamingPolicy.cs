@@ -44,17 +44,27 @@ namespace Reko.Core
 
         public TypeNamingPolicy Types { get; }
 
-        public virtual string GenerateProcedureName(Address addr)
+        public virtual string ProcedureName(Address addr)
         {
             return addr.GenerateName("fn", "");
         }
 
-        public virtual string GenerateStackArgumentName(DataType type, int cbOffset, string nameOverride)
+        /// <summary>
+        /// Generates the name for a block stating at address <paramref name="addr"/>.
+        /// </summary>
+        /// <returns>The name as a string.</returns>
+        public virtual string BlockName(Address addr)
+        {
+            if (addr == null) throw new ArgumentNullException(nameof(addr));
+            return addr.GenerateName("l", "");
+        }
+
+        public virtual string StackArgumentName(DataType type, int cbOffset, string nameOverride)
         {
             return GenerateStackAccessName(type, "Arg", cbOffset, nameOverride);
         }
 
-        public virtual string GenerateStackLocalName(DataType type, int cbOffset, string nameOverride)
+        public virtual string StackLocalName(DataType type, int cbOffset, string nameOverride)
         {
             return GenerateStackAccessName(type, "Loc", cbOffset, nameOverride);
         }

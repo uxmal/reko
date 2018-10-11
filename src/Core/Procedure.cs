@@ -83,14 +83,14 @@ namespace Reko.Core
 		{
 			if (name == null)
 			{
-				name = NamingPolicy.Instance.GenerateProcedureName(addr);
+				name = NamingPolicy.Instance.ProcedureName(addr);
 			}
 			return new Procedure(arch, name, addr, f);
 		}
 
 		public static Procedure Create(IProcessorArchitecture arch, Address addr, Frame f)
 		{
-			return new Procedure(arch, NamingPolicy.Instance.GenerateProcedureName(addr), addr, f);
+			return new Procedure(arch, NamingPolicy.Instance.ProcedureName(addr), addr, f);
 		}
 
         [Conditional("DEBUG")]
