@@ -1084,7 +1084,7 @@ namespace Reko.Scanning
         {
             ++extraLabels;
             var label = program.NamingPolicy.BlockName(ric.Address);
-            return proc.AddSyntheticBlock(ric.Address, label);
+            return proc.AddSyntheticBlock(ric.Address, $"{label}_{extraLabels}");
         }
 
         /// <summary>
