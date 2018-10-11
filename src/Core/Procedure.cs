@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,9 +51,9 @@ namespace Reko.Core
             this.ControlGraph = new BlockGraph(blocks);
 			this.Frame = frame;
 			this.Signature = new FunctionType();
-            this.EntryBlock = AddBlock(Name + "_entry");
-			this.ExitBlock = AddBlock(Name + "_exit");
-		}
+            this.EntryBlock = AddBlock(addrEntry, Name + "_entry");
+            this.ExitBlock = AddBlock(addrEntry, Name + "_exit");
+        }
 
         public IProcessorArchitecture Architecture { get; }
         public List<AbsynStatement> Body { get; set; }
