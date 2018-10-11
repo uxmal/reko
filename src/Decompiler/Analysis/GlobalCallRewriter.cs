@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,8 +86,7 @@ namespace Reko.Analysis
 					continue;
 
                 proc.ExitBlock.Statements.Add(
-                    //$TODO: should be procedure exit address here
-                    proc.EntryAddress.ToLinear(),
+                    proc.ExitBlock.Address.ToLinear(),
                     new UseInstruction(os.OriginalIdentifier, id));
 			}
 		}
