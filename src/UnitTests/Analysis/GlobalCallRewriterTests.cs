@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,12 +49,6 @@ namespace Reko.UnitTests.Analysis
             proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);
 		}
-
-        private void Given_DummyBlock(Procedure proc)
-        {
-            var block = proc.AddBlock(Address.Ptr32(0x100), "0x100");
-            proc.ControlGraph.AddEdge(proc.EntryBlock, block);
-        }
 
 		[Test]
 		public void RegisterArgument()
@@ -106,7 +100,6 @@ namespace Reko.UnitTests.Analysis
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
             Procedure proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
-            Given_DummyBlock(proc);
             proc.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
