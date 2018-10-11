@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,53 +29,55 @@ namespace Reko.Core
 {
     public class TypeNamingPolicy
     {
-        private PrefixPolicy prefixPolicy = new PrefixPolicy();
+        private readonly PrefixPolicy prefixPolicy = new PrefixPolicy();
 
-        public string ShortPrefix(DataType dt)
+        public virtual string ShortPrefix(DataType dt)
         {
-            return dt.Accept(new PrefixPolicy());
+            return dt.Accept(prefixPolicy);
         }
 
         private class PrefixPolicy : IDataTypeVisitor<string>
         {
+            private const string DefaultPrefix = "t";
+
             public string VisitArray(ArrayType at)
             {
-                throw new NotImplementedException();
+                return "a";
             }
 
             public string VisitClass(ClassType ct)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitCode(CodeType c)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitEnum(EnumType e)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitEquivalenceClass(EquivalenceClass eq)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitFunctionType(FunctionType ft)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitMemberPointer(MemberPointer memptr)
             {
-                throw new NotImplementedException();
+                return "ptr";
             }
 
             public string VisitPointer(Pointer ptr)
             {
-                throw new NotImplementedException();
+                return "ptr";
             }
 
             public string VisitPrimitive(PrimitiveType pt)
@@ -107,53 +109,48 @@ namespace Reko.Core
                 }
             }
 
-            public string VisitQualifiedType(QualifiedType qt)
-            {
-                throw new NotImplementedException();
-            }
-
             public string VisitReference(ReferenceTo refTo)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitString(StringType str)
             {
-                throw new NotImplementedException();
+                return "str";
             }
 
             public string VisitStructure(StructureType str)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitTypeReference(TypeReference typeref)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitTypeVariable(TypeVariable tv)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitUnion(UnionType ut)
             {
-                throw new NotImplementedException();
+                return "u";
             }
 
             public string VisitUnknownType(UnknownType ut)
             {
-                throw new NotImplementedException();
+                return DefaultPrefix;
             }
 
             public string VisitVoidType(VoidType voidType)
             {
-                throw new NotImplementedException();
+                return "v";
             }
         }
 
-        public string GetStructureFieldName(StructureField field, string userGivenName)
+        public virtual string GetStructureFieldName(StructureField field, string userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))
                 return userGivenName;
@@ -161,7 +158,7 @@ namespace Reko.Core
             return $"{prefix}{field.Offset:X4}";
         }
 
-        public string GetUnionAlternativeName(UnionAlternative alt, string userGivenName)
+        public virtual string GetUnionAlternativeName(UnionAlternative alt, string userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))
                 return userGivenName;

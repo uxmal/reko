@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,7 +196,8 @@ namespace Reko.Scanning
 
         private void AddBlocks(HeuristicProcedure hproc)
         {
-            var proc = Procedure.Create(program.Architecture, hproc.BeginAddress, hproc.Frame);
+            var name = program.NamingPolicy.GenerateProcedureName(hproc.BeginAddress);
+            var proc = new Procedure(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
             foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
                 var last = block.Instructions.Last();

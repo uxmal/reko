@@ -249,7 +249,7 @@ namespace Reko.Scanning
                 return; // Already scanned. Do nothing.
             if (IsNoDecompiledProcedure(addr))
                 return;
-            var proc = EnsureProcedure(addr, name);
+            var proc = Program.EnsureProcedure(addr, name);
             proc.Signature = sig;
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, Program, addr, proc.Name));
         }
@@ -326,7 +326,7 @@ namespace Reko.Scanning
                         // We jumped into a pre-existing block of another 
                         // procedure which was hairy enough that we need to 
                         // promote the block to a new procedure.
-                        procDest = EnsureProcedure(addrDest, null);
+                        procDest = Program.EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
                         EstablishInitialState(addrDest, Program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
@@ -356,7 +356,7 @@ namespace Reko.Scanning
 
         public void EnsureEntryPoint(ImageSymbol sym)
         {
-            var proc = EnsureProcedure(sym.Address, sym.Name);
+            var proc = Program.EnsureProcedure(sym.Address, sym.Name);
             if (sym.Signature != null && !proc.Signature.ParametersValid)
             {
                 var sser = Program.CreateProcedureSerializer();
@@ -374,7 +374,7 @@ namespace Reko.Scanning
                 return null; // Already scanned. Do nothing.
             if (!sp.Decompile)
                 return null;
-            proc = EnsureProcedure(addr, sp.Name);
+            proc = Program.EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
                 var sser = Program.CreateProcedureSerializer();
@@ -470,7 +470,7 @@ namespace Reko.Scanning
                 Address addr = sym.Address;
                 if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
-                Procedure proc = EnsureProcedure(addr, sym.Name);
+                Procedure proc = Program.EnsureProcedure(addr, sym.Name);
                 if (visitedProcs.Contains(proc))
                     return; // Already scanned. Do nothing.
 
@@ -524,7 +524,7 @@ namespace Reko.Scanning
             var imp = GetImportedProcedure(addr, addr);
             if (imp != null)
                 return imp;
-            Procedure proc = EnsureProcedure(addr, procedureName);
+            Procedure proc = Program.EnsureProcedure(addr, procedureName);
             if (visitedProcs.Contains(proc))
                 return proc;
 
@@ -985,7 +985,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    EnsureProcedure(sym.Address, sym.Name);
+                    Program.EnsureProcedure(sym.Address, sym.Name);
                     EnqueueImageSymbol(sym, false);
                 }
                 sr.KnownProcedures.Add(sym.Address);

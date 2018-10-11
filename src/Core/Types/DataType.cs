@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,6 @@ namespace Reko.Core.Types
         public virtual bool IsComplex { get { return false; } }
         public virtual string Name { get; set; }
         public Qualifier Qualifier { get; set; }
-        public virtual string Prefix { get { return "t"; } }            // Prefix to use when auto-generating field names.
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
         public abstract void Accept(IDataTypeVisitor v);
         public abstract T Accept<T>(IDataTypeVisitor<T> v);

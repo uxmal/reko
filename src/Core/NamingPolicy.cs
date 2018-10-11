@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -44,17 +44,17 @@ namespace Reko.Core
 
         public TypeNamingPolicy Types { get; }
 
-        public string GenerateProcedureName(Address addr)
+        public virtual string GenerateProcedureName(Address addr)
         {
             return addr.GenerateName("fn", "");
         }
 
-        public string GenerateStackArgumentName(DataType type, int cbOffset, string nameOverride)
+        public virtual string GenerateStackArgumentName(DataType type, int cbOffset, string nameOverride)
         {
             return GenerateStackAccessName(type, "Arg", cbOffset, nameOverride);
         }
 
-        public string GenerateStackLocalName(DataType type, int cbOffset, string nameOverride)
+        public virtual string GenerateStackLocalName(DataType type, int cbOffset, string nameOverride)
         {
             return GenerateStackAccessName(type, "Loc", cbOffset, nameOverride);
         }
@@ -71,7 +71,7 @@ namespace Reko.Core
         {
             cbOffset = Math.Abs(cbOffset);
             string fmt = (cbOffset > 0xFF) ? "{0}{1}{2:X4}" : "{0}{1}{2:X2}";
-            return string.Format(fmt, type.Prefix, prefix, cbOffset);
+            return string.Format(fmt, this.Types.ShortPrefix(type), prefix, cbOffset);
         }
 
 

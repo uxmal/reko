@@ -142,8 +142,7 @@ namespace Reko.Core
         {
             if (EnclosingType == null)
                 return Name;
-            var str = EnclosingType as StructType_v1;
-            if (str != null)
+            if (EnclosingType is StructType_v1 str)
                 return string.Format("{0}::{1}", str.Name, Name);
             return Name;
         }

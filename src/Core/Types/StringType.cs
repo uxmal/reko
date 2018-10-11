@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -79,7 +79,5 @@ namespace Reko.Core.Types
         // The offset from the start of the string where the length is stored.
         // This field is not valid if the LengthPrefixType is null.
         public int PrefixOffset { get; private set; }
-
-        public override string Prefix { get { return "str"; } }
     }
 }
