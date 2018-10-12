@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,14 +29,15 @@ namespace Reko.Arch.Pdp11
 {
     public class Pdp11Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstrClass> classOf;
-
         public Opcode Opcode;
+        public InstrClass IClass;
         public PrimitiveType DataWidth;
         public MachineOperand op1;
         public MachineOperand op2;
 
-        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+        public override int OpcodeAsInteger => (int)Opcode;
+
+        public override InstrClass InstructionClass => IClass;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -48,18 +49,6 @@ namespace Reko.Arch.Pdp11
                 return null;
         }
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                InstrClass ct;
-                if (!classOf.TryGetValue(Opcode, out ct))
-                {
-                    ct = InstrClass.Linear;
-                }
-                return ct;
-            }
-        }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -89,37 +78,6 @@ namespace Reko.Arch.Pdp11
             {
                 op.Write(writer, options);
             }
-        }
-
-        static Pdp11Instruction()
-        {
-            classOf = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.bcc,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bcs,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.beq,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bge,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bgt,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bhi,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.ble,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.blos,  InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.blt,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bmi,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bne,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bpl,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bpt,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.br,    InstrClass.Transfer },
-                { Opcode.bvc,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.bvs,   InstrClass.Transfer|InstrClass.Conditional },
-                { Opcode.halt,  InstrClass.Transfer },
-                { Opcode.jmp,   InstrClass.Transfer },
-                { Opcode.jsr,   InstrClass.Transfer },
-                { Opcode.reset, InstrClass.Transfer },
-                { Opcode.rti,   InstrClass.Transfer },
-                { Opcode.rtt,   InstrClass.Transfer },
-                { Opcode.rts,   InstrClass.Transfer },
-                { Opcode.trap,  InstrClass.Transfer },
-            };
         }
     }
 }

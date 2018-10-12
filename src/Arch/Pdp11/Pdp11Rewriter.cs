@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.Arch.Pdp11
             {
                 this.instr = dasm.Current;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instr.InstructionClass;
                 m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Opcode)
                 {
