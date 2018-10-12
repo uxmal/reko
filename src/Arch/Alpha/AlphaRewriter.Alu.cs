@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -59,7 +59,9 @@ namespace Reko.Arch.Alpha
                 instr.Address + instr.Length, 
                 InstrClass.ConditionalTransfer);
             var ch = new ProcedureCharacteristics { Terminates = true };
-            m.SideEffect(host.PseudoProcedure("__trap_overflow", ch, VoidType.Instance));
+            m.SideEffect(
+                host.PseudoProcedure("__trap_overflow", ch, VoidType.Instance),
+                InstrClass.Transfer|InstrClass.Call);
         }
 
         private void RewriteInstrinsic(string instrinic)
@@ -152,7 +154,9 @@ namespace Reko.Arch.Alpha
 
         private void RewriteTrapb()
         {
-            m.SideEffect(host.PseudoProcedure("__trap_barrier", VoidType.Instance));
+            m.SideEffect(
+                host.PseudoProcedure("__trap_barrier", VoidType.Instance),
+                InstrClass.Transfer|InstrClass.Call);
         }
 
         private Expression addl(Expression a, Expression b)

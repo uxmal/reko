@@ -27,13 +27,14 @@ namespace Reko.Arch.Alpha
     public class AlphaInstruction : MachineInstruction
     {
         public Opcode Opcode;
+        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override InstrClass InstructionClass {  get { return InstrClass.Invalid; } }
+        public override InstrClass InstructionClass => iclass;
 
-        public override int OpcodeAsInteger {  get { return (int)Opcode;  } }
+        public override int OpcodeAsInteger => (int)Opcode;
 
         public override MachineOperand GetOperand(int i)
         {

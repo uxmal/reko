@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -28,7 +28,6 @@ namespace Reko.Arch.Alpha
     {
         private void RewriteHalt()
         {
-            rtlc = InstrClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,

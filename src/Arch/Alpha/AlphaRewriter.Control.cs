@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -58,9 +58,8 @@ namespace Reko.Arch.Alpha
         private void RewriteBranch(Func<Expression, Expression> fn)
         {
             var dst = ((AddressOperand)instr.op2).Address;
-            rtlc = InstrClass.ConditionalTransfer;
             var src = Rewrite(instr.op1);
-            m.Branch(fn(src), dst, rtlc);
+            m.Branch(fn(src), dst, instr.iclass);
         }
 
         private void RewriteCmov(Func<Expression, Expression> skip)
@@ -105,7 +104,6 @@ namespace Reko.Arch.Alpha
         {
             if (ret.Number == ZeroRegister)
             {
-                rtlc = InstrClass.Transfer;
                 if (dst is Identifier id && ((RegisterStorage)id.Storage).Number == ReturnAddress)
                     m.Return(0, 0);
                 else 
@@ -120,7 +118,6 @@ namespace Reko.Arch.Alpha
                 }
                 else
                 {
-                    rtlc = InstrClass.Transfer;
                     // Weird jump. 
                     m.Assign(binder.EnsureRegister(ret), instr.Address + instr.Length);
                     m.Goto(dst);
