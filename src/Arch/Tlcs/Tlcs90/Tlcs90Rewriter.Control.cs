@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -31,10 +31,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
     {
         private void RewriteCall()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             if (instr.op2 != null)
             {
-                rtlc |= InstrClass.Conditional;
                 var cc = RewriteCondition((ConditionOperand)instr.op1).Invert();
                 m.Branch(cc, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
                 instr.op2.Width = PrimitiveType.Ptr16;
@@ -53,7 +51,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteDjnz()
         {
-            rtlc = InstrClass.ConditionalTransfer;
             MachineOperand op;
             Identifier reg;
             Constant one;
@@ -84,12 +81,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 Terminates = true,
             };
-            m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
+            m.SideEffect(
+                host.PseudoProcedure("__halt", c, VoidType.Instance),
+                InstrClass.Terminates);
         }
 
         private void RewriteJp()
         {
-            rtlc = InstrClass.Transfer;
             MachineOperand op;
             if (instr.op2 != null)
             {
@@ -120,13 +118,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 Invalid();
                 return;
             }
-            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
         private void RewriteReti()
         {
-            rtlc = InstrClass.Transfer;
             var sp = binder.EnsureRegister(Registers.sp);
             var af = binder.EnsureRegister(Registers.af);
             m.Assign(af, m.Mem16(sp));
@@ -136,7 +132,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteSwi()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             var sp = binder.EnsureRegister(Registers.sp);
             var af = binder.EnsureRegister(Registers.af);
             m.Assign(sp, m.ISubS(sp, 2));

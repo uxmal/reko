@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -30,20 +30,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public class Tlcs90Instruction : MachineInstruction
     {
+        public Opcode Opcode { get; set; }
+        internal InstrClass iclass;
         internal MachineOperand op1;
         internal MachineOperand op2;
 
-        public Opcode Opcode { get; set; }
 
-        public override InstrClass InstructionClass 
-        {
-            get { return InstrClass.Linear; }
-        }
+        public override InstrClass InstructionClass => iclass;
 
-        public override int OpcodeAsInteger
-        {
-            get { return (int)Opcode; }
-        }
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)
         {

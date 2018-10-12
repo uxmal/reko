@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -60,7 +60,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                rtlc = InstrClass.Linear;
+                rtlc = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
@@ -75,7 +75,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                            instr.Opcode));
 
                     break;
-                case Opcode.invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Opcode.invalid: m.Invalid(); break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd, "**-**V0*"); break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "**-***0*"); break;
                 case Opcode.and: RewriteBinOp(m.And,  "**-10*00"); break;

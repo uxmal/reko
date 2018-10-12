@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1493,7 +1493,6 @@ namespace Reko.Arch.X86
         private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
         private static Dictionary<Opcode, Opcode> s_mpVex;
-        private static Dictionary<Opcode, InstrClass> classOf;
 
         static X86Disassembler()
 		{

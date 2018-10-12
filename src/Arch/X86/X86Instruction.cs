@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Arch.X86
 
 
 		public Opcode code;		        // Opcode of the instruction.
-        public InstrClass iclass; // Instruction class.
+        public InstrClass iclass;       // Instruction class.
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
@@ -67,7 +67,9 @@ namespace Reko.Arch.X86
 			}
 		}
 
-        public override int OpcodeAsInteger { get { return (int) code; } } 
+        public override InstrClass InstructionClass => iclass;
+
+        public override int OpcodeAsInteger => (int) code;
 
 		private bool NeedsExplicitMemorySize()
 		{
@@ -208,10 +210,7 @@ namespace Reko.Arch.X86
             op.Write(writer, options);
         }
 
-        public override InstrClass InstructionClass
-        {
-            get { return iclass; }
-        }
+ 
 
         // Returns the condition codes that an instruction modifies.
 
