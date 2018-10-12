@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -70,7 +70,7 @@ namespace Reko.Arch.PowerPC
                 this.instr = dasm.Current;
                 var addr = this.instr.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {

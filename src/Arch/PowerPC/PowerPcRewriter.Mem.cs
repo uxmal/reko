@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -438,7 +438,6 @@ namespace Reko.Arch.PowerPC
                 m.Invalid();
                 return;
             }
-            rtlc = InstrClass.Linear;
             m.BranchInMiddleOfInstruction(
                 op(ra, rb).Invert(),
                 instr.Address + instr.Length,
