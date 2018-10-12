@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -47,7 +47,6 @@ namespace Reko.Arch.Vax
 
         private void RewriteHalt()
         {
-            rtlc = InstrClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
         }
 

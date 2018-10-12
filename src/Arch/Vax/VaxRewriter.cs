@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -61,7 +61,7 @@ namespace Reko.Arch.Vax
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = InstrClass.Linear;
+                rtlc = dasm.Current.IClass;
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
