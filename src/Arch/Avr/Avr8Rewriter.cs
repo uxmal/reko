@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -76,7 +76,7 @@ namespace Reko.Arch.Avr
         {
             this.instr = instr;
             this.rtlInstructions = new List<RtlInstruction>();
-            this.rtlc = InstrClass.Linear;
+            this.rtlc = instr.iclass;
             this.m = new RtlEmitter(rtlInstructions);
             switch (instr.opcode)
             {
@@ -382,7 +382,6 @@ namespace Reko.Arch.Avr
 
         private void RewriteBranch(ConditionCode cc, FlagM grfM)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
             var target = (Address)RewriteOp(0);
             m.Branch(m.Test(cc, grf), target, InstrClass.ConditionalTransfer);
