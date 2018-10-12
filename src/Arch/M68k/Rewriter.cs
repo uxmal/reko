@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
                 var addr = di.Address;
                 var len = di.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = InstrClass.Linear;
+                rtlc = di.iclass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
                 switch (di.code)

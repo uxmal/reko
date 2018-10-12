@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -66,14 +66,16 @@ namespace Reko.Core.Rtl
         public static string FormatClass(InstrClass rtlClass)
         {
             var sb = new StringBuilder();
-            switch (rtlClass & (InstrClass.Transfer|InstrClass.Linear|InstrClass.Terminates|InstrClass.System))
+            switch (rtlClass & (InstrClass.Transfer | InstrClass.Linear | InstrClass.Terminates | InstrClass.System))
             {
             case InstrClass.Linear: sb.Append('L'); break;
             case InstrClass.Transfer:
             case InstrClass.Transfer | InstrClass.Linear:
                 sb.Append('T'); break;
             case InstrClass.Terminates: sb.Append('H'); break;
-            case InstrClass.System: sb.Append('S'); break;
+            case InstrClass.System:
+            case InstrClass.Transfer | InstrClass.System:
+                sb.Append('S'); break;
             default: sb.Append('-'); break;
             }
             sb.Append((rtlClass & InstrClass.Delay) != 0 ? 'D' : '-');

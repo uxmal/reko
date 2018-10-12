@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -41,7 +41,6 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                rtlc = InstrClass.ConditionalTransfer;
                 m.Branch(
                     m.Test(cc, orw.FlagGroup(flags)),
                     addr,
@@ -51,7 +50,6 @@ namespace Reko.Arch.M68k
 
         private void RewriteBra()
         {
-            rtlc = InstrClass.Transfer;
             m.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
@@ -65,7 +63,6 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                rtlc = InstrClass.Transfer | InstrClass.Call;
                 m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
             }
         }
@@ -79,7 +76,6 @@ namespace Reko.Arch.M68k
 
         private void RewriteChk()
         {
-            rtlc = InstrClass.Conditional | InstrClass.Linear;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var bound = orw.RewriteSrc(di.op2, di.Address, true);
             m.Branch(m.Cand(
@@ -93,7 +89,6 @@ namespace Reko.Arch.M68k
 
         private void RewriteChk2()
         {
-            rtlc = InstrClass.Conditional | InstrClass.Linear;
             var reg = orw.RewriteSrc(di.op2, di.Address);
             var lowBound = orw.RewriteSrc(di.op1, di.Address);
             var ea = ((MemoryAccess)lowBound).EffectiveAddress;
@@ -110,20 +105,16 @@ namespace Reko.Arch.M68k
 
         private void RewriteJmp()
         {
-            rtlc = InstrClass.Transfer;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
-            var mem = src as MemoryAccess;
-            if (mem != null)
+            if (src is MemoryAccess mem)
                 src = mem.EffectiveAddress;
             m.Goto(src);
         }
 
         private void RewriteJsr()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
-            var mem = src as MemoryAccess;
-            if (mem != null)
+            if (src is MemoryAccess mem)
             {
                 src = mem.EffectiveAddress;
             }
@@ -178,7 +169,6 @@ namespace Reko.Arch.M68k
 
         private void RewriteRts()
         {
-            rtlc = InstrClass.Transfer;
             m.Return(4, 0);
         }
 
@@ -189,7 +179,6 @@ namespace Reko.Arch.M68k
 
         private void RewriteTrap()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             var vector = orw.RewriteSrc(di.op1, di.Address);
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
         }
@@ -201,7 +190,6 @@ namespace Reko.Arch.M68k
                 m.Nop();
                 return;
             }
-            rtlc = InstrClass.Transfer|InstrClass.Call;
             if (cc != ConditionCode.ALWAYS)
             {
                 rtlc |= InstrClass.Conditional;

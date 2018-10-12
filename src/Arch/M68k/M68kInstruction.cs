@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -30,21 +30,16 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
-        private const InstrClass Linear = InstrClass.Linear;
-        private const InstrClass Transfer = InstrClass.Transfer;
-        private const InstrClass Cond = InstrClass.Conditional;
-        private const InstrClass CallTransfer = InstrClass.Call | InstrClass.Transfer;
-        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
-
-        private static Dictionary<Opcode, InstrClass> classOf;
-
         public Opcode code;
+        public InstrClass iclass;
         public PrimitiveType dataWidth;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override int OpcodeAsInteger { get { return (int)code; } }
+        public override InstrClass InstructionClass => iclass;
+
+        public override int OpcodeAsInteger => (int) code;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -139,68 +134,6 @@ namespace Reko.Arch.M68k
                 }
             }
             throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
-        }
-
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                InstrClass cl;
-                if (!classOf.TryGetValue(code, out cl))
-                    cl = InstrClass.Linear;
-                return cl;
-            }
-        }
-
-        static M68kInstruction()
-        {
-            classOf = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.illegal, InstrClass.Invalid },
-
-                { Opcode.bcc,      CondTransfer },
-                { Opcode.bcs,      CondTransfer },
-                { Opcode.beq,      CondTransfer },
-                { Opcode.bge,      CondTransfer },
-                { Opcode.bgt,      CondTransfer },
-                { Opcode.bhi,      CondTransfer },
-                { Opcode.ble,      CondTransfer },
-                { Opcode.blt,      CondTransfer },
-                { Opcode.bmi,      CondTransfer },
-                { Opcode.bne,      CondTransfer },
-                { Opcode.bpl,      CondTransfer },
-                { Opcode.bra,      Transfer },
-                { Opcode.bsr,      CallTransfer },
-                { Opcode.bvc,      CondTransfer },
-                { Opcode.bvs,      CondTransfer },
-
-                { Opcode.callm,    CallTransfer },
-                { Opcode.jmp,      Transfer },
-                { Opcode.jsr,      CallTransfer },
-                { Opcode.reset,    Transfer },
-
-                { Opcode.rtd,      Transfer },
-                { Opcode.rte,      Transfer },
-                { Opcode.rtm,      Transfer },
-                { Opcode.rtr,      Transfer },
-                { Opcode.rts,      Transfer },
-
-                { Opcode.traphi,   CondTransfer },
-                { Opcode.trapls,   CondTransfer },
-                { Opcode.trapcc,   CondTransfer },
-                { Opcode.trapcs,   CondTransfer },
-                { Opcode.trapne,   CondTransfer },
-                { Opcode.trapeq,   CondTransfer },
-                { Opcode.trapvc,   CondTransfer },
-                { Opcode.trapvs,   CondTransfer },
-                { Opcode.trappl,   CondTransfer },
-                { Opcode.trapmi,   CondTransfer },
-                { Opcode.trapge,   CondTransfer },
-                { Opcode.traplt,   CondTransfer },
-                { Opcode.trapgt,   CondTransfer },
-                { Opcode.traple,   CondTransfer },
-                { Opcode.trapv,    CondTransfer },
-            };
         }
     }
 }
