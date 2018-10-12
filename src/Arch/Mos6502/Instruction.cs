@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,25 +29,13 @@ namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstrClass> classOf;
-
         public Opcode Code;
+        public InstrClass IClass;
         public Operand Operand;
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                InstrClass ct;
-                if (!classOf.TryGetValue(Code, out ct))
-                {
-                    ct = InstrClass.Linear;
-                }
-                return ct;
-            }
-        }
+        public override int OpcodeAsInteger => (int) Code;
 
-        public override int OpcodeAsInteger { get { return (int)Code; } }
+        public override InstrClass InstructionClass => IClass;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -147,25 +135,5 @@ namespace Reko.Arch.Mos6502
             return 0;
         }
 
-        static Instruction()
-        {
-            classOf = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.illegal, InstrClass.Linear },
-
-                { Opcode.bcc, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bcs, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.beq, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bit, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bmi, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bne, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bpl, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.brk, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bvc, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bvs, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jmp, InstrClass.Transfer },
-                { Opcode.jsr, InstrClass.Transfer | InstrClass.Call },
-            };
-        }
     }
 }

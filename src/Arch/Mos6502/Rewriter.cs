@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -65,7 +65,7 @@ namespace Reko.Arch.Mos6502
             {
                 this.instrCur = dasm.Current;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instrCur.IClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Code)
                 {
@@ -162,12 +162,11 @@ namespace Reko.Arch.Mos6502
 
         private void Branch(ConditionCode cc, FlagM flags)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var f = FlagGroupStorage(flags);
             m.Branch(
                 m.Test(cc, f),
                 Address.Ptr16(instrCur.Operand.Offset.ToUInt16()),
-                InstrClass.ConditionalTransfer);
+                rtlc);
         }
 
         private Identifier FlagGroupStorage(FlagM flags)
@@ -263,14 +262,12 @@ namespace Reko.Arch.Mos6502
 
         private void Jmp()
         {
-            rtlc = InstrClass.Transfer;
             var mem = (MemoryAccess)RewriteOperand(instrCur.Operand);
             m.Goto(mem.EffectiveAddress);
         }
 
         private void Jsr()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             var mem  = (MemoryAccess) RewriteOperand(instrCur.Operand);
             m.Call(mem.EffectiveAddress, 2);
         }
@@ -363,7 +360,6 @@ namespace Reko.Arch.Mos6502
 
         private void Rts()
         {
-            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
