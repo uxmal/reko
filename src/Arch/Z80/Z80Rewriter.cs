@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -56,7 +56,7 @@ namespace Reko.Arch.Z80
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = dasm.Current.IClass;
                 this.rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Code)
@@ -279,7 +279,6 @@ namespace Reko.Arch.Z80
 
         private void EmitBranch(ConditionOperand cOp, Address dst)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             m.Branch(
                 GenerateTestExpression(cOp, false),
                 dst,
@@ -308,7 +307,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteCall(Z80Instruction instr)
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             if (instr.Op1 is ConditionOperand cOp)
             {
                 m.BranchInMiddleOfInstruction(
@@ -379,7 +377,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteDjnz(MachineOperand dst)
         {
-            rtlc = InstrClass.Linear;
             var b = binder.EnsureRegister(Registers.b);
             m.Assign(b, m.ISub(b, 1));
             m.Branch(m.Ne0(b), ((AddressOperand)dst).Address, InstrClass.Transfer);
@@ -428,7 +425,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteHlt()
         {
-            rtlc = InstrClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance));
         }
 
@@ -443,14 +439,12 @@ namespace Reko.Arch.Z80
  
         private void RewriteJp(Z80Instruction instr)
         {
-            rtlc = InstrClass.Transfer;
             switch (instr.Op1)
             {
             case ConditionOperand cOp:
                 EmitBranch(cOp, ((AddressOperand)instr.Op2).Address);
                 break;
             case AddressOperand target:
-                rtlc = InstrClass.Transfer;
                 m.Goto(target.Address);
                 break;
             case MemoryOperand mTarget:
@@ -461,7 +455,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteJr()
         {
-            rtlc = InstrClass.Transfer;
             var op = dasm.Current.Op1;
             var cop = op as ConditionOperand;
             if (cop != null)
@@ -486,7 +479,7 @@ namespace Reko.Arch.Z80
                         cc,
                         binder.EnsureFlagGroup(arch.GetFlagGroup((uint)cr))),
                     target.Address,
-                    InstrClass.ConditionalTransfer);
+                    rtlc);
             }
             else
             {
@@ -617,7 +610,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteRet()
         {
-            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 

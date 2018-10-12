@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,27 +32,13 @@ namespace Reko.Arch.Z80
         private static Dictionary<Opcode, InstrClass> classOf;
 
         public Opcode Code;
+        public InstrClass IClass;
         public MachineOperand Op1;
         public MachineOperand Op2;
 
-        public override int OpcodeAsInteger { get { return (int)Code; } }
+        public override int OpcodeAsInteger => (int)Code;
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                if (!classOf.TryGetValue(Code, out InstrClass ct))
-                {
-                    ct = InstrClass.Linear;
-                }
-                else if ((Op1 as ConditionOperand) != null)
-                {
-                    ct |= InstrClass.Conditional;
-                }
-                return ct;
-            }
-        }
-
+        public override InstrClass InstructionClass => IClass;
         public override MachineOperand GetOperand(int i)
         {
             if (i == 0)
