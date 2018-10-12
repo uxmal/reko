@@ -61,7 +61,7 @@ namespace Reko.Arch.M6800.M6812
                 this.instr = dasm.Current;
                 var rtlInstrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtlInstrs);
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instr.iclass;
                 switch (instr.Opcode)
                 {
                 case Opcode.mov: 
@@ -437,7 +437,6 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBcc(ConditionCode cc, FlagM flags)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var grf = arch.GetFlagGroup((uint)flags);
             var addr = ((AddressOperand)instr.Operands[0]).Address;
             m.Branch(
@@ -471,13 +470,11 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBra()
         {
-            rtlc = InstrClass.Transfer;
             m.Goto(((AddressOperand)instr.Operands[0]).Address);
         }
 
         private void RewriteBrclr()
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var mem = RewriteOp(instr.Operands[0]);
             var mask = RewriteOp(instr.Operands[1]);
             var dst = ((AddressOperand)instr.Operands[2]).Address;
@@ -486,7 +483,6 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBrset()
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var mem = RewriteOp(instr.Operands[0]);
             var mask = RewriteOp(instr.Operands[1]);
             var dst = ((AddressOperand)instr.Operands[2]).Address;
@@ -578,10 +574,9 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteDb(Func<Expression, Expression> cmp)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var reg = RewriteOp(instr.Operands[0]);
             m.Assign(reg, m.ISub(reg, 1));
-            m.Branch(cmp(reg), ((AddressOperand)instr.Operands[1]).Address, InstrClass.ConditionalTransfer);
+            m.Branch(cmp(reg), ((AddressOperand) instr.Operands[1]).Address, rtlc);
         }
 
         private void RewriteEdiv(
@@ -674,7 +669,6 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteIb(Func<Expression, Expression> cmp)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var reg = RewriteOp(instr.Operands[0]);
             m.Assign(reg, m.IAdd(reg, 1));
             m.Branch(cmp(reg), ((AddressOperand)instr.Operands[1]).Address, InstrClass.ConditionalTransfer);
@@ -707,14 +701,12 @@ namespace Reko.Arch.M6800.M6812
      
         private void RewriteJmp()
         {
-            rtlc = InstrClass.Transfer;
             var mem = RewriteMemoryOperand((MemoryOperand)instr.Operands[0]);
             m.Goto(mem.EffectiveAddress);
         }
 
         private void RewriteJsr()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
             var mem = RewriteMemoryOperand((MemoryOperand)instr.Operands[0]);
             m.Call(mem.EffectiveAddress, 2);
         }
@@ -824,19 +816,16 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteRtc()
         {
-            rtlc = InstrClass.Transfer;
             m.Return(3, 0);
         }
 
         private void RewriteRti()
         {
-            rtlc = InstrClass.Transfer;
             m.Return(9, 0);
         }
 
         private void RewriteRts()
         {
-            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
@@ -892,7 +881,6 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteTb(Func<Expression, Expression> test)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
             var addr = ((AddressOperand)instr.Operands[1]).Address;
             m.Branch(test(src), addr, rtlc);

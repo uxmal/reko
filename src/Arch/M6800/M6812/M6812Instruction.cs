@@ -26,11 +26,12 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
+        public InstrClass iclass;
         public MachineOperand[] Operands;
 
-        public override InstrClass InstructionClass => GetInstructionClass();
+        public override InstrClass InstructionClass => iclass;
 
-        public override int OpcodeAsInteger => (int)Opcode;
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public Opcode Opcode { get; set; }
 
@@ -64,12 +65,6 @@ namespace Reko.Arch.M6800.M6812
                 return;
             }
             op.Write(writer, options);
-        }
-
-        private InstrClass GetInstructionClass()
-        {
-            //$TODO! Implement this!
-            return InstrClass.Linear;
         }
     }
 }
