@@ -85,12 +85,6 @@ namespace Reko.Core.CLanguage
             return pX.DataType.Accept(this);
         }
 
-        public bool VisitQualifiedType(QualifiedType_v1 qX)
-        {
-            y = ((QualifiedType_v1)y).DataType;
-            return qX.DataType.Accept(this);
-        }
-
         public bool VisitReference(ReferenceType_v1 rX)
         {
             y = ((ReferenceType_v1)y).Referent;

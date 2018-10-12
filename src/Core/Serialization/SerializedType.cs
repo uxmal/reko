@@ -26,6 +26,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Reflection;
+using System.ComponentModel;
+using System.Text;
 
 namespace Reko.Core.Serialization
 {
@@ -37,6 +39,9 @@ namespace Reko.Core.Serialization
         public SerializedType()
         {
         }
+
+        [DefaultValue(Qualifier.None)]
+        public Qualifier Qualifier;
 
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
@@ -88,7 +93,6 @@ namespace Reko.Core.Serialization
                     new XmlElementAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("code", typeof(CodeType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
-                    new XmlElementAttribute("qual", typeof(QualifiedType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlElementAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
@@ -124,6 +128,23 @@ namespace Reko.Core.Serialization
             };
             return sertypeAttributes;
         }
+
+        protected void WriteQualifier(Qualifier q, StringBuilder sb)
+        {
+            if ((q & Qualifier.Const) != 0)
+            {
+                sb.Append(",const");
+            }
+            if ((q & Qualifier.Volatile) != 0)
+            {
+                sb.Append(",volatile");
+            }
+            if ((q & Qualifier.Restricted) != 0)
+            {
+                sb.Append(",restricted");
+            }
+        }
+
     }
 
     public abstract class SerializedTaggedType : SerializedType

@@ -26,35 +26,6 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Types
 {
-    public class QualifiedType : DataType
-    {
-        public QualifiedType(DataType dt, Qualifier q)
-        {
-            this.DataType = dt;
-            this.Qualifier = q;
-        }
-
-        public DataType DataType { get; set; }
-        public Qualifier Qualifier { get; }
-
-        public override int Size { get { return DataType.Size; } set { DataType.Size = value; } }
-
-        public override void Accept(IDataTypeVisitor v)
-        {
-            v.VisitQualifiedType(this);
-        }
-
-        public override T Accept<T>(IDataTypeVisitor<T> v)
-        {
-            return v.VisitQualifiedType(this);
-        }
-
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
-        {
-            return new QualifiedType(DataType.Clone(clonedTypes), this.Qualifier);
-        }
-    }
-
     [Flags]
     public enum Qualifier
     {

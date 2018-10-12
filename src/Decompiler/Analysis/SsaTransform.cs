@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.Analysis
     /// calculation of the dominator graph. It is based on the algorithm
     /// described in "Simple and Efficient Construction of Static Single
     /// Assignment Form" by Matthias Braun, Sebastian Buchwald, Sebastian 
-    /// Hack, Roland Leißa, Christoph Mallon, and Andreas Zwinkau. 
+    /// Hack, Roland LeiÐ¯a, Christoph Mallon, and Andreas Zwinkau. 
     /// It has been augmented with storage alias analysis, and could be
     /// augmented with expression simplification if we can prove that the
     /// CFG graph is completed (future work).
@@ -189,8 +189,12 @@ namespace Reko.Analysis
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
 
-            var addr = block.Procedure.EntryAddress;
-            var stms = sortedIds.Select(id => new Statement(addr.ToLinear(), new UseInstruction(id), block)).ToList();
+            var stms = sortedIds
+                .Select(id => new Statement(
+                    block.Address.ToLinear(),
+                    new UseInstruction(id),
+                    block))
+                .ToList();
             block.Statements.AddRange(stms);
             DebugEx.PrintIf(trace.TraceVerbose, "AddUsesToExitBlock");
             stms.ForEach(u =>
@@ -1279,8 +1283,7 @@ namespace Reko.Analysis
             private SsaIdentifier NewPhi(Identifier id, Block b)
             {
                 var phiAss = new PhiAssignment(id, 0);
-                var addr = b.Address ?? b.Procedure.EntryAddress;
-                var stm = new Statement(addr.ToLinear(), phiAss, b);
+                var stm = new Statement(b.Address.ToLinear(), phiAss, b);
                 b.Statements.Insert(0, stm);
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
                 phiAss.Dst = sid.Identifier;

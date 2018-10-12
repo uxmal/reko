@@ -456,10 +456,6 @@ namespace Reko.Analysis
             else
             {
                 var dt = bin.Left.DataType;
-                if (dt is QualifiedType qt)
-                {
-                    dt = qt.DataType;
-                }
                 var ptr = dt.ResolveAs<Pointer>();
                 Expression zero;
                 if (ptr != null)

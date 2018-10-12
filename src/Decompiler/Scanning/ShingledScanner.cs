@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -408,7 +408,8 @@ namespace Reko.Scanning
                 wl.Remove(addr);
 
                 var instr = sr.Instructions[addr];
-                var block = new RtlBlock(addr, addr.GenerateName("l", ""));
+                var label = program.NamingPolicy.BlockName(addr);
+                var block = new RtlBlock(addr, label);
                 block.Instructions.Add(instr);
                 allBlocks.AddNode(block);
                 mpBlocks.Add(addr, block);

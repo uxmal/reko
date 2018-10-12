@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -261,7 +261,8 @@ namespace Reko.Scanning
             Block blockThen;
             if (!program.SegmentMap.IsValidAddress((Address)b.Target))
             {
-                blockThen = proc.AddBlock(this.ric.Address.GenerateName("l", "_then"));
+                var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
+                blockThen = proc.AddBlock(label);
                 var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                 GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
                 Emit(new ReturnInstruction());
@@ -289,19 +290,18 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    Block blockDsF = null;
-                    blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
-                    blockDsF.IsSynthesized = true;
-                    blockDsF.Address = ricDelayed.Address;
+                    var blockDsF = proc.AddSyntheticBlock(
+                        ricDelayed.Address,
+                        branchingBlock.Name + "_ds_f");
                     blockCur = blockDsF;
                     ProcessRtlCluster(ricDelayed);
                     EnsureEdge(proc, blockDsF, blockElse);
                     EnsureEdge(proc, branchingBlock, blockDsF);
                 }
 
-                Block blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
-                blockDsT.IsSynthesized = true;
-                blockDsT.Address = ricDelayed.Address;
+                var blockDsT = proc.AddSyntheticBlock(
+                    ricDelayed.Address,
+                    branchingBlock.Name + "_ds_t");
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsT, blockThen);
@@ -668,9 +668,9 @@ namespace Reko.Scanning
             scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
             var sig = new FunctionType();
             ProcedureCharacteristics chr = null;
+            var name = NamingPolicy.Instance.ProcedureName(addr);
             EmitCall(
-                CreateProcedureConstant(
-                    new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                CreateProcedureConstant(new ExternalProcedure(name, sig)),
                 sig,
                 chr,
                 site);
@@ -1093,13 +1093,9 @@ namespace Reko.Scanning
 
         private Block AddIntraStatementBlock(Procedure proc)
         {
-            var label = ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels));
-            var fallthru = new Block(proc, label)
-            {
-                IsSynthesized = true
-            };
-            proc.ControlGraph.Blocks.Add(fallthru);
-            return fallthru;
+            ++extraLabels;
+            var label = program.NamingPolicy.BlockName(ric.Address);
+            return proc.AddSyntheticBlock(ric.Address, $"{label}_{extraLabels}");
         }
 
         /// <summary>

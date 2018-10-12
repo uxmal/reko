@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -85,7 +85,7 @@ namespace Reko.Scanning
                 return;
             procedures.Add(addr, new ImageSymbol(addr, name, sig) { Type = SymbolType.Procedure });
             sr.KnownProcedures.Add(addr);
-            var proc = EnsureProcedure(addr, name);
+            var proc = Program.EnsureProcedure(addr, name);
             proc.Signature = sig;
         }
     }

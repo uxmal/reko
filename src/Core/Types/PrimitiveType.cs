@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -264,38 +264,6 @@ namespace Reko.Core.Types
             if (dom == 0)
                 dom = domainMask;
             return Create(dom, BitSize);
-		}
-
-		public override string Prefix
-		{
-			get
-			{
-				switch (Domain)
-				{
-				case Domain.None:
-					return "v";
-				case Domain.Boolean:
-					return "f";
-				case Domain.Real:
-					return "r";
-				case Domain.Pointer:
-                case Domain.SegPointer:
-					return "ptr";
-				case Domain.Selector:
-					return "pseg";
-				default:
-					switch (bitSize)
-					{
-					case 8: return "b";
-					case 16: return "w";
-					case 32: return "dw";
-                    case 64: return "qw";
-                    case 128: return "ow";
-                    case 256: return "hw";
-					default: return "n";
-					}
-				}
-			}
 		}
 
         public override int BitSize

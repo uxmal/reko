@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -64,6 +63,8 @@ namespace Reko.Core
             this.Resources = new ProgramResourceGroup();
             this.User = new UserData();
             this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
+            this.NamingPolicy = new NamingPolicy();
+
             // Most binary images don't have procedure information left.
             this.NeedsScanning = true;
             // Most binary images are not in SSA form.
@@ -317,6 +318,11 @@ namespace Reko.Core
         /// </summary>
         public string GlobalsFilename { get; set; }
 
+        /// <summary>
+        /// Policy to use when giving names to things.
+        /// </summary>
+        public NamingPolicy NamingPolicy { get; set; }
+
         public void EnsureFilenames(string fileName)
         {
             this.DisassemblyFilename = DisassemblyFilename ?? Path.ChangeExtension(fileName, ".asm");
@@ -475,6 +481,55 @@ namespace Reko.Core
             var stg = id?.Storage;
             return new Identifier("", arg.DataType, stg);
         }
+
+        /// <summary>
+        /// Ensure that there is a procedure at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">The address at which there must be a procedure after 
+        /// this method returns.
+        /// </param>
+        /// <param name="procedureName">The name of the procedure. If null,
+        /// this method will synthesize a new name.</param>
+        /// <returns>
+        /// The procedure, located at address <paramref name="addr"/>.
+        /// </returns>
+        public Procedure EnsureProcedure(Address addr, string procedureName)
+        {
+            if (this.Procedures.TryGetValue(addr, out Procedure proc))
+                return proc;
+
+            var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
+            proc = new Procedure(this.Architecture, generatedName, addr, this.Architecture.CreateFrame());
+            if (procedureName == null && this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
+            {
+                procedureName = sym.Name;
+                if (sym.Signature != null)
+                {
+                    var sser = this.CreateProcedureSerializer();
+                    proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
+                }
+            }
+            if (procedureName != null)
+            {
+                var sProc = this.Platform.SignatureFromName(procedureName);
+                if (sProc != null)
+                {
+                    var loader = this.CreateTypeLibraryDeserializer();
+                    var exp = loader.LoadExternalProcedure(sProc);
+                    proc.Name = exp.Name;
+                    proc.Signature = exp.Signature;
+                    proc.EnclosingType = exp.EnclosingType;
+                }
+                else
+                {
+                    proc.Name = procedureName;
+                }
+            }
+            this.Procedures.Add(addr, proc);
+            this.CallGraph.AddProcedure(proc);
+            return proc;
+        }
+
 
         public PseudoProcedure EnsurePseudoProcedure(string name, FunctionType sig)
         {

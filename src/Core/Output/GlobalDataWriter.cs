@@ -251,11 +251,6 @@ namespace Reko.Core.Output
             return codeFormatter;
         }
 
-        public CodeFormatter VisitQualifiedType(QualifiedType qt)
-        {
-            return qt.DataType.Accept(this);
-        }
-
         public CodeFormatter VisitReference(ReferenceTo refTo)
         {
             throw new NotSupportedException("Global variables cannot be references.");

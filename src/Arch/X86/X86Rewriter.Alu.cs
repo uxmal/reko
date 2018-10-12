@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -776,8 +776,9 @@ namespace Reko.Arch.X86
         {
             var port = SrcOp(instrCur.op1);
             var val = SrcOp(instrCur.op2);
+            var suffix = NamingPolicy.Instance.Types.ShortPrefix(instrCur.op2.Width);
             var ppp = host.PseudoProcedure(
-                "__out" + instrCur.op2.Width.Prefix,
+                "__out" + suffix,
                 VoidType.Instance,
                 port, val);
             m.SideEffect(ppp);
@@ -1031,7 +1032,8 @@ namespace Reko.Arch.X86
             case Opcode.outs:
             case Opcode.outsb:
                 regDX = binder.EnsureRegister(Registers.dx);
-                m.SideEffect(host.PseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, regDX, RegAl));
+                var suffix = NamingPolicy.Instance.Types.ShortPrefix(RegAl.DataType); 
+                m.SideEffect(host.PseudoProcedure("__out" + suffix, VoidType.Instance, regDX, RegAl));
                 incSi = true;
                 break;
             case Opcode.scas:
