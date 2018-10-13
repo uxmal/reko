@@ -93,7 +93,9 @@ namespace Reko.Analysis
             if (Identifiers.TryGetValue(id, out var sid))
                 return sid;
             sid = Identifiers.Add(id, null, null, false);
-            sid.DefStatement = b.Statements.Add(0, new DefInstruction(id));
+            sid.DefStatement = b.Statements.Add(
+                b.Address.ToLinear(),
+                new DefInstruction(id));
             return sid;
         }
 

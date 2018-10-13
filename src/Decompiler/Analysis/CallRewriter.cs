@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -400,8 +400,9 @@ namespace Reko.Analysis
             Block block,
             int insertPos)
         {
+            var iAddr = block.Statements[insertPos].LinearAddress;
             var stm = block.Statements.Insert(
-                insertPos, 0, 
+                insertPos, iAddr, 
                 new Store(parameter, e));
             ssa.AddUses(stm);
         }
