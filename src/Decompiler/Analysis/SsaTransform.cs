@@ -960,6 +960,22 @@ namespace Reko.Analysis
             incompletePhis.Clear();
         }
 
+        private Expression ReadParameter(Block b, FunctionType sig, Storage stg)
+        {
+            if (!sig.ParametersValid)
+                return null;
+            var param = sig.Parameters
+                .FirstOrDefault(p => p.Storage.Covers(stg));
+            if (param == null)
+                return null;
+            var sidParam = ssa.EnsureSsaIdentifier(param, b);
+            var idParam = sidParam.Identifier;
+            if (idParam.Storage.BitSize == stg.BitSize)
+                return idParam;
+            var dt = PrimitiveType.CreateWord((int) stg.BitSize);
+            return m.Slice(dt, idParam, idParam.Storage.OffsetOf(stg));
+        }
+
         public class SsaBlockState
         {
             public readonly Block Block;
@@ -1423,23 +1439,17 @@ namespace Reko.Analysis
             public SsaIdentifier NewDefInstruction(Identifier id, Block b)
             {
                 var sig = outer.ssa.Procedure.Signature;
-                if (sig.ParametersValid)
+                var param = outer.ReadParameter(b, sig, id.Storage);
+                if (param != null)
                 {
-                    var param = sig.Parameters.FirstOrDefault(p => p.Storage.Covers(id.Storage));
-                    if (param != null)
-                    {
-                        var sidParam = outer.ssa.EnsureSsaIdentifier(param, b);
-                        //$TODO: make sure identifier sizes are observed here, use SLICE
-                        //       when extracting smaller bitvectors out of larger values
-                        var copy = new Assignment(id, sidParam.Identifier);
-                        var stmCopy = b.Statements.Add(0, copy); 
-                        var sidCopy = ssaIds.Add(id, stmCopy, null, false);
-                        copy.Dst = sidCopy.Identifier;
-                        sidCopy.DefExpression = sidParam.Identifier;
+                    var copy = new Assignment(id, param);
+                    var stmCopy = b.Statements.Add(0, copy);
+                    var sidCopy = ssaIds.Add(id, stmCopy, null, false);
+                    copy.Dst = sidCopy.Identifier;
+                    sidCopy.DefExpression = param;
 
-                        sidParam.Uses.Add(stmCopy);
-                        return sidCopy;
-                    }
+                    outer.ssa.AddUses(stmCopy);
+                    return sidCopy;
                 }
                 return outer.ssa.EnsureSsaIdentifier(id, b);
             }

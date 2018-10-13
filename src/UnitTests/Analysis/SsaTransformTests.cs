@@ -3396,8 +3396,8 @@ test_exit:
 	def fp
 	def Mem0
 	def doubleArg
-	dwArg04_8 = doubleArg
-	dwArg08_9 = doubleArg
+	dwArg04_8 = SLICE(doubleArg, word32, 0)
+	dwArg08_9 = SLICE(doubleArg, word32, 32)
 body:
 	a_3 = dwArg04_8
 	b_4 = dwArg08_9
