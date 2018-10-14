@@ -1443,7 +1443,7 @@ namespace Reko.Analysis
                 if (param != null)
                 {
                     var copy = new Assignment(id, param);
-                    var stmCopy = b.Statements.Add(0, copy);
+                    var stmCopy = b.Statements.Add(b.Address.ToLinear(), copy);
                     var sidCopy = ssaIds.Add(id, stmCopy, null, false);
                     copy.Dst = sidCopy.Identifier;
                     sidCopy.DefExpression = param;
@@ -1835,7 +1835,9 @@ namespace Reko.Analysis
                     // alias statement.
                     var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
                     var ass = new AliasAssignment(id, seq);
-                    var stm = head.DefStatement.Block.Statements.Add(0, ass);
+                    var stm = head.DefStatement.Block.Statements.Add(
+                        head.DefStatement.LinearAddress,
+                        ass);
                     var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                     ass.Dst = sidTo.Identifier;
                     head.Uses.Add(stm);

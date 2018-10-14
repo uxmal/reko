@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -213,7 +213,8 @@ namespace Reko.Analysis
         {
             if (!ssa.Identifiers.TryGetValue(idSeq, out SsaIdentifier sidSeq))
             {
-                var def = ssa.Procedure.EntryBlock.Statements.Add(0, null);
+                var b = ssa.Procedure.EntryBlock;
+                var def = b.Statements.Add(b.Address.ToLinear(), null);
                 sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
                 sidSeq.DefStatement = def;
                 def.Instruction = new DefInstruction(sidSeq.Identifier);
