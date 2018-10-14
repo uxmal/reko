@@ -328,7 +328,7 @@ l10001348:
 
 l1000134E:
 	call eax_89 (retsize: 4;)
-		uses: eax:eax_89,ebp:0x00000000,ebx:eax_69,ecx:ecx_97,edi:edi_84,edx:edx_288,esi:0x100033AC,esp:esp_93,fs:fs,Stack +0000:ebp,Stack +000C:dwArg08,Stack +FFFFFFE8:0x100033AC,Stack +FFFFFFEC:0x00000001,Stack +FFFFFFF0:v16_76,Stack +FFFFFFF4:edi,Stack +FFFFFFF8:esi,Stack +FFFFFFFC:ebx,Top:Top_101
+		uses: eax:eax_89,ecx:ecx_97,edx:edx_288,esp:esp_93,Stack +0000:ebp,Stack +000C:dwArg08,Stack +FFFFFFE8:0x100033AC,Stack +FFFFFFEC:0x00000001,Stack +FFFFFFF0:v16_76,Stack +FFFFFFF4:edi,Stack +FFFFFFF8:esi,Stack +FFFFFFFC:ebx,Top:Top_101
 		defs: ecx:ecx_98,edx:edx_289,esp:esp_94,Top:Top_102
 // DataOut:
 // DataOut (flags):
@@ -440,11 +440,8 @@ l100012B6:
 // SymbolicIn:
 
 l100012BF:
-	word32 ebp_213
-	word32 ebx_214
 	word32 edi_216
-	word32 esi_218
-	word32 eax_212 = fn10001742(InterlockedCompareExchange, 0x100033AC, 0x00000002, out edx, out ebx_214, out ebp_213, out esi_218, out edi_216)
+	word32 eax_212 = fn10001742(InterlockedCompareExchange, 0x100033AC, 0x00000002, out edx, out edi_216)
 	word32 esp_219 = <invalid>
 	ecx = Mem203[esp_219:word32]
 	esp_120 = esp_219 + 4
@@ -458,7 +455,7 @@ l100012CE:
 	Mem233[esp_219 - 4:word32] = edi_216
 	Mem236[esp_219 - 8:word32] = Mem233[esp_219 + 0x00000018:word32]
 	call Mem236[0x100033B8:word32] (retsize: 4;)
-		uses: eax:eax_212,ebp:ebp_213,ebx:ebx_214,ecx:ecx_226,edi:edi_216,edx:edx_217,esi:esi_218,esp:esp_219 - 8,fs:fs,Stack +0000:ebp,Stack +000C:dwArg08,Stack +FFFFFFE8:0x100033AC,Stack +FFFFFFEC:dwLoc18_330,Stack +FFFFFFF0:0x100033B8,Stack +FFFFFFF4:edi,Stack +FFFFFFF8:esi,Stack +FFFFFFFC:ebx,Top:0
+		uses: eax:eax_212,ecx:ecx_226,edx:edx_217,esp:esp_219 - 8,Stack +0000:ebp,Stack +000C:dwArg08,Stack +FFFFFFE8:0x100033AC,Stack +FFFFFFEC:dwLoc18_330,Stack +FFFFFFF0:0x100033B8,Stack +FFFFFFF4:edi,Stack +FFFFFFF8:esi,Stack +FFFFFFFC:ebx,Top:0
 		defs: ecx:ecx_239,edx:edx_245,esp:esp_237
 // DataOut:
 // DataOut (flags):
@@ -596,7 +593,7 @@ l100013E7:
 	Mem83[esp_81:word32] = ecx
 	Mem86[esp_81 - 4:word32] = edx
 	Mem89[esp_81 - 8:word32] = ebx_116
-	word32 eax_92 = fn100011E9(edx_65, ebx_116, ebp_13, edx, ecx, Mem89[esp_81 - 4:word32], out ecx_310, out edx, out ebx_116, out esi_113, out edi_110)
+	word32 eax_92 = fn100011E9(edx_65, ebx_116, ebp_13, edx, ecx, Mem89[esp_81 - 4:word32], out ecx_307, out edx, out ebx_116, out esi_113, out edi_110)
 	Mem104[ebp_13 - 0x0000001C:word32] = eax_92
 	esp_103 = esp_81 + 0x00000004
 	branch eax_92 == 0x00000000 l1000147A
@@ -737,7 +734,7 @@ l1000147A:
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
 	word32 stackArg16 = <invalid>
-	fn1000182D(ebp_13, Mem260[esp_103 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16, out ebp_307, out esi_308, out edi_309)
+	fn1000182D(ebp_13, Mem260[esp_103 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16)
 	return eax_261
 // DataOut:
 // DataOut (flags):
@@ -906,7 +903,7 @@ l1000165F:
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
 	word32 stackArg16 = <invalid>
-	fn1000182D(ebp_13, Mem97[esp_81 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16, out ebp_125, out esi_126, out edi_127)
+	fn1000182D(ebp_13, Mem97[esp_81 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16)
 	return eax_110
 // DataOut:
 // DataOut (flags):
@@ -1140,11 +1137,11 @@ fn10001700_exit:
 
 
 
-word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
-// LiveOut: eax ebp ebx edi edx esi esp
+// LiveOut: eax edi edx esp
 // Trashed: SCZO eax ebp ebx ecx edi edx esi esp Top
 // Preserved:
 fn10001742_entry:
@@ -1203,14 +1200,8 @@ l100017A8:
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
 	word32 stackArg16 = <invalid>
-	word32 ebp_76
-	word32 edi_79
-	word32 esi_80
-	word32 ebx_77 = fn1000182D(ebp_13, Mem75[esp_14 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16, out ebp_76, out esi_80, out edi_79)
+	word32 edi_79 = fn1000182D(ebp_13, Mem75[esp_14 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16)
 	edxOut = edx_23
-	ebxOut = ebx_77
-	ebpOut = ebp_76
-	esiOut = esi_80
 	ediOut = edi_79
 	return eax_60
 // DataOut:
@@ -1299,11 +1290,11 @@ fn100017E8_exit:
 
 
 
-word32 fn1000182D(word32 ebp, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+word32 fn1000182D(word32 ebp, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebp:[0..31] fs:[0..15] Stack +0000:[0..31]
-// LiveOut: ebp ebx edi esi esp
+// LiveOut: edi esp
 // Trashed: ebp ebx ecx edi esi esp Top
 // Preserved:
 fn1000182D_entry:
@@ -1313,12 +1304,8 @@ fn1000182D_entry:
 
 l1000182D:
 	Mem8[fs:0x00000000:word32] = Mem0[ebp - 0x00000010:word32]
-	word32 ebp_19 = Mem8[ebp:word32]
 	Mem22[ebp:word32] = dwArg00
-	ebpOut = ebp_19
-	esiOut = dwArg0C
-	ediOut = dwArg08
-	return dwArg10
+	return dwArg08
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

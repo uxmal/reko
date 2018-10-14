@@ -162,16 +162,16 @@ l00000000004012C9:
 				else
 					esi_349 = 0xFF;
 				uint64 rdx_371 = (uint64) eax_230;
-				rcx_156 = (word64) (word32) (byte) (word32) ((Eq_1112[]) 0x01)[(uint64) eax_230].b0000;
+				rcx_156 = (word64) (word32) (byte) (word32) ((Eq_1108[]) 0x01)[(uint64) eax_230].b0000;
 				r9_245.u1 = (uint64) esi_349;
-				r8_154.u1 = (uint64) (word32) (byte) (word32) ((Eq_1113[]) 0x02)[(uint64) eax_230].b0000;
+				r8_154.u1 = (uint64) (word32) (byte) (word32) ((Eq_1109[]) 0x02)[(uint64) eax_230].b0000;
 				printf("INDEXED %u = %d %d %d %d\n", (uint64) (word32) (uint64) eax_230, DPB(rdx_371, (word32) (byte) (word32) null[rdx_371].b0000, 0), rcx_156, r8_154, r9_245);
 			}
 			else
 			{
 				uint64 rdx_320 = (uint64) eax_230;
-				rcx_156 = (word64) (word32) (byte) (word32) ((Eq_1109[]) 0x01)[(uint64) eax_230].b0000;
-				r8_154.u1 = (uint64) (word32) (byte) (word32) ((Eq_1110[]) 0x02)[(uint64) eax_230];
+				rcx_156 = (word64) (word32) (byte) (word32) ((Eq_1105[]) 0x01)[(uint64) eax_230].b0000;
+				r8_154.u1 = (uint64) (word32) (byte) (word32) ((Eq_1106[]) 0x02)[(uint64) eax_230];
 				printf("INDEXED %u = %d %d %d\n", (uint64) (word32) (uint64) eax_230, DPB(rdx_320, (word32) (byte) (word32) null[rdx_320].b0000, 0), rcx_156, r8_154);
 			}
 		}
@@ -367,17 +367,14 @@ l000000000040175D:
 // 0000000000401780: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
-	uint64 r15_10 = (uint64) edi;
-	word32 r15d_83 = (word32) r15_10;
-	uint64 r15_55 = DPB(r15_10, r15d_83, 0);
+	word32 r15d_83 = (word32) (uint64) edi;
 	int64 rbp_29 = 0x00601E08 - 0x00601E00;
 	word64 rax_33 = _init();
 	if (rbp_29 >> 0x03 != 0x00)
 	{
-		Eq_1097 rbx_41 = 0x00;
+		Eq_1094 rbx_41 = 0x00;
 		do
 		{
-			r15_55 = DPB(r15_55, r15d_83, 0);
 			(*((char *) globals->a601E00 + rbx_41 * 0x08))();
 			rbx_41 = (word64) rbx_41.u1 + 0x01;
 		} while (rbx_41 != rbp_29 >> 0x03);

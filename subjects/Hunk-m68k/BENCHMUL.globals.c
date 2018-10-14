@@ -4,20 +4,19 @@
 
 #include "BENCHMUL.h"
 
-struct Eq_120 * g_ptr0000;
-Eq_1430 g_t0001;
-struct Eq_5 * g_ptr0004;
+struct Eq_116 * g_ptr0000;
+Eq_1354 g_t0001;
+struct Eq_4 * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_3241 g_t0400;
 byte g_b16B0 = 0x65;
-Eq_4977 g_t2B15 = 
+Eq_4870 g_t2B15 = 
 	{
 		
 		{
 		},
 	};
-Eq_5 g_t4000 = 
+Eq_4 g_t4000 = 
 	{
 		0x600841EA,
 		0x81,
@@ -34,44 +33,32 @@ Eq_5 g_t4000 =
 		0x228C1010,
 	};
 ptr32 g_ptr40F8 = 0x00000000;
-struct Eq_5 * g_ptr40FC = &g_t4000;
-Eq_26 g_t4100 = 
-	{
-		0x00
-	};
-union Eq_4 * g_ptr4104 = &g_t10202;
-union Eq_4 * g_ptr4108 = &g_t3030303;
-Eq_26 g_t410C = 
-	{
-		0x04
-	};
-Eq_26 g_t4110 = 
-	{
-		0x04
-	};
-Eq_26 g_t4114 = 
-	{
-		0x05
-	};
+struct Eq_4 * g_ptr40FC = &g_t4000;
+struct Eq_25 * g_ptr4100 = null;
+union Eq_3 * g_ptr4104 = &g_t10202;
+union Eq_3 * g_ptr4108 = &g_t3030303;
+int32 g_dw410C = 67372036;
+int32 g_dw4110 = 67372036;
+int32 g_dw4114 = 84215045;
 word32 g_dw4120 = 0x05050505;
 ptr32 g_ptr4124 = 0x06060606;
 int32 g_dw4128 = 101058054;
-struct Eq_3241 * g_ptr412C = &g_t6060606;
-struct Eq_5 * g_ptr4130 = &g_t6060606;
-Eq_4094 g_t4134 = 
+struct Eq_3506 * g_ptr412C = &g_t6060606;
+struct Eq_4 * g_ptr4130 = &g_t6060606;
+Eq_3991 g_t4134 = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw4238;
-Eq_572 g_t4240;
+Eq_545 g_t4240;
 word32 g_dw4244;
-struct Eq_529 * g_ptr4250;
-Eq_26 g_t4254;
-Eq_26 g_t4258;
-Eq_26 g_t4260;
-Eq_4 g_t10202;
-Eq_4 g_t3030303;
-Eq_3241 g_t6060606;
+struct Eq_506 * g_ptr4250;
+Eq_505 g_t4254;
+Eq_505 g_t4258;
+Eq_505 g_t4260;
+Eq_3 g_t10202;
+Eq_3 g_t3030303;
+Eq_3506 g_t6060606;
 

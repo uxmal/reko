@@ -218,7 +218,7 @@ l0040120E:
 	int8 Top_159 = <invalid>
 	word32 esp_158 = <invalid>
 	call esi_156 (retsize: 4;)
-		uses: eax:eax_132,ebp:ebp_133,ebx:ebx_134,ecx:esi_156,edi:edi_136,edx:edx_139,esi:esi_156,esp:esp_158,fs:fs_59,Stack +0000:dwLoc04_321,Stack +FFFFFFF8:dwLoc0C_327,Stack +FFFFFFFC:dwLoc08_324,Top:Top_159
+		uses: eax:eax_132,ecx:esi_156,edx:edx_139,esp:esp_158,Stack +0000:dwLoc04_321,Stack +FFFFFFF8:dwLoc0C_327,Stack +FFFFFFFC:dwLoc08_324,Top:Top_159
 		defs: ecx:ecx_161,edx:edx_164,esp:esp_160,Top:Top_163
 // DataOut:
 // DataOut (flags):

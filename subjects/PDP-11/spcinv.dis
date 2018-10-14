@@ -65,19 +65,15 @@ l033E:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
-	r0_175 = fn0470(r0_158, r1_157, r2_174, r4_159, r5_160, stackArg0, out r2_176, out r4_177, out r5_178)
+	r0_175 = fn0470(r0_158, r1_157, r2_174, r4_159, r5_160, stackArg0, out r4_177)
 	Mem184[0x0F18:word16] = 0x0078
-	sp_179 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0352:
-	r5_237 = PHI((r5_153, l032C), (r5_178, l033E))
 	r4_235 = PHI((r4_109, l032C), (r4_177, l033E))
 	r0_227 = PHI((r0_105, l032C), (r0_175, l033E))
-	r2_220 = PHI((r2_174, l032C), (r2_176, l033E))
-	sp_215 = PHI((sp_218, l032C), (sp_179, l033E))
 	Mem190 = PHI((Mem131, l032C), (Mem184, l033E))
 	branch Mem190[0x0EF8:word16] != 0x0000 l036C
 // DataOut:
@@ -106,7 +102,7 @@ l0366:
 l036C:
 	Mem213 = PHI((Mem190, l0352), (Mem206, l0366))
 	call Mem213[0x0EFA:word16] (retsize: 2;)
-		uses: pc:pc,r0:r0_227,r1:r1_157,r2:r2_220,r3:r3_225,r4:r4_235,r5:r5_237,sp:sp_215
+		uses: r0:r0_227
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -118,8 +114,7 @@ l0370:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
-	r0_262 = fn0998(fn07A6(r4_240, pc, out r1_255, out r3_256, out r5_254), r1_255, r4_240, r5_254, pc, stackArg0, out r2_261, out r4_263, out r5_264)
-	sp_265 = <invalid>
+	r0_262 = fn0998(fn07A6(r4_240, pc, out r1_255, out r5_254), r1_255, r4_240, r5_254, pc, stackArg0, out r2_261, out r4_263, out r5_264)
 	branch 0x1178 - r4_263 == 0x0000 l0394
 // DataOut:
 // DataOut (flags):
@@ -218,7 +213,6 @@ l0386:
 // SymbolicIn:
 
 l038E:
-	r3_519 = PHI((r3_225, l0388), (r3_256, l0386))
 	r2_500 = PHI((r2_174, l0388), (r2_261, l0386))
 	Mem467 = PHI((Mem103, l0388), (Mem273, l0386))
 	r1_413 = PHI((r1_157, l0388), (r1_255, l0386))
@@ -228,14 +222,11 @@ l038E:
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
 	r4_415 = fn0AF6(r1_413, r4_412, r5_411, stackArg0, out r5_416)
-	sp_417 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0392:
-	r3_518 = PHI((r3_519, l038E), (r3_256, l039A))
-	sp_517 = PHI((sp_417, l038E), (sp_265, l039A))
 	r2_499 = PHI((r2_500, l038E), (r2_261, l039A))
 	r1_492 = PHI((r1_413, l038E), (r1_255, l039A))
 	r5_491 = PHI((r5_416, l038E), (r5_264, l039A))
@@ -246,8 +237,6 @@ l0392:
 // SymbolicIn:
 
 l02A6:
-	r3_225 = PHI((r3_225, l0388), (r3_256, l0394), (r3_518, l0392))
-	sp_218 = PHI((sp_218, l0388), (sp_265, l0394), (sp_517, l0392))
 	r2_174 = PHI((r2_174, l0388), (r2_261, l0394), (r2_499, l0392))
 	r1_157 = PHI((r1_157, l0388), (r1_255, l0394), (r1_492, l0392))
 	r5_153 = PHI((r5_153, l0388), (r5_264, l0394), (r5_491, l0392))
@@ -283,9 +272,8 @@ l02B8:
 // SymbolicIn:
 
 l02BC:
-	r1_435 = r1_429 - 0x02C7 << 1
-	call Mem422[r1_435 + 0x02CC:ptr16] (retsize: 2;)
-		uses: pc:pc,r0:r0_91,r1:r1_435,r2:r2_174,r3:r3_225,r4:r4_109,r5:r5_153,sp:sp_218
+	call Mem422[(r1_429 - 0x02C7 << 1) + 0x02CC:ptr16] (retsize: 2;)
+		uses: r0:r0_91
 	return
 // DataOut:
 // DataOut (flags):
@@ -419,11 +407,11 @@ l0234:
 
 
 
-word16 fn0470(word16 r0, word16 r1, word16 r2, word16 r4, word16 r5, byte bArg00, ptr16 & r2Out, ptr16 & r4Out, ptr16 & r5Out)
+word16 fn0470(word16 r0, word16 r1, word16 r2, word16 r4, word16 r5, byte bArg00, ptr16 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r1:[0..15] r2:[0..15] r4:[0..15] r5:[0..15]
-// LiveOut: r0 r2 r4 r5 sp
+// LiveOut: r0 r4
 // Trashed: NZVC r0 r2 r4 r5 sp
 // Preserved:
 fn0470_entry:
@@ -434,12 +422,9 @@ fn0470_entry:
 l0470:
 	word16 r5_15
 	word16 r4_21
-	word16 r5_22
-	word16 r0_20 = fn0AE8(r0, fn0AB6(r0, r1, r4, r5, bLoc03, bLoc02, out r5_15), r5_15, SEQ(bLoc02, bLoc03), out r4_21, out r5_22)
+	word16 r0_20 = fn0AE8(r0, fn0AB6(r0, r1, r4, r5, bLoc03, bLoc02, out r5_15), r5_15, SEQ(bLoc02, bLoc03), out r4_21, out r5_41)
 	Mem29[r2 - 0x0002:word16] = r4_21
-	r2Out = r2 - 0x0002
 	r4Out = r4_21
-	r5Out = r5_22
 	return r0_20
 // DataOut:
 // DataOut (flags):
@@ -1279,11 +1264,11 @@ fn06D6_exit:
 
 
 
-word16 fn07A6(word16 r4, word16 pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r5Out)
+word16 fn07A6(word16 r4, word16 pc, ptr16 & r1Out, ptr16 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc:[0..15] r4:[0..15]
-// LiveOut: r0 r1 r3 r5
+// LiveOut: r0 r1 r5
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: r4 sp
 fn07A6_entry:
@@ -1368,7 +1353,7 @@ l07EE:
 
 l07F4:
 	r1 = Mem92[r2_15 + 0x0DAC:word16]
-	r3 = 0x0008
+	word16 r3_181 = 0x0008
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1441,7 +1426,7 @@ l081E:
 // SymbolicIn:
 
 l0824:
-	fn093C(r0, r1, r3)
+	fn093C(r0, r1, r3_181)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1452,19 +1437,19 @@ l0828:
 	Mem204[sp_197 + 0x0001:byte] = r0
 	word16 r5_217
 	word16 r4_216 = fn0AB6(r0, r1, r4, r5_128 + 0x0001, Mem204[sp_197 + -2:byte], Mem204[sp_197 + -1:byte], out r5_217)
-	word16 r3_223 = fn096A(r3)
+	word16 r3_223 = fn096A(r3_181)
 	r0 = fn0AE8(r0, r4_216, r5_217, Mem204[sp_197 + -2:word16], out r4, out r5_128)
 	Mem236[Mem204[r3_223 - 0x0002:ptr16]:word16] = r4
 	sp_120 = <invalid>
-	r3 = r3_223 - 0x0002
+	r3_181 = r3_223 - 0x0002
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l085A:
 	r1 = r1 + 0x0002
-	r3 = r3 - 0x0001
-	branch r3 != 0x0000 l07FC
+	r3_181 = r3_181 - 0x0001
+	branch r3_181 != 0x0000 l07FC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1629,11 +1614,9 @@ l0908:
 // SymbolicIn:
 
 l0910:
-	word16 r3_445 = (int16) Mem368[r3_437:byte]
-	Mem451[r2_372 + 0x0EE6:byte] = r3_445 + 0x0002
+	Mem451[r2_372 + 0x0EE6:byte] = (int16) Mem368[r3_437:byte] + 0x0002
 	Mem452[r2_372 + 0x0EE9:byte] = Mem451[r0_389 + 0x000C:byte]
 	Mem453[r2_372 + 0x0EEC:byte] = 0x80
-	r3 = r3_445 + 0x0002
 	branch 0x0DAC - r0_389 == 0x0000 l0936
 // DataOut:
 // DataOut (flags):
@@ -1654,7 +1637,6 @@ l0936:
 
 l093A:
 	r1Out = r1
-	r3Out = r3
 	r5Out = <invalid>
 	return r0_389
 // DataOut:
@@ -1670,7 +1652,6 @@ l08CA:
 
 l08CE:
 	r1Out = r1
-	r3Out = r3
 	r5Out = <invalid>
 	return r0
 // DataOut:
@@ -1797,7 +1778,7 @@ word16 fn0998(word16 r0, word16 r1, word16 r4, word16 r5, word16 pc, byte bArg00
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc:[0..15] r0:[0..15] r1:[0..15] r4:[0..15] r5:[0..15]
-// LiveOut: r0 r2 r4 r5 sp
+// LiveOut: r0 r2 r4 r5
 // Trashed: NZVC r0 r2 r4 r5 sp
 // Preserved: r1
 fn0998_entry:
@@ -2164,7 +2145,7 @@ l0AEC:
 l0AF0:
 	word16 r0_34
 	call r5 + 0x0002 (retsize: 0;)
-		uses: r0:r0,r4:r4_19 - 0x0001,r5:wArg00,sp:fp + 0x0002,Stack +FFFFFFFC:r0,Stack +FFFFFFFE:wArg00
+		uses: r0:r0,Stack +FFFFFFFC:r0,Stack +FFFFFFFE:wArg00
 		defs: r0:r0_34
 	r4Out = r4 - 0x0001
 	r5Out = wArg00
@@ -2184,7 +2165,7 @@ word16 fn0AF6(word16 r1, word16 r4, word16 r5, byte bArg00, ptr16 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r1:[0..15] r4:[0..15] r5:[0..15]
-// LiveOut: r4 r5 sp
+// LiveOut: r4 r5
 // Trashed: NZVC r0 r4 r5 sp
 // Preserved:
 fn0AF6_entry:

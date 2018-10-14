@@ -2135,7 +2135,7 @@ l0D3C:
 	Mem26[0x182C:word16] = 0xF0A0
 	Mem29[0x182E:word16] = 0x0000
 	call ptrArg00 (retsize: 2;)
-		uses: r0:r0,r1:r1,r2:r2,r3:r3,r4:r4,r5:0x1830,sp:fp - 0x000A,Stack +0002:r4,Stack +0004:r1,Stack +0006:r0,Stack +0008:r3,Stack +000A:r2,Stack +000C:ptrArg00
+		uses: r0:r0,Stack +0002:r4,Stack +0004:r1,Stack +0006:r0,Stack +0008:r3,Stack +000A:r2,Stack +000C:ptrArg00
 	return 0x1830
 // DataOut:
 // DataOut (flags):

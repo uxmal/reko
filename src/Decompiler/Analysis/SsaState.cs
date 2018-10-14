@@ -323,6 +323,18 @@ namespace Reko.Analysis
 		}
 
         /// <summary>
+        /// Remove all uses <paramref name="e"/> expression makes
+        /// at <paramref name="stm"/> statement.
+        /// </summary>
+        /// <param name="stm">Statement</param>
+        /// <param name="e">Statement</param>
+        public void RemoveUses(Statement stm, Expression e)
+        {
+            var xu = new ExpressionUseRemover(stm, Identifiers);
+            e.Accept(xu);
+        }
+
+        /// <summary>
         /// Add all identifiers used in <paramref name="stm"/>.
         /// </summary>
         /// <param name="stm"></param>

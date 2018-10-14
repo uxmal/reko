@@ -3197,7 +3197,7 @@ l00000000004048D7:
 
 l00000000004048E1:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8 - 6399480,rax:0x0000000000000000,rbp:rbp,rdi:0x000000000061A5F8,rsp:fp,Stack +0000:rbp
+		uses: r8:r8 - 6399480,rax:0x0000000000000000,rdi:0x000000000061A5F8,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):
@@ -3520,7 +3520,7 @@ l0000000000404B35:
 	word64 r9_212
 	word64 r10_217
 	call Mem161[rcx_192 * 0x0000000000000008 + 0x00411F40:word64] (retsize: 8;)
-		uses: dl:dl_233,r10:r10_172,r11:r11_218,r12:r12_223,r14:r14_196,r8:r8_160,r9:r9_169,rax:rax_210,rbp:rbp_226,rbx:rbx_230,rcx:rcx_192,rdi:rdi_213,rsi:rsi_200,rsp:rsp_193,Stack +0000:qwLoc08_452,Stack +FFFFFFE8:qwLoc20_461,Stack +FFFFFFF0:qwLoc18_458,Stack +FFFFFFF8:qwLoc10_455
+		uses: dl:dl_233,r10:r10_172,r11:r11_218,r8:r8_160,r9:r9_169,rax:rax_210,rcx:rcx_192,rdi:rdi_213,rsi:rsi_200,Stack +0000:qwLoc08_452,Stack +FFFFFFE8:qwLoc20_461,Stack +FFFFFFF0:qwLoc18_458,Stack +FFFFFFF8:qwLoc10_455
 		defs: r10:r10_217,r8:r8_199,r9:r9_212,rax:rax_211
 	rbxOut = rbx_230
 	rspOut = rsp_193
@@ -10821,7 +10821,7 @@ l000000000040A165:
 	word64 rdi_88
 	word64 rsi_90
 	call r13_79 (retsize: 8;)
-		uses: fs:fs,r10:r10_76,rdi:rdi_88,rdx:fn000000000040A000(r15_61, rcx, rdx, fn0000000000409F80(rax_41, rsi, rdi, r10, r9, rdi, r8, fs, out r15_61), fs, out rsi_90, out rdi_88, out r10_76, out r13_79),rsi:rsi_90
+		uses: r10:r10_76,rdi:rdi_88,rdx:fn000000000040A000(r15_61, rcx, rdx, fn0000000000409F80(rax_41, rsi, rdi, r10, r9, rdi, r8, fs, out r15_61), fs, out rsi_90, out rdi_88, out r10_76, out r13_79),rsi:rsi_90
 		defs: r10:r10_96,r9:r9_103,rsp:rsp_111
 	rax_116 = 0xFFFFFFFFFFFFFFFF
 // DataOut:
@@ -11800,7 +11800,7 @@ fn000000000040AC80_entry:
 l000000000040AC80:
 	word64 rax_14
 	call Mem5[rdi + 0x0000000000000030:word64] (retsize: 8;)
-		uses: rax:rax,rbx:rdi,rdi:rsi,rsi:Mem5[rdi + 0x0000000000000010:word64],rsp:fp - 8,Stack +0008:rbx
+		uses: rax:rax,rdi:rsi,rsi:Mem5[rdi + 0x0000000000000010:word64],Stack +0008:rbx
 		defs: rax:rax_14
 	branch rax_14 >=u Mem5[rdi + 0x0000000000000010:word64] l000000000040AC9D
 // DataOut:
@@ -11863,7 +11863,7 @@ l000000000040ACDC:
 	word64 rdx_43
 	word64 rcx_47
 	call Mem34[rdi + 0x0000000000000038:word64] (retsize: 8;)
-		uses: r10:r10,r12:rsi,r13:r13_12,r14:rdx,r9:r9,rax:rax_27,rbp:rdi,rbx:rax_27,rcx:rcx_46,rdi:rsi,rdx:rdx,rsi:rsi_35,rsp:fp - 40,Stack +0008:rbx,Stack +0010:rbp,Stack +0018:r12,Stack +0020:r13,Stack +0028:r14
+		uses: r10:r10,r9:r9,rax:rax_27,rcx:rcx_46,rdi:rsi,rdx:rdx,rsi:rsi_35,Stack +0008:rbx,Stack +0010:rbp,Stack +0018:r12,Stack +0020:r13,Stack +0028:r14
 		defs: r10:r10_54,r9:r9_52,rax:rax_50,rcx:rcx_47,rdx:rdx_43
 	branch (byte) rax_50 == 0x00 l000000000040AD46
 // DataOut:
@@ -11889,7 +11889,7 @@ l000000000040AD30:
 l000000000040AD38:
 	word64 rax_81
 	call Mem34[rdi + 0x0000000000000038:word64] (retsize: 8;)
-		uses: r10:r10_84,r12:rsi,r13:r13_12,r14:rdx,r9:r9_82,rax:rax_62,rbp:rdi,rbx:rbx_60,rcx:rcx_77,rdi:rsi,rdx:rdx_74,rsi:rsi_66,rsp:fp - 40,Stack +0008:rbx,Stack +0010:rbp,Stack +0018:r12,Stack +0020:r13,Stack +0028:r14
+		uses: r10:r10_84,r9:r9_82,rax:rax_62,rcx:rcx_77,rdi:rsi,rdx:rdx_74,rsi:rsi_66,Stack +0008:rbx,Stack +0010:rbp,Stack +0018:r12,Stack +0020:r13,Stack +0028:r14
 		defs: r10:r10_85,r9:r9_83,rax:rax_81,rcx:rcx_78,rdx:rdx_75
 	branch (byte) rax_81 != 0x00 l000000000040AD60
 // DataOut:
@@ -12543,7 +12543,7 @@ l000000000040B6D0:
 
 l000000000040B6E3:
 	call Mem13[rdi + 0x0000000000000040:word64] (retsize: 8;)
-		uses: r12:r12_21,rax:rax_35,rbp:rdi,rbx:rbx_34,rdi:rdi_32,rsp:fp - 24,Stack +0008:rbx,Stack +0010:rbp,Stack +0018:r12
+		uses: rax:rax_35,rdi:rdi_32,Stack +0008:rbx,Stack +0010:rbp,Stack +0018:r12
 		defs: rax:rax_36
 	rbx_24 = Mem13[rbx_24 + 0x0000000000000008:word64]
 	branch rbx_24 != 0x0000000000000000 l000000000040B6E0
@@ -16087,7 +16087,7 @@ l000000000040D4C5:
 
 l000000000040D53B:
 	call rcx (retsize: 8;)
-		uses: r12:r12_91,r13:r13_89,r14:r14_96,r15:r15_95,rax:rax_104,rbp:rcx,rbx:rdi,rcx:rcx_97,rdi:r12_91,rdx:rdx_102,rsi:r13_89,rsp:fp - 0x0000000000000050,Stack +0000:qwLoc58,Stack +0008:rdx,Stack +0010:qwLoc48,Stack +0018:qwLoc40_307,Stack +0020:qwLoc38,Stack +0028:rbx,Stack +0030:rbp,Stack +0038:r12,Stack +0040:r13,Stack +0048:r14,Stack +0050:r15,Stack +FFFFFFF0:rsi,Stack +FFFFFFF8:rsi >>u 0x0000000000000001
+		uses: rax:rax_104,rcx:rcx_97,rdi:r12_91,rdx:rdx_102,rsi:r13_89,Stack +0000:qwLoc58,Stack +0008:rdx,Stack +0010:qwLoc48,Stack +0018:qwLoc40_307,Stack +0020:qwLoc38,Stack +0028:rbx,Stack +0030:rbp,Stack +0038:r12,Stack +0040:r13,Stack +0048:r14,Stack +0050:r15,Stack +FFFFFFF0:rsi,Stack +FFFFFFF8:rsi >>u 0x0000000000000001
 		defs: rax:rax_105,rcx:rcx_98,rdx:rdx_103
 	branch (word32) rax_104 > 0x00000000 l000000000040D520
 // DataOut:
@@ -16146,7 +16146,7 @@ l000000000040D57B:
 
 l000000000040D5B7:
 	call rcx (retsize: 8;)
-		uses: r12:r12_148,r13:r13_146,r14:r14_153,r15:r15_152,rax:rax_161,rbp:rcx,rbx:rdi,rcx:rcx_154,rdi:r12_148,rdx:rdx_159,rsi:r13_146,rsp:rsp_139,Stack +0000:r15,Stack +FFFFFFA0:rsi,Stack +FFFFFFA8:rsi >>u 0x0000000000000001,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFB8:rdx,Stack +FFFFFFC0:qwLoc48,Stack +FFFFFFC8:qwLoc40_373,Stack +FFFFFFD0:qwLoc38,Stack +FFFFFFD8:qwLoc30_362,Stack +FFFFFFE0:rbp,Stack +FFFFFFE8:r12,Stack +FFFFFFF0:r13,Stack +FFFFFFF8:r14
+		uses: rax:rax_161,rcx:rcx_154,rdi:r12_148,rdx:rdx_159,rsi:r13_146,Stack +0000:r15,Stack +FFFFFFA0:rsi,Stack +FFFFFFA8:rsi >>u 0x0000000000000001,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFB8:rdx,Stack +FFFFFFC0:qwLoc48,Stack +FFFFFFC8:qwLoc40_373,Stack +FFFFFFD0:qwLoc38,Stack +FFFFFFD8:qwLoc30_362,Stack +FFFFFFE0:rbp,Stack +FFFFFFE8:r12,Stack +FFFFFFF0:r13,Stack +FFFFFFF8:r14
 		defs: rax:rax_162,rcx:rcx_155,rdx:rdx_160
 	branch (word32) rax > 0x00000000 l000000000040D5A0
 // DataOut:
@@ -16233,7 +16233,7 @@ l000000000040D660:
 	word64 r13_211 = Mem30[rdi + 0x0000000000000008:word64]
 	word64 r12_212 = Mem30[rdi:word64]
 	call rcx (retsize: 8;)
-		uses: r12:r12_212,r13:r13_211,r14:r14,r15:r15,rax:rax,rbp:rcx,rbx:rdi,rcx:rcx,rdi:r12_212,rdx:rdx,rsi:r13_211,rsp:fp - 0x0000000000000068,Stack +0008:rsi,Stack +0010:qwLoc60,Stack +0018:qwLoc58,Stack +0020:rdx,Stack +0028:qwLoc48,Stack +0030:qwLoc40,Stack +0038:qwLoc38,Stack +0040:rbx,Stack +0048:rbp,Stack +0050:r12,Stack +0058:r13,Stack +0060:r14,Stack +0068:r15
+		uses: rax:rax,rcx:rcx,rdi:r12_212,rdx:rdx,rsi:r13_211,Stack +0008:rsi,Stack +0010:qwLoc60,Stack +0018:qwLoc58,Stack +0020:rdx,Stack +0028:qwLoc48,Stack +0030:qwLoc40,Stack +0038:qwLoc38,Stack +0040:rbx,Stack +0048:rbp,Stack +0050:r12,Stack +0058:r13,Stack +0060:r14,Stack +0068:r15
 		defs: rax:rax_220,rcx:rcx_215,rdx:rdx_218
 	branch (word32) rax <= 0x00000000 l000000000040D479
 // DataOut:
@@ -17794,7 +17794,7 @@ l000000000040DA2F:
 	word64 rsi_1292
 	word64 r10_1296
 	call Mem327[rax_1199 * 0x0000000000000008 + 0x00416068:word64] (retsize: 8;)
-		uses: fs:fs_1049,r10:r10_1088,r11:r11_1294,r12:r12_1233,r13:r13_326,r14:r14_390,r15:r15_292,r8:r8_342,r9:r9_344,rax:rax_1199,rbp:rbp_290,rbx:rbx_368,rcx:rcx_1200,rdi:rdi_1236,rdx:rdx_585,rsi:rsi_1264,rsp:rsp_286,Stack +0000:qwLoc08_1462,Stack +0010:qwArg08_1684,Stack +0018:qwArg10_1905,Stack +0020:qwArg18_1979,Stack +FFFFFF30:qwLocD8_1758,Stack +FFFFFF38:qwLocD0_1721,Stack +FFFFFF43:bLocC5_2127,Stack +FFFFFF44:dwLocC4_1794,Stack +FFFFFF68:qwLocA0_1868,Stack +FFFFFF70:qwLoc98_2165,Stack +FFFFFF78:qwLoc90_2016,Stack +FFFFFF80:qwLoc88_1942,Stack +FFFFFF88:qwLoc80_2090,Stack +FFFFFFA0:dwLoc68_1831,Stack +FFFFFFC8:qwLoc40_2053,Stack +FFFFFFD8:qwLoc30_1647,Stack +FFFFFFE0:qwLoc28_1610,Stack +FFFFFFE8:qwLoc20_1573,Stack +FFFFFFF0:qwLoc18_1536,Stack +FFFFFFF8:qwLoc10_1499
+		uses: r10:r10_1088,r11:r11_1294,r8:r8_342,r9:r9_344,rax:rax_1199,rcx:rcx_1200,rdi:rdi_1236,rdx:rdx_585,rsi:rsi_1264,Stack +0000:qwLoc08_1462,Stack +0010:qwArg08_1684,Stack +0018:qwArg10_1905,Stack +0020:qwArg18_1979,Stack +FFFFFF30:qwLocD8_1758,Stack +FFFFFF38:qwLocD0_1721,Stack +FFFFFF43:bLocC5_2127,Stack +FFFFFF44:dwLocC4_1794,Stack +FFFFFF68:qwLocA0_1868,Stack +FFFFFF70:qwLoc98_2165,Stack +FFFFFF78:qwLoc90_2016,Stack +FFFFFF80:qwLoc88_1942,Stack +FFFFFF88:qwLoc80_2090,Stack +FFFFFFA0:dwLoc68_1831,Stack +FFFFFFC8:qwLoc40_2053,Stack +FFFFFFD8:qwLoc30_1647,Stack +FFFFFFE0:qwLoc28_1610,Stack +FFFFFFE8:qwLoc20_1573,Stack +FFFFFFF0:qwLoc18_1536,Stack +FFFFFFF8:qwLoc10_1499
 		defs: r10:r10_1296,r8:r8_1231,r9:r9_1234,rax:rax_1235,rsi:rsi_1292
 	rbxOut = rbx_1029
 	rspOut = rsp_104
@@ -18726,17 +18726,17 @@ l000000000040ED94:
 	r9_574 = DPB(r9_118, r9d_668, 0) (alias)
 	word64 rdi_601 = DPB(rdi_377, edi_107, 0)
 	byte SZO_111 = SLICE(cond(dil_108 - 0x30), bool, 4)
-	r9_1282 = r9_574
-	r11_1293 = r11_100
-	r9_1300 = r9_118
+	r9_1280 = r9_574
+	r11_1291 = r11_100
+	r9_1298 = r9_118
 	branch dil_108 == 0x30 l000000000040EDC0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040EDA1:
-	r11_100 = DPB(r11_1292, r11d_101, 0) (alias)
-	r11_100 = DPB(r11_1292, r11d_101, 0) (alias)
+	r11_100 = DPB(r11_1290, r11d_101, 0) (alias)
+	r11_100 = DPB(r11_1290, r11d_101, 0) (alias)
 	word64 r11_620 = DPB(r11_100, r11d_101, 0)
 	word64 r11_629 = DPB(r11_100, r11d_101, 0)
 	r11_633 = DPB(r11_629, r11d_101, 0) (alias)
@@ -18750,8 +18750,8 @@ l000000000040EDA1:
 	r11_619 = DPB(r11_619, r11d_101, 0) (alias)
 	word64 r11_644 = DPB(r11_619, r11d_101, 0)
 	byte r9b_359 = (byte) r9d_668
-	r9_118 = DPB(r9_1281, r9d_668, 0) (alias)
-	r9_118 = DPB(r9_1281, r9d_668, 0) (alias)
+	r9_118 = DPB(r9_1279, r9d_668, 0) (alias)
+	r9_118 = DPB(r9_1279, r9d_668, 0) (alias)
 	word64 r9_572 = DPB(r9_118, r9d_668, 0)
 	word64 r9_581 = DPB(r9_118, r9d_668, 0)
 	r9_585 = DPB(r9_581, r9d_668, 0) (alias)
@@ -18781,9 +18781,9 @@ l000000000040EDD0:
 // SymbolicIn:
 
 l000000000040EE70:
-	r9_1280 = r9_118
-	rdi_1289 = rdi_377
-	r11_1291 = r11_100
+	r9_1278 = r9_118
+	rdi_1287 = rdi_377
+	r11_1289 = r11_100
 	branch dil_108 != 0x5F l000000000040EDEE
 // DataOut:
 // DataOut (flags):
@@ -18791,7 +18791,7 @@ l000000000040EE70:
 
 l000000000040EE7A:
 	r11d_101 = (int32) dil_108
-	r11_100 = DPB(r11_1292, r11d_101, 0) (alias)
+	r11_100 = DPB(r11_1290, r11d_101, 0) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18810,10 +18810,10 @@ l000000000040EDA3:
 // SymbolicIn:
 
 l000000000040EDE8:
-	r9_1279 = r9_118
-	rdi_1288 = rdi_377
-	r11_1290 = r11_100
-	r9_1299 = r9_118
+	r9_1277 = r9_118
+	rdi_1286 = rdi_377
+	r11_1288 = r11_100
+	r9_1297 = r9_118
 	branch dil_108 == 0x2D l000000000040EDC0
 // DataOut:
 // DataOut (flags):
@@ -18821,7 +18821,6 @@ l000000000040EDE8:
 
 l000000000040EDEE:
 	word64 rdx_126 = (uint64) ((int32) dil_108 - 0x00000030)
-	word64 rbp_125 = 0x00000000FFFFFFFF
 	word32 ebp_131 = 0xFFFFFFFF
 	branch (word32) rdx_126 >u 0x00000009 l000000000040EE40
 // DataOut:
@@ -18829,7 +18828,7 @@ l000000000040EDEE:
 // SymbolicIn:
 
 l000000000040EDFF:
-	rbp_125 = 0x0000000000000000
+	word64 rbp_130 = 0x0000000000000000
 	ebp_131 = 0x00000000 (alias)
 // DataOut:
 // DataOut (flags):
@@ -18837,7 +18836,7 @@ l000000000040EDFF:
 
 l000000000040EE28:
 	word64 rbp_144
-	word64 rbp_147 = DPB(rbp_125, ebp_131, 0)
+	word64 rbp_147 = DPB(rbp_130, ebp_131, 0)
 	branch ebp_131 <= 0x0CCCCCCC l000000000040EE08
 // DataOut:
 // DataOut (flags):
@@ -18848,16 +18847,16 @@ l000000000040EE08:
 	byte dl_141 = (byte) edx_139
 	word64 rdx_149 = DPB(rdx_126, edx_139, 0)
 	rdx_149 = DPB(rdx_126, dl_141, 0) (alias)
-	r9_1284 = r9_586
-	r11_1295 = r11_634
+	r9_1282 = r9_586
+	r11_1293 = r11_634
 	branch ebp_131 == 0x0CCCCCCC l000000000040EE88
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040EE88:
-	r9_1285 = r9_586
-	r11_1296 = r11_634
+	r9_1283 = r9_586
+	r11_1294 = r11_634
 	branch dl_141 <= 0x37 l000000000040EE0D
 // DataOut:
 // DataOut (flags):
@@ -18875,7 +18874,7 @@ l000000000040EE8D:
 l000000000040EE0D:
 	rcx = DPB(rcx, rbp_147 * 0x0000000000000005, 0) (alias)
 	ebp_131 = rdx_149 - 0x0000000000000030 + rcx * 0x0000000000000002
-	rbp_144 = DPB(rbp_125, ebp_131, 0) (alias)
+	rbp_144 = DPB(rbp_130, ebp_131, 0) (alias)
 	r9_581 = r9_589
 	r11_629 = r11_637
 // DataOut:
@@ -18896,25 +18895,20 @@ l000000000040EE15:
 	word32 edi_163 = (word32) Mem97[rbx_104:byte]
 	dil_108 = (byte) edi_163 (alias)
 	rdx_126 = (uint64) ((int32) dil_108 - 0x00000030)
-	rbp_125 = DPB(rbp_144, ebp_131, 0) (alias)
-	rdi_599 = DPB(rdi_1288, edi_163, 0) (alias)
-	r9_1283 = r9_581
-	r11_1294 = r11_629
+	rbp_130 = DPB(rbp_144, ebp_131, 0) (alias)
+	rdi_599 = DPB(rdi_1286, edi_163, 0) (alias)
+	r9_1281 = r9_581
+	r11_1292 = r11_629
 	branch (word32) rdx_126 >u 0x00000009 l000000000040EE40
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000040EE40:
-	word64 rbp_535 = DPB(rbp_125, ebp_131, 0)
-	rbp_535 = DPB(rbp_125, ebp_131, 0) (alias)
-	rbp_535 = DPB(rbp_535, ebp_131, 0) (alias)
-	word64 rbp_544 = DPB(rbp_535, ebp_131, 0)
 	word64 rdi_598 = DPB(rdi_599, dil_108, 0)
 	rdi_598 = DPB(rdi_599, dil_108, 0) (alias)
-	rbp_1277 = rbp_535
-	r9_1286 = r9_571
-	r11_1297 = r11_619
+	r9_1284 = r9_571
+	r11_1295 = r11_619
 	branch dil_108 == 0x45 l000000000040EEC8
 // DataOut:
 // DataOut (flags):
@@ -18922,9 +18916,8 @@ l000000000040EE40:
 
 l000000000040EE4A:
 	rcx = 0x0000000000000000
-	rbp_1278 = rbp_535
-	r9_1287 = r9_571
-	r11_1298 = r11_619
+	r9_1285 = r9_571
+	r11_1296 = r11_619
 	branch dil_108 == 0x4F l000000000040EEC8
 // DataOut:
 // DataOut (flags):
@@ -19169,7 +19162,7 @@ l000000000040EE60:
 	word64 r10_523
 	word64 rax_561
 	call Mem97[rdx_506 * 0x0000000000000008 + 0x004164E8:word64] (retsize: 8;)
-		uses: fs:fs,r10:rdx,r11:r11_644,r12:r12_83,r13:r13_79,r14:rdx,r15:r15_675,r8:r8_717,r9:r9_596,rax:rax_556,rbp:rbp_544,rbx:rbx_194,rcx:rcx_545,rdi:rdi_617,rdx:rdx_506,rsi:rsi_533,rsp:fp - 1288,Stack +0017:dil,Stack +0018:r8,Stack +0020:qwLoc04F0_1173,Stack +0028:fp - 0x0000000000000447,Stack +0030:dwLoc04E0_1159,Stack +0038:qwLoc04D8_1144,Stack +0048:dwLoc04C8_1120,Stack +004C:r9d,Stack +0050:rax_29,Stack +04D0:rsi_31,Stack +04E0:rbx,Stack +04E8:rbp,Stack +04F0:r12,Stack +04F8:r13,Stack +0500:r14,Stack +0508:r15
+		uses: r10:rdx,r11:r11_644,r8:r8_717,r9:r9_596,rax:rax_556,rcx:rcx_545,rdi:rdi_617,rdx:rdx_506,rsi:rsi_533,Stack +0017:dil,Stack +0018:r8,Stack +0020:qwLoc04F0_1173,Stack +0028:fp - 0x0000000000000447,Stack +0030:dwLoc04E0_1159,Stack +0038:qwLoc04D8_1144,Stack +0048:dwLoc04C8_1120,Stack +004C:r9d,Stack +0050:rax_29,Stack +04D0:rsi_31,Stack +04E0:rbx,Stack +04E8:rbp,Stack +04F0:r12,Stack +04F8:r13,Stack +0500:r14,Stack +0508:r15
 		defs: r10:r10_523,rax:rax_561
 	r10Out = r10_523
 	r15Out = r15_202
@@ -19191,8 +19184,8 @@ l000000000040EDA9:
 	rdi_377 = DPB(rdi_601, dil_108, 0) (alias)
 	rax_556 = 0x0000000000000001
 	SZO_111 = SLICE(cond(dil_108 - 0x30), bool, 4) (alias)
-	r9_1281 = r9_574
-	r11_1292 = r11_100
+	r9_1279 = r9_574
+	r11_1290 = r11_100
 	branch dil_108 != 0x30 l000000000040EDA1
 // DataOut:
 // DataOut (flags):
@@ -19300,7 +19293,7 @@ l00000000004107A1:
 
 l00000000004106BE:
 	call Mem24[0x0000000000416B48:word64] (retsize: 8;)
-		uses: r10:r10,r12:r9,r13:r13,r14:r14,r15:r15,r8:0x00000000000007DD,r9:r9_128,rax:rax_135,rbp:rdi,rbx:r8,rcx:rax_56,rdi:rax_68,rdx:0x0000000000000005,rsi:rdi,rsp:fp - 0x0000000000000088,Stack +0008:qwLoc88,Stack +0010:qwLoc80,Stack +0018:qwLoc78,Stack +0020:qwLoc70,Stack +0028:qwLoc68,Stack +0030:qwLoc60,Stack +0038:qwLoc58,Stack +0040:qwLoc50,Stack +0048:qwLoc48,Stack +0050:qwLoc40,Stack +0060:rbx,Stack +0068:rbp,Stack +0070:r12,Stack +0078:r13,Stack +0080:r14,Stack +0088:r15
+		uses: r10:r10,r8:0x00000000000007DD,r9:r9_128,rax:rax_135,rcx:rax_56,rdi:rax_68,rdx:0x0000000000000005,rsi:rdi,Stack +0008:qwLoc88,Stack +0010:qwLoc80,Stack +0018:qwLoc78,Stack +0020:qwLoc70,Stack +0028:qwLoc68,Stack +0030:qwLoc60,Stack +0038:qwLoc58,Stack +0040:qwLoc50,Stack +0048:qwLoc48,Stack +0050:qwLoc40,Stack +0060:rbx,Stack +0068:rbp,Stack +0070:r12,Stack +0078:r13,Stack +0080:r14,Stack +0088:r15
 	return
 // DataOut:
 // DataOut (flags):
@@ -19967,7 +19960,7 @@ l0000000000410FDD:
 	word64 rax_251
 	word64 r9_276
 	call Mem150[rdx_214 * 0x0000000000000008 + 0x00416C18:word64] (retsize: 8;)
-		uses: r12:r8,r13:rcx,r14:r14_80,r15:r15_72,r8:r8,r9:r9_54,rax:rax_250,rbp:rbp_249,rbx:rbx_197,rcx:rcx_260,rdi:r8,rdx:rdx_214,rsi:0x0000000000000030,rsp:fp - 0x0000000000000058,Stack +0010:rax_65,Stack +0030:rbx,Stack +0038:rbp,Stack +0040:r12,Stack +0048:r13,Stack +0050:r14,Stack +0058:r15
+		uses: r8:r8,r9:r9_54,rax:rax_250,rcx:rcx_260,rdi:r8,rdx:rdx_214,rsi:0x0000000000000030,Stack +0010:rax_65,Stack +0030:rbx,Stack +0038:rbp,Stack +0040:r12,Stack +0048:r13,Stack +0050:r14,Stack +0058:r15
 		defs: r9:r9_276,rax:rax_251
 	rbxOut = rbx_101
 	rspOut = fp - 0x0000000000000058
@@ -20180,7 +20173,6 @@ l00000000004113BB:
 // SymbolicIn:
 
 l00000000004113D8:
-	word64 rbp_101
 	word32 ebp_118
 	word32 edx_147
 	word64 rax_65 = __errno_location()
@@ -20210,7 +20202,6 @@ l00000000004114C8:
 // SymbolicIn:
 
 l00000000004114D4:
-	rbp_101 = 0x0000000000000000
 	ebp_118 = 0x00000000 (alias)
 	rbx_102 = 0x0000000000000001
 	edx_147 = (word32) (uint64) edx_99 (alias)
@@ -20225,7 +20216,6 @@ l00000000004114F7:
 // SymbolicIn:
 
 l000000000041140C:
-	word64 rbp_117
 	word32 eax_110 = (word32) (uint64) Mem79[rax_65:word32]
 	branch eax_110 != 0x00000000 l0000000000411440
 // DataOut:
@@ -20234,7 +20224,6 @@ l000000000041140C:
 
 l0000000000411440:
 	ebp_118 = 0x00000001 (alias)
-	rbp_117 = 0x0000000000000001 (alias)
 	branch eax_110 != 0x00000022 l00000000004113C0
 // DataOut:
 // DataOut (flags):
@@ -20246,14 +20235,12 @@ l000000000041144E:
 // SymbolicIn:
 
 l0000000000411413:
-	rbp_117 = 0x0000000000000000
 	ebp_118 = 0x00000000 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000411415:
-	rbp_101 = DPB(rbp_117, ebp_118, 0) (alias)
 	branch r8 == 0x0000000000000000 l0000000000411422
 // DataOut:
 // DataOut (flags):
@@ -20278,13 +20265,6 @@ l0000000000411450:
 l000000000041146C:
 	word64 rcx_173
 	word64 rax_166
-	rbp_235 = DPB(rbp_101, ebp_118, 0) (alias)
-	word64 rbp_235 = DPB(rbp_101, ebp_118, 0)
-	rbp_235 = DPB(rbp_101, ebp_118, 0) (alias)
-	word64 rbp_234 = DPB(rbp_235, ebp_118, 0)
-	rbp_234 = DPB(rbp_101, ebp_118, 0) (alias)
-	rbp_234 = DPB(rbp_235, ebp_118, 0) (alias)
-	word64 rbp_250 = DPB(rbp_234, ebp_118, 0)
 	word32 edx_179 = (word32) (uint64) edx_147
 	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l00000000004114A3
 // DataOut:
@@ -20353,7 +20333,7 @@ l00000000004114B5:
 	word64 r8_269
 	word64 r9_275
 	call Mem151[rdx_215 * 0x0000000000000008 + 0x00416E38:word64] (retsize: 8;)
-		uses: r12:r8,r13:rcx,r14:r14_81,r15:r15_73,r8:rax_65,r9:r9_54,rax:rax_251,rbp:rbp_250,rbx:rbx_198,rcx:rcx_261,rdi:r8,rdx:rdx_215,rsi:0x0000000000000030,rsp:fp - 0x0000000000000058,Stack +0010:rax_65,Stack +0030:rbx,Stack +0038:rbp,Stack +0040:r12,Stack +0048:r13,Stack +0050:r14,Stack +0058:r15
+		uses: r8:rax_65,r9:r9_54,rax:rax_251,rcx:rcx_261,rdi:r8,rdx:rdx_215,rsi:0x0000000000000030,Stack +0010:rax_65,Stack +0030:rbx,Stack +0038:rbp,Stack +0040:r12,Stack +0048:r13,Stack +0050:r14,Stack +0058:r15
 		defs: r8:r8_269,r9:r9_275,rax:rax_252
 	rbxOut = rbx_102
 	rspOut = fp - 0x0000000000000058

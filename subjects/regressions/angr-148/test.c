@@ -75,17 +75,14 @@ void main()
 // 0000000000400550: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
-	uint64 r15_7 = (uint64) edi;
-	word32 r15d_80 = (word32) r15_7;
-	uint64 r15_52 = DPB(r15_7, r15d_80, 0);
+	word32 r15d_80 = (word32) (uint64) edi;
 	int64 rbp_29 = 0x00600E18 - 0x00600E10;
-	Eq_111 rbx_30 = 0x00;
+	Eq_108 rbx_30 = 0x00;
 	word64 rax_34 = _init();
 	if (rbp_29 >> 0x03 != 0x00)
 	{
 		do
 		{
-			r15_52 = DPB(r15_52, r15d_80, 0);
 			(*((char *) globals->a600E10 + rbx_30 * 0x08))();
 			rbx_30 = (word64) rbx_30.u1 + 0x01;
 		} while (rbx_30 != rbp_29 >> 0x03);

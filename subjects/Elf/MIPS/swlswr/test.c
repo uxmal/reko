@@ -4,8 +4,8 @@
 
 #include "test.h"
 
-// 00000588: Register ptr32 _init(Register word32 ra)
-ptr32 _init(word32 ra)
+// 00000588: void _init(Register word32 ra)
+void _init(word32 ra)
 {
 	if (__gmon_start__ == 0x00)
 	{
@@ -13,14 +13,13 @@ ptr32 _init(word32 ra)
 		(r25_16 + 2004)();
 		ptr32 r25_23 = *(ptr32 *) 0x00020A4C;
 		(r25_23 + 0x0970)();
-		return __gmon_start__;
 	}
 	else
 		__gmon_start__();
 }
 
-// 00000610: void __start(Register word32 r2, Register word32 ra, Stack word32 dwArg00)
-void __start(word32 r2, word32 ra, word32 dwArg00)
+// 00000610: void __start(Register word32 r2, Stack word32 dwArg00)
+void __start(word32 r2, word32 dwArg00)
 {
 	word32 r8_18 = *(word32 *) 0x00020A60;
 	<anonymous> * r25_23 = *(<anonymous> **) 0x00020A24;
@@ -29,12 +28,11 @@ void __start(word32 r2, word32 ra, word32 dwArg00)
 		;
 }
 
-// 00000670: void deregister_tm_clones(Register word32 ra)
-void deregister_tm_clones(word32 ra)
+// 00000670: void deregister_tm_clones()
+void deregister_tm_clones()
 {
-	struct Eq_30 * r4_8 = globals->ptr10AA8;
-	word32 r2_9 = globals->dw10AA4;
-	if (r2_9 == (char *) (&r4_8->ptr0A60) + 0x0024)
+	struct Eq_27 * r4_8 = globals->ptr10AA8;
+	if (globals->dw10AA4 == r4_8->a0A68 + 0x07)
 		return;
 	<anonymous> * r25_12 = globals->ptr10AE4;
 	if (r25_12 == null)
@@ -45,10 +43,9 @@ void deregister_tm_clones(word32 ra)
 // 000006A8: void register_tm_clones()
 void register_tm_clones()
 {
-	struct Eq_30 * r4_8 = globals->ptr10AA8;
-	int32 r5_11 = globals->dw10AA4 - ((char *) (&r4_8->ptr0A60) + 0x0024);
-	uint32 r2_13 = r5_11 >> 0x02 >> 0x1F;
-	Eq_58 r5_14 = r2_13 + (r5_11 >> 0x02);
+	struct Eq_27 * r4_8 = globals->ptr10AA8;
+	int32 r5_11 = globals->dw10AA4 - (r4_8->a0A68 + 0x07);
+	Eq_49 r5_14 = (r5_11 >> 0x02 >> 0x1F) + (r5_11 >> 0x02);
 	if (r5_14 >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_17 = globals->ptr10AD4;
@@ -60,7 +57,7 @@ void register_tm_clones()
 // 000006F4: void __do_global_dtors_aux(Register word32 r3, Register word32 r4, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 ra)
 void __do_global_dtors_aux(word32 r3, word32 r4, word32 r16, word32 r17, word32 r18, word32 r19, word32 ra)
 {
-	struct Eq_30 * r19_10 = globals->ptr10AA8;
+	struct Eq_27 * r19_10 = globals->ptr10AA8;
 	if ((word32) r19_10->b0AF0 == 0x00)
 	{
 		if (__cxa_finalize != 0x00)
@@ -68,20 +65,19 @@ void __do_global_dtors_aux(word32 r3, word32 r4, word32 r16, word32 r17, word32 
 			word32 r2_24 = globals->dw10AAC;
 			__cxa_finalize();
 		}
-		struct Eq_30 * r17_35 = globals->ptr10AA8;
-		struct Eq_30 * r2_33 = globals->ptr10AA8;
-		Eq_96 r2_39 = r17_35->t0AF4;
-		Eq_96 r16_41 = (globals->dw10AB0 - ((char *) (&r2_33->ptr0A60) + 0x08) >> 0x02) + -0x01;
+		struct Eq_27 * r17_35 = globals->ptr10AA8;
+		struct Eq_27 * r2_33 = globals->ptr10AA8;
+		Eq_91 r2_39 = r17_35->t0AF4;
+		Eq_91 r16_41 = (globals->dw10AB0 - r2_33->a0A68 >> 0x02) + -0x01;
 		while ((word32) (r2_39 < r16_41) != 0x00)
 		{
-			Eq_96 r2_46 = (word32) r2_39 + 0x01;
+			Eq_91 r2_46 = (word32) r2_39 + 0x01;
 			r17_35->t0AF4 = r2_46;
-			<anonymous> ** r2_51 = (char *) &r2_33->ptr0A60 + 0x08 + (r2_46 << 0x02);
-			<anonymous> * r25_52 = *r2_51;
+			<anonymous> * r25_52 = r2_33->a0A68[r2_46];
 			r25_52();
 			r2_39 = r17_35->t0AF4;
 		}
-		deregister_tm_clones(ra);
+		deregister_tm_clones();
 		r19_10->b0AF0 = 0x01;
 	}
 }
@@ -109,7 +105,7 @@ void main(word32 dwArg00, word32 dwArg04)
 // 000008C0: void __libc_csu_init(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 ra)
 void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 ra)
 {
-	word32 r2_31 = _init(ra);
+	_init(ra);
 	word32 * r16_35 = globals->ptr10ABC;
 	int32 r18_37 = globals->ptr10ABC - r16_35;
 	if (r18_37 >> 0x02 != 0x00)
@@ -118,8 +114,8 @@ void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r16, word32 r17, wo
 		while (true)
 		{
 			<anonymous> * r25_43 = *r16_35;
-			++r17_40;
 			r25_43();
+			++r17_40;
 			if (r18_37 >> 0x02 == r17_40)
 				break;
 			++r16_35;
@@ -135,15 +131,15 @@ void __libc_csu_fini()
 // 00000970: void __do_global_ctors_aux(Register word32 r16, Register word32 r17, Register word32 ra)
 void __do_global_ctors_aux(word32 r16, word32 r17, word32 ra)
 {
-	struct Eq_30 * r3_8 = globals->ptr10AA8;
+	struct Eq_27 * r3_8 = globals->ptr10AA8;
 	<anonymous> * r25_18 = r3_8->ptr0A60;
 	if (r25_18 != (<anonymous> *) -0x01)
 	{
 		word32 * r16_21 = &r3_8->ptr0A60;
 		do
 		{
-			r16_21 += -0x01;
 			r25_18();
+			r16_21 += -0x01;
 			r25_18 = *r16_21;
 		} while (r25_18 != (<anonymous> *) -0x01);
 	}

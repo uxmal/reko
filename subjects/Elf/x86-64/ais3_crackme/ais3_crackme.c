@@ -104,17 +104,14 @@ void main(struct Eq_187 * rsi, word32 edi)
 // 0000000000400620: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
-	uint64 r13_20 = (uint64) edi;
-	word32 r13d_71 = (word32) r13_20;
 	int64 rbp_18 = 0x00600E00 - 0x00600DF8;
-	uint64 r13_50 = DPB(r13_20, r13d_71, 0);
+	word32 r13d_71 = (word32) (uint64) edi;
 	word64 rax_27 = _init();
 	if (rbp_18 >> 0x03 != 0x00)
 	{
-		Eq_239 rbx_35 = 0x00;
+		Eq_236 rbx_35 = 0x00;
 		do
 		{
-			r13_50 = DPB(r13_50, r13d_71, 0);
 			(*((char *) globals->a600DF8 + rbx_35 * 0x08))();
 			rbx_35 = (word64) rbx_35.u1 + 0x01;
 		} while (rbx_35 != rbp_18 >> 0x03);
