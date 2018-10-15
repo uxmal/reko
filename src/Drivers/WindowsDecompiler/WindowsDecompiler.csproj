@@ -256,6 +256,10 @@
       <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
       <Name>Elf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
+      <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
+      <Name>MachO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
       <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
       <Name>MzExe</Name>
