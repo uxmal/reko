@@ -29,10 +29,11 @@ using System.Text;
 
 namespace Reko.ImageLoaders.MachO
 {
+    // http://newosxbook.com/articles/DYLD.html
     public class MachOLoader : ImageLoader
     {
-        const uint MH_MAGIC = 0xfeedface;
-        const uint MH_MAGIC_64 = 0xfeedfacf;
+        const uint MH_MAGIC = 0xFEEDFACE;
+        const uint MH_MAGIC_64 = 0xFEEDFACF;
         const uint MH_MAGIC_32_LE = 0xCEFAEDFE; //0xfeedface;
         const uint MH_MAGIC_64_LE = 0xCFFAEDFE; // 0xfeedfacf;
 
@@ -50,6 +51,7 @@ namespace Reko.ImageLoaders.MachO
         public const uint CPU_TYPE_MIPS = 8;
         public const uint CPU_TYPE_MC98000 = 11;
         public const uint CPU_TYPE_ARM = 12;
+        public const uint CPU_TYPE_ARM64 = (CPU_TYPE_ARM | CPU_ARCH_ABI64);
         public const uint CPU_TYPE_MC88000 = 13;
         public const uint CPU_TYPE_SPARC = 14;
         public const uint CPU_TYPE_I860 = 15;
@@ -63,6 +65,8 @@ namespace Reko.ImageLoaders.MachO
         private Parser parser;
         private List<ImageSegment> sections;
         private Dictionary<string, ImageSegment> sectionsByName;
+        private Dictionary<MachOSection, ImageSegment> machoSections;
+        private List<MachOSymbol> machoSymbols;
         private List<ImageSymbol> entryPoints;
 
         public MachOLoader(IServiceProvider services, string filename, byte[] rawImg)
@@ -70,8 +74,12 @@ namespace Reko.ImageLoaders.MachO
         {
             this.sections = new List<ImageSegment>();
             this.sectionsByName = new Dictionary<string, ImageSegment>();
+            this.machoSections = new Dictionary<MachOSection, ImageSegment>();
+            this.machoSymbols = new List<MachOSymbol>();
             this.entryPoints = new List<ImageSymbol>();
+    
         }
+    
 
         public override Address PreferredBaseAddress
         {
@@ -142,11 +150,22 @@ namespace Reko.ImageLoaders.MachO
             protected MachOLoader ldr;
             protected EndianImageReader rdr;
             public IProcessorArchitecture arch;
+            protected Dictionary<uint, uint> mpCputypeToUnixthreadPc;
 
             protected Parser(MachOLoader ldr, EndianImageReader rdr)
             {
                 this.ldr = ldr;
                 this.rdr = rdr;
+                this.mpCputypeToUnixthreadPc = new Dictionary<uint, uint>
+                {
+                    { CPU_TYPE_POWERPC, 0x0010 },
+                    { CPU_TYPE_POWERPC64, 0x0010 },
+                    { CPU_TYPE_X86, 0x38 },
+                    { CPU_TYPE_X86_64, 0x90 },
+                    { CPU_TYPE_ARM, 0x4C },
+                    { CPU_TYPE_ARM64, 0x110 },
+                    { CPU_TYPE_MC680x0, 0x44 }
+                };
             }
 
             public IProcessorArchitecture CreateArchitecture(uint cputype)
@@ -229,6 +248,34 @@ namespace Reko.ImageLoaders.MachO
             public const uint LC_VERSION_MIN_TVOS = 0x0000002Fu;
             public const uint LC_VERSION_MIN_WATCHOS = 0x00000030u;
 
+            public const uint SECTION_TYPE = 0xFF;
+
+        public const uint S_REGULAR = 0x00u;                              // S_REGULAR - Regular section.
+        public const uint S_ZEROFILL = 0x01u;                             // Zero fill on demand section.
+        public const uint S_CSTRING_LITERALS = 0x02u;                     // Section with literal C strings.
+        public const uint S_4BYTE_LITERALS = 0x03u;                       // Section with 4 byte literals.
+        public const uint S_8BYTE_LITERALS = 0x04u;                       // Section with 8 byte literals.
+        public const uint S_LITERAL_POINTERS = 0x05u;                     // Section with pointers to literals.
+        public const uint S_NON_LAZY_SYMBOL_POINTERS = 0x06u;             // Section with non-lazy symbol pointers.
+        public const uint S_LAZY_SYMBOL_POINTERS = 0x07u;                 // Section with lazy symbol pointers.
+        public const uint S_SYMBOL_STUBS = 0x08u;                         // Section with symbol stubs, byte size of stub in the Reserved2 field.
+        public const uint S_MOD_INIT_FUNC_POINTERS = 0x09u;               // Section with only function pointers for initialization.
+        public const uint S_MOD_TERM_FUNC_POINTERS = 0x0au;               // Section with only function pointers for termination.
+        public const uint S_COALESCED = 0x0bu;                            // Section contains symbols that are to be coalesced.
+        public const uint S_GB_ZEROFILL = 0x0cu;                          // Zero fill on demand section (that can be larger than 4 gigabytes).
+        public const uint S_INTERPOSING = 0x0du;                          // Section with only pairs of function pointers for interposing.
+        public const uint S_16BYTE_LITERALS = 0x0eu;                      // Section with only 16 byte literals.
+        public const uint S_DTRACE_DOF = 0x0fu;                           // Section contains DTrace Object Format.
+        public const uint S_LAZY_DYLIB_SYMBOL_POINTERS = 0x10u;           // Section with lazy symbol pointers to lazy loaded dylibs.
+        public const uint S_THREAD_LOCAL_REGULAR = 0x11u;                 // Thread local data section.
+        public const uint S_THREAD_LOCAL_ZEROFILL = 0x12u;                // Thread local zerofill section.
+        public const uint S_THREAD_LOCAL_VARIABLES = 0x13u;               // Section with thread local variable structure data.
+        public const uint S_THREAD_LOCAL_VARIABLE_POINTERS = 0x14u;       // Section with pointers to thread local structures.
+        public const uint S_THREAD_LOCAL_INIT_FUNCTION_POINTERS = 0x15u;  // Section with thread local variable initialization pointers to functions.
+ 
+        public const uint LAST_KNOWN_SECTION_TYPE = S_THREAD_LOCAL_INIT_FUNCTION_POINTERS;
+
+
             public SegmentMap ParseLoadCommands(mach_header_64 hdr, Address addrLoad)
             {
                 var imageMap = new SegmentMap(addrLoad);
@@ -276,6 +323,16 @@ namespace Reko.ImageLoaders.MachO
                     rdr.Offset = pos + cmdsize;
                 }
                 return imageMap;
+            }
+
+            protected ImageSegment FindSectionByType(uint type)
+            {
+                foreach (var kv in ldr.machoSections)
+                {
+                    if ((kv.Key.Flags & SECTION_TYPE) == type)
+                        return kv.Value;
+                }
+                return null;
             }
 
             protected abstract void ParseUnixThread(uint cputype);
@@ -387,7 +444,7 @@ namespace Reko.ImageLoaders.MachO
                 var abSectname = rdr.ReadBytes(16);
                 var abSegname = rdr.ReadBytes(16);
 
-                if (!rdr.TryReadUInt32(out uint addr) ||
+                if (!rdr.TryReadUInt32(out uint uAddr) ||
                     !rdr.TryReadUInt32(out uint size) ||
                     !rdr.TryReadUInt32(out uint offset) ||
                     !rdr.TryReadUInt32(out uint align) ||
@@ -406,7 +463,7 @@ namespace Reko.ImageLoaders.MachO
                 Debug.Print("    Found section '{0}' in segment '{1}, addr = 0x{2:X}, size = 0x{3:X}.",
                         sectionName,
                         segmentName,
-                        addr,
+                        uAddr,
                         size);
                 Debug.Print("      reloff: {0:X} nreloc: {1:X} flags {2:X}", reloff, nreloc, flags);
 
@@ -418,14 +475,14 @@ namespace Reko.ImageLoaders.MachO
                 if ((protection & VM_PROT_EXECUTE) != 0)
                     am |= AccessMode.Execute;
 
+                var addr = Address.Ptr32(uAddr);
                 var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
-                var mem = new MemoryArea(
-                    Address.Ptr32(addr),
-                    bytes.ReadBytes((uint) size));
-                var imageSection = new ImageSegment(
-                    string.Format("{0},{1}", segmentName, sectionName),
-                    mem,
-                    am);
+                var name = string.Format("{0},{1}", segmentName, sectionName);
+                    
+                var mem = new MemoryArea(addr, bytes.ReadBytes((uint) size));
+                var machoSection = new MachOSection(addr, flags);
+                var imageSection = new ImageSegment(name, mem, am);
+                ldr.machoSections.Add(machoSection, imageSection);
 
                 //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
 
@@ -536,6 +593,7 @@ namespace Reko.ImageLoaders.MachO
                             Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X8} {7}",
                                 i, n_strx, n_type, ldr.sections[n_sect].Name,
                                 n_sect, n_desc, n_value, str);
+                            ldr.machoSymbols.Add(new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value));
                         }
                     }
                 }
@@ -623,13 +681,40 @@ namespace Reko.ImageLoaders.MachO
                     rdr.TryReadUInt32(out uint locreloff) &&
                     rdr.TryReadUInt32(out uint nlocrel))
                 {
+                    if (nundefsym > 0 && nindirectsyms > 0)
+                    {
+                        var rdrIndirect = rdr.CreateNew(ldr.RawImage, indirectsymoff);
+                        var indirects = LoadIndirectTable(rdrIndirect, nindirectsyms);
+                        var nonLazySection = FindSectionByType(S_LAZY_SYMBOL_POINTERS);
+                        if (nonLazySection != null)
+                            LoadImports(nonLazySection, indirects);
+                        var lazySection = FindSectionByType(S_NON_LAZY_SYMBOL_POINTERS);
+                        if (lazySection != null)
+                            LoadImports(lazySection, indirects);
+                    }
                     nextrel.ToString();
                 }
                 else
                 {
-
+                    throw new BadImageFormatException("Failed to parse LC_DYSYMTAB section.");
                 }
             }
+
+            protected abstract void LoadImports(ImageSegment section, List<uint> indirects);
+
+            private List<uint> LoadIndirectTable(EndianImageReader rdr, uint nindirectsyms)
+            {
+                var indirects = new List<uint>();
+                for (uint i = 0; i < nindirectsyms; ++i)
+                {
+                    if (!rdr.TryReadUInt32(out uint indir))
+                        return indirects;
+                    indirects.Add(indir);
+                }
+                return indirects;
+            }
+
+        
         }
 
         public enum RelocationInfoType
@@ -729,15 +814,19 @@ namespace Reko.ImageLoaders.MachO
                     rdr.TryReadUInt32(out uint count))
                 {
                     var data = rdr.ReadBytes(count * 4);
-                    switch (cputype)
-                    {
-                    case CPU_TYPE_MC680x0:
-                        var ep = MemoryArea.ReadBeUInt32(data, 0x44);
-                        base.ldr.entryPoints.Add(new ImageSymbol(Address.Ptr32(ep)));
-                        return;
-                    default:
+                    if (!mpCputypeToUnixthreadPc.TryGetValue(cputype, out uint uOffAddrStart))
                         throw new BadImageFormatException($"LC_PARSEUNIXTHREAD for CPU type {cputype} has not been implemented.");
-                    }
+                    var ep = MemoryArea.ReadBeUInt32(data, uOffAddrStart);
+                    base.ldr.entryPoints.Add(new ImageSymbol(Address.Ptr32(ep)));
+                }
+            }
+
+            protected override void LoadImports(ImageSegment section, List<uint> indirects)
+            {
+                var rdr = section.CreateImageReader(arch);
+                while (rdr.TryReadUInt32(out uint import))
+                {
+
                 }
             }
         }
@@ -777,6 +866,11 @@ namespace Reko.ImageLoaders.MachO
             }
 
             protected override void ParseUnixThread(uint cputype)
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override void LoadImports(ImageSegment section, List<uint> indirects)
             {
                 throw new NotImplementedException();
             }
@@ -1107,5 +1201,38 @@ static const byte NO_SECT = 0;
 
 }
 #endif
+        /// <summary>
+        /// Contains MachO specific information that is only used at load time
+        /// and which doesn't fit into the ImageSegment class (which is generic)
+        /// </summary>
+        public class MachOSection
+        {
+            public readonly Address Address;    // Key 
+            public readonly uint Flags;         // MachO sectuin flags
+
+            public MachOSection(Address addr, uint flags)
+            {
+                this.Address = addr;
+                this.Flags = flags;
+            }
+        }
+
+        public class MachOSymbol
+        {
+            private string str;
+            private byte n_type;
+            private ImageSegment imageSegment;
+            private ushort n_desc;
+            private uint n_value;
+
+            public MachOSymbol(string str, byte n_type, ImageSegment imageSegment, ushort n_desc, uint n_value)
+            {
+                this.str = str;
+                this.n_type = n_type;
+                this.imageSegment = imageSegment;
+                this.n_desc = n_desc;
+                this.n_value = n_value;
+            }
+        }
     }
 }
