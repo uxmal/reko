@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -490,14 +490,14 @@ namespace Reko.Arch.M68k
                     var addr = di.Address + c.ToInt32();
                     return addr;
                 }
-                Expression ea = orw.Combine(indop.Base, indop.base_reg);
+                Expression ea = orw.Combine(indop.Base, indop.base_reg, di.Address);
                 if (indop.postindex)
                 {
                     ea = m.Mem32(ea);
                 }
                 if (indop.index_reg != null)
                 {
-                    var idx = orw.Combine(null, indop.index_reg);
+                    var idx = orw.Combine(null, indop.index_reg, di.Address);
                     if (indop.index_reg_width.BitSize != 32)
                         idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
                     if (indop.index_scale > 1)
