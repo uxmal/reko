@@ -200,6 +200,10 @@
       <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
       <Name>M6800</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
+      <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
+      <Name>M68k</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
       <Name>Mips</Name>

@@ -29,6 +29,10 @@ using System.Text;
 
 namespace Reko.ImageLoaders.MachO
 {
+    using Reko.Core.Types;
+    using static Reko.ImageLoaders.MachO.MachOLoader.SectionFlags;
+    using static Reko.ImageLoaders.MachO.MachOLoader.Parser.Command;
+
     // http://newosxbook.com/articles/DYLD.html
     public class MachOLoader : ImageLoader
     {
@@ -63,23 +67,26 @@ namespace Reko.ImageLoaders.MachO
         public const uint CPU_SUBTYPE_MC68040 = 2;
 
         private Parser parser;
-        private List<ImageSegment> sections;
-        private Dictionary<string, ImageSegment> sectionsByName;
-        private Dictionary<MachOSection, ImageSegment> machoSections;
+        private List<MachOSection> sections;
+        private Dictionary<string, MachOSection> sectionsByName;
+        private Dictionary<MachOSection, ImageSegment> imageSections;
         private List<MachOSymbol> machoSymbols;
+        private SortedList<Address, ImageSymbol> imageSymbols;
         private List<ImageSymbol> entryPoints;
+        private Program program;
 
         public MachOLoader(IServiceProvider services, string filename, byte[] rawImg)
             : base(services, filename, rawImg)
         {
-            this.sections = new List<ImageSegment>();
-            this.sectionsByName = new Dictionary<string, ImageSegment>();
-            this.machoSections = new Dictionary<MachOSection, ImageSegment>();
+            this.sections = new List<MachOSection>();
+            this.sectionsByName = new Dictionary<string, MachOSection>();
+            this.imageSections = new Dictionary<MachOSection, ImageSegment>();
+            this.imageSymbols = new SortedList<Address, ImageSymbol>();
             this.machoSymbols = new List<MachOSymbol>();
             this.entryPoints = new List<ImageSymbol>();
-    
+
         }
-    
+
 
         public override Address PreferredBaseAddress
         {
@@ -89,14 +96,13 @@ namespace Reko.ImageLoaders.MachO
 
         public override Program Load(Address addrLoad)
         {
+            this.program = new Program();
             parser = CreateParser();
             var hdr = parser.ParseHeader(addrLoad);
-            SegmentMap segmentMap = parser.ParseLoadCommands(hdr, addrLoad);
-            var image = new MemoryArea(addrLoad, RawImage);
-            return new Program(
-                segmentMap,
-                parser.arch,
-                new DefaultPlatform(Services, parser.arch));
+            this.program.SegmentMap = parser.ParseLoadCommands(hdr, addrLoad);
+            this.program.Architecture = parser.arch;
+            this.program.Platform = new DefaultPlatform(Services, parser.arch);
+            return this.program;
         }
 
         public class mach_header_32
@@ -142,7 +148,7 @@ namespace Reko.ImageLoaders.MachO
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(entryPoints, new SortedList<Address, ImageSymbol>());
+            return new RelocationResults(entryPoints, imageSymbols);
         }
 
         public abstract class Parser
@@ -193,99 +199,70 @@ namespace Reko.ImageLoaders.MachO
             /// <returns>The number of load commands in the header.</returns>
             public abstract mach_header_64 ParseHeader(Address addrLoad);
 
-            const uint LC_REQ_DYLD = 0x80000000;
 
             // http://llvm.org/docs/doxygen/html/Support_2MachO_8h_source.html
             // http://opensource.apple.com//source/clang/clang-503.0.38/src/tools/macho-dump/macho-dump.cpp
             // https://github.com/opensource-apple/cctools/blob/master/libstuff/ofile.c
-            public const uint LC_SEGMENT = 0x00000001u;
-            public const uint LC_SYMTAB = 0x00000002u;
-            public const uint LC_SYMSEG = 0x00000003u;
-            public const uint LC_THREAD = 0x00000004u;
-            public const uint LC_UNIXTHREAD = 0x00000005u;
-            public const uint LC_LOADFVMLIB = 0x00000006u;
-            public const uint LC_IDFVMLIB = 0x00000007u;
-            public const uint LC_IDENT = 0x00000008u;
-            public const uint LC_FVMFILE = 0x00000009u;
-            public const uint LC_PREPAGE = 0x0000000Au;
-            public const uint LC_DYSYMTAB = 0x0000000Bu;
-            public const uint LC_LOAD_DYLIB = 0x0000000Cu;
-            public const uint LC_ID_DYLIB = 0x0000000Du;
-            public const uint LC_LOAD_DYLINKER = 0x0000000Eu;
-            public const uint LC_ID_DYLINKER = 0x0000000Fu;
-            public const uint LC_PREBOUND_DYLIB = 0x00000010u;
-            public const uint LC_ROUTINES = 0x00000011u;
-            public const uint LC_SUB_FRAMEWORK = 0x00000012u;
-            public const uint LC_SUB_UMBRELLA = 0x00000013u;
-            public const uint LC_SUB_CLIENT = 0x00000014u;
-            public const uint LC_SUB_LIBRARY = 0x00000015u;
-            public const uint LC_TWOLEVEL_HINTS = 0x00000016u;
-            public const uint LC_PREBIND_CKSUM = 0x00000017u;
-            public const uint LC_LOAD_WEAK_DYLIB = 0x80000018u;
-            public const uint LC_SEGMENT_64 = 0x00000019u;
-            public const uint LC_ROUTINES_64 = 0x0000001Au;
-            public const uint LC_UUID = 0x0000001Bu;
-            public const uint LC_RPATH = 0x8000001Cu;
-            public const uint LC_CODE_SIGNATURE = 0x0000001Du;
-            public const uint LC_SEGMENT_SPLIT_INFO = 0x0000001Eu;
-            public const uint LC_REEXPORT_DYLIB = 0x8000001Fu;
-            public const uint LC_LAZY_LOAD_DYLIB = 0x00000020u;
-            public const uint LC_ENCRYPTION_INFO = 0x00000021u;
-            public const uint LC_DYLD_INFO = 0x00000022u;
-            public const uint LC_DYLD_INFO_ONLY = 0x80000022u;
-            public const uint LC_LOAD_UPWARD_DYLIB = 0x80000023u;
-            public const uint LC_VERSION_MIN_MACOSX = 0x00000024u;
-            public const uint LC_VERSION_MIN_IPHONEOS = 0x00000025u;
-            public const uint LC_FUNCTION_STARTS = 0x00000026u;
-            public const uint LC_DYLD_ENVIRONMENT = 0x00000027u;
-            public const uint LC_MAIN = 0x80000028u;
-            public const uint LC_DATA_IN_CODE = 0x00000029u;
-            public const uint LC_SOURCE_VERSION = 0x0000002Au;
-            public const uint LC_DYLIB_CODE_SIGN_DRS = 0x0000002Bu;
-            public const uint LC_ENCRYPTION_INFO_64 = 0x0000002Cu;
-            public const uint LC_LINKER_OPTION = 0x0000002Du;
-            public const uint LC_LINKER_OPTIMIZATION_HINT = 0x0000002Eu;
-            public const uint LC_VERSION_MIN_TVOS = 0x0000002Fu;
-            public const uint LC_VERSION_MIN_WATCHOS = 0x00000030u;
-
-            public const uint SECTION_TYPE = 0xFF;
-
-        public const uint S_REGULAR = 0x00u;                              // S_REGULAR - Regular section.
-        public const uint S_ZEROFILL = 0x01u;                             // Zero fill on demand section.
-        public const uint S_CSTRING_LITERALS = 0x02u;                     // Section with literal C strings.
-        public const uint S_4BYTE_LITERALS = 0x03u;                       // Section with 4 byte literals.
-        public const uint S_8BYTE_LITERALS = 0x04u;                       // Section with 8 byte literals.
-        public const uint S_LITERAL_POINTERS = 0x05u;                     // Section with pointers to literals.
-        public const uint S_NON_LAZY_SYMBOL_POINTERS = 0x06u;             // Section with non-lazy symbol pointers.
-        public const uint S_LAZY_SYMBOL_POINTERS = 0x07u;                 // Section with lazy symbol pointers.
-        public const uint S_SYMBOL_STUBS = 0x08u;                         // Section with symbol stubs, byte size of stub in the Reserved2 field.
-        public const uint S_MOD_INIT_FUNC_POINTERS = 0x09u;               // Section with only function pointers for initialization.
-        public const uint S_MOD_TERM_FUNC_POINTERS = 0x0au;               // Section with only function pointers for termination.
-        public const uint S_COALESCED = 0x0bu;                            // Section contains symbols that are to be coalesced.
-        public const uint S_GB_ZEROFILL = 0x0cu;                          // Zero fill on demand section (that can be larger than 4 gigabytes).
-        public const uint S_INTERPOSING = 0x0du;                          // Section with only pairs of function pointers for interposing.
-        public const uint S_16BYTE_LITERALS = 0x0eu;                      // Section with only 16 byte literals.
-        public const uint S_DTRACE_DOF = 0x0fu;                           // Section contains DTrace Object Format.
-        public const uint S_LAZY_DYLIB_SYMBOL_POINTERS = 0x10u;           // Section with lazy symbol pointers to lazy loaded dylibs.
-        public const uint S_THREAD_LOCAL_REGULAR = 0x11u;                 // Thread local data section.
-        public const uint S_THREAD_LOCAL_ZEROFILL = 0x12u;                // Thread local zerofill section.
-        public const uint S_THREAD_LOCAL_VARIABLES = 0x13u;               // Section with thread local variable structure data.
-        public const uint S_THREAD_LOCAL_VARIABLE_POINTERS = 0x14u;       // Section with pointers to thread local structures.
-        public const uint S_THREAD_LOCAL_INIT_FUNCTION_POINTERS = 0x15u;  // Section with thread local variable initialization pointers to functions.
- 
-        public const uint LAST_KNOWN_SECTION_TYPE = S_THREAD_LOCAL_INIT_FUNCTION_POINTERS;
+            [Flags]
+            public enum Command : uint
+            {
+                LC_REQ_DYLD = 0x80000000,
+                LC_SEGMENT = 0x00000001u,
+                LC_SYMTAB = 0x00000002u,
+                LC_SYMSEG = 0x00000003u,
+                LC_THREAD = 0x00000004u,
+                LC_UNIXTHREAD = 0x00000005u,
+                LC_LOADFVMLIB = 0x00000006u,
+                LC_IDFVMLIB = 0x00000007u,
+                LC_IDENT = 0x00000008u,
+                LC_FVMFILE = 0x00000009u,
+                LC_PREPAGE = 0x0000000Au,
+                LC_DYSYMTAB = 0x0000000Bu,
+                LC_LOAD_DYLIB = 0x0000000Cu,
+                LC_ID_DYLIB = 0x0000000Du,
+                LC_LOAD_DYLINKER = 0x0000000Eu,
+                LC_ID_DYLINKER = 0x0000000Fu,
+                LC_PREBOUND_DYLIB = 0x00000010u,
+                LC_ROUTINES = 0x00000011u,
+                LC_SUB_FRAMEWORK = 0x00000012u,
+                LC_SUB_UMBRELLA = 0x00000013u,
+                LC_SUB_CLIENT = 0x00000014u,
+                LC_SUB_LIBRARY = 0x00000015u,
+                LC_TWOLEVEL_HINTS = 0x00000016u,
+                LC_PREBIND_CKSUM = 0x00000017u,
+                LC_LOAD_WEAK_DYLIB = 0x80000018u,
+                LC_SEGMENT_64 = 0x00000019u,
+                LC_ROUTINES_64 = 0x0000001Au,
+                LC_UUID = 0x0000001Bu,
+                LC_RPATH = 0x8000001Cu,
+                LC_CODE_SIGNATURE = 0x0000001Du,
+                LC_SEGMENT_SPLIT_INFO = 0x0000001Eu,
+                LC_REEXPORT_DYLIB = 0x8000001Fu,
+                LC_LAZY_LOAD_DYLIB = 0x00000020u,
+                LC_ENCRYPTION_INFO = 0x00000021u,
+                LC_DYLD_INFO = 0x00000022u,
+                LC_DYLD_INFO_ONLY = 0x80000022u,
+                LC_LOAD_UPWARD_DYLIB = 0x80000023u,
+                LC_VERSION_MIN_MACOSX = 0x00000024u,
+                LC_VERSION_MIN_IPHONEOS = 0x00000025u,
+                LC_FUNCTION_STARTS = 0x00000026u,
+                LC_DYLD_ENVIRONMENT = 0x00000027u,
+                LC_MAIN = 0x80000028u,
+                LC_DATA_IN_CODE = 0x00000029u,
+                LC_SOURCE_VERSION = 0x0000002Au,
+                LC_DYLIB_CODE_SIGN_DRS = 0x0000002Bu,
+                LC_ENCRYPTION_INFO_64 = 0x0000002Cu,
+                LC_LINKER_OPTION = 0x0000002Du,
+                LC_LINKER_OPTIMIZATION_HINT = 0x0000002Eu,
+                LC_VERSION_MIN_TVOS = 0x0000002Fu,
+                LC_VERSION_MIN_WATCHOS = 0x00000030u,
+            }
 
 
             public SegmentMap ParseLoadCommands(mach_header_64 hdr, Address addrLoad)
             {
                 var imageMap = new SegmentMap(addrLoad);
                 Debug.Print("Parsing {0} load commands.", hdr.ncmds);
-
-                var lookup = GetType()
-                    .GetFields(
-                        BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-                    .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.Name.StartsWith("LC_"))
-                    .ToDictionary(fi => (uint) fi.GetValue(null), fi => fi.Name);
 
                 for (uint i = 0; i < hdr.ncmds; ++i)
                 {
@@ -297,9 +274,9 @@ namespace Reko.ImageLoaders.MachO
                             "Unable to read Mach-O command ({0:X}).",
                             rdr.Offset));
                     }
-                    Debug.Print("{0,2}: Read MachO load command 0x{1:X} {2} of size {3}.", i, cmd, lookup.ContainsKey(cmd) ? lookup[cmd] : "", cmdsize);
+                    Debug.Print("{0,2}: Read MachO load command 0x{1:X} {2} of size {3}.", i, (int)cmd, cmd, cmdsize);
 
-                    switch (cmd & ~LC_REQ_DYLD)
+                    switch ((Command)(cmd & ~(uint)LC_REQ_DYLD))
                     {
                     case LC_SEGMENT:
                         ParseSegmentCommand32(imageMap);
@@ -325,12 +302,12 @@ namespace Reko.ImageLoaders.MachO
                 return imageMap;
             }
 
-            protected ImageSegment FindSectionByType(uint type)
+            protected MachOSection FindSectionByType(SectionFlags type)
             {
-                foreach (var kv in ldr.machoSections)
+                foreach (var kv in ldr.imageSections)
                 {
                     if ((kv.Key.Flags & SECTION_TYPE) == type)
-                        return kv.Value;
+                        return kv.Key;
                 }
                 return null;
             }
@@ -478,11 +455,11 @@ namespace Reko.ImageLoaders.MachO
                 var addr = Address.Ptr32(uAddr);
                 var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
                 var name = string.Format("{0},{1}", segmentName, sectionName);
-                    
+
                 var mem = new MemoryArea(addr, bytes.ReadBytes((uint) size));
-                var machoSection = new MachOSection(addr, flags);
+                var machoSection = new MachOSection(name, addr, (SectionFlags) flags, reserved1, reserved2);
                 var imageSection = new ImageSegment(name, mem, am);
-                ldr.machoSections.Add(machoSection, imageSection);
+                ldr.imageSections.Add(machoSection, imageSection);
 
                 //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
 
@@ -499,9 +476,12 @@ namespace Reko.ImageLoaders.MachO
                 //    }
                 //    source_->seek(pos);
                 //}
-                this.ldr.sections.Add(imageSection);
-                this.ldr.sectionsByName.Add(imageSection.Name, imageSection);
-                segmentMap.AddSegment(imageSection);
+                this.ldr.sections.Add(machoSection);
+                this.ldr.sectionsByName.Add(imageSection.Name, machoSection);
+                if (imageSection.Size > 0)
+                {
+                    segmentMap.AddSegment(imageSection);
+                }
             }
 
             void ParseSection64(uint protection, SegmentMap segmentMap)
@@ -593,7 +573,9 @@ namespace Reko.ImageLoaders.MachO
                             Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X8} {7}",
                                 i, n_strx, n_type, ldr.sections[n_sect].Name,
                                 n_sect, n_desc, n_value, str);
+                            var addr = Address.Ptr32(n_value);
                             ldr.machoSymbols.Add(new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value));
+                            ldr.imageSymbols[addr] = new ImageSymbol(addr);
                         }
                     }
                 }
@@ -684,13 +666,13 @@ namespace Reko.ImageLoaders.MachO
                     if (nundefsym > 0 && nindirectsyms > 0)
                     {
                         var rdrIndirect = rdr.CreateNew(ldr.RawImage, indirectsymoff);
-                        var indirects = LoadIndirectTable(rdrIndirect, nindirectsyms);
-                        var nonLazySection = FindSectionByType(S_LAZY_SYMBOL_POINTERS);
-                        if (nonLazySection != null)
-                            LoadImports(nonLazySection, indirects);
-                        var lazySection = FindSectionByType(S_NON_LAZY_SYMBOL_POINTERS);
+                        var indirects = LoadIndirectSymbols(rdrIndirect, nindirectsyms);
+                        var lazySection = FindSectionByType(S_LAZY_SYMBOL_POINTERS);
                         if (lazySection != null)
                             LoadImports(lazySection, indirects);
+                        var nonLazySection = FindSectionByType(S_NON_LAZY_SYMBOL_POINTERS);
+                        if (nonLazySection != null)
+                            LoadImports(nonLazySection, indirects);
                     }
                     nextrel.ToString();
                 }
@@ -700,21 +682,22 @@ namespace Reko.ImageLoaders.MachO
                 }
             }
 
-            protected abstract void LoadImports(ImageSegment section, List<uint> indirects);
+            protected abstract void LoadImports(MachOSection msec, List<uint> indirects);
 
-            private List<uint> LoadIndirectTable(EndianImageReader rdr, uint nindirectsyms)
+            private List<uint> LoadIndirectSymbols(EndianImageReader rdr, uint nindirectsyms)
             {
+                Debug.Print("    Loading indirect symbols");
                 var indirects = new List<uint>();
                 for (uint i = 0; i < nindirectsyms; ++i)
                 {
                     if (!rdr.TryReadUInt32(out uint indir))
                         return indirects;
                     indirects.Add(indir);
+                    var sym = ldr.machoSymbols[(int) indir];
+                    Debug.Print("      {0}: {1} {2:X2} {3:X2} {4:X8} {5}", i, indir, sym.n_type, sym.n_desc, sym.n_value, sym.Name);  
                 }
                 return indirects;
             }
-
-        
         }
 
         public enum RelocationInfoType
@@ -821,12 +804,31 @@ namespace Reko.ImageLoaders.MachO
                 }
             }
 
-            protected override void LoadImports(ImageSegment section, List<uint> indirects)
+            protected override void LoadImports(MachOSection section, List<uint> indirects)
             {
-                var rdr = section.CreateImageReader(arch);
-                while (rdr.TryReadUInt32(out uint import))
+                Debug.Print("    Loading imports from section {0} / res: {1:X8}", section.Name, section.Reserved1);
+                var iseg = ldr.imageSections[section];
+                var rdr = iseg.CreateImageReader(arch);
+                var addr = rdr.Address;
+                var tableIndex = section.Reserved1;
+                int i = (int) tableIndex;
+                while (rdr.TryReadUInt32(out uint uImport))
                 {
-
+                    var msym = ldr.machoSymbols[(int)indirects[i]];
+                    Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
+                    var addrImport = Address.Ptr32(uImport);
+                    var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
+                    var impSymbol = new ImageSymbol(addr)
+                    {
+                        Name = "__imp__" + msym.Name,
+                        Type = SymbolType.Data,
+                        DataType = ptr,
+                        Size = (uint) ptr.Size
+                    };
+                    ldr.imageSymbols[addr] = impSymbol;
+                    ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name));
+                    addr = rdr.Address;
+                    ++i;
                 }
             }
         }
@@ -870,78 +872,13 @@ namespace Reko.ImageLoaders.MachO
                 throw new NotImplementedException();
             }
 
-            protected override void LoadImports(ImageSegment section, List<uint> indirects)
+            protected override void LoadImports(MachOSection section, List<uint> indirects)
             {
                 throw new NotImplementedException();
             }
         }
 
 #if NYI
-        public enum ByteOrder {
-            BigEndian,
-            LittleEndian,
-        }
-
-        static const ByteOrder [] byteOrders = {
-        ByteOrder.BigEndian,
-        ByteOrder.LittleEndian
-        };
-
-Tuple<int, ByteOrder> getBitnessAndByteOrder(uint magic) {
-    throw new NotImplementedException();
-
-    //foreach (var byteOrder in byteOrders) {
-    //    auto m = magic;
-    //    byteOrder.convertFrom(m);
-
-    //    if (m == MH_MAGIC) {
-    //        return std::make_pair(32, byteOrder);
-    //    } else if (m == MH_MAGIC_64) {
-    //        return std::make_pair(64, byteOrder);
-    //    }
-    //}
-    //return null;
-}
-
-    EndianImageReader source_;
-    //core::image::Image *image_;
-    //const LogToken &log_;
-
-    ByteOrder byteOrder_;
-    List<ImageMapSegment> sections_;
-
-
-
-
-    private EndianImageReader CreateImageReader(byte[] source)
-    {
- 	    throw new NotImplementedException();
-    }
-
-    void parse<Mach>() {
-        source.seek(0);
-
-        Mach.MachHeader header;
-        if (!read(source_, header)) {
-            throw new BadImageFormatException("Could not read Mach-O header.");
-        }
-
-        var bitnessAndByteOrder = getBitnessAndByteOrder(header.magic);
-        if (!bitnessAndByteOrder) {
-            throw new BadImageFormatException("Mach-O magic does not match.");
-        }
-
-        byteOrder_ = bitnessAndByteOrder->second;
-
-        
-        byteOrder_.convertFrom(header.magic);
-        byteOrder_.convertFrom(header.cputype);
-        byteOrder_.convertFrom(header.ncmds);
-
-        if (header.magic != Mach::magic) {
-            throw ParseError(tr("The instantiation of the method does not match the Mach-O class."));
-        }
-
         switch (header.cputype) {
             case CPU_TYPE_I386:
                 image_.setArchitecture(QLatin1String("i386"));
@@ -956,206 +893,6 @@ Tuple<int, ByteOrder> getBitnessAndByteOrder(uint magic) {
                 throw  new BadImageFormatException("Unknown CPU type: %1.").arg(header.cputype);
         }
 
-        parseLoadCommands<Mach>(header.ncmds);
-    }
-
-private
-
-    void parseSegmentCommand<SegmentCommand, Section>() {
-        SegmentCommand command;
-        if (!read(source_, command)) {
-            throw BadImageFormatException("Could not read segment command.");
-        }
-        byteOrder_.convertFrom(command.nsects);
-        byteOrder_.convertFrom(command.initprot);
-
-        Debug.Print(tr("Found segment '%1' with %2 sections.").arg(getAsciizString(command.segname)).arg(command.nsects));
-
-        for (uint i = 0; i < command.nsects; ++i) {
-            Debug.Print(tr("Parsing section number %1.").arg(i));
-            parseSection<Section>(command.initprot);
-        }
-    }
-
-    const uint VM_PROT_READ = 0x01;
-const uint VM_PROT_WRITE = 0x02;
-const uint VM_PROT_EXECUTE = 0x04;
-
-    void parseSection<Section>(uint protection) {
-        Section section;
-        if (!read(source_, section)) {
-            throw ParseError(tr("Could not read section."));
-        }
-        byteOrder_.convertFrom(section.addr);
-        byteOrder_.convertFrom(section.size);
-        byteOrder_.convertFrom(section.offset);
-        byteOrder_.convertFrom(section.flags);
-
-        auto sectionName = getAsciizString(section.sectname);
-        auto segmentName = getAsciizString(section.segname);
-
-        Debug.Print(tr("Found section '%1' in segment '%2', addr = 0x%3, size = 0x%4.")
-                       .arg(sectionName)
-                       .arg(segmentName)
-                       .arg(section.addr, 0, 16)
-                       .arg(section.size, 0, 16));
-
-        var imageSection = std::make_unique<core::image::Section>(tr("%1,%2").arg(segmentName).arg(sectionName),
-                                                                   section.addr, section.size);
-
-        imageSection.setAllocated(protection);
-        AccessMode am = 0;
-        if ((protection & VM_PROT_READ) != 0)
-            am |= AccessMode.Read;
-        if ((protection & VM_PROT_WRITE) != 0)
-            am |= AccessMode.Write;
-        if ((protection & VM_PROT_EXECUTE) != 0)
-            am |= AccessMode.Execute;
-                   
-        imageSection.setCode(section.flags & (S_ATTR_SOME_INSTRUCTIONS | S_ATTR_PURE_INSTRUCTIONS));
-        imageSection.setData(!imageSection->isCode());
-        imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
-
-        if (!imageSection.isBss()) {
-            auto pos = source_->pos();
-            if (!source_->seek(section.offset)) {
-                throw ParseError("Could not seek to the beginning of the section's content.");
-            }
-            auto bytes = source_->read(section.size);
-            if (checked_cast<uint>(bytes.size()) != section.size) {
-                log_.warning("Could not read all the section's content.");
-            } else {
-                imageSection->setContent(std::move(bytes));
-            }
-            source_->seek(pos);
-        }
-
-        sections_.push_back(imageSection.get());
-        image_->addSection(std::move(imageSection));
-    }
-
-    
-
-bool doCanParse(QIODevice *source) const {
-    uint magic;
-    return read(source, magic) && getBitnessAndByteOrder(magic);
-}
-
-void doParse(QIODevice *source, core::image::Image *image, const LogToken &log) const {
-    uint magic;
-    if (!read(source, magic)) {
-        throw ParseError(tr("Could not read Mach-O magic."));
-    }
-
-    auto bitnessAndByteOrder = getBitnessAndByteOrder(magic);
-    if (!bitnessAndByteOrder) {
-        throw ParseError(tr("Mach-O magic does not match."));
-    }
-
-    switch (bitnessAndByteOrder->first) {
-        case 32:
-            MachOParserImpl(source, image, log).parse<MachO32>();
-            break;
-        case 64:
-            MachOParserImpl(source, image, log).parse<MachO64>();
-            break;
-        default:
-            unreachable();
-    }
-}
-
-//typedef uint cpu_type_t;
-//typedef uint cpu_subtype_t;
-
-struct mach_header {
-    uint magic;
-    uint cputype;
-    uint cpusubtype;
-    uint filetype;
-    uint ncmds;
-    uint sizeofcmds;
-    uint flags;
-};
-
-struct mach_header_64 {
-    uint magic;
-    uint cputype;
-    uint cpusubtype;
-    uint filetype;
-    uint ncmds;
-    uint sizeofcmds;
-    uint flags;
-    uint reserved;
-};
-
-
- 
-struct load_command {
-    public uint cmd;
-    public uint cmdsize;
-}
-
-
-
-typedef uint vm_prot_t;
-
-struct segment_command {
-    uint cmd;
-    uint cmdsize;
-    string segname; // char segname[16];
-    uint vmaddr;
-    uint vmsize;
-    uint fileoff;
-    uint filesize;
-    vm_prot_t maxprot;
-    vm_prot_t initprot;
-    uint nsects;
-    uint flags;
-};
-
-struct segment_command_64 {
-    uint cmd;
-    uint cmdsize;
-    char segname[16];
-    ulong vmaddr;
-    ulong vmsize;
-    ulong fileoff;
-    ulong filesize;
-    vm_prot_t maxprot;
-    vm_prot_t initprot;
-    uint nsects;
-    uint flags;
-}
-
-
-struct section {
-    char sectname[16];
-    char segname[16];
-    uint addr;
-    uint size;
-    uint offset;
-    uint align;
-    uint reloff;
-    uint nreloc;
-    uint flags;
-    uint reserved1;
-    uint reserved2;
-};
-
-struct section_64 {
-    char sectname[16];
-    char segname[16];
-    ulong addr;
-    ulong size;
-    uint offset;
-    uint align;
-    uint reloff;
-    uint nreloc;
-    uint flags;
-    uint reserved1;
-    uint reserved2;
-};
-
  const uint SECTION_TYPE = 0x000000ff;
  const uint SECTION_ATTRIBUTES = 0xffffff00;
  const uint S_REGULAR = 0;
@@ -1163,30 +900,6 @@ struct section_64 {
  const uint S_ATTR_SOME_INSTRUCTIONS = 0x00000400;
  const uint S_ATTR_PURE_INSTRUCTIONS = 0x80000000;
 
-struct symtab_command {
-    public uint cmd;
-    public uint cmdsize;
-    public uint symoff;
-    public uint nsyms;
-    public uint stroff;
-    public uint strsize;
-};
-
-struct nlist {
-    uint n_strx;
-    byte n_type;
-    byte n_sect;
-    int16_t n_desc;
-    uint n_value;
-};
-
-struct nlist_64 {
-    uint n_strx;
-    byte n_type;
-    byte n_sect;
-    ushort n_desc;
-    ulong n_value;
-};
 
 static const byte N_TYPE = 0x0e;
 static const byte N_UNDF = 0x0;
@@ -1195,11 +908,6 @@ static const byte N_SECT = 0xe;
 static const byte N_INDR = 0xa;
 
 static const byte NO_SECT = 0;
-
-/* vim:set et sts=4 sw=4: */
-
-
-}
 #endif
         /// <summary>
         /// Contains MachO specific information that is only used at load time
@@ -1207,32 +915,69 @@ static const byte NO_SECT = 0;
         /// </summary>
         public class MachOSection
         {
-            public readonly Address Address;    // Key 
-            public readonly uint Flags;         // MachO sectuin flags
+            public readonly string Name;
+            public readonly Address Address;
+            public readonly SectionFlags Flags;
+            public readonly uint Reserved1;
+            public readonly uint Reserved2;
 
-            public MachOSection(Address addr, uint flags)
+            public MachOSection(string name, Address addr, SectionFlags flags, uint reserved1, uint reserved2)
             {
+                this.Name = name;
                 this.Address = addr;
                 this.Flags = flags;
+                this.Reserved1 = reserved1;
+                this.Reserved2 = reserved2;
             }
         }
 
         public class MachOSymbol
         {
-            private string str;
-            private byte n_type;
-            private ImageSegment imageSegment;
-            private ushort n_desc;
-            private uint n_value;
+            public string Name;
+            public byte n_type;
+            public MachOSection msec;
+            public ushort n_desc;
+            public uint n_value;
 
-            public MachOSymbol(string str, byte n_type, ImageSegment imageSegment, ushort n_desc, uint n_value)
+            public MachOSymbol(string name, byte n_type, MachOSection msec, ushort n_desc, uint n_value)
             {
-                this.str = str;
+                this.Name = name;
                 this.n_type = n_type;
-                this.imageSegment = imageSegment;
+                this.msec = msec;
                 this.n_desc = n_desc;
                 this.n_value = n_value;
             }
+        }
+
+        [Flags]
+        public enum SectionFlags : UInt32
+        {
+            SECTION_TYPE = 0xFF,
+
+            S_REGULAR = 0x00u,                              // S_REGULAR - Regular section.
+            S_ZEROFILL = 0x01u,                             // Zero fill on demand section.
+            S_CSTRING_LITERALS = 0x02u,                     // Section with literal C strings.
+            S_4BYTE_LITERALS = 0x03u,                       // Section with 4 byte literals.
+            S_8BYTE_LITERALS = 0x04u,                       // Section with 8 byte literals.
+            S_LITERAL_POINTERS = 0x05u,                     // Section with pointers to literals.
+            S_NON_LAZY_SYMBOL_POINTERS = 0x06u,             // Section with non-lazy symbol pointers.
+            S_LAZY_SYMBOL_POINTERS = 0x07u,                 // Section with lazy symbol pointers.
+            S_SYMBOL_STUBS = 0x08u,                         // Section with symbol stubs, byte size of stub in the Reserved2 field.
+            S_MOD_INIT_FUNC_POINTERS = 0x09u,               // Section with only function pointers for initialization.
+            S_MOD_TERM_FUNC_POINTERS = 0x0au,               // Section with only function pointers for termination.
+            S_COALESCED = 0x0bu,                            // Section contains symbols that are to be coalesced.
+            S_GB_ZEROFILL = 0x0cu,                          // Zero fill on demand section (that can be larger than 4 gigabytes).
+            S_INTERPOSING = 0x0du,                          // Section with only pairs of function pointers for interposing.
+            S_16BYTE_LITERALS = 0x0eu,                      // Section with only 16 byte literals.
+            S_DTRACE_DOF = 0x0fu,                           // Section contains DTrace Object Format.
+            S_LAZY_DYLIB_SYMBOL_POINTERS = 0x10u,           // Section with lazy symbol pointers to lazy loaded dylibs.
+            S_THREAD_LOCAL_REGULAR = 0x11u,                 // Thread local data section.
+            S_THREAD_LOCAL_ZEROFILL = 0x12u,                // Thread local zerofill section.
+            S_THREAD_LOCAL_VARIABLES = 0x13u,               // Section with thread local variable structure data.
+            S_THREAD_LOCAL_VARIABLE_POINTERS = 0x14u,       // Section with pointers to thread local structures.
+            S_THREAD_LOCAL_INIT_FUNCTION_POINTERS = 0x15u,  // Section with thread local variable initialization pointers to functions.
+
+            LAST_KNOWN_SECTION_TYPE = S_THREAD_LOCAL_INIT_FUNCTION_POINTERS
         }
     }
 }
