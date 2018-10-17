@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -80,8 +80,6 @@ namespace Reko.ImageLoaders.Elf
         protected ElfMachine machine;
         protected ElfImageLoader imgLoader;
         protected byte endianness;
-        protected Address m_uPltMin;
-        protected Address m_uPltMax;
         protected IPlatform platform;
         protected byte[] rawImage;
         private SegmentMap segmentMap;
