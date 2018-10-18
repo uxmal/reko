@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Types;
+using Reko.ImageLoaders.MachO.Arch;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -71,9 +72,7 @@ namespace Reko.ImageLoaders.MachO
             this.program = new Program();
             parser = CreateParser();
             var hdr = parser.ParseHeader(addrLoad);
-            this.program.SegmentMap = parser.ParseLoadCommands(hdr, addrLoad);
-            this.program.Architecture = parser.arch;
-            this.program.Platform = new DefaultPlatform(Services, parser.arch);
+            this.program = parser.ParseLoadCommands(hdr, addrLoad);
             return this.program;
         }
 
@@ -83,23 +82,29 @@ namespace Reko.ImageLoaders.MachO
                 throw new BadImageFormatException("Invalid Mach-O header.");
             switch (magic)
             {
-            case MH_MAGIC:
-                return new Loader32(this, new BeImageReader(RawImage, 0));
-            case MH_MAGIC_64:
-                return new Loader64(this, new BeImageReader(RawImage, 0));
-            case MH_MAGIC_32_LE:
-                return new Loader32(this, new LeImageReader(RawImage, 0));
-            case MH_MAGIC_64_LE:
-                return new Loader64(this, new LeImageReader(RawImage, 0));
+            case MH_MAGIC: return new Loader32(this, new BeImageReader(RawImage, 0));
+            case MH_MAGIC_64: return new Loader64(this, new BeImageReader(RawImage, 0));
+            case MH_MAGIC_32_LE: return new Loader32(this, new LeImageReader(RawImage, 0));
+            case MH_MAGIC_64_LE: return new Loader64(this, new LeImageReader(RawImage, 0));
             }
             throw new BadImageFormatException("Invalid Mach-O header.");
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
+            CollectSymbolStubs(machoSymbols, imageSymbols);
             return new RelocationResults(entryPoints, imageSymbols);
         }
 
+        /// <summary>
+        /// Find the symbol stubs and add them to the <paramref name="imageSymbols"/> collection.
+        /// </summary>
+        /// <param name="machoSymbols"></param>
+        /// <param name="imageSymbols"></param>
+        private void CollectSymbolStubs(List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
+        {
+            throw new NotImplementedException();
+        }
 
         public enum RelocationInfoType
         {

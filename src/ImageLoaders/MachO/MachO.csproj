@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arch\ArchSpecific.cs" />
+    <Compile Include="Arch\ArmSpecific.cs" />
+    <Compile Include="Arch\M68kSpecific.cs" />
+    <Compile Include="Arch\MipsSpecific.cs" />
+    <Compile Include="Arch\PowerPCSpecific.cs" />
+    <Compile Include="Arch\X86Specific.cs" />
     <Compile Include="MachOLoader.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -28,6 +28,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.MachO
 {
+    using Reko.ImageLoaders.MachO.Arch;
     using static Reko.ImageLoaders.MachO.Parser.Command;
     using static Reko.ImageLoaders.MachO.SectionFlags;
 
@@ -60,7 +61,7 @@ namespace Reko.ImageLoaders.MachO
 
         protected MachOLoader ldr;
         protected EndianImageReader rdr;
-        public IProcessorArchitecture arch;
+        public ArchSpecific specific;
         protected Dictionary<uint, uint> mpCputypeToUnixthreadPc;
 
         protected Parser(MachOLoader ldr, EndianImageReader rdr)
@@ -68,33 +69,37 @@ namespace Reko.ImageLoaders.MachO
             this.ldr = ldr;
             this.rdr = rdr;
             this.mpCputypeToUnixthreadPc = new Dictionary<uint, uint>
-                {
-                    { CPU_TYPE_POWERPC, 0x0010 },
-                    { CPU_TYPE_POWERPC64, 0x0010 },
-                    { CPU_TYPE_X86, 0x38 },
-                    { CPU_TYPE_X86_64, 0x90 },
-                    { CPU_TYPE_ARM, 0x4C },
-                    { CPU_TYPE_ARM64, 0x110 },
-                    { CPU_TYPE_MC680x0, 0x44 }
-                };
+            {
+                { CPU_TYPE_POWERPC, 0x0010 },
+                { CPU_TYPE_POWERPC64, 0x0010 },
+                { CPU_TYPE_X86, 0x38 },
+                { CPU_TYPE_X86_64, 0x90 },
+                { CPU_TYPE_ARM, 0x4C },
+                { CPU_TYPE_ARM64, 0x110 },
+                { CPU_TYPE_MC680x0, 0x44 }
+            };
         }
 
-        public IProcessorArchitecture CreateArchitecture(uint cputype)
+        public ArchSpecific CreateArchitecture(uint cputype)
         {
-            var cfgSvc = ldr.Services.RequireService<IConfigurationService>();
-            string arch;
             switch (cputype)
             {
-            case CPU_TYPE_ARM: arch = "arm"; break;
-            case CPU_TYPE_I386: arch = "x86-protected-32"; break;
-            case CPU_TYPE_X86_64: arch = "x86-protected-64"; break;
-            case CPU_TYPE_MIPS: arch = "mips"; break;
-            case CPU_TYPE_POWERPC: arch = "ppc-be-32"; break;
-            case CPU_TYPE_MC680x0: arch = "m68k"; break;
+            case CPU_TYPE_ARM: return MakeSpecific("arm32", a => new ArmSpecific(a));
+            case CPU_TYPE_I386: return MakeSpecific("x86-protected-32", a => new X86Specific(a));
+            case CPU_TYPE_X86_64: return MakeSpecific("x86-protected-64", a => new X86Specific(a));
+            case CPU_TYPE_MIPS: return MakeSpecific("mips-be-32", a => new MipsSpecific(a));
+            case CPU_TYPE_POWERPC: return MakeSpecific("ppc-be-32", a => new PowerPCSpecific(a));
+            case CPU_TYPE_MC680x0: return MakeSpecific("m68k", a=> new M68kSpecific(a));
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", cputype));
             }
-            return cfgSvc.GetArchitecture(arch);
+        }
+
+        private ArchSpecific MakeSpecific(string archLabel, Func<IProcessorArchitecture, ArchSpecific> ctor)
+        {
+            var cfgSvc = ldr.Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture(archLabel);
+            return ctor(arch);
         }
 
         /// <summary>
@@ -164,7 +169,7 @@ namespace Reko.ImageLoaders.MachO
         }
 
 
-        public SegmentMap ParseLoadCommands(mach_header_64 hdr, Address addrLoad)
+        public Program ParseLoadCommands(mach_header_64 hdr, Address addrLoad)
         {
             var imageMap = new SegmentMap(addrLoad);
             Debug.Print("Parsing {0} load commands.", hdr.ncmds);
@@ -179,7 +184,7 @@ namespace Reko.ImageLoaders.MachO
                         "Unable to read Mach-O command ({0:X}).",
                         rdr.Offset));
                 }
-                Debug.Print("{0,2}: Read MachO load command 0x{1:X} {2} of size {3}.", i, (int) cmd, cmd, cmdsize);
+                Debug.Print("{0,2}: Read MachO load command 0x{1:X} {2} of size {3}.", i, cmd, (Command) cmd, cmdsize);
 
                 switch ((Command) (cmd & ~(uint) LC_REQ_DYLD))
                 {
@@ -204,7 +209,12 @@ namespace Reko.ImageLoaders.MachO
                 }
                 rdr.Offset = pos + cmdsize;
             }
-            return imageMap;
+            return new Program
+            {
+                Architecture = specific.Architecture,
+                SegmentMap = imageMap,
+                Platform = new DefaultPlatform(ldr.Services, specific.Architecture)
+            };
         }
 
         protected MachOSection FindSectionByType(SectionFlags type)
@@ -347,7 +357,8 @@ namespace Reko.ImageLoaders.MachO
                     segmentName,
                     uAddr,
                     size);
-            Debug.Print("      reloff: {0:X} nreloc: {1:X} flags {2:X}", reloff, nreloc, flags);
+            Debug.Print("      reloff:  {0:X8} nreloc: {1:X} flags {2:X}", reloff, nreloc, flags);
+            Debug.Print("      reserv1: {0:X8} reserv2: {1:X8}", reserved1, reserved2);
 
             AccessMode am = 0;
             if ((protection & VM_PROT_READ) != 0)
@@ -644,7 +655,8 @@ namespace Reko.ImageLoaders.MachO
                 rdr.TryReadUInt32(out uint sizeofcmds) &&
                 rdr.TryReadUInt32(out uint flags))
             {
-                arch = CreateArchitecture(cputype);
+                var cfgSvc = ldr.Services.RequireService<IConfigurationService>();
+                specific = CreateArchitecture(cputype);
                 return new mach_header_64
                 {
                     magic = magic,
@@ -676,7 +688,7 @@ namespace Reko.ImageLoaders.MachO
         {
             Debug.Print("    Loading imports from section {0} / res: {1:X8}", section.Name, section.Reserved1);
             var iseg = ldr.imageSections[section];
-            var rdr = iseg.CreateImageReader(arch);
+            var rdr = iseg.CreateImageReader(specific.Architecture);
             var addr = rdr.Address;
             var tableIndex = section.Reserved1;
             int i = (int) tableIndex;
@@ -685,7 +697,7 @@ namespace Reko.ImageLoaders.MachO
                 var msym = ldr.machoSymbols[(int) indirects[i]];
                 Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
                 var addrImport = Address.Ptr32(uImport);
-                var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
+                var ptr = new Pointer(new CodeType(), specific.Architecture.PointerType.BitSize);
                 var impSymbol = new ImageSymbol(addr)
                 {
                     Name = "__imp__" + msym.Name,
@@ -719,7 +731,7 @@ namespace Reko.ImageLoaders.MachO
               rdr.TryReadUInt32(out uint flags) &&
               rdr.TryReadUInt32(out uint reserved))
             {
-                arch = CreateArchitecture(cputype);
+                specific = CreateArchitecture(cputype);
                 return new mach_header_64
                 {
                     magic = magic,
