@@ -1357,21 +1357,9 @@ namespace Reko.Analysis
             /// <returns>true if the phi function was trivial</returns>
             private bool TryRemoveTrivial(SsaIdentifier phi, out SsaIdentifier sid)
             {
-                Identifier same = null;
-                var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
+                var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
                 DebugEx.PrintIf(trace.TraceVerbose, "  Checking {0} for triviality", phiFunc);
-                foreach (Identifier op in phiFunc.Arguments)
-                {
-                    if (op == same || op == phi.Identifier)
-                        continue;
-                    if (same != null)
-                    {
-                        sid = null;
-                        return false;
-                    }
-                    same = op;
-                }
-                if (same == null)
+                if (phiFunc.Arguments.All(a => a == phi.Identifier))
                 {
                     DebugEx.PrintIf(trace.TraceVerbose, "  {0} is a def", phi.Identifier);
                     // Undef'ined or unreachable parameter; assume it's a def.
@@ -1379,7 +1367,9 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    sid = ssaIds[same];
+                    sid = SamePhiArgument(phi);
+                    if (sid == null)
+                        return false;
                 }
 
                 // Remember all users except for phi
@@ -1397,14 +1387,11 @@ namespace Reko.Analysis
                     if (use.Instruction is PhiAssignment phiAss)
                     {
                         var sidU = ssaIds[phiAss.Dst];
-                        if (TryRemoveTrivial(sidU, out var sidNew) &&
-                            sidU == sid)
-                        {
-                            same = sidNew.Identifier;
-                            sid = sidNew;
-                        }
+                        TryRemoveTrivial(sidU, out var sidNew);
                     }
                 }
+                sid = EnsureLiveIdentifier(sid);
+                var same = sid.Identifier;
                 if (blockstates[phi.DefStatement.Block].currentDef.TryGetValue(same.Storage.Domain, out var alias))
                 {
                     alias.SsaId = outer.ssa.Identifiers[same];
@@ -1412,6 +1399,47 @@ namespace Reko.Analysis
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 this.outer.sidsToRemove.Add(phi);
                 return true;
+            }
+
+            /// <summary>
+            /// Ensure that identifier is alive. Simplify phi function until
+            /// identifier is not in the list of removed phi identifiers
+            /// </summary>
+            /// <param name="sid">SSA identifier of phi function</param>
+            /// <returns>
+            /// Returns original SSA identifier or result of phi function
+            /// simplification
+            /// </returns>
+            private SsaIdentifier EnsureLiveIdentifier(SsaIdentifier sid)
+            {
+                while (this.outer.sidsToRemove.Contains(sid))
+                {
+                    sid = SamePhiArgument(sid);
+                }
+                return sid;
+            }
+
+            /// <summary>
+            /// If the arguments of phi function are same, return it.
+            /// </summary>
+            /// <param name="phi">SSA identifier of phi function</param>
+            /// <returns>
+            /// If the arguments of phi function are same, return it.
+            /// Return null otherwise
+            /// </returns>
+            private SsaIdentifier SamePhiArgument(SsaIdentifier phi)
+            {
+                Identifier same = null;
+                var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
+                foreach (Identifier op in phiFunc.Arguments)
+                {
+                    if (op == same || op == phi.Identifier)
+                        continue;
+                    if (same != null)
+                        return null;
+                    same = op;
+                }
+                return ssaIds[same];
             }
 
             private void UsePhiArguments(SsaIdentifier phi)
