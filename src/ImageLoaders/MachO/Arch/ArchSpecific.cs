@@ -36,5 +36,13 @@ namespace Reko.ImageLoaders.MachO.Arch
         }
 
         public IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// Read a MachO symbol stub to find the address of the GOT slot.
+        /// </summary>
+        /// <param name="addrStub"></param>
+        /// <param name="memoryArea"></param>
+        /// <returns></returns>
+        public abstract Address ReadStub(Address addrStub, MemoryArea mem);
     }
 }

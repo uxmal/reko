@@ -33,5 +33,17 @@ namespace Reko.ImageLoaders.MachO.Arch
         public M68kSpecific(IProcessorArchitecture arch) : base(arch)
         {
         }
+
+        public override Address ReadStub(Address addrStub, MemoryArea mem)
+        {
+            var offsetInSection = (uint) (addrStub - mem.BaseAddress);
+            var opcode = mem.ReadBeUInt16(offsetInSection);
+            // Expect move.l offset(pc),a0
+            if (opcode != 0x207B)
+                return null;
+            var offsetToGotEntry = mem.ReadBeInt32(offsetInSection + 4);
+            var addrGotEntry = addrStub + 2 + offsetToGotEntry;
+            return addrGotEntry;
+        }
     }
 }

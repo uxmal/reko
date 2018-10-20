@@ -28,10 +28,16 @@ using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MachO.Arch
 {
-    class MipsSpecific : ArchSpecific
+    public class MipsSpecific : ArchSpecific
     {
         public MipsSpecific(IProcessorArchitecture arch) : base(arch)
         {
         }
+
+        public override Address ReadStub(Address addrStub, MemoryArea mem)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

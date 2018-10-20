@@ -57,7 +57,6 @@ namespace Reko.ImageLoaders.MachO
             this.imageSymbols = new SortedList<Address, ImageSymbol>();
             this.machoSymbols = new List<MachOSymbol>();
             this.entryPoints = new List<ImageSymbol>();
-
         }
 
 
@@ -103,7 +102,23 @@ namespace Reko.ImageLoaders.MachO
         /// <param name="imageSymbols"></param>
         private void CollectSymbolStubs(List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
         {
-            throw new NotImplementedException();
+            var msec = this.sections.FirstOrDefault(s => (s.Flags & SectionFlags.SECTION_TYPE) == SectionFlags.S_SYMBOL_STUBS);
+            if (msec == null)
+                return;
+            var sec = this.imageSections[msec];
+            for (uint i = 0; i < sec.Size; i += msec.Reserved2)
+            {
+                var addrStub = sec.Address + i;
+                var addr = parser.specific.ReadStub(addrStub, sec.MemoryArea);
+                if (program.ImportReferences.TryGetValue(addr, out var refe))
+                {
+                    var stubSym = new ImageSymbol(addrStub)
+                    {
+                        Name = refe.EntryName
+                    };
+                    imageSymbols.Add(addrStub, stubSym);
+                }
+            }
         }
 
         public enum RelocationInfoType
@@ -168,19 +183,6 @@ namespace Reko.ImageLoaders.MachO
 
 
 #if NYI
-        switch (header.cputype) {
-            case CPU_TYPE_I386:
-                image_.setArchitecture(QLatin1String("i386"));
-                break;
-            case CPU_TYPE_X86_64:
-                image_.setArchitecture(QLatin1String("x86-64"));
-                break;
-            case CPU_TYPE_ARM:
-                image_.setArchitecture(QLatin1String(byteOrder_ == ByteOrder::LittleEndian ? "arm-le" : "arm-be"));
-                break;
-            default:
-                throw  new BadImageFormatException("Unknown CPU type: %1.").arg(header.cputype);
-        }
 
  const uint SECTION_TYPE = 0x000000ff;
  const uint SECTION_ATTRIBUTES = 0xffffff00;

@@ -15,5 +15,11 @@ namespace Reko.ImageLoaders.MachO.Arch
         public PowerPCSpecific(IProcessorArchitecture arch) : base(arch)
         {
         }
+
+        public override Address ReadStub(Address addrStub, MemoryArea mem)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

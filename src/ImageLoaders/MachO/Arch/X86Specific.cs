@@ -28,10 +28,15 @@ using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.MachO.Arch
 {
-    class X86Specific : ArchSpecific
+    public class X86Specific : ArchSpecific
     {
         private string archName;
 
         public X86Specific(IProcessorArchitecture arch) : base(arch) { }
+
+        public override Address ReadStub(Address addrStub, MemoryArea mem)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

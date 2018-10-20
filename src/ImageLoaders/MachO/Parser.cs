@@ -209,12 +209,10 @@ namespace Reko.ImageLoaders.MachO
                 }
                 rdr.Offset = pos + cmdsize;
             }
-            return new Program
-            {
-                Architecture = specific.Architecture,
-                SegmentMap = imageMap,
-                Platform = new DefaultPlatform(ldr.Services, specific.Architecture)
-            };
+            ldr.program.Architecture = specific.Architecture;
+            ldr.program.SegmentMap = imageMap;
+            ldr.program.Platform = new DefaultPlatform(ldr.Services, specific.Architecture);
+            return ldr.program;
         }
 
         protected MachOSection FindSectionByType(SectionFlags type)

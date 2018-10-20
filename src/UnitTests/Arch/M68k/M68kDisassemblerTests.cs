@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -723,6 +723,12 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_cmpi_pc_relative_indexing()
         {
             RunTest("cmpi.b\t#$04,(pc,d0.w,+002C)", 0x0C3B, 0x0004, 0x0028);
+        }
+
+        [Test]
+        public void M68kdis_move_pc_relative_indexing()
+        {
+            RunTest("@@@", 0x207B, 0x0170, 0x0000, 0x025C);
         }
     }
 }
