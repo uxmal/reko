@@ -317,7 +317,7 @@ namespace Reko.ImageLoaders.MachO
             }
         }
 
-        private string GetAsciizString(byte[] bytes, int iStart)
+        public string GetAsciizString(byte[] bytes, int iStart)
         {
             int iEnd = Array.IndexOf<byte>(bytes, 0, iStart);
             if (iEnd == -1)
@@ -358,6 +358,16 @@ namespace Reko.ImageLoaders.MachO
             Debug.Print("      reloff:  {0:X8} nreloc: {1:X} flags {2:X}", reloff, nreloc, flags);
             Debug.Print("      reserv1: {0:X8} reserv2: {1:X8}", reserved1, reserved2);
 
+
+            var addr = Address.Ptr32(uAddr);
+            var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
+            var name = string.Format("{0},{1}", segmentName, sectionName);
+
+            AddSection(segmentMap, size, flags, reserved1, reserved2, protection, addr, bytes, name);
+        }
+
+        private void AddSection(SegmentMap segmentMap, uint size, uint flags, uint reserved1, uint reserved2, uint protection, Address addr, EndianImageReader bytes, string name)
+        {
             AccessMode am = 0;
             if ((protection & VM_PROT_READ) != 0)
                 am |= AccessMode.Read;
@@ -366,30 +376,11 @@ namespace Reko.ImageLoaders.MachO
             if ((protection & VM_PROT_EXECUTE) != 0)
                 am |= AccessMode.Execute;
 
-            var addr = Address.Ptr32(uAddr);
-            var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
-            var name = string.Format("{0},{1}", segmentName, sectionName);
-
             var mem = new MemoryArea(addr, bytes.ReadBytes((uint) size));
             var machoSection = new MachOSection(name, addr, (SectionFlags) flags, reserved1, reserved2);
             var imageSection = new ImageSegment(name, mem, am);
             ldr.imageSections.Add(machoSection, imageSection);
 
-            //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
-
-            //if (!imageSection.isBss()) {
-            //    auto pos = source_->pos();
-            //    if (!source_->seek(section.offset)) {
-            //        throw ParseError("Could not seek to the beginning of the section's content.");
-            //    }
-            //    auto bytes = source_->read(section.size);
-            //    if (checked_cast<uint>(bytes.size()) != section.size) {
-            //        log_.warning("Could not read all the section's content.");
-            //    } else {
-            //        imageSection->setContent(std::move(bytes));
-            //    }
-            //    source_->seek(pos);
-            //}
             this.ldr.sections.Add(machoSection);
             this.ldr.sectionsByName.Add(imageSection.Name, machoSection);
             if (imageSection.Size > 0)
@@ -402,7 +393,7 @@ namespace Reko.ImageLoaders.MachO
         {
             var abSectname = rdr.ReadBytes(16);
             var abSegname = rdr.ReadBytes(16);
-            if (!rdr.TryReadUInt64(out ulong addr) ||
+            if (!rdr.TryReadUInt64(out ulong uAddr) ||
                 !rdr.TryReadUInt64(out ulong size) ||
                 !rdr.TryReadUInt32(out uint offset) ||
                 !rdr.TryReadUInt32(out uint align) ||
@@ -422,7 +413,7 @@ namespace Reko.ImageLoaders.MachO
             Debug.Print("    Found section '{0}' in segment '{1}, addr = 0x{2:X}, size = 0x{3:X}.",
                     sectionName,
                     segmentName,
-                    addr,
+                    uAddr,
                     size);
             Debug.Print("      reloff: {0:X} nreloc: {1:X} flags {2:X}", reloff, nreloc, flags);
             AccessMode am = 0;
@@ -433,34 +424,10 @@ namespace Reko.ImageLoaders.MachO
             if ((protection & VM_PROT_EXECUTE) != 0)
                 am |= AccessMode.Execute;
 
+            var addr = Address.Ptr64(uAddr);
             var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
-            var mem = new MemoryArea(
-                Address.Ptr64(addr),
-                bytes.ReadBytes((uint) size));
-            var imageSection = new ImageSegment(
-                string.Format("{0},{1}", segmentName, sectionName),
-                mem,
-                am);
-
-            //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
-
-            //if (!imageSection.isBss()) {
-            //    auto pos = source_->pos();
-            //    if (!source_->seek(section.offset)) {
-            //        throw ParseError("Could not seek to the beginning of the section's content.");
-            //    }
-            //    auto bytes = source_->read(section.size);
-            //    if (checked_cast<uint>(bytes.size()) != section.size) {
-            //        log_.warning("Could not read all the section's content.");
-            //    } else {
-            //        imageSection->setContent(std::move(bytes));
-            //    }
-            //    source_->seek(pos);
-            //}
-
-            //sections_.push_back(imageSection.get());
-            //image_->addSection(std::move(imageSection));
-            segmentMap.AddSegment(imageSection);
+            var name = string.Format("{0},{1}", segmentName, sectionName);
+            AddSection(segmentMap, (uint)size, flags, reserved1, reserved2, protection, addr, bytes, name);
         }
 
 
@@ -477,18 +444,10 @@ namespace Reko.ImageLoaders.MachO
                 var syms = rdr.CreateNew(this.ldr.RawImage, symoff);
                 for (uint i = 0; i < nsyms; ++i)
                 {
-                    if (syms.TryReadUInt32(out uint n_strx) &&
-                        syms.TryReadByte(out byte n_type) &&
-                        syms.TryReadByte(out byte n_sect) &&
-                        syms.TryReadUInt16(out ushort n_desc) &&
-                        syms.TryReadUInt32(out uint n_value))
+                    var (msym, addr) = ReadSymbol(strBytes, syms, i);
+                    if (msym != null)
                     {
-                        var str = GetAsciizString(strBytes, (int) n_strx);
-                        Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X8} {7}",
-                            i, n_strx, n_type, ldr.sections[n_sect].Name,
-                            n_sect, n_desc, n_value, str);
-                        var addr = Address.Ptr32(n_value);
-                        ldr.machoSymbols.Add(new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value));
+                        ldr.machoSymbols.Add(msym);
                         ldr.imageSymbols[addr] = new ImageSymbol(addr);
                     }
                 }
@@ -555,6 +514,8 @@ namespace Reko.ImageLoaders.MachO
                 image_->addSymbol(std::make_unique<core::image::Symbol>(type, name, value, section));
                 */
         }
+
+        public abstract (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i);
 
         void ParseDysymtabCommand()
         {
@@ -709,6 +670,26 @@ namespace Reko.ImageLoaders.MachO
                 ++i;
             }
         }
+
+        public override (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)
+        {
+            if (syms.TryReadUInt32(out uint n_strx) &&
+                syms.TryReadByte(out byte n_type) &&
+                syms.TryReadByte(out byte n_sect) &&
+                syms.TryReadUInt16(out ushort n_desc) &&
+                syms.TryReadUInt32(out uint n_value))
+            {
+                var str = GetAsciizString(strBytes, (int) n_strx);
+                Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X8} {7}",
+                    i, n_strx, n_type, ldr.sections[n_sect].Name,
+                    n_sect, n_desc, n_value, str);
+                var msym = new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value);
+                var addr = Address.Ptr32(n_value);
+                return (msym, addr);
+            }
+            else
+                return (null, null);
+        }
     }
 
     public class Loader64 : Parser
@@ -754,6 +735,27 @@ namespace Reko.ImageLoaders.MachO
         {
             throw new NotImplementedException();
         }
+
+        public override (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)
+        {
+            if (syms.TryReadUInt32(out uint n_strx) &&
+                syms.TryReadByte(out byte n_type) &&
+                syms.TryReadByte(out byte n_sect) &&
+                syms.TryReadUInt16(out ushort n_desc) &&
+                syms.TryReadUInt64(out ulong n_value))
+            {
+                var str = GetAsciizString(strBytes, (int) n_strx);
+                Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X16} {7}",
+                    i, n_strx, n_type, ldr.sections[n_sect].Name,
+                    n_sect, n_desc, n_value, str);
+                var msym = new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value);
+                var addr = Address.Ptr64(n_value);
+                return (msym, addr);
+            }
+            else
+                return (null, null);
+        }
+
     }
 
 }

@@ -728,7 +728,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_move_pc_relative_indexing()
         {
-            RunTest("@@@", 0x207B, 0x0170, 0x0000, 0x025C);
+            RunTest("movea.l\t(0000025C,pc),a0", 0x207B, 0x0170, 0x0000, 0x025C);
         }
     }
 }

@@ -230,9 +230,9 @@ static const byte NO_SECT = 0;
         public byte n_type;
         public MachOSection msec;
         public ushort n_desc;
-        public uint n_value;
+        public ulong n_value;
 
-        public MachOSymbol(string name, byte n_type, MachOSection msec, ushort n_desc, uint n_value)
+        public MachOSymbol(string name, byte n_type, MachOSection msec, ushort n_desc, ulong n_value)
         {
             this.Name = name;
             this.n_type = n_type;
