@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -27,7 +27,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using System.Text.RegularExpressions;
 
-namespace Reko.Environments.MacOS
+namespace Reko.Environments.MacOS.Classic
 {
     /*
     MacsBug accepts and returns addresses as procedure names and offsets.

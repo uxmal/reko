@@ -60,13 +60,16 @@ namespace Reko.ImageLoaders.MachO
         public const uint CPU_SUBTYPE_MC68040 = 2;
 
         protected MachOLoader ldr;
+        private IConfigurationService cfgSvc;
         protected EndianImageReader rdr;
         public ArchSpecific specific;
         protected Dictionary<uint, uint> mpCputypeToUnixthreadPc;
+        private string platformName;
 
         protected Parser(MachOLoader ldr, EndianImageReader rdr)
         {
             this.ldr = ldr;
+            this.cfgSvc = ldr.Services.RequireService<IConfigurationService>();
             this.rdr = rdr;
             this.mpCputypeToUnixthreadPc = new Dictionary<uint, uint>
             {
@@ -97,7 +100,6 @@ namespace Reko.ImageLoaders.MachO
 
         private ArchSpecific MakeSpecific(string archLabel, Func<IProcessorArchitecture, ArchSpecific> ctor)
         {
-            var cfgSvc = ldr.Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture(archLabel);
             return ctor(arch);
         }
@@ -168,7 +170,6 @@ namespace Reko.ImageLoaders.MachO
             LC_VERSION_MIN_WATCHOS = 0x00000030u,
         }
 
-
         public Program ParseLoadCommands(mach_header_64 hdr, Address addrLoad)
         {
             var imageMap = new SegmentMap(addrLoad);
@@ -206,12 +207,23 @@ namespace Reko.ImageLoaders.MachO
                 case LC_UNIXTHREAD:
                     ParseUnixThread(hdr.cputype);
                     break;
+                case LC_VERSION_MIN_MACOSX:
+                    platformName = "macOsX";
+                    break;
                 }
                 rdr.Offset = pos + cmdsize;
             }
             ldr.program.Architecture = specific.Architecture;
             ldr.program.SegmentMap = imageMap;
-            ldr.program.Platform = new DefaultPlatform(ldr.Services, specific.Architecture);
+            if (!string.IsNullOrEmpty(platformName))
+            {
+                var env = cfgSvc.GetEnvironment(platformName);
+                ldr.program.Platform = env.Load(ldr.Services, specific.Architecture);
+            }
+            else
+            {
+                ldr.program.Platform = new DefaultPlatform(ldr.Services, specific.Architecture);
+            }
             return ldr.program;
         }
 

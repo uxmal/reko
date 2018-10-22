@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -24,7 +24,7 @@ using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Types;
 
-namespace Reko.Environments.MacOS
+namespace Reko.Environments.MacOS.Classic
 {
     /// <summary>
     /// Implements the "pascal" calling convention for MacOS according to 
