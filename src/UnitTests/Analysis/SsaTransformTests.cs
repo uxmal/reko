@@ -3524,5 +3524,96 @@ proc_exit:
             AssertProcedureCode(expected);
 
         }
+
+        [Test]
+        public void SsaLoopWithBreakAndReturn()
+        {
+            var proc = Given_Procedure("proc", m =>
+            {
+                var a = m.Reg32("a", 0);
+
+                m.Label("body");
+                m.Assign(a, m.Mem32(m.Word32(0x1234)));
+
+                m.Label("head");
+                m.BranchIf(m.Fn(m.Mem32(m.Word32(0xF))), "firstCondition");
+
+                m.Label("break");
+                m.MStore(m.Word32(0x5001), m.Word32(0x1111));
+                m.Goto("follow");
+
+                m.Label("firstCondition");
+                m.BranchIf(m.Fn(m.Mem32(m.Word32(0x1))), "thirdCondition");
+
+                m.Label("secondCondition");
+                m.BranchIf(m.Fn(m.Mem32(m.Word32(0x2))), "thirdCondition");
+
+                m.Label("firstAndSecondFailed");
+                m.Goto("failed");
+
+                m.Label("thirdCondition");
+                m.BranchIf(m.Fn(m.Mem32(m.Word32(0x3))), "success");
+
+                m.Label("failed");
+                m.MStore(m.Word32(0x5002), m.Word32(0x2222));
+                m.Goto("head");
+
+                m.Label("success");
+                m.MStore(m.Word32(0x567C), m.Word32(0x3333));
+                m.Goto("return");
+
+                m.Label("follow");
+                m.MStore(m.Word32(0x567C), m.Word32(0x4444));
+
+                m.Label("return");
+                m.MStore(m.Word32(0x567C), a);
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def Mem0
+body:
+	a_2 = Mem0[0x00001234:word32]
+	goto head
+break:
+	Mem7[0x00005001:word32] = 0x00001111
+	goto follow
+failed:
+	Mem6[0x00005002:word32] = 0x00002222
+	goto head
+firstAndSecondFailed:
+	goto failed
+firstCondition:
+	branch Mem3[0x00000001:word32]() thirdCondition
+	goto secondCondition
+follow:
+	Mem8[0x0000567C:word32] = 0x00004444
+	goto return
+head:
+	Mem3 = PHI(Mem0, Mem6)
+	branch Mem3[0x0000000F:word32]() firstCondition
+	goto break
+return:
+	Mem13[0x0000567C:word32] = a_2
+	return
+secondCondition:
+	branch Mem3[0x00000002:word32]() thirdCondition
+	goto firstAndSecondFailed
+success:
+	Mem5[0x0000567C:word32] = 0x00003333
+	goto return
+thirdCondition:
+	branch Mem3[0x00000003:word32]() success
+	goto failed
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+
+        }
     }
 }
