@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,15 @@
  */
 #endregion
 
-using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Archives;
+using Reko.Core.Configuration;
 using Reko.Core.Services;
-using Reko.Environments.MacOS;
+using Reko.Environments.MacOS.Classic;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Diagnostics;
-using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.BinHex
 {

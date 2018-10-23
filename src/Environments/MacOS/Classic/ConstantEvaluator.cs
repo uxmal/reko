@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Environments.MacOS
+namespace Reko.Environments.MacOS.Classic
 {
     public class ConstantEvaluator : IPascalSyntaxVisitor<Constant>
     {

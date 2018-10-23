@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -28,7 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Diagnostics;
 
-namespace Reko.Environments.MacOS
+namespace Reko.Environments.MacOS.Classic
 {
     public class TypeImporter : IPascalSyntaxVisitor<SerializedType>
     {
