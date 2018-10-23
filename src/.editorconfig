@@ -12,7 +12,7 @@ charset = utf-8
 csharp_new_line_before_open_brace = all
 csharp_space_after_cast = true
 csharp_indent_case_contents = true
-csharp_indent_switch_labels = true
+csharp_indent_switch_labels = false
 indent_size = 4
 indent_style = space
 

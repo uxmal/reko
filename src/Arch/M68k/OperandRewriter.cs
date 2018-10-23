@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -64,75 +64,56 @@ namespace Reko.Arch.M68k
         /// <returns></returns>
         public Expression RewriteSrc(MachineOperand operand, Address addrInstr, bool addressAsAddress = false)
         {
-            var reg = operand as RegisterOperand;
-            if (reg != null)
+            Expression ea;
+            Expression r;
+            switch (operand)
             {
-                Expression r = binder.EnsureRegister(reg.Register);
+            case RegisterOperand reg:
+                r = binder.EnsureRegister(reg.Register);
                 if (DataWidth != null && DataWidth.Size != reg.Width.Size)
                     r = m.Cast(DataWidth, r);
                 return r;
-            }
-            var imm = operand as M68kImmediateOperand;
-            if (imm != null)
-            {
+            case M68kImmediateOperand imm:
                 if (imm.Width.Domain == Domain.Real)
                     return imm.Constant.CloneExpression();
                 if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
                     return Constant.Create(DataWidth, imm.Constant.ToInt64());
                 else
                     return Constant.Create(imm.Width, imm.Constant.ToUInt32());
-            }
-            var mem = operand as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 return RewriteMemoryAccess(mem, DataWidth, addrInstr);
-            }
-            var addr = operand as M68kAddressOperand;
-            if (addr != null)
-            {
+            case M68kAddressOperand addr:
                 if (addressAsAddress)
                     return addr.Address;
                 else 
                     return m.Mem(DataWidth, addr.Address);
-            }
-            var pre = operand as PredecrementMemoryOperand;
-            if (pre != null)
-            {
-                var ea = binder.EnsureRegister(pre.Register);
+            case PredecrementMemoryOperand pre:
+                ea = binder.EnsureRegister(pre.Register);
                 m.Assign(ea, m.ISubS(ea, DataWidth.Size));
                 return m.Mem(DataWidth, ea);
-            }
-            var post = operand as PostIncrementMemoryOperand;
-            if (post != null)
-            {
-                var r = binder.EnsureRegister(post.Register);
+            case PostIncrementMemoryOperand post:
+                r = binder.EnsureRegister(post.Register);
                 var tmp = binder.CreateTemporary(DataWidth);
                 m.Assign(tmp, m.Mem(DataWidth, r));
                 m.Assign(r, m.IAddS(r, DataWidth.Size));
                 return tmp;
-            }
-            var indidx = operand as IndirectIndexedOperand;
-            if (indidx != null)
-            {
-                Expression ea = RewriteIndirectBaseRegister(indidx, addrInstr);
+            case IndirectIndexedOperand indidx:
+                ea = RewriteIndirectBaseRegister(indidx, addrInstr);
                 Expression ix = binder.EnsureRegister(indidx.XRegister);
                 if (indidx.XWidth.Size != 4)
                     ix = m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, ix));
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Mem(DataWidth, m.IAdd(ea, ix));
-            }
-            var indop = operand as IndexedOperand;
-            if (indop!=null)
-            {
-                Expression ea = Combine(indop.Base, indop.base_reg);
+            case IndexedOperand indop:  
+                ea = Combine(indop.Base, indop.base_reg, addrInstr);
                 if (indop.postindex)
                 {
                     ea = m.Mem32(ea);
                 }
                 if (indop.index_reg != null)
                 {
-                    var idx = Combine(null, indop.index_reg);
+                    var idx = Combine(null, indop.index_reg, addrInstr);
                     if (indop.index_reg_width.BitSize != 32)
                         idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
                     if (indop.index_scale > 1)
@@ -162,14 +143,32 @@ namespace Reko.Arch.M68k
             return ea;
         }
 
-        public Expression Combine(Expression e, RegisterStorage reg)
+        public Expression Combine(Expression e, RegisterStorage reg, Address addrInstr)
         {
             if (reg == null)
                 return e;
-            var r = binder.EnsureRegister(reg);
+            Expression ea;
+            if (reg == Registers.pc)
+            {
+                // The +2 offset is necessary as PC-relative addresses
+                // use the address of the instruction extension word
+                // as the PC address.
+                var addrPc = addrInstr + 2;
+                if (e == null)
+                    return addrPc;
+                if (e is Constant c)
+                {
+                    return addrPc + c.ToInt32();
+                }
+                ea = addrPc;
+            }
+            else
+            {
+                ea = binder.EnsureRegister(reg);
+            }
             if (e == null)
-                return r;
-            return m.IAdd(e, r);
+                return ea;
+            return m.IAdd(e, ea);
         }
 
         public Expression Combine(Expression e, Expression o)
@@ -193,99 +192,95 @@ namespace Reko.Arch.M68k
             Expression src,
             Func<Expression, Expression, Expression> opGen)
         {
-            var reg = operand as RegisterOperand;
-            if (reg != null)
+            switch (operand)
             {
-                Expression r = binder.EnsureRegister(reg.Register);
-                Expression tmp = r;
-                if (dataWidth != null && 
-                    reg.Width.BitSize > dataWidth.BitSize &&
-                    reg.Width.Domain != Domain.Real)
+            case RegisterOperand reg:
                 {
-                    Expression rSub = m.Cast(dataWidth, r);
-                    var srcExp = opGen(src, rSub);
-                    if (srcExp is Identifier || srcExp is Constant || srcExp is DepositBits)
+                    var r = binder.EnsureRegister(reg.Register);
+                    Expression tmp = r;
+                    if (dataWidth != null &&
+                        reg.Width.BitSize > dataWidth.BitSize &&
+                        reg.Width.Domain != Domain.Real)
                     {
-                        tmp = srcExp;
+                        Expression rSub = m.Cast(dataWidth, r);
+                        var srcExp = opGen(src, rSub);
+                        if (srcExp is Identifier || srcExp is Constant || srcExp is DepositBits)
+                        {
+                            tmp = srcExp;
+                        }
+                        else
+                        {
+                            tmp = binder.CreateTemporary(dataWidth);
+                            m.Assign(tmp, srcExp);
+                        }
+                        src = m.Dpb(r, tmp, 0);
                     }
                     else
                     {
-                        tmp = binder.CreateTemporary(dataWidth);
-                        m.Assign(tmp, srcExp);
+                        src = opGen(src, r);
                     }
-                    src = m.Dpb(r, tmp, 0);
+                    m.Assign(r, src);
+                    return tmp;
                 }
-                else
+            case DoubleRegisterOperand dbl:
                 {
-                    src = opGen(src, r);
+                    Identifier h = binder.EnsureRegister(dbl.Register1);
+                    Identifier l = binder.EnsureRegister(dbl.Register2);
+                    var d = binder.EnsureSequence(h.Storage, l.Storage, PrimitiveType.Word64);
+                    var result = opGen(src, l);
+                    m.Assign(d, result);
+                    return d;
                 }
-                m.Assign(r, src);
-                return tmp;
-            }
-            var dbl = operand as DoubleRegisterOperand;
-            if (dbl != null)
-            {
-                Identifier h = binder.EnsureRegister(dbl.Register1);
-                Identifier l = binder.EnsureRegister( dbl.Register2);
-                var d = binder.EnsureSequence(h.Storage, l.Storage, PrimitiveType.Word64);
-                var result = opGen(src, l);
-                m.Assign(d, result);
-                return d;
-            }
-            var addr = operand as M68kAddressOperand;
-            if (addr != null)
-            {
-                var load = m.Mem(dataWidth, addr.Address);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(src, load));
-                m.Assign(load, tmp);
-                return tmp;
-            }
-            var mem = operand as MemoryOperand;
-            if (mem != null)
-            {
-                var load = RewriteMemoryAccess(mem, dataWidth, addrInstr);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(src, load));
-                m.Assign(load, tmp);
-                return tmp;
-            }
-            var post = operand as PostIncrementMemoryOperand;
-            if (post != null)
-            {
-                var r = binder.EnsureRegister(post.Register);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(src, m.Mem(dataWidth, r))); 
-                m.Assign(m.Mem(dataWidth, r), tmp);
-                m.Assign(r, m.IAddS(r, dataWidth.Size));
-                return tmp;
-            }
-            var pre = operand as PredecrementMemoryOperand;
-            if (pre != null)
-            {
-                var r = binder.EnsureRegister(pre.Register);
-                src = Spill(src, r);
-                m.Assign(r, m.ISubS(r, dataWidth.Size));
-                var load = m.Mem(dataWidth, r);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(src, load));
-                m.Assign(m.Mem(dataWidth, r), tmp);
-                return tmp;
-            }
-            var indidx = operand as IndirectIndexedOperand;
-            if (indidx != null)
-            {
-                Expression ea = binder.EnsureRegister(indidx.ARegister);
-                if (indidx.Imm8 != 0)
-                    ea = m.IAddS(ea, indidx.Imm8);
-                Expression ix = binder.EnsureRegister(indidx.XRegister);
-                if (indidx.Scale > 1)
-                    ix = m.IMul(ix, Constant.Int32(indidx.Scale));
-                var load = m.Mem(dataWidth, m.IAdd(ea, ix));
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(src, load));
-                m.Assign(load, tmp);
-                return tmp;
+            case M68kAddressOperand addr:
+                {
+                    var load = m.Mem(dataWidth, addr.Address);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(src, load));
+                    m.Assign(load, tmp);
+                    return tmp;
+                }
+            case MemoryOperand mem:
+                {
+                    var load = RewriteMemoryAccess(mem, dataWidth, addrInstr);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(src, load));
+                    m.Assign(load, tmp);
+                    return tmp;
+                }
+            case PostIncrementMemoryOperand post:
+                {
+                    var r = binder.EnsureRegister(post.Register);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(src, m.Mem(dataWidth, r)));
+                    m.Assign(m.Mem(dataWidth, r), tmp);
+                    m.Assign(r, m.IAddS(r, dataWidth.Size));
+                    return tmp;
+                }
+            case PredecrementMemoryOperand pre:
+                {
+                    var r = binder.EnsureRegister(pre.Register);
+                    src = Spill(src, r);
+                    m.Assign(r, m.ISubS(r, dataWidth.Size));
+                    var load = m.Mem(dataWidth, r);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(src, load));
+                    m.Assign(m.Mem(dataWidth, r), tmp);
+                    return tmp;
+                }
+            case IndirectIndexedOperand indidx:
+                {
+                    Expression ea = binder.EnsureRegister(indidx.ARegister);
+                    if (indidx.Imm8 != 0)
+                        ea = m.IAddS(ea, indidx.Imm8);
+                    Expression ix = binder.EnsureRegister(indidx.XRegister);
+                    if (indidx.Scale > 1)
+                        ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                    var load = m.Mem(dataWidth, m.IAdd(ea, ix));
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(src, load));
+                    m.Assign(load, tmp);
+                    return tmp;
+                }
             }
             return null;
         }
@@ -315,105 +310,101 @@ namespace Reko.Arch.M68k
             PrimitiveType dataWidth,
             Func<Expression, Expression> opGen)
         {
-            var reg = operand as RegisterOperand;
-            if (reg != null)
+            switch (operand)
             {
-                Expression r = binder.EnsureRegister(reg.Register);
-                if (r.DataType.Size > dataWidth.Size)
+            case RegisterOperand reg:
                 {
+                    Expression r = binder.EnsureRegister(reg.Register);
+                    if (r.DataType.Size > dataWidth.Size)
+                    {
+                        var tmp = binder.CreateTemporary(dataWidth);
+                        m.Assign(tmp, opGen(m.Cast(dataWidth, r)));
+                        m.Assign(r, m.Dpb(r, tmp, 0));
+                        return tmp;
+                    }
+                    else
+                    {
+                        m.Assign(r, opGen(r));
+                        return r;
+                    }
+                }
+            case M68kAddressOperand addr:
+                {
+                    var load = m.Mem(dataWidth, addr.Address);
                     var tmp = binder.CreateTemporary(dataWidth);
-                    m.Assign(tmp, opGen(m.Cast(dataWidth, r)));
-                    m.Assign(r, m.Dpb(r, tmp, 0));
+                    m.Assign(tmp, opGen(load));
+                    m.Assign(load, tmp);
                     return tmp;
                 }
-                else 
+            case MemoryOperand mem:
                 {
-                    m.Assign(r, opGen(r));
-                    return r;
+                    var load = RewriteMemoryAccess(mem, dataWidth, addrInstr);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(load));
+                    m.Assign(RewriteMemoryAccess(mem, dataWidth, addrInstr), tmp);
+                    return tmp;
                 }
-            }
-            var addr = operand as M68kAddressOperand;
-            if (addr != null)
-            {
-                var load = m.Mem(dataWidth, addr.Address);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(load));
-                m.Assign(load, tmp);
-                return tmp;
-            }
-            var mem = operand as MemoryOperand;
-            if (mem != null)
-            {
-                var load = RewriteMemoryAccess(mem, dataWidth, addrInstr);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(load));
-                m.Assign(RewriteMemoryAccess(mem,dataWidth, addrInstr), tmp);
-                return tmp;
-            }
-            var post = operand as PostIncrementMemoryOperand;
-            if (post != null)
-            {
-                var r = binder.EnsureRegister(post.Register);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(m.Mem(dataWidth, r)));
-                m.Assign(m.Mem(dataWidth, r), tmp);
-                m.Assign(r, m.IAddS(r, dataWidth.Size));
-                return tmp;
-            }
-            var pre = operand as PredecrementMemoryOperand;
-            if (pre != null)
-            {
-                var r = binder.EnsureRegister(pre.Register);
-                m.Assign(r, m.ISubS(r, dataWidth.Size));
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(m.Mem(dataWidth, r)));
-                m.Assign(m.Mem(dataWidth, r), tmp);
-                return tmp;
-            }
-            var indidx = operand as IndirectIndexedOperand;
-            if (indidx != null)
-            {
-                Expression ea = binder.EnsureRegister(indidx.ARegister);
-                if (indidx.Imm8 != 0)
-                    ea = m.IAddS(ea, indidx.Imm8);
-                Expression ix = binder.EnsureRegister(indidx.XRegister);
-                if (indidx.Scale > 1)
-                    ix = m.IMul(ix, Constant.Int32(indidx.Scale));
-                var load = m.Mem(dataWidth, m.IAdd(ea, ix));
+            case PostIncrementMemoryOperand post:
+                {
+                    var r = binder.EnsureRegister(post.Register);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(m.Mem(dataWidth, r)));
+                    m.Assign(m.Mem(dataWidth, r), tmp);
+                    m.Assign(r, m.IAddS(r, dataWidth.Size));
+                    return tmp;
+                }
+            case PredecrementMemoryOperand pre:
+                {
+                    var r = binder.EnsureRegister(pre.Register);
+                    m.Assign(r, m.ISubS(r, dataWidth.Size));
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(m.Mem(dataWidth, r)));
+                    m.Assign(m.Mem(dataWidth, r), tmp);
+                    return tmp;
+                }
+            case IndirectIndexedOperand indidx:
+                {
+                    Expression ea = binder.EnsureRegister(indidx.ARegister);
+                    if (indidx.Imm8 != 0)
+                        ea = m.IAddS(ea, indidx.Imm8);
+                    Expression ix = binder.EnsureRegister(indidx.XRegister);
+                    if (indidx.Scale > 1)
+                        ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                    var load = m.Mem(dataWidth, m.IAdd(ea, ix));
 
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(load));
-                m.Assign(load, tmp);
-                return tmp;
-            }
-            var indop = operand as IndexedOperand;
-            if (indop != null)
-            {
-                Expression ea = Combine(indop.Base, indop.base_reg);
-                if (indop.postindex)
-                {
-                    ea = m.Mem32(ea);
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(load));
+                    m.Assign(load, tmp);
+                    return tmp;
                 }
-                if (indop.index_reg != null)
+            case IndexedOperand indop:
                 {
-                    var idx = Combine(null, indop.index_reg);
-                    if (indop.index_reg_width.BitSize != 32)
-                        idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
-                    if (indop.index_scale > 1)
-                        idx = m.IMul(idx, m.Int32(indop.index_scale));
-                    ea = Combine(ea, idx);
-                }
-                if (indop.preindex)
-                {
-                    ea = m.Mem32(ea);
-                }
-                ea = Combine(ea, indop.outer);
-                var load =  m.Mem(DataWidth, ea);
+                    Expression ea = Combine(indop.Base, indop.base_reg, addrInstr);
+                    if (indop.postindex)
+                    {
+                        ea = m.Mem32(ea);
+                    }
+                    if (indop.index_reg != null)
+                    {
+                        var idx = Combine(null, indop.index_reg, addrInstr);
+                        if (indop.index_reg_width.BitSize != 32)
+                            idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
+                        if (indop.index_scale > 1)
+                            idx = m.IMul(idx, m.Int32(indop.index_scale));
+                        ea = Combine(ea, idx);
+                    }
+                    if (indop.preindex)
+                    {
+                        ea = m.Mem32(ea);
+                    }
+                    ea = Combine(ea, indop.outer);
+                    var load = m.Mem(DataWidth, ea);
 
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(load));
-                m.Assign(load, tmp);
-                return tmp;
+                    var tmp = binder.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(load));
+                    m.Assign(load, tmp);
+                    return tmp;
+                }
             }
             throw new AddressCorrelatedException(
                 addrInstr,
@@ -424,113 +415,109 @@ namespace Reko.Arch.M68k
 
         public Expression RewriteMoveDst(MachineOperand opDst, Address addrInstr, PrimitiveType dataWidth, Expression src)
         {
-            var reg = opDst as RegisterOperand;
-            if (reg != null)
+            switch (opDst)
             {
-                var r = binder.EnsureRegister(reg.Register);
-                if (r.DataType.Size > dataWidth.Size)
+            case RegisterOperand reg:
                 {
+                    var r = binder.EnsureRegister(reg.Register);
+                    if (r.DataType.Size > dataWidth.Size)
+                    {
+                        var tmp = binder.CreateTemporary(dataWidth);
+                        m.Assign(r, m.Dpb(r, src, 0));
+                        return tmp;
+                    }
+                    else
+                    {
+                        m.Assign(r, src);
+                        return r;
+                    }
+                }
+            case MemoryOperand mem:
+                {
+                    src = Spill(src, binder.EnsureRegister(mem.Base));
+                    var load = RewriteMemoryAccess(mem, dataWidth, addrInstr);
                     var tmp = binder.CreateTemporary(dataWidth);
-                    m.Assign(r, m.Dpb(r, src, 0));
+                    m.Assign(load, src);
                     return tmp;
                 }
-                else
+            case PostIncrementMemoryOperand post:
                 {
-                    m.Assign(r, src);
-                    return r;
+                    var r = binder.EnsureRegister(post.Register);
+                    var rExp = Spill(src, r);
+                    var load = m.Mem(dataWidth, r);
+                    m.Assign(load, rExp);
+                    m.Assign(r, m.IAddS(r, dataWidth.Size));
+                    return src;
                 }
-            }
-            var mem = opDst as MemoryOperand;
-            if (mem != null)
-            {
-                src = Spill(src, binder.EnsureRegister(mem.Base));
-                var load = RewriteMemoryAccess(mem, dataWidth,addrInstr);
-                var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(load, src);
-                return tmp;
-            }
-            var post = opDst as PostIncrementMemoryOperand;
-            if (post != null)
-            {
-                var r = binder.EnsureRegister(post.Register);
-                var rExp = Spill(src, r);
-                var load = m.Mem(dataWidth, r);
-                m.Assign(load, rExp);
-                m.Assign(r, m.IAddS(r, dataWidth.Size));
-                return src;
-            }
-            var pre = opDst as PredecrementMemoryOperand;
-            if (pre != null)
-            {
-                var r = binder.EnsureRegister(pre.Register);
-                m.Assign(r, m.ISubS(r, dataWidth.Size));
-                var rExp = Spill(src, r);
-                var load = m.Mem(dataWidth, rExp);
-                m.Assign(load, src);
-                return src;
-            }
-            var idxop = opDst as IndexedOperand;
-            if (idxop != null)
-            {
-                var b = binder.EnsureRegister(idxop.base_reg);
-                var i = binder.EnsureRegister(idxop.index_reg);
-                Expression ea = b;
-                if (i != null)
+            case PredecrementMemoryOperand pre:
                 {
-                    var s = m.Const(i.DataType, idxop.index_scale);
-                    if (idxop.index_scale > 1)
-                    {
-                        ea = m.IMul(i, s);
-                    }
-                    else
-                    {
-                        ea = i;
-                    }
+                    var r = binder.EnsureRegister(pre.Register);
+                    m.Assign(r, m.ISubS(r, dataWidth.Size));
+                    var rExp = Spill(src, r);
+                    var load = m.Mem(dataWidth, rExp);
+                    m.Assign(load, src);
+                    return src;
                 }
-                if (b != null)
-                { 
-                    if (ea != null)
-                    {
-                        ea = m.IAdd(b, ea);
-                    }
-                    else
-                    {
-                        ea = b;
-                    }
-                }
-                if (idxop.Base != null)
+            case IndexedOperand idxop:
                 {
-                    if (ea != null)
+                    var b = binder.EnsureRegister(idxop.base_reg);
+                    var i = binder.EnsureRegister(idxop.index_reg);
+                    Expression ea = b;
+                    if (i != null)
                     {
-                        ea = m.IAdd(ea, idxop.Base);
+                        var s = m.Const(i.DataType, idxop.index_scale);
+                        if (idxop.index_scale > 1)
+                        {
+                            ea = m.IMul(i, s);
+                        }
+                        else
+                        {
+                            ea = i;
+                        }
                     }
-                    else
+                    if (b != null)
                     {
-                        ea = idxop.Base;
+                        if (ea != null)
+                        {
+                            ea = m.IAdd(b, ea);
+                        }
+                        else
+                        {
+                            ea = b;
+                        }
                     }
+                    if (idxop.Base != null)
+                    {
+                        if (ea != null)
+                        {
+                            ea = m.IAdd(ea, idxop.Base);
+                        }
+                        else
+                        {
+                            ea = idxop.Base;
+                        }
+                    }
+                    var load = m.Mem(dataWidth, ea);
+                    m.Assign(load, src);
+                    return src;
                 }
-                var load = m.Mem(dataWidth, ea);
-                m.Assign(load, src);
-                return src;
-            }
-            var indidx = opDst as IndirectIndexedOperand;
-            if (indidx != null)
-            {
-                var a = binder.EnsureRegister(indidx.ARegister);
-                var x = binder.EnsureRegister(indidx.XRegister);
-                var load = m.Mem(dataWidth, m.IAdd(a, x));
-                m.Assign(load, src);
-                return src;
-            }
-            var mAddr = opDst as M68kAddressOperand;
-            if (mAddr != null)
-            {
-                m.Assign(
-                    m.Mem(
-                        dataWidth, 
-                        Constant.Word32(mAddr.Address.ToUInt32())),
-                    src);
-                return src;
+            case IndirectIndexedOperand indidx:
+                {
+                    var a = binder.EnsureRegister(indidx.ARegister);
+                    var x = binder.EnsureRegister(indidx.XRegister);
+                    var load = m.Mem(dataWidth, m.IAdd(a, x));
+                    m.Assign(load, src);
+                    return src;
+                }
+            case M68kAddressOperand mAddr:
+                {
+                    m.Assign(
+                        m.Mem(
+                            dataWidth,
+                            Constant.Word32(mAddr.Address.ToUInt32())),
+                        src);
+                    return src;
+                }
             }
             throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + opDst.GetType().Name);
         }

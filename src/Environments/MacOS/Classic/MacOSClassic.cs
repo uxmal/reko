@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -21,22 +21,16 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Configuration;
-using Reko.Core.Lib;
-using Reko.Core.Serialization;
-using Reko.Core.Services;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Rtl;
-using Reko.Core.Expressions;
-using Reko.Core.Operators;
-using System.Diagnostics;
 
-namespace Reko.Environments.MacOS
+namespace Reko.Environments.MacOS.Classic
 {
     public class MacOSClassic : Platform
     {
@@ -152,11 +146,9 @@ namespace Reko.Environments.MacOS
                 return null;
             if (bin.Operator != Operator.IAdd)
                 return null;
-            var idLeft = bin.Left as Identifier;
-            if (idLeft == null || idLeft.Storage != Registers.a5)
+            if (!(bin.Left is Identifier idLeft) || idLeft.Storage != Registers.a5)
                 return null;
-            var cRight = bin.Right as Constant;
-            if (cRight == null)
+            if (!(bin.Right is Constant cRight))
                 return null;
             const uint SizeOfJmpOpcode = 2;
             uint offset = cRight.ToUInt32() + this.A5Offset + SizeOfJmpOpcode;
