@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Environments.SysV</RootNamespace>
     <AssemblyName>Reko.Environments.SysV</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -79,6 +79,10 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
+      <Project>{500c7c4b-5b7a-40e0-beed-75ddf1ba78d5}</Project>
+      <Name>C2Xml</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TranslateHeader Include="lp32.inc" />
@@ -96,8 +100,8 @@
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
-    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="dotnet $(SolutionDir)tools/c2xml.dll -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
   </Target>
   <!--
   <Target Name="AfterBuild">
