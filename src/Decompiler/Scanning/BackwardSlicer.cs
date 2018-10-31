@@ -52,7 +52,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Warning };
+        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Verbose };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private RtlBlock rtlBlock;
@@ -130,7 +130,21 @@ namespace Reko.Scanning
             {
                 return null;
             }
-            else
+            else if (interval.High == Int64.MaxValue)
+            {
+                // We have no reasonable upper bound. We make the arbitrary
+                // assumption that the jump table has 2 items; it wouldn't 
+                // make sense to be indexing otherwise.
+                listener.Warn(
+                    listener.CreateAddressNavigator(host.Program, addrSwitch),
+                    "Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.");
+                ctx.Add(
+                    this.JumpTableIndex,
+                    new IntervalValueSet(
+                        this.JumpTableIndex.DataType, 
+                        StridedInterval.Create(1, interval.Low, interval.Low + 1)));
+            }
+            else 
             {
                 ctx.Add(this.JumpTableIndex, new IntervalValueSet(this.JumpTableIndex.DataType, interval));
             }
@@ -510,12 +524,8 @@ namespace Reko.Scanning
 
         public bool Step()
         {
-            BackwardSlicer.trace.Level = (block.Name.EndsWith("A872") ? TraceLevel.Verbose : TraceLevel.Off);
             var instr = this.instrs[this.iInstr];
             DebugEx.PrintIf(BackwardSlicer.trace.TraceInfo, "Bwslc: Stepping to instruction {0}", instr);
-            if (instr.ToString().Contains("v12 = (word16) d0 - 0x0020") ||
-                BackwardSlicer.trace.Level == TraceLevel.Verbose && instr.ToString() == "d0 = DPB(d0, v12, 0)") //$DEBUG
-                instr.ToString();
             var sr = instr.Accept(this);
             --this.iInstr;
             if (sr == null)
@@ -743,6 +753,10 @@ namespace Reko.Scanning
             return se;
         }
 
+        /// <summary>
+        /// If all necessary conditions for a bounded indirect jump have been met, we can
+        /// set the jump table bounds and proceed.
+        /// </summary>
         private SlicerResult TryFoundAllConditions(
             BinaryExpression subtraction, 
             StorageDomain domLeft, 
