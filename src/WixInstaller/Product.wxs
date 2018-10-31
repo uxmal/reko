@@ -109,7 +109,7 @@
         <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" />
         <File Source="$(var.Dreamcast.TargetPath)" />
         <File Source="$(var.MacOS.TargetPath)" />
-        <File Source="$(var.MacOS.ProjectDir)macos_classic.xml" />
+        <File Source="$(var.MacOS.ProjectDir)/Classic/macos_classic.xml" />
         <File Source="$(var.Msdos.TargetPath)" />
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" />
         <File Source="$(var.Msdos.Design.TargetPath)" />
