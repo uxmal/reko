@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -623,29 +623,60 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        public void Bws_Rgression()
+        [Ignore("Unit test for #691 needs implementing.")]
+        public void Bwslc_Issue_691()
         {
+            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            var d0 = Reg(0);
+            var CVZN = Cc("CVZN");
+            var C = Cc("C");
+            var v3 = binder.CreateTemporary(PrimitiveType.Word16);
+            var v16 = binder.CreateTemporary(PrimitiveType.Word16);
+            var v17 = binder.CreateTemporary(PrimitiveType.Word16);
             var b1 = Given_Block(0xA860);
             Given_Instrs(b1, m =>
-                m.Assign(v12, m.Cast(PrimitiveType.Word16, d0), m.Word16(0x20)),m.ISub(d0,  0x2)))
-            @"
-	v12 = (word16) d0 - 0x0020
-	d0 = DPB(d0, v12, 0)
-	CVZNX = cond(v12)
-	branch Test(UGE,C) l0000A8AC
-	// succ:  l0000A87C l0000A8AC
-l0000A87C:
-    return
-l0000A8AC:
-	v16 = (word16) d0 + (word16) d0
-	d0 = DPB(d0, v16, 0)
-	CVZNX = cond(v16)
-	v17 = (word16) d0 + (word16) d0
-	d0 = DPB(d0, v17, 0)
-	CVZNX = cond(v17)
- m.Goto(m.IAdd(r1, 0x00123400)   goto 
-"
+            {
+                m.Assign(v3, m.ISub(m.Cast(PrimitiveType.Word16, d0), m.Word16(0x20)));
+                m.Assign(d0, m.Dpb(d0, v3, 0));
+                m.Assign(CVZN, m.Cond(v3));
+                m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), RtlClass.ConditionalTransfer);
+            });
+
+            var bRet = Given_Block(0xA870);
+            Given_Instrs(bRet, m =>
+            {
+                m.Return(0, 0);
+            });
+
+            var b2 = Given_Block(0xA900);
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(v16, m.IAdd(m.Cast(PrimitiveType.Word16, d0), m.Cast(PrimitiveType.Word16, d0)));
+                m.Assign(d0, m.Dpb(d0, v16, 0));
+                m.Assign(CVZN, m.Cond(v16));
+                m.Assign(v17, m.IAdd(m.Cast(PrimitiveType.Word16, d0), m.Cast(PrimitiveType.Word16, d0)));
+                m.Assign(CVZN, m.Cond(v17));
+                m.Assign(d0, m.Dpb(d0, v17, 0));
+                m.Goto(m.IAdd(m.Word32(0x0000A8B4), m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d0))));
+            });
+
+            graph.Nodes.Add(b1);
+            graph.Nodes.Add(bRet);
+            graph.Nodes.Add(b2);
+            graph.AddEdge(b1, bRet);
+            graph.AddEdge(b1, b2);
+
+            var bwslc = new BackwardSlicer(host, b2, processorState);
+            Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual(1, bwslc.Live.Count);
+            Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) ((word32) d0 * 0x00000002) + 0x0010EC32:word16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("(byte) d0", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
+
         // Test cases
         // A one-level jump table from MySQL. JTT represents the jump table.
         // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5
