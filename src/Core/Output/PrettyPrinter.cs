@@ -1,4 +1,4 @@
-﻿    #region License
+    #region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -37,8 +37,8 @@ namespace Reko.Core.Output
     /// </remarks>
     public class PrettyPrinter
     {
-        private IDequeue<Token> buffer;
-        private IDequeue<Break> breaks;
+        private IDequeue<Token> buffer;     // Pending tokens
+        private IDequeue<Break> breaks;     // Conditional breaks 
         private PrettyPrinterOutput output;
         private int currentGroupLevel;
         private int breakLevel;
@@ -72,7 +72,7 @@ namespace Reko.Core.Output
 
         public void Outdent(int indentWidth)
         {
-            EnqueueToken(new OutdentToken(indentWidth, output));
+            EnqueueToken(new IndentToken(-indentWidth, output));
         }
 
         public void ForceLineBreak()
@@ -156,6 +156,11 @@ namespace Reko.Core.Output
             PrintBuffer(buffer.Count);
         }
 
+        /// <summary>
+        /// Send the <paramref name="k"/> first tokens in the buffer to
+        /// the output.
+        /// </summary>
+        /// <param name="k">Number of tokens to emit.</param>
         private void PrintBuffer(int k)
         {
             for (int i = 0; i < k; ++i)
@@ -191,7 +196,7 @@ namespace Reko.Core.Output
 
         private class MarkerToken : Token
         {
-            private int groupingLevel;
+            private readonly int groupingLevel;
 
             public MarkerToken(int groupingLevel, PrettyPrinterOutput output)
                 : base(output)
@@ -208,7 +213,7 @@ namespace Reko.Core.Output
 
         private class IndentToken : Token
         {
-            private int indentAmt;
+            private readonly int indentAmt;
 
             public IndentToken(int amount, PrettyPrinterOutput output)
                 : base(output)
@@ -219,22 +224,6 @@ namespace Reko.Core.Output
             public override void Print(int break_level)
             {
                 Output.Indent(indentAmt);
-            }
-        }
-
-        private class OutdentToken : Token
-        {
-            private int outdentAmt;
-
-            public OutdentToken(int amount, PrettyPrinterOutput output)
-                : base(output)
-            {
-                outdentAmt = amount;
-            }
-
-            public override void Print(int break_level)
-            {
-                Output.Indent(outdentAmt);
             }
         }
 
