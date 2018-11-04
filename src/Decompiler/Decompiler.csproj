@@ -152,6 +152,7 @@
     <Compile Include="Analysis\SsaDefinitionsCollector.cs" />
     <Compile Include="Analysis\SequenceIdentifierGenerator.cs" />
     <Compile Include="Analysis\SsaMutator.cs" />
+    <Compile Include="Analysis\StackPointerBackpropagator.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder3.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemover.cs" />
