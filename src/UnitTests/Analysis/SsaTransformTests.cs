@@ -250,6 +250,12 @@ namespace Reko.UnitTests.Analysis
             sst.SsaState.Validate(s => Assert.Fail(s));
         }
 
+        private void When_AddUsesToExitBlock()
+        {
+            sst.AddUsesToExitBlock();
+            sst.SsaState.Validate(s => Assert.Fail(s));
+        }
+
         private void AssertProcedureCode(string expected)
         {
             var proc = this.pb.Program.Procedures.Values.First();
@@ -3614,6 +3620,57 @@ proc_exit:
             #endregion
             AssertProcedureCode(expected);
 
+        }
+
+        [Test]
+        public void SsaIfThenLoop_AddUsesToExitBlock()
+        {
+            var proc = Given_Procedure("proc", m =>
+            {
+                var a = m.Reg32("a", 0);
+
+                m.Label("body");
+                m.Assign(a, m.Mem32(m.Word32(0x1234)));
+                m.BranchIf(m.Fn(m.Mem32(m.Word32(0x1))), "return");
+
+                m.Label("head");
+                m.BranchIf(m.Fn(m.Mem32(m.Word32(0x2))), "return");
+
+                m.Label("loopBody");
+                m.MStore(m.Word32(0x5002), m.Word32(0x2222));
+                m.Goto("head");
+
+                m.Label("return");
+                m.MStore(m.Word32(0x567C), a);
+                m.Assign(a, m.Mem32(m.Word32(0x5002)));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_AddUsesToExitBlock();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def Mem0
+body:
+	a_2 = Mem0[0x00001234:word32]
+	branch Mem0[0x00000001:word32]() return
+head:
+	Mem3 = PHI(Mem0, Mem8)
+	branch Mem3[0x00000002:word32]() return
+loopBody:
+	Mem8[0x00005002:word32] = 0x00002222
+	goto head
+return:
+	Mem6[0x0000567C:word32] = a_2
+	a_7 = Mem6[0x00005002:word32]
+	return
+proc_exit:
+	use a_7
+";
+            #endregion
+            AssertProcedureCode(expected);
         }
     }
 }
