@@ -1391,11 +1391,6 @@ namespace Reko.Analysis
                     }
                 }
                 sid = EnsureLiveIdentifier(sid);
-                var same = sid.Identifier;
-                if (blockstates[phi.DefStatement.Block].currentDef.TryGetValue(same.Storage.Domain, out var alias))
-                {
-                    alias.SsaId = outer.ssa.Identifiers[same];
-                }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 this.outer.sidsToRemove.Add(phi);
                 return true;
