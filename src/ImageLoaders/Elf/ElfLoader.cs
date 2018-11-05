@@ -602,16 +602,18 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        protected ImageSymbol EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
         {
             if (addr == null)
-                return;
+                return null;
             if (!symbols.TryGetValue(addr, out ImageSymbol ep))
             {
                 ep = ImageSymbol.Procedure(this.Architecture, addr);
                 ep.ProcessorState = Architecture.CreateProcessorState();
+                symbols.Add(addr, ep);
             }
             entryPoints.Add(ep);
+            return ep;
         }
 
         /// <summary>
@@ -690,12 +692,30 @@ namespace Reko.ImageLoaders.Elf
             relocator.LocateGotPointers(program, symbols);
             var entryPoints = new List<ImageSymbol>();
             var addrEntry = GetEntryPointAddress(addrLoad);
-            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
             var addrMain = relocator.FindMainFunction(program, addrEntry);
-            EnsureEntryPoint(entryPoints, symbols, addrMain);
+            var symMain = EnsureEntryPoint(entryPoints, symbols, addrMain);
+            symbols = AdjustImageSymbols(symbols, relocator);
             return new RelocationResults(entryPoints, symbols);
         }
 
+        /// <summary>
+        /// Make final adjustments to symbols before returning to decompiler.
+        /// </summary>
+        /// <remarks>
+        /// This method will adjust all odd-valued ARM symbols to be ARM Thumb symbols with properly 
+        /// aligned addresses.
+        /// </remarks>
+        private SortedList<Address,ImageSymbol> AdjustImageSymbols(SortedList<Address, ImageSymbol> symbols, ElfRelocator relocator)
+        {
+            var symbolsNew = new SortedList<Address, ImageSymbol>();
+            foreach (var sym in symbols.Values)
+            {
+                var symNew = relocator.AdjustImageSymbol(sym);
+                symbolsNew.Add(symNew.Address, symNew);
+            }
+            return symbolsNew;
+        }
 
         /// <summary>
         /// Hack off the @@GLIBC_... suffixes from symbols. 

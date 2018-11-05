@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -47,6 +47,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 .Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
         }
 
+        /// <summary>
+        /// Give the relocator a chance to adjust the image symbol.
+        /// </summary>
+        /// <remarks>
+        /// This is helpful when adjust ARM Thumb symbols, which will have
+        /// their least significant bit set to 1.
+        /// </remarks>
+        public virtual ImageSymbol AdjustImageSymbol(ImageSymbol sym)
+        {
+            return sym;
+        }
 
         public abstract void Relocate(Program program);
 
