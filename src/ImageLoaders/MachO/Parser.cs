@@ -460,7 +460,10 @@ namespace Reko.ImageLoaders.MachO
                     if (msym != null)
                     {
                         ldr.machoSymbols.Add(msym);
-                        ldr.imageSymbols[addr] = ImageSymbol.Procedure(arch, addr, msym.Name);
+                        if (addr.ToLinear() != 0)
+                        {
+                            ldr.imageSymbols[addr] = ImageSymbol.Procedure(arch, addr, msym.Name);
+                        }
                     }
                 }
             }

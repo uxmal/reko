@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -22,9 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Output;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Reko.CmdLine
