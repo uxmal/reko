@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private ImageMap imageMap;
         private Program program;
         private StringWriter writer;
+        private Procedure proc;
 
         [SetUp]
         public void Setup()
@@ -65,6 +66,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 }));
             this.arch.Stub(a => a.InstructionBitSize).Return(8);
             this.writer = new StringWriter();
+            this.proc = Procedure.Create(arch, Address.Ptr32(0x42), new Frame(PrimitiveType.Ptr32));
         }
 
         private void Given_Program()
@@ -94,6 +96,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             imageMap.AddItem(addr, new ImageMapBlock
             {
                 Address = addr,
+                Block = new Block(proc, NamingPolicy.Instance.BlockName(addr)),
                 DataType = new CodeType(),
                 Size = (uint)size,
             });

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -158,7 +158,7 @@ namespace Reko.Environments.Windows
                 {
                     p.Dispose();
                     // Forward jump (appears in Borland binaries)
-                    dasm = program.CreateDisassembler(addrOp0.Address);
+                    dasm = program.CreateDisassembler(program.Architecture, addrOp0.Address);
 
                     // Search for this pattern.
                     if (!LocatePattern(

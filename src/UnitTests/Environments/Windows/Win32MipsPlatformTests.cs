@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -63,6 +63,7 @@ namespace Reko.UnitTests.Environments.Windows
             var addr = Address.Ptr32(0x00031234);
             arch.Stub(a => a.MakeAddressFromConstant(Arg<Constant>.Is.NotNull)).Return(addr);
             host.Stub(h => h.GetImportedProcedure(
+                Arg<IProcessorArchitecture>.Is.NotNull,
                 Arg<Address>.Is.Equal(addr),
                 Arg<Address>.Is.NotNull)).Return(new ExternalProcedure("foo", new FunctionType()));
             mr.ReplayAll();

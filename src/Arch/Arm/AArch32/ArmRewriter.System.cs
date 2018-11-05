@@ -29,8 +29,14 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteBkpt()
         {
-            var n = Operand(instr.ops[0]);
-            m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, n));
+            if (instr.ops.Length > 0)
+            {
+                m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, Operand(instr.ops[0])));
+            }
+            else
+            {
+                m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance));
+            }
         }
 
         private void RewriteCdp(string name)

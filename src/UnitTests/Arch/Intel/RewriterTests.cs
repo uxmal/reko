@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.Intel
             var program =  project.Programs[0];
             foreach (Procedure_v1 sp in program.User.Procedures.Values)
             {
-                scanner.EnqueueUserProcedure(sp);
+                scanner.EnqueueUserProcedure(program.Architecture, sp);
             }
             scanner.ScanImage();
         }

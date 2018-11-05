@@ -56,239 +56,1294 @@ fn092A: error: An error occurred during data flow analysis.
 fn092A_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
-0000800D: warning: Call target address FF48A91D is invalid.
-00008019: warning: Call target address 00C89029 is invalid.
-00008021: warning: Call target address 010ACC97 is invalid.
-00008025: warning: Call target address FFC08371 is invalid.
-00000079: warning: Call target address FEC5AF49 is invalid.
-00000081: warning: Call target address FFC001A1 is invalid.
-0000016D: warning: Call target address FEC5AB25 is invalid.
-00000179: error: AArch32 instruction 'crc32w' (C142A144) is not supported yet.
-00000185: warning: Call target address 0118647D is invalid.
-00000199: error: AArch32 instruction 'crc32cw' (1468A46) is not supported yet.
-000016C9: warning: Call target address 0000F8E8 is invalid.
-0000173D: warning: Call target address 012C5729 is invalid.
-00001759: error: AArch32 instruction 'mcrr' (8C45C0F8) is not supported yet.
-00001775: warning: Call target address 0008373D is invalid.
-0000A5C9: warning: Call target address FF656279 is invalid.
-0000A5CD: warning: Call target address 010CB1D5 is invalid.
-0000A631: error: AArch32 instruction 'mrrc' (EC5CCC23) is not supported yet.
-0000A259: warning: Call target address 018E3801 is invalid.
-0000A045: warning: Call target address 001B0DF1 is invalid.
-00009F59: warning: Call target address 0010C323 is invalid.
-00009F61: warning: Call target address 000CE329 is invalid.
-00009F6D: warning: Call target address 0008A735 is invalid.
-00009F7D: warning: Call target address 000CEB71 is invalid.
-00009F29: error: AArch32 instruction 'bxj' (1220021) is not supported yet.
-00009F29: error: AArch32 instruction 'bxj' (1220021) is not supported yet.
-00009F2D: warning: Call target address 01810461 is invalid.
-00009E8D: warning: Call target address 0130C965 is invalid.
-00009E91: warning: Call target address 01A12BBD is invalid.
-00009EA5: warning: Call target address 010CAC39 is invalid.
-00009DFD: warning: Call target address FF412EAD is invalid.
-00009D19: error: AArch32 instruction 'mcrr' (5C477060) is not supported yet.
-00009CD1: warning: Call target address 0128A605 is invalid.
-00009C41: error: AArch32 instruction 'mcrr' (2C4601B5) is not supported yet.
-00009C41: error: AArch32 instruction 'mcrr' (2C4601B5) is not supported yet.
-00009C0D: warning: Call target address 000EA7C1 is invalid.
-00009BF1: warning: Call target address 000EA7A5 is invalid.
-00009BD5: warning: Call target address 000EA789 is invalid.
-00009BB9: warning: Call target address 000EA76D is invalid.
-00009B9D: warning: Call target address 000EA751 is invalid.
-00009B81: warning: Call target address 000EA735 is invalid.
-00009B45: warning: Call target address 000EA6F9 is invalid.
-00009B29: warning: Call target address 01025EF1 is invalid.
-00009AF5: warning: Call target address 0120AC29 is invalid.
-00009ADD: warning: Call target address 0120AC11 is invalid.
-0000101B: warning: Call target address 00200000 is invalid.
-0000102F: warning: Call target address 00C24417 is invalid.
-0000104B: warning: Call target address 000213FF is invalid.
-00001057: warning: Call target address FFC02DFB is invalid.
-0000105B: warning: Call target address 01A1A047 is invalid.
-00009AD1: warning: Call target address 0080A079 is invalid.
-000099F5: warning: Call target address FFC09C73 is invalid.
-000099C9: warning: Call target address FFE09651 is invalid.
-000099E1: warning: Call target address 0100BD89 is invalid.
-000098E5: warning: Call target address 010B34E9 is invalid.
-000097CD: error: AArch32 instruction 'mcrr' (C4616B5) is not supported yet.
-000097CD: error: AArch32 instruction 'mcrr' (C4616B5) is not supported yet.
-0000980D: warning: Call target address FFFE83F1 is invalid.
-00009811: warning: Call target address FECEA5F9 is invalid.
-00009815: warning: Call target address 0138F8CD is invalid.
-00009825: warning: Call target address FFFE5409 is invalid.
-00009829: warning: Call target address FECD0611 is invalid.
-0000979D: warning: Call target address FFE094BD is invalid.
-00009731: error: AArch32 instruction 'mcrr' (7C400200) is not supported yet.
-000096C9: error: AArch32 instruction 'mcrr' (C4F0C46) is not supported yet.
-00009655: error: AArch32 instruction 'mcrr' (C477060) is not supported yet.
-00009661: warning: Call target address 011E57E9 is invalid.
-000095F9: error: AArch32 instruction 'mcrr' (C477060) is not supported yet.
-00009605: warning: Call target address 011E578D is invalid.
-000095C1: warning: Call target address 0110E1D1 is invalid.
-00009599: error: AArch32 instruction 'mcrr' (1C442304) is not supported yet.
-00009569: error: AArch32 instruction 'uqsub8' (663E0F4) is not supported yet.
-00009569: error: AArch32 instruction 'uqsub8' (663E0F4) is not supported yet.
-00009579: warning: Call target address 00ECA961 is invalid.
-00009505: warning: Call target address FED15639 is invalid.
-00009501: warning: Call target address FEF858C9 is invalid.
-000094A9: warning: Call target address 00909891 is invalid.
-00009485: warning: Call target address 0090986D is invalid.
-000092BD: error: AArch32 instruction 'bxj' (31240024) is not supported yet.
-000092C5: error: AArch32 instruction 'bxj' (11200020) is not supported yet.
-000092D5: warning: Call target address 010CBBE9 is invalid.
-000091E5: error: AArch32 instruction 'mcrr' (8C430CBF) is not supported yet.
-00009209: warning: Call target address 010CBD0D is invalid.
-00009219: warning: Call target address 010CBD1D is invalid.
-00009229: warning: Call target address 010CBD2D is invalid.
-00009239: warning: Call target address 010CBD3D is invalid.
-000091A1: warning: Call target address 00D0A589 is invalid.
-000091AD: warning: Call target address 0088923D is invalid.
-00009165: warning: Call target address 010CC069 is invalid.
-00009175: warning: Call target address FEFCE1B9 is invalid.
-00009149: warning: Call target address 008C944D is invalid.
-00009115: warning: Call target address 010CC019 is invalid.
-000090D5: warning: Call target address 010AF229 is invalid.
-000090AD: warning: Call target address FFE51491 is invalid.
-000090B1: warning: Call target address 01AC1259 is invalid.
-00008F31: warning: Call target address 01B63C6D is invalid.
-00008F49: warning: Call target address FE3DCF1D is invalid.
-00008F79: warning: Call target address FFE77B5D is invalid.
-00008F85: warning: Call target address 009C937D is invalid.
-00008F99: warning: Call target address 00E0946D is invalid.
-00008FA1: warning: Call target address FF41DC55 is invalid.
-00008FB5: warning: Call target address FFA04705 is invalid.
-00008FBD: warning: Call target address 01A21965 is invalid.
-00009001: warning: Call target address FFE66BE5 is invalid.
-00009009: warning: Call target address FF47E4B9 is invalid.
-00009015: warning: Call target address 019F3DD9 is invalid.
-00009025: warning: Call target address FECDF771 is invalid.
-00009035: warning: Call target address FEC55B21 is invalid.
-0000905D: warning: Call target address 01A2B8C5 is invalid.
-00009065: warning: Call target address 010AF97D is invalid.
-00008EF1: error: AArch32 instruction 'mcrr' (C460EB5) is not supported yet.
-00008EF1: error: AArch32 instruction 'mcrr' (C460EB5) is not supported yet.
-00008F11: warning: Call target address FFE08BDF is invalid.
-00008DF5: warning: Call target address 01189F15 is invalid.
-00008DFD: warning: Call target address FFE06F1D is invalid.
-00008D5D: warning: Call target address FFF09941 is invalid.
-00008D29: warning: Call target address FFE08C05 is invalid.
-00008BA9: warning: Call target address FFE088C9 is invalid.
-00008B7D: warning: Call target address 01189C9D is invalid.
-00008AF5: warning: Call target address 01189C15 is invalid.
-00008A91: warning: Call target address FFF62E75 is invalid.
-00008A95: error: AArch32 instruction 'crc32w' (31460446) is not supported yet.
-00008A0D: warning: Call target address 01189B2D is invalid.
-000089D5: warning: Call target address 01189AF5 is invalid.
-000089DD: warning: Call target address FFE06AFD is invalid.
-00008929: warning: Call target address FFE08805 is invalid.
-00008811: warning: Call target address 011ACD31 is invalid.
-00008815: warning: Call target address FE7CB135 is invalid.
-00008795: warning: Call target address FFE66B5D is invalid.
-000087A5: error: AArch32 instruction 'crc32h' (1210046) is not supported yet.
-00008715: warning: Call target address FFD75611 is invalid.
-00008735: warning: Call target address 012CCFC5 is invalid.
-0000874D: warning: Call target address FEF4CA15 is invalid.
-00008679: warning: Call target address 0118987D is invalid.
-00008645: warning: Call target address FECB902D is invalid.
-0000864D: warning: Call target address 010CB035 is invalid.
-00008609: warning: Call target address FECB873D is invalid.
-00008569: warning: Call target address 003C8D31 is invalid.
-00008505: warning: Call target address FFE200CD is invalid.
-0000837D: warning: Call target address FFE47745 is invalid.
-00008381: warning: Call target address 01B03135 is invalid.
-000083A1: warning: Call target address 01AF2DE5 is invalid.
-000083A5: warning: Call target address 010AED59 is invalid.
-0000834D: warning: Call target address 010B04F5 is invalid.
-0000830D: warning: Call target address 01A0B9E5 is invalid.
-00008329: warning: Call target address 0182E801 is invalid.
-0000829D: warning: Call target address 0118B979 is invalid.
-00008245: warning: Call target address FFFE0E0D is invalid.
-00008211: warning: Call target address FFC084ED is invalid.
-0000818D: warning: Call target address 002CAD55 is invalid.
-00008195: warning: Call target address 00048D61 is invalid.
-00008199: warning: Call target address 00089165 is invalid.
-0000819D: warning: Call target address 000C9569 is invalid.
-000081A1: warning: Call target address 0010996D is invalid.
-000081A5: warning: Call target address 00149D71 is invalid.
-000081A9: warning: Call target address 0018A175 is invalid.
-000081AD: warning: Call target address 001CA579 is invalid.
-000081B1: warning: Call target address 0020A97D is invalid.
-000081B5: warning: Call target address 0024AD81 is invalid.
-000081B9: warning: Call target address 0028B185 is invalid.
-000081BD: warning: Call target address 0030B589 is invalid.
-000081C5: warning: Call target address 00A0B111 is invalid.
-0000811D: error: AArch32 instruction 'crc32w' (1462846) is not supported yet.
-00008129: warning: Call target address 01A0EE5D is invalid.
-00008135: warning: Call target address 01E0CE65 is invalid.
-00008149: warning: Call target address FEF64411 is invalid.
-000080B5: warning: Call target address FFC085D5 is invalid.
-000080C1: error: AArch32 instruction 'crc32ch' (1223B49) is not supported yet.
-000080E5: error: AArch32 instruction 'crc32cw' (1480746) is not supported yet.
-00001925: warning: Call target address FE07DCCD is invalid.
-0000193D: warning: Call target address 012C5E8D is invalid.
-00001891: error: AArch32 instruction 'mcrr' (C4605B5) is not supported yet.
-00001891: error: AArch32 instruction 'mcrr' (C4605B5) is not supported yet.
-000018D1: warning: Call target address 010A1899 is invalid.
-00001875: error: AArch32 instruction 'mcrr' (C4606B5) is not supported yet.
-00001875: error: AArch32 instruction 'mcrr' (C4606B5) is not supported yet.
-000013B1: warning: Call target address FED1D4E5 is invalid.
-000013B9: warning: Call target address 000A1391 is invalid.
-000013C1: warning: Call target address 010A1389 is invalid.
-000012D5: warning: Call target address 01A17C09 is invalid.
-000012D9: warning: Call target address 01A179A5 is invalid.
-000012DD: warning: Call target address 00C81899 is invalid.
-0000115D: warning: Call target address FFC02E7D is invalid.
-00001121: warning: Call target address 01A17655 is invalid.
-000010F1: warning: Call target address 000E20A5 is invalid.
-00001105: warning: Call target address 01A13809 is invalid.
-00001001: warning: Call target address 01A1850D is invalid.
-00000FA9: warning: Call target address 012C3CF9 is invalid.
-00000FB5: warning: Call target address FEF451F9 is invalid.
-00000FB9: warning: Call target address FF6014C9 is invalid.
-00000F71: warning: Call target address 00A01375 is invalid.
-00000E89: warning: Call target address 00AC1031 is invalid.
-00000EC5: warning: Call target address 01A19EB5 is invalid.
-00000D6D: error: AArch32 instruction 'mcrr' (3C47F0E9) is not supported yet.
-00000D6D: error: AArch32 instruction 'mcrr' (3C47F0E9) is not supported yet.
-00000DD5: warning: Call target address 0000F1A1 is invalid.
-00000DF9: warning: Call target address 01B3B7A1 is invalid.
-00000E1D: warning: Call target address 000E1DD1 is invalid.
-00000D2D: warning: Call target address 0079B6D5 is invalid.
-00000BF1: warning: Call target address 01A19079 is invalid.
-00000C0D: warning: Call target address 01A19AD9 is invalid.
-00000C19: warning: Call target address 00AC10E1 is invalid.
-00000C45: warning: Call target address 012C2195 is invalid.
-00000B21: warning: Call target address FE3D4AF5 is invalid.
-00000B3D: warning: Call target address FFC016E5 is invalid.
-00000B49: warning: Call target address 00B010E9 is invalid.
-00000B61: warning: Call target address FF47DD01 is invalid.
-00000B75: warning: Call target address FFC0277D is invalid.
-00000B79: warning: Call target address 01A1DB6D is invalid.
-00000B7D: warning: Call target address 01B37935 is invalid.
-000009FD: warning: Call target address 012C128D is invalid.
-00000981: warning: Call target address 00C01A15 is invalid.
-00000875: warning: Call target address 01B32E39 is invalid.
-00000885: warning: Call target address 01897D95 is invalid.
-000007D5: warning: Call target address FFC02579 is invalid.
-000007E1: warning: Call target address 01A192AD is invalid.
-000007E5: warning: Call target address 01B3519D is invalid.
-00000801: warning: Call target address 01B3A9A9 is invalid.
-00000835: warning: Call target address FFC02555 is invalid.
-000006F1: warning: Call target address 01831479 is invalid.
-00000679: warning: Call target address 014A0A41 is invalid.
-00000619: warning: Call target address 0183930D is invalid.
-00000621: warning: Call target address 0118891D is invalid.
-000004E5: warning: Call target address 00C809AD is invalid.
-000004E9: warning: Call target address 018E0FB9 is invalid.
-000002E1: error: AArch32 instruction 'crc32cw' (1468A46) is not supported yet.
-0000037D: warning: Call target address FFE0009D is invalid.
-000002B9: warning: Call target address 01AE10FD is invalid.
-00000109: warning: Call target address FFC02AB1 is invalid.
-00000111: warning: Call target address 01A18AC9 is invalid.
-00000129: warning: Call target address FFC02AD1 is invalid.
-00000135: warning: Call target address 01104EDD is invalid.
-0000013D: warning: Call target address 01A1908D is invalid.
-0000101B: error: An error occurred while processing instruction at address 0000101B.
+00008026: warning: Call target address 00C0809C is invalid.
+0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
+0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB051588 (881505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB051588()
+{
+    Given_Instructions(0xEB05, 0x1588);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020281 (810202EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020281()
+{
+    Given_Instructions(0xEB02, 0x0281);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+00009CE0: warning: Call target address 00C0A0E8 is invalid.
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8533022 (223053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8533022()
+{
+    Given_Instructions(0xF853, 0x3022);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA0020C3 (C32000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
+[Test]
+public void ThumbDis_EA0020C3()
+{
+    Given_Instructions(0xEA00, 0x20C3);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA002013 (132000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
+[Test]
+public void ThumbDis_EA002013()
+{
+    Given_Instructions(0xEA00, 0x2013);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB070305()
+{
+    Given_Instructions(0xEB07, 0x0305);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB070305()
+{
+    Given_Instructions(0xEB07, 0x0305);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8150C01 (010C15F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8150C01()
+{
+    Given_Instructions(0xF815, 0x0C01);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8533020 (203053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8533020()
+{
+    Given_Instructions(0xF853, 0x3020);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8432020 (202043F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8432020()
+{
+    Given_Instructions(0xF843, 0x2020);
+    Expect_Code("@@@");
+}
+
+00009500: warning: Call target address 00C0A0E0 is invalid.
+000094FC: warning: Call target address 00C0A0D8 is invalid.
+// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8402021()
+{
+    Given_Instructions(0xF840, 0x2021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8402021()
+{
+    Given_Instructions(0xF840, 0x2021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8500021()
+{
+    Given_Instructions(0xF850, 0x0021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8500021()
+{
+    Given_Instructions(0xF850, 0x0021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+00008F44: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+// A T32 decoder for the instruction EB050282 (820205EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050282()
+{
+    Given_Instructions(0xEB05, 0x0282);
+    Expect_Code("@@@");
+}
+
+00008FCC: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+00008188: warning: Call target address 00C085F0 is invalid.
+00001994: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+// A T32 decoder for the instruction EA360304 (040336EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA360304()
+{
+    Given_Instructions(0xEA36, 0x0304);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA240505()
+{
+    Given_Instructions(0xEA24, 0x0505);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA350304 (040335EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA350304()
+{
+    Given_Instructions(0xEA35, 0x0304);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA240505()
+{
+    Given_Instructions(0xEA24, 0x0505);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230305 (050323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230305()
+{
+    Given_Instructions(0xEA23, 0x0305);
+    Expect_Code("@@@");
+}
+
+000019EA: warning: Call target address 00C085AC is invalid.
+00001824: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
+// A T32 decoder for the instruction F8133C02 (023C13F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8133C02()
+{
+    Given_Instructions(0xF813, 0x3C02);
+    Expect_Code("@@@");
+}
+
+00001242: warning: Call target address 00C082EC is invalid.
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F9564C0F()
+{
+    Given_Instructions(0xF956, 0x4C0F);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F9564C0F()
+{
+    Given_Instructions(0xF956, 0x4C0F);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+00000F12: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+00000C70: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+// A T32 decoder for the instruction EA220208 (080222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220208()
+{
+    Given_Instructions(0xEA22, 0x0208);
+    Expect_Code("@@@");
+}
+
+00000C4A: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
+// A T32 decoder for the instruction EA210106 (060121EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA210106()
+{
+    Given_Instructions(0xEA21, 0x0106);
+    Expect_Code("@@@");
+}
+
+00000B1C: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+000009F4: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00000978: warning: Call target address 00C01550 is invalid.
+00000986: warning: Call target address 00C01550 is invalid.
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB050583 (830505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050583()
+{
+    Given_Instructions(0xEB05, 0x0583);
+    Expect_Code("@@@");
+}
+
+00000534: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00000454: warning: Call target address 00C0177C is invalid.
+000002FC: error: AArch32 instruction 'qsax' (4620F959) is not supported yet.
+// A T32 decoder for the instruction EB050583 (830505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050583()
+{
+    Given_Instructions(0xEB05, 0x0583);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F7AD2 (D27A4FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F7AD2()
+{
+    Given_Instructions(0xEA4F, 0x7AD2);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB060080 (800006EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB060080()
+{
+    Given_Instructions(0xEB06, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230302 (020323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230302()
+{
+    Given_Instructions(0xEA23, 0x0302);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020080 (800002EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020080()
+{
+    Given_Instructions(0xEB02, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030080 (800003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030080()
+{
+    Given_Instructions(0xEB03, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA220208 (080222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220208()
+{
+    Given_Instructions(0xEA22, 0x0208);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA210106 (060121EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA210106()
+{
+    Given_Instructions(0xEA21, 0x0106);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030080 (800003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030080()
+{
+    Given_Instructions(0xEB03, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB040383 (830304EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB040383()
+{
+    Given_Instructions(0xEB04, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020080 (800002EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020080()
+{
+    Given_Instructions(0xEB02, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F9564C0F()
+{
+    Given_Instructions(0xF956, 0x4C0F);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000083 (830000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000083()
+{
+    Given_Instructions(0xEB00, 0x0083);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB050383 (830305EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050383()
+{
+    Given_Instructions(0xEB05, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020382 (820302EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020382()
+{
+    Given_Instructions(0xEB02, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB040383 (830304EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB040383()
+{
+    Given_Instructions(0xEB04, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230202 (020223EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230202()
+{
+    Given_Instructions(0xEA23, 0x0202);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020082 (820002EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020082()
+{
+    Given_Instructions(0xEB02, 0x0082);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB050080 (800005EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050080()
+{
+    Given_Instructions(0xEB05, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB010381 (810301EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB010381()
+{
+    Given_Instructions(0xEB01, 0x0381);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020383 (830302EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020383()
+{
+    Given_Instructions(0xEB02, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000083 (830000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000083()
+{
+    Given_Instructions(0xEB00, 0x0083);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F3AF8000 (0080AFF3) - (CreateBranchesMiscControl - hints) has not been implemented yet.
+[Test]
+public void ThumbDis_F3AF8000()
+{
+    Given_Instructions(0xF3AF, 0x8000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8133C02 (023C13F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8133C02()
+{
+    Given_Instructions(0xF813, 0x3C02);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8402C20 (202C40F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8402C20()
+{
+    Given_Instructions(0xF840, 0x2C20);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8404C0C (0C4C40F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8404C0C()
+{
+    Given_Instructions(0xF840, 0x4C0C);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8403C44 (443C40F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8403C44()
+{
+    Given_Instructions(0xF840, 0x3C44);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0343()
+{
+    Given_Instructions(0xEA4F, 0x0343);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0343()
+{
+    Given_Instructions(0xEA4F, 0x0343);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0343()
+{
+    Given_Instructions(0xEA4F, 0x0343);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0242 (42024FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0242()
+{
+    Given_Instructions(0xEA4F, 0x0242);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8523C0C (0C3C52F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8523C0C()
+{
+    Given_Instructions(0xF852, 0x3C0C);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8423C0C (0C3C42F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8423C0C()
+{
+    Given_Instructions(0xF842, 0x3C0C);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction FFFE1FFF (FF1FFEFF) - (AdvancedSimdTwoRegistersAndShiftAmount_opcF) has not been implemented yet.
+[Test]
+public void ThumbDis_FFFE1FFF()
+{
+    Given_Instructions(0xFFFE, 0x1FFF);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0242 (42024FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0242()
+{
+    Given_Instructions(0xEA4F, 0x0242);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0242 (42024FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0242()
+{
+    Given_Instructions(0xEA4F, 0x0242);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0343()
+{
+    Given_Instructions(0xEA4F, 0x0343);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
+[Test]
+public void ThumbDis_EA4F0343()
+{
+    Given_Instructions(0xEA4F, 0x0343);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA240505()
+{
+    Given_Instructions(0xEA24, 0x0505);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA240505()
+{
+    Given_Instructions(0xEA24, 0x0505);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA350304 (040335EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA350304()
+{
+    Given_Instructions(0xEA35, 0x0304);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA350304 (040335EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA350304()
+{
+    Given_Instructions(0xEA35, 0x0304);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA250404 (040425EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA250404()
+{
+    Given_Instructions(0xEA25, 0x0404);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA320E01 (010E32EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA320E01()
+{
+    Given_Instructions(0xEA32, 0x0E01);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA360304 (040336EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA360304()
+{
+    Given_Instructions(0xEA36, 0x0304);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230606 (060623EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230606()
+{
+    Given_Instructions(0xEA23, 0x0606);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA360304 (040336EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA360304()
+{
+    Given_Instructions(0xEA36, 0x0304);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA240606 (060624EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA240606()
+{
+    Given_Instructions(0xEA24, 0x0606);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230305 (050323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230305()
+{
+    Given_Instructions(0xEA23, 0x0305);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA220000 (000022EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220000()
+{
+    Given_Instructions(0xEA22, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA220000 (000022EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220000()
+{
+    Given_Instructions(0xEA22, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8530022 (220053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8530022()
+{
+    Given_Instructions(0xF853, 0x0022);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8530022 (220053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8530022()
+{
+    Given_Instructions(0xF853, 0x0022);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB000080()
+{
+    Given_Instructions(0xEB00, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB080080 (800008EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB080080()
+{
+    Given_Instructions(0xEB08, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030083 (830003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030083()
+{
+    Given_Instructions(0xEB03, 0x0083);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB080080 (800008EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB080080()
+{
+    Given_Instructions(0xEB08, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030083 (830003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030083()
+{
+    Given_Instructions(0xEB03, 0x0083);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB080080 (800008EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB080080()
+{
+    Given_Instructions(0xEB08, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB050282 (820205EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050282()
+{
+    Given_Instructions(0xEB05, 0x0282);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB050080 (800005EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050080()
+{
+    Given_Instructions(0xEB05, 0x0080);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB050181 (810105EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB050181()
+{
+    Given_Instructions(0xEB05, 0x0181);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8500021()
+{
+    Given_Instructions(0xF850, 0x0021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8500021()
+{
+    Given_Instructions(0xF850, 0x0021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8402021()
+{
+    Given_Instructions(0xF840, 0x2021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8402021()
+{
+    Given_Instructions(0xF840, 0x2021);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA220201 (010222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220201()
+{
+    Given_Instructions(0xEA22, 0x0201);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA220201 (010222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220201()
+{
+    Given_Instructions(0xEA22, 0x0201);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA220201 (010222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA220201()
+{
+    Given_Instructions(0xEA22, 0x0201);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8441020 (201044F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8441020()
+{
+    Given_Instructions(0xF844, 0x1020);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8432020 (202043F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8432020()
+{
+    Given_Instructions(0xF843, 0x2020);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8533020 (203053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8533020()
+{
+    Given_Instructions(0xF853, 0x3020);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230302 (020323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230302()
+{
+    Given_Instructions(0xEA23, 0x0302);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030383()
+{
+    Given_Instructions(0xEB03, 0x0383);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8150C01 (010C15F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
+[Test]
+public void ThumbDis_F8150C01()
+{
+    Given_Instructions(0xF815, 0x0C01);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB070305()
+{
+    Given_Instructions(0xEB07, 0x0305);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB070305()
+{
+    Given_Instructions(0xEB07, 0x0305);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA002013 (132000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
+[Test]
+public void ThumbDis_EA002013()
+{
+    Given_Instructions(0xEA00, 0x2013);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA0020C3 (C32000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
+[Test]
+public void ThumbDis_EA0020C3()
+{
+    Given_Instructions(0xEA00, 0x20C3);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction F8533022 (223053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
+[Test]
+public void ThumbDis_F8533022()
+{
+    Given_Instructions(0xF853, 0x3022);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB030382()
+{
+    Given_Instructions(0xEB03, 0x0382);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230000()
+{
+    Given_Instructions(0xEA23, 0x0000);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB020281 (810202EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB020281()
+{
+    Given_Instructions(0xEB02, 0x0281);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EB051588 (881505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
+[Test]
+public void ThumbDis_EB051588()
+{
+    Given_Instructions(0xEB05, 0x1588);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
+[Test]
+public void ThumbDis_EA230101()
+{
+    Given_Instructions(0xEA23, 0x0101);
+    Expect_Code("@@@");
+}
+
+000008CE: error: An error occurred while processing instruction at address 000008CE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -296,7 +1351,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000102F: error: An error occurred while processing instruction at address 0000102F.
+000008F2: error: An error occurred while processing instruction at address 000008F2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -304,7 +1359,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000102F: error: An error occurred while processing instruction at address 0000102F.
+000008F8: error: An error occurred while processing instruction at address 000008F8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -312,7 +1367,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000103F: error: An error occurred while processing instruction at address 0000103F.
+00000910: error: An error occurred while processing instruction at address 00000910.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -320,7 +1375,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000104B: error: An error occurred while processing instruction at address 0000104B.
+00000EFE: error: An error occurred while processing instruction at address 00000EFE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -328,7 +1383,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00001057: error: An error occurred while processing instruction at address 00001057.
+00000FCE: error: An error occurred while processing instruction at address 00000FCE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -336,7 +1391,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000105B: error: An error occurred while processing instruction at address 0000105B.
+0000111E: error: An error occurred while processing instruction at address 0000111E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -344,7 +1399,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00008008: error: An error occurred while processing instruction at address 00008008.
+0000182C: error: An error occurred while processing instruction at address 0000182C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -352,7 +1407,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00008008: error: An error occurred while processing instruction at address 00008008.
+00007FFE: error: An error occurred while processing instruction at address 00007FFE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -360,7 +1415,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000800D: error: An error occurred while processing instruction at address 0000800D.
+00008E78: error: An error occurred while processing instruction at address 00008E78.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -368,7 +1423,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00008019: error: An error occurred while processing instruction at address 00008019.
+00008E80: error: An error occurred while processing instruction at address 00008E80.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -376,7 +1431,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00008021: error: An error occurred while processing instruction at address 00008021.
+00008EB4: error: An error occurred while processing instruction at address 00008EB4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -384,7 +1439,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00008025: error: An error occurred while processing instruction at address 00008025.
+00008EC0: error: An error occurred while processing instruction at address 00008EC0.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -392,7 +1447,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000A28D: error: An error occurred while processing instruction at address 0000A28D.
+00008ECA: error: An error occurred while processing instruction at address 00008ECA.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -400,183 +1455,127 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-fn00001001: error: An error occurred during data flow analysis.
+00008ED0: error: An error occurred while processing instruction at address 00008ED0.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001005: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008ED8: error: An error occurred while processing instruction at address 00008ED8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001009: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009012: error: An error occurred while processing instruction at address 00009012.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn0000100D: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000900A: error: An error occurred while processing instruction at address 0000900A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001011: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008FAA: error: An error occurred while processing instruction at address 00008FAA.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001015: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000091B4: error: An error occurred while processing instruction at address 000091B4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001019: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000091B4: error: An error occurred while processing instruction at address 000091B4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001021: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000947E: error: An error occurred while processing instruction at address 0000947E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001025: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098A4: error: An error occurred while processing instruction at address 000098A4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001029: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098AC: error: An error occurred while processing instruction at address 000098AC.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn0000102D: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098AC: error: An error occurred while processing instruction at address 000098AC.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001031: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009938: error: An error occurred while processing instruction at address 00009938.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001039: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009944: error: An error occurred while processing instruction at address 00009944.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn0000103D: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000994C: error: An error occurred while processing instruction at address 0000994C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001041: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009A16: error: An error occurred while processing instruction at address 00009A16.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001049: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn0000104D: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00001051: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00007FF8: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00007FF9: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00007FFD: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn0000800C: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-fn00008010: error: An error occurred during data flow analysis.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+fn000091B4: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -590,591 +1589,55 @@ fn00008010: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn00008014: error: An error occurred during data flow analysis.
+fn00009890: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-00000121: error: An error occurred while processing the statement Mem280[r0 - 838 + 0x00000000:byte] = (byte) r10.
-    Not handling (ptr32 (struct (0 T_242 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-0000038D: error: An error occurred while processing the statement ip = (r3 >> r8) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_661 t0000) (4BF T_739 t04BF)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00000805: error: An error occurred while processing the statement r5_152 = Mem0[r1_141 - 4 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_2186 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 131
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00000B2D: error: An error occurred while processing the statement Mem263[r0 - 72 + 0x00000000:word64] = r7_r6.
-    Not handling (ptr32 (struct (0 T_3227 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-fn00008010_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
-000080E1: error: An error occurred while processing the statement Mem72[r6 - 44 + 0x00000000:word64] = r3_r2.
-    Not handling (ptr32 (struct (0 T_15533 t0000))) and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009335: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009355: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009369: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-0000938D: error: An error occurred while processing the statement fp = (r6 >> 26) - r8 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_21159 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009415: error: An error occurred while processing the statement __stc(p0, c2, Mem0[r6 - 996 + 0x00000000:word32]).
-    Not handling (ptr32 (struct (0 T_21471 t0000))) and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
-   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 50
-   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 219
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-000094DD: error: An error occurred while processing the statement Mem32[r2 - 356 + 0x00000000:word32] = r0.
-    Not handling (ptr32 (struct (0 T_21846 t0000))) and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-000095AD: error: An error occurred while processing the statement r1 = Mem0[r0 - -4 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_22072 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 131
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009801: error: An error occurred while processing the statement byte NZCV_288 = cond((r0 << r0) - r0 - C).
-    Pulling difference ui32 and (ptr32 (struct (0 T_22718 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
-   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 167
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009921: error: An error occurred while processing the statement Mem39[r0 - (r5 >> 20) + 0x00000000:byte] = (byte) r1.
-    Not handling (ptr32 (struct (0 T_23263 t0000))) and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009B1D: error: An error occurred while processing the statement Mem19[r0 - 4064 + 0x00000000:byte] = (byte) r0.
-    Not handling (ptr32 (struct (0 T_23901 t0000))) and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009BB1: error: An error occurred while processing the statement Mem35[r0_33 - 165 + 0x00000000:word32] = r0_33.
-    Not handling (ptr32 (struct (0 T_24126 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009BE9: error: An error occurred while processing the statement Mem35[r0_33 - 165 + 0x00000000:word32] = r0_33.
-    Not handling (ptr32 (struct (0 T_24256 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009C21: error: An error occurred while processing the statement Mem33[r0_31 - 165 + 0x00000000:word32] = r0_31.
-    Not handling (ptr32 (struct (0 T_24367 t0000))) and (union (ui32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 553
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009C31: error: An error occurred while processing the statement r4 = (r7 >> 6) - r0 - C.
-    Pulling difference int32 and (ptr32 (struct (0 T_24396 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009EDD: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_25432 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009EE5: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_10 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009EF9: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_25543 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009F01: error: An error occurred while processing the statement r1 = (r3 << 6) - r0.
-    Pulling difference ui32 and (ptr32 (struct (0 T_25543 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-00009F19: error: An error occurred while processing the statement byte NZCV_48 = cond((r7 >> 6) - r4 - C).
-    Pulling difference int32 and (ptr32 (struct (0 T_25612 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
-   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 167
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
-prvCopyDataToQueue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-prvCopyDataFromQueue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xQueueGenericSend: error: An error occurred while rewriting procedure to high-level language.
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00009890_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+00000020: warning: Expected sizes of arrays to have been determined by now
+00000060: warning: Expected sizes of arrays to have been determined by now
+20000808: error: Failed to write global variable g_t20000808.
     Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-xQueueGiveFromISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xQueueGiveMutexRecursive: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xQueueGenericReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xQueueCreateMutex: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-prvAddNewTaskToReadyList: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-prvAddCurrentTaskToDelayedList.isra.0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-vTaskAllocateMPURegions: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xTaskGenericNotifyFromISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xTaskNotifyWait: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-ulTaskNotifyTake: error: An error occurred while rewriting procedure to high-level language.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+00000020: warning: Expected sizes of arrays to have been determined by now
+00000060: warning: Expected sizes of arrays to have been determined by now
+20000808: error: Failed to write global variable g_t20000808.
     Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-vTaskDelayUntil: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn00000FFF: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001001: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001005: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001009: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn0000100D: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001011: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001015: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001019: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001021: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001025: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001029: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001031: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001039: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001041: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00001049: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn0000104D: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-uxTaskResetEventItemValue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-pvTaskIncrementMutexHeldCount: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xPortStartScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-pvPortMalloc: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xEventGroupSync: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-fn00007FF8: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00007FF9: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-ResetISR: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-fn00008010: error: An error occurred while rewriting procedure to high-level language.
-    Index was out of range. Must be non-negative and less than the size of the collection.
-Parameter name: index
-       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-vUART_ISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-prvSetAndCheckRegisters: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-PDCInit: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-PDCWrite: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-vListInsert: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xQueueCRSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-xPortRaisePrivilege: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-vParTestSetLED: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-vParTestToggleLED: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-prvFixedDelayCoRoutine: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-vStartFlashCoRoutines: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-MPU_xTaskCreate: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-MPU_xTaskGenericNotify: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-MPU_xTaskNotifyWait: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-MPU_xQueueGenericCreate: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-MPU_xQueueGenericSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-MPU_xQueueGenericReceive: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-MPU_xEventGroupSync: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-vCoRoutineSchedule: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIOGetIntNumber: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIODirModeGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIOIntTypeGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIOPadConfigSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIOPadConfigGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-IntEnable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-IntDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-OSRAMStringDraw: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-OSRAMDisplayOff: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlPeripheralDeepSleepDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlClockGet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-SysCtlClkVerificationClear: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-UARTConfigSet: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 355
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 263
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 150
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
-UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 === Elf\ARM\switch\switch
 === Elf\MIPS\redir\redir
 === Elf\MIPS\swlswr\test
@@ -1213,7 +1676,7 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
@@ -3006,7 +3469,7 @@ fn03B2: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 217
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 115
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
 fn1BF9: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 00000823: warning: Expected sizes of arrays to have been determined by now
 00000823: warning: Expected sizes of arrays to have been determined by now
@@ -3266,9 +3729,9 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 217
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 115
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 481
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 88.05 seconds ---
+Decompiled 55 binaries in 125.83 seconds ---

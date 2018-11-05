@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -120,13 +120,13 @@ namespace Reko.UnitTests.Scanning
 
         private void WriteString32(Program program, uint uiAddr, string str)
         {
-            var imgW = program.CreateImageWriter(Address.Ptr32(uiAddr));
+            var imgW = program.CreateImageWriter(program.Architecture, Address.Ptr32(uiAddr));
             imgW.WriteString(str, Encoding.ASCII);
         }
 
         private void WriteString64(Program program, uint uiAddr, string str)
         {
-            var imgW = program.CreateImageWriter(Address.Ptr64(uiAddr));
+            var imgW = program.CreateImageWriter(program.Architecture, Address.Ptr64(uiAddr));
             imgW.WriteString(str, Encoding.ASCII);
         }
 

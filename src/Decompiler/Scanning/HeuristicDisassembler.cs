@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -73,15 +73,15 @@ namespace Reko.Scanning
         public RtlBlock Disassemble(Address addr)
         {
             var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
-            var dasm = program.Architecture.CreateRewriter(
-                program.CreateImageReader(addr),
-                program.CreateProcessorState(),    //$TODO: use state from user.
+            var arch = program.Architecture;
+            var dasm = arch.CreateRewriter(
+                program.CreateImageReader(arch, addr),
+                arch.CreateProcessorState(),    //$TODO: use state from user.
                 binder,
                 host);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
-                RtlBlock block;
-                if (blockMap.TryGetValue(instr.Address, out block))
+                if (blockMap.TryGetValue(instr.Address, out RtlBlock block))
                 {
                     // This instruction was already disassembled before.
                     if (instr.Address.ToLinear() != block.Address.ToLinear())

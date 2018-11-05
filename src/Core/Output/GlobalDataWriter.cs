@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -81,7 +81,7 @@ namespace Reko.Core.Output
                 if (program.SegmentMap.IsValidAddress(addr))
                 {
                     formatter.Write(" = ");
-                    this.rdr = program.CreateImageReader(addr);
+                    this.rdr = program.CreateImageReader(program.Architecture, addr);
                     field.DataType.Accept(this);
                 }
             }
@@ -109,7 +109,7 @@ namespace Reko.Core.Output
                 if (program.SegmentMap.IsValidAddress(address))
                 {
                     formatter.Write(" = ");
-                    this.rdr = program.CreateImageReader(address);
+                    this.rdr = program.CreateImageReader(program.Architecture, address);
                     dataType.Accept(this);
                 }
             }

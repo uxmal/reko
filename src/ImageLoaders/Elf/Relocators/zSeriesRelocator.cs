@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -43,8 +43,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var addr = referringSection != null
                 ? referringSection.Address + rela.Offset
                 : loader.CreateAddress(rela.Offset);
-            var relR = program.CreateImageReader(addr);
-            var relW = program.CreateImageWriter(addr);
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
 
             switch (rt)
             {

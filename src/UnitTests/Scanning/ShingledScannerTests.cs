@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Scanning
             //    .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
             host.Stub(h => h.PseudoProcedure("", VoidType.Instance, null)).IgnoreArguments().Return(null);
             host.Stub(h => h.GetImport(null, null)).IgnoreArguments().Return(null);
-            host.Stub(h => h.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+            host.Stub(h => h.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
             host.Replay();
             dev.Replay();
             var frame = program.Architecture.CreateFrame();

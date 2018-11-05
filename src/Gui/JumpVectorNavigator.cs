@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -53,7 +53,7 @@ namespace Reko.Gui
 
             var dlgSvc = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
-            var instr = Program.CreateDisassembler(IndirectJumpAddress).First();
+            var instr = Program.CreateDisassembler(Program.Architecture, IndirectJumpAddress).First();
             using (var dlg = dlgSvc.CreateJumpTableDialog(Program, instr, VectorAddress, Stride))
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))

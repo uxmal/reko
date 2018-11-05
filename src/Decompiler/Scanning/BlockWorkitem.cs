@@ -66,12 +66,13 @@ namespace Reko.Scanning
         public BlockWorkitem(
             IScanner scanner,
             Program program,
+            IProcessorArchitecture arch,
             ProcessorState state,
             Address addr) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
-            this.arch = program.Architecture;   // cached since it's used heavily.
+            this.arch = arch;
             this.state = state;
             this.eval = new ExpressionSimplifier(
                 program.SegmentMap,
@@ -98,7 +99,7 @@ namespace Reko.Scanning
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
             this.vaScanner = new VarargsFormatScanner(program, frame, state, scanner.Services);
-            rtlStream = scanner.GetTrace(addrStart, state, frame)
+            rtlStream = scanner.GetTrace(arch, addrStart, state, frame)
                 .GetEnumerator();
 
             while (rtlStream.MoveNext())
@@ -416,7 +417,7 @@ namespace Reko.Scanning
             scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             if (g.Target is Address addrTarget)
             {
-                var impProc = scanner.GetImportedProcedure(addrTarget, this.ric.Address);
+                var impProc = scanner.GetImportedProcedure(this.arch, addrTarget, this.ric.Address);
                 if (impProc != null)
                 {
                     site = state.OnBeforeCall(stackReg, arch.PointerType.Size);
@@ -437,7 +438,7 @@ namespace Reko.Scanning
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
-                var trampoline = scanner.GetTrampoline(addrTarget);
+                var trampoline = scanner.GetTrampoline(blockCur.Procedure.Architecture, addrTarget);
                 if (trampoline != null)
                 {
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
@@ -543,7 +544,7 @@ namespace Reko.Scanning
             {
                 // Some image loaders generate import symbols at addresses
                 // outside of the program image. 
-                var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
+                var impProc = scanner.GetImportedProcedure(arch, addr, this.ric.Address);
                 if (impProc != null)
                 {
                     sig = impProc.Signature;
@@ -566,7 +567,7 @@ namespace Reko.Scanning
                     return true;
                 }
 
-                var callee = scanner.ScanProcedure(addr, null, state);
+                var callee = scanner.ScanProcedure(blockCur.Procedure.Architecture, addr, null, state);
                 if (callee is DispatchProcedure disp)
                 {
                     callee = ResolveDispatchProcedureCall(disp, state);
@@ -642,7 +643,7 @@ namespace Reko.Scanning
         /// <returns>True if the call was successfully inlined, false if not.</returns>
         private bool InlineCall(Address addCallee)
         {
-            var rdr = program.CreateImageReader(addCallee);
+            var rdr = program.CreateImageReader(this.arch, addCallee);
             List<RtlInstruction> inlinedInstructions = arch.InlineCall(addCallee, ric.Address + ric.Length, rdr, frame);
             if (inlinedInstructions == null)
                 return false;
@@ -1033,7 +1034,7 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.IsValidAddress(addr))
                     continue;
                 var st = state.Clone();
-                var pbase = scanner.ScanProcedure(addr, null, st);
+                var pbase = scanner.ScanProcedure(blockCur.Procedure.Architecture, addr, null, st);
                 if (pbase is Procedure pcallee)
                 {
                     program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
@@ -1168,7 +1169,7 @@ namespace Reko.Scanning
                     return null;
                 addrTarget = program.Platform.MakeAddressFromConstant(offset);
             }
-            var impEp = scanner.GetImportedProcedure(addrTarget, ric.Address);
+            var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric.Address);
             //if (impEp != null)
                 return impEp;
             //return scanner.GetInterceptedCall(addrTarget);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -167,7 +167,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var instrs = new List<MachineInstruction>();
                 var addrStart = bi.Address;
                 var addrEnd = bi.Address + bi.Size;
-                var dasm = program.CreateDisassembler(addrStart).GetEnumerator();
+                var arch = bi.Block.Procedure.Architecture;
+                var dasm = program.CreateDisassembler(arch, addrStart).GetEnumerator();
                 while (dasm.MoveNext() && dasm.Current.Address < addrEnd)
                 {
                     instrs.Add(dasm.Current);

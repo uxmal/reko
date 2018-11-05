@@ -493,9 +493,9 @@ namespace Reko.ImageLoaders.Elf
         /// <param name="gotStart"></param>
         /// <param name="gotEnd"></param>
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
-            {
+        {
             Debug.Print("== Constructing GOT entries ==");
-            var rdr = program.CreateImageReader(gotStart);
+            var rdr = program.CreateImageReader(program.Architecture, gotStart);
             while (rdr.Address < gotEnd)
             {
                 var addrGot = rdr.Address;
@@ -695,26 +695,9 @@ namespace Reko.ImageLoaders.Elf
             var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
             var addrMain = relocator.FindMainFunction(program, addrEntry);
             var symMain = EnsureEntryPoint(entryPoints, symbols, addrMain);
-            symbols = AdjustImageSymbols(symbols, relocator);
+            symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address);
+            entryPoints = entryPoints.Select(relocator.AdjustImageSymbol).ToList();
             return new RelocationResults(entryPoints, symbols);
-        }
-
-        /// <summary>
-        /// Make final adjustments to symbols before returning to decompiler.
-        /// </summary>
-        /// <remarks>
-        /// This method will adjust all odd-valued ARM symbols to be ARM Thumb symbols with properly 
-        /// aligned addresses.
-        /// </remarks>
-        private SortedList<Address,ImageSymbol> AdjustImageSymbols(SortedList<Address, ImageSymbol> symbols, ElfRelocator relocator)
-        {
-            var symbolsNew = new SortedList<Address, ImageSymbol>();
-            foreach (var sym in symbols.Values)
-            {
-                var symNew = relocator.AdjustImageSymbol(sym);
-                symbolsNew.Add(symNew.Address, symNew);
-            }
-            return symbolsNew;
         }
 
         /// <summary>

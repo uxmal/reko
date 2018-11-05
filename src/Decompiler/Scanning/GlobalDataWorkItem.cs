@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -45,7 +45,8 @@ namespace Reko.Scanning
             this.program = program;
             this.dt = dt;
             this.name = name;
-            this.rdr = program.CreateImageReader(addr);
+            var arch = program.Architecture;
+            this.rdr = program.CreateImageReader(arch, addr);
         }
 
         public override void Process()
@@ -89,7 +90,9 @@ namespace Reko.Scanning
         public void VisitFunctionType(FunctionType ft)
         {
             var addr = rdr.Address;
-            scanner.EnqueueUserProcedure(addr, ft, null);
+            //$TODO: if address is odd and we're dealing with an ARM binary,
+            // the arch should be arm-thumb.
+            scanner.EnqueueUserProcedure(program.Architecture, addr, ft, null);
         }
 
         public void VisitPrimitive(PrimitiveType pt)

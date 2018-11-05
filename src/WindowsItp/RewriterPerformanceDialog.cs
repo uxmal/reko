@@ -1,4 +1,4 @@
-﻿using Reko.Arch.Arm;
+using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -71,7 +71,7 @@ namespace Reko.WindowsItp
                 throw new NotImplementedException();
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstruction)
+            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstruction)
             {
                 if (importThunks.TryGetValue(addrThunk, out var p))
                     throw new NotImplementedException();
@@ -80,7 +80,7 @@ namespace Reko.WindowsItp
             }
 
 
-            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
                 throw new NotImplementedException();
             }

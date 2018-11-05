@@ -343,31 +343,26 @@ namespace Reko.Core
         }
        
         // Convenience functions.
-        public EndianImageReader CreateImageReader(Address addr)
+        public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
                  throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
-            return Architecture.CreateImageReader(segment.MemoryArea, addr);
+            return arch.CreateImageReader(segment.MemoryArea, addr);
         }
 
-        public ImageWriter CreateImageWriter(Address addr)
+        public ImageWriter CreateImageWriter(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
-            return Architecture.CreateImageWriter(segment.MemoryArea, addr);
+            return arch.CreateImageWriter(segment.MemoryArea, addr);
         }
 
-        public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
+        public IEnumerable<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
-            return Architecture.CreateDisassembler(
-                Architecture.CreateImageReader(segment.MemoryArea, addr));
-        }
-
-        public ProcessorState CreateProcessorState()
-        {
-            return Architecture.CreateProcessorState();
+            return arch.CreateDisassembler(
+                arch.CreateImageReader(segment.MemoryArea, addr));
         }
 
         // Mutators /////////////////////////////////////////////////////////////////
@@ -378,11 +373,11 @@ namespace Reko.Core
         /// <param name="address"></param>
         /// <param name="dataType"></param>
         /// <returns></returns>
-        public ImageMapItem AddUserGlobalItem(Address address, DataType dataType)
+        public ImageMapItem AddUserGlobalItem(IProcessorArchitecture arch, Address address, DataType dataType)
         {
             //$TODO: if user enters a segmented address, we need to 
             // place the item in the respective globals struct.
-            var size = GetDataSize(address, dataType);
+            var size = GetDataSize(arch, address, dataType);
             var item = new ImageMapItem
             {
                 Address = address,
@@ -446,7 +441,7 @@ namespace Reko.Core
             }
         }
 
-        public uint GetDataSize(Address addr, DataType dt)
+        public uint GetDataSize(IProcessorArchitecture arch, Address addr, DataType dt)
         {
             var strDt = dt as StringType;
             if (strDt == null)
@@ -454,7 +449,7 @@ namespace Reko.Core
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = this.CreateImageReader(addr);
+                var rdr = this.CreateImageReader(arch, addr);
                 while (rdr.IsValid && !rdr.ReadNullCharTerminator(strDt.ElementType))
                     ;
                 return (uint)(rdr.Address - addr);
@@ -503,13 +498,13 @@ namespace Reko.Core
         /// <returns>
         /// The procedure, located at address <paramref name="addr"/>.
         /// </returns>
-        public Procedure EnsureProcedure(Address addr, string procedureName)
+        public Procedure EnsureProcedure(IProcessorArchitecture arch, Address addr, string procedureName)
         {
             if (this.Procedures.TryGetValue(addr, out Procedure proc))
                 return proc;
 
             var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
-            proc = new Procedure(this.Architecture, generatedName, addr, this.Architecture.CreateFrame());
+            proc = new Procedure(arch, generatedName, addr, arch.CreateFrame());
             if (procedureName == null && this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
                 procedureName = sym.Name;
@@ -571,7 +566,7 @@ namespace Reko.Core
             return up;
         }
 
-        public GlobalDataItem_v2 ModifyUserGlobal(Address address, SerializedType dataType, string name)
+        public GlobalDataItem_v2 ModifyUserGlobal(IProcessorArchitecture arch, Address address, SerializedType dataType, string name)
         {
             if (!User.Globals.TryGetValue(address, out var gbl))
             {
@@ -589,7 +584,7 @@ namespace Reko.Core
 
             var tlDeser = CreateTypeLibraryDeserializer();
             var dt = dataType.Accept(tlDeser);
-            var size = GetDataSize(address, dt);
+            var size = GetDataSize(arch, address, dt);
             var item = new ImageMapItem
             {
                 Address = address,

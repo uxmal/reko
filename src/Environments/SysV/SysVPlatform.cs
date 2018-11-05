@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -171,10 +171,11 @@ namespace Reko.Environments.SysV
             }
             if (addrTarget == null)
                 return null;
-            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
+            var arch = this.Architecture;
+            ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, rtlc.Address);
             if (proc != null)
                 return proc;
-            return host.GetInterceptedCall(addrTarget);
+            return host.GetInterceptedCall(arch, addrTarget);
         }
 
         public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -96,12 +96,12 @@ namespace Reko.UnitTests.Arch.Arm
                 throw new NotImplementedException();
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
+            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
             }
 
-            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
                 throw new NotImplementedException();
             }

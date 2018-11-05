@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -202,7 +202,7 @@ namespace Reko.Environments.C64
                     new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,
                 new C64Platform(Services, null));
-            var sym = ImageSymbol.Procedure(arch, image.BaseAddress, state: program.CreateProcessorState());
+            var sym = ImageSymbol.Procedure(arch, image.BaseAddress, state: arch.CreateProcessorState());
             program.EntryPoints.Add(sym.Address, sym);
             return program;
         }

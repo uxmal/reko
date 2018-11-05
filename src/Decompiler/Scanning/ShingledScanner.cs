@@ -350,10 +350,10 @@ namespace Reko.Scanning
         {
             if (!pool.TryGetValue(addr, out var e))
             {
-                var rdr = program.CreateImageReader(addr);
                 var arch = program.Architecture;
+                var rdr = program.CreateImageReader(arch, addr);
                 var rw = arch.CreateRewriter(
-                    program.CreateImageReader(addr),
+                    program.CreateImageReader(arch, addr),
                     arch.CreateProcessorState(),
                     storageBinder,
                     this.host);
@@ -595,7 +595,8 @@ namespace Reko.Scanning
         {
             //$TODO: this assumes pointers must be aligned. Not the case for older machines.
             uint ptrSize = (uint)program.Platform.PointerType.Size;
-            var rdr = program.CreateImageReader(seg.Address);
+            var arch = program.Architecture;
+            var rdr = program.CreateImageReader(arch, seg.Address);
             Constant c;
             while (rdr.TryRead(program.Platform.PointerType, out c))
             {
@@ -646,7 +647,7 @@ namespace Reko.Scanning
             var addr = segment.Address + a;
             if (!segment.IsInRange(addr) || !segment.MemoryArea.IsValidAddress(addr))
                 return null;
-            var dasm = program.CreateDisassembler(addr);
+            var dasm = program.CreateDisassembler(program.Architecture, addr);
             return dasm.FirstOrDefault();
         }
 

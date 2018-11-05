@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -100,8 +100,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint P = (uint)rela.Offset;
             var addr = Address.Ptr32(P);
             uint PP = P;
-            var relR = program.CreateImageReader(addr);
-            var relW = program.CreateImageWriter(addr);
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
 
             var rt = (PpcRt)(rela.Info & 0xFF);
             switch (rt)

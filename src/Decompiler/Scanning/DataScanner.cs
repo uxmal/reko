@@ -63,7 +63,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public void EnqueueProcedure(Address addr)
+        public void EnqueueProcedure(IProcessorArchitecture arch, Address addr)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void EnqueueUserProcedure(Address addr, FunctionType sig, string name)
+        public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string name)
         {
             if (procedures.ContainsKey(addr))
                 return;
@@ -85,9 +85,9 @@ namespace Reko.Scanning
                 return;
             //$BUG: this needs to be fixed. If in an ARM binary, we scan a code 
             // address that has an odd address, we need to make it Thumb.
-            procedures.Add(addr, ImageSymbol.Procedure(Program.Architecture, addr, name, sig));
+            procedures.Add(addr, ImageSymbol.Procedure(arch, addr, name, sig));
             sr.KnownProcedures.Add(addr);
-            var proc = Program.EnsureProcedure(addr, name);
+            var proc = Program.EnsureProcedure(arch, addr, name);
             proc.Signature = sig;
         }
     }

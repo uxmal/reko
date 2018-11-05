@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -159,15 +159,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             BuildAddressTable();
         }
 
-
-
         private void Entries_SelectedIndexChanged(object sender, EventArgs e)
         {
             var addr = (Address)dlg.Entries.SelectedItem;
             string text;
             if (addr != null)
             {
-                var dasm = dlg.Program.CreateDisassembler(addr);
+                var dasm = dlg.Program.CreateDisassembler(dlg.Program.Architecture, addr);
                 text = string.Join(
                     Environment.NewLine,
                     dasm.TakeWhile(i => (i.InstructionClass & InstructionClass.Transfer) == 0)
