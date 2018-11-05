@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -384,8 +384,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
                 case Opcode.qsub: RewriteQAddSub(m.ISub); break;
                 case Opcode.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
-                case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
-                case Opcode.push: case Opcode.push_w: RewritePush(); break;
+                case Opcode.pop: RewritePop(); break;
+                case Opcode.push: RewritePush(); break;
                 case Opcode.ror: RewriteShift(Ror); break;
                 case Opcode.rrx: RewriteShift(Rrx); break;
                 case Opcode.rev: RewriteRev(); break;

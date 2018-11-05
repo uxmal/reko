@@ -88,6 +88,7 @@ namespace Reko.Arch.Arm.AArch32
             public List<MachineOperand> ops = new List<MachineOperand>();
             public ArmCondition cc = ArmCondition.AL;
             public bool updateFlags = false;
+            public bool wide = false;
             public bool writeback = false;
             public Opcode shiftType = Opcode.Invalid;
             public MachineOperand shiftValue = null;
@@ -107,6 +108,7 @@ namespace Reko.Arch.Arm.AArch32
                     ops = ops.ToArray(),
                     condition = cc,
                     SetFlags = updateFlags,
+                    Wide = wide,
                     Writeback = writeback,
                     ShiftType = shiftType,
                     ShiftValue = shiftValue,
@@ -134,6 +136,10 @@ namespace Reko.Arch.Arm.AArch32
                 case '.':
                     // This instruction always sets the flags.
                     state.updateFlags = true;
+                    continue;
+                case 'q':
+                    // This is the wide form of an ARM Thumb instruction.
+                    state.wide = true;
                     continue;
                 case ':':
                     // This instructions sets the flags if it's outside an IT block.
@@ -408,6 +414,7 @@ namespace Reko.Arch.Arm.AArch32
                 SetFlags = state.updateFlags,
                 ops = state.ops.ToArray(),
                 Writeback = state.writeback,
+                Wide = state.wide,
                 ShiftType = state.shiftType,
                 ShiftValue = state.shiftValue,
                 vector_data = state.vectorData,
@@ -1591,28 +1598,28 @@ namespace Reko.Arch.Arm.AArch32
             var LoadStoreUnsignedRegisterOffset = Mask(4 + 16, 7,
                 Instr(Opcode.strb, "R12,[R16,R0<4:2,b]"),
                 Select((16, 4), n => n != 0xF,
-                    Instr(Opcode.ldrb_w, "R12,[R16,R0<4:2,b]"),
+                    Instr(Opcode.ldrb, "q R12,[R16,R0<4:2,b]"),
                     Instr(Opcode.pld, "*")),
                 Instr(Opcode.strh, "R12,[R16,R0<4:2,h]"),
                 Select((16, 4), n => n != 0xF,
-                    Instr(Opcode.ldrh_w, "R12,[R16,R0<4:2,h]"),
+                    Instr(Opcode.ldrh, "q R12,[R16,R0<4:2,h]"),
                     Instr(Opcode.pld, "*")),
-                Instr(Opcode.str_w, "R12,[R16,R0<4:2,w]"),
-                Instr(Opcode.ldr_w, "R12,[R16,R0<4:2,w]"),
+                Instr(Opcode.str, "q R12,[R16,R0<4:2,w]"),
+                Instr(Opcode.ldr, "q R12,[R16,R0<4:2,w]"),
                 invalid,
                 invalid);
 
             var LoadStoreUnsignedNegativeImm = Mask(4 + 16, 7,
                 Instr(Opcode.strb, "R12,[R16,i0:8,bx]"),
                 Select((16, 4), n => n != 0xF,
-                    Instr(Opcode.ldrb_w, "R12,[R16,i0:8,bx]"),
+                    Instr(Opcode.ldrb, "q R12,[R16,i0:8,bx]"),
                     Instr(Opcode.pld, "*")),
                 Instr(Opcode.strh, "R12,[R16,i0:8,hx]"),
                 Select((16, 4), n => n != 0xF,
-                    Instr(Opcode.ldrh_w, "R12,[R16,i0:8,hx]"),
+                    Instr(Opcode.ldrh, "q R12,[R16,i0:8,hx]"),
                     Instr(Opcode.pld, "*")),
-                Instr(Opcode.str_w, "R12,[R16,i0:8,wx]"),
-                Instr(Opcode.ldr_w, "R12,[R16,i0:8,wx]"),
+                Instr(Opcode.str, "q R12,[R16,i0:8,wx]"),
+                Instr(Opcode.ldr, "q R12,[R16,i0:8,wx]"),
                 invalid,
                 invalid);
 
@@ -2800,15 +2807,15 @@ namespace Reko.Arch.Arm.AArch32
 
             var DataProcessingShiftedRegister = Mask(21, 0xF,
                 Mask(20, 1,
-                    Instr(Opcode.and_w, "R8,R16,R0,Si4:2;12:3:6:2"),
+                    Instr(Opcode.and, "q R8,R16,R0,Si4:2;12:3:6:2"),
                     Nyi("DataProcessingShiftedRegister_opc0 s=1")),
                 Mask(20, 1,
-                    Instr(Opcode.bic_w, "R8,R16,R0,Si4:2;12:3:6:2"),
-                    Instr(Opcode.bics_w, "R8,R16,R0,Si4:2;12:3:6:2")),
+                    Instr(Opcode.bic, "q R8,R16,R0,Si4:2;12:3:6:2"),
+                    Instr(Opcode.bic, ".q R8,R16,R0,Si4:2;12:3:6:2")),
                 Mask(20, 1,
                     Select((16,4), n => n != 15,
                         Instr(Opcode.orr, "R8,R16,R0,Si4:2;12:3:6:2"),
-                        Instr(Opcode.mov_w, "R8,R0,Si4:2;12:3:6:2")),
+                        Instr(Opcode.mov, "q R8,R0,Si4:2;12:3:6:2")),
                     Select((16,4), n => n != 15,
                         Instr(Opcode.orr, "*."),
                         Instr(Opcode.mov, "*."))),
@@ -2833,7 +2840,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(20, 1,
                     Select((16, 4), n => n != 13,
-                        Instr(Opcode.add_w, "R8,R16,R0,Si4:2;12:3:6:2"),
+                        Instr(Opcode.add, "q R8,R16,R0,Si4:2;12:3:6:2"),
                         Instr(Opcode.add, "S*")),
                     Select((8,4), n => n != 15,
                         Select((16,4), n => n != 13,
@@ -2999,7 +3006,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var Hints = Mask(4, 0xF,
                 Mask(0, 0xF,
-                    Instr(Opcode.nop_w, ""),
+                    Instr(Opcode.nop, "q"),
                     Instr(Opcode.yield, "*"),
                     Instr(Opcode.wfe, "*"),
                     Instr(Opcode.wfi, "*"),

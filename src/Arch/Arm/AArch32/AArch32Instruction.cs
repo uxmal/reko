@@ -34,18 +34,6 @@ namespace Reko.Arch.Arm.AArch32
         // Specially rendered opcodes
         private static readonly Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
         {
-            { Opcode.add_w, "add.w" },
-            { Opcode.and_w, "and.w" },
-            { Opcode.bic_w, "bic.w" },
-            { Opcode.bics_w, "bics.w" },
-            { Opcode.ldr_w, "ldr.w" },
-            { Opcode.ldrb_w, "ldrb.w" },
-            { Opcode.ldrh_w, "ldrh.w" },
-            { Opcode.mov_w, "mov.w" },
-            { Opcode.nop_w, "nop.w" },
-            { Opcode.pop_w, "pop.w" },
-            { Opcode.push_w, "push.w" },
-            { Opcode.str_w, "str.w" },
         };
 
         // Block data transfer opcodes that affect the rendering of the first operand.
@@ -251,6 +239,10 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     sb.AppendFormat(".{0}", s);
                 }
+                else if (Wide)
+                {
+                    sb.Append(".w");
+                }
             }
             writer.WriteOpcode(sb.ToString());
             return ops;
@@ -392,6 +384,7 @@ namespace Reko.Arch.Arm.AArch32
         public bool Writeback;
         public bool SetFlags;
         public bool UserStmLdm;
+        public bool Wide;               // (Thumb only) wide form of instruction.
         public Opcode ShiftType;
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;

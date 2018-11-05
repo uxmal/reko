@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -342,7 +342,8 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     return new AArch32Instruction
                     {
-                        opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
+                        opcode = l != 0 ? Opcode.pop : Opcode.push,
+                        Wide = true,
                         Writeback = w,
                         ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
                     };
