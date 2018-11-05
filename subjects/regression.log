@@ -3270,24 +3270,5 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
-*** regressions\snowman-82\flags
-0000000000000000: error: The address 0000000000000000 is invalid.
-0000000000000FA6: warning: Procedure fn0000000000000F9E previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.NotImplementedException: The method or operation is not implemented.
-   at Reko.Environments.MacOS.OSX.MacOSXPlatform.CreateImplicitArgumentRegisters() in D:\dev\uxmal\reko\master\src\Environments\MacOS\OSX\MacOSXPlatform.cs:line 44
-   at Reko.Analysis.GlobalCallRewriter.EnsureSignature(Procedure proc, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\GlobalCallRewriter.cs:line 151
-   at Reko.Analysis.GlobalCallRewriter.Rewrite(Program program, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\GlobalCallRewriter.cs:line 121
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 235
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 165
 === regressions\snowman-83\flags3
-*** regressions\snowman-83\flags3
-0000000000000000: error: The address 0000000000000000 is invalid.
-error: An error occurred during decompilation. System.NotImplementedException: The method or operation is not implemented.
-   at Reko.Environments.MacOS.OSX.MacOSXPlatform.CreateImplicitArgumentRegisters() in D:\dev\uxmal\reko\master\src\Environments\MacOS\OSX\MacOSXPlatform.cs:line 44
-   at Reko.Analysis.GlobalCallRewriter.EnsureSignature(Procedure proc, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\GlobalCallRewriter.cs:line 151
-   at Reko.Analysis.GlobalCallRewriter.Rewrite(Program program, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\GlobalCallRewriter.cs:line 121
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 235
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 165
-Decompiled 55 binaries in 104.54 seconds ---
+Decompiled 55 binaries in 88.05 seconds ---

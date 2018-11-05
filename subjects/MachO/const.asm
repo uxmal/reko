@@ -1,13 +1,8 @@
 ;;; Segment __TEXT,__text (00000000)
+00000000 55 89 E5 E8                                     U...           
 
-;; fn00000000: 00000000
-fn00000000 proc
-	push	ebp
-	mov	ebp,esp
-	call	00000008
-
-;; fn00000004: 00000004
-fn00000004 proc
+;; _f: 00000004
+_f proc
 	add	[eax],al
 	add	[eax],al
 	pop	eax

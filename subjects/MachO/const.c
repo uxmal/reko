@@ -4,13 +4,8 @@
 
 #include "const.h"
 
-// 00000000: void fn00000000()
-void fn00000000()
-{
-}
-
-// 00000004: void fn00000004(Register (ptr32 byte) eax, Stack word32 dwArg00, Stack word32 dwArg04)
-void fn00000004(byte * eax, word32 dwArg00, word32 dwArg04)
+// 00000004: void _f(Register (ptr32 byte) eax, Stack word32 dwArg00, Stack word32 dwArg04)
+void _f(byte * eax, word32 dwArg00, word32 dwArg04)
 {
 	*eax += al;
 	*eax += al;

@@ -1,0 +1,63 @@
+void foo(byte sil, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi sil
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx eax ecx rax rcx
+// Preserved: rsp
+foo_entry:
+// DataOut: rdi sil
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+l0000000000000F9E:
+	branch ((byte) (uint64) ((word32) (uint64) Mem0[rdi:word32] >>u 0x0000000A) ^ sil) == 0x00 l0000000000000FB4
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+l0000000000000FA6_thunk_bar:
+	bar()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp rcx:<invalid> cl:cl ^ sil
+
+l0000000000000FAC:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp rcx:<invalid> cl:cl ^ sil
+
+foo_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp rcx:<invalid> cl:cl ^ sil rax:<invalid>
+
+
+
+void bar()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax eax rax
+// Preserved: rsp
+bar_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+l0000000000000FB4:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp
+
+bar_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:fp rax:0x0000000000000000
+
+
+
