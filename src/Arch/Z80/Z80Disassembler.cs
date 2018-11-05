@@ -333,7 +333,7 @@ namespace Reko.Arch.Z80
 
         private class CbPrefixOpRec : OpRec
         {
-            static Opcode[] cbOpcodes = new Opcode[] {
+            static readonly Opcode[] cbOpcodes = new Opcode[] {
                 Opcode.rlc,
                 Opcode.rrc,
                 Opcode.rl,
@@ -344,7 +344,7 @@ namespace Reko.Arch.Z80
                 Opcode.srl,
             };
 
-            static string[] cbFormats = new string[] {
+            static readonly string[] cbFormats = new string[] {
                 "R", "R", "R", "R", "R", "R", "Mb", "R", 
             };
 
@@ -409,7 +409,7 @@ namespace Reko.Arch.Z80
         /// http://wikiti.brandonw.net/index.php?title=Z80_Instruction_Set
         /// http://www.zophar.net/fileuploads/2/10807fvllz/z80-1.txt
         /// </summary>
-        private static OpRec [] oprecs = new OpRec[] 
+        private static readonly OpRec [] oprecs = new OpRec[] 
         {
             // 00
             new SingleByteOpRec(Opcode.nop, Opcode.nop, ""),
@@ -716,7 +716,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x38"),
         };
 
-        private static OpRec[] edOprecs = new OpRec[] 
+        private static readonly OpRec[] edOprecs = new OpRec[] 
         {
             // 40
             new SingleByteOpRec(Opcode.illegal, Opcode.@in, "r,[c"), 

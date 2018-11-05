@@ -119,12 +119,6 @@ namespace Reko.Typing
             return ptr;
         }
 
-        public DataType VisitQualifiedType(QualifiedType qt)
-        {
-            qt.DataType = qt.DataType.Accept(this);
-            return qt;
-        }
-
         public DataType VisitReference(ReferenceTo refTo)
         {
             refTo.Referent = refTo.Referent.Accept(this);

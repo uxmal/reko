@@ -30,6 +30,17 @@ namespace Reko.Core.Lib
     /// </summary>
     public static class Bits
     {
+        /// <summary>
+        /// Returns true if the bit at position <paramref name="pos"/> is set.
+        /// </summary>
+        public static bool IsBitSet(uint u, int pos)
+        {
+            return ((u >> pos) & 1) != 0;
+        }
+
+        /// <summary>
+        /// Returns true if exactly one bit of the word is set.
+        /// </summary>
         public static bool IsSingleBitSet(uint w)
         {
             return w != 0 && (w & (w - 1)) == 0;
@@ -56,6 +67,15 @@ namespace Reko.Core.Lib
             return r;
         }
 
+        public static uint SignExtend(uint w, int b)
+        {
+            uint r;      // resulting sign-extended number
+            uint m = 1u << (b - 1); // mask can be pre-computed if b is fixed
+            w = w & ((1u << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+            r = (w ^ m) - m;
+            return r;
+        }
+
         public static ulong ZeroExtend(ulong w, int b)
         {
             ulong m = (1Lu << b) - 1;
@@ -76,5 +96,53 @@ namespace Reko.Core.Lib
             u = (u & 0x00000000FFFFFFFFUL) + ((u >> 32) & 0x0000000FFFFFFFFUL);
             return (int)u;
         }
+
+        public static uint RotateR32(uint u, int s)
+        {
+            return (u << (32 - s)) | (u >> s);
+        }
+
+        /// <summary>
+        /// Rotate the <paramref name="wordSize"/> least significant bits of 
+        /// the unsigned value <paramref name="u"/> to the right by <paramref name="s"/>
+        /// bits.
+        /// </summary>
+        public static ulong RotateR(int wordSize, ulong u, int s)
+        {
+            var mask = (1ul << wordSize) - 1;
+            u &= mask;
+            u = (u << (wordSize - s)) | (u >> s);
+            return u & mask;
+        }
+
+        public static int CountLeadingZeros(int wordSize, ulong x)
+        {
+            int n = wordSize;
+            ulong y;
+
+            y = x >> 32; if (y != 0) { n = n - 32; x = y; }
+            y = x >> 16; if (y != 0) { n = n - 16; x = y; }
+            y = x >> 8; if (y != 0) { n = n - 8; x = y; }
+            y = x >> 4; if (y != 0) { n = n - 4; x = y; }
+            y = x >> 2; if (y != 0) { n = n - 2; x = y; }
+            y = x >> 1; if (y != 0) return n - 2;
+            var leading = n - (int) x;
+            return leading;
+        }
+
+        /// <summary>
+        /// Change the endianness of <paramref name="u"/>.
+        /// </summary>
+        public static uint Reverse(uint u)
+        {
+            var uNew =
+                (u >> 24) |
+                (((u >> 16) & 0xFF) << 8) |
+                (((u >> 8) & 0xFF) << 16) |
+                ((u & 0xFF) << 24);
+            return uNew;
+        }
+
+  
     }
 }

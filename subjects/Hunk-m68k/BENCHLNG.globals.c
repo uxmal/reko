@@ -12,7 +12,7 @@ union Eq_31 g_u12BC =
 	{
 		0x64
 	};
-Eq_4397 g_a28C5[] = 
+Eq_4395 g_a28C5[] = 
 	{
 	};
 ptr32 g_ptr3E20 = 0x00000000;
@@ -26,13 +26,13 @@ ui32 g_dw3E3C = 0x05050505;
 word32 g_dw3E48 = 0x05050505;
 ptr32 g_ptr3E4C = 0x06060606;
 word32 g_dw3E50 = 0x06060606;
-struct Eq_3178 * g_ptr3E54 = &g_t6060606;
+struct Eq_3176 * g_ptr3E54 = &g_t6060606;
 word32 g_dw3E58 = 0x06060606;
-Eq_3694 g_a3E5C[] = 
+Eq_3692 g_a3E5C[] = 
 	{
 	};
 Eq_4 g_t4000;
 Eq_69 g_t10202;
 Eq_69 g_t3030303;
-Eq_3178 g_t6060606;
+Eq_3176 g_t6060606;
 

@@ -1,0 +1,55 @@
+void fn00000000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: ah al ax eax rax
+// Preserved: ebp esp
+fn00000000_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l00000000:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn00000000_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> ebp:ebp -4(fp):ebp
+
+
+
+void fn00000004(word32 eax, word32 dwArg00, word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  al eax
+// LiveOut:
+// Trashed: SCZO ah al ax bp bpl eax ebp esp rax rbp rsp sp spl
+// Preserved:
+// Stack args: Stack +0000(32)
+fn00000004_entry:
+// DataOut: al eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0000(32)
+
+l00000004:
+	Mem6[eax:byte] = Mem0[eax:byte] + al
+	Mem8[eax:byte] = Mem6[eax:byte] + al
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+fn00000004_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 8 eax:<invalid> ebp:<invalid>
+
+
+

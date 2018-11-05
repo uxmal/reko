@@ -309,8 +309,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void MarkAndScanProcedure()
         {
-            AddressRange addrRange;
-            if (!TryGetSelectedAddressRange(out addrRange))
+            if (!TryGetSelectedAddressRange(out var addrRange))
                 return;
             var address = new ProgramAddress(program, addrRange.Begin);
             services.RequireService<ICommandFactory>().MarkProcedure(address).Do();
@@ -342,8 +341,7 @@ namespace Reko.UserInterfaces.WindowsForms
         /// <returns></returns>
         private bool CopySelectionToClipboard()
         {
-            AddressRange range;
-            if (!TryGetSelectedAddressRange(out range))
+            if (!TryGetSelectedAddressRange(out var range))
                 return true;
             if (control.MemoryView.Focused)
             {
@@ -351,7 +349,11 @@ namespace Reko.UserInterfaces.WindowsForms
                 var dumper = new Dumper(decompiler.Project.Programs.First());
                 var sb = new StringWriter();
                 dumper.DumpData(control.MemoryView.SegmentMap, range, new TextFormatter(sb));
-                Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
+                var text = sb.ToString();
+                if (text.Length > 0)
+                {
+                    Clipboard.SetText(text);       //$TODO: abstract this.
+                }
             }
             return true;
         }
@@ -408,8 +410,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var dataType = parser.Parse(userText);
             if (dataType == null)
                 return null;
-            var arr = dataType as ArrayType;
-            if (arr != null && arr.ElementType.Size != 0)
+            if (dataType is ArrayType arr && arr.ElementType.Size != 0)
             {
                 var range = control.MemoryView.GetAddressRange();
                 if (range.IsValid)
@@ -514,8 +515,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private UserCallData GetUserCallDataFromAddress(Address addr)
         {
-            UserCallData ucd;
-            if (!program.User.Calls.TryGetValue(addr, out ucd))
+            if (!program.User.Calls.TryGetValue(addr, out UserCallData ucd))
             {
                 ucd = new UserCallData { Address = addr };
             }
@@ -550,10 +550,9 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.MemoryView.SelectedAddress = addr;
             this.Control.MemoryView.TopAddress = addr;
 
-            ImageSegment seg;
-            if (program.SegmentMap.TryFindSegment(addr, out seg))
+            if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
             {
-                this.Control.DisassemblyView.Model  = new DisassemblyTextModel(program, seg);
+                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, seg);
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }

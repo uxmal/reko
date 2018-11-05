@@ -50,13 +50,15 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
             switch (instrCurr.Opcode)
             {
-                default:
-                    throw new AddressCorrelatedException(addr, $"Rewriting of PIC16 instruction '{instrCurr.Opcode}' is not implemented yet.");
-
-                case Opcode.invalid:
-                case Opcode.unaligned:
-                    m.Invalid();
-                    break;
+            default:
+                host.Warn(
+                    instrCurr.Address,
+                    $"PIC16 instruction {instrCurr.Opcode}' is not supported yet.");
+                goto case Opcode.invalid;
+            case Opcode.invalid:
+            case Opcode.unaligned:
+                m.Invalid();
+                break;
 
                 case Opcode.ADDLW:
                     Rewrite_ADDLW();

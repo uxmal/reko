@@ -60,7 +60,11 @@ namespace Reko.Core.Expressions
 
         public Expression VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(appl, original))
+                return replacement;
+            var args = appl.Arguments.Select(a => a.Accept(this)).ToArray();
+            var fn = appl.Procedure;
+            return new Application(fn, appl.DataType, args);
         }
 
         public Expression VisitArrayAccess(ArrayAccess acc)
@@ -92,7 +96,10 @@ namespace Reko.Core.Expressions
 
         public Expression VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(cof, original))
+                return replacement;
+            var expr = cof.Expression.Accept(this);
+            return new ConditionOf(expr);
         }
 
         public Expression VisitConstant(Constant c)

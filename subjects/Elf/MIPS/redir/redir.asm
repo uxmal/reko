@@ -16,7 +16,7 @@
 ; DT_MIPS_RLD_MAP      10000840
 ; DT_DEBUG             00000000
 ; DT_PLTGOT            10000870
-; DT_MIPS_RLD_VERSION         1
+; DT_MIPS_RLD_VERSION  00000001
 ; DT_MIPS_FLAGS        00000002
 ; DT_MIPS_BASE_ADDRESS 00400000
 ; DT_MIPS_LOCAL_GOTNO         7
@@ -84,63 +84,402 @@ l00400284:
 	beq	r0,r0,00400284
 	nop
 0040028C                                     00 00 00 00             ....
-00400290 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 AC ......x!. ..$...
-004002A0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A7 ......x!. ..$...
-004002B0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A6 ......x!. ..$...
-004002C0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A5 ......x!. ..$...
-004002D0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A2 ......x!. ..$...
-004002E0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A1 ......x!. ..$...
-004002F0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 A0 ......x!. ..$...
-00400300 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 98 ......x!. ..$...
-00400310 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 96 ......x!. ..$...
-00400320 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 95 ......x!. ..$...
-00400330 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 92 ......x!. ..$...
-00400340 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 90 ......x!. ..$...
-00400350 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 8F ......x!. ..$...
-00400360 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 8E ......x!. ..$...
-00400370 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 8A ......x!. ..$...
-00400380 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 89 ......x!. ..$...
-00400390 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 86 ......x!. ..$...
-004003A0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 81 ......x!. ..$...
-004003B0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 80 ......x!. ..$...
-004003C0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 7F ......x!. ..$...
-004003D0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 7C ......x!. ..$..|
-004003E0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 79 ......x!. ..$..y
-004003F0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 78 ......x!. ..$..x
-00400400 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 74 ......x!. ..$..t
-00400410 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 73 ......x!. ..$..s
-00400420 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 72 ......x!. ..$..r
-00400430 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 71 ......x!. ..$..q
-00400440 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 6B ......x!. ..$..k
-00400450 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 6A ......x!. ..$..j
-00400460 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 68 ......x!. ..$..h
-00400470 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 66 ......x!. ..$..f
-00400480 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 65 ......x!. ..$..e
-00400490 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 63 ......x!. ..$..c
-004004A0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 5E ......x!. ..$..^
-004004B0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 5B ......x!. ..$..[
-004004C0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 57 ......x!. ..$..W
-004004D0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 56 ......x!. ..$..V
-004004E0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 54 ......x!. ..$..T
-004004F0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 52 ......x!. ..$..R
-00400500 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 50 ......x!. ..$..P
-00400510 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 4F ......x!. ..$..O
-00400520 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 4A ......x!. ..$..J
-00400530 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 47 ......x!. ..$..G
-00400540 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 44 ......x!. ..$..D
-00400550 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 43 ......x!. ..$..C
-00400560 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 41 ......x!. ..$..A
-00400570 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 3F ......x!. ..$..?
-00400580 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 39 ......x!. ..$..9
-00400590 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 38 ......x!. ..$..8
-004005A0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 36 ......x!. ..$..6
-004005B0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 35 ......x!. ..$..5
-004005C0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 34 ......x!. ..$..4
-004005D0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 31 ......x!. ..$..1
-004005E0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 2A ......x!. ..$..*
-004005F0 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 27 ......x!. ..$..'
-00400600 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 26 ......x!. ..$..&
-00400610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+;; strcpy: 00400290
+strcpy proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000AC
+
+;; printf: 004002A0
+printf proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000A7
+
+;; recv: 004002B0
+recv proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000A6
+
+;; connect: 004002C0
+connect proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000A5
+
+;; strerror: 004002D0
+strerror proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000A2
+
+;; __xpg_basename: 004002E0
+__xpg_basename proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000A1
+
+;; snprintf: 004002F0
+snprintf proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+000000A0
+
+;; getpid: 00400300
+getpid proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000098
+
+;; fgets: 00400310
+fgets proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000096
+
+;; memcpy: 00400320
+memcpy proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000095
+
+;; tolower: 00400330
+tolower proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000092
+
+;; malloc: 00400340
+malloc proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000090
+
+;; vsnprintf: 00400350
+vsnprintf proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008F
+
+;; strtoul: 00400360
+strtoul proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008E
+
+;; socket: 00400370
+socket proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008A
+
+;; select: 00400380
+select proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000089
+
+;; fflush: 00400390
+fflush proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000086
+
+;; strncasecmp: 004003A0
+strncasecmp proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000081
+
+;; bzero: 004003B0
+bzero proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000080
+
+;; send: 004003C0
+send proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000007F
+
+;; accept: 004003D0
+accept proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000007C
+
+;; rename: 004003E0
+rename proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000079
+
+;; strrchr: 004003F0
+strrchr proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000078
+
+;; fprintf: 00400400
+fprintf proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000074
+
+;; strcat: 00400410
+strcat proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000073
+
+;; bind: 00400420
+bind proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000072
+
+;; inet_addr: 00400430
+inet_addr proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000071
+
+;; signal: 00400440
+signal proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000006B
+
+;; read: 00400450
+read proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000006A
+
+;; strncmp: 00400460
+strncmp proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000068
+
+;; strncpy: 00400470
+strncpy proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000066
+
+;; unlink: 00400480
+unlink proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000065
+
+;; strcasecmp: 00400490
+strcasecmp proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000063
+
+;; listen: 004004A0
+listen proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000005E
+
+;; fork: 004004B0
+fork proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000005B
+
+;; gettimeofday: 004004C0
+gettimeofday proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000057
+
+;; fopen: 004004D0
+fopen proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000056
+
+;; ftell: 004004E0
+ftell proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000054
+
+;; fclose: 004004F0
+fclose proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000052
+
+;; inet_ntoa: 00400500
+inet_ntoa proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000050
+
+;; time: 00400510
+time proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000004F
+
+;; strcspn: 00400520
+strcspn proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000004A
+
+;; strsep: 00400530
+strsep proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000047
+
+;; getsockopt: 00400540
+getsockopt proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000044
+
+;; strftime: 00400550
+strftime proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000043
+
+;; __errno_location: 00400560
+__errno_location proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000041
+
+;; exit: 00400570
+exit proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000003F
+
+;; gmtime: 00400580
+gmtime proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000039
+
+;; strspn: 00400590
+strspn proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000038
+
+;; strlen: 004005A0
+strlen proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000036
+
+;; __uClibc_start_main: 004005B0
+__uClibc_start_main proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000035
+
+;; toupper: 004005C0
+toupper proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000034
+
+;; strchr: 004005D0
+strchr proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000031
+
+;; close: 004005E0
+close proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000002A
+
+;; strpbrk: 004005F0
+strpbrk proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000027
+
+;; free: 00400600
+free proc
+	lw	r25,-7FF0(r28)
+	addu	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000026
+	nop
+	nop
+	nop
+	nop
 
 ;; __do_global_dtors_aux: 00400620
 __do_global_dtors_aux proc
@@ -12551,7 +12890,9 @@ client_check_activ_GOT		; 10000898
 	dd	0x00403840
 close_GOT		; 1000089C
 	dd	0x004005E0
-100008A0 10 00 0A AC 08 11 F2 60                         .......`       
+100008A0 10 00 0A AC                                     ....           
+__register_frame_info_GOT		; 100008A4
+	dd	0x0811F260
 slist_destroy_GOT		; 100008A8
 	dd	0x004076A8
 get_a_line_GOT		; 100008AC
@@ -12679,7 +13020,8 @@ __pack_f_GOT		; 100009AC
 	dd	0x004093E0
 client_send_request_GOT		; 100009B0
 	dd	0x00402EF8
-100009B4             08 11 F2 60                             ...`       
+__deregister_frame_info_GOT		; 100009B4
+	dd	0x0811F260
 inet_addr_GOT		; 100009B8
 	dd	0x00400430
 bind_GOT		; 100009BC

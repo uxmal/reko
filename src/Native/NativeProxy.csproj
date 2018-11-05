@@ -74,8 +74,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -84,8 +84,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
-    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
+    <OutputPath>bin\x64\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -94,8 +94,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
-    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
+    <OutputPath>bin\x86\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

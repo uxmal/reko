@@ -141,12 +141,11 @@ namespace Reko.Arch.PowerPC
         {
             rtlc = RtlClass.ConditionalTransfer;
             var ctr = binder.EnsureRegister(arch.ctr);
-            var ccOp = instr.op1 as ConditionOperand;
             Expression dest;
 
             Expression cond = decOp(ctr, Constant.Zero(ctr.DataType));
 
-            if (ccOp != null)
+            if (instr.op1 is ConditionOperand ccOp)
             {
                 Expression test = m.Test(
                     CcFromOperand(ccOp),

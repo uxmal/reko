@@ -48,10 +48,10 @@ namespace Reko.UnitTests.Structure
 
 			LoadId(r3, r1);
 			Assign(r2, IAdd(r2, r3));
-			LoadId(r3, IAdd(r1, Int32(4)));
+			LoadId(r3, IAddS(r1, 4));
 			BranchIf(Eq(r3, Int32(0)), "done");
 
-			LoadId(r1, IAdd(r1, Int32(0x00C)));
+			LoadId(r1, IAddS(r1, 0x00C));
 			Goto("looptest");
 
 			Label("done");

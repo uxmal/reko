@@ -58,7 +58,7 @@ fn0C00_0026_entry:
 	// succ:  l0C00_0026
 l0C00_0026:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = di
 	di = Mem0[ds:0x0104:word16]
 	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001

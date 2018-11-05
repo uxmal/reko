@@ -15,9 +15,9 @@ fn0C00_0000_entry:
 // SymbolicIn: sp:fp
 l0C00_0000:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	si = ax
 	ax = Mem0[ds:si + 0x0004:word16]
 	ax = ax + Mem0[ds:si + 0x0006:word16]
@@ -27,7 +27,7 @@ l0C00_0000:
 	SCZO = cond(ax)
 	ax = ax + Mem0[ds:si + 0x0006:word16]
 	SCZO = cond(ax)
-	sp = fp - 0x0002
+	sp = fp - 2
 	bp = wLoc02
 	sp = fp
 	return

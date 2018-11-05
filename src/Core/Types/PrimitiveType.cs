@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ namespace Reko.Core.Types
         }
 
         private static PrimitiveType Create(Domain dom, int bitSize, string name)
-		{
+        {
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
                 dom &= domainMask;
@@ -162,29 +162,6 @@ namespace Reko.Core.Types
 
         public static PrimitiveType CreateWord(uint bitSize)
             => CreateWord((int)bitSize);
-
-        //$TODO: Shall remove when Constant.Create will accept any bit-wide PrimitiveType.
-        // As of today only accepts multiple of 1, 2, 4, 8, 16 bytes. See issue #643.
-        public static PrimitiveType CreateWordFromBits(uint bitSize)
-        {
-            if (bitSize == 0)
-                throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
-            if (bitSize == 1)
-                return Bool;
-            if (bitSize <= 8)
-                return Byte;
-            if (bitSize <= 16)
-                return Word16;
-            if (bitSize <= 32)
-                return Word32;
-            if (bitSize <= 64)
-                return Word64;
-            if (bitSize <= 128)
-                return Word128;
-            if (bitSize <= 256)
-                return Word256;
-            throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
-        }
 
         public Domain Domain { get; private set; }
 
@@ -289,38 +266,6 @@ namespace Reko.Core.Types
             return Create(dom, BitSize);
 		}
 
-		public override string Prefix
-		{
-			get
-			{
-				switch (Domain)
-				{
-				case Domain.None:
-					return "v";
-				case Domain.Boolean:
-					return "f";
-				case Domain.Real:
-					return "r";
-				case Domain.Pointer:
-                case Domain.SegPointer:
-					return "ptr";
-				case Domain.Selector:
-					return "pseg";
-				default:
-					switch (bitSize)
-					{
-					case 8: return "b";
-					case 16: return "w";
-					case 32: return "dw";
-                    case 64: return "qw";
-                    case 128: return "ow";
-                    case 256: return "hw";
-					default: return "n";
-					}
-				}
-			}
-		}
-
         public override int BitSize
             => this.bitSize;
 
@@ -344,6 +289,7 @@ namespace Reko.Core.Types
             mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
             {
                 { 0, Domain.Any },
+                { 1, Domain.Boolean },
                 { 8, Domain.Boolean|Domain.Character|Domain.Integer },
                 { 16, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
                 { 32, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
@@ -368,6 +314,7 @@ namespace Reko.Core.Types
             SegmentSelector = Create(Domain.Selector, 16);
             WChar = Create(Domain.Character, 16);
             Offset16 = Create(Domain.Offset, 16);
+            Real16 = Create(Domain.Real, 16);
 
             Word32 = CreateWord(32);
             Int32 = Create(Domain.SignedInt, 32);
@@ -409,6 +356,7 @@ namespace Reko.Core.Types
 		public static PrimitiveType UInt16 { get; private set; }
         public static PrimitiveType Ptr16 { get; private set; }
         public static PrimitiveType Offset16 { get; private set; }
+        public static PrimitiveType Real16 { get; private set; }
 
 		public static PrimitiveType SegmentSelector  {get; private set; }
 

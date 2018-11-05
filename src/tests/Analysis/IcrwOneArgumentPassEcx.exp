@@ -8,7 +8,7 @@ a_1: orig: a
 fp:fp
     def:  def fp
     uses: esp_3 = fp
-          esp_7 = fp - 0x00000004
+          esp_7 = fp - 4
 esp_3: orig: esp
     def:  esp_3 = fp
 eax_4: orig: eax
@@ -22,13 +22,13 @@ ecx_6: orig: ecx
     uses: eax_10 = Mem0[ecx_6 + 0x00000004:word32](ecx_6, Mem12[esp_7:int32])
           eax_10 = Mem0[ecx_6 + 0x00000004:word32](ecx_6, Mem12[esp_7:int32])
 esp_7: orig: esp
-    def:  esp_7 = fp - 0x00000004
-    uses: esp_9 = esp_7 + 0x00000004
+    def:  esp_7 = fp - 4
+    uses: esp_9 = esp_7 + 4
           eax_10 = Mem0[ecx_6 + 0x00000004:word32](ecx_6, Mem12[esp_7:int32])
 dwLoc04_8: orig: dwLoc04
     def:  dwLoc04_8 = 0x0000000A
 esp_9: orig: esp
-    def:  esp_9 = esp_7 + 0x00000004
+    def:  esp_9 = esp_7 + 4
 eax_10: orig: eax
     def:  eax_10 = Mem0[ecx_6 + 0x00000004:word32](ecx_6, Mem12[esp_7:int32])
 ecx_11: orig: ecx
@@ -48,11 +48,11 @@ l0C00_0000:
 	esp_3 = fp
 	eax_4 = a_1
 	ecx_6 = Mem0[a:word32]
-	esp_7 = fp - 0x00000004
+	esp_7 = fp - 4
 	dwLoc04_8 = 0x0000000A
 	eax_10 = Mem0[ecx_6 + 0x00000004:word32](ecx_6, Mem12[esp_7:int32])
 	ecx_11 = <invalid>
-	esp_9 = esp_7 + 0x00000004
+	esp_9 = esp_7 + 4
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

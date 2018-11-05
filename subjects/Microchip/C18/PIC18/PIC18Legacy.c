@@ -7,13 +7,13 @@
 // 00000000: void fn00000000()
 void fn00000000()
 {
-	globals->b0001 = globals->b0001 & 191;
+	globals->b0001 &= 191;
 	Stack[0x01].ptr0000 = 330;
 	fn00000E(0x00, 0x00);
 }
 
-// 00000E: void fn00000E(Register Eq_17 FSR0, Register word32 TBLPTR)
-void fn00000E(Eq_17 FSR0, word32 TBLPTR)
+// 00000E: void fn00000E(Register Eq_17 FSR0, Register word24 TBLPTR)
+void fn00000E(Eq_17 FSR0, word24 TBLPTR)
 {
 	__tblrd(TBLPTR, 0x01);
 	0x00->b00C5 = TABLAT;
@@ -67,7 +67,7 @@ l000080:
 		__tblrd(TBLPTR, 0x01);
 		*FSR0 = TABLAT;
 		0x00->b00C3 = 0x00->b00C3 - 0x01;
-		FSR0 = FSR0 + 0x01;
+		++FSR0;
 		Z_57 = cond(0x00->b00C3);
 		if (0x00->b00C3 < 0x00)
 			break;
@@ -86,9 +86,9 @@ void fn0000D0(byte LATB, byte FSR2L, Eq_194 * FSR2, Eq_195 * FSR1)
 		{
 			0x00->b00CA = 0x00->b00CA & ~0x01;
 			if ((LATB & 0x01) != 0x00)
-				LATB = LATB | 0x80;
+				LATB |= 0x80;
 			else
-				LATB = LATB & 0x7F;
+				LATB &= 0x7F;
 		}
 	}
 	FSR1->b0001 = FSR1->b0001;

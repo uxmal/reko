@@ -408,7 +408,7 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcRw_or_imm_g0()
         {
             BuildTest(
-                Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.g1));
+                Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.IntegerRegisters[1]));
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
@@ -494,6 +494,25 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
                "1|L--|g2 = o3 >>u 0x00000010");
+        }
+
+        [Test]
+        public void SparcRw_fcmpd()
+        {
+            BuildTest(0x81A90A47);	// fcmpd	%f4,%f38
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ELGU = cond(f38_f39 - f4_f5)");
+        }
+
+        [Test]
+        [Ignore("analysis-development")]
+        public void SparcRw_fcmpq()
+        {
+            BuildTest(0x81A90A45);	// fcmpq %f4,%f36
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ELGU = cond(f36_f37 - f4_f5)");
         }
     }
 }

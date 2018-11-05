@@ -30,6 +30,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -336,12 +337,14 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
             var listener = new FakeDecompilerEventListener();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
 			this.proc = proc;
             doms = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(
                 new ProgramDataFlow(),
                 proc,
-                null,
+                importResolver,
                 doms,
                 new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
@@ -354,7 +357,7 @@ namespace Reko.UnitTests.Analysis
 			DeadCode.Eliminate(proc, ssa);
 
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			var vp = new ValuePropagator(segmentMap, ssa, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, importResolver, listener);
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

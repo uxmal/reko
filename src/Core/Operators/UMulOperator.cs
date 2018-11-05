@@ -42,7 +42,12 @@ namespace Reko.Core.Operators
 			}
 		}
 
-		public override string ToString()
+        public override string AsCompound()
+        {
+            return " *= ";
+        }
+
+        public override string ToString()
 		{
 			return " *u ";
 		}

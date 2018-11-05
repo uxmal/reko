@@ -40,11 +40,11 @@ namespace Reko.Scanning
     /// </remarks>
     public class ProcedureDetector
     {
-        private Program program;
-        private ScanResults sr;
-        private DecompilerEventListener listener;
-        private HashSet<Address> procedures;
-        private Dictionary<Address, RtlBlock> mpAddrToBlock;
+        private readonly Program program;
+        private readonly ScanResults sr;
+        private readonly DecompilerEventListener listener;
+        private readonly HashSet<Address> procedures;
+        private readonly Dictionary<Address, RtlBlock> mpAddrToBlock;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
@@ -112,9 +112,14 @@ namespace Reko.Scanning
         {
             foreach (var address in sr.IndirectJumps)
             {
-
+                /*
+                if (!mpAddrToBlock.TryGetValue(address, out var rtlBlock))
+                    continue;
+                var host = new BackwardSlicerHost(this.program);
+                var bws = new BackwardSlicer(host, rtlBlock, program.Architecture.CreateProcessorState());
+                var te = bws.DiscoverTableExtent(address, (RtlTransfer)rtlBlock.Instructions.Last().Instructions.Last(), listener);
+                */
             }
-            //$TODO: need some form of backwalking here.
         }
 
         /// <summary>

@@ -1094,14 +1094,14 @@ test_exit:
             var pb = new ProgramBuilder();
             pb.Add("AddressOf", m =>
             {
-                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TerAddressOf.txt");
         }
 
         [Test]
@@ -1117,14 +1117,14 @@ test_exit:
                         { 4, PrimitiveType.Byte, "byte004"}
                     }
                 });
-                var foo = new Identifier("foo", str, new MemoryStorage());
+                var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TerTypedAddressOf.txt");
         }
 
         [Test(Description = "@smx-smx discovered that 64-bit ELF binaries always have an issue with a variable" + 
@@ -1159,7 +1159,7 @@ test_exit:
 
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TerUnsignedSigned.txt");
         }
     }
 }

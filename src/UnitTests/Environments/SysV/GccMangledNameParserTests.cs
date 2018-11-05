@@ -77,6 +77,7 @@ namespace Reko.UnitTests.Environments.SysV
 
             public StringBuilder VisitPrimitive(PrimitiveType_v1 primitive)
             {
+                WriteQualifier(primitive.Qualifier);
                 switch (primitive.Domain)
                 {
                 case Domain.None:
@@ -130,20 +131,26 @@ namespace Reko.UnitTests.Environments.SysV
                 name = null;
                 pointer.DataType.Accept(this);
                 sb.AppendFormat(" *");
+                WriteQualifier(pointer.Qualifier);
                 name = n;
                 if (name != null)
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }
 
-            public StringBuilder VisitQualifiedType(QualifiedType_v1 qt)
+            public StringBuilder WriteQualifier(Qualifier q)
             {
-                qt.DataType.Accept(this);
-                switch (qt.Qualifier)
+                if ((q & Qualifier.Const) != 0)
                 {
-                case Qualifier.Const: sb.Append(" const"); break;
-                case Qualifier.Volatile: sb.Append(" volatile"); break;
-                case Qualifier.Restricted: sb.Append(" restrict"); break;
+                    sb.Append(" const");
+                }
+                if ((q & Qualifier.Volatile) != 0)
+                {
+                    sb.AppendFormat(" volatile");
+                }
+                if ((q & Qualifier.Restricted) != 0)
+                {
+                    sb.AppendFormat(" restricted");
                 }
                 return sb;
             }
@@ -243,6 +250,7 @@ namespace Reko.UnitTests.Environments.SysV
                     }
                     sb.Append(">");
                 }
+                WriteQualifier(typeReference.Qualifier);
                 return sb;
             }
 
@@ -328,7 +336,7 @@ namespace Reko.UnitTests.Environments.SysV
         public void Gmnp_std_string()
         {
             RunTest(
-                "std::string::assign(std::string & const)",
+                "std::string::assign(std::string const &)",
                 "_ZNSs6assignERKSs");
         }
 

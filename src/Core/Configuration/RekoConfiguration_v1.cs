@@ -109,6 +109,11 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("Value")]
         public string Value;
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 
     [Serializable]

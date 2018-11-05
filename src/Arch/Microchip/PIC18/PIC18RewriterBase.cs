@@ -54,8 +54,10 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             switch (instrCurr.Opcode)
             {
                 default:
-                    throw new AddressCorrelatedException(addr, $"Rewriting of PIC18 instruction '{instrCurr.Opcode}' is not implemented yet.");
-
+                    host.Warn(
+                        instrCurr.Address,
+                        $"PIC18 instruction '{instrCurr.Opcode}' is not supported yet.");
+                goto case Opcode.invalid;
                 case Opcode.invalid:
                 case Opcode.unaligned:
                     m.Invalid();

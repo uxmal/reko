@@ -16,33 +16,33 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	cx = 0x002A
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0001
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = 0x0002
 	call fn0C00_0023 (retsize: 2; depth: 6)
 	sp = fp
 	ax = 0x0000
 	SZO = cond(0x0000)
 	C = false
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0000
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = 0x0000
-	sp = fp - 0x0006
+	sp = fp - 6
 	wLoc06 = 0x0000
-	sp = fp - 0x0008
+	sp = fp - 8
 	wLoc08 = 0x0000
-	sp = fp - 0x000A
+	sp = fp - 10
 	wLoc0A = 0x0000
-	sp = fp - 0x000C
+	sp = fp - 12
 	wLoc0C = 0x0000
 	call fn0C00_0034 (retsize: 2; depth: 14)
 	sp = fp
 	SCZO = cond(fp)
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0001
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = 0x0002
 	call fn0C00_005D (retsize: 2; depth: 6)
 	sp = fp
@@ -73,17 +73,17 @@ fn0C00_0023_entry:
 // SymbolicIn: sp:fp
 l0C00_0023:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = cx
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = bp
-	bp = fp - 0x0004
+	bp = fp - 4
 	cx = wArg02
 	ax = wArg04
 	ax = ax + cx
 	SCZO = cond(ax)
 	bp = wLoc04
-	sp = fp - 0x0002
+	sp = fp - 2
 	cx = wLoc02
 	sp = fp
 	return
@@ -112,21 +112,21 @@ fn0C00_0034_entry:
 // SymbolicIn: sp:fp
 l0C00_0034:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bx
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = cx
-	sp = fp - 0x0006
+	sp = fp - 6
 	wLoc06 = dx
-	sp = fp - 0x0008
+	sp = fp - 8
 	wLoc08 = bp
-	bp = fp - 0x0008
+	bp = fp - 8
 	bx = fp + 0x0006
 // DataOut: bx ds
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
-// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
+// SymbolicIn: sp:fp - 8 bp:fp - 8 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 l0C00_003D:
 	ax = Mem0[ds:bx:word16]
 	bx = bx + 0x0002
@@ -138,7 +138,7 @@ l0C00_003D:
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
-// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
+// SymbolicIn: sp:fp - 8 bp:fp - 8 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 l0C00_0046:
 	dx = wArg04
 	bx = bx + 0x0002
@@ -148,11 +148,11 @@ l0C00_0046:
 	bx = fp + 0x0006
 	call fn0C00_0069 (retsize: 2; depth: 10)
 	bp = wLoc08
-	sp = fp - 0x0006
+	sp = fp - 6
 	dx = wLoc06
-	sp = fp - 0x0004
+	sp = fp - 4
 	cx = wLoc04
-	sp = fp - 0x0002
+	sp = fp - 2
 	bx = wLoc02
 	sp = fp
 	return
@@ -181,16 +181,16 @@ fn0C00_005D_entry:
 // SymbolicIn: sp:fp
 l0C00_005D:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = cx
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = bp
-	bp = fp - 0x0004
+	bp = fp - 4
 	ax = wArg04
 	ax = ax + cx
 	SCZO = cond(ax)
 	bp = wLoc04
-	sp = fp - 0x0002
+	sp = fp - 2
 	cx = wLoc02
 	sp = fp
 	return

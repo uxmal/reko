@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-This file contains the definitions of all files required for a 
+This file contains the definitions of all files required for a
 complete Reko distribution. The ItemGroups defined here are consumed
 by the PreBuild.targets file.
 -->
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsMac>$([MSBuild]::IsOSPlatform(OSX))</IsMac>
+    <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
+    <UnixDllExt Condition="!$(IsMac)">so</UnixDllExt>
+  </PropertyGroup>
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
 
@@ -12,6 +17,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(Configuration)\Reko.Arch.Arm.*" />
     <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(Configuration)\Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(Configuration)\Reko.Arch.i8051.*" />
+    <Architectures Include="$(SolutionDir)Arch\M6800\bin\$(Configuration)\Reko.Arch.M6800.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(Configuration)\Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.MicrochipPIC.*" />
@@ -20,6 +26,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(Configuration)\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(Configuration)\Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(Configuration)\Reko.Arch.PowerPC.*" />
+    <Architectures Include="$(SolutionDir)Arch\PowerPC.Design\bin\$(Configuration)\Reko.Arch.PowerPC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\bin\$(Configuration)\Reko.Arch.RiscV.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(Configuration)\Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(Configuration)\Reko.Arch.SuperH.*" />
@@ -30,7 +37,8 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\Reko.Arch.Z80.*" />
-    
+    <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(Configuration)\Reko.Arch.zSeries.*" />
+
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
@@ -48,12 +56,13 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Classic\Mac MPW Interfaces 1991 PASCAL.pas" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\opengl.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
@@ -112,7 +121,7 @@ by the PreBuild.targets file.
   </ItemGroup>
 
   <!-- Platform dependent files go here-->
-  
+
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
@@ -124,6 +133,6 @@ by the PreBuild.targets file.
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.$(UnixDllExt)" />
   </ItemGroup>
 </Project>

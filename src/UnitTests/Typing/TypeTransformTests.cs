@@ -438,7 +438,7 @@ namespace Reko.UnitTests.Typing
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSegmentedArray.txt");
         }
 
         [Test]
@@ -479,14 +479,14 @@ namespace Reko.UnitTests.Typing
             var pb = new ProgramBuilder();
             pb.Add("AddressOf", m =>
             {
-                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranAddressOf.txt");
         }
 
         [Test]
@@ -502,14 +502,14 @@ namespace Reko.UnitTests.Typing
                         { 4, PrimitiveType.Byte, "byte004"}
                     }
                 });
-                var foo = new Identifier("foo", str, new MemoryStorage());
+                var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranTypedAddressOf.txt");
         }
 
         [Test]
@@ -524,7 +524,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.IAdd(a4, m.Shl(d0, 2)), a4);
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSelfArray.txt");
         }
 
         [Test]
@@ -538,7 +538,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(a4, a4);
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSelfRef.txt");
         }
     }
 }

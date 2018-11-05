@@ -68,17 +68,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var symStr = loader.Symbols[rela_plt.LinkedSection.FileOffset][(int)sym];
 
                 var addr = plt.Address + (uint)(i + 1) * plt.EntrySize;
-                importReferences.Add(
-                    addr,
-                    new NamedImportReference(addr, null, symStr.Name));
+                importReferences[addr] = new NamedImportReference(addr, null, symStr.Name);
             }
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (x86_64Rt)(rela.Info & 0xFF);
             if (loader.Sections.Count <= sym.SectionIndex)
-                return;
+                return sym;
             if (rt == x86_64Rt.R_X86_64_GLOB_DAT ||
                 rt == x86_64Rt.R_X86_64_JUMP_SLOT)
             {
@@ -87,10 +85,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name));
                 var gotSym = loader.CreateGotSymbol(addrPfn, sym.Name);
                 imageSymbols.Add(addrPfn, gotSym);
-                return;
+                return sym;
             }
             if (sym.SectionIndex == 0)
-                return;
+                return sym;
             var symSection = loader.Sections[(int)sym.SectionIndex];
             ulong S = (ulong)sym.Value + symSection.Address.ToLinear();
             long A = 0;
@@ -131,6 +129,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 w += ((ulong)(S + (ulong)A + P) >> sh) & mask;
                 relW.WriteUInt64(w);
             }
+            return sym;
         }
 
         public override string RelocationTypeToString(uint type)

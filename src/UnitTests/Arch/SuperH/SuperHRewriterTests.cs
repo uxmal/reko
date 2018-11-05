@@ -457,7 +457,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("1DF8"); // flds\tfr8,fpul
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|fpul = fr8");
+                "1|L--|fpul = dr8");
         }
 
         [Test]
@@ -885,6 +885,91 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "3|L--|r3 = __div1(r3, r4)",
                 "4|L--|00100004(2): 1 instructions",
                 "5|L--|Mem0[r1 + 8:word32] = r2");
+        }
+
+        [Test]
+        public void SHRw_mac_l()
+        {
+            RewriteCode("FF00");	// mac.l	@r15+,@r0+
+            AssertCode(
+                "0|L--|00100000(2): 5 instructions",
+                "1|L--|v2 = Mem0[r15:word32]",
+                "2|L--|r15 = r15 + 4",
+                "3|L--|v4 = Mem0[r0:word32]",
+                "4|L--|r0 = r0 + 4",
+                "5|L--|mac = v2 *s v4 + mac");
+        }
+
+        [Test]
+        public void SHRw_cmp_str()
+        {
+            RewriteCode("AC25");	// cmp/str	r10,r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = __cmp_str(r5, r10)");
+        }
+
+        [Test]
+        public void SHRw_stc()
+        {
+            RewriteCode("0200");	// stc	sr,r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = sr");
+        }
+
+        [Test]
+        public void SHRw_lds()
+        {
+            RewriteCode("2A4F");	// lds	r15,pr
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|pr = r15");
+        }
+
+        [Test]
+        public void SHRw_clrs()
+        {
+            RewriteCode("4800");	// clrs
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|S = false");
+        }
+
+        [Test]
+        public void SHRw_fmac()
+        {
+            RewriteCode("0EF4");	// fmac	fr0,fr0,fr4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|fr4 = fr0 * fr0 + fr4");
+        }
+
+        [Test]
+        public void SHRw_ocbi()
+        {
+            RewriteCode("9300");	// ocbi	@r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__ocbi(r0)");
+        }
+
+        [Test]
+        public void SHRw_fmov_d()
+        {
+            RewriteCode("08FB");	// fmov.d	@r11,dr0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|dr0 = Mem0[r11:word64]");
+        }
+
+        [Test]
+        public void SHRw_fmov_s()
+        {
+            RewriteCode("D8FC");	// fmov.s	@r12,fr13
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|fr13 = Mem0[r12:word32]");
         }
     }
 }

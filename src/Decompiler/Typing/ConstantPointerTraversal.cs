@@ -166,11 +166,6 @@ namespace Reko.Typing
             return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }
 
-        public IEnumerable<WorkItem> VisitQualifiedType(QualifiedType qt)
-        {
-            return qt.DataType.Accept(this);
-        }
-
         public IEnumerable<WorkItem> VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();

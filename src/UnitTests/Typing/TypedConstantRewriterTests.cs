@@ -200,6 +200,29 @@ namespace Reko.UnitTests.Typing
                 ((Pointer)program.Globals.DataType).Pointee.ResolveAs<StructureType>().ToString());
         }
 
+        [Test(Description = "If we have a (array char)* to read-only memory, treat it as a C string")]
+        public void Tcr_ReadOnly_ArrayChar_Pointer_YieldsStringConstant()
+        {
+            //$REVIEW: this is highly platform dependent. Some platforms have 
+            // strings terminated by the high bit of the last character set to
+            // 1, others have length prefixed strings (looking at you, Turbo Pascal and
+            // MacOS classic).
+            Given_TypedConstantRewriter();
+            Given_String("Hello", 0x00100000);
+            Given_Readonly_Segment();
+            var c = Constant.Word32(0x00100000);
+            store.EnsureExpressionTypeVariable(factory, c);
+            var arrayCharPtr = new Pointer(new ArrayType(PrimitiveType.Char, 32), 6);
+            c.TypeVariable.DataType = arrayCharPtr;
+            c.TypeVariable.OriginalDataType = arrayCharPtr;
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("Hello", e.ToString());
+            Assert.AreEqual(
+                "(struct (100000 (str char) str100000))",
+                ((Pointer)program.Globals.DataType).Pointee.ResolveAs<StructureType>().ToString());
+        }
+
+
         [Test]
         public void Tcr_Writable_Char_Pointer_YieldsCharacterReference()
         {

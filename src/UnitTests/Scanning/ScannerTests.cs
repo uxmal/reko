@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Scanning
         public void AddBlock()
         {
             var sc = CreateScanner(0x0100, 10);
-            sc.AddBlock(Address.Ptr32(0x102), new Procedure(sc.Program.Architecture, "bob", null), "l0102");
+            sc.AddBlock(Address.Ptr32(0x102), new Procedure(sc.Program.Architecture, "bob", Address.Ptr32(0x100), null), "l0102");
             Assert.IsNotNull(sc.FindExactBlock(Address.Ptr32(0x0102)));
         }
 
@@ -264,7 +264,7 @@ namespace Reko.UnitTests.Scanning
         public void Scanner_SplitBlock()
         {
             scan = CreateScanner(0x100, 0x100);
-            var proc = new Procedure(program.Architecture, "foo", arch.CreateFrame());
+            var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00000100), arch.CreateFrame());
             Enqueue(Address.Ptr32(0x101), proc);
             Enqueue(Address.Ptr32(0x106), proc);
             Enqueue(Address.Ptr32(0x104), proc);
@@ -437,7 +437,7 @@ fn0C00_0000_exit:
         public void Scanner_IsLinearReturning_EmptyBlock()
         {
             var scanner = CreateScanner(0x1000, 0x1000);
-            var proc = new Procedure(program.Architecture, "fn1000", arch.CreateFrame());
+            var proc = new Procedure(program.Architecture, "fn1000", Address.Ptr32(0x00001000), arch.CreateFrame());
             var block = new Block(proc, "l1000");
             Assert.IsFalse(scanner.IsLinearReturning(block));
         }
@@ -844,7 +844,6 @@ fn00001200_exit:
             });
 
             scanner.ScanImageSymbol(
-                program,
                 ImageSymbol.Procedure(arch, Address.Ptr32(0x1000), "test", state: arch.CreateProcessorState()),
                 true);
 

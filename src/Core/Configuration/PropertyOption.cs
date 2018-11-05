@@ -34,5 +34,10 @@ namespace Reko.Core.Configuration
         public bool Required { get; set; }
         public string TypeName { get; set; }
         public ListOption_v1[] Choices { get; set; }
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 }

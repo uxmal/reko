@@ -31,7 +31,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-
 namespace Reko.CmdLine
 {
     public class CmdLineDriver
@@ -122,7 +121,8 @@ namespace Reko.CmdLine
             if (pArgs.ContainsKey("--arch") ||
                 pArgs.ContainsKey("--env") ||
                 pArgs.ContainsKey("--base") ||
-                pArgs.ContainsKey("--entry"))
+                pArgs.ContainsKey("--entry") ||
+                pArgs.ContainsKey("--loader"))
             {
                 // User must supply these arguments for a meaningful
                 // decompilation.

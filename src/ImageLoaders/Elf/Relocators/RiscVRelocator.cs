@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (RiscV64Rt)(rela.Info & 0xFF);
 
@@ -45,6 +45,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case RiscV64Rt.R_RISCV_COPY:
                 break;
             }
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)

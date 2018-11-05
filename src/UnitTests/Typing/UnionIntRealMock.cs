@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Typing
 			Assign(x, i);
 			Assign(x, r);
 			MStore(ptr, i);
-			MStore(IAdd(ptr, Int32(4)), r);
+			MStore(IAddS(ptr, 4), r);
 			Return();
 		}
 	}

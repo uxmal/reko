@@ -31,9 +31,9 @@ using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
-	public class CoalescerTests : AnalysisTestBase
-	{
+    [TestFixture]
+    public class CoalescerTests : AnalysisTestBase
+    {
         private SsaProcedureBuilder m;
 
         [SetUp]
@@ -54,110 +54,110 @@ namespace Reko.UnitTests.Analysis
             ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
-		protected override void RunTest(Program program, TextWriter fut)
-		{
+        protected override void RunTest(Program program, TextWriter fut)
+        {
             IImportResolver importResolver = null;
             var listener = new FakeDecompilerEventListener();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
-			dfa.UntangleProcedures();
-			
-			foreach (Procedure proc in program.Procedures.Values)
-			{
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+            dfa.UntangleProcedures();
+
+            foreach (Procedure proc in program.Procedures.Values)
+            {
                 Aliases alias = new Aliases(proc);
                 alias.Transform();
                 SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
-				SsaState ssa = sst.SsaState;
-				
+                SsaState ssa = sst.SsaState;
+
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                cce.Transform();
+                DeadCode.Eliminate(proc, ssa);
 
-                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
-				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
-				Coalescer co = new Coalescer(proc, ssa);
-				co.Transform();
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, listener);
+                vp.Transform();
+                DeadCode.Eliminate(proc, ssa);
+                Coalescer co = new Coalescer(proc, ssa);
+                co.Transform();
 
-				ssa.Write(fut);
-				proc.Write(false, fut);
-				fut.WriteLine();
+                ssa.Write(fut);
+                proc.Write(false, fut);
+                fut.WriteLine();
 
                 ssa.Validate(s => Assert.Fail(s));
             }
         }
 
-		[Test]
-		public void Coa3Converge()
-		{
-			RunFileTest("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
-		}
+        [Test]
+        public void Coa3Converge()
+        {
+            RunFileTest("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
+        }
 
-		[Test]
-		public void CoaAsciiHex()
-		{
-			RunFileTest("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
-		}
+        [Test]
+        public void CoaAsciiHex()
+        {
+            RunFileTest("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
+        }
 
-		[Test]
-		public void CoaDataConstraint()
-		{
-			RunFileTest("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
-		}
+        [Test]
+        public void CoaDataConstraint()
+        {
+            RunFileTest("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
+        }
 
-		[Test]
-		public void CoaMoveChain()
-		{
-			RunFileTest("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
-		}
+        [Test]
+        public void CoaMoveChain()
+        {
+            RunFileTest("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
+        }
 
-		[Test]
-		public void CoaFactorialReg()
-		{
-			RunFileTest("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
-		}
+        [Test]
+        public void CoaFactorialReg()
+        {
+            RunFileTest("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
+        }
 
-		[Test]
-		public void CoaMemoryTest()
-		{
-			RunFileTest("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
-		}
+        [Test]
+        public void CoaMemoryTest()
+        {
+            RunFileTest("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
+        }
 
-		[Test]
-		public void CoaSmallLoop()
-		{
-			RunFileTest("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
-		}
+        [Test]
+        public void CoaSmallLoop()
+        {
+            RunFileTest("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore("scanning-development")]
         public void CoaAddSubCarries()
-		{
-			RunFileTest("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
-		}
+        {
+            RunFileTest("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
+        }
 
-		[Test]
-		public void CoaConditionals()
-		{
-			RunFileTest("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
-		}
+        [Test]
+        public void CoaConditionals()
+        {
+            RunFileTest("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
+        }
 
-		[Test]
-		public void CoaSliceReturn()
-		{
-			RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
-		}
+        [Test]
+        public void CoaSliceReturn()
+        {
+            RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
+        }
 
-		[Test]
-		public void CoaReg00002()
-		{
-			RunFileTest("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
-		}
+        [Test]
+        public void CoaReg00002()
+        {
+            RunFileTest("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
+        }
 
-		[Test]
-		public void CoaWhileGoto()
-		{
-			RunFileTest("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
-		}
+        [Test]
+        public void CoaWhileGoto()
+        {
+            RunFileTest("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
+        }
 
         [Test]
         public void CoaSideEffectCalls()
@@ -191,7 +191,7 @@ namespace Reko.UnitTests.Analysis
             RunFileTest(m, "Analysis/CoaCallCallee.txt");
         }
 
-        [Test(Description="Avoid coalescing of invalid constant")]
+        [Test(Description = "Avoid coalescing of invalid constant")]
         public void CoaDoNotCoalesceInvalidConstant()
         {
             var a = m.Reg32("a");

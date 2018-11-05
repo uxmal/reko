@@ -160,11 +160,6 @@ namespace Reko.Core
             }
         }
 
-        public void VisitQualifiedType(QualifiedType qt)
-        {
-            qt.DataType.Accept(this);
-        }
-
         public void VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();

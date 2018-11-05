@@ -39,10 +39,10 @@ namespace Reko.UnitTests.Core
 			CallGraph g = new CallGraph();
             var arch = MockRepository.GenerateStub<IProcessorArchitecture>();
             arch.Replay();
-			Procedure p1 = new Procedure(arch, "p1000", null);
-			Procedure p2 = new Procedure(arch, "p2000", null);
-			Procedure p3 = new Procedure(arch, "p3000", null);
-			Procedure p4 = new Procedure(arch, "p4000", null);
+			Procedure p1 = new Procedure(arch, "p1000", Address.Ptr32(0x1000), null);
+			Procedure p2 = new Procedure(arch, "p2000", Address.Ptr32(0x2000), null);
+			Procedure p3 = new Procedure(arch, "p3000", Address.Ptr32(0x3000), null);
+			Procedure p4 = new Procedure(arch, "p4000", Address.Ptr32(0x4000), null);
 
             var pc2 = new ProcedureConstant(PrimitiveType.Ptr32, p2);
             var pc3 = new ProcedureConstant(PrimitiveType.Ptr32, p3);

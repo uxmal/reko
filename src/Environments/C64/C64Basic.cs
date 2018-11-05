@@ -160,7 +160,7 @@ namespace Reko.Environments.C64
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Basic doesn't have the notion of a parameter stack.");
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

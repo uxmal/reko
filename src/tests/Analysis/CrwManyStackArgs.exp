@@ -21,11 +21,11 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0003
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = 0x0002
-	sp = fp - 0x0006
+	sp = fp - 6
 	wLoc06 = 0x0001
 	ax = fn0C00_0011(wLoc06, wLoc04, wLoc02)
 	sp = fp
@@ -59,9 +59,9 @@ fn0C00_0011_entry:
 	// succ:  l0C00_0011
 l0C00_0011:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	ax = wArg02
 	ax = ax + wArg04
 	ax = ax + wArg06

@@ -125,7 +125,7 @@ word32 verify(Eq_136 rdi[])
 			eax_122 = 0x00;
 			return eax_122;
 		}
-		dwLoc0C_126 = dwLoc0C_126 + 0x01;
+		++dwLoc0C_126;
 	}
 	eax_122 = (word32) (dwLoc0C_126 == 0x17);
 	return eax_122;

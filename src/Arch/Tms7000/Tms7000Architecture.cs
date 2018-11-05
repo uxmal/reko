@@ -94,6 +94,7 @@ namespace Reko.Arch.Tms7000
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
+            //$TODO: TMS7000 has an 8-bit stack pointer but a 16-bit address space.
             throw new NotImplementedException();
         }
 

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,7 +32,11 @@ using Reko.Core.Types;
 
 namespace Reko.Scanning
 {
-    public class ScannerInLinq : ScanResults
+    using block = ScanResults.block;
+    using instr = ScanResults.instr;
+    using link = ScanResults.link;
+
+    public class ScannerInLinq
     {
         // change @binary_size to simulate a large executable
         //private const int binary_size = 10;
@@ -275,8 +279,7 @@ namespace Reko.Scanning
                     group link by link.first into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                instr instr;
-                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr))
+                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out var instr))
                     instr.succ = cSucc.Count;
             }
             foreach (var cPred in
@@ -284,8 +287,7 @@ namespace Reko.Scanning
                     group link by link.second into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                instr instr;
-                if (sr.FlatInstructions.TryGetValue(cPred.addr, out instr))
+                if (sr.FlatInstructions.TryGetValue(cPred.addr, out var instr))
                     instr.pred = cPred.Count;
             }
 
@@ -294,8 +296,7 @@ namespace Reko.Scanning
             {
                 if (instr.type != (ushort)RtlClass.Linear)
                     continue;
-                ScanResults.instr succ;
-                if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out succ))
+                if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out var succ))
                     continue;
                 if (instr.succ == 1 && succ.pred == 1 &&
                     !sr.KnownProcedures.Contains(succ.addr) &&
@@ -401,7 +402,7 @@ namespace Reko.Scanning
                 from b in blocks.Values
                 join i in sr.FlatInstructions.Values on b.id equals i.block_id into instrs
                 orderby b.id
-                select new RtlBlock(b.id, b.id.GenerateName("l", ""))
+                select new RtlBlock(b.id, program.NamingPolicy.BlockName(b.id))
                 {
                     Instructions = instrs.Select(x => x.rtl).ToList()
                 };
@@ -413,9 +414,8 @@ namespace Reko.Scanning
             }
             foreach (var edge in sr.FlatEdges)
             {
-                RtlBlock from, to;
-                if (!map.TryGetValue(edge.first, out from) ||
-                    !map.TryGetValue(edge.second, out to))
+                if (!map.TryGetValue(edge.first, out RtlBlock from) ||
+                    !map.TryGetValue(edge.second, out RtlBlock to))
                     continue;
                 icfg.AddEdge(from, to);
             }

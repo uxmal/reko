@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var proc = new Procedure(null, "test", new Frame(PrimitiveType.Ptr32));
+            var proc = new Procedure(null, "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);
@@ -89,6 +89,42 @@ namespace Reko.UnitTests.Structure
                     e =>
                     {
                         e.Assign(id, Constant.True());
+                    });
+            });
+        }
+
+        [Test]
+        public void PP_CompoundAddition()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var pp = new ProcedurePrettifier(null);
+            var m = new AbsynCodeEmitter(new List<AbsynStatement>());
+            Assert.AreEqual("id += 0x00000002;", m.Assign(id, m.IAdd(id, 2)).Accept(pp).ToString());
+        }
+
+        [Test]
+        public void PP_ForLoop()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (id = 0x00000000; id != 0x000003E8; ++id)
+        foo(id);
+}
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var id = new Identifier("id", PrimitiveType.Word32, null);
+                var foo = new Identifier("foo", PrimitiveType.Ptr32, null);
+                m.For(
+                    n => n.Assign(id, m.Word32(0)),
+                    n => n.Ne(id, 1000),
+                    n => n.Assign(id, n.IAdd(id, 1)),
+                    b =>
+                    {
+                        b.SideEffect(m.Fn(foo, id));
                     });
             });
         }

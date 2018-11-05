@@ -351,8 +351,8 @@ namespace Reko.Environments.SysV
                 AddSubstitution(ptr);
                 return Qualify(ptr, qual);
             case 'R':
-                qual = CvQualifier();
-                var r = new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+                var referent = Type();
+                var r = new ReferenceType_v1 { Referent = referent, Size = ptrSize };
                 return Qualify(r, qual);
             case 'S':
                 switch (str[i++])
@@ -396,9 +396,8 @@ namespace Reko.Environments.SysV
 
         private SerializedType Qualify(SerializedType t, Qualifier q)
         {
-            if (q == Qualifier.None)
-                return t;
-            return new QualifiedType_v1 { DataType = t, Qualifier = q };
+            t.Qualifier = q;
+            return t;
         }
 
         /*

@@ -58,6 +58,10 @@ namespace Reko.UnitTests.Mocks
         {
             LostFocus.Fire(this);
         }
+        public void FireGotFocus()
+        {
+            GotFocus.Fire(this);
+        }
 
         public void FireKeyDown(KeyEventArgs e)
         {

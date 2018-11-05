@@ -58,22 +58,22 @@ namespace Reko.UnitTests.Mocks
 
         public DataType VisitPointer(PointerType_v1 pointer)
         {
-            return new Pointer(pointer.DataType.Accept(this), ptrBitSize);
+            return new Pointer(pointer.DataType.Accept(this), ptrBitSize)
+            {
+                Qualifier = pointer.Qualifier
+            };
+        }
+
+        public DataType VisitPrimitive(PrimitiveType_v1 primitive)
+        {
+            var pt = PrimitiveType.Create(primitive.Domain, primitive.ByteSize * DataType.BitsPerByte);
+            pt.Qualifier = primitive.Qualifier;
+            return pt;
         }
 
         public DataType VisitReference(ReferenceType_v1 refTo)
         {
             return new ReferenceTo(refTo.Referent.Accept(this));
-        }
-
-        public DataType VisitQualifiedType(QualifiedType_v1 qt)
-        {
-            return new QualifiedType(qt.DataType.Accept(this), qt.Qualifier);
-        }
-
-        public DataType VisitPrimitive(PrimitiveType_v1 primitive)
-        {
-            return PrimitiveType.Create(primitive.Domain, primitive.ByteSize * DataType.BitsPerByte);
         }
 
         public DataType VisitSignature(SerializedSignature signature)

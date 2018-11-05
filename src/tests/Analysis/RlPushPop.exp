@@ -49,16 +49,16 @@ fn0C00_0008_entry:
 // SymbolicIn: sp:fp
 l0C00_0008:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = si
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = di
 	si = 0x0000
 // DataOut: cx di ds si
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
-// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+// SymbolicIn: sp:fp - 4 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
 l0C00_000D:
 	SCZO = cond(cx - 0x0000)
 	branch Test(EQ,Z) l0C00_001A
@@ -66,7 +66,7 @@ l0C00_000D:
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
-// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+// SymbolicIn: sp:fp - 4 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
 l0C00_0012:
 	si = si + Mem0[ds:di:word16]
 	SCZO = cond(si)
@@ -76,11 +76,11 @@ l0C00_0012:
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
-// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+// SymbolicIn: sp:fp - 4 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
 l0C00_001A:
 	ax = si
 	di = wLoc04
-	sp = fp - 0x0002
+	sp = fp - 2
 	si = wLoc02
 	sp = fp
 	return

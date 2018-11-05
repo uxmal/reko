@@ -175,6 +175,11 @@ namespace Reko.Structure
             stms.Add(absynCase);
         }
 
+        public void VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            stms.Add(compound);
+        }
+
         public void VisitContinue(AbsynContinue cont)
         {
             stms.Add(cont);
@@ -193,6 +198,11 @@ namespace Reko.Structure
         public void VisitDoWhile(AbsynDoWhile loop)
         {
             stms.Add(loop);
+        }
+
+        public void VisitFor(AbsynFor forLoop)
+        {
+            stms.Add(forLoop);
         }
 
         public void VisitGoto(AbsynGoto gotoStm)

@@ -66,10 +66,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 switch (instr.Opcode)
                 {
                 default:
-                    host.Error(
+                    host.Warn(
                        instr.Address,
                        string.Format(
-                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                           "TLCS-900 instruction '{0}' not supported yet.",
                            instr.Opcode));
                     EmitUnitTest();
                     Invalid();

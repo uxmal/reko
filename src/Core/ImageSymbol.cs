@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -42,7 +42,7 @@ namespace Reko.Core
     {
         private ImageSymbol(IProcessorArchitecture arch)
         {
-            this.Architecture = arch;
+            this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
         }
 
         /// <summary>

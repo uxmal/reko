@@ -83,7 +83,7 @@ namespace Reko.Analysis
                     var fuser = new UnalignedMemoryAccessFuser(ssa);
                     fuser.Transform();
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
 
                     sst.RenameFrameAccesses = true;
                     var icrw = new IndirectCallRewriter(program, ssa, eventListener);
@@ -281,7 +281,7 @@ namespace Reko.Analysis
                 // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:

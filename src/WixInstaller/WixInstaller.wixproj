@@ -57,6 +57,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\M6800\M6800.csproj">
+      <Name>M6800</Name>
+      <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\M68k.Design\M68k.Design.csproj">
       <Name>M68k.Design</Name>
       <Project>{90b83ec1-915b-471b-8f86-6a71b17db6a1}</Project>
@@ -108,6 +116,14 @@
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Name>Pdp11</Name>
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\arch\PowerPC.Design\PowerPC.Design.csproj">
+      <Name>PowerPC.Design</Name>
+      <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -188,6 +204,14 @@
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Name>Z80</Name>
       <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\zSystem\zSeries.csproj">
+      <Name>zSeries</Name>
+      <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

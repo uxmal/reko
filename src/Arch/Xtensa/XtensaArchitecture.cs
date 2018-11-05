@@ -180,11 +180,6 @@ namespace Reko.Arch.Xtensa
             return new XtensaRewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public RegisterStorage GetAluRegister(int i)
         {
             return aregs[i];

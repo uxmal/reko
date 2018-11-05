@@ -137,7 +137,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                var dtRet = ss.ReturnValue != null
+                var dtRet = ss.ReturnValue != null && ss.ReturnValue.Type != null
                     ? ss.ReturnValue.Type.Accept(TypeLoader)
                     : null;
                 var dtThis = ss.EnclosingType != null
@@ -221,7 +221,7 @@ namespace Reko.Core.Serialization
                 return name;
             var stack = storage as StackStorage;
             if (stack != null)
-                return Frame.FormatStackAccessName(dataType, "Arg", stack.StackOffset, name);
+                return NamingPolicy.Instance.StackArgumentName(dataType, stack.StackOffset, name);
             var seq = storage as SequenceStorage;
             if (seq != null)
                 return seq.Name;

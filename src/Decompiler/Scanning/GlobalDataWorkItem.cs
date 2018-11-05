@@ -113,12 +113,6 @@ namespace Reko.Scanning
             scanner.EnqueueUserGlobalData(addr, ptr.Pointee, null);
         }
 
-        public void VisitQualifiedType(QualifiedType qt)
-        {
-            qt.DataType.Accept(this);
-        }
-
-
         public void VisitReference(ReferenceTo refTo)
         {
             throw new NotSupportedException("Global variables cannot be references.");

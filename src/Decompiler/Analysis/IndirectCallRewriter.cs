@@ -43,8 +43,6 @@ namespace Reko.Analysis
         private SsaIdentifierTransformer ssaIdTransformer;
         private DecompilerEventListener eventListener;
         private SsaMutator ssam;
-        private bool changed;
-
 
         public IndirectCallRewriter(
             Program program,
@@ -69,14 +67,14 @@ namespace Reko.Analysis
         /// <returns>True if statements were changed.</returns>
         public bool Rewrite()
         {
-            changed = false;
+            bool changed = false;
             foreach (Statement stm in proc.Statements.ToList())
             {
                 if (stm.Instruction is CallInstruction ci)
                 {
                     try
                     {
-                        RewriteCall(stm, ci);
+                        changed |= TryRewriteCall(stm, ci);
                     }
                     catch (Exception ex)
                     {
@@ -91,15 +89,20 @@ namespace Reko.Analysis
             return changed;
         }
 
-        private void RewriteCall(Statement stm, CallInstruction call)
+        private bool TryRewriteCall(Statement stm, CallInstruction call)
         {
             var e = expander.Expand(call.Callee);
             var pt = e.Accept(asc).ResolveAs<Pointer>();
             if (pt == null)
-                return;
-            var ft = pt.Pointee as FunctionType;
-            if (ft == null)
-                return;
+                return false;
+            if (!(pt.Pointee is FunctionType ft))
+                return false;
+            RewriteCall(stm, call, ft);
+            return true;
+        }
+
+        public void RewriteCall(Statement stm, CallInstruction call, FunctionType ft)
+        {
             ssam.AdjustRegisterAfterCall(
                 stm,
                 call,
@@ -111,7 +114,6 @@ namespace Reko.Analysis
             stm.Instruction = ab.CreateInstruction();
             ssaIdTransformer.Transform(stm, call);
             DefineUninitializedIdentifiers(stm, call);
-            changed = true;
         }
 
         private void DefineUninitializedIdentifiers(

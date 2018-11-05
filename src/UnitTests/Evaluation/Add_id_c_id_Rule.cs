@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Evaluation
         {
             BinaryExpression b = m.IAdd(id, m.UMul(id, 5));
             Assignment ass = new Assignment(x, b);
-            var rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(null, ssaIds));
+            var rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(null, ssaIds, null));
             Assert.IsTrue(rule.Match(b));
             ass.Src = rule.Transform();
             Assert.AreEqual("x = id *u 0x00000006", ass.ToString());
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Evaluation
             {
                 ssaIds.Add(i, null, null, false);
             }
-            ctx = new SsaEvaluationContext(null, ssaIds);
+            ctx = new SsaEvaluationContext(null, ssaIds, null);
         }
     }
 }

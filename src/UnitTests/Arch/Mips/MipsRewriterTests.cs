@@ -394,11 +394,19 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsRw_mul()
+        public void MipsRw_mult()
         {
             AssertCode(0x02F00018, // mult s7,s0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|hi_lo = r23 *s r16");
+        }
+
+        [Test]
+        public void MipsRw_mul()
+        {
+            AssertCode(0x70621002,  // mul r2, r3, r2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = r3 *s r2");
         }
 
         [Test]
@@ -851,6 +859,26 @@ namespace Reko.UnitTests.Arch.Mips
                 "1|L--|__tlbr()");
         }
 
+        [Test]
+        public void MipsRw_bgezal_is_bal()
+        {
+            // The MIPS docs specify that bgezal r0,XXXX
+            // is interpreted by the processor as bal XXXX.
+            // It's a silicon hack, but we have to deal
+            // with it....
+            AssertCode(0x0411FF66,      // bgezal   r0,xxxx
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|call 000FFD9C (0)");
+        }
 
+        [Test]
+        public void MipsRw_bgezal_idiom()
+        {
+            // This idiom is used to capture the address of the 
+            // called destination in the la register.
+            AssertCode(0x04110001,      // skip the delay slot.
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ra = 00100008");
+        }
     }
 }

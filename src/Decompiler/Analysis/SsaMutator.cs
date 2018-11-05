@@ -98,7 +98,7 @@ namespace Reko.Analysis
 
             // Generate an instruction that adjusts the register according to
             // the specified delta.
-            var src = m.AddConstantWord(usedRegExp, register.DataType, delta);
+            var src = m.AddSubSignedInt(usedRegExp, delta);
             var ass = new Assignment(defRegId, src);
             var defSid = ssa.Identifiers[defRegId];
 

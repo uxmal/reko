@@ -33,8 +33,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -62,8 +62,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
-    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
+    <OutputPath>bin\x86\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -91,8 +91,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
-    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
+    <OutputPath>bin\x64\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -132,6 +132,10 @@
     <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj">
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
+      <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
+      <Name>zSeries</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>

@@ -115,12 +115,12 @@ fn0C00_000B_exit:
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_2 = fp - 0x0002
+          sp_2 = fp - 2
           sp_20 = fp
 sp_1: orig: sp
     def:  sp_1 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp - 0x0002
+    def:  sp_2 = fp - 2
 si:si
     def:  def si
     uses: wLoc02_4 = si
@@ -206,7 +206,7 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp_1 = fp
-	sp_2 = fp - 0x0002
+	sp_2 = fp - 2
 	wLoc02_4 = si
 	si_5 = 0x0000
 	SZO_6 = cond(0x0000)
@@ -244,12 +244,12 @@ fn0C00_000F_exit:
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_2 = fp - 0x0002
+          sp_2 = fp - 2
           sp_20 = fp
 sp_1: orig: sp
     def:  sp_1 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp - 0x0002
+    def:  sp_2 = fp - 2
 si:si
     def:  def si
     uses: wLoc02_4 = si
@@ -334,7 +334,7 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp_1 = fp
-	sp_2 = fp - 0x0002
+	sp_2 = fp - 2
 	wLoc02_4 = si
 	si_5 = 0x0000
 	SZO_6 = cond(0x0000)

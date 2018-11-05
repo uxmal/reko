@@ -58,9 +58,10 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_ProcedureAtAddress(uint address, string name)
         {
+            var addr = Address.Ptr32(address);
             program.Procedures.Add(
-                Address.Ptr32(address),
-                new Procedure(program.Architecture, name, program.Architecture.CreateFrame())
+                addr, 
+                new Procedure(program.Architecture, name, addr, program.Architecture.CreateFrame())
             );
         }
 

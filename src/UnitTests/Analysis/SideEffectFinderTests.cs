@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SefApplication()
 		{
-			var p = new Procedure(null, "foo", null);
+			var p = new Procedure(null, "foo", Address.Ptr32(0x00123400), null);
 			var a = new Application(
 				new ProcedureConstant(PrimitiveType.Ptr32, p), 
 				PrimitiveType.Word32,

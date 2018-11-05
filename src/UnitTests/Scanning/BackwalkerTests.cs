@@ -63,6 +63,10 @@ namespace Reko.UnitTests.Scanning
                 this.arch = arch;
             }
 
+            public IProcessorArchitecture Architecture => arch;
+
+            public Program Program => null;
+
             public SegmentMap SegmentMap => throw new NotImplementedException();
 
             public Tuple<Expression, Expression> AsAssignment(Instruction instr)
@@ -137,6 +141,11 @@ namespace Reko.UnitTests.Scanning
             public IEnumerable<Instruction> GetBlockInstructions(Block block)
             {
                 return block.Statements.Select(s => s.Instruction);
+            }
+
+            public int BlockInstructionCount(Block block)
+            {
+                return block.Statements.Count;
             }
 
             #endregion

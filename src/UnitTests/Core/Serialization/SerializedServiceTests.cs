@@ -125,5 +125,19 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(0x0C, svc.SyscallInfo.StackValues[0].Offset);
             Assert.AreEqual(0x2A, svc.SyscallInfo.StackValues[0].Value);
         }
+
+        [Test]
+        public void SserEmptyRegs()
+        {
+            var ssvc = new SerializedService
+            {
+                Ordinal = 3,
+            };
+
+            var svc = ssvc.Build(platform, new TypeLibrary());
+
+            Assert.AreEqual(3, svc.SyscallInfo.Vector);
+            Assert.AreEqual(0, svc.SyscallInfo.RegisterValues.Length);
+        }
 	}
 }

@@ -1699,9 +1699,9 @@ string filename;
                     }
                     return true;
                 }
-                */
                 variables["$RESULT"] = Var.Create(0);
                 return true;
+                */
             }
             return false;
         }

@@ -200,11 +200,6 @@ namespace Reko.Arch.Z80
             return GetFlagGroup((uint)flags);
         }
 
-        public override Core.Expressions.Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());

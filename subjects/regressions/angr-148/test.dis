@@ -66,8 +66,8 @@ _start_entry:
 // LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000400440:
-	__align(fp + 0x0000000000000008)
-	__libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, fp)
+	__align(fp + 8)
+	__libc_start_main(0x000000000040053D, qwArg00, fp + 8, 0x0000000000400550, 0x00000000004005C0, rdx, fp)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -98,7 +98,7 @@ l0000000000400487:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400485
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000601047 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000601047 r8:r8 - 6295616 rbp:fp - 8 -8(fp):rbp
 
 l0000000000400491:
 	word64 rsp_42
@@ -119,13 +119,13 @@ l0000000000400491:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000000000 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000000000 r8:r8 - 6295616 rbp:fp - 8 -8(fp):rbp
 
 l0000000000400485:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid> r8:r8 - 6295616 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:<invalid> r8:r8 - 6295616 rbp:fp - 8 -8(fp):rbp
 
 deregister_tm_clones_exit:
 // DataOut:
@@ -157,7 +157,7 @@ l00000000004004C4:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 8 rdx:0x0000000000000000 -8(fp):rbp
 
 l00000000004004CE:
 	word64 rsp_45
@@ -177,13 +177,13 @@ l00000000004004CE:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 8 rdx:0x0000000000000000 -8(fp):rbp
 
 l00000000004004C2:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 8 rdx:0x0000000000000000 -8(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:

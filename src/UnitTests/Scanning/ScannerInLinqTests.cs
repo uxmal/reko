@@ -255,7 +255,7 @@ namespace Reko.UnitTests.Scanning
             AssertBlocks(sExp, blocks);
         }
 
-        private void AssertBlocks(string sExp, Dictionary<Address, ScannerInLinq.block> blocks)
+        private void AssertBlocks(string sExp, Dictionary<Address, ScanResults.block> blocks)
         {
             var sw = new StringWriter();
             this.siq.DumpBlocks(sr, blocks, sw.WriteLine);

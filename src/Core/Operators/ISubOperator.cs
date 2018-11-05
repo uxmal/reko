@@ -36,7 +36,12 @@ namespace Reko.Core.Operators
             return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToInt64() - c2.ToInt64()));
 		}
 
-		public override string ToString()
+        public override string AsCompound()
+        {
+            return " -= ";
+        }
+
+        public override string ToString()
 		{
 			return " - ";
 		}
@@ -54,6 +59,11 @@ namespace Reko.Core.Operators
                 return Constant.Invalid;
 
             return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt64() - c2.ToUInt64()));
+        }
+
+        public override string AsCompound()
+        {
+            return " -= ";
         }
 
         public override string ToString()
