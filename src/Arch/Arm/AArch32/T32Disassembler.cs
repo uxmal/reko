@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -329,90 +329,7 @@ namespace Reko.Arch.Arm.AArch32
                     break;
                 case '[':   // Memory access
                     ++i;
-                    bool add = true;
-                    RegisterStorage index = null;
-                    if (PeekAndDiscard('s', format, ref i))
-                    {
-                        // [s = stack register access
-                        baseReg = arch.StackRegister;
-                    }
-                    else if (PeekAndDiscard('r', format, ref i))
-                    {
-                        // [r = low 8 register
-                        // Only 3 bits for register
-                        var reg = ReadDecimal(format, ref i);
-                        baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
-                    }
-                    else if (PeekAndDiscard('R', format, ref i))
-                    {
-                        // [R = GP register
-                        var reg = ReadDecimal(format, ref i);
-                        baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 4)];
-                    }
-                    else if (PeekAndDiscard('P', format, ref i))
-                    {
-                        // [P = PC-relative
-                        baseReg = Registers.pc;
-                    }
-                    else
-                    { 
-                        throw new NotImplementedException();
-                    }
-                    offset = 0;
-                    if (PeekAndDiscard(',', format, ref i))
-                    {
-                        if (PeekAndDiscard('I', format, ref i))
-                        {
-                            // Offset, shifted by 2
-                            offset = ReadDecimal(format, ref i);
-                            Expect(':', format, ref i);
-                            size = ReadDecimal(format, ref i);
-                            offset = SBitfield(wInstr, offset, size) << 2;
-                            add = true;
-                            Expect(',', format, ref i);
-                        }
-                        else if (PeekAndDiscard('r', format, ref i))
-                        {
-                            // Only 3 bits for register
-                            var reg = ReadDecimal(format, ref i);
-                            index = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
-                            Expect(',', format, ref i);
-                        }
-                        else if (PeekAndDiscard('i', format, ref i))
-                        {
-                            // Unshifted offset.
-                            offset = (int) ReadBitfields(wInstr, format, ref i);
-                            add = true;
-                            Expect(',', format, ref i);
-                        }
-                    }
-                    var dt = DataType(format, ref i);
-                    var preindex = false;
-                    if (PeekAndDiscard('x', format, ref i))
-                    {
-                        // Indexing bits in P=10, W=8
-                        // Negative bit in U=9
-                        preindex = SBitfield(wInstr, 10, 1) != 0;
-                        add = (SBitfield(wInstr, 9, 1) != 0);
-                        state.writeback = SBitfield(wInstr, 8, 1) != 0;
-                    }
-                    else if (PeekAndDiscard('X', format, ref i))
-                    {
-                        preindex = SBitfield(wInstr, 24, 1) != 0;
-                        add = SBitfield(wInstr, 23, 1) != 0;
-                        state.writeback = SBitfield(wInstr, 21, 1) != 0;
-                    }
-
-                    Expect(']', format, ref i);
-                    op = new MemoryOperand(dt)
-                    {
-                        BaseRegister = baseReg,
-                        Offset = Constant.Int32(offset),
-                        Index = index,
-                        PreIndex = preindex,
-                        ShiftType = state.shiftType,
-                        Add = add,
-                    };
+                    op = ReadMemoryAccess(wInstr, format, ref i);
                     break;
                 case 'P': // PC-relative offset, aligned by 4 bytes
                     ++i;
@@ -495,6 +412,117 @@ namespace Reko.Arch.Arm.AArch32
                 ShiftValue = state.shiftValue,
                 vector_data = state.vectorData,
             };
+        }
+
+        private MemoryOperand ReadMemoryAccess(uint wInstr, string format, ref int i)
+        {
+            int offset, size;
+            RegisterStorage baseReg;
+            bool add = true;
+            RegisterStorage index = null;
+            Opcode shiftType = Opcode.Invalid;
+            int shiftAmt = 0;
+
+            if (PeekAndDiscard('s', format, ref i))
+            {
+                // [s = stack register access
+                baseReg = arch.StackRegister;
+            }
+            else if (PeekAndDiscard('r', format, ref i))
+            {
+                // [r = low 8 register
+                // Only 3 bits for register
+                var reg = ReadDecimal(format, ref i);
+                baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
+            }
+            else if (PeekAndDiscard('R', format, ref i))
+            {
+                // [R = GP register
+                var reg = ReadDecimal(format, ref i);
+                baseReg = Registers.GpRegs[SBitfield(wInstr, reg, 4)];
+            }
+            else if (PeekAndDiscard('P', format, ref i))
+            {
+                // [P = PC-relative
+                baseReg = Registers.pc;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            offset = 0;
+            if (PeekAndDiscard(',', format, ref i))
+            {
+                if (PeekAndDiscard('I', format, ref i))
+                {
+                    // Offset, shifted by 2
+                    offset = ReadDecimal(format, ref i);
+                    Expect(':', format, ref i);
+                    size = ReadDecimal(format, ref i);
+                    offset = SBitfield(wInstr, offset, size) << 2;
+                    add = true;
+                    Expect(',', format, ref i);
+                }
+                else if (PeekAndDiscard('r', format, ref i))
+                {
+                    // Only 3 bits for register
+                    var reg = ReadDecimal(format, ref i);
+                    index = Registers.GpRegs[SBitfield(wInstr, reg, 3)];
+                    Expect(',', format, ref i);
+                }
+                else if (PeekAndDiscard('R', format, ref i))
+                {
+                    // 4 bits for register
+                    var reg = ReadDecimal(format, ref i);
+                    index = Registers.GpRegs[SBitfield(wInstr, reg, 4)];
+                    if (PeekAndDiscard('<', format, ref i))
+                    {
+                        var shOffset = ReadDecimal(format, ref i);
+                        Expect(':', format, ref i);
+                        var shSize = ReadDecimal(format, ref i);
+                        shiftAmt = SBitfield(wInstr, shOffset, shSize);
+                        shiftType = shiftAmt != 0 ? Opcode.lsl : Opcode.Invalid;
+                    }
+                    add = true;
+                    Expect(',', format, ref i);
+                }
+                else if (PeekAndDiscard('i', format, ref i))
+                {
+                    // Unshifted offset.
+                    offset = (int) ReadBitfields(wInstr, format, ref i);
+                    add = true;
+                    Expect(',', format, ref i);
+                }
+            }
+            var dt = DataType(format, ref i);
+            var preindex = false;
+            if (PeekAndDiscard('x', format, ref i))
+            {
+                // Indexing bits in P=10, W=8
+                // Negative bit in U=9
+                preindex = SBitfield(wInstr, 10, 1) != 0;
+                add = (SBitfield(wInstr, 9, 1) != 0);
+                state.writeback = SBitfield(wInstr, 8, 1) != 0;
+            }
+            else if (PeekAndDiscard('X', format, ref i))
+            {
+                preindex = SBitfield(wInstr, 24, 1) != 0;
+                add = SBitfield(wInstr, 23, 1) != 0;
+                state.writeback = SBitfield(wInstr, 21, 1) != 0;
+            }
+
+            Expect(']', format, ref i);
+            var op = new MemoryOperand(dt)
+            {
+                BaseRegister = baseReg,
+                Offset = Constant.Int32(offset),
+                Index = index,
+                PreIndex = preindex,
+                ShiftType = shiftType,
+                Shift = shiftAmt,
+                Add = add,
+            };
+            return op;
         }
 
         private (Opcode, MachineOperand) DecodeImmShift(uint wInstr, string format, ref int i)
@@ -1560,6 +1588,34 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
+            var LoadStoreUnsignedRegisterOffset = Mask(4 + 16, 7,
+                Instr(Opcode.strb, "R12,[R16,R0<4:2,b]"),
+                Select((16, 4), n => n != 0xF,
+                    Instr(Opcode.ldrb_w, "R12,[R16,R0<4:2,b]"),
+                    Instr(Opcode.pld, "*")),
+                Instr(Opcode.strh, "R12,[R16,R0<4:2,h]"),
+                Select((16, 4), n => n != 0xF,
+                    Instr(Opcode.ldrh_w, "R12,[R16,R0<4:2,h]"),
+                    Instr(Opcode.pld, "*")),
+                Instr(Opcode.str_w, "R12,[R16,R0<4:2,w]"),
+                Instr(Opcode.ldr_w, "R12,[R16,R0<4:2,w]"),
+                invalid,
+                invalid);
+
+            var LoadStoreUnsignedNegativeImm = Mask(4 + 16, 7,
+                Instr(Opcode.strb, "R12,[R16,i0:8,bx]"),
+                Select((16, 4), n => n != 0xF,
+                    Instr(Opcode.ldrb_w, "R12,[R16,i0:8,bx]"),
+                    Instr(Opcode.pld, "*")),
+                Instr(Opcode.strh, "R12,[R16,i0:8,hx]"),
+                Select((16, 4), n => n != 0xF,
+                    Instr(Opcode.ldrh_w, "R12,[R16,i0:8,hx]"),
+                    Instr(Opcode.pld, "*")),
+                Instr(Opcode.str_w, "R12,[R16,i0:8,wx]"),
+                Instr(Opcode.ldr_w, "R12,[R16,i0:8,wx]"),
+                invalid,
+                invalid);
+
             var LoadStoreUnsignedUnprivileged = Mask(4 + 16, 7,
                 Instr(Opcode.strbt, "R12,[R16,i0:8,b]"),
                 Instr(Opcode.ldrbt, "R12,[R16,i0:8,b]"),
@@ -1610,14 +1666,14 @@ namespace Reko.Arch.Arm.AArch32
                 Select((16,4), n => n != 0xF,
                     Mask(10, 3,
                         Select(w => SBitfield(w, 6, 6) == 0,
-                            Nyi("LoadStoreUnsignedRegisterOffset"),
+                            LoadStoreUnsignedRegisterOffset,
                             invalid),
                         invalid,
                         Select(w => SBitfield(w, 8, 1) == 0,
                             invalid,
                             LoadStoreUnsignedImmediatePostIndexed),
                         Mask(8, 3,
-                            Nyi("LoadStoreUnsignedNegativeImm"),
+                            LoadStoreUnsignedNegativeImm,
                             LoadStoreUnsignedImmediatePreIndexed,
                             LoadStoreUnsignedUnprivileged,
                             LoadStoreUnsignedImmediatePreIndexed)),
@@ -2743,12 +2799,16 @@ namespace Reko.Arch.Arm.AArch32
                 invalid);   // op1 = 0b111
 
             var DataProcessingShiftedRegister = Mask(21, 0xF,
-                Nyi("DataProcessingShiftedRegister_opc0"),
-                Nyi("DataProcessingShiftedRegister_opc1"),
+                Mask(20, 1,
+                    Instr(Opcode.and_w, "R8,R16,R0,Si4:2;12:3:6:2"),
+                    Nyi("DataProcessingShiftedRegister_opc0 s=1")),
+                Mask(20, 1,
+                    Instr(Opcode.bic_w, "R8,R16,R0,Si4:2;12:3:6:2"),
+                    Instr(Opcode.bics_w, "R8,R16,R0,Si4:2;12:3:6:2")),
                 Mask(20, 1,
                     Select((16,4), n => n != 15,
                         Instr(Opcode.orr, "R8,R16,R0,Si4:2;12:3:6:2"),
-                        Instr(Opcode.mov, "*")),
+                        Instr(Opcode.mov_w, "R8,R0,Si4:2;12:3:6:2")),
                     Select((16,4), n => n != 15,
                         Instr(Opcode.orr, "*."),
                         Instr(Opcode.mov, "*."))),
@@ -2772,7 +2832,9 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
 
                 Mask(20, 1,
-                    Nyi("DataProcessingShiftedRegister_opc8 s=0"),
+                    Select((16, 4), n => n != 13,
+                        Instr(Opcode.add_w, "R8,R16,R0,Si4:2;12:3:6:2"),
+                        Instr(Opcode.add, "S*")),
                     Select((8,4), n => n != 15,
                         Select((16,4), n => n != 13,
                             Instr(Opcode.add, ".*"),
@@ -2935,6 +2997,48 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
+            var Hints = Mask(4, 0xF,
+                Mask(0, 0xF,
+                    Instr(Opcode.nop_w, ""),
+                    Instr(Opcode.yield, "*"),
+                    Instr(Opcode.wfe, "*"),
+                    Instr(Opcode.wfi, "*"),
+
+                    Instr(Opcode.sev, "*"),
+                    Instr(Opcode.sevl, "*"),
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, ""), // Reserved hint
+
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, ""), // Reserved hint
+
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.nop, "")), // Reserved hint
+                Select((0, 4), n => n != 0, 
+                    Instr(Opcode.nop, ""), // Reserved hint
+                    Instr(Opcode.esb, "*")),
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.nop, ""), // Reserved hint
+                Instr(Opcode.dbg, "*"));
+
             var mixedDecoders = Mask(6 + 16, 0xF,
                 branch_T3_variant,
                 branch_T3_variant,
@@ -2964,7 +3068,7 @@ namespace Reko.Arch.Arm.AArch32
                             Instr(Opcode.msr, "*register"),
                             Instr(Opcode.msr, "*banked register")),
                         Select((8,3), n => n == 0,
-                            Nyi("CreateBranchesMiscControl - hints"),
+                            Hints,
                             Nyi("ChangeProcessorState")),
                         MiscellaneousSystem),
                     Mask(20, 3,     // op2

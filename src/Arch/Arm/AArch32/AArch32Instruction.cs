@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -34,8 +34,18 @@ namespace Reko.Arch.Arm.AArch32
         // Specially rendered opcodes
         private static readonly Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
         {
+            { Opcode.add_w, "add.w" },
+            { Opcode.and_w, "and.w" },
+            { Opcode.bic_w, "bic.w" },
+            { Opcode.bics_w, "bics.w" },
+            { Opcode.ldr_w, "ldr.w" },
+            { Opcode.ldrb_w, "ldrb.w" },
+            { Opcode.ldrh_w, "ldrh.w" },
+            { Opcode.mov_w, "mov.w" },
+            { Opcode.nop_w, "nop.w" },
             { Opcode.pop_w, "pop.w" },
-            { Opcode.push_w, "push.w" }
+            { Opcode.push_w, "push.w" },
+            { Opcode.str_w, "str.w" },
         };
 
         // Block data transfer opcodes that affect the rendering of the first operand.
@@ -164,12 +174,17 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (ShiftType != Opcode.Invalid)
             {
-                writer.WriteChar(',');
-                writer.WriteOpcode(ShiftType.ToString());
-                if (ShiftType != Opcode.rrx)
+                if (ShiftType != Opcode.lsl ||
+                    !(ShiftValue is ImmediateOperand imm) ||
+                    !imm.Value.IsZero)
                 {
-                    writer.WriteChar(' ');
-                    RenderOperand(ShiftValue, writer, options);
+                    writer.WriteChar(',');
+                    writer.WriteOpcode(ShiftType.ToString());
+                    if (ShiftType != Opcode.rrx)
+                    {
+                        writer.WriteChar(' ');
+                        RenderOperand(ShiftValue, writer, options);
+                    }
                 }
             }
             if (UserStmLdm)

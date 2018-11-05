@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -453,10 +453,8 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("srsdb\tsp,#9");
         }
 
-        // ------------------------------------------
-
         [Test]
-        public void ThumbDis_FF7FA52D()
+        public void ThumbDis_vrshl()
         {
             Given_Instructions(0xFF7F, 0xA52D);
             Expect_Code("vrshl\td26,d15,d29");
@@ -514,7 +512,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_FF1F2E45()
+        public void ThumbDis_vcge()
         {
             Given_Instructions(0xFF1F, 0x2E45);
             Expect_Code("vcge.f16\tq1,q7,q2");
@@ -543,7 +541,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_F2628DDD()
+        public void ThumbDis_b_2()
         {
             Given_Instructions(0xF262, 0x8DDD);
             Expect_Code("b\t$001A2BBA");
@@ -573,14 +571,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_E8CBA8D7()
+        public void ThumbDis_stlexh()
         {
             Given_Instructions(0xE8CB, 0xA8D7);
             Expect_Code("stlexh\tr7,r10,[fp]");
         }
 
         [Test]
-        public void ThumbDis_F7688AE5()
+        public void ThumbDis_b()
         {
             Given_Instructions(0xF768, 0x8AE5);
             Expect_Code("b\t$000A85CA");
@@ -594,7 +592,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_EF677565()
+        public void ThumbDis_vrshl_i32()
         {
             Given_Instructions(0xEF67, 0x7565);
             Expect_Code("vrshl.i32\tq11,q3,q10");
@@ -608,7 +606,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_F93FAD4D()
+        public void ThumbDis_ldrsh_pc()
         {
             Given_Instructions(0xF93F, 0xAD4D);
             Expect_Code("ldrsh\tr10,[pc,#&DD]");
@@ -667,10 +665,80 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_EF80E7FE()
+        public void ThumbDis_vqshl()
         {
             Given_Instructions(0xEF80, 0xE7FE);
             Expect_Code("vqshl.i64\tq7,q15,#&40");
+        }
+
+        [Test]
+        public void ThumbDis_bic_w()
+        {
+            Given_Instructions(0xEA23, 0x0101);
+            Expect_Code("bic.w\tr1,r3,r1");
+        }
+
+        [Test]
+        public void ThumbDis_add_w()
+        {
+            Given_Instructions(0xEB05, 0x1588);
+            Expect_Code("add.w\tr5,r5,r8,lsl #6");
+        }
+
+        [Test]
+        public void ThumbDis_and_w()
+        {
+            Given_Instructions(0xEA00, 0x2013);
+            Expect_Code("and.w\tr0,r0,r3,lsr #8");
+        }
+
+        [Test]
+        public void ThumbDis_ldrb_w()
+        {
+            Given_Instructions(0xF815, 0x0C01);
+            Expect_Code("ldrb.w\tr0,[r5,-#&1]");
+        }
+
+        [Test]
+        public void ThumbDis_str_w()
+        {
+            Given_Instructions(0xF840, 0x2021);
+            Expect_Code("str.w\tr2,[r0,r1,lsl #2]");
+        }
+
+        [Test]
+        public void ThumbDis_str_w_noshift()
+        {
+            Given_Instructions(0xF840, 0x2001);
+            Expect_Code("str.w\tr2,[r0,r1]");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_w()
+        {
+            Given_Instructions(0xF850, 0x0021);
+            Expect_Code("ldr.w\tr0,[r0,r1,lsl #2]");
+        }
+
+        [Test]
+        public void ThumbDis_bics_w()
+        {
+            Given_Instructions(0xEA36, 0x0304);
+            Expect_Code("bics.w\tr3,r6,r4");
+        }
+
+        [Test]
+        public void ThumbDis_mov_w()
+        {
+            Given_Instructions(0xEA4F, 0x7AD2);
+            Expect_Code("mov.w\tr10,r2,lsr #&1F");
+        }
+
+        [Test]
+        public void ThumbDis_nop_w()
+        {
+            Given_Instructions(0xF3AF, 0x8000);
+            Expect_Code("nop.w");
         }
     }
 }
