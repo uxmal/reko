@@ -1,4 +1,4 @@
-﻿/*
+/*
  Copyright (c) 2012 Eran Meir
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -369,9 +369,11 @@ namespace Reko.Core.Lib
                 }
                 else if (m_isa[chain.head + chain.length] < 0)
                 {
-                    SuffixRank sr = new SuffixRank();
-                    sr.head = chain.head;
-                    sr.rank = -m_isa[chain.head + chain.length];
+                    SuffixRank sr = new SuffixRank
+                    {
+                        head = chain.head,
+                        rank = -m_isa[chain.head + chain.length],
+                    };
                     notedSuffixes.Add(sr);
                 }
                 else
