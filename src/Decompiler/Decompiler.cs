@@ -138,7 +138,11 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program);
+            Dumper dump = new Dumper(program)
+            {
+                ShowAddresses = program.User.ShowAddressesInDisassembly,
+                ShowCodeBytes = program.User.ShowBytesInDisassembly
+            };
             dump.Dump(wr);
         }
 
