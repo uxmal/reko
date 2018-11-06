@@ -6410,13 +6410,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_dsb()
         {
             RewriteCode("BFF34F8F");	// dsb sy
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__dsb_sy()");
         }
 
         [Test]
@@ -7952,5 +7951,13 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = r0");
         }
 
+        [Test]
+        public void ThumbRw_wfi()
+        {
+            RewriteCode("30BF");
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__wait_for_interrupt()");
+        }
     }
 }

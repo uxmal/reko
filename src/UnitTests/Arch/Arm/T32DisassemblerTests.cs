@@ -740,5 +740,34 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instructions(0xF3AF, 0x8000);
             Expect_Code("nop.w");
         }
+
+        [Test]
+        public void ThumbDis_push_1()
+        {
+            Given_Instructions(0xB570);
+            Expect_Code("push\t{r4-r6,lr}");
+        }
+
+        [Test]
+        public void ThumbDis_pop_1()
+        {
+            Given_Instructions(0xBD08);
+            Expect_Code("pop\t{r3,pc}");
+        }
+
+        [Test]
+        public void ThumbDis_nop()
+        {
+            Given_Instructions(0xBF00);
+            Expect_Code("nop");
+        }
+
+        // A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
+        [Test]
+        public void ThumbDis_FEB01CA8()
+        {
+            Given_Instructions(0xFEB0, 0x1CA8);
+            Expect_Code("@@@");
+        }
     }
 }

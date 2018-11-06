@@ -67,7 +67,7 @@ namespace Reko.Arch.Arm.AArch32
 
         MachineOperand Dst() => instr.ops[0];
         MachineOperand Src1() => instr.ops[1];
-        MachineOperand Src2() =>  instr.ops[2]; 
+        MachineOperand Src2() => instr.ops[2];
         MachineOperand Src3() => instr.ops[3];
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -99,7 +99,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.crc32h:
                 case Opcode.crc32w:
                 case Opcode.dbg:
-                case Opcode.dsb:
                 case Opcode.fldmdbx:
                 case Opcode.fldmiax:
                 case Opcode.fstmdbx:
@@ -304,7 +303,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.subs:
                 case Opcode.movs:
                 case Opcode.wfe:
-                case Opcode.wfi:
                 case Opcode.sev:
                 case Opcode.sevl:
                     NotImplementedYet();
@@ -318,7 +316,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.adr: RewriteAdr(); break;
                 case Opcode.and: RewriteLogical(m.And); break;
                 case Opcode.asr: RewriteShift(m.Sar); break;
-                case Opcode.asrs: RewriteShift(m.Sar); break; 
+                case Opcode.asrs: RewriteShift(m.Sar); break;
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.bfc: RewriteBfc(); break;
                 case Opcode.bfi: RewriteBfi(); break;
@@ -335,6 +333,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.cmn: RewriteCmp(m.IAdd); break;
                 case Opcode.cmp: RewriteCmp(m.ISub); break;
                 case Opcode.cps: RewriteCps(); break;
+                case Opcode.dsb: RewriteDsb(); break;
                 case Opcode.dmb: RewriteDmb(); break;
                 case Opcode.eor: RewriteLogical(m.Xor); break;
                 case Opcode.eret: RewriteEret(); break;
@@ -402,8 +401,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smc: RewriteSmc(); break;
                 case Opcode.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlad:  RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smladx:  RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Opcode.smlad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Opcode.smladx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
                 case Opcode.smlalbb: RewriteMlal(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlalbt: RewriteMlal(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlald: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
@@ -478,6 +477,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uxtah: RewriteXtab(PrimitiveType.UInt16); break;
                 case Opcode.uxtb: RewriteXtb(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Opcode.uxth: RewriteXtb(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
+                case Opcode.wfi: RewriteWfi(); break;
                 case Opcode.yield: RewriteYield(); break;
 
 
@@ -561,7 +561,7 @@ namespace Reko.Arch.Arm.AArch32
                 wInstr = rdr.PeekLeUInt16(-2);
             }
             host.Error(instr.Address, "AArch32 instruction '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
-            EmitUnitTest();
+            EmitUnitTest(instr);
             Invalid();
         }
 
@@ -580,7 +580,7 @@ namespace Reko.Arch.Arm.AArch32
 
         Expression C()
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+            return binder.EnsureFlagGroup(Registers.cpsr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
         }
 
         Expression Q()
@@ -636,7 +636,7 @@ namespace Reko.Arch.Arm.AArch32
                     rtlClass = RtlClass.ConditionalTransfer;
                     if (dstIsAddress)
                     {
-                        m.Branch(TestCond(instr.condition), (Address)dst, rtlClass);
+                        m.Branch(TestCond(instr.condition), (Address) dst, rtlClass);
                     }
                     else
                     {
@@ -652,7 +652,7 @@ namespace Reko.Arch.Arm.AArch32
             rtlClass = RtlClass.ConditionalTransfer;
             var cond = Operand(Dst(), PrimitiveType.Word32, true);
             m.Branch(ctor(Operand(Dst())),
-                    ((AddressOperand)Src1()).Address,
+                    ((AddressOperand) Src1()).Address,
                     RtlClass.ConditionalTransfer);
         }
 
@@ -690,7 +690,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     ea = m.IAdd(ea, mem.Offset);
                 }
-                else 
+                else
                 {
                     ea = m.ISub(ea, mem.Offset);
                 }
@@ -879,7 +879,7 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.ShiftValue is RegisterOperand reg)
                 sh = binder.EnsureRegister(reg.Register);
             else
-                sh = ((ImmediateOperand)instr.ShiftValue).Value;
+                sh = ((ImmediateOperand) instr.ShiftValue).Value;
 
             return MaybeShiftExpression(exp, sh, instr.ShiftType);
         }
@@ -970,7 +970,7 @@ namespace Reko.Arch.Arm.AArch32
 
         Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, (uint)bits, name, type);
+            return binder.EnsureFlagGroup(Registers.cpsr, (uint) bits, name, type);
         }
 
         int BitSize(ArmVectorData vec)
@@ -1018,52 +1018,39 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-void EmitUnitTest()
-{
-#if NOT_YET
+        private static HashSet<Opcode> opcode_seen = new HashSet<Opcode>();
 
-    if (opcode_seen.Contains(instr.opcode))
-        return;
+        void EmitUnitTest(AArch32Instruction instr)
+        {
+            if (opcode_seen.Contains(instr.opcode))
+                return;
             opcode_seen.Add(instr.opcode);
 
-    //var r2 = rdr.Clone();
-    //r2.Offset -= dasm.Current.Length;
-    var auto bytes = &instr->bytes[0];
-    wchar_t buf[256];
+            var r2 = rdr.Clone();
+            r2.Offset -= instr.Length;
 
-    .OutputDebugString(L"        [Test]\r\n");
-    wsprintfW(buf, L"        public void ArmRw_%S()\r\n", instr->mnemonic);
+            Console.WriteLine("        [Test]");
+            Console.WriteLine("        public void ArmRw_{0}()", instr.opcode);
+            Console.WriteLine("        {");
 
-    .OutputDebugString(buf);
-
-    .OutputDebugString(L"        {\r\n");
-    wsprintfW(buf, L"            BuildTest(0x%02x%02x%02x%02x);\t// %S %S\r\n",
-        bytes[3], bytes[2], bytes[1], bytes[0],
-        instr->mnemonic, instr->op_str);
-
-    .OutputDebugString(buf);
-
-    .OutputDebugString(L"            AssertCode(");
-
-    .OutputDebugString(L"                \"0|L--|00100000(4): 1 instructions\",\r\n");
-
-    .OutputDebugString(L"                \"1|L--|@@@\");\r\n");
-
-    .OutputDebugString(L"        }\r\n");
-
-    .OutputDebugString(L"\r\n");
-#endif
-
-}
-
-#if DEBUG
-        private static HashSet<Opcode> opcode_seen = new HashSet<Opcode>();
-#endif
-
-
+            if (instr.Length > 2)
+            {
+                var wInstr = r2.ReadBeUInt32();
+                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");");
+            }
+            else
+            {
+                var wInstr = r2.ReadBeUInt16();
+                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");");
+            }
+            Console.WriteLine("            AssertCode(");
+            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
+            Console.WriteLine($"                \"1|L--|@@@\");");
+            Console.WriteLine("        }");
         }
+    }
 
-        public class ArmRewriterRetired : IEnumerable<RtlInstructionCluster>
+    public class ArmRewriterRetired : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
         private EndianImageReader rdr;

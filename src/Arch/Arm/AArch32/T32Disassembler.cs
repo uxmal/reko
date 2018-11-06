@@ -287,6 +287,22 @@ namespace Reko.Arch.Arm.AArch32
                         op = ModifiedImmediate(wInstr);
                     }
                     break;
+                case 'm':
+                    ++i;
+                    uint regmask = wInstr & 0xFF;
+                    if (PeekAndDiscard('w', format, ref i))
+                    {
+                        // 'mw': 16-bit instruction register mask used by push
+                        regmask |= (wInstr & 0x100) << 6;
+                    }
+                    else
+                    {
+                        // 'mr': 16-bit instruction register mask used by pop
+                        Expect('r', format, ref i);
+                        regmask |= (wInstr & 0x100) << 7;
+                    }
+                    op = new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, regmask);
+                    break;
                 case 'x':   // Jump displacement in bits 9:3..7, shifted left by 1.
                     offset = (SBitfield(wInstr, 9, 1) << 6) |
                              (SBitfield(wInstr, 3, 5) << 1);
@@ -1343,6 +1359,10 @@ namespace Reko.Arch.Arm.AArch32
 
         private static Decoder CreateMisc16bitDecoder()
         {
+            var pushAndPop = Mask(11, 1,
+                Instr(Opcode.push, "mw"),
+                Instr(Opcode.pop, "mr"));
+
             var cbnzCbz = Mask(11, 1,
                 Instr(Opcode.cbz, "r0,x"),
                 Instr(Opcode.cbnz, "r0,x"));
@@ -1359,8 +1379,8 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.uxtb, "r0,r3")),
                 cbnzCbz,
 
-                invalid,
-                invalid,
+                pushAndPop,
+                pushAndPop,
                 Mask(5, 0x7,
                     Instr(Opcode.setpan, "i3:1"),
                     Nyi("ChangeProcessorState"),
@@ -1382,8 +1402,8 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.rev, "r0,r3")),
                 cbnzCbz,
 
-                invalid,
-                invalid,
+                pushAndPop,
+                pushAndPop,
                 Instr(Opcode.bkpt, ""),
                 Select(w => (w & 0xF) == 0,
                     Mask(4, 0xF, // Hints
@@ -1560,6 +1580,16 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
+            var LoadStoreSignedNegativeImm = Mask(5 + 16, 3,
+                Select((12, 4), w=> w != 0xF,
+                    Instr(Opcode.ldrsb, "R12,[R16,i0:8,B]"),
+                    Instr(Opcode.pli, "*")),
+                Select((12, 4), w=> w != 0xF,
+                    Instr(Opcode.ldrsh, "R12,[R16,i0:8,H]"),
+                    Instr(Opcode.nop, "*")),        // Reserved hint
+                invalid,
+                invalid);
+
             var LoadStoreUnsignedImmediatePostIndexed = Mask(4 + 16, 7,
                 Instr(Opcode.strb, "R12,[R16,i0:8,bx]"),
                 Instr(Opcode.ldrb, "R12,[R16,i0:8,bx]"),
@@ -1688,7 +1718,7 @@ namespace Reko.Arch.Arm.AArch32
                 Select((16,4), n => n != 0xF,
                     LoadStoreUnsignedPositiveImm,
                     LoadUnsignedLiteral),
-                Select(w => SBitfield(w, 16, 4) != 0xF,
+                Select((16, 4), w  => w != 0xF,
                     Mask(10, 3,
                         Select(w => SBitfield(w, 6, 6) == 0,
                             LoadStoreSignedRegisterOffset,
@@ -1698,7 +1728,7 @@ namespace Reko.Arch.Arm.AArch32
                             invalid,
                             LoadStoreSignedImmediatePostIndexed),
                         Mask(8, 3,
-                            Nyi("LoadStoreSignedNegativeImm"),
+                            LoadStoreSignedNegativeImm,
                             Nyi("LoadStoreSignedImmediatePreIndexed"),
                             Nyi("LoadStoreSignedUnprivileged"),
                             Nyi("LoadStoreSignedImmediatePreIndexed"))),

@@ -57,290 +57,60 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 00008026: warning: Call target address 00C0809C is invalid.
-0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
-0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB051588 (881505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB051588()
-{
-    Given_Instructions(0xEB05, 0x1588);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020281 (810202EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020281()
-{
-    Given_Instructions(0xEB02, 0x0281);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-00009CE0: warning: Call target address 00C0A0E8 is invalid.
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8533022 (223053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8533022()
-{
-    Given_Instructions(0xF853, 0x3022);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA0020C3 (C32000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
-[Test]
-public void ThumbDis_EA0020C3()
-{
-    Given_Instructions(0xEA00, 0x20C3);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA002013 (132000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
-[Test]
-public void ThumbDis_EA002013()
-{
-    Given_Instructions(0xEA00, 0x2013);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB070305()
-{
-    Given_Instructions(0xEB07, 0x0305);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB070305()
-{
-    Given_Instructions(0xEB07, 0x0305);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8150C01 (010C15F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8150C01()
-{
-    Given_Instructions(0xF815, 0x0C01);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8533020 (203053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8533020()
-{
-    Given_Instructions(0xF853, 0x3020);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8432020 (202043F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8432020()
-{
-    Given_Instructions(0xF843, 0x2020);
-    Expect_Code("@@@");
-}
-
+000000E8: warning: Call target address 00C085AC is invalid.
+000002B6: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
+00000188: warning: Call target address 00C0A5C0 is invalid.
+0000A5FA: warning: Call target address 0000A7E0 is invalid.
+0000A63A: warning: Call target address 0000A82E is invalid.
 00009500: warning: Call target address 00C0A0E0 is invalid.
+0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
+0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
+00009CE0: warning: Call target address 00C0A0E8 is invalid.
+// A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
+[Test]
+public void ThumbDis_FEB01CA8()
+{
+    Given_Instructions(0xFEB0, 0x1CA8);
+    Expect_Code("@@@");
+}
+
+// A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
+[Test]
+public void ThumbDis_FEB01CA8()
+{
+    Given_Instructions(0xFEB0, 0x1CA8);
+    Expect_Code("@@@");
+}
+
+0000972C: warning: Call target address 00C0A21C is invalid.
+000096BC: warning: Call target address 00C0A21C is invalid.
 000094FC: warning: Call target address 00C0A0D8 is invalid.
-// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8402021()
-{
-    Given_Instructions(0xF840, 0x2021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8402021()
-{
-    Given_Instructions(0xF840, 0x2021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8500021()
-{
-    Given_Instructions(0xF850, 0x0021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8500021()
-{
-    Given_Instructions(0xF850, 0x0021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
+0000942E: warning: Call target address 00C09534 is invalid.
+000093F6: warning: Call target address 00C09534 is invalid.
+0000941C: warning: Call target address 00C09534 is invalid.
+000093D6: warning: Call target address 00C09534 is invalid.
+00009392: warning: Call target address 00C095D8 is invalid.
+0000935A: warning: Call target address 00C095D8 is invalid.
+00009380: warning: Call target address 00C095D8 is invalid.
+0000933A: warning: Call target address 00C095D8 is invalid.
 00008F44: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-// A T32 decoder for the instruction EB050282 (820205EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050282()
-{
-    Given_Instructions(0xEB05, 0x0282);
-    Expect_Code("@@@");
-}
-
 00008FCC: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
+000087BE: warning: Call target address 00C08E3C is invalid.
+0000865E: warning: Call target address 00C088DC is invalid.
+00008620: warning: Call target address 00C088DC is invalid.
+00008586: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+0000840C: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00008374: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00008288: warning: Call target address 00C09450 is invalid.
 00008188: warning: Call target address 00C085F0 is invalid.
-00001994: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-// A T32 decoder for the instruction EA360304 (040336EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA360304()
-{
-    Given_Instructions(0xEA36, 0x0304);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA240505()
-{
-    Given_Instructions(0xEA24, 0x0505);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA350304 (040335EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA350304()
-{
-    Given_Instructions(0xEA35, 0x0304);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA240505()
-{
-    Given_Instructions(0xEA24, 0x0505);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230305 (050323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230305()
-{
-    Given_Instructions(0xEA23, 0x0305);
-    Expect_Code("@@@");
-}
-
 000019EA: warning: Call target address 00C085AC is invalid.
+00001994: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00001942: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
 00001824: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-// A T32 decoder for the instruction F8133C02 (023C13F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8133C02()
-{
-    Given_Instructions(0xF813, 0x3C02);
-    Expect_Code("@@@");
-}
-
+000016F2: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 00001242: warning: Call target address 00C082EC is invalid.
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
+00000FAE: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
+00000F54: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
 // A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
 [Test]
 public void ThumbDis_F9564C0F()
@@ -354,203 +124,27 @@ public void ThumbDis_F9564C0F()
 public void ThumbDis_F9564C0F()
 {
     Given_Instructions(0xF956, 0x4C0F);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
     Expect_Code("@@@");
 }
 
 00000F12: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
+00000D58: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
 00000C70: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-// A T32 decoder for the instruction EA220208 (080222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220208()
-{
-    Given_Instructions(0xEA22, 0x0208);
-    Expect_Code("@@@");
-}
-
 00000C4A: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-// A T32 decoder for the instruction EA210106 (060121EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA210106()
-{
-    Given_Instructions(0xEA21, 0x0106);
-    Expect_Code("@@@");
-}
-
 00000B1C: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00000AE6: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
 000009F4: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 00000978: warning: Call target address 00C01550 is invalid.
 00000986: warning: Call target address 00C01550 is invalid.
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB050583 (830505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050583()
-{
-    Given_Instructions(0xEB05, 0x0583);
-    Expect_Code("@@@");
-}
-
+000007F4: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
+000007F8: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00000680: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
 00000534: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+000004D2: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00000466: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 00000454: warning: Call target address 00C0177C is invalid.
+000002B2: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 000002FC: error: AArch32 instruction 'qsax' (4620F959) is not supported yet.
-// A T32 decoder for the instruction EB050583 (830505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050583()
-{
-    Given_Instructions(0xEB05, 0x0583);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F7AD2 (D27A4FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F7AD2()
-{
-    Given_Instructions(0xEA4F, 0x7AD2);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB060080 (800006EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB060080()
-{
-    Given_Instructions(0xEB06, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230302 (020323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230302()
-{
-    Given_Instructions(0xEA23, 0x0302);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020080 (800002EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020080()
-{
-    Given_Instructions(0xEB02, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030080 (800003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030080()
-{
-    Given_Instructions(0xEB03, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA220208 (080222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220208()
-{
-    Given_Instructions(0xEA22, 0x0208);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA210106 (060121EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA210106()
-{
-    Given_Instructions(0xEA21, 0x0106);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030080 (800003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030080()
-{
-    Given_Instructions(0xEB03, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB040383 (830304EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB040383()
-{
-    Given_Instructions(0xEB04, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020080 (800002EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020080()
-{
-    Given_Instructions(0xEB02, 0x0080);
-    Expect_Code("@@@");
-}
-
 // A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
 [Test]
 public void ThumbDis_F9564C0F()
@@ -559,790 +153,86 @@ public void ThumbDis_F9564C0F()
     Expect_Code("@@@");
 }
 
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000083 (830000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000083()
-{
-    Given_Instructions(0xEB00, 0x0083);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB050383 (830305EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050383()
-{
-    Given_Instructions(0xEB05, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020382 (820302EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020382()
-{
-    Given_Instructions(0xEB02, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB040383 (830304EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB040383()
-{
-    Given_Instructions(0xEB04, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230202 (020223EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230202()
-{
-    Given_Instructions(0xEA23, 0x0202);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020082 (820002EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020082()
-{
-    Given_Instructions(0xEB02, 0x0082);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB050080 (800005EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050080()
-{
-    Given_Instructions(0xEB05, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB010381 (810301EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB010381()
-{
-    Given_Instructions(0xEB01, 0x0381);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020383 (830302EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020383()
-{
-    Given_Instructions(0xEB02, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000083 (830000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000083()
-{
-    Given_Instructions(0xEB00, 0x0083);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F3AF8000 (0080AFF3) - (CreateBranchesMiscControl - hints) has not been implemented yet.
-[Test]
-public void ThumbDis_F3AF8000()
-{
-    Given_Instructions(0xF3AF, 0x8000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8133C02 (023C13F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8133C02()
-{
-    Given_Instructions(0xF813, 0x3C02);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8402C20 (202C40F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8402C20()
-{
-    Given_Instructions(0xF840, 0x2C20);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8404C0C (0C4C40F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8404C0C()
-{
-    Given_Instructions(0xF840, 0x4C0C);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8403C44 (443C40F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8403C44()
-{
-    Given_Instructions(0xF840, 0x3C44);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0343()
-{
-    Given_Instructions(0xEA4F, 0x0343);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0343()
-{
-    Given_Instructions(0xEA4F, 0x0343);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0343()
-{
-    Given_Instructions(0xEA4F, 0x0343);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0242 (42024FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0242()
-{
-    Given_Instructions(0xEA4F, 0x0242);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8523C0C (0C3C52F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8523C0C()
-{
-    Given_Instructions(0xF852, 0x3C0C);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8423C0C (0C3C42F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8423C0C()
-{
-    Given_Instructions(0xF842, 0x3C0C);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction FFFE1FFF (FF1FFEFF) - (AdvancedSimdTwoRegistersAndShiftAmount_opcF) has not been implemented yet.
-[Test]
-public void ThumbDis_FFFE1FFF()
-{
-    Given_Instructions(0xFFFE, 0x1FFF);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0242 (42024FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0242()
-{
-    Given_Instructions(0xEA4F, 0x0242);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0242 (42024FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0242()
-{
-    Given_Instructions(0xEA4F, 0x0242);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0343()
-{
-    Given_Instructions(0xEA4F, 0x0343);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA4F0343 (43034FEA) - (Unknown format specifier * in * when decoding mov) has not been implemented yet.
-[Test]
-public void ThumbDis_EA4F0343()
-{
-    Given_Instructions(0xEA4F, 0x0343);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA240505()
-{
-    Given_Instructions(0xEA24, 0x0505);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA240505 (050524EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA240505()
-{
-    Given_Instructions(0xEA24, 0x0505);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA350304 (040335EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA350304()
-{
-    Given_Instructions(0xEA35, 0x0304);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA350304 (040335EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA350304()
-{
-    Given_Instructions(0xEA35, 0x0304);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA250404 (040425EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA250404()
-{
-    Given_Instructions(0xEA25, 0x0404);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA320E01 (010E32EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA320E01()
-{
-    Given_Instructions(0xEA32, 0x0E01);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA360304 (040336EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA360304()
-{
-    Given_Instructions(0xEA36, 0x0304);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230606 (060623EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230606()
-{
-    Given_Instructions(0xEA23, 0x0606);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA360304 (040336EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA360304()
-{
-    Given_Instructions(0xEA36, 0x0304);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA240606 (060624EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA240606()
-{
-    Given_Instructions(0xEA24, 0x0606);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230305 (050323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230305()
-{
-    Given_Instructions(0xEA23, 0x0305);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA220000 (000022EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220000()
-{
-    Given_Instructions(0xEA22, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA220000 (000022EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220000()
-{
-    Given_Instructions(0xEA22, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8530022 (220053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8530022()
-{
-    Given_Instructions(0xF853, 0x0022);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8530022 (220053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8530022()
-{
-    Given_Instructions(0xF853, 0x0022);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB000080 (800000EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB000080()
-{
-    Given_Instructions(0xEB00, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB080080 (800008EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB080080()
-{
-    Given_Instructions(0xEB08, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030083 (830003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030083()
-{
-    Given_Instructions(0xEB03, 0x0083);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB080080 (800008EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB080080()
-{
-    Given_Instructions(0xEB08, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030083 (830003EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030083()
-{
-    Given_Instructions(0xEB03, 0x0083);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB080080 (800008EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB080080()
-{
-    Given_Instructions(0xEB08, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB050282 (820205EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050282()
-{
-    Given_Instructions(0xEB05, 0x0282);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB050080 (800005EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050080()
-{
-    Given_Instructions(0xEB05, 0x0080);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB050181 (810105EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB050181()
-{
-    Given_Instructions(0xEB05, 0x0181);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8500021()
-{
-    Given_Instructions(0xF850, 0x0021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8500021 (210050F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8500021()
-{
-    Given_Instructions(0xF850, 0x0021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8402021()
-{
-    Given_Instructions(0xF840, 0x2021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8402021 (212040F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8402021()
-{
-    Given_Instructions(0xF840, 0x2021);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA220201 (010222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220201()
-{
-    Given_Instructions(0xEA22, 0x0201);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA220201 (010222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220201()
-{
-    Given_Instructions(0xEA22, 0x0201);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA220201 (010222EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA220201()
-{
-    Given_Instructions(0xEA22, 0x0201);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8441020 (201044F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8441020()
-{
-    Given_Instructions(0xF844, 0x1020);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8432020 (202043F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8432020()
-{
-    Given_Instructions(0xF843, 0x2020);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8533020 (203053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8533020()
-{
-    Given_Instructions(0xF853, 0x3020);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230302 (020323EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230302()
-{
-    Given_Instructions(0xEA23, 0x0302);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030383 (830303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030383()
-{
-    Given_Instructions(0xEB03, 0x0383);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8150C01 (010C15F8) - (LoadStoreUnsignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F8150C01()
-{
-    Given_Instructions(0xF815, 0x0C01);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB070305()
-{
-    Given_Instructions(0xEB07, 0x0305);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB070305 (050307EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB070305()
-{
-    Given_Instructions(0xEB07, 0x0305);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA002013 (132000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
-[Test]
-public void ThumbDis_EA002013()
-{
-    Given_Instructions(0xEA00, 0x2013);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA0020C3 (C32000EA) - (DataProcessingShiftedRegister_opc0) has not been implemented yet.
-[Test]
-public void ThumbDis_EA0020C3()
-{
-    Given_Instructions(0xEA00, 0x20C3);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F8533022 (223053F8) - (LoadStoreUnsignedRegisterOffset) has not been implemented yet.
-[Test]
-public void ThumbDis_F8533022()
-{
-    Given_Instructions(0xF853, 0x3022);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB030382 (820303EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB030382()
-{
-    Given_Instructions(0xEB03, 0x0382);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230000 (000023EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230000()
-{
-    Given_Instructions(0xEA23, 0x0000);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB020281 (810202EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB020281()
-{
-    Given_Instructions(0xEB02, 0x0281);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EB051588 (881505EB) - (DataProcessingShiftedRegister_opc8 s=0) has not been implemented yet.
-[Test]
-public void ThumbDis_EB051588()
-{
-    Given_Instructions(0xEB05, 0x1588);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction EA230101 (010123EA) - (DataProcessingShiftedRegister_opc1) has not been implemented yet.
-[Test]
-public void ThumbDis_EA230101()
-{
-    Given_Instructions(0xEA23, 0x0101);
-    Expect_Code("@@@");
-}
-
+// A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
+[Test]
+public void ThumbDis_FEB01CA8()
+{
+    Given_Instructions(0xFEB0, 0x1CA8);
+    Expect_Code("@@@");
+}
+
+000006C2: error: An error occurred while processing instruction at address 000006C2.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000006C0: error: An error occurred while processing instruction at address 000006C0.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000006D0: error: An error occurred while processing instruction at address 000006D0.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000006F8: error: An error occurred while processing instruction at address 000006F8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000006F8: error: An error occurred while processing instruction at address 000006F8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000006EA: error: An error occurred while processing instruction at address 000006EA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000086A: error: An error occurred while processing instruction at address 0000086A.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000086E: error: An error occurred while processing instruction at address 0000086E.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000086E: error: An error occurred while processing instruction at address 0000086E.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 000008CE: error: An error occurred while processing instruction at address 000008CE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1375,6 +265,62 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000914: error: An error occurred while processing instruction at address 00000914.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000008B2: error: An error occurred while processing instruction at address 000008B2.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000930: error: An error occurred while processing instruction at address 00000930.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000930: error: An error occurred while processing instruction at address 00000930.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000092A: error: An error occurred while processing instruction at address 0000092A.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000930: error: An error occurred while processing instruction at address 00000930.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000930: error: An error occurred while processing instruction at address 00000930.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 00000EFE: error: An error occurred while processing instruction at address 00000EFE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1383,7 +329,7 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00000FCE: error: An error occurred while processing instruction at address 00000FCE.
+00001098: error: An error occurred while processing instruction at address 00001098.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1391,7 +337,7 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000111E: error: An error occurred while processing instruction at address 0000111E.
+000010BA: error: An error occurred while processing instruction at address 000010BA.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1399,7 +345,79 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000182C: error: An error occurred while processing instruction at address 0000182C.
+00001106: error: An error occurred while processing instruction at address 00001106.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00001104: error: An error occurred while processing instruction at address 00001104.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000011AA: error: An error occurred while processing instruction at address 000011AA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000175E: error: An error occurred while processing instruction at address 0000175E.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00001778: error: An error occurred while processing instruction at address 00001778.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000017BA: error: An error occurred while processing instruction at address 000017BA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000017BA: error: An error occurred while processing instruction at address 000017BA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000017B2: error: An error occurred while processing instruction at address 000017B2.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000019BE: error: An error occurred while processing instruction at address 000019BE.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00007FFA: error: An error occurred while processing instruction at address 00007FFA.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1408,6 +426,62 @@ public void ThumbDis_EA230101()
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 00007FFE: error: An error occurred while processing instruction at address 00007FFE.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000080E8: error: An error occurred while processing instruction at address 000080E8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000088AE: error: An error occurred while processing instruction at address 000088AE.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000088A8: error: An error occurred while processing instruction at address 000088A8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000088AE: error: An error occurred while processing instruction at address 000088AE.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000088AE: error: An error occurred while processing instruction at address 000088AE.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000890C: error: An error occurred while processing instruction at address 0000890C.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000089A8: error: An error occurred while processing instruction at address 000089A8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1424,6 +498,14 @@ public void ThumbDis_EA230101()
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 00008E80: error: An error occurred while processing instruction at address 00008E80.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008EA2: error: An error occurred while processing instruction at address 00008EA2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1471,30 +553,6 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00009012: error: An error occurred while processing instruction at address 00009012.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0000900A: error: An error occurred while processing instruction at address 0000900A.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00008FAA: error: An error occurred while processing instruction at address 00008FAA.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 000091B4: error: An error occurred while processing instruction at address 000091B4.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1512,6 +570,142 @@ public void ThumbDis_EA230101()
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0000947E: error: An error occurred while processing instruction at address 0000947E.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009536: error: An error occurred while processing instruction at address 00009536.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000096F6: error: An error occurred while processing instruction at address 000096F6.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009718: error: An error occurred while processing instruction at address 00009718.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009720: error: An error occurred while processing instruction at address 00009720.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009712: error: An error occurred while processing instruction at address 00009712.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009702: error: An error occurred while processing instruction at address 00009702.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009972: error: An error occurred while processing instruction at address 00009972.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009776: error: An error occurred while processing instruction at address 00009776.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009736: error: An error occurred while processing instruction at address 00009736.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000979E: error: An error occurred while processing instruction at address 0000979E.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000097A4: error: An error occurred while processing instruction at address 000097A4.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000097AC: error: An error occurred while processing instruction at address 000097AC.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000097B4: error: An error occurred while processing instruction at address 000097B4.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000097BA: error: An error occurred while processing instruction at address 000097BA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009990: error: An error occurred while processing instruction at address 00009990.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000983A: error: An error occurred while processing instruction at address 0000983A.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009844: error: An error occurred while processing instruction at address 00009844.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1543,7 +737,79 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00009938: error: An error occurred while processing instruction at address 00009938.
+000098C8: error: An error occurred while processing instruction at address 000098C8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098E8: error: An error occurred while processing instruction at address 000098E8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098CE: error: An error occurred while processing instruction at address 000098CE.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098D8: error: An error occurred while processing instruction at address 000098D8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098E2: error: An error occurred while processing instruction at address 000098E2.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000098E8: error: An error occurred while processing instruction at address 000098E8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009928: error: An error occurred while processing instruction at address 00009928.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009908: error: An error occurred while processing instruction at address 00009908.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009910: error: An error occurred while processing instruction at address 00009910.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009928: error: An error occurred while processing instruction at address 00009928.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1567,7 +833,7 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00009A16: error: An error occurred while processing instruction at address 00009A16.
+0000995C: error: An error occurred while processing instruction at address 0000995C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1575,6 +841,222 @@ public void ThumbDis_EA230101()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009956: error: An error occurred while processing instruction at address 00009956.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000099AA: error: An error occurred while processing instruction at address 000099AA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009B90: error: An error occurred while processing instruction at address 00009B90.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009A02: error: An error occurred while processing instruction at address 00009A02.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009A00: error: An error occurred while processing instruction at address 00009A00.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009AA4: error: An error occurred while processing instruction at address 00009AA4.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009C9A: error: An error occurred while processing instruction at address 00009C9A.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009B36: error: An error occurred while processing instruction at address 00009B36.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009D68: error: An error occurred while processing instruction at address 00009D68.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00009D68: error: An error occurred while processing instruction at address 00009D68.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+fn000006C6: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitOutArgument(OutArgument outArg) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 231
+   at Reko.Core.Expressions.OutArgument.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\OutArgument.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00000860: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn000008FA: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00001092: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn000010EE: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 164
+   at Reko.Core.Expressions.BinaryExpression.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 64
+   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 213
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
+   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00001740: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 199
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn0000175A: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitOutArgument(OutArgument outArg) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 231
+   at Reko.Core.Expressions.OutArgument.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\OutArgument.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Analysis.DeadCode.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 143
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00001772: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
+   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn000088A6: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00008908: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn000089A0: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn000091B4: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1586,6 +1068,34 @@ fn000091B4: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
    at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+GPIOPinTypePWM: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00009734: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
@@ -1603,8 +1113,133 @@ fn00009890: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn00009890_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+fn000098CC: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00009904: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 213
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
+   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn0000993A: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn000099AE: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00009A9E: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn00009B26: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00009D5A: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
+   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn000006C6_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+000010C4: error: An error occurred while processing the statement NZCV = cond(r2 - r3).
+    Pulling difference ui32 and (ptr32 (struct (4C T_2640 t004C)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 292
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 129
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 83
+fn00000858: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+memcpy: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+00000002: error: Failed to write global variable g_t0002.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+00000004: error: Failed to write global variable g_t0004.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00000020: warning: Expected sizes of arrays to have been determined by now
+0000002C: warning: Expected sizes of arrays to have been determined by now
 00000060: warning: Expected sizes of arrays to have been determined by now
 20000808: error: Failed to write global variable g_t20000808.
     Index was outside the bounds of the array.
@@ -1621,8 +1256,37 @@ fn00009890_exit: warning: Phi functions will be ignored by type analysis. This m
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+000094F9: warning: Expected sizes of arrays to have been determined by now
+00000002: error: Failed to write global variable g_t0002.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+00000004: error: Failed to write global variable g_t0004.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00000020: warning: Expected sizes of arrays to have been determined by now
+0000002C: warning: Expected sizes of arrays to have been determined by now
 00000060: warning: Expected sizes of arrays to have been determined by now
+000094F9: warning: Expected sizes of arrays to have been determined by now
 20000808: error: Failed to write global variable g_t20000808.
     Index was outside the bounds of the array.
        at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
@@ -3734,4 +3398,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 125.83 seconds ---
+Decompiled 55 binaries in 106.12 seconds ---
