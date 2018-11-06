@@ -164,6 +164,10 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowAddressesInDisassembly = true;
                 }
+                if (pArgs.ContainsKey("dasm-bytes"))
+                {
+                    decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
+                }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
                 decompiler.ReconstructTypes();
@@ -343,6 +347,10 @@ namespace Reko.CmdLine
                 else if (args[i] == "--dasm-address")
                 {
                     parsedArgs["dasm-address"] = true;
+                }
+                else if (args[i] == "--dasm-bytes")
+                {
+                    parsedArgs["dasm-bytes"] = true;
                 }
                 else if (arg.StartsWith("-"))
                 {

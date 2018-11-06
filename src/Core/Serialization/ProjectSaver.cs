@@ -95,7 +95,8 @@ namespace Reko.Core.Serialization
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
                     TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding.WebName : null,
                     RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
-                    ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly
+                    ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
+                    ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
                 },
                 DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
                 IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),

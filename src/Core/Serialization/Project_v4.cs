@@ -153,7 +153,12 @@ namespace Reko.Core.Serialization
         public RegisterValue_v2[] RegisterValues;
 
         [XmlElement("dasmAddress")]
+        [DefaultValue(false)]
         public bool ShowAddressesInDisassembly;
+
+        [XmlElement("dasmBytes")]
+        [DefaultValue(false)]
+        public bool ShowBytesInDisassembly;
     }
 
     public class PlatformOptions_v4

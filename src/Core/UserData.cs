@@ -81,6 +81,11 @@ namespace Reko.Core
         /// If set, display addresses in the written disassembly file.
         /// </summary>
         public bool ShowAddressesInDisassembly { get; set; }
+
+        /// <summary>
+        /// If set, display bytes in the written disassembly file.
+        /// </summary>
+        public bool ShowBytesInDisassembly { get; set; }
     }
 
     public class Annotation
