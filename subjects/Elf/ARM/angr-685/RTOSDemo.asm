@@ -8,33 +8,44 @@
 
 ;; prvUnlockQueue: 00000058
 prvUnlockQueue proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	bl	$00008574
 	ldrb	r4,[r5,#&45]
 	sxtb	r4,r4
 	cmps	r4,#0
 	ble	$0000007E
+
+l0000006A:
 	ldr	r3,[r5,#&24]
 	cbz	r3,$00000098
+
+l0000006E:
 	add	r6,r5,#&24
 	b	$0000007C
-	subs	r4,#1
-	uxtb	r3,r4
-	sxtb	r4,r3
-	cbz	r3,$00000098
+00000074             01 3C E3 B2 5C B2 6B B1                 .<..\.k.   
+
+l0000007C:
 	ldr	r3,[r5,#&24]
+
+l0000007E:
 	cbz	r3,$00000098
+
+l00000080:
 	mov	r0,r6
 	bl	$00001018
 	cmps	r0,#0
 	beq	$00000270
+
+l0000008A:
 	subs	r4,#1
 	bl	$000011A8
 	uxtb	r3,r4
 	sxtb	r4,r3
 	cmps	r3,#0
 	bne	$00000278
+
+l00000098:
 	mov	r3,#&FF
 	strb	r3,[r5,#&45]
 	bl	$000085AC
@@ -43,26 +54,38 @@ prvUnlockQueue proc
 	sxtb	r4,r4
 	cmps	r4,#0
 	ble	$000000C4
+
+l000000B0:
 	ldr	r3,[r5,#&10]
 	cbz	r3,$000000DE
+
+l000000B4:
 	add	r6,r5,#&10
 	b	$000000C2
-	subs	r4,#1
-	uxtb	r3,r4
-	sxtb	r4,r3
-	cbz	r3,$000000DE
+000000BA                               01 3C E3 B2 5C B2           .<..\.
+000000C0 6B B1                                           k.             
+
+l000000C2:
 	ldr	r3,[r5,#&10]
+
+l000000C4:
 	cbz	r3,$000000DE
+
+l000000C6:
 	mov	r0,r6
 	bl	$00001018
 	cmps	r0,#0
 	beq	$000002B6
+
+l000000D0:
 	subs	r4,#1
 	bl	$000011A8
 	uxtb	r3,r4
 	sxtb	r4,r3
 	cmps	r3,#0
 	bne	$000002BE
+
+l000000DE:
 	mov	r3,#&FF
 	strb	r3,[r5,#&44]
 	pop.w	{r4-r6,lr}
@@ -70,20 +93,30 @@ prvUnlockQueue proc
 
 ;; prvCopyDataToQueue: 000000EC
 prvCopyDataToQueue proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r4,r0
 	ldr	r0,[r0,#&40]
 	ldr	r5,[r4,#&38]
 	cbnz	r0,$00000102
+
+l000000F6:
 	ldr	r6,[r4]
 	cmps	r6,#0
+
+l000000FA:
 	beq	$0000015C
+
+l000000FC:
 	adds	r5,#1
 	str	r5,[r4,#&38]
-	Invalid
+	pop	{r4-r6,pc}
+
+l00000102:
 	mov	r6,r2
 	mov	r2,r0
 	cbnz	r6,$00000128
+
+l00000108:
 	ldr	r0,[r4,#&8]
 	bl	$0000A5C0
 	ldr	r3,[r4,#&8]
@@ -93,12 +126,16 @@ prvCopyDataToQueue proc
 	cmps	r3,r2
 	str	r3,[r4,#&8]
 	blo	$0000014C
+
+l0000011C:
 	ldr	r3,[r4]
 	adds	r5,#1
 	mov	r0,r6
 	str	r3,[r4,#&8]
 	str	r5,[r4,#&38]
-	Invalid
+	pop	{r4-r6,pc}
+
+l00000128:
 	ldr	r0,[r4,#&C]
 	bl	$0000A5C0
 	ldr	r2,[r4,#&40]
@@ -109,28 +146,34 @@ prvCopyDataToQueue proc
 	cmps	r3,r1
 	str	r3,[r4,#&C]
 	bhs	$00000140
+
+l0000013E:
 	ldr	r3,[r4,#&4]
+
+l00000140:
 	adds	r2,r3
 	str	r2,[r4,#&C]
 	cmps	r6,#2
 	beq	$00000154
+
+l00000148:
 	adds	r5,#1
 	mov	r0,#0
+
+l0000014C:
 	str	r5,[r4,#&38]
-	Invalid
-	adds	r5,#1
-	mov	r0,r6
+	pop	{r4-r6,pc}
+00000150 01 35 30 46                                     .50F           
+
+l00000154:
 	str	r5,[r4,#&38]
-	Invalid
-	cbnz	r5,$0000015C
-	mov	r5,#1
+	pop	{r4-r6,pc}
+00000158                         05 B9 01 25                     ...%   
+
+l0000015C:
 	mov	r0,#0
 	b	$000000FA
-	ldr	r0,[r4,#&4]
-	bl	$0000124C
-	adds	r5,#1
-	str	r6,[r4,#&4]
-	b	$000000FA
+00000160 60 68 01 F0 75 F8 01 35 66 60 C8 E7             `h..u..5f`..   
 
 ;; prvCopyDataFromQueue: 0000016C
 prvCopyDataFromQueue proc
@@ -139,7 +182,7 @@ prvCopyDataFromQueue proc
 
 l00000170:
 	mov	r3,r1
-	Invalid
+	push	{r4}
 	ldr	r1,[r0,#&C]
 	ldr	r4,[r0,#&4]
 	adds	r1,r2
@@ -147,8 +190,10 @@ l00000170:
 	str	r1,[r0,#&C]
 	itt	hs
 	ldrhs	r1,[r0]
-	strhs	r1,[r0,#&C]
-	Invalid
+
+l00000182:
+	str	r1,[r0,#&C]
+	pop	{r4}
 	mov	r0,r3
 	b	$00C0A5C0
 
@@ -222,48 +267,47 @@ l000001F4:
 	mov	r0,#1
 	add	sp,#&10
 	pop.w	{r4-r10,pc}
+
+l00000270:
+	strh	r0,[r6,#&7C]
 	bl	$000085AC
 	mov	r0,r6
+
+l00000278:
 	add	sp,#&10
 	pop.w	{r4-r10,pc}
-	mov	r0,r4
-	bl	$00000054
-	bl	$00000E68
-	mov	r0,#0
-	add	sp,#&10
-	pop.w	{r4-r10,pc}
-	add	r0,r4,#&24
-	bl	$00001018
-	cmps	r0,#0
-	bne	$00000452
-	b	$00000262
-	nop
+0000027E                                           20 46                F
+00000280 FF F7 EA FE 00 F0 F2 FD 00 20 04 B0 BD E8 F0 87 ......... ......
+00000290 04 F1 24 00 00 F0 C2 FE 00 28 DC D1 E3 E7 00 BF ..$......(......
+
+;; fn000002A0: 000002A0
+fn000002A0 proc
 	Invalid
 
 ;; xQueuePeekFromISR: 000002A4
 xQueuePeekFromISR proc
-	Invalid
+	push	{r4-r6,lr}
 	mrs	r5,cpsr
 	mov	r3,#&BF
 	msr	cpsr,r3
 	isb	sy
+
+l000002B6:
 	dsb	sy
 	ldr	r3,[r0,#&38]
 	cbnz	r3,$000002C6
+
+l000002BE:
 	mov	r0,r3
 	msr	cpsr,r5
-	Invalid
-	mov	r4,r0
-	ldr	r6,[r0,#&C]
-	bl	$00000168
-	str	r6,[r4,#&C]
-	mov	r0,#1
-	msr	cpsr,r5
+	pop	{r4-r6,pc}
+000002C6                   04 46 C6 68 FF F7 4F FF E6 60       .F.h..O..`
+000002D0 01 20 85 F3                                     . ..           
 
 ;; fn000002D4: 000002D4
 fn000002D4 proc
 	ldrh	r1,[r2]
-	Invalid
+	pop	{r4-r6,pc}
 
 ;; xQueueGenericReceive: 000002D8
 xQueueGenericReceive proc
@@ -382,22 +426,28 @@ l00000306:
 	bl	$000012D0
 	str	r0,[r4,#&4]
 	b	$000003C4
+
+;; fn00000424: 00000424
+fn00000424 proc
 	Invalid
 
 ;; uxQueueMessagesWaiting: 00000428
 uxQueueMessagesWaiting proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r0
 	bl	$00008574
 	ldr	r4,[r4,#&38]
 	bl	$000085AC
 	mov	r0,r4
-	Invalid
-	nop
+
+;; fn00000438: 00000438
+fn00000438 proc
+	pop	{r4,pc}
+0000043A                               00 BF                       ..   
 
 ;; uxQueueSpacesAvailable: 0000043C
 uxQueueSpacesAvailable proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008574
 	ldr	r0,[r5,#&38]
@@ -405,8 +455,11 @@ uxQueueSpacesAvailable proc
 	sub	r4,r4,r0
 	bl	$000085AC
 	mov	r0,r4
-	Invalid
-	nop
+
+;; fn00000450: 00000450
+fn00000450 proc
+	pop	{r3-r5,pc}
+00000452       00 BF                                       ..           
 
 ;; vQueueDelete: 00000454
 vQueueDelete proc
@@ -414,7 +467,7 @@ vQueueDelete proc
 
 ;; xQueueGenericSendFromISR: 00000458
 xQueueGenericSendFromISR proc
-	Invalid
+	push	{r3-r7,lr}
 	mrs	r6,cpsr
 	mov	r4,#&BF
 	msr	cpsr,r4
@@ -428,7 +481,7 @@ xQueueGenericSendFromISR proc
 	beq	$0000047E
 	mov	r0,#0
 	msr	cpsr,r6
-	Invalid
+	pop	{r3-r7,pc}
 	ldrb	r4,[r0,#&45]
 	mov	r7,r2
 	sxtb	r4,r4
@@ -442,7 +495,7 @@ xQueueGenericSendFromISR proc
 	strb	r4,[r5,#&45]
 	mov	r0,#1
 	msr	cpsr,r6
-	Invalid
+	pop	{r3-r7,pc}
 	ldr	r3,[r5,#&24]
 	cmps	r3,#0
 	beq	$0000069A
@@ -459,7 +512,7 @@ xQueueGenericSendFromISR proc
 
 ;; xQueueGiveFromISR: 000004C4
 xQueueGiveFromISR proc
-	Invalid
+	push	{r3-r5,lr}
 	mrs	r4,cpsr
 	mov	r3,#&BF
 	msr	cpsr,r3
@@ -480,10 +533,10 @@ xQueueGiveFromISR proc
 	strb	r3,[r0,#&45]
 	mov	r0,#1
 	msr	cpsr,r4
-	Invalid
+	pop	{r3-r5,pc}
 	mov	r0,#0
 	msr	cpsr,r4
-	Invalid
+	pop	{r3-r5,pc}
 	ldr	r3,[r0,#&24]
 	cmps	r3,#0
 	beq	$000006F4
@@ -565,71 +618,84 @@ uxQueueMessagesWaitingFromISR proc
 
 ;; xQueueGetMutexHolder: 000005B4
 xQueueGetMutexHolder proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r0
 	bl	$00008574
 	ldr	r3,[r4]
 	cbnz	r3,$000005CA
+
+l000005C0:
 	ldr	r4,[r4,#&4]
 	bl	$000085AC
 	mov	r0,r4
-	Invalid
+	pop	{r4,pc}
+
+l000005CA:
 	mov	r4,#0
 	bl	$000085AC
+
+;; fn000005D0: 000005D0
+fn000005D0 proc
 	mov	r0,r4
-	Invalid
+	pop	{r4,pc}
 
 ;; xQueueTakeMutexRecursive: 000005D4
 xQueueTakeMutexRecursive proc
-	Invalid
+	push	{r4-r6,lr}
 	ldr	r5,[r0,#&4]
 	mov	r4,r0
 	mov	r6,r1
 	bl	$00001134
 	cmps	r5,r0
 	beq	$000005F6
+
+l000005E4:
 	mov	r3,#0
 	mov	r2,r6
 	mov	r1,r3
 	mov	r0,r4
 	bl	$000002D4
 	cbz	r0,$000005F8
+
+l000005F2:
 	ldr	r3,[r4,#&C]
 	adds	r3,#1
+
+l000005F6:
 	str	r3,[r4,#&C]
-	Invalid
-	mov	r0,#1
-	ldr	r3,[r4,#&C]
-	adds	r3,r0
+
+l000005F8:
+	pop	{r4-r6,pc}
+000005FA                               01 20 E3 68 03 44           . .h.D
+
+;; fn00000600: 00000600
+fn00000600 proc
 	str	r3,[r4,#&C]
-	Invalid
+	pop	{r4-r6,pc}
 
 ;; xQueueGiveMutexRecursive: 00000604
 xQueueGiveMutexRecursive proc
-	Invalid
+	push	{r3-r5,lr}
 	ldr	r5,[r0,#&4]
 	mov	r4,r0
 	bl	$00001134
 	cmps	r5,r0
 	beq	$00000612
+
+l00000612:
 	mov	r0,#0
-	Invalid
-	ldr	r3,[r4,#&C]
-	subs	r3,#1
-	str	r3,[r4,#&C]
-	cbz	r3,$00000622
+	pop	{r3-r5,pc}
+00000616                   E3 68 01 3B E3 60 0B B1 01 20       .h.;.`... 
+00000620 38 BD 20 46 1A 46 19 46 FF F7 B2 FD             8. F.F.F....   
+
+;; fn0000062C: 0000062C
+fn0000062C proc
 	mov	r0,#1
-	Invalid
-	mov	r0,r4
-	mov	r2,r3
-	mov	r1,r3
-	bl	$0000018C
-	mov	r0,#1
-	Invalid
+	pop	{r3-r5,pc}
 
 ;; xQueueGenericReset: 00000630
 xQueueGenericReset proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r4,r0
 	mov	r6,r1
 	mov	r5,#&FF
@@ -649,15 +715,23 @@ xQueueGenericReset proc
 	str	r0,[r4,#&8]
 	strb	r5,[r4,#&45]
 	cbnz	r6,$00000690
+
+l00000660:
 	ldr	r3,[r4,#&10]
 	cbnz	r3,$0000066C
+
+l00000664:
 	bl	$000085AC
 	mov	r0,#1
-	Invalid
+	pop	{r4-r6,pc}
+
+l0000066C:
 	add	r0,r4,#&10
 	bl	$00001018
 	cmps	r0,#0
 	beq	$00000860
+
+l00000678:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&28]                                           ; 000006AC
 	str	r2,[r3]
@@ -665,19 +739,24 @@ xQueueGenericReset proc
 	isb	sy
 	bl	$000085AC
 	mov	r0,#1
-	Invalid
+	pop	{r4-r6,pc}
+
+l00000690:
 	add	r0,r4,#&10
 	bl	$000082CC
 	add	r0,r4,#&24
 	bl	$000082CC
 	bl	$000085AC
 	mov	r0,#1
-	Invalid
+	pop	{r4-r6,pc}
+
+;; fn000006A8: 000006A8
+fn000006A8 proc
 	Invalid
 
 ;; xQueueGenericCreate: 000006AC
 xQueueGenericCreate proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r6,r0
 	mul	r0,r0,r1
 	adds	r0,#&48
@@ -685,28 +764,45 @@ xQueueGenericCreate proc
 	bl	$00001728
 	mov	r4,r0
 	cbz	r0,$000006D4
+
+l000006C0:
 	cbz	r5,$000006D8
+
+l000006C2:
 	add	r3,r0,#&48
+
+l000006C4:
+	lsls	r0,r1,#&D
+
+;; fn000006C6: 000006C6
+fn000006C6 proc
 	str	r3,[r0]
 	str	r6,[r4,#&3C]
 	str	r5,[r4,#&40]
 	mov	r1,#1
 	mov	r0,r4
 	bl	$0000062C
+
+l000006D4:
 	mov	r0,r4
-	Invalid
+	pop	{r4-r6,pc}
+
+;; fn000006D8: 000006D8
+fn000006D8 proc
 	str	r0,[r4]
 	b	$000006C4
 
 ;; xQueueCreateMutex: 000006DC
 xQueueCreateMutex proc
-	Invalid
+	push	{r4,lr}
 	mov	r2,r0
 	mov	r1,#0
 	mov	r0,#1
 	bl	$000006A8
 	mov	r4,r0
 	cbz	r0,$000006FC
+
+l000006EC:
 	mov	r3,#0
 	str	r3,[r0,#&4]
 	str	r3,[r0]
@@ -718,7 +814,7 @@ xQueueCreateMutex proc
 ;; fn000006FC: 000006FC
 fn000006FC proc
 	mov	r0,r4
-	Invalid
+	pop	{r4,pc}
 
 ;; prvInitialiseNewTask: 00000700
 prvInitialiseNewTask proc
@@ -730,10 +826,10 @@ prvInitialiseNewTask proc
 	subs	r3,#1
 	mov	fp,r2
 	ldr	r2,[sp,#&28]
-	Invalid
+	add.w	r5,r5,r3,lsl #2
 	mov	r8,r0
 	sub	r3,r1,#1
-	Invalid
+	mov.w	r10,r2,lsr #&1F
 	bic	r5,r5,#7
 	adds	r1,#2
 	add	r0,r4,#&54
@@ -742,11 +838,17 @@ prvInitialiseNewTask proc
 	strb	r6,[r0],#&1
 	ldrb	r6,[r3,#&1]!
 	cbz	r6,$0000073E
+
+l0000073A:
 	cmps	r3,r1
 	bne	$0000092A
+
+l0000073E:
 	cmps	r2,#1
 	it	hs
 	movhs	r2,#1
+
+l00000744:
 	mov	r6,#0
 	mov	r7,r2
 	str	r2,[r4,#&4C]
@@ -776,13 +878,17 @@ prvInitialiseNewTask proc
 	ldr	r3,[sp,#&2C]
 	str	r0,[r4]
 	cbz	r3,$00000792
+
+l00000790:
 	str	r4,[r3]
+
+l00000792:
 	pop.w	{r3-fp,pc}
 
 ;; fn00000794: 00000794
 fn00000794 proc
 	ldrh	r0,[r7,#&7C]
-	nop
+00000796                   00 BF                               ..       
 
 ;; prvAddNewTaskToReadyList: 00000798
 prvAddNewTaskToReadyList proc
@@ -810,10 +916,10 @@ l000007B6:
 	ldr	r1,[r4,#&7C]
 	ldr	r2,[r4,#&78]
 	lsls	r3,r0
-	Invalid
+	add.w	r0,r0,r0,lsl #2
 	orrs	r3,r1
 	adds	r2,#1
-	Invalid
+	add.w	r0,r6,r0,lsl #2
 	add	r1,r5,#&24
 	str	r3,[r4,#&7C]
 	str	r2,[r4,#&78]
@@ -821,16 +927,24 @@ l000007B6:
 	bl	$000085AC
 	ldr	r3,[r4,#&74]
 	cbz	r3,$000007FC
+
+l000007E2:
 	ldr	r2,[r4,#&4]
 	ldr	r3,[r5,#&4C]
 	ldr	r2,[r2,#&4C]
 	cmps	r2,r3
 	bhs	$000007F8
+
+l000007EC:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&64]                                           ; 0000085C
 	str	r2,[r3]
 	dsb	sy
+
+l000007F8:
 	isb	sy
+
+l000007FC:
 	pop.w	{r4-r8,pc}
 
 l00000800:
@@ -856,26 +970,37 @@ fn00000858 proc
 
 ;; prvAddCurrentTaskToDelayedList.isra.0: 0000085C
 prvAddCurrentTaskToDelayedList.isra.0 proc
-	Invalid
+	push	{r4-r6,lr}
 	ldr	r4,[pc,#&50]                                           ; 000008B6
+
+;; fn00000860: 00000860
+fn00000860 proc
 	mov	r5,r0
 	ldr	r6,[r4,#&80]
 	ldr	r0,[r4,#&4]
 	adds	r0,#&24
 	bl	$0000833C
 	cbnz	r0,$00000880
+
+;; fn00000870: 00000870
+fn00000870 proc
 	mov	r2,#1
 	ldr	r1,[r4,#&4]
 	ldr	r3,[r4,#&7C]
 	ldr	r1,[r1,#&4C]
 	lsls	r2,r1
-	Invalid
+	bic.w	r3,r3,r2
 	str	r3,[r4,#&7C]
+
+;; fn00000880: 00000880
+fn00000880 proc
 	adds	r5,r6
 	ldr	r3,[r4,#&4]
 	cmps	r6,r5
 	str	r5,[r3,#&24]
 	bhi	$0000089E
+
+l0000088A:
 	ldr	r0,[r4,#&6C]
 	ldr	r1,[r4,#&4]
 	adds	r1,#&24
@@ -884,12 +1009,13 @@ prvAddCurrentTaskToDelayedList.isra.0 proc
 	cmps	r5,r3
 	it	lo
 	strlo	r5,[r4,#&84]
-	Invalid
-	ldr	r0,[r4,#&70]
-	ldr	r1,[r4,#&4]
-	pop.w	{r4-r6,lr}
-	adds	r1,#&24
-	b	$00C08308
+
+l0000089E:
+	str	r4,[r0,r2]
+
+l000008A0:
+	pop	{r4-r6,pc}
+000008A2       20 6F 61 68 BD E8 70 40 24 31 07 F0 2E BD    oah..p@$1....
 
 ;; fn000008B0: 000008B0
 fn000008B0 proc
@@ -933,8 +1059,12 @@ l000008D6:
 	mov	r0,r4
 	bl	$00000794
 
-l000008FA:
+;; fn000008FA: 000008FA
+fn000008FA proc
 	vhadd.u8	d18,d14,d1
+
+l000008FC:
+	mov	r0,#1
 	add	sp,#&10
 	pop.w	{r4-r10,pc}
 
@@ -947,6 +1077,9 @@ l0000090E:
 	mov	r0,r5
 	bl	$0000177C
 	mov	r0,#&FFFFFFFF
+
+;; fn00000918: 00000918
+fn00000918 proc
 	b	$000008FA
 0000091A                               00 BF                       ..   
 
@@ -956,14 +1089,20 @@ xTaskCreateRestricted proc
 	cbz	r3,$0000096A
 
 l00000920:
-	Invalid
+	push	{r4-r7,lr}
 	mov	r4,r0
 	sub	sp,#&14
 	mov	r0,#&68
 	mov	r7,r1
+
+;; fn0000092A: 0000092A
+fn0000092A proc
 	bl	$00001728
 	mov	r5,r0
 	cbz	r0,$00000964
+
+;; fn00000932: 00000932
+fn00000932 proc
 	mov	r6,#1
 	ldr	r1,[r4,#&14]
 	strb	r6,[r0,#&65]
@@ -980,14 +1119,25 @@ l00000920:
 	bl	$000006FC
 	mov	r0,r5
 	bl	$00000794
-	mov	r0,r6
+
+l0000095C:
+	vmin.u16	d4,d13,d16
 	add	sp,#&14
-	Invalid
+	pop	{r4-r7,pc}
+
+;; fn00000964: 00000964
+fn00000964 proc
 	mov	r0,#&FFFFFFFF
 	b	$0000095C
 
 l0000096A:
 	mov	r0,#&FFFFFFFF
+
+;; fn0000096C: 0000096C
+fn0000096C proc
+	adds	r0,#&FF
+
+l0000096E:
 	bx	lr
 
 ;; vTaskAllocateMPURegions: 00000970
@@ -1007,12 +1157,17 @@ l0000097C:
 	adds	r0,#4
 	mov	r2,r3
 	b	$00C01550
-0000098A                               00 BF C4 00 00 20           ..... 
+0000098A                               00 BF                       ..   
+
+;; fn0000098C: 0000098C
+fn0000098C proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; vTaskStartScheduler: 00000990
 vTaskStartScheduler proc
 	mov	r3,#&80000000
-	Invalid
+	push	{r4,lr}
 	ldr	r4,[pc,#&48]                                           ; 000009E6
 	sub	sp,#8
 	str	r3,[sp]
@@ -1025,26 +1180,14 @@ vTaskStartScheduler proc
 	bl	$000008B0
 	cmps	r0,#1
 	beq	$000009B2
+
+l000009B2:
 	add	sp,#8
-	Invalid
-	mov	r3,#&BF
-	msr	cpsr,r3
-	isb	sy
-	dsb	sy
-	mov	r2,#&FFFFFFFF
-	mov	r3,#0
-	str	r2,[r4,#&84]
-	str	r0,[r4,#&74]
-	str	r3,[r4,#&80]
-	add	sp,#8
-	pop.w	{r4,lr}
-	b	$00C013AC
-	lsls	r4,r0,#3
-	mov	r0,#0
-	adr	r2,$00000BD4
-	mov	r0,r0
-	strh	r5,[r5,#&50]
-	mov	r0,r0
+	pop	{r4,pc}
+000009B6                   4F F0 BF 03 83 F3 11 88 BF F3       O.........
+000009C0 6F 8F BF F3 4F 8F 4F F0 FF 32 00 23 C4 F8 84 20 o...O.O..2.#... 
+000009D0 60 67 C4 F8 80 30 02 B0 BD E8 10 40 00 F0 E8 BC `g...0.....@....
+000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00             ... |...-...   
 
 ;; vTaskEndScheduler: 000009EC
 vTaskEndScheduler proc
@@ -1070,7 +1213,12 @@ vTaskSuspendAll proc
 	adds	r3,#1
 	str	r3,[r2,#&8C]
 	bx	lr
-00000A1A                               00 BF C4 00 00 20           ..... 
+00000A1A                               00 BF                       ..   
+
+;; fn00000A1C: 00000A1C
+fn00000A1C proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; xTaskGetTickCount: 00000A20
 xTaskGetTickCount proc
@@ -1084,7 +1232,11 @@ xTaskGetTickCountFromISR proc
 	ldr	r3,[pc,#&4]                                            ; 00000A38
 	ldr	r0,[r3,#&80]
 	bx	lr
-00000A34             C4 00 00 20                             ...        
+
+;; fn00000A34: 00000A34
+fn00000A34 proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; uxTaskGetNumberOfTasks: 00000A38
 uxTaskGetNumberOfTasks proc
@@ -1092,7 +1244,11 @@ uxTaskGetNumberOfTasks proc
 	ldr	r0,[r3]
 	bx	lr
 00000A3E                                           00 BF               ..
-00000A40 C4 00 00 20                                     ...            
+
+;; fn00000A40: 00000A40
+fn00000A40 proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; pcTaskGetName: 00000A44
 pcTaskGetName proc
@@ -1116,15 +1272,19 @@ fn00000A54 proc
 
 ;; xTaskGenericNotify: 00000A58
 xTaskGenericNotify proc
-	Invalid
+	push	{r3-r7,lr}
 	mov	r4,r3
 	mov	r6,r0
 	mov	r7,r1
 	mov	r5,r2
 	bl	$00008574
 	cbz	r4,$00000A6C
+
+l00000A68:
 	ldr	r3,[r6,#&60]
 	str	r3,[r4]
+
+l00000A6C:
 	mov	r3,#2
 	ldrb	r4,[r6,#&64]
 	sub	r2,r5,#1
@@ -1132,23 +1292,42 @@ xTaskGenericNotify proc
 	uxtb	r4,r4
 	cmps	r2,#3
 	bhi	$00000A88
+
+l00000A7E:
 	tbb	[pc,-r2]                                               ; 00000A86
+
+l00000A82:
 	lsrs	r2,r7,#&10
-	lsls	r4,r0,#8
+l00000A83	db	0x0C
+l00000A84	db	0x04
+l00000A85	db	0x02
+
+l00000A86:
 	cmps	r4,#2
+
+l00000A88:
 	beq	$00000AFA
+
+l00000A8A:
 	str	r7,[r6,#&60]
 	cmps	r4,#1
 	beq	$00000AA2
+
+l00000A90:
 	mov	r4,#1
 	bl	$000085AC
+
+l00000A96:
 	mov	r0,r4
-	Invalid
-	ldr	r3,[r6,#&60]
-	cmps	r4,#1
-	add	r3,r3,#1
+	pop	{r3-r7,pc}
+00000A9A                               33 6E 01 2C 03 F1           3n.,..
+00000AA0 01 03                                           ..             
+
+l00000AA2:
 	str	r3,[r6,#&60]
 	bne	$00000C8C
+
+l00000AA6:
 	add	r7,r6,#&24
 	ldr	r5,[pc,#&58]                                           ; 00000B0A
 	mov	r0,r7
@@ -1157,9 +1336,9 @@ xTaskGenericNotify proc
 	ldr	lr,[r5,#&7C]
 	add	r2,r5,#8
 	lsl	r3,r4,r0
-	Invalid
-	orr	r3,r3,lr,lsl #0
-	Invalid
+	add.w	r0,r0,r0,lsl #2
+	orr	r3,r3,lr
+	add.w	r0,r2,r0,lsl #2
 	mov	r1,r7
 	str	r3,[r5,#&7C]
 	bl	$000082EC
@@ -1168,24 +1347,25 @@ xTaskGenericNotify proc
 	ldr	r3,[r3,#&4C]
 	cmps	r2,r3
 	bls	$00000C8C
+
+l00000ADE:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&24]                                           ; 00000B0E
 	str	r2,[r3]
 	dsb	sy
 	isb	sy
 	bl	$000085AC
+
+l00000AF2:
 	mov	r0,r4
-	Invalid
-	ldr	r3,[r6,#&60]
-	orrs	r7,r3
+	pop	{r3-r7,pc}
+00000AF6                   33 6E 1F 43                         3n.C     
+
+l00000AFA:
 	str	r7,[r6,#&60]
 	b	$00000A88
-	mov	r4,#0
-	b	$00000A8E
-	nop
-	lsls	r4,r0,#3
-	mov	r0,#0
-	Invalid
+00000AFE                                           00 24               .$
+00000B00 C7 E7 00 BF C4 00 00 20 04 ED 00 E0             ....... ....   
 
 ;; xTaskGenericNotifyFromISR: 00000B0C
 xTaskGenericNotifyFromISR proc
@@ -1250,10 +1430,10 @@ xTaskGenericNotifyFromISR proc
 	ldr	r2,[r6,#&7C]
 	lsls	r4,r0
 	add	r3,r6,#8
-	Invalid
+	add.w	r0,r0,r0,lsl #2
 	orrs	r4,r2
 	mov	r1,r8
-	Invalid
+	add.w	r0,r3,r0,lsl #2
 	str	r4,[r6,#&7C]
 	bl	$000082EC
 	b	$00000B76
@@ -1286,13 +1466,15 @@ l00000BF0:
 	mov	r0,#1
 	ldr	r1,[r4,#&4]
 	ldr	r2,[r1,#&60]
-	Invalid
+	bic.w	r2,r2,r8
 	str	r2,[r1,#&60]
 	ldr	r3,[r4,#&4]
 	strb	r0,[r3,#&64]
 
 l00000C00:
 	lsls	r4,r4,#1
+
+l00000C02:
 	cbnz	r7,$00000C3C
 
 l00000C04:
@@ -1315,7 +1497,7 @@ l00000C1E:
 	mov	r5,#1
 	ldr	r3,[r4,#&4]
 	ldr	r1,[r3,#&60]
-	Invalid
+	bic.w	r1,r1,r6
 	str	r1,[r3,#&60]
 	mov	r2,#0
 	ldr	r3,[r4,#&4]
@@ -1354,51 +1536,32 @@ vTaskNotifyGiveFromISR proc
 	adds	r3,#1
 	cmps	r5,#1
 	str	r3,[r0,#&60]
+
+;; fn00000C8C: 00000C8C
+fn00000C8C proc
 	beq	$00000C92
+
+l00000C8E:
 	msr	cpsr,r6
+
+l00000C92:
 	pop.w	{r3-r9,pc}
-	ldr	r7,[pc,#&64]                                           ; 00000D02
-	mov	r8,r1
-	ldr	r3,[r7,#&8C]
-	mov	r4,r0
-	cbz	r3,$00000CCC
-	add	r1,r0,#&38
-	add	r0,r7,#&58
-	bl	$000082EC
-	ldr	r3,[r7,#&4]
-	ldr	r2,[r4,#&4C]
-	ldr	r3,[r3,#&4C]
-	cmps	r2,r3
-	bls	$00000E8A
-	mov	r3,#1
-	cmp	r8,#0
-	beq	$00000CF0
-	str	r3,[r8]
-	msr	cpsr,r6
-	pop.w	{r3-r9,pc}
-	add	r9,r0,#&24
-	mov	r0,r9
-	bl	$0000833C
-	ldr	r0,[r4,#&4C]
-	ldr	r2,[r7,#&7C]
-	lsls	r5,r0
-	add	r3,r7,#8
-	Invalid
-	orrs	r5,r2
-	mov	r1,r9
-	Invalid
-	str	r5,[r7,#&7C]
-	bl	$000082EC
-	b	$00000CAA
-	str	r3,[r7,#&90]
-	b	$00000C8A
-	nop
+00000C96                   19 4F 88 46 D7 F8 8C 30 04 46       .O.F...0.F
+00000CA0 A3 B1 00 F1 38 01 07 F1 58 00 07 F0 21 FB 7B 68 ....8...X...!.{h
+00000CB0 E2 6C DB 6C 9A 42 EA D9 01 23 B8 F1 00 0F 19 D0 .l.l.B...#......
+00000CC0 C8 F8 00 30 86 F3 11 88 BD E8 F8 83 00 F1 24 09 ...0..........$.
+00000CD0 48 46 07 F0 35 FB E0 6C FA 6F 85 40 07 F1 08 03 HF..5..l.o.@....
+00000CE0 00 EB 80 00 15 43 49 46 03 EB 80 00 FD 67 07 F0 .....CIF.....g..
+00000CF0 FF FA DC E7 C7 F8 90 30 C9 E7 00 BF             .......0....   
+
+;; fn00000CFC: 00000CFC
+fn00000CFC proc
 	lsls	r4,r0,#3
 	mov	r0,#0
 
 ;; ulTaskNotifyTake: 00000D00
 ulTaskNotifyTake proc
-	Invalid
+	push	{r4-r6,lr}
 	ldr	r4,[pc,#&60]                                           ; 00000D6A
 	mov	r6,r0
 	mov	r5,r1
@@ -1406,29 +1569,45 @@ ulTaskNotifyTake proc
 	ldr	r3,[r4,#&4]
 	ldr	r3,[r3,#&60]
 	cbnz	r3,$00000D1C
+
+l00000D12:
 	mov	r2,#1
 	ldr	r3,[r4,#&4]
 	strb	r2,[r3,#&64]
 	cbnz	r5,$00000D4A
+
+l00000D1C:
 	bl	$000085AC
 	bl	$00008574
 	ldr	r3,[r4,#&4]
 	ldr	r5,[r3,#&60]
 	cbz	r5,$00000D32
+
+l00000D2A:
 	cbnz	r6,$00000D42
+
+l00000D2C:
 	ldr	r3,[r4,#&4]
+
+l00000D2E:
 	sub	r2,r5,#1
 	str	r2,[r3,#&60]
+
+l00000D32:
 	mov	r2,#0
 	ldr	r3,[r4,#&4]
 	strb	r2,[r3,#&64]
 	bl	$000085AC
 	mov	r0,r5
-	Invalid
+	pop	{r4-r6,pc}
+
+l00000D42:
 	mov	r2,#0
 	ldr	r3,[r4,#&4]
 	str	r2,[r3,#&60]
 	b	$00000D2E
+
+l00000D4A:
 	mov	r0,r5
 	bl	$00000858
 	mov	r2,#&10000000
@@ -1509,8 +1688,8 @@ l00000E10:
 	str	r3,[r4,#&84]
 	ldr	r3,[r4,#&4]
 	ldr	r3,[r3,#&4C]
-	Invalid
-	Invalid
+	add.w	r3,r3,r3,lsl #2
+	add.w	r3,r4,r3,lsl #2
 	ldr	r3,[r3,#&8]
 	cmps	r3,#2
 
@@ -1639,18 +1818,26 @@ l00000F32:
 	ldr	r3,[r3,#&24]
 	str	r3,[r4,#&84]
 	b	$00000EE6
-00000F40 C4 00 00 20 04 ED 00 E0                         ... ....       
+00000F40 C4 00 00 20                                     ...            
+
+;; fn00000F44: 00000F44
+fn00000F44 proc
+	Invalid
 
 ;; vTaskDelay: 00000F48
 vTaskDelay proc
-	Invalid
+	push	{r3,lr}
 	cbnz	r0,$00000F5E
+
+l00000F4C:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&24]                                           ; 00000F7C
 	str	r2,[r3]
 	dsb	sy
 	isb	sy
-	Invalid
+	pop	{r3,pc}
+
+l00000F5E:
 	ldr	r2,[pc,#&1C]                                           ; 00000F82
 	ldr	r3,[r2,#&8C]
 	adds	r3,#1
@@ -1659,15 +1846,20 @@ vTaskDelay proc
 	bl	$00000E68
 	cmps	r0,#0
 	beq	$00001148
-	Invalid
-	Invalid
+
+l00000F76:
+	pop	{r3,pc}
+00000F78                         04 ED 00 E0                     ....   
+
+;; fn00000F7C: 00000F7C
+fn00000F7C proc
 	lsls	r4,r0,#3
 	mov	r0,#0
 
 ;; vTaskDelayUntil: 00000F80
 vTaskDelayUntil proc
 	ldr	r2,[pc,#&50]                                           ; 00000FD8
-	Invalid
+	push	{r4,lr}
 	ldr	r4,[r2,#&8C]
 	ldr	r3,[r0]
 	adds	r4,#1
@@ -1676,17 +1868,26 @@ vTaskDelayUntil proc
 	adds	r1,r3
 	cmps	r2,r3
 	bhs	$00000FB4
+
+l00000F9A:
 	cmps	r3,r1
 	bhi	$00000FB8
+
+l00000F9E:
 	str	r1,[r0]
 	bl	$00000E68
 	cbnz	r0,$00000FD0
+
+l00000FA6:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&2C]                                           ; 00000FDE
 	str	r2,[r3]
 	dsb	sy
 	isb	sy
-	Invalid
+
+l00000FB4:
+	ldrh	r7,[r5,#&74]
+	pop	{r4,pc}
 
 ;; fn00000FB8: 00000FB8
 fn00000FB8 proc
@@ -1706,15 +1907,12 @@ l00000FC0:
 	beq	$000011A2
 
 l00000FD0:
-	Invalid
-	nop
-	lsls	r4,r0,#3
-	mov	r0,#0
-	Invalid
+	pop	{r4,pc}
+00000FD2       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; vTaskPlaceOnEventList: 00000FDC
 vTaskPlaceOnEventList proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r1
 	ldr	r3,[pc,#&10]                                           ; 00000FF8
 	ldr	r1,[r3,#&4]
@@ -1723,7 +1921,7 @@ vTaskPlaceOnEventList proc
 	mov	r0,r4
 	pop.w	{r4,lr}
 	b	$00000858
-	nop
+00000FF2       00 BF                                       ..           
 
 ;; fn00000FF4: 00000FF4
 fn00000FF4 proc
@@ -1732,7 +1930,7 @@ fn00000FF4 proc
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF8
 vTaskPlaceOnUnorderedEventList proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r4,r2
 	ldr	r3,[pc,#&18]                                           ; 0000101C
 	orr	r1,r1,#&80000000
@@ -1744,12 +1942,15 @@ vTaskPlaceOnUnorderedEventList proc
 	mov	r0,r4
 	pop.w	{r3-r5,lr}
 	b	$00000858
+
+;; fn00001018: 00001018
+fn00001018 proc
 	lsls	r4,r0,#3
 	mov	r0,#0
 
 ;; xTaskRemoveFromEventList: 0000101C
 xTaskRemoveFromEventList proc
-	Invalid
+	push	{r3-r7,lr}
 	ldr	r3,[r0,#&C]
 	ldr	r4,[pc,#&58]                                           ; 00001080
 	ldr	r5,[r3,#&C]
@@ -1758,6 +1959,8 @@ xTaskRemoveFromEventList proc
 	bl	$0000833C
 	ldr	r3,[r4,#&8C]
 	cbnz	r3,$00001070
+
+l00001034:
 	add	r6,r5,#&24
 	mov	r0,r6
 	bl	$0000833C
@@ -1766,11 +1969,13 @@ xTaskRemoveFromEventList proc
 	ldr	r7,[r4,#&7C]
 	lsls	r3,r0
 	add	r2,r4,#8
-	Invalid
+	add.w	r0,r0,r0,lsl #2
 	orrs	r3,r7
 	mov	r1,r6
-	Invalid
+	add.w	r0,r2,r0,lsl #2
 	str	r3,[r4,#&7C]
+
+l00001058:
 	bl	$000082EC
 	ldr	r3,[r4,#&4]
 	ldr	r2,[r5,#&4C]
@@ -1778,19 +1983,26 @@ xTaskRemoveFromEventList proc
 	cmps	r2,r3
 	itte	hi
 	movhi	r0,#1
-	strhi	r0,[r4,#&90]
-	movls	r0,#0
-	Invalid
+
+l00001068:
+	str	r0,[r4,#&90]
+	mov	r0,#0
+	pop	{r3-r7,pc}
+
+l00001070:
 	mov	r1,r6
 	add	r0,r4,#&58
 	bl	$000082EC
 	b	$00001058
+
+;; fn0000107C: 0000107C
+fn0000107C proc
 	lsls	r4,r0,#3
 	mov	r0,#0
 
 ;; xTaskRemoveFromUnorderedEventList: 00001080
 xTaskRemoveFromUnorderedEventList proc
-	Invalid
+	push	{r3-r7,lr}
 	mov	r5,#1
 	ldr	r6,[r0,#&C]
 	orr	r1,r1,#&80000000
@@ -1807,9 +2019,9 @@ fn00001092 proc
 	ldr	lr,[r4,#&7C]
 	lsl	r2,r5,r3
 	add	r0,r4,#8
-	Invalid
-	Invalid
-	orr	r2,r2,lr,lsl #0
+	add.w	r3,r3,r3,lsl #2
+	add.w	r0,r0,r3,lsl #2
+	orr	r2,r2,lr
 	mov	r1,r7
 	str	r2,[r4,#&7C]
 	bl	$000082EC
@@ -1819,10 +2031,12 @@ fn00001092 proc
 	cmps	r2,r3
 	itte	hi
 	movhi	r0,r5
-	strhi	r5,[r4,#&90]
-	movls	r0,#0
-	Invalid
-	nop
+
+l000010CA:
+	str	r5,[r4,#&90]
+	mov	r0,#0
+	pop	{r3-r7,pc}
+000010D2       00 BF                                       ..           
 
 ;; fn000010D4: 000010D4
 fn000010D4 proc
@@ -1845,7 +2059,7 @@ l000010E0:
 ;; fn000010EE: 000010EE
 fn000010EE proc
 	lsls	r7,r3,#&C
-	Invalid
+	add.w	r3,r3,r3,lsl #2
 	lsls	r3,r3,#2
 	add	r0,r2,r3
 	mov	r3,r0
@@ -1856,9 +2070,14 @@ fn000010EE proc
 	str	r1,[r0,#&C]
 	it	eq
 	ldreq	r1,[r1,#&4]
+
+;; fn00001108: 00001108
+fn00001108 proc
 	ldr	r3,[r1,#&C]
 	it	eq
 	streq	r1,[r0,#&C]
+
+l0000110E:
 	str	r3,[r2,#&4]
 	bx	lr
 
@@ -1884,7 +2103,11 @@ uxTaskResetEventItemValue proc
 	rsb	r3,r3,#2
 	str	r3,[r2,#&38]
 	bx	lr
-00001134             C4 00 00 20                             ...        
+
+;; fn00001134: 00001134
+fn00001134 proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; xTaskGetCurrentTaskHandle: 00001138
 xTaskGetCurrentTaskHandle proc
@@ -1892,20 +2115,31 @@ xTaskGetCurrentTaskHandle proc
 	ldr	r0,[r3,#&4]
 	bx	lr
 0000113E                                           00 BF               ..
-00001140 C4 00 00 20                                     ...            
+
+;; fn00001140: 00001140
+fn00001140 proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; vTaskSetTimeOutState: 00001144
 vTaskSetTimeOutState proc
 	ldr	r3,[pc,#&C]                                            ; 00001158
 	ldr	r2,[r3,#&94]
+
+l00001148:
+	mov	r0,#&94
 	ldr	r3,[r3,#&80]
 	stm	r0,{r2-r3}
 	bx	lr
-00001154             C4 00 00 20                             ...        
+
+;; fn00001154: 00001154
+fn00001154 proc
+	lsls	r4,r0,#3
+	mov	r0,#0
 
 ;; xTaskCheckForTimeOut: 00001158
 xTaskCheckForTimeOut proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r4,r0
 	mov	r6,r1
 	bl	$00008574
@@ -1916,12 +2150,18 @@ xTaskCheckForTimeOut proc
 	ldr	r0,[r4,#&4]
 	cmps	r1,r2
 	beq	$00001174
+
+l00001174:
 	cmps	r5,r0
 	bhs	$00001198
+
+l00001178:
 	ldr	r2,[r6]
 	sub	r1,r5,r0
 	cmps	r1,r2
 	bhs	$00001198
+
+l00001180:
 	sub	r2,r2,r5
 	mov	r5,#0
 	ldr	r1,[r3,#&94]
@@ -1930,19 +2170,22 @@ xTaskCheckForTimeOut proc
 	str	r2,[r6]
 	stm	r4,{r1,r3}
 	bl	$000085AC
+
+l00001198:
 	mov	r0,r5
 
-;; fn0000119A: 0000119A
-fn0000119A proc
-	Invalid
-	mov	r5,#1
-	bl	$000085AC
+l0000119A:
+	pop	{r4-r6,pc}
+0000119C                                     01 25 07 F0             .%..
+000011A0 07 FA                                           ..             
 
-;; fn000011A2: 000011A2
-fn000011A2 proc
+l000011A2:
 	mov	r0,r5
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+000011A6                   00 BF                               ..       
+
+;; fn000011A8: 000011A8
+fn000011A8 proc
 	lsls	r4,r0,#3
 	mov	r0,#0
 
@@ -1960,57 +2203,51 @@ vTaskPriorityInherit proc
 	beq	$00001242
 
 l000011C0:
-	Invalid
+	push	{r3-r7,lr}
 	ldr	r4,[pc,#&84]                                           ; 0000124E
 	ldr	r3,[r0,#&4C]
 	ldr	r2,[r4,#&4]
 	ldr	r2,[r2,#&4C]
 	cmps	r3,r2
 	bhs	$000011F0
+
+l000011CE:
 	ldr	r2,[r0,#&38]
 	cmps	r2,#0
 	blt	$000011DA
+
+l000011D4:
 	ldr	r2,[r4,#&4]
 	ldr	r2,[r2,#&4C]
 	rsb	r2,r2,#2
+
+l000011DA:
+	lsls	r2,r0,#8
+
+l000011DC:
 	str	r2,[r0,#&38]
 	ldr	r5,[pc,#&6C]                                           ; 00001252
-	Invalid
+	add.w	r3,r3,r3,lsl #2
 	ldr	r2,[r0,#&34]
-	Invalid
+	add.w	r3,r5,r3,lsl #2
 	cmps	r2,r3
 	beq	$000011F2
+
+l000011EE:
 	ldr	r3,[r4,#&4]
+
+l000011F0:
 	ldr	r3,[r3,#&4C]
+
+l000011F2:
 	str	r3,[r0,#&4C]
-	Invalid
-	add	r7,r0,#&24
-	mov	r6,r0
-	mov	r0,r7
-	bl	$0000833C
-	cbnz	r0,$00001220
-	ldr	r2,[r6,#&4C]
-	Invalid
-	Invalid
-	ldr	r3,[r3,#&8]
-	cbnz	r3,$00001220
-	mov	r1,#1
-	ldr	r3,[r4,#&7C]
-	lsl	r2,r1,r2
-	Invalid
-	str	r2,[r4,#&7C]
-	mov	r3,#1
-	ldr	r2,[r4,#&4]
-	ldr	lr,[r4,#&7C]
-	ldr	r2,[r2,#&4C]
-	mov	r1,r7
-	lsls	r3,r2
-	orr	r3,r3,lr,lsl #0
-	Invalid
-	str	r2,[r6,#&4C]
-	Invalid
-	str	r3,[r4,#&7C]
-	pop.w	{r3-r7,lr}
+	pop	{r3-r7,pc}
+000011F6                   00 F1 24 07 06 46 38 46 07 F0       ..$..F8F..
+00001200 9F F8 68 B9 F2 6C 02 EB 82 03 04 EB 83 03 9B 68 ..h..l.........h
+00001210 33 B9 01 21 E3 6F 01 FA 02 F2 23 EA 02 02 E2 67 3..!.o....#....g
+00001220 01 23 62 68 D4 F8 7C E0 D2 6C 39 46 93 40 43 EA .#bh..|..l9F.@C.
+00001230 0E 03 02 EB 82 00 F2 64 05 EB 80 00 E3 67 BD E8 .......d.....g..
+00001240 F8 40                                           .@             
 
 l00001242:
 	b	$00C082EC
@@ -2022,35 +2259,53 @@ xTaskPriorityDisinherit proc
 	beq	$000012C4
 
 l00001254:
-	Invalid
+	push	{r3-r7,lr}
 	ldr	r1,[r0,#&4C]
 	ldr	r3,[r0,#&5C]
 	ldr	r2,[r0,#&58]
 	subs	r3,#1
 	cmps	r1,r2
 	str	r3,[r0,#&5C]
+
+l00001262:
 	beq	$00001262
+
+l00001264:
 	cbz	r3,$0000126A
+
+l00001266:
 	mov	r0,#0
-	Invalid
+	pop	{r3-r7,pc}
+
+l0000126A:
 	add	r7,r0,#&24
 	mov	r4,r0
 	mov	r0,r7
 	bl	$0000833C
 	cbnz	r0,$00001298
+
+l00001278:
 	ldr	r1,[r4,#&4C]
 	ldr	r2,[pc,#&50]                                           ; 000012D2
-	Invalid
-	Invalid
+	add.w	r3,r1,r1,lsl #2
+	add.w	r3,r2,r3,lsl #2
 	ldr	r3,[r3,#&8]
 	cbnz	r3,$0000129A
+
+l00001288:
 	mov	r0,#1
 	ldr	r3,[r2,#&7C]
 	lsl	r1,r0,r1
-	Invalid
+	bic.w	r1,r3,r1
 	str	r1,[r2,#&7C]
+
+l00001296:
 	b	$00001296
+
+l00001298:
 	ldr	r2,[pc,#&30]                                           ; 000012D0
+
+l0000129A:
 	mov	r5,#1
 	ldr	r3,[r4,#&58]
 	ldr	lr,[r2,#&7C]
@@ -2059,22 +2314,18 @@ l00001254:
 	mov	r1,r7
 	str	r3,[r4,#&4C]
 	rsb	r7,r3,#2
-	Invalid
-	orr	r6,r6,lr,lsl #0
-	Invalid
+	add.w	r3,r3,r3,lsl #2
+	orr	r6,r6,lr
+	add.w	r0,r0,r3,lsl #2
 	str	r7,[r4,#&38]
 	str	r6,[r2,#&7C]
 	bl	$000082EC
 
 l000012C4:
 	mov	r0,r5
-	Invalid
-	mov	r0,#0
-	bx	lr
-	lsls	r4,r0,#3
-	mov	r0,#0
-	lsls	r4,r1,#3
-	mov	r0,#0
+	pop	{r3-r7,pc}
+000012C8                         00 20 70 47 C4 00 00 20         . pG... 
+000012D0 CC 00 00 20                                     ...            
 
 ;; pvTaskIncrementMutexHeldCount: 000012D4
 pvTaskIncrementMutexHeldCount proc
@@ -2091,7 +2342,12 @@ l000012DA:
 l000012E2:
 	ldr	r0,[r3,#&4]
 	bx	lr
-000012E6                   00 BF C4 00 00 20 00 00 00 00       ..... ....
+000012E6                   00 BF C4 00 00 20                   .....    
+
+;; fn000012EC: 000012EC
+fn000012EC proc
+	mov	r0,r0
+	mov	r0,r0
 
 ;; prvRestoreContextOfFirstTask: 000012F0
 prvRestoreContextOfFirstTask proc
@@ -2123,57 +2379,68 @@ fn00001330 proc
 ;; prvSVCHandler: 00001334
 prvSVCHandler proc
 	ldr	r3,[r0,#&18]
-	Invalid
+	ldrb.w	r3,[r3,-#&2]
 	cmps	r3,#1
 	beq	$0000135C
+
+l0000133E:
 	blo	$00001350
+
+l00001340:
 	cmps	r3,#2
 	bne	$0000134E
+
+l00001344:
 	mrs	r1,cpsr
 	bic	r1,r1,#1
 	msr	cpsr,r1
+
+l0000134E:
+	ldrh	r4,[r2]
+
+l00001350:
 	bx	lr
-	bx	lr
-	ldr	r2,[pc,#&1C]                                           ; 00001378
-	ldr	r3,[r2]
-	orr	r3,r3,#&BE000000
+00001352       70 47 07 4A 13 68 43 F0 3E 43               pG.J.hC.>C   
+
+l0000135C:
 	str	r3,[r2]
 	b	$000012EC
-	mov	r2,#&10000000
-	ldr	r3,[pc,#&10]                                           ; 0000137C
-	str	r2,[r3]
-	dsb	sy
-	isb	sy
-	bx	lr
-	nop
-	Invalid
+00001360 4F F0 80 52 04 4B 1A 60 BF F3 4F 8F BF F3 6F 8F O..R.K.`..O...o.
+00001370 70 47 00 BF 1C ED 00 E0                         pG......       
+
+;; fn00001378: 00001378
+fn00001378 proc
 	Invalid
 
 ;; pxPortInitialiseStack: 0000137C
 pxPortInitialiseStack proc
 	cmps	r3,#1
-	Invalid
+	push	{r4-r5}
 	it	eq
 	moveq	r3,#2
+
+l00001384:
 	mov	r5,#&1000000
 	mov	r4,#0
 	it	ne
 	movne	r3,#3
-	Invalid
+
+l00001390:
+	str.w	r2,[r0,-#&20]
 	bic	r1,r1,#1
 	sub	r2,r0,#&44
 	stmdb	r0,{r1,r5}
-	Invalid
-	Invalid
-	Invalid
+	str.w	r4,[r0,-#&C]
+	str.w	r3,[r0,-#&44]
+	pop	{r4-r5}
 	mov	r0,r2
 	bx	lr
-	nop
+000013AE                                           00 BF               ..
 
 ;; xPortStartScheduler: 000013B0
 xPortStartScheduler proc
 	ldr	r3,[pc,#&134]                                          ; 000014EC
-	Invalid
+	push	{r4-r6}
 	ldr	r2,[r3]
 	ldr	r1,[pc,#&134]                                          ; 000014F2
 	orr	r2,r2,#&FF0000
@@ -2184,6 +2451,8 @@ xPortStartScheduler proc
 	ldr	r3,[r1]
 	cmp	r3,#&800
 	beq	$000013FC
+
+l000013CE:
 	mov	r5,#&4E1F
 	mov	r1,#7
 	mov	r0,#0
@@ -2203,155 +2472,31 @@ xPortStartScheduler proc
 	isb	sy
 	svc	#0
 	nop
-	Invalid
+
+l000013FC:
+	pop	{r4-r6}
 	bx	lr
-	ldr	r0,[pc,#&F8]                                           ; 00001500
-	ldr	r1,[pc,#&FC]                                           ; 00001506
-	ldr	r3,[pc,#&FC]                                           ; 00001508
-	sub	r1,r1,r0
-	orr	r2,r0,#&10
-	cmps	r1,#&20
-	str	r2,[r3]
-	bls	$000014DA
-	mov	r3,#&40
-	mov	r2,#5
-	b	$0000141A
-	adds	r2,#1
-	cmps	r2,#&1F
-	beq	$000014CA
-	cmps	r1,r3
-	Invalid
-	bhi	$00001614
-	ldr	r3,[pc,#&E0]                                           ; 0000150E
-	orr	r2,r3,r2,lsl #1
-	ldr	r1,[pc,#&DC]                                           ; 00001510
-	ldr	r4,[pc,#&E0]                                           ; 00001516
-	sub	r1,r1,r0
-	ldr	r3,[pc,#&D0]                                           ; 0000150A
-	orr	r0,r0,#&11
-	cmps	r1,#&20
-	str	r2,[r4]
-	str	r0,[r3]
-	bls	$000014D6
-	mov	r3,#&40
-	mov	r2,#5
-	b	$00001448
-	adds	r2,#1
-	cmps	r2,#&1F
-	beq	$000014CE
-	cmps	r1,r3
-	Invalid
-	bhi	$00001642
-	ldr	r3,[pc,#&BC]                                           ; 00001518
-	orr	r2,r3,r2,lsl #1
-	ldr	r3,[pc,#&BC]                                           ; 0000151E
-	ldr	r1,[pc,#&BC]                                           ; 00001520
-	ldr	r5,[pc,#&B0]                                           ; 00001516
-	ldr	r0,[pc,#&A0]                                           ; 00001508
-	sub	r1,r1,r3
-	orr	r4,r3,#&12
-	cmps	r1,#&20
-	str	r2,[r5]
-	str	r4,[r0]
-	bls	$000014DE
-	mov	r3,#&40
-	mov	r2,#5
-	b	$00001478
-	adds	r2,#1
-	cmps	r2,#&1F
-	beq	$000014D2
-	cmps	r1,r3
-	Invalid
-	bhi	$00001672
-	ldr	r0,[pc,#&98]                                           ; 00001524
-	orr	r0,r0,r2,lsl #1
-	mov	r3,#5
-	mov	r2,#&40
-	ldr	r6,[pc,#&80]                                           ; 00001516
-	ldr	r4,[pc,#&70]                                           ; 00001508
-	ldr	r5,[pc,#&90]                                           ; 0000152A
-	ldr	r1,[pc,#&90]                                           ; 0000152C
-	str	r0,[r6]
-	str	r5,[r4]
-	adds	r3,#1
-	cmps	r3,#&1F
-	Invalid
-	beq	$000014C6
-	cmps	r2,r1
-	bls	$00001696
-	ldr	r2,[pc,#&80]                                           ; 00001530
-	orr	r3,r2,r3,lsl #1
-	ldr	r2,[pc,#&60]                                           ; 00001516
-	ldr	r1,[pc,#&7C]                                           ; 00001534
-	str	r3,[r2]
-	ldr	r3,[r1]
-	orr	r3,r3,#&10000
-	str	r3,[r1]
-	Invalid
-	orr	r3,r3,#5
-	Invalid
-	b	$000013CA
-	ldr	r3,[pc,#&68]                                           ; 0000153A
-	b	$000014AA
-	ldr	r2,[pc,#&68]                                           ; 0000153E
-	b	$00001428
-	ldr	r2,[pc,#&68]                                           ; 00001542
-	b	$00001456
-	ldr	r0,[pc,#&68]                                           ; 00001546
-	b	$00001486
-	ldr	r2,[pc,#&68]                                           ; 0000154A
-	b	$00001456
-	ldr	r2,[pc,#&68]                                           ; 0000154E
-	b	$00001428
-	ldr	r0,[pc,#&68]                                           ; 00001552
-	b	$00001486
-	nop
-	Invalid
-	Invalid
-	b	$00001518
-	b	$000014F2
-	b	$00001514
-	b	$000014F6
-	lsls	r4,r7,#2
-	mov	r0,#0
-	mov	r0,r0
-	mov	r0,r0
-	mov	r0,r0
-	mov	r2,r0
-	Invalid
-	mov	r1,r0
-	lsls	r7,r0,#&18
-	strh	r0,[r0]
-	mov	r0,r0
-	Invalid
-	mov	r1,r0
-	lsls	r7,r0,#&14
-	mov	r0,r0
-	mov	r0,#0
-	lsls	r0,r0,#8
-	mov	r0,#0
-	mov	r1,r0
-	lsls	r7,r0,#4
-	mov	r3,r2
-	ands	r0,r0
-	Invalid
-	mov	r1,r0
-	asrss	r0,r0,#&C
-	Invalid
-	mov	r7,r7
-	asrss	r0,r0,#&C
-	mov	r7,r7
-	lsls	r7,r0,#&18
-	mov	r7,r7
-	lsls	r7,r0,#&14
-	mov	r7,r7
-	lsls	r7,r0,#4
-	mov	r1,r1
-	lsls	r7,r0,#&14
-	mov	r1,r1
-	lsls	r7,r0,#&18
-	mov	r1,r1
-	lsls	r7,r0,#4
+00001400 3E 48 3F 49 3F 4B 09 1A 40 F0 10 02 20 29 1A 60 >H?I?K..@... ).`
+00001410 65 D9 40 23 05 22 02 E0 01 32 1F 2A 57 D0 99 42 e.@#."...2.*W..B
+00001420 4F EA 43 03 F8 D8 38 4B 43 EA 42 02 37 49 38 4C O.C...8KC.B.7I8L
+00001430 09 1A 34 4B 40 F0 11 00 20 29 22 60 18 60 4C D9 ..4K@... )"`.`L.
+00001440 40 23 05 22 02 E0 01 32 1F 2A 42 D0 99 42 4F EA @#."...2.*B..BO.
+00001450 43 03 F8 D8 2F 4B 43 EA 42 02 2F 4B 2F 49 2C 4D C.../KC.B./K/I,M
+00001460 28 48 C9 1A 43 F0 12 04 20 29 2A 60 04 60 38 D9 (H..C... )*`.`8.
+00001470 40 23 05 22 02 E0 01 32 1F 2A 2C D0 99 42 4F EA @#."...2.*,..BO.
+00001480 43 03 F8 D8 26 48 40 EA 42 00 05 23 40 22 20 4E C...&H@.B..#@" N
+00001490 1C 4C 24 4D 24 49 30 60 25 60 01 33 1F 2B 4F EA .L$M$I0`%`.3.+O.
+000014A0 42 02 12 D0 8A 42 F8 D9 20 4A 42 EA 43 03 18 4A B....B.. JB.C..J
+000014B0 1F 49 13 60 0B 68 43 F4 80 33 0B 60 52 F8 0C 3C .I.`.hC..3.`R..<
+000014C0 43 F0 05 03 42 F8 0C 3C 81 E7 1A 4B EF E7 1A 4A C...B..<...K...J
+000014D0 AC E7 1A 4A C1 E7 1A 48 D7 E7 1A 4A BD E7 1A 4A ...J...H...J...J
+000014E0 A4 E7 1A 48 D1 E7 00 BF 20 ED 00 E0 90 ED 00 E0 ...H.... .......
+000014F0 14 E0 00 E0 10 E0 00 E0 BC 00 00 20 00 00 00 00 ........... ....
+00001500 00 00 02 00 9C ED 00 E0 01 00 07 06 00 80 00 00 ................
+00001510 A0 ED 00 E0 01 00 07 05 00 00 00 20 00 02 00 20 ........... ... 
+00001520 01 00 07 01 13 00 00 40 FE FF FF 1F 01 00 00 13 .......@........
+00001530 24 ED 00 E0 3F 00 00 13 3F 00 07 06 3F 00 07 05 $...?...?...?...
+00001540 3F 00 07 01 09 00 07 05 09 00 07 06 09 00 07 01 ?...............
 
 ;; vPortEndScheduler: 00001550
 vPortEndScheduler proc
@@ -2360,31 +2505,51 @@ vPortEndScheduler proc
 
 ;; vPortStoreTaskMPUSettings: 00001554
 vPortStoreTaskMPUSettings proc
-	Invalid
+	push	{r4-r5}
 	cmps	r1,#0
+
+l00001558:
 	beq	$000015DA
+
+l0000155A:
 	cbnz	r3,$000015B0
+
+l0000155C:
 	mov	r5,#5
 	ldr	r4,[r1,#&4]
 	cbz	r4,$000015A2
+
+l00001562:
 	ldr	r3,[r1]
 	orr	r2,r5,#&10
 	orrs	r3,r2
 	cmps	r4,#&20
 	str	r3,[r0,#&8]
 	bls	$0000164C
+
+l00001570:
 	mov	r2,#&40
 	mov	r3,#5
 	b	$00001578
-	adds	r3,#1
+00001576                   01 33                               .3       
+
+l00001578:
 	cmps	r3,#&1F
 	beq	$000015A8
+
+l0000157C:
 	cmps	r4,r2
-	Invalid
+	mov.w	r2,r2,lsl #1
+
+l00001582:
 	bhi	$00001772
+
+l00001584:
 	lsls	r3,r3,#1
 	ldr	r2,[r1,#&8]
 	orr	r2,r2,#1
+
+l0000158C:
 	orrs	r3,r2
 	str	r3,[r0,#&C]
 	adds	r5,#1
@@ -2392,70 +2557,63 @@ vPortStoreTaskMPUSettings proc
 	add	r1,r1,#&C
 	add	r0,r0,#8
 	bne	$0000175A
-	Invalid
+
+l0000159E:
+	pop	{r4-r5}
 	bx	lr
+
+l000015A2:
 	orr	r3,r5,#&10
 	str	r4,[r0,#&C]
+
+l000015A8:
 	str	r3,[r0,#&8]
 	b	$0000158C
-	mov	r3,#&3E
-	b	$00001582
+000015AC                                     3E 23 EA E7             >#..
+
+l000015B0:
 	lsls	r3,r3,#2
 	orr	r2,r2,#&14
 	cmps	r3,#&20
 	str	r2,[r0]
 	bls	$00001650
+
+l000015BC:
 	mov	r2,#&40
 	mov	r4,#5
 	b	$000015C4
-	adds	r4,#1
+000015C2       01 34                                       .4           
+
+l000015C4:
 	cmps	r4,#&1F
 	beq	$000015D6
+
+l000015C8:
 	cmps	r3,r2
-	Invalid
+	mov.w	r2,r2,lsl #1
 	bhi	$000017BE
+
+l000015D0:
 	ldr	r3,[pc,#&8C]                                           ; 00001664
+
+l000015D2:
 	orr	r4,r3,r4,lsl #1
+
+l000015D6:
 	str	r4,[r0,#&4]
 	b	$00001558
+
+l000015DA:
 	ldr	r4,[pc,#&88]                                           ; 0000166A
 	b	$000015D2
-	ldr	r3,[pc,#&88]                                           ; 0000166E
-	ldr	r1,[pc,#&88]                                           ; 00001670
-	orr	r2,r3,#&14
-	sub	r1,r1,r3
-	cmps	r1,#&20
-	str	r2,[r0]
-	bls	$00001658
-	mov	r3,#&40
-	mov	r2,#5
-	b	$000015F6
-	adds	r2,#1
-	cmps	r2,#&1F
-	beq	$00001644
-	cmps	r3,r1
-	Invalid
-	blo	$000017F0
-	ldr	r3,[pc,#&5C]                                           ; 00001666
-	orr	r2,r3,r2,lsl #1
-	ldr	r3,[pc,#&64]                                           ; 00001674
-	ldr	r1,[pc,#&68]                                           ; 0000167A
-	orr	r4,r3,#&15
-	sub	r1,r1,r3
-	cmps	r1,#&20
-	str	r2,[r0,#&4]
-	str	r4,[r0,#&8]
-	bls	$00001654
-	mov	r2,#5
-	mov	r3,#&40
-	b	$00001622
-	adds	r2,#1
-	cmps	r2,#&1F
-	beq	$00001648
-	cmps	r1,r3
-	Invalid
-	bhi	$0000181C
-	ldr	r3,[pc,#&48]                                           ; 0000167E
+000015DE                                           22 4B               "K
+000015E0 22 49 43 F0 14 02 C9 1A 20 29 02 60 36 D9 40 23 "IC..... ).`6.@#
+000015F0 05 22 02 E0 01 32 1F 2A 26 D0 8B 42 4F EA 43 03 ."...2.*&..BO.C.
+00001600 F8 D3 17 4B 43 EA 42 02 19 4B 1A 49 43 F0 15 04 ...KC.B..K.IC...
+00001610 C9 1A 20 29 42 60 84 60 1E D9 05 22 40 23 02 E0 .. )B`.`..."@#..
+00001620 01 32 1F 2A 12 D0 99 42 4F EA 43 03 F8 D8 12 4B .2.*...BO.C....K
+
+l00001630:
 	orr	r2,r3,r2,lsl #1
 	mov	r4,#&16
 	mov	r3,#0
@@ -2465,40 +2623,21 @@ vPortStoreTaskMPUSettings proc
 	str	r3,[r0,#&14]
 	str	r3,[r0,#&1C]
 	str	r1,[r0,#&18]
-	Invalid
+	pop	{r4-r5}
 	bx	lr
-	ldr	r2,[pc,#&18]                                           ; 00001668
-	b	$00001604
+00001648                         06 4A DD E7                     .J..   
+
+l0000164C:
 	ldr	r2,[pc,#&2C]                                           ; 00001680
 	b	$00001630
+
+l00001650:
 	mov	r3,#8
 	b	$00001582
-	ldr	r4,[pc,#&28]                                           ; 00001684
-	b	$000015D2
-	ldr	r2,[pc,#&28]                                           ; 00001688
-	b	$00001630
-	ldr	r2,[pc,#&20]                                           ; 00001684
-	b	$00001604
-	mov	r1,r0
-	lsls	r7,r0,#&C
-	mov	r7,r7
-	lsls	r7,r0,#&C
-	mov	r0,r0
-	mov	r0,#0
-	mov	r0,#0
-	mov	r0,#0
-	mov	r0,r0
-	mov	r0,#0
-	lsls	r0,r0,#8
-	mov	r0,#0
-	mov	r1,r0
-	lsls	r7,r0,#4
-	mov	r7,r7
-	lsls	r7,r0,#4
-	mov	r1,r1
-	lsls	r7,r0,#&C
-	mov	r1,r1
-	lsls	r7,r0,#4
+00001654             0A 4C BE E7 0A 4A EB E7 08 4A D3 E7     .L...J...J..
+00001660 01 00 07 03 3F 00 07 03 00 00 00 20 00 20 00 20 ....?...... . . 
+00001670 00 00 00 20 00 02 00 20 01 00 07 01 3F 00 07 01 ... ... ....?...
+00001680 09 00 07 03 09 00 07 01                         ........       
 
 ;; xPortPendSVHandler: 00001688
 xPortPendSVHandler proc
@@ -2530,7 +2669,7 @@ xPortPendSVHandler proc
 
 ;; xPortSysTickHandler: 000016E4
 xPortSysTickHandler proc
-	Invalid
+	push	{r4,lr}
 	mrs	r4,cpsr
 	mov	r3,#&BF
 	msr	cpsr,r3
@@ -2542,7 +2681,7 @@ xPortSysTickHandler proc
 	ldr	r3,[pc,#&8]                                            ; 00001714
 	str	r2,[r3]
 	msr	cpsr,r4
-	Invalid
+	pop	{r4,pc}
 	nop
 	Invalid
 
@@ -2563,34 +2702,54 @@ fn00001728 proc
 
 ;; pvPortMalloc: 0000172C
 pvPortMalloc proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r0
 	lsls	r3,r0,#&1D
 	itt	ne
 	bicne	r4,r0,#7
-	addsne	r4,#8
+
+l00001738:
+	adds	r4,#8
 	bl	$00000A08
 	ldr	r3,[pc,#&3C]                                           ; 00001782
+
+;; fn00001740: 00001740
+fn00001740 proc
 	ldr	r2,[r3]
 	cbz	r2,$00001770
+
+l00001744:
 	mov	r1,#&5B3
 	ldr	r2,[r3,#&5C0]
 	adds	r4,r2
 	cmps	r4,r1
 	bhi	$00001762
+
+l00001752:
 	cmps	r2,r4
 	bhs	$00001762
+
+l00001756:
 	ldr	r1,[r3]
 	str	r4,[r3,#&5C0]
+
+;; fn0000175A: 0000175A
+fn0000175A proc
+	cmps	r8,r8
 	add	r4,r1,r2
 	bl	$00000E68
+
+l00001762:
 	mov	r0,r4
-	Invalid
-	mov	r4,#0
-	bl	$00000E68
-	mov	r0,r4
-	Invalid
+	pop	{r4,pc}
+00001766                   00 24 FF F7 80 FB 20 46 10 BD       .$.... F..
+
+l00001770:
 	add	r2,r3,#&C
+
+;; fn00001772: 00001772
+fn00001772 proc
+	lsls	r4,r1,#8
 	bic	r2,r2,#7
 	str	r2,[r3]
 	b	$00001740
@@ -2612,7 +2771,11 @@ vPortInitialiseBlocks proc
 	str	r2,[r3,#&5C0]
 	bx	lr
 0000178E                                           00 BF               ..
-00001790 30 02 00 20                                     0..            
+
+;; fn00001790: 00001790
+fn00001790 proc
+	lsls	r0,r6,#8
+	mov	r0,#0
 
 ;; xPortGetFreeHeapSize: 00001794
 xPortGetFreeHeapSize proc
@@ -2621,24 +2784,34 @@ xPortGetFreeHeapSize proc
 	rsb	r0,r0,#&5B0
 	adds	r0,#4
 	bx	lr
-000017A2       00 BF 30 02 00 20                           ..0..        
+000017A2       00 BF                                       ..           
+
+;; fn000017A4: 000017A4
+fn000017A4 proc
+	lsls	r0,r6,#8
+	mov	r0,#0
 
 ;; xEventGroupCreate: 000017A8
 xEventGroupCreate proc
-	Invalid
+	push	{r4,lr}
 	mov	r0,#&18
 	bl	$00001728
 	mov	r4,r0
 	cbz	r0,$000017BE
+
+l000017B4:
 	mov	r3,#0
 	str	r3,[r0],#&4
 	bl	$000082CC
+
+;; fn000017BE: 000017BE
+fn000017BE proc
 	mov	r0,r4
 
 ;; fn000017C0: 000017C0
 fn000017C0 proc
-	Invalid
-	nop
+	pop	{r4,pc}
+000017C2       00 BF                                       ..           
 
 ;; xEventGroupWaitBits: 000017C4
 xEventGroupWaitBits proc
@@ -2660,20 +2833,24 @@ l000017DC:
 	beq	$000017E4
 
 l000017E2:
-	Invalid
+	bic.w	r5,r4,r5
 
 l000017E4:
 	lsls	r5,r0,#&14
+
+l000017E6:
 	str	r5,[r6]
 	bl	$00000E68
 	mov	r0,r4
 	pop.w	{r4-r8,pc}
 
 l000017F2:
-	Invalid
+	bics.w	r3,r5,r4
 
 l000017F4:
 	lsls	r4,r0,#&C
+
+l000017F6:
 	beq	$000019D8
 
 l000017F8:
@@ -2723,32 +2900,37 @@ l0000183E:
 
 l00001840:
 	str	r0,[r0,#&18]
+
+l00001842:
 	b	$00001808
 00001844             06 F0 98 FE 34 68 6F B9 25 42 05 D0     ....4ho.%B..
 00001850 B8 F1 00 0F 02 D0 24 EA 05 05 35 60 06 F0 A8 FE ......$...5`....
 00001860 24 F0 7F 40 BD E8 F0 81 35 EA 04 03 F6 D1 EF E7 $..@....5.......
-00001870 04 ED 00 E0                                     ....           
+
+;; fn00001870: 00001870
+fn00001870 proc
+	Invalid
 
 ;; xEventGroupClearBits: 00001874
 xEventGroupClearBits proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r6,r0
 	mov	r4,r1
 	bl	$00008574
 	ldr	r5,[r6]
-	Invalid
+	bic.w	r4,r5,r4
 	str	r4,[r6]
 	bl	$000085AC
 	mov	r0,r5
 
 ;; fn0000188C: 0000188C
 fn0000188C proc
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+0000188E                                           00 BF               ..
 
 ;; xEventGroupSetBits: 00001890
 xEventGroupSetBits proc
-	Invalid
+	push	{r3-r7,lr}
 	mov	r5,r0
 	mov	r4,r1
 	bl	$00000A08
@@ -2759,26 +2941,32 @@ xEventGroupSetBits proc
 	cmps	r6,r0
 	str	r1,[r5]
 	beq	$000018EC
+
+l000018AA:
 	mov	r7,#0
 	b	$000018C4
-	adcs	r2,r1
-	beq	$000018BE
-	lsls	r3,r3,#7
-	bpl	$000018B4
-	orrs	r7,r2
-	orr	r1,r1,#&2000000
-	bl	$0000107C
-	ldr	r1,[r5]
-	cmps	r6,r4
+000018AE                                           0A 42               .B
+000018B0 07 D0 DB 01 00 D5 17 43 41 F0 00 71 FF F7 E0 FB .......CA..q....
+000018C0 29 68 A6 42                                     )h.B           
+
+l000018C4:
 	mov	r0,r4
 	beq	$000018DE
+
+l000018C8:
 	ldm	r0,{r3-r4}
 	tst	r3,#&4000000
 	bic	r2,r3,#&FF000000
 	beq	$00001AAA
-	Invalid
+
+l000018D6:
+	bics.w	lr,r2,r1
 	beq	$00001AAE
+
+l000018DC:
 	cmps	r6,r4
+
+l000018DE:
 	mov	r0,r4
 
 ;; fn000018E0: 000018E0
@@ -2790,9 +2978,12 @@ l000018E2:
 	ands	r1,r7
 	str	r1,[r5]
 	bl	$00000E68
+
+;; fn000018EC: 000018EC
+fn000018EC proc
 	ldr	r0,[r5]
-	Invalid
-	mov	r7,#&FFFFFFFF
+	pop	{r3-r7,pc}
+000018F0 4F F0 FF 37                                     O..7           
 
 ;; fn000018F4: 000018F4
 fn000018F4 proc
@@ -2812,45 +3003,54 @@ xEventGroupSync proc
 	mov	r0,r5
 	orrs	r4,r1
 	bl	$0000188C
-	Invalid
+	bics.w	r3,r6,r4
 	beq	$0000195A
+
+l0000191A:
 	cbnz	r7,$00001928
+
+l0000191C:
 	ldr	r4,[r5]
 	bl	$00000E68
 	mov	r0,r4
 	pop.w	{r4-r8,pc}
+
+l00001928:
 	mov	r2,r7
 	orr	r1,r6,#&5000000
 	add	r0,r5,#4
 	bl	$00000FF4
 	bl	$00000E68
 	cbnz	r0,$0000194A
+
+l0000193A:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&44]                                           ; 0000198A
 	str	r2,[r3]
 	dsb	sy
 	isb	sy
+
+l0000194A:
 	bl	$0000111C
 	lsls	r3,r0,#6
 	mov	r4,r0
 	bpl	$00001964
+
+l00001954:
 	bic	r4,r4,#&FF000000
 	mov	r0,r4
+
+l0000195A:
 	pop.w	{r4-r8,pc}
-	ldr	r3,[r5]
-	Invalid
+0000195E                                           2B 68               +h
+00001960 23 EA 06 06                                     #...           
+
+l00001964:
 	str	r6,[r5]
 	b	$0000191A
-	bl	$00008574
-	ldr	r4,[r5]
-	Invalid
-	itt	eq
-	Invalid
-	streq	r6,[r5]
-	bl	$000085AC
-	bic	r4,r4,#&FF000000
-	b	$00001954
-	Invalid
+00001968                         06 F0 06 FE 2C 68 36 EA         ....,h6.
+00001970 04 03 04 BF 24 EA 06 06 2E 60 06 F0 19 FE 24 F0 ....$....`....$.
+00001980 7F 44 E9 E7 04 ED 00 E0                         .D......       
 
 ;; xEventGroupGetBitsFromISR: 00001988
 xEventGroupGetBitsFromISR proc
@@ -2860,27 +3060,34 @@ xEventGroupGetBitsFromISR proc
 	isb	sy
 	dsb	sy
 	msr	cpsr,r3
+
+;; fn000019A0: 000019A0
+fn000019A0 proc
 	ldr	r0,[r0]
 	bx	lr
 
 ;; vEventGroupDelete: 000019A4
 vEventGroupDelete proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r0
 	bl	$00000A08
 	ldr	r3,[r4,#&4]
 	cbz	r3,$000019C0
+
+l000019B0:
 	mov	r1,#&2000000
 	ldr	r0,[r4,#&10]
 	bl	$0000107C
 	ldr	r3,[r4,#&4]
 	cmps	r3,#0
 	bne	$00001BAC
+
+l000019C0:
 	mov	r0,r4
 	bl	$0000177C
 	pop.w	{r4,lr}
 	b	$00000E68
-	nop
+000019CE                                           00 BF               ..
 
 ;; vEventGroupSetBitsCallback: 000019D0
 vEventGroupSetBitsCallback proc
@@ -2888,29 +3095,29 @@ vEventGroupSetBitsCallback proc
 
 ;; vEventGroupClearBitsCallback: 000019D4
 vEventGroupClearBitsCallback proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r4,r0
 
-;; fn000019D8: 000019D8
-fn000019D8 proc
+l000019D8:
 	mov	r5,r1
 	bl	$00008574
 	ldr	r3,[r4]
-	Invalid
+	bic.w	r3,r3,r5
 
-;; fn000019E4: 000019E4
-fn000019E4 proc
+l000019E4:
 	str	r3,[r4]
 	pop.w	{r3-r5,lr}
 	b	$00C085AC
 000019EE                                           00 BF               ..
 000019F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
-00001AC0 00 00 00 00                                     ....           
+00001AA0 00 00 00 00 00 00 00 00 00 00                   ..........     
 
-l00001AC4:
+l00001AAA:
 	mov	r0,r0
 	mov	r0,r0
+
+l00001AAE:
 	mov	r0,r0
 	mov	r0,r0
 	mov	r0,r0
@@ -2922,6 +3129,9 @@ l00001AC4:
 	mov	r0,r0
 	mov	r0,r0
 	mov	r0,r0
+
+;; fn00001AC4: 00001AC4
+fn00001AC4 proc
 	mov	r0,r0
 	mov	r0,r0
 	mov	r0,r0
@@ -3025,6 +3235,22 @@ l00001AC4:
 	mov	r0,r0
 	mov	r0,r0
 	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+	mov	r0,r0
+
+;; fn00001BAC: 00001BAC
+fn00001BAC proc
 	mov	r0,r0
 	mov	r0,r0
 	mov	r0,r0
@@ -15917,8 +16143,10 @@ raise proc
 
 ;; vPrintTask: 00008038
 vPrintTask proc
-	Invalid
+	push	{r4-r5,lr}
 	mov	r4,#0
+
+l0000803C:
 	ldr	r5,[pc,#&24]                                           ; 00008068
 	sub	sp,#&C
 	add	r1,sp,#4
@@ -15933,18 +16161,19 @@ vPrintTask proc
 	ldr	r0,[sp,#&4]
 	bl	$000097C8
 	b	$0000803C
-	lsrs	r0,r0,#2
-	mov	r0,#0
+00008064             80 08 00 20                             ...        
 
 ;; vCheckTask: 00008068
 vCheckTask proc
-	Invalid
+	push	{r4-r5,lr}
 	ldr	r3,[pc,#&2C]                                           ; 0000809E
 	sub	sp,#&C
 	str	r3,[sp,#&4]
 	bl	$00008900
 	add	r4,sp,#8
 	ldr	r5,[pc,#&24]                                           ; 000080A2
+
+l00008078:
 	str	r0,[r4,-#&8]!
 	mov	r0,r4
 	mov	r1,#&1388
@@ -15955,15 +16184,11 @@ vCheckTask proc
 	ldr	r0,[r5]
 	bl	$00008AE0
 	b	$00008078
-	nop
-	adr	r2,$000081D8
-	mov	r0,r0
-	lsrs	r0,r0,#2
-	mov	r0,#0
+00008096                   00 BF 50 A2 00 00 80 08 00 20       ..P...... 
 
 ;; Main: 000080A0
 Main proc
-	Invalid
+	push	{lr}
 	mov	r2,#0
 	sub	sp,#&C
 	mov	r1,#4
@@ -15994,25 +16219,17 @@ Main proc
 	mov	r2,r4
 	mov	r1,r4
 	ldr	r0,[pc,#&1C]                                           ; 0000810A
+
+l000080E8:
 	bl	$000097C8
 	b	$000080E8
-	nop
-	lsrs	r0,r0,#2
-	mov	r0,#0
-	adr	r2,$00008254
-	mov	r0,r0
-	strh	r1,[r5,#&4]
-	mov	r0,r0
-	adr	r2,$0000827C
-	mov	r0,r0
-	strh	r1,[r7]
-	mov	r0,r0
-	adr	r2,$000082A4
-	mov	r0,r0
+000080EE                                           00 BF               ..
+000080F0 80 08 00 20 58 A2 00 00 69 80 00 00 60 A2 00 00 ... X...i...`...
+00008100 39 80 00 00 68 A2 00 00                         9...h...       
 
 ;; vUART_ISR: 00008108
 vUART_ISR proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r6,#0
 	ldr	r5,[pc,#&64]                                           ; 00008178
 	sub	sp,#8
@@ -16026,52 +16243,57 @@ vUART_ISR proc
 	bl	$0000A0D4
 	lsls	r2,r4,#&1B
 	bpl	$0000812C
+
+l00008128:
 	ldr	r3,[pc,#&4C]                                           ; 0000817C
 	ldr	r3,[r3]
+
+l0000812C:
 	lsls	r3,r3,#&19
 	bmi	$0000815A
+
+l00008130:
 	lsls	r0,r4,#&1A
 	bpl	$00008138
+
+l00008134:
 	ldr	r2,[pc,#&44]                                           ; 00008180
 	ldrb	r3,[r2]
+
+l00008138:
 	cmps	r3,#&7A
 	bls	$00008148
+
+l0000813C:
 	ldr	r3,[sp,#&4]
 	cbz	r3,$00008148
+
+l00008140:
 	mov	r2,#&10000000
 	ldr	r3,[pc,#&38]                                           ; 00008184
 	str	r2,[r3]
+
+l00008148:
 	add	sp,#8
-	Invalid
-	ldr	r1,[pc,#&28]                                           ; 0000817C
-	ldr	r1,[r1]
-	lsls	r1,r1,#&1A
-	itt	pl
-	ldrpl	r1,[pc,#&1C]                                         ; 00008178
-	strpl	r3,[r1]
-	adds	r3,#1
+	pop	{r4-r6,pc}
+0000814C                                     0A 49 09 68             .I.h
+00008150 89 06 5C BF 07 49 0B 60 01 33                   ..\..I.`.3     
+
+l0000815A:
 	strb	r3,[r2]
 	b	$00008138
-	ldr	r5,[r5]
-	mov	r3,r6
-	mov	r0,r6
-	add	r2,sp,#4
-	add	r0,sp,#3
-	strb	r5,[sp,#&3]
-	bl	$00000454
-	b	$0000812C
-	stm	r0!,}
-	ands	r0,r0
-	stm	r0!,{r3-r4}
-	ands	r0,r0
-	lsls	r4,r5,#8
-	mov	r0,#0
-	Invalid
+0000815E                                           2D 68               -h
+00008160 33 46 30 46 01 AA 0D F1 03 01 8D F8 03 50 F8 F7 3F0F.........P..
+00008170 73 F9 DD E7 00 C0 00 40 18 C0 00 40 2C 02 00 20 s......@...@,.. 
+00008180 04 ED 00 E0                                     ....           
 
 ;; vSetErrorLED: 00008184
 vSetErrorLED proc
 	mov	r1,#1
 	mov	r0,#7
+
+;; fn00008188: 00008188
+fn00008188 proc
 	b	$00C085F0
 
 ;; prvSetAndCheckRegisters: 0000818C
@@ -16144,24 +16366,33 @@ l000081FC:
 
 l000081FE:
 	bx	lr
-00008200 00 B5 06 49 88 47 5D F8 04 EB 70 47 70 47       ...I.G]...pGpG 
+00008200 00 B5 06 49 88 47 5D F8 04 EB 70 47             ...I.G]...pG   
+
+;; fn0000820C: 0000820C
+fn0000820C proc
+	bx	lr
 
 l0000820E:
 	nop
 
 ;; vApplicationIdleHook: 00008210
 vApplicationIdleHook proc
-	Invalid
+	push	{r3,lr}
 	bl	$00008F28
 	bl	$00008188
 
-l0000821A:
+;; fn0000821A: 0000821A
+fn0000821A proc
 	b	$0000820E
-0000821C                                     85 81 00 00             ....
+
+;; fn0000821C: 0000821C
+fn0000821C proc
+	strh	r5,[r0,#&18]
+	mov	r0,r0
 
 ;; PDCInit: 00008220
 PDCInit proc
-	Invalid
+	push	{r4-r5,lr}
 	ldr	r0,[pc,#&68]                                           ; 00008292
 	sub	sp,#&C
 	bl	$00009B78
@@ -16200,18 +16431,17 @@ PDCInit proc
 	add	sp,#&C
 	pop.w	{r4-r5,lr}
 	b	$00C09450
-	mov	r0,r2
-	asrss	r0,r0,#0
-	mov	r1,r0
-	mov	r0,#0
-	strh	r0,[r0]
-	ands	r0,r0
+0000828C                                     10 00 00 10             ....
+00008290 01 00 00 20 00 80 00 40                         ... ...@       
+
+;; fn00008298: 00008298
+fn00008298 proc
 	rsbs	r0,r0
 	mov	r7,r1
 
 ;; PDCWrite: 0000829C
 PDCWrite proc
-	Invalid
+	push	{r4-r5,lr}
 	mov	r5,r1
 	ldr	r4,[pc,#&28]                                           ; 000082D0
 	sub	sp,#&C
@@ -16228,8 +16458,8 @@ PDCWrite proc
 	mov	r0,r4
 	bl	$00009AB4
 	add	sp,#&C
-	Invalid
-	nop
+	pop	{r4-r5,pc}
+000082CA                               00 BF                       ..   
 
 ;; fn000082CC: 000082CC
 fn000082CC proc
@@ -16255,13 +16485,16 @@ fn000082E4 proc
 vListInitialiseItem proc
 	mov	r3,#0
 	str	r3,[r0,#&10]
+
+;; fn000082EC: 000082EC
+fn000082EC proc
 	bx	lr
 000082EE                                           00 BF               ..
 
 ;; vListInsertEnd: 000082F0
 vListInsertEnd proc
 	ldm	r0,{r2-r3}
-	Invalid
+	push	{r4}
 	ldr	r4,[r3,#&8]
 	adds	r2,#1
 	str	r4,[r1,#&8]
@@ -16269,24 +16502,33 @@ vListInsertEnd proc
 	str	r3,[r1,#&4]
 	str	r1,[r4,#&4]
 	str	r1,[r3,#&8]
-	Invalid
+	pop	{r4}
 	str	r0,[r1,#&10]
+
+;; fn00008308: 00008308
+fn00008308 proc
 	str	r2,[r0]
 	bx	lr
 
 ;; vListInsert: 0000830C
 vListInsert proc
-	Invalid
+	push	{r4-r5}
 	ldr	r5,[r1]
 	add	r3,r5,#1
 	beq	$00008334
+
+l00008314:
 	add	r2,r0,#8
+
+l00008318:
 	b	$00008318
-	mov	r2,r3
-	ldr	r3,[r2,#&4]
-	ldr	r4,[r3]
+0000831A                               1A 46 53 68 1C 68           .FSh.h
+
+l00008320:
 	cmps	r5,r4
 	bhs	$00008516
+
+l00008324:
 	ldr	r4,[r0]
 	str	r3,[r1,#&4]
 	adds	r4,#1
@@ -16295,19 +16537,23 @@ vListInsert proc
 	str	r1,[r2,#&4]
 	str	r0,[r1,#&10]
 	str	r4,[r0]
-	Invalid
+
+l00008334:
+	pop	{r4-r5}
 	bx	lr
-	ldr	r2,[r0,#&10]
-	ldr	r3,[r2,#&4]
+00008338                         02 69 53 68                     .iSh   
+
+;; fn0000833C: 0000833C
+fn0000833C proc
 	b	$00008320
-	nop
+0000833E                                           00 BF               ..
 
 ;; uxListRemove: 00008340
 uxListRemove proc
 	ldr	r2,[r0,#&10]
 	ldr	r3,[r0,#&4]
 	ldr	r1,[r0,#&8]
-	Invalid
+	push	{r4}
 	str	r1,[r3,#&8]
 	ldr	r4,[r2,#&4]
 	ldr	r1,[r0,#&8]
@@ -16315,17 +16561,19 @@ uxListRemove proc
 	str	r3,[r1,#&4]
 	it	eq
 	streq	r1,[r2,#&4]
+
+l00008356:
 	mov	r1,#0
 	ldr	r3,[r2]
 	str	r1,[r0,#&10]
 	sub	r0,r3,#1
 	str	r0,[r2]
-	Invalid
+	pop	{r4}
 	bx	lr
 
 ;; xQueueCRSend: 00008364
 xQueueCRSend proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	mov	r4,r2
@@ -16347,43 +16595,33 @@ xQueueCRSend proc
 	dsb	sy
 	ldr	r2,[r5,#&38]
 	ldr	r3,[r5,#&3C]
+
+l000083A6:
 	cmps	r2,r3
 	blo	$000083BC
+
+l000083AA:
 	mov	r3,#0
 	msr	cpsr,r3
-	Invalid
-	bl	$000085AC
-	cbnz	r4,$000083D8
-	msr	cpsr,r4
+	pop	{r4-r6,pc}
+000083B2       00 F0 FD F8 7C B9 84 F3 11 88               ....|.....   
+
+l000083BC:
 	mov	r0,r4
-	Invalid
-	mov	r2,r0
-	mov	r1,r6
-	mov	r0,r5
-	bl	$000000E8
-	ldr	r3,[r5,#&24]
-	cbnz	r3,$000083EE
-	mov	r0,#1
-	mov	r3,#0
-	msr	cpsr,r3
-	Invalid
-	add	r1,r5,#&10
-	mov	r0,r4
-	bl	$00008EEC
-	mov	r3,#0
-	msr	cpsr,r3
-	mvn	r0,#3
-	Invalid
-	add	r0,r5,#&24
-	bl	$00009090
-	cmps	r0,#0
-	beq	$000085CA
-	mvn	r0,#4
+	pop	{r4-r6,pc}
+000083C0 02 46 31 46 28 46 F7 F7 91 FE 6B 6A 7B B9 01 20 .F1F(F....kj{.. 
+000083D0 00 23 83 F3 11 88 70 BD 05 F1 10 01 20 46 00 F0 .#....p..... F..
+000083E0 87 FD 00 23 83 F3 11 88 6F F0 03 00 70 BD 05 F1 ...#....o...p...
+000083F0 24 00 00 F0 4F FE 00 28 E9 D0 6F F0             $...O..(..o.   
+
+;; fn000083FC: 000083FC
+fn000083FC proc
+	mov	r4,r0
 	b	$000083A6
 
 ;; xQueueCRReceive: 00008400
 xQueueCRReceive proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r4,r0
 	mov	r3,#&BF
 	msr	cpsr,r3
@@ -16395,7 +16633,7 @@ xQueueCRReceive proc
 	bne	$00008486
 	msr	cpsr,r2
 	mov	r0,r2
-	Invalid
+	pop	{r3-r5,pc}
 	mov	r3,#0
 	msr	cpsr,r3
 	mov	r3,#&BF
@@ -16407,7 +16645,7 @@ xQueueCRReceive proc
 	mov	r0,r2
 	mov	r3,#0
 	msr	cpsr,r3
-	Invalid
+	pop	{r3-r5,pc}
 	mov	r0,r1
 	ldr	r2,[r4,#&40]
 	ldr	r1,[r4,#&C]
@@ -16428,7 +16666,7 @@ xQueueCRReceive proc
 	mov	r0,#1
 	mov	r3,#0
 	msr	cpsr,r3
-	Invalid
+	pop	{r3-r5,pc}
 	add	r0,r4,#&10
 	bl	$00009090
 	cmps	r0,#0
@@ -16440,40 +16678,32 @@ xQueueCRReceive proc
 	bl	$00008EEC
 	msr	cpsr,r5
 	mvn	r0,#3
-	Invalid
+	pop	{r3-r5,pc}
 	nop
 
 ;; xQueueCRSendFromISR: 000084A0
 xQueueCRSendFromISR proc
-	Invalid
+	push	{r4-r6,lr}
 	ldr	r3,[r0,#&3C]
 	ldr	r6,[r0,#&38]
 	mov	r5,r2
 	cmps	r6,r3
 	blo	$000084AC
+
+l000084AC:
 	mov	r0,r5
-	Invalid
-	mov	r2,#0
-	mov	r4,r0
-	bl	$000000E8
-	cmps	r5,#0
-	bne	$000086A8
-	ldr	r3,[r4,#&24]
-	cmps	r3,#0
-	beq	$000086A8
-	add	r0,r4,#&24
-	bl	$00009090
-	add	r5,r0,#0
-	it	ne
-	movne	r5,#1
-	b	$000084A8
-	nop
+	pop	{r4-r6,pc}
+000084B0 00 22 04 46 F7 F7 1A FE 00 2D F7 D1 63 6A 00 2B .".F.....-..cj.+
+000084C0 F4 D0 04 F1 24 00 00 F0 E5 FD 05 1C 18 BF 01 25 ....$..........%
+000084D0 EC E7 00 BF                                     ....           
 
 ;; xQueueCRReceiveFromISR: 000084D4
 xQueueCRReceiveFromISR proc
-	Invalid
+	push	{r3-r7,lr}
 	ldr	r3,[r0,#&38]
 	cbz	r3,$00008514
+
+l000084DA:
 	ldr	r3,[r0,#&C]
 	ldr	lr,[r0,#&40]
 	ldr	r4,[r0,#&4]
@@ -16486,9 +16716,13 @@ xQueueCRReceiveFromISR proc
 	str	r3,[r0,#&C]
 	it	hs
 	ldrhs	r3,[r0]
+
+l000084F4:
 	add	r7,r7,#&FFFFFFFF
 	it	hs
 	strhs	r3,[r0,#&C]
+
+l000084FC:
 	mov	r1,r3
 	mov	r2,lr
 	mov	r0,r6
@@ -16496,47 +16730,76 @@ xQueueCRReceiveFromISR proc
 	bl	$0000A5C0
 	ldr	r3,[r5]
 	cbnz	r3,$00008510
+
+l0000850C:
 	ldr	r3,[r4,#&10]
 	cbnz	r3,$00008518
+
+l00008510:
 	mov	r0,#1
-	Invalid
+	pop	{r3-r7,pc}
+
+l00008514:
 	mov	r0,r3
-	Invalid
+
+l00008516:
+	pop	{r3-r7,pc}
+
+l00008518:
 	add	r0,r4,#&10
 	bl	$00009090
 	cmps	r0,#0
 	beq	$0000870C
+
+l00008524:
 	mov	r0,#1
 	str	r0,[r5]
-	Invalid
+	pop	{r3-r7,pc}
+
+l0000852A:
 	nop
 
 ;; prvIdleTask: 0000852C
 prvIdleTask proc
-	Invalid
+	push	{r3,lr}
 	bl	$0000820C
+
+;; fn00008530: 00008530
+fn00008530 proc
+	Invalid
+
+;; fn00008532: 00008532
+fn00008532 proc
 	b	$0000852A
 
 ;; xTaskNotifyStateClear: 00008534
 xTaskNotifyStateClear proc
-	Invalid
+	push	{r3-r5,lr}
+
+l00008536:
 	cbz	r0,$00008558
+
+l00008538:
 	mov	r4,r0
 	bl	$00008574
 	ldrb	r3,[r4,#&64]
 	cmps	r3,#2
 	ittet	eq
 	moveq	r3,#0
-	moveq	r5,#1
-	movne	r5,#0
-	strbeq	r3,[r4,#&64]
+
+l00008548:
+	mov	r5,#1
+	mov	r5,#0
+	strb	r3,[r4,#&64]
 	bl	$000085AC
 	mov	r0,r5
-	Invalid
+	pop	{r3-r5,pc}
+
+l00008558:
 	ldr	r3,[pc,#&4]                                            ; 00008564
 	ldr	r4,[r3,#&4]
 	b	$00008536
-	nop
+0000855E                                           00 BF               ..
 
 ;; fn00008560: 00008560
 fn00008560 proc
@@ -16561,7 +16824,7 @@ fn00008574 proc
 
 ;; vPortEnterCritical: 00008578
 vPortEnterCritical proc
-	Invalid
+	push	{r3,lr}
 	bl	$00008560
 	mov	r3,#&BF
 	msr	cpsr,r3
@@ -16576,7 +16839,7 @@ vPortEnterCritical proc
 	mrs	r0,cpsr
 	orr	r0,r0,#1
 	msr	cpsr,r0
-	Invalid
+	pop	{r3,pc}
 	nop
 
 ;; fn000085AC: 000085AC
@@ -16586,70 +16849,88 @@ fn000085AC proc
 
 ;; vPortExitCritical: 000085B0
 vPortExitCritical proc
-	Invalid
+	push	{r3,lr}
 	bl	$00008560
 	ldr	r2,[pc,#&20]                                           ; 000085DE
 	ldr	r3,[r2]
 	subs	r3,#1
 	str	r3,[r2]
 	cbnz	r3,$000085C4
+
+l000085C0:
 	msr	cpsr,r3
+
+l000085C4:
 	cmps	r0,#1
 	beq	$000085D0
+
+l000085C8:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l000085D0:
 	msr	cpsr,r0
-	Invalid
-	nop
-	lsls	r4,r7,#2
-	mov	r0,#0
+	pop	{r3,pc}
+000085D6                   00 BF BC 00 00 20                   .....    
 
 ;; vParTestInitialise: 000085DC
 vParTestInitialise proc
-	Invalid
+	push	{r3,lr}
 	bl	$0000821C
 	ldr	r3,[pc,#&C]                                            ; 000085F6
 	mov	r0,#5
 	ldrb	r1,[r3]
 	pop.w	{r3,lr}
 	b	$00008298
-	lsls	r4,r6,#&1F
-	mov	r0,#0
+000085F0 F4 07 00 20                                     ...            
 
 ;; vParTestSetLED: 000085F4
 vParTestSetLED proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r4,r0
 	mov	r5,r1
 	bl	$000088BC
 	cmps	r4,#7
 	bhi	$00008618
+
+l00008602:
 	mov	r3,#1
 	lsl	r0,r3,r4
 	ldr	r3,[pc,#&20]                                           ; 00008630
 	uxtb	r0,r0
 	ldrb	r2,[r3]
 	cbz	r5,$00008624
+
+l00008610:
 	orrs	r0,r2
 	strb	r0,[r3]
 	ldrb	r1,[r3]
 	mov	r0,#5
+
+l00008618:
 	bl	$00008298
 	pop.w	{r3-r5,lr}
 	b	$00C088DC
-	Invalid
+
+l00008624:
+	bic.w	r0,r2,r0
 	strb	r0,[r3]
 	b	$00008610
+
+;; fn0000862C: 0000862C
+fn0000862C proc
 	lsls	r4,r6,#&1F
 	mov	r0,#0
 
 ;; vParTestToggleLED: 00008630
 vParTestToggleLED proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r0
 	bl	$000088BC
 	cmps	r4,#7
 	bhi	$00008656
+
+l0000863C:
 	mov	r2,#1
 	ldr	r3,[pc,#&2C]                                           ; 00008672
 	lsl	r0,r2,r4
@@ -16657,38 +16938,46 @@ vParTestToggleLED proc
 	uxtb	r2,r0
 	adcs	r2,r1
 	bne	$0000865E
+
+l0000864C:
 	ldrb	r1,[r3]
 	orrs	r2,r1
 	strb	r2,[r3]
 	ldrb	r1,[r3]
 	mov	r0,#5
+
+l00008656:
 	bl	$00008298
 	pop.w	{r4,lr}
+
+l0000865E:
 	b	$00C088DC
-	ldrb	r2,[r3]
-	Invalid
-	strb	r0,[r3]
-	b	$0000864E
-	lsls	r4,r6,#&1F
-	mov	r0,#0
+00008662       1A 78 22 EA 00 00 18 70 F2 E7 F4 07 00 20   .x"....p..... 
 
 ;; prvFlashCoRoutine: 00008670
 prvFlashCoRoutine proc
-	Invalid
+	push	{r4-r6,lr}
 	ldrh	r3,[r0,#&68]
 	sub	sp,#8
 	cmp	r3,#&1C2
 	mov	r4,r0
 	beq	$000086B2
+
+l0000867E:
 	mov	r2,#&1C3
 	cmps	r3,r2
 	beq	$00008688
+
+l00008686:
 	cbz	r3,$000086D2
+
+l00008688:
 	add	sp,#8
-	Invalid
-	ldr	r5,[pc,#&50]                                           ; 000086E4
-	add	r6,sp,#4
-	ldr	r0,[sp,#&4]
+	pop	{r4-r6,pc}
+0000868C                                     14 4D 01 AE             .M..
+00008690 01 98                                           ..             
+
+l00008692:
 	bl	$0000862C
 	mov	r2,#&FFFFFFFF
 	mov	r1,r6
@@ -16696,106 +16985,106 @@ prvFlashCoRoutine proc
 	bl	$000083FC
 	add	r2,r0,#4
 	beq	$000086D4
+
+l000086A6:
 	add	r3,r0,#5
 	beq	$000086C4
+
+l000086AA:
 	cmps	r0,#1
 	beq	$0000888C
+
+l000086AE:
 	mov	r2,#0
 	ldr	r3,[pc,#&30]                                           ; 000086E8
+
+l000086B2:
 	str	r2,[r3]
 	b	$00008692
-	ldr	r5,[pc,#&28]                                           ; 000086E6
-	add	r6,sp,#4
-	ldr	r0,[r5]
-	mov	r1,r6
-	mov	r2,#0
-	bl	$000083FC
+000086B6                   0A 4D 01 AE 28 68 31 46 00 22       .M..(h1F."
+000086C0 FF F7 9E FE                                     ....           
+
+l000086C4:
 	add	r3,r0,#5
 	bne	$000088A6
+
+l000086C8:
 	mov	r3,#&1C3
 	strh	r3,[r4,#&68]
 	add	sp,#8
-	Invalid
+	pop	{r4-r6,pc}
+
+l000086D2:
 	ldr	r5,[pc,#&C]                                            ; 000086E6
+
+l000086D4:
 	add	r6,sp,#4
 	b	$00008692
-	mov	r3,#&1C2
-	strh	r3,[r4,#&68]
-	b	$00008684
-	lsls	r0,r7,#&1F
-	mov	r0,#0
-	lsls	r0,r0,#3
-	mov	r0,#0
+000086D8                         4F F4 E1 73 A3 86 D3 E7         O..s....
+000086E0 F8 07 00 20 C0 00 00 20                         ... ...        
 
 ;; prvFixedDelayCoRoutine: 000086E8
 prvFixedDelayCoRoutine proc
-	Invalid
+	push	{r4,lr}
 	ldrh	r3,[r0,#&68]
 	sub	sp,#8
 	cmp	r3,#&182
 	mov	r4,r0
 	str	r1,[sp,#&4]
 	beq	$0000874C
+
+l000086F8:
 	bls	$00008744
+
+l000086FA:
 	mov	r2,#&183
 	cmps	r3,r2
 	bne	$00008712
+
+l00008702:
 	ldr	r3,[pc,#&74]                                           ; 0000877E
 	ldr	r2,[sp,#&4]
-	Invalid
+	ldr.w	r0,[r3,r2,lsl #2]
+
+l00008708:
+	mov	r2,r4
 	cbnz	r0,$0000875E
+
+;; fn0000870C: 0000870C
+fn0000870C proc
 	mov	r3,#&196
 	strh	r3,[r4,#&68]
+
+l00008712:
 	add	sp,#8
-	Invalid
-	cmp	r3,#&196
-	bne	$0000890E
-	ldr	r3,[pc,#&5C]                                           ; 00008780
-	mov	r2,#0
-	ldr	r0,[r3]
-	add	r1,sp,#4
-	bl	$00008360
-	add	r2,r0,#4
-	beq	$0000876A
-	add	r3,r0,#5
-	beq	$00008762
-	cmps	r0,#1
-	beq	$000088FE
-	mov	r2,#0
-	ldr	r3,[pc,#&48]                                           ; 00008786
-	str	r2,[r3]
-	ldr	r3,[pc,#&3C]                                           ; 0000877E
-	ldr	r2,[sp,#&4]
-	Invalid
-	cmps	r0,#0
+	pop	{r4,pc}
+00008716                   B3 F5 CB 7F FA D1 17 4B 00 22       .......K."
+00008720 18 68 01 A9 FF F7 1E FE 02 1D 20 D0 43 1D 1A D0 .h........ .C...
+00008730 01 28 E6 D0 00 22 12 4B 1A 60 0F 4B 01 9A 53 F8 .(...".K.`.K..S.
+00008740 22 00 00 28                                     "..(           
+
+l00008744:
 	beq	$00008908
+
+l00008746:
 	b	$0000875A
-	cmps	r3,#0
-	beq	$00008918
+00008748                         00 2B E7 D0                     .+..   
+
+l0000874C:
 	add	sp,#8
+	pop	{r4,pc}
+00008750 0A 4B 00 22 18 68 01 A9 FF F7                   .K.".h....     
+
+l0000875A:
 	Invalid
-	ldr	r3,[pc,#&28]                                           ; 00008780
-	mov	r2,#0
-	ldr	r0,[r3]
-	add	r1,sp,#4
-	bl	$00008360
-	b	$00008728
+
+l0000875E:
 	mov	r1,#0
 	bl	$00008EEC
 	b	$00008708
-	mov	r3,#&183
-	strh	r3,[r4,#&68]
-	b	$0000870E
-	mov	r3,#&182
-	strh	r3,[r4,#&68]
-	b	$0000870E
-	nop
-	adr	r2,$00008988
-	mov	r0,r0
-	lsls	r0,r7,#&1F
-	mov	r0,#0
-	lsls	r0,r0,#3
-	mov	r0,#0
+00008766                   40 F2 83 13 A3 86 D1 E7 4F F4       @.......O.
+00008770 C1 73 A3 86 CD E7 00 BF 84 A2 00 00 F8 07 00 20 .s............. 
+00008780 C0 00 00 20                                     ...            
 
 ;; vStartFlashCoRoutines: 00008784
 vStartFlashCoRoutines proc
@@ -16804,7 +17093,7 @@ vStartFlashCoRoutines proc
 	movhs	r0,#8
 
 l0000878A:
-	Invalid
+	push	{r4-r6,lr}
 	mov	r2,#0
 	mov	r5,r0
 	mov	r1,#4
@@ -16813,7 +17102,11 @@ l0000878A:
 	ldr	r3,[pc,#&28]                                           ; 000087C8
 	str	r0,[r3]
 	cbz	r0,$000087C2
+
+l0000879E:
 	cbz	r5,$000087B4
+
+l000087A0:
 	mov	r4,#0
 	ldr	r6,[pc,#&24]                                           ; 000087CE
 	mov	r2,r4
@@ -16823,18 +17116,17 @@ l0000878A:
 	bl	$00008E3C
 	cmps	r4,r5
 	bne	$000089A0
+
+l000087B4:
 	mov	r2,#0
 	pop.w	{r4-r6,lr}
 	mov	r1,#1
 	ldr	r0,[pc,#&C]                                            ; 000087D0
 	b	$00C08E3C
-	Invalid
-	lsls	r0,r7,#&1F
-	mov	r0,#0
-	strh	r1,[r5,#&6C]
-	mov	r0,r0
-	strh	r1,[r6,#&64]
-	mov	r0,r0
+
+l000087C2:
+	pop	{r4-r6,pc}
+000087C4             F8 07 00 20 E9 86 00 00 71 86 00 00     ... ....q...
 
 ;; xAreFlashCoRoutinesStillRunning: 000087D0
 xAreFlashCoRoutinesStillRunning proc
@@ -16845,7 +17137,7 @@ xAreFlashCoRoutinesStillRunning proc
 
 ;; MPU_xTaskCreateRestricted: 000087DC
 MPU_xTaskCreateRestricted proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -16856,12 +17148,19 @@ MPU_xTaskCreateRestricted proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$000087FE
+
+l000087F6:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l000087FE:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+
+;; fn00008804: 00008804
+fn00008804 proc
+	pop	{r4-r6,pc}
+00008806                   00 BF                               ..       
 
 ;; MPU_xTaskCreate: 00008808
 MPU_xTaskCreate proc
@@ -16899,7 +17198,7 @@ l0000883E:
 
 ;; MPU_vTaskAllocateMPURegions: 0000884C
 MPU_vTaskAllocateMPURegions proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -16909,15 +17208,22 @@ MPU_vTaskAllocateMPURegions proc
 	bl	$0000096C
 	cmps	r4,#1
 	beq	$0000886C
+
+l00008864:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l0000886C:
 	msr	cpsr,r0
-	Invalid
-	nop
+
+;; fn00008870: 00008870
+fn00008870 proc
+	pop	{r4-r6,pc}
+00008872       00 BF                                       ..           
 
 ;; MPU_vTaskDelayUntil: 00008874
 MPU_vTaskDelayUntil proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -16927,96 +17233,131 @@ MPU_vTaskDelayUntil proc
 	bl	$00000F7C
 	cmps	r4,#1
 	beq	$00008894
+
+;; fn0000888C: 0000888C
+fn0000888C proc
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008894:
 	msr	cpsr,r0
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+0000889A                               00 BF                       ..   
 
 ;; MPU_vTaskDelay: 0000889C
 MPU_vTaskDelay proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
+
+;; fn000088A6: 000088A6
+fn000088A6 proc
 	mov	r0,r5
 	bl	$00000F44
 	cmps	r4,#1
 	beq	$000088B8
+
+;; fn000088B0: 000088B0
+fn000088B0 proc
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l000088B8:
 	msr	cpsr,r0
-	Invalid
-	nop
+
+;; fn000088BC: 000088BC
+fn000088BC proc
+	pop	{r3-r5,pc}
+000088BE                                           00 BF               ..
 
 ;; MPU_vTaskSuspendAll: 000088C0
 MPU_vTaskSuspendAll proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
 	mov	r4,r0
 	bl	$00000A08
 	cmps	r4,#1
 	beq	$000088D8
+
+l000088D0:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l000088D8:
 	msr	cpsr,r0
-	Invalid
-	nop
+	pop	{r4,pc}
+000088DE                                           00 BF               ..
 
 ;; MPU_xTaskResumeAll: 000088E0
 MPU_xTaskResumeAll proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
 	mov	r4,r0
 	bl	$00000E68
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$000088FA
+
+l000088F2:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l000088FA:
 	msr	cpsr,r0
 	mov	r0,r3
 
 ;; fn00008900: 00008900
 fn00008900 proc
-	Invalid
-	nop
+	pop	{r4,pc}
+00008902       00 BF                                       ..           
 
 ;; MPU_xTaskGetTickCount: 00008904
 MPU_xTaskGetTickCount proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
-	mov	r4,r0
+
+;; fn00008908: 00008908
+fn00008908 proc
+	Invalid
 	bl	$00000A1C
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$0000891E
+
+l00008916:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l0000891E:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4,pc}
+00008926                   00 BF                               ..       
 
 ;; MPU_uxTaskGetNumberOfTasks: 00008928
 MPU_uxTaskGetNumberOfTasks proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
 	mov	r4,r0
 	bl	$00000A34
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008942
+
+l0000893A:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008942:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4,pc}
+0000894A                               00 BF                       ..   
 
 ;; MPU_pcTaskGetName: 0000894C
 MPU_pcTaskGetName proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17025,16 +17366,20 @@ MPU_pcTaskGetName proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$0000896A
+
+l00008962:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l0000896A:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008972       00 BF                                       ..           
 
 ;; MPU_vTaskSetTimeOutState: 00008974
 MPU_vTaskSetTimeOutState proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17042,31 +17387,42 @@ MPU_vTaskSetTimeOutState proc
 	bl	$00001140
 	cmps	r4,#1
 	beq	$00008990
+
+l00008988:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008990:
 	msr	cpsr,r0
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008996                   00 BF                               ..       
 
 ;; MPU_xTaskCheckForTimeOut: 00008998
 MPU_xTaskCheckForTimeOut proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
-	mov	r1,r6
+
+;; fn000089A0: 000089A0
+fn000089A0 proc
+	Invalid
 	mov	r4,r0
 	mov	r0,r5
 	bl	$00001154
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$000089BA
+
+l000089B2:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l000089BA:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+000089C2       00 BF                                       ..           
 
 ;; MPU_xTaskGenericNotify: 000089C4
 MPU_xTaskGenericNotify proc
@@ -17126,7 +17482,7 @@ l00008A28:
 
 ;; MPU_ulTaskNotifyTake: 00008A34
 MPU_ulTaskNotifyTake proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -17137,16 +17493,20 @@ MPU_ulTaskNotifyTake proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008A56
+
+l00008A4E:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008A56:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+00008A5E                                           00 BF               ..
 
 ;; MPU_xTaskNotifyStateClear: 00008A60
 MPU_xTaskNotifyStateClear proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17155,16 +17515,23 @@ MPU_xTaskNotifyStateClear proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008A7E
+
+l00008A76:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008A7E:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+
+;; fn00008A84: 00008A84
+fn00008A84 proc
+	pop	{r3-r5,pc}
+00008A86                   00 BF                               ..       
 
 ;; MPU_xQueueGenericCreate: 00008A88
 MPU_xQueueGenericCreate proc
-	Invalid
+	push	{r3-r7,lr}
 	mov	r5,r0
 	mov	r6,r1
 	mov	r7,r2
@@ -17177,16 +17544,20 @@ MPU_xQueueGenericCreate proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008AAE
+
+l00008AA6:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008AAE:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r7,pc}
+00008AB6                   00 BF                               ..       
 
 ;; MPU_xQueueGenericReset: 00008AB8
 MPU_xQueueGenericReset proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -17197,12 +17568,19 @@ MPU_xQueueGenericReset proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008ADA
+
+l00008AD2:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008ADA:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+
+;; fn00008AE0: 00008AE0
+fn00008AE0 proc
+	pop	{r4-r6,pc}
+00008AE2       00 BF                                       ..           
 
 ;; MPU_xQueueGenericSend: 00008AE4
 MPU_xQueueGenericSend proc
@@ -17234,7 +17612,7 @@ l00008B10:
 
 ;; MPU_uxQueueMessagesWaiting: 00008B1C
 MPU_uxQueueMessagesWaiting proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17243,16 +17621,20 @@ MPU_uxQueueMessagesWaiting proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008B3A
+
+l00008B32:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008B3A:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008B42       00 BF                                       ..           
 
 ;; MPU_uxQueueSpacesAvailable: 00008B44
 MPU_uxQueueSpacesAvailable proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17261,12 +17643,19 @@ MPU_uxQueueSpacesAvailable proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008B62
+
+l00008B5A:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008B62:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+
+;; fn00008B68: 00008B68
+fn00008B68 proc
+	pop	{r3-r5,pc}
+00008B6A                               00 BF                       ..   
 
 ;; MPU_xQueueGenericReceive: 00008B6C
 MPU_xQueueGenericReceive proc
@@ -17298,7 +17687,7 @@ l00008B98:
 
 ;; MPU_xQueuePeekFromISR: 00008BA4
 MPU_xQueuePeekFromISR proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -17309,16 +17698,20 @@ MPU_xQueuePeekFromISR proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008BC6
+
+l00008BBE:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008BC6:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+00008BCE                                           00 BF               ..
 
 ;; MPU_xQueueGetMutexHolder: 00008BD0
 MPU_xQueueGetMutexHolder proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17327,16 +17720,20 @@ MPU_xQueueGetMutexHolder proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008BEE
+
+l00008BE6:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008BEE:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008BF6                   00 BF                               ..       
 
 ;; MPU_xQueueCreateMutex: 00008BF8
 MPU_xQueueCreateMutex proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17345,16 +17742,20 @@ MPU_xQueueCreateMutex proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008C16
+
+l00008C0E:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008C16:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008C1E                                           00 BF               ..
 
 ;; MPU_xQueueTakeMutexRecursive: 00008C20
 MPU_xQueueTakeMutexRecursive proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -17365,16 +17766,20 @@ MPU_xQueueTakeMutexRecursive proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008C42
+
+l00008C3A:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008C42:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+00008C4A                               00 BF                       ..   
 
 ;; MPU_xQueueGiveMutexRecursive: 00008C4C
 MPU_xQueueGiveMutexRecursive proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17383,16 +17788,20 @@ MPU_xQueueGiveMutexRecursive proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008C6A
+
+l00008C62:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008C6A:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008C72       00 BF                                       ..           
 
 ;; MPU_vQueueDelete: 00008C74
 MPU_vQueueDelete proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17400,15 +17809,19 @@ MPU_vQueueDelete proc
 	bl	$00000450
 	cmps	r4,#1
 	beq	$00008C90
+
+l00008C88:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008C90:
 	msr	cpsr,r0
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008C96                   00 BF                               ..       
 
 ;; MPU_pvPortMalloc: 00008C98
 MPU_pvPortMalloc proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17417,16 +17830,20 @@ MPU_pvPortMalloc proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008CB6
+
+l00008CAE:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008CB6:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008CBE                                           00 BF               ..
 
 ;; MPU_vPortFree: 00008CC0
 MPU_vPortFree proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17434,57 +17851,73 @@ MPU_vPortFree proc
 	bl	$0000177C
 	cmps	r4,#1
 	beq	$00008CDC
+
+l00008CD4:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008CDC:
 	msr	cpsr,r0
-	Invalid
-	nop
+	pop	{r3-r5,pc}
+00008CE2       00 BF                                       ..           
 
 ;; MPU_vPortInitialiseBlocks: 00008CE4
 MPU_vPortInitialiseBlocks proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
 	mov	r4,r0
 	bl	$00001780
 	cmps	r4,#1
 	beq	$00008CFC
+
+l00008CF4:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008CFC:
 	msr	cpsr,r0
-	Invalid
-	nop
+	pop	{r4,pc}
+00008D02       00 BF                                       ..           
 
 ;; MPU_xPortGetFreeHeapSize: 00008D04
 MPU_xPortGetFreeHeapSize proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
 	mov	r4,r0
 	bl	$00001790
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008D1E
+
+l00008D16:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008D1E:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4,pc}
+00008D26                   00 BF                               ..       
 
 ;; MPU_xEventGroupCreate: 00008D28
 MPU_xEventGroupCreate proc
-	Invalid
+	push	{r4,lr}
 	bl	$00008560
 	mov	r4,r0
 	bl	$000017A4
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008D42
+
+l00008D3A:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008D42:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4,pc}
+00008D4A                               00 BF                       ..   
 
 ;; MPU_xEventGroupWaitBits: 00008D4C
 MPU_xEventGroupWaitBits proc
@@ -17520,7 +17953,7 @@ l00008D7E:
 
 ;; MPU_xEventGroupClearBits: 00008D8C
 MPU_xEventGroupClearBits proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -17531,16 +17964,20 @@ MPU_xEventGroupClearBits proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008DAE
+
+l00008DA6:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008DAE:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+00008DB6                   00 BF                               ..       
 
 ;; MPU_xEventGroupSetBits: 00008DB8
 MPU_xEventGroupSetBits proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r5,r0
 	mov	r6,r1
 	bl	$00008560
@@ -17551,12 +17988,16 @@ MPU_xEventGroupSetBits proc
 	cmps	r4,#1
 	mov	r3,r0
 	beq	$00008DDA
+
+l00008DD2:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008DDA:
 	msr	cpsr,r0
 	mov	r0,r3
-	Invalid
-	nop
+	pop	{r4-r6,pc}
+00008DE2       00 BF                                       ..           
 
 ;; MPU_xEventGroupSync: 00008DE4
 MPU_xEventGroupSync proc
@@ -17588,7 +18029,7 @@ l00008E10:
 
 ;; MPU_vEventGroupDelete: 00008E1C
 MPU_vEventGroupDelete proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	bl	$00008560
 	mov	r4,r0
@@ -17596,11 +18037,18 @@ MPU_vEventGroupDelete proc
 	bl	$000019A0
 	cmps	r4,#1
 	beq	$00008E38
+
+l00008E30:
 	mrs	r0,cpsr
 	orr	r0,r0,#1
+
+l00008E38:
 	msr	cpsr,r0
-	Invalid
-	nop
+
+;; fn00008E3C: 00008E3C
+fn00008E3C proc
+	pop	{r3-r5,pc}
+00008E3E                                           00 BF               ..
 
 ;; xCoRoutineCreate: 00008E40
 xCoRoutineCreate proc
@@ -17644,8 +18092,8 @@ l00008E66:
 	strhi	r0,[r7,#&70]
 
 l00008E92:
-	Invalid
-	Invalid
+	add.w	r0,r0,r0,lsl #2
+	add.w	r0,r8,r0,lsl #2
 	str	r5,[r4,#&18]
 	str	r4,[r4,#&10]
 	str	r4,[r4,#&24]
@@ -17674,11 +18122,16 @@ l00008EAC:
 l00008EE0:
 	str	r6,[r7,#&6C]
 	b	$00008E5C
-00008EE4             4F F0 FF 30 BD E8 F8 8F FC 07 00 20     O..0....... 
+00008EE4             4F F0 FF 30 BD E8 F8 8F                 O..0....   
+
+;; fn00008EEC: 00008EEC
+fn00008EEC proc
+	lsls	r4,r7,#&1F
+	mov	r0,#0
 
 ;; vCoRoutineAddToDelayedList: 00008EF0
 vCoRoutineAddToDelayedList proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r6,r1
 	ldr	r4,[pc,#&30]                                           ; 00008F2C
 	ldr	r3,[r4]
@@ -17692,16 +18145,25 @@ vCoRoutineAddToDelayedList proc
 	str	r5,[r1,#&4]
 	ite	lo
 	ldrlo	r0,[r4,#&6C]
-	ldrhs	r0,[r4,#&68]
+
+l00008F0E:
+	ldr	r0,[r4,#&68]
 	adds	r1,#4
 	bl	$00008308
 	cbz	r6,$00008F26
+
+l00008F18:
 	ldr	r1,[r4]
 	mov	r0,r6
 	pop.w	{r4-r6,lr}
 	adds	r1,#&18
 	b	$00008308
-	Invalid
+
+l00008F26:
+	pop	{r4-r6,pc}
+
+;; fn00008F28: 00008F28
+fn00008F28 proc
 	lsls	r4,r7,#&1F
 	mov	r0,#0
 
@@ -17729,10 +18191,10 @@ l00008F36:
 	bl	$0000833C
 	ldr	r3,[r4,#&2C]
 	ldr	r2,[r5,#&70]
-	Invalid
+	add.w	r0,r3,r3,lsl #2
 	cmps	r3,r2
 	mov	r1,r6
-	Invalid
+	add.w	r0,r8,r0,lsl #2
 	it	hi
 	strhi	r3,[r5,#&70]
 	bl	$000082EC
@@ -17798,10 +18260,10 @@ l00008FC4:
 	msr	cpsr,r7
 	ldr	r3,[r4,#&2C]
 	ldr	r2,[r5,#&70]
-	Invalid
+	add.w	r0,r3,r3,lsl #2
 	cmps	r3,r2
 	mov	r1,r6
-	Invalid
+	add.w	r0,r8,r0,lsl #2
 	it	hi
 	strhi	r3,[r5,#&70]
 	bl	$000082EC
@@ -17825,39 +18287,80 @@ l00009014:
 	str	r3,[r5,#&78]
 	lsls	r3,r1,#2
 	add	r2,r3,r1
-	Invalid
+	add.w	r2,r5,r2,lsl #2
 	ldr	r2,[r2,#&4]
 	cmps	r2,#0
 	bne	$00009080
+
+l00009026:
 	cbz	r1,$00009080
+
+l00009028:
 	sub	r2,r1,#1
 	lsls	r3,r2,#2
 	add	r0,r3,r2
-	Invalid
+	add.w	r0,r5,r0,lsl #2
 	ldr	r0,[r0,#&4]
 	cbnz	r0,$00009056
+
+l00009036:
 	cbz	r2,$00009046
+
+l00009038:
 	sub	r2,r1,#2
 	lsls	r3,r2,#2
 	add	r1,r3,r2
-	Invalid
+	add.w	r1,r5,r1,lsl #2
 	ldr	r1,[r1,#&4]
 	cbnz	r1,$00009056
+
+l00009046:
 	str	r2,[r5,#&70]
 
 l00009048:
 	pop.w	{r4-r8,pc}
 0000904C                                     A9 6E EA 6E             .n.n
-00009050 E9 66 AA 66 A7 E7 2A 67 13 44 9B 00 E9 18 8A 68 .f.f..*g.D.....h
-00009060 0A 48 52 68 03 44 9A 42 8A 60 08 BF 52 68 D0 68 .HRh.D.B.`..Rh.h
-00009070 08 BF 8A 60 28 60 03 68 01 6B BD E8 F0 41 18 47 ...`(`.h.k...A.G
-00009080 BD E8 F0 81 0A 46 E7 E7 FC 07 00 20 08 08 00 20 .....F..... ... 
-00009090 00 08 00 20                                     ...            
+00009050 E9 66 AA 66 A7 E7                               .f.f..         
+
+l00009056:
+	str	r2,[r5,#&70]
+	adds	r3,r2
+	lsls	r3,r3,#2
+	add	r1,r5,r3
+	ldr	r2,[r1,#&8]
+	ldr	r0,[pc,#&28]                                           ; 00009090
+	ldr	r2,[r2,#&4]
+	adds	r3,r0
+	cmps	r2,r3
+	str	r2,[r1,#&8]
+	it	eq
+	ldreq	r2,[r2,#&4]
+
+l0000906E:
+	ldr	r0,[r2,#&C]
+	it	eq
+	streq	r2,[r1,#&8]
+
+l00009074:
+	str	r0,[r5]
+	ldr	r3,[r0]
+	ldr	r1,[r0,#&30]
+	pop.w	{r4-r8,lr}
+	bx	r3
+
+l00009080:
+	pop.w	{r4-r8,pc}
+00009084             0A 46 E7 E7 FC 07 00 20 08 08 00 20     .F..... ... 
+
+;; fn00009090: 00009090
+fn00009090 proc
+	movs	r0,r0,#0
+	mov	r0,#0
 
 ;; xCoRoutineRemoveFromEventList: 00009094
 xCoRoutineRemoveFromEventList proc
 	ldr	r3,[r0,#&C]
-	Invalid
+	push	{r4-r6,lr}
 	ldr	r4,[r3,#&C]
 	ldr	r5,[pc,#&24]                                           ; 000090C6
 	add	r6,r4,#&18
@@ -17872,10 +18375,11 @@ xCoRoutineRemoveFromEventList proc
 	cmps	r0,r3
 	ite	lo
 	movlo	r0,#0
-	movhs	r0,#1
-	Invalid
-	lsls	r4,r7,#&1F
-	mov	r0,#0
+
+l000090BC:
+	mov	r0,#1
+	pop	{r4-r6,pc}
+000090C0 FC 07 00 20                                     ...            
 
 ;; GPIOGetIntNumber: 000090C4
 GPIOGetIntNumber proc
@@ -17914,7 +18418,12 @@ l000090FA:
 	mov	r0,#&10
 	bx	lr
 000090FE                                           12 20               . 
-00009100 70 47 00 BF 00 60 00 40 00 70 00 40             pG...`.@.p.@   
+00009100 70 47 00 BF 00 60 00 40                         pG...`.@       
+
+;; fn00009108: 00009108
+fn00009108 proc
+	strb	r0,[r0]
+	ands	r0,r0
 
 ;; GPIODirModeSet: 0000910C
 GPIODirModeSet proc
@@ -17930,7 +18439,7 @@ l00009118:
 	lsls	r2,r2,#&1E
 	ite	mi
 	orrmi	r1,r3
-	Invalid
+	bicpl.w	r1,r3,r1
 	str	r1,[r0,#&420]
 	bx	lr
 	nop
@@ -17938,7 +18447,7 @@ l00009118:
 ;; GPIODirModeGet: 00009134
 GPIODirModeGet proc
 	mov	r3,#1
-	Invalid
+	push	{r4}
 	lsl	r1,r3,r1
 	ldr	r4,[r0,#&400]
 	uxtb	r1,r1
@@ -17946,14 +18455,18 @@ GPIODirModeGet proc
 	adcs	r4,r1
 	it	eq
 	moveq	r3,#0
-	adc	r2,r1
+
+l0000914C:
+	adcs	r2,r1
 	ite	ne
 	movne	r0,#2
-	moveq	r0,#0
-	Invalid
+
+l00009152:
+	mov	r0,#0
+	pop	{r4}
 	orrs	r0,r3
 	bx	lr
-	nop
+0000915A                               00 BF                       ..   
 
 ;; GPIOIntTypeSet: 0000915C
 GPIOIntTypeSet proc
@@ -17975,7 +18488,7 @@ l00009168:
 	lsls	r2,r2,#&1D
 	ite	mi
 	orrmi	r1,r3
-	Invalid
+	bicpl.w	r1,r3,r1
 	str	r1,[r0,#&40C]
 
 ;; fn00009190: 00009190
@@ -18023,11 +18536,13 @@ fn000091C4 proc
 
 ;; GPIOPadConfigSet: 000091C8
 GPIOPadConfigSet proc
-	Invalid
+	push	{r4}
 	ldr	r4,[r0,#&500]
 	tst	r2,#1
 	ite	ne
 	orrne	r4,r1
+
+l000091D6:
 	Invalid
 	str	r4,[r0,#&500]
 	ldr	r4,[r0,#&504]
@@ -18068,17 +18583,17 @@ GPIOPadConfigSet proc
 	str	r2,[r0,#&514]
 	tst	r3,#8
 	ldr	r3,[r0,#&51C]
-	Invalid
+	pop	{r4}
 	ite	ne
 	orrne	r1,r3
-	Invalid
+	biceq.w	r1,r3,r1
 	str	r1,[r0,#&51C]
 	bx	lr
 	nop
 
 ;; GPIOPadConfigGet: 0000925C
 GPIOPadConfigGet proc
-	Invalid
+	push	{r4-r7}
 	mov	r4,#1
 	ldr	r5,[r0,#&500]
 	lsl	r1,r4,r1
@@ -18088,21 +18603,29 @@ GPIOPadConfigGet proc
 	ldr	r5,[r0,#&508]
 	ite	ne
 	movne	r7,#1
-	moveq	r7,#0
-	adc	r4,r1
+
+l00009278:
+	mov	r7,#0
+	adcs	r4,r1
 	ldr	r4,[r0,#&518]
 	ite	ne
 	movne	r6,#2
-	moveq	r6,#0
-	adc	r5,r1
+
+l00009284:
+	mov	r6,#0
+	adcs	r5,r1
 	ite	ne
 	movne	r5,#4
-	moveq	r5,#0
-	adc	r4,r1
+
+l0000928C:
+	mov	r5,#0
+	adcs	r4,r1
 	ite	ne
 	movne	r4,#8
-	moveq	r4,#0
-	orr	r6,r7
+
+l00009294:
+	mov	r4,#0
+	orrs	r6,r7
 	orrs	r5,r6
 	orrs	r4,r5
 	str	r4,[r2]
@@ -18112,28 +18635,38 @@ GPIOPadConfigGet proc
 	ldr	r6,[r0,#&514]
 	it	ne
 	movne	r5,#1
+
+l000092B0:
 	ldr	r2,[r0,#&51C]
 	it	eq
 	moveq	r5,#0
-	adc	r1,r4
+
+l000092B8:
+	adcs	r1,r4
 	ite	ne
 	movne	r4,#2
-	moveq	r4,#0
-	adc	r1,r6
+
+l000092BE:
+	mov	r4,#0
+	adcs	r1,r6
 	ite	ne
 	movne	r0,#4
-	moveq	r0,#0
-	adc	r1,r2
+
+l000092C6:
+	mov	r0,#0
+	adcs	r1,r2
 	ite	ne
 	movne	r2,#8
-	moveq	r2,#0
-	orr	r1,r4,r5,lsl #0
+
+l000092CE:
+	mov	r2,#0
+	orr	r1,r4,r5
 	orrs	r1,r0
 	orrs	r2,r1
 	str	r2,[r3]
-	Invalid
+	pop	{r4-r7}
 	bx	lr
-	nop
+000092DE                                           00 BF               ..
 
 ;; GPIOPinIntEnable: 000092E0
 GPIOPinIntEnable proc
@@ -18145,10 +18678,10 @@ GPIOPinIntEnable proc
 ;; GPIOPinIntDisable: 000092EC
 GPIOPinIntDisable proc
 	ldr	r3,[r0,#&410]
-	Invalid
+	bic.w	r1,r3,r1
 	str	r1,[r0,#&410]
 	bx	lr
-	nop
+000092FA                               00 BF                       ..   
 
 ;; GPIOPinIntStatus: 000092FC
 GPIOPinIntStatus proc
@@ -18172,136 +18705,116 @@ GPIOPinIntClear proc
 ;; GPIOPortIntRegister: 00009314
 GPIOPortIntRegister proc
 	ldr	r3,[pc,#&90]                                           ; 000093AC
-	Invalid
+	push	{r4,lr}
 	cmps	r0,r3
 	beq	$00009392
+
+l0000931C:
 	bhi	$0000933A
+
+l0000931E:
 	cmp	r0,#&40004000
 	beq	$00009380
+
+l00009324:
 	sub	r3,r3,#&1000
 	cmps	r0,r3
 	bne	$0000935A
+
+l0000932C:
 	mov	r4,#&11
 	mov	r0,r4
 	bl	$00009500
 	mov	r0,r4
 	pop.w	{r4,lr}
+
+l0000933A:
 	b	$00C095D8
-	ldr	r3,[pc,#&6C]                                           ; 000093B2
-	cmps	r0,r3
-	beq	$0000936E
-	add	r3,r3,#&1D000
-	cmps	r0,r3
-	bne	$0000935A
-	mov	r4,#&14
-	mov	r0,r4
-	bl	$00009500
-	mov	r0,r4
-	pop.w	{r4,lr}
+0000933E                                           1B 4B               .K
+00009340 98 42 16 D0 03 F5 E8 33 98 42 08 D1 14 24 20 46 .B.....3.B...$ F
+00009350 00 F0 D8 F8 20 46 BD E8 10 40                   .... F...@     
+
+l0000935A:
 	b	$00C095D8
-	mov	r4,#&FFFFFFFF
-	mov	r0,r4
-	bl	$00009500
-	mov	r0,r4
-	pop.w	{r4,lr}
+0000935E                                           4F F0               O.
+00009360 FF 34 20 46 00 F0 CE F8 20 46 BD E8 10 40 00 F0 .4 F.... F...@..
+00009370 35 B9 13 24 20 46 00 F0 C5 F8 20 46 BD E8 10 40 5..$ F.... F...@
+
+l00009380:
 	b	$00C095D8
-	mov	r4,#&13
-	mov	r0,r4
-	bl	$00009500
-	mov	r0,r4
-	pop.w	{r4,lr}
+00009384             10 24 20 46 00 F0 BC F8 20 46 BD E8     .$ F.... F..
+00009390 10 40                                           .@             
+
+l00009392:
 	b	$00C095D8
-	mov	r4,#&10
-	mov	r0,r4
-	bl	$00009500
-	mov	r0,r4
-	pop.w	{r4,lr}
-	b	$00C095D8
-	mov	r4,#&12
-	mov	r0,r4
-	bl	$00009500
-	mov	r0,r4
-	pop.w	{r4,lr}
-	b	$00C095D8
-	str	r0,[r0]
-	ands	r0,r0
-	strb	r0,[r0]
-	ands	r0,r0
+00009396                   12 24 20 46 00 F0 B3 F8 20 46       .$ F.... F
+000093A0 BD E8 10 40 00 F0 1A B9 00 60 00 40 00 70 00 40 ...@.....`.@.p.@
 
 ;; GPIOPortIntUnregister: 000093B0
 GPIOPortIntUnregister proc
 	ldr	r3,[pc,#&90]                                           ; 00009448
-	Invalid
+	push	{r4,lr}
 	cmps	r0,r3
 	beq	$0000942E
+
+l000093B8:
 	bhi	$000093D6
+
+l000093BA:
 	cmp	r0,#&40004000
 	beq	$0000941C
+
+l000093C0:
 	sub	r3,r3,#&1000
 	cmps	r0,r3
 	bne	$000093F6
+
+l000093C8:
 	mov	r4,#&11
 	mov	r0,r4
 	bl	$00009634
 	mov	r0,r4
 	pop.w	{r4,lr}
+
+l000093D6:
 	b	$00C09534
-	ldr	r3,[pc,#&6C]                                           ; 0000944E
-	cmps	r0,r3
-	beq	$0000940A
-	add	r3,r3,#&1D000
-	cmps	r0,r3
-	bne	$000093F6
-	mov	r4,#&14
-	mov	r0,r4
-	bl	$00009634
-	mov	r0,r4
-	pop.w	{r4,lr}
+000093DA                               1B 4B 98 42 16 D0           .K.B..
+000093E0 03 F5 E8 33 98 42 08 D1 14 24 20 46 00 F0 24 F9 ...3.B...$ F..$.
+000093F0 20 46 BD E8 10 40                                F...@         
+
+l000093F6:
 	b	$00C09534
-	mov	r4,#&FFFFFFFF
-	mov	r0,r4
-	bl	$00009634
-	mov	r0,r4
-	pop.w	{r4,lr}
+000093FA                               4F F0 FF 34 20 46           O..4 F
+00009400 00 F0 1A F9 20 46 BD E8 10 40 00 F0 95 B8 13 24 .... F...@.....$
+00009410 20 46 00 F0 11 F9 20 46 BD E8 10 40              F.... F...@   
+
+l0000941C:
 	b	$00C09534
-	mov	r4,#&13
-	mov	r0,r4
-	bl	$00009634
-	mov	r0,r4
-	pop.w	{r4,lr}
+00009420 10 24 20 46 00 F0 08 F9 20 46 BD E8 10 40       .$ F.... F...@ 
+
+l0000942E:
 	b	$00C09534
-	mov	r4,#&10
-	mov	r0,r4
-	bl	$00009634
-	mov	r0,r4
-	pop.w	{r4,lr}
-	b	$00C09534
-	mov	r4,#&12
-	mov	r0,r4
-	bl	$00009634
-	mov	r0,r4
-	pop.w	{r4,lr}
-	b	$00C09534
-	str	r0,[r0]
-	ands	r0,r0
-	strb	r0,[r0]
-	ands	r0,r0
+00009432       12 24 20 46 00 F0 FF F8 20 46 BD E8 10 40   .$ F.... F...@
+00009440 00 F0 7A B8 00 60 00 40 00 70 00 40             ..z..`.@.p.@   
 
 ;; GPIOPinRead: 0000944C
 GPIOPinRead proc
-	Invalid
+	ldr.w	r0,[r0,r1,lsl #2]
+
+;; fn00009450: 00009450
+fn00009450 proc
 	bx	lr
-	nop
+00009452       00 BF                                       ..           
 
 ;; GPIOPinWrite: 00009454
 GPIOPinWrite proc
-	Invalid
+	str.w	r2,[r0,r1,lsl #2]
 	bx	lr
-	nop
+0000945A                               00 BF                       ..   
 
 ;; GPIOPinTypeComparator: 0000945C
 GPIOPinTypeComparator proc
-	Invalid
+	push	{r4-r6}
 	Invalid
 	ldr	r2,[r0,#&400]
 	mov	r3,#0
@@ -18311,7 +18824,7 @@ GPIOPinTypeComparator proc
 	mov	r2,#1
 	ands	r5,r6
 	str	r5,[r0,#&420]
-	Invalid
+	pop	{r4-r6}
 	b	$000091C4
 
 ;; fn0000947C: 0000947C
@@ -18321,32 +18834,32 @@ fn0000947C proc
 
 ;; GPIOPinTypeI2C: 00009480
 GPIOPinTypeI2C proc
-	Invalid
+	push	{r4-r6}
 	mov	r5,r1
 	ldr	r2,[r0,#&400]
 	mov	r3,#&B
-	Invalid
+	bic.w	r2,r2,r1
 	str	r2,[r0,#&400]
 	ldr	r6,[r0,#&420]
 	mov	r2,#1
 	orrs	r5,r6
 	str	r5,[r0,#&420]
-	Invalid
+	pop	{r4-r6}
 	b	$000091C4
 
 ;; GPIOPinTypeQEI: 000094A4
 GPIOPinTypeQEI proc
-	Invalid
+	push	{r4-r6}
 	mov	r5,r1
 	ldr	r2,[r0,#&400]
 	mov	r3,#&A
-	Invalid
+	bic.w	r2,r2,r1
 	str	r2,[r0,#&400]
 	ldr	r6,[r0,#&420]
 	mov	r2,#1
 	orrs	r5,r6
 	str	r5,[r0,#&420]
-	Invalid
+	pop	{r4-r6}
 
 ;; fn000094C4: 000094C4
 fn000094C4 proc
@@ -18354,17 +18867,17 @@ fn000094C4 proc
 
 ;; GPIOPinTypeUART: 000094C8
 GPIOPinTypeUART proc
-	Invalid
+	push	{r4-r6}
 	mov	r5,r1
 	ldr	r2,[r0,#&400]
 	mov	r3,#8
-	Invalid
+	bic.w	r2,r2,r1
 	str	r2,[r0,#&400]
 	ldr	r6,[r0,#&420]
 	mov	r2,#1
 	orrs	r5,r6
 	str	r5,[r0,#&420]
-	Invalid
+	pop	{r4-r6}
 	b	$000091C4
 
 ;; GPIOPinTypeTimer: 000094EC
@@ -18395,11 +18908,13 @@ IntMasterDisable proc
 ;; IntRegister: 00009504
 IntRegister proc
 	ldr	r3,[pc,#&28]                                           ; 00009534
-	Invalid
+	push	{r4-r5}
 	ldr	r3,[r3]
 	ldr	r4,[pc,#&28]                                           ; 0000953A
 	cmps	r3,r4
 	beq	$00009522
+
+l00009510:
 	mov	r3,r4
 	add	r5,r4,#&B8
 	sub	r2,r3,r4
@@ -18407,13 +18922,18 @@ IntRegister proc
 	str	r2,[r3],#&4
 	cmps	r3,r5
 	bne	$00009712
+
+l00009522:
 	ldr	r3,[pc,#&C]                                            ; 00009536
 	str	r4,[r3]
-	Invalid
-	Invalid
+	str.w	r1,[r4,r0,lsl #2]
+	pop	{r4-r5}
 	bx	lr
-	nop
-	Invalid
+0000952E                                           00 BF               ..
+00009530 08 ED 00 E0                                     ....           
+
+;; fn00009534: 00009534
+fn00009534 proc
 	mov	r0,r0
 	mov	r0,#0
 
@@ -18421,26 +18941,20 @@ IntRegister proc
 IntUnregister proc
 	ldr	r3,[pc,#&8]                                            ; 00009548
 	ldr	r2,[pc,#&C]                                            ; 0000954E
-	Invalid
+	str.w	r2,[r3,r0,lsl #2]
 	bx	lr
-	nop
-	mov	r0,r0
-	mov	r0,#0
-	str	r4,[sp,#&3E4]
-	mov	r0,r0
+00009542       00 BF 00 00 00 20 F9 94 00 00               ..... ....   
 
 ;; IntPriorityGroupingSet: 0000954C
 IntPriorityGroupingSet proc
 	ldr	r3,[pc,#&10]                                           ; 00009564
 	ldr	r2,[pc,#&14]                                           ; 0000956A
-	Invalid
+	ldr.w	r3,[r3,r0,lsl #2]
 	orr	r3,r3,#&5F80000
 	orr	r3,r3,#&20000
 	str	r3,[r2]
 	bx	lr
-	adr	r2,$000097F0
-	mov	r0,r0
-	Invalid
+00009560 A4 A2 00 00 0C ED 00 E0                         ........       
 
 ;; IntPriorityGroupingGet: 00009568
 IntPriorityGroupingGet proc
@@ -18472,7 +18986,7 @@ l00009586:
 IntPrioritySet proc
 	mov	r2,#&FF
 	ldr	r3,[pc,#&24]                                           ; 000095BE
-	Invalid
+	push	{r4}
 	bic	r4,r0,#3
 	adds	r3,r4
 	ldr	r4,[r3,#&20]
@@ -18480,14 +18994,13 @@ IntPrioritySet proc
 	ldr	r3,[r4]
 	lsls	r0,r0,#3
 	lsls	r2,r0
-	Invalid
+	bic.w	r3,r3,r2
 	lsl	r0,r1,r0
 	orrs	r0,r3
 	str	r0,[r4]
-	Invalid
+	pop	{r4}
 	bx	lr
-	adr	r2,$00009848
-	mov	r0,r0
+000095B8                         A4 A2 00 00                     ....   
 
 ;; IntPriorityGet: 000095BC
 IntPriorityGet proc
@@ -18501,7 +19014,12 @@ IntPriorityGet proc
 	lsr	r0,r3,r0
 	uxtb	r0,r0
 	bx	lr
-000095D6                   00 BF A4 A2 00 00                   ......   
+000095D6                   00 BF                               ..       
+
+;; fn000095D8: 000095D8
+fn000095D8 proc
+	adr	r2,$00009868
+	mov	r0,r0
 
 ;; IntEnable: 000095DC
 IntEnable proc
@@ -18554,7 +19072,11 @@ l0000961C:
 	str	r3,[r2]
 	bx	lr
 00009620 04 4A 13 68 43 F4 80 23 13 60 70 47 00 E1 00 E0 .J.hC..#.`pG....
-00009630 10 E0 00 E0 24 ED 00 E0                         ....$...       
+00009630 10 E0 00 E0                                     ....           
+
+;; fn00009634: 00009634
+fn00009634 proc
+	Invalid
 
 ;; IntDisable: 00009638
 IntDisable proc
@@ -18608,7 +19130,8 @@ l00009678:
 0000967C                                     04 4A 13 68             .J.h
 00009680 23 F4 80 23 13 60 70 47 80 E1 00 E0 10 E0 00 E0 #..#.`pG........
 
-l00009690:
+;; fn00009690: 00009690
+fn00009690 proc
 	Invalid
 
 ;; OSRAMDelay: 00009694
@@ -18623,7 +19146,7 @@ fn00009698 proc
 
 ;; OSRAMWriteFirst: 0000969C
 OSRAMWriteFirst proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r0
 	ldr	r4,[pc,#&1C]                                           ; 000096C4
 	mov	r2,#0
@@ -18648,7 +19171,7 @@ OSRAMWriteArray proc
 	cbz	r1,$000096FA
 
 l000096C6:
-	Invalid
+	push	{r3-r7,lr}
 	mov	r5,r0
 	ldr	r7,[pc,#&30]                                           ; 00009702
 	ldr	r4,[pc,#&30]                                           ; 00009704
@@ -18658,6 +19181,8 @@ l000096C6:
 	bl	$0000A1C4
 	cmps	r0,#0
 	beq	$000098CC
+
+l000096DC:
 	ldr	r0,[r7]
 	bl	$00009690
 	ldrb	r1,[r5],#&1
@@ -18668,7 +19193,9 @@ l000096C6:
 	bl	$0000A21C
 	cmps	r6,r5
 	bne	$000098CC
-	Invalid
+
+l000096F8:
+	pop	{r3-r7,pc}
 
 l000096FA:
 	bx	lr
@@ -18681,13 +19208,18 @@ fn00009700 proc
 
 ;; OSRAMWriteByte: 00009704
 OSRAMWriteByte proc
-	Invalid
+	push	{r4,lr}
 	mov	r4,r0
 	mov	r1,#0
 	ldr	r0,[pc,#&24]                                           ; 00009736
 	bl	$0000A1C4
 	cmps	r0,#0
+
+;; fn00009712: 00009712
+fn00009712 proc
 	beq	$00009904
+
+l00009714:
 	ldr	r3,[pc,#&1C]                                           ; 00009738
 	ldr	r0,[r3]
 	bl	$00009690
@@ -18698,8 +19230,7 @@ OSRAMWriteByte proc
 	mov	r1,#1
 	ldr	r0,[pc,#&4]                                            ; 00009736
 	b	$00C0A21C
-	mov	r0,r0
-	ands	r2,r0
+00009730 00 00 02 40                                     ...@           
 
 ;; fn00009734: 00009734
 fn00009734 proc
@@ -18708,7 +19239,7 @@ fn00009734 proc
 
 ;; OSRAMWriteFinal: 00009738
 OSRAMWriteFinal proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r6,r0
 	ldr	r4,[pc,#&38]                                           ; 0000977C
 	mov	r1,#0
@@ -18716,6 +19247,8 @@ OSRAMWriteFinal proc
 	bl	$0000A1C4
 	cmps	r0,#0
 	beq	$0000993A
+
+l0000974A:
 	ldr	r5,[pc,#&30]                                           ; 00009782
 	ldr	r4,[pc,#&28]                                           ; 0000977C
 	ldr	r0,[r5]
@@ -18731,6 +19264,8 @@ OSRAMWriteFinal proc
 	bl	$0000A1C4
 	cmps	r0,#0
 	beq	$00009960
+
+l00009770:
 	ldr	r0,[r5]
 	pop.w	{r4-r6,lr}
 
@@ -18738,11 +19273,16 @@ OSRAMWriteFinal proc
 fn00009774 proc
 	eors	r0,r6
 	b	$00009690
-00009778                         00 00 02 40 7C 08 00 20         ...@|.. 
+00009778                         00 00 02 40                     ...@   
+
+;; fn0000977C: 0000977C
+fn0000977C proc
+	lsrs	r4,r7,#1
+	mov	r0,#0
 
 ;; OSRAMClear: 00009780
 OSRAMClear proc
-	Invalid
+	push	{r4,lr}
 	mov	r0,#&80
 	bl	$00009698
 	mov	r1,#6
@@ -18753,6 +19293,8 @@ OSRAMClear proc
 	bl	$00009700
 	subs	r4,#1
 	bne	$0000998E
+
+l0000979C:
 	mov	r0,r4
 	bl	$00009734
 	mov	r0,#&80
@@ -18765,17 +19307,21 @@ OSRAMClear proc
 	bl	$00009700
 	subs	r4,#1
 	bne	$000099AE
+
+l000097BC:
 	mov	r0,r4
 	pop.w	{r4,lr}
 	b	$00009734
-	adr	r2,$00009B94
-	mov	r0,r0
+000097C4             F4 A2 00 00                             ....       
+
+;; fn000097C8: 000097C8
+fn000097C8 proc
 	adr	r2,$00009BB8
 	mov	r0,r0
 
 ;; OSRAMStringDraw: 000097CC
 OSRAMStringDraw proc
-	Invalid
+	push	{r4-r6,lr}
 	mov	r6,r2
 	mov	r4,r1
 	mov	r5,r0
@@ -18784,7 +19330,9 @@ OSRAMStringDraw proc
 	cmps	r6,#0
 	ite	eq
 	moveq	r0,#&B0
-	movne	r0,#&B1
+
+l000097E0:
+	mov	r0,#&B1
 	bl	$00009700
 	add	r6,r4,#&24
 	mov	r0,#&80
@@ -18800,49 +19348,47 @@ OSRAMStringDraw proc
 	bl	$00009700
 	ldrb	r3,[r5]
 	cbz	r3,$00009876
+
+l00009814:
 	cmps	r4,#&5A
 	ldr	r6,[pc,#&60]                                           ; 0000987E
 	bls	$0000982C
+
+l0000981A:
 	b	$00009848
-	ldrb	r3,[r5,#&1]!
-	adds	r4,#6
-	cbz	r3,$00009846
-	bl	$00009700
-	ldrb	r3,[r5]
-	cbz	r3,$00009874
+0000981C                                     15 F8 01 3F             ...?
+00009820 06 34 83 B1 FF F7 6E FF 2B 78 1B B3             .4....n.+x..   
+
+l0000982C:
 	cmps	r4,#&5A
 	bhi	$00009848
+
+l00009830:
 	subs	r3,#&20
-	Invalid
+	add.w	r3,r3,r3,lsl #2
 	add	r0,r6,r3
 	mov	r1,#5
 	bl	$000096C0
 	cmps	r4,#&5A
 	mov	r0,#0
 	bne	$00009A18
+
+l00009846:
 	pop.w	{r4-r6,lr}
+
+l00009848:
+	eors	r0,r6
+
+l0000984A:
 	b	$00009734
-	subs	r3,#&20
-	Invalid
-	rsb	r4,r4,#&5F
-	add	r0,r6,r3
-	mov	r1,r4
-	bl	$000096C0
-	ldrb	r3,[r5]
-	ldr	r2,[pc,#&18]                                           ; 00009880
-	subs	r3,#&20
-	Invalid
-	adds	r3,r2
-	adds	r3,r4
-	ldrb	r0,[r3,#&10]
-	pop.w	{r4-r6,lr}
-	b	$00009734
-	Invalid
-	Invalid
-	adr	r3,$00009888
-	mov	r0,r0
-	adr	r2,$00009C4C
-	mov	r0,r0
+0000984C                                     20 3B 03 EB              ;..
+00009850 83 03 C4 F1 5F 04 F0 18 21 46 FF F7 33 FF 2B 78 ...._...!F..3.+x
+00009860 06 4A 20 3B 03 EB 83 03 13 44 23 44 18 7C BD E8 .J ;.....D#D.|..
+00009870 70 40 61 E7 70 BD                               p@a.p.         
+
+l00009876:
+	pop	{r4-r6,pc}
+00009878                         04 A3 00 00 F4 A2 00 00         ........
 
 ;; OSRAMImageDraw: 00009880
 OSRAMImageDraw proc
@@ -18881,6 +19427,9 @@ fn000098AE proc
 	bl	$00009700
 	mov	r0,r8
 	bl	$00009700
+
+;; fn000098CC: 000098CC
+fn000098CC proc
 	mov	r0,#&40
 	bl	$00009700
 	mov	r0,r5
@@ -18888,13 +19437,17 @@ fn000098AE proc
 	adds	r5,r9
 	bl	$000096C0
 	adds	r4,#1
-	Invalid
+	ldrb.w	r0,[r5,-#&1]
 	bl	$00009734
 	cmps	r6,r4
 	bne	$00009A9E
 
 l000098EA:
 	pop.w	{r4-r10,pc}
+
+;; fn000098EC: 000098EC
+fn000098EC proc
+	strh	r0,[r6,#&7C]
 000098EE                                           00 BF               ..
 
 ;; OSRAMInit: 000098F0
@@ -18905,6 +19458,9 @@ OSRAMInit proc
 	bl	$00009B78
 	ldr	r0,[pc,#&60]                                           ; 00009966
 	bl	$00009B78
+
+;; fn00009904: 00009904
+fn00009904 proc
 	mov	r1,#&C
 	ldr	r0,[pc,#&5C]                                           ; 0000996A
 	bl	$0000947C
@@ -18924,10 +19480,14 @@ OSRAMInit proc
 0000992A                               93 F8 EC 41 93 F8           ...A..
 00009930 ED 01 23 44                                     ..#D           
 
-l00009934:
+;; fn00009934: 00009934
+fn00009934 proc
 	ldrb	r6,[r3,#&EC]
 	bl	$00009698
-	add	r0,r5,#2
+
+;; fn0000993A: 0000993A
+fn0000993A proc
+	Invalid
 	sub	r1,r4,#2
 	adds	r0,r8
 	adds	r4,#1
@@ -18936,10 +19496,14 @@ l00009934:
 	mov	r0,r6
 	bl	$00009734
 	cmps	r5,#&70
-	Invalid
+	add.w	r3,r7,r5
 	bls	$00009B26
+
+l00009958:
 	pop.w	{r4-r8,lr}
 	b	$0000977C
+
+l00009960:
 	mov	r2,r0
 	mov	r0,#0
 	str	r0,[r0,r0]
@@ -18961,10 +19525,14 @@ OSRAMDisplayOn proc
 	mov	r5,#0
 	add	r8,r7,#&1EC
 	b	$00009992
-00009988                         93 F8 EC 41 93 F8 ED 01         ...A....
-00009990 23 44                                           #D             
+00009988                         93 F8 EC 41 93 F8               ...A.. 
 
-l00009992:
+l0000998E:
+	lsls	r5,r5,#7
+	adds	r3,r4
+
+;; fn00009992: 00009992
+fn00009992 proc
 	ldrb	r6,[r3,#&EC]
 	bl	$00009698
 	add	r0,r5,#2
@@ -18975,17 +19543,20 @@ l00009992:
 	adds	r5,r4
 	mov	r0,r6
 	bl	$00009734
+
+;; fn000099AE: 000099AE
+fn000099AE proc
 	cmps	r5,#&70
-	Invalid
+	add.w	r3,r7,r5
 	bls	$00009B84
+
+l000099B6:
 	pop.w	{r4-r8,pc}
-	nop
-	adr	r2,$00009D8C
-	mov	r0,r0
+000099BA                               00 BF F4 A2 00 00           ......
 
 ;; OSRAMDisplayOff: 000099C0
 OSRAMDisplayOff proc
-	Invalid
+	push	{r3,lr}
 	mov	r0,#&80
 	bl	$00009698
 	mov	r0,#&AE
@@ -18997,6 +19568,9 @@ OSRAMDisplayOff proc
 	mov	r0,#&80
 	bl	$00009700
 	pop.w	{r3,lr}
+
+;; fn000099E4: 000099E4
+fn000099E4 proc
 	mov	r0,#&8A
 	b	$00009734
 
@@ -19014,10 +19588,14 @@ SSIConfig proc
 
 l000099FE:
 	cmps	r7,#0
+
+;; fn00009A00: 00009A00
+fn00009A00 proc
 	it	ne
 	movne	r7,#4
 
-l00009A04:
+;; fn00009A04: 00009A04
+fn00009A04 proc
 	udiv	r3,r0,r4
 	mov	r4,#0
 	str	r7,[r6,#&4]
@@ -19027,7 +19605,8 @@ l00009A04:
 	cmps	r2,#&FF
 	bhi	$00009C08
 
-l00009A18:
+;; fn00009A18: 00009A18
+fn00009A18 proc
 	and	r3,r8,#&30
 	subs	r5,#1
 	orr	r1,r3,r8,lsl #6
@@ -19038,7 +19617,11 @@ l00009A18:
 
 l00009A2C:
 	pop.w	{r4-r8,pc}
-00009A30 0C 27 E7 E7                                     .'..           
+
+;; fn00009A30: 00009A30
+fn00009A30 proc
+	mov	r7,#&C
+	b	$00009A00
 
 ;; SSIEnable: 00009A34
 SSIEnable proc
@@ -19058,23 +19641,23 @@ SSIDisable proc
 
 ;; SSIIntRegister: 00009A4C
 SSIIntRegister proc
-	Invalid
+	push	{r3,lr}
 	mov	r0,#&17
 	bl	$00009500
 	pop.w	{r3,lr}
 	mov	r0,#&17
 	b	$000095D8
-	nop
+00009A5E                                           00 BF               ..
 
 ;; SSIIntUnregister: 00009A60
 SSIIntUnregister proc
-	Invalid
+	push	{r3,lr}
 	mov	r0,#&17
 	bl	$00009634
 	pop.w	{r3,lr}
 	mov	r0,#&17
 	b	$00009534
-	nop
+00009A72       00 BF                                       ..           
 
 ;; SSIIntEnable: 00009A74
 SSIIntEnable proc
@@ -19086,10 +19669,10 @@ SSIIntEnable proc
 ;; SSIIntDisable: 00009A7C
 SSIIntDisable proc
 	ldr	r3,[r0,#&14]
-	Invalid
+	bic.w	r1,r3,r1
 	str	r1,[r0,#&14]
 	bx	lr
-	nop
+00009A86                   00 BF                               ..       
 
 ;; SSIIntStatus: 00009A88
 SSIIntStatus proc
@@ -19113,6 +19696,9 @@ SSIIntClear proc
 SSIDataPut proc
 	add	r2,r0,#&C
 	ldr	r3,[r2]
+
+;; fn00009A9E: 00009A9E
+fn00009A9E proc
 	lsls	r3,r3,#&1E
 	bpl	$00009C98
 
@@ -19130,6 +19716,9 @@ SSIDataNonBlockingPut proc
 
 l00009AB2:
 	mov	r0,#1
+
+;; fn00009AB4: 00009AB4
+fn00009AB4 proc
 	mov	r0,r3
 	bx	lr
 
@@ -19164,24 +19753,21 @@ SysCtlSRAMSizeGet proc
 	ldr	r3,[pc,#&C]                                            ; 00009AF0
 	ldr	r0,[pc,#&10]                                           ; 00009AF6
 	ldr	r3,[r3]
-	Invalid
+	and.w	r0,r0,r3,lsr #8
 	add	r0,r0,#&100
 	bx	lr
-	b	$00009AFC
-	ands	r7,r1
-	vqadd.u8	q0,q8,q15
+00009AEC                                     08 E0 0F 40             ...@
+00009AF0 00 FF FF 00                                     ....           
 
 ;; SysCtlFlashSizeGet: 00009AF4
 SysCtlFlashSizeGet proc
 	ldr	r3,[pc,#&C]                                            ; 00009B08
 	ldr	r0,[pc,#&10]                                           ; 00009B0E
 	ldr	r3,[r3]
-	Invalid
+	and.w	r0,r0,r3,lsl #&B
 	add	r0,r0,#&800
 	bx	lr
-	b	$00009B14
-	ands	r7,r1
-	Invalid
+00009B04             08 E0 0F 40 00 F8 FF 07                 ...@....   
 
 ;; SysCtlPinPresent: 00009B0C
 SysCtlPinPresent proc
@@ -19200,24 +19786,29 @@ l00009B16:
 SysCtlPeripheralPresent proc
 	ldr	r3,[pc,#&14]                                           ; 00009B3C
 	lsrs	r2,r0,#&1C
-	Invalid
+	ldr.w	r3,[r3,r2,lsl #2]
+
+;; fn00009B26: 00009B26
+fn00009B26 proc
+	adds	r0,#&22
 	bic	r0,r0,#&F0000000
 	ldr	r3,[r3]
 	adcs	r0,r3
 	ite	ne
 	movne	r0,#1
-	moveq	r0,#0
+
+l00009B34:
+	mov	r0,#0
 	bx	lr
-	adr	r5,$00009C88
-	mov	r0,r0
+00009B38                         54 A5 00 00                     T...   
 
 ;; SysCtlPeripheralReset: 00009B3C
 SysCtlPeripheralReset proc
 	mov	r1,#0
 	ldr	r3,[pc,#&38]                                           ; 00009B7E
 	lsrs	r2,r0,#&1C
-	Invalid
-	Invalid
+	push	{r4}
+	add.w	r3,r3,r2,lsl #2
 	ldr	r2,[r3,#&10]
 	bic	r3,r0,#&F0000000
 	ldr	r4,[r2]
@@ -19228,17 +19819,23 @@ SysCtlPeripheralReset proc
 	ldr	r3,[sp,#&4]
 	cmps	r3,#&F
 	bhi	$00009B66
+
+l00009B5E:
 	ldr	r3,[sp,#&4]
 	adds	r3,#1
 	str	r3,[sp,#&4]
 	ldr	r3,[sp,#&4]
+
+l00009B66:
 	cmps	r3,#&F
 	bls	$00009D5A
+
+l00009B6A:
 	ldr	r3,[r2]
-	Invalid
+	bic.w	r0,r3,r0
 	str	r0,[r2]
 	add	sp,#&C
-	Invalid
+	pop	{r4}
 	bx	lr
 
 ;; fn00009B78: 00009B78
@@ -19250,88 +19847,81 @@ fn00009B78 proc
 SysCtlPeripheralEnable proc
 	ldr	r3,[pc,#&14]                                           ; 00009B98
 	lsrs	r2,r0,#&1C
-	Invalid
+	add.w	r3,r3,r2,lsl #2
+
+l00009B84:
 	ldr	r3,[r3,#&1C]
 	bic	r0,r0,#&F0000000
 	ldr	r2,[r3]
 	orrs	r0,r2
 	str	r0,[r3]
 	bx	lr
-	nop
-	adr	r5,$00009CE4
-	mov	r0,r0
+00009B92       00 BF 54 A5 00 00                           ..T...       
 
 ;; SysCtlPeripheralDisable: 00009B98
 SysCtlPeripheralDisable proc
 	ldr	r3,[pc,#&14]                                           ; 00009BB4
 	lsrs	r2,r0,#&1C
-	Invalid
+	add.w	r3,r3,r2,lsl #2
 	ldr	r2,[r3,#&1C]
 	bic	r0,r0,#&F0000000
 	ldr	r3,[r2]
-	Invalid
+	bic.w	r0,r3,r0
 	str	r0,[r2]
 	bx	lr
-	adr	r5,$00009D00
-	mov	r0,r0
+00009BB0 54 A5 00 00                                     T...           
 
 ;; SysCtlPeripheralSleepEnable: 00009BB4
 SysCtlPeripheralSleepEnable proc
 	ldr	r3,[pc,#&14]                                           ; 00009BD0
 	lsrs	r2,r0,#&1C
-	Invalid
+	add.w	r3,r3,r2,lsl #2
 	ldr	r3,[r3,#&28]
 	bic	r0,r0,#&F0000000
 	ldr	r2,[r3]
 	orrs	r0,r2
 	str	r0,[r3]
 	bx	lr
-	nop
-	adr	r5,$00009D1C
-	mov	r0,r0
+00009BCA                               00 BF 54 A5 00 00           ..T...
 
 ;; SysCtlPeripheralSleepDisable: 00009BD0
 SysCtlPeripheralSleepDisable proc
 	ldr	r3,[pc,#&14]                                           ; 00009BEC
 	lsrs	r2,r0,#&1C
-	Invalid
+	add.w	r3,r3,r2,lsl #2
 	ldr	r2,[r3,#&28]
 	bic	r0,r0,#&F0000000
 	ldr	r3,[r2]
-	Invalid
+	bic.w	r0,r3,r0
 	str	r0,[r2]
 	bx	lr
-	adr	r5,$00009D38
-	mov	r0,r0
+00009BE8                         54 A5 00 00                     T...   
 
 ;; SysCtlPeripheralDeepSleepEnable: 00009BEC
 SysCtlPeripheralDeepSleepEnable proc
 	ldr	r3,[pc,#&14]                                           ; 00009C08
 	lsrs	r2,r0,#&1C
-	Invalid
+	add.w	r3,r3,r2,lsl #2
 	ldr	r3,[r3,#&34]
 	bic	r0,r0,#&F0000000
 	ldr	r2,[r3]
 	orrs	r0,r2
 	str	r0,[r3]
 	bx	lr
-	nop
-	adr	r5,$00009D54
-	mov	r0,r0
+00009C02       00 BF 54 A5 00 00                           ..T...       
 
 ;; SysCtlPeripheralDeepSleepDisable: 00009C08
 SysCtlPeripheralDeepSleepDisable proc
 	ldr	r3,[pc,#&14]                                           ; 00009C24
 	lsrs	r2,r0,#&1C
-	Invalid
+	add.w	r3,r3,r2,lsl #2
 	ldr	r2,[r3,#&34]
 	bic	r0,r0,#&F0000000
 	ldr	r3,[r2]
-	Invalid
+	bic.w	r0,r3,r0
 	str	r0,[r2]
 	bx	lr
-	adr	r5,$00009D70
-	mov	r0,r0
+00009C20 54 A5 00 00                                     T...           
 
 ;; SysCtlPeripheralClockGating: 00009C24
 SysCtlPeripheralClockGating proc
@@ -19352,7 +19942,7 @@ l00009C32:
 
 ;; SysCtlIntRegister: 00009C40
 SysCtlIntRegister proc
-	Invalid
+	push	{r3,lr}
 	mov	r1,r0
 	mov	r0,#&2C
 	bl	$00009500
@@ -19362,13 +19952,13 @@ SysCtlIntRegister proc
 
 ;; SysCtlIntUnregister: 00009C54
 SysCtlIntUnregister proc
-	Invalid
+	push	{r3,lr}
 	mov	r0,#&2C
 	bl	$00009634
 	pop.w	{r3,lr}
 	mov	r0,#&2C
 	b	$00009534
-	nop
+00009C66                   00 BF                               ..       
 
 ;; SysCtlIntEnable: 00009C68
 SysCtlIntEnable proc
@@ -19383,11 +19973,10 @@ SysCtlIntEnable proc
 SysCtlIntDisable proc
 	ldr	r2,[pc,#&8]                                            ; 00009C88
 	ldr	r3,[r2]
-	Invalid
+	bic.w	r0,r3,r0
 	str	r0,[r2]
 	bx	lr
-	b	$00009D2C
-	ands	r7,r1
+00009C84             54 E0 0F 40                             T..@       
 
 ;; SysCtlIntClear: 00009C88
 SysCtlIntClear proc
@@ -19452,7 +20041,7 @@ SysCtlSleep proc
 
 ;; SysCtlDeepSleep: 00009CE4
 SysCtlDeepSleep proc
-	Invalid
+	push	{r4,lr}
 	ldr	r4,[pc,#&18]                                           ; 00009D06
 	ldr	r3,[r4]
 	orr	r3,r3,#4
@@ -19461,9 +20050,9 @@ SysCtlDeepSleep proc
 	ldr	r3,[r4]
 	bic	r3,r3,#4
 	str	r3,[r4]
-	Invalid
-	nop
-	Invalid
+	pop	{r4,pc}
+00009CFE                                           00 BF               ..
+00009D00 10 ED 00 E0                                     ....           
 
 ;; SysCtlResetCauseGet: 00009D04
 SysCtlResetCauseGet proc
@@ -19476,11 +20065,10 @@ SysCtlResetCauseGet proc
 SysCtlResetCauseClear proc
 	ldr	r2,[pc,#&8]                                            ; 00009D20
 	ldr	r3,[r2]
-	Invalid
+	bic.w	r0,r3,r0
 	str	r0,[r2]
 	bx	lr
-	b	$00009DD4
-	ands	r7,r1
+00009D1C                                     5C E0 0F 40             \..@
 
 ;; SysCtlBrownOutConfigSet: 00009D20
 SysCtlBrownOutConfigSet proc
@@ -19493,7 +20081,7 @@ SysCtlBrownOutConfigSet proc
 ;; SysCtlClockSet: 00009D30
 SysCtlClockSet proc
 	mov	r2,#&33F0
-	Invalid
+	push	{r4-r7}
 	mov	r7,#&40
 	mov	r6,#0
 	ldr	r4,[pc,#&A4]                                           ; 00009DE6
@@ -19508,6 +20096,9 @@ SysCtlClockSet proc
 	ldr	r5,[pc,#&94]                                           ; 00009DEE
 	sub	sp,#8
 	orr	r3,r3,#&800
+
+;; fn00009D5A: 00009D5A
+fn00009D5A proc
 	orrs	r2,r1
 	str	r3,[r4]
 	str	r7,[r5]
@@ -19516,12 +20107,20 @@ SysCtlClockSet proc
 	ldr	r3,[sp,#&4]
 	cmps	r3,#&F
 	bhi	$00009D72
+
+;; fn00009D6A: 00009D6A
+fn00009D6A proc
 	ldr	r3,[sp,#&4]
 	adds	r3,#1
 	str	r3,[sp,#&4]
 	ldr	r3,[sp,#&4]
+
+;; fn00009D72: 00009D72
+fn00009D72 proc
 	cmps	r3,#&F
 	bls	$00009F66
+
+l00009D76:
 	and	r3,r0,#3
 	ldr	r4,[pc,#&64]                                           ; 00009DE6
 	bic	r2,r2,#3
@@ -19530,26 +20129,40 @@ SysCtlClockSet proc
 	and	r1,r0,#&7C00000
 	str	r2,[r4]
 	lsls	r4,r0,#&14
-	orr	r1,r1,r3,lsl #0
+	orr	r1,r1,r3
 	bmi	$00009DBA
+
+l00009D94:
 	mov	r3,#&8000
 	str	r3,[sp,#&4]
 	ldr	r3,[sp,#&4]
 	cbz	r3,$00009DBA
+
+l00009D9E:
 	ldr	r2,[pc,#&4C]                                           ; 00009DF2
 	ldr	r3,[r2]
 	lsls	r0,r3,#&19
 	bpl	$00009DAA
+
+l00009DA6:
 	b	$00009DB6
-	ldr	r3,[r2]
+00009DA8                         13 68                           .h     
+
+l00009DAA:
 	lsls	r3,r3,#&19
 	bmi	$00009DB6
+
+l00009DAE:
 	ldr	r3,[sp,#&4]
 	subs	r3,#1
 	str	r3,[sp,#&4]
 	ldr	r3,[sp,#&4]
+
+l00009DB6:
 	cmps	r3,#0
 	bne	$00009FA4
+
+l00009DBA:
 	bic	r1,r1,#&800
 	mov	r3,#0
 	ldr	r2,[pc,#&1C]                                           ; 00009DE4
@@ -19558,21 +20171,23 @@ SysCtlClockSet proc
 	ldr	r3,[sp,#&4]
 	cmps	r3,#&F
 	bhi	$00009DD4
+
+l00009DCC:
 	ldr	r3,[sp,#&4]
 	adds	r3,#1
 	str	r3,[sp,#&4]
 	ldr	r3,[sp,#&4]
+
+l00009DD4:
 	cmps	r3,#&F
 	bls	$00009FC8
+
+l00009DD8:
 	add	sp,#8
-	Invalid
+	pop	{r4-r7}
 	bx	lr
-	nop
-	b	$00009EA0
-	ands	r7,r1
-	ldm	r4!,{r0-r3}
-	vshr.i32	q14,q8,#&1F
-	ands	r7,r1
+00009DDE                                           00 BF               ..
+00009DE0 60 E0 0F 40 0F CC BF FF 58 E0 0F 40             `..@....X..@   
 
 ;; fn00009DEC: 00009DEC
 fn00009DEC proc
@@ -19601,10 +20216,12 @@ l00009E02:
 l00009E06:
 	ldr	r2,[pc,#&50]                                           ; 00009E5E
 	ubfx	r1,r3,#6,#4
-	Invalid
+	add.w	r2,r2,r1,lsl #2
 
 l00009E0E:
 	lsls	r1,r0,#&A
+
+l00009E10:
 	ldr	r0,[r2,#&30]
 	lsls	r2,r3,#&14
 	bmi	$00009E36
@@ -19671,7 +20288,7 @@ SysCtlPWMClockGet proc
 
 ;; SysCtlADCSpeedSet: 00009E8C
 SysCtlADCSpeedSet proc
-	Invalid
+	push	{r4}
 	ldr	r4,[pc,#&28]                                           ; 00009EBE
 	ldr	r1,[pc,#&28]                                           ; 00009EC0
 	ldr	r3,[r4]
@@ -19680,7 +20297,7 @@ SysCtlADCSpeedSet proc
 	orrs	r3,r0
 	str	r3,[r4]
 	ldr	r3,[r1]
-	Invalid
+	pop	{r4}
 	bic	r3,r3,#&F00
 	orrs	r3,r0
 	str	r3,[r1]
@@ -19689,13 +20306,8 @@ SysCtlADCSpeedSet proc
 	orrs	r0,r3
 	str	r0,[r2]
 	bx	lr
-	nop
-	b	$0000A0B8
-	ands	r7,r1
-	b	$0000A0DC
-	ands	r7,r1
-	b	$0000A100
-	ands	r7,r1
+00009EB6                   00 BF 00 E1 0F 40 10 E1 0F 40       .....@...@
+00009EC0 20 E1 0F 40                                      ..@           
 
 ;; SysCtlADCSpeedGet: 00009EC4
 SysCtlADCSpeedGet proc
@@ -19783,7 +20395,7 @@ UARTParityModeGet proc
 
 ;; UARTConfigSet: 00009F4C
 UARTConfigSet proc
-	Invalid
+	push	{r3-r7,lr}
 	mov	r7,r1
 	mov	r6,r2
 	mov	r5,r0
@@ -19791,9 +20403,13 @@ UARTConfigSet proc
 	ldr	r4,[r0]
 	ands	r4,r4,#8
 	bne	$0000A152
+
+l00009F5E:
 	ldr	r3,[r5,#&2C]
 	bic	r3,r3,#&10
 	str	r3,[r5,#&2C]
+
+l00009F66:
 	ldr	r2,[r5,#&30]
 	bic	r2,r2,#&300
 	bic	r2,r2,#1
@@ -19816,8 +20432,10 @@ UARTConfigSet proc
 	ldr	r3,[r5,#&30]
 	orr	r3,r3,#&300
 	orr	r3,r3,#1
+
+l00009FA4:
 	str	r3,[r5,#&30]
-	Invalid
+	pop	{r3-r7,pc}
 
 ;; UARTConfigGet: 00009FA8
 UARTConfigGet proc
@@ -19828,10 +20446,12 @@ UARTConfigGet proc
 	mov	r6,r2
 	ldr	r5,[r0,#&28]
 	bl	$00009DEC
-	Invalid
+	add.w	r5,r5,r8,lsl #6
 	lsls	r0,r0,#2
 	udiv	r0,r0,r5
 	str	r0,[r7]
+
+l00009FC8:
 	ldr	r3,[r4,#&2C]
 	and	r3,r3,#&EE
 	str	r3,[r6]
@@ -19948,35 +20568,37 @@ l0000A070:
 
 ;; UARTIntRegister: 0000A078
 UARTIntRegister proc
-	Invalid
+	push	{r4,lr}
 	ldr	r4,[pc,#&18]                                           ; 0000A09A
 	cmps	r0,r4
 	ite	eq
 	moveq	r4,#&15
-	movne	r4,#&16
+
+l0000A082:
+	mov	r4,#&16
 	mov	r0,r4
 	bl	$00009500
 	mov	r0,r4
 	pop.w	{r4,lr}
 	b	$000095D8
-	stm	r0!,}
-	ands	r0,r0
+0000A094             00 C0 00 40                             ...@       
 
 ;; UARTIntUnregister: 0000A098
 UARTIntUnregister proc
-	Invalid
+	push	{r4,lr}
 	ldr	r4,[pc,#&18]                                           ; 0000A0BA
 	cmps	r0,r4
 	ite	eq
 	moveq	r4,#&15
-	movne	r4,#&16
+
+l0000A0A2:
+	mov	r4,#&16
 	mov	r0,r4
 	bl	$00009634
 	mov	r0,r4
 	pop.w	{r4,lr}
 	b	$00009534
-	stm	r0!,}
-	ands	r0,r0
+0000A0B4             00 C0 00 40                             ...@       
 
 ;; UARTIntEnable: 0000A0B8
 UARTIntEnable proc
@@ -19988,10 +20610,13 @@ UARTIntEnable proc
 ;; UARTIntDisable: 0000A0C0
 UARTIntDisable proc
 	ldr	r3,[r0,#&38]
-	Invalid
+	bic.w	r1,r3,r1
 	str	r1,[r0,#&38]
+
+;; fn0000A0C8: 0000A0C8
+fn0000A0C8 proc
 	bx	lr
-	nop
+0000A0CA                               00 BF                       ..   
 
 ;; UARTIntStatus: 0000A0CC
 UARTIntStatus proc
@@ -20003,6 +20628,9 @@ l0000A0CE:
 
 l0000A0D2:
 	ldr	r0,[r0,#&40]
+
+;; fn0000A0D4: 0000A0D4
+fn0000A0D4 proc
 	bx	lr
 0000A0D6                   00 BF                               ..       
 
@@ -20022,8 +20650,11 @@ CPUcpsie proc
 CPUcpsid proc
 	Invalid
 	bx	lr
+
+;; fn0000A0E8: 0000A0E8
+fn0000A0E8 proc
 	bx	lr
-	nop
+0000A0EA                               00 BF                       ..   
 
 ;; CPUwfi: 0000A0EC
 CPUwfi proc
@@ -20037,7 +20668,7 @@ fn0000A0F0 proc
 
 ;; I2CMasterInit: 0000A0F4
 I2CMasterInit proc
-	Invalid
+	push	{r3-r5,lr}
 	mov	r5,r1
 	ldr	r2,[r0,#&20]
 	mov	r4,r0
@@ -20050,20 +20681,19 @@ I2CMasterInit proc
 	cmps	r5,#1
 	it	eq
 	moveq	r3,r2
+
+l0000A112:
 	add	r1,r0,r3
 	udiv	r1,r1,r3
 	subs	r1,#1
 	str	r1,[r4,#&C]
-	Invalid
-	nop
-	strh	r0,[r0,#&48]
-	mov	r6,r3
-	asrss	r0,r0,#8
-	lsls	r2,r7,#1
+	pop	{r3-r5,pc}
+0000A11E                                           00 BF               ..
+0000A120 80 84 1E 00 00 12 7A 00                         ......z.       
 
 ;; I2CSlaveInit: 0000A128
 I2CSlaveInit proc
-	Invalid
+	push	{r4}
 	mov	r4,#1
 	sub	r2,r0,#&7E0
 	ldr	r3,[r2]
@@ -20071,7 +20701,7 @@ I2CSlaveInit proc
 	str	r3,[r2]
 	str	r4,[r0,#&4]
 	str	r1,[r0]
-	Invalid
+	pop	{r4}
 	bx	lr
 
 ;; I2CMasterEnable: 0000A140
@@ -20086,6 +20716,8 @@ I2CMasterEnable proc
 I2CSlaveEnable proc
 	mov	r1,#1
 	sub	r2,r0,#&7E0
+
+l0000A152:
 	ldr	r3,[r2]
 	orr	r3,r3,#&20
 	str	r3,[r2]
@@ -20114,23 +20746,23 @@ I2CSlaveDisable proc
 
 ;; I2CIntRegister: 0000A180
 I2CIntRegister proc
-	Invalid
+	push	{r3,lr}
 	mov	r0,#&18
 	bl	$00009500
 	pop.w	{r3,lr}
 	mov	r0,#&18
 	b	$000095D8
-	nop
+0000A192       00 BF                                       ..           
 
 ;; I2CIntUnregister: 0000A194
 I2CIntUnregister proc
-	Invalid
+	push	{r3,lr}
 	mov	r0,#&18
 	bl	$00009634
 	pop.w	{r3,lr}
 	mov	r0,#&18
 	b	$00009534
-	nop
+0000A1A6                   00 BF                               ..       
 
 ;; I2CMasterIntEnable: 0000A1A8
 I2CMasterIntEnable proc
@@ -20157,6 +20789,9 @@ I2CMasterIntDisable proc
 I2CSlaveIntDisable proc
 	mov	r3,#0
 	str	r3,[r0,#&C]
+
+;; fn0000A1C4: 0000A1C4
+fn0000A1C4 proc
 	bx	lr
 0000A1C6                   00 BF                               ..       
 
@@ -20218,6 +20853,9 @@ I2CMasterIntClear proc
 I2CSlaveIntClear proc
 	mov	r3,#1
 	str	r3,[r0,#&18]
+
+;; fn0000A204: 0000A204
+fn0000A204 proc
 	bx	lr
 0000A206                   00 BF                               ..       
 
@@ -20237,6 +20875,10 @@ I2CMasterBusy proc
 I2CMasterBusBusy proc
 	ldr	r0,[r0,#&4]
 	ubfx	r0,r0,#6,#1
+
+;; fn0000A21C: 0000A21C
+fn0000A21C proc
+	asrss	r0,r0,#2
 	bx	lr
 
 ;; I2CMasterControl: 0000A220
@@ -20262,7 +20904,12 @@ l0000A232:
 
 l0000A234:
 	bx	lr
-0000A236                   00 20 70 47 00 BF                   . pG..   
+0000A236                   00 20                               .        
+
+;; fn0000A238: 0000A238
+fn0000A238 proc
+	bx	lr
+0000A23A                               00 BF                       ..   
 
 ;; I2CMasterDataPut: 0000A23C
 I2CMasterDataPut proc
@@ -20395,18 +21042,27 @@ g_pulXtals		; 0000A594
 	db	0x00, 0x80, 0x3E, 0x00, 0x00, 0x00, 0x4B, 0x00, 0x40, 0x4B, 0x4C, 0x00, 0x00, 0x20, 0x4E, 0x00
 	db	0x80, 0x8D, 0x5B, 0x00, 0x00, 0xC0, 0x5D, 0x00, 0x00, 0x80, 0x70, 0x00, 0x00, 0x12, 0x7A, 0x00
 	db	0x00, 0x00, 0x7D, 0x00
+
+;; fn0000A5C0: 0000A5C0
+fn0000A5C0 proc
+	mov	r0,r0
+	lsls	r5,r7,#1
 ;;; Segment .text.memcpy (0000A5C4)
 
 ;; memcpy: 0000A5C4
 memcpy proc
-	Invalid
+	push	{r4-r7,lr}
 	mov	r5,r0
 	cmps	r2,#&F
 	bls	$0000A628
+
+l0000A5CC:
 	mov	r3,r1
 	orrs	r3,r0
 	lsls	r3,r3,#&1E
 	bne	$0000A63E
+
+l0000A5D4:
 	mov	r6,r2
 	mov	r4,r1
 	mov	r3,r0
@@ -20427,6 +21083,8 @@ memcpy proc
 	adds	r4,#&10
 	cmps	r5,r3
 	bne	$0000A7E0
+
+l0000A5FC:
 	mov	r3,#&F
 	Invalid
 	adds	r6,#&10
@@ -20449,24 +21107,30 @@ memcpy proc
 	Invalid
 	add	r3,r6,#4
 	ands	r2,r4
+
+l0000A628:
 	add	r1,r1,r3
 	add	r5,r5,r3
 	cmps	r2,#0
 	beq	$0000A638
+
+l0000A630:
 	mov	r3,#0
 	ldrb	r4,[r1,r3]
 	strb	r4,[r5,r3]
 	adds	r3,#1
+
+l0000A638:
 	cmps	r3,r2
 	bne	$0000A82E
-	Invalid
-	Invalid
+
+l0000A63C:
+	pop	{r4-r7}
+
+l0000A63E:
+	pop	{r1}
 	bx	r1
-	mov	r5,r0
-	b	$0000A62C
-	mov	r2,r3
-	b	$0000A628
-	mov	r8,r8
+0000A642       05 00 F4 E7 1A 00 F0 E7 C0 46               .........F   
 ;;; Segment .data (20000000)
 g_pfnRAMVectors		; 20000000
 	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
