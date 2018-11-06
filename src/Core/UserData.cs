@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -76,6 +76,11 @@ namespace Reko.Core
         /// Users can set register values at any location.
         /// </summary>
         public SortedList<Address, List<UserRegisterValue>> RegisterValues { get; set; }
+
+        /// <summary>
+        /// If set, display addresses in the written disassembly file.
+        /// </summary>
+        public bool ShowAddressesInDisassembly { get; set; }
     }
 
     public class Annotation
