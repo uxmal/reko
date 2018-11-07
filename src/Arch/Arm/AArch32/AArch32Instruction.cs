@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    public class AArch32Instruction : MachineInstruction
+    public abstract class AArch32Instruction : MachineInstruction
     {
         #region Special cases
 
@@ -89,12 +90,6 @@ namespace Reko.Arch.Arm.AArch32
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand[] ops { get; set; }
-        /*
-        public MachineOperand op1 => ops[0];
-        public MachineOperand op2 => ops[1];
-        public MachineOperand op3 => ops[2];
-        public MachineOperand op4 => ops[3];
-        */
 
         public override InstructionClass InstructionClass
         {
@@ -116,13 +111,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        public override int OpcodeAsInteger
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public override int OpcodeAsInteger => (int) opcode;
+
+        /// <summary>
+        /// PC-relative addressing has an extra offset.This varies
+        /// between the T32 and the A32 instruction sets.
+        /// </summary>
+        public abstract Address ComputePcRelativeAddress(MemoryOperand mem);
+
 
         public override MachineOperand GetOperand(int i)
         {
@@ -353,12 +349,9 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RenderPcRelativeAddressAnnotation(MemoryOperand mem, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            int offset = 8;     // PC-relative addressing has a hidden 8-byte offset.
-            if (mem.Offset != null)
-                offset += mem.Offset.ToInt32();
-            var addr = this.Address + offset;
+            var addr = ComputePcRelativeAddress(mem);
             if (mem.Index == null &&
-                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
             {
                 writer.WriteChar('[');
                 writer.WriteAddress(addr.ToString(), addr);
@@ -391,5 +384,29 @@ namespace Reko.Arch.Arm.AArch32
         public int vector_size;         // only valid if vector_data is valid
         public int? vector_index;
         public byte itmask;
+    }
+
+    public class A32Instruction : AArch32Instruction
+    {
+        public override Address ComputePcRelativeAddress(MemoryOperand mem)
+        {
+            int offset = 8;     // PC-relative addressing has a hidden 8-byte offset.
+            if (mem.Offset != null)
+                offset += mem.Offset.ToInt32();
+            var addr = this.Address + offset;
+            return addr;
+        }
+    }
+
+    public class T32Instruction : AArch32Instruction
+    {
+        public override Address ComputePcRelativeAddress(MemoryOperand mem)
+        {
+            int offset = 2;
+            if (mem.Offset != null)
+                offset += mem.Offset.ToInt32();
+            var addr = (this.Address + offset).Align(4);
+            return addr;
+        }
     }
 }

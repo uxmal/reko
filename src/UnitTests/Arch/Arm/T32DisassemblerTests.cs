@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_bl()
         {
             var instr = Disassemble16(0xF000, 0xFA06);
-            Assert.AreEqual("bl\t$0010040C", instr.ToString());
+            Assert.AreEqual("bl\t$00100410", instr.ToString());
         }
 
         [Test]
@@ -294,13 +294,13 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_b_T2_variant()
         {
             Given_Instructions(0xE005);
-            Expect_Code("b\t$0010000A");
+            Expect_Code("b\t$0010000E");
         }
 
         [Test]
         public void ThumbDis_b_T2_variant_backward()
         {
-            Given_Instructions(0xE7FF);
+            Given_Instructions(0xE7FD);
             Expect_Code("b\t$000FFFFE");
         }
 
@@ -315,13 +315,13 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_b_T4_variant()
         {
             Given_Instructions(0xF008, 0xBA62);
-            Expect_Code("b\t$00D084C4");
+            Expect_Code("b\t$001084C8");
         }
 
         [Test]
         public void ThumbDis_b_T4_variant_negative()
         {
-            Given_Instructions(0xF7FF, 0xBFFF);
+            Given_Instructions(0xF7FF, 0xBFFD);
             Expect_Code("b\t$000FFFFE");
         }
 
@@ -541,10 +541,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_b_2()
+        public void ThumbDis_b_T3_()
         {
             Given_Instructions(0xF262, 0x8DDD);
-            Expect_Code("b\t$001A2BBA");
+            Expect_Code("b\t$001A2BBE");
+        }
+
+        [Test]
+        public void ThumbDis_b_T3()
+        {
+            Given_Instructions(0xF008, 0xBA62);
+            Expect_Code("b\t$001084C8");
         }
 
         [Test]
@@ -581,7 +588,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_b()
         {
             Given_Instructions(0xF768, 0x8AE5);
-            Expect_Code("b\t$000A85CA");
+            Expect_Code("b\t$000A85CE");
+        }
+
+        [Test]
+        public void ThumbDis_bhs_T1()
+        {
+            Given_Instructions(0xD20A);
+            Expect_Code("bhs\t$00100018");
         }
 
         [Test]
@@ -777,11 +791,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_438A()
+        public void ThumbDis_cbnz()
         {
-            Given_Instructions(0x438A);
-            Expect_Code("bics\tr2,r1");
+            Given_Instructions(0xB92D);
+            Expect_Code("cbnz\tr5,$0010000E");
         }
+
+   
 
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]

@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         private ThumbArchitecture arch;
         private MemoryArea image;
-        private Address baseAddress = Address.Ptr32(0x00100000);
+        private Address baseAddress;
 
         public override IProcessorArchitecture Architecture
         {
@@ -5440,7 +5440,13 @@ namespace Reko.UnitTests.Arch.Arm
         [SetUp]
         public void Setup()
         {
+            baseAddress = Address.Ptr32(0x00100000);
             arch = new ThumbArchitecture("arm-thumb");
+        }
+
+        private void Given_Address(uint uAddr)
+        {
+            this.baseAddress = Address.Ptr32(uAddr);
         }
 
         //[Test]
@@ -5527,7 +5533,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xF000, 0xFA06); // bl\t$00100410
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|call 0010040C (0)");
+                "1|T--|call 00100410 (0)");
         }
 
         [Test]
@@ -5635,7 +5641,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xD101);  // bne         00401056
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (Test(NE,Z)) branch 00100002");
+                "1|T--|if (Test(NE,Z)) branch 00100006");
         }
 
         [Test]
@@ -7958,6 +7964,25 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|__wait_for_interrupt()");
+        }
+
+        [Test]
+        public void ThumbRw_ldr_literal_at_offset_0002()
+        {
+            Given_Address(0x00100002);
+            RewriteCode("004A");
+            AssertCode(
+                "0|L--|00100002(2): 1 instructions",
+                "1|L--|r2 = Mem0[0x00100004:word32]");
+        }
+
+        [Test]
+        public void ThumbRw_bx_lr()
+        {
+            RewriteCode("7047");// bx lr
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
     }
 }

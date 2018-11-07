@@ -629,7 +629,17 @@ namespace Reko.Arch.Arm.AArch32
                 if (instr.condition == ArmCondition.AL)
                 {
                     rtlClass = RtlClass.Transfer;
-                    m.Goto(dst);
+                    if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
+                    {
+                        //$TODO: cheating a little since
+                        // one could consider lr being set explitly.
+                        // however, this is very uncommon.
+                        m.Return(0, 0);
+                    }
+                    else
+                    {
+                        m.Goto(dst);
+                    }
                 }
                 else
                 {
@@ -757,12 +767,7 @@ namespace Reko.Arch.Arm.AArch32
                     if (mop.BaseRegister == Registers.pc)
                     {
                         // PC-relative address
-                        var dst = instr.Address + 8u;
-                        if (mop.Offset != null)
-                        {
-                            dst += mop.Offset.ToInt32();
-                        }
-                        ea = dst;
+                        ea = ComputePcRelativeOffset(mop);
 
                         if (mop.Index != null)
                         {
@@ -827,6 +832,16 @@ namespace Reko.Arch.Arm.AArch32
                 return aop.Address;
             }
             throw new NotImplementedException(op.GetType().Name);
+        }
+
+        public virtual Address ComputePcRelativeOffset(MemoryOperand mop)
+        {
+            var dst = instr.Address + 8u;
+            if (mop.Offset != null)
+            {
+                dst += mop.Offset.ToInt32();
+            }
+            return dst;
         }
 
         DataType SizeFromLoadStore()
@@ -1050,6 +1065,8 @@ namespace Reko.Arch.Arm.AArch32
         }
     }
 
+#if NATIVE
+
     public class ArmRewriterRetired : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
@@ -1179,5 +1196,5 @@ namespace Reko.Arch.Arm.AArch32
         [DllImport("ArmNative",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
 		//[return: MarshalAs(UnmanagedType.IUnknown)]
         public static extern IntPtr CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr typeFactory, IntPtr host);
-    }
+#endif
 }

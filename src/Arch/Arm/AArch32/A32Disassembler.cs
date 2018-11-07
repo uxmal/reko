@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -98,7 +98,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public AArch32Instruction MakeInstruction()
             {
-                var instr = new AArch32Instruction
+                var instr = new A32Instruction
                 {
                     opcode = opcode,
                     ops = ops.ToArray(),
@@ -253,7 +253,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private AArch32Instruction Invalid()
         {
-            return new AArch32Instruction
+            return new A32Instruction
             {
                 opcode = Opcode.Invalid,
                 ops = new MachineOperand[0]

@@ -102,7 +102,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public AArch32Instruction MakeInstruction()
             {
-                return new AArch32Instruction
+                return new T32Instruction
                 {
                     opcode = opcode,
                     ops = ops.ToArray(),
@@ -359,10 +359,10 @@ namespace Reko.Arch.Arm.AArch32
                     size = ReadDecimal(format, ref i);
                     op = AddressOperand.Create(addr.Align(4) + (SBitfield(wInstr, offset, size) << 2));
                     break;
-                case 'p':   // PC-relative offset.
+                case 'p':   // PC-relative offset, 
                     ++i;
                     offset = (int)ReadBitfields(wInstr, format, ref i);
-                    op = AddressOperand.Create(addr + offset);
+                    op = AddressOperand.Create(addr + offset + 4);
                     break;
                 case 'c':  // Condition code
                     ++i;
@@ -422,7 +422,7 @@ namespace Reko.Arch.Arm.AArch32
                 state.ops.Add(op);
             }
 
-            return new AArch32Instruction
+            return new T32Instruction
             {
                 opcode = state.opcode,
                 condition = state.cc,
@@ -666,9 +666,9 @@ namespace Reko.Arch.Arm.AArch32
             return null;
         }
 
-        private AArch32Instruction Invalid()
+        private T32Instruction Invalid()
         {
-            return new AArch32Instruction
+            return new T32Instruction
             {
                 opcode = Opcode.Invalid,
                 ops = new MachineOperand[0]
@@ -1107,6 +1107,30 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
+
+        // Branch targets
+
+        private static Bitfield[] B_T4_fields = new Bitfield[]
+        {
+            new Bitfield(26, 1),
+            new Bitfield(13, 1),
+            new Bitfield(11, 1),
+            new Bitfield(16, 10),
+            new Bitfield(0, 11)
+        };
+        private static bool B_T4(uint wInstr, T32Disassembler dasm)
+        {
+            // The T4 encoding of the 'b' instruction is incredibly
+            // hairy....
+            var mask = 5u << 11;
+            var ssss = Bits.SignExtend(wInstr >> 26, 1) & mask;
+            wInstr = (wInstr & ~mask) | (~(wInstr ^ ssss) & mask);
+            int offset = Bitfield.ReadSignedFields(B_T4_fields, wInstr) << 1;
+            var op = AddressOperand.Create(dasm.addr + (offset + 4));
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
         #endregion
 
 
@@ -3009,7 +3033,7 @@ namespace Reko.Arch.Arm.AArch32
         private static Decoder CreateBranchesMiscControl()
         {
             var branch_T3_variant = Instr(Opcode.b, "p+26:1:11:1:13:1:16:6:0:11<1");
-            var branch_T4_variant = Instr(Opcode.b, "p+26:1:13:1:11:1:16:10:0:11<1");
+            var branch_T4_variant = Instr(Opcode.b, B_T4);
             var branch = Nyi("Branch");
 
             var MiscellaneousSystem = Mask(4, 0xF,
