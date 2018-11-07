@@ -58,13 +58,11 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 *** Elf\ARM\angr-685\RTOSDemo.axf
 00008026: warning: Call target address 00C0809C is invalid.
 000000E8: warning: Call target address 00C085AC is invalid.
-000002B6: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
 00000188: warning: Call target address 00C0A5C0 is invalid.
 0000A5FA: warning: Call target address 0000A7E0 is invalid.
+0000A61E: warning: Call target address 0000A812 is invalid.
 0000A63A: warning: Call target address 0000A82E is invalid.
 00009500: warning: Call target address 00C0A0E0 is invalid.
-0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
-0000A0EC: error: AArch32 instruction 'wfi' (BF30) is not supported yet.
 00009CE0: warning: Call target address 00C0A0E8 is invalid.
 // A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
 [Test]
@@ -93,66 +91,26 @@ public void ThumbDis_FEB01CA8()
 0000935A: warning: Call target address 00C095D8 is invalid.
 00009380: warning: Call target address 00C095D8 is invalid.
 0000933A: warning: Call target address 00C095D8 is invalid.
-00008F44: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00008FCC: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 000087BE: warning: Call target address 00C08E3C is invalid.
 0000865E: warning: Call target address 00C088DC is invalid.
 00008620: warning: Call target address 00C088DC is invalid.
-00008586: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-0000840C: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00008374: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 00008288: warning: Call target address 00C09450 is invalid.
 00008188: warning: Call target address 00C085F0 is invalid.
 000019EA: warning: Call target address 00C085AC is invalid.
-00001994: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00001942: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-00001824: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-000016F2: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 00001242: warning: Call target address 00C082EC is invalid.
-00000FAE: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-00000F54: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-// A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F9564C0F()
-{
-    Given_Instructions(0xF956, 0x4C0F);
-    Expect_Code("@@@");
-}
-
-// A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F9564C0F()
-{
-    Given_Instructions(0xF956, 0x4C0F);
-    Expect_Code("@@@");
-}
-
-00000F12: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-00000D58: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-00000C70: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00000C4A: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-00000B1C: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00000AE6: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-000009F4: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
+00000A02: warning: Call target address 00C0154C is invalid.
 00000978: warning: Call target address 00C01550 is invalid.
 00000986: warning: Call target address 00C01550 is invalid.
-000007F4: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-000007F8: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00000680: error: AArch32 instruction 'dsb' (8F4FF3BF) is not supported yet.
-00000534: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-000004D2: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
-00000466: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 00000454: warning: Call target address 00C0177C is invalid.
-000002B2: error: AArch32 instruction 'isb' (8F6FF3BF) is not supported yet.
 000002FC: error: AArch32 instruction 'qsax' (4620F959) is not supported yet.
-// A T32 decoder for the instruction F9564C0F (0F4C56F9) - (LoadStoreSignedNegativeImm) has not been implemented yet.
-[Test]
-public void ThumbDis_F9564C0F()
-{
-    Given_Instructions(0xF956, 0x4C0F);
-    Expect_Code("@@@");
-}
-
+        [Test]
+        public void ArmRw_qsax()
+        {
+            RewriteCode("59F92046");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
 // A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
 [Test]
 public void ThumbDis_FEB01CA8()
@@ -161,6 +119,14 @@ public void ThumbDis_FEB01CA8()
     Expect_Code("@@@");
 }
 
+000000DC: error: An error occurred while processing instruction at address 000000DC.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 000006C2: error: An error occurred while processing instruction at address 000006C2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -321,6 +287,46 @@ public void ThumbDis_FEB01CA8()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000C8C: error: An error occurred while processing instruction at address 00000C8C.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000C8C: error: An error occurred while processing instruction at address 00000C8C.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000D1C: error: An error occurred while processing instruction at address 00000D1C.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000D20: error: An error occurred while processing instruction at address 00000D20.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00000D3A: error: An error occurred while processing instruction at address 00000D3A.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 00000EFE: error: An error occurred while processing instruction at address 00000EFE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -441,6 +447,14 @@ public void ThumbDis_FEB01CA8()
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00008654: error: An error occurred while processing instruction at address 00008654.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 000088AE: error: An error occurred while processing instruction at address 000088AE.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -546,6 +560,22 @@ public void ThumbDis_FEB01CA8()
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 00008ED8: error: An error occurred while processing instruction at address 00008ED8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000914A: error: An error occurred while processing instruction at address 0000914A.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000914A: error: An error occurred while processing instruction at address 0000914A.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1027,6 +1057,20 @@ fn00001772: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
+fn0000864E: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
+   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 fn000088A6: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1057,6 +1101,20 @@ fn000089A0: error: An error occurred during data flow analysis.
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 162
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
+fn00009138: error: An error occurred during data flow analysis.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
+   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
+   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
+   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
+   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
+   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 fn000091B4: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1201,7 +1259,7 @@ fn00009D5A: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 fn000006C6_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 000010C4: error: An error occurred while processing the statement NZCV = cond(r2 - r3).
-    Pulling difference ui32 and (ptr32 (struct (4C T_2640 t004C)))
+    Pulling difference ui32 and (ptr32 (struct (4C T_3084 t004C)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1224,6 +1282,8 @@ memcpy: warning: Structure analysis stopped making progress, quitting. Please re
    at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00000004: error: Failed to write global variable g_t0004.
     Index was outside the bounds of the array.
@@ -1237,10 +1297,71 @@ memcpy: warning: Structure analysis stopped making progress, quitting. Please re
    at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00000020: warning: Expected sizes of arrays to have been determined by now
+00000020: error: Failed to write global variable g_t0020.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 0000002C: warning: Expected sizes of arrays to have been determined by now
 00000060: warning: Expected sizes of arrays to have been determined by now
+00000017: error: Failed to write global variable g_t0017.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+00000016: error: Failed to write global variable g_t0016.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+20000880: error: Failed to write global variable g_t20000880.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 20000808: error: Failed to write global variable g_t20000808.
     Index was outside the bounds of the array.
        at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
@@ -1269,6 +1390,8 @@ memcpy: warning: Structure analysis stopped making progress, quitting. Please re
    at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00000004: error: Failed to write global variable g_t0004.
     Index was outside the bounds of the array.
@@ -1282,12 +1405,73 @@ memcpy: warning: Structure analysis stopped making progress, quitting. Please re
    at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00000020: warning: Expected sizes of arrays to have been determined by now
+00000016: error: Failed to write global variable g_t0016.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+00000017: error: Failed to write global variable g_t0017.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+00000020: error: Failed to write global variable g_t0020.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 0000002C: warning: Expected sizes of arrays to have been determined by now
 00000060: warning: Expected sizes of arrays to have been determined by now
 000094F9: warning: Expected sizes of arrays to have been determined by now
 20000808: error: Failed to write global variable g_t20000808.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
+   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
+   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 222
+   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 157
+   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
+   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 215
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 286
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 184
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
+20000880: error: Failed to write global variable g_t20000880.
     Index was outside the bounds of the array.
        at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 449
    at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 559
@@ -1340,7 +1524,7 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 486
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
@@ -3133,7 +3317,7 @@ fn03B2: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 217
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 115
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 486
 fn1BF9: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 00000823: warning: Expected sizes of arrays to have been determined by now
 00000823: warning: Expected sizes of arrays to have been determined by now
@@ -3393,9 +3577,9 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 217
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 115
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 486
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 106.12 seconds ---
+Decompiled 55 binaries in 111.91 seconds ---
