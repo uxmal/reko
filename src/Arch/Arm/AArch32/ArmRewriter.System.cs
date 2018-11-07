@@ -83,6 +83,13 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(host.PseudoProcedure("__hypervisor", VoidType.Instance, n));
         }
 
+        private void RewriteIsb()
+        {
+            var memBarrier = (BarrierOperand) instr.ops[0];
+            var name = $"__isb_{memBarrier.Option.ToString().ToLower()}";
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+        }
+
         private void RewriteLdc(string fnName)
         {
             var src2 = Operand(Src2());

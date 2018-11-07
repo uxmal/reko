@@ -124,7 +124,6 @@ namespace Reko.Arch.Arm.AArch32
             {
                 int offset;
                 int size;
-                RegisterStorage baseReg;
                 MachineOperand op = null;
                 switch (format[i])
                 {
@@ -1352,9 +1351,9 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.cmn, ".r0,r3"),
 
                 Instr(Opcode.orr, ":r0,r3"),
-                invalid,
-                invalid,
-                invalid);
+                Instr(Opcode.mul, ":r0,r3"),
+                Instr(Opcode.bic, ":r0,r3"),
+                Instr(Opcode.mvn, ":r0,r3"));
         }
 
         private static Decoder CreateMisc16bitDecoder()
@@ -1366,11 +1365,11 @@ namespace Reko.Arch.Arm.AArch32
             var cbnzCbz = Mask(11, 1,
                 Instr(Opcode.cbz, "r0,x"),
                 Instr(Opcode.cbnz, "r0,x"));
+
             return Mask(8, 0xF,
                 Mask(7, 1,  // Adjust SP
                     Instr(Opcode.add, "sp,s0:7<2"),
                     Instr(Opcode.sub, "sp,s0:7<2")),
-
                 cbnzCbz,
                 Mask(6, 3,
                     Instr(Opcode.sxth, "r0,r3"),
@@ -1383,9 +1382,9 @@ namespace Reko.Arch.Arm.AArch32
                 pushAndPop,
                 Mask(5, 0x7,
                     Instr(Opcode.setpan, "i3:1"),
-                    Nyi("ChangeProcessorState"),
                     invalid,
-                    invalid,
+                    Instr(Opcode.setend, "i3:1"),
+                    Instr(Opcode.cps, "i3:1"),
 
                     invalid,
                     invalid,

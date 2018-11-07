@@ -762,12 +762,37 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("nop");
         }
 
-        // A T32 decoder for the instruction FEB01CA8 (A81CB0FE) - (AdvancedSimdTwoScalarsAndExtension) has not been implemented yet.
         [Test]
-        public void ThumbDis_FEB01CA8()
+        public void ThumbDis_bics_short()
         {
-            Given_Instructions(0xFEB0, 0x1CA8);
-            Expect_Code("@@@");
+            Given_Instructions(0x439E);
+            Expect_Code("bics\tr6,r3");
         }
+
+        [Test]
+        public void ThumbDis_mvns()
+        {
+            Given_Instructions(0x43DA);
+            Expect_Code("mvns\tr2,r3");
+        }
+
+        [Test]
+        public void ThumbDis_438A()
+        {
+            Given_Instructions(0x438A);
+            Expect_Code("bics\tr2,r1");
+        }
+
+        //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
+        //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
+        //.data:0000001e ED9C E000  ldc	0, cr14, [r12]
+        //.data:00000022 F0F3 4770  ; <UNDEFINED> instruction: 0xf0f34770
+        //.data:00000026 F956 4C0F  ldr??.w r4, [r6, #-15]
+        //.data:0000002a FDB2 2501  ldc2 5, cr2, [r2, #4]!
+        //.data:0000002e FDE1 4631  stc2l	6, cr4, [r1, #196]!	; 0xc4
+        //.data:00000032 FE04 E7E6  cdp2	7, 0, cr14, cr4, cr6, {7}
+        //.data:00000036 FE2D 4604  cdp2	6, 2, cr4, cr13, cr4, {0}
+        //.data:0000003a FE3B 2501  cdp2	5, 3, cr2, cr11, cr1, {0}
+        //.data:0000003e FE6F E7FC  mcr2	7, 3, lr, cr15, cr12, {7}
     }
 }

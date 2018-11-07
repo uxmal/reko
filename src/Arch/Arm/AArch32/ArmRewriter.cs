@@ -104,7 +104,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.fstmdbx:
                 case Opcode.fstmiax:
                 case Opcode.hlt:
-                case Opcode.isb:
                 case Opcode.lda:
                 case Opcode.ldab:
                 case Opcode.ldaex:
@@ -320,7 +319,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.bfc: RewriteBfc(); break;
                 case Opcode.bfi: RewriteBfi(); break;
-                case Opcode.bic: RewriteBic(); break;
+                case Opcode.bic: RewriteLogical(Bic); break;
                 case Opcode.bkpt: RewriteBkpt(); break;
                 case Opcode.bl: RewriteB(true); break;
                 case Opcode.blx: RewriteB(true); break;
@@ -339,6 +338,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.eret: RewriteEret(); break;
                 case Opcode.hint: RewriteHint(); break;
                 case Opcode.hvc: RewriteHvc(); break;
+                case Opcode.isb: RewriteIsb(); break;
                 case Opcode.it: RewriteIt(); break;
                 case Opcode.ldc2l: RewriteLdc("__ldc2l"); break;
                 case Opcode.ldc2: RewriteLdc("__ldc2"); break;
