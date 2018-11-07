@@ -7984,5 +7984,14 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|T--|00100000(2): 1 instructions",
                 "1|T--|return (0,0)");
         }
+
+        [Test]
+        public void ThumbRw_bne_backwards()
+        {
+            RewriteCode("FED1");    // bne 
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100000");
+        }
     }
 }

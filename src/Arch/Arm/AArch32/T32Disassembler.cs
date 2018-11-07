@@ -1254,23 +1254,23 @@ namespace Reko.Arch.Arm.AArch32
             var decMisc16Bit = CreateMisc16bitDecoder();
             var decLdmStm = new LdmStmDecoder16();
             var decCondBranch = Mask(8, 0xF, // "CondBranch"
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
 
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
 
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
-                Instr(Opcode.b, "c8p0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
+                Instr(Opcode.b, "c8p+0:8<1"),
 
-                Instr(Opcode.b, "c8p0:8"),
-                Instr(Opcode.b, "c8p0:8"),
+                Instr(Opcode.b, "c8p+0:8"),
+                Instr(Opcode.b, "c8p+0:8"),
                 Instr(Opcode.udf, "i0:8"),
                 Instr(Opcode.svc, "i0:8"));
 

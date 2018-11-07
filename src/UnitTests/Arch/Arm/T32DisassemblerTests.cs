@@ -797,7 +797,14 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("cbnz\tr5,$0010000E");
         }
 
-   
+        [Test]
+        public void ThumbDis_bne_backward()
+        {
+            Given_Instructions(0xD1FE);
+            Expect_Code("bne\t$00100000");
+        }
+
+
 
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
