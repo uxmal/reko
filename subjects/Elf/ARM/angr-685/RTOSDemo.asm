@@ -10,11 +10,11 @@
 prvUnlockQueue proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
-F008 FA8C     	bl	$00008574
+F008 FA8C     	bl	$00008578
 F895 4045     	ldrb	r4,[r5,#&45]
 B264           	sxtb	r4,r4
 2C00           	cmps	r4,#0
-DD16           	ble	$0000007E
+DD16           	ble	$00000082
 
 l0000006A:
 6A6B           	ldr	r3,[r5,#&24]
@@ -22,38 +22,34 @@ B1A3           	cbz	r3,$00000098
 
 l0000006E:
 F105 0624     	add	r6,r5,#&24
-E005           	b	$0000007C
-00000074             01 3C E3 B2 5C B2 6B B1                 .<..\.k.   
-
-l0000007C:
-6A6B           	ldr	r3,[r5,#&24]
-
-l0000007E:
-B15B           	cbz	r3,$00000098
+E005           	b	$00000080
+00000074             01 3C E3 B2 5C B2 6B B1 6B 6A 5B B1     .<..\.k.kj[.
 
 l00000080:
 4630           	mov	r0,r6
-F000 FFCB     	bl	$00001018
+
+l00000082:
+F000 FFCB     	bl	$0000101C
 2800           	cmps	r0,#0
-D0F4           	beq	$00000270
+D0F4           	beq	$00000274
 
 l0000008A:
 3C01           	subs	r4,#1
-F001 F88E     	bl	$000011A8
+F001 F88E     	bl	$000011AC
 B2E3           	uxtb	r3,r4
 B25C           	sxtb	r4,r3
 2B00           	cmps	r3,#0
-D1F1           	bne	$00000278
+D1F1           	bne	$0000027C
 
 l00000098:
 23FF           	mov	r3,#&FF
 F885 3045     	strb	r3,[r5,#&45]
-F008 FA87     	bl	$000085AC
-F008 FA69     	bl	$00008574
+F008 FA87     	bl	$000085B0
+F008 FA69     	bl	$00008578
 F895 4044     	ldrb	r4,[r5,#&44]
 B264           	sxtb	r4,r4
 2C00           	cmps	r4,#0
-DD16           	ble	$000000C4
+DD16           	ble	$000000C8
 
 l000000B0:
 692B           	ldr	r3,[r5,#&10]
@@ -61,35 +57,31 @@ B1A3           	cbz	r3,$000000DE
 
 l000000B4:
 F105 0610     	add	r6,r5,#&10
-E005           	b	$000000C2
+E005           	b	$000000C6
 000000BA                               01 3C E3 B2 5C B2           .<..\.
-000000C0 6B B1                                           k.             
-
-l000000C2:
-692B           	ldr	r3,[r5,#&10]
-
-l000000C4:
-B15B           	cbz	r3,$000000DE
+000000C0 6B B1 2B 69 5B B1                               k.+i[.         
 
 l000000C6:
 4630           	mov	r0,r6
-F000 FFA8     	bl	$00001018
+
+l000000C8:
+F000 FFA8     	bl	$0000101C
 2800           	cmps	r0,#0
-D0F4           	beq	$000002B6
+D0F4           	beq	$000002BA
 
 l000000D0:
 3C01           	subs	r4,#1
-F001 F86B     	bl	$000011A8
+F001 F86B     	bl	$000011AC
 B2E3           	uxtb	r3,r4
 B25C           	sxtb	r4,r3
 2B00           	cmps	r3,#0
-D1F1           	bne	$000002BE
+D1F1           	bne	$000002C2
 
 l000000DE:
 23FF           	mov	r3,#&FF
 F885 3044     	strb	r3,[r5,#&44]
 E8BD 4070     	pop.w	{r4-r6,lr}
-F008 BA62     	b	$00C085AC
+F008 BA62     	b	$000085B0
 
 ;; prvCopyDataToQueue: 000000EC
 prvCopyDataToQueue proc
@@ -102,13 +94,12 @@ B928           	cbnz	r0,$00000102
 l000000F6:
 6826           	ldr	r6,[r4]
 2E00           	cmps	r6,#0
-
-;; fn000000FA: 000000FA
-fn000000FA proc
-D031           	beq	$0000015C
+D031           	beq	$00000160
 
 l000000FC:
 3501           	adds	r5,#1
+
+l000000FE:
 63A5           	str	r5,[r4,#&38]
 BD70           	pop	{r4-r6,pc}
 
@@ -119,14 +110,14 @@ B97E           	cbnz	r6,$00000128
 
 l00000108:
 68A0           	ldr	r0,[r4,#&8]
-F00A FA5B     	bl	$0000A5C0
+F00A FA5B     	bl	$0000A5C4
 68A3           	ldr	r3,[r4,#&8]
 6C21           	ldr	r1,[r4,#&40]
 6862           	ldr	r2,[r4,#&4]
 440B           	adds	r3,r1
 4293           	cmps	r3,r2
 60A3           	str	r3,[r4,#&8]
-D319           	blo	$0000014C
+D319           	blo	$00000150
 
 l0000011C:
 6823           	ldr	r3,[r4]
@@ -138,7 +129,7 @@ BD70           	pop	{r4-r6,pc}
 
 l00000128:
 68E0           	ldr	r0,[r4,#&C]
-F00A FA4B     	bl	$0000A5C0
+F00A FA4B     	bl	$0000A5C4
 6C22           	ldr	r2,[r4,#&40]
 68E3           	ldr	r3,[r4,#&C]
 4252           	rsbs	r2,r2
@@ -146,40 +137,45 @@ F00A FA4B     	bl	$0000A5C0
 4413           	adds	r3,r2
 428B           	cmps	r3,r1
 60E3           	str	r3,[r4,#&C]
-D202           	bhs	$00000140
+D202           	bhs	$00000144
 
 l0000013E:
 6863           	ldr	r3,[r4,#&4]
-
-l00000140:
 441A           	adds	r2,r3
 60E2           	str	r2,[r4,#&C]
+
+l00000144:
 2E02           	cmps	r6,#2
-D007           	beq	$00000154
+D007           	beq	$00000158
 
 l00000148:
 3501           	adds	r5,#1
 2000           	mov	r0,#0
-
-l0000014C:
 63A5           	str	r5,[r4,#&38]
 BD70           	pop	{r4-r6,pc}
-00000150 01 35 30 46                                     .50F           
 
-l00000154:
+l00000150:
+3501           	adds	r5,#1
+4630           	mov	r0,r6
 63A5           	str	r5,[r4,#&38]
 BD70           	pop	{r4-r6,pc}
-00000158                         05 B9 01 25                     ...%   
+
+l00000158:
+B905           	cbnz	r5,$0000015C
+
+l0000015A:
+2501           	mov	r5,#1
 
 l0000015C:
 2000           	mov	r0,#0
-E7CE           	b	$000000FA
-00000160 60 68 01 F0 75 F8 01 35                         `h..u..5       
+E7CE           	b	$000000FE
 
-;; fn00000168: 00000168
-fn00000168 proc
+l00000160:
+6860           	ldr	r0,[r4,#&4]
+F001 F875     	bl	$00001250
+3501           	adds	r5,#1
 6066           	str	r6,[r4,#&4]
-E7C8           	b	$000000FA
+E7C8           	b	$000000FE
 
 ;; prvCopyDataFromQueue: 0000016C
 prvCopyDataFromQueue proc
@@ -201,10 +197,9 @@ l00000182:
 60C1           	str	r1,[r0,#&C]
 BC10           	pop	{r4}
 4618           	mov	r0,r3
-F00A BA1C     	b	$00C0A5C0
+F00A BA1C     	b	$0000A5C4
 
-;; fn0000018C: 0000018C
-fn0000018C proc
+l0000018C:
 4770           	bx	lr
 0000018E                                           00 BF               ..
 
@@ -218,77 +213,146 @@ B084           	sub	sp,#&10
 9201           	str	r2,[sp,#&4]
 461F           	mov	r7,r3
 46A8           	mov	r8,r5
-F8DF 90FC     	ldr	r9,[pc,#&FC]                             ; 000002A6
-E027           	b	$000001F4
-000001A8                         08 F0 02 FA 00 F0 2E FC         ........
-000001B0 08 F0 E2 F9 94 F8 44 30 FF 2B 08 BF 84 F8 44 80 ......D0.+....D.
-000001C0 94 F8 45 30 FF 2B 08 BF 84 F8 45 80 08 F0 F0 F9 ..E0.+....E.....
-000001D0 01 A9 02 A8 00 F0 C0 FF 00 28 50 D1 08 F0 CC F9 .........(P.....
-000001E0 A2 6B E3 6B 9A 42 17 D0 08 F0 E2 F9 20 46 FF F7 .k.k.B...... F..
-000001F0 33 FF 00 F0                                     3...           
+F8DF 90FC     	ldr	r9,[pc,#&FC]                             ; 000002A0
+E027           	b	$000001F8
 
-l000001F4:
-FE3B 2501     	Invalid
-F008 F9BE     	bl	$00008574
+l000001A8:
+F008 FA02     	bl	$000085B0
+F000 FC2E     	bl	$00000A0C
+F008 F9E2     	bl	$00008578
+F894 3044     	ldrb	r3,[r4,#&44]
+2BFF           	cmps	r3,#&FF
+BF08           	it	eq
+F884 8044     	strbeq	r8,[r4,#&44]
+
+l000001C0:
+F894 3045     	ldrb	r3,[r4,#&45]
+2BFF           	cmps	r3,#&FF
+BF08           	it	eq
+F884 8045     	strbeq	r8,[r4,#&45]
+
+l000001CC:
+F008 F9F0     	bl	$000085B0
+A901           	add	r1,sp,#4
+A802           	add	r0,sp,#8
+F000 FFC0     	bl	$00001158
+2800           	cmps	r0,#0
+D150           	bne	$0000027E
+
+l000001DC:
+F008 F9CC     	bl	$00008578
 6BA2           	ldr	r2,[r4,#&38]
 6BE3           	ldr	r3,[r4,#&3C]
 429A           	cmps	r2,r3
-D320           	blo	$00000242
+D017           	beq	$00000218
+
+l000001E8:
+F008 F9E2     	bl	$000085B0
+4620           	mov	r0,r4
+F7FF FF33     	bl	$00000058
+F000 FE3B     	bl	$00000E6C
+
+l000001F6:
+2501           	mov	r5,#1
+
+l000001F8:
+F008 F9BE     	bl	$00008578
+6BA2           	ldr	r2,[r4,#&38]
+6BE3           	ldr	r3,[r4,#&3C]
+429A           	cmps	r2,r3
+D320           	blo	$00000246
+
+l00000204:
 2F02           	cmps	r7,#2
-D01E           	beq	$00000242
+D01E           	beq	$00000246
+
+l00000208:
 9E01           	ldr	r6,[sp,#&4]
 B396           	cbz	r6,$00000272
+
+l0000020C:
 2D00           	cmps	r5,#0
-D1CB           	bne	$000003A4
+D1CB           	bne	$000003A8
+
+l00000210:
 A802           	add	r0,sp,#8
-F000 FF97     	bl	$00001140
-E7C7           	b	$000001A4
-F008 F9CA     	bl	$000085AC
+F000 FF97     	bl	$00001144
+E7C7           	b	$000001A8
+
+l00000218:
+F008 F9CA     	bl	$000085B0
 9901           	ldr	r1,[sp,#&4]
 F104 0010     	add	r0,r4,#&10
-F000 FEDB     	bl	$00000FD8
+F000 FEDB     	bl	$00000FDC
 4620           	mov	r0,r4
-F7FF FF16     	bl	$00000054
-F000 FE1E     	bl	$00000E68
+F7FF FF16     	bl	$00000058
+F000 FE1E     	bl	$00000E6C
 2800           	cmps	r0,#0
-D1E0           	bne	$000003F2
+D1E0           	bne	$000003F6
+
+l00000234:
 F04F 5380     	mov	r3,#&10000000
 F8C9 3000     	str	r3,[r9]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-E7D7           	b	$000001F2
+E7D7           	b	$000001F6
+
+l00000246:
 463A           	mov	r2,r7
 4651           	mov	r1,r10
 4620           	mov	r0,r4
-F7FF FF4E     	bl	$000000E8
+F7FF FF4E     	bl	$000000EC
 6A63           	ldr	r3,[r4,#&24]
 B9EB           	cbnz	r3,$00000290
+
+l00000254:
 B138           	cbz	r0,$00000266
+
+l00000256:
 F04F 5280     	mov	r2,#&10000000
-4B11           	ldr	r3,[pc,#&44]                            ; 000002A6
+4B11           	ldr	r3,[pc,#&44]                            ; 000002A0
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-F008 F9A3     	bl	$000085AC
+
+l00000266:
+F008 F9A3     	bl	$000085B0
 2001           	mov	r0,#1
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
 
-l00000270:
-87F0           	strh	r0,[r6,#&7C]
-F008 F99D     	bl	$000085AC
-4630           	mov	r0,r6
+l00000272:
+F008 F99D     	bl	$000085B0
 
-l00000278:
+l00000274:
+F99D 4630     	ldrsb	r4,[sp,#&630]
+
+l00000276:
+4630           	mov	r0,r6
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
-0000027E                                           20 46                F
-00000280 FF F7 EA FE 00 F0 F2 FD 00 20 04 B0 BD E8 F0 87 ......... ......
-00000290 04 F1 24 00 00 F0 C2 FE 00 28 DC D1 E3 E7 00 BF ..$......(......
 
-;; fn000002A0: 000002A0
-fn000002A0 proc
-ED04 E000     	Invalid
+l0000027C:
+87F0           	strh	r0,[r6,#&7C]
+
+l0000027E:
+4620           	mov	r0,r4
+F7FF FEEA     	bl	$00000058
+F000 FDF2     	bl	$00000E6C
+2000           	mov	r0,#0
+B004           	add	sp,#&10
+E8BD 87F0     	pop.w	{r4-r10,pc}
+
+l00000290:
+F104 0024     	add	r0,r4,#&24
+F000 FEC2     	bl	$0000101C
+2800           	cmps	r0,#0
+D1DC           	bne	$00000456
+
+l0000029C:
+E7E3           	b	$00000266
+0000029E                                           00 BF               ..
+000002A0 04 ED 00 E0                                     ....           
 
 ;; xQueuePeekFromISR: 000002A4
 xQueuePeekFromISR proc
@@ -297,29 +361,30 @@ F3EF 8511     	mrs	r5,cpsr
 F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
-
-;; fn000002B6: 000002B6
-fn000002B6 proc
 F3BF 8F4F     	dsb	sy
+
+;; fn000002BA: 000002BA
+fn000002BA proc
 6B83           	ldr	r3,[r0,#&38]
 B91B           	cbnz	r3,$000002C6
 
 l000002BE:
 4618           	mov	r0,r3
 F385 8811     	msr	cpsr,r5
+
+l000002C2:
+8811           	ldrh	r1,[r2]
+
+l000002C4:
 BD70           	pop	{r4-r6,pc}
 
 l000002C6:
 4604           	mov	r4,r0
 68C6           	ldr	r6,[r0,#&C]
-F7FF FF4F     	bl	$00000168
+F7FF FF4F     	bl	$0000016C
 60E6           	str	r6,[r4,#&C]
 2001           	mov	r0,#1
 F385 8811     	msr	cpsr,r5
-
-;; fn000002D4: 000002D4
-fn000002D4 proc
-8811           	ldrh	r1,[r2]
 BD70           	pop	{r4-r6,pc}
 
 ;; xQueueGenericReceive: 000002D8
@@ -332,129 +397,160 @@ B084           	sub	sp,#&10
 9201           	str	r2,[sp,#&4]
 4699           	mov	r9,r3
 462F           	mov	r7,r5
-F8DF 8138     	ldr	r8,[pc,#&138]                            ; 0000042A
-E00C           	b	$00000306
+F8DF 8138     	ldr	r8,[pc,#&138]                            ; 00000424
+E00C           	b	$0000030A
 000002F0 08 F0 42 F9 A3 6B 00 2B 37 D0 08 F0 59 F9 20 46 ..B..k.+7...Y. F
-00000300 FF F7 AA FE 00 F0                               ......         
+00000300 FF F7 AA FE 00 F0 B2 FD                         ........       
 
-l00000306:
-FDB2 2501     	Invalid
-F008 F935     	bl	$00008574
+l00000308:
+2501           	mov	r5,#1
+
+l0000030A:
+F008 F935     	bl	$00008578
 6BA6           	ldr	r6,[r4,#&38]
 2E00           	cmps	r6,#0
-D14D           	bne	$000003AC
+D14D           	bne	$000003B0
+
+l00000314:
 9B01           	ldr	r3,[sp,#&4]
 2B00           	cmps	r3,#0
-D044           	beq	$000003A0
+D044           	beq	$000003A4
+
+l0000031A:
 2D00           	cmps	r5,#0
-D03E           	beq	$00000398
-F008 F947     	bl	$000085AC
-F000 FB73     	bl	$00000A08
-F008 F927     	bl	$00008574
+D03E           	beq	$0000039C
+
+l0000031E:
+F008 F947     	bl	$000085B0
+F000 FB73     	bl	$00000A0C
+F008 F927     	bl	$00008578
 F894 3044     	ldrb	r3,[r4,#&44]
 2BFF           	cmps	r3,#&FF
 BF08           	it	eq
 F884 7044     	strbeq	r7,[r4,#&44]
+
+l00000336:
 F894 3045     	ldrb	r3,[r4,#&45]
 2BFF           	cmps	r3,#&FF
 BF08           	it	eq
 F884 7045     	strbeq	r7,[r4,#&45]
-F008 F935     	bl	$000085AC
+
+l00000342:
+F008 F935     	bl	$000085B0
 A901           	add	r1,sp,#4
 A802           	add	r0,sp,#8
-F000 FF05     	bl	$00001154
+F000 FF05     	bl	$00001158
 2800           	cmps	r0,#0
-D0CE           	beq	$000004EC
+D0CE           	beq	$000004F0
+
+l00000352:
 4620           	mov	r0,r4
-F7FF FE80     	bl	$00000054
-F000 FD88     	bl	$00000E68
-F008 F90C     	bl	$00008574
+F7FF FE80     	bl	$00000058
+F000 FD88     	bl	$00000E6C
+F008 F90C     	bl	$00008578
 6BA3           	ldr	r3,[r4,#&38]
 B1FB           	cbz	r3,$000003A4
-F008 F924     	bl	$000085AC
-E7CE           	b	$00000304
-F008 F921     	bl	$000085AC
-6823           	ldr	r3,[r4]
-B393           	cbz	r3,$000003D8
-9901           	ldr	r1,[sp,#&4]
-F104 0024     	add	r0,r4,#&24
-F000 FE30     	bl	$00000FD8
-4620           	mov	r0,r4
-F7FF FE6B     	bl	$00000054
-F000 FD73     	bl	$00000E68
-2800           	cmps	r0,#0
-D1BE           	bne	$00000504
-F04F 5380     	mov	r3,#&10000000
-F8C8 3000     	str	r3,[r8]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-E7B5           	b	$00000304
+
+l00000364:
+F008 F924     	bl	$000085B0
+E7CE           	b	$00000308
+0000036A                               08 F0 21 F9 23 68           ..!.#h
+00000370 93 B3 01 99 04 F1 24 00 00 F0 30 FE 20 46 FF F7 ......$...0. F..
+00000380 6B FE 00 F0 73 FD 00 28 BE D1 4F F0 80 53 C8 F8 k...s..(..O..S..
+00000390 00 30 BF F3 4F 8F BF F3 6F 8F B5 E7             .0..O...o...   
+
+l0000039C:
 A802           	add	r0,sp,#8
-F000 FED1     	bl	$00001140
-E7BC           	b	$0000031A
-F008 F904     	bl	$000085AC
+F000 FED1     	bl	$00001144
+E7BC           	b	$0000031E
+
+l000003A4:
+F008 F904     	bl	$000085B0
+
+l000003A8:
 2000           	mov	r0,#0
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
+
+l000003B0:
 4651           	mov	r1,r10
 4620           	mov	r0,r4
 68E5           	ldr	r5,[r4,#&C]
-F7FF FED9     	bl	$00000168
+F7FF FED9     	bl	$0000016C
 F1B9 0F00     	cmp	r9,#0
-D113           	bne	$000003E4
+D113           	bne	$000003E8
+
+l000003C0:
 6823           	ldr	r3,[r4]
 3E01           	subs	r6,#1
 63A6           	str	r6,[r4,#&38]
 B34B           	cbz	r3,$0000041C
+
+;; fn000003C8: 000003C8
+fn000003C8 proc
 6923           	ldr	r3,[r4,#&10]
 BB03           	cbnz	r3,$0000040E
-F008 F8F0     	bl	$000085AC
+
+;; fn000003CC: 000003CC
+fn000003CC proc
+F008 F8F0     	bl	$000085B0
 2001           	mov	r0,#1
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
-F008 F8CE     	bl	$00008574
-6860           	ldr	r0,[r4,#&4]
-F000 FEED     	bl	$000011B8
-F008 F8E5     	bl	$000085AC
-E7C4           	b	$0000036E
+000003D8                         08 F0 CE F8 60 68 00 F0         ....`h..
+000003E0 ED FE 08 F0 E5 F8 C4 E7                         ........       
+
+l000003E8:
 6A63           	ldr	r3,[r4,#&24]
 60E5           	str	r5,[r4,#&C]
 2B00           	cmps	r3,#0
-D0ED           	beq	$000005C8
+D0ED           	beq	$000005CC
+
+l000003F0:
 F104 0024     	add	r0,r4,#&24
-F000 FE12     	bl	$00001018
+F000 FE12     	bl	$0000101C
+
+l000003F6:
+FE12 2800     	Invalid
+
+;; fn000003F8: 000003F8
+fn000003F8 proc
 2800           	cmps	r0,#0
-D0E7           	beq	$000005C8
+D0E7           	beq	$000005CC
+
+l000003FC:
 F04F 5280     	mov	r2,#&10000000
-4B08           	ldr	r3,[pc,#&20]                            ; 00000428
+4B08           	ldr	r3,[pc,#&20]                            ; 00000424
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-E7DE           	b	$000003C8
-F104 0010     	add	r0,r4,#&10
-F000 FE03     	bl	$00001018
-2800           	cmps	r0,#0
-D1F0           	bne	$000005F8
-E7D7           	b	$000003C8
-F000 FF5A     	bl	$000012D0
-6060           	str	r0,[r4,#&4]
-E7D1           	b	$000003C4
+E7DE           	b	$000003CC
 
-;; fn00000424: 00000424
-fn00000424 proc
-ED04 E000     	Invalid
+;; fn0000040E: 0000040E
+fn0000040E proc
+F104 0010     	add	r0,r4,#&10
+F000 FE03     	bl	$0000101C
+2800           	cmps	r0,#0
+D1F0           	bne	$000005FC
+
+l0000041A:
+E7D7           	b	$000003CC
+
+;; fn0000041C: 0000041C
+fn0000041C proc
+F000 FF5A     	bl	$000012D4
+6060           	str	r0,[r4,#&4]
+E7D1           	b	$000003C8
+00000424             04 ED 00 E0                             ....       
 
 ;; uxQueueMessagesWaiting: 00000428
 uxQueueMessagesWaiting proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F008 F8A4     	bl	$00008574
+F008 F8A4     	bl	$00008578
 6BA4           	ldr	r4,[r4,#&38]
-F008 F8BD     	bl	$000085AC
+F008 F8BD     	bl	$000085B0
 4620           	mov	r0,r4
-
-;; fn00000438: 00000438
-fn00000438 proc
 BD10           	pop	{r4,pc}
 0000043A                               00 BF                       ..   
 
@@ -462,21 +558,22 @@ BD10           	pop	{r4,pc}
 uxQueueSpacesAvailable proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F008 F89A     	bl	$00008574
+F008 F89A     	bl	$00008578
 6BA8           	ldr	r0,[r5,#&38]
 6BEC           	ldr	r4,[r5,#&3C]
 1A24           	sub	r4,r4,r0
-F008 F8B1     	bl	$000085AC
+F008 F8B1     	bl	$000085B0
 4620           	mov	r0,r4
-
-;; fn00000450: 00000450
-fn00000450 proc
 BD38           	pop	{r3-r5,pc}
 00000452       00 BF                                       ..           
 
 ;; vQueueDelete: 00000454
 vQueueDelete proc
-F001 B994     	b	$00C0177C
+F001 B994     	b	$00001780
+
+;; fn00000456: 00000456
+fn00000456 proc
+B994           	cbnz	r4,$0000047E
 
 ;; xQueueGenericSendFromISR: 00000458
 xQueueGenericSendFromISR proc
@@ -489,14 +586,16 @@ F3BF 8F4F     	dsb	sy
 6B85           	ldr	r5,[r0,#&38]
 6BC4           	ldr	r4,[r0,#&3C]
 42A5           	cmps	r5,r4
-D305           	blo	$0000047E
+D305           	blo	$00000482
 
 l00000476:
 2B02           	cmps	r3,#2
-D003           	beq	$0000047E
+D003           	beq	$00000482
 
 l0000047A:
 2000           	mov	r0,#0
+
+l0000047C:
 F386 8811     	msr	cpsr,r6
 
 l0000047E:
@@ -504,11 +603,45 @@ l0000047E:
 
 l00000480:
 BDF8           	pop	{r3-r7,pc}
-00000482       90 F8 45 40 17 46 64 B2 1A 46 05 46 FF F7   ..E@.Fd..F.F..
-00000490 2D FE 63 1C 07 D0 01 34 64 B2 85 F8 45 40 01 20 -.c....4d...E@. 
-000004A0 86 F3 11 88 F8 BD 6B 6A 00 2B F8 D0 05 F1 24 00 ......kj.+....$.
-000004B0 00 F0 B4 FD 00 28 F2 D0 00 2F F0 D0 01 20 38 60 .....(.../... 8`
-000004C0 DC E7 00 BF                                     ....           
+
+l00000482:
+F890 4045     	ldrb	r4,[r0,#&45]
+4617           	mov	r7,r2
+B264           	sxtb	r4,r4
+461A           	mov	r2,r3
+4605           	mov	r5,r0
+F7FF FE2D     	bl	$000000EC
+1C63           	add	r3,r4,#1
+D007           	beq	$000004A6
+
+l00000496:
+3401           	adds	r4,#1
+B264           	sxtb	r4,r4
+F885 4045     	strb	r4,[r5,#&45]
+2001           	mov	r0,#1
+F386 8811     	msr	cpsr,r6
+BDF8           	pop	{r3-r7,pc}
+
+l000004A6:
+6A6B           	ldr	r3,[r5,#&24]
+2B00           	cmps	r3,#0
+D0F8           	beq	$0000069E
+
+l000004AC:
+F105 0024     	add	r0,r5,#&24
+F000 FDB4     	bl	$0000101C
+2800           	cmps	r0,#0
+D0F2           	beq	$0000069E
+
+l000004B8:
+2F00           	cmps	r7,#0
+D0F0           	beq	$0000069E
+
+l000004BC:
+2001           	mov	r0,#1
+6038           	str	r0,[r7]
+E7DC           	b	$0000047C
+000004C2       00 BF                                       ..           
 
 ;; xQueueGiveFromISR: 000004C4
 xQueueGiveFromISR proc
@@ -521,7 +654,7 @@ F3BF 8F4F     	dsb	sy
 6B82           	ldr	r2,[r0,#&38]
 6BC3           	ldr	r3,[r0,#&3C]
 429A           	cmps	r2,r3
-D20E           	bhs	$000004FC
+D20E           	bhs	$00000500
 
 l000004E2:
 F890 3045     	ldrb	r3,[r0,#&45]
@@ -529,28 +662,43 @@ F890 3045     	ldrb	r3,[r0,#&45]
 B25B           	sxtb	r3,r3
 6382           	str	r2,[r0,#&38]
 1C5A           	add	r2,r3,#1
-D00B           	beq	$00000504
+D00B           	beq	$00000508
 
 l000004F0:
 3301           	adds	r3,#1
 B25B           	sxtb	r3,r3
 F880 3045     	strb	r3,[r0,#&45]
 2001           	mov	r0,#1
+
+l000004FA:
 F384 8811     	msr	cpsr,r4
-
-l000004FC:
-8811           	ldrh	r1,[r2]
-
-l000004FE:
 BD38           	pop	{r3-r5,pc}
-00000500 00 20 84 F3                                     . ..           
 
-l00000504:
-8811           	ldrh	r1,[r2]
+l00000500:
+2000           	mov	r0,#0
+F384 8811     	msr	cpsr,r4
 BD38           	pop	{r3-r5,pc}
-00000508                         43 6A 00 2B F4 D0 24 30         Cj.+..$0
-00000510 0D 46 00 F0 83 FD 00 28 EE D0 00 2D EC D0 01 20 .F.....(...-... 
-00000520 28 60 EA E7                                     (`..           
+
+l00000508:
+6A43           	ldr	r3,[r0,#&24]
+2B00           	cmps	r3,#0
+D0F4           	beq	$000006F8
+
+l0000050E:
+3024           	adds	r0,#&24
+460D           	mov	r5,r1
+F000 FD83     	bl	$0000101C
+2800           	cmps	r0,#0
+D0EE           	beq	$000006F8
+
+l0000051A:
+2D00           	cmps	r5,#0
+D0EC           	beq	$000006F8
+
+l0000051E:
+2001           	mov	r0,#1
+6028           	str	r0,[r5]
+E7EA           	b	$000004FA
 
 ;; xQueueReceiveFromISR: 00000524
 xQueueReceiveFromISR proc
@@ -565,6 +713,8 @@ B924           	cbnz	r4,$0000054A
 
 l00000540:
 4620           	mov	r0,r4
+
+l00000542:
 F386 8811     	msr	cpsr,r6
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -573,11 +723,11 @@ l0000054A:
 F890 5044     	ldrb	r5,[r0,#&44]
 4690           	mov	r8,r2
 B26D           	sxtb	r5,r5
-F7FF FE0A     	bl	$00000168
+F7FF FE0A     	bl	$0000016C
 3C01           	subs	r4,#1
 1C6B           	add	r3,r5,#1
 63BC           	str	r4,[r7,#&38]
-D008           	beq	$0000056E
+D008           	beq	$00000572
 
 l00000560:
 3501           	adds	r5,#1
@@ -585,12 +735,28 @@ B26D           	sxtb	r5,r5
 F887 5044     	strb	r5,[r7,#&44]
 2001           	mov	r0,#1
 F386 8811     	msr	cpsr,r6
-
-l0000056E:
 E8BD 81F0     	pop.w	{r4-r8,pc}
-00000572       3B 69 00 2B F7 D0 07 F1 10 00 00 F0 4E FD   ;i.+........N.
-00000580 00 28 F1 D0 B8 F1 00 0F EE D0 01 20 C8 F8 00 00 .(......... ....
-00000590 D7 E7 00 BF                                     ....           
+
+l00000572:
+693B           	ldr	r3,[r7,#&10]
+2B00           	cmps	r3,#0
+D0F7           	beq	$00000768
+
+l00000578:
+F107 0010     	add	r0,r7,#&10
+F000 FD4E     	bl	$0000101C
+2800           	cmps	r0,#0
+D0F1           	beq	$00000768
+
+l00000584:
+F1B8 0F00     	cmp	r8,#0
+D0EE           	beq	$00000768
+
+l0000058A:
+2001           	mov	r0,#1
+F8C8 0000     	str	r0,[r8]
+E7D7           	b	$00000542
+00000592       00 BF                                       ..           
 
 ;; xQueueIsQueueEmptyFromISR: 00000594
 xQueueIsQueueEmptyFromISR proc
@@ -619,22 +785,22 @@ uxQueueMessagesWaitingFromISR proc
 xQueueGetMutexHolder proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F007 FFDE     	bl	$00008574
+F007 FFDE     	bl	$00008578
 6823           	ldr	r3,[r4]
 B923           	cbnz	r3,$000005CA
 
 l000005C0:
 6864           	ldr	r4,[r4,#&4]
-F007 FFF5     	bl	$000085AC
+F007 FFF5     	bl	$000085B0
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
 l000005CA:
 2400           	mov	r4,#0
-F007 FFF0     	bl	$000085AC
 
-;; fn000005D0: 000005D0
-fn000005D0 proc
+;; fn000005CC: 000005CC
+fn000005CC proc
+F007 FFF0     	bl	$000085B0
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
@@ -644,31 +810,33 @@ B570           	push	{r4-r6,lr}
 6845           	ldr	r5,[r0,#&4]
 4604           	mov	r4,r0
 460E           	mov	r6,r1
-F000 FDAC     	bl	$00001134
+F000 FDAC     	bl	$00001138
 4285           	cmps	r5,r0
-D00A           	beq	$000005F6
+D00A           	beq	$000005FA
 
 l000005E4:
 2300           	mov	r3,#0
 4632           	mov	r2,r6
 4619           	mov	r1,r3
 4620           	mov	r0,r4
-F7FF FE74     	bl	$000002D4
+F7FF FE74     	bl	$000002D8
 B110           	cbz	r0,$000005F8
 
 l000005F2:
 68E3           	ldr	r3,[r4,#&C]
 3301           	adds	r3,#1
-
-l000005F6:
 60E3           	str	r3,[r4,#&C]
 
 l000005F8:
 BD70           	pop	{r4-r6,pc}
-000005FA                               01 20 E3 68 03 44           . .h.D
 
-;; fn00000600: 00000600
-fn00000600 proc
+l000005FA:
+2001           	mov	r0,#1
+
+;; fn000005FC: 000005FC
+fn000005FC proc
+68E3           	ldr	r3,[r4,#&C]
+4403           	adds	r3,r0
 60E3           	str	r3,[r4,#&C]
 BD70           	pop	{r4-r6,pc}
 
@@ -677,18 +845,29 @@ xQueueGiveMutexRecursive proc
 B538           	push	{r3-r5,lr}
 6845           	ldr	r5,[r0,#&4]
 4604           	mov	r4,r0
-F000 FD95     	bl	$00001134
+F000 FD95     	bl	$00001138
 4285           	cmps	r5,r0
-D001           	beq	$00000612
+D001           	beq	$00000616
 
 l00000612:
 2000           	mov	r0,#0
 BD38           	pop	{r3-r5,pc}
-00000616                   E3 68 01 3B E3 60 0B B1 01 20       .h.;.`... 
-00000620 38 BD 20 46 1A 46 19 46 FF F7 B2 FD             8. F.F.F....   
 
-;; fn0000062C: 0000062C
-fn0000062C proc
+l00000616:
+68E3           	ldr	r3,[r4,#&C]
+3B01           	subs	r3,#1
+60E3           	str	r3,[r4,#&C]
+B10B           	cbz	r3,$00000622
+
+l0000061E:
+2001           	mov	r0,#1
+BD38           	pop	{r3-r5,pc}
+
+l00000622:
+4620           	mov	r0,r4
+461A           	mov	r2,r3
+4619           	mov	r1,r3
+F7FF FDB2     	bl	$00000190
 2001           	mov	r0,#1
 BD38           	pop	{r3-r5,pc}
 
@@ -698,7 +877,7 @@ B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
 460E           	mov	r6,r1
 25FF           	mov	r5,#&FF
-F007 FF9E     	bl	$00008574
+F007 FF9E     	bl	$00008578
 2100           	mov	r1,#0
 6C23           	ldr	r3,[r4,#&40]
 6BE2           	ldr	r2,[r4,#&3C]
@@ -720,38 +899,37 @@ l00000660:
 B91B           	cbnz	r3,$0000066C
 
 l00000664:
-F007 FFA4     	bl	$000085AC
+F007 FFA4     	bl	$000085B0
 2001           	mov	r0,#1
 BD70           	pop	{r4-r6,pc}
 
 l0000066C:
 F104 0010     	add	r0,r4,#&10
-F000 FCD4     	bl	$00001018
+F000 FCD4     	bl	$0000101C
 2800           	cmps	r0,#0
-D0F5           	beq	$00000860
+D0F5           	beq	$00000864
 
 l00000678:
 F04F 5280     	mov	r2,#&10000000
-4B0A           	ldr	r3,[pc,#&28]                            ; 000006AC
+4B0A           	ldr	r3,[pc,#&28]                            ; 000006A8
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-F007 FF92     	bl	$000085AC
+F007 FF92     	bl	$000085B0
 2001           	mov	r0,#1
 BD70           	pop	{r4-r6,pc}
 
 l00000690:
 F104 0010     	add	r0,r4,#&10
-F007 FE1C     	bl	$000082CC
+F007 FE1C     	bl	$000082D0
 F104 0024     	add	r0,r4,#&24
-F007 FE18     	bl	$000082CC
-F007 FF86     	bl	$000085AC
-2001           	mov	r0,#1
-BD70           	pop	{r4-r6,pc}
+F007 FE18     	bl	$000082D0
 
-;; fn000006A8: 000006A8
-fn000006A8 proc
-ED04 E000     	Invalid
+l0000069E:
+FE18 F007     	Invalid
+FF86 2001     	Invalid
+BD70           	pop	{r4-r6,pc}
+000006A8                         04 ED 00 E0                     ....   
 
 ;; xQueueGenericCreate: 000006AC
 xQueueGenericCreate proc
@@ -760,7 +938,7 @@ B570           	push	{r4-r6,lr}
 FB00 F001     	mul	r0,r0,r1
 3048           	adds	r0,#&48
 460D           	mov	r5,r1
-F001 F838     	bl	$00001728
+F001 F838     	bl	$0000172C
 4604           	mov	r4,r0
 B148           	cbz	r0,$000006D4
 
@@ -769,27 +947,22 @@ B155           	cbz	r5,$000006D8
 
 l000006C2:
 F100 0348     	add	r3,r0,#&48
-
-l000006C4:
-0348           	lsls	r0,r1,#&D
-
-;; fn000006C6: 000006C6
-fn000006C6 proc
 6003           	str	r3,[r0]
+
+l000006C8:
 63E6           	str	r6,[r4,#&3C]
 6425           	str	r5,[r4,#&40]
 2101           	mov	r1,#1
 4620           	mov	r0,r4
-F7FF FFAE     	bl	$0000062C
+F7FF FFAE     	bl	$00000630
 
 l000006D4:
 4620           	mov	r0,r4
 BD70           	pop	{r4-r6,pc}
 
-;; fn000006D8: 000006D8
-fn000006D8 proc
+l000006D8:
 6020           	str	r0,[r4]
-E7F5           	b	$000006C4
+E7F5           	b	$000006C8
 
 ;; xQueueCreateMutex: 000006DC
 xQueueCreateMutex proc
@@ -797,7 +970,7 @@ B510           	push	{r4,lr}
 4602           	mov	r2,r0
 2100           	mov	r1,#0
 2001           	mov	r0,#1
-F7FF FFE2     	bl	$000006A8
+F7FF FFE2     	bl	$000006AC
 4604           	mov	r4,r0
 B138           	cbz	r0,$000006FC
 
@@ -808,10 +981,12 @@ l000006EC:
 60C3           	str	r3,[r0,#&C]
 461A           	mov	r2,r3
 4619           	mov	r1,r3
-F7FF FD4A     	bl	$0000018C
 
-;; fn000006FC: 000006FC
-fn000006FC proc
+;; fn000006F8: 000006F8
+fn000006F8 proc
+F7FF FD4A     	bl	$00000190
+
+l000006FC:
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
@@ -840,7 +1015,7 @@ B10E           	cbz	r6,$0000073E
 
 l0000073A:
 428B           	cmps	r3,r1
-D1F7           	bne	$0000092A
+D1F7           	bne	$0000092E
 
 l0000073E:
 2A01           	cmps	r2,#1
@@ -855,52 +1030,52 @@ l00000744:
 F104 0024     	add	r0,r4,#&24
 F884 6056     	strb	r6,[r4,#&56]
 65E6           	str	r6,[r4,#&5C]
-F007 FDC7     	bl	$000082E4
+F007 FDC7     	bl	$000082E8
 F104 0038     	add	r0,r4,#&38
-F007 FDC3     	bl	$000082E4
+F007 FDC3     	bl	$000082E8
 F1C7 0302     	rsb	r3,r7,#2
 63A3           	str	r3,[r4,#&38]
+
+;; fn00000768: 00000768
+fn00000768 proc
 6D22           	ldr	r2,[r4,#&50]
 465B           	mov	r3,fp
 990D           	ldr	r1,[sp,#&34]
 1D20           	add	r0,r4,#4
 6324           	str	r4,[r4,#&30]
 6464           	str	r4,[r4,#&44]
-F000 FEEE     	bl	$00001550
+F000 FEEE     	bl	$00001554
 6626           	str	r6,[r4,#&60]
 4653           	mov	r3,r10
 F884 6064     	strb	r6,[r4,#&64]
 464A           	mov	r2,r9
 4641           	mov	r1,r8
 4628           	mov	r0,r5
-F000 FDF9     	bl	$00001378
+F000 FDF9     	bl	$0000137C
 9B0B           	ldr	r3,[sp,#&2C]
 6020           	str	r0,[r4]
 B103           	cbz	r3,$00000792
 
-l00000790:
+;; fn00000790: 00000790
+fn00000790 proc
 601C           	str	r4,[r3]
 
 l00000792:
 E8BD 8FF8     	pop.w	{r3-fp,pc}
-
-;; fn00000794: 00000794
-fn00000794 proc
-8FF8           	ldrh	r0,[r7,#&7C]
 00000796                   00 BF                               ..       
 
 ;; prvAddNewTaskToReadyList: 00000798
 prvAddNewTaskToReadyList proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4C2D           	ldr	r4,[pc,#&B4]                            ; 00000858
+4C2D           	ldr	r4,[pc,#&B4]                            ; 00000854
 4605           	mov	r5,r0
-F007 FEEA     	bl	$00008574
+F007 FEEA     	bl	$00008578
 6823           	ldr	r3,[r4]
 3301           	adds	r3,#1
 6023           	str	r3,[r4]
 6863           	ldr	r3,[r4,#&4]
 2B00           	cmps	r3,#0
-D030           	beq	$0000080E
+D030           	beq	$00000812
 
 l000007B0:
 6F63           	ldr	r3,[r4,#&74]
@@ -908,9 +1083,9 @@ B32B           	cbz	r3,$00000800
 
 l000007B4:
 6CE8           	ldr	r0,[r5,#&4C]
-
-l000007B6:
 F104 0608     	add	r6,r4,#8
+
+l000007BA:
 2301           	mov	r3,#1
 6FE1           	ldr	r1,[r4,#&7C]
 6FA2           	ldr	r2,[r4,#&78]
@@ -922,8 +1097,8 @@ EB06 0080     	add.w	r0,r6,r0,lsl #2
 F105 0124     	add	r1,r5,#&24
 67E3           	str	r3,[r4,#&7C]
 67A2           	str	r2,[r4,#&78]
-F007 FD8B     	bl	$000082EC
-F007 FEE9     	bl	$000085AC
+F007 FD8B     	bl	$000082F0
+F007 FEE9     	bl	$000085B0
 6F63           	ldr	r3,[r4,#&74]
 B163           	cbz	r3,$000007FC
 
@@ -932,15 +1107,13 @@ l000007E2:
 6CEB           	ldr	r3,[r5,#&4C]
 6CD2           	ldr	r2,[r2,#&4C]
 429A           	cmps	r2,r3
-D207           	bhs	$000007F8
+D207           	bhs	$000007FC
 
 l000007EC:
 F04F 5280     	mov	r2,#&10000000
-4B19           	ldr	r3,[pc,#&64]                            ; 0000085C
+4B19           	ldr	r3,[pc,#&64]                            ; 00000858
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
-
-l000007F8:
 F3BF 8F6F     	isb	sy
 
 l000007FC:
@@ -953,32 +1126,50 @@ l00000800:
 F104 0608     	add	r6,r4,#8
 4283           	cmps	r3,r0
 BF98           	it	ls
+6065           	strls	r5,[r4,#&4]
 
-l0000080E:
+l00000810:
+E7D3           	b	$000007BA
+
+l00000812:
 6065           	str	r5,[r4,#&4]
-E7D3           	b	$000007B6
-00000812       65 60 23 68 01 2B CC D1 04 F1 08 06 30 46   e`#h.+......0F
-00000820 07 F0 56 FD 04 F1 30 08 04 F1 1C 00 07 F0 50 FD ..V...0.......P.
-00000830 04 F1 44 07 40 46 07 F0 4B FD 38 46 07 F0 48 FD ..D.@F..K.8F..H.
-00000840 04 F1 58 00 07 F0 44 FD C4 F8 6C 80 E8 6C 27 67 ..X...D...l..l'g
-00000850 B3 E7 00 BF C4 00 00 20                         .......        
+6823           	ldr	r3,[r4]
+2B01           	cmps	r3,#1
+D1CC           	bne	$000009B4
 
-;; fn00000858: 00000858
-fn00000858 proc
-ED04 E000     	Invalid
+l0000081A:
+F104 0608     	add	r6,r4,#8
+4630           	mov	r0,r6
+F007 FD56     	bl	$000082D0
+F104 0830     	add	r8,r4,#&30
+F104 001C     	add	r0,r4,#&1C
+F007 FD50     	bl	$000082D0
+F104 0744     	add	r7,r4,#&44
+4640           	mov	r0,r8
+F007 FD4B     	bl	$000082D0
+4638           	mov	r0,r7
+F007 FD48     	bl	$000082D0
+F104 0058     	add	r0,r4,#&58
+F007 FD44     	bl	$000082D0
+F8C4 806C     	str	r8,[r4,#&6C]
+6CE8           	ldr	r0,[r5,#&4C]
+6727           	str	r7,[r4,#&70]
+E7B3           	b	$000007BA
+00000852       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; prvAddCurrentTaskToDelayedList.isra.0: 0000085C
 prvAddCurrentTaskToDelayedList.isra.0 proc
 B570           	push	{r4-r6,lr}
-4C14           	ldr	r4,[pc,#&50]                            ; 000008B6
-
-;; fn00000860: 00000860
-fn00000860 proc
+4C14           	ldr	r4,[pc,#&50]                            ; 000008B0
 4605           	mov	r5,r0
 F8D4 6080     	ldr	r6,[r4,#&80]
+
+;; fn00000864: 00000864
+fn00000864 proc
+6080           	str	r0,[r0,#&8]
 6860           	ldr	r0,[r4,#&4]
 3024           	adds	r0,#&24
-F007 FD69     	bl	$0000833C
+F007 FD69     	bl	$00008340
 B938           	cbnz	r0,$00000880
 
 ;; fn00000870: 00000870
@@ -997,29 +1188,28 @@ fn00000880 proc
 6863           	ldr	r3,[r4,#&4]
 42AE           	cmps	r6,r5
 625D           	str	r5,[r3,#&24]
-D80B           	bhi	$0000089E
+D80B           	bhi	$000008A2
 
 l0000088A:
 6EE0           	ldr	r0,[r4,#&6C]
 6861           	ldr	r1,[r4,#&4]
 3124           	adds	r1,#&24
-F007 FD3C     	bl	$00008308
+F007 FD3C     	bl	$0000830C
 F8D4 3084     	ldr	r3,[r4,#&84]
 429D           	cmps	r5,r3
 BF38           	it	lo
 F8C4 5084     	strlo	r5,[r4,#&84]
 
-l0000089E:
-5084           	str	r4,[r0,r2]
-
 l000008A0:
 BD70           	pop	{r4-r6,pc}
-000008A2       20 6F 61 68 BD E8 70 40 24 31 07 F0 2E BD    oah..p@$1....
 
-;; fn000008B0: 000008B0
-fn000008B0 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+l000008A2:
+6F20           	ldr	r0,[r4,#&70]
+6861           	ldr	r1,[r4,#&4]
+E8BD 4070     	pop.w	{r4-r6,lr}
+3124           	adds	r1,#&24
+F007 BD2E     	b	$0000830C
+000008B0 C4 00 00 20                                     ...            
 
 ;; xTaskCreate: 000008B4
 xTaskCreate proc
@@ -1030,13 +1220,13 @@ B084           	sub	sp,#&10
 4616           	mov	r6,r2
 4689           	mov	r9,r1
 469A           	mov	r10,r3
-F000 FF32     	bl	$00001728
+F000 FF32     	bl	$0000172C
 B1E0           	cbz	r0,$00000904
 
 l000008CA:
 4605           	mov	r5,r0
 2068           	mov	r0,#&68
-F000 FF2D     	bl	$00001728
+F000 FF2D     	bl	$0000172C
 4604           	mov	r4,r0
 B1D8           	cbz	r0,$0000090E
 
@@ -1054,16 +1244,12 @@ F884 7065     	strb	r7,[r4,#&65]
 9703           	str	r7,[sp,#&C]
 9402           	str	r4,[sp,#&8]
 9500           	str	r5,[sp]
-F7FF FF05     	bl	$000006FC
+F7FF FF05     	bl	$00000700
 4620           	mov	r0,r4
-F7FF FF4E     	bl	$00000794
-
-;; fn000008FA: 000008FA
-fn000008FA proc
-FF4E 2001     	vhadd.u8	d18,d14,d1
-
-l000008FC:
+F7FF FF4E     	bl	$00000798
 2001           	mov	r0,#1
+
+l000008FE:
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
 
@@ -1074,12 +1260,9 @@ E8BD 87F0     	pop.w	{r4-r10,pc}
 
 l0000090E:
 4628           	mov	r0,r5
-F000 FF36     	bl	$0000177C
+F000 FF36     	bl	$00001780
 F04F 30FF     	mov	r0,#&FFFFFFFF
-
-;; fn00000918: 00000918
-fn00000918 proc
-E7F1           	b	$000008FA
+E7F1           	b	$000008FE
 0000091A                               00 BF                       ..   
 
 ;; xTaskCreateRestricted: 0000091C
@@ -1093,15 +1276,14 @@ B5F0           	push	{r4-r7,lr}
 B085           	sub	sp,#&14
 2068           	mov	r0,#&68
 460F           	mov	r7,r1
+F000 FEFF     	bl	$0000172C
 
-;; fn0000092A: 0000092A
-fn0000092A proc
-F000 FEFF     	bl	$00001728
+;; fn0000092E: 0000092E
+fn0000092E proc
 4605           	mov	r5,r0
 B1C0           	cbz	r0,$00000964
 
-;; fn00000932: 00000932
-fn00000932 proc
+l00000932:
 2601           	mov	r6,#1
 6961           	ldr	r1,[r4,#&14]
 F880 6065     	strb	r6,[r0,#&65]
@@ -1115,28 +1297,21 @@ F8D4 E010     	ldr	lr,[r4,#&10]
 F854 0B18     	ldr	r0,[r4],#&18
 F8CD E000     	str	lr,[sp]
 9403           	str	r4,[sp,#&C]
-F7FF FED4     	bl	$000006FC
+F7FF FED4     	bl	$00000700
 4628           	mov	r0,r5
-F7FF FF1D     	bl	$00000794
+F7FF FF1D     	bl	$00000798
+4630           	mov	r0,r6
 
-l0000095C:
-FF1D 4630     	vmin.u16	d4,d13,d16
+l00000960:
 B005           	add	sp,#&14
 BDF0           	pop	{r4-r7,pc}
 
-;; fn00000964: 00000964
-fn00000964 proc
+l00000964:
 F04F 30FF     	mov	r0,#&FFFFFFFF
-E7FA           	b	$0000095C
+E7FA           	b	$00000960
 
 l0000096A:
 F04F 30FF     	mov	r0,#&FFFFFFFF
-
-;; fn0000096C: 0000096C
-fn0000096C proc
-30FF           	adds	r0,#&FF
-
-l0000096E:
 4770           	bx	lr
 
 ;; vTaskAllocateMPURegions: 00000970
@@ -1147,45 +1322,54 @@ l00000972:
 2300           	mov	r3,#0
 3004           	adds	r0,#4
 461A           	mov	r2,r3
-F000 BDEC     	b	$00C01550
+F000 BDEC     	b	$00001554
 
 l0000097C:
-4B03           	ldr	r3,[pc,#&C]                             ; 00000990
+4B03           	ldr	r3,[pc,#&C]                             ; 0000098C
 6858           	ldr	r0,[r3,#&4]
 2300           	mov	r3,#0
 3004           	adds	r0,#4
 461A           	mov	r2,r3
-F000 BDE5     	b	$00C01550
-0000098A                               00 BF                       ..   
-
-;; fn0000098C: 0000098C
-fn0000098C proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+F000 BDE5     	b	$00001554
+0000098A                               00 BF C4 00 00 20           ..... 
 
 ;; vTaskStartScheduler: 00000990
 vTaskStartScheduler proc
 F04F 4300     	mov	r3,#&80000000
 B510           	push	{r4,lr}
-4C12           	ldr	r4,[pc,#&48]                            ; 000009E6
+4C12           	ldr	r4,[pc,#&48]                            ; 000009E0
 B082           	sub	sp,#8
 9300           	str	r3,[sp]
 F104 0388     	add	r3,r4,#&88
 9301           	str	r3,[sp,#&4]
 223B           	mov	r2,#&3B
 2300           	mov	r3,#0
-490F           	ldr	r1,[pc,#&3C]                            ; 000009EA
-480F           	ldr	r0,[pc,#&3C]                            ; 000009EC
-F7FF FF83     	bl	$000008B0
+490F           	ldr	r1,[pc,#&3C]                            ; 000009E4
+480F           	ldr	r0,[pc,#&3C]                            ; 000009E8
+F7FF FF83     	bl	$000008B4
 2801           	cmps	r0,#1
-D001           	beq	$000009B2
+D001           	beq	$000009B6
 
 l000009B2:
 B002           	add	sp,#8
+
+;; fn000009B4: 000009B4
+fn000009B4 proc
 BD10           	pop	{r4,pc}
-000009B6                   4F F0 BF 03 83 F3 11 88 BF F3       O.........
-000009C0 6F 8F BF F3 4F 8F 4F F0 FF 32 00 23 C4 F8 84 20 o...O.O..2.#... 
-000009D0 60 67 C4 F8 80 30 02 B0 BD E8 10 40 00 F0 E8 BC `g...0.....@....
+
+l000009B6:
+F04F 03BF     	mov	r3,#&BF
+F383 8811     	msr	cpsr,r3
+F3BF 8F6F     	isb	sy
+F3BF 8F4F     	dsb	sy
+F04F 32FF     	mov	r2,#&FFFFFFFF
+2300           	mov	r3,#0
+F8C4 2084     	str	r2,[r4,#&84]
+6760           	str	r0,[r4,#&74]
+F8C4 3080     	str	r3,[r4,#&80]
+B002           	add	sp,#8
+E8BD 4010     	pop.w	{r4,lr}
+F000 BCE8     	b	$000013B0
 000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00             ... |...-...   
 
 ;; vTaskEndScheduler: 000009EC
@@ -1195,59 +1379,41 @@ F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 2200           	mov	r2,#0
-4B02           	ldr	r3,[pc,#&8]                             ; 00000A0E
+4B02           	ldr	r3,[pc,#&8]                             ; 00000A08
 675A           	str	r2,[r3,#&74]
-F000 BDA5     	b	$00C0154C
-00000A06                   00 BF                               ..       
-
-;; fn00000A08: 00000A08
-fn00000A08 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+F000 BDA5     	b	$00001550
+00000A06                   00 BF C4 00 00 20                   .....    
 
 ;; vTaskSuspendAll: 00000A0C
 vTaskSuspendAll proc
-4A03           	ldr	r2,[pc,#&C]                             ; 00000A20
+4A03           	ldr	r2,[pc,#&C]                             ; 00000A1C
 F8D2 308C     	ldr	r3,[r2,#&8C]
 3301           	adds	r3,#1
 F8C2 308C     	str	r3,[r2,#&8C]
 4770           	bx	lr
-00000A1A                               00 BF                       ..   
-
-;; fn00000A1C: 00000A1C
-fn00000A1C proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00000A1A                               00 BF C4 00 00 20           ..... 
 
 ;; xTaskGetTickCount: 00000A20
 xTaskGetTickCount proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00000A2C
+4B01           	ldr	r3,[pc,#&4]                             ; 00000A28
 F8D3 0080     	ldr	r0,[r3,#&80]
 4770           	bx	lr
 00000A28                         C4 00 00 20                     ...    
 
 ;; xTaskGetTickCountFromISR: 00000A2C
 xTaskGetTickCountFromISR proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00000A38
+4B01           	ldr	r3,[pc,#&4]                             ; 00000A34
 F8D3 0080     	ldr	r0,[r3,#&80]
 4770           	bx	lr
-
-;; fn00000A34: 00000A34
-fn00000A34 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00000A34             C4 00 00 20                             ...        
 
 ;; uxTaskGetNumberOfTasks: 00000A38
 uxTaskGetNumberOfTasks proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00000A44
+4B01           	ldr	r3,[pc,#&4]                             ; 00000A40
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00000A3E                                           00 BF               ..
-
-;; fn00000A40: 00000A40
-fn00000A40 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00000A40 C4 00 00 20                                     ...            
 
 ;; pcTaskGetName: 00000A44
 pcTaskGetName proc
@@ -1258,16 +1424,11 @@ l00000A46:
 4770           	bx	lr
 
 l00000A4A:
-4B02           	ldr	r3,[pc,#&8]                             ; 00000A5A
+4B02           	ldr	r3,[pc,#&8]                             ; 00000A54
 6858           	ldr	r0,[r3,#&4]
 3054           	adds	r0,#&54
 4770           	bx	lr
-00000A52       00 BF                                       ..           
-
-;; fn00000A54: 00000A54
-fn00000A54 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00000A52       00 BF C4 00 00 20                           .....        
 
 ;; xTaskGenericNotify: 00000A58
 xTaskGenericNotify proc
@@ -1276,7 +1437,7 @@ B5F8           	push	{r3-r7,lr}
 4606           	mov	r6,r0
 460F           	mov	r7,r1
 4615           	mov	r5,r2
-F007 FD89     	bl	$00008574
+F007 FD89     	bl	$00008578
 B10C           	cbz	r4,$00000A6C
 
 l00000A68:
@@ -1290,10 +1451,10 @@ F896 4064     	ldrb	r4,[r6,#&64]
 F886 3064     	strb	r3,[r6,#&64]
 B2E4           	uxtb	r4,r4
 2A03           	cmps	r2,#3
-D806           	bhi	$00000A88
+D806           	bhi	$00000A8C
 
 l00000A7E:
-E8DF F002     	tbb	[pc,-r2]                                 ; 00000A86
+E8DF F002     	tbb	[pc,-r2]                                 ; 00000A80
 
 l00000A82:
 0C3A           	lsrs	r2,r7,#&10
@@ -1303,34 +1464,32 @@ l00000A85	db	0x02
 
 l00000A86:
 2C02           	cmps	r4,#2
-
-l00000A88:
-D039           	beq	$00000AFA
+D039           	beq	$00000AFE
 
 l00000A8A:
 6637           	str	r7,[r6,#&60]
+
+l00000A8C:
 2C01           	cmps	r4,#1
-D00A           	beq	$00000AA2
+D00A           	beq	$00000AA6
 
 l00000A90:
 2401           	mov	r4,#1
-F007 FD8D     	bl	$000085AC
+
+l00000A92:
+F007 FD8D     	bl	$000085B0
 
 l00000A96:
 4620           	mov	r0,r4
 BDF8           	pop	{r3-r7,pc}
 00000A9A                               33 6E 01 2C 03 F1           3n.,..
-00000AA0 01 03                                           ..             
-
-l00000AA2:
-6633           	str	r3,[r6,#&60]
-D1F4           	bne	$00000C8C
+00000AA0 01 03 33 66 F4 D1                               ..3f..         
 
 l00000AA6:
 F106 0724     	add	r7,r6,#&24
-4D16           	ldr	r5,[pc,#&58]                            ; 00000B0A
+4D16           	ldr	r5,[pc,#&58]                            ; 00000B04
 4638           	mov	r0,r7
-F007 FC47     	bl	$0000833C
+F007 FC47     	bl	$00008340
 6CF0           	ldr	r0,[r6,#&4C]
 F8D5 E07C     	ldr	lr,[r5,#&7C]
 F105 0208     	add	r2,r5,#8
@@ -1340,31 +1499,30 @@ EA43 030E     	orr	r3,r3,lr
 EB02 0080     	add.w	r0,r2,r0,lsl #2
 4639           	mov	r1,r7
 67EB           	str	r3,[r5,#&7C]
-F007 FC0E     	bl	$000082EC
+F007 FC0E     	bl	$000082F0
 686B           	ldr	r3,[r5,#&4]
 6CF2           	ldr	r2,[r6,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
 429A           	cmps	r2,r3
-D9D8           	bls	$00000C8C
+D9D8           	bls	$00000C90
 
 l00000ADE:
 F04F 5280     	mov	r2,#&10000000
-4B09           	ldr	r3,[pc,#&24]                            ; 00000B0E
+4B09           	ldr	r3,[pc,#&24]                            ; 00000B08
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-F007 FD5F     	bl	$000085AC
+F007 FD5F     	bl	$000085B0
 
 l00000AF2:
 4620           	mov	r0,r4
 BDF8           	pop	{r3-r7,pc}
-00000AF6                   33 6E 1F 43                         3n.C     
+00000AF6                   33 6E 1F 43 37 66 C6 E7             3n.C7f.. 
 
-l00000AFA:
-6637           	str	r7,[r6,#&60]
-E7C6           	b	$00000A88
-00000AFE                                           00 24               .$
-00000B00 C7 E7 00 BF C4 00 00 20 04 ED 00 E0             ....... ....   
+l00000AFE:
+2400           	mov	r4,#0
+E7C7           	b	$00000A92
+00000B02       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; xTaskGenericNotifyFromISR: 00000B0C
 xTaskGenericNotifyFromISR proc
@@ -1387,10 +1545,10 @@ F890 4064     	ldrb	r4,[r0,#&64]
 F880 3064     	strb	r3,[r0,#&64]
 B2E4           	uxtb	r4,r4
 2A03           	cmps	r2,#3
-D806           	bhi	$00000B46
+D806           	bhi	$00000B4A
 
 l00000B3C:
-E8DF F002     	tbb	[pc,-r2]                                 ; 00000B44
+E8DF F002     	tbb	[pc,-r2]                                 ; 00000B40
 
 l00000B40:
 0C2A           	lsrs	r2,r5,#&10
@@ -1400,31 +1558,28 @@ l00000B43	db	0x02
 
 l00000B44:
 2C02           	cmps	r4,#2
-
-l00000B46:
-D03D           	beq	$00000BC0
+D03D           	beq	$00000BC4
 
 l00000B48:
 6601           	str	r1,[r0,#&60]
-2C01           	cmps	r4,#1
 
-l00000B4C:
-D00A           	beq	$00000B60
+l00000B4A:
+2C01           	cmps	r4,#1
+D00A           	beq	$00000B64
 
 l00000B4E:
 2001           	mov	r0,#1
+
+l00000B50:
 F385 8811     	msr	cpsr,r5
 
 l00000B54:
 E8BD 81F0     	pop.w	{r4-r8,pc}
 00000B58                         03 6E 01 2C 03 F1 01 03         .n.,....
-
-l00000B60:
-6603           	str	r3,[r0,#&60]
-D1F4           	bne	$00000D4A
+00000B60 03 66 F4 D1                                     .f..           
 
 l00000B64:
-4E1A           	ldr	r6,[pc,#&68]                            ; 00000BD4
+4E1A           	ldr	r6,[pc,#&68]                            ; 00000BD0
 4607           	mov	r7,r0
 F8D6 308C     	ldr	r3,[r6,#&8C]
 B1B3           	cbz	r3,$00000B9C
@@ -1432,14 +1587,14 @@ B1B3           	cbz	r3,$00000B9C
 l00000B6E:
 F100 0138     	add	r1,r0,#&38
 F106 0058     	add	r0,r6,#&58
+F007 FBBB     	bl	$000082F0
 
-l00000B76:
-F007 FBBB     	bl	$000082EC
+l00000B7A:
 6873           	ldr	r3,[r6,#&4]
 6CFA           	ldr	r2,[r7,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
 429A           	cmps	r2,r3
-D9E4           	bls	$00000D4A
+D9E4           	bls	$00000D4E
 
 l00000B84:
 9B06           	ldr	r3,[sp,#&18]
@@ -1457,7 +1612,7 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 l00000B9C:
 F100 0824     	add	r8,r0,#&24
 4640           	mov	r0,r8
-F007 FBCD     	bl	$0000833C
+F007 FBCD     	bl	$00008340
 6CF8           	ldr	r0,[r7,#&4C]
 6FF2           	ldr	r2,[r6,#&7C]
 4084           	lsls	r4,r0
@@ -1467,38 +1622,32 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4641           	mov	r1,r8
 EB03 0080     	add.w	r0,r3,r0,lsl #2
 67F4           	str	r4,[r6,#&7C]
-F007 FB97     	bl	$000082EC
+F007 FB97     	bl	$000082F0
+E7DA           	b	$00000B7A
 
-l00000BC0:
-FB97 E7DA     	Invalid
-
-l00000BC2:
-E7DA           	b	$00000B76
-00000BC4             00 20 C3 E7                             . ..       
+l00000BC4:
+2000           	mov	r0,#0
+E7C3           	b	$00000B50
 
 l00000BC8:
 F8C6 0090     	str	r0,[r6,#&90]
-E7C0           	b	$00000B4C
+E7C0           	b	$00000B50
 00000BCE                                           00 BF               ..
-
-;; fn00000BD0: 00000BD0
-fn00000BD0 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00000BD0 C4 00 00 20                                     ...            
 
 ;; xTaskNotifyWait: 00000BD4
 xTaskNotifyWait proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4C1F           	ldr	r4,[pc,#&7C]                            ; 00000C5C
+4C1F           	ldr	r4,[pc,#&7C]                            ; 00000C58
 4615           	mov	r5,r2
 4680           	mov	r8,r0
 460E           	mov	r6,r1
 461F           	mov	r7,r3
-F007 FCC9     	bl	$00008574
+F007 FCC9     	bl	$00008578
 6862           	ldr	r2,[r4,#&4]
 F892 2064     	ldrb	r2,[r2,#&64]
 2A02           	cmps	r2,#2
-D009           	beq	$00000C00
+D009           	beq	$00000C04
 
 l00000BF0:
 2001           	mov	r0,#1
@@ -1508,16 +1657,11 @@ EA22 0208     	bic.w	r2,r2,r8
 660A           	str	r2,[r1,#&60]
 6863           	ldr	r3,[r4,#&4]
 F883 0064     	strb	r0,[r3,#&64]
-
-l00000C00:
-0064           	lsls	r4,r4,#1
-
-l00000C02:
 B9DF           	cbnz	r7,$00000C3C
 
 l00000C04:
-F007 FCD4     	bl	$000085AC
-F007 FCB6     	bl	$00008574
+F007 FCD4     	bl	$000085B0
+F007 FCB6     	bl	$00008578
 B115           	cbz	r5,$00000C14
 
 l00000C0E:
@@ -1529,7 +1673,7 @@ l00000C14:
 6863           	ldr	r3,[r4,#&4]
 F893 3064     	ldrb	r3,[r3,#&64]
 2B01           	cmps	r3,#1
-D01A           	beq	$00000C50
+D01A           	beq	$00000C54
 
 l00000C1E:
 2501           	mov	r5,#1
@@ -1537,26 +1681,29 @@ l00000C1E:
 6E19           	ldr	r1,[r3,#&60]
 EA21 0106     	bic.w	r1,r1,r6
 6619           	str	r1,[r3,#&60]
+
+l00000C2A:
 2200           	mov	r2,#0
 6863           	ldr	r3,[r4,#&4]
 F883 2064     	strb	r2,[r3,#&64]
-F007 FCBD     	bl	$000085AC
+F007 FCBD     	bl	$000085B0
 4628           	mov	r0,r5
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
 l00000C3C:
 4638           	mov	r0,r7
-F7FF FE0D     	bl	$00000858
+F7FF FE0D     	bl	$0000085C
 F04F 5280     	mov	r2,#&10000000
-4B05           	ldr	r3,[pc,#&14]                            ; 00000C62
+4B05           	ldr	r3,[pc,#&14]                            ; 00000C5C
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
+E7D7           	b	$00000C04
 
-l00000C50:
-8F6F           	ldrh	r7,[r5,#&74]
-E7D7           	b	$00000C00
-00000C54             00 25 E8 E7 C4 00 00 20 04 ED 00 E0     .%..... ....
+l00000C54:
+2500           	mov	r5,#0
+E7E8           	b	$00000C2A
+00000C58                         C4 00 00 20 04 ED 00 E0         ... ....
 
 ;; vTaskNotifyGiveFromISR: 00000C60
 vTaskNotifyGiveFromISR proc
@@ -1574,37 +1721,74 @@ B2ED           	uxtb	r5,r5
 3301           	adds	r3,#1
 2D01           	cmps	r5,#1
 6603           	str	r3,[r0,#&60]
+D003           	beq	$00000C96
 
-;; fn00000C8C: 00000C8C
-fn00000C8C proc
-D003           	beq	$00000C92
-
-;; fn00000C8E: 00000C8E
-fn00000C8E proc
+l00000C8E:
 F386 8811     	msr	cpsr,r6
+
+l00000C90:
+8811           	ldrh	r1,[r2]
 
 l00000C92:
 E8BD 83F8     	pop.w	{r3-r9,pc}
-00000C96                   19 4F 88 46 D7 F8 8C 30 04 46       .O.F...0.F
-00000CA0 A3 B1 00 F1 38 01 07 F1 58 00 07 F0 21 FB 7B 68 ....8...X...!.{h
-00000CB0 E2 6C DB 6C 9A 42 EA D9 01 23 B8 F1 00 0F 19 D0 .l.l.B...#......
-00000CC0 C8 F8 00 30 86 F3 11 88 BD E8 F8 83 00 F1 24 09 ...0..........$.
-00000CD0 48 46 07 F0 35 FB E0 6C FA 6F 85 40 07 F1 08 03 HF..5..l.o.@....
-00000CE0 00 EB 80 00 15 43 49 46 03 EB 80 00 FD 67 07 F0 .....CIF.....g..
-00000CF0 FF FA DC E7 C7 F8 90 30 C9 E7 00 BF             .......0....   
 
-;; fn00000CFC: 00000CFC
-fn00000CFC proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+l00000C96:
+4F19           	ldr	r7,[pc,#&64]                            ; 00000CFC
+4688           	mov	r8,r1
+F8D7 308C     	ldr	r3,[r7,#&8C]
+4604           	mov	r4,r0
+B1A3           	cbz	r3,$00000CCC
+
+l00000CA2:
+F100 0138     	add	r1,r0,#&38
+F107 0058     	add	r0,r7,#&58
+F007 FB21     	bl	$000082F0
+
+l00000CAE:
+687B           	ldr	r3,[r7,#&4]
+6CE2           	ldr	r2,[r4,#&4C]
+6CDB           	ldr	r3,[r3,#&4C]
+429A           	cmps	r2,r3
+D9EA           	bls	$00000E8E
+
+l00000CB8:
+2301           	mov	r3,#1
+F1B8 0F00     	cmp	r8,#0
+D019           	beq	$00000CF4
+
+l00000CC0:
+F8C8 3000     	str	r3,[r8]
+F386 8811     	msr	cpsr,r6
+E8BD 83F8     	pop.w	{r3-r9,pc}
+
+l00000CCC:
+F100 0924     	add	r9,r0,#&24
+4648           	mov	r0,r9
+F007 FB35     	bl	$00008340
+6CE0           	ldr	r0,[r4,#&4C]
+6FFA           	ldr	r2,[r7,#&7C]
+4085           	lsls	r5,r0
+F107 0308     	add	r3,r7,#8
+EB00 0080     	add.w	r0,r0,r0,lsl #2
+4315           	orrs	r5,r2
+4649           	mov	r1,r9
+EB03 0080     	add.w	r0,r3,r0,lsl #2
+67FD           	str	r5,[r7,#&7C]
+F007 FAFF     	bl	$000082F0
+E7DC           	b	$00000CAE
+
+l00000CF4:
+F8C7 3090     	str	r3,[r7,#&90]
+E7C9           	b	$00000C8E
+00000CFA                               00 BF C4 00 00 20           ..... 
 
 ;; ulTaskNotifyTake: 00000D00
 ulTaskNotifyTake proc
 B570           	push	{r4-r6,lr}
-4C18           	ldr	r4,[pc,#&60]                            ; 00000D6A
+4C18           	ldr	r4,[pc,#&60]                            ; 00000D64
 4606           	mov	r6,r0
 460D           	mov	r5,r1
-F007 FC36     	bl	$00008574
+F007 FC36     	bl	$00008578
 6863           	ldr	r3,[r4,#&4]
 6E1B           	ldr	r3,[r3,#&60]
 B923           	cbnz	r3,$00000D1C
@@ -1613,14 +1797,11 @@ l00000D12:
 2201           	mov	r2,#1
 6863           	ldr	r3,[r4,#&4]
 F883 2064     	strb	r2,[r3,#&64]
-
-l00000D18:
-2064           	mov	r0,#&64
 B9B5           	cbnz	r5,$00000D4A
 
 l00000D1C:
-F007 FC48     	bl	$000085AC
-F007 FC2A     	bl	$00008574
+F007 FC48     	bl	$000085B0
+F007 FC2A     	bl	$00008578
 6863           	ldr	r3,[r4,#&4]
 6E1D           	ldr	r5,[r3,#&60]
 B11D           	cbz	r5,$00000D32
@@ -1630,8 +1811,6 @@ B956           	cbnz	r6,$00000D42
 
 l00000D2C:
 6863           	ldr	r3,[r4,#&4]
-
-l00000D2E:
 1E6A           	sub	r2,r5,#1
 661A           	str	r2,[r3,#&60]
 
@@ -1639,7 +1818,7 @@ l00000D32:
 2200           	mov	r2,#0
 6863           	ldr	r3,[r4,#&4]
 F883 2064     	strb	r2,[r3,#&64]
-F007 FC39     	bl	$000085AC
+F007 FC39     	bl	$000085B0
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
 
@@ -1647,31 +1826,30 @@ l00000D42:
 2200           	mov	r2,#0
 6863           	ldr	r3,[r4,#&4]
 661A           	str	r2,[r3,#&60]
-E7F3           	b	$00000D2E
+E7F3           	b	$00000D32
 
-;; fn00000D4A: 00000D4A
-fn00000D4A proc
+l00000D4A:
 4628           	mov	r0,r5
-F7FF FD86     	bl	$00000858
-F04F 5280     	mov	r2,#&10000000
-4B04           	ldr	r3,[pc,#&10]                            ; 00000D6C
+F7FF FD86     	bl	$0000085C
+
+;; fn00000D4E: 00000D4E
+fn00000D4E proc
+FD86 F04F     	Invalid
+5280           	strh	r0,[r0,r2]
+4B04           	ldr	r3,[pc,#&10]                            ; 00000D68
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-E7DC           	b	$00000D18
-00000D62       00 BF C4 00 00 20                           .....        
-
-;; fn00000D68: 00000D68
-fn00000D68 proc
-ED04 E000     	Invalid
+E7DC           	b	$00000D1C
+00000D62       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; xTaskIncrementTick: 00000D6C
 xTaskIncrementTick proc
 E92D 47F0     	push.w	{r4-r10,lr}
-4C3C           	ldr	r4,[pc,#&F0]                            ; 00000E68
+4C3C           	ldr	r4,[pc,#&F0]                            ; 00000E64
 F8D4 308C     	ldr	r3,[r4,#&8C]
 2B00           	cmps	r3,#0
-D15E           	bne	$00000E34
+D15E           	bne	$00000E38
 
 l00000D7A:
 F8D4 7080     	ldr	r7,[r4,#&80]
@@ -1690,7 +1868,7 @@ F8C4 3094     	str	r3,[r4,#&94]
 6EE3           	ldr	r3,[r4,#&6C]
 681B           	ldr	r3,[r3]
 2B00           	cmps	r3,#0
-D152           	bne	$00000E42
+D152           	bne	$00000E46
 
 l00000DA0:
 F04F 33FF     	mov	r3,#&FFFFFFFF
@@ -1700,41 +1878,36 @@ l00000DA8:
 F8D4 3084     	ldr	r3,[r4,#&84]
 2600           	mov	r6,#0
 429F           	cmps	r7,r3
-D330           	blo	$00000E10
+D330           	blo	$00000E14
 
 l00000DB2:
 F04F 0901     	mov	r9,#1
-F8DF 80B0     	ldr	r8,[pc,#&B0]                             ; 00000E6E
-E023           	b	$00000E00
+F8DF 80B0     	ldr	r8,[pc,#&B0]                             ; 00000E68
+E023           	b	$00000E04
 00000DBC                                     E3 6E DB 68             .n.h
 00000DC0 DD 68 6B 6A 05 F1 24 0A 9F 42 48 D3 50 46 07 F0 .hkj..$..BH.PF..
 00000DD0 B7 FA AB 6C 05 F1 38 00 0B B1 07 F0 B1 FA E8 6C ...l..8........l
 00000DE0 E2 6F 09 FA 00 F3 00 EB 80 00 13 43 51 46 08 EB .o.........CQF..
 00000DF0 80 00 E3 67 07 F0 7C FA 63 68 EA 6C DB 6C 9A 42 ...g..|.ch.l.l.B
-
-l00000E00:
-BF28           	it	hs
-2601           	movhs	r6,#1
+00000E00 28 BF 01 26                                     (..&           
 
 l00000E04:
 6EE3           	ldr	r3,[r4,#&6C]
 681B           	ldr	r3,[r3]
 2B00           	cmps	r3,#0
-D1D7           	bne	$00000FB8
+D1D7           	bne	$00000FBC
 
 l00000E0C:
 F04F 33FF     	mov	r3,#&FFFFFFFF
-
-l00000E10:
 F8C4 3084     	str	r3,[r4,#&84]
+
+l00000E14:
 6863           	ldr	r3,[r4,#&4]
 6CDB           	ldr	r3,[r3,#&4C]
 EB03 0383     	add.w	r3,r3,r3,lsl #2
 EB04 0383     	add.w	r3,r4,r3,lsl #2
 689B           	ldr	r3,[r3,#&8]
 2B02           	cmps	r3,#2
-
-l00000E24:
 BF28           	it	hs
 2601           	movhs	r6,#1
 
@@ -1746,55 +1919,63 @@ BF18           	it	ne
 
 l00000E32:
 4630           	mov	r0,r6
-
-l00000E34:
 E8BD 87F0     	pop.w	{r4-r10,pc}
-00000E38                         D4 F8 98 30 00 26 01 33         ...0.&.3
-00000E40 C4 F8                                           ..             
 
-l00000E42:
-3098           	adds	r0,#&98
-E7F0           	b	$00000E24
-00000E46                   E3 6E 00 26 DB 68 DB 68 5B 6A       .n.&.h.h[j
-00000E50 C4 F8 84 30 D4 F8 84 30 9F 42 DB D3 A9 E7 C4 F8 ...0...0.B......
-00000E60 84 30 D7 E7 C4 00 00 20                         .0.....        
+l00000E38:
+F8D4 3098     	ldr	r3,[r4,#&98]
+2600           	mov	r6,#0
+3301           	adds	r3,#1
+F8C4 3098     	str	r3,[r4,#&98]
+E7F0           	b	$00000E28
 
-;; fn00000E68: 00000E68
-fn00000E68 proc
-00CC           	lsls	r4,r1,#3
-2000           	mov	r0,#0
+l00000E46:
+6EE3           	ldr	r3,[r4,#&6C]
+2600           	mov	r6,#0
+68DB           	ldr	r3,[r3,#&C]
+68DB           	ldr	r3,[r3,#&C]
+6A5B           	ldr	r3,[r3,#&24]
+F8C4 3084     	str	r3,[r4,#&84]
+F8D4 3084     	ldr	r3,[r4,#&84]
+429F           	cmps	r7,r3
+D3DB           	blo	$00001014
+
+l00000E5C:
+E7A9           	b	$00000DB2
+00000E5E                                           C4 F8               ..
+00000E60 84 30 D7 E7 C4 00 00 20 CC 00 00 20             .0..... ...    
 
 ;; xTaskResumeAll: 00000E6C
 xTaskResumeAll proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4C33           	ldr	r4,[pc,#&CC]                            ; 00000F44
-F007 FB81     	bl	$00008574
+4C33           	ldr	r4,[pc,#&CC]                            ; 00000F40
+F007 FB81     	bl	$00008578
 F8D4 308C     	ldr	r3,[r4,#&8C]
 3B01           	subs	r3,#1
 F8C4 308C     	str	r3,[r4,#&8C]
 F8D4 508C     	ldr	r5,[r4,#&8C]
 2D00           	cmps	r5,#0
-D14E           	bne	$00000F22
+D14E           	bne	$00000F26
 
 l00000E88:
 6823           	ldr	r3,[r4]
 2B00           	cmps	r3,#0
-D04B           	beq	$00000F22
+D04B           	beq	$00000F26
 
-l00000E8E:
+;; fn00000E8E: 00000E8E
+fn00000E8E proc
 2601           	mov	r6,#1
 F104 0708     	add	r7,r4,#8
-E01E           	b	$00000ED0
+E01E           	b	$00000ED4
 00000E96                   63 6E DD 68 05 F1 24 08 05 F1       cn.h..$...
 00000EA0 38 00 07 F0 4D FA 40 46 07 F0 4A FA E8 6C E2 6F 8...M.@F..J..l.o
 00000EB0 06 FA 00 F3 00 EB 80 00 13 43 41 46 07 EB 80 00 .........CAF....
 00000EC0 E3 67 07 F0 15 FA 63 68 EA 6C DB 6C 9A 42 28 BF .g....ch.l.l.B(.
+00000ED0 C4 F8 90 60                                     ...`           
 
-l00000ED0:
-F8C4 6090     	str	r6,[r4,#&90]
+l00000ED4:
 6DA3           	ldr	r3,[r4,#&58]
 2B00           	cmps	r3,#0
-D1DD           	bne	$00001092
+D1DD           	bne	$00001096
 
 l00000EDA:
 B135           	cbz	r5,$00000EEA
@@ -1806,8 +1987,6 @@ BB3B           	cbnz	r3,$00000F32
 
 l00000EE2:
 F04F 33FF     	mov	r3,#&FFFFFFFF
-
-l00000EE6:
 F8C4 3084     	str	r3,[r4,#&84]
 
 l00000EEA:
@@ -1816,7 +1995,7 @@ B14D           	cbz	r5,$00000F04
 
 l00000EF0:
 2601           	mov	r6,#1
-F7FF FF3B     	bl	$00000D68
+F7FF FF3B     	bl	$00000D6C
 B108           	cbz	r0,$00000EFC
 
 l00000EF8:
@@ -1824,7 +2003,7 @@ F8C4 6090     	str	r6,[r4,#&90]
 
 l00000EFC:
 3D01           	subs	r5,#1
-D1F8           	bne	$000010EE
+D1F8           	bne	$000010F2
 
 l00000F00:
 F8C4 5098     	str	r5,[r4,#&98]
@@ -1835,20 +2014,18 @@ B16B           	cbz	r3,$00000F26
 
 l00000F0A:
 F04F 5280     	mov	r2,#&10000000
-4B0D           	ldr	r3,[pc,#&34]                            ; 00000F4A
+4B0D           	ldr	r3,[pc,#&34]                            ; 00000F44
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 2401           	mov	r4,#1
-F007 FB48     	bl	$000085AC
+F007 FB48     	bl	$000085B0
 4620           	mov	r0,r4
-
-l00000F22:
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
 l00000F26:
 2400           	mov	r4,#0
-F007 FB42     	bl	$000085AC
+F007 FB42     	bl	$000085B0
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -1858,12 +2035,8 @@ l00000F32:
 68DB           	ldr	r3,[r3,#&C]
 6A5B           	ldr	r3,[r3,#&24]
 F8C4 3084     	str	r3,[r4,#&84]
-E7D4           	b	$00000EE6
-00000F40 C4 00 00 20                                     ...            
-
-;; fn00000F44: 00000F44
-fn00000F44 proc
-ED04 E000     	Invalid
+E7D4           	b	$00000EEA
+00000F40 C4 00 00 20 04 ED 00 E0                         ... ....       
 
 ;; vTaskDelay: 00000F48
 vTaskDelay proc
@@ -1872,34 +2045,29 @@ B940           	cbnz	r0,$00000F5E
 
 l00000F4C:
 F04F 5280     	mov	r2,#&10000000
-4B09           	ldr	r3,[pc,#&24]                            ; 00000F7C
+4B09           	ldr	r3,[pc,#&24]                            ; 00000F78
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 BD08           	pop	{r3,pc}
 
 l00000F5E:
-4A07           	ldr	r2,[pc,#&1C]                            ; 00000F82
+4A07           	ldr	r2,[pc,#&1C]                            ; 00000F7C
 F8D2 308C     	ldr	r3,[r2,#&8C]
 3301           	adds	r3,#1
 F8C2 308C     	str	r3,[r2,#&8C]
-F7FF FC77     	bl	$00000858
-F7FF FF7D     	bl	$00000E68
+F7FF FC77     	bl	$0000085C
+F7FF FF7D     	bl	$00000E6C
 2800           	cmps	r0,#0
-D0EA           	beq	$00001148
+D0EA           	beq	$0000114C
 
 l00000F76:
 BD08           	pop	{r3,pc}
-00000F78                         04 ED 00 E0                     ....   
-
-;; fn00000F7C: 00000F7C
-fn00000F7C proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00000F78                         04 ED 00 E0 C4 00 00 20         ....... 
 
 ;; vTaskDelayUntil: 00000F80
 vTaskDelayUntil proc
-4A14           	ldr	r2,[pc,#&50]                            ; 00000FD8
+4A14           	ldr	r2,[pc,#&50]                            ; 00000FD4
 B510           	push	{r4,lr}
 F8D2 408C     	ldr	r4,[r2,#&8C]
 6803           	ldr	r3,[r0]
@@ -1908,46 +2076,42 @@ F8C2 408C     	str	r4,[r2,#&8C]
 F8D2 2080     	ldr	r2,[r2,#&80]
 4419           	adds	r1,r3
 429A           	cmps	r2,r3
-D20E           	bhs	$00000FB4
+D20E           	bhs	$00000FB8
 
 l00000F9A:
 428B           	cmps	r3,r1
-D80E           	bhi	$00000FB8
+D80E           	bhi	$00000FBC
 
 l00000F9E:
 6001           	str	r1,[r0]
-F7FF FF64     	bl	$00000E68
+F7FF FF64     	bl	$00000E6C
 B9A0           	cbnz	r0,$00000FD0
 
 l00000FA6:
 F04F 5280     	mov	r2,#&10000000
-4B0B           	ldr	r3,[pc,#&2C]                            ; 00000FDE
+4B0B           	ldr	r3,[pc,#&2C]                            ; 00000FD8
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-
-l00000FB4:
-8F6F           	ldrh	r7,[r5,#&74]
-
-l00000FB6:
 BD10           	pop	{r4,pc}
 
-;; fn00000FB8: 00000FB8
-fn00000FB8 proc
+l00000FB8:
 428B           	cmps	r3,r1
-D801           	bhi	$00000FBC
+D801           	bhi	$00000FC0
 
-l00000FBC:
+;; fn00000FBC: 00000FBC
+fn00000FBC proc
 428A           	cmps	r2,r1
-D2EE           	bhs	$0000119A
+D2EE           	bhs	$0000119E
 
-l00000FC0:
+;; fn00000FC0: 00000FC0
+fn00000FC0 proc
 6001           	str	r1,[r0]
 1A88           	sub	r0,r1,r2
-F7FF FC4A     	bl	$00000858
-F7FF FF50     	bl	$00000E68
+F7FF FC4A     	bl	$0000085C
+F7FF FF50     	bl	$00000E6C
 2800           	cmps	r0,#0
-D0EA           	beq	$000011A2
+D0EA           	beq	$000011A6
 
 l00000FD0:
 BD10           	pop	{r4,pc}
@@ -1957,56 +2121,54 @@ BD10           	pop	{r4,pc}
 vTaskPlaceOnEventList proc
 B510           	push	{r4,lr}
 460C           	mov	r4,r1
-4B04           	ldr	r3,[pc,#&10]                            ; 00000FF8
+4B04           	ldr	r3,[pc,#&10]                            ; 00000FF4
 6859           	ldr	r1,[r3,#&4]
 3138           	adds	r1,#&38
-F007 F991     	bl	$00008308
+F007 F991     	bl	$0000830C
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-E434           	b	$00000858
-00000FF2       00 BF                                       ..           
-
-;; fn00000FF4: 00000FF4
-fn00000FF4 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+E434           	b	$0000085C
+00000FF2       00 BF C4 00 00 20                           .....        
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF8
 vTaskPlaceOnUnorderedEventList proc
 B538           	push	{r3-r5,lr}
 4614           	mov	r4,r2
-4B06           	ldr	r3,[pc,#&18]                            ; 0000101C
+4B06           	ldr	r3,[pc,#&18]                            ; 00001018
 F041 4100     	orr	r1,r1,#&80000000
 685D           	ldr	r5,[r3,#&4]
 685B           	ldr	r3,[r3,#&4]
 63A9           	str	r1,[r5,#&38]
 F103 0138     	add	r1,r3,#&38
-F007 F970     	bl	$000082EC
+F007 F970     	bl	$000082F0
 4620           	mov	r0,r4
 E8BD 4038     	pop.w	{r3-r5,lr}
-E421           	b	$00000858
 
-;; fn00001018: 00001018
-fn00001018 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+;; fn00001014: 00001014
+fn00001014 proc
+4038           	ands	r0,r7
+
+;; fn00001016: 00001016
+fn00001016 proc
+E421           	b	$0000085C
+00001018                         C4 00 00 20                     ...    
 
 ;; xTaskRemoveFromEventList: 0000101C
 xTaskRemoveFromEventList proc
 B5F8           	push	{r3-r7,lr}
 68C3           	ldr	r3,[r0,#&C]
-4C16           	ldr	r4,[pc,#&58]                            ; 00001080
+4C16           	ldr	r4,[pc,#&58]                            ; 0000107C
 68DD           	ldr	r5,[r3,#&C]
 F105 0638     	add	r6,r5,#&38
 4630           	mov	r0,r6
-F007 F989     	bl	$0000833C
+F007 F989     	bl	$00008340
 F8D4 308C     	ldr	r3,[r4,#&8C]
 B9EB           	cbnz	r3,$00001070
 
 l00001034:
 F105 0624     	add	r6,r5,#&24
 4630           	mov	r0,r6
-F007 F981     	bl	$0000833C
+F007 F981     	bl	$00008340
 2301           	mov	r3,#1
 6CE8           	ldr	r0,[r5,#&4C]
 6FE7           	ldr	r7,[r4,#&7C]
@@ -2017,9 +2179,9 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4631           	mov	r1,r6
 EB02 0080     	add.w	r0,r2,r0,lsl #2
 67E3           	str	r3,[r4,#&7C]
+F007 F94A     	bl	$000082F0
 
-l00001058:
-F007 F94A     	bl	$000082EC
+l0000105C:
 6863           	ldr	r3,[r4,#&4]
 6CEA           	ldr	r2,[r5,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
@@ -2035,13 +2197,9 @@ BDF8           	pop	{r3-r7,pc}
 l00001070:
 4631           	mov	r1,r6
 F104 0058     	add	r0,r4,#&58
-F007 F93B     	bl	$000082EC
-E7EF           	b	$00001058
-
-;; fn0000107C: 0000107C
-fn0000107C proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+F007 F93B     	bl	$000082F0
+E7EF           	b	$0000105C
+0000107C                                     C4 00 00 20             ... 
 
 ;; xTaskRemoveFromUnorderedEventList: 00001080
 xTaskRemoveFromUnorderedEventList proc
@@ -2051,13 +2209,13 @@ B5F8           	push	{r3-r7,lr}
 F041 4100     	orr	r1,r1,#&80000000
 6001           	str	r1,[r0]
 F106 0724     	add	r7,r6,#&24
-F007 F956     	bl	$0000833C
+F007 F956     	bl	$00008340
+4C0F           	ldr	r4,[pc,#&3C]                            ; 000010D4
 
-;; fn00001092: 00001092
-fn00001092 proc
-F956 4C0F     	Invalid
+;; fn00001096: 00001096
+fn00001096 proc
 4638           	mov	r0,r7
-F007 F952     	bl	$0000833C
+F007 F952     	bl	$00008340
 6CF3           	ldr	r3,[r6,#&4C]
 F8D4 E07C     	ldr	lr,[r4,#&7C]
 FA05 F203     	lsl	r2,r5,r3
@@ -2067,7 +2225,7 @@ EB00 0083     	add.w	r0,r0,r3,lsl #2
 EA42 020E     	orr	r2,r2,lr
 4639           	mov	r1,r7
 67E2           	str	r2,[r4,#&7C]
-F007 F919     	bl	$000082EC
+F007 F919     	bl	$000082F0
 6863           	ldr	r3,[r4,#&4]
 6CF2           	ldr	r2,[r6,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
@@ -2079,16 +2237,11 @@ l000010CA:
 F8C4 5090     	str	r5,[r4,#&90]
 2000           	mov	r0,#0
 BDF8           	pop	{r3-r7,pc}
-000010D2       00 BF                                       ..           
-
-;; fn000010D4: 000010D4
-fn000010D4 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+000010D2       00 BF C4 00 00 20                           .....        
 
 ;; vTaskSwitchContext: 000010D8
 vTaskSwitchContext proc
-4A10           	ldr	r2,[pc,#&40]                            ; 00001120
+4A10           	ldr	r2,[pc,#&40]                            ; 0000111C
 F8D2 308C     	ldr	r3,[r2,#&8C]
 B9C3           	cbnz	r3,$00001112
 
@@ -2098,11 +2251,13 @@ F8C2 3090     	str	r3,[r2,#&90]
 FAB3 F383     	clz	r3,r3
 B2DB           	uxtb	r3,r3
 F1C3 031F     	rsb	r3,r3,#&1F
-
-;; fn000010EE: 000010EE
-fn000010EE proc
-031F           	lsls	r7,r3,#&C
 EB03 0383     	add.w	r3,r3,r3,lsl #2
+
+l000010F2:
+0383           	lsls	r3,r0,#&E
+
+;; fn000010F4: 000010F4
+fn000010F4 proc
 009B           	lsls	r3,r3,#2
 18D0           	add	r0,r2,r3
 4603           	mov	r3,r0
@@ -2128,16 +2283,11 @@ l00001112:
 2301           	mov	r3,#1
 F8C2 3090     	str	r3,[r2,#&90]
 4770           	bx	lr
-0000111A                               00 BF                       ..   
-
-;; fn0000111C: 0000111C
-fn0000111C proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+0000111A                               00 BF C4 00 00 20           ..... 
 
 ;; uxTaskResetEventItemValue: 00001120
 uxTaskResetEventItemValue proc
-4B04           	ldr	r3,[pc,#&10]                            ; 00001138
+4B04           	ldr	r3,[pc,#&10]                            ; 00001134
 6859           	ldr	r1,[r3,#&4]
 685A           	ldr	r2,[r3,#&4]
 685B           	ldr	r3,[r3,#&4]
@@ -2146,63 +2296,51 @@ uxTaskResetEventItemValue proc
 F1C3 0302     	rsb	r3,r3,#2
 6393           	str	r3,[r2,#&38]
 4770           	bx	lr
-
-;; fn00001134: 00001134
-fn00001134 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00001134             C4 00 00 20                             ...        
 
 ;; xTaskGetCurrentTaskHandle: 00001138
 xTaskGetCurrentTaskHandle proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00001144
+4B01           	ldr	r3,[pc,#&4]                             ; 00001140
 6858           	ldr	r0,[r3,#&4]
 4770           	bx	lr
 0000113E                                           00 BF               ..
-
-;; fn00001140: 00001140
-fn00001140 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00001140 C4 00 00 20                                     ...            
 
 ;; vTaskSetTimeOutState: 00001144
 vTaskSetTimeOutState proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00001158
+4B03           	ldr	r3,[pc,#&C]                             ; 00001154
 F8D3 2094     	ldr	r2,[r3,#&94]
-
-l00001148:
-2094           	mov	r0,#&94
 F8D3 3080     	ldr	r3,[r3,#&80]
+
+l0000114C:
+3080           	adds	r0,#&80
 E880 000C     	stm	r0,{r2-r3}
 4770           	bx	lr
-
-;; fn00001154: 00001154
-fn00001154 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00001154             C4 00 00 20                             ...        
 
 ;; xTaskCheckForTimeOut: 00001158
 xTaskCheckForTimeOut proc
 B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
 460E           	mov	r6,r1
-F007 FA0B     	bl	$00008574
-4B11           	ldr	r3,[pc,#&44]                            ; 000011AE
+F007 FA0B     	bl	$00008578
+4B11           	ldr	r3,[pc,#&44]                            ; 000011A8
 6821           	ldr	r1,[r4]
 F8D3 5080     	ldr	r5,[r3,#&80]
 F8D3 2094     	ldr	r2,[r3,#&94]
 6860           	ldr	r0,[r4,#&4]
 4291           	cmps	r1,r2
-D001           	beq	$00001174
+D001           	beq	$00001178
 
 l00001174:
 4285           	cmps	r5,r0
-D211           	bhs	$00001198
+D211           	bhs	$0000119C
 
 l00001178:
 6832           	ldr	r2,[r6]
 1A29           	sub	r1,r5,r0
 4291           	cmps	r1,r2
-D20D           	bhs	$00001198
+D20D           	bhs	$0000119C
 
 l00001180:
 1B52           	sub	r2,r2,r5
@@ -2212,30 +2350,28 @@ F8D3 3080     	ldr	r3,[r3,#&80]
 4402           	adds	r2,r0
 6032           	str	r2,[r6]
 E884 000A     	stm	r4,{r1,r3}
-F007 FA0C     	bl	$000085AC
-
-l00001198:
-4628           	mov	r0,r5
-
-l0000119A:
-BD70           	pop	{r4-r6,pc}
-0000119C                                     01 25 07 F0             .%..
-000011A0 07 FA                                           ..             
-
-l000011A2:
+F007 FA0C     	bl	$000085B0
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
-000011A6                   00 BF                               ..       
 
-;; fn000011A8: 000011A8
-fn000011A8 proc
+l0000119C:
+2501           	mov	r5,#1
+
+;; fn0000119E: 0000119E
+fn0000119E proc
+F007 FA07     	bl	$000085B0
+4628           	mov	r0,r5
+BD70           	pop	{r4-r6,pc}
+
+l000011A6:
+BF00           	nop
 00C4           	lsls	r4,r0,#3
 2000           	mov	r0,#0
 
 ;; vTaskMissedYield: 000011AC
 vTaskMissedYield proc
 2201           	mov	r2,#1
-4B02           	ldr	r3,[pc,#&8]                             ; 000011BE
+4B02           	ldr	r3,[pc,#&8]                             ; 000011B8
 F8C3 2090     	str	r2,[r3,#&90]
 4770           	bx	lr
 000011B6                   00 BF C4 00 00 20                   .....    
@@ -2243,63 +2379,88 @@ F8C3 2090     	str	r2,[r3,#&90]
 ;; vTaskPriorityInherit: 000011BC
 vTaskPriorityInherit proc
 2800           	cmps	r0,#0
-D042           	beq	$00001242
+D042           	beq	$00001246
 
 l000011C0:
 B5F8           	push	{r3-r7,lr}
-4C21           	ldr	r4,[pc,#&84]                            ; 0000124E
+4C21           	ldr	r4,[pc,#&84]                            ; 00001248
 6CC3           	ldr	r3,[r0,#&4C]
 6862           	ldr	r2,[r4,#&4]
 6CD2           	ldr	r2,[r2,#&4C]
 4293           	cmps	r3,r2
-D212           	bhs	$000011F0
+D212           	bhs	$000011F4
 
 l000011CE:
 6B82           	ldr	r2,[r0,#&38]
 2A00           	cmps	r2,#0
-DB04           	blt	$000011DA
+DB04           	blt	$000011DE
 
 l000011D4:
 6862           	ldr	r2,[r4,#&4]
 6CD2           	ldr	r2,[r2,#&4C]
 F1C2 0202     	rsb	r2,r2,#2
-
-l000011DA:
-0202           	lsls	r2,r0,#8
-
-l000011DC:
 6382           	str	r2,[r0,#&38]
-4D1B           	ldr	r5,[pc,#&6C]                            ; 00001252
+
+l000011DE:
+4D1B           	ldr	r5,[pc,#&6C]                            ; 0000124C
 EB03 0383     	add.w	r3,r3,r3,lsl #2
 6B42           	ldr	r2,[r0,#&34]
 EB05 0383     	add.w	r3,r5,r3,lsl #2
 429A           	cmps	r2,r3
-D003           	beq	$000011F2
+D003           	beq	$000011F6
 
 l000011EE:
 6863           	ldr	r3,[r4,#&4]
-
-l000011F0:
 6CDB           	ldr	r3,[r3,#&4C]
-
-l000011F2:
 64C3           	str	r3,[r0,#&4C]
-BDF8           	pop	{r3-r7,pc}
-000011F6                   00 F1 24 07 06 46 38 46 07 F0       ..$..F8F..
-00001200 9F F8 68 B9 F2 6C 02 EB 82 03 04 EB 83 03 9B 68 ..h..l.........h
-00001210 33 B9 01 21 E3 6F 01 FA 02 F2 23 EA 02 02 E2 67 3..!.o....#....g
-00001220 01 23 62 68 D4 F8 7C E0 D2 6C 39 46 93 40 43 EA .#bh..|..l9F.@C.
-00001230 0E 03 02 EB 82 00 F2 64 05 EB 80 00 E3 67 BD E8 .......d.....g..
-00001240 F8 40                                           .@             
 
-l00001242:
-F007 B855     	b	$00C082EC
-00001246                   70 47 C4 00 00 20 CC 00 00 20       pG... ... 
+l000011F4:
+BDF8           	pop	{r3-r7,pc}
+
+l000011F6:
+F100 0724     	add	r7,r0,#&24
+4606           	mov	r6,r0
+4638           	mov	r0,r7
+F007 F89F     	bl	$00008340
+B968           	cbnz	r0,$00001220
+
+l00001204:
+6CF2           	ldr	r2,[r6,#&4C]
+EB02 0382     	add.w	r3,r2,r2,lsl #2
+EB04 0383     	add.w	r3,r4,r3,lsl #2
+689B           	ldr	r3,[r3,#&8]
+B933           	cbnz	r3,$00001220
+
+l00001212:
+2101           	mov	r1,#1
+6FE3           	ldr	r3,[r4,#&7C]
+FA01 F202     	lsl	r2,r1,r2
+EA23 0202     	bic.w	r2,r3,r2
+67E2           	str	r2,[r4,#&7C]
+
+l00001220:
+2301           	mov	r3,#1
+6862           	ldr	r2,[r4,#&4]
+F8D4 E07C     	ldr	lr,[r4,#&7C]
+6CD2           	ldr	r2,[r2,#&4C]
+4639           	mov	r1,r7
+4093           	lsls	r3,r2
+EA43 030E     	orr	r3,r3,lr
+EB02 0082     	add.w	r0,r2,r2,lsl #2
+64F2           	str	r2,[r6,#&4C]
+EB05 0080     	add.w	r0,r5,r0,lsl #2
+67E3           	str	r3,[r4,#&7C]
+E8BD 40F8     	pop.w	{r3-r7,lr}
+F007 B855     	b	$000082F0
+
+l00001246:
+4770           	bx	lr
+00001248                         C4 00 00 20 CC 00 00 20         ... ... 
 
 ;; xTaskPriorityDisinherit: 00001250
 xTaskPriorityDisinherit proc
 2800           	cmps	r0,#0
-D039           	beq	$000012C4
+D039           	beq	$000012C8
 
 l00001254:
 B5F8           	push	{r3-r7,lr}
@@ -2309,9 +2470,7 @@ B5F8           	push	{r3-r7,lr}
 3B01           	subs	r3,#1
 4291           	cmps	r1,r2
 65C3           	str	r3,[r0,#&5C]
-
-l00001262:
-D000           	beq	$00001262
+D000           	beq	$00001266
 
 l00001264:
 B10B           	cbz	r3,$0000126A
@@ -2324,12 +2483,12 @@ l0000126A:
 F100 0724     	add	r7,r0,#&24
 4604           	mov	r4,r0
 4638           	mov	r0,r7
-F007 F865     	bl	$0000833C
+F007 F865     	bl	$00008340
 B978           	cbnz	r0,$00001298
 
 l00001278:
 6CE1           	ldr	r1,[r4,#&4C]
-4A14           	ldr	r2,[pc,#&50]                            ; 000012D2
+4A14           	ldr	r2,[pc,#&50]                            ; 000012CC
 EB01 0381     	add.w	r3,r1,r1,lsl #2
 EB02 0383     	add.w	r3,r2,r3,lsl #2
 689B           	ldr	r3,[r3,#&8]
@@ -2341,18 +2500,16 @@ l00001288:
 FA00 F101     	lsl	r1,r0,r1
 EA23 0101     	bic.w	r1,r3,r1
 67D1           	str	r1,[r2,#&7C]
-
-l00001296:
-E000           	b	$00001296
+E000           	b	$0000129A
 
 l00001298:
-4A0C           	ldr	r2,[pc,#&30]                            ; 000012D0
+4A0C           	ldr	r2,[pc,#&30]                            ; 000012CC
 
 l0000129A:
 2501           	mov	r5,#1
 6DA3           	ldr	r3,[r4,#&58]
 F8D2 E07C     	ldr	lr,[r2,#&7C]
-480B           	ldr	r0,[pc,#&2C]                            ; 000012D6
+480B           	ldr	r0,[pc,#&2C]                            ; 000012D0
 FA05 F603     	lsl	r6,r5,r3
 4639           	mov	r1,r7
 64E3           	str	r3,[r4,#&4C]
@@ -2362,17 +2519,19 @@ EA46 060E     	orr	r6,r6,lr
 EB00 0083     	add.w	r0,r0,r3,lsl #2
 63A7           	str	r7,[r4,#&38]
 67D6           	str	r6,[r2,#&7C]
-F007 F816     	bl	$000082EC
-
-l000012C4:
+F007 F816     	bl	$000082F0
 4628           	mov	r0,r5
 BDF8           	pop	{r3-r7,pc}
-000012C8                         00 20 70 47 C4 00 00 20         . pG... 
+
+l000012C8:
+2000           	mov	r0,#0
+4770           	bx	lr
+000012CC                                     C4 00 00 20             ... 
 000012D0 CC 00 00 20                                     ...            
 
 ;; pvTaskIncrementMutexHeldCount: 000012D4
 pvTaskIncrementMutexHeldCount proc
-4B04           	ldr	r3,[pc,#&10]                            ; 000012EC
+4B04           	ldr	r3,[pc,#&10]                            ; 000012E8
 685A           	ldr	r2,[r3,#&4]
 B11A           	cbz	r2,$000012E2
 
@@ -2385,24 +2544,19 @@ l000012DA:
 l000012E2:
 6858           	ldr	r0,[r3,#&4]
 4770           	bx	lr
-000012E6                   00 BF C4 00 00 20                   .....    
-
-;; fn000012EC: 000012EC
-fn000012EC proc
-0000           	mov	r0,r0
-0000           	mov	r0,r0
+000012E6                   00 BF C4 00 00 20 00 00 00 00       ..... ....
 
 ;; prvRestoreContextOfFirstTask: 000012F0
 prvRestoreContextOfFirstTask proc
-F8DF 0430     	ldr	r0,[pc,#&430]                            ; 00001728
+F8DF 0430     	ldr	r0,[pc,#&430]                            ; 00001724
 6800           	ldr	r0,[r0]
 6800           	ldr	r0,[r0]
 F380 8808     	msr	cpsr,r0
-4B0C           	ldr	r3,[pc,#&30]                            ; 00001334
+4B0C           	ldr	r3,[pc,#&30]                            ; 00001330
 6819           	ldr	r1,[r3]
 6808           	ldr	r0,[r1]
 F101 0104     	add	r1,r1,#4
-F8DF 2420     	ldr	r2,[pc,#&420]                            ; 0000172E
+F8DF 2420     	ldr	r2,[pc,#&420]                            ; 00001728
 E8B1 0FF0     	ldm	r1!,{r4-fp}
 E8A2 0FF0     	stm	r2!,{r4-fp}
 E8B0 0FF8     	ldm	r0!,{r3-fp}
@@ -2413,47 +2567,46 @@ F380 8811     	msr	cpsr,r0
 F06F 0E02     	mvn	lr,#2
 4770           	bx	lr
 0000132C                                     AF F3 00 80             ....
-
-;; fn00001330: 00001330
-fn00001330 proc
-00C8           	lsls	r0,r1,#3
-2000           	mov	r0,#0
+00001330 C8 00 00 20                                     ...            
 
 ;; prvSVCHandler: 00001334
 prvSVCHandler proc
 6983           	ldr	r3,[r0,#&18]
 F813 3C02     	ldrb.w	r3,[r3,-#&2]
 2B01           	cmps	r3,#1
-D010           	beq	$0000135C
+D010           	beq	$00001360
 
 l0000133E:
-D309           	blo	$00001350
+D309           	blo	$00001354
 
 l00001340:
 2B02           	cmps	r3,#2
-D106           	bne	$0000134E
+D106           	bne	$00001352
 
 l00001344:
 F3EF 8114     	mrs	r1,cpsr
 F021 0101     	bic	r1,r1,#1
 F381 8814     	msr	cpsr,r1
-
-l0000134E:
-8814           	ldrh	r4,[r2]
-
-l00001350:
 4770           	bx	lr
-00001352       70 47 07 4A 13 68 43 F0 3E 43               pG.J.hC.>C   
 
-l0000135C:
+l00001352:
+4770           	bx	lr
+
+l00001354:
+4A07           	ldr	r2,[pc,#&1C]                            ; 00001374
+6813           	ldr	r3,[r2]
+F043 433E     	orr	r3,r3,#&BE000000
 6013           	str	r3,[r2]
-E7C7           	b	$000012EC
-00001360 4F F0 80 52 04 4B 1A 60 BF F3 4F 8F BF F3 6F 8F O..R.K.`..O...o.
-00001370 70 47 00 BF 1C ED 00 E0                         pG......       
+E7C7           	b	$000012F0
 
-;; fn00001378: 00001378
-fn00001378 proc
-ED04 E000     	Invalid
+l00001360:
+F04F 5280     	mov	r2,#&10000000
+4B04           	ldr	r3,[pc,#&10]                            ; 00001378
+601A           	str	r2,[r3]
+F3BF 8F4F     	dsb	sy
+F3BF 8F6F     	isb	sy
+4770           	bx	lr
+00001372       00 BF 1C ED 00 E0 04 ED 00 E0               ..........   
 
 ;; pxPortInitialiseStack: 0000137C
 pxPortInitialiseStack proc
@@ -2482,10 +2635,10 @@ BC30           	pop	{r4-r5}
 
 ;; xPortStartScheduler: 000013B0
 xPortStartScheduler proc
-4B4D           	ldr	r3,[pc,#&134]                           ; 000014EC
+4B4D           	ldr	r3,[pc,#&134]                           ; 000014E8
 B470           	push	{r4-r6}
 681A           	ldr	r2,[r3]
-494D           	ldr	r1,[pc,#&134]                           ; 000014F2
+494D           	ldr	r1,[pc,#&134]                           ; 000014EC
 F442 027F     	orr	r2,r2,#&FF0000
 601A           	str	r2,[r3]
 681A           	ldr	r2,[r3]
@@ -2493,19 +2646,19 @@ F042 427F     	orr	r2,r2,#&FF000000
 601A           	str	r2,[r3]
 680B           	ldr	r3,[r1]
 F5B3 6F00     	cmp	r3,#&800
-D018           	beq	$000013FC
+D018           	beq	$00001400
 
 l000013CE:
 F644 651F     	mov	r5,#&4E1F
 2107           	mov	r1,#7
 2000           	mov	r0,#0
-4C46           	ldr	r4,[pc,#&118]                           ; 000014F6
-4A46           	ldr	r2,[pc,#&118]                           ; 000014F8
-4B47           	ldr	r3,[pc,#&11C]                           ; 000014FE
+4C46           	ldr	r4,[pc,#&118]                           ; 000014F0
+4A46           	ldr	r2,[pc,#&118]                           ; 000014F4
+4B47           	ldr	r3,[pc,#&11C]                           ; 000014F8
 6025           	str	r5,[r4]
 6011           	str	r1,[r2]
 6018           	str	r0,[r3]
-48D0           	ldr	r0,[pc,#&340]                           ; 0000172A
+48D0           	ldr	r0,[pc,#&340]                           ; 00001724
 6800           	ldr	r0,[r0]
 6800           	ldr	r0,[r0]
 F380 8808     	msr	cpsr,r0
@@ -2515,25 +2668,139 @@ F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 DF00           	svc	#0
 BF00           	nop
-
-l000013FC:
 BC70           	pop	{r4-r6}
 4770           	bx	lr
-00001400 3E 48 3F 49 3F 4B 09 1A 40 F0 10 02 20 29 1A 60 >H?I?K..@... ).`
-00001410 65 D9 40 23 05 22 02 E0 01 32 1F 2A 57 D0 99 42 e.@#."...2.*W..B
-00001420 4F EA 43 03 F8 D8 38 4B 43 EA 42 02 37 49 38 4C O.C...8KC.B.7I8L
-00001430 09 1A 34 4B 40 F0 11 00 20 29 22 60 18 60 4C D9 ..4K@... )"`.`L.
-00001440 40 23 05 22 02 E0 01 32 1F 2A 42 D0 99 42 4F EA @#."...2.*B..BO.
-00001450 43 03 F8 D8 2F 4B 43 EA 42 02 2F 4B 2F 49 2C 4D C.../KC.B./K/I,M
-00001460 28 48 C9 1A 43 F0 12 04 20 29 2A 60 04 60 38 D9 (H..C... )*`.`8.
-00001470 40 23 05 22 02 E0 01 32 1F 2A 2C D0 99 42 4F EA @#."...2.*,..BO.
-00001480 43 03 F8 D8 26 48 40 EA 42 00 05 23 40 22 20 4E C...&H@.B..#@" N
-00001490 1C 4C 24 4D 24 49 30 60 25 60 01 33 1F 2B 4F EA .L$M$I0`%`.3.+O.
-000014A0 42 02 12 D0 8A 42 F8 D9 20 4A 42 EA 43 03 18 4A B....B.. JB.C..J
-000014B0 1F 49 13 60 0B 68 43 F4 80 33 0B 60 52 F8 0C 3C .I.`.hC..3.`R..<
-000014C0 43 F0 05 03 42 F8 0C 3C 81 E7 1A 4B EF E7 1A 4A C...B..<...K...J
-000014D0 AC E7 1A 4A C1 E7 1A 48 D7 E7 1A 4A BD E7 1A 4A ...J...H...J...J
-000014E0 A4 E7 1A 48 D1 E7 00 BF 20 ED 00 E0 90 ED 00 E0 ...H.... .......
+
+l00001400:
+483E           	ldr	r0,[pc,#&F8]                            ; 000014FC
+493F           	ldr	r1,[pc,#&FC]                            ; 00001500
+4B3F           	ldr	r3,[pc,#&FC]                            ; 00001504
+1A09           	sub	r1,r1,r0
+F040 0210     	orr	r2,r0,#&10
+2920           	cmps	r1,#&20
+601A           	str	r2,[r3]
+D965           	bls	$000014DE
+
+l00001412:
+2340           	mov	r3,#&40
+2205           	mov	r2,#5
+E002           	b	$0000141E
+00001418                         01 32 1F 2A 57 D0               .2.*W. 
+
+l0000141E:
+4299           	cmps	r1,r3
+EA4F 0343     	mov.w	r3,r3,lsl #1
+D8F8           	bhi	$00001618
+
+l00001426:
+4B38           	ldr	r3,[pc,#&E0]                            ; 00001508
+EA43 0242     	orr	r2,r3,r2,lsl #1
+
+l0000142C:
+4937           	ldr	r1,[pc,#&DC]                            ; 0000150C
+4C38           	ldr	r4,[pc,#&E0]                            ; 00001510
+1A09           	sub	r1,r1,r0
+4B34           	ldr	r3,[pc,#&D0]                            ; 00001504
+F040 0011     	orr	r0,r0,#&11
+2920           	cmps	r1,#&20
+6022           	str	r2,[r4]
+6018           	str	r0,[r3]
+D94C           	bls	$000014DA
+
+l00001440:
+2340           	mov	r3,#&40
+2205           	mov	r2,#5
+E002           	b	$0000144C
+00001446                   01 32 1F 2A 42 D0                   .2.*B.   
+
+l0000144C:
+4299           	cmps	r1,r3
+EA4F 0343     	mov.w	r3,r3,lsl #1
+D8F8           	bhi	$00001646
+
+l00001454:
+4B2F           	ldr	r3,[pc,#&BC]                            ; 00001514
+EA43 0242     	orr	r2,r3,r2,lsl #1
+
+l0000145A:
+4B2F           	ldr	r3,[pc,#&BC]                            ; 00001518
+492F           	ldr	r1,[pc,#&BC]                            ; 0000151C
+4D2C           	ldr	r5,[pc,#&B0]                            ; 00001510
+4828           	ldr	r0,[pc,#&A0]                            ; 00001504
+1AC9           	sub	r1,r1,r3
+F043 0412     	orr	r4,r3,#&12
+2920           	cmps	r1,#&20
+602A           	str	r2,[r5]
+6004           	str	r4,[r0]
+D938           	bls	$000014E2
+
+l00001470:
+2340           	mov	r3,#&40
+2205           	mov	r2,#5
+E002           	b	$0000147C
+00001476                   01 32 1F 2A 2C D0                   .2.*,.   
+
+l0000147C:
+4299           	cmps	r1,r3
+EA4F 0343     	mov.w	r3,r3,lsl #1
+D8F8           	bhi	$00001676
+
+l00001484:
+4826           	ldr	r0,[pc,#&98]                            ; 00001520
+EA40 0042     	orr	r0,r0,r2,lsl #1
+
+l0000148A:
+2305           	mov	r3,#5
+2240           	mov	r2,#&40
+4E20           	ldr	r6,[pc,#&80]                            ; 00001510
+4C1C           	ldr	r4,[pc,#&70]                            ; 00001504
+4D24           	ldr	r5,[pc,#&90]                            ; 00001524
+4924           	ldr	r1,[pc,#&90]                            ; 00001528
+6030           	str	r0,[r6]
+6025           	str	r5,[r4]
+3301           	adds	r3,#1
+2B1F           	cmps	r3,#&1F
+EA4F 0242     	mov.w	r2,r2,lsl #1
+D012           	beq	$000014CA
+
+l000014A4:
+428A           	cmps	r2,r1
+D9F8           	bls	$0000169A
+
+l000014A8:
+4A20           	ldr	r2,[pc,#&80]                            ; 0000152C
+EA42 0343     	orr	r3,r2,r3,lsl #1
+
+l000014AE:
+4A18           	ldr	r2,[pc,#&60]                            ; 00001510
+491F           	ldr	r1,[pc,#&7C]                            ; 00001530
+6013           	str	r3,[r2]
+680B           	ldr	r3,[r1]
+F443 3380     	orr	r3,r3,#&10000
+600B           	str	r3,[r1]
+F852 3C0C     	ldr.w	r3,[r2,-#&C]
+F043 0305     	orr	r3,r3,#5
+F842 3C0C     	str.w	r3,[r2,-#&C]
+E781           	b	$000013CE
+
+l000014CA:
+4B1A           	ldr	r3,[pc,#&68]                            ; 00001534
+E7EF           	b	$000014AE
+000014CE                                           1A 4A               .J
+000014D0 AC E7 1A 4A C1 E7 1A 48 D7 E7                   ...J...H..     
+
+l000014DA:
+4A1A           	ldr	r2,[pc,#&68]                            ; 00001544
+E7BD           	b	$0000145A
+
+l000014DE:
+4A1A           	ldr	r2,[pc,#&68]                            ; 00001548
+E7A4           	b	$0000142C
+
+l000014E2:
+481A           	ldr	r0,[pc,#&68]                            ; 0000154C
+E7D1           	b	$0000148A
+000014E6                   00 BF 20 ED 00 E0 90 ED 00 E0       .. .......
 000014F0 14 E0 00 E0 10 E0 00 E0 BC 00 00 20 00 00 00 00 ........... ....
 00001500 00 00 02 00 9C ED 00 E0 01 00 07 06 00 80 00 00 ................
 00001510 A0 ED 00 E0 01 00 07 05 00 00 00 20 00 02 00 20 ........... ... 
@@ -2550,9 +2817,7 @@ vPortEndScheduler proc
 vPortStoreTaskMPUSettings proc
 B430           	push	{r4-r5}
 2900           	cmps	r1,#0
-
-l00001558:
-D041           	beq	$000015DA
+D041           	beq	$000015DE
 
 l0000155A:
 BB4B           	cbnz	r3,$000015B0
@@ -2568,38 +2833,34 @@ F045 0210     	orr	r2,r5,#&10
 4313           	orrs	r3,r2
 2C20           	cmps	r4,#&20
 6083           	str	r3,[r0,#&8]
-D96F           	bls	$0000164C
+D96F           	bls	$00001650
 
 l00001570:
 2240           	mov	r2,#&40
 2305           	mov	r3,#5
-E002           	b	$00001578
-00001576                   01 33                               .3       
-
-l00001578:
-2B1F           	cmps	r3,#&1F
-D017           	beq	$000015A8
+E002           	b	$0000157C
+00001576                   01 33 1F 2B 17 D0                   .3.+..   
 
 l0000157C:
 4294           	cmps	r4,r2
 EA4F 0242     	mov.w	r2,r2,lsl #1
-
-l00001582:
-D8F8           	bhi	$00001772
+D8F8           	bhi	$00001776
 
 l00001584:
 005B           	lsls	r3,r3,#1
+
+l00001586:
 688A           	ldr	r2,[r1,#&8]
 F042 0201     	orr	r2,r2,#1
-
-l0000158C:
 4313           	orrs	r3,r2
 60C3           	str	r3,[r0,#&C]
+
+l00001590:
 3501           	adds	r5,#1
 2D08           	cmps	r5,#8
 F101 010C     	add	r1,r1,#&C
 F100 0008     	add	r0,r0,#8
-D1DF           	bne	$0000175A
+D1DF           	bne	$0000175E
 
 l0000159E:
 BC30           	pop	{r4-r5}
@@ -2608,10 +2869,8 @@ BC30           	pop	{r4-r5}
 l000015A2:
 F045 0310     	orr	r3,r5,#&10
 60C4           	str	r4,[r0,#&C]
-
-l000015A8:
 6083           	str	r3,[r0,#&8]
-E7F1           	b	$0000158C
+E7F1           	b	$00001590
 000015AC                                     3E 23 EA E7             >#..
 
 l000015B0:
@@ -2619,45 +2878,82 @@ l000015B0:
 F042 0214     	orr	r2,r2,#&14
 2B20           	cmps	r3,#&20
 6002           	str	r2,[r0]
-D94B           	bls	$00001650
+D94B           	bls	$00001654
 
 l000015BC:
 2240           	mov	r2,#&40
 2405           	mov	r4,#5
-E002           	b	$000015C4
-000015C2       01 34                                       .4           
-
-l000015C4:
-2C1F           	cmps	r4,#&1F
-D008           	beq	$000015D6
+E002           	b	$000015C8
+000015C2       01 34 1F 2C 08 D0                           .4.,..       
 
 l000015C8:
 4293           	cmps	r3,r2
 EA4F 0242     	mov.w	r2,r2,lsl #1
-D8F8           	bhi	$000017BE
+D8F8           	bhi	$000017C2
 
 l000015D0:
-4B23           	ldr	r3,[pc,#&8C]                            ; 00001664
-
-l000015D2:
+4B23           	ldr	r3,[pc,#&8C]                            ; 00001660
 EA43 0444     	orr	r4,r3,r4,lsl #1
 
 l000015D6:
 6044           	str	r4,[r0,#&4]
-E7C0           	b	$00001558
+E7C0           	b	$0000155C
+000015DA                               22 4C FB E7                 "L.. 
 
-l000015DA:
-4C22           	ldr	r4,[pc,#&88]                            ; 0000166A
-E7FB           	b	$000015D2
-000015DE                                           22 4B               "K
-000015E0 22 49 43 F0 14 02 C9 1A 20 29 02 60 36 D9 40 23 "IC..... ).`6.@#
-000015F0 05 22 02 E0 01 32 1F 2A 26 D0 8B 42 4F EA 43 03 ."...2.*&..BO.C.
-00001600 F8 D3 17 4B 43 EA 42 02 19 4B 1A 49 43 F0 15 04 ...KC.B..K.IC...
-00001610 C9 1A 20 29 42 60 84 60 1E D9 05 22 40 23 02 E0 .. )B`.`..."@#..
-00001620 01 32 1F 2A 12 D0 99 42 4F EA 43 03 F8 D8 12 4B .2.*...BO.C....K
+l000015DE:
+4B22           	ldr	r3,[pc,#&88]                            ; 00001668
+4922           	ldr	r1,[pc,#&88]                            ; 0000166C
+F043 0214     	orr	r2,r3,#&14
+1AC9           	sub	r1,r1,r3
+2920           	cmps	r1,#&20
+6002           	str	r2,[r0]
+D936           	bls	$0000165C
 
-l00001630:
+l000015EE:
+2340           	mov	r3,#&40
+2205           	mov	r2,#5
+E002           	b	$000015FA
+000015F4             01 32 1F 2A 26 D0                       .2.*&.     
+
+l000015FA:
+428B           	cmps	r3,r1
+EA4F 0343     	mov.w	r3,r3,lsl #1
+D3F8           	blo	$000017F4
+
+l00001602:
+4B17           	ldr	r3,[pc,#&5C]                            ; 00001660
 EA43 0242     	orr	r2,r3,r2,lsl #1
+
+l00001608:
+4B19           	ldr	r3,[pc,#&64]                            ; 00001670
+491A           	ldr	r1,[pc,#&68]                            ; 00001674
+F043 0415     	orr	r4,r3,#&15
+1AC9           	sub	r1,r1,r3
+2920           	cmps	r1,#&20
+6042           	str	r2,[r0,#&4]
+6084           	str	r4,[r0,#&8]
+
+;; fn00001618: 00001618
+fn00001618 proc
+D91E           	bls	$00001658
+
+;; fn0000161A: 0000161A
+fn0000161A proc
+2205           	mov	r2,#5
+2340           	mov	r3,#&40
+E002           	b	$00001626
+00001620 01 32 1F 2A 12 D0                               .2.*..         
+
+l00001626:
+4299           	cmps	r1,r3
+EA4F 0343     	mov.w	r3,r3,lsl #1
+D8F8           	bhi	$00001820
+
+l0000162E:
+4B12           	ldr	r3,[pc,#&48]                            ; 00001678
+EA43 0242     	orr	r2,r3,r2,lsl #1
+
+l00001634:
 2416           	mov	r4,#&16
 2300           	mov	r3,#0
 2117           	mov	r1,#&17
@@ -2667,40 +2963,62 @@ EA43 0242     	orr	r2,r3,r2,lsl #1
 61C3           	str	r3,[r0,#&1C]
 6181           	str	r1,[r0,#&18]
 BC30           	pop	{r4-r5}
-4770           	bx	lr
-00001648                         06 4A DD E7                     .J..   
 
-l0000164C:
-4A0B           	ldr	r2,[pc,#&2C]                            ; 00001680
-E7F1           	b	$00001630
+l00001646:
+4770           	bx	lr
+00001648                         06 4A DD E7 0B 4A F1 E7         .J...J..
 
 l00001650:
 2308           	mov	r3,#8
-E798           	b	$00001582
-00001654             0A 4C BE E7 0A 4A EB E7 08 4A D3 E7     .L...J...J..
+E798           	b	$00001586
+
+l00001654:
+4C0A           	ldr	r4,[pc,#&28]                            ; 00001680
+E7BE           	b	$000015D6
+
+;; fn00001658: 00001658
+fn00001658 proc
+4A0A           	ldr	r2,[pc,#&28]                            ; 00001684
+E7EB           	b	$00001634
+
+l0000165C:
+4A08           	ldr	r2,[pc,#&20]                            ; 00001680
+E7D3           	b	$00001608
 00001660 01 00 07 03 3F 00 07 03 00 00 00 20 00 20 00 20 ....?...... . . 
-00001670 00 00 00 20 00 02 00 20 01 00 07 01 3F 00 07 01 ... ... ....?...
-00001680 09 00 07 03 09 00 07 01                         ........       
+00001670 00 00 00 20 00 02                               ... ..         
+
+l00001676:
+2000           	mov	r0,#0
+0001           	mov	r1,r0
+0107           	lsls	r7,r0,#4
+003F           	mov	r7,r7
+0107           	lsls	r7,r0,#4
+0009           	mov	r1,r1
+0307           	lsls	r7,r0,#&C
+0009           	mov	r1,r1
+0107           	lsls	r7,r0,#4
 
 ;; xPortPendSVHandler: 00001688
 xPortPendSVHandler proc
 F3EF 8009     	mrs	r0,cpsr
-4B14           	ldr	r3,[pc,#&50]                            ; 000016E4
+4B14           	ldr	r3,[pc,#&50]                            ; 000016E0
 681A           	ldr	r2,[r3]
 F3EF 8114     	mrs	r1,cpsr
 E920 0FF2     	stmdb	r0!,{r1,r4-fp}
 6010           	str	r0,[r2]
+
+l0000169A:
 E92D 4008     	push.w	{r3,lr}
 F04F 00BF     	mov	r0,#&BF
 F380 8811     	msr	cpsr,r0
-F7FF FD17     	bl	$000010D4
+F7FF FD17     	bl	$000010D8
 F04F 0000     	mov	r0,#0
 F380 8811     	msr	cpsr,r0
 E8BD 4008     	pop.w	{r3,lr}
 6819           	ldr	r1,[r3]
 6808           	ldr	r0,[r1]
 F101 0104     	add	r1,r1,#4
-4A1A           	ldr	r2,[pc,#&68]                            ; 0000172E
+4A1A           	ldr	r2,[pc,#&68]                            ; 00001728
 E8B1 0FF0     	ldm	r1!,{r4-fp}
 E8A2 0FF0     	stm	r2!,{r4-fp}
 E8B0 0FF8     	ldm	r0!,{r3-fp}
@@ -2718,12 +3036,12 @@ F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
-F7FF FB37     	bl	$00000D68
+F7FF FB37     	bl	$00000D6C
 B118           	cbz	r0,$00001708
 
 l00001700:
 F04F 5280     	mov	r2,#&10000000
-4B02           	ldr	r3,[pc,#&8]                             ; 00001714
+4B02           	ldr	r3,[pc,#&8]                             ; 00001710
 601A           	str	r2,[r3]
 
 l00001708:
@@ -2740,12 +3058,8 @@ F3EF 8008     	mrseq	r0,cpsr
 
 l0000171E:
 F3EF 8009     	mrs	r0,cpsr
-E607           	b	$00001330
-00001724             08 ED 00 E0                             ....       
-
-;; fn00001728: 00001728
-fn00001728 proc
-ED9C E000     	Invalid
+E607           	b	$00001334
+00001724             08 ED 00 E0 9C ED 00 E0                 ........   
 
 ;; pvPortMalloc: 0000172C
 pvPortMalloc proc
@@ -2757,54 +3071,49 @@ F020 0407     	bicne	r4,r0,#7
 
 l00001738:
 3408           	adds	r4,#8
-F7FF F967     	bl	$00000A08
-4B0F           	ldr	r3,[pc,#&3C]                            ; 00001782
-
-;; fn00001740: 00001740
-fn00001740 proc
+F7FF F967     	bl	$00000A0C
+4B0F           	ldr	r3,[pc,#&3C]                            ; 0000177C
 681A           	ldr	r2,[r3]
 B1AA           	cbz	r2,$00001770
 
-l00001744:
+;; fn00001744: 00001744
+fn00001744 proc
 F240 51B3     	mov	r1,#&5B3
 F8D3 25C0     	ldr	r2,[r3,#&5C0]
 4414           	adds	r4,r2
 428C           	cmps	r4,r1
-D809           	bhi	$00001762
+D809           	bhi	$00001766
 
 l00001752:
 42A2           	cmps	r2,r4
-D207           	bhs	$00001762
+D207           	bhs	$00001766
 
 l00001756:
 6819           	ldr	r1,[r3]
 F8C3 45C0     	str	r4,[r3,#&5C0]
-
-;; fn0000175A: 0000175A
-fn0000175A proc
-45C0           	cmps	r8,r8
 188C           	add	r4,r1,r2
-F7FF FB85     	bl	$00000E68
 
-l00001762:
+l0000175E:
+F7FF FB85     	bl	$00000E6C
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
-00001766                   00 24 FF F7 80 FB 20 46 10 BD       .$.... F..
+
+l00001766:
+2400           	mov	r4,#0
+F7FF FB80     	bl	$00000E6C
+4620           	mov	r0,r4
+BD10           	pop	{r4,pc}
 
 l00001770:
 F103 020C     	add	r2,r3,#&C
-
-;; fn00001772: 00001772
-fn00001772 proc
-020C           	lsls	r4,r1,#8
 F022 0207     	bic	r2,r2,#7
-601A           	str	r2,[r3]
-E7E3           	b	$00001740
 
-;; fn0000177C: 0000177C
-fn0000177C proc
-0230           	lsls	r0,r6,#8
-2000           	mov	r0,#0
+;; fn00001776: 00001776
+fn00001776 proc
+0207           	lsls	r7,r0,#8
+601A           	str	r2,[r3]
+E7E3           	b	$00001744
+0000177C                                     30 02 00 20             0.. 
 
 ;; vPortFree: 00001780
 vPortFree proc
@@ -2814,51 +3123,40 @@ vPortFree proc
 ;; vPortInitialiseBlocks: 00001784
 vPortInitialiseBlocks proc
 2200           	mov	r2,#0
-4B02           	ldr	r3,[pc,#&8]                             ; 00001796
+4B02           	ldr	r3,[pc,#&8]                             ; 00001790
 F8C3 25C0     	str	r2,[r3,#&5C0]
 4770           	bx	lr
 0000178E                                           00 BF               ..
-
-;; fn00001790: 00001790
-fn00001790 proc
-0230           	lsls	r0,r6,#8
-2000           	mov	r0,#0
+00001790 30 02 00 20                                     0..            
 
 ;; xPortGetFreeHeapSize: 00001794
 xPortGetFreeHeapSize proc
-4B03           	ldr	r3,[pc,#&C]                             ; 000017A8
+4B03           	ldr	r3,[pc,#&C]                             ; 000017A4
 F8D3 05C0     	ldr	r0,[r3,#&5C0]
 F5C0 60B6     	rsb	r0,r0,#&5B0
 3004           	adds	r0,#4
 4770           	bx	lr
-000017A2       00 BF                                       ..           
-
-;; fn000017A4: 000017A4
-fn000017A4 proc
-0230           	lsls	r0,r6,#8
-2000           	mov	r0,#0
+000017A2       00 BF 30 02 00 20                           ..0..        
 
 ;; xEventGroupCreate: 000017A8
 xEventGroupCreate proc
 B510           	push	{r4,lr}
 2018           	mov	r0,#&18
-F7FF FFBE     	bl	$00001728
+F7FF FFBE     	bl	$0000172C
 4604           	mov	r4,r0
 B120           	cbz	r0,$000017BE
 
 l000017B4:
 2300           	mov	r3,#0
 F840 3B04     	str	r3,[r0],#&4
-F006 FD89     	bl	$000082CC
+F006 FD89     	bl	$000082D0
 
-;; fn000017BE: 000017BE
-fn000017BE proc
+l000017BE:
 4620           	mov	r0,r4
-
-;; fn000017C0: 000017C0
-fn000017C0 proc
 BD10           	pop	{r4,pc}
-000017C2       00 BF                                       ..           
+
+l000017C2:
+BF00           	nop
 
 ;; xEventGroupWaitBits: 000017C4
 xEventGroupWaitBits proc
@@ -2867,27 +3165,24 @@ E92D 41F0     	push.w	{r4-r8,lr}
 461F           	mov	r7,r3
 460D           	mov	r5,r1
 4690           	mov	r8,r2
-F7FF F91C     	bl	$00000A08
+F7FF F91C     	bl	$00000A0C
 6834           	ldr	r4,[r6]
 B967           	cbnz	r7,$000017F2
 
 l000017D8:
 422C           	adcs	r4,r5
-D00D           	beq	$000017F4
+D00D           	beq	$000017F8
 
 l000017DC:
 F1B8 0F00     	cmp	r8,#0
-D002           	beq	$000017E4
+D002           	beq	$000017E8
 
 l000017E2:
 EA24 0505     	bic.w	r5,r4,r5
-
-l000017E4:
-0505           	lsls	r5,r0,#&14
-
-l000017E6:
 6035           	str	r5,[r6]
-F7FF FB40     	bl	$00000E68
+
+l000017E8:
+F7FF FB40     	bl	$00000E6C
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -2897,13 +3192,15 @@ EA35 0304     	bics.w	r3,r5,r4
 l000017F4:
 0304           	lsls	r4,r0,#&C
 
-l000017F6:
-D0F1           	beq	$000019D8
+;; fn000017F6: 000017F6
+fn000017F6 proc
+D0F1           	beq	$000019DC
 
-l000017F8:
+;; fn000017F8: 000017F8
+fn000017F8 proc
 9B06           	ldr	r3,[sp,#&18]
 2B00           	cmps	r3,#0
-D0F4           	beq	$000019E4
+D0F4           	beq	$000019E8
 
 l000017FE:
 F1B8 0F00     	cmp	r8,#0
@@ -2912,31 +3209,30 @@ BF0C           	ite	eq
 
 l00001806:
 F04F 7180     	mov	r1,#&1000000
-
-l00001808:
-7180           	strb	r0,[r0,#&6]
 B9C7           	cbnz	r7,$0000183E
 
 l0000180C:
 4329           	orrs	r1,r5
 9A06           	ldr	r2,[sp,#&18]
 1D30           	add	r0,r6,#4
-F7FF FBF1     	bl	$00000FF4
-F7FF FB29     	bl	$00000E68
+F7FF FBF1     	bl	$00000FF8
+F7FF FB29     	bl	$00000E6C
 B938           	cbnz	r0,$0000182C
 
 l0000181C:
 F04F 5280     	mov	r2,#&10000000
-4B13           	ldr	r3,[pc,#&4C]                            ; 00001874
+
+l00001820:
+4B13           	ldr	r3,[pc,#&4C]                            ; 00001870
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 
 l0000182C:
-F7FF FC78     	bl	$0000111C
+F7FF FC78     	bl	$00001120
 0183           	lsls	r3,r0,#6
 4604           	mov	r4,r0
-D506           	bpl	$00001840
+D506           	bpl	$00001844
 
 l00001836:
 F024 407F     	bic	r0,r4,#&FF000000
@@ -2944,34 +3240,49 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 
 l0000183E:
 F041 6180     	orr	r1,r1,#&4000000
+E7E3           	b	$0000180C
 
-l00001840:
-6180           	str	r0,[r0,#&18]
+l00001844:
+F006 FE98     	bl	$00008578
+6834           	ldr	r4,[r6]
+B96F           	cbnz	r7,$00001868
 
-l00001842:
-E7E3           	b	$00001808
-00001844             06 F0 98 FE 34 68 6F B9 25 42 05 D0     ....4ho.%B..
-00001850 B8 F1 00 0F 02 D0 24 EA 05 05 35 60 06 F0 A8 FE ......$...5`....
-00001860 24 F0 7F 40 BD E8 F0 81 35 EA 04 03 F6 D1 EF E7 $..@....5.......
+l0000184C:
+4225           	adcs	r5,r4
+D005           	beq	$0000185C
 
-;; fn00001870: 00001870
-fn00001870 proc
-ED04 E000     	Invalid
+l00001850:
+F1B8 0F00     	cmp	r8,#0
+D002           	beq	$0000185C
+
+l00001856:
+EA24 0505     	bic.w	r5,r4,r5
+6035           	str	r5,[r6]
+
+l0000185C:
+F006 FEA8     	bl	$000085B0
+F024 407F     	bic	r0,r4,#&FF000000
+E8BD 81F0     	pop.w	{r4-r8,pc}
+
+l00001868:
+EA35 0304     	bics.w	r3,r5,r4
+D1F6           	bne	$00001A5C
+
+l0000186E:
+E7EF           	b	$00001850
+00001870 04 ED 00 E0                                     ....           
 
 ;; xEventGroupClearBits: 00001874
 xEventGroupClearBits proc
 B570           	push	{r4-r6,lr}
 4606           	mov	r6,r0
 460C           	mov	r4,r1
-F006 FE7D     	bl	$00008574
+F006 FE7D     	bl	$00008578
 6835           	ldr	r5,[r6]
 EA25 0404     	bic.w	r4,r5,r4
 6034           	str	r4,[r6]
-F006 FE93     	bl	$000085AC
+F006 FE93     	bl	$000085B0
 4628           	mov	r0,r5
-
-;; fn0000188C: 0000188C
-fn0000188C proc
 BD70           	pop	{r4-r6,pc}
 0000188E                                           00 BF               ..
 
@@ -2980,60 +3291,50 @@ xEventGroupSetBits proc
 B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
 460C           	mov	r4,r1
-F7FF F8B9     	bl	$00000A08
+F7FF F8B9     	bl	$00000A0C
 6829           	ldr	r1,[r5]
 6928           	ldr	r0,[r5,#&10]
 F105 060C     	add	r6,r5,#&C
 4321           	orrs	r1,r4
 4286           	cmps	r6,r0
 6029           	str	r1,[r5]
-D022           	beq	$000018EC
+D022           	beq	$000018F0
 
 l000018AA:
 2700           	mov	r7,#0
-E00C           	b	$000018C4
+E00C           	b	$000018C8
 000018AE                                           0A 42               .B
 000018B0 07 D0 DB 01 00 D5 17 43 41 F0 00 71 FF F7 E0 FB .......CA..q....
-000018C0 29 68 A6 42                                     )h.B           
-
-l000018C4:
-4620           	mov	r0,r4
-D00C           	beq	$000018DE
+000018C0 29 68 A6 42 20 46 0C D0                         )h.B F..       
 
 l000018C8:
 E890 0018     	ldm	r0,{r3-r4}
 F013 6F80     	tst	r3,#&4000000
 F023 427F     	bic	r2,r3,#&FF000000
-D0EB           	beq	$00001AAA
+D0EB           	beq	$00001AAE
 
 l000018D6:
 EA32 0E01     	bics.w	lr,r2,r1
-D0EA           	beq	$00001AAE
+D0EA           	beq	$00001AB2
 
 l000018DC:
 42A6           	cmps	r6,r4
-
-l000018DE:
 4620           	mov	r0,r4
-
-;; fn000018E0: 000018E0
-fn000018E0 proc
-D1F2           	bne	$00001AC4
+D1F2           	bne	$00001AC8
 
 l000018E2:
 43FF           	mvns	r7,r7
+
+l000018E4:
 4039           	ands	r1,r7
 6029           	str	r1,[r5]
-F7FF FAC0     	bl	$00000E68
-
-l000018EC:
+F7FF FAC0     	bl	$00000E6C
 6828           	ldr	r0,[r5]
 BDF8           	pop	{r3-r7,pc}
-000018F0 4F F0 FF 37                                     O..7           
 
-;; fn000018F4: 000018F4
-fn000018F4 proc
-E7F6           	b	$000018E0
+l000018F0:
+F04F 37FF     	mov	r7,#&FFFFFFFF
+E7F6           	b	$000018E4
 000018F6                   00 BF                               ..       
 
 ;; xEventGroupSync: 000018F8
@@ -3043,21 +3344,23 @@ E92D 41F0     	push.w	{r4-r8,lr}
 4605           	mov	r5,r0
 4616           	mov	r6,r2
 461F           	mov	r7,r3
-F7FF F882     	bl	$00000A08
+F7FF F882     	bl	$00000A0C
 4641           	mov	r1,r8
 682C           	ldr	r4,[r5]
 4628           	mov	r0,r5
 430C           	orrs	r4,r1
-F7FF FFBE     	bl	$0000188C
+F7FF FFBE     	bl	$00001890
 EA36 0304     	bics.w	r3,r6,r4
-D021           	beq	$0000195A
+D021           	beq	$0000195E
 
 l0000191A:
 B92F           	cbnz	r7,$00001928
 
 l0000191C:
 682C           	ldr	r4,[r5]
-F7FF FAA5     	bl	$00000E68
+
+l0000191E:
+F7FF FAA5     	bl	$00000E6C
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -3065,38 +3368,49 @@ l00001928:
 463A           	mov	r2,r7
 F046 61A0     	orr	r1,r6,#&5000000
 1D28           	add	r0,r5,#4
-F7FF FB62     	bl	$00000FF4
-F7FF FA9A     	bl	$00000E68
+F7FF FB62     	bl	$00000FF8
+F7FF FA9A     	bl	$00000E6C
 B938           	cbnz	r0,$0000194A
 
 l0000193A:
 F04F 5280     	mov	r2,#&10000000
-4B11           	ldr	r3,[pc,#&44]                            ; 0000198A
+4B11           	ldr	r3,[pc,#&44]                            ; 00001984
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 
 l0000194A:
-F7FF FBE9     	bl	$0000111C
+F7FF FBE9     	bl	$00001120
 0183           	lsls	r3,r0,#6
 4604           	mov	r4,r0
-D509           	bpl	$00001964
+D509           	bpl	$00001968
 
 l00001954:
 F024 447F     	bic	r4,r4,#&FF000000
+
+l00001958:
 4620           	mov	r0,r4
-
-l0000195A:
 E8BD 81F0     	pop.w	{r4-r8,pc}
-0000195E                                           2B 68               +h
-00001960 23 EA 06 06                                     #...           
 
-l00001964:
+l0000195E:
+682B           	ldr	r3,[r5]
+EA23 0606     	bic.w	r6,r3,r6
 602E           	str	r6,[r5]
-E7DA           	b	$0000191A
-00001968                         06 F0 06 FE 2C 68 36 EA         ....,h6.
-00001970 04 03 04 BF 24 EA 06 06 2E 60 06 F0 19 FE 24 F0 ....$....`....$.
-00001980 7F 44 E9 E7 04 ED 00 E0                         .D......       
+E7DA           	b	$0000191E
+
+l00001968:
+F006 FE06     	bl	$00008578
+682C           	ldr	r4,[r5]
+EA36 0304     	bics.w	r3,r6,r4
+BF04           	itt	eq
+EA24 0606     	biceq.w	r6,r4,r6
+
+l00001978:
+602E           	str	r6,[r5]
+F006 FE19     	bl	$000085B0
+F024 447F     	bic	r4,r4,#&FF000000
+E7E9           	b	$00001958
+00001984             04 ED 00 E0                             ....       
 
 ;; xEventGroupGetBitsFromISR: 00001988
 xEventGroupGetBitsFromISR proc
@@ -3106,9 +3420,6 @@ F382 8811     	msr	cpsr,r2
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 F383 8811     	msr	cpsr,r3
-
-;; fn000019A0: 000019A0
-fn000019A0 proc
 6800           	ldr	r0,[r0]
 4770           	bx	lr
 
@@ -3116,143 +3427,59 @@ fn000019A0 proc
 vEventGroupDelete proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F7FF F830     	bl	$00000A08
+F7FF F830     	bl	$00000A0C
 6863           	ldr	r3,[r4,#&4]
 B13B           	cbz	r3,$000019C0
 
 l000019B0:
 F04F 7100     	mov	r1,#&2000000
 6920           	ldr	r0,[r4,#&10]
-F7FF FB63     	bl	$0000107C
+F7FF FB63     	bl	$00001080
 6863           	ldr	r3,[r4,#&4]
 2B00           	cmps	r3,#0
-D1F7           	bne	$00001BAC
+D1F7           	bne	$00001BB0
 
 l000019C0:
 4620           	mov	r0,r4
-F7FF FEDD     	bl	$0000177C
+F7FF FEDD     	bl	$00001780
 E8BD 4010     	pop.w	{r4,lr}
-F7FF BA4F     	b	$00000E68
+F7FF BA4F     	b	$00000E6C
 000019CE                                           00 BF               ..
 
 ;; vEventGroupSetBitsCallback: 000019D0
 vEventGroupSetBitsCallback proc
-F7FF BF5E     	b	$0000188C
+F7FF BF5E     	b	$00001890
 
 ;; vEventGroupClearBitsCallback: 000019D4
 vEventGroupClearBitsCallback proc
 B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
-
-l000019D8:
 460D           	mov	r5,r1
-F006 FDCD     	bl	$00008574
+F006 FDCD     	bl	$00008578
+
+;; fn000019DC: 000019DC
+fn000019DC proc
+FDCD 6823     	vsub.i8	d22,d13,d19
+
+;; fn000019DE: 000019DE
+fn000019DE proc
 6823           	ldr	r3,[r4]
 EA23 0305     	bic.w	r3,r3,r5
-
-l000019E4:
 6023           	str	r3,[r4]
 E8BD 4038     	pop.w	{r3-r5,lr}
-F006 BDE1     	b	$00C085AC
+
+l000019E8:
+4038           	ands	r0,r7
+
+;; fn000019EA: 000019EA
+fn000019EA proc
+F006 BDE1     	b	$000085B0
 000019EE                                           00 BF               ..
 000019F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
-00001AA0 00 00 00 00 00 00 00 00 00 00                   ..........     
+00001A50 00 00 00 00 00 00 00 00 00 00 00 00             ............   
 
-l00001AAA:
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-
-l00001AAE:
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-
-;; fn00001AC4: 00001AC4
-fn00001AC4 proc
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
+l00001A5C:
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 0000           	mov	r0,r0
@@ -3295,10 +3522,13 @@ fn00001AC4 proc
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 
-;; fn00001BAC: 00001BAC
-fn00001BAC proc
+;; fn00001AAE: 00001AAE
+fn00001AAE proc
 0000           	mov	r0,r0
 0000           	mov	r0,r0
+
+;; fn00001AB2: 00001AB2
+fn00001AB2 proc
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 0000           	mov	r0,r0
@@ -3310,12717 +3540,9 @@ fn00001BAC proc
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
-0000           	mov	r0,r0
+
+;; fn00001AC8: 00001AC8
+fn00001AC8 proc
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 0000           	mov	r0,r0
@@ -16138,28 +3660,12866 @@ fn00001BAC proc
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 
-;; fn00007FFC: 00007FFC
-fn00007FFC proc
+;; fn00001BB0: 00001BB0
+fn00001BB0 proc
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
+0000           	mov	r0,r0
 0000           	mov	r0,r0
 0000           	mov	r0,r0
 ;;; Segment .text (00008000)
 
 ;; NmiSR: 00008000
 NmiSR proc
-E7FE           	b	$00007FFC
+E7FE           	b	$00008000
 00008002       00 BF                                       ..           
 
 ;; FaultISR: 00008004
 FaultISR proc
-E7FE           	b	$00008000
+E7FE           	b	$00008004
 00008006                   00 BF                               ..       
 
 ;; ResetISR: 00008008
 ResetISR proc
-4B08           	ldr	r3,[pc,#&20]                            ; 00008030
-4809           	ldr	r0,[pc,#&24]                            ; 00008036
+4B08           	ldr	r3,[pc,#&20]                            ; 0000802C
+4809           	ldr	r0,[pc,#&24]                            ; 00008030
 4283           	cmps	r3,r0
-D20A           	bhs	$00008022
+D20A           	bhs	$00008026
 
 l00008010:
 43DA           	mvns	r2,r3
@@ -16169,67 +16529,62 @@ F022 0203     	bic	r2,r2,#3
 3204           	adds	r2,#4
 441A           	adds	r2,r3
 F843 1B04     	str	r1,[r3],#&4
-
-l00008022:
 4293           	cmps	r3,r2
-D1FB           	bne	$0000821A
+D1FB           	bne	$0000821E
 
 l00008026:
-F000 B83B     	b	$00C0809C
+F000 B83B     	b	$000080A0
 0000802A                               00 BF 60 01 00 20           ..`.. 
-
-l00008030:
-0880           	lsrs	r0,r0,#2
-2000           	mov	r0,#0
+00008030 80 08 00 20                                     ...            
 
 ;; raise: 00008034
 raise proc
-E7FE           	b	$00008030
+E7FE           	b	$00008034
 00008036                   00 BF                               ..       
 
 ;; vPrintTask: 00008038
 vPrintTask proc
 B530           	push	{r4-r5,lr}
 2400           	mov	r4,#0
-
-l0000803C:
-4D09           	ldr	r5,[pc,#&24]                            ; 00008068
+4D09           	ldr	r5,[pc,#&24]                            ; 00008064
 B083           	sub	sp,#&C
+
+l00008040:
 A901           	add	r1,sp,#4
 3401           	adds	r4,#1
 2300           	mov	r3,#0
 F04F 32FF     	mov	r2,#&FFFFFFFF
 6828           	ldr	r0,[r5]
-F000 FD8E     	bl	$00008B68
-F001 FB96     	bl	$0000977C
+F000 FD8E     	bl	$00008B6C
+F001 FB96     	bl	$00009780
 F004 0201     	and	r2,r4,#1
 F004 013F     	and	r1,r4,#&3F
 9801           	ldr	r0,[sp,#&4]
-F001 FBB5     	bl	$000097C8
-E7ED           	b	$0000803C
+F001 FBB5     	bl	$000097CC
+E7ED           	b	$00008040
 00008064             80 08 00 20                             ...        
 
 ;; vCheckTask: 00008068
 vCheckTask proc
 B530           	push	{r4-r5,lr}
-4B0B           	ldr	r3,[pc,#&2C]                            ; 0000809E
+4B0B           	ldr	r3,[pc,#&2C]                            ; 00008098
 B083           	sub	sp,#&C
 9301           	str	r3,[sp,#&4]
-F000 FC48     	bl	$00008900
+F000 FC48     	bl	$00008904
 AC02           	add	r4,sp,#8
-4D09           	ldr	r5,[pc,#&24]                            ; 000080A2
-
-l00008078:
+4D09           	ldr	r5,[pc,#&24]                            ; 0000809C
 F844 0D08     	str	r0,[r4,-#&8]!
+
+l0000807C:
 4620           	mov	r0,r4
 F241 3188     	mov	r1,#&1388
-F000 FBF7     	bl	$00008870
+F000 FBF7     	bl	$00008874
 2300           	mov	r3,#0
 F04F 32FF     	mov	r2,#&FFFFFFFF
 A901           	add	r1,sp,#4
 6828           	ldr	r0,[r5]
-F000 FD28     	bl	$00008AE0
-E7F2           	b	$00008078
+F000 FD28     	bl	$00008AE4
+E7F2           	b	$0000807C
 00008096                   00 BF 50 A2 00 00 80 08 00 20       ..P...... 
 
 ;; Main: 000080A0
@@ -16240,35 +16595,35 @@ B083           	sub	sp,#&C
 2104           	mov	r1,#4
 2003           	mov	r0,#3
 2400           	mov	r4,#0
-F000 FCEC     	bl	$00008A84
-4B0F           	ldr	r3,[pc,#&3C]                            ; 000080F4
+F000 FCEC     	bl	$00008A88
+4B0F           	ldr	r3,[pc,#&3C]                            ; 000080F0
 6018           	str	r0,[r3]
 4620           	mov	r0,r4
-F001 FC1B     	bl	$000098EC
+F001 FC1B     	bl	$000098F0
 2203           	mov	r2,#3
 4623           	mov	r3,r4
 9200           	str	r2,[sp]
-490C           	ldr	r1,[pc,#&30]                            ; 000080F8
+490C           	ldr	r1,[pc,#&30]                            ; 000080F4
 223B           	mov	r2,#&3B
 9401           	str	r4,[sp,#&4]
-480C           	ldr	r0,[pc,#&30]                            ; 000080FE
-F000 FB9E     	bl	$00008804
+480C           	ldr	r0,[pc,#&30]                            ; 000080F8
+F000 FB9E     	bl	$00008808
 2202           	mov	r2,#2
-490B           	ldr	r1,[pc,#&2C]                            ; 00008102
+490B           	ldr	r1,[pc,#&2C]                            ; 000080FC
 4623           	mov	r3,r4
 9200           	str	r2,[sp]
 9401           	str	r4,[sp,#&4]
 223B           	mov	r2,#&3B
-4809           	ldr	r0,[pc,#&24]                            ; 00008104
-F000 FB95     	bl	$00008804
-F7F8 FC57     	bl	$0000098C
+4809           	ldr	r0,[pc,#&24]                            ; 00008100
+F000 FB95     	bl	$00008808
+F7F8 FC57     	bl	$00000990
 4622           	mov	r2,r4
 4621           	mov	r1,r4
-4807           	ldr	r0,[pc,#&1C]                            ; 0000810A
+4807           	ldr	r0,[pc,#&1C]                            ; 00008104
+F001 FB70     	bl	$000097CC
 
-l000080E8:
-F001 FB70     	bl	$000097C8
-E7FE           	b	$000080E8
+l000080EC:
+E7FE           	b	$000080EC
 000080EE                                           00 BF               ..
 000080F0 80 08 00 20 58 A2 00 00 69 80 00 00 60 A2 00 00 ... X...i...`...
 00008100 39 80 00 00 68 A2 00 00                         9...h...       
@@ -16277,38 +16632,34 @@ E7FE           	b	$000080E8
 vUART_ISR proc
 B570           	push	{r4-r6,lr}
 2600           	mov	r6,#0
-4D19           	ldr	r5,[pc,#&64]                            ; 00008178
+4D19           	ldr	r5,[pc,#&64]                            ; 00008174
 B082           	sub	sp,#8
 2101           	mov	r1,#1
 4628           	mov	r0,r5
 9601           	str	r6,[sp,#&4]
-F001 FFD9     	bl	$0000A0C8
+F001 FFD9     	bl	$0000A0CC
 4604           	mov	r4,r0
 4601           	mov	r1,r0
 4628           	mov	r0,r5
-F001 FFDA     	bl	$0000A0D4
+F001 FFDA     	bl	$0000A0D8
 06E2           	lsls	r2,r4,#&1B
-D503           	bpl	$0000812C
+D503           	bpl	$00008130
 
 l00008128:
-4B13           	ldr	r3,[pc,#&4C]                            ; 0000817C
+4B13           	ldr	r3,[pc,#&4C]                            ; 00008178
 681B           	ldr	r3,[r3]
-
-l0000812C:
 065B           	lsls	r3,r3,#&19
-D416           	bmi	$0000815A
+D416           	bmi	$0000815E
 
 l00008130:
 06A0           	lsls	r0,r4,#&1A
-D503           	bpl	$00008138
+D503           	bpl	$0000813C
 
 l00008134:
-4A11           	ldr	r2,[pc,#&44]                            ; 00008180
+4A11           	ldr	r2,[pc,#&44]                            ; 0000817C
 7813           	ldrb	r3,[r2]
-
-l00008138:
 2B7A           	cmps	r3,#&7A
-D907           	bls	$00008148
+D907           	bls	$0000814C
 
 l0000813C:
 9B01           	ldr	r3,[sp,#&4]
@@ -16316,31 +16667,43 @@ B11B           	cbz	r3,$00008148
 
 l00008140:
 F04F 5280     	mov	r2,#&10000000
-4B0E           	ldr	r3,[pc,#&38]                            ; 00008184
+4B0E           	ldr	r3,[pc,#&38]                            ; 00008180
 601A           	str	r2,[r3]
 
 l00008148:
 B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
-0000814C                                     0A 49 09 68             .I.h
-00008150 89 06 5C BF 07 49 0B 60 01 33                   ..\..I.`.3     
 
-l0000815A:
+l0000814C:
+490A           	ldr	r1,[pc,#&28]                            ; 00008178
+6809           	ldr	r1,[r1]
+0689           	lsls	r1,r1,#&1A
+BF5C           	itt	pl
+4907           	ldrpl	r1,[pc,#&1C]                          ; 00008174
+
+l00008156:
+600B           	str	r3,[r1]
+3301           	adds	r3,#1
 7013           	strb	r3,[r2]
-E7EE           	b	$00008138
-0000815E                                           2D 68               -h
-00008160 33 46 30 46 01 AA 0D F1 03 01 8D F8 03 50 F8 F7 3F0F.........P..
-00008170 73 F9 DD E7 00 C0 00 40 18 C0 00 40 2C 02 00 20 s......@...@,.. 
+E7EE           	b	$0000813C
+
+l0000815E:
+682D           	ldr	r5,[r5]
+4633           	mov	r3,r6
+4630           	mov	r0,r6
+AA01           	add	r2,sp,#4
+F10D 0103     	add	r0,sp,#3
+F88D 5003     	strb	r5,[sp,#&3]
+F7F8 F973     	bl	$00000458
+E7DD           	b	$00008130
+00008174             00 C0 00 40 18 C0 00 40 2C 02 00 20     ...@...@,.. 
 00008180 04 ED 00 E0                                     ....           
 
 ;; vSetErrorLED: 00008184
 vSetErrorLED proc
 2101           	mov	r1,#1
 2007           	mov	r0,#7
-
-;; fn00008188: 00008188
-fn00008188 proc
-F000 BA34     	b	$00C085F0
+F000 BA34     	b	$000085F4
 
 ;; prvSetAndCheckRegisters: 0000818C
 prvSetAndCheckRegisters proc
@@ -16358,159 +16721,146 @@ F10B 090A     	add	r9,fp,#&A
 F10B 0A0B     	add	r10,fp,#&B
 F10B 0C0C     	add	ip,fp,#&C
 F1BB 0F0A     	cmp	fp,#&A
-D11C           	bne	$000081FC
+D11C           	bne	$00008200
 
 l000081C6:
 280B           	cmps	r0,#&B
-D11A           	bne	$000081FC
+D11A           	bne	$00008200
 
 l000081CA:
 290C           	cmps	r1,#&C
-D118           	bne	$000081FC
+D118           	bne	$00008200
 
 l000081CE:
 2A0D           	cmps	r2,#&D
-D116           	bne	$000081FC
+D116           	bne	$00008200
 
 l000081D2:
 2B0E           	cmps	r3,#&E
-D114           	bne	$000081FC
+D114           	bne	$00008200
 
 l000081D6:
 2C0F           	cmps	r4,#&F
-D112           	bne	$000081FC
+D112           	bne	$00008200
 
 l000081DA:
 2D10           	cmps	r5,#&10
-D110           	bne	$000081FC
+D110           	bne	$00008200
 
 l000081DE:
 2E11           	cmps	r6,#&11
-D10E           	bne	$000081FC
+D10E           	bne	$00008200
 
 l000081E2:
 2F12           	cmps	r7,#&12
-D10C           	bne	$000081FC
+D10C           	bne	$00008200
 
 l000081E6:
 F1B8 0F13     	cmp	r8,#&13
-D109           	bne	$000081FC
+D109           	bne	$00008200
 
 l000081EC:
 F1B9 0F14     	cmp	r9,#&14
-D106           	bne	$000081FC
+D106           	bne	$00008200
 
 l000081F2:
 F1BA 0F15     	cmp	r10,#&15
-D103           	bne	$000081FC
+D103           	bne	$00008200
 
 l000081F8:
 F1BC 0F16     	cmp	ip,#&16
-
-l000081FC:
-D100           	bne	$000081FC
+D100           	bne	$00008200
 
 l000081FE:
 4770           	bx	lr
-00008200 00 B5 06 49 88 47 5D F8 04 EB 70 47             ...I.G]...pG   
 
-;; fn0000820C: 0000820C
-fn0000820C proc
+l00008200:
+B500           	push	{lr}
+4906           	ldr	r1,[pc,#&18]                            ; 0000821C
+4788           	blx	r1
+F85D EB04     	pop	lr
 4770           	bx	lr
-
-l0000820E:
+4770           	bx	lr
 BF00           	nop
 
 ;; vApplicationIdleHook: 00008210
 vApplicationIdleHook proc
 B508           	push	{r3,lr}
-F000 FE8B     	bl	$00008F28
-F7FF FFB9     	bl	$00008188
 
-;; fn0000821A: 0000821A
-fn0000821A proc
-E7FA           	b	$0000820E
+l00008212:
+F000 FE8B     	bl	$00008F2C
+F7FF FFB9     	bl	$0000818C
+E7FA           	b	$00008212
+0000821C                                     85 81                   .. 
 
-;; fn0000821C: 0000821C
-fn0000821C proc
-8185           	strh	r5,[r0,#&18]
+l0000821E:
 0000           	mov	r0,r0
 
 ;; PDCInit: 00008220
 PDCInit proc
 B530           	push	{r4-r5,lr}
-481A           	ldr	r0,[pc,#&68]                            ; 00008292
+481A           	ldr	r0,[pc,#&68]                            ; 0000828C
 B083           	sub	sp,#&C
-F001 FCA9     	bl	$00009B78
-4819           	ldr	r0,[pc,#&64]                            ; 00008296
-F001 FCA6     	bl	$00009B78
+F001 FCA9     	bl	$00009B7C
+4819           	ldr	r0,[pc,#&64]                            ; 00008290
+F001 FCA6     	bl	$00009B7C
 2202           	mov	r2,#2
 2134           	mov	r1,#&34
 F04F 2040     	mov	r0,#&40004000
-F000 FF68     	bl	$00009108
+F000 FF68     	bl	$0000910C
 2201           	mov	r2,#1
 2108           	mov	r1,#8
 F04F 2040     	mov	r0,#&40004000
-F000 FF62     	bl	$00009108
+F000 FF62     	bl	$0000910C
 230A           	mov	r3,#&A
 2202           	mov	r2,#2
 2104           	mov	r1,#4
 F04F 2040     	mov	r0,#&40004000
-F000 FFB9     	bl	$000091C4
+F000 FFB9     	bl	$000091C8
 2408           	mov	r4,#8
 2200           	mov	r2,#0
-4D0E           	ldr	r5,[pc,#&38]                            ; 0000829A
+4D0E           	ldr	r5,[pc,#&38]                            ; 00008294
 4611           	mov	r1,r2
-4B0E           	ldr	r3,[pc,#&38]                            ; 0000829E
+4B0E           	ldr	r3,[pc,#&38]                            ; 00008298
 4628           	mov	r0,r5
 9400           	str	r4,[sp]
-F001 FBC0     	bl	$000099E4
+F001 FBC0     	bl	$000099E8
 4628           	mov	r0,r5
-F001 FBE3     	bl	$00009A30
+F001 FBE3     	bl	$00009A34
 4621           	mov	r1,r4
 2200           	mov	r2,#0
 F04F 2040     	mov	r0,#&40004000
-F001 F8ED     	bl	$00009450
+F001 F8ED     	bl	$00009454
 4622           	mov	r2,r4
 4621           	mov	r1,r4
 F04F 2040     	mov	r0,#&40004000
 B003           	add	sp,#&C
 E8BD 4030     	pop.w	{r4-r5,lr}
-F001 B8E4     	b	$00C09450
+F001 B8E4     	b	$00009454
 0000828C                                     10 00 00 10             ....
-00008290 01 00 00 20 00 80 00 40                         ... ...@       
-
-;; fn00008298: 00008298
-fn00008298 proc
-4240           	rsbs	r0,r0
-000F           	mov	r7,r1
+00008290 01 00 00 20 00 80 00 40 40 42 0F 00             ... ...@@B..   
 
 ;; PDCWrite: 0000829C
 PDCWrite proc
 B530           	push	{r4-r5,lr}
 460D           	mov	r5,r1
-4C0A           	ldr	r4,[pc,#&28]                            ; 000082D0
+4C0A           	ldr	r4,[pc,#&28]                            ; 000082CC
 B083           	sub	sp,#&C
 F000 010F     	and	r1,r0,#&F
 4620           	mov	r0,r4
-F001 FBF5     	bl	$00009A94
+F001 FBF5     	bl	$00009A98
 4629           	mov	r1,r5
 4620           	mov	r0,r4
-F001 FBF1     	bl	$00009A94
+F001 FBF1     	bl	$00009A98
 4620           	mov	r0,r4
 A901           	add	r1,sp,#4
-F001 FBFD     	bl	$00009AB4
+F001 FBFD     	bl	$00009AB8
 A901           	add	r1,sp,#4
 4620           	mov	r0,r4
-F001 FBF9     	bl	$00009AB4
+F001 FBF9     	bl	$00009AB8
 B003           	add	sp,#&C
 BD30           	pop	{r4-r5,pc}
-000082CA                               00 BF                       ..   
-
-;; fn000082CC: 000082CC
-fn000082CC proc
-8000           	strh	r0,[r0]
-4000           	ands	r0,r0
+000082CA                               00 BF 00 80 00 40           .....@
 
 ;; vListInitialise: 000082D0
 vListInitialise proc
@@ -16521,9 +16871,6 @@ F100 0308     	add	r3,r0,#8
 E880 000C     	stm	r0,{r2-r3}
 60C3           	str	r3,[r0,#&C]
 6103           	str	r3,[r0,#&10]
-
-;; fn000082E4: 000082E4
-fn000082E4 proc
 4770           	bx	lr
 000082E6                   00 BF                               ..       
 
@@ -16531,9 +16878,6 @@ fn000082E4 proc
 vListInitialiseItem proc
 2300           	mov	r3,#0
 6103           	str	r3,[r0,#&10]
-
-;; fn000082EC: 000082EC
-fn000082EC proc
 4770           	bx	lr
 000082EE                                           00 BF               ..
 
@@ -16550,9 +16894,6 @@ B410           	push	{r4}
 6099           	str	r1,[r3,#&8]
 BC10           	pop	{r4}
 6108           	str	r0,[r1,#&10]
-
-;; fn00008308: 00008308
-fn00008308 proc
 6002           	str	r2,[r0]
 4770           	bx	lr
 
@@ -16561,18 +16902,18 @@ vListInsert proc
 B430           	push	{r4-r5}
 680D           	ldr	r5,[r1]
 1C6B           	add	r3,r5,#1
-D011           	beq	$00008334
+D011           	beq	$00008338
 
 l00008314:
 F100 0208     	add	r2,r0,#8
+E000           	b	$0000831C
+0000831A                               1A 46                       .F   
 
-l00008318:
-E000           	b	$00008318
-0000831A                               1A 46 53 68 1C 68           .FSh.h
-
-l00008320:
+l0000831C:
+6853           	ldr	r3,[r2,#&4]
+681C           	ldr	r4,[r3]
 42A5           	cmps	r5,r4
-D2FA           	bhs	$00008516
+D2FA           	bhs	$0000851A
 
 l00008324:
 6804           	ldr	r4,[r0]
@@ -16583,15 +16924,13 @@ l00008324:
 6051           	str	r1,[r2,#&4]
 6108           	str	r0,[r1,#&10]
 6004           	str	r4,[r0]
-
-l00008334:
 BC30           	pop	{r4-r5}
 4770           	bx	lr
-00008338                         02 69 53 68                     .iSh   
 
-;; fn0000833C: 0000833C
-fn0000833C proc
-E7F2           	b	$00008320
+l00008338:
+6902           	ldr	r2,[r0,#&10]
+6853           	ldr	r3,[r2,#&4]
+E7F2           	b	$00008324
 0000833E                                           00 BF               ..
 
 ;; uxListRemove: 00008340
@@ -16627,14 +16966,14 @@ F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
-F000 F8FC     	bl	$00008574
+F000 F8FC     	bl	$00008578
 6BAA           	ldr	r2,[r5,#&38]
 6BEB           	ldr	r3,[r5,#&3C]
 429A           	cmps	r2,r3
-D014           	beq	$000083AE
+D014           	beq	$000083B2
 
 l00008388:
-F000 F912     	bl	$000085AC
+F000 F912     	bl	$000085B0
 2000           	mov	r0,#0
 F380 8811     	msr	cpsr,r0
 F04F 03BF     	mov	r3,#&BF
@@ -16643,33 +16982,55 @@ F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 6BAA           	ldr	r2,[r5,#&38]
 6BEB           	ldr	r3,[r5,#&3C]
-
-;; fn000083A6: 000083A6
-fn000083A6 proc
 429A           	cmps	r2,r3
-D30A           	blo	$000083BC
+D30A           	blo	$000083C0
 
 l000083AA:
 2300           	mov	r3,#0
 F383 8811     	msr	cpsr,r3
-
-l000083AE:
-8811           	ldrh	r1,[r2]
 BD70           	pop	{r4-r6,pc}
-000083B2       00 F0 FD F8 7C B9 84 F3 11 88               ....|.....   
 
-l000083BC:
+l000083B2:
+F000 F8FD     	bl	$000085B0
+B97C           	cbnz	r4,$000083D8
+
+l000083B8:
+F384 8811     	msr	cpsr,r4
 4620           	mov	r0,r4
 BD70           	pop	{r4-r6,pc}
-000083C0 02 46 31 46 28 46 F7 F7 91 FE 6B 6A 7B B9 01 20 .F1F(F....kj{.. 
-000083D0 00 23 83 F3 11 88 70 BD 05 F1 10 01 20 46 00 F0 .#....p..... F..
-000083E0 87 FD 00 23 83 F3 11 88 6F F0 03 00 70 BD 05 F1 ...#....o...p...
-000083F0 24 00 00 F0 4F FE 00 28 E9 D0 6F F0             $...O..(..o.   
 
-;; fn000083FC: 000083FC
-fn000083FC proc
-0004           	mov	r4,r0
-E7D4           	b	$000083A6
+l000083C0:
+4602           	mov	r2,r0
+4631           	mov	r1,r6
+4628           	mov	r0,r5
+F7F7 FE91     	bl	$000000EC
+6A6B           	ldr	r3,[r5,#&24]
+B97B           	cbnz	r3,$000083EE
+
+l000083CE:
+2001           	mov	r0,#1
+2300           	mov	r3,#0
+F383 8811     	msr	cpsr,r3
+BD70           	pop	{r4-r6,pc}
+
+l000083D8:
+F105 0110     	add	r1,r5,#&10
+4620           	mov	r0,r4
+F000 FD87     	bl	$00008EF0
+2300           	mov	r3,#0
+F383 8811     	msr	cpsr,r3
+F06F 0003     	mvn	r0,#3
+BD70           	pop	{r4-r6,pc}
+
+l000083EE:
+F105 0024     	add	r0,r5,#&24
+F000 FE4F     	bl	$00009094
+2800           	cmps	r0,#0
+D0E9           	beq	$000085CE
+
+l000083FA:
+F06F 0004     	mvn	r0,#4
+E7D4           	b	$000083AA
 
 ;; xQueueCRReceive: 00008400
 xQueueCRReceive proc
@@ -16684,7 +17045,7 @@ B92D           	cbnz	r5,$00008424
 
 l00008418:
 2A00           	cmps	r2,#0
-D136           	bne	$00008486
+D136           	bne	$0000848A
 
 l0000841C:
 F382 8811     	msr	cpsr,r2
@@ -16699,12 +17060,12 @@ F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 6B82           	ldr	r2,[r0,#&38]
-
-l0000843C:
 B922           	cbnz	r2,$00008448
 
 l0000843E:
 4610           	mov	r0,r2
+
+l00008440:
 2300           	mov	r3,#0
 F383 8811     	msr	cpsr,r3
 BD38           	pop	{r3-r5,pc}
@@ -16728,7 +17089,7 @@ BF28           	it	hs
 60E1           	strhs	r1,[r4,#&C]
 
 l00008466:
-F002 F8AD     	bl	$0000A5C0
+F002 F8AD     	bl	$0000A5C4
 6923           	ldr	r3,[r4,#&10]
 B923           	cbnz	r3,$00008478
 
@@ -16740,20 +17101,22 @@ BD38           	pop	{r3-r5,pc}
 
 l00008478:
 F104 0010     	add	r0,r4,#&10
-F000 FE0A     	bl	$00009090
+F000 FE0A     	bl	$00009094
 2800           	cmps	r0,#0
-D0F4           	beq	$0000866A
+D0F4           	beq	$0000866E
 
 l00008484:
 F06F 0004     	mvn	r0,#4
+E7DA           	b	$00008440
 
-l00008486:
-0004           	mov	r4,r0
-
-l00008488:
-E7DA           	b	$0000843C
-0000848A                               00 F1 24 01 10 46           ..$..F
-00008490 00 F0 2E FD 85 F3 11 88 6F F0 03 00 38 BD 00 BF ........o...8...
+l0000848A:
+F100 0124     	add	r1,r0,#&24
+4610           	mov	r0,r2
+F000 FD2E     	bl	$00008EF0
+F385 8811     	msr	cpsr,r5
+F06F 0003     	mvn	r0,#3
+BD38           	pop	{r3-r5,pc}
+0000849E                                           00 BF               ..
 
 ;; xQueueCRSendFromISR: 000084A0
 xQueueCRSendFromISR proc
@@ -16762,14 +17125,34 @@ B570           	push	{r4-r6,lr}
 6B86           	ldr	r6,[r0,#&38]
 4615           	mov	r5,r2
 429E           	cmps	r6,r3
-D301           	blo	$000084AC
+D301           	blo	$000084B0
 
 l000084AC:
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
-000084B0 00 22 04 46 F7 F7 1A FE 00 2D F7 D1 63 6A 00 2B .".F.....-..cj.+
-000084C0 F4 D0 04 F1 24 00 00 F0 E5 FD 05 1C 18 BF 01 25 ....$..........%
-000084D0 EC E7 00 BF                                     ....           
+
+l000084B0:
+2200           	mov	r2,#0
+4604           	mov	r4,r0
+F7F7 FE1A     	bl	$000000EC
+2D00           	cmps	r5,#0
+D1F7           	bne	$000086AC
+
+l000084BC:
+6A63           	ldr	r3,[r4,#&24]
+2B00           	cmps	r3,#0
+D0F4           	beq	$000086AC
+
+l000084C2:
+F104 0024     	add	r0,r4,#&24
+F000 FDE5     	bl	$00009094
+1C05           	add	r5,r0,#0
+BF18           	it	ne
+2501           	movne	r5,#1
+
+l000084D0:
+E7EC           	b	$000084AC
+000084D2       00 BF                                       ..           
 
 ;; xQueueCRReceiveFromISR: 000084D4
 xQueueCRReceiveFromISR proc
@@ -16801,7 +17184,7 @@ l000084FC:
 4672           	mov	r2,lr
 4630           	mov	r0,r6
 63A7           	str	r7,[r4,#&38]
-F002 F85E     	bl	$0000A5C0
+F002 F85E     	bl	$0000A5C4
 682B           	ldr	r3,[r5]
 B90B           	cbnz	r3,$00008510
 
@@ -16815,47 +17198,44 @@ BDF8           	pop	{r3-r7,pc}
 
 l00008514:
 4618           	mov	r0,r3
-
-l00008516:
 BDF8           	pop	{r3-r7,pc}
 
 l00008518:
 F104 0010     	add	r0,r4,#&10
-F000 FDBA     	bl	$00009090
+
+l0000851A:
+0010           	mov	r0,r2
+
+;; fn0000851C: 0000851C
+fn0000851C proc
+F000 FDBA     	bl	$00009094
 2800           	cmps	r0,#0
-D0F5           	beq	$0000870C
+D0F5           	beq	$00008710
 
 l00008524:
 2001           	mov	r0,#1
 6028           	str	r0,[r5]
 BDF8           	pop	{r3-r7,pc}
-
-l0000852A:
-BF00           	nop
+0000852A                               00 BF                       ..   
 
 ;; prvIdleTask: 0000852C
 prvIdleTask proc
 B508           	push	{r3,lr}
-F7FF FE6F     	bl	$0000820C
 
-;; fn00008530: 00008530
-fn00008530 proc
-FE6F E7FC     	Invalid
-
-;; fn00008532: 00008532
-fn00008532 proc
-E7FC           	b	$0000852A
+l0000852E:
+F7FF FE6F     	bl	$00008210
+E7FC           	b	$0000852E
 
 ;; xTaskNotifyStateClear: 00008534
 xTaskNotifyStateClear proc
 B538           	push	{r3-r5,lr}
-
-l00008536:
 B178           	cbz	r0,$00008558
 
 l00008538:
 4604           	mov	r4,r0
-F000 F81D     	bl	$00008574
+
+l0000853A:
+F000 F81D     	bl	$00008578
 F894 3064     	ldrb	r3,[r4,#&64]
 2B02           	cmps	r3,#2
 BF05           	ittet	eq
@@ -16865,20 +17245,16 @@ l00008548:
 2501           	mov	r5,#1
 2500           	mov	r5,#0
 F884 3064     	strb	r3,[r4,#&64]
-F000 F82E     	bl	$000085AC
+F000 F82E     	bl	$000085B0
 4628           	mov	r0,r5
 BD38           	pop	{r3-r5,pc}
 
 l00008558:
-4B01           	ldr	r3,[pc,#&4]                             ; 00008564
+4B01           	ldr	r3,[pc,#&4]                             ; 00008560
 685C           	ldr	r4,[r3,#&4]
-E7ED           	b	$00008536
+E7ED           	b	$0000853A
 0000855E                                           00 BF               ..
-
-;; fn00008560: 00008560
-fn00008560 proc
-00C4           	lsls	r4,r0,#3
-2000           	mov	r0,#0
+00008560 C4 00 00 20                                     ...            
 
 ;; xPortRaisePrivilege: 00008564
 xPortRaisePrivilege proc
@@ -16890,46 +17266,38 @@ BF1A           	itte	ne
 l00008570:
 DF02           	svc	#2
 2001           	mov	r0,#1
-
-;; fn00008574: 00008574
-fn00008574 proc
 4770           	bx	lr
 00008576                   00 20                               .        
 
 ;; vPortEnterCritical: 00008578
 vPortEnterCritical proc
 B508           	push	{r3,lr}
-F7FF FFF3     	bl	$00008560
+F7FF FFF3     	bl	$00008564
 F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
-4A07           	ldr	r2,[pc,#&1C]                            ; 000085B2
+4A07           	ldr	r2,[pc,#&1C]                            ; 000085AC
 2801           	cmps	r0,#1
 6813           	ldr	r3,[r2]
 F103 0301     	add	r3,r3,#1
 6013           	str	r3,[r2]
-D005           	beq	$000085A4
+D005           	beq	$000085A8
 
 l0000859C:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000085A4:
 F380 8814     	msr	cpsr,r0
-BD08           	pop	{r3,pc}
-000085AA                               00 BF                       ..   
 
-;; fn000085AC: 000085AC
-fn000085AC proc
-00BC           	lsls	r4,r7,#2
-2000           	mov	r0,#0
+l000085A8:
+BD08           	pop	{r3,pc}
+000085AA                               00 BF BC 00 00 20           ..... 
 
 ;; vPortExitCritical: 000085B0
 vPortExitCritical proc
 B508           	push	{r3,lr}
-F7FF FFD7     	bl	$00008560
-4A08           	ldr	r2,[pc,#&20]                            ; 000085DE
+F7FF FFD7     	bl	$00008564
+4A08           	ldr	r2,[pc,#&20]                            ; 000085D8
 6813           	ldr	r3,[r2]
 3B01           	subs	r3,#1
 6013           	str	r3,[r2]
@@ -16940,26 +17308,30 @@ F383 8811     	msr	cpsr,r3
 
 l000085C4:
 2801           	cmps	r0,#1
-D005           	beq	$000085D0
+D005           	beq	$000085D4
 
 l000085C8:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
 
-l000085D0:
+;; fn000085CE: 000085CE
+fn000085CE proc
+0001           	mov	r1,r0
 F380 8814     	msr	cpsr,r0
+
+l000085D4:
 BD08           	pop	{r3,pc}
 000085D6                   00 BF BC 00 00 20                   .....    
 
 ;; vParTestInitialise: 000085DC
 vParTestInitialise proc
 B508           	push	{r3,lr}
-F7FF FE1F     	bl	$0000821C
-4B03           	ldr	r3,[pc,#&C]                             ; 000085F6
+F7FF FE1F     	bl	$00008220
+4B03           	ldr	r3,[pc,#&C]                             ; 000085F0
 2005           	mov	r0,#5
 7819           	ldrb	r1,[r3]
 E8BD 4008     	pop.w	{r3,lr}
-F7FF BE56     	b	$00008298
+F7FF BE56     	b	$0000829C
 000085F0 F4 07 00 20                                     ...            
 
 ;; vParTestSetLED: 000085F4
@@ -16967,14 +17339,14 @@ vParTestSetLED proc
 B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
 460D           	mov	r5,r1
-F000 F961     	bl	$000088BC
+F000 F961     	bl	$000088C0
 2C07           	cmps	r4,#7
-D80C           	bhi	$00008618
+D80C           	bhi	$0000861C
 
 l00008602:
 2301           	mov	r3,#1
 FA03 F004     	lsl	r0,r3,r4
-4B08           	ldr	r3,[pc,#&20]                            ; 00008630
+4B08           	ldr	r3,[pc,#&20]                            ; 0000862C
 B2C0           	uxtb	r0,r0
 781A           	ldrb	r2,[r3]
 B14D           	cbz	r5,$00008624
@@ -16982,63 +17354,62 @@ B14D           	cbz	r5,$00008624
 l00008610:
 4310           	orrs	r0,r2
 7018           	strb	r0,[r3]
+
+l00008614:
 7819           	ldrb	r1,[r3]
 2005           	mov	r0,#5
+F7FF FE40     	bl	$0000829C
 
-l00008618:
-F7FF FE40     	bl	$00008298
+l0000861C:
 E8BD 4038     	pop.w	{r3-r5,lr}
-F000 B95E     	b	$00C088DC
+F000 B95E     	b	$000088E0
 
 l00008624:
 EA22 0000     	bic.w	r0,r2,r0
 7018           	strb	r0,[r3]
-E7F3           	b	$00008610
-
-;; fn0000862C: 0000862C
-fn0000862C proc
-07F4           	lsls	r4,r6,#&1F
-2000           	mov	r0,#0
+E7F3           	b	$00008614
+0000862C                                     F4 07 00 20             ... 
 
 ;; vParTestToggleLED: 00008630
 vParTestToggleLED proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F000 F944     	bl	$000088BC
+F000 F944     	bl	$000088C0
 2C07           	cmps	r4,#7
-D80E           	bhi	$00008656
+D80E           	bhi	$0000865A
 
 l0000863C:
 2201           	mov	r2,#1
-4B0B           	ldr	r3,[pc,#&2C]                            ; 00008672
+4B0B           	ldr	r3,[pc,#&2C]                            ; 0000866C
 FA02 F004     	lsl	r0,r2,r4
 7819           	ldrb	r1,[r3]
 B2C2           	uxtb	r2,r0
 420A           	adcs	r2,r1
-D10A           	bne	$0000865E
+D10A           	bne	$00008662
 
 l0000864C:
 7819           	ldrb	r1,[r3]
-
-;; fn0000864E: 0000864E
-fn0000864E proc
 430A           	orrs	r2,r1
 701A           	strb	r2,[r3]
+
+l00008652:
 7819           	ldrb	r1,[r3]
 2005           	mov	r0,#5
+F7FF FE21     	bl	$0000829C
 
-;; fn00008656: 00008656
-fn00008656 proc
-F7FF FE21     	bl	$00008298
+l0000865A:
 E8BD 4010     	pop.w	{r4,lr}
+F000 B93F     	b	$000088E0
 
-l0000865E:
-F000 B93F     	b	$00C088DC
-00008662       1A 78 22 EA 00 00 18 70                     .x"....p     
+l00008662:
+781A           	ldrb	r2,[r3]
+EA22 0000     	bic.w	r0,r2,r0
+7018           	strb	r0,[r3]
+E7F2           	b	$00008652
+0000866C                                     F4 07                   .. 
 
-l0000866A:
-E7F2           	b	$0000864E
-0000866C                                     F4 07 00 20             ... 
+l0000866E:
+2000           	mov	r0,#0
 
 ;; prvFlashCoRoutine: 00008670
 prvFlashCoRoutine proc
@@ -17047,12 +17418,12 @@ B570           	push	{r4-r6,lr}
 B082           	sub	sp,#8
 F5B3 7FE1     	cmp	r3,#&1C2
 4604           	mov	r4,r0
-D01B           	beq	$000086B2
+D01B           	beq	$000086B6
 
 l0000867E:
 F240 12C3     	mov	r2,#&1C3
 4293           	cmps	r3,r2
-D002           	beq	$00008688
+D002           	beq	$0000868C
 
 l00008686:
 B323           	cbz	r3,$000086D2
@@ -17060,39 +17431,48 @@ B323           	cbz	r3,$000086D2
 l00008688:
 B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
-0000868C                                     14 4D 01 AE             .M..
-00008690 01 98                                           ..             
 
-l00008692:
-F7FF FFCD     	bl	$0000862C
+l0000868C:
+4D14           	ldr	r5,[pc,#&50]                            ; 000086E0
+AE01           	add	r6,sp,#4
+9801           	ldr	r0,[sp,#&4]
+F7FF FFCD     	bl	$00008630
+
+l00008696:
 F04F 32FF     	mov	r2,#&FFFFFFFF
 4631           	mov	r1,r6
 6828           	ldr	r0,[r5]
-F7FF FEAF     	bl	$000083FC
+F7FF FEAF     	bl	$00008400
 1D02           	add	r2,r0,#4
-D018           	beq	$000086D4
+D018           	beq	$000086D8
 
 l000086A6:
 1D43           	add	r3,r0,#5
-D00E           	beq	$000086C4
+D00E           	beq	$000086C8
 
 l000086AA:
 2801           	cmps	r0,#1
-D0F0           	beq	$0000888C
 
-l000086AE:
+;; fn000086AC: 000086AC
+fn000086AC proc
+D0F0           	beq	$00008890
+
+;; fn000086AE: 000086AE
+fn000086AE proc
 2200           	mov	r2,#0
-4B0C           	ldr	r3,[pc,#&30]                            ; 000086E8
-
-l000086B2:
+4B0C           	ldr	r3,[pc,#&30]                            ; 000086E4
 601A           	str	r2,[r3]
-E7EF           	b	$00008692
-000086B6                   0A 4D 01 AE 28 68 31 46 00 22       .M..(h1F."
-000086C0 FF F7 9E FE                                     ....           
+E7EF           	b	$00008696
 
-l000086C4:
+l000086B6:
+4D0A           	ldr	r5,[pc,#&28]                            ; 000086E0
+AE01           	add	r6,sp,#4
+6828           	ldr	r0,[r5]
+4631           	mov	r1,r6
+2200           	mov	r2,#0
+F7FF FE9E     	bl	$00008400
 1D43           	add	r3,r0,#5
-D1F0           	bne	$000088A6
+D1F0           	bne	$000088AA
 
 l000086C8:
 F240 13C3     	mov	r3,#&1C3
@@ -17101,12 +17481,14 @@ B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
 
 l000086D2:
-4D03           	ldr	r5,[pc,#&C]                             ; 000086E6
-
-l000086D4:
+4D03           	ldr	r5,[pc,#&C]                             ; 000086E0
 AE01           	add	r6,sp,#4
-E7DE           	b	$00008692
-000086D8                         4F F4 E1 73 A3 86 D3 E7         O..s....
+E7DE           	b	$00008696
+
+l000086D8:
+F44F 73E1     	mov	r3,#&1C2
+86A3           	strh	r3,[r4,#&68]
+E7D3           	b	$00008688
 000086E0 F8 07 00 20 C0 00 00 20                         ... ...        
 
 ;; prvFixedDelayCoRoutine: 000086E8
@@ -17117,59 +17499,98 @@ B082           	sub	sp,#8
 F5B3 7FC1     	cmp	r3,#&182
 4604           	mov	r4,r0
 9101           	str	r1,[sp,#&4]
-D02B           	beq	$0000874C
+D02B           	beq	$00008750
 
 l000086F8:
-D926           	bls	$00008744
+D926           	bls	$00008748
 
 l000086FA:
 F240 1283     	mov	r2,#&183
 4293           	cmps	r3,r2
-D109           	bne	$00008712
+D109           	bne	$00008716
 
 l00008702:
-4B1D           	ldr	r3,[pc,#&74]                            ; 0000877E
+4B1D           	ldr	r3,[pc,#&74]                            ; 00008778
 9A01           	ldr	r2,[sp,#&4]
 F853 0022     	ldr.w	r0,[r3,r2,lsl #2]
-
-l00008708:
-0022           	mov	r2,r4
 BB40           	cbnz	r0,$0000875E
 
-;; fn0000870C: 0000870C
-fn0000870C proc
+l0000870C:
 F44F 73CB     	mov	r3,#&196
+
+;; fn00008710: 00008710
+fn00008710 proc
 86A3           	strh	r3,[r4,#&68]
 
 l00008712:
 B002           	add	sp,#8
 BD10           	pop	{r4,pc}
-00008716                   B3 F5 CB 7F FA D1 17 4B 00 22       .......K."
-00008720 18 68 01 A9 FF F7 1E FE 02 1D 20 D0 43 1D 1A D0 .h........ .C...
-00008730 01 28 E6 D0 00 22 12 4B 1A 60 0F 4B 01 9A 53 F8 .(...".K.`.K..S.
-00008740 22 00 00 28                                     "..(           
 
-l00008744:
-D0E2           	beq	$00008908
+l00008716:
+F5B3 7FCB     	cmp	r3,#&196
+D1FA           	bne	$00008912
+
+l0000871C:
+4B17           	ldr	r3,[pc,#&5C]                            ; 0000877C
+2200           	mov	r2,#0
+6818           	ldr	r0,[r3]
+A901           	add	r1,sp,#4
+F7FF FE1E     	bl	$00008364
+1D02           	add	r2,r0,#4
+D020           	beq	$0000876E
+
+l0000872C:
+1D43           	add	r3,r0,#5
+D01A           	beq	$00008766
+
+l00008730:
+2801           	cmps	r0,#1
+D0E6           	beq	$00008902
+
+l00008734:
+2200           	mov	r2,#0
+4B12           	ldr	r3,[pc,#&48]                            ; 00008780
+601A           	str	r2,[r3]
+4B0F           	ldr	r3,[pc,#&3C]                            ; 00008778
+9A01           	ldr	r2,[sp,#&4]
+F853 0022     	ldr.w	r0,[r3,r2,lsl #2]
+2800           	cmps	r0,#0
+D0E2           	beq	$0000890C
 
 l00008746:
-E00A           	b	$0000875A
-00008748                         00 2B E7 D0                     .+..   
+E00A           	b	$0000875E
+
+l00008748:
+2B00           	cmps	r3,#0
+D0E7           	beq	$0000891C
 
 l0000874C:
 B002           	add	sp,#8
 BD10           	pop	{r4,pc}
-00008750 0A 4B 00 22 18 68 01 A9 FF F7                   .K.".h....     
 
-l0000875A:
-FE04 E7E6     	Invalid
+l00008750:
+4B0A           	ldr	r3,[pc,#&28]                            ; 0000877C
+2200           	mov	r2,#0
+6818           	ldr	r0,[r3]
+A901           	add	r1,sp,#4
+F7FF FE04     	bl	$00008364
+E7E6           	b	$0000872C
 
 l0000875E:
 2100           	mov	r1,#0
-F000 FBC6     	bl	$00008EEC
-E7D2           	b	$00008708
-00008766                   40 F2 83 13 A3 86 D1 E7 4F F4       @.......O.
-00008770 C1 73 A3 86 CD E7 00 BF 84 A2 00 00 F8 07 00 20 .s............. 
+F000 FBC6     	bl	$00008EF0
+E7D2           	b	$0000870C
+
+l00008766:
+F240 1383     	mov	r3,#&183
+86A3           	strh	r3,[r4,#&68]
+E7D1           	b	$00008712
+
+l0000876E:
+F44F 73C1     	mov	r3,#&182
+86A3           	strh	r3,[r4,#&68]
+E7CD           	b	$00008712
+00008776                   00 BF 84 A2 00 00 F8 07 00 20       ......... 
 00008780 C0 00 00 20                                     ...            
 
 ;; vStartFlashCoRoutines: 00008784
@@ -17184,8 +17605,8 @@ B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 2104           	mov	r1,#4
 2001           	mov	r0,#1
-F000 F978     	bl	$00008A84
-4B0A           	ldr	r3,[pc,#&28]                            ; 000087C8
+F000 F978     	bl	$00008A88
+4B0A           	ldr	r3,[pc,#&28]                            ; 000087C4
 6018           	str	r0,[r3]
 B188           	cbz	r0,$000087C2
 
@@ -17194,21 +17615,21 @@ B14D           	cbz	r5,$000087B4
 
 l000087A0:
 2400           	mov	r4,#0
-4E09           	ldr	r6,[pc,#&24]                            ; 000087CE
+4E09           	ldr	r6,[pc,#&24]                            ; 000087C8
 4622           	mov	r2,r4
 2100           	mov	r1,#0
 3401           	adds	r4,#1
 4630           	mov	r0,r6
-F000 FB48     	bl	$00008E3C
+F000 FB48     	bl	$00008E40
 42AC           	cmps	r4,r5
-D1F7           	bne	$000089A0
+D1F7           	bne	$000089A4
 
 l000087B4:
 2200           	mov	r2,#0
 E8BD 4070     	pop.w	{r4-r6,lr}
 2101           	mov	r1,#1
-4803           	ldr	r0,[pc,#&C]                             ; 000087D0
-F000 BB3F     	b	$00C08E3C
+4803           	ldr	r0,[pc,#&C]                             ; 000087CC
+F000 BB3F     	b	$00008E40
 
 l000087C2:
 BD70           	pop	{r4-r6,pc}
@@ -17216,7 +17637,7 @@ BD70           	pop	{r4-r6,pc}
 
 ;; xAreFlashCoRoutinesStillRunning: 000087D0
 xAreFlashCoRoutinesStillRunning proc
-4B01           	ldr	r3,[pc,#&4]                             ; 000087DC
+4B01           	ldr	r3,[pc,#&4]                             ; 000087D8
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 000087D6                   00 BF C0 00 00 20                   .....    
@@ -17226,25 +17647,22 @@ MPU_xTaskCreateRestricted proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FEBF     	bl	$00008560
+F7FF FEBF     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 F896     	bl	$00000918
+F7F8 F896     	bl	$0000091C
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$000087FE
+D005           	beq	$00008802
 
 l000087F6:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000087FE:
 F380 8814     	msr	cpsr,r0
-4618           	mov	r0,r3
 
-;; fn00008804: 00008804
-fn00008804 proc
+l00008802:
+4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008806                   00 BF                               ..       
 
@@ -17258,7 +17676,7 @@ B082           	sub	sp,#8
 469A           	mov	r10,r3
 9F0A           	ldr	r7,[sp,#&28]
 9E0B           	ldr	r6,[sp,#&2C]
-F7FF FEA3     	bl	$00008560
+F7FF FEA3     	bl	$00008564
 4653           	mov	r3,r10
 4604           	mov	r4,r0
 9700           	str	r7,[sp]
@@ -17266,17 +17684,17 @@ F7FF FEA3     	bl	$00008560
 464A           	mov	r2,r9
 4641           	mov	r1,r8
 4628           	mov	r0,r5
-F7F8 F842     	bl	$000008B0
+F7F8 F842     	bl	$000008B4
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$0000883E
+D005           	beq	$00008842
 
 l00008836:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l0000883E:
 F380 8814     	msr	cpsr,r0
+
+l00008842:
 4618           	mov	r0,r3
 B002           	add	sp,#8
 E8BD 87F0     	pop.w	{r4-r10,pc}
@@ -17287,23 +17705,20 @@ MPU_vTaskAllocateMPURegions proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FE87     	bl	$00008560
+F7FF FE87     	bl	$00008564
 4604           	mov	r4,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 F888     	bl	$0000096C
+F7F8 F888     	bl	$00000970
 2C01           	cmps	r4,#1
-D005           	beq	$0000886C
+D005           	beq	$00008870
 
 l00008864:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l0000886C:
 F380 8814     	msr	cpsr,r0
 
-;; fn00008870: 00008870
-fn00008870 proc
+l00008870:
 BD70           	pop	{r4-r6,pc}
 00008872       00 BF                                       ..           
 
@@ -17312,21 +17727,23 @@ MPU_vTaskDelayUntil proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FE73     	bl	$00008560
+F7FF FE73     	bl	$00008564
 4604           	mov	r4,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 FB7C     	bl	$00000F7C
+F7F8 FB7C     	bl	$00000F80
 2C01           	cmps	r4,#1
-D005           	beq	$00008894
+D005           	beq	$00008898
 
-;; fn0000888C: 0000888C
-fn0000888C proc
+l0000888C:
 F3EF 8014     	mrs	r0,cpsr
-F040 0001     	orr	r0,r0,#1
 
-l00008894:
+;; fn00008890: 00008890
+fn00008890 proc
+F040 0001     	orr	r0,r0,#1
 F380 8814     	msr	cpsr,r0
+
+l00008898:
 BD70           	pop	{r4-r6,pc}
 0000889A                               00 BF                       ..   
 
@@ -17334,89 +17751,92 @@ BD70           	pop	{r4-r6,pc}
 MPU_vTaskDelay proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FE60     	bl	$00008560
+F7FF FE60     	bl	$00008564
 4604           	mov	r4,r0
-
-;; fn000088A6: 000088A6
-fn000088A6 proc
 4628           	mov	r0,r5
-F7F8 FB4E     	bl	$00000F44
-2C01           	cmps	r4,#1
-D005           	beq	$000088B8
+F7F8 FB4E     	bl	$00000F48
 
-;; fn000088B0: 000088B0
-fn000088B0 proc
+;; fn000088AA: 000088AA
+fn000088AA proc
+FB4E 2C01     	Invalid
+D005           	beq	$000088BC
+
+l000088B0:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000088B8:
 F380 8814     	msr	cpsr,r0
 
-;; fn000088BC: 000088BC
-fn000088BC proc
+l000088BC:
 BD38           	pop	{r3-r5,pc}
 000088BE                                           00 BF               ..
 
 ;; MPU_vTaskSuspendAll: 000088C0
 MPU_vTaskSuspendAll proc
 B510           	push	{r4,lr}
-F7FF FE4F     	bl	$00008560
+F7FF FE4F     	bl	$00008564
 4604           	mov	r4,r0
-F7F8 F8A0     	bl	$00000A08
+F7F8 F8A0     	bl	$00000A0C
 2C01           	cmps	r4,#1
-D005           	beq	$000088D8
+D005           	beq	$000088DC
 
 l000088D0:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000088D8:
 F380 8814     	msr	cpsr,r0
+
+l000088DC:
 BD10           	pop	{r4,pc}
 000088DE                                           00 BF               ..
 
 ;; MPU_xTaskResumeAll: 000088E0
 MPU_xTaskResumeAll proc
 B510           	push	{r4,lr}
-F7FF FE3F     	bl	$00008560
+F7FF FE3F     	bl	$00008564
 4604           	mov	r4,r0
-F7F8 FAC0     	bl	$00000E68
+F7F8 FAC0     	bl	$00000E6C
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$000088FA
+D005           	beq	$000088FE
 
 l000088F2:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000088FA:
 F380 8814     	msr	cpsr,r0
-4618           	mov	r0,r3
 
-;; fn00008900: 00008900
-fn00008900 proc
+l000088FE:
+4618           	mov	r0,r3
 BD10           	pop	{r4,pc}
-00008902       00 BF                                       ..           
+
+l00008902:
+BF00           	nop
 
 ;; MPU_xTaskGetTickCount: 00008904
 MPU_xTaskGetTickCount proc
 B510           	push	{r4,lr}
-F7FF FE2D     	bl	$00008560
+F7FF FE2D     	bl	$00008564
+4604           	mov	r4,r0
 
-;; fn00008908: 00008908
-fn00008908 proc
-FE2D 4604     	Invalid
-F7F8 F888     	bl	$00000A1C
+;; fn0000890C: 0000890C
+fn0000890C proc
+F7F8 F888     	bl	$00000A20
 2C01           	cmps	r4,#1
-4603           	mov	r3,r0
-D005           	beq	$0000891E
 
-l00008916:
+;; fn00008912: 00008912
+fn00008912 proc
+4603           	mov	r3,r0
+D005           	beq	$00008922
+
+;; fn00008916: 00008916
+fn00008916 proc
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
 
-l0000891E:
+;; fn0000891C: 0000891C
+fn0000891C proc
+0001           	mov	r1,r0
 F380 8814     	msr	cpsr,r0
+
+l00008922:
 4618           	mov	r0,r3
 BD10           	pop	{r4,pc}
 00008926                   00 BF                               ..       
@@ -17424,19 +17844,19 @@ BD10           	pop	{r4,pc}
 ;; MPU_uxTaskGetNumberOfTasks: 00008928
 MPU_uxTaskGetNumberOfTasks proc
 B510           	push	{r4,lr}
-F7FF FE1B     	bl	$00008560
+F7FF FE1B     	bl	$00008564
 4604           	mov	r4,r0
-F7F8 F882     	bl	$00000A34
+F7F8 F882     	bl	$00000A38
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008942
+D005           	beq	$00008946
 
 l0000893A:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008942:
 F380 8814     	msr	cpsr,r0
+
+l00008946:
 4618           	mov	r0,r3
 BD10           	pop	{r4,pc}
 0000894A                               00 BF                       ..   
@@ -17445,20 +17865,20 @@ BD10           	pop	{r4,pc}
 MPU_pcTaskGetName proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FE08     	bl	$00008560
+F7FF FE08     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 F874     	bl	$00000A40
+F7F8 F874     	bl	$00000A44
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$0000896A
+D005           	beq	$0000896E
 
 l00008962:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l0000896A:
 F380 8814     	msr	cpsr,r0
+
+l0000896E:
 4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008972       00 BF                                       ..           
@@ -17467,19 +17887,19 @@ BD38           	pop	{r3-r5,pc}
 MPU_vTaskSetTimeOutState proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FDF4     	bl	$00008560
+F7FF FDF4     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FBE0     	bl	$00001140
+F7F8 FBE0     	bl	$00001144
 2C01           	cmps	r4,#1
-D005           	beq	$00008990
+D005           	beq	$00008994
 
 l00008988:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008990:
 F380 8814     	msr	cpsr,r0
+
+l00008994:
 BD38           	pop	{r3-r5,pc}
 00008996                   00 BF                               ..       
 
@@ -17488,24 +17908,25 @@ MPU_xTaskCheckForTimeOut proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FDE1     	bl	$00008560
+F7FF FDE1     	bl	$00008564
+4631           	mov	r1,r6
 
-;; fn000089A0: 000089A0
-fn000089A0 proc
-FDE1 4631     	Invalid
+;; fn000089A4: 000089A4
+fn000089A4 proc
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FBD6     	bl	$00001154
+F7F8 FBD6     	bl	$00001158
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$000089BA
+D005           	beq	$000089BE
 
-l000089B2:
+;; fn000089B2: 000089B2
+fn000089B2 proc
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000089BA:
 F380 8814     	msr	cpsr,r0
+
+l000089BE:
 4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 000089C2       00 BF                                       ..           
@@ -17517,23 +17938,23 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FDC8     	bl	$00008560
+F7FF FDC8     	bl	$00008564
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 F83B     	bl	$00000A54
+F7F8 F83B     	bl	$00000A58
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$000089F0
+D005           	beq	$000089F4
 
 l000089E8:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l000089F0:
 F380 8814     	msr	cpsr,r0
+
+l000089F4:
 4618           	mov	r0,r3
 E8BD 81F0     	pop.w	{r4-r8,pc}
 000089FA                               00 BF                       ..   
@@ -17545,23 +17966,23 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FDAC     	bl	$00008560
+F7FF FDAC     	bl	$00008564
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 F8DD     	bl	$00000BD0
+F7F8 F8DD     	bl	$00000BD4
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008A28
+D005           	beq	$00008A2C
 
 l00008A20:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008A28:
 F380 8814     	msr	cpsr,r0
+
+l00008A2C:
 4618           	mov	r0,r3
 E8BD 81F0     	pop.w	{r4-r8,pc}
 00008A32       00 BF                                       ..           
@@ -17571,21 +17992,21 @@ MPU_ulTaskNotifyTake proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FD93     	bl	$00008560
+F7FF FD93     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 F95C     	bl	$00000CFC
+F7F8 F95C     	bl	$00000D00
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008A56
+D005           	beq	$00008A5A
 
 l00008A4E:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008A56:
 F380 8814     	msr	cpsr,r0
+
+l00008A5A:
 4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008A5E                                           00 BF               ..
@@ -17594,24 +18015,21 @@ BD70           	pop	{r4-r6,pc}
 MPU_xTaskNotifyStateClear proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FD7E     	bl	$00008560
+F7FF FD7E     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7FF FD62     	bl	$00008530
+F7FF FD62     	bl	$00008534
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008A7E
+D005           	beq	$00008A82
 
 l00008A76:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008A7E:
 F380 8814     	msr	cpsr,r0
-4618           	mov	r0,r3
 
-;; fn00008A84: 00008A84
-fn00008A84 proc
+l00008A82:
+4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008A86                   00 BF                               ..       
 
@@ -17621,22 +18039,22 @@ B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
 4617           	mov	r7,r2
-F7FF FD68     	bl	$00008560
+F7FF FD68     	bl	$00008564
 463A           	mov	r2,r7
 4604           	mov	r4,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FE06     	bl	$000006A8
+F7F7 FE06     	bl	$000006AC
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008AAE
+D005           	beq	$00008AB2
 
 l00008AA6:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008AAE:
 F380 8814     	msr	cpsr,r0
+
+l00008AB2:
 4618           	mov	r0,r3
 BDF8           	pop	{r3-r7,pc}
 00008AB6                   00 BF                               ..       
@@ -17646,25 +18064,22 @@ MPU_xQueueGenericReset proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FD51     	bl	$00008560
+F7FF FD51     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FDB2     	bl	$0000062C
+F7F7 FDB2     	bl	$00000630
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008ADA
+D005           	beq	$00008ADE
 
 l00008AD2:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008ADA:
 F380 8814     	msr	cpsr,r0
-4618           	mov	r0,r3
 
-;; fn00008AE0: 00008AE0
-fn00008AE0 proc
+l00008ADE:
+4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008AE2       00 BF                                       ..           
 
@@ -17675,23 +18090,23 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FD38     	bl	$00008560
+F7FF FD38     	bl	$00008564
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FB47     	bl	$0000018C
+F7F7 FB47     	bl	$00000190
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008B10
+D005           	beq	$00008B14
 
 l00008B08:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008B10:
 F380 8814     	msr	cpsr,r0
+
+l00008B14:
 4618           	mov	r0,r3
 E8BD 81F0     	pop.w	{r4-r8,pc}
 00008B1A                               00 BF                       ..   
@@ -17700,20 +18115,20 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 MPU_uxQueueMessagesWaiting proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FD20     	bl	$00008560
+F7FF FD20     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FC7E     	bl	$00000424
+F7F7 FC7E     	bl	$00000428
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008B3A
+D005           	beq	$00008B3E
 
 l00008B32:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008B3A:
 F380 8814     	msr	cpsr,r0
+
+l00008B3E:
 4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008B42       00 BF                                       ..           
@@ -17722,24 +18137,21 @@ BD38           	pop	{r3-r5,pc}
 MPU_uxQueueSpacesAvailable proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FD0C     	bl	$00008560
+F7FF FD0C     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FC74     	bl	$00000438
+F7F7 FC74     	bl	$0000043C
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008B62
+D005           	beq	$00008B66
 
 l00008B5A:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008B62:
 F380 8814     	msr	cpsr,r0
-4618           	mov	r0,r3
 
-;; fn00008B68: 00008B68
-fn00008B68 proc
+l00008B66:
+4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008B6A                               00 BF                       ..   
 
@@ -17750,23 +18162,23 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FCF4     	bl	$00008560
+F7FF FCF4     	bl	$00008564
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FBA7     	bl	$000002D4
+F7F7 FBA7     	bl	$000002D8
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008B98
+D005           	beq	$00008B9C
 
 l00008B90:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008B98:
 F380 8814     	msr	cpsr,r0
+
+l00008B9C:
 4618           	mov	r0,r3
 E8BD 81F0     	pop.w	{r4-r8,pc}
 00008BA2       00 BF                                       ..           
@@ -17776,21 +18188,21 @@ MPU_xQueuePeekFromISR proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FCDB     	bl	$00008560
+F7FF FCDB     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FB76     	bl	$000002A0
+F7F7 FB76     	bl	$000002A4
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008BC6
+D005           	beq	$00008BCA
 
 l00008BBE:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008BC6:
 F380 8814     	msr	cpsr,r0
+
+l00008BCA:
 4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008BCE                                           00 BF               ..
@@ -17799,20 +18211,20 @@ BD70           	pop	{r4-r6,pc}
 MPU_xQueueGetMutexHolder proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FCC6     	bl	$00008560
+F7FF FCC6     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FCEA     	bl	$000005B0
+F7F7 FCEA     	bl	$000005B4
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008BEE
+D005           	beq	$00008BF2
 
 l00008BE6:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008BEE:
 F380 8814     	msr	cpsr,r0
+
+l00008BF2:
 4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008BF6                   00 BF                               ..       
@@ -17821,20 +18233,20 @@ BD38           	pop	{r3-r5,pc}
 MPU_xQueueCreateMutex proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FCB2     	bl	$00008560
+F7FF FCB2     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FD6A     	bl	$000006D8
+F7F7 FD6A     	bl	$000006DC
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008C16
+D005           	beq	$00008C1A
 
 l00008C0E:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008C16:
 F380 8814     	msr	cpsr,r0
+
+l00008C1A:
 4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008C1E                                           00 BF               ..
@@ -17844,21 +18256,21 @@ MPU_xQueueTakeMutexRecursive proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FC9D     	bl	$00008560
+F7FF FC9D     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FCD0     	bl	$000005D0
+F7F7 FCD0     	bl	$000005D4
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008C42
+D005           	beq	$00008C46
 
 l00008C3A:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008C42:
 F380 8814     	msr	cpsr,r0
+
+l00008C46:
 4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008C4A                               00 BF                       ..   
@@ -17867,20 +18279,20 @@ BD70           	pop	{r4-r6,pc}
 MPU_xQueueGiveMutexRecursive proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC88     	bl	$00008560
+F7FF FC88     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FCD4     	bl	$00000600
+F7F7 FCD4     	bl	$00000604
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008C6A
+D005           	beq	$00008C6E
 
 l00008C62:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008C6A:
 F380 8814     	msr	cpsr,r0
+
+l00008C6E:
 4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008C72       00 BF                                       ..           
@@ -17889,19 +18301,19 @@ BD38           	pop	{r3-r5,pc}
 MPU_vQueueDelete proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC74     	bl	$00008560
+F7FF FC74     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FBE8     	bl	$00000450
+F7F7 FBE8     	bl	$00000454
 2C01           	cmps	r4,#1
-D005           	beq	$00008C90
+D005           	beq	$00008C94
 
 l00008C88:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008C90:
 F380 8814     	msr	cpsr,r0
+
+l00008C94:
 BD38           	pop	{r3-r5,pc}
 00008C96                   00 BF                               ..       
 
@@ -17909,20 +18321,20 @@ BD38           	pop	{r3-r5,pc}
 MPU_pvPortMalloc proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC62     	bl	$00008560
+F7FF FC62     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD42     	bl	$00001728
+F7F8 FD42     	bl	$0000172C
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008CB6
+D005           	beq	$00008CBA
 
 l00008CAE:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008CB6:
 F380 8814     	msr	cpsr,r0
+
+l00008CBA:
 4618           	mov	r0,r3
 BD38           	pop	{r3-r5,pc}
 00008CBE                                           00 BF               ..
@@ -17931,56 +18343,56 @@ BD38           	pop	{r3-r5,pc}
 MPU_vPortFree proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC4E     	bl	$00008560
+F7FF FC4E     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD58     	bl	$0000177C
+F7F8 FD58     	bl	$00001780
 2C01           	cmps	r4,#1
-D005           	beq	$00008CDC
+D005           	beq	$00008CE0
 
 l00008CD4:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008CDC:
 F380 8814     	msr	cpsr,r0
+
+l00008CE0:
 BD38           	pop	{r3-r5,pc}
 00008CE2       00 BF                                       ..           
 
 ;; MPU_vPortInitialiseBlocks: 00008CE4
 MPU_vPortInitialiseBlocks proc
 B510           	push	{r4,lr}
-F7FF FC3D     	bl	$00008560
+F7FF FC3D     	bl	$00008564
 4604           	mov	r4,r0
-F7F8 FD4A     	bl	$00001780
+F7F8 FD4A     	bl	$00001784
 2C01           	cmps	r4,#1
-D005           	beq	$00008CFC
+D005           	beq	$00008D00
 
 l00008CF4:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008CFC:
 F380 8814     	msr	cpsr,r0
+
+l00008D00:
 BD10           	pop	{r4,pc}
 00008D02       00 BF                                       ..           
 
 ;; MPU_xPortGetFreeHeapSize: 00008D04
 MPU_xPortGetFreeHeapSize proc
 B510           	push	{r4,lr}
-F7FF FC2D     	bl	$00008560
+F7FF FC2D     	bl	$00008564
 4604           	mov	r4,r0
-F7F8 FD42     	bl	$00001790
+F7F8 FD42     	bl	$00001794
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008D1E
+D005           	beq	$00008D22
 
 l00008D16:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008D1E:
 F380 8814     	msr	cpsr,r0
+
+l00008D22:
 4618           	mov	r0,r3
 BD10           	pop	{r4,pc}
 00008D26                   00 BF                               ..       
@@ -17988,19 +18400,19 @@ BD10           	pop	{r4,pc}
 ;; MPU_xEventGroupCreate: 00008D28
 MPU_xEventGroupCreate proc
 B510           	push	{r4,lr}
-F7FF FC1B     	bl	$00008560
+F7FF FC1B     	bl	$00008564
 4604           	mov	r4,r0
-F7F8 FD3A     	bl	$000017A4
+F7F8 FD3A     	bl	$000017A8
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008D42
+D005           	beq	$00008D46
 
 l00008D3A:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008D42:
 F380 8814     	msr	cpsr,r0
+
+l00008D46:
 4618           	mov	r0,r3
 BD10           	pop	{r4,pc}
 00008D4A                               00 BF                       ..   
@@ -18014,24 +18426,24 @@ B083           	sub	sp,#&C
 4690           	mov	r8,r2
 4699           	mov	r9,r3
 9F0A           	ldr	r7,[sp,#&28]
-F7FF FC02     	bl	$00008560
+F7FF FC02     	bl	$00008564
 464B           	mov	r3,r9
 4604           	mov	r4,r0
 9700           	str	r7,[sp]
 4642           	mov	r2,r8
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 FD2A     	bl	$000017C0
+F7F8 FD2A     	bl	$000017C4
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008D7E
+D005           	beq	$00008D82
 
 l00008D76:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008D7E:
 F380 8814     	msr	cpsr,r0
+
+l00008D82:
 4618           	mov	r0,r3
 B003           	add	sp,#&C
 E8BD 83F0     	pop.w	{r4-r9,pc}
@@ -18042,21 +18454,21 @@ MPU_xEventGroupClearBits proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FBE7     	bl	$00008560
+F7FF FBE7     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD6A     	bl	$00001870
+F7F8 FD6A     	bl	$00001874
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008DAE
+D005           	beq	$00008DB2
 
 l00008DA6:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008DAE:
 F380 8814     	msr	cpsr,r0
+
+l00008DB2:
 4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008DB6                   00 BF                               ..       
@@ -18066,21 +18478,21 @@ MPU_xEventGroupSetBits proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FBD1     	bl	$00008560
+F7FF FBD1     	bl	$00008564
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD62     	bl	$0000188C
+F7F8 FD62     	bl	$00001890
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008DDA
+D005           	beq	$00008DDE
 
 l00008DD2:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008DDA:
 F380 8814     	msr	cpsr,r0
+
+l00008DDE:
 4618           	mov	r0,r3
 BD70           	pop	{r4-r6,pc}
 00008DE2       00 BF                                       ..           
@@ -18092,23 +18504,23 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FBB8     	bl	$00008560
+F7FF FBB8     	bl	$00008564
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 FD7B     	bl	$000018F4
+F7F8 FD7B     	bl	$000018F8
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
-D005           	beq	$00008E10
+D005           	beq	$00008E14
 
 l00008E08:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008E10:
 F380 8814     	msr	cpsr,r0
+
+l00008E14:
 4618           	mov	r0,r3
 E8BD 81F0     	pop.w	{r4-r8,pc}
 00008E1A                               00 BF                       ..   
@@ -18117,22 +18529,19 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 MPU_vEventGroupDelete proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FBA0     	bl	$00008560
+F7FF FBA0     	bl	$00008564
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FDBC     	bl	$000019A0
+F7F8 FDBC     	bl	$000019A4
 2C01           	cmps	r4,#1
-D005           	beq	$00008E38
+D005           	beq	$00008E3C
 
 l00008E30:
 F3EF 8014     	mrs	r0,cpsr
 F040 0001     	orr	r0,r0,#1
-
-l00008E38:
 F380 8814     	msr	cpsr,r0
 
-;; fn00008E3C: 00008E3C
-fn00008E3C proc
+l00008E3C:
 BD38           	pop	{r3-r5,pc}
 00008E3E                                           00 BF               ..
 
@@ -18143,18 +18552,20 @@ E92D 4FF8     	push.w	{r3-fp,lr}
 2038           	mov	r0,#&38
 460D           	mov	r5,r1
 4692           	mov	r10,r2
-F7F8 FC6E     	bl	$00001728
+F7F8 FC6E     	bl	$0000172C
 2800           	cmps	r0,#0
-D047           	beq	$00008EE0
+D047           	beq	$00008EE4
 
 l00008E54:
-4F25           	ldr	r7,[pc,#&94]                            ; 00008EF0
+4F25           	ldr	r7,[pc,#&94]                            ; 00008EEC
 4604           	mov	r4,r0
 683B           	ldr	r3,[r7]
 B33B           	cbz	r3,$00008EAC
 
 l00008E5C:
 F107 0804     	add	r8,r7,#4
+
+l00008E60:
 2D01           	cmps	r5,#1
 BF28           	it	hs
 2501           	movhs	r5,#1
@@ -18167,9 +18578,9 @@ l00008E66:
 F8C4 A030     	str	r10,[r4,#&30]
 F846 9B04     	str	r9,[r6],#&4
 4630           	mov	r0,r6
-F7FF FA36     	bl	$000082E4
+F7FF FA36     	bl	$000082E8
 F104 0018     	add	r0,r4,#&18
-F7FF FA32     	bl	$000082E4
+F7FF FA32     	bl	$000082E8
 6AE0           	ldr	r0,[r4,#&2C]
 6F3B           	ldr	r3,[r7,#&70]
 F1C5 0502     	rsb	r5,r5,#2
@@ -18184,7 +18595,7 @@ EB08 0080     	add.w	r0,r8,r0,lsl #2
 6124           	str	r4,[r4,#&10]
 6264           	str	r4,[r4,#&24]
 4631           	mov	r1,r6
-F7FF FA25     	bl	$000082EC
+F7FF FA25     	bl	$000082F0
 2001           	mov	r0,#1
 E8BD 8FF8     	pop.w	{r3-fp,pc}
 
@@ -18192,39 +18603,36 @@ l00008EAC:
 46B8           	mov	r8,r7
 F848 0B04     	str	r0,[r8],#&4
 4640           	mov	r0,r8
-F7FF FA0C     	bl	$000082CC
+F7FF FA0C     	bl	$000082D0
 F107 0B2C     	add	fp,r7,#&2C
 F107 0018     	add	r0,r7,#&18
-F7FF FA06     	bl	$000082CC
+F7FF FA06     	bl	$000082D0
 F107 0640     	add	r6,r7,#&40
 4658           	mov	r0,fp
-F7FF FA01     	bl	$000082CC
+F7FF FA01     	bl	$000082D0
 4630           	mov	r0,r6
-F7FF F9FE     	bl	$000082CC
+F7FF F9FE     	bl	$000082D0
 F107 0054     	add	r0,r7,#&54
-F7FF F9FA     	bl	$000082CC
+F7FF F9FA     	bl	$000082D0
 F8C7 B068     	str	fp,[r7,#&68]
-
-l00008EE0:
 66FE           	str	r6,[r7,#&6C]
-E7BD           	b	$00008E5C
-00008EE4             4F F0 FF 30 BD E8 F8 8F                 O..0....   
+E7BD           	b	$00008E60
 
-;; fn00008EEC: 00008EEC
-fn00008EEC proc
-07FC           	lsls	r4,r7,#&1F
-2000           	mov	r0,#0
+l00008EE4:
+F04F 30FF     	mov	r0,#&FFFFFFFF
+E8BD 8FF8     	pop.w	{r3-fp,pc}
+00008EEC                                     FC 07 00 20             ... 
 
 ;; vCoRoutineAddToDelayedList: 00008EF0
 vCoRoutineAddToDelayedList proc
 B570           	push	{r4-r6,lr}
 460E           	mov	r6,r1
-4C0C           	ldr	r4,[pc,#&30]                            ; 00008F2C
+4C0C           	ldr	r4,[pc,#&30]                            ; 00008F28
 6823           	ldr	r3,[r4]
 6F65           	ldr	r5,[r4,#&74]
 4405           	adds	r5,r0
 1D18           	add	r0,r3,#4
-F7FF FA1F     	bl	$0000833C
+F7FF FA1F     	bl	$00008340
 6F63           	ldr	r3,[r4,#&74]
 6821           	ldr	r1,[r4]
 429D           	cmps	r5,r3
@@ -18235,7 +18643,7 @@ BF34           	ite	lo
 l00008F0E:
 6EA0           	ldr	r0,[r4,#&68]
 3104           	adds	r1,#4
-F7FF F9FB     	bl	$00008308
+F7FF F9FB     	bl	$0000830C
 B136           	cbz	r6,$00008F26
 
 l00008F18:
@@ -18243,20 +18651,16 @@ l00008F18:
 4630           	mov	r0,r6
 E8BD 4070     	pop.w	{r4-r6,lr}
 3118           	adds	r1,#&18
-F7FF B9F3     	b	$00008308
+F7FF B9F3     	b	$0000830C
 
 l00008F26:
 BD70           	pop	{r4-r6,pc}
-
-;; fn00008F28: 00008F28
-fn00008F28 proc
-07FC           	lsls	r4,r7,#&1F
-2000           	mov	r0,#0
+00008F28                         FC 07 00 20                     ...    
 
 ;; vCoRoutineSchedule: 00008F2C
 vCoRoutineSchedule proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4D55           	ldr	r5,[pc,#&154]                           ; 0000908C
+4D55           	ldr	r5,[pc,#&154]                           ; 00009088
 6D6B           	ldr	r3,[r5,#&54]
 B32B           	cbz	r3,$00008F82
 
@@ -18270,11 +18674,11 @@ F3BF 8F4F     	dsb	sy
 6E2B           	ldr	r3,[r5,#&60]
 68DC           	ldr	r4,[r3,#&C]
 F104 0018     	add	r0,r4,#&18
-F7FF F9F4     	bl	$0000833C
+F7FF F9F4     	bl	$00008340
 F387 8811     	msr	cpsr,r7
 1D26           	add	r6,r4,#4
 4630           	mov	r0,r6
-F7FF F9EE     	bl	$0000833C
+F7FF F9EE     	bl	$00008340
 6AE3           	ldr	r3,[r4,#&2C]
 6F2A           	ldr	r2,[r5,#&70]
 EB03 0083     	add.w	r0,r3,r3,lsl #2
@@ -18285,24 +18689,23 @@ BF88           	it	hi
 672B           	strhi	r3,[r5,#&70]
 
 l00008F78:
-F7FF F9BA     	bl	$000082EC
+F7FF F9BA     	bl	$000082F0
 6D6B           	ldr	r3,[r5,#&54]
 2B00           	cmps	r3,#0
-D1DC           	bne	$00009138
+D1DC           	bne	$0000913C
 
 l00008F82:
-F7FF FCBF     	bl	$00008900
+F7FF FCBF     	bl	$00008904
 2700           	mov	r7,#0
 6FAA           	ldr	r2,[r5,#&78]
 6F6B           	ldr	r3,[r5,#&74]
 1A80           	sub	r0,r0,r2
-F8DF 8100     	ldr	r8,[pc,#&100]                            ; 00009096
-
-l00008F90:
-8100           	strh	r0,[r0,#&10]
+F8DF 8100     	ldr	r8,[pc,#&100]                            ; 00009090
 67E8           	str	r0,[r5,#&7C]
+
+l00008F94:
 2800           	cmps	r0,#0
-D03D           	beq	$00009010
+D03D           	beq	$00009014
 
 l00008F98:
 3301           	adds	r3,#1
@@ -18310,28 +18713,27 @@ l00008F98:
 676B           	str	r3,[r5,#&74]
 67E8           	str	r0,[r5,#&7C]
 2B00           	cmps	r3,#0
-D053           	beq	$00009048
+D053           	beq	$0000904C
 
 l00008FA4:
 6EAA           	ldr	r2,[r5,#&68]
+
+l00008FA6:
 6811           	ldr	r1,[r2]
 2900           	cmps	r1,#0
-D0F3           	beq	$00009190
+D0F3           	beq	$00009194
 
 l00008FAC:
 68D2           	ldr	r2,[r2,#&C]
 68D4           	ldr	r4,[r2,#&C]
 6862           	ldr	r2,[r4,#&4]
 4293           	cmps	r3,r2
-D206           	bhs	$00008FC0
+D206           	bhs	$00008FC4
 
 l00008FB6:
-E7ED           	b	$00008F90
+E7ED           	b	$00008F94
 00008FB8                         DA 68 6B 6F D4 68 62 68         .hko.hbh
-
-l00008FC0:
-429A           	cmps	r2,r3
-D824           	bhi	$0000900A
+00008FC0 9A 42 24 D8                                     .B$.           
 
 l00008FC4:
 F04F 03BF     	mov	r3,#&BF
@@ -18340,13 +18742,13 @@ F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 1D26           	add	r6,r4,#4
 4630           	mov	r0,r6
-F7FF F9B2     	bl	$0000833C
+F7FF F9B2     	bl	$00008340
 6AA3           	ldr	r3,[r4,#&28]
 F104 0018     	add	r0,r4,#&18
 B10B           	cbz	r3,$00008FE8
 
 l00008FE4:
-F7FF F9AC     	bl	$0000833C
+F7FF F9AC     	bl	$00008340
 
 l00008FE8:
 F387 8811     	msr	cpsr,r7
@@ -18360,21 +18762,17 @@ BF88           	it	hi
 672B           	strhi	r3,[r5,#&70]
 
 l00009000:
-F7FF F976     	bl	$000082EC
+F7FF F976     	bl	$000082F0
 6EAB           	ldr	r3,[r5,#&68]
 681A           	ldr	r2,[r3]
 2A00           	cmps	r2,#0
-
-l0000900A:
-D1D5           	bne	$000091B4
+D1D5           	bne	$000091B8
 
 l0000900C:
 6F6B           	ldr	r3,[r5,#&74]
 6FE8           	ldr	r0,[r5,#&7C]
-
-l00009010:
 2800           	cmps	r0,#0
-D1C1           	bne	$00009194
+D1C1           	bne	$00009198
 
 l00009014:
 6F29           	ldr	r1,[r5,#&70]
@@ -18384,7 +18782,7 @@ l00009014:
 EB05 0282     	add.w	r2,r5,r2,lsl #2
 6852           	ldr	r2,[r2,#&4]
 2A00           	cmps	r2,#0
-D12E           	bne	$00009080
+D12E           	bne	$00009084
 
 l00009026:
 B359           	cbz	r1,$00009080
@@ -18410,19 +18808,24 @@ B939           	cbnz	r1,$00009056
 
 l00009046:
 672A           	str	r2,[r5,#&70]
-
-l00009048:
 E8BD 81F0     	pop.w	{r4-r8,pc}
-0000904C                                     A9 6E EA 6E             .n.n
-00009050 E9 66 AA 66 A7 E7                               .f.f..         
+
+l0000904C:
+6EA9           	ldr	r1,[r5,#&68]
+6EEA           	ldr	r2,[r5,#&6C]
+66E9           	str	r1,[r5,#&6C]
+66AA           	str	r2,[r5,#&68]
+E7A7           	b	$00008FA6
 
 l00009056:
 672A           	str	r2,[r5,#&70]
+
+l00009058:
 4413           	adds	r3,r2
 009B           	lsls	r3,r3,#2
 18E9           	add	r1,r5,r3
 688A           	ldr	r2,[r1,#&8]
-480A           	ldr	r0,[pc,#&28]                            ; 00009090
+480A           	ldr	r0,[pc,#&28]                            ; 0000908C
 6852           	ldr	r2,[r2,#&4]
 4403           	adds	r3,r0
 429A           	cmps	r2,r3
@@ -18444,25 +18847,25 @@ E8BD 41F0     	pop.w	{r4-r8,lr}
 
 l00009080:
 E8BD 81F0     	pop.w	{r4-r8,pc}
-00009084             0A 46 E7 E7 FC 07 00 20 08 08 00 20     .F..... ... 
 
-;; fn00009090: 00009090
-fn00009090 proc
-0800           	movs	r0,r0,#0
-2000           	mov	r0,#0
+l00009084:
+460A           	mov	r2,r1
+E7E7           	b	$00009058
+00009088                         FC 07 00 20 08 08 00 20         ... ... 
+00009090 00 08 00 20                                     ...            
 
 ;; xCoRoutineRemoveFromEventList: 00009094
 xCoRoutineRemoveFromEventList proc
 68C3           	ldr	r3,[r0,#&C]
 B570           	push	{r4-r6,lr}
 68DC           	ldr	r4,[r3,#&C]
-4D09           	ldr	r5,[pc,#&24]                            ; 000090C6
+4D09           	ldr	r5,[pc,#&24]                            ; 000090C0
 F104 0618     	add	r6,r4,#&18
 4630           	mov	r0,r6
-F7FF F94D     	bl	$0000833C
+F7FF F94D     	bl	$00008340
 F105 0054     	add	r0,r5,#&54
 4631           	mov	r1,r6
-F7FF F920     	bl	$000082EC
+F7FF F920     	bl	$000082F0
 682B           	ldr	r3,[r5]
 6AE0           	ldr	r0,[r4,#&2C]
 6ADB           	ldr	r3,[r3,#&2C]
@@ -18477,32 +18880,43 @@ BD70           	pop	{r4-r6,pc}
 
 ;; GPIOGetIntNumber: 000090C4
 GPIOGetIntNumber proc
-4B0F           	ldr	r3,[pc,#&3C]                            ; 00009108
+4B0F           	ldr	r3,[pc,#&3C]                            ; 00009104
 4298           	cmps	r0,r3
-D019           	beq	$000090FA
+D019           	beq	$000090FE
 
 l000090CA:
-D808           	bhi	$000090DA
+D808           	bhi	$000090DE
 
 l000090CC:
 F1B0 2F40     	cmp	r0,#&40004000
-D013           	beq	$000090F6
+D013           	beq	$000090FA
 
 l000090D2:
 F5A3 5380     	sub	r3,r3,#&1000
 4298           	cmps	r0,r3
-D10A           	bne	$000090EC
+D10A           	bne	$000090F0
 
 l000090DA:
 2011           	mov	r0,#&11
 4770           	bx	lr
-000090DE                                           0A 4B               .K
-000090E0 98 42 08 D0 03 F5 E8 33 98 42 01 D1             .B.....3.B..   
+
+l000090DE:
+4B0A           	ldr	r3,[pc,#&28]                            ; 00009108
+4298           	cmps	r0,r3
+D008           	beq	$000090F6
+
+l000090E4:
+F503 33E8     	add	r3,r3,#&1D000
+4298           	cmps	r0,r3
+D101           	bne	$000090F0
 
 l000090EC:
 2014           	mov	r0,#&14
 4770           	bx	lr
-000090F0 4F F0 FF 30 70 47                               O..0pG         
+
+l000090F0:
+F04F 30FF     	mov	r0,#&FFFFFFFF
+4770           	bx	lr
 
 l000090F6:
 2013           	mov	r0,#&13
@@ -18511,13 +18925,11 @@ l000090F6:
 l000090FA:
 2010           	mov	r0,#&10
 4770           	bx	lr
-000090FE                                           12 20               . 
-00009100 70 47 00 BF 00 60 00 40                         pG...`.@       
 
-;; fn00009108: 00009108
-fn00009108 proc
-7000           	strb	r0,[r0]
-4000           	ands	r0,r0
+l000090FE:
+2012           	mov	r0,#&12
+4770           	bx	lr
+00009102       00 BF 00 60 00 40 00 70 00 40               ...`.@.p.@   
 
 ;; GPIODirModeSet: 0000910C
 GPIODirModeSet proc
@@ -18544,10 +18956,10 @@ F8C0 1420     	str	r1,[r0,#&420]
 GPIODirModeGet proc
 2301           	mov	r3,#1
 B410           	push	{r4}
-
-;; fn00009138: 00009138
-fn00009138 proc
 FA03 F101     	lsl	r1,r3,r1
+
+;; fn0000913C: 0000913C
+fn0000913C proc
 F8D0 4400     	ldr	r4,[r0,#&400]
 B2C9           	uxtb	r1,r1
 F8D0 2420     	ldr	r2,[r0,#&420]
@@ -18594,15 +19006,16 @@ BF4C           	ite	mi
 l0000918A:
 EA23 0101     	bic.w	r1,r3,r1
 F8C0 140C     	str	r1,[r0,#&40C]
-
-l00009190:
-140C           	asrss	r4,r1,#&10
 4770           	bx	lr
 
 ;; GPIOIntTypeGet: 00009194
 GPIOIntTypeGet proc
 2301           	mov	r3,#1
 F8D0 2408     	ldr	r2,[r0,#&408]
+
+;; fn00009198: 00009198
+fn00009198 proc
+2408           	mov	r4,#8
 FA03 F101     	lsl	r1,r3,r1
 B2C9           	uxtb	r1,r1
 F8D0 3404     	ldr	r3,[r0,#&404]
@@ -18611,18 +19024,18 @@ F8D0 040C     	ldr	r0,[r0,#&40C]
 BF14           	ite	ne
 2201           	movne	r2,#1
 
-l000091AE:
+;; fn000091AE: 000091AE
+fn000091AE proc
 2200           	mov	r2,#0
 420B           	adcs	r3,r1
 BF14           	ite	ne
+2302           	movne	r3,#2
 
-;; fn000091B4: 000091B4
-fn000091B4 proc
-2302           	mov	r3,#2
-
-;; fn000091B6: 000091B6
-fn000091B6 proc
+l000091B6:
 2300           	mov	r3,#0
+
+;; fn000091B8: 000091B8
+fn000091B8 proc
 4208           	adcs	r0,r1
 BF14           	ite	ne
 2004           	movne	r0,#4
@@ -18631,9 +19044,6 @@ l000091BE:
 2000           	mov	r0,#0
 4313           	orrs	r3,r2
 4318           	orrs	r0,r3
-
-;; fn000091C4: 000091C4
-fn000091C4 proc
 4770           	bx	lr
 000091C6                   00 BF                               ..       
 
@@ -18821,105 +19231,163 @@ F8C0 141C     	str	r1,[r0,#&41C]
 
 ;; GPIOPortIntRegister: 00009314
 GPIOPortIntRegister proc
-4B24           	ldr	r3,[pc,#&90]                            ; 000093AC
+4B24           	ldr	r3,[pc,#&90]                            ; 000093A8
 B510           	push	{r4,lr}
 4298           	cmps	r0,r3
-D03C           	beq	$00009392
+D03C           	beq	$00009396
 
 l0000931C:
-D80F           	bhi	$0000933A
+D80F           	bhi	$0000933E
 
 l0000931E:
 F1B0 2F40     	cmp	r0,#&40004000
-D02F           	beq	$00009380
+D02F           	beq	$00009384
 
 l00009324:
 F5A3 5380     	sub	r3,r3,#&1000
 4298           	cmps	r0,r3
-D118           	bne	$0000935A
+D118           	bne	$0000935E
 
 l0000932C:
 2411           	mov	r4,#&11
 4620           	mov	r0,r4
-F000 F8E8     	bl	$00009500
+F000 F8E8     	bl	$00009504
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
+F000 B94F     	b	$000095DC
 
-l0000933A:
-F000 B94F     	b	$00C095D8
-0000933E                                           1B 4B               .K
-00009340 98 42 16 D0 03 F5 E8 33 98 42 08 D1 14 24 20 46 .B.....3.B...$ F
-00009350 00 F0 D8 F8 20 46 BD E8 10 40                   .... F...@     
+l0000933E:
+4B1B           	ldr	r3,[pc,#&6C]                            ; 000093AC
+4298           	cmps	r0,r3
+D016           	beq	$00009372
 
-l0000935A:
-F000 B93F     	b	$00C095D8
-0000935E                                           4F F0               O.
-00009360 FF 34 20 46 00 F0 CE F8 20 46 BD E8 10 40 00 F0 .4 F.... F...@..
-00009370 35 B9 13 24 20 46 00 F0 C5 F8 20 46 BD E8 10 40 5..$ F.... F...@
+l00009344:
+F503 33E8     	add	r3,r3,#&1D000
+4298           	cmps	r0,r3
+D108           	bne	$0000935E
 
-l00009380:
-F000 B92C     	b	$00C095D8
-00009384             10 24 20 46 00 F0 BC F8 20 46 BD E8     .$ F.... F..
-00009390 10 40                                           .@             
+l0000934C:
+2414           	mov	r4,#&14
+4620           	mov	r0,r4
+F000 F8D8     	bl	$00009504
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B93F     	b	$000095DC
 
-l00009392:
-F000 B923     	b	$00C095D8
-00009396                   12 24 20 46 00 F0 B3 F8 20 46       .$ F.... F
-000093A0 BD E8 10 40 00 F0 1A B9 00 60 00 40 00 70 00 40 ...@.....`.@.p.@
+l0000935E:
+F04F 34FF     	mov	r4,#&FFFFFFFF
+4620           	mov	r0,r4
+F000 F8CE     	bl	$00009504
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B935     	b	$000095DC
+
+l00009372:
+2413           	mov	r4,#&13
+4620           	mov	r0,r4
+F000 F8C5     	bl	$00009504
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B92C     	b	$000095DC
+
+l00009384:
+2410           	mov	r4,#&10
+4620           	mov	r0,r4
+F000 F8BC     	bl	$00009504
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B923     	b	$000095DC
+
+l00009396:
+2412           	mov	r4,#&12
+4620           	mov	r0,r4
+F000 F8B3     	bl	$00009504
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B91A     	b	$000095DC
+000093A8                         00 60 00 40 00 70 00 40         .`.@.p.@
 
 ;; GPIOPortIntUnregister: 000093B0
 GPIOPortIntUnregister proc
-4B24           	ldr	r3,[pc,#&90]                            ; 00009448
+4B24           	ldr	r3,[pc,#&90]                            ; 00009444
 B510           	push	{r4,lr}
 4298           	cmps	r0,r3
-D03C           	beq	$0000942E
+D03C           	beq	$00009432
 
 l000093B8:
-D80F           	bhi	$000093D6
+D80F           	bhi	$000093DA
 
 l000093BA:
 F1B0 2F40     	cmp	r0,#&40004000
-D02F           	beq	$0000941C
+D02F           	beq	$00009420
 
 l000093C0:
 F5A3 5380     	sub	r3,r3,#&1000
 4298           	cmps	r0,r3
-D118           	bne	$000093F6
+D118           	bne	$000093FA
 
 l000093C8:
 2411           	mov	r4,#&11
 4620           	mov	r0,r4
-F000 F934     	bl	$00009634
+F000 F934     	bl	$00009638
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
+F000 B8AF     	b	$00009538
 
-l000093D6:
-F000 B8AF     	b	$00C09534
-000093DA                               1B 4B 98 42 16 D0           .K.B..
-000093E0 03 F5 E8 33 98 42 08 D1 14 24 20 46 00 F0 24 F9 ...3.B...$ F..$.
-000093F0 20 46 BD E8 10 40                                F...@         
+l000093DA:
+4B1B           	ldr	r3,[pc,#&6C]                            ; 00009448
+4298           	cmps	r0,r3
+D016           	beq	$0000940E
 
-l000093F6:
-F000 B89F     	b	$00C09534
-000093FA                               4F F0 FF 34 20 46           O..4 F
-00009400 00 F0 1A F9 20 46 BD E8 10 40 00 F0 95 B8 13 24 .... F...@.....$
-00009410 20 46 00 F0 11 F9 20 46 BD E8 10 40              F.... F...@   
+l000093E0:
+F503 33E8     	add	r3,r3,#&1D000
+4298           	cmps	r0,r3
+D108           	bne	$000093FA
 
-l0000941C:
-F000 B88C     	b	$00C09534
-00009420 10 24 20 46 00 F0 08 F9 20 46 BD E8 10 40       .$ F.... F...@ 
+l000093E8:
+2414           	mov	r4,#&14
+4620           	mov	r0,r4
+F000 F924     	bl	$00009638
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B89F     	b	$00009538
 
-l0000942E:
-F000 B883     	b	$00C09534
-00009432       12 24 20 46 00 F0 FF F8 20 46 BD E8 10 40   .$ F.... F...@
-00009440 00 F0 7A B8 00 60 00 40 00 70 00 40             ..z..`.@.p.@   
+l000093FA:
+F04F 34FF     	mov	r4,#&FFFFFFFF
+4620           	mov	r0,r4
+F000 F91A     	bl	$00009638
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B895     	b	$00009538
+
+l0000940E:
+2413           	mov	r4,#&13
+4620           	mov	r0,r4
+F000 F911     	bl	$00009638
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B88C     	b	$00009538
+
+l00009420:
+2410           	mov	r4,#&10
+4620           	mov	r0,r4
+F000 F908     	bl	$00009638
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B883     	b	$00009538
+
+l00009432:
+2412           	mov	r4,#&12
+4620           	mov	r0,r4
+F000 F8FF     	bl	$00009638
+4620           	mov	r0,r4
+E8BD 4010     	pop.w	{r4,lr}
+F000 B87A     	b	$00009538
+00009444             00 60 00 40 00 70 00 40                 .`.@.p.@   
 
 ;; GPIOPinRead: 0000944C
 GPIOPinRead proc
 F850 0021     	ldr.w	r0,[r0,r1,lsl #2]
-
-;; fn00009450: 00009450
-fn00009450 proc
 4770           	bx	lr
 00009452       00 BF                                       ..           
 
@@ -18942,11 +19410,7 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4035           	ands	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BEA5     	b	$000091C4
-
-;; fn0000947C: 0000947C
-fn0000947C proc
-BEA5           	bkpt
+F7FF BEA5     	b	$000091C8
 0000947E                                           00 BF               ..
 
 ;; GPIOPinTypeI2C: 00009480
@@ -18962,7 +19426,7 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4335           	orrs	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BE92     	b	$000091C4
+F7FF BE92     	b	$000091C8
 
 ;; GPIOPinTypeQEI: 000094A4
 GPIOPinTypeQEI proc
@@ -18977,10 +19441,7 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4335           	orrs	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-
-;; fn000094C4: 000094C4
-fn000094C4 proc
-F7FF BE80     	b	$000091C4
+F7FF BE80     	b	$000091C8
 
 ;; GPIOPinTypeUART: 000094C8
 GPIOPinTypeUART proc
@@ -18995,41 +19456,41 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4335           	orrs	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BE6E     	b	$000091C4
+F7FF BE6E     	b	$000091C8
 
 ;; GPIOPinTypeTimer: 000094EC
 GPIOPinTypeTimer proc
-F7FF BFEC     	b	$000094C4
+F7FF BFEC     	b	$000094C8
 
 ;; GPIOPinTypeSSI: 000094F0
 GPIOPinTypeSSI proc
-F7FF BFEA     	b	$000094C4
+F7FF BFEA     	b	$000094C8
 
 ;; GPIOPinTypePWM: 000094F4
 GPIOPinTypePWM proc
-F7FF BFE8     	b	$000094C4
+F7FF BFE8     	b	$000094C8
 
 ;; IntDefaultHandler: 000094F8
 IntDefaultHandler proc
-E7FE           	b	$000094F4
+E7FE           	b	$000094F8
 000094FA                               00 BF                       ..   
 
 ;; IntMasterEnable: 000094FC
 IntMasterEnable proc
-F000 BDEE     	b	$00C0A0D8
+F000 BDEE     	b	$0000A0DC
 
 ;; IntMasterDisable: 00009500
 IntMasterDisable proc
-F000 BDF0     	b	$00C0A0E0
+F000 BDF0     	b	$0000A0E4
 
 ;; IntRegister: 00009504
 IntRegister proc
-4B0A           	ldr	r3,[pc,#&28]                            ; 00009534
+4B0A           	ldr	r3,[pc,#&28]                            ; 00009530
 B430           	push	{r4-r5}
 681B           	ldr	r3,[r3]
-4C0A           	ldr	r4,[pc,#&28]                            ; 0000953A
+4C0A           	ldr	r4,[pc,#&28]                            ; 00009534
 42A3           	cmps	r3,r4
-D00A           	beq	$00009522
+D00A           	beq	$00009526
 
 l00009510:
 4623           	mov	r3,r4
@@ -19038,34 +19499,31 @@ F104 05B8     	add	r5,r4,#&B8
 6812           	ldr	r2,[r2]
 F843 2B04     	str	r2,[r3],#&4
 42AB           	cmps	r3,r5
-D1F9           	bne	$00009712
+D1F9           	bne	$00009716
 
 l00009522:
-4B03           	ldr	r3,[pc,#&C]                             ; 00009536
+4B03           	ldr	r3,[pc,#&C]                             ; 00009530
 601C           	str	r4,[r3]
+
+l00009526:
 F844 1020     	str.w	r1,[r4,r0,lsl #2]
 BC30           	pop	{r4-r5}
 4770           	bx	lr
 0000952E                                           00 BF               ..
-00009530 08 ED 00 E0                                     ....           
-
-;; fn00009534: 00009534
-fn00009534 proc
-0000           	mov	r0,r0
-2000           	mov	r0,#0
+00009530 08 ED 00 E0 00 00 00 20                         .......        
 
 ;; IntUnregister: 00009538
 IntUnregister proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009548
-4A03           	ldr	r2,[pc,#&C]                             ; 0000954E
+4B02           	ldr	r3,[pc,#&8]                             ; 00009544
+4A03           	ldr	r2,[pc,#&C]                             ; 00009548
 F843 2020     	str.w	r2,[r3,r0,lsl #2]
 4770           	bx	lr
 00009542       00 BF 00 00 00 20 F9 94 00 00               ..... ....   
 
 ;; IntPriorityGroupingSet: 0000954C
 IntPriorityGroupingSet proc
-4B04           	ldr	r3,[pc,#&10]                            ; 00009564
-4A05           	ldr	r2,[pc,#&14]                            ; 0000956A
+4B04           	ldr	r3,[pc,#&10]                            ; 00009560
+4A05           	ldr	r2,[pc,#&14]                            ; 00009564
 F853 3020     	ldr.w	r3,[r3,r0,lsl #2]
 F043 63BF     	orr	r3,r3,#&5F80000
 F443 3300     	orr	r3,r3,#&20000
@@ -19076,24 +19534,22 @@ F443 3300     	orr	r3,r3,#&20000
 ;; IntPriorityGroupingGet: 00009568
 IntPriorityGroupingGet proc
 F44F 63E0     	mov	r3,#&700
-4906           	ldr	r1,[pc,#&18]                            ; 0000958C
+4906           	ldr	r1,[pc,#&18]                            ; 00009588
 2000           	mov	r0,#0
 6809           	ldr	r1,[r1]
-4A06           	ldr	r2,[pc,#&18]                            ; 00009592
+4A06           	ldr	r2,[pc,#&18]                            ; 0000958C
 4019           	ands	r1,r3
-E001           	b	$00009578
+E001           	b	$0000957C
+00009578                         52 F8 04 3B                     R..;   
 
-l00009578:
-F852 3B04     	ldr	r3,[r2],#&4
+l0000957C:
 428B           	cmps	r3,r1
-D002           	beq	$00009582
+D002           	beq	$00009586
 
 l00009580:
 3001           	adds	r0,#1
-
-l00009582:
 2808           	cmps	r0,#8
-D1F8           	bne	$00009774
+D1F8           	bne	$00009778
 
 l00009586:
 4770           	bx	lr
@@ -19102,7 +19558,7 @@ l00009586:
 ;; IntPrioritySet: 00009590
 IntPrioritySet proc
 22FF           	mov	r2,#&FF
-4B09           	ldr	r3,[pc,#&24]                            ; 000095BE
+4B09           	ldr	r3,[pc,#&24]                            ; 000095B8
 B410           	push	{r4}
 F020 0403     	bic	r4,r0,#3
 4423           	adds	r3,r4
@@ -19121,7 +19577,7 @@ BC10           	pop	{r4}
 
 ;; IntPriorityGet: 000095BC
 IntPriorityGet proc
-4B06           	ldr	r3,[pc,#&18]                            ; 000095DC
+4B06           	ldr	r3,[pc,#&18]                            ; 000095D8
 F020 0203     	bic	r2,r0,#3
 4413           	adds	r3,r2
 6A1B           	ldr	r3,[r3,#&20]
@@ -19131,133 +19587,134 @@ F000 0003     	and	r0,r0,#3
 FA23 F000     	lsr	r0,r3,r0
 B2C0           	uxtb	r0,r0
 4770           	bx	lr
-000095D6                   00 BF                               ..       
-
-;; fn000095D8: 000095D8
-fn000095D8 proc
-A2A4           	adr	r2,$00009868
-0000           	mov	r0,r0
+000095D6                   00 BF A4 A2 00 00                   ......   
 
 ;; IntEnable: 000095DC
 IntEnable proc
 2804           	cmps	r0,#4
-D013           	beq	$00009604
+D013           	beq	$00009608
 
 l000095E0:
 2805           	cmps	r0,#5
-D017           	beq	$00009610
+D017           	beq	$00009614
 
 l000095E4:
 2806           	cmps	r0,#6
-D01B           	beq	$0000961C
+D01B           	beq	$00009620
 
 l000095E8:
 280F           	cmps	r0,#&F
-D007           	beq	$000095F8
+D007           	beq	$000095FC
 
 l000095EC:
-D905           	bls	$000095F6
+D905           	bls	$000095FA
 
 l000095EE:
 2301           	mov	r3,#1
 3810           	subs	r0,#&10
-4A0E           	ldr	r2,[pc,#&38]                            ; 00009632
+4A0E           	ldr	r2,[pc,#&38]                            ; 0000962C
 FA03 F000     	lsl	r0,r3,r0
-
-l000095F6:
-F000 6010     	and	r0,r0,#&9000000
-
-l000095F8:
 6010           	str	r0,[r2]
 
 l000095FA:
 4770           	bx	lr
-000095FC                                     0C 4A 13 68             .J.h
-00009600 43 F0 02 03                                     C...           
 
-l00009604:
+l000095FC:
+4A0C           	ldr	r2,[pc,#&30]                            ; 00009630
+6813           	ldr	r3,[r2]
+F043 0302     	orr	r3,r3,#2
 6013           	str	r3,[r2]
 4770           	bx	lr
-00009608                         0A 4A 13 68 43 F4 80 33         .J.hC..3
 
-l00009610:
+l00009608:
+4A0A           	ldr	r2,[pc,#&28]                            ; 00009634
+6813           	ldr	r3,[r2]
+F443 3380     	orr	r3,r3,#&10000
 6013           	str	r3,[r2]
 4770           	bx	lr
-00009614             07 4A 13 68 43 F4 00 33                 .J.hC..3   
 
-l0000961C:
+l00009614:
+4A07           	ldr	r2,[pc,#&1C]                            ; 00009634
+6813           	ldr	r3,[r2]
+F443 3300     	orr	r3,r3,#&20000
 6013           	str	r3,[r2]
 4770           	bx	lr
-00009620 04 4A 13 68 43 F4 80 23 13 60 70 47 00 E1 00 E0 .J.hC..#.`pG....
-00009630 10 E0 00 E0                                     ....           
 
-;; fn00009634: 00009634
-fn00009634 proc
-ED24 E000     	Invalid
+l00009620:
+4A04           	ldr	r2,[pc,#&10]                            ; 00009634
+6813           	ldr	r3,[r2]
+F443 2380     	orr	r3,r3,#&40000
+6013           	str	r3,[r2]
+4770           	bx	lr
+0000962C                                     00 E1 00 E0             ....
+00009630 10 E0 00 E0 24 ED 00 E0                         ....$...       
 
 ;; IntDisable: 00009638
 IntDisable proc
 2804           	cmps	r0,#4
-D013           	beq	$00009660
+D013           	beq	$00009664
 
 l0000963C:
 2805           	cmps	r0,#5
-D017           	beq	$0000966C
+D017           	beq	$00009670
 
 l00009640:
 2806           	cmps	r0,#6
-D01B           	beq	$00009678
+D01B           	beq	$0000967C
 
 l00009644:
 280F           	cmps	r0,#&F
-D007           	beq	$00009654
+D007           	beq	$00009658
 
 l00009648:
-D905           	bls	$00009652
+D905           	bls	$00009656
 
 l0000964A:
 2301           	mov	r3,#1
 3810           	subs	r0,#&10
-4A0E           	ldr	r2,[pc,#&38]                            ; 0000968E
+4A0E           	ldr	r2,[pc,#&38]                            ; 00009688
 FA03 F000     	lsl	r0,r3,r0
-
-l00009652:
-F000 6010     	and	r0,r0,#&9000000
-
-l00009654:
 6010           	str	r0,[r2]
 
 l00009656:
 4770           	bx	lr
-00009658                         0C 4A 13 68 23 F0 02 03         .J.h#...
 
-l00009660:
+l00009658:
+4A0C           	ldr	r2,[pc,#&30]                            ; 0000968C
+6813           	ldr	r3,[r2]
+F023 0302     	bic	r3,r3,#2
 6013           	str	r3,[r2]
 4770           	bx	lr
-00009664             0A 4A 13 68 23 F4 80 33                 .J.h#..3   
 
-l0000966C:
+l00009664:
+4A0A           	ldr	r2,[pc,#&28]                            ; 00009690
+6813           	ldr	r3,[r2]
+F423 3380     	bic	r3,r3,#&10000
 6013           	str	r3,[r2]
 4770           	bx	lr
-00009670 07 4A 13 68 23 F4 00 33                         .J.h#..3       
 
-l00009678:
+l00009670:
+4A07           	ldr	r2,[pc,#&1C]                            ; 00009690
+6813           	ldr	r3,[r2]
+F423 3300     	bic	r3,r3,#&20000
 6013           	str	r3,[r2]
 4770           	bx	lr
-0000967C                                     04 4A 13 68             .J.h
-00009680 23 F4 80 23 13 60 70 47 80 E1 00 E0 10 E0 00 E0 #..#.`pG........
 
-;; fn00009690: 00009690
-fn00009690 proc
-ED24 E000     	Invalid
+l0000967C:
+4A04           	ldr	r2,[pc,#&10]                            ; 00009690
+6813           	ldr	r3,[r2]
+F423 2380     	bic	r3,r3,#&40000
+6013           	str	r3,[r2]
+4770           	bx	lr
+00009688                         80 E1 00 E0 10 E0 00 E0         ........
+00009690 24 ED 00 E0                                     $...           
 
 ;; OSRAMDelay: 00009694
 OSRAMDelay proc
 3801           	subs	r0,#1
-D1FD           	bne	$00009890
+D1FD           	bne	$00009894
 
-;; fn00009698: 00009698
-fn00009698 proc
+l00009698:
 4770           	bx	lr
 0000969A                               00 BF                       ..   
 
@@ -19265,23 +19722,19 @@ fn00009698 proc
 OSRAMWriteFirst proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-4C07           	ldr	r4,[pc,#&1C]                            ; 000096C4
+4C07           	ldr	r4,[pc,#&1C]                            ; 000096C0
 2200           	mov	r2,#0
 4620           	mov	r0,r4
 213D           	mov	r1,#&3D
-F000 FDAE     	bl	$0000A204
+F000 FDAE     	bl	$0000A208
 4629           	mov	r1,r5
 4620           	mov	r0,r4
-F000 FDC4     	bl	$0000A238
+F000 FDC4     	bl	$0000A23C
 4620           	mov	r0,r4
 E8BD 4038     	pop.w	{r3-r5,lr}
 2103           	mov	r1,#3
-F000 BDB0     	b	$00C0A21C
-
-;; fn000096C0: 000096C0
-fn000096C0 proc
-0000           	mov	r0,r0
-4002           	ands	r2,r0
+F000 BDB0     	b	$0000A220
+000096C0 00 00 02 40                                     ...@           
 
 ;; OSRAMWriteArray: 000096C4
 OSRAMWriteArray proc
@@ -19290,26 +19743,26 @@ B1C9           	cbz	r1,$000096FA
 l000096C6:
 B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
-4F0C           	ldr	r7,[pc,#&30]                            ; 00009702
-4C0C           	ldr	r4,[pc,#&30]                            ; 00009704
+4F0C           	ldr	r7,[pc,#&30]                            ; 000096FC
+4C0C           	ldr	r4,[pc,#&30]                            ; 00009700
 1846           	add	r6,r0,r1
 2100           	mov	r1,#0
 4620           	mov	r0,r4
-F000 FD78     	bl	$0000A1C4
+F000 FD78     	bl	$0000A1C8
 2800           	cmps	r0,#0
-D0F9           	beq	$000098CC
+D0F9           	beq	$000098D0
 
 l000096DC:
 6838           	ldr	r0,[r7]
-F7FF FFD9     	bl	$00009690
+F7FF FFD9     	bl	$00009694
 F815 1B01     	ldrb	r1,[r5],#&1
 4620           	mov	r0,r4
-F000 FDA8     	bl	$0000A238
+F000 FDA8     	bl	$0000A23C
 2101           	mov	r1,#1
 4620           	mov	r0,r4
-F000 FD96     	bl	$0000A21C
+F000 FD96     	bl	$0000A220
 42AE           	cmps	r6,r5
-D1EB           	bne	$000098CC
+D1EB           	bne	$000098D0
 
 l000096F8:
 BDF8           	pop	{r3-r7,pc}
@@ -19317,83 +19770,70 @@ BDF8           	pop	{r3-r7,pc}
 l000096FA:
 4770           	bx	lr
 000096FC                                     7C 08 00 20             |.. 
-
-;; fn00009700: 00009700
-fn00009700 proc
-0000           	mov	r0,r0
-4002           	ands	r2,r0
+00009700 00 00 02 40                                     ...@           
 
 ;; OSRAMWriteByte: 00009704
 OSRAMWriteByte proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
 2100           	mov	r1,#0
-4809           	ldr	r0,[pc,#&24]                            ; 00009736
-F000 FD5C     	bl	$0000A1C4
+4809           	ldr	r0,[pc,#&24]                            ; 00009730
+F000 FD5C     	bl	$0000A1C8
 2800           	cmps	r0,#0
-
-;; fn00009712: 00009712
-fn00009712 proc
-D0F9           	beq	$00009904
+D0F9           	beq	$00009908
 
 l00009714:
-4B07           	ldr	r3,[pc,#&1C]                            ; 00009738
+4B07           	ldr	r3,[pc,#&1C]                            ; 00009734
+
+;; fn00009716: 00009716
+fn00009716 proc
 6818           	ldr	r0,[r3]
-F7FF FFBC     	bl	$00009690
+F7FF FFBC     	bl	$00009694
 4621           	mov	r1,r4
-4804           	ldr	r0,[pc,#&10]                            ; 00009736
-F000 FD8C     	bl	$0000A238
+4804           	ldr	r0,[pc,#&10]                            ; 00009730
+F000 FD8C     	bl	$0000A23C
 E8BD 4010     	pop.w	{r4,lr}
 2101           	mov	r1,#1
-4801           	ldr	r0,[pc,#&4]                             ; 00009736
-F000 BD78     	b	$00C0A21C
-00009730 00 00 02 40                                     ...@           
-
-;; fn00009734: 00009734
-fn00009734 proc
-087C           	lsrs	r4,r7,#1
-2000           	mov	r0,#0
+4801           	ldr	r0,[pc,#&4]                             ; 00009730
+F000 BD78     	b	$0000A220
+00009730 00 00 02 40 7C 08 00 20                         ...@|..        
 
 ;; OSRAMWriteFinal: 00009738
 OSRAMWriteFinal proc
 B570           	push	{r4-r6,lr}
 4606           	mov	r6,r0
-4C0E           	ldr	r4,[pc,#&38]                            ; 0000977C
+4C0E           	ldr	r4,[pc,#&38]                            ; 00009778
 2100           	mov	r1,#0
 4620           	mov	r0,r4
-F000 FD41     	bl	$0000A1C4
+F000 FD41     	bl	$0000A1C8
 2800           	cmps	r0,#0
-D0F9           	beq	$0000993A
+D0F9           	beq	$0000993E
 
 l0000974A:
-4D0C           	ldr	r5,[pc,#&30]                            ; 00009782
-4C0A           	ldr	r4,[pc,#&28]                            ; 0000977C
+4D0C           	ldr	r5,[pc,#&30]                            ; 0000977C
+4C0A           	ldr	r4,[pc,#&28]                            ; 00009778
 6828           	ldr	r0,[r5]
-F7FF FFA0     	bl	$00009690
+F7FF FFA0     	bl	$00009694
 4631           	mov	r1,r6
 4620           	mov	r0,r4
-F000 FD70     	bl	$0000A238
+F000 FD70     	bl	$0000A23C
 2105           	mov	r1,#5
 4620           	mov	r0,r4
-F000 FD5E     	bl	$0000A21C
+F000 FD5E     	bl	$0000A220
 2100           	mov	r1,#0
 4620           	mov	r0,r4
-F000 FD2E     	bl	$0000A1C4
+F000 FD2E     	bl	$0000A1C8
 2800           	cmps	r0,#0
-D0F9           	beq	$00009960
+D0F9           	beq	$00009964
 
 l00009770:
 6828           	ldr	r0,[r5]
 E8BD 4070     	pop.w	{r4-r6,lr}
+E78D           	b	$00009694
 
-;; fn00009774: 00009774
-fn00009774 proc
-4070           	eors	r0,r6
-E78D           	b	$00009690
-00009778                         00 00 02 40                     ...@   
-
-;; fn0000977C: 0000977C
-fn0000977C proc
+l00009778:
+0000           	mov	r0,r0
+4002           	ands	r2,r0
 087C           	lsrs	r4,r7,#1
 2000           	mov	r0,#0
 
@@ -19401,40 +19841,35 @@ fn0000977C proc
 OSRAMClear proc
 B510           	push	{r4,lr}
 2080           	mov	r0,#&80
-F7FF FF8A     	bl	$00009698
+F7FF FF8A     	bl	$0000969C
 2106           	mov	r1,#6
-480E           	ldr	r0,[pc,#&38]                            ; 000097CA
-F7FF FF9A     	bl	$000096C0
+480E           	ldr	r0,[pc,#&38]                            ; 000097C4
+F7FF FF9A     	bl	$000096C4
 245F           	mov	r4,#&5F
 2000           	mov	r0,#0
-F7FF FFB6     	bl	$00009700
+F7FF FFB6     	bl	$00009704
 3C01           	subs	r4,#1
-D1FA           	bne	$0000998E
+D1FA           	bne	$00009992
 
 l0000979C:
 4620           	mov	r0,r4
-F7FF FFCB     	bl	$00009734
+F7FF FFCB     	bl	$00009738
 2080           	mov	r0,#&80
-F7FF FF7A     	bl	$00009698
+F7FF FF7A     	bl	$0000969C
 2106           	mov	r1,#6
-4807           	ldr	r0,[pc,#&1C]                            ; 000097CE
-F7FF FF8A     	bl	$000096C0
+4807           	ldr	r0,[pc,#&1C]                            ; 000097C8
+F7FF FF8A     	bl	$000096C4
 245F           	mov	r4,#&5F
 2000           	mov	r0,#0
-F7FF FFA6     	bl	$00009700
+F7FF FFA6     	bl	$00009704
 3C01           	subs	r4,#1
-D1FA           	bne	$000099AE
+D1FA           	bne	$000099B2
 
 l000097BC:
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-E7B9           	b	$00009734
-000097C4             F4 A2 00 00                             ....       
-
-;; fn000097C8: 000097C8
-fn000097C8 proc
-A2FC           	adr	r2,$00009BB8
-0000           	mov	r0,r0
+E7B9           	b	$00009738
+000097C4             F4 A2 00 00 FC A2 00 00                 ........   
 
 ;; OSRAMStringDraw: 000097CC
 OSRAMStringDraw proc
@@ -19443,65 +19878,70 @@ B570           	push	{r4-r6,lr}
 460C           	mov	r4,r1
 4605           	mov	r5,r0
 2080           	mov	r0,#&80
-F7FF FF61     	bl	$00009698
+F7FF FF61     	bl	$0000969C
 2E00           	cmps	r6,#0
 BF0C           	ite	eq
 20B0           	moveq	r0,#&B0
 
 l000097E0:
 20B1           	mov	r0,#&B1
-F7FF FF8F     	bl	$00009700
+F7FF FF8F     	bl	$00009704
 F104 0624     	add	r6,r4,#&24
 2080           	mov	r0,#&80
-F7FF FF8A     	bl	$00009700
+F7FF FF8A     	bl	$00009704
 F006 000F     	and	r0,r6,#&F
-F7FF FF86     	bl	$00009700
+F7FF FF86     	bl	$00009704
 2080           	mov	r0,#&80
-F7FF FF83     	bl	$00009700
+F7FF FF83     	bl	$00009704
 F3C6 1003     	ubfx	r0,r6,#4,#4
 F040 0010     	orr	r0,r0,#&10
-F7FF FF7D     	bl	$00009700
+F7FF FF7D     	bl	$00009704
 2040           	mov	r0,#&40
-F7FF FF7A     	bl	$00009700
+F7FF FF7A     	bl	$00009704
 782B           	ldrb	r3,[r5]
 B383           	cbz	r3,$00009876
 
 l00009814:
 2C5A           	cmps	r4,#&5A
-4E18           	ldr	r6,[pc,#&60]                            ; 0000987E
-D90A           	bls	$0000982C
+4E18           	ldr	r6,[pc,#&60]                            ; 00009878
+D90A           	bls	$00009830
 
 l0000981A:
-E017           	b	$00009848
+E017           	b	$0000984C
 0000981C                                     15 F8 01 3F             ...?
-00009820 06 34 83 B1 FF F7 6E FF 2B 78 1B B3             .4....n.+x..   
-
-l0000982C:
-2C5A           	cmps	r4,#&5A
-D80D           	bhi	$00009848
+00009820 06 34 83 B1 FF F7 6E FF 2B 78 1B B3 5A 2C 0D D8 .4....n.+x..Z,..
 
 l00009830:
 3B20           	subs	r3,#&20
 EB03 0383     	add.w	r3,r3,r3,lsl #2
 18F0           	add	r0,r6,r3
 2105           	mov	r1,#5
-F7FF FF43     	bl	$000096C0
+F7FF FF43     	bl	$000096C4
 2C5A           	cmps	r4,#&5A
 F04F 0000     	mov	r0,#0
-D1EA           	bne	$00009A18
+D1EA           	bne	$00009A1C
 
 l00009846:
 E8BD 4070     	pop.w	{r4-r6,lr}
+E775           	b	$00009738
 
-l00009848:
-4070           	eors	r0,r6
-
-l0000984A:
-E775           	b	$00009734
-0000984C                                     20 3B 03 EB              ;..
-00009850 83 03 C4 F1 5F 04 F0 18 21 46 FF F7 33 FF 2B 78 ...._...!F..3.+x
-00009860 06 4A 20 3B 03 EB 83 03 13 44 23 44 18 7C BD E8 .J ;.....D#D.|..
-00009870 70 40 61 E7 70 BD                               p@a.p.         
+l0000984C:
+3B20           	subs	r3,#&20
+EB03 0383     	add.w	r3,r3,r3,lsl #2
+F1C4 045F     	rsb	r4,r4,#&5F
+18F0           	add	r0,r6,r3
+4621           	mov	r1,r4
+F7FF FF33     	bl	$000096C4
+782B           	ldrb	r3,[r5]
+4A06           	ldr	r2,[pc,#&18]                            ; 0000987C
+3B20           	subs	r3,#&20
+EB03 0383     	add.w	r3,r3,r3,lsl #2
+4413           	adds	r3,r2
+4423           	adds	r3,r4
+7C18           	ldrb	r0,[r3,#&10]
+E8BD 4070     	pop.w	{r4-r6,lr}
+E761           	b	$00009738
+00009874             70 BD                                   p.         
 
 l00009876:
 BD70           	pop	{r4-r6,pc}
@@ -19518,53 +19958,54 @@ l00009888:
 4614           	mov	r4,r2
 4699           	mov	r9,r3
 3124           	adds	r1,#&24
-
-;; fn00009890: 00009890
-fn00009890 proc
 F3C1 1803     	ubfx	r8,r1,#4,#4
+
+;; fn00009894: 00009894
+fn00009894 proc
 4416           	adds	r6,r2
 F048 0810     	orr	r8,r8,#&10
 F001 070F     	and	r7,r1,#&F
 F103 3AFF     	add	r10,r3,#&FFFFFFFF
 2080           	mov	r0,#&80
-F7FF FEFA     	bl	$00009698
+F7FF FEFA     	bl	$0000969C
 2C00           	cmps	r4,#0
 BF14           	ite	ne
 20B1           	movne	r0,#&B1
 
-;; fn000098AE: 000098AE
-fn000098AE proc
+l000098AE:
 20B0           	mov	r0,#&B0
-F7FF FF28     	bl	$00009700
+F7FF FF28     	bl	$00009704
 2080           	mov	r0,#&80
-F7FF FF25     	bl	$00009700
+F7FF FF25     	bl	$00009704
 4638           	mov	r0,r7
-F7FF FF22     	bl	$00009700
+F7FF FF22     	bl	$00009704
 2080           	mov	r0,#&80
-F7FF FF1F     	bl	$00009700
+F7FF FF1F     	bl	$00009704
 4640           	mov	r0,r8
-F7FF FF1C     	bl	$00009700
-
-;; fn000098CC: 000098CC
-fn000098CC proc
+F7FF FF1C     	bl	$00009704
 2040           	mov	r0,#&40
-F7FF FF19     	bl	$00009700
+F7FF FF19     	bl	$00009704
+
+l000098D0:
+FF19 4628     	vmax.u16	d4,d9,d24
+
+;; fn000098D2: 000098D2
+fn000098D2 proc
 4628           	mov	r0,r5
+
+;; fn000098D4: 000098D4
+fn000098D4 proc
 4651           	mov	r1,r10
 444D           	adds	r5,r9
-F7FF FEF4     	bl	$000096C0
+F7FF FEF4     	bl	$000096C4
 3401           	adds	r4,#1
 F815 0C01     	ldrb.w	r0,[r5,-#&1]
-F7FF FF29     	bl	$00009734
+F7FF FF29     	bl	$00009738
 42A6           	cmps	r6,r4
-D1DB           	bne	$00009A9E
+D1DB           	bne	$00009AA2
 
 l000098EA:
 E8BD 87F0     	pop.w	{r4-r10,pc}
-
-;; fn000098EC: 000098EC
-fn000098EC proc
-87F0           	strh	r0,[r6,#&7C]
 000098EE                                           00 BF               ..
 
 ;; OSRAMInit: 000098F0
@@ -19572,57 +20013,59 @@ OSRAMInit proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4604           	mov	r4,r0
 F04F 2010     	mov	r0,#&10001000
-F000 F93F     	bl	$00009B78
-4818           	ldr	r0,[pc,#&60]                            ; 00009966
-F000 F93C     	bl	$00009B78
-
-;; fn00009904: 00009904
-fn00009904 proc
+F000 F93F     	bl	$00009B7C
+4818           	ldr	r0,[pc,#&60]                            ; 00009960
+F000 F93C     	bl	$00009B7C
 210C           	mov	r1,#&C
-4817           	ldr	r0,[pc,#&5C]                            ; 0000996A
-F7FF FDBA     	bl	$0000947C
+4817           	ldr	r0,[pc,#&5C]                            ; 00009964
+
+;; fn00009908: 00009908
+fn00009908 proc
+F7FF FDBA     	bl	$00009480
 4621           	mov	r1,r4
-4816           	ldr	r0,[pc,#&58]                            ; 0000996E
-F000 FBF0     	bl	$0000A0F0
+4816           	ldr	r0,[pc,#&58]                            ; 00009968
+F000 FBF0     	bl	$0000A0F4
 2201           	mov	r2,#1
-4B15           	ldr	r3,[pc,#&54]                            ; 00009972
-4F15           	ldr	r7,[pc,#&54]                            ; 00009974
+4B15           	ldr	r3,[pc,#&54]                            ; 0000996C
+4F15           	ldr	r7,[pc,#&54]                            ; 00009970
 26E3           	mov	r6,#&E3
 2404           	mov	r4,#4
 2080           	mov	r0,#&80
 2500           	mov	r5,#0
 601A           	str	r2,[r3]
 F507 78F6     	add	r8,r7,#&1EC
-E006           	b	$00009934
+E006           	b	$00009938
 0000992A                               93 F8 EC 41 93 F8           ...A..
-00009930 ED 01 23 44                                     ..#D           
+00009930 ED 01 23 44 93 F8 EC 61                         ..#D...a       
 
-;; fn00009934: 00009934
-fn00009934 proc
-F893 61EC     	ldrb	r6,[r3,#&EC]
-F7FF FEB0     	bl	$00009698
+;; fn00009938: 00009938
+fn00009938 proc
+F7FF FEB0     	bl	$0000969C
+1CA8           	add	r0,r5,#2
 
-;; fn0000993A: 0000993A
-fn0000993A proc
-FEB0 1CA8     	Invalid
+;; fn0000993E: 0000993E
+fn0000993E proc
 1EA1           	sub	r1,r4,#2
 4440           	adds	r0,r8
 3401           	adds	r4,#1
-F7FF FEBE     	bl	$000096C0
+F7FF FEBE     	bl	$000096C4
+
+;; fn00009948: 00009948
+fn00009948 proc
 4425           	adds	r5,r4
 4630           	mov	r0,r6
-F7FF FEF4     	bl	$00009734
+F7FF FEF4     	bl	$00009738
 2D70           	cmps	r5,#&70
 EB07 0305     	add.w	r3,r7,r5
-D9E8           	bls	$00009B26
+D9E8           	bls	$00009B2A
 
-l00009958:
+;; fn00009958: 00009958
+fn00009958 proc
 E8BD 41F0     	pop.w	{r4-r8,lr}
-F7FF BF10     	b	$0000977C
+F7FF BF10     	b	$00009780
+00009960 02 00 00 20                                     ...            
 
-l00009960:
-0002           	mov	r2,r0
-2000           	mov	r0,#0
+l00009964:
 5000           	str	r0,[r0,r0]
 4000           	ands	r0,r0
 0000           	mov	r0,r0
@@ -19635,37 +20078,39 @@ A2F4           	adr	r2,$00009D40
 ;; OSRAMDisplayOn: 00009974
 OSRAMDisplayOn proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4F10           	ldr	r7,[pc,#&40]                            ; 000099C0
+4F10           	ldr	r7,[pc,#&40]                            ; 000099BC
 26E3           	mov	r6,#&E3
 2404           	mov	r4,#4
 2080           	mov	r0,#&80
 2500           	mov	r5,#0
 F507 78F6     	add	r8,r7,#&1EC
-E006           	b	$00009992
-00009988                         93 F8 EC 41 93 F8               ...A.. 
+E006           	b	$00009996
+00009988                         93 F8 EC 41 93 F8 ED 01         ...A....
+00009990 23 44                                           #D             
 
-l0000998E:
-01ED           	lsls	r5,r5,#7
-4423           	adds	r3,r4
-
-;; fn00009992: 00009992
-fn00009992 proc
+l00009992:
 F893 61EC     	ldrb	r6,[r3,#&EC]
-F7FF FE81     	bl	$00009698
+
+;; fn00009996: 00009996
+fn00009996 proc
+F7FF FE81     	bl	$0000969C
 1CA8           	add	r0,r5,#2
 1EA1           	sub	r1,r4,#2
 4440           	adds	r0,r8
 3401           	adds	r4,#1
-F7FF FE8F     	bl	$000096C0
+F7FF FE8F     	bl	$000096C4
 4425           	adds	r5,r4
 4630           	mov	r0,r6
-F7FF FEC5     	bl	$00009734
-
-;; fn000099AE: 000099AE
-fn000099AE proc
+F7FF FEC5     	bl	$00009738
 2D70           	cmps	r5,#&70
 EB07 0305     	add.w	r3,r7,r5
-D9E8           	bls	$00009B84
+
+l000099B2:
+0305           	lsls	r5,r0,#&C
+
+;; fn000099B4: 000099B4
+fn000099B4 proc
+D9E8           	bls	$00009B88
 
 l000099B6:
 E8BD 81F0     	pop.w	{r4-r8,pc}
@@ -19675,21 +20120,18 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 OSRAMDisplayOff proc
 B508           	push	{r3,lr}
 2080           	mov	r0,#&80
-F7FF FE6A     	bl	$00009698
+F7FF FE6A     	bl	$0000969C
 20AE           	mov	r0,#&AE
-F7FF FE9B     	bl	$00009700
+F7FF FE9B     	bl	$00009704
 2080           	mov	r0,#&80
-F7FF FE98     	bl	$00009700
+F7FF FE98     	bl	$00009704
 20AD           	mov	r0,#&AD
-F7FF FE95     	bl	$00009700
+F7FF FE95     	bl	$00009704
 2080           	mov	r0,#&80
-F7FF FE92     	bl	$00009700
+F7FF FE92     	bl	$00009704
 E8BD 4008     	pop.w	{r3,lr}
-
-;; fn000099E4: 000099E4
-fn000099E4 proc
 208A           	mov	r0,#&8A
-E6A7           	b	$00009734
+E6A7           	b	$00009738
 
 ;; SSIConfig: 000099E8
 SSIConfig proc
@@ -19699,20 +20141,16 @@ E92D 41F0     	push.w	{r4-r8,lr}
 4688           	mov	r8,r1
 461C           	mov	r4,r3
 9D06           	ldr	r5,[sp,#&18]
-F000 F9FB     	bl	$00009DEC
+F000 F9FB     	bl	$00009DF0
 2F02           	cmps	r7,#2
-D018           	beq	$00009A2C
+D018           	beq	$00009A30
 
 l000099FE:
 2F00           	cmps	r7,#0
-
-;; fn00009A00: 00009A00
-fn00009A00 proc
 BF18           	it	ne
 2704           	movne	r7,#4
 
-;; fn00009A04: 00009A04
-fn00009A04 proc
+l00009A04:
 FBB0 F3F4     	udiv	r3,r0,r4
 2400           	mov	r4,#0
 6077           	str	r7,[r6,#&4]
@@ -19720,25 +20158,23 @@ FBB0 F3F4     	udiv	r3,r0,r4
 FBB3 F2F4     	udiv	r2,r3,r4
 3A01           	subs	r2,#1
 2AFF           	cmps	r2,#&FF
-D8F9           	bhi	$00009C08
+D8F9           	bhi	$00009C0C
 
-;; fn00009A18: 00009A18
-fn00009A18 proc
+l00009A18:
 F008 0330     	and	r3,r8,#&30
+
+l00009A1C:
 3D01           	subs	r5,#1
 EA43 1188     	orr	r1,r3,r8,lsl #6
 430D           	orrs	r5,r1
 EA45 2202     	orr	r2,r5,r2,lsl #8
 6134           	str	r4,[r6,#&10]
 6032           	str	r2,[r6]
-
-l00009A2C:
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
-;; fn00009A30: 00009A30
-fn00009A30 proc
+l00009A30:
 270C           	mov	r7,#&C
-E7E7           	b	$00009A00
+E7E7           	b	$00009A04
 
 ;; SSIEnable: 00009A34
 SSIEnable proc
@@ -19760,20 +20196,20 @@ F023 0302     	bic	r3,r3,#2
 SSIIntRegister proc
 B508           	push	{r3,lr}
 2017           	mov	r0,#&17
-F7FF FD58     	bl	$00009500
+F7FF FD58     	bl	$00009504
 E8BD 4008     	pop.w	{r3,lr}
 2017           	mov	r0,#&17
-F7FF BDBF     	b	$000095D8
+F7FF BDBF     	b	$000095DC
 00009A5E                                           00 BF               ..
 
 ;; SSIIntUnregister: 00009A60
 SSIIntUnregister proc
 B508           	push	{r3,lr}
 2017           	mov	r0,#&17
-F7FF FDE8     	bl	$00009634
+F7FF FDE8     	bl	$00009638
 E8BD 4008     	pop.w	{r3,lr}
 2017           	mov	r0,#&17
-F7FF BD63     	b	$00009534
+F7FF BD63     	b	$00009538
 00009A72       00 BF                                       ..           
 
 ;; SSIIntEnable: 00009A74
@@ -19813,11 +20249,8 @@ SSIIntClear proc
 SSIDataPut proc
 F100 020C     	add	r2,r0,#&C
 6813           	ldr	r3,[r2]
-
-;; fn00009A9E: 00009A9E
-fn00009A9E proc
 079B           	lsls	r3,r3,#&1E
-D5FC           	bpl	$00009C98
+D5FC           	bpl	$00009C9C
 
 l00009AA2:
 6081           	str	r1,[r0,#&8]
@@ -19833,9 +20266,6 @@ BF1A           	itte	ne
 
 l00009AB2:
 2001           	mov	r0,#1
-
-;; fn00009AB4: 00009AB4
-fn00009AB4 proc
 4618           	mov	r0,r3
 4770           	bx	lr
 
@@ -19844,7 +20274,7 @@ SSIDataGet proc
 F100 020C     	add	r2,r0,#&C
 6813           	ldr	r3,[r2]
 075B           	lsls	r3,r3,#&1D
-D5FC           	bpl	$00009CB8
+D5FC           	bpl	$00009CBC
 
 l00009AC2:
 6883           	ldr	r3,[r0,#&8]
@@ -19867,8 +20297,8 @@ l00009AD2:
 
 ;; SysCtlSRAMSizeGet: 00009ADC
 SysCtlSRAMSizeGet proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00009AF0
-4804           	ldr	r0,[pc,#&10]                            ; 00009AF6
+4B03           	ldr	r3,[pc,#&C]                             ; 00009AEC
+4804           	ldr	r0,[pc,#&10]                            ; 00009AF0
 681B           	ldr	r3,[r3]
 EA00 2013     	and.w	r0,r0,r3,lsr #8
 F500 7080     	add	r0,r0,#&100
@@ -19878,8 +20308,8 @@ F500 7080     	add	r0,r0,#&100
 
 ;; SysCtlFlashSizeGet: 00009AF4
 SysCtlFlashSizeGet proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00009B08
-4804           	ldr	r0,[pc,#&10]                            ; 00009B0E
+4B03           	ldr	r3,[pc,#&C]                             ; 00009B04
+4804           	ldr	r0,[pc,#&10]                            ; 00009B08
 681B           	ldr	r3,[r3]
 EA00 20C3     	and.w	r0,r0,r3,lsl #&B
 F500 6000     	add	r0,r0,#&800
@@ -19888,7 +20318,7 @@ F500 6000     	add	r0,r0,#&800
 
 ;; SysCtlPinPresent: 00009B0C
 SysCtlPinPresent proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00009B20
+4B03           	ldr	r3,[pc,#&C]                             ; 00009B1C
 681B           	ldr	r3,[r3]
 4203           	adcs	r3,r0
 BF14           	ite	ne
@@ -19901,14 +20331,17 @@ l00009B16:
 
 ;; SysCtlPeripheralPresent: 00009B20
 SysCtlPeripheralPresent proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009B3C
+4B05           	ldr	r3,[pc,#&14]                            ; 00009B38
 0F02           	lsrs	r2,r0,#&1C
 F853 3022     	ldr.w	r3,[r3,r2,lsl #2]
-
-;; fn00009B26: 00009B26
-fn00009B26 proc
-3022           	adds	r0,#&22
 F020 4070     	bic	r0,r0,#&F0000000
+
+;; fn00009B2A: 00009B2A
+fn00009B2A proc
+4070           	eors	r0,r6
+
+;; fn00009B2C: 00009B2C
+fn00009B2C proc
 681B           	ldr	r3,[r3]
 4218           	adcs	r0,r3
 BF14           	ite	ne
@@ -19922,7 +20355,7 @@ l00009B34:
 ;; SysCtlPeripheralReset: 00009B3C
 SysCtlPeripheralReset proc
 2100           	mov	r1,#0
-4B0E           	ldr	r3,[pc,#&38]                            ; 00009B7E
+4B0E           	ldr	r3,[pc,#&38]                            ; 00009B78
 0F02           	lsrs	r2,r0,#&1C
 B410           	push	{r4}
 EB03 0382     	add.w	r3,r3,r2,lsl #2
@@ -19935,17 +20368,15 @@ B083           	sub	sp,#&C
 9101           	str	r1,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
 2B0F           	cmps	r3,#&F
-D805           	bhi	$00009B66
+D805           	bhi	$00009B6A
 
 l00009B5E:
 9B01           	ldr	r3,[sp,#&4]
 3301           	adds	r3,#1
 9301           	str	r3,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
-
-l00009B66:
 2B0F           	cmps	r3,#&F
-D9F9           	bls	$00009D5A
+D9F9           	bls	$00009D5E
 
 l00009B6A:
 6813           	ldr	r3,[r2]
@@ -19954,21 +20385,18 @@ EA23 0000     	bic.w	r0,r3,r0
 B003           	add	sp,#&C
 BC10           	pop	{r4}
 4770           	bx	lr
-
-;; fn00009B78: 00009B78
-fn00009B78 proc
-A554           	adr	r5,$00009CC8
-0000           	mov	r0,r0
+00009B78                         54 A5 00 00                     T...   
 
 ;; SysCtlPeripheralEnable: 00009B7C
 SysCtlPeripheralEnable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009B98
+4B05           	ldr	r3,[pc,#&14]                            ; 00009B94
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
-
-l00009B84:
 69DB           	ldr	r3,[r3,#&1C]
 F020 4070     	bic	r0,r0,#&F0000000
+
+l00009B88:
+4070           	eors	r0,r6
 681A           	ldr	r2,[r3]
 4310           	orrs	r0,r2
 6018           	str	r0,[r3]
@@ -19977,7 +20405,7 @@ F020 4070     	bic	r0,r0,#&F0000000
 
 ;; SysCtlPeripheralDisable: 00009B98
 SysCtlPeripheralDisable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009BB4
+4B05           	ldr	r3,[pc,#&14]                            ; 00009BB0
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 69DA           	ldr	r2,[r3,#&1C]
@@ -19990,7 +20418,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlPeripheralSleepEnable: 00009BB4
 SysCtlPeripheralSleepEnable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009BD0
+4B05           	ldr	r3,[pc,#&14]                            ; 00009BCC
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6A9B           	ldr	r3,[r3,#&28]
@@ -20003,7 +20431,7 @@ F020 4070     	bic	r0,r0,#&F0000000
 
 ;; SysCtlPeripheralSleepDisable: 00009BD0
 SysCtlPeripheralSleepDisable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009BEC
+4B05           	ldr	r3,[pc,#&14]                            ; 00009BE8
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6A9A           	ldr	r2,[r3,#&28]
@@ -20016,7 +20444,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlPeripheralDeepSleepEnable: 00009BEC
 SysCtlPeripheralDeepSleepEnable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009C08
+4B05           	ldr	r3,[pc,#&14]                            ; 00009C04
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6B5B           	ldr	r3,[r3,#&34]
@@ -20029,8 +20457,10 @@ F020 4070     	bic	r0,r0,#&F0000000
 
 ;; SysCtlPeripheralDeepSleepDisable: 00009C08
 SysCtlPeripheralDeepSleepDisable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009C24
+4B05           	ldr	r3,[pc,#&14]                            ; 00009C20
 0F02           	lsrs	r2,r0,#&1C
+
+l00009C0C:
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6B5A           	ldr	r2,[r3,#&34]
 F020 4070     	bic	r0,r0,#&F0000000
@@ -20042,7 +20472,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlPeripheralClockGating: 00009C24
 SysCtlPeripheralClockGating proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009C40
+4A05           	ldr	r2,[pc,#&14]                            ; 00009C3C
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009C32
 
@@ -20062,24 +20492,24 @@ SysCtlIntRegister proc
 B508           	push	{r3,lr}
 4601           	mov	r1,r0
 202C           	mov	r0,#&2C
-F7FF FC5D     	bl	$00009500
+F7FF FC5D     	bl	$00009504
 E8BD 4008     	pop.w	{r3,lr}
 202C           	mov	r0,#&2C
-F7FF BCC4     	b	$000095D8
+F7FF BCC4     	b	$000095DC
 
 ;; SysCtlIntUnregister: 00009C54
 SysCtlIntUnregister proc
 B508           	push	{r3,lr}
 202C           	mov	r0,#&2C
-F7FF FCEE     	bl	$00009634
+F7FF FCEE     	bl	$00009638
 E8BD 4008     	pop.w	{r3,lr}
 202C           	mov	r0,#&2C
-F7FF BC69     	b	$00009534
+F7FF BC69     	b	$00009538
 00009C66                   00 BF                               ..       
 
 ;; SysCtlIntEnable: 00009C68
 SysCtlIntEnable proc
-4A02           	ldr	r2,[pc,#&8]                             ; 00009C78
+4A02           	ldr	r2,[pc,#&8]                             ; 00009C74
 6813           	ldr	r3,[r2]
 4318           	orrs	r0,r3
 6010           	str	r0,[r2]
@@ -20088,7 +20518,7 @@ SysCtlIntEnable proc
 
 ;; SysCtlIntDisable: 00009C78
 SysCtlIntDisable proc
-4A02           	ldr	r2,[pc,#&8]                             ; 00009C88
+4A02           	ldr	r2,[pc,#&8]                             ; 00009C84
 6813           	ldr	r3,[r2]
 EA23 0000     	bic.w	r0,r3,r0
 6010           	str	r0,[r2]
@@ -20097,7 +20527,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlIntClear: 00009C88
 SysCtlIntClear proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009C94
+4B01           	ldr	r3,[pc,#&4]                             ; 00009C90
 6018           	str	r0,[r3]
 4770           	bx	lr
 00009C8E                                           00 BF               ..
@@ -20108,62 +20538,62 @@ SysCtlIntStatus proc
 B910           	cbnz	r0,$00009C9C
 
 l00009C96:
-4B03           	ldr	r3,[pc,#&C]                             ; 00009CAA
-
-l00009C98:
+4B03           	ldr	r3,[pc,#&C]                             ; 00009CA4
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 
 l00009C9C:
-4B02           	ldr	r3,[pc,#&8]                             ; 00009CAC
+4B02           	ldr	r3,[pc,#&8]                             ; 00009CA8
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00009CA2       00 BF 50 E0 0F 40 58 E0 0F 40               ..P..@X..@   
 
 ;; SysCtlLDOSet: 00009CAC
 SysCtlLDOSet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CB8
+4B01           	ldr	r3,[pc,#&4]                             ; 00009CB4
 6018           	str	r0,[r3]
 4770           	bx	lr
 00009CB2       00 BF 34 E0 0F 40                           ..4..@       
 
 ;; SysCtlLDOGet: 00009CB8
 SysCtlLDOGet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CC4
+4B01           	ldr	r3,[pc,#&4]                             ; 00009CC0
 6818           	ldr	r0,[r3]
+
+l00009CBC:
 4770           	bx	lr
 00009CBE                                           00 BF               ..
 00009CC0 34 E0 0F 40                                     4..@           
 
 ;; SysCtlLDOConfigSet: 00009CC4
 SysCtlLDOConfigSet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CD0
+4B01           	ldr	r3,[pc,#&4]                             ; 00009CCC
 6018           	str	r0,[r3]
 4770           	bx	lr
 00009CCA                               00 BF 60 E1 0F 40           ..`..@
 
 ;; SysCtlReset: 00009CD0
 SysCtlReset proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CDC
-
-l00009CD2:
-4A02           	ldr	r2,[pc,#&8]                             ; 00009CE2
+4B01           	ldr	r3,[pc,#&4]                             ; 00009CD8
+4A02           	ldr	r2,[pc,#&8]                             ; 00009CDC
 601A           	str	r2,[r3]
-E7FE           	b	$00009CD2
+
+l00009CD6:
+E7FE           	b	$00009CD6
 00009CD8                         0C ED 00 E0 04 00 FA 05         ........
 
 ;; SysCtlSleep: 00009CE0
 SysCtlSleep proc
-F000 BA04     	b	$00C0A0E8
+F000 BA04     	b	$0000A0EC
 
 ;; SysCtlDeepSleep: 00009CE4
 SysCtlDeepSleep proc
 B510           	push	{r4,lr}
-4C06           	ldr	r4,[pc,#&18]                            ; 00009D06
+4C06           	ldr	r4,[pc,#&18]                            ; 00009D00
 6823           	ldr	r3,[r4]
 F043 0304     	orr	r3,r3,#4
 6023           	str	r3,[r4]
-F000 F9FC     	bl	$0000A0E8
+F000 F9FC     	bl	$0000A0EC
 6823           	ldr	r3,[r4]
 F023 0304     	bic	r3,r3,#4
 6023           	str	r3,[r4]
@@ -20173,14 +20603,14 @@ BD10           	pop	{r4,pc}
 
 ;; SysCtlResetCauseGet: 00009D04
 SysCtlResetCauseGet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009D10
+4B01           	ldr	r3,[pc,#&4]                             ; 00009D0C
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00009D0A                               00 BF 5C E0 0F 40           ..\..@
 
 ;; SysCtlResetCauseClear: 00009D10
 SysCtlResetCauseClear proc
-4A02           	ldr	r2,[pc,#&8]                             ; 00009D20
+4A02           	ldr	r2,[pc,#&8]                             ; 00009D1C
 6813           	ldr	r3,[r2]
 EA23 0000     	bic.w	r0,r3,r0
 6010           	str	r0,[r2]
@@ -20189,7 +20619,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlBrownOutConfigSet: 00009D20
 SysCtlBrownOutConfigSet proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009D30
+4B02           	ldr	r3,[pc,#&8]                             ; 00009D2C
 EA40 0181     	orr	r1,r0,r1,lsl #2
 6019           	str	r1,[r3]
 4770           	bx	lr
@@ -20201,8 +20631,8 @@ F243 32F0     	mov	r2,#&33F0
 B4F0           	push	{r4-r7}
 2740           	mov	r7,#&40
 2600           	mov	r6,#0
-4C29           	ldr	r4,[pc,#&A4]                            ; 00009DE6
-4929           	ldr	r1,[pc,#&A4]                            ; 00009DE8
+4C29           	ldr	r4,[pc,#&A4]                            ; 00009DE0
+4929           	ldr	r1,[pc,#&A4]                            ; 00009DE4
 6823           	ldr	r3,[r4]
 F060 0503     	orn	r5,r0,#3
 4019           	ands	r1,r3
@@ -20210,20 +20640,20 @@ F441 6100     	orr	r1,r1,#&800
 4029           	ands	r1,r5
 4002           	ands	r2,r0
 F423 0380     	bic	r3,r3,#&400000
-4D25           	ldr	r5,[pc,#&94]                            ; 00009DEE
+4D25           	ldr	r5,[pc,#&94]                            ; 00009DE8
 B082           	sub	sp,#8
 F443 6300     	orr	r3,r3,#&800
-
-;; fn00009D5A: 00009D5A
-fn00009D5A proc
 430A           	orrs	r2,r1
 6023           	str	r3,[r4]
+
+;; fn00009D5E: 00009D5E
+fn00009D5E proc
 602F           	str	r7,[r5]
 6022           	str	r2,[r4]
 9601           	str	r6,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
 2B0F           	cmps	r3,#&F
-D805           	bhi	$00009D72
+D805           	bhi	$00009D76
 
 ;; fn00009D6A: 00009D6A
 fn00009D6A proc
@@ -20231,15 +20661,13 @@ fn00009D6A proc
 3301           	adds	r3,#1
 9301           	str	r3,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
-
-;; fn00009D72: 00009D72
-fn00009D72 proc
 2B0F           	cmps	r3,#&F
-D9F9           	bls	$00009F66
+D9F9           	bls	$00009F6A
 
-l00009D76:
+;; fn00009D76: 00009D76
+fn00009D76 proc
 F000 0303     	and	r3,r0,#3
-4C19           	ldr	r4,[pc,#&64]                            ; 00009DE6
+4C19           	ldr	r4,[pc,#&64]                            ; 00009DE0
 F022 0203     	bic	r2,r2,#3
 431A           	orrs	r2,r3
 F022 63F8     	bic	r3,r2,#&7C00000
@@ -20247,7 +20675,7 @@ F000 61F8     	and	r1,r0,#&7C00000
 6022           	str	r2,[r4]
 0504           	lsls	r4,r0,#&14
 EA41 0103     	orr	r1,r1,r3
-D414           	bmi	$00009DBA
+D414           	bmi	$00009DBE
 
 l00009D94:
 F44F 4300     	mov	r3,#&8000
@@ -20256,72 +20684,61 @@ F44F 4300     	mov	r3,#&8000
 B16B           	cbz	r3,$00009DBA
 
 l00009D9E:
-4A13           	ldr	r2,[pc,#&4C]                            ; 00009DF2
+4A13           	ldr	r2,[pc,#&4C]                            ; 00009DEC
 6813           	ldr	r3,[r2]
 0658           	lsls	r0,r3,#&19
-D503           	bpl	$00009DAA
+D503           	bpl	$00009DAE
 
 l00009DA6:
-E008           	b	$00009DB6
-00009DA8                         13 68                           .h     
-
-l00009DAA:
-065B           	lsls	r3,r3,#&19
-D405           	bmi	$00009DB6
+E008           	b	$00009DBA
+00009DA8                         13 68 5B 06 05 D4               .h[... 
 
 l00009DAE:
 9B01           	ldr	r3,[sp,#&4]
 3B01           	subs	r3,#1
 9301           	str	r3,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
-
-l00009DB6:
 2B00           	cmps	r3,#0
-D1F6           	bne	$00009FA4
+D1F6           	bne	$00009FA8
 
 l00009DBA:
 F421 6100     	bic	r1,r1,#&800
+
+l00009DBE:
 2300           	mov	r3,#0
-4A07           	ldr	r2,[pc,#&1C]                            ; 00009DE4
+4A07           	ldr	r2,[pc,#&1C]                            ; 00009DE0
 6011           	str	r1,[r2]
 9301           	str	r3,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
 2B0F           	cmps	r3,#&F
-D805           	bhi	$00009DD4
+D805           	bhi	$00009DD8
 
 l00009DCC:
 9B01           	ldr	r3,[sp,#&4]
 3301           	adds	r3,#1
 9301           	str	r3,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
-
-l00009DD4:
 2B0F           	cmps	r3,#&F
-D9F9           	bls	$00009FC8
+D9F9           	bls	$00009FCC
 
 l00009DD8:
 B002           	add	sp,#8
 BCF0           	pop	{r4-r7}
 4770           	bx	lr
 00009DDE                                           00 BF               ..
-00009DE0 60 E0 0F 40 0F CC BF FF 58 E0 0F 40             `..@....X..@   
-
-;; fn00009DEC: 00009DEC
-fn00009DEC proc
-E050           	b	$00009E8C
-00009DEE                                           0F 40               .@
+00009DE0 60 E0 0F 40 0F CC BF FF 58 E0 0F 40 50 E0 0F 40 `..@....X..@P..@
 
 ;; SysCtlClockGet: 00009DF0
 SysCtlClockGet proc
-4B18           	ldr	r3,[pc,#&60]                            ; 00009E58
+4B18           	ldr	r3,[pc,#&60]                            ; 00009E54
 681B           	ldr	r3,[r3]
 F003 0230     	and	r2,r3,#&30
 2A10           	cmps	r2,#&10
-D028           	beq	$00009E4A
+D028           	beq	$00009E4E
 
 l00009DFC:
 2A20           	cmps	r2,#&20
-D024           	beq	$00009E46
+D024           	beq	$00009E4A
 
 l00009E00:
 B10A           	cbz	r2,$00009E06
@@ -20331,20 +20748,17 @@ l00009E02:
 4770           	bx	lr
 
 l00009E06:
-4A14           	ldr	r2,[pc,#&50]                            ; 00009E5E
+4A14           	ldr	r2,[pc,#&50]                            ; 00009E58
 F3C3 1183     	ubfx	r1,r3,#6,#4
 EB02 0281     	add.w	r2,r2,r1,lsl #2
-
-l00009E0E:
-0281           	lsls	r1,r0,#&A
-
-l00009E10:
 6B10           	ldr	r0,[r2,#&30]
+
+l00009E12:
 051A           	lsls	r2,r3,#&14
-D411           	bmi	$00009E36
+D411           	bmi	$00009E3A
 
 l00009E16:
-4A11           	ldr	r2,[pc,#&44]                            ; 00009E62
+4A11           	ldr	r2,[pc,#&44]                            ; 00009E5C
 6812           	ldr	r2,[r2]
 F3C2 1148     	ubfx	r1,r2,#5,#9
 3102           	adds	r1,#2
@@ -20358,36 +20772,32 @@ BF48           	it	mi
 
 l00009E34:
 0411           	lsls	r1,r2,#&10
-
-l00009E36:
 BF48           	it	mi
 0880           	lsrsmi	r0,r0,#2
 
 l00009E3A:
 025A           	lsls	r2,r3,#9
-D5E2           	bpl	$0000A000
+D5E2           	bpl	$0000A004
 
 l00009E3E:
 F3C3 53C3     	ubfx	r3,r3,#&17,#4
 3301           	adds	r3,#1
 FBB0 F0F3     	udiv	r0,r0,r3
-
-l00009E46:
-F0F3 4770     	Invalid
-
-l00009E48:
 4770           	bx	lr
 
 l00009E4A:
-4805           	ldr	r0,[pc,#&14]                            ; 00009E66
-E7E1           	b	$00009E0E
-00009E4E                                           05 48               .H
-00009E50 DF E7 00 BF 60 E0 0F 40 54 A5 00 00 64 E0 0F 40 ....`..@T...d..@
+4805           	ldr	r0,[pc,#&14]                            ; 00009E60
+E7E1           	b	$00009E12
+
+l00009E4E:
+4805           	ldr	r0,[pc,#&14]                            ; 00009E64
+E7DF           	b	$00009E12
+00009E52       00 BF 60 E0 0F 40 54 A5 00 00 64 E0 0F 40   ..`..@T...d..@
 00009E60 70 38 39 00 C0 E1 E4 00                         p89.....       
 
 ;; SysCtlPWMClockSet: 00009E68
 SysCtlPWMClockSet proc
-4A03           	ldr	r2,[pc,#&C]                             ; 00009E7C
+4A03           	ldr	r2,[pc,#&C]                             ; 00009E78
 6813           	ldr	r3,[r2]
 F423 13F0     	bic	r3,r3,#&1E0000
 4318           	orrs	r0,r3
@@ -20397,7 +20807,7 @@ F423 13F0     	bic	r3,r3,#&1E0000
 
 ;; SysCtlPWMClockGet: 00009E7C
 SysCtlPWMClockGet proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009E8C
+4B02           	ldr	r3,[pc,#&8]                             ; 00009E88
 6818           	ldr	r0,[r3]
 F400 10F0     	and	r0,r0,#&1E0000
 4770           	bx	lr
@@ -20406,10 +20816,10 @@ F400 10F0     	and	r0,r0,#&1E0000
 ;; SysCtlADCSpeedSet: 00009E8C
 SysCtlADCSpeedSet proc
 B410           	push	{r4}
-4C0A           	ldr	r4,[pc,#&28]                            ; 00009EBE
-490A           	ldr	r1,[pc,#&28]                            ; 00009EC0
+4C0A           	ldr	r4,[pc,#&28]                            ; 00009EB8
+490A           	ldr	r1,[pc,#&28]                            ; 00009EBC
 6823           	ldr	r3,[r4]
-4A0A           	ldr	r2,[pc,#&28]                            ; 00009EC4
+4A0A           	ldr	r2,[pc,#&28]                            ; 00009EC0
 F423 6370     	bic	r3,r3,#&F00
 4303           	orrs	r3,r0
 6023           	str	r3,[r4]
@@ -20428,7 +20838,7 @@ F423 6370     	bic	r3,r3,#&F00
 
 ;; SysCtlADCSpeedGet: 00009EC4
 SysCtlADCSpeedGet proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009ED4
+4B02           	ldr	r3,[pc,#&8]                             ; 00009ED0
 6818           	ldr	r0,[r3]
 F400 6070     	and	r0,r0,#&F00
 4770           	bx	lr
@@ -20437,7 +20847,7 @@ F400 6070     	and	r0,r0,#&F00
 
 ;; SysCtlIOSCVerificationSet: 00009ED4
 SysCtlIOSCVerificationSet proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009EF0
+4A05           	ldr	r2,[pc,#&14]                            ; 00009EEC
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009EE2
 
@@ -20454,7 +20864,7 @@ F043 0308     	orr	r3,r3,#8
 
 ;; SysCtlMOSCVerificationSet: 00009EF0
 SysCtlMOSCVerificationSet proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009F0C
+4A05           	ldr	r2,[pc,#&14]                            ; 00009F08
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009EFE
 
@@ -20471,7 +20881,7 @@ F043 0304     	orr	r3,r3,#4
 
 ;; SysCtlPLLVerificationSet: 00009F0C
 SysCtlPLLVerificationSet proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009F28
+4A05           	ldr	r2,[pc,#&14]                            ; 00009F24
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009F1A
 
@@ -20490,7 +20900,7 @@ F443 6380     	orr	r3,r3,#&400
 SysCtlClkVerificationClear proc
 2101           	mov	r1,#1
 2200           	mov	r2,#0
-4B01           	ldr	r3,[pc,#&4]                             ; 00009F38
+4B01           	ldr	r3,[pc,#&4]                             ; 00009F34
 6019           	str	r1,[r3]
 601A           	str	r2,[r3]
 4770           	bx	lr
@@ -20519,19 +20929,20 @@ B5F8           	push	{r3-r7,lr}
 3018           	adds	r0,#&18
 6804           	ldr	r4,[r0]
 F014 0408     	ands	r4,r4,#8
-D1FB           	bne	$0000A152
+D1FB           	bne	$0000A156
 
 l00009F5E:
 6AEB           	ldr	r3,[r5,#&2C]
 F023 0310     	bic	r3,r3,#&10
 62EB           	str	r3,[r5,#&2C]
-
-l00009F66:
 6B2A           	ldr	r2,[r5,#&30]
 F422 7240     	bic	r2,r2,#&300
+
+l00009F6A:
+7240           	strb	r0,[r0,#&9]
 F022 0201     	bic	r2,r2,#1
 632A           	str	r2,[r5,#&30]
-F7FF FF3D     	bl	$00009DEC
+F7FF FF3D     	bl	$00009DF0
 013B           	lsls	r3,r7,#4
 FBB0 F2F3     	udiv	r2,r0,r3
 FB03 0312     	mls	r3,r3,r2,r0
@@ -20549,8 +20960,6 @@ F043 0310     	orr	r3,r3,#&10
 6B2B           	ldr	r3,[r5,#&30]
 F443 7340     	orr	r3,r3,#&300
 F043 0301     	orr	r3,r3,#1
-
-l00009FA4:
 632B           	str	r3,[r5,#&30]
 BDF8           	pop	{r3-r7,pc}
 
@@ -20562,15 +20971,16 @@ F8D0 8024     	ldr	r8,[r0,#&24]
 460F           	mov	r7,r1
 4616           	mov	r6,r2
 6A85           	ldr	r5,[r0,#&28]
-F7FF FF1A     	bl	$00009DEC
+F7FF FF1A     	bl	$00009DF0
 EB05 1588     	add.w	r5,r5,r8,lsl #6
 0080           	lsls	r0,r0,#2
 FBB0 F0F5     	udiv	r0,r0,r5
 6038           	str	r0,[r7]
-
-l00009FC8:
 6AE3           	ldr	r3,[r4,#&2C]
 F003 03EE     	and	r3,r3,#&EE
+
+l00009FCC:
+03EE           	lsls	r6,r5,#&F
 6033           	str	r3,[r6]
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -20591,16 +21001,16 @@ UARTDisable proc
 F100 0218     	add	r2,r0,#&18
 6813           	ldr	r3,[r2]
 071B           	lsls	r3,r3,#&1C
-D4FC           	bmi	$0000A1EC
+D4FC           	bmi	$0000A1F0
 
 l00009FF6:
 6AC3           	ldr	r3,[r0,#&2C]
 F023 0310     	bic	r3,r3,#&10
 62C3           	str	r3,[r0,#&2C]
 6B03           	ldr	r3,[r0,#&30]
-
-l0000A000:
 F423 7340     	bic	r3,r3,#&300
+
+l0000A004:
 F023 0301     	bic	r3,r3,#1
 6303           	str	r3,[r0,#&30]
 4770           	bx	lr
@@ -20636,7 +21046,7 @@ UARTCharGet proc
 F100 0218     	add	r2,r0,#&18
 6813           	ldr	r3,[r2]
 06DB           	lsls	r3,r3,#&1B
-D4FC           	bmi	$0000A234
+D4FC           	bmi	$0000A238
 
 l0000A03E:
 6800           	ldr	r0,[r0]
@@ -20661,7 +21071,7 @@ UARTCharPut proc
 F100 0218     	add	r2,r0,#&18
 6813           	ldr	r3,[r2]
 069B           	lsls	r3,r3,#&1A
-D4FC           	bmi	$0000A254
+D4FC           	bmi	$0000A258
 
 l0000A05E:
 6001           	str	r1,[r0]
@@ -20686,7 +21096,7 @@ F043 0301     	orr	r3,r3,#1
 ;; UARTIntRegister: 0000A078
 UARTIntRegister proc
 B510           	push	{r4,lr}
-4C06           	ldr	r4,[pc,#&18]                            ; 0000A09A
+4C06           	ldr	r4,[pc,#&18]                            ; 0000A094
 42A0           	cmps	r0,r4
 BF0C           	ite	eq
 2415           	moveq	r4,#&15
@@ -20694,16 +21104,16 @@ BF0C           	ite	eq
 l0000A082:
 2416           	mov	r4,#&16
 4620           	mov	r0,r4
-F7FF FA3D     	bl	$00009500
+F7FF FA3D     	bl	$00009504
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F7FF BAA4     	b	$000095D8
+F7FF BAA4     	b	$000095DC
 0000A094             00 C0 00 40                             ...@       
 
 ;; UARTIntUnregister: 0000A098
 UARTIntUnregister proc
 B510           	push	{r4,lr}
-4C06           	ldr	r4,[pc,#&18]                            ; 0000A0BA
+4C06           	ldr	r4,[pc,#&18]                            ; 0000A0B4
 42A0           	cmps	r0,r4
 BF0C           	ite	eq
 2415           	moveq	r4,#&15
@@ -20711,10 +21121,10 @@ BF0C           	ite	eq
 l0000A0A2:
 2416           	mov	r4,#&16
 4620           	mov	r0,r4
-F7FF FAC7     	bl	$00009634
+F7FF FAC7     	bl	$00009638
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F7FF BA42     	b	$00009534
+F7FF BA42     	b	$00009538
 0000A0B4             00 C0 00 40                             ...@       
 
 ;; UARTIntEnable: 0000A0B8
@@ -20729,9 +21139,6 @@ UARTIntDisable proc
 6B83           	ldr	r3,[r0,#&38]
 EA23 0101     	bic.w	r1,r3,r1
 6381           	str	r1,[r0,#&38]
-
-;; fn0000A0C8: 0000A0C8
-fn0000A0C8 proc
 4770           	bx	lr
 0000A0CA                               00 BF                       ..   
 
@@ -20745,9 +21152,6 @@ l0000A0CE:
 
 l0000A0D2:
 6C00           	ldr	r0,[r0,#&40]
-
-;; fn0000A0D4: 0000A0D4
-fn0000A0D4 proc
 4770           	bx	lr
 0000A0D6                   00 BF                               ..       
 
@@ -20766,21 +21170,13 @@ B662           	cps	#0
 CPUcpsid proc
 B672           	cps	#0
 4770           	bx	lr
-
-;; fn0000A0E8: 0000A0E8
-fn0000A0E8 proc
-4770           	bx	lr
-0000A0EA                               00 BF                       ..   
+0000A0E8                         70 47 00 BF                     pG..   
 
 ;; CPUwfi: 0000A0EC
 CPUwfi proc
 BF30           	wfi
 4770           	bx	lr
-
-;; fn0000A0F0: 0000A0F0
-fn0000A0F0 proc
-4770           	bx	lr
-0000A0F2       00 BF                                       ..           
+0000A0F0 70 47 00 BF                                     pG..           
 
 ;; I2CMasterInit: 0000A0F4
 I2CMasterInit proc
@@ -20790,9 +21186,9 @@ B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
 F042 0210     	orr	r2,r2,#&10
 6202           	str	r2,[r0,#&20]
-F7FF FE75     	bl	$00009DEC
-4B06           	ldr	r3,[pc,#&18]                            ; 0000A126
-4A06           	ldr	r2,[pc,#&18]                            ; 0000A128
+F7FF FE75     	bl	$00009DF0
+4B06           	ldr	r3,[pc,#&18]                            ; 0000A120
+4A06           	ldr	r2,[pc,#&18]                            ; 0000A124
 3801           	subs	r0,#1
 2D01           	cmps	r5,#1
 BF08           	it	eq
@@ -20832,10 +21228,11 @@ F043 0310     	orr	r3,r3,#&10
 I2CSlaveEnable proc
 2101           	mov	r1,#1
 F5A0 62FC     	sub	r2,r0,#&7E0
-
-l0000A152:
 6813           	ldr	r3,[r2]
 F043 0320     	orr	r3,r3,#&20
+
+l0000A156:
+0320           	lsls	r0,r4,#&C
 6013           	str	r3,[r2]
 6041           	str	r1,[r0,#&4]
 4770           	bx	lr
@@ -20864,20 +21261,20 @@ F023 0320     	bic	r3,r3,#&20
 I2CIntRegister proc
 B508           	push	{r3,lr}
 2018           	mov	r0,#&18
-F7FF F9BE     	bl	$00009500
+F7FF F9BE     	bl	$00009504
 E8BD 4008     	pop.w	{r3,lr}
 2018           	mov	r0,#&18
-F7FF BA25     	b	$000095D8
+F7FF BA25     	b	$000095DC
 0000A192       00 BF                                       ..           
 
 ;; I2CIntUnregister: 0000A194
 I2CIntUnregister proc
 B508           	push	{r3,lr}
 2018           	mov	r0,#&18
-F7FF FA4E     	bl	$00009634
+F7FF FA4E     	bl	$00009638
 E8BD 4008     	pop.w	{r3,lr}
 2018           	mov	r0,#&18
-F7FF B9C9     	b	$00009534
+F7FF B9C9     	b	$00009538
 0000A1A6                   00 BF                               ..       
 
 ;; I2CMasterIntEnable: 0000A1A8
@@ -20905,9 +21302,6 @@ I2CMasterIntDisable proc
 I2CSlaveIntDisable proc
 2300           	mov	r3,#0
 60C3           	str	r3,[r0,#&C]
-
-;; fn0000A1C4: 0000A1C4
-fn0000A1C4 proc
 4770           	bx	lr
 0000A1C6                   00 BF                               ..       
 
@@ -20947,10 +21341,12 @@ BF18           	it	ne
 l0000A1EA:
 4770           	bx	lr
 
-;; fn0000A1EC: 0000A1EC
-fn0000A1EC proc
+l0000A1EC:
 6940           	ldr	r0,[r0,#&14]
 3000           	adds	r0,#0
+
+;; fn0000A1F0: 0000A1F0
+fn0000A1F0 proc
 BF18           	it	ne
 2001           	movne	r0,#1
 
@@ -20969,9 +21365,6 @@ I2CMasterIntClear proc
 I2CSlaveIntClear proc
 2301           	mov	r3,#1
 6183           	str	r3,[r0,#&18]
-
-;; fn0000A204: 0000A204
-fn0000A204 proc
 4770           	bx	lr
 0000A206                   00 BF                               ..       
 
@@ -20991,10 +21384,6 @@ F000 0001     	and	r0,r0,#1
 I2CMasterBusBusy proc
 6840           	ldr	r0,[r0,#&4]
 F3C0 1080     	ubfx	r0,r0,#6,#1
-
-;; fn0000A21C: 0000A21C
-fn0000A21C proc
-1080           	asrss	r0,r0,#2
 4770           	bx	lr
 
 ;; I2CMasterControl: 0000A220
@@ -21006,24 +21395,20 @@ I2CMasterControl proc
 I2CMasterErr proc
 6843           	ldr	r3,[r0,#&4]
 07DA           	lsls	r2,r3,#&1F
-D405           	bmi	$0000A232
+D405           	bmi	$0000A236
 
 l0000A22A:
 F013 0002     	ands	r0,r3,#2
-D003           	beq	$0000A234
+D003           	beq	$0000A238
 
 l0000A230:
 F003 001C     	and	r0,r3,#&1C
-
-l0000A232:
-001C           	mov	r4,r3
-
-l0000A234:
 4770           	bx	lr
-0000A236                   00 20                               .        
 
-;; fn0000A238: 0000A238
-fn0000A238 proc
+l0000A236:
+2000           	mov	r0,#0
+
+l0000A238:
 4770           	bx	lr
 0000A23A                               00 BF                       ..   
 
@@ -21051,11 +21436,9 @@ I2CSlaveDataPut proc
 I2CSlaveDataGet proc
 6880           	ldr	r0,[r0,#&8]
 4770           	bx	lr
-0000A250 48 65 6C 6C                                     Hell           
+0000A250 48 65 6C 6C 6F 00 00 00                         Hello...       
 
-l0000A254:
-006F           	lsls	r7,r5,#1
-0000           	mov	r0,r0
+l0000A258:
 6843           	ldr	r3,[r0,#&4]
 6365           	str	r5,[r4,#&34]
 006B           	lsls	r3,r5,#1
@@ -21158,11 +21541,6 @@ g_pulXtals		; 0000A594
 	db	0x00, 0x80, 0x3E, 0x00, 0x00, 0x00, 0x4B, 0x00, 0x40, 0x4B, 0x4C, 0x00, 0x00, 0x20, 0x4E, 0x00
 	db	0x80, 0x8D, 0x5B, 0x00, 0x00, 0xC0, 0x5D, 0x00, 0x00, 0x80, 0x70, 0x00, 0x00, 0x12, 0x7A, 0x00
 	db	0x00, 0x00, 0x7D, 0x00
-
-;; fn0000A5C0: 0000A5C0
-fn0000A5C0 proc
-0000           	mov	r0,r0
-007D           	lsls	r5,r7,#1
 ;;; Segment .text.memcpy (0000A5C4)
 
 ;; memcpy: 0000A5C4
@@ -21170,13 +21548,13 @@ memcpy proc
 B5F0           	push	{r4-r7,lr}
 0005           	mov	r5,r0
 2A0F           	cmps	r2,#&F
-D92F           	bls	$0000A628
+D92F           	bls	$0000A62C
 
 l0000A5CC:
 000B           	mov	r3,r1
 4303           	orrs	r3,r0
 079B           	lsls	r3,r3,#&1E
-D136           	bne	$0000A63E
+D136           	bne	$0000A642
 
 l0000A5D4:
 0016           	mov	r6,r2
@@ -21198,7 +21576,7 @@ l0000A5D4:
 3310           	adds	r3,#&10
 3410           	adds	r4,#&10
 429D           	cmps	r5,r3
-D1F3           	bne	$0000A7E0
+D1F3           	bne	$0000A7E4
 
 l0000A5FC:
 230F           	mov	r3,#&F
@@ -21208,7 +21586,7 @@ l0000A5FC:
 1989           	add	r1,r1,r6
 4013           	ands	r3,r2
 2B03           	cmps	r3,#3
-D91C           	bls	$0000A642
+D91C           	bls	$0000A646
 
 l0000A60C:
 1F1E           	sub	r6,r3,#4
@@ -21220,43 +21598,41 @@ l0000A60C:
 50EF           	str	r7,[r5,r3]
 3304           	adds	r3,#4
 42A3           	cmps	r3,r4
-D1FA           	bne	$0000A812
+D1FA           	bne	$0000A816
 
 l0000A620:
 2403           	mov	r4,#3
 43A6           	bics	r6,r4
 1D33           	add	r3,r6,#4
 4022           	ands	r2,r4
-
-l0000A628:
 18C9           	add	r1,r1,r3
 18ED           	add	r5,r5,r3
 
 l0000A62C:
 2A00           	cmps	r2,#0
-D005           	beq	$0000A638
+D005           	beq	$0000A63C
 
 l0000A630:
 2300           	mov	r3,#0
 5CCC           	ldrb	r4,[r1,r3]
 54EC           	strb	r4,[r5,r3]
 3301           	adds	r3,#1
-
-l0000A638:
 4293           	cmps	r3,r2
-D1FA           	bne	$0000A82E
+D1FA           	bne	$0000A832
 
 l0000A63C:
 BCF0           	pop	{r4-r7}
-
-l0000A63E:
 BC02           	pop	{r1}
 4708           	bx	r1
 
 l0000A642:
 0005           	mov	r5,r0
-E7F4           	b	$0000A62C
-0000A646                   1A 00 F0 E7 C0 46                   .....F   
+E7F4           	b	$0000A630
+
+l0000A646:
+001A           	mov	r2,r3
+E7F0           	b	$0000A62C
+0000A64A                               C0 46                       .F   
 ;;; Segment .data (20000000)
 g_pfnRAMVectors		; 20000000
 	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
