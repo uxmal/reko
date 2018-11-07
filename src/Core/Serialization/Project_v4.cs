@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -151,6 +151,14 @@ namespace Reko.Core.Serialization
         [XmlArray("registerValues")]
         [XmlArrayItem("assume")]
         public RegisterValue_v2[] RegisterValues;
+
+        [XmlElement("dasmAddress")]
+        [DefaultValue(false)]
+        public bool ShowAddressesInDisassembly;
+
+        [XmlElement("dasmBytes")]
+        [DefaultValue(false)]
+        public bool ShowBytesInDisassembly;
     }
 
     public class PlatformOptions_v4

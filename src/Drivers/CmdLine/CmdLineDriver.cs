@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -145,7 +145,6 @@ namespace Reko.CmdLine
 
         private void Decompile(Dictionary<string, object> pArgs)
         {
-
             pArgs.TryGetValue("--loader", out object loader);
             try
             {
@@ -160,6 +159,14 @@ namespace Reko.CmdLine
                     {
                         Filename = (string)oMetadata
                     });
+                }
+                if (pArgs.ContainsKey("dasm-address"))
+                {
+                    decompiler.Project.Programs[0].User.ShowAddressesInDisassembly = true;
+                }
+                if (pArgs.ContainsKey("dasm-bytes"))
+                {
+                    decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
@@ -337,6 +344,14 @@ namespace Reko.CmdLine
                     parsedArgs["time-limit"] = timeLimit;
                     ++i;
                 }
+                else if (args[i] == "--dasm-address")
+                {
+                    parsedArgs["dasm-address"] = true;
+                }
+                else if (args[i] == "--dasm-bytes")
+                {
+                    parsedArgs["dasm-bytes"] = true;
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: unrecognized option {0}", arg);
@@ -406,6 +421,7 @@ namespace Reko.CmdLine
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
+            w.WriteLine(" --dasm-address           Display addresses in disassembled machine code.");
             w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");
             w.WriteLine("                          to one of the following formats:");
             DumpRawFiles(config, w, "    {0,-25} {1}");
