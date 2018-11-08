@@ -294,7 +294,6 @@ namespace Reko.ImageLoaders.Elf
                 ? platform.MakeAddressFromLinear(sym.Value)
                 : Sections[(int)sym.SectionIndex].Address + sym.Value;
 
-
             var dt = GetSymbolDataType(sym);
             return new ImageSymbol(addr)
             {
