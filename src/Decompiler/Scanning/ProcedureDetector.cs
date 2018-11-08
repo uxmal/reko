@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -192,8 +192,6 @@ namespace Reko.Scanning
         /// Collects weakly connected components from the ICFG and gathers
         /// them into Clusters.
         /// </summary>
-        /// <param name="sr"></param>
-        /// <returns></returns>
         public List<Cluster> FindClusters()
         {
             var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);

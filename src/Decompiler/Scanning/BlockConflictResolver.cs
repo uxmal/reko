@@ -258,8 +258,6 @@ namespace Reko.Scanning
 
         private void RemoveBlocksWithFewAncestors()
         {
-            var there = blocks.Nodes.Any(c => c.Address.ToLinear() == 0x00404F92);
-            there = blocks.Nodes.Any(c => c.Address.ToLinear() == 0x00404F92);
             conflicts = BuildConflictGraph(blocks.Nodes);
             foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
@@ -268,8 +266,6 @@ namespace Reko.Scanning
                 if (uCount < vCount)
                 {
                     RemoveBlockFromGraph(conflict.Item1);
-                if (uCount > vCount)
-                    RemoveBlockFromGraph(conflict.Item2);
                 }
                 else if (uCount > vCount)
                 {
