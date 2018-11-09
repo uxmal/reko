@@ -347,8 +347,10 @@ namespace Reko.Scanning
                 // This is disabled as we get a lot of false positives.
                 // If we can generate a cross reference lookup then perhaps
                 // this will improve.
-                cluster.Entries.UnionWith(nopreds);
-                return true;
+
+                //cluster.Entries.UnionWith(nopreds);
+                //return true;
+                return false;
             }
 
             /*
