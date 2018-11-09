@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -81,7 +81,7 @@ namespace Reko.Typing
                     try
                     {
                         this.stmCur = stm;
-                       stm.Instruction.Accept(this);
+                        stm.Instruction.Accept(this);
                     }
                     catch (Exception ex)
                     {
@@ -200,7 +200,7 @@ namespace Reko.Typing
                     eventListener.CreateBlockNavigator(this.program, stmCur.Block),
                     "Phi functions will be ignored by type analysis. " +
                     "This may be caused by a failure in a previous stage of the decompilation.");
-        }
+            }
         }
 
         public void VisitReturnInstruction(ReturnInstruction ret)

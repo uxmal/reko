@@ -58,11 +58,11 @@ namespace Reko.Scanning
 
         public readonly Address Bad;
 
-        private Program program;
-        private ScanResults sr;
-        private IRewriterHost host;
-        private IStorageBinder storageBinder;
-        private DecompilerEventListener eventListener;
+        private readonly Program program;
+        private readonly ScanResults sr;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder storageBinder;
+        private readonly DecompilerEventListener eventListener;
 
         public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
         {
@@ -350,15 +350,15 @@ namespace Reko.Scanning
         {
             if (!pool.TryGetValue(addr, out var e))
             {
-            var rdr = program.CreateImageReader(addr);
-            var arch = program.Architecture;
-            var rw = arch.CreateRewriter(
-                    program.CreateImageReader(addr),
-                arch.CreateProcessorState(),
-                storageBinder,
-                this.host);
-            return rw.GetEnumerator();
-        }
+                var rdr = program.CreateImageReader(addr);
+                var arch = program.Architecture;
+                var rw = arch.CreateRewriter(
+                        program.CreateImageReader(addr),
+                    arch.CreateProcessorState(),
+                    storageBinder,
+                    this.host);
+                return rw.GetEnumerator();
+            }
             else
             {
                 pool.Remove(addr);
@@ -569,8 +569,7 @@ namespace Reko.Scanning
             {
                 foreach (var pointer in GetPossiblePointers(seg))
                 {
-                    ImageSegment segPointee;
-                    if (program.SegmentMap.TryFindSegment(pointer, out segPointee) &&
+                    if (program.SegmentMap.TryFindSegment(pointer, out var segPointee) &&
                         segPointee.IsInRange(pointer))
                     {
                         int segOffset = (int)(pointer - segPointee.Address);
@@ -596,8 +595,7 @@ namespace Reko.Scanning
             //$TODO: this assumes pointers must be aligned. Not the case for older machines.
             uint ptrSize = (uint)program.Platform.PointerType.Size;
             var rdr = program.CreateImageReader(seg.Address);
-            Constant c;
-            while (rdr.TryRead(program.Platform.PointerType, out c))
+            while (rdr.TryRead(program.Platform.PointerType, out Constant c))
             {
                 yield return program.Architecture.MakeAddressFromConstant(c);
             }
@@ -605,8 +603,7 @@ namespace Reko.Scanning
 
         private bool IsExecutable(Address address)
         {
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(address, out seg))
+            if (!program.SegmentMap.TryFindSegment(address, out ImageSegment seg))
                 return false;
             return seg.IsExecutable;
         }
@@ -621,13 +618,11 @@ namespace Reko.Scanning
             var rtl = i.Instructions[i.Instructions.Length - 1];
             for (;;)
             {
-                var rif = rtl as RtlIf;
-                if (rif == null)
+                if (!(rtl is RtlIf rif))
                     break;
                 rtl = rif.Instruction;
             }
-            var xfer = rtl as RtlTransfer;
-            if (xfer != null)
+            if (rtl is RtlTransfer xfer)
             {
                 return xfer.Target as Address;
             }
@@ -663,8 +658,7 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<ImageSegment, byte[]> map)
         {
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(addr, out seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));
             return map[seg][addr - seg.Address] == MaybeCode;
         }
