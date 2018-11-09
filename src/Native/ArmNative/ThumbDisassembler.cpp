@@ -64,7 +64,7 @@ INativeInstruction * ThumbDisassembler::NextInstruction()
 	{
 		instr->detail->arm.op_count = 0;
 		auto info = NativeInstructionInfo{
-			uAddr, 4, static_cast<uint32_t>(InstructionClass::Invalid), ARM_INS_INVALID
+			uAddr, 4, static_cast<uint32_t>(InstrClass::Invalid), ARM_INS_INVALID
 		};
 		this->uAddr += 4;
 		this->length -= 4;
@@ -74,34 +74,34 @@ INativeInstruction * ThumbDisassembler::NextInstruction()
 	{
 		auto info = NativeInstructionInfo{
 			uAddr, 4,
-			static_cast<uint32_t>(InstructionClass::Linear), 
+			static_cast<uint32_t>(InstrClass::Linear), 
 			static_cast<int32_t>(instr->id)
 		};
 		return new NativeInstruction(instr, info);
 	}
 }
 
-inline InstructionClass operator | (InstructionClass a, InstructionClass b) {
-	return static_cast<InstructionClass>(static_cast<int>(a) | static_cast<int>(b));
+inline InstrClass operator | (InstrClass a, InstrClass b) {
+	return static_cast<InstrClass>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-InstructionClass ThumbDisassembler::InstructionClassFromId(unsigned int armInstrID)
+InstrClass ThumbDisassembler::InstructionClassFromId(unsigned int armInstrID)
 {
 	switch (armInstrID)
 	{
-	case ARM_INS_INVALID: return InstructionClass::Invalid;
-	case ARM_INS_BKPT: return InstructionClass::Transfer;
-	case ARM_INS_BL: return InstructionClass::Transfer | InstructionClass::Call;
-	case ARM_INS_BLX: return InstructionClass::Transfer | InstructionClass::Call;
-	case ARM_INS_BX: return InstructionClass::Transfer;
-	case ARM_INS_BXJ: return InstructionClass::Transfer;
-	case ARM_INS_B: return InstructionClass::Transfer;
-	case ARM_INS_HLT: return InstructionClass::Transfer;
-	case ARM_INS_SVC: return InstructionClass::Transfer;
-	case ARM_INS_TEQ: return InstructionClass::Transfer;
-	case ARM_INS_TRAP: return InstructionClass::Transfer;
-	case ARM_INS_YIELD: return InstructionClass::Transfer;
+	case ARM_INS_INVALID: return InstrClass::Invalid;
+	case ARM_INS_BKPT: return InstrClass::Transfer;
+	case ARM_INS_BL: return InstrClass::Transfer | InstrClass::Call;
+	case ARM_INS_BLX: return InstrClass::Transfer | InstrClass::Call;
+	case ARM_INS_BX: return InstrClass::Transfer;
+	case ARM_INS_BXJ: return InstrClass::Transfer;
+	case ARM_INS_B: return InstrClass::Transfer;
+	case ARM_INS_HLT: return InstrClass::Transfer;
+	case ARM_INS_SVC: return InstrClass::Transfer;
+	case ARM_INS_TEQ: return InstrClass::Transfer;
+	case ARM_INS_TRAP: return InstrClass::Transfer;
+	case ARM_INS_YIELD: return InstrClass::Transfer;
 	}
-	return InstructionClass::Linear;
+	return InstrClass::Linear;
 }
 

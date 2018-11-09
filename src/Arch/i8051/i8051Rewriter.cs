@@ -44,7 +44,7 @@ namespace Reko.Arch.i8051
         private IEnumerator<i8051Instruction> dasm;
         private i8051Instruction instr;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public i8051Rewriter(i8051Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -63,7 +63,7 @@ namespace Reko.Arch.i8051
                 this.instr = dasm.Current;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 switch (instr.Opcode)
                 {
                 default:
@@ -136,7 +136,7 @@ namespace Reko.Arch.i8051
      
         private void RewriteJump()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var dst = OpSrc(instr.Operand1);
             dst.DataType = PrimitiveType.Ptr16;
             m.Goto(dst);
@@ -174,7 +174,7 @@ namespace Reko.Arch.i8051
 
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             var dst = OpSrc(instr.Operand1);
             dst.DataType = PrimitiveType.Ptr16;
             m.Call(dst, 2);
@@ -182,7 +182,7 @@ namespace Reko.Arch.i8051
 
         private void RewriteCjne()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var a = OpSrc(instr.Operand1);
             var b = OpSrc(instr.Operand2);
             var addr = ((AddressOperand)instr.Operand3).Address;
@@ -202,11 +202,11 @@ namespace Reko.Arch.i8051
 
         private void RewriteDjnz()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var dst = OpSrc(instr.Operand1);
             var addr = ((AddressOperand)instr.Operand2).Address;
             m.Assign(dst, m.ISub(dst, 1));
-            m.Branch(m.Ne0(dst), addr, RtlClass.ConditionalTransfer);
+            m.Branch(m.Ne0(dst), addr, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
@@ -222,23 +222,23 @@ namespace Reko.Arch.i8051
 
         private void RewriteJb(Func<Expression, Expression> cmp)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var src = OpSrc(instr.Operand1);
             var addr = ((AddressOperand)instr.Operand2).Address;
-            m.Branch(cmp(src), addr, RtlClass.ConditionalTransfer);
+            m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJc(Func<Expression, Expression> cmp)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var src = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.C));
             var addr = ((AddressOperand)instr.Operand1).Address;
-            m.Branch(cmp(src), addr, RtlClass.ConditionalTransfer);
+            m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJbc()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var src = OpSrc(instr.Operand1);
             m.BranchInMiddleOfInstruction(m.Eq0(src), instr.Address + instr.Length, rtlc);
             WriteDst(instr.Operand1, Constant.Zero(src.DataType));
@@ -247,10 +247,10 @@ namespace Reko.Arch.i8051
 
         private void RewriteJz(Func<Expression, Expression> cmp)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var src = binder.EnsureRegister(Registers.A);
             var addr = ((AddressOperand)instr.Operand1).Address;
-            m.Branch(cmp(src), addr, RtlClass.ConditionalTransfer);
+            m.Branch(cmp(src), addr, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
@@ -320,7 +320,7 @@ namespace Reko.Arch.i8051
 
         private void RewriteRet()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
@@ -376,7 +376,7 @@ namespace Reko.Arch.i8051
         private void Invalid()
         {
             m.Invalid();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

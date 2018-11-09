@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -158,7 +158,7 @@ namespace Reko.Arch.PowerPC
             var rDst = ((RegisterOperand)instr.op1).Register;
             if ((rDst.Number & 1) == 1)
             {
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -424,7 +424,7 @@ namespace Reko.Arch.PowerPC
             case 0x14: op = m.Le; break;
             case 0x18: op = m.Ne; break;
             case 0x1F:
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 m.SideEffect(
                     host.PseudoProcedure(
                         "__trap",
@@ -434,15 +434,14 @@ namespace Reko.Arch.PowerPC
                 host.Error(
                     instr.Address,
                     string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
-            rtlc = RtlClass.Linear;
             m.BranchInMiddleOfInstruction(
                 op(ra, rb).Invert(),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.SideEffect(
                 host.PseudoProcedure(
                     "__trap",

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,10 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -98,37 +98,29 @@ namespace Reko.Arch.Arm.AArch32
         public MachineOperand op4 => ops[3];
         */
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
                 if (!iclasses.TryGetValue(opcode, out var iclass))
-                    iclass = InstructionClass.Linear;
+                    iclass = InstrClass.Linear;
                 if (condition != ArmCondition.AL)
-                    iclass |= InstructionClass.Conditional;
+                    iclass |= InstrClass.Conditional;
                 return iclass;
-            }
-        }
-
-        public override bool IsValid
-        {
-            get
-            {
-                throw new System.NotImplementedException();
             }
         }
 
         public override int OpcodeAsInteger
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
+            get { return (int) this.opcode; }
         }
 
         public override MachineOperand GetOperand(int i)
         {
-            throw new System.NotImplementedException();
+            if (0 <= i && i < ops.Length)
+                return ops[i];
+            else
+                return null;
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -369,9 +361,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private static Dictionary<Opcode, InstructionClass> iclasses = new Dictionary<Opcode, InstructionClass>
+        private static Dictionary<Opcode, InstrClass> iclasses = new Dictionary<Opcode, InstrClass>
         {
-            { Opcode.hlt, InstructionClass.System },
+            { Opcode.hlt, InstrClass.System },
         };
 
         public bool Writeback;

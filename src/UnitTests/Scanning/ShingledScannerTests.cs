@@ -334,7 +334,7 @@ namespace Reko.UnitTests.Scanning
             var instr = new RtlInstructionCluster(
                 Address.Ptr32(addr), length, new RtlInstruction[1])
             {
-                Class = RtlClass.Linear
+                Class = InstrClass.Linear
             };
             return instr;
         }

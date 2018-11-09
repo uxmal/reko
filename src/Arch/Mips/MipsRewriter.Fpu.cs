@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -69,7 +70,7 @@ namespace Reko.Arch.Mips
                 ? cc.Invert()
                 : cc,
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
         }
 

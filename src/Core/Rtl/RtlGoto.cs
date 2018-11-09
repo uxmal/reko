@@ -28,7 +28,7 @@ namespace Reko.Core.Rtl
 {
     public class RtlGoto : RtlTransfer
     {
-        public RtlGoto(Expression target, RtlClass rtlClass) : base(target, rtlClass)
+        public RtlGoto(Expression target, InstrClass rtlClass) : base(target, rtlClass)
         {
         }
 

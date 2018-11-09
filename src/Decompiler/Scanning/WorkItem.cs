@@ -25,14 +25,6 @@ using System.IO;
 
 namespace Reko.Scanning
 {
-	public enum BlockType
-	{
-		Segment,
-		JumpTarget,
-		Procedure,
-		Vector
-	}
-
     public abstract class WorkItem
     {
         protected WorkItem(Address addr)

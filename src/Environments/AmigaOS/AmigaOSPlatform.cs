@@ -59,7 +59,7 @@ namespace Reko.Environments.AmigaOS
                         ExpressionMatcher.AnyId("addrReg"),
                         ExpressionMatcher.AnyConstant("offset")),
                     4,
-                    RtlClass.Transfer));
+                    InstrClass.Transfer));
         }
 
         public Dictionary<string, object> MapKickstartToListOfLibraries

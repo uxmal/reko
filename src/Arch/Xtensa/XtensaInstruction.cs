@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 
@@ -45,14 +46,9 @@ namespace Reko.Arch.Xtensa
             { Opcodes.ueq_s, "ueq.s" }
         };
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
-            get { return InstructionClass.Linear; }
-        }
-
-        public override bool IsValid
-        {
-            get { return Opcode != Opcodes.invalid;  }
+            get { return InstrClass.Linear; }
         }
 
         public Opcodes Opcode { get; set; }

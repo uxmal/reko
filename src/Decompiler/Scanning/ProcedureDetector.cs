@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -156,6 +156,11 @@ namespace Reko.Scanning
             [Conditional("DEBUG")]
             public void Dump(DirectedGraph<RtlBlock> icfg)
             {
+                Debug.Print("Cluster with sources: [{0}]", string.Join(",",
+                    from b in Blocks
+                    where icfg.Predecessors(b).Count == 0
+                    orderby b.Address
+                    select b));
                 foreach (var b in Blocks)
                 {
                     var isEntry = Entries.Contains(b);
@@ -174,6 +179,12 @@ namespace Reko.Scanning
                     Debug.Print("  succ: {0}",
                         string.Join(",", icfg.Successors(b)));
                 }
+                Debug.Print("Cluster with sinks: [{0}]", string.Join(",",
+                    from b in Blocks
+                    where icfg.Successors(b).Count == 0
+                    orderby b.Address
+                    select b));
+                Debug.WriteLine("");
             }
         }
 
@@ -181,8 +192,6 @@ namespace Reko.Scanning
         /// Collects weakly connected components from the ICFG and gathers
         /// them into Clusters.
         /// </summary>
-        /// <param name="sr"></param>
-        /// <returns></returns>
         public List<Cluster> FindClusters()
         {
             var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
@@ -258,7 +267,10 @@ namespace Reko.Scanning
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
+                // cluster.Dump(sr.ICFG);
                 sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
+                var bcr = new BlockConflictResolver(null, sr, a => true, null);
+                bcr.ResolveBlockConflicts(new Address[0]);
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));
@@ -335,6 +347,7 @@ namespace Reko.Scanning
                 // This is disabled as we get a lot of false positives.
                 // If we can generate a cross reference lookup then perhaps
                 // this will improve.
+
                 //cluster.Entries.UnionWith(nopreds);
                 //return true;
                 return false;
@@ -408,7 +421,7 @@ namespace Reko.Scanning
         {
             // Create a fake node that will serve as the parent of all the 
             // existing entries. That node will be used to compute all
-            // immediate dominatores of all reachable blocks.
+            // immediate dominators of all reachable blocks.
             var auxNode = new RtlBlock(null, "<root>");
             sr.ICFG.AddNode(auxNode);
             var allEntries =

@@ -479,6 +479,11 @@ namespace Reko.Core.Expressions
             return Create(PrimitiveType.CreateWord(bitSize), value);
         }
 
+        public static Constant Word(int bitSize, ulong value)
+        {
+            return Create(PrimitiveType.CreateWord(bitSize), value);
+        }
+
         public static Constant Zero(DataType dataType)
         {
             return Constant.Create(dataType, 0);

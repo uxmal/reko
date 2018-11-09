@@ -45,7 +45,7 @@ namespace Reko.Arch.Sparc
         private SparcInstruction instrCur;
         private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -76,7 +76,7 @@ namespace Reko.Arch.Sparc
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Opcode)
                 {
@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
                         instrCur.Opcode);
                     goto case Opcode.illegal;
                 case Opcode.illegal:
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Opcode.add: RewriteAlu(m.IAdd, false); break;

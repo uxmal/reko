@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.zSeries
 {
@@ -27,29 +29,12 @@ namespace Reko.Arch.zSeries
         internal Opcode Opcode;
         internal MachineOperand[] Ops;
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
+            get { throw new NotImplementedException(); }
         }
 
-        public override bool IsValid
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public override int OpcodeAsInteger
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -68,7 +53,7 @@ namespace Reko.Arch.zSeries
                 writer.WriteString(sep);
                 sep = ",";
                 op.Write(writer, options);
-            }
         }
+    }
     }
 }

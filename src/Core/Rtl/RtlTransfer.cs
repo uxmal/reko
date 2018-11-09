@@ -28,7 +28,7 @@ namespace Reko.Core.Rtl
 {
     public abstract class RtlTransfer : RtlInstruction
     {
-        public RtlTransfer(Expression target, RtlClass rtlClass)
+        public RtlTransfer(Expression target, InstrClass rtlClass)
         {
             this.Target = target;
             this.Class = rtlClass;
