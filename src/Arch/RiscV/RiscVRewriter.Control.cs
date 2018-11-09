@@ -43,25 +43,25 @@ namespace Reko.Arch.RiscV
         {
             var opLeft = RewriteOp(instr.op1);
             var opRight = RewriteOp(instr.op2);
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             m.Branch(
                 fn(opLeft, opRight),
                 ((AddressOperand)instr.op3).Address,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJal()
         {
             var continuation = ((RegisterOperand)instr.op1).Register;
             var dst = RewriteOp(instr.op2);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             if (continuation.Number == 0)
             {
                 m.Goto(dst);
             }
             else
             {
-                rtlc |= RtlClass.Call;
+                rtlc |= InstrClass.Call;
                 m.Call(dst, 0);
             }
         }
@@ -72,7 +72,7 @@ namespace Reko.Arch.RiscV
             var rDst = ((RegisterOperand)instr.op2).Register;
             var dst = RewriteOp(instr.op2);
             var off = RewriteOp(instr.op3);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             if (!off.IsZero)
             {
                 dst = m.IAdd(dst, off);
@@ -90,7 +90,7 @@ namespace Reko.Arch.RiscV
             }
             else if (continuation.Number == 1)     // 'r1'
             {
-                rtlc |= RtlClass.Call;
+                rtlc |= InstrClass.Call;
                 m.Call(dst, 0);
             } 
             else 

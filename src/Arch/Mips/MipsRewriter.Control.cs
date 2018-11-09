@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -50,7 +50,7 @@ namespace Reko.Arch.Mips
                 }
                 else
                 {
-                    rtlc = RtlClass.Transfer;
+                    rtlc = InstrClass.Transfer;
                     m.CallD(dst, 0);
                 }
                 return;
@@ -70,13 +70,13 @@ namespace Reko.Arch.Mips
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
-                    rtlc = RtlClass.Transfer | RtlClass.Delay;
+                    rtlc = InstrClass.Transfer | InstrClass.Delay;
                     m.GotoD(addr);
                 }
                 else
                 {
-                    rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
-                    m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                    rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
+                    m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
                 }
             }
             else
@@ -104,8 +104,8 @@ namespace Reko.Arch.Mips
                 }
             }
             var cond = condOp(reg, Constant.Zero(reg.DataType));
-            rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+            rtlc = InstrClass.ConditionalTransfer;
+            m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
         }
 
         private void RewriteBranchLikely(MipsInstruction instr, Func<Expression, Expression, Expression> condOp)
@@ -118,13 +118,13 @@ namespace Reko.Arch.Mips
                 ((RegisterOperand)instr.op1).Register ==
                 ((RegisterOperand)instr.op2).Register)
             {
-                rtlc = RtlClass.Transfer | RtlClass.Delay;
+                rtlc = InstrClass.Transfer | InstrClass.Delay;
                 m.GotoD(addr);
             }
             else
             {
-                rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
-                m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
+                m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
             }
         }
 
@@ -134,7 +134,7 @@ namespace Reko.Arch.Mips
             if (!opTrue)
                 cond = m.Not(cond);
             var addr = (Address)RewriteOperand0(instr.op2);
-            rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
+            rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
             m.Branch(cond, addr, rtlc);
         }
 
@@ -151,7 +151,7 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.CallD(RewriteOperand0(instr.op1), 0);
         }
 
@@ -160,7 +160,7 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var dst = RewriteOperand0(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
             if (lr == arch.LinkRegister)
@@ -177,7 +177,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteJr(MipsInstruction instr)
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var dst = RewriteOperand(instr.op1);
 
             var reg = (RegisterStorage)((Identifier)dst).Storage;
@@ -194,7 +194,7 @@ namespace Reko.Arch.Mips
         private void RewriteJump(MipsInstruction instr)
         {
             var dst = RewriteOperand0(instr.op1);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.GotoD(dst);
         }
     }

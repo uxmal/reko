@@ -42,7 +42,7 @@ namespace Reko.Arch.Mips
         private IEnumerator<MipsInstruction> dasm;
         private IStorageBinder binder;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private MipsProcessorArchitecture arch;
         private IRewriterHost host;
@@ -64,7 +64,7 @@ namespace Reko.Arch.Mips
             {
                 var instr = dasm.Current;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.opcode)
                 {
@@ -75,7 +75,7 @@ namespace Reko.Arch.Mips
                     EmitUnitTest();
                     goto case Opcode.illegal;
                 case Opcode.illegal:
-                    rtlc = RtlClass.Invalid; m.Invalid(); break;
+                    rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.add:
                 case Opcode.addi:
                 case Opcode.addiu:

@@ -47,7 +47,7 @@ namespace Reko.Arch.M68k
         private M68kState state;
         private IRewriterHost host;
         private IEnumerator<M68kInstruction> dasm;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private OperandRewriter orw;
 
@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
                 var addr = di.Address;
                 var len = di.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = RtlClass.Linear;
+                rtlc = di.iclass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
                 switch (di.code)
@@ -286,7 +286,7 @@ VS Overflow Set 1001 V
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 

@@ -16,9 +16,9 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -73,7 +73,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteEret()
         {
-            rtlClass = RtlClass.Transfer;
+            rtlClass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 
@@ -171,7 +171,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteSvc()
         {
-            this.rtlClass = RtlClass.Transfer | RtlClass.Call;
+            this.rtlClass = InstrClass.Transfer | InstrClass.Call;
             var intrinsic = host.PseudoProcedure("__syscall", VoidType.Instance, Operand(Dst()));
             m.SideEffect(intrinsic);
         }

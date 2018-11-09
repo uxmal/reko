@@ -40,7 +40,7 @@ namespace Reko.Arch.Tms7000
         private IStorageBinder binder;
         private IEnumerator<Tms7000Instruction> dasm;
         private Tms7000Instruction instr;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
 
         public Tms7000Rewriter(Tms7000Architecture arch, EndianImageReader rdr, Tms7000State state, IStorageBinder binder, IRewriterHost host)
@@ -57,14 +57,14 @@ namespace Reko.Arch.Tms7000
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 switch (instr.Opcode)
                 {
                 default:
                     host.Error(instr.Address, "Rewriting x86 opcode '{0}' is not supported yet.", instr);
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     break;
                 case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteArithmetic(m.IAdd); break;
@@ -240,7 +240,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteBtj(Func<Expression, Expression> fn)
         {
-            this.rtlc = RtlClass.ConditionalTransfer;
+            this.rtlc = InstrClass.ConditionalTransfer;
             var opLeft = Operand(instr.op2);
             var opRight = Operand(instr.op1);
             NZ0(m.And(opLeft, fn(opRight)));
@@ -248,12 +248,12 @@ namespace Reko.Arch.Tms7000
             m.Branch(
                 m.Test(ConditionCode.NE, z),
                 ((AddressOperand)instr.op3).Address,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteBr()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var dst = Operand(instr.op1);
             var ea = ((MemoryAccess)dst).EffectiveAddress;
             m.Goto(ea);
@@ -261,7 +261,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             var dst = Operand(instr.op1);
             var ea = ((MemoryAccess)dst).EffectiveAddress;
             m.Call(ea, 2);
@@ -329,7 +329,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteDjnz()
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var reg = Operand(instr.op1);
             m.Assign(reg, m.ISub(reg, 1));
             m.Branch(m.Ne0(reg), ((AddressOperand)instr.op2).Address, rtlc);
@@ -349,7 +349,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteJcc(ConditionCode cc, FlagM grf)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var dst = ((AddressOperand)instr.op1).Address;
             var flags = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grf));
             m.Branch(m.Test(cc, flags), dst, rtlc);
@@ -357,7 +357,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteJmp()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Goto(Operand(instr.op1));
         }
 
@@ -436,13 +436,13 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteReti()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Return(2, 1);
         }
 
         private void RewriteRets()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 

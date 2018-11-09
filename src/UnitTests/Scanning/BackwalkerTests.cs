@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(CVZN, m.Cond(v40));
             m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
             m.Assign(a5, m.Mem32(m.IAdd(Address.Ptr32(0x0000C046), d0)));
-            var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
+            var xfer = new RtlCall(a5, 4, InstrClass.Transfer);
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Scanning
         {
             var r1 = m.Reg32("r1", 1);
             m.Assign(r1, m.Mem32(Constant.Word32(0x00123400)));
-            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00113300), m.IMul(r1, 8))), RtlClass.Transfer);
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00113300), m.IMul(r1, 8))), InstrClass.Transfer);
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
@@ -260,7 +260,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(CZ, m.Cond(m.ISub(al, 0x78)));
             m.BranchIf(m.Test(ConditionCode.UGT, CZ), "ldefault");
             m.Assign(ecx, m.Cast(PrimitiveType.Word32, al));
-            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), RtlClass.Transfer);
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), InstrClass.Transfer);
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Scanning
             m.Label("do_switch");
             m.Assign(eax, 0);
             var block = m.CurrentBlock;
-            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), RtlClass.Transfer);
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), InstrClass.Transfer);
 
             m.Label("default_case");
             m.Return();
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Scanning
                 m.IAdd(
                     m.Word32(0x001066A2),
                     m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
-                RtlClass.Transfer);
+                InstrClass.Transfer);
 
             m.Label("default_case");
             m.Return();

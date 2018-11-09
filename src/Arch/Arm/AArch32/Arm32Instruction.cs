@@ -50,14 +50,9 @@ namespace Reko.Arch.Arm.AArch32
             nInstr = null;
         }
 
-        public override InstructionClass InstructionClass 
+        public override InstrClass InstructionClass 
         {
-            get { return (InstructionClass)info.InstructionClass; }
-        }
-
-        public override bool IsValid
-        {
-            get { return this.InstructionClass != InstructionClass.Invalid; }
+            get { return (InstrClass)info.InstructionClass; }
         }
 
         public override int OpcodeAsInteger

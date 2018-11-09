@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -19,22 +19,22 @@
 #endregion
 
 using System;
+using Reko.Core;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Alpha
 {
     public class AlphaInstruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass {  get { return InstructionClass.Invalid; } }
-
         public Opcode Opcode;
+        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override bool IsValid {  get { return Opcode != Opcode.invalid;  } }
+        public override InstrClass InstructionClass => iclass;
 
-        public override int OpcodeAsInteger {  get { return (int)Opcode;  } }
+        public override int OpcodeAsInteger => (int)Opcode;
 
         public override MachineOperand GetOperand(int i)
         {

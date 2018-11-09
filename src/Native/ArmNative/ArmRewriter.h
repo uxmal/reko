@@ -177,7 +177,7 @@ protected:
 	const uint8_t * rawBytes;
 	size_t available;			// Available bytes left past rawBytes
 	uint64_t address;
-	RtlClass rtlClass;
+	InstrClass rtlClass;
 
 	static const BaseType register_types[];
 	static const int type_sizes[];
@@ -192,6 +192,6 @@ protected:
 	}
 #endif
 };
-inline RtlClass operator|(RtlClass a, RtlClass b) {
-	return static_cast<RtlClass>(static_cast<int>(a) | static_cast<int>(b));
+inline InstrClass operator|(InstrClass a, InstrClass b) {
+	return static_cast<InstrClass>(static_cast<int>(a) | static_cast<int>(b));
 }

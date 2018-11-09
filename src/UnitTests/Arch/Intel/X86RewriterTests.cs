@@ -122,10 +122,6 @@ namespace Reko.UnitTests.Arch.Intel
 
         private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
 
-        private X86Instruction Instr(Opcode op, PrimitiveType dSize, PrimitiveType aSize, params MachineOperand[] ops)
-        {
-            return new X86Instruction(op, dSize, aSize, ops);
-        }
 
         private class RewriterHost : IRewriterHost
         {
@@ -551,7 +547,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.JmpF(Address.SegPtr(0xF000, 0xFFF0));
             });
             AssertCode(
-                "0|L--|0C00:0000(5): 1 instructions",
+                "0|T--|0C00:0000(5): 1 instructions",
                 "1|L--|__bios_reboot()");
         }
 
@@ -2310,7 +2306,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run64bitTest(0x0F, 0x05);    // syscall
             AssertCode(
-                "0|L--|0000000140000000(2): 1 instructions",
+                "0|T--|0000000140000000(2): 1 instructions",
                 "1|L--|__syscall()");
             Run32bitTest(0x0F, 0x05);    // illegal
             AssertCode(

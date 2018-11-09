@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -43,7 +43,7 @@ namespace Reko.Arch.SuperH
         private IEnumerator<SuperHInstruction> dasm;
         private SuperHInstruction instr;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public SuperHRewriter(SuperHArchitecture arch, EndianImageReader rdr, SuperHState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -60,7 +60,7 @@ namespace Reko.Arch.SuperH
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
@@ -187,7 +187,7 @@ namespace Reko.Arch.SuperH
 
         private void Invalid()
         {
-            this.rtlc = RtlClass.Invalid;
+            this.rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -403,8 +403,8 @@ namespace Reko.Arch.SuperH
         private void RewriteBranch(bool takenOnTset, bool delaySlot)
         {
             rtlc = delaySlot
-                ? RtlClass.ConditionalTransfer | RtlClass.Delay
-                : RtlClass.ConditionalTransfer;
+                ? InstrClass.ConditionalTransfer | InstrClass.Delay
+                : InstrClass.ConditionalTransfer;
             Expression cond = binder.EnsureFlagGroup(Registers.T);
             var addr = ((AddressOperand)instr.op1).Address;
             if (!takenOnTset)
@@ -414,7 +414,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBraf()
         {
-            rtlc = RtlClass.Delay | RtlClass.Transfer;
+            rtlc = InstrClass.Delay | InstrClass.Transfer;
             var reg = binder.EnsureRegister(((RegisterOperand)instr.op1).Register);
             m.GotoD(m.IAdd(instr.Address + 4, reg));
         }
@@ -426,14 +426,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBsr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Call | InstrClass.Delay;
             var dst = SrcOp(instr.op1, null);
             m.CallD(dst, 0);
         }
 
         private void RewriteBsrf()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.op1, null);
             var reg = binder.EnsureRegister(((RegisterOperand)instr.op1).Register);
             m.CallD(m.IAdd(instr.Address + 4, src), 0);
@@ -441,7 +441,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteGoto()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var addr = ((AddressOperand)instr.op1).Address;
             m.GotoD(addr);
         }
@@ -457,6 +457,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteClr(RegisterStorage reg)
         {
+            rtlc = InstrClass.Linear;
             var dst = binder.EnsureRegister(reg);
             var z = Constant.Zero(dst.DataType);
             m.Assign(dst, z);
@@ -550,14 +551,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteJmp()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.op1);
             m.GotoD(((MemoryAccess)src).EffectiveAddress);
         }
 
         private void RewriteJsr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var dst = SrcOp(instr.op1, null);
             m.CallD(dst, 0);
         }
@@ -628,7 +629,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteRts()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             m.Return(0, 0);
         }
 

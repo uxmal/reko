@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86Instruction : MachineInstruction
 	{
-        private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
-        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
-        private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
-        private const InstructionClass Transfer = InstructionClass.Transfer;
+        private const InstrClass CondLinear = InstrClass.Conditional | InstrClass.Linear;
+        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
+        private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
+        private const InstrClass Transfer = InstrClass.Transfer;
 
-        private static Dictionary<Opcode, InstructionClass> classOf;
 
-		public Opcode code;		// Opcode of the instruction.
+		public Opcode code;		        // Opcode of the instruction.
+        public InstrClass iclass;       // Instruction class.
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
@@ -47,9 +47,10 @@ namespace Reko.Arch.X86
 		public MachineOperand op2;
 		public MachineOperand op3;
 
-        public X86Instruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+		public X86Instruction(Opcode code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
+            this.iclass = iclass;
 			this.dataWidth = dataWidth;
 			this.addrWidth = addrWidth;
 			if (ops.Length >= 1)
@@ -66,9 +67,9 @@ namespace Reko.Arch.X86
 			}
 		}
 
-        public override bool IsValid { get { return code != Opcode.illegal; } }
+        public override InstrClass InstructionClass => iclass;
 
-        public override int OpcodeAsInteger { get { return (int) code; } } 
+        public override int OpcodeAsInteger => (int) code;
 
 		private bool NeedsExplicitMemorySize()
 		{
@@ -209,16 +210,7 @@ namespace Reko.Arch.X86
             op.Write(writer, options);
         }
 
-        public override InstructionClass InstructionClass
-        {
-            get
-            {
-                InstructionClass cl;
-                if (!classOf.TryGetValue(code, out cl))
-                    cl = InstructionClass.Linear;
-                return cl;
-            }
-        }
+ 
 
         // Returns the condition codes that an instruction modifies.
 
@@ -397,59 +389,5 @@ namespace Reko.Arch.X86
 		{
 			return op is RegisterOperand || op is X86AddressOperand || op is FpuOperand;
 		}
-
-        static X86Instruction()
-        {
-            classOf = new Dictionary<Opcode, InstructionClass>
-            {
-                { Opcode.illegal,    InstructionClass.Invalid },
-
-                { Opcode.call,       LinkTransfer },
-                { Opcode.cmova,      CondLinear },
-                { Opcode.cmovbe,     CondLinear },
-                { Opcode.cmovc,      CondLinear },
-                { Opcode.cmovg,      CondLinear },
-                { Opcode.cmovge,     CondLinear },
-                { Opcode.cmovl,      CondLinear },
-                { Opcode.cmovle,     CondLinear },
-                { Opcode.cmovnc,     CondLinear },
-                { Opcode.cmovno,     CondLinear },
-                { Opcode.cmovns,     CondLinear },
-                { Opcode.cmovnz,     CondLinear },
-                { Opcode.cmovo,      CondLinear },
-                { Opcode.cmovpe,     CondLinear },
-                { Opcode.cmovpo,     CondLinear },
-                { Opcode.cmovs,      CondLinear },
-                { Opcode.cmovz,      CondLinear },
-                { Opcode.hlt,        Transfer },
-                { Opcode.@int,       Transfer },
-                { Opcode.iret,       Transfer },
-                { Opcode.ja,         CondTransfer },
-                { Opcode.jbe,        CondTransfer },
-                { Opcode.jc,         CondTransfer },
-                { Opcode.jcxz,       CondTransfer },
-                { Opcode.jg,         CondTransfer },
-                { Opcode.jge,        CondTransfer },
-                { Opcode.jl,         CondTransfer },
-                { Opcode.jle,        CondTransfer },
-                { Opcode.jmp,        Transfer },
-                { Opcode.jnc,        CondTransfer },
-                { Opcode.jno,        CondTransfer },
-                { Opcode.jns,        CondTransfer },
-                { Opcode.jnz,        CondTransfer },
-                { Opcode.jo,         CondTransfer },
-                { Opcode.jpe,        CondTransfer },
-                { Opcode.jpo,        CondTransfer },
-                { Opcode.js,         CondTransfer },
-                { Opcode.jz,         CondTransfer },
-                { Opcode.loop,       CondLinear },
-                { Opcode.loope,      CondLinear },
-                { Opcode.loopne,     CondLinear },
-                { Opcode.ret,        Transfer },
-                { Opcode.retf,       Transfer },
-                { Opcode.syscall,    Transfer },
-                { Opcode.sysret,     Transfer },
-            };
-        }
 	}
 }

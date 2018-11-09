@@ -263,7 +263,7 @@ namespace Reko.Scanning
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
             RtlInstructionCluster ricDelayed = null;
-            if ((b.Class & RtlClass.Delay) != 0)
+            if ((b.Class & InstrClass.Delay) != 0)
             {
                 rtlStream.MoveNext();
                 ricDelayed = rtlStream.Current;
@@ -291,13 +291,13 @@ namespace Reko.Scanning
                 ? blockCur
                 : scanner.FindContainingBlock(ric.Address);
 
-            if ((b.Class & RtlClass.Delay) != 0 &&
+            if ((b.Class & InstrClass.Delay) != 0 &&
                 ricDelayed.Instructions.Length > 0)
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.
 
-                if ((b.Class & RtlClass.Annul) != 0)
+                if ((b.Class & InstrClass.Annul) != 0)
                 {
                     EnsureEdge(proc, branchingBlock, blockElse);
                 }
@@ -406,7 +406,7 @@ namespace Reko.Scanning
         public bool VisitGoto(RtlGoto g)
         {
             var blockFrom = blockCur;
-            if ((g.Class & RtlClass.Delay) != 0)
+            if ((g.Class & InstrClass.Delay) != 0)
             {
                 // Get next instruction cluster, which should be the delay slot.
                 //$TODO: some architectures, curse it, have more than one delay slot...
@@ -530,7 +530,7 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
-            if ((call.Class & RtlClass.Delay) != 0)
+            if ((call.Class & InstrClass.Delay) != 0)
             {
                 // Get delay slot instruction cluster.
                 rtlStream.MoveNext();
@@ -799,7 +799,7 @@ namespace Reko.Scanning
 
         public bool VisitReturn(RtlReturn ret)
         {
-            if ((ret.Class & RtlClass.Delay) != 0)
+            if ((ret.Class & InstrClass.Delay) != 0)
             {
                 // Get next instruction cluster from the delay slot.
                 rtlStream.MoveNext();

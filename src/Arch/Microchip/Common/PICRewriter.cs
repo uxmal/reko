@@ -44,7 +44,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected IEnumerator<PICInstruction> dasm;
         protected PICInstruction instrCurr;
-        protected RtlClass rtlc;
+        protected InstrClass rtlc;
         protected List<RtlInstruction> rtlInstructions;
         protected RtlEmitter m;
         protected Identifier Wreg;    // cached WREG register identifier
@@ -77,7 +77,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             while (dasm.MoveNext())
             {
                 instrCurr = dasm.Current;
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
 
@@ -178,7 +178,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected void ArithCondSkip(Expression dst, Expression src, Expression cond, FSRIndexedMode indMode, Expression memPtr)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             switch (indMode)
             {
                 case FSRIndexedMode.None:
@@ -217,7 +217,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected void CondBranch(TestCondition test)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             if (instrCurr.op1 is PICOperandProgMemoryAddress brop)
             {
                 m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget.ToUInt32()), rtlc);
@@ -228,7 +228,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected void CondSkipIndirect(Expression cond, FSRIndexedMode indMode, Expression memPtr)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             switch (indMode)
             {
                 case FSRIndexedMode.None:

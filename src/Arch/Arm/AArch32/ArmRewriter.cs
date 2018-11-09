@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm.AArch32
         private IStorageBinder binder;
         private IEnumerator<AArch32Instruction> dasm;
         protected AArch32Instruction instr;
-        protected RtlClass rtlClass;
+        protected InstrClass rtlClass;
         protected RtlEmitter m;
         protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
 
@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
-                this.rtlClass = RtlClass.Linear;
+                this.rtlClass = InstrClass.Linear;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.
@@ -545,7 +545,7 @@ namespace Reko.Arch.Arm.AArch32
 
         void Invalid()
         {
-            this.rtlClass = RtlClass.Invalid;
+            this.rtlClass = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -612,14 +612,14 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (link)
             {
-                rtlClass = RtlClass.Transfer | RtlClass.Call;
+                rtlClass = InstrClass.Transfer | InstrClass.Call;
                 if (instr.condition == ArmCondition.AL)
                 {
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    rtlClass = RtlClass.ConditionalTransfer | RtlClass.Call;
+                    rtlClass = InstrClass.ConditionalTransfer | InstrClass.Call;
                     ConditionalSkip(true);
                     m.Call(dst, 0);
                 }
@@ -628,7 +628,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (instr.condition == ArmCondition.AL)
                 {
-                    rtlClass = RtlClass.Transfer;
+                    rtlClass = InstrClass.Transfer;
                     if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
                     {
                         //$TODO: cheating a little since
@@ -643,7 +643,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    rtlClass = RtlClass.ConditionalTransfer;
+                    rtlClass = InstrClass.ConditionalTransfer;
                     if (dstIsAddress)
                     {
                         m.Branch(TestCond(instr.condition), (Address) dst, rtlClass);
@@ -659,11 +659,11 @@ namespace Reko.Arch.Arm.AArch32
 
         void RewriteCbnz(Func<Expression, Expression> ctor)
         {
-            rtlClass = RtlClass.ConditionalTransfer;
+            rtlClass = InstrClass.ConditionalTransfer;
             var cond = Operand(Dst(), PrimitiveType.Word32, true);
             m.Branch(ctor(Operand(Dst())),
                     ((AddressOperand) Src1()).Address,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
         }
 
         // If a conditional ARM instruction is encountered, generate an IL
@@ -687,7 +687,7 @@ namespace Reko.Arch.Arm.AArch32
             m.BranchInMiddleOfInstruction(
                 TestCond(Invert(cc)),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         Expression EffectiveAddress(MemoryOperand mem)

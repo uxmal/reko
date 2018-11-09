@@ -32,16 +32,16 @@ namespace Reko.Arch.MicrochipPIC.Common
     public abstract class PICInstruction : MachineInstruction
     {
 
-        public const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
-        public const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
-        public const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
-        public const InstructionClass Transfer = InstructionClass.Transfer;
+        public const InstrClass CondLinear = InstrClass.Conditional | InstrClass.Linear;
+        public const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
+        public const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
+        public const InstrClass Transfer = InstrClass.Transfer;
 
         public readonly MachineOperand op1;
         public readonly MachineOperand op2;
         public readonly MachineOperand op3;
 
-        private static Dictionary<Opcode, InstructionClass> classOf = new Dictionary<Opcode, InstructionClass>()
+        private static Dictionary<Opcode, InstrClass> classOf = new Dictionary<Opcode, InstrClass>()
         {
                 { Opcode.ADDULNK,   Transfer },
                 { Opcode.BRA,       Transfer },
@@ -73,17 +73,17 @@ namespace Reko.Arch.MicrochipPIC.Common
                 { Opcode.CALL,      LinkTransfer },
                 { Opcode.CALLW,     LinkTransfer },
                 { Opcode.RCALL,     LinkTransfer },
-                { Opcode.CONFIG,    InstructionClass.None },
-                { Opcode.DA,        InstructionClass.None },
-                { Opcode.DB,        InstructionClass.None },
-                { Opcode.DE,        InstructionClass.None },
-                { Opcode.DT,        InstructionClass.None },
-                { Opcode.DTM,       InstructionClass.None },
-                { Opcode.DW,        InstructionClass.None },
-                { Opcode.__CONFIG,  InstructionClass.None },
-                { Opcode.__IDLOCS,  InstructionClass.None },
-                { Opcode.invalid,   InstructionClass.Invalid },
-                { Opcode.unaligned, InstructionClass.Invalid },
+                { Opcode.CONFIG,    InstrClass.None },
+                { Opcode.DA,        InstrClass.None },
+                { Opcode.DB,        InstrClass.None },
+                { Opcode.DE,        InstrClass.None },
+                { Opcode.DT,        InstrClass.None },
+                { Opcode.DTM,       InstrClass.None },
+                { Opcode.DW,        InstrClass.None },
+                { Opcode.__CONFIG,  InstrClass.None },
+                { Opcode.__IDLOCS,  InstrClass.None },
+                { Opcode.invalid,   InstrClass.Invalid },
+                { Opcode.unaligned, InstrClass.Invalid },
         };
 
 
@@ -125,14 +125,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The opcode as integer.
         /// </value>
         public override int OpcodeAsInteger => (int)Opcode;
-
-        /// <summary>
-        /// Returns true if the instruction is valid.
-        /// </summary>
-        /// <value>
-        /// True if this instruction is valid, false if not.
-        /// </value>
-        public override bool IsValid => (Opcode != Opcode.invalid && Opcode != Opcode.unaligned);
 
         /// <summary>
         /// Gets the number of operands of this instruction.
@@ -179,12 +171,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// The control-flow kind of the instruction.
         /// </summary>
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                if (!classOf.TryGetValue(Opcode, out InstructionClass il))
-                    il = InstructionClass.Linear;
+                if (!classOf.TryGetValue(Opcode, out InstrClass il))
+                    il = InstrClass.Linear;
                 return il;
             }
         }

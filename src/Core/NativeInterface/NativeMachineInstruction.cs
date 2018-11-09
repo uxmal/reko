@@ -9,15 +9,7 @@ namespace Reko.Core.NativeInterface
 {
     public class NativeMachineInstruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override bool IsValid
+        public override InstrClass InstructionClass
         {
             get
             {

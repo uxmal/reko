@@ -118,7 +118,7 @@ namespace Reko.Scanning
             // by the processor. Starting with known "roots", try to
             // remove as many invalid blocks as possible.
 
-            var hsc = new HeuristicProcedureScanner(
+            var hsc = new BlockConflictResolver(
                 program,
                 sr,
                 program.SegmentMap.IsValidAddress,
@@ -230,8 +230,7 @@ namespace Reko.Scanning
 
         private Tuple<MemoryArea, Address, Address> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
-            ImageSegment seg;
-            if (!this.program.SegmentMap.TryFindSegment(de.Key, out seg))
+            if (!this.program.SegmentMap.TryFindSegment(de.Key, out var seg))
                 return null;
             if (!seg.IsExecutable)
                 return null;

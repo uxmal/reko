@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -131,8 +131,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             RewriteCode("01");	// halt
             AssertCode(
-                "0|L--|0100(1): 1 instructions",
-                "1|L--|__halt()");
+                "0|H--|0100(1): 1 instructions",
+                "1|H--|__halt()");
         }
 
         [Test]

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -34,11 +35,10 @@ namespace Reko.Arch.Cil
             { OpCodes.Ldc_I4_0,  "ldc.i4.0"}
         };
 
-        public override bool IsValid { get { return false; } }
         public OpCode Opcode { get; set; }
         public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {

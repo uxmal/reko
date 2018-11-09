@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -40,7 +40,7 @@ namespace Reko.Arch.Alpha
         private IEnumerator<AlphaInstruction> dasm;
         private IRewriterHost host;
         private AlphaInstruction instr;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
 
         public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -59,7 +59,7 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = instr.iclass;
                 switch (instr.Opcode)
                 {
                 default:
@@ -259,13 +259,14 @@ namespace Reko.Arch.Alpha
         private void Invalid()
         {
             m.Invalid();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
         }
 
         private Expression Rewrite(MachineOperand op, bool highWord = false)
         {
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            switch (op)
+            {
+            case RegisterOperand rop:
             {
                 if (rop.Register.Number == 31)
                     return Constant.Word64(0);
@@ -274,19 +275,11 @@ namespace Reko.Arch.Alpha
                 else
                     return this.binder.EnsureRegister(rop.Register);
             }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 return imm.Value;
-            }
-            var addr = op as AddressOperand;
-            if (addr != null)
-            {
+            case AddressOperand addr:
                 return addr.Address;
-            }
-            var mop = op as MemoryOperand;
-            if (mop != null)
-            {
+            case MemoryOperand mop:
                 int offset = highWord ? (int)mop.Offset << 16 : mop.Offset;
                 Expression ea;
                 if (mop.Base.Number == ZeroRegister)
