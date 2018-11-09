@@ -54,6 +54,7 @@
             this.performanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rewriterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.suffixArrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decoderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -233,14 +234,14 @@
             // emulatorToolStripMenuItem
             // 
             this.emulatorToolStripMenuItem.Name = "emulatorToolStripMenuItem";
-            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.emulatorToolStripMenuItem.Text = "X86 &Emulator";
             this.emulatorToolStripMenuItem.Click += new System.EventHandler(this.emulatorToolStripMenuItem_Click);
             // 
             // ollyScriptToolStripMenuItem
             // 
             this.ollyScriptToolStripMenuItem.Name = "ollyScriptToolStripMenuItem";
-            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ollyScriptToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
@@ -248,7 +249,8 @@
             // 
             this.performanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.rewriterToolStripMenuItem,
-            this.suffixArrayToolStripMenuItem});
+            this.suffixArrayToolStripMenuItem,
+            this.decoderToolStripMenuItem});
             this.performanceToolStripMenuItem.Name = "performanceToolStripMenuItem";
             this.performanceToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
             this.performanceToolStripMenuItem.Text = "&Performance";
@@ -266,6 +268,13 @@
             this.suffixArrayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.suffixArrayToolStripMenuItem.Text = "&Suffix Array...";
             this.suffixArrayToolStripMenuItem.Click += new System.EventHandler(this.suffixArrayToolStripMenuItem_Click);
+            // 
+            // decoderToolStripMenuItem
+            // 
+            this.decoderToolStripMenuItem.Name = "decoderToolStripMenuItem";
+            this.decoderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.decoderToolStripMenuItem.Text = "&Decoder...";
+            this.decoderToolStripMenuItem.Click += new System.EventHandler(this.decoderToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -311,6 +320,7 @@
         private System.Windows.Forms.ToolStripMenuItem performanceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rewriterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem suffixArrayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decoderToolStripMenuItem;
     }
 }
 

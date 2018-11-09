@@ -86,6 +86,12 @@
     <Compile Include="ByteMapDialog.Designer.cs">
       <DependentUpon>ByteMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DecoderPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DecoderPerformanceDialog.Designer.cs">
+      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ActiveControlForm.resx">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DecoderPerformanceDialog.resx">
+      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DisassemblyControlForm.resx">
       <DependentUpon>DisassemblyControlForm.cs</DependentUpon>

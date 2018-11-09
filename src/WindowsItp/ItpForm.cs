@@ -305,5 +305,13 @@ namespace Reko.WindowsItp
                 dlg.ShowDialog(this);
             }
         }
+
+        private void decoderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new DecoderPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }
