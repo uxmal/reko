@@ -443,9 +443,8 @@ namespace Reko.Core
 
         public uint GetDataSize(IProcessorArchitecture arch, Address addr, DataType dt)
         {
-            var strDt = dt as StringType;
-            if (strDt == null)
-                return (uint)dt.Size;
+            if (!(dt is StringType strDt))
+                return (uint) dt.Size;
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.

@@ -511,11 +511,11 @@ namespace Reko.ImageLoaders.Elf
                         symbols[addrGot] = gotSym;
                         Debug.Print("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
                             gotStart, addrGot-gotStart, gotSym, symbol);
-                            program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
-                        }
+                        program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
                     }
                 }
             }
+        }
 
         public ImageSymbol CreateGotSymbol(Address addrGot, string name)
         {
@@ -722,7 +722,7 @@ namespace Reko.ImageLoaders.Elf
             sb.Append((flags & 2) != 0 ? 'w' : '-');
             sb.Append((flags & 1) != 0 ? 'x' : '-');
             return sb.ToString();
-    }
+        }
     }
 
     public class ElfLoader64 : ElfLoader
@@ -882,7 +882,7 @@ namespace Reko.ImageLoaders.Elf
         public override List<string> GetDependencyList(byte[] rawImage)
         {
             return Dependencies;
-            }
+        }
 
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
         {
@@ -1152,13 +1152,13 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(
                     (int)i,
                     new ElfSymbol
-                {
-                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                    Type = (ElfSymbolType)(sym.st_info & 0xF),
-                    SectionIndex = sym.st_shndx,
-                    Value = sym.st_value,
-                    Size = sym.st_size,
-                });
+                    {
+                        Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                        Type = (ElfSymbolType)(sym.st_info & 0xF),
+                        SectionIndex = sym.st_shndx,
+                        Value = sym.st_value,
+                        Size = sym.st_size,
+                    });
             }
             return symbols;
         }
