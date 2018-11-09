@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -43,8 +43,9 @@ namespace Reko.ImageLoaders.MzExe.Pe
         {
             ushort fixup = rdr.ReadLeUInt16();
             Address offset = baseOfImage + page + (fixup & 0x0FFFu);
-            var imgR = program.CreateImageReader(offset);
-            var imgW = program.CreateImageWriter(offset);
+            var arch = program.Architecture;
+            var imgR = program.CreateImageReader(arch, offset);
+            var imgW = program.CreateImageWriter(arch, offset);
             switch (fixup >> 12)
             {
             case RelocationAbsolute:

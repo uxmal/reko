@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -235,7 +235,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 program.User.Procedures.Remove(address);
                 program.ModifyUserGlobal(
-                    address, parsedGlobal.DataType, parsedGlobal.Name
+                    program.Architecture,
+                    address,
+                    parsedGlobal.DataType, 
+                    parsedGlobal.Name
                 );
             }
 

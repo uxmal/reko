@@ -381,7 +381,7 @@ namespace Reko.Scanning
             {
                 var addrEnd = block.GetEndAddress();
                 var sb = new StringBuilder();
-                var rdr = program.CreateImageReader(block.Address);
+                var rdr = program.CreateImageReader(program.Architecture, block.Address);
                 sb.AppendFormat("{0} - {1} ", block.Address, addrEnd);
                 while (rdr.Address < addrEnd)
                 {

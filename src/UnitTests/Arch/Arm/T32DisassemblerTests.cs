@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_bl()
         {
             var instr = Disassemble16(0xF000, 0xFA06);
-            Assert.AreEqual("bl\t$0010040C", instr.ToString());
+            Assert.AreEqual("bl\t$00100410", instr.ToString());
         }
 
         [Test]
@@ -294,13 +294,13 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_b_T2_variant()
         {
             Given_Instructions(0xE005);
-            Expect_Code("b\t$0010000A");
+            Expect_Code("b\t$0010000E");
         }
 
         [Test]
         public void ThumbDis_b_T2_variant_backward()
         {
-            Given_Instructions(0xE7FF);
+            Given_Instructions(0xE7FD);
             Expect_Code("b\t$000FFFFE");
         }
 
@@ -315,13 +315,13 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_b_T4_variant()
         {
             Given_Instructions(0xF008, 0xBA62);
-            Expect_Code("b\t$00D084C4");
+            Expect_Code("b\t$001084C8");
         }
 
         [Test]
         public void ThumbDis_b_T4_variant_negative()
         {
-            Given_Instructions(0xF7FF, 0xBFFF);
+            Given_Instructions(0xF7FF, 0xBFFD);
             Expect_Code("b\t$000FFFFE");
         }
 
@@ -453,10 +453,8 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("srsdb\tsp,#9");
         }
 
-        // ------------------------------------------
-
         [Test]
-        public void ThumbDis_FF7FA52D()
+        public void ThumbDis_vrshl()
         {
             Given_Instructions(0xFF7F, 0xA52D);
             Expect_Code("vrshl\td26,d15,d29");
@@ -514,7 +512,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_FF1F2E45()
+        public void ThumbDis_vcge()
         {
             Given_Instructions(0xFF1F, 0x2E45);
             Expect_Code("vcge.f16\tq1,q7,q2");
@@ -543,10 +541,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_F2628DDD()
+        public void ThumbDis_b_T3_()
         {
             Given_Instructions(0xF262, 0x8DDD);
-            Expect_Code("b\t$001A2BBA");
+            Expect_Code("b\t$001A2BBE");
+        }
+
+        [Test]
+        public void ThumbDis_b_T3()
+        {
+            Given_Instructions(0xF008, 0xBA62);
+            Expect_Code("b\t$001084C8");
         }
 
         [Test]
@@ -573,17 +578,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_E8CBA8D7()
+        public void ThumbDis_stlexh()
         {
             Given_Instructions(0xE8CB, 0xA8D7);
             Expect_Code("stlexh\tr7,r10,[fp]");
         }
 
         [Test]
-        public void ThumbDis_F7688AE5()
+        public void ThumbDis_b()
         {
             Given_Instructions(0xF768, 0x8AE5);
-            Expect_Code("b\t$000A85CA");
+            Expect_Code("b\t$000A85CE");
+        }
+
+        [Test]
+        public void ThumbDis_bhs_T1()
+        {
+            Given_Instructions(0xD20A);
+            Expect_Code("bhs\t$00100018");
         }
 
         [Test]
@@ -594,7 +606,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_EF677565()
+        public void ThumbDis_vrshl_i32()
         {
             Given_Instructions(0xEF67, 0x7565);
             Expect_Code("vrshl.i32\tq11,q3,q10");
@@ -608,7 +620,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_F93FAD4D()
+        public void ThumbDis_ldrsh_pc()
         {
             Given_Instructions(0xF93F, 0xAD4D);
             Expect_Code("ldrsh\tr10,[pc,#&DD]");
@@ -667,10 +679,143 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_EF80E7FE()
+        public void ThumbDis_vqshl()
         {
             Given_Instructions(0xEF80, 0xE7FE);
             Expect_Code("vqshl.i64\tq7,q15,#&40");
         }
+
+        [Test]
+        public void ThumbDis_bic_w()
+        {
+            Given_Instructions(0xEA23, 0x0101);
+            Expect_Code("bic.w\tr1,r3,r1");
+        }
+
+        [Test]
+        public void ThumbDis_add_w()
+        {
+            Given_Instructions(0xEB05, 0x1588);
+            Expect_Code("add.w\tr5,r5,r8,lsl #6");
+        }
+
+        [Test]
+        public void ThumbDis_and_w()
+        {
+            Given_Instructions(0xEA00, 0x2013);
+            Expect_Code("and.w\tr0,r0,r3,lsr #8");
+        }
+
+        [Test]
+        public void ThumbDis_ldrb_w()
+        {
+            Given_Instructions(0xF815, 0x0C01);
+            Expect_Code("ldrb.w\tr0,[r5,-#&1]");
+        }
+
+        [Test]
+        public void ThumbDis_str_w()
+        {
+            Given_Instructions(0xF840, 0x2021);
+            Expect_Code("str.w\tr2,[r0,r1,lsl #2]");
+        }
+
+        [Test]
+        public void ThumbDis_str_w_noshift()
+        {
+            Given_Instructions(0xF840, 0x2001);
+            Expect_Code("str.w\tr2,[r0,r1]");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_w()
+        {
+            Given_Instructions(0xF850, 0x0021);
+            Expect_Code("ldr.w\tr0,[r0,r1,lsl #2]");
+        }
+
+        [Test]
+        public void ThumbDis_bics_w()
+        {
+            Given_Instructions(0xEA36, 0x0304);
+            Expect_Code("bics.w\tr3,r6,r4");
+        }
+
+        [Test]
+        public void ThumbDis_mov_w()
+        {
+            Given_Instructions(0xEA4F, 0x7AD2);
+            Expect_Code("mov.w\tr10,r2,lsr #&1F");
+        }
+
+        [Test]
+        public void ThumbDis_nop_w()
+        {
+            Given_Instructions(0xF3AF, 0x8000);
+            Expect_Code("nop.w");
+        }
+
+        [Test]
+        public void ThumbDis_push_1()
+        {
+            Given_Instructions(0xB570);
+            Expect_Code("push\t{r4-r6,lr}");
+        }
+
+        [Test]
+        public void ThumbDis_pop_1()
+        {
+            Given_Instructions(0xBD08);
+            Expect_Code("pop\t{r3,pc}");
+        }
+
+        [Test]
+        public void ThumbDis_nop()
+        {
+            Given_Instructions(0xBF00);
+            Expect_Code("nop");
+        }
+
+        [Test]
+        public void ThumbDis_bics_short()
+        {
+            Given_Instructions(0x439E);
+            Expect_Code("bics\tr6,r3");
+        }
+
+        [Test]
+        public void ThumbDis_mvns()
+        {
+            Given_Instructions(0x43DA);
+            Expect_Code("mvns\tr2,r3");
+        }
+
+        [Test]
+        public void ThumbDis_cbnz()
+        {
+            Given_Instructions(0xB92D);
+            Expect_Code("cbnz\tr5,$0010000E");
+        }
+
+        [Test]
+        public void ThumbDis_bne_backward()
+        {
+            Given_Instructions(0xD1FE);
+            Expect_Code("bne\t$00100000");
+        }
+
+
+
+        //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
+        //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
+        //.data:0000001e ED9C E000  ldc	0, cr14, [r12]
+        //.data:00000022 F0F3 4770  ; <UNDEFINED> instruction: 0xf0f34770
+        //.data:00000026 F956 4C0F  ldr??.w r4, [r6, #-15]
+        //.data:0000002a FDB2 2501  ldc2 5, cr2, [r2, #4]!
+        //.data:0000002e FDE1 4631  stc2l	6, cr4, [r1, #196]!	; 0xc4
+        //.data:00000032 FE04 E7E6  cdp2	7, 0, cr14, cr4, cr6, {7}
+        //.data:00000036 FE2D 4604  cdp2	6, 2, cr4, cr13, cr4, {0}
+        //.data:0000003a FE3B 2501  cdp2	5, 3, cr2, cr11, cr1, {0}
+        //.data:0000003e FE6F E7FC  mcr2	7, 3, lr, cr15, cr12, {7}
     }
 }

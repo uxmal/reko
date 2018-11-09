@@ -322,7 +322,7 @@ namespace Reko.Environments.MacOS.Classic
                         else
                         {
                             codeSegs.Add(rsrc.ResourceID, segment);
-                            var macsBug = new MacsBugSymbolScanner(segment.MemoryArea);
+                            var macsBug = new MacsBugSymbolScanner(arch, segment.MemoryArea);
                             var mbSymbols = macsBug.ScanForSymbols();
                             foreach (var symbol in mbSymbols)
                             {
@@ -519,7 +519,7 @@ namespace Reko.Environments.MacOS.Classic
                 var addrDst = targetSeg.Address + entry.RoutineOffsetFromSegmentStart;
                 if (!symbols.ContainsKey(addrDst))
                 {
-                    symbols.Add(addrDst, new ImageSymbol(addrDst) { Type = SymbolType.Procedure });
+                    symbols.Add(addrDst, ImageSymbol.Procedure(arch, addrDst));
                 }
                 w.WriteBeUInt16(0x4EF9);            // jmp (xxxxxxxxx).L
                 w.WriteBeUInt32(addrDst.ToUInt32());

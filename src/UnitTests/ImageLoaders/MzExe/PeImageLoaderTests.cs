@@ -471,7 +471,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             {
                 sb.AppendFormat("{0:X} {1:X4} {2} {3}",
                     item.Address,
-                    item.Size,
+                    item.DataType.Size,
                     item.Type,
                     item.DataType);
                 sb.AppendLine();

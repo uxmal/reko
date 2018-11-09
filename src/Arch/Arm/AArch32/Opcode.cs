@@ -1,4 +1,4 @@
-﻿namespace Reko.Arch.Arm.AArch32
+namespace Reko.Arch.Arm.AArch32
 {
     public enum Opcode
     {
@@ -79,9 +79,7 @@
         qsub,
         qsub16,
         pop,
-        pop_w,
         push,
-        push_w,
         rev,
         rsb,
         rsc,

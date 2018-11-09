@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -72,6 +72,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         {
             var program = new Program
             {
+                Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch),
             };
             

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Arch.Intel
             return null;
         }
 
-        public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
+        public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrTunk, Address addrInstruction)
 		{
 			return null;
 		}
@@ -255,7 +255,7 @@ namespace Reko.UnitTests.Arch.Intel
 
 		#endregion
 
-        public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+        public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {
             throw new NotImplementedException();
         }

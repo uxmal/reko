@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch
                 return null;
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
+            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
             }
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch
                     args);
             }
 
-            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
                 throw new NotImplementedException();
             }

@@ -392,6 +392,7 @@ namespace Reko
             var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;
             return scanner.ScanProcedure(
+                program.Architecture,       //$TODO: make this user-selectable.
                 paddr.Address,
                 procName, 
                 program.Architecture.CreateProcessorState());

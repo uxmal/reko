@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -328,7 +328,7 @@ namespace Reko.Typing
 
         private Expression ReadNullTerminatedString(Constant c, DataType dt)
         {
-            var rdr = program.CreateImageReader(platform.MakeAddressFromConstant(c));
+            var rdr = program.CreateImageReader(program.Architecture, platform.MakeAddressFromConstant(c));
             return rdr.ReadCString(dt, program.TextEncoding);
         }
 

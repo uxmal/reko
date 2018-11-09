@@ -27,15 +27,13 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    public class AArch32Instruction : MachineInstruction
+    public abstract class AArch32Instruction : MachineInstruction
     {
         #region Special cases
 
         // Specially rendered opcodes
         private static readonly Dictionary<Opcode, string> opcodes = new Dictionary<Opcode, string>
         {
-            { Opcode.pop_w, "pop.w" },
-            { Opcode.push_w, "push.w" }
         };
 
         // Block data transfer opcodes that affect the rendering of the first operand.
@@ -91,12 +89,6 @@ namespace Reko.Arch.Arm.AArch32
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand[] ops { get; set; }
-        /*
-        public MachineOperand op1 => ops[0];
-        public MachineOperand op2 => ops[1];
-        public MachineOperand op3 => ops[2];
-        public MachineOperand op4 => ops[3];
-        */
 
         public override InstrClass InstructionClass
         {
@@ -110,10 +102,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        public override int OpcodeAsInteger
-        {
-            get { return (int) this.opcode; }
-        }
+        public override int OpcodeAsInteger => (int) opcode;
+
+        /// <summary>
+        /// PC-relative addressing has an extra offset.This varies
+        /// between the T32 and the A32 instruction sets.
+        /// </summary>
+        public abstract Address ComputePcRelativeAddress(MemoryOperand mem);
+
 
         public override MachineOperand GetOperand(int i)
         {
@@ -156,12 +152,17 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (ShiftType != Opcode.Invalid)
             {
-                writer.WriteChar(',');
-                writer.WriteOpcode(ShiftType.ToString());
-                if (ShiftType != Opcode.rrx)
+                if (ShiftType != Opcode.lsl ||
+                    !(ShiftValue is ImmediateOperand imm) ||
+                    !imm.Value.IsZero)
                 {
-                    writer.WriteChar(' ');
-                    RenderOperand(ShiftValue, writer, options);
+                    writer.WriteChar(',');
+                    writer.WriteOpcode(ShiftType.ToString());
+                    if (ShiftType != Opcode.rrx)
+                    {
+                        writer.WriteChar(' ');
+                        RenderOperand(ShiftValue, writer, options);
+                    }
                 }
             }
             if (UserStmLdm)
@@ -227,6 +228,10 @@ namespace Reko.Arch.Arm.AArch32
                         s = s.Substring(0, 3) + "." + s.Substring(3);
                     }
                     sb.AppendFormat(".{0}", s);
+                }
+                else if (Wide)
+                {
+                    sb.Append(".w");
                 }
             }
             writer.WriteOpcode(sb.ToString());
@@ -338,12 +343,9 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RenderPcRelativeAddressAnnotation(MemoryOperand mem, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            int offset = 8;     // PC-relative addressing has a hidden 8-byte offset.
-            if (mem.Offset != null)
-                offset += mem.Offset.ToInt32();
-            var addr = this.Address + offset;
+            var addr = ComputePcRelativeAddress(mem);
             if (mem.Index == null &&
-                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
             {
                 writer.WriteChar('[');
                 writer.WriteAddress(addr.ToString(), addr);
@@ -369,11 +371,36 @@ namespace Reko.Arch.Arm.AArch32
         public bool Writeback;
         public bool SetFlags;
         public bool UserStmLdm;
+        public bool Wide;               // (Thumb only) wide form of instruction.
         public Opcode ShiftType;
         public MachineOperand ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;         // only valid if vector_data is valid
         public int? vector_index;
         public byte itmask;
+    }
+
+    public class A32Instruction : AArch32Instruction
+    {
+        public override Address ComputePcRelativeAddress(MemoryOperand mem)
+        {
+            int offset = 8;     // PC-relative addressing has a hidden 8-byte offset.
+            if (mem.Offset != null)
+                offset += mem.Offset.ToInt32();
+            var addr = this.Address + offset;
+            return addr;
+        }
+    }
+
+    public class T32Instruction : AArch32Instruction
+    {
+        public override Address ComputePcRelativeAddress(MemoryOperand mem)
+        {
+            int offset = 2;
+            if (mem.Offset != null)
+                offset += mem.Offset.ToInt32();
+            var addr = (this.Address + offset).Align(4);
+            return addr;
+        }
     }
 }

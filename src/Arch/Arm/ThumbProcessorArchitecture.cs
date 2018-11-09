@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -37,7 +37,9 @@ namespace Reko.Arch.Arm
 {
     public class ThumbArchitecture : ProcessorArchitecture
     {
+#if NATIVE
         private INativeArchitecture native;
+#endif
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
@@ -62,6 +64,7 @@ namespace Reko.Arch.Arm
             StackRegister = regsByName["sp"];
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             int cRegs;
@@ -89,6 +92,7 @@ namespace Reko.Arch.Arm
                 --cRegs;
             }
         }
+#endif
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -183,8 +187,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            RegisterStorage reg;
-            if (regsByNumber.TryGetValue(i, out reg))
+            if (regsByNumber.TryGetValue(i, out RegisterStorage reg))
                 return reg;
             else
                 return null;
@@ -192,8 +195,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (regsByName.TryGetValue(name, out reg))
+            if (regsByName.TryGetValue(name, out RegisterStorage reg))
                 return reg;
             else
                 return null;
@@ -216,14 +218,13 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(regsByName["CPSRQQQQ"], grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.cpsr, grf, GrfToString(grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }

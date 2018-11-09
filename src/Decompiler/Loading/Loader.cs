@@ -83,7 +83,7 @@ namespace Reko.Loading
                 program.EntryPoints[ep.Address] = ep;
             }
             program.EntryPoints[asm.StartAddress] =
-                new ImageSymbol(asm.StartAddress);
+                ImageSymbol.Procedure(program.Architecture, asm.StartAddress);
             CopyImportReferences(asm.ImportReferences, program);
             return program;
         }
@@ -180,7 +180,7 @@ namespace Reko.Loading
             var program = imgLoader.Load(addrLoad, arch, platform);
             if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
             {
-                program.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
+                program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
             }
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
@@ -243,10 +243,7 @@ namespace Reko.Loading
                 {
                     addrEp = baseAddr;
                 }
-                imgLoader.EntryPoints.Add(new ImageSymbol(addrEp)
-                {
-                    Type = SymbolType.Procedure
-                });
+                imgLoader.EntryPoints.Add(ImageSymbol.Procedure(arch, addrEp));
             }
             return imgLoader;
         }

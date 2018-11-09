@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui
 {
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Gui
             mr = new MockRepository();
             sc = new ServiceContainer();
             procs = new List<ProcedureSearchHit>();
-            program = new Program { Name = "Proggie" };
+            program = new Program { Name = "Proggie", Architecture = new FakeArchitecture() };
         }
 
         [Test]

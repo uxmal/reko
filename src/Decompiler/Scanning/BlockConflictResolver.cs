@@ -150,7 +150,7 @@ namespace Reko.Scanning
             var trie = new Trie<MachineInstruction>(cmp);
             foreach (var item in valid.OrderBy(i => i.Address))
             {
-                var dasm = program.CreateDisassembler(item.Address);
+                var dasm = program.CreateDisassembler(program.Architecture, item.Address);
                 var instrs = dasm.Take(5);
                 trie.Add(instrs.ToArray());
             }
@@ -395,10 +395,11 @@ namespace Reko.Scanning
 
         private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
         {
-            var rw = program.Architecture.CreateRewriter(
-                program.CreateImageReader(addr),
-                program.Architecture.CreateProcessorState(),
-                program.Architecture.CreateFrame(),
+            var arch = program.Architecture;
+            var rw = arch.CreateRewriter(
+                program.CreateImageReader(arch, addr),
+                arch.CreateProcessorState(),
+                arch.CreateFrame(),
                 host);
             return new RobustRewriter(rw, program.Architecture.InstructionBitSize / 8);
         }

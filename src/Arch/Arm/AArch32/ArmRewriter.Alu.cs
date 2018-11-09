@@ -173,12 +173,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteBic()
+        private Expression Bic(Expression a, Expression b)
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var opSrc1 = this.Operand(Src1());
-            var opSrc2 = this.Operand(Src2());
-            m.Assign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
+            return m.And(a, m.Comp(b));
         }
 
         private void RewriteClz()

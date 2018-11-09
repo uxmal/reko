@@ -53,9 +53,9 @@ namespace Reko.Environments.RT11
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var header = CreateSavHeader();
+            var header = CreateSavHeader(program.Architecture);
             var uaddrEntry = MemoryArea.ReadLeUInt16(RawImage, 0x20);
-            var entry = new ImageSymbol(Address.Ptr16(uaddrEntry));
+            var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr16(uaddrEntry));
             return new RelocationResults(
                 new List<ImageSymbol> { entry },
                 new SortedList<Address, ImageSymbol>
@@ -69,7 +69,7 @@ namespace Reko.Environments.RT11
         // Order Number AA–PD6PA–TC
         // August 1991
         // Digital Equipment Corporation
-        private ImageSymbol CreateSavHeader()
+        private ImageSymbol CreateSavHeader(IProcessorArchitecture arch)
         {
             StructureField fld(int offset, DataType dt)
             {
@@ -109,11 +109,7 @@ namespace Reko.Environments.RT11
                 }
             };
             var addr = Address.Ptr16(0);
-            var sym = new ImageSymbol(addr, null, s)
-            {
-                Type = SymbolType.Data,
-                Size = (uint)s.Size,
-            };
+            var sym = ImageSymbol.DataObject(arch, addr, null, s);
             return sym;
         }
     }

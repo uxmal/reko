@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -106,8 +106,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 addr = Address.Ptr64(rela.Offset);
                 P = 0;
             }
-            var relR = program.CreateImageReader(addr);
-            var relW = program.CreateImageWriter(addr);
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
             ulong PP = P;
             switch (rt)
             {

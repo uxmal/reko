@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -79,21 +79,21 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (program.Architecture != null)
             {
                 var addr = Align(position);
-                ImageSegment seg;
-                if (program.SegmentMap.TryFindSegment(addr, out seg) &&
+                if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg) &&
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
                     var options = ShowPcRelative
                         ? MachineInstructionWriterOptions.None
                         : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
-                    var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
+                    var arch = program.Architecture;    //$TODO: get this from imageitem.
+                    var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
                         var instr = dasm.Current;
                         lines.Add(
                             RenderAsmLine(
-                                instr.Address, program, instr, options));
+                                instr.Address, program, arch, instr, options));
                         --count;
                         position += instr.Length;
                     }
@@ -105,14 +105,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public static LineSpan RenderAsmLine(
             object position,
             Program program,
+            IProcessorArchitecture arch,
             MachineInstruction instr,
             MachineInstructionWriterOptions options)
         {
             var line = new List<TextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-            line.Add(new InstructionTextSpan(instr, BuildBytes(program, instr), "dasm-bytes"));
-            var dfmt = new DisassemblyFormatter(program, instr, line);
+            line.Add(new InstructionTextSpan(instr, BuildBytes(program, arch, instr), "dasm-bytes"));
+            var dfmt = new DisassemblyFormatter(program, arch, instr, line);
             dfmt.Address = instr.Address;
             instr.Render(dfmt, options);
             dfmt.NewLine();
@@ -127,17 +128,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return addr - (int)rem;
         }
 
-        private static string BuildBytes(Program program, MachineInstruction instr)
+        private static string BuildBytes(Program program, IProcessorArchitecture arch, MachineInstruction instr)
         {
             //$REVIEW: these computations will be done a lot, but we need some place to store 
             // them.
-            var bitSize = program.Architecture.InstructionBitSize;
+            var bitSize = arch.InstructionBitSize;
             var byteSize = (bitSize + 7) / 8;
             var instrByteFormat = $"{{0:X{byteSize * 2}}} ";      // 2 characters for each byte
             var instrByteSize = PrimitiveType.CreateWord(bitSize);
 
             var sb = new StringBuilder();
-            var rdr = program.CreateImageReader(instr.Address);
+            var rdr = program.CreateImageReader(arch, instr.Address);
             for (int i = 0; i < instr.Length; i += byteSize)
             {
                 var v = rdr.Read(instrByteSize);

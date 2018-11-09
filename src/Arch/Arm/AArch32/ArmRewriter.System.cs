@@ -29,8 +29,14 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteBkpt()
         {
-            var n = Operand(instr.ops[0]);
-            m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, n));
+            if (instr.ops.Length > 0)
+            {
+                m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance, Operand(instr.ops[0])));
+            }
+            else
+            {
+                m.SideEffect(host.PseudoProcedure("__breakpoint", VoidType.Instance));
+            }
         }
 
         private void RewriteCdp(string name)
@@ -58,6 +64,13 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
 
+        private void RewriteDsb()
+        {
+            var memBarrier = (BarrierOperand) instr.ops[0];
+            var name = $"__dsb_{memBarrier.Option.ToString().ToLower()}";
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
+        }
+
         private void RewriteEret()
         {
             rtlClass = InstrClass.Transfer;
@@ -68,6 +81,13 @@ namespace Reko.Arch.Arm.AArch32
         {
             var n = Operand(instr.ops[0]);
             m.SideEffect(host.PseudoProcedure("__hypervisor", VoidType.Instance, n));
+        }
+
+        private void RewriteIsb()
+        {
+            var memBarrier = (BarrierOperand) instr.ops[0];
+            var name = $"__isb_{memBarrier.Option.ToString().ToLower()}";
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance));
         }
 
         private void RewriteLdc(string fnName)
@@ -172,6 +192,12 @@ namespace Reko.Arch.Arm.AArch32
             var trapNo = ((ImmediateOperand)instr.ops[0]).Value;
             var ppp = host.PseudoProcedure("__syscall", PrimitiveType.Word32, trapNo);
             m.SideEffect(ppp);
+        }
+
+        private void RewriteWfi()
+        {
+            var intrinsic = host.PseudoProcedure("__wait_for_interrupt", VoidType.Instance);
+            m.SideEffect(intrinsic);
         }
 
         /*

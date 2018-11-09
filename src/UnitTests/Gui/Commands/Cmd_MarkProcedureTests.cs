@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Gui.Commands
         public void Cmasp_Do()
         {
             var addr = Address.SegPtr(0x0C20, 0);
-            var proc = new Procedure(program.Architecture, "foo", addr, null);
+            var proc = new Procedure(new FakeArchitecture(), "foo", addr, null);
             var progaddr = new ProgramAddress(program, addr);
             var dc = mr.Stub<IDecompiler>();
             var dcSvc = mr.Stub<IDecompilerService>();

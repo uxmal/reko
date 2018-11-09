@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,12 +213,12 @@ namespace Reko.UnitTests.Analysis
                 new ImportResolver(project, program, eventListener),
                 sc);
 
-            scan.EnqueueImageSymbol(new ImageSymbol(asm.StartAddress), true);
+            scan.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, asm.StartAddress), true);
             foreach (var f in project.Programs)
             {
                 foreach (var sp in f.User.Procedures.Values)
                 {
-                    scan.EnqueueUserProcedure(sp);
+                    scan.EnqueueUserProcedure(program.Architecture, sp);
                 }
             }
             scan.ScanImage();

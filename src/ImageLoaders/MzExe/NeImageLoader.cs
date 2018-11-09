@@ -410,7 +410,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames(this.lfaNew + this.offResidentNameTable);
             var entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, entryNames);
-            entryPoints.Add(new ImageSymbol(this.addrEntry));
+            entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             return new RelocationResults(
                 entryPoints,
                 imageSymbols);
@@ -474,7 +474,7 @@ namespace Reko.ImageLoaders.MzExe
                     var state = arch.CreateProcessorState();
                     var seg = segments[entry.iSeg-1];
                     var addr = seg.Address + entry.offset;
-                    ImageSymbol ep = new ImageSymbol(addr);
+                    ImageSymbol ep = ImageSymbol.Procedure(arch, addr);
                     if (names.TryGetValue(bundleOrdinal + i, out string name))
                     {
                         ep.Name = name;

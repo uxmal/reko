@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Scanning
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
             }
             var scanner = new Scanner(program, null, sc);
-            scanner.EnqueueImageSymbol(new ImageSymbol(program.ImageMap.BaseAddress), true);
+            scanner.EnqueueImageSymbol(ImageSymbol.Procedure(arch, program.ImageMap.BaseAddress), true);
             scanner.ScanImage();
             using (var fut = new FileUnitTester(outputFile))
             {

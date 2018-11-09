@@ -112,10 +112,7 @@ namespace Reko.ImageLoaders.MachO
                 var addr = parser.specific.ReadStub(addrStub, sec.MemoryArea);
                 if (program.ImportReferences.TryGetValue(addr, out var refe))
                 {
-                    var stubSym = new ImageSymbol(addrStub)
-                    {
-                        Name = refe.EntryName
-                    };
+                    var stubSym = ImageSymbol.ExternalProcedure(program.Architecture, addrStub, refe.EntryName);
                     imageSymbols.Add(addrStub, stubSym);
                 }
             }

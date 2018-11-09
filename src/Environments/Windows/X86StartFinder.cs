@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -158,7 +158,7 @@ namespace Reko.Environments.Windows
                 {
                     p.Dispose();
                     // Forward jump (appears in Borland binaries)
-                    dasm = program.CreateDisassembler(addrOp0.Address);
+                    dasm = program.CreateDisassembler(program.Architecture, addrOp0.Address);
 
                     // Search for this pattern.
                     if (!LocatePattern(
@@ -178,12 +178,7 @@ namespace Reko.Environments.Windows
                         segMainInfo.MemoryArea.ReadLeUInt32(addrMainInfo + 0x18));
                     if (program.SegmentMap.IsExecutableAddress(addrMain))
                     {
-                        return new ImageSymbol(addrMain)
-                        {
-                            Type = SymbolType.Procedure,
-                            Name = "main",
-                            Signature = mainSignature,
-                        };
+                        return ImageSymbol.Procedure(program.Architecture, addrMain, "main", signature: mainSignature);
                     }
                 }
             }
@@ -200,12 +195,7 @@ namespace Reko.Environments.Windows
                 var addrMain = seg.MemoryArea.BaseAddress + idx + 5 + offset;
                 if (program.SegmentMap.IsExecutableAddress(addrMain))
                 {
-                    return new ImageSymbol(addrMain)
-                    {
-                        Type = SymbolType.Procedure,
-                        Name = "WinMain",
-                        Signature = winmainSignature,
-                    };
+                    return ImageSymbol.Procedure(program.Architecture, addrMain, "WinMain", signature: winmainSignature);
                 }
             }
             return null;
