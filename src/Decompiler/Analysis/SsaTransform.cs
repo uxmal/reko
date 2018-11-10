@@ -1492,19 +1492,34 @@ namespace Reko.Analysis
                             alias.SsaId = idNew;
                         }
                     }
-                    foreach (var de in bs.currentStackDef.ToList())
-                    {
-                        if (de.Value.SsaId == sidOld)
-                        {
-                            de.Value.SsaId = idNew;
-                        }
-                    }
+                    ReplaceStackDefs(bs, sidOld, idNew);
                     foreach (var de in bs.currentFpuDef.ToList())
                     {
                         if (de.Value == sidOld)
                         {
                             bs.currentFpuDef[de.Key] = idNew;
                         }
+                    }
+                }
+            }
+
+            private void ReplaceStackDefs(
+                SsaBlockState bs,
+                SsaIdentifier sidOld,
+                SsaIdentifier sidNew)
+            {
+                if (!(sidOld.Identifier.Storage is StackStorage stack))
+                    return;
+                var offsetInterval = Interval.Create(
+                    stack.StackOffset,
+                    stack.StackOffset + sidOld.Identifier.DataType.Size);
+                var ints = bs.currentStackDef
+                    .GetIntervalsOverlappingWith(offsetInterval);
+                foreach (var de in ints)
+                {
+                    if (de.Value.SsaId == sidOld)
+                    {
+                        de.Value.SsaId = sidNew;
                     }
                 }
             }
