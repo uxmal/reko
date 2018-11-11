@@ -20,13 +20,10 @@ namespace Reko.WindowsItp
             lblTest.Text = "Running...";
             try
             {
-                bool simulated = false;
-                bool rewriter = true;
-                string filename = null;
-                int bufsize = 1_000_000;
-                byte[] buf = ReadBytes(filename, bufsize);
-
-                Func<long> test = SelectTest(buf, simulated, rewriter);
+                byte[] buf = ReadBytes();
+                if (buf == null)
+                    return;
+                Func<long> test = SelectTest(buf);
                 long msec = await Task.Run(test);
                 double instrs_msec = msec / (double) (buf.Length / 4000);
                 lblTest.Text = $"Done in {msec}ms; {instrs_msec,3} usec/instr";
@@ -37,13 +34,32 @@ namespace Reko.WindowsItp
             }
         }
 
-        private Func<long> SelectTest(byte[] buf, bool simulated, bool rewriter)
+        private Func<long> SelectTest(byte[] buf)
         {
+            var rewriter = chkRewriter.Checked;
             Func<long> test;
-            if (simulated)
+            if (rdbRealDasm.Checked)
             {
-                //var m = new Decoders.FormatDecoderBuilder();
-                var m = new Decoders.ThreadedDecoderBuilder();
+                if (rewriter)
+                {
+                    test = () => PerformanceTest_A32Rewriter(buf);
+                }
+                else
+                {
+                    test = () => PerformanceTest_A32Dasm(buf);
+                }
+            }
+            else
+            {
+                DecoderBuilder m;
+                if (rdbInterpretedDasm.Checked)
+                {
+                    m = new Decoders.FormatDecoderBuilder();
+                }
+                else
+                {
+                    m = new Decoders.ThreadedDecoderBuilder();
+                }
                 var root = m.Mask(29, 3,
                     m.Instr(Opcode.add, "r8,r4,r0"),
                     m.Instr(Opcode.sub, "r8,r4,r0"),
@@ -64,29 +80,23 @@ namespace Reko.WindowsItp
                     test = () => PerformanceTest_Simulated(buf, root);
                 }
             }
-            else
-            {
-                if (rewriter)
-                {
-                    test = () => PerformanceTest_A32Rewriter(buf);
-                }
-                else
-                {
-                    test = () => PerformanceTest_A32Dasm(buf);
-                }
-            }
             return test;
         }
 
-        private static byte[] ReadBytes(string filename, int bufsize)
+        private byte[] ReadBytes()
         {
-            if (!string.IsNullOrEmpty(filename))
+            if (rdbLoadFile.Checked)
             {
+                string filename = txtFilename.Text;
+                if (string.IsNullOrEmpty(filename))
+                    return null;
                 var buf = System.IO.File.ReadAllBytes(filename);
                 return buf;
             }
             else
             {
+                if (!int.TryParse(txtRandomSize.Text, out var bufsize))
+                    return null;
                 var rnd = new Random(4711);
                 var buf = new byte[bufsize];
                 rnd.NextBytes(buf);
@@ -158,6 +168,11 @@ namespace Reko.WindowsItp
             sw.Stop();
             var time = sw.ElapsedMilliseconds;
             return time;
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }
