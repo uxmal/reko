@@ -64,6 +64,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -92,6 +96,11 @@
     <Compile Include="DecoderPerformanceDialog.Designer.cs">
       <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Decoders\Decoder.cs" />
+    <Compile Include="Decoders\DecoderBuilder.cs" />
+    <Compile Include="Decoders\Disassembler.cs" />
+    <Compile Include="Decoders\Opcode.cs" />
+    <Compile Include="Decoders\TestInstruction.cs" />
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
