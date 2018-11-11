@@ -20,10 +20,12 @@ namespace Reko.WindowsItp
             lblTest.Text = "Running...";
             try
             {
-                byte[] buf = ReadBytes();
-
                 bool simulated = false;
-                bool rewriter = false;
+                bool rewriter = true;
+                string filename = null;
+                int bufsize = 1_000_000;
+                byte[] buf = ReadBytes(filename, bufsize);
+
                 Func<long> test = SelectTest(buf, simulated, rewriter);
                 long msec = await Task.Run(test);
                 double instrs_msec = msec / (double) (buf.Length / 4000);
@@ -42,31 +44,49 @@ namespace Reko.WindowsItp
             {
                 //var m = new Decoders.FormatDecoderBuilder();
                 var m = new Decoders.ThreadedDecoderBuilder();
-                test = () => PerformanceTest_Simulated(buf, m);
-            }
-            else if (rewriter)
-            {
-                test = () => PerformanceTest_A32Rewriter(buf);
+                var root = m.Mask(29, 3,
+                    m.Instr(Opcode.add, "r8,r4,r0"),
+                    m.Instr(Opcode.sub, "r8,r4,r0"),
+                    m.Instr(Opcode.mul, "r8,r4,r0"),
+                    m.Instr(Opcode.div, "r8,r4,r0"),
+
+                    m.Instr(Opcode.and, "r8,r4,r0"),
+                    m.Instr(Opcode.or, "r8,r4,r0"),
+                    m.Instr(Opcode.not, "r8,r4"),
+                    m.Instr(Opcode.xor, "r8,r4,r0"));
+
+                if (rewriter)
+                {
+                    test = () => PerformanceTest_SimulatedRewriter(buf, root);
+                }
+                else
+                {
+                    test = () => PerformanceTest_Simulated(buf, root);
+                }
             }
             else
             {
-                test = () => PerformanceTest_A32Dasm(buf);
+                if (rewriter)
+                {
+                    test = () => PerformanceTest_A32Rewriter(buf);
+                }
+                else
+                {
+                    test = () => PerformanceTest_A32Dasm(buf);
+                }
             }
-
             return test;
         }
 
-        private static byte[] ReadBytes()
+        private static byte[] ReadBytes(string filename, int bufsize)
         {
-            bool readfile = false;
-            if (readfile)
+            if (!string.IsNullOrEmpty(filename))
             {
-                var buf = System.IO.File.ReadAllBytes("executable.exe");
+                var buf = System.IO.File.ReadAllBytes(filename);
                 return buf;
             }
             else
             {
-                int bufsize = 1_000_000;
                 var rnd = new Random(4711);
                 var buf = new byte[bufsize];
                 rnd.NextBytes(buf);
@@ -74,18 +94,8 @@ namespace Reko.WindowsItp
             }
         }
 
-        private long PerformanceTest_Simulated(byte[] buf, DecoderBuilder m)
+        private long PerformanceTest_Simulated(byte[] buf, Decoder root)
         {
-            var root = m.Mask(29, 3,
-                m.Instr(Opcode.add, "r8,r4,r0"),
-                m.Instr(Opcode.sub, "r8,r4,r0"),
-                m.Instr(Opcode.mul, "r8,r4,r0"),
-                m.Instr(Opcode.div, "r8,r4,r0"),
-
-                m.Instr(Opcode.and, "r8,r4,r0"),
-                m.Instr(Opcode.or, "r8,r4,r0"),
-                m.Instr(Opcode.not, "r8,r4"),
-                m.Instr(Opcode.xor, "r8,r4,r0"));
             var rdr = new BeImageReader(buf);
             var dasm = new Disassembler(rdr, root);
             Stopwatch sw = new Stopwatch();
@@ -96,6 +106,24 @@ namespace Reko.WindowsItp
             sw.Stop();
             var time = sw.ElapsedMilliseconds;
             return time;
+        }
+
+        private long PerformanceTest_SimulatedRewriter(byte[] buf, Decoder root)
+        {
+#if NYI
+            var rdr = new BeImageReader(buf);
+            var dasm = new Disassembler(rdr, root);
+            var rewriter = new Rewriter(dasm);
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            foreach (var instr in rewriter)
+            {
+            }
+            sw.Stop();
+            var time = sw.ElapsedMilliseconds;
+            return time;
+#endif
+            return 1;
         }
 
         private long PerformanceTest_A32Dasm(byte[] buf)
