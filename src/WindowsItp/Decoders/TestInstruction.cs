@@ -14,8 +14,13 @@ namespace Reko.WindowsItp.Decoders
 
         public Opcode Opcode { get; set; }
 
-        public MachineOperand[] Operands { get; internal set; }
-
+#if !ARRAY_OPERANDS
+        public MachineOperand[] Operands;
+#else
+        public MachineOperand Op1;
+        public MachineOperand Op2;
+        public MachineOperand Op3;
+#endif
         public override InstructionClass InstructionClass { get;  }
 
         public override bool IsValid { get; }
@@ -24,8 +29,6 @@ namespace Reko.WindowsItp.Decoders
 
         public override MachineOperand GetOperand(int i)
         {
-            if (0 <= i && i < Operands.Length)
-                return Operands[i];
             return null;
         }
     }

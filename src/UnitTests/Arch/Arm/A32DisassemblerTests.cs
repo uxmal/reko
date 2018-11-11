@@ -1353,6 +1353,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Make this work")]
+        public void ArmDasm_f2c14e3e()
+        {
+            Disassemble32(0xF2C14E3E);
+            Expect_Code("@@@");
+        }
+
+        /// If you're bored and want something to do, why not implement a 
+        /// A32 decoder or 10? :)
+#if BORED
+        // An AArch64 decoder for the instruction 5F03C0A8 (A8C0035F) - (AdvancedSimdScalar_x_IdxElem - opcode=1100 U=0) has not been implemented yet.
+        [Test]
         public void ArmDasm_wfe_eq()
         {
             Disassemble32(0x03200002);
