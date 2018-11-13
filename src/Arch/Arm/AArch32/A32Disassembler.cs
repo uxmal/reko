@@ -149,6 +149,8 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+
+
         private RegisterOperand Coprocessor(uint wInstr, int bitPos)
         {
             var cp = Registers.Coprocessors[SBitfield(wInstr, bitPos, 4)];
@@ -166,12 +168,11 @@ namespace Reko.Arch.Arm.AArch32
             return (int)((wInstr >> bitPos) & ((1u << size) - 1));
         }
 
-        private ulong SimdExpandImm(uint op, uint cmode, uint imm)
+        public static ulong SimdExpandImm(uint op, uint cmode, uint imm)
         {
             ulong imm64 = imm;
             switch (cmode)
             {
-
             case 0:
             case 1:
                 imm64 |= imm64 << 32;
@@ -219,10 +220,44 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    ulong MakeByte(uint n, int bit)
+                    {
+                        return ((n >> bit) & 1u) == 1u
+                            ? (ulong)0xFF
+                            : (ulong) 0;
+                    }
+                    var imm8a = MakeByte(imm, 7); var imm8b = MakeByte(imm, 6);
+                    var imm8c = MakeByte(imm, 5); var imm8d = MakeByte(imm, 4);
+                    var imm8e = MakeByte(imm, 3); var imm8f = MakeByte(imm, 2);
+                    var imm8g = MakeByte(imm, 1); var imm8h = MakeByte(imm, 0);
+                    imm64 =
+                        (imm8a << 56) |
+                        (imm8b << 48) |
+                        (imm8c << 40) |
+                        (imm8d << 32) |
+                        (imm8e << 24) |
+                        (imm8f << 16) |
+                        (imm8g << 8) |
+                        (imm8h);
                 }
                 break;
             case 15:
+                if (op == 0)
+                {
+                    uint imm32 = (imm & 0xC0) << 24;
+                    imm32 ^= 0x40000000u;
+                    imm32 |= (uint) Bits.Replicate64(imm, 6, 5) << 25;
+                    imm32 |= (imm & 0x1F) << 19;
+                    imm64 = ((ulong) imm32 << 32) | imm32;
+                }
+                else
+                {
+                    imm64 = (imm & 0xC0) << 56;
+                    imm64 ^= 0x40000000_00000000u;
+                    imm64 |= Bits.Replicate64(imm, 6, 8) << 53;
+                    imm64 |= (imm & 0x1F) << 48;
+                }
+                break;
             default:
                 throw new NotImplementedException();
             }
@@ -854,6 +889,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        /// <summary>
+        /// Modified SIMD immediate
+        /// </summary>
         private static Mutator Is(int pos1, int size1, int pos2, int size2, int pos3, int size3)
         {
             var fields = new[]
@@ -867,10 +905,34 @@ namespace Reko.Arch.Arm.AArch32
                 var imm = Bitfield.ReadFields(fields, u);
                 var cmode = (u >> 8) & 0xF;
                 var op = (u >> 5) & 1;
-                d.state.ops.Add(ImmediateOperand.Word64(d.SimdExpandImm(op, cmode, (uint)imm)));
+                d.state.ops.Add(ImmediateOperand.Word64(SimdExpandImm(op, cmode, (uint)imm)));
                 return true;
             };
         }
+
+        /// <summary>
+        /// Compute vector element type from cmode(0:2)
+        /// </summary>
+        private static Mutator DtFromCmode(int pos, int len)
+        {
+            var field = new Bitfield(pos, len);
+            return (u, d) =>
+            {
+                var cmode0_2 = field.Read(u);
+                d.state.vectorData = dtFromCmode[cmode0_2];
+                return true;
+            };
+        }
+
+        private static ArmVectorData[] dtFromCmode =
+        {
+            // See p. F6-4271
+            ArmVectorData.I32,
+            ArmVectorData.I32,
+            ArmVectorData.I8,
+            ArmVectorData.F32,
+        };
+
 
         // use bit 20 to determine if sets flags
         private static Mutator s =>
@@ -935,6 +997,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        /// <summary>
+        /// Not yet implemented decoder.
+        /// </summary>
         private static Mutator x(string message)
         {
             return (u, d) =>
@@ -2750,23 +2815,26 @@ namespace Reko.Arch.Arm.AArch32
                     AdvanceSimd_ThreeRegistersDifferentLength,
                     nyi("AdvanceSimd_TwoRegistersScalar")));
 
-            var AdvancedSimd_OneRegisterModifiedImmediate = Mask(8, 3, 5, 1,
-                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+            var vmov_A1 = Instr(Opcode.vmov, I32, q(6), W(22,1,12,4), Is(24,1,16,3,0,4));
+            var vmov_A4 = Instr(Opcode.vmov, DtFromCmode(8,2), q(6), W(22,1,12,4), Is(24,1,16,3,0,4));
+
+            var AdvancedSimd_OneRegisterModifiedImmediate = Mask("AdvancedSimd_OneRegisterModifiedImmediate", 8,4,5,1,
+                vmov_A1,
                 Instr(Opcode.vmvn, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                vmov_A1,
                 Instr(Opcode.vmvn, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                vmov_A1,
                 Instr(Opcode.vmvn, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
+                vmov_A1,
                 Instr(Opcode.vmvn, I32, W(22,1,12,4),Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
@@ -2781,14 +2849,14 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vorr, x("immediate - A2")),
                 Instr(Opcode.vbic, x("immediate - A2")),
 
-                Instr(Opcode.vmov, x("immediate - A4")),
+                vmov_A4,
                 Instr(Opcode.vmvn, x("immediate - A3")),
-                Instr(Opcode.vmov, x("immediate - A4")),
+                vmov_A4,
                 Instr(Opcode.vmvn, x("immediate - A3")),
 
-                Instr(Opcode.vmov, x("immediate - A4")),
-                Instr(Opcode.vmov, x("immediate - A5")),
-                Instr(Opcode.vmov, x("immediate - A4")),
+                vmov_A4,
+                Instr(Opcode.vmov, I64, q(6), W(22,1, 12,4), Is(24,1, 16,3, 0,4)),
+                vmov_A4,
                 invalid);
 
 

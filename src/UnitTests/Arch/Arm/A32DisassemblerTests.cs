@@ -681,7 +681,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_vmov_neg1()
         {
             Disassemble32(0xF3C70E5F);
-            Expect_Code("vmov.i32\tq8,#&FFFFFFFFFFFFFFFF");
+            Expect_Code("vmov.i8\tq8,#&FFFFFFFFFFFFFFFF");
         }
 
         [Test]
@@ -1452,6 +1452,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xF3AF8000);
             Expect_Code("vaddl.u32\tq4,d15,d0");
+        }
+
+        [Test]
+        public void ArmDasm_vmov_imm_2()
+        {
+            Disassemble32(0xF2C14E3E);
+            Expect_Code("vmov.i64\td20,#&FFFFFFFF00");
         }
 
         /// If you're bored and want something to do, why not implement a 

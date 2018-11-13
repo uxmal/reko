@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -84,6 +84,12 @@ namespace Reko.UnitTests.Core.Lib
         public void Bits_CountLeadingZeros_0x7F_7bitWord()
         {
             Assert.AreEqual(0, Bits.CountLeadingZeros(7, 0x7F));
+        }
+
+        [Test]
+        public void Bits_Replicate_1_bit_pattern()
+        {
+            Assert.AreEqual(0b11111ul, Bits.Replicate64(3, 1, 5));
         }
     }
 }
