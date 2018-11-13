@@ -1464,6 +1464,14 @@ namespace Reko.UnitTests.Arch.Arm
         /// If you're bored and want something to do, why not implement a 
         /// A32 decoder or 10? :)
 #if BORED
+        // An A32 decoder for the instruction 5E3DAB31 (vmov - *Scalar to GP op1:op2=0b01 01)) has not been implemented yet.
+        [Test]
+        public void ArmDasm_5E3DAB31()
+        {
+            Disassemble32(0x5E3DAB31);
+            Expect_Code("@@@");
+        }
+
 
         // An A32 decoder for the instruction F42800FF (AdvancedSimdElementLoadStore) has not been implemented yet.
         [Test]

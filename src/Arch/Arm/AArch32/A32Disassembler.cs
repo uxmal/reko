@@ -541,6 +541,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        /// <summary>
+        /// Set the SIMD vector index
+        /// </summary>
         private static Mutator Ix(int pos, int size)
         {
             var fields = new[]
@@ -670,7 +673,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static  PrimitiveType w1 => PrimitiveType.Byte;
+        private static PrimitiveType w1 => PrimitiveType.Byte;
         private static PrimitiveType w2 => PrimitiveType.Word16;
         private static PrimitiveType w4 => PrimitiveType.Word32;
         private static PrimitiveType w8 => PrimitiveType.Word64;
@@ -933,14 +936,12 @@ namespace Reko.Arch.Arm.AArch32
             ArmVectorData.F32,
         };
 
-
         // use bit 20 to determine if sets flags
         private static Mutator s =>
             (u, d) => {
                 d.state.updateFlags = ((u >> 20) & 1) != 0;
                 return true;
             };
-
 
         // Coprocessor #
         private static Mutator CP(int n)
@@ -1056,7 +1057,7 @@ namespace Reko.Arch.Arm.AArch32
                 d.state.ops.Add(ImmediateOperand.Int32((int)(msb - lsb + 1)));
                 return true;
             };
-         }
+        }
 
         // Alias mutators that morph the disassembled instruction
         // if special cases are present
@@ -1722,14 +1723,14 @@ namespace Reko.Arch.Arm.AArch32
                 LogicalArithmeticRegShift);
 
             var IntegerDataProcessingTwoRegImm = new MaskDecoder(21, 7,
-               Instr(Opcode.and, s,r(3),r(4),I),
-               Instr(Opcode.eor, s,r(3),r(4),I),
-               Instr(Opcode.sub, s,r(3),r(4),I),
-               Instr(Opcode.rsb, s,r(3),r(4),I),
-               Instr(Opcode.add, s,r(3),r(4),I),
-               Instr(Opcode.adc, s,r(3),r(4),I),
-               Instr(Opcode.sbc, s,r(3),r(4),I),
-               Instr(Opcode.rsc, s,r(3),r(4),I));
+                Instr(Opcode.and, s,r(3),r(4),I),
+                Instr(Opcode.eor, s,r(3),r(4),I),
+                Instr(Opcode.sub, s,r(3),r(4),I),
+                Instr(Opcode.rsb, s,r(3),r(4),I),
+                Instr(Opcode.add, s,r(3),r(4),I),
+                Instr(Opcode.adc, s,r(3),r(4),I),
+                Instr(Opcode.sbc, s,r(3),r(4),I),
+                Instr(Opcode.rsc, s,r(3),r(4),I));
 
             var LogicalArithmeticTwoRegImm = new MaskDecoder(21, 3,
                 Instr(Opcode.orr, s,r(3),r(4),I),
@@ -1901,7 +1902,7 @@ namespace Reko.Arch.Arm.AArch32
             var Qsax = Instr(Opcode.qsax, r(3),r(4),r(0));
             var Qsub16 = Instr(Opcode.qsub16, r(3),r(4),r(0));
             var QSub8 = Instr(Opcode.qsub8, r(3),r(4),r(0));
-            var Shadd16 = Instr(Opcode.shadd16, x(""));
+            var Shadd16 = Instr(Opcode.shadd16, r(3),r(4),r(0));
             var Shasx = Instr(Opcode.shasx, x(""));
             var Shsax = Instr(Opcode.shsax, x(""));
             var Shsub16 = Instr(Opcode.shsub16, x(""));
@@ -2468,11 +2469,11 @@ namespace Reko.Arch.Arm.AArch32
                             nyi("floating point minNum/maxNum"),
                             nyi("floating point data processing")))));
 
-            var AdvancedSIMDElementMovDuplicate = Mask(20, 1,
+            var AdvancedSIMDElementMovDuplicate = Mask("AdvancedSIMDElementMovDuplicate", 20, 1,
                 Mask(23, 1,
                     Instr(Opcode.vmov, vW(22,1,5,1), D(7,1,16,4),r(3)),
                     Mask(6, 1,
-                        Instr(Opcode.vdup, vW(22,1,5,1),q(21), W(7,1,16,4),r(3)),
+                        Instr(Opcode.vdup, vW(22,1,5,1), q(21), W(7,1,16,4),r(3)),
                         invalid)),
                 Mask(21,2,5,2,
                     Instr(Opcode.vmov, I32, r(3),D(7,1,16,4), Ix(21,1)),
