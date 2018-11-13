@@ -200,7 +200,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vacge:
                 case Opcode.vacgt:
                 case Opcode.vaddhn:
-                case Opcode.vaddl:
                 case Opcode.vaddw:
                 case Opcode.vbic:
                 case Opcode.vbif:
@@ -481,9 +480,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.yield: RewriteYield(); break;
 
 
-
                 case Opcode.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
                 case Opcode.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
+                case Opcode.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;

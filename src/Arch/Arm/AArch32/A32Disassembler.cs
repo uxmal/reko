@@ -756,6 +756,21 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        private static Mutator Q(int pos1, int size1, int pos2, int size2)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2)
+            };
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(fields, u) >> 1;
+                d.state.ops.Add(new RegisterOperand(Registers.QRegs[iReg]));
+                return true;
+            };
+        }
+
         //if (PeekAndDiscard('[', format, ref i))
         //{
         //    // D13[3] - index into sub-element
@@ -1498,7 +1513,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var ChangeProcessState = new MaskDecoder(16, 1, // op
                 Mask(18, 0x3,
-                    nyi("CPS,CPSID,CPSIE mask=0b00"),
+                    Instr(Opcode.cps, i(0, 5)),
                     nyi("CPS,CPSID,CPSIE mask=0b01"),
                     nyi("CPS,CPSID,CPSIE mask=0b10"),
                     Mask(17, 1,  // mask=0b11 M
@@ -2094,12 +2109,12 @@ namespace Reko.Arch.Arm.AArch32
                         nyi("media - 0b11011 - 111")),
                     Mask(5, 7, 
                         BitfieldInsert,
-                        nyi("media - 0b11100 - 001"),
+                        invalid,
                         nyi("media - 0b11100 - 010"),
                         nyi("media - 0b11100 - 011"),
 
                         BitfieldInsert,
-                        nyi("media - 0b11100 - 101"),
+                        invalid,
                         nyi("media - 0b11100 - 110"),
                         invalid),
                     Mask(5, 7, // media - 0b11101
@@ -2114,12 +2129,12 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     Mask(5, 7,
                         nyi("media - 0b11110 - 000"),
-                        nyi("media - 0b11110 - 001"),
+                        invalid,
                         BitfieldExtract,
                         nyi("media - 0b11110 - 011"),
 
                         nyi("media - 0b11110 - 100"),
-                        nyi("media - 0b11110 - 101"),
+                        invalid,
                         BitfieldExtract,
                         invalid),
                     Mask(5, 7, // media - 0b11111
@@ -2174,8 +2189,14 @@ namespace Reko.Arch.Arm.AArch32
                     LdmUser);
 
             var RfeRfeda = nyi("RfeRefda");
-            var SrcSrsda = nyi("SrcSrsda");
-            var ExceptionSaveRestore = new MaskDecoder("ExceptionSaveRestore", 22, 7, // PUS
+            var SrcSrsda = Select(
+                "SrcSrsda",
+                5, 15,
+                n => n == 0b1101_0000_0101_000,
+                nyi("srs"),
+                invalid);
+
+            var ExceptionSaveRestore = Mask("ExceptionSaveRestore", 22, 7, // PUS
                 new MaskDecoder(20, 1, // L
                     invalid,
                     RfeRfeda),
@@ -2679,11 +2700,55 @@ namespace Reko.Arch.Arm.AArch32
                 SystemRegister_AdvancedSimd_FloatingPoint,
                 SystemRegister_AdvancedSimd_FloatingPoint);
 
-            var AdvancedSimd_TwoRegisterOrThreeRegisters = Select(20, 0x3, n => n == 0b11,
-                Mask(24, 1, 
-                    Instr(Opcode.vext, U8, q(6), W(22,1,12,4),W(7,1,16,4),W(5,1,0,4),i(8,4)),
+            var VmullIntegerPolynomial = nyi("VmullIntegerPolynomial");
+
+            var AdvanceSimd_ThreeRegistersDifferentLength = Mask("AdvanceSimd_ThreeRegistersDifferentLength",
+                    8, 0xF,
+                    Mask(20, 3, 
+                        Instr(Opcode.vaddl, U8, Q(22,1,12,4), D(7,1,16,4), D(5,1,0,4)),
+                        Instr(Opcode.vaddl, U16, Q(22, 1, 12, 4), D(7, 1, 16, 4), D(5, 1, 0, 4)),
+                        Instr(Opcode.vaddl, U32, Q(22, 1, 12, 4), D(7, 1, 16, 4), D(5, 1, 0, 4)),
+                        invalid),
+                    Instr(Opcode.vaddw, x("*")),
+                    Instr(Opcode.vsubl, x("*")),
+                    Instr(Opcode.vsubw, x("*")),
+
+                    Mask(24, 1,
+                        Instr(Opcode.vaddhn, x("*")),
+                        Instr(Opcode.vraddhn, x("*"))),
+                    Instr(Opcode.vabal, x("*")),
+                    Mask(24, 1,
+                        Instr(Opcode.vsubhn, x("*")),
+                        Instr(Opcode.vsubhn, x("*"))),
+                    Instr(Opcode.vabdl, x("vabdl - integer")),
+
+                    Instr(Opcode.vmlal, x("*")),
+                    Mask(24, 1,
+                        Instr(Opcode.vqdmlal, x("*")),
+                        invalid),
+                    Instr(Opcode.vmlsl, x("*")),
+                    Mask(24, 1,
+                        Instr(Opcode.vqdmlsl, x("*")),
+                        invalid),
+
+                    VmullIntegerPolynomial,
+                    Mask(24, 1,
+                        Instr(Opcode.vqdmull, x("*")),
+                        invalid),
+                    VmullIntegerPolynomial,
+                    invalid);
+
+            var AdvancedSimd_TwoRegisterOrThreeRegisters = Select(
+                "AdvancedSimd_TwoRegisterOrThreeRegisters",
+                20, 0x3,
+                n => n == 0b11,
+                Mask(24, 1,
+                    Instr(Opcode.vext, U8, q(6), W(22, 1, 12, 4), W(7, 1, 16, 4), W(5, 1, 0, 4), i(8, 4)),
                     nyi("AdvancedSimd_TwoRegisterOrThreeRegisters op1==0b11 op0=1")),
-                nyi("AdvancedSimd_TwoRegisterOrThreeRegisters op1!=0b11"));
+                Mask("AdvancedSimd_TwoRegisterOrThreeRegisters op1!=0b11 op=0",
+                    6, 1,
+                    AdvanceSimd_ThreeRegistersDifferentLength,
+                    nyi("AdvanceSimd_TwoRegistersScalar")));
 
             var AdvancedSimd_OneRegisterModifiedImmediate = Mask(8, 3, 5, 1,
                 Instr(Opcode.vmov, I32, q(6), W(22,1,12,4),Is(24,1,16,3,0,4)),
@@ -2782,7 +2847,9 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     invalid));
 
-            var unconditionalDecoder = Mask(25, 7,
+            var unconditionalDecoder = Mask(
+                "Unconditional", 
+                25, 7,
                 UncMiscellaneous,
                 AdvancedSimd,
                 new MaskDecoder(20, 1,

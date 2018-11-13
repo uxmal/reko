@@ -1440,6 +1440,20 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vstmdblt\tr7!,{s18-s31}");
         }
 
+        [Test]
+        public void ArmDasm_cps()
+        {
+            Disassemble32(0xF100BF00);
+            Expect_Code("cps\t#0");
+        }
+
+        [Test]
+        public void ArmDasm_vaddl_u32()
+        {
+            Disassemble32(0xF3AF8000);
+            Expect_Code("vaddl.u32\tq4,d15,d0");
+        }
+
         /// If you're bored and want something to do, why not implement a 
         /// A32 decoder or 10? :)
 #if BORED
