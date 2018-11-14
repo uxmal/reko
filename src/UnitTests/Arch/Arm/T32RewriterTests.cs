@@ -7845,13 +7845,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.Capstone)]
         public void ThumbRw_smlald()
+        {
+            RewriteCode("C3FBC0B5");	// smlald fp, r5, r3, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5_fp = r5_fp + ((int16) r3 *s (int16) r0 + (r3 >> 16) *s (r0 >> 16))");
+        }
+
+        [Test]
+        public void ThumbRw_smlald_pc()
         {
             RewriteCode("CFFBC0B5");	// smlald fp, r5, pc, r0
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5_fp = r5_fp + ((int16) pc *s (int16) r0 + (pc >> 16) *s (r0 >> 16))");
+                "0|---|00100000(4): 1 instructions",
+                "1|---|<invalid>");
         }
 
         [Test]
@@ -7864,13 +7872,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vclt()
         {
             RewriteCode("F9FF0646");	// vclt.f32 d20, d6, #0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d20 = __vclt_f32(d6, 0x0000000000000000)");
         }
 
         [Test]

@@ -210,7 +210,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vcgt:
                 case Opcode.vcle:
                 case Opcode.vcls:
-                case Opcode.vclt:
                 case Opcode.vclz:
                 case Opcode.vcnt:
                 case Opcode.vcvta:
@@ -485,6 +484,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
+                case Opcode.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;
                 case Opcode.vcvt: RewriteVcvt(); break;
                 case Opcode.vdiv: RewriteVecBinOp(m.FDiv); break;

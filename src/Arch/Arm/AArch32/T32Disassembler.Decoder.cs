@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
             {
-                return;
+                // return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -267,8 +267,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     if (!mutators[i](wInstr, dasm))
                     {
-                        dasm.state.Invalid();
-                        break;
+                        return dasm.Invalid();
                     }
                 }
                 var instr = dasm.state.MakeInstruction();
