@@ -196,7 +196,7 @@ namespace Reko.ImageLoaders.MachO
                     ParseSegmentCommand64(imageMap);
                     break;
                 case LC_SYMTAB:
-                    ParseSymtabCommand();
+                    ParseSymtabCommand(specific.Architecture);
                     break;
                 case LC_DYSYMTAB:
                     ParseDysymtabCommand();
@@ -443,7 +443,7 @@ namespace Reko.ImageLoaders.MachO
         }
 
 
-        void ParseSymtabCommand()
+        void ParseSymtabCommand(IProcessorArchitecture arch)
         {
             if (rdr.TryReadUInt32(out uint symoff) &&
                 rdr.TryReadUInt32(out uint nsyms) &&
@@ -460,7 +460,10 @@ namespace Reko.ImageLoaders.MachO
                     if (msym != null)
                     {
                         ldr.machoSymbols.Add(msym);
-                        ldr.imageSymbols[addr] = new ImageSymbol(addr);
+                        if (addr.ToLinear() != 0)
+                        {
+                            ldr.imageSymbols[addr] = ImageSymbol.Procedure(arch, addr, msym.Name);
+                        }
                     }
                 }
             }
@@ -651,7 +654,7 @@ namespace Reko.ImageLoaders.MachO
                 if (!mpCputypeToUnixthreadPc.TryGetValue(cputype, out uint uOffAddrStart))
                     throw new BadImageFormatException($"LC_PARSEUNIXTHREAD for CPU type {cputype} has not been implemented.");
                 var ep = MemoryArea.ReadBeUInt32(data, uOffAddrStart);
-                base.ldr.entryPoints.Add(new ImageSymbol(Address.Ptr32(ep)));
+                base.ldr.entryPoints.Add(ImageSymbol.Procedure(specific.Architecture, Address.Ptr32(ep)));
             }
         }
 
@@ -669,13 +672,11 @@ namespace Reko.ImageLoaders.MachO
                 Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
                 var addrImport = Address.Ptr32(uImport);
                 var ptr = new Pointer(new CodeType(), specific.Architecture.PointerType.BitSize);
-                var impSymbol = new ImageSymbol(addr)
-                {
-                    Name = "__imp__" + msym.Name,
-                    Type = SymbolType.Data,
-                    DataType = ptr,
-                    Size = (uint) ptr.Size
-                };
+                var impSymbol = ImageSymbol.DataObject(
+                    specific.Architecture,
+                    addr,
+                    "__imp__" + msym.Name,
+                    ptr);
                 ldr.imageSymbols[addr] = impSymbol;
                 ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name));
                 addr = rdr.Address;

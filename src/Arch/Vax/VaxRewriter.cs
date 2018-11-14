@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -39,7 +39,7 @@ namespace Reko.Arch.Vax
         private EndianImageReader rdr;
         private ProcessorState state;
         private VaxArchitecture arch;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
         private IEnumerator<VaxInstruction> dasm;
@@ -61,7 +61,7 @@ namespace Reko.Arch.Vax
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = RtlClass.Linear;
+                rtlc = dasm.Current.IClass;
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
@@ -745,7 +745,7 @@ namespace Reko.Arch.Vax
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
     }

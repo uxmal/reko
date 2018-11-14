@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_StubProcedure(uint addr, uint size)
         {
             var address = Address32.Ptr32(addr);
-            var m = new ProcedureBuilder("fnTest");
+            var m = new ProcedureBuilder(program.Architecture, "fnTest");
             m.Return();
             this.proc = m.Procedure;
             this.program.Procedures[address] = proc;

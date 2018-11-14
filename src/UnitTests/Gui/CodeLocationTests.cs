@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui
 {
@@ -39,7 +40,10 @@ namespace Reko.UnitTests.Gui
         public void Setup()
         {
             mr = new MockRepository();
-            this.program = new Program();
+            this.program = new Program
+            {
+                Architecture = new FakeArchitecture()
+            };
         }
 
         [Test]
@@ -87,7 +91,7 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void NavigateToBlock()
         {
-            var proc = new Procedure(null, "foo", Address.Ptr32(0x00123400), null);
+            var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), null);
             var block = new Block(proc, "foo_block");
 
             var codeSvc = mr.DynamicMock<ICodeViewerService>();

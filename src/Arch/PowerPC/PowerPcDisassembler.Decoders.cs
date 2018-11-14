@@ -1,4 +1,4 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
@@ -93,17 +93,19 @@ namespace Reko.Arch.PowerPC
         public class DOpRec : Decoder
         {
             public readonly Opcode opcode;
+            public readonly InstrClass iclass;
             public readonly string opFmt;
 
-            public DOpRec(Opcode opcode, string opFmt)
+            public DOpRec(Opcode opcode, string opFmt, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.opFmt = opFmt;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(opcode, wInstr, opFmt);
+                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
             }
         }
 
@@ -111,12 +113,14 @@ namespace Reko.Arch.PowerPC
         {
             public readonly Opcode opcode0;
             public readonly Opcode opcode1;
+            public readonly InstrClass iclass;
             public readonly string opFmt;
 
-            public DSOpRec(Opcode opcode0, Opcode opcode1, string opFmt)
+            public DSOpRec(Opcode opcode0, Opcode opcode1, string opFmt, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode0 = opcode0;
                 this.opcode1 = opcode1;
+                this.iclass = iclass;
                 this.opFmt = opFmt;
             }
 
@@ -124,7 +128,7 @@ namespace Reko.Arch.PowerPC
             {
                 Opcode opcode = ((wInstr & 1) == 0) ? opcode0 : opcode1;
                 wInstr &= ~3u;
-                return dasm.DecodeOperands(opcode, wInstr, opFmt);
+                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
             }
         }
 
@@ -154,6 +158,7 @@ namespace Reko.Arch.PowerPC
                     wInstr &= ~1u;
                     return new PowerPcInstruction(opcode)
                     {
+                        iclass = InstrClass.Linear,
                         op1 = dasm.RegFromBits(wInstr >> 16),
                         op2 = dasm.RegFromBits(wInstr >> 21),
                         op3 = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
@@ -239,24 +244,29 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands((wInstr & 1) != 0 ? opLink : opcode, wInstr, opFmt);
+                bool link = (wInstr & 1) != 0;
+                var opcode = link ? this.opLink : this.opcode;
+                var iclass = link ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
+                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
             }
         }
 
         public class FpuOpRecAux : Decoder
         {
             private readonly Opcode opcode;
+            private readonly InstrClass iclass;
             private readonly string opFmt;
 
-            public FpuOpRecAux(Opcode opcode, string opFmt)
+            public FpuOpRecAux(Opcode opcode, string opFmt, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.opFmt = opFmt;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(opcode, wInstr, opFmt);
+                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
             }
         }
 
@@ -265,12 +275,14 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var opcode = (wInstr & 1) == 1 ? Opcode.bl : Opcode.b;
+                var iclass = (wInstr & 1) == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 var uOffset = wInstr & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 return new PowerPcInstruction(opcode)
                 {
+                    iclass = iclass,
                     op1 = new AddressOperand(baseAddr + uOffset),
                 };
             }
@@ -341,6 +353,7 @@ namespace Reko.Arch.PowerPC
                 var crf = grfBi >> 2;
 
                 Opcode opcode;
+                InstrClass iclass = link == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 MachineOperand op1;
                 MachineOperand op2;
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
@@ -351,6 +364,7 @@ namespace Reko.Arch.PowerPC
                 case 1:
                     // Decrement ctr, branch if ctr != 0 and condition is false
                     opcode = opcBdnzf[link];
+                    iclass |= InstrClass.Conditional;
                     op1 = new ConditionOperand(grfBi);
                     op2 = dst;
                     break;
@@ -358,6 +372,7 @@ namespace Reko.Arch.PowerPC
                 case 3:
                     // Decrement ctr, branch if ctr == 0 and condition is false
                     opcode = opcBdzf[link];
+                    iclass |= InstrClass.Conditional;
                     op1 = new ConditionOperand(grfBi);
                     op2 = dst;
                     break;
@@ -367,6 +382,7 @@ namespace Reko.Arch.PowerPC
                 case 7:
                     // Branch if condition is false
                     opcode = opcBNcc[grfBi & 0b11, link];
+                    iclass |= InstrClass.Conditional;
                     if (grfBi < 4)
                     {
                         op1 = dst;
@@ -382,6 +398,7 @@ namespace Reko.Arch.PowerPC
                 case 9:
                     // Decrement ctr, branch if ctr != 0 and condition is true
                     opcode = opcBdnzt[link];
+                    iclass |= InstrClass.Conditional;
                     op1 = new ConditionOperand(grfBi);
                     op2 = dst;
                     break;
@@ -389,6 +406,7 @@ namespace Reko.Arch.PowerPC
                 case 0xB:
                     // Decrement ctr, branch if ctr == 0 and condition is true
                     opcode = opcBdzt[link];
+                    iclass |= InstrClass.Conditional;
                     op1 = new ConditionOperand(grfBi);
                     op2 = dst;
                     break;
@@ -398,6 +416,7 @@ namespace Reko.Arch.PowerPC
                 case 0xF:
                     // Branch if condition is true.
                     opcode = opcBcc[grfBi & 0b11, link];
+                    iclass |= InstrClass.Conditional;
                     if (grfBi < 4)
                     {
                         op1 = dst;
@@ -415,6 +434,7 @@ namespace Reko.Arch.PowerPC
                 case 0b11001:
                     // Decrement ctr, Branch if ctr != 0
                     opcode = opcBdnz[link];
+                    iclass |= InstrClass.Conditional;
                     op1 = dst;
                     op2 = null;
                     break;
@@ -424,6 +444,7 @@ namespace Reko.Arch.PowerPC
                 case 0b11011:
                     // Decrement ctr, Branch if ctr == 0
                     opcode = opcBdz[link];
+                    iclass |= InstrClass.Conditional;
                     op1 = dst;
                     op2 = null;
                     break;
@@ -435,6 +456,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(opcode)
                 {
+                    iclass = iclass,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -456,13 +478,20 @@ namespace Reko.Arch.PowerPC
                 var condCode = ((wInstr >> 22) & 4) | (crBit & 0x3);
                 var bo = (wInstr >> 21) & 0x1F;
                 if ((bo & 0x14) == 0x14)
-                    return new PowerPcInstruction(Opcode.blr);
+                {
+                    return new PowerPcInstruction(Opcode.blr)
+                    {
+                        iclass = InstrClass.Transfer
+                    };
+                }
 
+                var iclass = link ? InstrClass.Call : 0;
                 switch (condCode)
                 {
                 default:
                     return new PowerPcInstruction(link ? Opcode.bclrl : Opcode.bclr)
                     {
+                        iclass = iclass | InstrClass.Transfer,
                         op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
                         op2 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
                     };
@@ -477,6 +506,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(opcode)
                 {
+                    iclass = iclass | InstrClass.ConditionalTransfer,
                     op1 = dasm.CRegFromBits(crf),
                 };
             }
@@ -486,7 +516,6 @@ namespace Reko.Arch.PowerPC
         {
             public XfxOpRec(Opcode opcode, string fmt) : base(opcode, fmt)
             {
-
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
@@ -495,6 +524,7 @@ namespace Reko.Arch.PowerPC
                 var spr = (wInstr >> 11) & 0x3FF;
                 return new PowerPcInstruction(opcode)
                 {
+                    iclass = base.iclass,
                     op1 = reg,
                     op2 = new ImmediateOperand(Constant.Word16((ushort)spr))
                 };
@@ -528,6 +558,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(opcode)
                 {
+                    iclass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2
                 };
@@ -551,7 +582,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.cmpl: op = l ? Opcode.cmpl : Opcode.cmplw; break;
                 case Opcode.cmpli: op = l ? Opcode.cmpli : Opcode.cmplwi; break;
                 }
-                return dasm.DecodeOperands(op, wInstr, opFmt);
+                return dasm.DecodeOperands(op, iclass, wInstr, opFmt);
             }
         }
 
@@ -652,7 +683,7 @@ namespace Reko.Arch.PowerPC
 
             public static PowerPcInstruction DecodeVperm128(PowerPcDisassembler dasm, uint wInstr)
             {
-                var instr = dasm.DecodeOperands(Opcode.vperm128, wInstr, "Wd,Wa,Wb");
+                var instr = dasm.DecodeOperands(Opcode.vperm128, InstrClass.Linear, wInstr, "Wd,Wa,Wb");
                 instr.op4 = dasm.VRegFromBits((wInstr >> 6) & 7);
                 return instr;
             }

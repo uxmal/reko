@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch.Intel
                     new ImageSegment(".text", mem, AccessMode.ReadExecute))
             };
             var procAddress = Address.Ptr32(0x10000000);
-            instr = new X86Instruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
+            instr = new X86Instruction(Opcode.nop, InstrClass.Linear,  PrimitiveType.Word32, PrimitiveType.Word32)
             {
                 Address = procAddress,
             };
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Arch.Intel
 			mem.Offset = Constant.Word32(4);
 			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
-		}	
+		}
 
 		[Test]
 		public void X86Orw32_IndexedAccess()
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Arch.Intel
             return null;
         }
 
-        public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
+        public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrTunk, Address addrInstruction)
 		{
 			return null;
 		}
@@ -255,7 +255,7 @@ namespace Reko.UnitTests.Arch.Intel
 
 		#endregion
 
-        public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+        public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {
             throw new NotImplementedException();
         }

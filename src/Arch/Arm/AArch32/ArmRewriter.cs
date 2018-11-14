@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm.AArch32
         private IStorageBinder binder;
         private IEnumerator<AArch32Instruction> dasm;
         protected AArch32Instruction instr;
-        protected RtlClass rtlClass;
+        protected InstrClass rtlClass;
         protected RtlEmitter m;
         protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
 
@@ -67,7 +67,7 @@ namespace Reko.Arch.Arm.AArch32
 
         MachineOperand Dst() => instr.ops[0];
         MachineOperand Src1() => instr.ops[1];
-        MachineOperand Src2() =>  instr.ops[2]; 
+        MachineOperand Src2() => instr.ops[2];
         MachineOperand Src3() => instr.ops[3];
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
-                this.rtlClass = RtlClass.Linear;
+                this.rtlClass = InstrClass.Linear;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.
@@ -99,13 +99,11 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.crc32h:
                 case Opcode.crc32w:
                 case Opcode.dbg:
-                case Opcode.dsb:
                 case Opcode.fldmdbx:
                 case Opcode.fldmiax:
                 case Opcode.fstmdbx:
                 case Opcode.fstmiax:
                 case Opcode.hlt:
-                case Opcode.isb:
                 case Opcode.lda:
                 case Opcode.ldab:
                 case Opcode.ldaex:
@@ -202,7 +200,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vacge:
                 case Opcode.vacgt:
                 case Opcode.vaddhn:
-                case Opcode.vaddl:
                 case Opcode.vaddw:
                 case Opcode.vbic:
                 case Opcode.vbif:
@@ -213,7 +210,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vcgt:
                 case Opcode.vcle:
                 case Opcode.vcls:
-                case Opcode.vclt:
                 case Opcode.vclz:
                 case Opcode.vcnt:
                 case Opcode.vcvta:
@@ -304,7 +300,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.subs:
                 case Opcode.movs:
                 case Opcode.wfe:
-                case Opcode.wfi:
                 case Opcode.sev:
                 case Opcode.sevl:
                     NotImplementedYet();
@@ -318,11 +313,11 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.adr: RewriteAdr(); break;
                 case Opcode.and: RewriteLogical(m.And); break;
                 case Opcode.asr: RewriteShift(m.Sar); break;
-                case Opcode.asrs: RewriteShift(m.Sar); break; 
+                case Opcode.asrs: RewriteShift(m.Sar); break;
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.bfc: RewriteBfc(); break;
                 case Opcode.bfi: RewriteBfi(); break;
-                case Opcode.bic: RewriteBic(); break;
+                case Opcode.bic: RewriteLogical(Bic); break;
                 case Opcode.bkpt: RewriteBkpt(); break;
                 case Opcode.bl: RewriteB(true); break;
                 case Opcode.blx: RewriteB(true); break;
@@ -335,11 +330,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.cmn: RewriteCmp(m.IAdd); break;
                 case Opcode.cmp: RewriteCmp(m.ISub); break;
                 case Opcode.cps: RewriteCps(); break;
+                case Opcode.dsb: RewriteDsb(); break;
                 case Opcode.dmb: RewriteDmb(); break;
                 case Opcode.eor: RewriteLogical(m.Xor); break;
                 case Opcode.eret: RewriteEret(); break;
                 case Opcode.hint: RewriteHint(); break;
                 case Opcode.hvc: RewriteHvc(); break;
+                case Opcode.isb: RewriteIsb(); break;
                 case Opcode.it: RewriteIt(); break;
                 case Opcode.ldc2l: RewriteLdc("__ldc2l"); break;
                 case Opcode.ldc2: RewriteLdc("__ldc2"); break;
@@ -384,8 +381,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
                 case Opcode.qsub: RewriteQAddSub(m.ISub); break;
                 case Opcode.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
-                case Opcode.pop: case Opcode.pop_w: RewritePop(); break;
-                case Opcode.push: case Opcode.push_w: RewritePush(); break;
+                case Opcode.pop: RewritePop(); break;
+                case Opcode.push: RewritePush(); break;
                 case Opcode.ror: RewriteShift(Ror); break;
                 case Opcode.rrx: RewriteShift(Rrx); break;
                 case Opcode.rev: RewriteRev(); break;
@@ -402,8 +399,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smc: RewriteSmc(); break;
                 case Opcode.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
-                case Opcode.smlad:  RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
-                case Opcode.smladx:  RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Opcode.smlad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
+                case Opcode.smladx: RewriteMxd(true, PrimitiveType.Int16, m.SMul, m.IAdd); break;
                 case Opcode.smlalbb: RewriteMlal(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlalbt: RewriteMlal(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smlald: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
@@ -478,14 +475,16 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.uxtah: RewriteXtab(PrimitiveType.UInt16); break;
                 case Opcode.uxtb: RewriteXtb(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Opcode.uxth: RewriteXtb(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
+                case Opcode.wfi: RewriteWfi(); break;
                 case Opcode.yield: RewriteYield(); break;
-
 
 
                 case Opcode.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
                 case Opcode.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
+                case Opcode.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
+                case Opcode.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;
                 case Opcode.vcvt: RewriteVcvt(); break;
                 case Opcode.vdiv: RewriteVecBinOp(m.FDiv); break;
@@ -545,7 +544,7 @@ namespace Reko.Arch.Arm.AArch32
 
         void Invalid()
         {
-            this.rtlClass = RtlClass.Invalid;
+            this.rtlClass = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -561,7 +560,7 @@ namespace Reko.Arch.Arm.AArch32
                 wInstr = rdr.PeekLeUInt16(-2);
             }
             host.Error(instr.Address, "AArch32 instruction '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
-            EmitUnitTest();
+            EmitUnitTest(instr);
             Invalid();
         }
 
@@ -580,7 +579,7 @@ namespace Reko.Arch.Arm.AArch32
 
         Expression C()
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+            return binder.EnsureFlagGroup(Registers.cpsr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
         }
 
         Expression Q()
@@ -612,14 +611,14 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (link)
             {
-                rtlClass = RtlClass.Transfer | RtlClass.Call;
+                rtlClass = InstrClass.Transfer | InstrClass.Call;
                 if (instr.condition == ArmCondition.AL)
                 {
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    rtlClass = RtlClass.ConditionalTransfer | RtlClass.Call;
+                    rtlClass = InstrClass.ConditionalTransfer | InstrClass.Call;
                     ConditionalSkip(true);
                     m.Call(dst, 0);
                 }
@@ -628,15 +627,25 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (instr.condition == ArmCondition.AL)
                 {
-                    rtlClass = RtlClass.Transfer;
-                    m.Goto(dst);
+                    rtlClass = InstrClass.Transfer;
+                    if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
+                    {
+                        //$TODO: cheating a little since
+                        // one could consider lr being set explitly.
+                        // however, this is very uncommon.
+                        m.Return(0, 0);
+                    }
+                    else
+                    {
+                        m.Goto(dst);
+                    }
                 }
                 else
                 {
-                    rtlClass = RtlClass.ConditionalTransfer;
+                    rtlClass = InstrClass.ConditionalTransfer;
                     if (dstIsAddress)
                     {
-                        m.Branch(TestCond(instr.condition), (Address)dst, rtlClass);
+                        m.Branch(TestCond(instr.condition), (Address) dst, rtlClass);
                     }
                     else
                     {
@@ -649,11 +658,11 @@ namespace Reko.Arch.Arm.AArch32
 
         void RewriteCbnz(Func<Expression, Expression> ctor)
         {
-            rtlClass = RtlClass.ConditionalTransfer;
+            rtlClass = InstrClass.ConditionalTransfer;
             var cond = Operand(Dst(), PrimitiveType.Word32, true);
             m.Branch(ctor(Operand(Dst())),
-                    ((AddressOperand)Src1()).Address,
-                    RtlClass.ConditionalTransfer);
+                    ((AddressOperand) Src1()).Address,
+                    InstrClass.ConditionalTransfer);
         }
 
         // If a conditional ARM instruction is encountered, generate an IL
@@ -677,7 +686,7 @@ namespace Reko.Arch.Arm.AArch32
             m.BranchInMiddleOfInstruction(
                 TestCond(Invert(cc)),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         Expression EffectiveAddress(MemoryOperand mem)
@@ -690,7 +699,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     ea = m.IAdd(ea, mem.Offset);
                 }
-                else 
+                else
                 {
                     ea = m.ISub(ea, mem.Offset);
                 }
@@ -757,12 +766,7 @@ namespace Reko.Arch.Arm.AArch32
                     if (mop.BaseRegister == Registers.pc)
                     {
                         // PC-relative address
-                        var dst = instr.Address + 8u;
-                        if (mop.Offset != null)
-                        {
-                            dst += mop.Offset.ToInt32();
-                        }
-                        ea = dst;
+                        ea = ComputePcRelativeOffset(mop);
 
                         if (mop.Index != null)
                         {
@@ -829,6 +833,16 @@ namespace Reko.Arch.Arm.AArch32
             throw new NotImplementedException(op.GetType().Name);
         }
 
+        public virtual Address ComputePcRelativeOffset(MemoryOperand mop)
+        {
+            var dst = instr.Address + 8u;
+            if (mop.Offset != null)
+            {
+                dst += mop.Offset.ToInt32();
+            }
+            return dst;
+        }
+
         DataType SizeFromLoadStore()
         {
             switch (instr.opcode)
@@ -879,7 +893,7 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.ShiftValue is RegisterOperand reg)
                 sh = binder.EnsureRegister(reg.Register);
             else
-                sh = ((ImmediateOperand)instr.ShiftValue).Value;
+                sh = ((ImmediateOperand) instr.ShiftValue).Value;
 
             return MaybeShiftExpression(exp, sh, instr.ShiftType);
         }
@@ -970,7 +984,7 @@ namespace Reko.Arch.Arm.AArch32
 
         Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, (uint)bits, name, type);
+            return binder.EnsureFlagGroup(Registers.cpsr, (uint) bits, name, type);
         }
 
         int BitSize(ArmVectorData vec)
@@ -1018,52 +1032,41 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-void EmitUnitTest()
-{
-#if NOT_YET
+        private static HashSet<Opcode> opcode_seen = new HashSet<Opcode>();
 
-    if (opcode_seen.Contains(instr.opcode))
-        return;
+        void EmitUnitTest(AArch32Instruction instr)
+        {
+            if (opcode_seen.Contains(instr.opcode))
+                return;
             opcode_seen.Add(instr.opcode);
 
-    //var r2 = rdr.Clone();
-    //r2.Offset -= dasm.Current.Length;
-    var auto bytes = &instr->bytes[0];
-    wchar_t buf[256];
+            var r2 = rdr.Clone();
+            r2.Offset -= instr.Length;
 
-    .OutputDebugString(L"        [Test]\r\n");
-    wsprintfW(buf, L"        public void ArmRw_%S()\r\n", instr->mnemonic);
+            Console.WriteLine("        [Test]");
+            Console.WriteLine("        public void ArmRw_{0}()", instr.opcode);
+            Console.WriteLine("        {");
 
-    .OutputDebugString(buf);
-
-    .OutputDebugString(L"        {\r\n");
-    wsprintfW(buf, L"            BuildTest(0x%02x%02x%02x%02x);\t// %S %S\r\n",
-        bytes[3], bytes[2], bytes[1], bytes[0],
-        instr->mnemonic, instr->op_str);
-
-    .OutputDebugString(buf);
-
-    .OutputDebugString(L"            AssertCode(");
-
-    .OutputDebugString(L"                \"0|L--|00100000(4): 1 instructions\",\r\n");
-
-    .OutputDebugString(L"                \"1|L--|@@@\");\r\n");
-
-    .OutputDebugString(L"        }\r\n");
-
-    .OutputDebugString(L"\r\n");
-#endif
-
-}
-
-#if DEBUG
-        private static HashSet<Opcode> opcode_seen = new HashSet<Opcode>();
-#endif
-
-
+            if (instr.Length > 2)
+            {
+                var wInstr = r2.ReadBeUInt32();
+                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");");
+            }
+            else
+            {
+                var wInstr = r2.ReadBeUInt16();
+                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");");
+            }
+            Console.WriteLine("            AssertCode(");
+            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
+            Console.WriteLine($"                \"1|L--|@@@\");");
+            Console.WriteLine("        }");
         }
+    }
 
-        public class ArmRewriterRetired : IEnumerable<RtlInstructionCluster>
+#if NATIVE
+
+    public class ArmRewriterRetired : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
         private EndianImageReader rdr;
@@ -1192,5 +1195,5 @@ void EmitUnitTest()
         [DllImport("ArmNative",CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNativeRewriter")]
 		//[return: MarshalAs(UnmanagedType.IUnknown)]
         public static extern IntPtr CreateNativeRewriter(IntPtr rawbytes, int length, int offset, ulong address, IntPtr rtlEmitter, IntPtr typeFactory, IntPtr host);
-    }
+#endif
 }

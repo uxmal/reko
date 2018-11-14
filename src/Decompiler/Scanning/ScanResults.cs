@@ -99,6 +99,11 @@ namespace Reko.Scanning
         public List<link> FlatEdges { get; set; }
 
         /// <summary>
+        /// All the places that were identified as padding.
+        /// </summary>
+        public List<RtlBlock> RemovedPadding { get; set; }
+
+        /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
         /// excluding relocations which are known to be addresses.
         /// </summary>
@@ -131,7 +136,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
         {
-            BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
+            //BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
 
             return;     // This is horribly verbose, so only use it when debugging unit tests.
 #if VERBOSE
@@ -180,7 +185,7 @@ namespace Reko.Scanning
             public Address block_id;
             public int pred;
             public int succ;
-            internal RtlInstructionCluster rtl;
+            public RtlInstructionCluster rtl;
         }
 
         public class link

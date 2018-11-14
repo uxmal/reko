@@ -63,8 +63,7 @@ namespace Reko.Scanning
 
         private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
         {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledProcedure(addr, out sProc))
+            if (!TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc))
             {
                 parsedProc = null;
                 return false;

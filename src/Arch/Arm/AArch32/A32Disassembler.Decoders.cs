@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm.AArch32
                 return (u >> shift) & mask;
             }
 
-            protected void DumpMaskedInstruction(uint wInstr, uint shMask)
+            protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
             {
                 return;
                 var hibit = 0x80000000u;
@@ -58,22 +58,32 @@ namespace Reko.Arch.Arm.AArch32
                     shMask <<= 1;
                     wInstr <<= 1;
                 }
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    sb.AppendFormat(" {0}", tag);
+                }
                 Debug.Print(sb.ToString());
             }
         }
 
         public class MaskDecoder : Decoder
         {
+            private readonly string tag;
             private readonly int shift;
             private readonly uint mask;
             private readonly Decoder[] decoders;
 
-            public MaskDecoder(int shift, uint mask, params Decoder[] decoders)
+            public MaskDecoder(string tag, int shift, uint mask, params Decoder[] decoders)
             {
+                this.tag = tag;
                 this.shift = shift;
                 this.mask = mask;
                 Debug.Assert(decoders.Length == mask + 1, $"Inconsistent number of decoders {decoders.Length} (shift {shift} mask {mask:X})");
                 this.decoders = decoders;
+            }
+
+            public MaskDecoder(int shift, uint mask, params Decoder[] decoders): this("", shift, mask, decoders)
+            {
             }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
@@ -87,34 +97,36 @@ namespace Reko.Arch.Arm.AArch32
             public void TraceDecoder(uint wInstr)
             {
                 var shMask = this.mask << shift;
-                DumpMaskedInstruction(wInstr, shMask);
+                DumpMaskedInstruction(wInstr, shMask, tag);
             }
         }
 
         public class BitfieldDecoder : Decoder
         {
+            private readonly string tag;
             private readonly Bitfield [] bitfields;
             private readonly Decoder[] decoders;
 
-            public BitfieldDecoder(Bitfield[] bitfields, Decoder[] decoders)
+            public BitfieldDecoder(string tag, Bitfield[] bitfields, Decoder[] decoders)
             {
+                this.tag = tag;
                 this.bitfields = bitfields;
                 this.decoders = decoders;
             }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
-                TraceDecoder(wInstr);
+                TraceDecoder(wInstr, tag);
                 uint n = Bitfield.ReadFields(bitfields, wInstr);
                 return this.decoders[n].Decode(wInstr, dasm);
             }
 
 
             [Conditional("DEBUG")]
-            public void TraceDecoder(uint wInstr)
+            public void TraceDecoder(uint wInstr, string tag = "")
             {
                 var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
-                DumpMaskedInstruction(wInstr, shMask);
+                DumpMaskedInstruction(wInstr, shMask, tag);
             }
         }
 
@@ -209,20 +221,26 @@ namespace Reko.Arch.Arm.AArch32
         // Special decoder for when a 4-bit field has the bit pattern 1111 or not.
         private class PcDecoder : Decoder
         {
+            private readonly string tag;
             private readonly int shift;
             private readonly Decoder not1111;
             private readonly Decoder is1111;
 
-            public PcDecoder(int shift, Decoder not1111, Decoder is1111)
+            public PcDecoder(string tag, int shift, Decoder not1111, Decoder is1111)
             {
+                this.tag = tag;
                 this.shift = shift;
                 this.not1111 = not1111;
                 this.is1111 = is1111;
             }
 
+            public PcDecoder(int shift, Decoder not1111, Decoder is1111) : this("", shift, not1111, is1111)
+            {
+            }
+
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
-                TraceMask(wInstr);
+                TraceMask(wInstr, tag);
                 var op = (wInstr >> shift) & 0xF;
                 if (op == 0xF)
                     return is1111.Decode(wInstr, dasm);
@@ -231,10 +249,10 @@ namespace Reko.Arch.Arm.AArch32
             }
 
             [Conditional("DEBUG")]
-            public void TraceMask(uint wInstr)
+            public void TraceMask(uint wInstr, string tag)
             {
                 var shMask = 0xFu << shift;
-                DumpMaskedInstruction(wInstr, shMask);
+                DumpMaskedInstruction(wInstr, shMask, tag);
             }
         }
 
@@ -255,14 +273,16 @@ namespace Reko.Arch.Arm.AArch32
 
         private class SelectDecoder:Decoder
         {
+            private readonly string tag;
             private readonly int pos;
             private readonly uint mask;
             private readonly Predicate<uint> predicate;
             private readonly Decoder trueDecoder;
             private readonly Decoder falseDecoder;
 
-            public SelectDecoder(int pos, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            public SelectDecoder(string tag, int pos, uint mask, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
             {
+                this.tag = tag;
                 this.pos = pos;
                 this.mask = mask;
                 this.predicate = predicate;
@@ -282,7 +302,7 @@ namespace Reko.Arch.Arm.AArch32
             private void TraceMask(uint wInstr)
             {
                 var uMask = mask << pos;
-                DumpMaskedInstruction(wInstr, uMask);
+                DumpMaskedInstruction(wInstr, uMask, tag);
             }
         }
     }

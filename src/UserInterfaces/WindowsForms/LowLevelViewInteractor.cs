@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -219,7 +219,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.ActionCallTerminates:
                         if (instr != null)
                         {
-                            if ((instr.InstructionClass &  InstructionClass.Call) != 0)
+                            if ((instr.InstructionClass &  InstrClass.Call) != 0)
                             {
                                 status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                             }
@@ -294,7 +294,7 @@ namespace Reko.UserInterfaces.WindowsForms
             AddressRange addrRange = GetSelectedAddressRange();
             if (addrRange == null)
                 return;
-            var rdr = program.CreateImageReader(addrRange.Begin);
+            var rdr = program.CreateImageReader(program.Architecture, addrRange.Begin);
             var addrDst = rdr.Read(program.Platform.PointerType);
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
@@ -348,7 +348,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
                 var dumper = new Dumper(decompiler.Project.Programs.First());
                 var sb = new StringWriter();
-                dumper.DumpData(control.MemoryView.SegmentMap, range, new TextFormatter(sb));
+                dumper.DumpData(control.MemoryView.SegmentMap, program.Architecture, range, new TextFormatter(sb));
                 var text = sb.ToString();
                 if (text.Length > 0)
                 {
@@ -420,7 +420,8 @@ namespace Reko.UserInterfaces.WindowsForms
                     arr.Length = nElems;
                 }
             }
-            var item = program.AddUserGlobalItem(address, dataType);
+            var arch = program.Architecture;
+            var item = program.AddUserGlobalItem(arch, address, dataType);
             control.MemoryView.Invalidate();
             return item;
         }
@@ -530,7 +531,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private string SelectionToHex(AddressRange addr)
         {
             var sb = new StringBuilder();
-            var rdr = program.CreateImageReader(addr.Begin);
+            var rdr = program.CreateImageReader(program.Architecture, addr.Begin);
             var sep = "";
             while (rdr.Address <= addr.End)
             {

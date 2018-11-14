@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System;
@@ -26,11 +27,11 @@ namespace Reko.Arch.Mips
 {
     public class MipsInstruction : MachineInstruction
     {
-        private const InstructionClass LinkCondTransfer = InstructionClass.Conditional | InstructionClass.Call | InstructionClass.Transfer | InstructionClass.Delay;
-        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer | InstructionClass.Delay;
-        private const InstructionClass Linear = InstructionClass.Linear;
-        private const InstructionClass Transfer = InstructionClass.Transfer | InstructionClass.Delay;
-        private const InstructionClass LinkTransfer = InstructionClass.Transfer | InstructionClass.Call | InstructionClass.Delay;
+        private const InstrClass LinkCondTransfer = InstrClass.Conditional | InstrClass.Call | InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass Linear = InstrClass.Linear;
+        private const InstrClass Transfer = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass LinkTransfer = InstrClass.Transfer | InstrClass.Call | InstrClass.Delay;
 
         private static readonly Dictionary<Opcode, string> instrNames = new Dictionary<Opcode, string>
         {
@@ -59,22 +60,20 @@ namespace Reko.Arch.Mips
             { Opcode.trunc_l_d, "trunc.l.d" },
         };
 
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         public Opcode opcode;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override bool IsValid { get { return opcode != Opcode.illegal; } }
-
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass ct;
+                InstrClass ct;
                 if (!classOf.TryGetValue(opcode, out ct))
                 {
                     ct = Linear;
@@ -124,9 +123,9 @@ namespace Reko.Arch.Mips
 
         static MipsInstruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.illegal, InstructionClass.Invalid },
+                { Opcode.illegal, InstrClass.Invalid },
 
                 { Opcode.beq,     CondTransfer },
                 { Opcode.beql,    LinkCondTransfer },

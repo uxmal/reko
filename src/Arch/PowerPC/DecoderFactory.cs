@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -67,7 +68,7 @@ namespace Reko.Arch.PowerPC
                     { 0, new DOpRec(Opcode.mcrf, "C1,C2")},
                     { 16, new BclrOpRec() },
                     { 33, new DOpRec(Opcode.crnor, "I1,I2,I3") },
-                    { 50, new DOpRec(Opcode.rfi, "") },
+                    { 50, new DOpRec(Opcode.rfi, "", InstrClass.Transfer) },
                     { 0x96, new DOpRec(Opcode.isync, "") },
                     { 449, new DOpRec(Opcode.cror, "I1,I2,I3") },
                     { 0x0C1, new DOpRec(Opcode.crxor, "I1,I2,I3") },

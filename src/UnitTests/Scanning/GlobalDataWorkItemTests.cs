@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -205,6 +205,7 @@ namespace Reko.UnitTests.Scanning
                new Identifier("", PrimitiveType.Real32, null),
                new Identifier[0]);
             scanner.Expect(s => s.EnqueueUserProcedure(
+                Arg<IProcessorArchitecture>.Is.NotNull,
                 Arg<Address>.Is.Equal(addr),
                 Arg<FunctionType>.Is.NotNull,
                 Arg<string>.Is.Anything));

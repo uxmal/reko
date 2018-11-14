@@ -61,7 +61,7 @@ namespace Reko.Scanning
                 {
                     rtl = new RtlInstructionCluster(aex.Address, granularity,
                         new RtlInvalid());
-                    rtl.Class = RtlClass.Invalid;
+                    rtl.Class = InstrClass.Invalid;
                 }
                 if (rtl != null)
                     yield return rtl;

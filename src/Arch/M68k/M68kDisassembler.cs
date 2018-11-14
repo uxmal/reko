@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -35,11 +35,12 @@ namespace Reko.Arch.M68k
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
+        private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
+
         public const string HexStringFormat = "{0}${1}";
 
         private EndianImageReader rdr;        // program counter 
         internal M68kInstruction instr;  // instruction being built
-        private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
         
         private M68kDisassembler(EndianImageReader rdr, uint cpuType)
         {
@@ -63,27 +64,26 @@ namespace Reko.Arch.M68k
             if (!rdr.TryReadBeUInt16(out instruction))
                 return null;
             var offset = rdr.Offset;
-            OpRec handler = g_instruction_table[instruction];
+            Decoder handler = g_instruction_table[instruction];
             try
-            {
-                instr = new M68kInstruction { Address = addr };
-                instr = handler.opcode_handler(this);
-                if (instr == null)
-                    instr = new M68kInstruction { Address = addr, code = Opcode.illegal };
-                instr.Address = addr;
-                instr.Length = (int)(rdr.Address - addr);
-            }
-            catch
             {
                 instr = new M68kInstruction
                 {
                     Address = addr,
-                    code = Opcode.illegal
+                    iclass = handler.iclass
                 };
-                instr.Address = addr;
+                instr = handler.opcode_handler(this);
+                if (instr == null)
+                    instr = Invalid();
+                instr.Length = (int)(rdr.Address - addr);
+            }
+            catch
+            {
+                instr = Invalid();
                 instr.Length = 2;
                 rdr.Offset = offset + 2;
             }
+            instr.Address = addr;
             return instr;
         }
 
@@ -188,6 +188,14 @@ namespace Reko.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (((A) & 3) == 2 && ((A) & 0x47) < 0x44); }
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
+        private static M68kInstruction Invalid()
+        {
+            return new M68kInstruction
+            {
+                code = Opcode.illegal,
+                iclass = InstrClass.Invalid,
+            };
+        }
 
         /// <summary>
         /// OpRecs provide the knowledge for how to decode a M68k instruction.
@@ -196,7 +204,7 @@ namespace Reko.Arch.M68k
         /// OpRecs follow the flyweight pattern; they must never have modifyable state. Therefore,
         /// all the fields are readonly.
         /// </remarks>
-        private class OpRec
+        private class Decoder
         {
             public readonly Func<M68kDisassembler, M68kInstruction> opcode_handler;
             public readonly uint mask;                  // opcode mask
@@ -204,6 +212,7 @@ namespace Reko.Arch.M68k
             public readonly uint ea_mask;               // Permitted ea modes are allowed 
 
             public readonly Opcode opcode;              // The decoded opcode.
+            public readonly InstrClass iclass;          // Instruction class of the decoded instruction.
             public readonly string operandFormat;       // Format string which when interpreted generates the operands of the dasm.instruction.
 
             /// <summary>
@@ -220,7 +229,8 @@ namespace Reko.Arch.M68k
             /// <param name="mask"></param>
             /// <param name="match"></param>
             /// <param name="ea_mask"></param>
-            public OpRec(Func<M68kDisassembler, M68kInstruction> handler, uint mask, uint match, uint ea_mask)
+            /// <param name="iclass"></param>
+            public Decoder(Func<M68kDisassembler, M68kInstruction> handler, uint mask, uint match, uint ea_mask, InstrClass iclass = InstrClass.Linear)
             {
                 Debug.Assert(handler == null || handler.Target == null, "If a handler is specified it must be a static method.");
                 this.opcode_handler = handler;
@@ -229,6 +239,7 @@ namespace Reko.Arch.M68k
                 this.ea_mask = ea_mask;
 
                 this.opcode = Opcode.illegal;
+                this.iclass = iclass;
                 this.operandFormat = "$";
             }
 
@@ -245,7 +256,8 @@ namespace Reko.Arch.M68k
             /// <param name="match"></param>
             /// <param name="ea_mask"></param>
             /// <param name="opcode"></param>
-            public OpRec(string opFormat, uint mask, uint match, uint ea_mask, Opcode opcode)
+            /// <param name="iclass"></param>
+            public Decoder(string opFormat, uint mask, uint match, uint ea_mask, Opcode opcode, InstrClass iclass = InstrClass.Linear)
             {
                 this.operandFormat = opFormat;
 
@@ -255,12 +267,14 @@ namespace Reko.Arch.M68k
                 this.ea_mask = ea_mask;
 
                 this.opcode = opcode;
+                this.iclass = iclass;
             }
 
             public virtual M68kInstruction UseDecodeMethod(M68kDisassembler dasm)
             {
                 var instr = dasm.instr;
                 instr.code = opcode;
+                instr.iclass = iclass;
                 if (opcode == Opcode.illegal || string.IsNullOrEmpty(operandFormat))
                 {
                     return dasm.instr;
@@ -282,13 +296,13 @@ namespace Reko.Arch.M68k
                 }
                 else
                 {
-                    return new M68kInstruction { code = Opcode.illegal };
+                    return Invalid();
                 }
             }
         }
 
         // Opcode handler jump table 
-        static OpRec[] g_instruction_table = new OpRec[0x10000];
+        static Decoder[] g_instruction_table = new Decoder[0x10000];
 
         string g_dasm_str;              //string to hold disassembly: OBSOLETE
         internal ushort instruction;    // 16-bit instruction
@@ -760,16 +774,18 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction CreateInstruction(
             Opcode code,
+            InstrClass iclass,
             PrimitiveType width,
             MachineOperand op1,
             MachineOperand op2)
         {
             if (op1 == null || op2 == null)
-                return new M68kInstruction { code = Opcode.illegal };
+                return Invalid();
 
             return new M68kInstruction
             {
                 code = code,
+                iclass = iclass,
                 dataWidth = width,
                 op1 = op1,
                 op2 = op2,
@@ -816,19 +832,24 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68000_illegal(M68kDisassembler dasm)
         {
-            throw new NotSupportedException(string.Format("dc.w    ${0:X}; ILLEGAL", dasm.instruction));
+            return Invalid();
+            //throw new NotSupportedException(string.Format("dc.w    ${0:X}; ILLEGAL", dasm.instruction));
         }
 
         private static M68kInstruction d68000_1010(M68kDisassembler dasm)
         {
             if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", dasm.instruction);
-            return new M68kInstruction { code = Opcode.illegal, op1 = new M68kImmediateOperand(Constant.Word16( dasm.instruction)) };
+            return new M68kInstruction {
+                code = Opcode.illegal,
+                iclass = InstrClass.Invalid,
+                op1 = new M68kImmediateOperand(Constant.Word16( dasm.instruction))
+            };
         }
 
         private static M68kInstruction d68000_1111(M68kDisassembler dasm)
         {
             if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1111", dasm.instruction);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68000_bcc_8(M68kDisassembler dasm)
@@ -838,6 +859,7 @@ namespace Reko.Arch.M68k
             {
                 Address = dasm.instr.Address,
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
+                iclass = InstrClass.ConditionalTransfer,
                 op1 = new M68kAddressOperand(temp_pc + make_int_8(dasm.instruction))
             };
         }
@@ -849,6 +871,7 @@ namespace Reko.Arch.M68k
             {
                 Address = dasm.instr.Address,
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
+                iclass = InstrClass.ConditionalTransfer,
                 op1 = new M68kAddressOperand(temp_pc + dasm.rdr.ReadBeInt16()),
             };
         }
@@ -861,28 +884,8 @@ namespace Reko.Arch.M68k
             {
                 Address = dasm.instr.Address,
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
+                iclass = InstrClass.ConditionalTransfer,
                 op1 = new M68kAddressOperand(temp_pc + dasm.rdr.ReadBeInt32()),
-            };
-        }
-
-        private static M68kInstruction d68000_bchg_r(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.bchg,
-                op1 = get_data_reg((dasm.instruction >> 9) & 7),
-                op2 = dasm.get_ea_mode_str_8(dasm.instruction)
-            };
-        }
-
-        private static M68kInstruction d68000_bchg_s(M68kDisassembler dasm)
-        {
-            var str = dasm.get_imm_str_u8();
-            return new M68kInstruction
-            {
-                code = Opcode.bchg,
-                op1 = str,
-                op2 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
         }
 
@@ -892,6 +895,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.bkpt,
+                iclass = InstrClass.System,
                 op1 = new M68kImmediateOperand(Constant.Byte((byte)(dasm.instruction & 7)))
             };
         }
@@ -915,7 +919,7 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bfchg   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_bfclr(M68kDisassembler dasm)
@@ -937,7 +941,7 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bfclr   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_bfexts(M68kDisassembler dasm)
@@ -959,12 +963,12 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bfexts  D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_bfextu(M68kDisassembler dasm)
         {
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
             //uint extension;
             //string offset; ;
             //string width; ;
@@ -1004,7 +1008,7 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bfffo   D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_bfins(M68kDisassembler dasm)
@@ -1026,7 +1030,7 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bfins   D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_bfset(M68kDisassembler dasm)
@@ -1048,7 +1052,7 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bfset   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_bftst(M68kDisassembler dasm)
@@ -1070,7 +1074,7 @@ namespace Reko.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             dasm.g_dasm_str = string.Format("bftst   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_callm(M68kDisassembler dasm)
@@ -1080,6 +1084,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.callm,
+                iclass = InstrClass.Transfer|InstrClass.Call,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
@@ -1093,6 +1098,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cas,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Byte,
                 op1 = get_data_reg((int)extension & 7),
                 op2 = get_data_reg((int)(extension >> 8) & 7),
@@ -1108,6 +1114,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cas,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = get_data_reg((int)extension & 7),
                 op2 = get_data_reg((int)(extension >> 8) & 7),
@@ -1123,6 +1130,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cas,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = get_data_reg((int)extension & 7),
                 op2 = get_data_reg((int)(extension >> 8) & 7),
@@ -1145,7 +1153,7 @@ namespace Reko.Arch.M68k
                 (extension >> 16) & 7, extension & 7, (extension >> 22) & 7, (extension >> 6) & 7,
                 BIT_1F(extension) ? 'A' : 'D', (extension >> 28) & 7,
                 BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cas2_32(M68kDisassembler dasm)
@@ -1157,7 +1165,7 @@ namespace Reko.Arch.M68k
                 (extension >> 16) & 7, extension & 7, (extension >> 22) & 7, (extension >> 6) & 7,
                 BIT_1F(extension) ? 'A' : 'D', (extension >> 28) & 7,
                 BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68000_chk_16(M68kDisassembler dasm)
@@ -1165,6 +1173,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.chk,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction),
                 op2 = get_data_reg((dasm.instruction >> 9) & 7)
@@ -1177,6 +1186,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.chk,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = dasm.get_ea_mode_str_32(dasm.instruction),
                 op2 = get_data_reg((dasm.instruction >> 9) & 7)
@@ -1190,6 +1200,7 @@ namespace Reko.Arch.M68k
 
             return CreateInstruction(
                 BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                InstrClass.Invalid,
                 PrimitiveType.Byte,
                 dasm.get_ea_mode_str_8(dasm.instruction),
                 get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7));
@@ -1202,6 +1213,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction),
                 op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
@@ -1217,6 +1229,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = dasm.get_ea_mode_str_32(dasm.instruction),
                 op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
@@ -1241,7 +1254,7 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("cinva   {0}; (4)", (dasm.instruction >> 6) & 3);
                 break;
             }
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cmpi_pcdi_8(M68kDisassembler dasm)
@@ -1251,6 +1264,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cmpi,
+                iclass = InstrClass.Linear,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
@@ -1263,6 +1277,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cmpi,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Byte,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_8(dasm.instruction)
@@ -1276,6 +1291,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cmpi,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_16(dasm.instruction)
@@ -1289,6 +1305,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cmpi,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_16(dasm.instruction)
@@ -1301,6 +1318,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cmpi,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_32(dasm.instruction)
@@ -1314,6 +1332,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.cmpi,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_32(dasm.instruction)
@@ -1325,10 +1344,13 @@ namespace Reko.Arch.M68k
             var new_pc = dasm.rdr.Address;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             Opcode opcode = g_cpcc[dasm.instruction & 0x3f];
+            if (opcode == Opcode.illegal)
+                return Invalid();
             return new M68kInstruction
             {
                 code = opcode,
-                op1 = (opcode != Opcode.illegal) ? new M68kAddressOperand(new_pc + dasm.rdr.ReadBeInt16()) : null
+                iclass = InstrClass.Linear,
+                op1 = new M68kAddressOperand(new_pc + dasm.rdr.ReadBeInt16())
             };
         }
 
@@ -1363,13 +1385,13 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt32(out u))
                 return null;
             dasm.g_dasm_str = string.Format("%dgen    %s; (2-3)", (dasm.instruction >> 9) & 7, u);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cprestore(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
             //if (((dasm.instruction >> 9) & 7) == 1)
             //{
             //    dasm.g_dasm_str = string.Format("frestore {0}", dasm.get_ea_mode_str_8(dasm.instruction));
@@ -1392,7 +1414,7 @@ namespace Reko.Arch.M68k
             {
                 dasm.g_dasm_str = string.Format("{0}save   {1}; (2-3)", (dasm.instruction >> 9) & 7, dasm.get_ea_mode_str_8(dasm.instruction));
             }
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cpscc(M68kDisassembler dasm)
@@ -1404,7 +1426,7 @@ namespace Reko.Arch.M68k
             int cooprocessor_id = (dasm.instruction >> 9) & 7;
             extension1 = dasm.read_imm_16();
             dasm.g_dasm_str = string.Format("{0}cpS{1}  %s; (extension = %x) (2-3)", cooprocessor_id, g_cpcc[extension1 & 0x3f], dasm.get_ea_mode_str_8(dasm.instruction));
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cptrapcc_0(M68kDisassembler dasm)
@@ -1415,7 +1437,7 @@ namespace Reko.Arch.M68k
             extension1 = dasm.read_imm_16();
             extension2 = dasm.read_imm_16();
             dasm.g_dasm_str = string.Format("{0}cptrap{1,4}; (extension = {2:X}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cptrapcc_16(M68kDisassembler dasm)
@@ -1430,7 +1452,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt16(out extension2))
                 return null;
             dasm.g_dasm_str = string.Format("{0}trap{1,4} {2}; (extension = {3}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.rdr.ReadBeUInt16(), extension2);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_cptrapcc_32(M68kDisassembler dasm)
@@ -1444,7 +1466,7 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt32(out u))
                 return null;
             dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], new M68kImmediateOperand(Constant.UInt32(u)), extension2);
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68040_cpush(M68kDisassembler dasm)
@@ -1465,7 +1487,7 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("cpusha  {0}; (4)", (dasm.instruction >> 6) & 3);
                 break;
             }
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68000_dbcc(M68kDisassembler dasm)
@@ -1475,6 +1497,7 @@ namespace Reko.Arch.M68k
             {
                 Address = dasm.instr.Address,
                 code = g_dbcc[(dasm.instruction >> 8) & 0xf],
+                iclass = InstrClass.ConditionalTransfer,
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = new M68kAddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
             };
@@ -1519,6 +1542,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = code,
+                iclass = InstrClass.Linear,
                 dataWidth = dataWidth,
                 op1 = ea,
                 op2 = op2,
@@ -1530,6 +1554,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.eori,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_imm_str_u8(),
                 op2 = new RegisterOperand(Registers.ccr),
             };
@@ -1544,6 +1569,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.eori,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = new M68kImmediateOperand(Constant.UInt16(extension1)),
                 op2 = new RegisterOperand(Registers.sr),
@@ -1572,15 +1598,14 @@ namespace Reko.Arch.M68k
             src = (w2 >> 10) & 0x7;
             dst_reg = (w2 >> 7) & 0x7;
 
+            var instr = dasm.instr;
             // special override for FMOVECR
             if ((((w2 >> 13) & 0x7) == 2) && (((w2 >> 10) & 0x7) == 7))
             {
-                return new M68kInstruction
-                {
-                    code = Opcode.fmovecr,
-                    op1 = new M68kImmediateOperand(Constant.Byte((byte)(w2 & 0x7f))),
-                    op2 = dasm.get_fp_reg((int)dst_reg),
-                };
+                instr.code = Opcode.fmovecr;
+                instr.op1 = new M68kImmediateOperand(Constant.Byte((byte) (w2 & 0x7f)));
+                instr.op2 = dasm.get_fp_reg((int) dst_reg);
+                return instr;
             }
 
             switch ((w2 >> 13) & 0x7)
@@ -1656,24 +1681,19 @@ namespace Reko.Arch.M68k
 
                     if ((w2 & 0x4000) != 0)
                     {
-                        return new M68kInstruction
-                        {
-                            code = mnemonic,
-                            dataWidth = float_data_format[src],
-                            op1 = dasm.get_ea_mode_str(dasm.instruction, float_data_format[src]),
-                            op2 = dasm.get_fp_reg((int) dst_reg)
-                        };
+                        instr.code = mnemonic;
+                        instr.dataWidth = float_data_format[src];
+                        instr.op1 = dasm.get_ea_mode_str(dasm.instruction, float_data_format[src]);
+                        instr.op2 = dasm.get_fp_reg((int) dst_reg);
                     }
                     else
                     {
-                        return new M68kInstruction
-                        {
-                            code = mnemonic,
-                            dataWidth = PrimitiveType.Real80,
-                            op1 = dasm.get_fp_reg((int) src),
-                            op2 = dasm.get_fp_reg((int) dst_reg),
-                        };
+                        instr.code = mnemonic;
+                        instr.dataWidth = PrimitiveType.Real80;
+                        instr.op1 = dasm.get_fp_reg((int) src);
+                        instr.op2 = dasm.get_fp_reg((int) dst_reg);
                     }
+                    return instr;
                 }
 
             case 0x3:
@@ -1681,27 +1701,22 @@ namespace Reko.Arch.M68k
                     switch ((w2 >> 10) & 7)
                     {
                     case 3:		// packed decimal w/fixed k-factor
-                        return new M68kInstruction
-                        {
-                            code = Opcode.fmove,
-                            dataWidth = float_data_format[(w2 >> 10) & 7],
-                            op1 = dasm.get_fp_reg((int)dst_reg),
-                            op2 = dasm.get_ea_mode_str_32(dasm.instruction),
+                        instr.code = Opcode.fmove;
+                        instr.dataWidth = float_data_format[(w2 >> 10) & 7];
+                        instr.op1 = dasm.get_fp_reg((int) dst_reg);
+                        instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
                             // sext_7bit_int((int)w2 & 0x7f));
-                        };
-
+                        return instr;
                     case 7:		// packed decimal w/dynamic k-factor (register)
                         dasm.g_dasm_str = string.Format("fmove{0}   FP%d, %s {D%d}", float_data_format[(w2 >> 10) & 7], dst_reg, dasm.get_ea_mode_str_32(dasm.instruction), (w2 >> 4) & 7);
                         break;
 
                     default:
-                        return new M68kInstruction
-                        {
-                            code = Opcode.fmove,
-                            dataWidth = float_data_format[(w2 >> 10) & 7],
-                            op1 = dasm.get_fp_reg((int)dst_reg),
-                            op2 = dasm.get_ea_mode_str_32(dasm.instruction)
-                        };
+                        instr.code = Opcode.fmove;
+                        instr.dataWidth = float_data_format[(w2 >> 10) & 7];
+                        instr.op1 = dasm.get_fp_reg((int) dst_reg);
+                        instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
+                        return instr;
                     }
                     break;
                 }
@@ -1735,19 +1750,19 @@ namespace Reko.Arch.M68k
                     }
                     else	// static register list
                     {
-                        dasm.instr.code = Opcode.fmovem;
-                        dasm.instr.dataWidth = PrimitiveType.Real96;
+                        instr.code = Opcode.fmovem;
+                        instr.dataWidth = PrimitiveType.Real96;
                         if (((w2 >> 12) & 1) == 0)
                         {
-                            dasm.instr.op2 = RegisterSetOperand.CreateReversed((byte)w2, PrimitiveType.Real96);
+                            instr.op2 = RegisterSetOperand.CreateReversed((byte)w2, PrimitiveType.Real96);
                         }
                         else
                         {
-                            dasm.instr.op2 = new RegisterSetOperand((byte)w2, PrimitiveType.Real96);
+                            instr.op2 = new RegisterSetOperand((byte)w2, PrimitiveType.Real96);
                         }
-                        dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.instruction);
-                        dasm.instr.ToString();
-                        return dasm.instr;
+                        instr.op1 = dasm.get_ea_mode_str_32(dasm.instruction);
+                        instr.ToString();
+                        return instr;
 
                         //int i;
 
@@ -1776,29 +1791,26 @@ namespace Reko.Arch.M68k
                 {
                     if (((w2 >> 11) & 1) != 0)	// dynamic register list
                     {
-                        return new M68kInstruction
-                        {
-                            code = Opcode.fmovem,
-                            dataWidth = PrimitiveType.Real96,
-                            op1 = new RegisterOperand(Registers.GetRegister((int)(w2 >> 4) & 7)),
-                            op2 = dasm.get_ea_mode_str_32(dasm.instruction)
-                        };
+                        instr.code = Opcode.fmovem;
+                        instr.dataWidth = PrimitiveType.Real96;
+                        instr.op1 = new RegisterOperand(Registers.GetRegister((int) (w2 >> 4) & 7));
+                        instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
                     }
                     else	// static register list
                     {
-                        dasm.instr.code = Opcode.fmovem;
-                        dasm.instr.dataWidth = PrimitiveType.Real96;
+                        instr.code = Opcode.fmovem;
+                        instr.dataWidth = PrimitiveType.Real96;
                         if (((w2 >> 12) & 1) == 0)
                         {
-                            dasm.instr.op1 = RegisterSetOperand.CreateReversed((ushort)(w2 << 8), PrimitiveType.Real96);
+                            instr.op1 = RegisterSetOperand.CreateReversed((ushort)(w2 << 8), PrimitiveType.Real96);
                         }
                         else
                         {
-                            dasm.instr.op1 = new RegisterSetOperand(w2 & 0xFF, PrimitiveType.Real96);
+                            instr.op1 = new RegisterSetOperand(w2 & 0xFF, PrimitiveType.Real96);
                         }
-                        dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
+                        instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
                     }
-                    return dasm.instr;
+                    return instr;
                 }
 
             default:
@@ -1807,7 +1819,7 @@ namespace Reko.Arch.M68k
                     break;
                 }
             }
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68000_move_8(M68kDisassembler dasm)
@@ -1816,6 +1828,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Byte,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_8(((dasm.instruction >> 9) & 7) | ((dasm.instruction >> 3) & 0x38))
@@ -1828,6 +1841,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_16(((dasm.instruction >> 9) & 7) | ((dasm.instruction >> 3) & 0x38))
@@ -1840,6 +1854,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = str,
                 op2 = dasm.get_ea_mode_str_32(((dasm.instruction >> 9) & 7) | ((dasm.instruction >> 3) & 0x38))
@@ -1852,6 +1867,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 op1 = new RegisterOperand(Registers.ccr),
                 op2 = dasm.get_ea_mode_str_8(dasm.instruction),
             };
@@ -1862,6 +1878,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = new RegisterOperand(Registers.sr),
                 op2 = dasm.get_ea_mode_str_16(dasm.instruction),
@@ -1873,6 +1890,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction),
                 op2 = new RegisterOperand(Registers.sr)
@@ -1884,6 +1902,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 op1 = new RegisterOperand(Registers.usp),
                 op2 = get_addr_reg(dasm.instruction & 7)
             };
@@ -1894,6 +1913,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                iclass = InstrClass.Linear,
                 op1 = get_addr_reg(dasm.instruction & 7),
                 op2 = new RegisterOperand(Registers.usp),
             };
@@ -1969,6 +1989,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.movec,
+                    iclass = InstrClass.Linear,
                     op1 = other_reg,
                     op2 = reg_name
                 };
@@ -1978,6 +1999,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.movec,
+                    iclass = InstrClass.Linear,
                     op1 = reg_name,
                     op2 = other_reg
                 };
@@ -2028,158 +2050,7 @@ namespace Reko.Arch.M68k
                 }
             }
             dasm.g_dasm_str = string.Format("movem.w {0},{1}", buffer, dasm.get_ea_mode_str_16(dasm.instruction));
-            return new M68kInstruction { code = Opcode.illegal };
-        }
-
-        private static M68kInstruction d68000_movem_pd_32(M68kDisassembler dasm)
-        {
-            uint data = dasm.read_imm_16();
-            var buffer = new StringBuilder();
-            int first;
-            uint run_length;
-
-            for (int i = 0; i < 8; i++)
-            {
-                if ((data & (1 << (15 - i)))!=0)
-                {
-                    first = i;
-                    run_length = 0;
-                    while (i < 7 && (data & (1 << (15 - (i + 1))))!=0)
-                    {
-                        i++;
-                        run_length++;
-                    }
-                    if (buffer[0] != 0)
-                        buffer.Append("/");
-                    buffer.AppendFormat("D{0}", first);
-                    if (run_length > 0)
-                        buffer.AppendFormat("-D{0}", first + run_length);
-                }
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                if ((data & (1 << (7 - i)))!=0)
-                {
-                    first = i;
-                    run_length = 0;
-                    while (i < 7 && (data & (1 << (7 - (i + 1))))!=0)
-                    {
-                        i++;
-                        run_length++;
-                    }
-                    if (buffer[0] != 0)
-                        buffer.Append("/");
-                    buffer.AppendFormat("A{0}", first);
-                    if (run_length > 0)
-                        buffer.AppendFormat("-A{0}", first + run_length);
-                }
-            }
-            dasm.g_dasm_str = string.Format("movem.l {0},{1}", buffer, dasm.get_ea_mode_str_32(dasm.instruction));
-            return new M68kInstruction { code = Opcode.illegal };
-        }
-
-        private static M68kInstruction d68000_movem_er_16(M68kDisassembler dasm)
-        {
-            uint data = dasm.read_imm_16();
-            var buffer = new StringBuilder();
-            int first;
-            uint run_length;
-
-            for (int i = 0; i < 8; i++)
-            {
-                if ((data & (1 << i))!=0)
-                {
-                    first = i;
-                    run_length = 0;
-                    while (i < 7 && (data & (1 << (i + 1)))!=0)
-                    {
-                        i++;
-                        run_length++;
-                    }
-                    if (buffer.Length == 0)
-                        buffer.Append("/");
-                    buffer.AppendFormat("D{0}", first);
-                    if (run_length > 0)
-                        buffer.AppendFormat("-D{0}", first + run_length);
-                }
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                if ((data & (1 << (i + 8)))!=0)
-                {
-                    first = i;
-                    run_length = 0;
-                    while (i < 7 && (data & (1 << (i + 8 + 1)))!=0)
-                    {
-                        i++;
-                        run_length++;
-                    }
-                    if (buffer[0] != 0)
-                        buffer.Append("/");
-                    buffer.AppendFormat("A{0}", first);
-                    if (run_length > 0)
-                        buffer.AppendFormat("-A{0}", first + run_length);
-                }
-            }
-            dasm.g_dasm_str = string.Format("movem.w {0}, {1}", dasm.get_ea_mode_str_16(dasm.instruction), buffer);
-            return new M68kInstruction { code = Opcode.illegal };
-        }
-
-        private static M68kInstruction d68000_movem_er_32(M68kDisassembler dasm)
-        {
-            uint data = dasm.read_imm_16();
-            var buffer = new StringBuilder();
-            int first;
-            uint run_length;
-
-            for (int i = 0; i < 8; i++)
-            {
-                if ((data & (1 << i))!=0)
-                {
-                    first = i;
-                    run_length = 0;
-                    while (i < 7 && (data & (1 << (i + 1)))!=0)
-                    {
-                        i++;
-                        run_length++;
-                    }
-                    if (buffer[0] != 0)
-                        buffer.Append("/");
-                    buffer.AppendFormat("D{0}", first);
-                    if (run_length > 0)
-                        buffer.AppendFormat("-D{0}", first + run_length);
-                }
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                if ((data & (1 << (i + 8)))!=0)
-                {
-                    first = i;
-                    run_length = 0;
-                    while (i < 7 && (data & (1 << (i + 8 + 1)))!=0)
-                    {
-                        i++;
-                        run_length++;
-                    }
-                    if (buffer[0] != 0)
-                        buffer.Append("/");
-                    buffer.AppendFormat("A{0}", first);
-                    if (run_length > 0)
-                        buffer.AppendFormat("-A{0}", first + run_length);
-                }
-            }
-            dasm.g_dasm_str = string.Format("movem.l {0},{1}", dasm.get_ea_mode_str_32(dasm.instruction), buffer);
-            return new M68kInstruction { code = Opcode.illegal };
-        }
-
-        private static M68kInstruction d68000_movem_re_16(M68kDisassembler dasm)
-        {
-            uint data = dasm.read_imm_16();
-            var buffer = new StringBuilder();
-            dasm.WriteRegisterSet(data, 0, 1, "D", buffer);
-            dasm.WriteRegisterSet(data, 8, 1, "A", buffer);
-            dasm.g_dasm_str = string.Format("movem.w {0},{1}", buffer, dasm.get_ea_mode_str_16(dasm.instruction));
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         public static bool bit(uint word, int pos)
@@ -2212,22 +2083,12 @@ namespace Reko.Arch.M68k
 
         }
 
-        private static M68kInstruction d68000_movem_re_32(M68kDisassembler dasm)
-        {
-            uint data = dasm.read_imm_16();
-            var buffer = new StringBuilder();
-            dasm.WriteRegisterSet(data, 0, 1, "D", buffer);
-            dasm.WriteRegisterSet(data, 8, 1, "A", buffer);
-            dasm.g_dasm_str = string.Format("movem.l {0},{1}", buffer, dasm.get_ea_mode_str_32(dasm.instruction));
-            return new M68kInstruction { code = Opcode.illegal };
-
-        }
-
         private static M68kInstruction d68000_movep_re_16(M68kDisassembler dasm)
         {
             return new M68kInstruction
             {
                 code = Opcode.movep,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = get_data_reg((dasm.instruction >> 9) & 7),
                 op2 = new MemoryOperand(
@@ -2242,6 +2103,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.movep,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = get_data_reg((dasm.instruction >> 9) & 7),
                 op2 = new MemoryOperand(
@@ -2253,30 +2115,28 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68000_movep_er_16(M68kDisassembler dasm)
         {
-            return new M68kInstruction
-            {
-                code = Opcode.movep,
-                dataWidth = PrimitiveType.Word16,
-                op1 = new MemoryOperand(
+            var instr = dasm.instr;
+            instr.code = Opcode.movep;
+            instr.dataWidth = PrimitiveType.Word16;
+            instr.op1 = new MemoryOperand(
                         PrimitiveType.Word16,
                         Registers.AddressRegister(dasm.instruction & 7),
-                        Constant.Int16((short)dasm.read_imm_16())),
-                op2 = get_data_reg((dasm.instruction >> 9) & 7),
-            };
+                        Constant.Int16((short) dasm.read_imm_16()));
+            instr.op2 = get_data_reg((dasm.instruction >> 9) & 7);
+            return instr;
         }
 
         private static M68kInstruction d68000_movep_er_32(M68kDisassembler dasm)
         {
-            return new M68kInstruction
-            {
-                code = Opcode.movep,
-                dataWidth = PrimitiveType.Word32,
-                op1 = new MemoryOperand(
+            var instr = dasm.instr;
+            instr.code = Opcode.movep;
+            instr.dataWidth = PrimitiveType.Word32;
+            instr.op1 = new MemoryOperand(
                         PrimitiveType.Word32,
                         Registers.AddressRegister(dasm.instruction & 7),
-                        Constant.Int16((short)dasm.read_imm_16())),
-                op2 = get_data_reg((dasm.instruction >> 9) & 7),
-            };
+                        Constant.Int16((short) dasm.read_imm_16()));
+            instr.op2 = get_data_reg((dasm.instruction >> 9) & 7);
+            return instr;
         }
 
         private static M68kInstruction d68010_moves_8(M68kDisassembler dasm)
@@ -2290,6 +2150,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.moves,
+                    iclass = InstrClass.System,
                     dataWidth = PrimitiveType.Word16,
                     op1 = reg,
                     op2 = ea
@@ -2298,6 +2159,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.moves,
+                    iclass = InstrClass.System,
                     dataWidth = PrimitiveType.Word16,
                     op1 = ea,
                     op2 = reg,
@@ -2314,6 +2176,7 @@ namespace Reko.Arch.M68k
             if (BIT_B(extension))
                 return new M68kInstruction {
                     code = Opcode.moves,
+                    iclass = InstrClass.System,
                     dataWidth = PrimitiveType.Word16,
                     op1 = reg,
                     op2 = ea
@@ -2321,6 +2184,7 @@ namespace Reko.Arch.M68k
             else 
                 return new M68kInstruction {
                     code = Opcode.moves,
+                    iclass = InstrClass.System,
                     dataWidth = PrimitiveType.Word16,
                     op1 = ea,
                     op2 = reg,
@@ -2338,6 +2202,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.moves,
+                    iclass = InstrClass.System,
                     dataWidth = PrimitiveType.Word16,
                     op1 = reg,
                     op2 = ea
@@ -2346,6 +2211,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.moves,
+                    iclass = InstrClass.System,
                     dataWidth = PrimitiveType.Word16,
                     op1 = ea,
                     op2 = reg,
@@ -2358,6 +2224,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move16,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_post_inc(dasm.instruction & 7),
                 op2 = dasm.get_post_inc((dasm.read_imm_16() >> 12) & 7)
             };
@@ -2372,6 +2239,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move16,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_post_inc(dasm.instruction & 7),
                 op2 = new M68kImmediateOperand(Constant.UInt32(uOp2))
             };
@@ -2386,6 +2254,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move16,
+                iclass = InstrClass.Linear,
                 op1 = new M68kImmediateOperand(Constant.UInt32(uOp1)),
                 op2 = dasm.get_post_inc(dasm.instruction & 7)
             };
@@ -2397,12 +2266,11 @@ namespace Reko.Arch.M68k
             uint uOp2;
             if (!dasm.rdr.TryReadBeUInt32(out uOp2))
                 return null;
-            return new M68kInstruction
-            {
-                code = Opcode.move16,
-                op1 = new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(dasm.instruction & 7)),
-                op2 = new M68kImmediateOperand(Constant.UInt32(uOp2)),
-            };
+            var instr = dasm.instr;
+            instr.code = Opcode.move16;
+            instr.op1 = new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(dasm.instruction & 7));
+            instr.op2 = new M68kImmediateOperand(Constant.UInt32(uOp2));
+            return instr;
         }
 
         private static M68kInstruction d68040_move16_al_ai(M68kDisassembler dasm)
@@ -2412,12 +2280,11 @@ namespace Reko.Arch.M68k
             if (!dasm.rdr.TryReadBeUInt32(out uOp1))
                 return null;
 
-            return new M68kInstruction
-            {
-                code = Opcode.move16,
-                op1 = new M68kImmediateOperand(Constant.UInt32(uOp1)),
-                op2 = new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(dasm.instruction & 7)),
-            };
+            var instr = dasm.instr;
+            instr.code = Opcode.move16;
+            instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
+            instr.op2 = new MemoryOperand(dasm.instr.dataWidth, Registers.AddressRegister(dasm.instruction & 7));
+            return instr;
         }
 
         private static M68kInstruction d68020_mull(M68kDisassembler dasm)
@@ -2433,7 +2300,7 @@ namespace Reko.Arch.M68k
 
             if (!opDecoder.TryParseOperand(dasm.instruction, 0, PrimitiveType.Word32, dasm.rdr, out dasm.instr.op1))
             {
-                return new M68kInstruction { code = Opcode.illegal };
+                return Invalid();
             }
             dasm.instr.op2 = op2;
             return dasm.instr;
@@ -2444,6 +2311,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.nbcd,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
         }
@@ -2457,6 +2325,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.pack,
+                iclass = InstrClass.Linear,
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = get_data_reg((dasm.instruction >> 9) & 7),
                 op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
@@ -2472,6 +2341,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.pack,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_pre_dec(dasm.instruction & 7),
                 op2 = dasm.get_pre_dec((dasm.instruction >> 9) & 7),
                 op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
@@ -2491,7 +2361,7 @@ namespace Reko.Arch.M68k
             {
                 dasm.g_dasm_str = string.Format("pflush{0}(A%d)", (dasm.instruction & 8)!=0 ? "" : "n", dasm.instruction & 7);
             }
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68020_rtm(M68kDisassembler dasm)
@@ -2501,6 +2371,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.rtm,
+                iclass = InstrClass.Transfer|InstrClass.Call,
                 op1 = BIT_3(dasm.instruction) 
                     ? get_addr_reg(reg)
                     : get_data_reg(reg)
@@ -2512,6 +2383,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = g_scc[(dasm.instruction >> 8) & 0xf],
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
         }
@@ -2521,6 +2393,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.stop,
+                iclass = InstrClass.System,
                 op1 = dasm.get_imm_str_s16()
             };
         }
@@ -2530,6 +2403,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tas,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
         }
@@ -2539,6 +2413,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.trap,
+                iclass = InstrClass.Call | InstrClass.Transfer,
                 op1 = new M68kImmediateOperand(Constant.Byte((byte)(dasm.instruction & 0xf)))
             };
         }
@@ -2546,49 +2421,45 @@ namespace Reko.Arch.M68k
         private static M68kInstruction d68020_trapcc_0(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            return new M68kInstruction
-            {
-                code = g_trapcc[(dasm.instruction >> 8) & 0xf],
-            };
+            dasm.instr.code = g_trapcc[(dasm.instruction >> 8) & 0xf];
+            dasm.instr.iclass = dasm.instr.code != Opcode.trapf
+                ? InstrClass.Call | InstrClass.Transfer
+                : InstrClass.Linear;
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_trapcc_16(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            ushort uImm;
-            if (!dasm.rdr.TryReadBeUInt16(out uImm))
+            if (!dasm.rdr.TryReadBeUInt16(out ushort uImm))
                 return null;
 
-            return new M68kInstruction
-            {
-                code = g_trapcc[(dasm.instruction >> 8) & 0xf],
-                op1 = new M68kImmediateOperand(Constant.UInt16(uImm))
-            };
+            dasm.instr.code = g_trapcc[(dasm.instruction >> 8) & 0xf];
+            dasm.instr.iclass = InstrClass.Call | InstrClass.Transfer;
+            dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt16(uImm));
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_trapcc_32(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            uint uOp1;
-            if (!dasm.rdr.TryReadBeUInt32(out uOp1))
+            if (!dasm.rdr.TryReadBeUInt32(out uint uOp1))
                 return null;
 
-            return new M68kInstruction
-            {
-                code = g_trapcc[(dasm.instruction >> 8) & 0xf],
-                op1 = new M68kImmediateOperand(Constant.UInt32(uOp1))
-            };
+            dasm.instr.code = g_trapcc[(dasm.instruction >> 8) & 0xf];
+            dasm.instr.iclass = InstrClass.Call | InstrClass.Transfer;
+            dasm.instr.op1 = new M68kImmediateOperand(Constant.UInt32(uOp1));
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_tst_pcdi_8(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            return new M68kInstruction
-            {
-                code = Opcode.tst,
-                dataWidth = PrimitiveType.Byte,
-                op1 = dasm.get_ea_mode_str_8(dasm.instruction)
-            };
+            dasm.instr.code = Opcode.tst;
+            dasm.instr.iclass = InstrClass.Linear;
+            dasm.instr.dataWidth = PrimitiveType.Byte;
+            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.instruction);
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_tst_pcix_8(M68kDisassembler dasm)
@@ -2597,6 +2468,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Byte,
                 op1 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
@@ -2608,6 +2480,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Byte,
                 op1 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
@@ -2619,6 +2492,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction)
             };
@@ -2630,6 +2504,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction)
             };
@@ -2641,6 +2516,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction)
             };
@@ -2652,6 +2528,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction)
             };
@@ -2663,6 +2540,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = dasm.get_ea_mode_str_32(dasm.instruction)
             };
@@ -2674,6 +2552,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = dasm.get_ea_mode_str_32(dasm.instruction)
             };
@@ -2685,6 +2564,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.tst,
+                iclass = InstrClass.Linear,
                 dataWidth = PrimitiveType.Word32,
                 op1 = dasm.get_ea_mode_str_32(dasm.instruction)
             };
@@ -2699,6 +2579,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.unpk,
+                iclass = InstrClass.Linear,
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = get_data_reg((dasm.instruction >> 9) & 7),
                 op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
@@ -2714,6 +2595,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.unpk,
+                iclass = InstrClass.Linear,
                 op1 = dasm.get_pre_dec(dasm.instruction & 7),
                 op2 = dasm.get_pre_dec((dasm.instruction >> 9) & 7),
                 op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
@@ -2744,6 +2626,7 @@ namespace Reko.Arch.M68k
                     return new M68kInstruction
                     {
                         code = Opcode.pload,
+                        iclass = InstrClass.Linear,
                         op1 = new M68kImmediateOperand(Constant.Byte((byte)((modes >> 10) & 7))),
                         op2 = str,
                     };
@@ -2753,6 +2636,7 @@ namespace Reko.Arch.M68k
                     return new M68kInstruction
                     {
                         code = Opcode.pload,
+                        iclass = InstrClass.Linear,
                         op1 = str,
                         op2 = new M68kImmediateOperand(Constant.Byte((byte)((modes >> 10) & 7))),
                     };
@@ -2764,6 +2648,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.pflushr,
+                    iclass = InstrClass.System,
                     op1 = new M68kImmediateOperand(Constant.Byte((byte)(modes & 0x1f))),
                     op2 = new M68kImmediateOperand(Constant.Byte((byte)((modes >> 5) & 0xf))),
                     op3 = str,
@@ -2775,6 +2660,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.pflushr,
+                    iclass = InstrClass.System,
                     op1 = str,
                 };
             }
@@ -2784,6 +2670,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.pvalid,
+                    iclass = InstrClass.Linear,
                     op1 = dasm.get_ctrl_reg("VAL", 0x2800),
                     op2 = str
                 };
@@ -2794,6 +2681,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.pvalid,
+                    iclass = InstrClass.Linear,
                     op1 = get_addr_reg(modes & 0xf),
                     op2 = str
                 };
@@ -2804,6 +2692,7 @@ namespace Reko.Arch.M68k
                 return new M68kInstruction
                 {
                     code = Opcode.ptest,
+                    iclass = InstrClass.System,
                     op1 = new M68kImmediateOperand(Constant.Byte((byte)(modes & 0x1f))),
                     op2 = str,
                 };
@@ -2852,21 +2741,21 @@ namespace Reko.Arch.M68k
                 dasm.g_dasm_str = string.Format("pmove [unknown form] {0}", str);
                 break;
             }
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68851_pbcc16(M68kDisassembler dasm)
         {
             uint temp_pc = dasm.rdr.Address.ToUInt32();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.instruction & 0xf], temp_pc + make_int_16(dasm.read_imm_16()));
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68851_pbcc32(M68kDisassembler dasm)
         {
             uint temp_pc = dasm.rdr.Address.ToUInt32();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.instruction & 0xf], temp_pc + make_int_32(dasm. read_imm_32()));
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         private static M68kInstruction d68851_pdbcc(M68kDisassembler dasm)
@@ -2874,14 +2763,14 @@ namespace Reko.Arch.M68k
             uint temp_pc = dasm.rdr.Address.ToUInt32();
             ushort modes = dasm.read_imm_16();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[modes & 0xf], temp_pc + make_int_16(dasm.read_imm_16()));
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         // PScc:  0000000000xxxxxx
         private static M68kInstruction d68851_p001(M68kDisassembler dasm)
         {
             dasm.g_dasm_str = string.Format("MMU 001 group");
-            return new M68kInstruction { code = Opcode.illegal };
+            return Invalid();
         }
 
         /* ======================================================================== */
@@ -2903,7 +2792,7 @@ namespace Reko.Arch.M68k
           1 = pc idx
         */
 
-        static OpRec[] g_opcode_info;
+        static Decoder[] g_opcode_info;
 
         /// <summary>
         /// Generates the table of opcode decoders. Should only be called once
@@ -2913,319 +2802,319 @@ namespace Reko.Arch.M68k
         /// </summary>
         private static void GenTable()
         {
-         g_opcode_info = new OpRec[] 
+         g_opcode_info = new Decoder[] 
         {
 //  opcode handler             mask    match   ea mask 
-	new OpRec(d68000_1010         , 0xf000, 0xa000, 0x000),
-	new OpRec("", 0xf000, 0xf000, 0x000, Opcode.illegal),               // d68000_1111
-	new OpRec("D0,D9", 0xf1f8, 0xc100, 0x000, Opcode.abcd),             // d68000_abcd_rr
-	new OpRec("-0,-9", 0xf1f8, 0xc108, 0x000, Opcode.abcd),             // d68000_abcd_mm
-	new OpRec("s6:E0,D9", 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8
-	new OpRec("sw:E0,D9", 0xf1c0, 0xd040, 0xfff, Opcode.add),           // d68000_add_er_16
-	new OpRec("sl:E0,D9", 0xf1c0, 0xd080, 0xfff, Opcode.add),           // d68000_add_er_32
-	new OpRec("s6:D9,E0", 0xf1c0, 0xd100, 0x3f8, Opcode.add),           // d68000_add_re_8
-	new OpRec("sw:D9,E0", 0xf1c0, 0xd140, 0x3f8, Opcode.add),           // d68000_add_re_16
-	new OpRec("sl:D9,E0", 0xf1c0, 0xd180, 0x3f8, Opcode.add),           // d68000_add_re_32
-	new OpRec("sw:E0,A9", 0xf1c0, 0xd0c0, 0xfff, Opcode.adda),          // d68000_adda_16
-	new OpRec("sl:E0,A9", 0xf1c0, 0xd1c0, 0xfff, Opcode.adda),          // d68000_adda_32
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0600, 0xbf8, Opcode.addi),          // d68000_addi_8
-	new OpRec("sw:Iw,E0", 0xffc0, 0x0640, 0xbf8, Opcode.addi),          // d68000_addi_16
-	new OpRec("sl:Il,E0", 0xffc0, 0x0680, 0xbf8, Opcode.addi),          // d68000_addi_32
-	new OpRec("s6:q9,E0", 0xf1c0, 0x5000, 0xbf8, Opcode.addq),          // d68000_addq_8 
-	new OpRec("s6:q9,E0", 0xf1c0, 0x5040, 0xff8, Opcode.addq),          // d68000_addq_16
-	new OpRec("s6:q9,E0", 0xf1c0, 0x5080, 0xff8, Opcode.addq),          // d68000_addq_32
-	new OpRec("sb:D0,D9", 0xf1f8, 0xd100, 0x000, Opcode.addx),          // d68000_addx_rr_8    
-	new OpRec("sw:D0,D9", 0xf1f8, 0xd140, 0x000, Opcode.addx),          // d68000_addx_rr_16   
-	new OpRec("sl:D0,D9", 0xf1f8, 0xd180, 0x000, Opcode.addx),          // d68000_addx_rr_32   
-	new OpRec("sb:-0,-9", 0xf1f8, 0xd108, 0x000, Opcode.addx),          // d68000_addx_mm_8    
-	new OpRec("sw:-0,-9", 0xf1f8, 0xd148, 0x000, Opcode.addx),          // d68000_addx_mm_16   
-	new OpRec("sl:-0,-9", 0xf1f8, 0xd188, 0x000, Opcode.addx),          // d68000_addx_mm_32   
-	new OpRec("sb:E0,D9", 0xf1c0, 0xc000, 0xbff, Opcode.and),           // d68000_and_er_8
-	new OpRec("sw:E0,D9", 0xf1c0, 0xc040, 0xbff, Opcode.and),           // d68000_and_er_16
-	new OpRec("sl:E0,D9", 0xf1c0, 0xc080, 0xbff, Opcode.and),           // d68000_and_er_32
-	new OpRec("sb:D9,E0", 0xf1c0, 0xc100, 0x3f8, Opcode.and),           // d68000_and_re_8
-	new OpRec("sw:D9,E0", 0xf1c0, 0xc140, 0x3f8, Opcode.and),           // d68000_and_re_16
-	new OpRec("sl:D9,E0", 0xf1c0, 0xc180, 0x3f8, Opcode.and),           // d68000_and_re_32
-	new OpRec("Iw,c", 0xffff, 0x023c, 0x000, Opcode.andi),              // d68000_andi_to_ccr
-	new OpRec("Iw,s", 0xffff, 0x027c, 0x000, Opcode.andi),              // d68000_andi_to_sr
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0200, 0xbf8, Opcode.andi),          // d68000_andi_8
-	new OpRec("sw:Iw,E0", 0xffc0, 0x0240, 0xbf8, Opcode.andi),          // d68000_andi_16
-	new OpRec("sl:Il,E0", 0xffc0, 0x0280, 0xbf8, Opcode.andi),          // d68000_andi_32
-	new OpRec("sb:q9,D0", 0xf1f8, 0xe000, 0x000, Opcode.asr),           // d68000_asr_s_8
-	new OpRec("sw:q9,D0", 0xf1f8, 0xe040, 0x000, Opcode.asr),           // d68000_asr_s_16
-	new OpRec("sl:q9,D0", 0xf1f8, 0xe080, 0x000, Opcode.asr),           // d68000_asr_s_32
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe020, 0x000, Opcode.asr),           // d68000_asr_r_8
-    new OpRec("sw:D9,D0", 0xf1f8, 0xe060, 0x000, Opcode.asr),           // d68000_asr_r_16
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe0a0, 0x000, Opcode.asr),           // d68000_asr_r_32
-	new OpRec("sw:E0",    0xffc0, 0xe0c0, 0x3f8, Opcode.asr),           // d68000_asr_ea
-	new OpRec("sb:q9,D0", 0xf1f8, 0xe100, 0x000, Opcode.asl),           // d68000_asl_s_8     
-	new OpRec("sw:q9,D0", 0xf1f8, 0xe140, 0x000, Opcode.asl),           // d68000_asl_s_16    
-	new OpRec("sl:q9,D0", 0xf1f8, 0xe180, 0x000, Opcode.asl),           // d68000_asl_s_32    
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe120, 0x000, Opcode.asl),           // d68000_asl_r_8     
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe160, 0x000, Opcode.asl),           // d68000_asl_r_16    
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe1a0, 0x000, Opcode.asl),           // d68000_asl_r_32    
-	new OpRec("sw:E0",    0xffc0, 0xe1c0, 0x3f8, Opcode.asl),           // d68000_asl_ea      
-	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
-	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
-	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec("sr:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
-	new OpRec("sr:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
-	new OpRec("sr:D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
-	new OpRec("sr:Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
-	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
-	new OpRec(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
-	new OpRec(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
-	new OpRec(d68020_bfextu       , 0xffc0, 0xe9c0, 0xa7b),
-	new OpRec(d68020_bfffo        , 0xffc0, 0xedc0, 0xa7b),
-	new OpRec(d68020_bfins        , 0xffc0, 0xefc0, 0xa78),
-	new OpRec(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
-	new OpRec(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
-	new OpRec(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
-	new OpRec("J", 0xff00, 0x6000, 0x000, Opcode.bra),              // d68000_bra_8
-	new OpRec("J", 0xffff, 0x6000, 0x000, Opcode.bra),              // d68000_bra_16
-	new OpRec("J", 0xffff, 0x60ff, 0x000, Opcode.bra),              // d68020_bra_32
-	new OpRec("D9,E0", 0xf1c0, 0x01c0, 0xbf8, Opcode.bset),         // d68000_bset_r
-	new OpRec("Iw,E0", 0xffc0, 0x08c0, 0xbf8, Opcode.bset),         // d68000_bset_s
-	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
-	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
-	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
-	new OpRec("sw:Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
-	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
-	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
-	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
-	new OpRec(d68020_cas_32       , 0xffc0, 0x0ec0, 0x3f8),
-	new OpRec(d68020_cas2_16      , 0xffff, 0x0cfc, 0x000),
-	new OpRec(d68020_cas2_32      , 0xffff, 0x0efc, 0x000),
-	new OpRec(d68000_chk_16       , 0xf1c0, 0x4180, 0xbff),
-	new OpRec(d68020_chk_32       , 0xf1c0, 0x4100, 0xbff),
-	new OpRec(d68020_chk2_cmp2_8  , 0xffc0, 0x00c0, 0x27b),
-	new OpRec(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
-	new OpRec(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
-	new OpRec(d68040_cinv         , 0xff20, 0xf400, 0x000),
-	new OpRec("sb:E0", 0xffc0, 0x4200, 0xbf8, Opcode.clr),      // d68000_clr_8
-	new OpRec("sw:E0", 0xffc0, 0x4240, 0xbf8, Opcode.clr),      // d68000_clr_16
-	new OpRec("sl:E0", 0xffc0, 0x4280, 0xbf8, Opcode.clr),      // d68000_clr_32
-	new OpRec("sb:E0,D9", 0xf1c0, 0xb000, 0xbff, Opcode.cmp),   // d68000_cmp_8
-	new OpRec("sw:E0,D9", 0xf1c0, 0xb040, 0xfff, Opcode.cmp),   // d68000_cmp_16
-	new OpRec("sl:E0,D9", 0xf1c0, 0xb080, 0xfff, Opcode.cmp),   // d68000_cmp_32
-	new OpRec("sw:E0,A9", 0xf1c0, 0xb0c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_16
-	new OpRec("sl:E0,A9", 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),  // d68000_cmpi_8
-	new OpRec(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
-	new OpRec(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
-	new OpRec("sw:Iw,E0", 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
-	new OpRec(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
-	new OpRec(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
-	new OpRec("sl:Il,E0", 0xffc0, 0x0c80, 0xbf8, Opcode.cmpi),      // d68000_cmpi_32
-	new OpRec(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
-	new OpRec(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
-	new OpRec("sb:+0,+9", 0xf1f8, 0xb108, 0x000, Opcode.cmpm),      // d68000_cmpm_8
-	new OpRec("sw:+0,+9" , 0xf1f8, 0xb148, 0x000, Opcode.cmpm),     // d68000_cmpm_16     
-	new OpRec("sl:+0,+9" , 0xf1f8, 0xb188, 0x000, Opcode.cmpm),     // d68000_cmpm_32     
-	new OpRec(d68020_cpbcc_16     , 0xf1c0, 0xf080, 0x000),
-	new OpRec(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
-	new OpRec(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
-	new OpRec(d68020_cpgen        , 0xf1c0, 0xf000, 0x000),
-	new OpRec(d68020_cprestore    , 0xf1c0, 0xf140, 0x37f),
-	new OpRec(d68020_cpsave       , 0xf1c0, 0xf100, 0x2f8),
-	new OpRec(d68020_cpscc        , 0xf1c0, 0xf040, 0xbf8),
-	new OpRec(d68020_cptrapcc_0   , 0xf1ff, 0xf07c, 0x000),
-	new OpRec(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
-	new OpRec(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
-	new OpRec(d68040_cpush        , 0xff20, 0xf420, 0x000),
-    new OpRec(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
-    new OpRec("D0,Rw", 0xfff8, 0x51c8, 0x000, Opcode.dbra),         // d68000_dbra
-	new OpRec("sw:E0,D9", 0xf1c0, 0x81c0, 0xbff, Opcode.divs),      // d68000_divs
-	new OpRec("su:E0,D9", 0xf1c0, 0x80c0, 0xbff, Opcode.divu),      // d68000_divu   
-	new OpRec(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
-	new OpRec("sb:D9,E0", 0xf1c0, 0xb100, 0xbf8, Opcode.eor),       // d68000_eor_8  
-	new OpRec("sw:D9,E0", 0xf1c0, 0xb140, 0xbf8, Opcode.eor),       // d68000_eor_16 
-	new OpRec("sl:D9,E0", 0xf1c0, 0xb180, 0xbf8, Opcode.eor),       // d68000_eor_32 
-	new OpRec(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
-	new OpRec(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0a00, 0xbf8, Opcode.eori),      // d68000_eori_8
-	new OpRec("sw:Iw,E0", 0xffc0, 0x0a40, 0xbf8, Opcode.eori),      // d68000_eori_16
-	new OpRec("sl:Il,E0", 0xffc0, 0x0a80, 0xbf8, Opcode.eori),      // d68000_eori_32
-	new OpRec("D9,D0", 0xf1f8, 0xc140, 0x000, Opcode.exg),          // d68000_exg_dd 
-	new OpRec("A9,A0", 0xf1f8, 0xc148, 0x000, Opcode.exg),          // d68000_exg_aa
-	new OpRec("D9,A0", 0xf1f8, 0xc188, 0x000, Opcode.exg),          // d68000_exg_da
-	new OpRec("sl:D0", 0xfff8, 0x49c0, 0x000, Opcode.extb),         // d68020_extb_32
-	new OpRec("sw:D0", 0xfff8, 0x4880, 0x000, Opcode.ext),          // d68000_ext_16
-	new OpRec("sl:D0", 0xfff8, 0x48c0, 0x000, Opcode.ext),          // d68000_ext_32
-	new OpRec(d68040_fpu          , 0xffc0, 0xf200, 0x000),
-	new OpRec(d68000_illegal      , 0xffff, 0x4afc, 0x000),
-	new OpRec("sl:E0", 0xffc0, 0x4ec0, 0x27b, Opcode.jmp),          // d68000_jmp
-	new OpRec("sl:E0", 0xffc0, 0x4e80, 0x27b, Opcode.jsr),          // d68000_jsr
-	new OpRec("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
-	new OpRec("A0,Iw", 0xfff8, 0x4e50, 0x000, Opcode.link),         // d68000_link_16 
-	new OpRec("A0,Il", 0xfff8, 0x4808, 0x000, Opcode.link),         // d68020_link_32
-	new OpRec("s6:q9,D0", 0xf1f8, 0xe008, 0x000, Opcode.lsr),       // d68000_lsr_s_8
-	new OpRec("s6:q9,D0", 0xf1f8, 0xe048, 0x000, Opcode.lsr),       // d68000_lsr_s_16 
-	new OpRec("s6:q9,D0", 0xf1f8, 0xe088, 0x000, Opcode.lsr),       // d68000_lsr_s_32 
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe028, 0x000, Opcode.lsr),       // d68000_lsr_r_8  
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe068, 0x000, Opcode.lsr),       // d68000_lsr_r_16 
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe0a8, 0x000, Opcode.lsr),       // d68000_lsr_r_32 
-	new OpRec("sw:E0", 0xffc0, 0xe2c0, 0x3f8, Opcode.lsr),          // d68000_lsr_ea   
-	new OpRec("s6:q9,D0", 0xf1f8, 0xe108, 0x000, Opcode.lsl),       // d68000_lsl_s_8  
-	new OpRec("s6:q9,D0", 0xf1f8, 0xe148, 0x000, Opcode.lsl),       // d68000_lsl_s_16 
-	new OpRec("s6:q9,D0", 0xf1f8, 0xe188, 0x000, Opcode.lsl),       // d68000_lsl_s_32 
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe128, 0x000, Opcode.lsl),       // d68000_lsl_r_8  
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe168, 0x000, Opcode.lsl),       // d68000_lsl_r_16 
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe1a8, 0x000, Opcode.lsl),       // d68000_lsl_r_32 
-	new OpRec("sw:E0", 0xffc0, 0xe3c0, 0x3f8, Opcode.lsl),          // d68000_lsl_ea       
-	new OpRec("sb:E0,e6", 0xf000, 0x1000, 0xbff, Opcode.move),      // d68000_move_8   
-	new OpRec("sw:E0,e6", 0xf000, 0x3000, 0xfff, Opcode.move),      // d68000_move_16  
-	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
-	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
-	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
-	new OpRec("sw:E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
-	new OpRec("sw:c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
-	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
-	new OpRec(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
-	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
-	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
-	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-	new OpRec("sw:Mw,E0", 0xfff8, 0x48a0, 0x000, Opcode.movem),     // d68000_movem_pd_16
-	new OpRec("sl:Ml,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),     // d68000_movem_pd_32
-	new OpRec("sw:Mw,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),     // d68000_movem_re_16
-	new OpRec("sl:Ml,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32
-	new OpRec("sw:nE0,mw", 0xffc0, 0x4c80, 0x37b, Opcode.movem),    // d68000_movem_er_16
-	new OpRec("sl:nE0,ml", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),    // d68000_movem_er_32
-	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
-	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
-	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
-	new OpRec(d68000_movep_re_32  , 0xf1f8, 0x01c8, 0x000),
-	new OpRec(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8),
-	new OpRec(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8),
-	new OpRec(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8),
-	new OpRec("Q0,D9", 0xf100, 0x7000, 0x000, Opcode.moveq),        // d68000_moveq        
-	new OpRec(d68040_move16_pi_pi , 0xfff8, 0xf620, 0x000),
-	new OpRec(d68040_move16_pi_al , 0xfff8, 0xf600, 0x000),
-	new OpRec(d68040_move16_al_pi , 0xfff8, 0xf608, 0x000),
-	new OpRec(d68040_move16_ai_al , 0xfff8, 0xf610, 0x000),
-	new OpRec(d68040_move16_al_ai , 0xfff8, 0xf618, 0x000),
-	new OpRec("sw:E0,D9", 0xf1c0, 0xc1c0, 0xbff, Opcode.muls),      // d68000_muls         
-	new OpRec("sw:E0,D9", 0xf1c0, 0xc0c0, 0xbff, Opcode.mulu),      // d68000_mulu
-	new OpRec(d68020_mull         , 0xffc0, 0x4c00, 0xbff),
-	new OpRec(d68000_nbcd         , 0xffc0, 0x4800, 0xbf8),
-	new OpRec("sb:E0", 0xffc0, 0x4400, 0xbf8, Opcode.neg),          // d68000_neg_8
-	new OpRec("sw:E0", 0xffc0, 0x4440, 0xbf8, Opcode.neg),          // d68000_neg_16
-	new OpRec("sl:E0", 0xffc0, 0x4480, 0xbf8, Opcode.neg),          // d68000_neg_32
-	new OpRec("sb:E0", 0xffc0, 0x4000, 0xbf8, Opcode.negx),         // d68000_negx_8
-	new OpRec("sw:E0", 0xffc0, 0x4040, 0xbf8, Opcode.negx),         // d68000_negx_16
-	new OpRec("sl:E0", 0xffc0, 0x4080, 0xbf8, Opcode.negx),         // d68000_negx_32,
-	new OpRec("", 0xffff, 0x4e71, 0x000, Opcode.nop),               // d68000_nop
-	new OpRec("sb:E0", 0xffc0, 0x4600, 0xbf8, Opcode.not),          // d68000_not_8
-	new OpRec("sw:E0", 0xffc0, 0x4640, 0xbf8, Opcode.not),          // d68000_not_16
-	new OpRec("sl:E0", 0xffc0, 0x4680, 0xbf8, Opcode.not),          // d68000_not_32       
-	new OpRec("sb:E0,D9", 0xf1c0, 0x8000, 0xbff, Opcode.or),        // d68000_or_er_8      
-	new OpRec("sw:E0,D9", 0xf1c0, 0x8040, 0xbff, Opcode.or),        // d68000_or_er_16     
-	new OpRec("sl:E0,D9", 0xf1c0, 0x8080, 0xbff, Opcode.or),        // d68000_or_er_32   
-	new OpRec("sb:D9,E0", 0xf1c0, 0x8100, 0x3f8, Opcode.or),       // d68000_or_re_8     
-	new OpRec("sw:D9,E0", 0xf1c0, 0x8140, 0x3f8, Opcode.or),       // d68000_or_re_16    
-	new OpRec("sl:D9,E0", 0xf1c0, 0x8180, 0x3f8, Opcode.or),        // d68000_or_re_32
-	new OpRec("sb:Ib,c", 0xffff, 0x003c, 0x000, Opcode.ori),        // d68000_ori_to_ccr   
-	new OpRec("sw:Iw,s", 0xffff, 0x007c, 0x000, Opcode.ori),        // d68000_ori_to_sr    
-	new OpRec("s6:Iv,E0", 0xffc0, 0x0000, 0xbf8, Opcode.ori),       // d68000_ori_8        
-	new OpRec("s6:Iv,E0", 0xffc0, 0x0040, 0xbf8, Opcode.ori),       // d68000_ori_16        
-	new OpRec("s6:Iv,E0", 0xffc0, 0x0080, 0xbf8, Opcode.ori),       // d68000_ori_32       
-	new OpRec(d68020_pack_rr      , 0xf1f8, 0x8140, 0x000),
-	new OpRec(d68020_pack_mm      , 0xf1f8, 0x8148, 0x000),
-	new OpRec("E0", 0xffc0, 0x4840, 0x27b, Opcode.pea),             // d68000_pea
-	new OpRec(d68040_pflush       , 0xffe0, 0xf500, 0x000),
-	new OpRec("", 0xffff, 0x4e70, 0x000, Opcode.reset),             // d68000_reset
-	new OpRec("sb:q9,D0", 0xf1f8, 0xe018, 0x000, Opcode.ror),       // d68000_ror_s_8
-	new OpRec("sw:q9,D0", 0xf1f8, 0xe058, 0x000, Opcode.ror),       // d68000_ror_s_16
-	new OpRec("sl:q9,D0", 0xf1f8, 0xe098, 0x000, Opcode.ror),       // d68000_ror_s_32
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe038, 0x000, Opcode.ror),       // d68000_ror_r_8 
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe078, 0x000, Opcode.ror),       // d68000_ror_r_16
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe0b8, 0x000, Opcode.ror),       // d68000_ror_r_32
-	new OpRec("sl:E0", 0xffc0, 0xe6c0, 0x3f8, Opcode.ror),          // d68000_ror_ea
-	new OpRec("sb:q9,D0", 0xf1f8, 0xe118, 0x000, Opcode.rol),       // d68000_rol_s_8
-	new OpRec("sw:q9,D0", 0xf1f8, 0xe158, 0x000, Opcode.rol),       // d68000_rol_s_16
-	new OpRec("sl:q9,D0", 0xf1f8, 0xe198, 0x000, Opcode.rol),       // d68000_rol_s_32
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe138, 0x000, Opcode.rol),       // d68000_rol_r_8
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe178, 0x000, Opcode.rol),       // d68000_rol_r_16
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe1b8, 0x000, Opcode.rol),       // d68000_rol_r_32
-	new OpRec("sl:E0", 0xffc0, 0xe7c0, 0x3f8, Opcode.rol),          // d68000_rol_ea
-	new OpRec("sb:q9,D0", 0xf1f8, 0xe010, 0x000, Opcode.roxr),      // d68000_roxr_s_8 
-	new OpRec("sw:q9,D0", 0xf1f8, 0xe050, 0x000, Opcode.roxr),      // d68000_roxr_s_16
-	new OpRec("sl:q9,D0", 0xf1f8, 0xe090, 0x000, Opcode.roxr),      // d68000_roxr_s_32
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe030, 0x000, Opcode.roxr),      // d68000_roxr_r_8 
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe070, 0x000, Opcode.roxr),      // d68000_roxr_r_16
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe0b0, 0x000, Opcode.roxr),      // d68000_roxr_r_32
-	new OpRec("sl:E0", 0xffc0, 0xe4c0, 0x3f8, Opcode.roxr),         // d68000_roxr_ea  
-	new OpRec("sb:q9,D0", 0xf1f8, 0xe110, 0x000, Opcode.roxl),      // d68000_roxl_s_8 
-	new OpRec("sw:q9,D0", 0xf1f8, 0xe150, 0x000, Opcode.roxl),      // d68000_roxl_s_16
-	new OpRec("sl:q9,D0", 0xf1f8, 0xe190, 0x000, Opcode.roxl),      // d68000_roxl_s_32
-	new OpRec("sb:D9,D0", 0xf1f8, 0xe130, 0x000, Opcode.roxl),      // d68000_roxl_r_8 
-	new OpRec("sw:D9,D0", 0xf1f8, 0xe170, 0x000, Opcode.roxl),      // d68000_roxl_r_16
-	new OpRec("sl:D9,D0", 0xf1f8, 0xe1b0, 0x000, Opcode.roxl),      // d68000_roxl_r_32
-	new OpRec("sl:E0", 0xffc0, 0xe5c0, 0x3f8, Opcode.roxl),         // d68000_roxl_ea 
-	new OpRec("Iw", 0xffff, 0x4e74, 0x000, Opcode.rtd),             // d68010_rtd
-	new OpRec("", 0xffff, 0x4e73, 0x000, Opcode.rte),               // d68000_rte
-	new OpRec(d68020_rtm          , 0xfff0, 0x06c0, 0x000),
-	new OpRec("", 0xffff, 0x4e77, 0x000, Opcode.rtr),               // d68000_rtr
-	new OpRec("", 0xffff, 0x4e75, 0x000, Opcode.rts),               // d68000_rts
-	new OpRec("D0,D9", 0xf1f8, 0x8100, 0x000, Opcode.sbcd),         // d68000_sbcd_rr
-	new OpRec("-0,-9", 0xf1f8, 0x8108, 0x000, Opcode.sbcd),         // d68000_sbcd_mm
-	new OpRec(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),
-	new OpRec(d68000_stop         , 0xffff, 0x4e72, 0x000),
-	new OpRec("sb:E0,D9", 0xf1c0, 0x9000, 0xbff, Opcode.sub),       // d68000_sub_er_8
-	new OpRec("sw:E0,D9", 0xf1c0, 0x9040, 0xfff, Opcode.sub),       // d68000_sub_er_16
-	new OpRec("sl:E0,D9", 0xf1c0, 0x9080, 0xfff, Opcode.sub),       // d68000_sub_er_32
-	new OpRec("sb:D9,E0", 0xf1c0, 0x9100, 0x3f8, Opcode.sub),       // d68000_sub_re_8
-	new OpRec("sw:D9,E0", 0xf1c0, 0x9140, 0x3f8, Opcode.sub),       // d68000_sub_re_16
-	new OpRec("sl:D9,E0", 0xf1c0, 0x9180, 0x3f8, Opcode.sub),       // d68000_sub_re_32
-	new OpRec("sw:E0,A9", 0xf1c0, 0x90c0, 0xfff, Opcode.suba),      // d68000_suba_16
-	new OpRec("sl:E0,A9", 0xf1c0, 0x91c0, 0xfff, Opcode.suba),      // d68000_suba_32
-	new OpRec("sb:Ib,E0",   0xffc0, 0x0400, 0xbf8, Opcode.subi),      // d68000_subi_8
-	new OpRec("sw:Iw,E0",   0xffc0, 0x0440, 0xbf8, Opcode.subi),      // d68000_subi_16
-	new OpRec("sl:Il,E0",   0xffc0, 0x0480, 0xbf8, Opcode.subi),      // d68000_subi_32
-	new OpRec("sb:q9,E0",   0xf1c0, 0x5100, 0xbf8, Opcode.subq),      // d68000_subq_8
-	new OpRec("sw:q9,E0",   0xf1c0, 0x5140, 0xff8, Opcode.subq),      // d68000_subq_16
-	new OpRec("sl:q9,E0",   0xf1c0, 0x5180, 0xff8, Opcode.subq),      // d68000_subq_32
-	new OpRec("sb:D0,D9",   0xf1f8, 0x9100, 0x000, Opcode.subx),      // d68000_subx_rr_8
-	new OpRec("sw:D0,D9",   0xf1f8, 0x9140, 0x000, Opcode.subx),      // d68000_subx_rr_16
-	new OpRec("sl:D0,D9",   0xf1f8, 0x9180, 0x000, Opcode.subx),      // d68000_subx_rr_32
-	new OpRec("sb:-0,-9",   0xf1f8, 0x9108, 0x000, Opcode.subx),      // d68000_subx_mm_8
-	new OpRec("sw:-0,-9",   0xf1f8, 0x9148, 0x000, Opcode.subx),      // d68000_subx_mm_16
-	new OpRec("sl:-0,-9",   0xf1f8, 0x9188, 0x000, Opcode.subx),      // d68000_subx_mm_32
-	new OpRec("sl:D0",      0xfff8, 0x4840, 0x000, Opcode.swap),         // d68000_swap
-	new OpRec(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
-	new OpRec(d68000_trap         , 0xfff0, 0x4e40, 0x000),
-	new OpRec(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000),
-	new OpRec(d68020_trapcc_16    , 0xf0ff, 0x50fa, 0x000),
-	new OpRec(d68020_trapcc_32    , 0xf0ff, 0x50fb, 0x000),
-	new OpRec("", 0xffff, 0x4e76, 0x000, Opcode.trapv),                 // d68000_trapv
-	new OpRec("sb:E0", 0xffc0, 0x4a00, 0xbf8, Opcode.tst),              // d68000_tst_8
-	new OpRec(d68020_tst_pcdi_8   , 0xffff, 0x4a3a, 0x000),
-	new OpRec(d68020_tst_pcix_8   , 0xffff, 0x4a3b, 0x000),
-	new OpRec(d68020_tst_i_8      , 0xffff, 0x4a3c, 0x000),
-	new OpRec("sw:E0", 0xffc0, 0x4a40, 0xbf8, Opcode.tst),              // d68000_tst_16
-	new OpRec(d68020_tst_a_16     , 0xfff8, 0x4a48, 0x000),
-	new OpRec(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
-	new OpRec(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
-	new OpRec(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
-	new OpRec("sl:E0",      0xffc0, 0x4a80, 0xbf8, Opcode.tst),         // d68000_tst_32
-	new OpRec(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
-	new OpRec("sl:E0",      0xffff, 0x4aba, 0x000, Opcode.tst),         // d68020_tst_pcdi_32
-	new OpRec(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
-	new OpRec("sl:E0", 0xffff, 0x4abc, 0x000, Opcode.tst),              // d68020_tst_i_32
-	new OpRec("A0", 0xfff8, 0x4e58, 0x000, Opcode.unlk),                // d68000_unlk
-	new OpRec(d68020_unpk_rr      , 0xf1f8, 0x8180, 0x000),
-	new OpRec(d68020_unpk_mm      , 0xf1f8, 0x8188, 0x000),
-	new OpRec(d68851_p000         , 0xffc0, 0xf000, 0x000),
-	new OpRec(d68851_pbcc16       , 0xffc0, 0xf080, 0x000),
-	new OpRec(d68851_pbcc32       , 0xffc0, 0xf0c0, 0x000),
-	new OpRec(d68851_pdbcc        , 0xfff8, 0xf048, 0x000),
-	new OpRec(d68851_p001         , 0xffc0, 0xf040, 0x000),
-	new OpRec(null, 0, 0, 0),
+	new Decoder(d68000_1010         , 0xf000, 0xa000, 0x000),
+	new Decoder("", 0xf000, 0xf000, 0x000, Opcode.illegal, InstrClass.Invalid),  // d68000_1111
+	new Decoder("D0,D9", 0xf1f8, 0xc100, 0x000, Opcode.abcd),             // d68000_abcd_rr
+	new Decoder("-0,-9", 0xf1f8, 0xc108, 0x000, Opcode.abcd),             // d68000_abcd_mm
+	new Decoder("s6:E0,D9", 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8
+	new Decoder("sw:E0,D9", 0xf1c0, 0xd040, 0xfff, Opcode.add),           // d68000_add_er_16
+	new Decoder("sl:E0,D9", 0xf1c0, 0xd080, 0xfff, Opcode.add),           // d68000_add_er_32
+	new Decoder("s6:D9,E0", 0xf1c0, 0xd100, 0x3f8, Opcode.add),           // d68000_add_re_8
+	new Decoder("sw:D9,E0", 0xf1c0, 0xd140, 0x3f8, Opcode.add),           // d68000_add_re_16
+	new Decoder("sl:D9,E0", 0xf1c0, 0xd180, 0x3f8, Opcode.add),           // d68000_add_re_32
+	new Decoder("sw:E0,A9", 0xf1c0, 0xd0c0, 0xfff, Opcode.adda),          // d68000_adda_16
+	new Decoder("sl:E0,A9", 0xf1c0, 0xd1c0, 0xfff, Opcode.adda),          // d68000_adda_32
+	new Decoder("sb:Ib,E0", 0xffc0, 0x0600, 0xbf8, Opcode.addi),          // d68000_addi_8
+	new Decoder("sw:Iw,E0", 0xffc0, 0x0640, 0xbf8, Opcode.addi),          // d68000_addi_16
+	new Decoder("sl:Il,E0", 0xffc0, 0x0680, 0xbf8, Opcode.addi),          // d68000_addi_32
+	new Decoder("s6:q9,E0", 0xf1c0, 0x5000, 0xbf8, Opcode.addq),          // d68000_addq_8 
+	new Decoder("s6:q9,E0", 0xf1c0, 0x5040, 0xff8, Opcode.addq),          // d68000_addq_16
+	new Decoder("s6:q9,E0", 0xf1c0, 0x5080, 0xff8, Opcode.addq),          // d68000_addq_32
+	new Decoder("sb:D0,D9", 0xf1f8, 0xd100, 0x000, Opcode.addx),          // d68000_addx_rr_8    
+	new Decoder("sw:D0,D9", 0xf1f8, 0xd140, 0x000, Opcode.addx),          // d68000_addx_rr_16   
+	new Decoder("sl:D0,D9", 0xf1f8, 0xd180, 0x000, Opcode.addx),          // d68000_addx_rr_32   
+	new Decoder("sb:-0,-9", 0xf1f8, 0xd108, 0x000, Opcode.addx),          // d68000_addx_mm_8    
+	new Decoder("sw:-0,-9", 0xf1f8, 0xd148, 0x000, Opcode.addx),          // d68000_addx_mm_16   
+	new Decoder("sl:-0,-9", 0xf1f8, 0xd188, 0x000, Opcode.addx),          // d68000_addx_mm_32   
+	new Decoder("sb:E0,D9", 0xf1c0, 0xc000, 0xbff, Opcode.and),           // d68000_and_er_8
+	new Decoder("sw:E0,D9", 0xf1c0, 0xc040, 0xbff, Opcode.and),           // d68000_and_er_16
+	new Decoder("sl:E0,D9", 0xf1c0, 0xc080, 0xbff, Opcode.and),           // d68000_and_er_32
+	new Decoder("sb:D9,E0", 0xf1c0, 0xc100, 0x3f8, Opcode.and),           // d68000_and_re_8
+	new Decoder("sw:D9,E0", 0xf1c0, 0xc140, 0x3f8, Opcode.and),           // d68000_and_re_16
+	new Decoder("sl:D9,E0", 0xf1c0, 0xc180, 0x3f8, Opcode.and),           // d68000_and_re_32
+	new Decoder("Iw,c", 0xffff, 0x023c, 0x000, Opcode.andi),              // d68000_andi_to_ccr
+	new Decoder("Iw,s", 0xffff, 0x027c, 0x000, Opcode.andi),              // d68000_andi_to_sr
+	new Decoder("sb:Ib,E0", 0xffc0, 0x0200, 0xbf8, Opcode.andi),          // d68000_andi_8
+	new Decoder("sw:Iw,E0", 0xffc0, 0x0240, 0xbf8, Opcode.andi),          // d68000_andi_16
+	new Decoder("sl:Il,E0", 0xffc0, 0x0280, 0xbf8, Opcode.andi),          // d68000_andi_32
+	new Decoder("sb:q9,D0", 0xf1f8, 0xe000, 0x000, Opcode.asr),           // d68000_asr_s_8
+	new Decoder("sw:q9,D0", 0xf1f8, 0xe040, 0x000, Opcode.asr),           // d68000_asr_s_16
+	new Decoder("sl:q9,D0", 0xf1f8, 0xe080, 0x000, Opcode.asr),           // d68000_asr_s_32
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe020, 0x000, Opcode.asr),           // d68000_asr_r_8
+    new Decoder("sw:D9,D0", 0xf1f8, 0xe060, 0x000, Opcode.asr),           // d68000_asr_r_16
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe0a0, 0x000, Opcode.asr),           // d68000_asr_r_32
+	new Decoder("sw:E0",    0xffc0, 0xe0c0, 0x3f8, Opcode.asr),           // d68000_asr_ea
+	new Decoder("sb:q9,D0", 0xf1f8, 0xe100, 0x000, Opcode.asl),           // d68000_asl_s_8     
+	new Decoder("sw:q9,D0", 0xf1f8, 0xe140, 0x000, Opcode.asl),           // d68000_asl_s_16    
+	new Decoder("sl:q9,D0", 0xf1f8, 0xe180, 0x000, Opcode.asl),           // d68000_asl_s_32    
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe120, 0x000, Opcode.asl),           // d68000_asl_r_8     
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe160, 0x000, Opcode.asl),           // d68000_asl_r_16    
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe1a0, 0x000, Opcode.asl),           // d68000_asl_r_32    
+	new Decoder("sw:E0",    0xffc0, 0xe1c0, 0x3f8, Opcode.asl),           // d68000_asl_ea      
+	new Decoder(d68000_bcc_8        , 0xf000, 0x6000, 0x000, InstrClass.ConditionalTransfer),
+	new Decoder(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000, InstrClass.ConditionalTransfer),
+    new Decoder(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000, InstrClass.ConditionalTransfer),
+    new Decoder("sr:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
+	new Decoder("sr:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
+	new Decoder("sr:D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
+	new Decoder("sr:Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
+	new Decoder(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
+	new Decoder(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
+	new Decoder(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
+	new Decoder(d68020_bfextu       , 0xffc0, 0xe9c0, 0xa7b),
+	new Decoder(d68020_bfffo        , 0xffc0, 0xedc0, 0xa7b),
+	new Decoder(d68020_bfins        , 0xffc0, 0xefc0, 0xa78),
+	new Decoder(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
+	new Decoder(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
+	new Decoder(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
+	new Decoder("J", 0xff00, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_8
+	new Decoder("J", 0xffff, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_16
+	new Decoder("J", 0xffff, 0x60ff, 0x000, Opcode.bra, InstrClass.Transfer),              // d68020_bra_32
+	new Decoder("D9,E0", 0xf1c0, 0x01c0, 0xbf8, Opcode.bset),         // d68000_bset_r
+	new Decoder("Iw,E0", 0xffc0, 0x08c0, 0xbf8, Opcode.bset),         // d68000_bset_s
+	new Decoder("J", 0xff00, 0x6100, 0x000, Opcode.bsr, InstrClass.Transfer|InstrClass.Call),   // d68000_bsr_8 
+	new Decoder("J", 0xffff, 0x6100, 0x000, Opcode.bsr, InstrClass.Transfer|InstrClass.Call),   // d68000_bsr_16
+	new Decoder("J", 0xffff, 0x61ff, 0x000, Opcode.bsr, InstrClass.Transfer|InstrClass.Call),   // d68020_bsr_32
+	new Decoder("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
+	new Decoder("sw:Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
+	new Decoder(d68020_callm        , 0xffc0, 0x06c0, 0x27b, InstrClass.Transfer|InstrClass.Call),
+	new Decoder(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
+	new Decoder(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
+	new Decoder(d68020_cas_32       , 0xffc0, 0x0ec0, 0x3f8),
+	new Decoder(d68020_cas2_16      , 0xffff, 0x0cfc, 0x000),
+	new Decoder(d68020_cas2_32      , 0xffff, 0x0efc, 0x000),
+	new Decoder(d68000_chk_16       , 0xf1c0, 0x4180, 0xbff),
+	new Decoder(d68020_chk_32       , 0xf1c0, 0x4100, 0xbff),
+	new Decoder(d68020_chk2_cmp2_8  , 0xffc0, 0x00c0, 0x27b),
+	new Decoder(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
+	new Decoder(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
+	new Decoder(d68040_cinv         , 0xff20, 0xf400, 0x000),
+	new Decoder("sb:E0", 0xffc0, 0x4200, 0xbf8, Opcode.clr),      // d68000_clr_8
+	new Decoder("sw:E0", 0xffc0, 0x4240, 0xbf8, Opcode.clr),      // d68000_clr_16
+	new Decoder("sl:E0", 0xffc0, 0x4280, 0xbf8, Opcode.clr),      // d68000_clr_32
+	new Decoder("sb:E0,D9", 0xf1c0, 0xb000, 0xbff, Opcode.cmp),   // d68000_cmp_8
+	new Decoder("sw:E0,D9", 0xf1c0, 0xb040, 0xfff, Opcode.cmp),   // d68000_cmp_16
+	new Decoder("sl:E0,D9", 0xf1c0, 0xb080, 0xfff, Opcode.cmp),   // d68000_cmp_32
+	new Decoder("sw:E0,A9", 0xf1c0, 0xb0c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_16
+	new Decoder("sl:E0,A9", 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
+	new Decoder("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),  // d68000_cmpi_8
+	new Decoder(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
+	new Decoder(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
+	new Decoder("sw:Iw,E0", 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
+	new Decoder(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
+	new Decoder(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
+	new Decoder("sl:Il,E0", 0xffc0, 0x0c80, 0xbf8, Opcode.cmpi),      // d68000_cmpi_32
+	new Decoder(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
+	new Decoder(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
+	new Decoder("sb:+0,+9", 0xf1f8, 0xb108, 0x000, Opcode.cmpm),      // d68000_cmpm_8
+	new Decoder("sw:+0,+9" , 0xf1f8, 0xb148, 0x000, Opcode.cmpm),     // d68000_cmpm_16     
+	new Decoder("sl:+0,+9" , 0xf1f8, 0xb188, 0x000, Opcode.cmpm),     // d68000_cmpm_32     
+	new Decoder(d68020_cpbcc_16     , 0xf1c0, 0xf080, 0x000),
+	new Decoder(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
+	new Decoder(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
+	new Decoder(d68020_cpgen        , 0xf1c0, 0xf000, 0x000),
+	new Decoder(d68020_cprestore    , 0xf1c0, 0xf140, 0x37f),
+	new Decoder(d68020_cpsave       , 0xf1c0, 0xf100, 0x2f8),
+	new Decoder(d68020_cpscc        , 0xf1c0, 0xf040, 0xbf8),
+	new Decoder(d68020_cptrapcc_0   , 0xf1ff, 0xf07c, 0x000),
+	new Decoder(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
+	new Decoder(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
+	new Decoder(d68040_cpush        , 0xff20, 0xf420, 0x000),
+    new Decoder(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
+    new Decoder("D0,Rw", 0xfff8, 0x51c8, 0x000, Opcode.dbra),         // d68000_dbra
+	new Decoder("sw:E0,D9", 0xf1c0, 0x81c0, 0xbff, Opcode.divs),      // d68000_divs
+	new Decoder("su:E0,D9", 0xf1c0, 0x80c0, 0xbff, Opcode.divu),      // d68000_divu   
+	new Decoder(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
+	new Decoder("sb:D9,E0", 0xf1c0, 0xb100, 0xbf8, Opcode.eor),       // d68000_eor_8  
+	new Decoder("sw:D9,E0", 0xf1c0, 0xb140, 0xbf8, Opcode.eor),       // d68000_eor_16 
+	new Decoder("sl:D9,E0", 0xf1c0, 0xb180, 0xbf8, Opcode.eor),       // d68000_eor_32 
+	new Decoder(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
+	new Decoder(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
+	new Decoder("sb:Ib,E0", 0xffc0, 0x0a00, 0xbf8, Opcode.eori),      // d68000_eori_8
+	new Decoder("sw:Iw,E0", 0xffc0, 0x0a40, 0xbf8, Opcode.eori),      // d68000_eori_16
+	new Decoder("sl:Il,E0", 0xffc0, 0x0a80, 0xbf8, Opcode.eori),      // d68000_eori_32
+	new Decoder("D9,D0", 0xf1f8, 0xc140, 0x000, Opcode.exg),          // d68000_exg_dd 
+	new Decoder("A9,A0", 0xf1f8, 0xc148, 0x000, Opcode.exg),          // d68000_exg_aa
+	new Decoder("D9,A0", 0xf1f8, 0xc188, 0x000, Opcode.exg),          // d68000_exg_da
+	new Decoder("sl:D0", 0xfff8, 0x49c0, 0x000, Opcode.extb),         // d68020_extb_32
+	new Decoder("sw:D0", 0xfff8, 0x4880, 0x000, Opcode.ext),          // d68000_ext_16
+	new Decoder("sl:D0", 0xfff8, 0x48c0, 0x000, Opcode.ext),          // d68000_ext_32
+	new Decoder(d68040_fpu          , 0xffc0, 0xf200, 0x000),
+	new Decoder(d68000_illegal      , 0xffff, 0x4afc, 0x000, InstrClass.Invalid),
+	new Decoder("sl:E0", 0xffc0, 0x4ec0, 0x27b, Opcode.jmp, InstrClass.Transfer),   // d68000_jmp
+	new Decoder("sl:E0", 0xffc0, 0x4e80, 0x27b, Opcode.jsr, InstrClass.Transfer|InstrClass.Call),   // d68000_jsr
+	new Decoder("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
+	new Decoder("A0,Iw", 0xfff8, 0x4e50, 0x000, Opcode.link),         // d68000_link_16 
+	new Decoder("A0,Il", 0xfff8, 0x4808, 0x000, Opcode.link),         // d68020_link_32
+	new Decoder("s6:q9,D0", 0xf1f8, 0xe008, 0x000, Opcode.lsr),       // d68000_lsr_s_8
+	new Decoder("s6:q9,D0", 0xf1f8, 0xe048, 0x000, Opcode.lsr),       // d68000_lsr_s_16 
+	new Decoder("s6:q9,D0", 0xf1f8, 0xe088, 0x000, Opcode.lsr),       // d68000_lsr_s_32 
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe028, 0x000, Opcode.lsr),       // d68000_lsr_r_8  
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe068, 0x000, Opcode.lsr),       // d68000_lsr_r_16 
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe0a8, 0x000, Opcode.lsr),       // d68000_lsr_r_32 
+	new Decoder("sw:E0", 0xffc0, 0xe2c0, 0x3f8, Opcode.lsr),          // d68000_lsr_ea   
+	new Decoder("s6:q9,D0", 0xf1f8, 0xe108, 0x000, Opcode.lsl),       // d68000_lsl_s_8  
+	new Decoder("s6:q9,D0", 0xf1f8, 0xe148, 0x000, Opcode.lsl),       // d68000_lsl_s_16 
+	new Decoder("s6:q9,D0", 0xf1f8, 0xe188, 0x000, Opcode.lsl),       // d68000_lsl_s_32 
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe128, 0x000, Opcode.lsl),       // d68000_lsl_r_8  
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe168, 0x000, Opcode.lsl),       // d68000_lsl_r_16 
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe1a8, 0x000, Opcode.lsl),       // d68000_lsl_r_32 
+	new Decoder("sw:E0", 0xffc0, 0xe3c0, 0x3f8, Opcode.lsl),          // d68000_lsl_ea       
+	new Decoder("sb:E0,e6", 0xf000, 0x1000, 0xbff, Opcode.move),      // d68000_move_8   
+	new Decoder("sw:E0,e6", 0xf000, 0x3000, 0xfff, Opcode.move),      // d68000_move_16  
+	new Decoder("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
+	new Decoder("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
+	new Decoder("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
+	new Decoder("sw:E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
+	new Decoder("sw:c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
+	new Decoder(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
+	new Decoder(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
+	new Decoder(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
+	new Decoder(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
+	new Decoder(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
+	new Decoder("sw:Mw,E0", 0xfff8, 0x48a0, 0x000, Opcode.movem),     // d68000_movem_pd_16
+	new Decoder("sl:Ml,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),     // d68000_movem_pd_32
+	new Decoder("sw:Mw,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),     // d68000_movem_re_16
+	new Decoder("sl:Ml,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32
+	new Decoder("sw:nE0,mw", 0xffc0, 0x4c80, 0x37b, Opcode.movem),    // d68000_movem_er_16
+	new Decoder("sl:nE0,ml", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),    // d68000_movem_er_32
+	new Decoder(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
+	new Decoder(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
+	new Decoder(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
+	new Decoder(d68000_movep_re_32  , 0xf1f8, 0x01c8, 0x000),
+	new Decoder(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8, InstrClass.System),
+	new Decoder(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8, InstrClass.System),
+	new Decoder(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8, InstrClass.System),
+	new Decoder("Q0,D9", 0xf100, 0x7000, 0x000, Opcode.moveq),        // d68000_moveq        
+	new Decoder(d68040_move16_pi_pi , 0xfff8, 0xf620, 0x000),
+	new Decoder(d68040_move16_pi_al , 0xfff8, 0xf600, 0x000),
+	new Decoder(d68040_move16_al_pi , 0xfff8, 0xf608, 0x000),
+	new Decoder(d68040_move16_ai_al , 0xfff8, 0xf610, 0x000),
+	new Decoder(d68040_move16_al_ai , 0xfff8, 0xf618, 0x000),
+	new Decoder("sw:E0,D9", 0xf1c0, 0xc1c0, 0xbff, Opcode.muls),      // d68000_muls         
+	new Decoder("sw:E0,D9", 0xf1c0, 0xc0c0, 0xbff, Opcode.mulu),      // d68000_mulu
+	new Decoder(d68020_mull         , 0xffc0, 0x4c00, 0xbff),
+	new Decoder(d68000_nbcd         , 0xffc0, 0x4800, 0xbf8),
+	new Decoder("sb:E0", 0xffc0, 0x4400, 0xbf8, Opcode.neg),          // d68000_neg_8
+	new Decoder("sw:E0", 0xffc0, 0x4440, 0xbf8, Opcode.neg),          // d68000_neg_16
+	new Decoder("sl:E0", 0xffc0, 0x4480, 0xbf8, Opcode.neg),          // d68000_neg_32
+	new Decoder("sb:E0", 0xffc0, 0x4000, 0xbf8, Opcode.negx),         // d68000_negx_8
+	new Decoder("sw:E0", 0xffc0, 0x4040, 0xbf8, Opcode.negx),         // d68000_negx_16
+	new Decoder("sl:E0", 0xffc0, 0x4080, 0xbf8, Opcode.negx),         // d68000_negx_32,
+	new Decoder("", 0xffff, 0x4e71, 0x000, Opcode.nop),               // d68000_nop
+	new Decoder("sb:E0", 0xffc0, 0x4600, 0xbf8, Opcode.not),          // d68000_not_8
+	new Decoder("sw:E0", 0xffc0, 0x4640, 0xbf8, Opcode.not),          // d68000_not_16
+	new Decoder("sl:E0", 0xffc0, 0x4680, 0xbf8, Opcode.not),          // d68000_not_32       
+	new Decoder("sb:E0,D9", 0xf1c0, 0x8000, 0xbff, Opcode.or),        // d68000_or_er_8      
+	new Decoder("sw:E0,D9", 0xf1c0, 0x8040, 0xbff, Opcode.or),        // d68000_or_er_16     
+	new Decoder("sl:E0,D9", 0xf1c0, 0x8080, 0xbff, Opcode.or),        // d68000_or_er_32   
+	new Decoder("sb:D9,E0", 0xf1c0, 0x8100, 0x3f8, Opcode.or),       // d68000_or_re_8     
+	new Decoder("sw:D9,E0", 0xf1c0, 0x8140, 0x3f8, Opcode.or),       // d68000_or_re_16    
+	new Decoder("sl:D9,E0", 0xf1c0, 0x8180, 0x3f8, Opcode.or),        // d68000_or_re_32
+	new Decoder("sb:Ib,c", 0xffff, 0x003c, 0x000, Opcode.ori),        // d68000_ori_to_ccr   
+	new Decoder("sw:Iw,s", 0xffff, 0x007c, 0x000, Opcode.ori),        // d68000_ori_to_sr    
+	new Decoder("s6:Iv,E0", 0xffc0, 0x0000, 0xbf8, Opcode.ori),       // d68000_ori_8        
+	new Decoder("s6:Iv,E0", 0xffc0, 0x0040, 0xbf8, Opcode.ori),       // d68000_ori_16        
+	new Decoder("s6:Iv,E0", 0xffc0, 0x0080, 0xbf8, Opcode.ori),       // d68000_ori_32       
+	new Decoder(d68020_pack_rr      , 0xf1f8, 0x8140, 0x000),
+	new Decoder(d68020_pack_mm      , 0xf1f8, 0x8148, 0x000),
+	new Decoder("E0", 0xffc0, 0x4840, 0x27b, Opcode.pea),             // d68000_pea
+	new Decoder(d68040_pflush       , 0xffe0, 0xf500, 0x000),
+	new Decoder("", 0xffff, 0x4e70, 0x000, Opcode.reset, InstrClass.Transfer),  // d68000_reset
+	new Decoder("sb:q9,D0", 0xf1f8, 0xe018, 0x000, Opcode.ror),       // d68000_ror_s_8
+	new Decoder("sw:q9,D0", 0xf1f8, 0xe058, 0x000, Opcode.ror),       // d68000_ror_s_16
+	new Decoder("sl:q9,D0", 0xf1f8, 0xe098, 0x000, Opcode.ror),       // d68000_ror_s_32
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe038, 0x000, Opcode.ror),       // d68000_ror_r_8 
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe078, 0x000, Opcode.ror),       // d68000_ror_r_16
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe0b8, 0x000, Opcode.ror),       // d68000_ror_r_32
+	new Decoder("sl:E0", 0xffc0, 0xe6c0, 0x3f8, Opcode.ror),          // d68000_ror_ea
+	new Decoder("sb:q9,D0", 0xf1f8, 0xe118, 0x000, Opcode.rol),       // d68000_rol_s_8
+	new Decoder("sw:q9,D0", 0xf1f8, 0xe158, 0x000, Opcode.rol),       // d68000_rol_s_16
+	new Decoder("sl:q9,D0", 0xf1f8, 0xe198, 0x000, Opcode.rol),       // d68000_rol_s_32
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe138, 0x000, Opcode.rol),       // d68000_rol_r_8
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe178, 0x000, Opcode.rol),       // d68000_rol_r_16
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe1b8, 0x000, Opcode.rol),       // d68000_rol_r_32
+	new Decoder("sl:E0", 0xffc0, 0xe7c0, 0x3f8, Opcode.rol),          // d68000_rol_ea
+	new Decoder("sb:q9,D0", 0xf1f8, 0xe010, 0x000, Opcode.roxr),      // d68000_roxr_s_8 
+	new Decoder("sw:q9,D0", 0xf1f8, 0xe050, 0x000, Opcode.roxr),      // d68000_roxr_s_16
+	new Decoder("sl:q9,D0", 0xf1f8, 0xe090, 0x000, Opcode.roxr),      // d68000_roxr_s_32
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe030, 0x000, Opcode.roxr),      // d68000_roxr_r_8 
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe070, 0x000, Opcode.roxr),      // d68000_roxr_r_16
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe0b0, 0x000, Opcode.roxr),      // d68000_roxr_r_32
+	new Decoder("sl:E0", 0xffc0, 0xe4c0, 0x3f8, Opcode.roxr),         // d68000_roxr_ea  
+	new Decoder("sb:q9,D0", 0xf1f8, 0xe110, 0x000, Opcode.roxl),      // d68000_roxl_s_8 
+	new Decoder("sw:q9,D0", 0xf1f8, 0xe150, 0x000, Opcode.roxl),      // d68000_roxl_s_16
+	new Decoder("sl:q9,D0", 0xf1f8, 0xe190, 0x000, Opcode.roxl),      // d68000_roxl_s_32
+	new Decoder("sb:D9,D0", 0xf1f8, 0xe130, 0x000, Opcode.roxl),      // d68000_roxl_r_8 
+	new Decoder("sw:D9,D0", 0xf1f8, 0xe170, 0x000, Opcode.roxl),      // d68000_roxl_r_16
+	new Decoder("sl:D9,D0", 0xf1f8, 0xe1b0, 0x000, Opcode.roxl),      // d68000_roxl_r_32
+	new Decoder("sl:E0", 0xffc0, 0xe5c0, 0x3f8, Opcode.roxl),         // d68000_roxl_ea 
+	new Decoder("Iw", 0xffff, 0x4e74, 0x000, Opcode.rtd, InstrClass.Transfer),      // d68010_rtd
+	new Decoder("", 0xffff, 0x4e73, 0x000, Opcode.rte, InstrClass.Transfer|InstrClass.System),        // d68000_rte
+	new Decoder(d68020_rtm, 0xfff0, 0x06c0, 0x000, InstrClass.Transfer),
+	new Decoder("", 0xffff, 0x4e77, 0x000, Opcode.rtr, InstrClass.Transfer),        // d68000_rtr
+	new Decoder("", 0xffff, 0x4e75, 0x000, Opcode.rts, InstrClass.Transfer),        // d68000_rts
+	new Decoder("D0,D9", 0xf1f8, 0x8100, 0x000, Opcode.sbcd),         // d68000_sbcd_rr
+	new Decoder("-0,-9", 0xf1f8, 0x8108, 0x000, Opcode.sbcd),         // d68000_sbcd_mm
+	new Decoder(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),
+	new Decoder(d68000_stop         , 0xffff, 0x4e72, 0x000),
+	new Decoder("sb:E0,D9", 0xf1c0, 0x9000, 0xbff, Opcode.sub),       // d68000_sub_er_8
+	new Decoder("sw:E0,D9", 0xf1c0, 0x9040, 0xfff, Opcode.sub),       // d68000_sub_er_16
+	new Decoder("sl:E0,D9", 0xf1c0, 0x9080, 0xfff, Opcode.sub),       // d68000_sub_er_32
+	new Decoder("sb:D9,E0", 0xf1c0, 0x9100, 0x3f8, Opcode.sub),       // d68000_sub_re_8
+	new Decoder("sw:D9,E0", 0xf1c0, 0x9140, 0x3f8, Opcode.sub),       // d68000_sub_re_16
+	new Decoder("sl:D9,E0", 0xf1c0, 0x9180, 0x3f8, Opcode.sub),       // d68000_sub_re_32
+	new Decoder("sw:E0,A9", 0xf1c0, 0x90c0, 0xfff, Opcode.suba),      // d68000_suba_16
+	new Decoder("sl:E0,A9", 0xf1c0, 0x91c0, 0xfff, Opcode.suba),      // d68000_suba_32
+	new Decoder("sb:Ib,E0",   0xffc0, 0x0400, 0xbf8, Opcode.subi),      // d68000_subi_8
+	new Decoder("sw:Iw,E0",   0xffc0, 0x0440, 0xbf8, Opcode.subi),      // d68000_subi_16
+	new Decoder("sl:Il,E0",   0xffc0, 0x0480, 0xbf8, Opcode.subi),      // d68000_subi_32
+	new Decoder("sb:q9,E0",   0xf1c0, 0x5100, 0xbf8, Opcode.subq),      // d68000_subq_8
+	new Decoder("sw:q9,E0",   0xf1c0, 0x5140, 0xff8, Opcode.subq),      // d68000_subq_16
+	new Decoder("sl:q9,E0",   0xf1c0, 0x5180, 0xff8, Opcode.subq),      // d68000_subq_32
+	new Decoder("sb:D0,D9",   0xf1f8, 0x9100, 0x000, Opcode.subx),      // d68000_subx_rr_8
+	new Decoder("sw:D0,D9",   0xf1f8, 0x9140, 0x000, Opcode.subx),      // d68000_subx_rr_16
+	new Decoder("sl:D0,D9",   0xf1f8, 0x9180, 0x000, Opcode.subx),      // d68000_subx_rr_32
+	new Decoder("sb:-0,-9",   0xf1f8, 0x9108, 0x000, Opcode.subx),      // d68000_subx_mm_8
+	new Decoder("sw:-0,-9",   0xf1f8, 0x9148, 0x000, Opcode.subx),      // d68000_subx_mm_16
+	new Decoder("sl:-0,-9",   0xf1f8, 0x9188, 0x000, Opcode.subx),      // d68000_subx_mm_32
+	new Decoder("sl:D0",      0xfff8, 0x4840, 0x000, Opcode.swap),      // d68000_swap
+	new Decoder(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
+	new Decoder(d68000_trap         , 0xfff0, 0x4e40, 0x000, InstrClass.Transfer|InstrClass.Call),
+	new Decoder(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000, InstrClass.Transfer|InstrClass.Call),
+	new Decoder(d68020_trapcc_16    , 0xf0ff, 0x50fa, 0x000, InstrClass.Transfer|InstrClass.Call),
+	new Decoder(d68020_trapcc_32    , 0xf0ff, 0x50fb, 0x000, InstrClass.Transfer|InstrClass.Call),
+	new Decoder("", 0xffff, 0x4e76, 0x000, Opcode.trapv, InstrClass.Transfer|InstrClass.Call),  // d68000_trapv
+	new Decoder("sb:E0", 0xffc0, 0x4a00, 0xbf8, Opcode.tst),              // d68000_tst_8
+	new Decoder(d68020_tst_pcdi_8   , 0xffff, 0x4a3a, 0x000),
+	new Decoder(d68020_tst_pcix_8   , 0xffff, 0x4a3b, 0x000),
+	new Decoder(d68020_tst_i_8      , 0xffff, 0x4a3c, 0x000),
+	new Decoder("sw:E0", 0xffc0, 0x4a40, 0xbf8, Opcode.tst),              // d68000_tst_16
+	new Decoder(d68020_tst_a_16     , 0xfff8, 0x4a48, 0x000),
+	new Decoder(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
+	new Decoder(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
+	new Decoder(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
+	new Decoder("sl:E0",      0xffc0, 0x4a80, 0xbf8, Opcode.tst),         // d68000_tst_32
+	new Decoder(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
+	new Decoder("sl:E0",      0xffff, 0x4aba, 0x000, Opcode.tst),         // d68020_tst_pcdi_32
+	new Decoder(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
+	new Decoder("sl:E0", 0xffff, 0x4abc, 0x000, Opcode.tst),              // d68020_tst_i_32
+	new Decoder("A0", 0xfff8, 0x4e58, 0x000, Opcode.unlk),                // d68000_unlk
+	new Decoder(d68020_unpk_rr      , 0xf1f8, 0x8180, 0x000),
+	new Decoder(d68020_unpk_mm      , 0xf1f8, 0x8188, 0x000),
+	new Decoder(d68851_p000         , 0xffc0, 0xf000, 0x000),
+	new Decoder(d68851_pbcc16       , 0xffc0, 0xf080, 0x000),
+	new Decoder(d68851_pbcc32       , 0xffc0, 0xf0c0, 0x000),
+	new Decoder(d68851_pdbcc        , 0xfff8, 0xf048, 0x000),
+	new Decoder(d68851_p001         , 0xffc0, 0xf040, 0x000),
+	new Decoder(null, 0, 0, 0),
 };
         }
 
-        private static OpRec illegalOpcode = new OpRec("", 0, 0, 0, Opcode.illegal);
+        private static Decoder illegalOpcode = new Decoder("", 0, 0, 0, Opcode.illegal);
 
         // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)
@@ -3312,7 +3201,7 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        static int compare_nof_true_bits(OpRec aptr, OpRec bptr)
+        static int compare_nof_true_bits(Decoder aptr, Decoder bptr)
         {
             int a = (int) aptr.mask;
             int b = (int) bptr.mask;
@@ -3335,8 +3224,8 @@ namespace Reko.Arch.M68k
             uint i;
             uint opcode;
             int ostruct;
-            OpRec[] opcode_info = (OpRec[])g_opcode_info.Clone();
-            Array.Sort<OpRec>(opcode_info, compare_nof_true_bits);
+            Decoder[] opcode_info = (Decoder[])g_opcode_info.Clone();
+            Array.Sort<Decoder>(opcode_info, compare_nof_true_bits);
 
             for (i = 0; i < 0x10000; i++)
             {

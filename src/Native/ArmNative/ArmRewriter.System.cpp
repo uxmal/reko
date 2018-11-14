@@ -128,7 +128,7 @@ void ArmRewriter::RewriteStc(const char * name)
 
 void ArmRewriter::RewriteSvc()
 {
-	this->rtlClass = RtlClass::Transfer | RtlClass::Call;
+	this->rtlClass = InstrClass::Transfer | InstrClass::Call;
 	auto intrinsic = host->EnsurePseudoProcedure("__syscall", BaseType::Void, 1);
 	m.AddArg(Operand(Dst()));
 	m.SideEffect(m.Fn(intrinsic));

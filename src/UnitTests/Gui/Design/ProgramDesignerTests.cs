@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Design;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -99,14 +100,14 @@ namespace Reko.UnitTests.Gui.Design
             slSvc.Expect(s => s.GetSymbolSource("foo.h")).Return(symSrc);
             symSrc.Expect(s => s.GetAllSymbols()).Return(new List<ImageSymbol>
             {
-                new ImageSymbol(Address.Ptr32(0x00112240))
-                {
-                    Name = "my_procedure",
-                    Signature = new SerializedSignature
+                ImageSymbol.Procedure(
+                    program.Architecture, 
+                    Address.Ptr32(0x00112240),
+                    "my_procedure",
+                    signature:new SerializedSignature
                     {
                         // let's not worry about this yet.
-                    }
-                }
+                    })
             });
         }
 
@@ -133,6 +134,7 @@ namespace Reko.UnitTests.Gui.Design
         private void Given_Program_NoSymbols()
         {
             this.program = new Program();
+            this.program.Architecture = new FakeArchitecture();
             var addr = Address.Ptr32(0x00112200);
             this.program.ImageMap = new ImageMap(addr);
             this.program.SegmentMap = new SegmentMap(addr);

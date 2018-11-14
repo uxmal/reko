@@ -29,10 +29,10 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        private const InstructionClass Transfer = InstructionClass.Delay | InstructionClass.Transfer;
-        private const InstructionClass CondTransfer = InstructionClass.Delay | InstructionClass.Transfer | InstructionClass.Conditional;
-        private const InstructionClass LinkTransfer = InstructionClass.Delay | InstructionClass.Transfer | InstructionClass.Call;
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private const InstrClass Transfer = InstrClass.Delay | InstrClass.Transfer;
+        private const InstrClass CondTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Conditional;
+        private const InstrClass LinkTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Call;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         public Opcode Opcode;
         public bool Annul;
@@ -41,22 +41,20 @@ namespace Reko.Arch.Sparc
         public MachineOperand Op2;
         public MachineOperand Op3;
 
-        public override bool IsValid { get { return Opcode != Opcode.illegal; } }
-
         public override int OpcodeAsInteger { get { return (int)Opcode; } }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass cl;
+                InstrClass cl;
                 if (!classOf.TryGetValue(Opcode, out cl))
                 {
-                    cl = InstructionClass.Linear;
+                    cl = InstrClass.Linear;
                 }
                 else if (Annul)
                 {
-                    cl |= InstructionClass.Annul;
+                    cl |= InstrClass.Annul;
                 }
                 return cl;
             }
@@ -134,9 +132,9 @@ namespace Reko.Arch.Sparc
 
         static SparcInstruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.illegal, InstructionClass.Invalid },
+                { Opcode.illegal, InstrClass.Invalid },
 
                 { Opcode.call,   LinkTransfer },
                 { Opcode.tvc,    CondTransfer },

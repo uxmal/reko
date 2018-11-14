@@ -85,7 +85,7 @@ namespace Reko.Core
                 foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.Type != null))
                 {
                     var dt = this.LoadType(g.Type);
-                    var sym = new ImageSymbol { Type = SymbolType.Data };
+                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null, g.Name);
                     mod.GlobalsByName[g.Name] = sym;
                     if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
                     {

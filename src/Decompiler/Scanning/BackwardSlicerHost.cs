@@ -105,16 +105,16 @@ namespace Reko.Scanning
                     // after conversion from "raw" RTL.
                     if (branch.Target.Address == null)
                         yield break;
-                    yield return new RtlBranch(branch.Condition, branch.Target.Address, RtlClass.ConditionalTransfer);
+                    yield return new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
                     break;
                 case CallInstruction call:
-                    yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, RtlClass.Call);
+                    yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, InstrClass.Call);
                     break;
                 case SideEffect side:
                     yield return new RtlSideEffect(side.Expression);
                     break;
                 case GotoInstruction go:
-                    yield return new RtlGoto(go.Target, RtlClass.Transfer);
+                    yield return new RtlGoto(go.Target, InstrClass.Transfer);
                     break;
                 default:
                     throw new NotImplementedException($"Translation needed for {stm.Instruction}.");

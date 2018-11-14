@@ -66,7 +66,7 @@ INativeInstruction * Arm64Disassembler::NextInstruction()
 	{
 		instr->detail->arm64.op_count = 0;
 		auto info = NativeInstructionInfo{
-			uAddr, 4, static_cast<uint32_t>(InstructionClass::Invalid), ARM64_INS_INVALID
+			uAddr, 4, static_cast<uint32_t>(InstrClass::Invalid), ARM64_INS_INVALID
 		};
 		this->uAddr += 4;
 		this->length -= 4;
@@ -76,23 +76,23 @@ INativeInstruction * Arm64Disassembler::NextInstruction()
 	{
 		auto info = NativeInstructionInfo{
 			uAddr, 4,
-			static_cast<uint32_t>(InstructionClass::Linear),
+			static_cast<uint32_t>(InstrClass::Linear),
 			static_cast<int32_t>(instr->id)
 		};
 		return new Arm64Instruction(instr, info);
 	}
 }
 
-inline InstructionClass operator | (InstructionClass a, InstructionClass b) {
-	return static_cast<InstructionClass>(static_cast<int>(a) | static_cast<int>(b));
+inline InstrClass operator | (InstrClass a, InstrClass b) {
+	return static_cast<InstrClass>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-InstructionClass Arm64Disassembler::InstructionClassFromId(unsigned int armInstrID)
+InstrClass Arm64Disassembler::InstrClassFromId(unsigned int armInstrID)
 {
 	switch (armInstrID)
 	{
-	case ARM64_INS_INVALID: return InstructionClass::Invalid;
+	case ARM64_INS_INVALID: return InstrClass::Invalid;
 	}
-	return InstructionClass::Linear;
+	return InstrClass::Linear;
 }
 

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Serialization.Json;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,8 +52,9 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Jprjs_Programs()
         {
-            var proc1 = new Procedure(null, "fn00123400", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            var proc2 = new Procedure(null, "fn00123500", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var arch = new FakeArchitecture();
+            var proc1 = new Procedure(arch, "fn00123400", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            var proc2 = new Procedure(arch, "fn00123500", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
             var project = new Project
             {
                 Programs =

@@ -18,10 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -131,12 +129,12 @@ namespace Reko.Arch.X86
             //  F2h arctangent(ST0)
             case 0xF4:
                 //  F4h ST0 = ln(ST0)
-                return new X86Instruction(Opcode.BOR_ln, dataWidth, addressWidth);
+                return new X86Instruction(Opcode.BOR_ln, InstrClass.Linear, dataWidth, addressWidth);
             // F6h    ST0 = log2(ST0)
             //  F8h ST0 = log10(ST0)
             case 0xFA:
                 // FAh    ST0 = e** ST0
-                return new X86Instruction(Opcode.BOR_exp, dataWidth, addressWidth);
+                return new X86Instruction(Opcode.BOR_exp, InstrClass.Linear, dataWidth, addressWidth);
                 //  FCh ST0 = 2 * *ST0
                 // FEh    ST0 = 10**ST0
             }

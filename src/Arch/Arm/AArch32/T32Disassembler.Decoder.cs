@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
             {
-                //return;
+                // return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -267,8 +267,7 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     if (!mutators[i](wInstr, dasm))
                     {
-                        dasm.state.Invalid();
-                        break;
+                        return dasm.Invalid();
                     }
                 }
                 var instr = dasm.state.MakeInstruction();
@@ -289,10 +288,10 @@ namespace Reko.Arch.Arm.AArch32
                 off = (off << 10) | SBitfield(wInstr, 16, 10);
                 off = (off << 11) | SBitfield(wInstr, 0, 11);
                 off <<= 1;
-                return new AArch32Instruction
+                return new T32Instruction
                 {
                     opcode = Opcode.bl,
-                    ops = new MachineOperand[] { AddressOperand.Create(dasm.addr + off) }
+                    ops = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
                 };
             }
         }
@@ -306,7 +305,7 @@ namespace Reko.Arch.Arm.AArch32
                 var registers = (byte)wInstr;
                 var st = SBitfield(wInstr, 11, 1) == 0;
                 var w = st || (registers & (1 << rn.Number)) == 0;
-                return new AArch32Instruction
+                return new T32Instruction
                 {
                     opcode = st
                         ? Opcode.stm
@@ -340,16 +339,17 @@ namespace Reko.Arch.Arm.AArch32
                 // writeback
                 if (rn == Registers.sp)
                 {
-                    return new AArch32Instruction
+                    return new T32Instruction
                     {
-                        opcode = l != 0 ? Opcode.pop_w : Opcode.push_w,
+                        opcode = l != 0 ? Opcode.pop : Opcode.push,
+                        Wide = true,
                         Writeback = w,
                         ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
                     };
                 }
                 else
                 {
-                    return new AArch32Instruction
+                    return new T32Instruction
                     {
                         opcode = opcode,
                         Writeback = w,
@@ -389,7 +389,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                var instr = new AArch32Instruction
+                var instr = new T32Instruction
                 {
                     opcode = Opcode.it,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),

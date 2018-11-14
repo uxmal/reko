@@ -18,14 +18,11 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Registers = Reko.Arch.Tlcs.Tlcs900.Tlcs900Registers;
 
 namespace Reko.Arch.Tlcs.Tlcs900
@@ -154,7 +151,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             m.Assign(src, m.IAddS(src, dt.Size));
             m.Assign(dst, m.IAddS(dst, dt.Size));
             m.Assign(cnt, m.ISubS(cnt, 1));
-            m.Branch(m.Ne0(cnt), instr.Address, RtlClass.ConditionalTransfer);
+            m.Branch(m.Ne0(cnt), instr.Address, InstrClass.ConditionalTransfer);
             EmitCc(null, flags);
         }
 

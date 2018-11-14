@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -157,10 +157,10 @@ namespace Reko.Environments.Windows
                 }
                 addrTarget = MakeAddressFromConstant(wAddr);
             }
-            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
+            ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, rtlc.Address);
             if (proc != null)
                 return proc;
-            return host.GetInterceptedCall(addrTarget);
+            return host.GetInterceptedCall(this.Architecture, addrTarget);
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

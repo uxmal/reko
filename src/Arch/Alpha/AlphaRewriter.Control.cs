@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -58,9 +58,8 @@ namespace Reko.Arch.Alpha
         private void RewriteBranch(Func<Expression, Expression> fn)
         {
             var dst = ((AddressOperand)instr.op2).Address;
-            rtlc = RtlClass.ConditionalTransfer;
             var src = Rewrite(instr.op1);
-            m.Branch(fn(src), dst, rtlc);
+            m.Branch(fn(src), dst, instr.iclass);
         }
 
         private void RewriteCmov(Func<Expression, Expression> skip)
@@ -68,7 +67,7 @@ namespace Reko.Arch.Alpha
             var cond = Rewrite(instr.op1);
             var src = Rewrite(instr.op2);
             var dst = Rewrite(instr.op3);
-            m.BranchInMiddleOfInstruction(skip(cond).Invert(), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+            m.BranchInMiddleOfInstruction(skip(cond).Invert(), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
         }
 
@@ -78,20 +77,20 @@ namespace Reko.Arch.Alpha
             var src = Rewrite(instr.op2);
             var dst = Rewrite(instr.op3);
             cond = new BinaryExpression(op, PrimitiveType.Bool, cond, Constant.Real64(0.0));
-            m.BranchInMiddleOfInstruction(cond.Invert(), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+            m.BranchInMiddleOfInstruction(cond.Invert(), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
         }
 
         private void RewriteFBranch(Operator op)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var src = Rewrite(instr.op1);
             var dst = ((AddressOperand)instr.op2).Address;
             m.Branch(
                 new BinaryExpression(
                     op, PrimitiveType.Bool, src, Constant.Real64(0.0)),
                 dst,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJmp()
@@ -105,7 +104,6 @@ namespace Reko.Arch.Alpha
         {
             if (ret.Number == ZeroRegister)
             {
-                rtlc = RtlClass.Transfer;
                 if (dst is Identifier id && ((RegisterStorage)id.Storage).Number == ReturnAddress)
                     m.Return(0, 0);
                 else 
@@ -115,12 +113,11 @@ namespace Reko.Arch.Alpha
             {
                 if (ret.Number == ReturnAddress)
                 {
-                    rtlc = RtlClass.Transfer | RtlClass.Call;
+                    rtlc = InstrClass.Transfer | InstrClass.Call;
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    rtlc = RtlClass.Transfer;
                     // Weird jump. 
                     m.Assign(binder.EnsureRegister(ret), instr.Address + instr.Length);
                     m.Goto(dst);

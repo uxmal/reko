@@ -82,11 +82,13 @@ namespace Reko.Environments.MacOS.Classic
         public const ushort JMP_A0 = 0x4ED0;
         public const ushort RTD = 0x4E74;
 
+        private IProcessorArchitecture arch;
         private BeImageReader rdr;
         private Regex reValidVariableLengthProcedureName;
 
-        public MacsBugSymbolScanner(MemoryArea mem)
+        public MacsBugSymbolScanner(IProcessorArchitecture arch, MemoryArea mem)
         {
+            this.arch = arch;
             this.rdr = mem.CreateBeReader(0);
             this.reValidVariableLengthProcedureName = new Regex(
                 "[a-zA-Z%_]([a-zA-Z0-9%_.])*");
@@ -175,7 +177,7 @@ namespace Reko.Environments.MacOS.Classic
                     continue;
                 }
                 
-                sym = new ImageSymbol(addrStart) { Type = SymbolType.Procedure, Name = symbol };
+                sym = ImageSymbol.Procedure(arch, addrStart, symbol);
                 return true;
             }
             return false;

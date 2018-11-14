@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -1652,6 +1652,15 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__breakpoint(0x000062B0)");
+        }
+
+        [Test]
+        public void ArmRw_vaddl()
+        {
+            BuildTest(0xF3AF8000);    // vaddl.u32\tq4,d15,d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q4 = __vaddl_u32(d15, d0)");
         }
     }
 }

@@ -29,7 +29,7 @@ public:
 
 	INativeInstruction * STDAPICALLTYPE NextInstruction() override;
 private:
-	InstructionClass InstructionClassFromId(unsigned int armInstrID);
+	InstrClass InstrClassFromId(unsigned int armInstrID);
 
 	csh hcapstone;
 	const uint8_t * bytes;

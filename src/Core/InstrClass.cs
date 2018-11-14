@@ -24,23 +24,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Machine
+namespace Reko.Core
 {
     /// <summary>
-    /// Classifies a machine instruction according to its behavior.
+    /// Classifies an instruction based on certain architectural features involving
+    /// delay slots on architectures like MIPS and SPARC.
     /// </summary>
     [Flags]
     [NativeInterop]
-    public enum InstructionClass
+    public enum InstrClass
     {
         None,
         Linear  = 1,            // ALU instruction, computational (like ADD, SHR, or MOVE)
         Transfer = 2,           // Control flow transfer like JMP, CALL
         Conditional = 4,        // Conditionally executed  (like branches or CMOV instructions)
-        Delay = 8,              // The following instruction is in a delay slot.
-        Annul = 16,             // The following instruction is anulled.
-        Invalid = 32,           // The instruction is invalid
-        Call = 64,              // The instruction saves a return address somewhere
+        Call = 8,               // Instruction saves its continuation.
+        Delay = 16,             // The following instruction is in a delay slot.
+        Annul = 32,             // The following instruction is anulled.
+        Terminates = 64,        // Instruction terminates execution.
         System = 128,           // Privileged instruction
+        Padding = 256,          // Instruction _could_ be used as alignment padding between procedures.
+        Invalid = 512,          // The instruction is invalid
+        ConditionalTransfer = Conditional | Transfer,
     }
 }

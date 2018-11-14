@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
-        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcode opcode, string fmt)
+        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcode opcode, InstrClass iclass, string fmt)
         {
             List<MachineOperand> ops = new List<MachineOperand>(2);
             int i = 0;
@@ -80,6 +80,7 @@ namespace Reko.Arch.Pdp11
                 return new Pdp11Instruction
                 {
                     Opcode = opcode,
+                    IClass = iclass,
                 };
             }
             switch (fmt[i])
@@ -103,12 +104,19 @@ namespace Reko.Arch.Pdp11
                 default: throw new NotImplementedException();
                 }
                 if (op == null)
-                    return new Pdp11Instruction {  Opcode = Opcode.illegal };
+                {
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcode.illegal,
+                        IClass = InstrClass.Invalid
+                    };
+                }
                 ops.Add(op);
             }
             var instr = new Pdp11Instruction
             {
                 Opcode = opcode,
+                IClass = iclass,
                 DataWidth = dataWidth,
                 op1 = ops.Count > 0 ? ops[0] : null,
                 op2 = ops.Count > 1 ? ops[1] : null,
@@ -123,18 +131,20 @@ namespace Reko.Arch.Pdp11
 
         class FormatOpRec : OpRec
         {
-            private string fmt;
-            private Opcode opcode;
+            private readonly string fmt;
+            private readonly InstrClass iclass;
+            private readonly Opcode opcode;
 
-            public FormatOpRec(string fmt, Opcode op)
+            public FormatOpRec(string fmt, Opcode op, InstrClass iclass = InstrClass.Linear)
             {
                 this.fmt = fmt;
                 this.opcode = op;
+                this.iclass = iclass;
             }
 
             public override Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm)
             {
-                return dasm.DecodeOperands(opcode, this.opcode, fmt);
+                return dasm.DecodeOperands(opcode, this.opcode, iclass, fmt);
             }
         }
 
@@ -256,9 +266,10 @@ namespace Reko.Arch.Pdp11
 
         private static Pdp11Instruction NonDoubleOperandInstruction(ushort opcode, Pdp11Disassembler dasm)
         {
+            var iclass = InstrClass.Linear;
             switch ((opcode >> 8))
             {
-            case 0x01: return dasm.BranchInstruction(opcode, Opcode.br);
+            case 0x01: return dasm.BranchInstruction(opcode, Opcode.br, InstrClass.Transfer);
             case 0x02: return dasm.BranchInstruction(opcode, Opcode.bne);
             case 0x03: return dasm.BranchInstruction(opcode, Opcode.beq);
             case 0x04: return dasm.BranchInstruction(opcode, Opcode.bge);
@@ -285,21 +296,21 @@ namespace Reko.Arch.Pdp11
             case 0x000:
                 switch (opcode & 0x3F)
                 {
-                case 0x00: cop = 0; oc = Opcode.halt; break;
+                case 0x00: cop = 0; oc = Opcode.halt; iclass = InstrClass.Terminates; break;
                 case 0x01: cop = 0; oc = Opcode.wait; break;
-                case 0x02: cop = 0; oc = Opcode.rti; break;
+                case 0x02: cop = 0; oc = Opcode.rti; iclass = InstrClass.Transfer; break;
                 case 0x03: cop = 0; oc = Opcode.bpt; break;
                 case 0x04: cop = 0; oc = Opcode.iot; break;
-                case 0x05: cop = 0; oc = Opcode.reset; break;
-                case 0x06: cop = 0; oc = Opcode.rtt; break;
+                case 0x05: cop = 0; oc = Opcode.reset; iclass = InstrClass.Transfer; break;
+                case 0x06: cop = 0; oc = Opcode.rtt; iclass = InstrClass.Transfer; break;
                 case 0x07: cop = 0; oc = Opcode.illegal; break;
                 }
                 break;
-            case 0x001: op1 = dasm.DecodeOperand(opcode); oc = Opcode.jmp; break;
+            case 0x001: op1 = dasm.DecodeOperand(opcode); oc = Opcode.jmp; iclass = InstrClass.Transfer; break;
             case 0x002:
                 switch (opcode & 0x38)
                 {
-                case 0: op1 = dasm.DecodeOperand(opcode & 7); oc = Opcode.rts; break;
+                case 0: op1 = dasm.DecodeOperand(opcode & 7); oc = Opcode.rts; iclass = InstrClass.Transfer; break;
                 case 3: op1 = dasm.DecodeOperand(opcode); oc = Opcode.spl; break;
                 case 0x20:
                 case 0x28:
@@ -321,6 +332,7 @@ namespace Reko.Arch.Pdp11
             case 0x026:
             case 0x027:
                 oc = Opcode.jsr;
+                iclass = InstrClass.Transfer | InstrClass.Call;
                 cop = 2;
                 op1 = Reg(opcode >> 6, dasm);
                 op2 = dasm.DecodeOperand(opcode);
@@ -338,6 +350,7 @@ namespace Reko.Arch.Pdp11
             case 0x226:
             case 0x227:
                 oc = Opcode.trap;
+                iclass = InstrClass.Transfer;
                 op1 = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x028:
@@ -418,11 +431,16 @@ namespace Reko.Arch.Pdp11
             if (cop > 0 && op1 == null ||
                 cop > 1 && op2 == null)
             {
-                return new Pdp11Instruction { Opcode = Opcode.illegal };
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcode.illegal,
+                    IClass = InstrClass.Invalid
+                };
             }
             return new Pdp11Instruction
             {
                 Opcode = oc,
+                IClass = iclass,
                 DataWidth = dataWidth,
                 op1 = op1,
                 op2 = op2,
@@ -436,11 +454,13 @@ namespace Reko.Arch.Pdp11
                 return new Pdp11Instruction
                 {
                     Opcode = Opcode.nop,
+                    IClass = InstrClass.Linear,
                 };
             } 
             return new Pdp11Instruction
             {
                 Opcode = ((opcode & 0x10) != 0) ? Opcode.setflags : Opcode.clrflags,
+                IClass = InstrClass.Linear,
                 DataWidth = dataWidth,
                 op1 = new ImmediateOperand(Constant.Byte((byte)(opcode&0xF))),
             };
@@ -456,11 +476,12 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        private Pdp11Instruction BranchInstruction(ushort opcode, Opcode oc)
+        private Pdp11Instruction BranchInstruction(ushort opcode, Opcode oc, InstrClass iclass = InstrClass.ConditionalTransfer)
         {
             return new Pdp11Instruction
             {
                 Opcode = oc,
+                IClass = iclass,
                 DataWidth = PrimitiveType.Word16,
                 op1 = new AddressOperand(this.rdr.Address + 2 * (sbyte)(opcode & 0xFF)),
             };

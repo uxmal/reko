@@ -39,14 +39,14 @@ namespace Reko.Core.NativeInterface
     public interface INativeRtlEmitter
     {
         [PreserveSig] void Assign(HExpr dst, HExpr src);
-        [PreserveSig] void Branch(HExpr exp, HExpr dst, RtlClass rtlClass);
-        [PreserveSig] void BranchInMiddleOfInstruction(HExpr exp, HExpr dst, RtlClass rtlClass);
+        [PreserveSig] void Branch(HExpr exp, HExpr dst, InstrClass rtlClass);
+        [PreserveSig] void BranchInMiddleOfInstruction(HExpr exp, HExpr dst, InstrClass rtlClass);
         [PreserveSig] void Call(HExpr dst, int bytesOnStack);
         [PreserveSig] void Goto(HExpr dst);
         [PreserveSig] void Invalid();
         [PreserveSig] void Nop();
         [PreserveSig] void Return(int x, int y);
-        [PreserveSig] void FinishCluster(RtlClass rtlClass, ulong address, int mcLength);
+        [PreserveSig] void FinishCluster(InstrClass rtlClass, ulong address, int mcLength);
         [PreserveSig] void SideEffect(HExpr exp);
 
         [PreserveSig] HExpr And(HExpr a, HExpr b);

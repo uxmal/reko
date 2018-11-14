@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Scanning
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x200);
             Given_Instrs(b2, m => { m.Assign(r1, m.Shl(r2, 2)); });
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Scanning
 
             var b = Given_Block(0x100);
             Given_Instrs(b, m => { m.Assign(cz, m.Cond(m.ISub(r2, 4))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x200);
             Given_Instrs(b2, m => { m.Assign(r1, m.Shl(r2, 2)); });
@@ -306,7 +306,7 @@ namespace Reko.UnitTests.Scanning
                 m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
             });
             Given_Instrs(b, m => {
-                m.Branch(new TestCondition(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), RtlClass.ConditionalTransfer);
+                m.Branch(new TestCondition(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), InstrClass.ConditionalTransfer);
             });
 
             var b2 = Given_Block(0x200);
@@ -367,11 +367,11 @@ namespace Reko.UnitTests.Scanning
             Given_Instrs(b, m => { m.Assign(ecx, m.Shr(ecx, 2)); m.Assign(SCZO, m.Cond(ecx)); });
             Given_Instrs(b, m => { m.Assign(edx, m.And(edx, 3)); m.Assign(SZO, m.Cond(edx)); m.Assign(C, Constant.False()); });
             Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(ecx, 8))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x2000), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x2000), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x1008);
             Given_Instrs(b2, m => {
-                m.BranchInMiddleOfInstruction(m.Eq0(ecx), Address.Ptr32(0x1010), RtlClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Eq0(ecx), Address.Ptr32(0x1010), InstrClass.ConditionalTransfer);
                 m.Assign(tmp, m.Mem32(esi));
                 m.Assign(m.Mem32(edi), tmp);
                 m.Assign(esi, m.IAdd(esi, 4));
@@ -423,7 +423,7 @@ namespace Reko.UnitTests.Scanning
 
             var b = Given_Block(0x0C00, 0x0100);
             Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(bx, 15))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.SegPtr(0xC00, 0x200), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.SegPtr(0xC00, 0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x0C00, 0x0108);
             Given_Instrs(b2, m => { m.Assign(bx, m.IAdd(bx, bx)); m.Assign(SCZO, m.Cond(bx)); });
@@ -459,7 +459,7 @@ namespace Reko.UnitTests.Scanning
 
             var b = Given_Block(0x001000000);
             Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(eax, 3))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x00100010), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x00100010), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x001000008);
             Given_Instrs(b2, m => { m.Assign(edx, m.Xor(edx, edx)); m.Assign(SZO, m.Cond(edx)); m.Assign(C, Constant.False()); });
@@ -559,7 +559,7 @@ namespace Reko.UnitTests.Scanning
             });
             Given_Instrs(b, m =>
             {
-                m.Branch(m.Test(ConditionCode.UGT, CZ), Address.Ptr32(0x00100040), RtlClass.ConditionalTransfer);
+                m.Branch(m.Test(ConditionCode.UGT, CZ), Address.Ptr32(0x00100040), InstrClass.ConditionalTransfer);
             });
 
             var b2 = Given_Block(0x00100008);
@@ -732,7 +732,7 @@ namespace Reko.UnitTests.Scanning
         //      m.IAdd(
         //          m.Word32(0x001066A2), 
         //          m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
-        //      RtlClass.Transfer);
+        //      InstrClass.Transfer);
 
         // cmp [ebp-66],1D
         // mov edx,[ebp-66]
