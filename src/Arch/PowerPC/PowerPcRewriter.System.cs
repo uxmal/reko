@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -95,7 +96,6 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteRfi()
         {
-            this.rtlc = RtlClass.Transfer;
             var srr0 = binder.EnsureRegister(arch.SpRegisters[26]);
             var srr1 = binder.EnsureRegister(arch.SpRegisters[27]);
             m.SideEffect(host.PseudoProcedure("__write_msr", PrimitiveType.Word32, srr1));

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2018 John KÃ¤llÃ©n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -173,12 +173,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteBic()
+        private Expression Bic(Expression a, Expression b)
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var opSrc1 = this.Operand(Src1());
-            var opSrc2 = this.Operand(Src2());
-            m.Assign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
+            return m.And(a, m.Comp(b));
         }
 
         private void RewriteClz()
@@ -208,7 +205,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteTableBranch(DataType elemSize)
         {
-            this.rtlClass = RtlClass.Transfer;
+            this.rtlClass = InstrClass.Transfer;
             var mem = (MemoryOperand) instr.ops[0];
             Expression tableBase;
             if (mem.BaseRegister == Registers.pc)
@@ -286,8 +283,8 @@ namespace Reko.Arch.Arm.AArch32
                     // of this procedure. That requires more advanced 
                     // analyses than Reko can manage presently.
                     rtlClass = instr.condition == ArmCondition.AL
-                        ? RtlClass.Transfer
-                        : RtlClass.ConditionalTransfer;
+                        ? InstrClass.Transfer
+                        : InstrClass.ConditionalTransfer;
                     m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
                     m.Return(0, 0);
                     return;
@@ -304,7 +301,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (isJump)
             {
-                rtlClass = RtlClass.Transfer;
+                rtlClass = InstrClass.Transfer;
                 m.Goto(src);
             }
             else
@@ -413,8 +410,8 @@ namespace Reko.Arch.Arm.AArch32
             if (pcRestored)
             {
                 rtlClass = instr.condition == ArmCondition.AL
-                    ? RtlClass.Transfer
-                    : RtlClass.ConditionalTransfer;
+                    ? InstrClass.Transfer
+                    : InstrClass.ConditionalTransfer;
                 m.Return(0, 0);
             }
         }
@@ -478,7 +475,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (Dst() is RegisterOperand rOp && rOp.Register == Registers.pc)
             {
-                rtlClass = RtlClass.Transfer;
+                rtlClass = InstrClass.Transfer;
                 if (Src1() is RegisterOperand ropSrc && ropSrc.Register == Registers.lr)
                 {
                     m.Return(0, 0);

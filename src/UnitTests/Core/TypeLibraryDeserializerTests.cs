@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Core
 {
@@ -331,6 +332,7 @@ namespace Reko.UnitTests.Core
             var typelib = new TypeLibrary();
             platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+            platform.Stub(p => p.Architecture).Return(new FakeArchitecture());
             platform.Replay();
             var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
             tlldr.Load(new SerializedLibrary

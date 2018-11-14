@@ -19,7 +19,7 @@ void ThumbRewriter::RewriteIt()
 
 	itStateCondition = instr->detail->arm.cc;
 	m.Nop();
-	m.FinishCluster(RtlClass::Linear, instr->address, instr->size);
+	m.FinishCluster(InstrClass::Linear, instr->address, instr->size);
 }
 
 

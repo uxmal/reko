@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -114,7 +114,7 @@ namespace Reko.Environments.Windows
                         ExpressionMatcher.AnyConstant("lo")),
                     PrimitiveType.Word32))),
             new RtlInstructionMatcher(
-                new RtlGoto(ExpressionMatcher.AnyId("r2s"), RtlClass.Delay|RtlClass.Transfer))
+                new RtlGoto(ExpressionMatcher.AnyId("r2s"), InstrClass.Delay|InstrClass.Transfer))
         };
 
         /// <summary>
@@ -149,10 +149,10 @@ namespace Reko.Environments.Windows
             var lo = (Constant)trampPattern[1].CapturedExpressions("lo");
             var c = Operator.IAdd.ApplyConstants(hi, lo);
             var addrTarget= MakeAddressFromConstant(c);
-            ProcedureBase proc = host.GetImportedProcedure(addrTarget, addrFrom);
+            ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrFrom);
             if (proc != null)
                 return proc;
-            return host.GetInterceptedCall(addrTarget);
+            return host.GetInterceptedCall(this.Architecture, addrTarget);
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

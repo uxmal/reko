@@ -35,5 +35,10 @@ namespace Reko.Scanning
             this.Entry = entry;
             this.Blocks = blocks;
         }
+
+        public override string ToString()
+        {
+            return $"RtlProcedure(entry: {Entry.Address}, blocks: {Blocks.Count})";
+        }
     }
 }

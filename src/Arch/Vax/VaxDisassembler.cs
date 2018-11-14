@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -49,9 +49,13 @@ namespace Reko.Arch.Vax
             try
             {
                 instr = oneByteInstructions[op].Decode(this);
-            } catch
+            }
+            catch
             {
-                instr = new VaxInstruction { Opcode = Opcode.Invalid, Operands = new MachineOperand[0] };
+                instr = new VaxInstruction {
+                    Opcode = Opcode.Invalid,
+                    IClass = InstrClass.Invalid,
+                    Operands = new MachineOperand[0] };
             }
             if (instr == null)
                 return null;
@@ -60,7 +64,7 @@ namespace Reko.Arch.Vax
             return instr;
         }
 
-        private VaxInstruction DecodeOperands(Opcode opcode, string format)
+        private VaxInstruction DecodeOperands(Opcode opcode, InstrClass iclass, string format)
         {
             var ops = new List<MachineOperand>();
             MachineOperand op;
@@ -104,6 +108,7 @@ namespace Reko.Arch.Vax
                     return new VaxInstruction
                     {
                         Opcode = Opcode.Invalid,
+                        IClass = InstrClass.Invalid,
                         Operands = new MachineOperand[0],
                     };
                 }
@@ -112,6 +117,7 @@ namespace Reko.Arch.Vax
             return new VaxInstruction
             {
                 Opcode = opcode,
+                IClass = iclass,
                 Operands = ops.ToArray()
             };
         }
@@ -282,11 +288,13 @@ namespace Reko.Arch.Vax
         public class Decoder
         {
             private readonly Opcode op;
+            private readonly InstrClass iclass;
             private readonly string format;
 
-            public Decoder(Opcode op, string format)
+            public Decoder(Opcode op, string format, InstrClass iclass = InstrClass.Linear)
             {
                 this.op = op;
+                this.iclass = iclass;
                 this.format = format;
             }
 
@@ -298,7 +306,7 @@ namespace Reko.Arch.Vax
 
             public virtual VaxInstruction Decode(VaxDisassembler dasm)
             {
-                return dasm.DecodeOperands(op, format);
+                return dasm.DecodeOperands(op, iclass, format);
             }
         }
     }

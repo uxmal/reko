@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -129,8 +129,8 @@ namespace Reko.UnitTests.Scanning
         private void Given_x86_Image(Action<X86Assembler> asm)
         {
             var addrBase = Address.Ptr32(0x100000);
-            var entry = new ImageSymbol(addrBase) { Type = SymbolType.Procedure };
             var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var entry = ImageSymbol.Procedure(arch, addrBase);
             var m = new X86Assembler(null, new DefaultPlatform(null, arch), addrBase, new List<ImageSymbol> { entry });
             asm(m);
             this.program = m.GetImage();
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Scanning
             //    .Return(new PseudoProcedure("<>", PrimitiveType.Word32, 2));
             host.Stub(h => h.PseudoProcedure("", VoidType.Instance, null)).IgnoreArguments().Return(null);
             host.Stub(h => h.GetImport(null, null)).IgnoreArguments().Return(null);
-            host.Stub(h => h.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+            host.Stub(h => h.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
             host.Replay();
             dev.Replay();
             var frame = program.Architecture.CreateFrame();
@@ -334,7 +334,7 @@ namespace Reko.UnitTests.Scanning
             var instr = new RtlInstructionCluster(
                 Address.Ptr32(addr), length, new RtlInstruction[1])
             {
-                Class = RtlClass.Linear
+                Class = InstrClass.Linear
             };
             return instr;
         }

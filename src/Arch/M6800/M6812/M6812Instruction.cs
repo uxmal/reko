@@ -1,21 +1,37 @@
-﻿using Reko.Core.Machine;
+#region License
+/* 
+ * Copyright (C) 1999-2018 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
+        public InstrClass iclass;
         public MachineOperand[] Operands;
 
-        public override InstructionClass InstructionClass => GetInstructionClass();
+        public override InstrClass InstructionClass => iclass;
 
-        public override bool IsValid => Opcode != Opcode.invalid;
-
-        public override int OpcodeAsInteger => (int)Opcode;
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public Opcode Opcode { get; set; }
 
@@ -49,11 +65,6 @@ namespace Reko.Arch.M6800.M6812
                 return;
             }
             op.Write(writer, options);
-        }
-
-        private InstructionClass GetInstructionClass()
-        {
-            return InstructionClass.Linear;
         }
     }
 }

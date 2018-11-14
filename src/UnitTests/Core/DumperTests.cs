@@ -82,7 +82,8 @@ namespace Reko.UnitTests.Core
                     Operation.Ret
                 }.Select((m, i) => new FakeInstruction(m)
                 {
-                    Address = Address.Ptr32(0x00010010 + 2 * (uint)i)
+                    Address = Address.Ptr32(0x00010010 + 2 * (uint)i),
+                    Length = 2,
                 }));
 
             arch.Replay();
@@ -297,6 +298,67 @@ l00010004		db	0x04
 00010010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
 00010060 00 00 00 00 00 00 00 00 00 00 00 00 00 00       .............. 
+";
+            #endregion
+            AssertOutput(sExp, sw);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Dumper_ShowAddressesInDisassembly()
+        {
+            Given_32bit_Program();
+            Given_ProcedureAt(Address.Ptr32(0x10010));
+            mr.ReplayAll();
+
+            var dmp = new Dumper(program);
+            dmp.ShowAddresses = true;
+            var sw = new StringWriter();
+            dmp.Dump(new TextFormatter(sw));
+
+            string sExp =
+            #region Expected
+@";;; Segment .text (00010000)
+00010000 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ................
+
+;; fn00010010: 00010010
+fn00010010 proc
+00010010 	add
+00010012 	mul
+00010014 	add
+00010016 	ret
+00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
+";
+            #endregion
+            AssertOutput(sExp, sw);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Dumper_ShowBytesInDisassembly()
+        {
+            Given_32bit_Program();
+            Given_ProcedureAt(Address.Ptr32(0x10010));
+            mr.ReplayAll();
+
+            var dmp = new Dumper(program);
+            dmp.ShowCodeBytes = true;
+
+            var sw = new StringWriter();
+            dmp.Dump(new TextFormatter(sw));
+
+            string sExp =
+            #region Expected
+@";;; Segment .text (00010000)
+00010000 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ................
+
+;; fn00010010: 00010010
+fn00010010 proc
+10 11           	add
+12 13           	mul
+14 15           	add
+16 17           	ret
+00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
 ";
             #endregion
             AssertOutput(sExp, sw);

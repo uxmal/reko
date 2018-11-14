@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Gui.Forms
         {
             program.Procedures.Add(
                 addr,
-                new Procedure(null, procName, addr, program.Architecture.CreateFrame()));
+                new Procedure(program.Architecture, procName, addr, program.Architecture.CreateFrame()));
         }
 
         [Test]

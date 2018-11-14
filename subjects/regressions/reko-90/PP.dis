@@ -40167,37 +40167,37 @@ fn1483_0ADB_exit:
 
 
 
-real64 fn1483_0ADC(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector es, selector ds, selector fs, real64 rArg0)
+real64 fn1483_0ADC(byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 bp, word16 si, word16 di, selector es, selector ds, selector fs, real64 rArg0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ah al bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
+// MayUse:  ah al bh bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
 // LiveOut:
-// Trashed: SCZDOP ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// Trashed: SCZDOP ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved:
 fn1483_0ADC_entry:
-// DataOut: ah al bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
+// DataOut: ah al bh bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
 // DataOut (flags): P
 // SymbolicIn: sp:fp
 
 l1483_0ADC:
-	word16 cx_18
-	word16 dx_19
-	word16 bx_20
-	word16 bp_21
-	word16 si_22
-	word16 di_23
-	selector es_24
-	word16 ax_25 = fn1483_0D3F(al, ah, cx, dx, bl, bp, si, di, es, ds, fs, wLoc02, wArg00, wArg02, wArg04, wArg06, out cx_18, out dx_19, out bx_20, out bp_21, out si_22, out di_23, out es_24)
-	real64 rArg0_28 = Mem0[es_24:di_23 + 0xE086:real32] - rArg0
-	Mem31[ss:fp - 2:word16] = ax_25
-	Mem34[ss:fp - 4:word16] = cx_18
-	Mem36[ss:fp - 6:word16] = dx_19
-	Mem38[ss:fp - 8:word16] = bx_20
-	Mem40[ss:fp - 10:word16] = fp
-	Mem42[ss:fp - 12:word16] = bp_21
-	Mem44[ss:fp - 14:word16] = si_22
-	Mem46[ss:fp - 16:word16] = di_23
-	return rArg0_28
+	word16 cx_19
+	word16 dx_20
+	word16 bx_21
+	word16 bp_22
+	word16 si_23
+	word16 di_24
+	selector es_25
+	word16 ax_26 = fn1483_0D3F(al, ah, cx, dx, bl, bh, bp, si, di, es, ds, fs, wLoc02, wArg00, wArg02, wArg04, wArg06, out cx_19, out dx_20, out bx_21, out bp_22, out si_23, out di_24, out es_25)
+	real64 rArg0_29 = Mem0[es_25:di_24 + 0xE086:real32] - rArg0
+	Mem32[ss:fp - 2:word16] = ax_26
+	Mem35[ss:fp - 4:word16] = cx_19
+	Mem37[ss:fp - 6:word16] = dx_20
+	Mem39[ss:fp - 8:word16] = bx_21
+	Mem41[ss:fp - 10:word16] = fp
+	Mem43[ss:fp - 12:word16] = bp_22
+	Mem45[ss:fp - 14:word16] = si_23
+	Mem47[ss:fp - 16:word16] = di_24
+	return rArg0_29
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -40205,16 +40205,16 @@ l1483_0ADC:
 fn1483_0ADC_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> si:<invalid> di:<invalid> cx:<invalid> es:<invalid> dx:<invalid> dl:<invalid> bp:<invalid> cl:<invalid> ah:<invalid> bx:<invalid> eax:<invalid> -16(fp):di -14(fp):si -12(fp):bp -10(fp):fp -8(fp):bx -6(fp):dx -4(fp):cx -2(fp):ax
+// SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> si:<invalid> di:<invalid> cx:<invalid> es:<invalid> dx:<invalid> dl:<invalid> bp:<invalid> cl:<invalid> ah:<invalid> bx:<invalid> eax:<invalid> bh:<invalid> ss:<invalid> ds:<invalid> -16(fp):di -14(fp):si -12(fp):bp -10(fp):fp -8(fp):bx -6(fp):dx -4(fp):cx -2(fp):ax
 
 
 
 word16 fn1483_0C11(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al bl bp bx cx di ds es si ss
-// LiveOut: ax bp bx cx di dx es
-// Trashed: SCZDO ah al ax bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  al bh bl bp bx cs cx di ds es si ss
+// LiveOut: ax bp bx cx di dx es ss
+// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved: si
 l1483_0C11:
 // DataOut:
@@ -40222,61 +40222,61 @@ l1483_0C11:
 // SymbolicIn:
 
 fn1483_0C11_entry:
-// DataOut: al bl bp bx cx di ds es si ss
+// DataOut: al bh bl bp bx cs cx di ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16)
 
 l1483_0C11:
 	branch al != Mem0[ss:si:byte] l1483_0C4D
-// DataOut: al bl bp bx cx dh di dl ds es si ss
+// DataOut: al bh bl bp bx cs cx di ds dx es si ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Local -0002(16) Local -0004(16)
 
 l1483_0C4D:
-// DataOut: al bl bp bx cx di ds es si ss
+// DataOut: al bh bl bp bx cs cx di ds es si ss
 // DataOut (flags): Z
 // SymbolicIn: sp:fp - 4 dx:0x8000 -4(fp):si -2(fp):cx
 
 l1483_0C53_thunk_fn1483_0C55:
-	word16 cx_88
-	word16 dx_89
-	word16 bx_90
-	word16 bp_91
-	word16 si_92
-	word16 di_93
-	selector es_94
-	return fn1483_0C55(al + 0x01, cx, bx, bp, si, di, es, ds, wArg00, wArg02, wArg04, out cx_88, out dx_89, out bx_90, out bp_91, out si_92, out di_93, out es_94)
+	word16 cx_85
+	word16 dx_86
+	word16 bx_87
+	word16 bp_88
+	word16 si_89
+	word16 di_90
+	selector es_91
+	return fn1483_0C55(al + 0x01, cx, bx, bp, si, di, es, ds, wArg00, wArg02, wArg04, out cx_85, out dx_86, out bx_87, out bp_88, out si_89, out di_90, out es_91)
 // DataOut: ax bp bx cx di dx es ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp dx:0x4000 si:si cx:cx al:al + 0x01 -4(fp):si -2(fp):cx
 
 l1483_0C1B:
 	branch al - 0x8C - (al <u Mem0[ss:si:byte]) != 0x00 && cx != 0x0001 l1483_0C22_thunk_fn1483_0C6C
-// DataOut: al bl bp bx cx dh di dl ds es si ss
+// DataOut: al bh bl bp bx cl cs cx di ds dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 4 dx:0x8000 -4(fp):si -2(fp):cx
 
 l1483_0C22_thunk_fn1483_0C6C:
-	word16 cx_65
-	word16 dx_66
-	word16 bx_67
-	word16 bp_68
-	word16 di_69
-	selector es_70
-	return fn1483_0C6C(0x55, cx - 0x0001, 0x80, 0x00, bx, bp, si, di, es, ds, wLoc0A, out cx_65, out dx_66, out bx_67, out bp_68, out di_69, out es_70)
+	word16 cx_62
+	word16 dx_63
+	word16 bx_64
+	word16 bp_65
+	word16 di_66
+	selector es_67
+	return fn1483_0C6C(0x55, cx - 0x0001, 0x8000, bx, bp, si, di, es, ds, out cx_62, out dx_63, out bx_64, out bp_65, out di_66, out es_67)
 // DataOut: ax bp bx cx di dx es ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 dx:0x8000 al:0x55 ax:0x1955 cx:cx - 0x0001 -8(fp):bx -6(fp):ax -4(fp):si -2(fp):cx
 
 fn1483_0C11_exit:
-// DataOut: ax bp bx cx di dx es
+// DataOut: ax bp bx cx di dx es ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> al:<invalid> ax:<invalid> cx:<invalid> si:<invalid> di:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> es:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> cl:<invalid> ah:<invalid> -8(fp):bx -6(fp):ax -4(fp):si -2(fp):cx
+// SymbolicIn: sp:<invalid> dx:<invalid> al:<invalid> ax:<invalid> cx:<invalid> si:<invalid> di:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> es:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> cl:<invalid> ah:<invalid> bh:<invalid> ss:<invalid> ds:<invalid> bx:<invalid> -8(fp):bx -6(fp):ax -4(fp):si -2(fp):cx
 
 l1483_0C24:
-	Mem54[es:di:word16] = 0x1955
+	Mem52[es:di:word16] = 0x1955
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 dx:0x8000 al:0x55 ax:0x1955 cx:cx - 0x0001 -8(fp):bx -6(fp):ax -4(fp):si -2(fp):cx
@@ -40286,9 +40286,9 @@ l1483_0C24:
 word16 fn1483_0C55(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Z al bl bp bx cx di ds es si ss
-// LiveOut: ax bp bx cx di dx es si
-// Trashed: SCZDO ah al ax bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  Z al bh bl bp bx cs cx di ds es si ss
+// LiveOut: ax bp bx cx di dx es si ss
+// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved:
 // Stack args: Stack +0000(16) Stack +0002(16) Stack +0004(16)
 l1483_0C55:
@@ -40302,14 +40302,14 @@ fn1483_0C55_entry:
 	*bpOut = bp
 	*esOut = es
 	*siOut = si
-// DataOut: al ax bl bp bx cx di ds es si ss
+// DataOut: al ax bh bl bp bx cs cx di ds es si ss
 // DataOut (flags): Z
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16)
 
 l1483_0C55:
 	branch Z l1483_0C55_thunk_fn1483_0C11
-// DataOut: al ax bl bp bx cx di ds es si ss
+// DataOut: al ax bh bl bp bx cs cx di ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Stack +0000(16) Stack +0002(16) Stack +0004(16)
@@ -40339,98 +40339,105 @@ l1483_0C57:
 // SymbolicIn: sp:fp
 
 fn1483_0C55_exit:
-// DataOut: ax bp bx cx di dx es si
+// DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> si:<invalid> dx:<invalid> di:<invalid> al:<invalid> ax:<invalid> cx:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> es:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> cl:<invalid> ah:<invalid>
+// SymbolicIn: sp:<invalid> si:<invalid> dx:<invalid> di:<invalid> al:<invalid> ax:<invalid> cx:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> es:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> cl:<invalid> ah:<invalid> bh:<invalid> ss:<invalid> ds:<invalid> bx:<invalid>
 
 
 
-word16 fn1483_0C6C(byte al, word16 cx, byte dh, byte dl, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0C6C(byte al, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al bl bp bx cx dh di dl ds es si ss
-// LiveOut: ax bp bx cx di dx es
-// Trashed: SCZDO ah al ax bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  al bh bl bp bx cl cs cx di ds dx es si ss
+// LiveOut: ax bp bx cx di dx es ss
+// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved: ebx sp
-// Stack args: Stack +0000(16)
 l1483_0C6C:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn:
 
 fn1483_0C6C_entry:
-	*esOut = es
-// DataOut: al bp bx cx dh di dl ds es si ss
+// DataOut: al bh bl bp bx cl cs cx di ds dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: Stack +0000(16)
 
 l1483_0C6C:
 	byte al_4
 	__daa(al, &al_4)
-	word16 bp_10
-	word16 ax_16 = fn1483_1BB8(al_4, cx, bp, si, ds, out bp_10) + Mem0[ds:bx + 0x3303:word16]
-	word16 di_15 = di + Mem0[ds:bx:word16]
-	byte dh_28 = dh + Mem0[ds:si + 0x147C:byte] + (ax_16 <u 0x0000)
-	word16 v17_41 = Mem0[ds:ax_16 + 0x020E + di_15:word16] + di_15
-	Mem42[ds:ax_16 + 0x020E + di_15:word16] = v17_41
-	word16 ax_33 = (word16) ebx - 0x0903 - (dh_28 <u 0x00)
-	word16 dx_30 = DPB(dx, dh_28, 8)
-	byte al_34 = (byte) ax_33
-	byte ah_37 = SLICE(ax_33, byte, 8)
-	byte ch_46 = SLICE(cx - 0x0001, byte, 8)
-	branch v17_41 != 0x0000 && cx != 0x0001 l1483_0C85_thunk_fn1483_0CA0
-// DataOut: ah al bl bp bx ch cl cx di dl ds dx es si sp ss
+	word16 cx_14
+	byte dl_15
+	byte dh_16
+	word16 bx_17
+	word16 bp_18
+	word16 si_19
+	word16 di_20
+	selector es_21
+	selector ds_22
+	word16 ax_23 = fn1483_1BB8(al_4, cx, dx, bx, bp, si, di, es, ds, out cx_14, out dl_15, out dh_16, out bx_17, out bp_18, out si_19, out di_20, out es_21, out ds_22)
+	word16 ax_26 = ax_23 + Mem0[ds_22:bx_17 + 0x3303:word16]
+	byte dh_37 = dh_16 + Mem0[ds_22:si_19 + 0x147C:byte] + (ax_26 <u 0x0000)
+	word16 di_25 = di_20 + Mem0[ds_22:bx_17:word16]
+	word16 sp_47 = Mem0[ss:fp:word16]
+	word16 v17_49 = Mem0[ds_22:ax_26 + 0x020E + di_25:word16] + di_25
+	Mem50[ds_22:ax_26 + 0x020E + di_25:word16] = v17_49
+	word16 ax_41 = (word16) ebx - 0x0903 - (dh_37 <u 0x00)
+	word16 dx_38 = DPB(dx, dh_37, 8)
+	byte al_42 = (byte) ax_41
+	byte ah_45 = SLICE(ax_41, byte, 8)
+	byte ch_54 = SLICE(cx_14 - 0x0001, byte, 8)
+	branch v17_49 != 0x0000 && cx_14 != 0x0001 l1483_0C85_thunk_fn1483_0CA0
+// DataOut: ah al bh bl bp bx ch cl cs cx di dl ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l1483_0C85_thunk_fn1483_0CA0:
-	word16 cx_111
-	word16 dx_112
-	word16 bx_113
-	word16 bp_114
-	word16 di_115
-	return fn1483_0CA0(al_34, ah_37, dl, ax_16, bp_10, si, di_15, es, ds, out cx_111, out dx_112, out bx_113, out bp_114, out di_115)
+	word16 cx_117
+	word16 dx_118
+	word16 bx_119
+	word16 bp_120
+	word16 di_121
+	return fn1483_0CA0(al_42, ah_45, dl_15, ax_26, bp_18, si_19, di_25, es_21, ds_22, out cx_117, out dx_118, out bx_119, out bp_120, out di_121)
 // DataOut: ax bp bx cx di dx es ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:cx - 0x0001 bp:<invalid>
+// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:<invalid> dx:<invalid> si:<invalid> bp:<invalid> bh:<invalid> es:<invalid> ss:<invalid> ds:<invalid> bx:<invalid> ch:<invalid>
 
 l1483_0C87:
-	word16 ax_77 = Mem42[ds:ax_16:word16]
-	Mem80[ss:wArg00:word16] = si
-	Mem85[es:di_15:byte] = Mem80[ds:si:byte]
-	word16 dx_73 = dx_30 | cx - 0x0001
-	word16 cx_83 = DPB(cx - 0x0001, ch_46 + (byte) ax_77, 8)
-// DataOut: ah al ax bl bp bx ch cx di ds dx si sil ss
+	word16 ax_85 = Mem50[ds_22:ax_26:word16]
+	Mem88[ss:sp_47:word16] = si_19
+	Mem92[es_21:di_25:byte] = Mem88[ds_22:si_19:byte]
+	word16 dx_81 = dx_38 | cx_14 - 0x0001
+	word16 cx_90 = DPB(cx_14 - 0x0001, ch_54 + (byte) ax_85, 8)
+// DataOut: ah al ax bh bl bp bx ch cs cx di ds dx si sil ss
 // DataOut (flags): C
-// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:cx - 0x0001 bp:<invalid>
+// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:<invalid> dx:<invalid> si:<invalid> bp:<invalid> bh:<invalid> es:<invalid> ss:<invalid> ds:<invalid> bx:<invalid> ch:<invalid>
 
 l1483_0C8F_thunk_fn1483_0C91:
-	word16 cx_98
-	word16 dx_99
-	word16 bx_100
-	word16 bp_101
-	word16 si_102
-	word16 di_103
-	selector es_104
-	return fn1483_0C91(ax_77 * 0x0002, cx_83, dx_73, ax_16, bp_10, si + 0x0001, di_15 + 0x0001, ds, wArg00, out cx_98, out dx_99, out bx_100, out bp_101, out si_102, out di_103, out es_104)
+	word16 cx_105
+	word16 dx_106
+	word16 bx_107
+	word16 bp_108
+	word16 si_109
+	word16 di_110
+	selector es_111
+	return fn1483_0C91(ax_85 * 0x0002, cx_90, dx_81, ax_26, bp_18, si_19 + 0x0001, di_25 + 0x0001, ds_22, psegArg00, out cx_105, out dx_106, out bx_107, out bp_108, out si_109, out di_110, out es_111)
 // DataOut: ax bp bx cx di dx es ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:<invalid> dx:dx | cx - 0x0002 ch:<invalid> si:si + 0x0001 bp:<invalid>
+// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:<invalid> dx:<invalid> ch:<invalid> si:<invalid> bp:<invalid> bh:<invalid> es:<invalid> ss:<invalid> ds:<invalid> bx:<invalid>
 
 fn1483_0C6C_exit:
-// DataOut: ax bp bx cx di dx es
+// DataOut: ax bp bx cx di dx es ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:<invalid> dx:<invalid> ch:<invalid> si:<invalid> es:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> cl:<invalid> ah:<invalid>
+// SymbolicIn: sp:<invalid> al:<invalid> di:<invalid> ax:<invalid> eax:<invalid> ebx:ebx dh:<invalid> cx:<invalid> dx:<invalid> ch:<invalid> si:<invalid> es:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> cl:<invalid> ah:<invalid> bh:<invalid> ss:<invalid> ds:<invalid> bx:<invalid>
 
 
 
 word16 fn1483_0C91(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector ds, selector psegArg00, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  C ah al ax bl bp bx ch cx di ds dx si sil ss
-// LiveOut: ax bp bx cx di dx es si
-// Trashed: SCZDO ah al ax bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  C ah al ax bh bl bp bx ch cs cx di ds dx si sil ss
+// LiveOut: ax bp bx cx di dx es si ss
+// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved:
 // Stack args: Stack +0000(16)
 l1483_0C91:
@@ -40440,7 +40447,7 @@ l1483_0C91:
 
 fn1483_0C91_entry:
 	*siOut = si
-// DataOut: ah al ax bl bp bx ch cx di ds dx si sil ss
+// DataOut: ah al ax bh bl bp bx ch cs cx di ds dx si sil ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Stack +0000(16) v13(8) v19(8) v21(8) v23(16) v25(16) v26(16) v27(16)
@@ -40451,7 +40458,7 @@ l1483_0C91:
 	*esOut = es_3
 	word16 ax_12 = DPB(ax, al_11, 0)
 	branch !OVERFLOW(al_11) l1483_0C96_thunk_fn1483_0C55
-// DataOut: ah al ax bl bp bx cx di ds es si sil ss
+// DataOut: ah al ax bh bl bp bx cs cx di ds es si sil ss
 // DataOut (flags): Z
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) v13(8) v19(8) v21(8) v23(16) v25(16) v26(16) v27(16)
@@ -40543,9 +40550,9 @@ l1483_0C9D_thunk_fn1483_0CA1:
 // SymbolicIn: sp:fp + 2 es:<invalid> dx:<invalid> al:al + ch cx:cx - 0x0001
 
 fn1483_0C91_exit:
-// DataOut: ax bp bx cx di dx es si
+// DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> es:<invalid> dx:<invalid> al:<invalid> cx:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> ax:<invalid> di:<invalid> cl:<invalid> si:<invalid> ah:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> 0(fp):si 2(fp):<invalid> 4(fp):si
+// SymbolicIn: sp:<invalid> es:<invalid> dx:<invalid> al:<invalid> cx:<invalid> dl:<invalid> bp:<invalid> bl:<invalid> ax:<invalid> di:<invalid> cl:<invalid> si:<invalid> ah:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> bh:<invalid> ss:<invalid> ds:<invalid> bx:<invalid> 0(fp):si 2(fp):<invalid> 4(fp):si
 
 
 
@@ -40788,12 +40795,12 @@ fn1483_0CA1_exit:
 
 
 
-word16 fn1483_0CFA(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector ds, selector fs, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0CFA(byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 bp, word16 si, word16 di, selector ds, selector fs, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  C ah al bl bp ch cx di ds dx fs si sil ss
-// LiveOut: ax bp bx cx di dx es si
-// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  C ah al bh bl bp ch cs cx di ds dx fs si sil ss
+// LiveOut: ax bp bx cx di dx es si ss
+// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved: sp
 l1483_0CFA:
 // DataOut:
@@ -40801,49 +40808,49 @@ l1483_0CFA:
 // SymbolicIn:
 
 fn1483_0CFA_entry:
-// DataOut: ah al bl bp ch cx di ds dx fs si sil ss
+// DataOut: ah al bh bl bp ch cs cx di ds dx fs si sil ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 
 l1483_0CFA:
 	Mem8[ds:si + 0xD832:byte] = Mem0[ds:si + 0xD832:byte] - ch - C
-// DataOut: ah al bl bp ch cx di ds dx fs si sil ss
+// DataOut: ah al bh bl bp ch cs cx di ds dx fs si sil ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l1483_0CFA_thunk_fn1483_0CFC:
-	word16 cx_18
-	word16 dx_19
-	word16 bx_20
-	word16 bp_21
-	word16 si_22
-	word16 di_23
-	selector es_24
-	return fn1483_0CFC(al, ah, cx, dx, bl, bp, si, di, ds, fs, out cx_18, out dx_19, out bx_20, out bp_21, out si_22, out di_23, out es_24)
+	word16 cx_19
+	word16 dx_20
+	word16 bx_21
+	word16 bp_22
+	word16 si_23
+	word16 di_24
+	selector es_25
+	return fn1483_0CFC(al, ah, cx, dx, bl, bh, bp, si, di, ds, fs, out cx_19, out dx_20, out bx_21, out bp_22, out si_23, out di_24, out es_25)
 // DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn1483_0CFA_exit:
-// DataOut: ax bp bx cx di dx es si
+// DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bl:<invalid> al:<invalid> es:<invalid> dx:<invalid> cx:<invalid> dl:<invalid> bp:<invalid> ax:<invalid> di:<invalid> cl:<invalid> ah:<invalid> si:<invalid> bx:<invalid> eax:<invalid> dh:<invalid> ch:<invalid>
+// SymbolicIn: sp:<invalid> bl:<invalid> al:<invalid> es:<invalid> dx:<invalid> cx:<invalid> dl:<invalid> bp:<invalid> ax:<invalid> di:<invalid> cl:<invalid> ah:<invalid> si:<invalid> bx:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> bh:<invalid> ss:<invalid> ds:<invalid>
 
 
 
-word16 fn1483_0CFC(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector ds, selector fs, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0CFC(byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 bp, word16 si, word16 di, selector ds, selector fs, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ah al bl bp ch cx di ds dx fs si sil ss
-// LiveOut: ax bp bx cx di dx es si
-// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  ah al bh bl bp ch cs cx di ds dx fs si sil ss
+// LiveOut: ax bp bx cx di dx es si ss
+// Trashed: SCZDO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved: sp
 l1483_0CFC:
 	al = Mem0[ds:bx + di:byte]
 	ax = DPB(ax, al, 0) (alias)
 	Mem0[ss:bp + si:word16] = 0xD1FF
 	branch cx == 0x0000 l1483_0D04_thunk_fn1483_0C91
-// DataOut: ah al ax bl bp bx ch cx di ds dx es fs si sil ss
+// DataOut: ah al ax bh bl bp bx ch cs cx di ds dx es fs si sil ss
 // DataOut (flags): C
 // SymbolicIn:
 
@@ -40889,7 +40896,7 @@ fn1483_0CFC_entry:
 	def fs
 	def es
 	def psegLoc02
-// DataOut: ah al bl bp ch cx di ds dx es fs si sil ss
+// DataOut: ah al bh bl bp ch cs cx di ds dx es fs si sil ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
@@ -40903,7 +40910,7 @@ l1483_0CFC:
 	ax_14 = DPB(ax, al_12, 0) (alias)
 	Mem15[ss:bp + si:word16] = 0xD1FF
 	branch cx == 0x0000 l1483_0D04_thunk_fn1483_0C91
-// DataOut: ah al ax bl bp bx ch cx di ds dx es fs si sil ss
+// DataOut: ah al ax bh bl bp bx ch cs cx di ds dx es fs si sil ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 
@@ -40943,9 +40950,9 @@ fn1483_0CFC_exit:
 	use si_25 (=> siOut)
 	use di_26 (=> diOut)
 	use es_20 (=> esOut)
-// DataOut: ax bp bx cx di dx es si
+// DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bl:<invalid> al:<invalid> es:<invalid> dx:<invalid> cx:<invalid> dl:<invalid> bp:<invalid> ax:<invalid> di:<invalid> cl:<invalid> ah:<invalid> si:<invalid> bx:<invalid> eax:<invalid> dh:<invalid> ch:<invalid>
+// SymbolicIn: sp:<invalid> bl:<invalid> al:<invalid> es:<invalid> dx:<invalid> cx:<invalid> dl:<invalid> bp:<invalid> ax:<invalid> di:<invalid> cl:<invalid> ah:<invalid> si:<invalid> bx:<invalid> eax:<invalid> dh:<invalid> ch:<invalid> bh:<invalid> ss:<invalid> ds:<invalid>
 
 
 
@@ -40977,7 +40984,7 @@ l1483_0D06:
 // SymbolicIn: sp:fp
 
 l1483_0D11:
-	msdos_display_string(SEQ(ds, 1483:0D21))
+	msdos_display_string(SEQ(ds, 0x0D21))
 	word16 ax_63 = Mem8[ss:v3 + 0x000E:word16]
 	word16 di_49 = Mem8[ss:v3:word16]
 	*diOut = di_49
@@ -41011,24 +41018,24 @@ fn1483_0D06_exit:
 
 
 
-word16 fn1483_0D3F(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector es, selector ds, selector fs, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0D3F(byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 bp, word16 si, word16 di, selector es, selector ds, selector fs, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  P ah al bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
-// LiveOut: ax bp bx cx di dx es si sp
-// Trashed: SCZDOP ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
+// MayUse:  P ah al bh bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
+// LiveOut: ax bp bx cx di dx es si sp ss
+// Trashed: SCZDOP ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved:
 fn1483_0D3F_entry:
 	*bpOut = bp
 	*esOut = es
-// DataOut: ah al bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
+// DataOut: ah al bh bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
 // DataOut (flags): CP
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16)
 
 l1483_0D3F:
 	branch P l1483_0D40_thunk_fn1483_0CFA
-// DataOut: ah al bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
+// DataOut: ah al bh bl bp ch cl cs cx dh di dl ds dx es fs si sil ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16)
@@ -41041,7 +41048,7 @@ l1483_0D40_thunk_fn1483_0CFA:
 	word16 si_372
 	word16 di_373
 	selector es_374
-	return fn1483_0CFA(al, ah, cx, dx, bl, bp, si, di, ds, fs, out cx_368, out dx_369, out bx_370, out bp_371, out si_372, out di_373, out es_374)
+	return fn1483_0CFA(al, ah, cx, dx, bl, bh, bp, si, di, ds, fs, out cx_368, out dx_369, out bx_370, out bp_371, out si_372, out di_373, out es_374)
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 2 -2(fp):ax
@@ -41057,7 +41064,7 @@ l1483_0D42:
 	word16 dx_79 = DPB(dx, dh ^ 0x17, 8)
 	*dxOut = dx_79
 	branch (dh ^ 0x17) < 0x00 l1483_0CED
-// DataOut: ah al ax bp bx ch cs cx dh di dl ds dx es fs si sp ss
+// DataOut: ah al ax bh bp bx ch cs cx dh di dl ds dx es fs si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 2 -2(fp):ax
 // LocalsOut: fp(16) Local -0004(16)
@@ -41074,7 +41081,7 @@ l1483_0CED:
 	word16 bx_331 = DPB(bx, 0xB5, 0)
 	*bxOut = bx_331
 	branch true l1483_0CE5_in_fn1483_0D3F
-// DataOut: ah al ax bl bp bx cx di ds dx es fs si sil sp ss
+// DataOut: ah al ax bh bl bp bx cs cx di ds dx es fs si sil sp ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp - 4 al:<invalid> bl:0xB4 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 -4(fp):si -2(fp):ax
 // LocalsOut: fp(16) Local -0004(16)
@@ -41087,7 +41094,7 @@ l1483_0CE5_in_fn1483_0D3F:
 
 l1483_0CF8:
 	Mem345[ds:bx_331 + si_323:byte] = __rcr(Mem328[ds:bx_331 + si_323:byte], 0xAC, C_327)
-// DataOut: ah al bl bp ch cx di ds dx fs si sil ss
+// DataOut: ah al bh bl bp ch cs cx di ds dx fs si sil ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 4 al:<invalid> bl:0xB5 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 si:<invalid> di:di + 0x0002 -4(fp):si -2(fp):ax
 
@@ -41099,7 +41106,7 @@ l1483_0CF9_thunk_fn1483_0CFC:
 	word16 si_351
 	word16 di_352
 	selector es_353
-	return fn1483_0CFC(al_72, ah_73, si, dx_79, 0xB5, bp, si_323, di + 0x0002, ds, fs, out cx_347, out dx_348, out bx_349, out bp_350, out si_351, out di_352, out es_353)
+	return fn1483_0CFC(al_72, ah_73, si, dx_79, 0xB5, bh, bp, si_323, di + 0x0002, ds, fs, out cx_347, out dx_348, out bx_349, out bp_350, out si_351, out di_352, out es_353)
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 2 al:<invalid> bl:0xB5 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 si:<invalid> di:di + 0x0002 cx:si -4(fp):si -2(fp):ax
@@ -41304,9 +41311,9 @@ l1483_0DCD:
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:<invalid> di:<invalid> dx:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 fn1483_0D3F_exit:
-// DataOut: ax bp bx cx di dx es si sp
+// DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> si:<invalid> di:<invalid> cx:<invalid> es:<invalid> dx:<invalid> dl:<invalid> bp:<invalid> cl:<invalid> ah:<invalid> bx:<invalid> eax:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
+// SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> si:<invalid> di:<invalid> cx:<invalid> es:<invalid> dx:<invalid> dl:<invalid> bp:<invalid> cl:<invalid> ah:<invalid> bx:<invalid> eax:<invalid> bh:<invalid> ss:<invalid> ds:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 
 
@@ -41363,555 +41370,378 @@ l1483_110D:
 
 
 
-void fn1483_118B(byte cl, word32 edx, word16 bx, word16 si, selector ds)
+bool fn1483_1B91(byte al, word16 cx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, selector psegArg00, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bx cl dl ds edx si
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn1483_118B_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn1483_118B_entry:
-// DataOut: bx cl dl ds edx si
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1483_118B:
-	byte cl_10 = cl & Mem0[ds:(bx - 0x004F) + si:byte]
-	cpu_debug_break()
-	__arpl(Mem0[ds:si:word16], bx, &Mem0[ds:si:word16])
-	Mem15[ds:si:byte] = Mem0[ds:si:byte] & cl_10
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-
-
-void fn1483_1B13()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: ss
-// Trashed: ss
-// Preserved: sp
-l1483_1B13:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn1483_1B13_entry:
-// DataOut: ax bp bx cx dh di dl ds es si
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1483_1B13:
-	__sti()
-	word16 sp_6
-	selector ss_7
-	word16 di_8
-	word16 bx_9
-	call Mem0[0x1483:bx:ptr32] (retsize: 4; depth: 4)
-		uses: bx,di,sp_1,ss_3
-		defs: bx_9,di_8,sp_6,ss_7
-	return
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn1483_1B13_exit:
-// DataOut: ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp ss:di
-
-
-
-word16 fn1483_1B38(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, selector psegArg00, ptr16 & cxOut, ptr16 & dlOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  al ax bh bl bp bx cl cs cx di ds dx es si ss
-// LiveOut: ax bp bx cx dh di dl ds es si ss
+// MayUse:  al bh bl bp bx cs cx di ds es si ss
+// LiveOut: C di ds es sp ss
 // Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved:
 // Stack args: Stack +0000(16)
-l1483_1B38:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn1483_1B38_entry:
-	*esOut = es
-	*siOut = si
-	*bxOut = bx
-	*dsOut = ds
-	*diOut = di
-	*bpOut = bp
-// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16)
-
-l1483_1B38:
-	word16 sp_1 = fp
-	byte dh_179 = SLICE(dx - 0x0001, byte, 8)
-	*dhOut = dh_179
-	byte dl_5
-	*dlOut = (byte) (dx - 0x0001)
-	branch dx != 0x0001 l1483_1B7F
-// DataOut: al ax bh bl bp bx cl cs cx dh di dl ds es si sp ss
-// DataOut (flags): Z
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16)
-
-l1483_1B3B:
-	word16 cx_124 = cx - 0x0001
-	*cxOut = cx_124
-	branch dx == 0x0001 && cx != 0x0001 l1483_1B6D
-// DataOut: al ax bh bl bp bx cs cx dh di dl ds es si sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp dx:dx - 0x0001
-// LocalsOut: fp(16) Stack +0000(16)
-
-l1483_1B3D:
-	selector es_203
-	*esOut = psegArg00
-	word16 sp_204 = fp + 2
-	word16 si_210
-	*siOut = ax
-	branch si == bx l1483_1B51
-// DataOut: ax bh bp bx cs cx di ds es si sp ss
-// DataOut (flags): C
-// SymbolicIn: sp:fp dx:dx - 0x0001 cx:cx - 0x0001
-// LocalsOut: fp(8)
-
-l1483_1B44:
-	byte al_279 = (byte) (fp + 2) + bh + (si <u bx)
-	byte dh_272
-	*dhOut = 0x02
-	byte dl_273
-	*dlOut = 0xE2
-	byte ah_277 = SLICE(fp + 2, byte, 8)
-	word16 ax_280 = DPB(fp + 2, al_279, 0)
-	branch al_279 == 0x00 l1483_1B4B_thunk_fn1483_1B13
-// DataOut: ah ax bh bp bx cs cx dh di dl ds es si sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 2 dx:dx - 0x0001 cx:cx - 0x0001 es:<invalid> ax:si si:si
-
-l1483_1B4B_thunk_fn1483_1B13:
-	fn1483_1B13()
-	return ax_280
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:si - 0x0001 dx:0x02E2 cx:cx - 0x0001 es:<invalid> ax:<invalid> si:si al:<invalid>
-
-l1483_1B4E:
-	Mem285[ds:ax:byte] = Mem0[ds:ax:byte] + ah_277
-	Mem289[ss:si - 0x0003:word16] = cs
-	sp_204 = si - 0x0003
-// DataOut: bh bp bx cx ds si sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:si - 0x0001 dx:0x02E2 cx:cx - 0x0001 es:<invalid> ax:<invalid> si:si al:<invalid>
-
-l1483_1B51:
-	es = Mem0[ss:sp_204:selector]
-	*esOut = es
-	byte al_221 = Mem0[ds:ax:byte]
-	Mem223[es:0x02FB:byte] = al_221
-	word16 di_226
-	bool C_228 = fn1483_1B91(al_221, cx - 0x0001, bx, bp, 0x02FC, ds, psegLoc02, out di_226, out ds)
-	__cli()
-	Mem231[es:di_226 - 0x0001:word16] = 0x0A0D
-	word16 sp_219 = sp_204 + 2
-	bx = Mem231[ss:sp_219 + 0x0008:word16]
-	word16 dx_244 = Mem231[ss:sp_219 + 0x000A:word16]
-	word16 cx_248 = Mem231[ss:sp_219 + 0x000C:word16]
-	*cxOut = cx_248
-	word16 ax_253 = Mem231[ss:sp_219 + 0x000E:word16]
-	word16 di_233 = Mem231[ss:sp_219:word16]
-	si = Mem231[ss:sp_219 + 0x0002:word16]
-	bp = Mem231[ss:sp_219 + 0x0004:word16]
-	Mem256[es:di_233:byte] = (byte) ax_253
-	word16 v37_263 = Mem256[ds:bx + (di_233 + 0x0001):word16] + bx
-	Mem264[ds:bx + (di_233 + 0x0001):word16] = v37_263
-	Mem268[ds:di_233 + 0x0001:byte] = __rcl(Mem264[ds:di_233 + 0x0001:byte], (byte) cx_248, (bool) cond(v37_263))
-	ax = ax_253 - 0xECBA - C_228
-	bh = SLICE(bx, byte, 8) (alias)
-	byte dl_246
-	*dlOut = (byte) dx_244
-	sp_1 = sp_219 + 0x0010
-	word16 di_257
-	*diOut = di_233 + 0x0001
-	al = (byte) ax (alias)
-	byte dh_261
-	*dhOut = SLICE(dx_244, byte, 8) + (byte) bx
-// DataOut: al bh bl bp bx cx dh di dl ds es si sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:cx - 0x0001 es:<invalid> ax:<invalid> si:si al:<invalid>
-
-l1483_1B6D:
-	byte al_152 = al & 0x5C
-	word16 sp_158 = sp_1 - 2
-	Mem159[ss:sp_158:word16] = si
-	word16 ax_153 = DPB(ax, al_152, 0)
-	word16 si_160
-	*siOut = 0x7269
-	branch al_152 != 0x00 l1483_1BE8
-// DataOut: al ax bh bl bp bx cx dh di dl ds es si sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> es:<invalid> ax:<invalid> si:<invalid> di:<invalid> al:<invalid> ds:<invalid> bp:<invalid> bx:<invalid> dh:dh + bl
-
-l1483_1BE8:
-	word16 bx_197
-	*bxOut = DPB(bx, bh | Mem159[ds:bx + 0x0003:byte], 8)
-	Mem199[ss:sp_158 - 2:word16] = es
-	word16 bp_195
-	*bpOut = bp - 0x0002
-	return ax_153 - 0x85FE
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:0x7269 es:<invalid> ax:<invalid> di:<invalid> ds:<invalid> bp:<invalid> bx:<invalid> dh:dh + bl -2(fp):si
-
-l1483_1B75:
-	Mem164[ss:sp_158 - 2:word16] = 0x6365
-	word16 sp_165 = Mem164[ds:bx + 0x726A:word16] *s 0x0046
-	di = Mem164[ss:sp_165:word16]
-	*siOut = Mem164[ss:sp_165 + 0x0002:word16]
-	bx = Mem164[ss:sp_165 + 0x0008:word16]
-	dh_179 = Mem164[sp_165 + 0x000B:byte] (alias)
-	cl = (byte) Mem164[ss:sp_165 + 0x000C:word16] (alias)
-	al = (byte) Mem164[ss:sp_165 + 0x000E:word16] (alias)
-	sp_1 = sp_165 + 0x0010
-// DataOut: al bx cl dh di dl ds es si sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:0x7269 es:<invalid> ax:<invalid> di:<invalid> ds:<invalid> bp:<invalid> bx:<invalid> dh:dh + bl -2(fp):si
-
-l1483_1B7F:
-	word16 bp_66 = Mem0[ds:si + 0x0065:word16] *s 0x3A64
-	Mem69[ss:bp_66 + si:byte] = Mem0[ss:bp_66 + si:byte] & al
-	byte dh_73 = dh_179 ^ Mem69[ds:bx + di:byte]
-	word16 ax_77 = __inw(0x0C)
-	Mem80[ds:0x2CF2:byte] = Mem69[ds:0x2CF2:byte] ^ cl
-	Mem83[ds:di:byte] = Mem80[ds:di:byte] - dh_73
-	Mem89[ds:di + 0xEA01:word16] = ~Mem83[ds:di + 0xEA01:word16]
-	word16 sp_97 = sp_1 - 2
-	Mem98[ss:sp_97:word16] = sp_1
-	selector ds_103 = Mem98[ss:sp_97 + 2:selector]
-	*dsOut = ds_103
-	word16 dx_99 = Mem98[ss:sp_97:word16]
-	word16 v33_105 = Mem98[ds_103:di + 0x0B0A:word16]
-	Mem106[ds_103:di + 0x0B0A:word16] = di
-	__inb(0x41)
-	__sti()
-	Mem113[ds_103:0xFF1F:word16] = Mem106[ds_103:0xFF1F:word16] + 0x0001
-	word16 ax_85 = DPB(ax_77, (byte) ax_77 - 0xD9, 0)
-	word16 bx_74
-	*bxOut = 0xD909
-	word16 cx_92
-	*cxOut = ax_85
-	byte dh_100
-	*dhOut = SLICE(dx_99, byte, 8)
-	byte dl_101
-	*dlOut = (byte) dx_99
-	word16 di_107
-	*diOut = v33_105
-	byte al_116 = __inb(dx_99) - 0xF8 & 0x0A
-// DataOut: al bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:<invalid> bx:<invalid> di:<invalid> bp:<invalid> ax:<invalid> es:<invalid> ds:<invalid> dh:<invalid> -4(fp):0x6365 -2(fp):si
-
-l1483_1BB7_thunk_fn1483_1BB9:
-	word16 ax_121
-	word16 bp_122
-	fn1483_1BB9(al_116, ax_85, bp_66, out ax_121, out bp_122)
-	return ax_121
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> -4(fp):0x6365 -2(fp):<invalid>
-
-fn1483_1B38_exit:
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:<invalid> ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> bh:<invalid> es:<invalid> ss:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-
-
-
-bool fn1483_1B91(byte al, word16 cx, word16 bx, word16 bp, word16 di, selector ds, selector psegArg00, ptr16 & diOut, ptr16 & dsOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  al bh bp bx cx di ds
-// LiveOut: C di ds sp
-// Trashed: SCZO ah al ax bp bpl ch cl cx dh di dil dl ds dx eax ebp ecx edi edx esp rax rbp rcx rdi rdx rsp sp spl
-// Preserved:
-// Stack args: Stack +0000(16)
 fn1483_1B91_entry:
-// DataOut: al bh bp bx cx di ds es ss
+// DataOut: al bh bl bp bx cs cx di ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Stack +0000(16)
 
 l1483_1B91:
 	Mem17[ds:bx + 0x10F8 + di:word16] = ~Mem0[ds:bx + 0x10F8 + di:word16]
-	word16 v18_34 = Mem17[psegArg00:bx + 0x3201 + di:word16]
-	Mem35[psegArg00:bx + 0x3201 + di:word16] = di
+	word16 v18_36 = Mem17[psegArg00:bx + 0x3201 + di:word16]
+	Mem37[psegArg00:bx + 0x3201 + di:word16] = di
 	__inb(0x41)
 	__sti()
-	Mem42[psegArg00:0xFF1F:word16] = Mem35[psegArg00:0xFF1F:word16] + 0x0001
+	Mem45[psegArg00:0xFF1F:word16] = Mem37[psegArg00:0xFF1F:word16] + 0x0001
 	word16 ax_5 = DPB(ax, al - 0x28, 0)
 	word16 ax_10 = DPB(ax_5 ^ 0x2EF9, (byte) (ax_5 ^ 0x2EF9) - bh, 0)
-	selector ds_32
-	*dsOut = psegArg00
-	word16 di_36
-	*diOut = v18_34
-	byte al_45 = __inb(fp) - 0xF8 & 0x0A
-// DataOut: al bp cx di ds es sp ss
-// DataOut (flags): 
+	word16 ax_49 = DPB(cx, __inb(fp) - 0xF8 & 0x0A, 0)
+// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si ss
+// DataOut (flags): C
 // SymbolicIn: sp:fp
 
 l1483_1BB7_thunk_fn1483_1BB9:
-	word16 ax_51
-	word16 bp_52
-	return fn1483_1BB9(al_45, ax_10, bp, out ax_51, out bp_52)
-// DataOut: di ds es sp ss
+	word16 ax_57
+	word16 cx_58
+	byte dl_59
+	byte dh_60
+	word16 bx_61
+	word16 bp_62
+	word16 si_63
+	word16 di_64
+	selector es_65
+	selector ds_66
+	return fn1483_1BB9(ax_49, ax_10, fp, bx, bp, si, v18_36, es, psegArg00, out ax_57, out cx_58, out dl_59, out dh_60, out bx_61, out bp_62, out si_63, out di_64, out es_65, out ds_66)
+// DataOut: cs di ds es sp ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp + 2 al:<invalid> ax:<invalid> cx:<invalid> dx:fp ds:<invalid> di:<invalid> -2(fp):fp
 
 fn1483_1B91_exit:
-// DataOut: di ds sp
+// DataOut: di ds es sp ss
 // DataOut (flags): C
-// SymbolicIn: sp:fp + 2 al:<invalid> ax:<invalid> cx:<invalid> dx:fp ds:<invalid> di:<invalid> bp:<invalid> -2(fp):fp
+// SymbolicIn: sp:<invalid> al:<invalid> ax:<invalid> cx:<invalid> dx:<invalid> ds:<invalid> di:<invalid> si:<invalid> bp:<invalid> bh:<invalid> es:<invalid> ss:<invalid> bx:<invalid> dh:<invalid> ch:<invalid> -2(fp):fp
 
 
 
-word16 fn1483_1BB8(byte al, word16 cx, word16 bp, word16 si, selector ds, ptr16 & bpOut)
+word16 fn1483_1BB8(byte al, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dlOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al bp cx ds si
-// LiveOut: ax bp
-// Trashed: SCZO al ax bp bpl eax ebp rax rbp
+// MayUse:  al bh bl bp bx cl cs cx di ds dx es si ss
+// LiveOut: ax bp bx cx dh di dl ds es si ss
+// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
 // Preserved: sp
-l1483_1BBC_thunk_fn1483_1B38:
-	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dl, out dh, out bx, out bp, out si, out di, out es, out ds)
-	al = (byte) ax (alias)
-	return ax
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn:
-
 fn1483_1BB8_entry:
-	def fp
-	def al
-	def ds
-	def si
-	def Mem0
-	def ax
-	def cx
-	def bp
-	def dl
-	def dh
-	def bx
-	def di
-	def es
-	def bpOut
-// DataOut: al bp bx cx dh di dl ds es si ss
+// DataOut: al bh bl bp bx cl cs cx di ds dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l1483_1BB8:
-	sp_1 = fp
-	al_6 = al | Mem0[ds:si:byte]
-	ax_8 = DPB(ax, al_6, 0) (alias)
-	SZO_9 = cond(al_6)
-	C_10 = false
-// DataOut: al bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
+	word16 ax_8 = DPB(ax, al | Mem0[ds:si:byte], 0)
+// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si ss
+// DataOut (flags): C
 // SymbolicIn: sp:fp
 
 l1483_1BB8_thunk_fn1483_1BB9:
-	C_15 = fn1483_1BB9(al_6, cx, bp, out ax_13, out bp_14)
-	return ax_13
-// DataOut: ax bp bx cx dh di dl ds es si ss
+	word16 ax_20
+	word16 cx_21
+	byte dl_22
+	byte dh_23
+	word16 bx_24
+	word16 bp_25
+	word16 si_26
+	word16 di_27
+	selector es_28
+	selector ds_29
+	fn1483_1BB9(ax_8, cx, dx, bx, bp, si, di, es, ds, out ax_20, out cx_21, out dl_22, out dh_23, out bx_24, out bp_25, out si_26, out di_27, out es_28, out ds_29)
+	return ax_20
+// DataOut: ax bp bx cs cx dh di dl ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp al:<invalid>
 
 fn1483_1BB8_exit:
-	cx_21 = PHI(cx, cx)
-	dl_22 = PHI(dl, dl)
-	dh_23 = PHI(dh, dh)
-	bx_24 = PHI(bx, bx)
-	si_25 = PHI(si, si)
-	di_26 = PHI(di, di)
-	es_27 = PHI(es, es)
-	ds_28 = PHI(ds, ds)
-	al_29 = PHI(al_6, al)
-	ax_30 = PHI(ax_13, ax)
-	bp_31 = PHI(bp_14, bp)
-	use bp_31 (=> bpOut)
-// DataOut: ax bp
+// DataOut: ax bp bx cx dh di dl ds es si ss
 // DataOut (flags): 
-// SymbolicIn: sp:fp al:<invalid> bp:<invalid>
+// SymbolicIn: sp:<invalid> al:<invalid> dx:<invalid> cx:<invalid> si:<invalid> bp:<invalid> ax:<invalid> bh:<invalid> es:<invalid> ss:<invalid> di:<invalid> ds:<invalid> bx:<invalid> dh:<invalid> ch:<invalid>
 
 
 
-bool fn1483_1BB9(byte al, word16 cx, word16 bp, ptr16 & axOut, ptr16 & bpOut)
+bool fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & axOut, ptr16 & cxOut, ptr16 & dlOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al bp cx
-// LiveOut: C ax bp
-// Trashed: SCZO al ax bp bpl eax ebp rax rbp
-// Preserved: sp
-l1483_1BB9:
-	branch Test(UGE,C) l1483_1BBF
-// DataOut: al ax bh bl bp bx cl cs cx dh di dl ds dx es si ss
+// MayUse:  C al ax bh bl bp bx cl cs cx di ds dx es si ss
+// LiveOut: C ax bp bx cx dh di dl ds es si sp ss
+// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl ss
+// Preserved:
+fn1483_1BB9_entry:
+// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si ss
 // DataOut (flags): C
-// SymbolicIn:
+// SymbolicIn: sp:fp
+// LocalsOut: v3(16)
 
-l1483_1BB9_thunk_fn1483_1BBF:
-	fn1483_1BBF()
-	return C
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): C
-// SymbolicIn:
-// Terminates process
+l1483_1BB9:
+	sp = v3
+	branch Test(UGE,C) l1483_1BBF
+// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1BBF:
+	ax = Mem0[ds:0xE10D:word16]
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:v3 dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> bh:0xD9 ss:<invalid>
 
 l1483_1BBC:
-// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si ss
+// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si sp ss
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:v3 dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
 
-l1483_1BBC_thunk_fn1483_1B38:
-	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dl, out dh, out bx, out bp, out si, out di, out es, out ds)
+l1483_1B38:
+	dx = dx - 0x0001
+	dh = SLICE(dx, byte, 8) (alias)
+	dl = (byte) dx (alias)
+	SZO = cond(dx)
+	Z = (bool) SZO (alias)
+	SCZO = SZO (alias)
+	branch Test(NE,Z) l1483_1B7F
+// DataOut: al ax bh bl bp bx cl cs cx dh di dl ds es si sp ss
+// DataOut (flags): Z
+// SymbolicIn: sp:v3 dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1B3B:
+	cx = cx - 0x0001
+	ecx = DPB(ecx, cx, 0) (alias)
+	ch = SLICE(cx, byte, 8) (alias)
+	cl = (byte) cx (alias)
+	branch Test(EQ,Z) && cx != 0x0000 l1483_1B6D
+// DataOut: al ax bh bl bp bx cs cx dh di dl ds es si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:v3 dx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> cx:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1B3D:
+	es = Mem0[ss:sp:selector]
+	sp = sp + 2
+	v12 = ax
+	ax = si
+	ax_al = ax (alias)
 	al = (byte) ax (alias)
-	return ax
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn:
-
-fn1483_1BB8_exit:
-	cx_21 = PHI(cx, cx)
-	dl_22 = PHI(dl, dl)
-	dh_23 = PHI(dh, dh)
-	bx_24 = PHI(bx, bx)
-	si_25 = PHI(si, si)
-	di_26 = PHI(di, di)
-	es_27 = PHI(es, es)
-	ds_28 = PHI(ds, ds)
-	al_29 = PHI(al_6, al)
-	ax_30 = PHI(ax_13, ax)
-	bp_31 = PHI(bp_14, bp)
-	use bp_31 (=> bpOut)
-// DataOut: ax bp
-// DataOut (flags): 
-// SymbolicIn: sp:fp al:<invalid> bp:<invalid>
-
-fn1483_1BB9_entry:
-// DataOut: al bp bx cx dh di dl ds es si ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1483_1BB9:
-	sp = fp
-	al = al + 0x73
-	ax = DPB(ax, al, 0) (alias)
-	bp = bp + cx
-	SCZO = cond(bp)
+	ah = SLICE(ax, byte, 8) (alias)
+	si = v12
+	SCZO = cond(ax - 0xD909)
 	C = (bool) SCZO (alias)
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): SC
-// SymbolicIn: sp:fp
-
-l1483_1BBB_thunk_fn1483_1BBD:
-	fn1483_1BBD()
-	return C
-// DataOut: ax bp bx cx dh di dl ds es si ss
+	SZO = SCZO (alias)
+	Z = (bool) SCZO (alias)
+	branch Test(EQ,Z) l1483_1B51
+// DataOut: ax bh bl bp bx cs cx di ds es si sp spl ss
 // DataOut (flags): C
-// SymbolicIn: sp:fp al:al + 0x73 bp:bp + cx
+// SymbolicIn: sp:v3 dx:<invalid> cx:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ax:<invalid> al:<invalid> ds:<invalid> di:<invalid> si:<invalid> es:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1B44:
+	ax = ax - 0x0001
+	dx = 0x02E2
+	dh = SLICE(dx, byte, 8) (alias)
+	dl = (byte) dx (alias)
+	v16 = ax
+	ax = sp
+	al = (byte) ax (alias)
+	ah = SLICE(ax, byte, 8) (alias)
+	sp = v16
+	al = al + 0xD9 + C
+	ax = DPB(ax, al, 0) (alias)
+	ax_al = SEQ(ax, al) (alias)
+	SCZO = cond(al)
+	C = (bool) SCZO (alias)
+	SZO = SCZO (alias)
+	Z = (bool) SCZO (alias)
+	branch Test(EQ,Z) l1483_1B13
+// DataOut: ah ax bh bl bp bx cs cx dh di dl ds es si sp ss
+// DataOut (flags): C
+// SymbolicIn: sp:v3 + 2 dx:<invalid> cx:<invalid> es:<invalid> ax:<invalid> si:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 al:<invalid> ds:<invalid> di:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1B13:
+	ss = di
+	__sti()
+	call Mem0[0x1483:0xD909:ptr32] (retsize: 4; depth: 4)
+	return C
+// DataOut: ax bp bx cs cx dh di dl ds es si sp ss
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> dx:0x02E2 cx:<invalid> es:<invalid> ax:<invalid> si:<invalid> al:<invalid> bp:<invalid> ch:<invalid> dh:0x02 bx:0xD909 ds:<invalid> di:<invalid> bh:0xD9 ss:<invalid>
+
+l1483_1B4E:
+	v21 = Mem0[ds:si:byte] + ah
+	Mem0[ds:si:byte] = v21
+	SCZO = cond(v21)
+	sp = sp - 2
+	Mem0[ss:sp:word16] = cs
+// DataOut: bh bl bp bx cs cx ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:0x02E2 cx:<invalid> es:<invalid> ax:<invalid> si:<invalid> al:<invalid> bp:<invalid> ch:<invalid> dh:0x02 bx:0xD909 ds:<invalid> di:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1B51:
+	es = Mem0[ss:sp:selector]
+	sp = sp + 2
+	di = 0x02FB
+	al = Mem0[ds:si:byte]
+	si = si + 0x0001
+	Mem0[es:0x02FB:byte] = al
+	di = 0x02FC
+	C = fn1483_1B91(al, cx, bx, bp, si, di, es, ds, psegLoc02, out di, out es, out ds)
+	__cli()
+	di = di - 0x0001
+	ax = 0x0A0D
+	Mem0[es:di:word16] = 0x0A0D
+	al = 0x24
+	di = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	si = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	sp = sp + 0x0002
+	bx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	dx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	cx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	ax = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	Mem0[es:di:byte] = al
+	di = di + 0x0001
+	ax = ax - 0xECBA - C
+	dh = dh + bl
+	v37 = Mem0[ds:bx + di:word16] + bx
+	Mem0[ds:bx + di:word16] = v37
+	SCZO = cond(v37)
+	v38 = (Mem0[ds:di:byte] & 0x01 << 0x08 - cl) != 0x00
+	Mem0[ds:di:byte] = __rcl(Mem0[ds:di:byte], cl, C)
+	C = v38
+// DataOut: al bh bl bp bx cs cx dh di dl ds es si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> es:<invalid> ax:<invalid> si:<invalid> al:<invalid> bp:<invalid> ch:<invalid> dh:<invalid> bx:0xD909 ds:<invalid> di:<invalid> bh:0xD9 ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1B6D:
+	al = al & 0x5C
+	SZO = cond(al)
+	C = false
+	sp = sp - 2
+	Mem0[ss:sp:word16] = si
+	si = 0x7269
+	branch Test(NE,Z) l1483_1BE8
+// DataOut: al ax bh bl bp bx cs cx dh di dl ds es si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> es:<invalid> ax:<invalid> si:<invalid> di:<invalid> al:<invalid> ds:<invalid> bp:<invalid> bx:<invalid> dh:<invalid> ch:<invalid> bh:<invalid> ss:<invalid>
+// LocalsOut: v3(16)
+
+l1483_1BE8:
+	bp = bp - 0x0001
+	ax = ax - 0x85FE
+	bp = bp - 0x0001
+	bh = bh | Mem0[ds:bx + 0x0003:byte]
+	sp = sp - 2
+	Mem0[ss:sp:word16] = es
+	SCZO = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	return C
+// DataOut: ax bp bx cs cx dh di dl ds es si sp ss
+// DataOut (flags): C
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:0x7269 es:<invalid> ax:<invalid> di:<invalid> ds:<invalid> bp:<invalid> bx:<invalid> dh:<invalid> ch:<invalid> bh:<invalid> ss:<invalid>
 
 fn1483_1BB9_exit:
 	use ax (=> axOut)
+	use cx (=> cxOut)
+	use dl (=> dlOut)
+	use dh (=> dhOut)
+	use bx (=> bxOut)
 	use bp (=> bpOut)
-// DataOut: ax bp
+	use si (=> siOut)
+	use di (=> diOut)
+	use es (=> esOut)
+	use ds (=> dsOut)
+// DataOut: ax bp bx cx dh di dl ds es si sp ss
 // DataOut (flags): C
-// SymbolicIn: sp:fp al:al + 0x73 bp:bp + cx
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:<invalid> bp:<invalid> ax:<invalid> bh:<invalid> es:<invalid> ss:<invalid> di:<invalid> ds:<invalid> bx:<invalid> dh:<invalid> ch:<invalid> -2(fp):<invalid>
 
-
-
-void fn1483_1BBD()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  S
-// LiveOut:
-// Trashed:
-// Preserved: sp
-l1483_1BBD:
-// DataOut:
+l1483_1B75:
+	al = al & 0x20
+	bx = bx + 0x0001
+	sp = sp - 2
+	Mem0[ss:sp:word16] = 0x6365
+	sp = Mem0[ds:bx + si:word16] *s 0x0046
+	SCZO = cond(sp)
+	di = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	si = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	sp = sp + 0x0002
+	bx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	dx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	cx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	ax = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+// DataOut: al bx cl cs dh di dl ds es si sp ss
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:0x7269 es:<invalid> ax:<invalid> di:<invalid> ds:<invalid> bp:<invalid> bx:<invalid> dh:<invalid> ch:<invalid> bh:<invalid> ss:<invalid>
+// LocalsOut: v3(16)
 
-fn1483_1BBD_entry:
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): SC
-// SymbolicIn: sp:fp
-
-l1483_1BBD:
-	branch S l1483_1BBE
-// DataOut: ax bp bx cx dh di dl ds es si ss
+l1483_1B7F:
+	bp = Mem0[ds:si + 0x0065:word16] *s 0x3A64
+	v25 = Mem0[ss:bp + si:byte] & al
+	Mem0[ss:bp + si:byte] = v25
+	SZO = cond(Mem0[ss:bp + si:byte])
+	ch = 0xAF
+	dh = dh ^ Mem0[ds:bx + di:byte]
+	bx = 0xD909
+	ax = __inw(0x0C)
+	v29 = Mem0[ds:0x2CF2:byte] ^ cl
+	Mem0[ds:0x2CF2:byte] = v29
+	SZO = cond(Mem0[ds:0x2CF2:byte])
+	v30 = Mem0[ds:di:byte] - dh
+	Mem0[ds:di:byte] = v30
+	al = al - 0xD9
+	SCZO = cond(al)
+	v31 = ~Mem0[ds:bx + 0x10F8 + di:word16]
+	Mem0[ds:bx + 0x10F8 + di:word16] = v31
+	v32 = ax
+	ax = cx
+	cx = v32
+	v33 = sp
+	sp = sp - 2
+	Mem0[ss:sp:word16] = v33
+	dx = Mem0[ss:sp:word16]
+	sp = sp + 2
+	ds = Mem0[ss:sp:selector]
+	sp = sp + 2
+	v34 = Mem0[ds:bx + 0x3201 + di:word16]
+	Mem0[ds:bx + 0x3201 + di:word16] = di
+	di = v34
+	ax_al = ax_al - 0x87D9
+	al = __inb(0x41)
+	al = al + Mem0[ds:ecx:byte]
+	__sti()
+	C = false
+	v36 = Mem0[ds:0xFF1F:word16] + 0x0001
+	Mem0[ds:0xFF1F:word16] = v36
+	al = __inb(dx)
+	al = al - 0xF8 - C
+	al = al & 0x0A
+	SZO = cond(al)
+	C = false
+// DataOut: al ax bh bl bp bx cl cs cx di ds dx es si ss
 // DataOut (flags): C
-// SymbolicIn: sp:fp
-
-l1483_1BBE:
-	word16 sp_12
-	bool S_13
-	word16 bx_14
-	word16 di_15
-	selector ds_16
-	call Mem0[ds:bx + 0xE10D + di:word16] (retsize: 2; depth: 2)
-		uses: bx,di,ds,S,sp_1
-		defs: bx_14,di_15,ds_16,S_13,sp_12
-	return
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-l1483_1BBD_thunk_fn1483_1BBF:
-	fn1483_1BBF()
-	return
-// DataOut: ax bp bx cx dh di dl ds es si ss
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-fn1483_1BBD_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-
-
-void fn1483_1BBF()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn1483_1BBF_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn:
-
-fn1483_1BBF_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1483_1BBF:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> al:<invalid> si:<invalid> bx:<invalid> di:<invalid> bp:<invalid> ax:<invalid> ch:<invalid> dh:<invalid> ds:<invalid> es:<invalid> bh:<invalid> ss:<invalid>
+// LocalsOut: v3(16)
 
 
 

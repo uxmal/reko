@@ -65,13 +65,14 @@ namespace Reko.UnitTests.Typing
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            var arch = new X86ArchitectureReal("x86-real-16");
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16")),
+                new X86TextAssembler(sc, arch),
                 addrBase);
             program.Platform = mkPlatform(sc, program.Architecture);
-            var ep = new ImageSymbol(program.SegmentMap.BaseAddress);
+            var ep = ImageSymbol.Procedure(arch, program.SegmentMap.BaseAddress);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
@@ -98,7 +99,7 @@ namespace Reko.UnitTests.Typing
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var program = imgLoader.Load(null);
             var project = new Project { Programs = { program } };
-            var ep = new ImageSymbol(program.ImageMap.BaseAddress);
+            var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
             var importResolver = new ImportResolver(project, program, eventListener);
             var scan = new Scanner(program, importResolver, svc);
             scan.EnqueueImageSymbol(ep, true);

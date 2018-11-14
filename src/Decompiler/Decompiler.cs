@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 1999-2018 John Källén.
+/* Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,7 +140,11 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program);
+            Dumper dump = new Dumper(program)
+            {
+                ShowAddresses = program.User.ShowAddressesInDisassembly,
+                ShowCodeBytes = program.User.ShowBytesInDisassembly
+            };
             dump.Dump(wr);
         }
 
@@ -390,6 +394,7 @@ namespace Reko
             var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;
             return scanner.ScanProcedure(
+                program.Architecture,       //$TODO: make this user-selectable.
                 paddr.Address,
                 procName, 
                 program.Architecture.CreateProcessorState());

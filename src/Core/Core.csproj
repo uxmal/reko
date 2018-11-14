@@ -343,6 +343,7 @@
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\Float80.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
+    <Compile Include="Lib\SuffixArray2.cs" />
     <Compile Include="Lib\UbjsonReader.cs" />
     <Compile Include="Lib\UbjsonMarker.cs" />
     <Compile Include="Lib\UbjsonWriter.cs" />
@@ -406,7 +407,7 @@
     <Compile Include="Lib\Trie.cs" />
     <Compile Include="Lib\UndirectedGraph.cs" />
     <Compile Include="Lib\UndirectedGraphImpl.cs" />
-    <Compile Include="Machine\InstructionClass.cs" />
+    <Compile Include="InstrClass.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="Machine\InstructionComparer.cs" />
     <Compile Include="MetadataLoader.cs" />

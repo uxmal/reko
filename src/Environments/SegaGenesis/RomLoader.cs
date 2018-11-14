@@ -73,11 +73,7 @@ namespace Reko.Environments.SegaGenesis
             var eps = new List<ImageSymbol>();
             if (program.SegmentMap.IsValidAddress(addrReset))
             {
-                var sym = new ImageSymbol(addrReset)
-                {
-                    Name = "Reset",
-                    ProcessorState = program.Architecture.CreateProcessorState()
-                };
+                var sym = ImageSymbol.Procedure(program.Architecture, addrReset, "Reset", state: program.Architecture.CreateProcessorState());
                 syms.Add(sym.Address, sym);
                 eps.Add(sym);
             }

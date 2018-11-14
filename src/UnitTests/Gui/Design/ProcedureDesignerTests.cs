@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -44,7 +45,10 @@ namespace Reko.UnitTests.Gui.Design
         {
             this.mr = new MockRepository();
             this.services = mr.StrictMock<IServiceProvider>();
-            this.program = new Program();
+            this.program = new Program
+            {
+                Architecture = new FakeArchitecture()
+            };
         }
 
         private void Given_Service<T>(T svc)

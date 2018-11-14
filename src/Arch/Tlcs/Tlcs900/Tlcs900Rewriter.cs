@@ -41,7 +41,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private IStorageBinder binder;
         private IRewriterHost host;
         private IEnumerator<Tlcs900Instruction> dasm;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
         private Tlcs900Instruction instr;
 
@@ -59,7 +59,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             while (dasm.MoveNext())
             {
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
                 this.instr = dasm.Current;
@@ -142,7 +142,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void Invalid()
         {
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 

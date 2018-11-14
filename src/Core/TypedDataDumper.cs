@@ -132,8 +132,32 @@ namespace Reko.Core
                 fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
                 fmt.WriteLine();
                 return;
+            default:
+                bool newLine = false;
+                fmt.WriteKeyword("db");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X2}", rdr.ReadByte()));
+                for (int i = 1; i < pt.Size; ++i)
+                {
+                    if (newLine)
+                    {
+                        newLine = false;
+                        fmt.WriteLine();
+                        fmt.Write("\t");
+                        fmt.WriteKeyword("db");
+                        fmt.Write("\t");
+                        fmt.Write(string.Format("0x{0:X2}", rdr.ReadByte()));
+                    }
+                    else
+                    {
+                        fmt.Write(", ");
+                        fmt.Write(string.Format("0x{0:X2}", rdr.ReadByte()));
+                    }
+                    newLine = (rdr.Address.ToLinear() & 0xF) == 0;
+                }
+                fmt.WriteLine();
+                break;
             }
-            throw new NotImplementedException();
         }
 
         public void VisitReference(ReferenceTo refTo)

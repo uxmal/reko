@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -39,8 +40,6 @@ namespace Reko.Environments.C64
         internal const int TokenMin = 0x80;
         internal const int TokenMax = 0xCC;
 
-        public override bool IsValid { get { return true; } }
-
         public override int OpcodeAsInteger
         {
             get { throw new NotImplementedException(); }
@@ -51,11 +50,11 @@ namespace Reko.Environments.C64
             return null;
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                return InstructionClass.Linear;
+                return InstrClass.Linear;
             }
         }
 

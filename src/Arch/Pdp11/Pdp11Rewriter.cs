@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp11
         private IEnumerator<Pdp11Instruction> dasm;
         private Pdp11Instruction instr;
         private IStorageBinder binder;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
         private IRewriterHost host;
@@ -59,7 +59,7 @@ namespace Reko.Arch.Pdp11
             {
                 this.instr = dasm.Current;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = instr.InstructionClass;
                 m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Opcode)
                 {
@@ -68,10 +68,10 @@ namespace Reko.Arch.Pdp11
                         instr.Address,
                         "PDP-11 instruction {0} is not supported yet.", 
                         instr.Opcode);
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addb: RewriteAdd(); break;
@@ -596,7 +596,7 @@ namespace Reko.Arch.Pdp11
         private void Invalid()
         {
             rtlInstructions.Clear();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
     }

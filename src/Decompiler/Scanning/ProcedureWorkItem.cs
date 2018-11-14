@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -28,22 +28,22 @@ namespace Reko.Scanning
 {
     public class ProcedureWorkItem : WorkItem
     {
-        private IScanner scanner;
-        private Program program;
-        private Address addr;
-        private string name;
+        private readonly IScanner scanner;
+        private readonly IProcessorArchitecture arch;
+        private readonly Address addr;
+        private readonly string name;
 
-        public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name) : base(addr)
+        public ProcedureWorkItem(IScanner scanner, IProcessorArchitecture arch, Address addr, string name) : base(addr)
         {
             this.scanner = scanner;
-            this.program = program;
+            this.arch = arch;
             this.addr = addr;
             this.name = name;
         }
 
         public override void Process()
         {
-            scanner.ScanProcedure(addr, name, program.Architecture.CreateProcessorState());
+            scanner.ScanProcedure(arch, addr, name, arch.CreateProcessorState());
         }
     }
 }

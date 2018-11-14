@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -52,14 +52,9 @@ namespace Reko.Arch.Arm.AArch64
             nInstr = null;
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
-            get { return (InstructionClass)info.InstructionClass; }
-        }
-
-        public override bool IsValid
-        {
-            get { return this.InstructionClass != InstructionClass.Invalid; }
+            get { return (InstrClass) info.InstructionClass; }
         }
 
         public override int OpcodeAsInteger
@@ -86,9 +81,7 @@ namespace Reko.Arch.Arm.AArch64
         public MachineOperand shiftAmount;
         public VectorData vectorData;
 
-        public override InstructionClass InstructionClass { get; }
-
-        public override bool IsValid { get; }
+        public override InstrClass InstructionClass { get; }
 
         public override int OpcodeAsInteger => (int)opcode;
 

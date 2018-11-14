@@ -40,6 +40,28 @@ of the [AppVeyor integration builder](https://ci.appveyor.com/project/uxmal/reko
 Naturally you can build the project from the sources: see "Hacking" 
 below.
 
+## Installing Reko
+
+### Windows users
+
+The following prerequisite software must be installed on your machine first:
+* .NET Framework 4.7.2 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
+
+Download an MSI file from one of the places mentioned above, then simply run
+the installer.
+
+### Non-Windows users
+
+The following prerequisite software must be installed on your machine first:
+* mono version 5.14.0 (https://download.mono-project.com/archive/5.14.0/)
+
+**Note**: we've been unable to test Reko with the most recent version of mono, 5.16.0, because
+a bug in said version makes it impossible to build. This has been reported in mono/mono#11663.
+
+After installing mono, you can proceed by either downloading binaries directly
+from the integration build server, or by building Reko from sources (see `Hacking` 
+below).
+
 ## Getting support
 
 You can report any issues you encounter or ask any Reko-related question

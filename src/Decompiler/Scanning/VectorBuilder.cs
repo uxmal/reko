@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,7 +119,7 @@ namespace Reko.Scanning
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
             if (!program.SegmentMap.IsValidAddress(addrTableStart))
                 return new int[0];      //$DEBUG: look into this case.
-            var rdr = program.CreateImageReader(addrTableStart);
+            var rdr = program.CreateImageReader(program.Architecture, addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
@@ -145,6 +145,7 @@ namespace Reko.Scanning
         {
             List<Address> vector = new List<Address>();
 
+            var arch = program.Architecture;
             if (permutation != null)
             {
                 int cbEntry = stride;
@@ -154,7 +155,7 @@ namespace Reko.Scanning
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
                     var entryAddr = addrTable + (uint)(permutation[i] * cbEntry);
-                    var addr = program.Architecture.ReadCodeAddress(0, program.CreateImageReader(entryAddr), state);
+                    var addr = arch.ReadCodeAddress(0, program.CreateImageReader(arch, entryAddr), state);
                     if (addr != null)
                     { 
                         vector.Add(addr);
@@ -163,10 +164,9 @@ namespace Reko.Scanning
             }
             else
             {
-                EndianImageReader rdr = program.CreateImageReader(addrTable);
+                EndianImageReader rdr = program.CreateImageReader(arch, addrTable);
                 int cItems = limit / stride;
                 var segmentMap = program.SegmentMap;
-                var arch = program.Architecture;
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);

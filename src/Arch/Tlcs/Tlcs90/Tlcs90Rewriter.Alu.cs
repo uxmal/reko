@@ -116,7 +116,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             if (ifXSet)
             {
                 var x = binder.EnsureFlagGroup(Registers.X);
-                m.BranchInMiddleOfInstruction(m.Not(x), instr.Address + instr.Length, Core.Rtl.RtlClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Not(x), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             }
             if (this.instr.op1 is MemoryOperand)
             {
@@ -175,7 +175,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             m.Assign(src, m.IAddS(src, dt.Size));
             m.Assign(dst, m.IAddS(dst, dt.Size));
             m.Assign(cnt, m.ISubS(cnt, 1));
-            m.Branch(m.Ne0(cnt), instr.Address, RtlClass.ConditionalTransfer);
+            m.Branch(m.Ne0(cnt), instr.Address, InstrClass.ConditionalTransfer);
             EmitCc(null, flags);
         }
 

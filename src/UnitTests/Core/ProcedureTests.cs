@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void ProcCharacteristicIsAlloca()
 		{
-			Procedure proc = new Procedure(null, "foo", Address.Ptr32(0x00123400), null);
+			Procedure proc = new Procedure(arch, "foo", Address.Ptr32(0x00123400), null);
 			Assert.IsFalse(proc.Characteristics.IsAlloca);
 		}
 

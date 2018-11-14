@@ -294,24 +294,31 @@ namespace Reko.ImageLoaders.Elf
                 ? platform.MakeAddressFromLinear(sym.Value)
                 : Sections[(int)sym.SectionIndex].Address + sym.Value;
 
-
             var dt = GetSymbolDataType(sym);
-            return new ImageSymbol(addr)
-            {
-                Type = st,
-                Name = sym.Name,
-                Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
-                DataType = dt,
-                ProcessorState = Architecture.CreateProcessorState()
-            };
+            var imgSym = ImageSymbol.Create(
+                st,
+                this.Architecture,
+                addr,
+                sym.Name,
+                dt);
+            imgSym.ProcessorState = Architecture.CreateProcessorState();
+            return imgSym;
         }
 
         private DataType GetSymbolDataType(ElfSymbol sym)
         {
             if (sym.Type == ElfSymbolType.STT_FUNC)
+            {
                 return new FunctionType();
+            }
+            else if (sym.Size == 0)
+            {
+                return new UnknownType();
+            }
             else
-                return new UnknownType((int)sym.Size);
+            {
+                return PrimitiveType.CreateWord(DataType.BitsPerByte * (int)sym.Size);
+            }
         }
 
         /// <summary>
@@ -488,7 +495,7 @@ namespace Reko.ImageLoaders.Elf
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
         {
             Debug.Print("== Constructing GOT entries ==");
-            var rdr = program.CreateImageReader(gotStart);
+            var rdr = program.CreateImageReader(program.Architecture, gotStart);
             while (rdr.Address < gotEnd)
             {
                 var addrGot = rdr.Address;
@@ -515,11 +522,7 @@ namespace Reko.ImageLoaders.Elf
             //$TODO: look up function signature.
             int size = Architecture.PointerType.Size;
             int bitSize = Architecture.PointerType.BitSize;
-            return new ImageSymbol(addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize))
-            {
-                Type = SymbolType.Data,
-                Size = (uint)size,
-            };
+            return ImageSymbol.DataObject(Architecture, addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize));
         }
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
@@ -556,7 +559,7 @@ namespace Reko.ImageLoaders.Elf
             if (st_shndx < 0xFF00)
             {
                 if (st_shndx < Sections.Count)
-                    return Sections[st_shndx].Name;
+                return Sections[st_shndx].Name;
                 else
                     return $"?section{st_shndx}?";
             }
@@ -599,18 +602,18 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        protected ImageSymbol EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
         {
             if (addr == null)
-                return;
+                return null;
             if (!symbols.TryGetValue(addr, out ImageSymbol ep))
             {
-                ep = new ImageSymbol(addr)
-                {
-                    ProcessorState = Architecture.CreateProcessorState()
-                };
+                ep = ImageSymbol.Procedure(this.Architecture, addr);
+                ep.ProcessorState = Architecture.CreateProcessorState();
+                symbols.Add(addr, ep);
             }
             entryPoints.Add(ep);
+            return ep;
         }
 
         /// <summary>
@@ -633,9 +636,9 @@ namespace Reko.ImageLoaders.Elf
             {
                 symList = new Dictionary<int, ElfSymbol>();
                 Symbols.Add(offSymtab, symList);
-            }
+        }
             if (!symList.TryGetValue(i, out var sym))
-            {
+        {
                 sym = LoadSymbol(offSymtab, (ulong)i, symentrysize, offStrtab);
                 symList.Add(i, sym);
             }
@@ -656,15 +659,15 @@ namespace Reko.ImageLoaders.Elf
                 s.Type == SectionHeaderType.SHT_SYMTAB ||
                 s.Type == SectionHeaderType.SHT_DYNSYM)
                 .ToList();
-            foreach (var section in symbolSections)
+                foreach (var section in symbolSections)
             {
                 var symtab = LoadSymbolsSection(section);
                 Symbols[section.FileOffset] = symtab;
                 if (section.Type == SectionHeaderType.SHT_DYNSYM)
                 {
                     this.DynamicSymbols = symtab;
-                }
             }
+        }
         }
 
         public string ReadAsciiString(ulong fileOffset)
@@ -676,7 +679,7 @@ namespace Reko.ImageLoaders.Elf
             while (bytes[u] != 0)
             {
                 ++u;
-            }
+        }
             return Encoding.ASCII.GetString(bytes, (int)fileOffset, u - (int)fileOffset);
         }
 
@@ -689,12 +692,13 @@ namespace Reko.ImageLoaders.Elf
             relocator.LocateGotPointers(program, symbols);
             var entryPoints = new List<ImageSymbol>();
             var addrEntry = GetEntryPointAddress(addrLoad);
-            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
             var addrMain = relocator.FindMainFunction(program, addrEntry);
-            EnsureEntryPoint(entryPoints, symbols, addrMain);
+            var symMain = EnsureEntryPoint(entryPoints, symbols, addrMain);
+            symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address);
+            entryPoints = entryPoints.Select(relocator.AdjustImageSymbol).ToList();
             return new RelocationResults(entryPoints, symbols);
         }
-
 
         /// <summary>
         /// Hack off the @@GLIBC_... suffixes from symbols. 
@@ -1113,7 +1117,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
+        public override ElfSymbol LoadSymbol(ulong offsetSymtab,  ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             var sym = Elf64_Sym.Load(rdr);
@@ -1175,7 +1179,7 @@ namespace Reko.ImageLoaders.Elf
         public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage, byte endianness)
             : base(imgLoader, header32.e_machine, endianness)
         {
-            this.Header = header32 ?? throw new ArgumentNullException("header32");
+            this.Header = header32 ?? throw new ArgumentNullException(nameof(header32));
             this.rawImage = rawImage;
         }
 
@@ -1330,7 +1334,7 @@ namespace Reko.ImageLoaders.Elf
         public override List<string> GetDependencyList(byte[] rawImage)
         {
             return Dependencies;
-        }
+            }
 
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
         {

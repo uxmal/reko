@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,15 +32,17 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class DisassemblyFormatter : MachineInstructionWriter 
     {
-        private Program program;
-        private MachineInstruction instr;
+        private readonly Program program;
+        private readonly IProcessorArchitecture arch;
+        private readonly MachineInstruction instr;
         private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
         private List<string> annotations;
 
-        public DisassemblyFormatter(Program program, MachineInstruction instr, List<TextSpan> line)
+        public DisassemblyFormatter(Program program, IProcessorArchitecture arch, MachineInstruction instr, List<TextSpan> line)
         {
             this.program = program;
+            this.arch = arch;
             this.instr = instr;
             this.line = line;
             this.Platform = program.Platform;
@@ -58,9 +60,8 @@ namespace Reko.UserInterfaces.WindowsForms
         public void WriteAddress(string formattedAddress, Address addr)
         {
             TerminateSpan();
-            Procedure proc;
             TextSpan span;
-            if (program.Procedures.TryGetValue(addr, out proc))
+            if (program.Procedures.TryGetValue(addr, out Procedure proc))
             {
                 span = new DisassemblyTextModel.ProcedureTextSpan(proc, addr);
             }

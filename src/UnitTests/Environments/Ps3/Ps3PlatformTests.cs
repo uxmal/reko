@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -53,6 +53,7 @@ namespace Reko.UnitTests.Environments.Ps3
             m.Bctr();
             var host = mr.Stub<IRewriterHost>();
             host.Stub(h => h.GetImportedProcedure(
+                Arg<IProcessorArchitecture>.Is.NotNull,
                 Arg<Address>.Matches(a => a.ToLinear() == 0x10061234),
                 Arg<Address>.Is.Anything))
                 .Return(new ExternalProcedure("foo", new FunctionType()));

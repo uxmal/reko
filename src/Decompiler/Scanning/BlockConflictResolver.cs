@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -40,7 +40,7 @@ namespace Reko.Scanning
     /// Static Disassembly of Obfuscated Binaries
     /// Christopher Kruegel, William Robertson, Fredrik Valeur and Giovanni Vigna
     /// </remarks>
-    public class HeuristicProcedureScanner
+    public class BlockConflictResolver
     {
         private static TraceSwitch trace = new TraceSwitch("HeuristicProcedureScanner", "Display progress of scanner", "Error");
 
@@ -51,8 +51,8 @@ namespace Reko.Scanning
         private Func<Address, bool> isAddressValid;
         private HashSet<Tuple<RtlBlock, RtlBlock>> conflicts;
 
-        public HeuristicProcedureScanner(
-            Program program, 
+        public BlockConflictResolver(
+            Program program,
             ScanResults sr,
             Func<Address,bool> isAddressValid,
             IRewriterHost host)
@@ -68,16 +68,17 @@ namespace Reko.Scanning
         public void ResolveBlockConflicts(IEnumerable<Address> procedureStarts)
         {
             var reachable = TraceReachableBlocks(procedureStarts);
-            ComputeStatistics(reachable);
+            // We're never using these stats, so disable them for now.
+            //ComputeStatistics(reachable);
             Dump("Before conflict resolution");
             RemoveBlocksEndingWithInvalidInstruction();
-            Dump("After invalid instruction elimination");
+            this.sr.Dump("After invalid instruction elimination");
             RemoveBlocksConflictingWithValidBlocks(reachable);
             Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
-            Dump("After parents of conflicting blocks removed");
-            //RemoveBlocksWithFewAncestors();
-            //Dump("After few ancestors removal");
+            this.sr.Dump("After parents of conflicting blocks removed");
+            // RemoveBlocksWithFewPredecessors();
+            //DumpGraph();
             RemoveBlocksWithFewSuccessors();
             Dump("After few successor removal");
             RemoveConflictsRandomly();
@@ -90,7 +91,8 @@ namespace Reko.Scanning
         public void BlockConflictResolution(Address addrProcedureStart)
         {
             var valid = TraceReachableBlocks(new[] { addrProcedureStart });
-            ComputeStatistics(valid);
+            // We're never using these stats, so disable them for now.
+            //ComputeStatistics(valid);
             Dump("Before conflict resolution");
             RemoveBlocksEndingWithInvalidInstruction();
             Dump("After invalid instruction elimination");
@@ -139,6 +141,8 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void ComputeStatistics(ISet<RtlBlock> valid)
         {
+            if (program == null || program.Architecture == null)
+                return;
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
             if (cmp == null)
                 return;
@@ -146,7 +150,7 @@ namespace Reko.Scanning
             var trie = new Trie<MachineInstruction>(cmp);
             foreach (var item in valid.OrderBy(i => i.Address))
             {
-                var dasm = program.CreateDisassembler(item.Address);
+                var dasm = program.CreateDisassembler(program.Architecture, item.Address);
                 var instrs = dasm.Take(5);
                 trie.Add(instrs.ToArray());
             }
@@ -260,9 +264,13 @@ namespace Reko.Scanning
                 var uCount = GetAncestors(conflict.Item1).Count;
                 var vCount = GetAncestors(conflict.Item2).Count;
                 if (uCount < vCount)
+                {
                     RemoveBlockFromGraph(conflict.Item1);
-                if (uCount > vCount)
+                }
+                else if (uCount > vCount)
+                {
                     RemoveBlockFromGraph(conflict.Item2);
+                }
             }
         }
 
@@ -387,23 +395,24 @@ namespace Reko.Scanning
 
         private IEnumerable<RtlInstructionCluster> CreateRewriter(Address addr)
         {
-            var rw = program.Architecture.CreateRewriter(
-                program.CreateImageReader(addr),
-                program.Architecture.CreateProcessorState(),
-                program.Architecture.CreateFrame(),
+            var arch = program.Architecture;
+            var rw = arch.CreateRewriter(
+                program.CreateImageReader(arch, addr),
+                arch.CreateProcessorState(),
+                arch.CreateFrame(),
                 host);
             return new RobustRewriter(rw, program.Architecture.InstructionBitSize / 8);
         }
 
         private bool NonLocalTransferInstruction(RtlInstructionCluster cluster)
         {
-            if (cluster.Class == RtlClass.Linear)
+            if (cluster.Class == InstrClass.Linear)
                 return false;
-            var last = cluster.Instructions.Last();
-            if (last is RtlCall)
-                return true;
-            if (last is RtlGoto rtlGoto && rtlGoto.Target is Address target)
+            switch (cluster.Instructions.Last())
             {
+            case RtlCall _:
+                return true;
+            case RtlGoto rtlGoto when rtlGoto.Target is Address target:
                 return !isAddressValid(target);
             }
             return true;
@@ -430,16 +439,16 @@ namespace Reko.Scanning
             RtlBlock n,
             RtlBlock orig,
             ISet<RtlBlock> ancestors)
-        {
+                {
             if (ancestors.Contains(n) || n == orig)
                 return ancestors;
             ancestors.Add(n);
             foreach (var p in blocks.Predecessors(n))
             {
                 GetAncestorsAux(p, orig, ancestors);
-            }
+                }
             return ancestors;
-        }
+            }
 
         private class CollisionComparer : IEqualityComparer<Tuple<RtlBlock, RtlBlock>>
         {

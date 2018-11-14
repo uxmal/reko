@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -216,7 +216,7 @@ namespace Reko.Gui
                     return;
                 foreach (var pa in SelectedHits())
                 {
-                    pa.Program.AddUserGlobalItem(pa.Address, dataType);
+                    pa.Program.AddUserGlobalItem(pa.Program.Architecture, pa.Address, dataType);
                 }
                 View.Invalidate();
             });
@@ -257,7 +257,7 @@ namespace Reko.Gui
         {
             try
             {
-                var dasm = hit.Program.CreateDisassembler(hit.Address);
+                var dasm = hit.Program.CreateDisassembler(hit.Program.Architecture, hit.Address);
                 return string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
             }
             catch
@@ -271,7 +271,8 @@ namespace Reko.Gui
     {
         public override string RenderHit(AddressSearchHit hit)
         {
-            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var arch = hit.Program.Architecture;
+            var rdr = hit.Program.CreateImageReader(arch, hit.Address);
             var sb = new StringBuilder();
             int cb = 0;
             while (rdr.IsValid)
@@ -297,7 +298,8 @@ namespace Reko.Gui
 
         public override string RenderHit(AddressSearchHit hit)
         {
-            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var arch = hit.Program.Architecture;
+            var rdr = hit.Program.CreateImageReader(arch, hit.Address);
             var bytes = rdr.ReadBytes(hit.Length);
             return encoding.GetString(bytes.ToArray());
         }

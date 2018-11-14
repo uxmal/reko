@@ -105,6 +105,7 @@ namespace Reko.UnitTests.Scanning
 		{
             X86Instruction inst = new X86Instruction(
                 Opcode.mov,
+                InstrClass.Linear,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 new RegisterOperand(regDst),
@@ -116,6 +117,7 @@ namespace Reko.UnitTests.Scanning
 		{
             X86Instruction inst = new X86Instruction(
                 Opcode.push,
+                InstrClass.Linear,
                 reg.DataType,
                 reg.DataType,
                 new RegisterOperand(reg));

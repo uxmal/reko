@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -152,7 +152,7 @@ namespace Reko.Scanning
             if (!program.SegmentMap.IsValidAddress(addr))
                 throw new ApplicationException(
                     string.Format("Varargs: invalid address: {0}", addr));
-            var rdr = program.CreateImageReader(addr);
+            var rdr = program.CreateImageReader(program.Architecture, addr);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
         }

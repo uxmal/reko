@@ -45,7 +45,7 @@ namespace Reko.Core
             //$REVIEW consider removing Body completely and use
             // AbsynProcedure instead.
             this.EntryAddress = addrEntry;
-            this.Architecture = arch;
+            this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
             this.Body = null;
             this.blocks = new List<Block>();
             this.ControlGraph = new BlockGraph(blocks);
