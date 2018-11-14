@@ -1265,23 +1265,5 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7A42D020);
             Expect_Code("ccmp\tw1,w5,#0,LE");
         }
-
-        // An AArch64 decoder for the instruction 5F03C0A8 (A8C0035F) - (AdvancedSimdScalar_x_IdxElem - opcode=1100 U=0) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_5F03C0A8()
-        {
-            Given_Instruction(0x5F03C0A8);
-            Expect_Code("@@@");
-        }
-
-        // An AArch64 decoder for the instruction 6800F940 (40F90068) - (LdStNoallocatePair) has not been implemented yet.
-        [Test]
-        public void AArch64Dis_6800F940()
-        {
-            Given_Instruction(0x6800F940);
-            Expect_Code("@@@");
-        }
-
-
     }
 }
