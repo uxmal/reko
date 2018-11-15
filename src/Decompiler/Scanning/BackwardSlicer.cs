@@ -511,7 +511,7 @@ namespace Reko.Scanning
             }
 
             this.Live = sr.LiveExprs;
-            if (sr.LiveExprs.Count == 0)
+            if (!sr.LiveExprs.Keys.OfType<Identifier>().Any())
             {
                 // Couldn't find any indirect registers, so there is no work to do.
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceWarning, "  No indirect registers?");
