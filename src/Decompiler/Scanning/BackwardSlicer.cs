@@ -653,8 +653,6 @@ namespace Reko.Scanning
             }
             this.assignLhs = ass.Dst;
             var killedRegs = Live.Where(de => de.Key is Identifier i && i.Storage.Domain == id.Storage.Domain).ToList();
-            if (ass.ToString().Contains("0020"))
-                ass.ToString(); //$DEBUG
             if (killedRegs.Count == 0)
             {
                 // This assignment doesn't affect the end result.
@@ -968,7 +966,7 @@ namespace Reko.Scanning
             return new SlicerResult
             {
                 LiveExprs = srEa.LiveExprs,
-                SrcExpr = new MemoryAccess(srEa.SrcExpr, access.DataType),
+                SrcExpr = srEa.SrcExpr != null ? new MemoryAccess(srEa.SrcExpr, access.DataType) : null,
                 Stop = srEa.Stop
             };
         }
