@@ -44,13 +44,13 @@ namespace Reko.Arch.Alpha
         public override AlphaInstruction DisassembleInstruction()
         {
             var addr = rdr.Address;
-            uint uInstr;
-            if (!rdr.TryReadUInt32(out uInstr))
+            if (!rdr.TryReadUInt32(out uint uInstr))
                 return null;
             var op = uInstr >> 26;
             var instr = decoders[op].Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = 4;
+            instr.iclass |= uInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 

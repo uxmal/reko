@@ -86,21 +86,12 @@ namespace Reko.Arch.Arm.AArch32
             this.condition = ArmCondition.AL;
         }
 
+        public InstrClass iclass { get; set; }
         public Opcode opcode { get; set; }
         public ArmCondition condition { get; set; }
         public MachineOperand[] ops { get; set; }
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                if (!iclasses.TryGetValue(opcode, out var iclass))
-                    iclass = InstrClass.Linear;
-                if (condition != ArmCondition.AL)
-                    iclass |= InstrClass.Conditional;
-                return iclass;
-            }
-        }
+        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) opcode;
 
@@ -362,11 +353,6 @@ namespace Reko.Arch.Arm.AArch32
                 writer.AddAnnotation(addr.ToString());
             }
         }
-
-        private static Dictionary<Opcode, InstrClass> iclasses = new Dictionary<Opcode, InstrClass>
-        {
-            { Opcode.hlt, InstrClass.System },
-        };
 
         public bool Writeback;
         public bool SetFlags;

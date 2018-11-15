@@ -66,6 +66,8 @@ namespace Reko.Arch.Arm.AArch32
             this.state = new DasmState();
 
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
+            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instr.iclass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             if ((itState & 0x1F) == 0x10)

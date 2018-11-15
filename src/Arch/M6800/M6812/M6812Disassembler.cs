@@ -1365,7 +1365,7 @@ namespace Reko.Arch.M6800.M6812
             decoders = new Decoder[256]
             {
                 // 00
-                Instr(Opcode.bgnd),
+                Instr(Opcode.bgnd, InstrClass.Linear|InstrClass.Zero),
                 Instr(Opcode.mem),
                 Instr(Opcode.iny),
                 Instr(Opcode.dey),

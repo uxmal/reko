@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -149,11 +149,17 @@ namespace Reko.Arch.Tms7000
         public class Decoder
         {
             public Opcode name;
+            public InstrClass iclass;
             public string amode;
 
-            public Decoder(Opcode name, string decoder)
+            public Decoder(Opcode name, string decoder) : this(name, InstrClass.Linear, decoder)
+            {
+            }
+
+            public Decoder(Opcode name, InstrClass iclass, string decoder)
             {
                 this.name = name;
+                this.iclass = iclass;
                 this.amode = decoder;
             }
             public const string F_None = "";
@@ -367,7 +373,7 @@ namespace Reko.Arch.Tms7000
             { 0x5c, new Decoder(Opcode.mpy, Decoder.F_iop_B) },
             { 0x7c, new Decoder(Opcode.mpy, Decoder.F_iop_Rn) },
 
-            { 0x00, new Decoder(Opcode.nop, Decoder.F_None) },
+            { 0x00, new Decoder(Opcode.nop, InstrClass.Padding|InstrClass.Zero, Decoder.F_None) },
 
             { 0x64, new Decoder(Opcode.or, Decoder.F_A_B) },
             { 0x14, new Decoder(Opcode.or, Decoder.F_Rn_A) },

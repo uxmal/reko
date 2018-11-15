@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -60,27 +60,15 @@ namespace Reko.Arch.Mips
             { Opcode.trunc_l_d, "trunc.l.d" },
         };
 
-        private static Dictionary<Opcode, InstrClass> classOf;
-
         public Opcode opcode;
+        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                InstrClass ct;
-                if (!classOf.TryGetValue(opcode, out ct))
-                {
-                    ct = Linear;
-                }
-                return ct;
-            }
-        }
+        public override InstrClass InstructionClass => iclass;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -117,45 +105,6 @@ namespace Reko.Arch.Mips
                     }
                 }
             }
-        }
-
- 
-
-        static MipsInstruction()
-        {
-            classOf = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.illegal, InstrClass.Invalid },
-
-                { Opcode.beq,     CondTransfer },
-                { Opcode.beql,    LinkCondTransfer },
-                { Opcode.bgez,    CondTransfer },
-                { Opcode.bgezal,  LinkCondTransfer },
-                { Opcode.bgezall, LinkCondTransfer },
-                { Opcode.bgezl,   LinkCondTransfer },
-                { Opcode.bgtz,    CondTransfer },
-                { Opcode.bgtzl,   LinkCondTransfer },
-                { Opcode.blez,    CondTransfer },
-                { Opcode.blezl,   LinkCondTransfer },
-                { Opcode.bltz,    CondTransfer },
-                { Opcode.bltzal,  LinkCondTransfer },
-                { Opcode.bltzall, LinkCondTransfer },
-                { Opcode.bltzl,   CondTransfer },
-                { Opcode.bne,     CondTransfer },
-                { Opcode.bnel,    LinkCondTransfer },
-                { Opcode.@break,  Transfer },
-                { Opcode.j,       Transfer },
-                { Opcode.jal,     LinkTransfer },
-                { Opcode.jalr,    LinkTransfer },
-                { Opcode.jr,      Transfer },
-                { Opcode.syscall, LinkTransfer },
-                { Opcode.teq,     LinkCondTransfer },
-                { Opcode.tlt,     LinkCondTransfer },
-                { Opcode.tltu,    LinkCondTransfer },
-                { Opcode.tge,     LinkCondTransfer },
-                { Opcode.tgeu,    LinkCondTransfer },
-                { Opcode.tne,     LinkCondTransfer },
-            };
         }
     }
 }

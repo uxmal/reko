@@ -248,7 +248,7 @@ namespace Reko.Arch.Avr
             var invalid = new BOpRec(Opcode.invalid, "", InstrClass.Invalid);
             var oprecs0 = new OpRec[16]
             {
-                invalid,
+                new BOpRec(Opcode.invalid, "", InstrClass.Invalid|InstrClass.Zero),
                 new BOpRec(Opcode.movw, "p,P"),
                 new BOpRec(Opcode.muls, "d,r4"),
                 new BOpRec(Opcode.muls, "d,r4"),

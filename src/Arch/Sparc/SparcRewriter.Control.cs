@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -45,9 +45,7 @@ namespace Reko.Arch.Sparc
         private void RewriteBranch(Expression cond)
         {
             // SPARC architecture always has delay slot.
-            var rtlClass = InstrClass.ConditionalTransfer | InstrClass.Delay;
-            if (instrCur.Annul)
-                rtlClass |= InstrClass.Annul;
+            var rtlClass = instrCur.IClass;
             this.rtlc = rtlClass;
             if (cond is Constant c && c.ToBoolean())
             {

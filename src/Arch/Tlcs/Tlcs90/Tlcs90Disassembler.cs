@@ -451,7 +451,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static Decoder[] oprecs = new Decoder[]
         {
             // 00
-            new OpRec(Opcode.nop, "", InstrClass.Linear|InstrClass.Padding),
+            new OpRec(Opcode.nop, "", InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
             new OpRec(Opcode.halt, "", InstrClass.Terminates),
             new OpRec(Opcode.di, ""),
             new OpRec(Opcode.ei, ""),

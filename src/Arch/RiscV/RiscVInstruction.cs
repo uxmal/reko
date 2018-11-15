@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,6 +32,7 @@ namespace Reko.Arch.RiscV
         private static Dictionary<Opcode, InstrClass> instrClasses;
 
         internal Opcode opcode;
+        internal InstrClass iclass;
         internal MachineOperand op1;
         internal MachineOperand op2;
         internal MachineOperand op3;
@@ -50,31 +51,9 @@ namespace Reko.Arch.RiscV
                 { Opcode.fmv_d_x, "fmv.d.x" },
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };
-
-            instrClasses = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.jal, InstrClass.Transfer },
-                { Opcode.jalr, InstrClass.Transfer },
-                { Opcode.beq, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bne, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.blt, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bltu, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bge, InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.bgeu, InstrClass.Transfer | InstrClass.Conditional },
-            };
         }
 
-        public override InstrClass InstructionClass
-        {
-            get {
-                InstrClass c;
-                if (!instrClasses.TryGetValue(opcode, out c))
-                {
-                    return InstrClass.Linear;
-                }
-                return c;
-            }
-        }
+        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
@@ -93,8 +72,7 @@ namespace Reko.Arch.RiscV
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string name;
-            if (!opcodeNames.TryGetValue(opcode, out name))
+            if (!opcodeNames.TryGetValue(opcode, out string name))
             {
                 name = opcode.ToString();
             }

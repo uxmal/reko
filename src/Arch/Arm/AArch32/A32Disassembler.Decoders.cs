@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
@@ -177,18 +178,21 @@ namespace Reko.Arch.Arm.AArch32
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
+            private readonly InstrClass iclass;
             private readonly ArmVectorData vectorData;
             private readonly Func<uint, A32Disassembler, bool>[] mutators;
 
-            public InstrDecoder(Opcode opcode, ArmVectorData vectorData, params Func<uint, A32Disassembler, bool>[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, ArmVectorData vectorData, params Func<uint, A32Disassembler, bool>[] mutators)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.vectorData = vectorData;
                 this.mutators = mutators;
             }
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                dasm.state.iclass = iclass;
                 dasm.state.opcode = this.opcode;
                 dasm.state.vectorData = this.vectorData;
                 for (int i = 0; i < mutators.Length; ++i)

@@ -60,12 +60,15 @@ namespace Reko.Arch.Arm.AArch32
             this.state = new DasmState();
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = this.addr;
+            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instr.iclass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Length = 4;
             return instr;
         }
 
         public class DasmState
         {
+            public InstrClass iclass;
             public Opcode opcode;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public bool updateFlags = false;
@@ -80,6 +83,7 @@ namespace Reko.Arch.Arm.AArch32
             public void Clear()
             {
                 ops.Clear();
+                iclass = InstrClass.Invalid;
                 updateFlags = false;
                 writeback = false;
                 shiftOp = Opcode.Invalid;
@@ -100,6 +104,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var instr = new A32Instruction
                 {
+                    iclass = iclass,
                     opcode = opcode,
                     ops = ops.ToArray(),
                     ShiftType = shiftOp,
@@ -1088,12 +1093,17 @@ namespace Reko.Arch.Arm.AArch32
 
         private static Decoder Instr(Opcode opcode, params Mutator[] mutators)
         {
-            return new InstrDecoder(opcode, ArmVectorData.INVALID, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators);
+        }
+
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, ArmVectorData.INVALID, mutators);
         }
 
         private static Decoder Instr(Opcode opcode, ArmVectorData vec, params Mutator[] mutators)
         {
-            return new InstrDecoder(opcode, vec, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, vec, mutators);
         }
 
         private static NyiDecoder nyi(string str)
@@ -1201,7 +1211,7 @@ namespace Reko.Arch.Arm.AArch32
 
         static A32Disassembler()
         {
-            invalid = new InstrDecoder(Opcode.Invalid, ArmVectorData.INVALID);
+            invalid = new InstrDecoder(Opcode.Invalid, InstrClass.Invalid, ArmVectorData.INVALID);
             bankedRegisters = new Dictionary<uint, RegisterStorage>
             {
                 { 0b000000, Registers.r8_usr },
@@ -1571,8 +1581,8 @@ namespace Reko.Arch.Arm.AArch32
                 Hvc,
                 Smc);
 
-            var Bx = Instr(Opcode.bx, r(0));
-            var Bxj = Instr(Opcode.bxj, r(0));
+            var Bx = Instr(Opcode.bx, InstrClass.Transfer, r(0));
+            var Bxj = Instr(Opcode.bxj, InstrClass.Transfer, r(0));
             var Blx = Instr(Opcode.blx, J);
             var Clz = Instr(Opcode.clz, r(3),r(0));
             var Eret = Instr(Opcode.eret);

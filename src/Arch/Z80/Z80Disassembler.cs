@@ -52,8 +52,7 @@ namespace Reko.Arch.Z80
             {
                 Address = addr,
             };
-            byte op;
-            if (!rdr.TryReadByte(out op))
+            if (!rdr.TryReadByte(out byte op))
                 return Invalid(addr);
             
             var opRef = oprecs[op];
@@ -62,6 +61,7 @@ namespace Reko.Arch.Z80
             if (instr == null)
                 return Invalid(addr);
             instr.Address = addr;
+            instr.IClass |= op == 0 ? InstrClass.Zero : 0;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
@@ -416,7 +416,7 @@ namespace Reko.Arch.Z80
         private static readonly OpRec [] oprecs = new OpRec[] 
         {
             // 00
-            new SingleByteOpRec(Opcode.nop, Opcode.nop, ""),
+            new SingleByteOpRec(Opcode.nop, Opcode.nop, "", InstrClass.Zero|InstrClass.Linear|InstrClass.Padding),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wb,Iw"),
             new SingleByteOpRec(Opcode.stax, Opcode.ld, "B,a"),
             new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wb"),

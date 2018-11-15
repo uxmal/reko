@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
         {
             return new OpRec[] { 
 				// 00
-				new SingleByteOpRec(Opcode.add, "Eb,Gb", InstrClass.Linear|InstrClass.Padding),
+				new SingleByteOpRec(Opcode.add, "Eb,Gb", InstrClass.Linear|InstrClass.Zero),
 				new SingleByteOpRec(Opcode.add, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.add, "Gb,Eb"),
 				new SingleByteOpRec(Opcode.add, "Gv,Ev"),

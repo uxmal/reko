@@ -60,6 +60,7 @@ namespace Reko.Arch.Arm.AArch64
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = addr;
             instr.Length = 4;
+            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 

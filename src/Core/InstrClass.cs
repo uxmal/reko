@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -45,6 +45,8 @@ namespace Reko.Core
         System = 128,           // Privileged instruction
         Padding = 256,          // Instruction _could_ be used as alignment padding between procedures.
         Invalid = 512,          // The instruction is invalid
+        Zero = 1024,            // The instruction first "unit" was zero.
+
         ConditionalTransfer = Conditional | Transfer,
     }
 }
