@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -234,35 +235,39 @@ namespace Reko.Arch.Arm.AArch32
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
+            private readonly InstrClass iclass;
             private readonly string format;
 
-            public InstrDecoder(Opcode opcode, string format)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, string format)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.format = format;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
-                return dasm.DecodeFormat(wInstr, opcode, format);
+                return dasm.DecodeFormat(wInstr, opcode, iclass, format);
             }
         }
 
         private class InstrDecoder2 : Decoder
         {
             private readonly Opcode opcode;
+            private readonly InstrClass iclass;
             private readonly Mutator[] mutators;
-            private object state;
 
-            public InstrDecoder2(Opcode opcode, params Mutator[] mutators)
+            public InstrDecoder2(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.mutators = mutators;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
             {
                 dasm.state.opcode = this.opcode;
+                dasm.state.iclass = this.iclass;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
                     if (!mutators[i](wInstr, dasm))
@@ -310,6 +315,7 @@ namespace Reko.Arch.Arm.AArch32
                     opcode = st
                         ? Opcode.stm
                         : Opcode.ldm,
+                    iclass = InstrClass.Linear,
                     Writeback = w,
                     ops = new MachineOperand[] {
                             new RegisterOperand(rn),
@@ -342,6 +348,7 @@ namespace Reko.Arch.Arm.AArch32
                     return new T32Instruction
                     {
                         opcode = l != 0 ? Opcode.pop : Opcode.push,
+                        iclass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
                         ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
@@ -352,13 +359,13 @@ namespace Reko.Arch.Arm.AArch32
                     return new T32Instruction
                     {
                         opcode = opcode,
+                        iclass = InstrClass.Linear,
                         Writeback = w,
                         ops = new MachineOperand[] {
                             new RegisterOperand(rn),
                             new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers))
                         }
                     };
-
                 }
             }
         }
@@ -368,7 +375,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             private readonly string format;
 
-            public MovMovsDecoder(Opcode opcode, string format) : base(opcode, format)
+            public MovMovsDecoder(Opcode opcode, string format) : base(opcode, InstrClass.Linear, format)
             {
                 this.format = format;
             }
@@ -392,6 +399,7 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = new T32Instruction
                 {
                     opcode = Opcode.it,
+                    iclass = InstrClass.Linear,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4)
                 };
@@ -406,7 +414,7 @@ namespace Reko.Arch.Arm.AArch32
         // differently from how they are repesented in the word.
         private class BfcBfiDecoder : InstrDecoder
         {
-            public BfcBfiDecoder(Opcode opcode, string format) : base(opcode, format)
+            public BfcBfiDecoder(Opcode opcode, string format) : base(opcode, InstrClass.Linear, format)
             {
             }
 

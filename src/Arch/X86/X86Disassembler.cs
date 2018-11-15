@@ -295,7 +295,7 @@ namespace Reko.Arch.X86
             {
                 instrCur = s_aOpRec[op].Decode(this, op, "");
             }
-            catch (Exception ex)
+            catch
             {
                 instrCur = Illegal();
                 //throw new AddressCorrelatedException(addr, ex, "An exception occurred when disassembling x86 code.");
@@ -522,6 +522,21 @@ namespace Reko.Arch.X86
 			throw new ArgumentOutOfRangeException("bits", string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
 
+        public static SingleByteOpRec Instr(Opcode op)
+        {
+            return new SingleByteOpRec(op, InstrClass.Linear, "");
+        }
+
+        public static SingleByteOpRec Instr(Opcode op, string format)
+        {
+            return new SingleByteOpRec(op, InstrClass.Linear, format);
+        }
+
+        public static SingleByteOpRec Instr(Opcode op, InstrClass iclass, string format)
+        {
+            return new SingleByteOpRec(op, iclass, format);
+        }
+
         /// <summary>
         /// Opcode Records are used to pick apart the somewhat complex x86 instructions, which have many optional
         /// prefixes, segment overrides, and two classes of instructions, single-byte and two-byte (that is,
@@ -541,15 +556,15 @@ namespace Reko.Arch.X86
 			public string	format;
 			public InstrClass	iclass;
 
-            public SingleByteOpRec(Opcode op): this(op, "", InstrClass.Linear)
+            public SingleByteOpRec(Opcode op): this(op, InstrClass.Linear, "")
             {
             }
 
-			public SingleByteOpRec(Opcode op, string fmt) : this(op, fmt, InstrClass.Linear)
+			public SingleByteOpRec(Opcode op, string fmt) : this(op, InstrClass.Linear, fmt)
 			{
 			}
 
-			public SingleByteOpRec(Opcode op, string fmt, InstrClass icl)
+			public SingleByteOpRec(Opcode op, InstrClass icl, string fmt)
 			{
 				opcode = op;
 				format = fmt;
@@ -673,7 +688,7 @@ namespace Reko.Arch.X86
                     {
                         return regInstrs[i].Decode(disasm, op, opFormat);
                     }
-                else
+                    else
                     {
                         return disasm.Illegal();
                     }
@@ -846,8 +861,8 @@ namespace Reko.Arch.X86
             {
                 disasm.currentDecodingContext.SizeOverridePrefix = true;
                 disasm.dataWidth = (disasm.dataWidth == PrimitiveType.Word16)
-                        ? PrimitiveType.Word32
-                        : PrimitiveType.Word16;
+                    ? PrimitiveType.Word32
+                    : PrimitiveType.Word16;
                 op = disasm.rdr.ReadByte();
                 return s_aOpRec[op].Decode(disasm, op, opFormat);
             }
@@ -858,8 +873,8 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 disasm.addressWidth = (disasm.addressWidth == PrimitiveType.Word16)
-                        ? PrimitiveType.Word32
-                        : PrimitiveType.Word16;
+                    ? PrimitiveType.Word32
+                    : PrimitiveType.Word16;
                 op = disasm.rdr.ReadByte();
                 return s_aOpRec[op].Decode(disasm, op, opFormat);
             }
@@ -867,17 +882,12 @@ namespace Reko.Arch.X86
 
         public class PrefixedOpRec : OpRec
         {
-            private Opcode op;
-            private Opcode op66;
-            private Opcode opWide;
-            private Opcode op66Wide;
-            private Opcode opF3;
-            private Opcode opF2;
-            private string opFmt;
-            private string op66Fmt;
-            private string opF3Fmt;
-            private string opF2Fmt;
-            private InstrClass iclass;
+            private readonly OpRec op;
+            private readonly OpRec opWide;
+            private readonly OpRec op66;
+            private readonly OpRec op66Wide;
+            private readonly OpRec opF3;
+            private readonly OpRec opF2;
 
             public PrefixedOpRec(
                 Opcode op,
@@ -890,15 +900,17 @@ namespace Reko.Arch.X86
                 string opF2Fmt = null,
                 InstrClass iclass = InstrClass.Linear)
             {
-                this.op =   this.opWide = op;
-                this.op66 = this.op66Wide = op66;
-                this.opF3 = opF3;
-                this.opF2 = opF2;
-                this.opFmt = opFmt;
-                this.op66Fmt = op66Fmt;
-                this.opF3Fmt = opF3Fmt;
-                this.opF2Fmt = opF2Fmt;
-                this.iclass = iclass;
+                OpRec MakeDecoder(Opcode opc, string format)
+                {
+                    return opc != Opcode.illegal
+                        ? new SingleByteOpRec(opc, iclass, format)
+                        : s_invalid;
+                }
+
+                this.op = this.opWide = MakeDecoder(op, opFmt);
+                this.op66 = this.op66Wide = MakeDecoder(op66, op66Fmt);
+                this.opF3 = MakeDecoder(opF3, opF3Fmt);
+                this.opF2 = MakeDecoder(opF2, opF2Fmt);
             }
 
             public PrefixedOpRec(
@@ -912,50 +924,64 @@ namespace Reko.Arch.X86
                 string opF3Fmt = null,
                 InstrClass iclass = InstrClass.Linear)
             {
-                this.op = op;
-                this.opWide = opWide;
-                this.op66 = op66;
-                this.op66Wide = op66Wide;
-                this.opF3 = opF3;
-                this.opF2 = Opcode.illegal;
-                this.opFmt = opFmt;
-                this.op66Fmt = op66Fmt;
-                this.opF3Fmt = opF3Fmt;
-                this.opF2Fmt = null;
-                this.iclass = InstrClass.Linear;
+                OpRec MakeDecoder(Opcode opc, string format)
+                {
+                    return opc != Opcode.illegal
+                        ? new SingleByteOpRec(opc, iclass, format)
+                        : s_invalid;
+                }
+
+                this.op = MakeDecoder(op, opFmt);
+                this.opWide = MakeDecoder(opWide, opFmt);
+                this.op66 = MakeDecoder(op66, op66Fmt);
+                this.op66Wide = MakeDecoder(op66Wide, op66Fmt);
+                this.opF3 = MakeDecoder(opF3, opF3Fmt);
+                this.opF2 = s_invalid;
+            }
+
+            public PrefixedOpRec(
+                OpRec dec = null,
+                OpRec decWide = null,
+                OpRec dec66 = null,
+                OpRec dec66Wide = null,
+                OpRec decF3 = null,
+                OpRec decF2 = null)
+            {
+                this.op = dec ?? s_invalid;
+                this.opWide = decWide ?? s_invalid;
+                this.op66 = dec66 ?? s_invalid;
+                this.op66Wide = dec66Wide ?? s_invalid;
+                this.opF3 = decF3 ?? s_invalid;
+                this.opF2 = decF2 ?? s_invalid;
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.currentDecodingContext.F2Prefix)
                 {
-                    if (opF2Fmt == null)
-                        return disasm.Illegal();
-                    var instr = disasm.DecodeOperands(this.opF2, op, opF2Fmt, iclass);
+                    var instr = opF2.Decode(disasm, op, opFormat);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.F3Prefix)
                 {
-                    if (opF3Fmt == null)
-                        return disasm.Illegal();
-                    var instr = disasm.DecodeOperands(this.opF3, op, opF3Fmt, iclass);
+                    var instr = opF3.Decode(disasm, op, opFormat);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.SizeOverridePrefix)
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
-                        return disasm.DecodeOperands(this.op66Wide, op, op66Fmt, iclass);
+                        return op66Wide.Decode(disasm, op, opFormat);
                     else
-                        return disasm.DecodeOperands(this.op66, op, op66Fmt, iclass);
+                        return op66.Decode(disasm, op, opFormat);
                 }
                 else
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
-                        return disasm.DecodeOperands(this.opWide, op, opFmt, iclass);
+                        return opWide.Decode(disasm, op, opFormat);
                     else
-                        return disasm.DecodeOperands(this.op, op, opFmt, iclass);
+                        return this.op.Decode(disasm, op, opFormat);
                 }
             }
         }
@@ -1486,6 +1512,7 @@ namespace Reko.Arch.X86
 			return op is RegisterOperand || op is X86AddressOperand;
 		}
 
+        private static OpRec s_invalid;
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
 		private static OpRec [] s_aOpRec0F38;
@@ -1496,6 +1523,7 @@ namespace Reko.Arch.X86
 
         static X86Disassembler()
 		{
+            s_invalid = new SingleByteOpRec(Opcode.illegal, InstrClass.Invalid, "");
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
             s_aOpRec0F38 = Create0F38Oprecs();

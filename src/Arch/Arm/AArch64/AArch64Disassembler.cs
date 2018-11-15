@@ -67,6 +67,7 @@ namespace Reko.Arch.Arm.AArch64
         private class DasmState
         {
             public Opcode opcode;
+            public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public Opcode shiftCode = Opcode.Invalid;
             public MachineOperand shiftAmount = null;
@@ -77,6 +78,7 @@ namespace Reko.Arch.Arm.AArch64
             public void Clear()
             {
                 this.opcode = Opcode.Invalid;
+                this.iclass = InstrClass.Invalid;
                 this.ops.Clear();
                 this.shiftCode = Opcode.Invalid;
                 this.shiftAmount = null;
@@ -95,6 +97,7 @@ namespace Reko.Arch.Arm.AArch64
                 var instr = new AArch64Instruction
                 {
                     opcode = opcode,
+                    iclass = iclass,
                     ops = ops.ToArray(),
                     shiftCode = shiftCode,
                     shiftAmount = shiftAmount,
@@ -1437,12 +1440,17 @@ namespace Reko.Arch.Arm.AArch64
 
         private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
         {
-            return new InstrDecoder(opcode, VectorData.Invalid, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, VectorData.Invalid, mutators);
+        }
+
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, VectorData.Invalid, mutators);
         }
 
         private static Decoder Instr(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
         {
-            return new InstrDecoder(opcode, vectorData, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, vectorData, mutators);
         }
 
         private static Decoder Mask(string tag, int pos, uint mask, params Decoder[] decoders)
@@ -2261,25 +2269,25 @@ namespace Reko.Arch.Arm.AArch64
                 Extract);
 
             var UncondBranchImm = Mask(31, 1,
-                Instr(Opcode.b, J(0,26)),
-                Instr(Opcode.bl, J(0,26)));
+                Instr(Opcode.b, InstrClass.Transfer, J(0,26)),
+                Instr(Opcode.bl, InstrClass.Transfer | InstrClass.Call, J(0,26)));
 
             var UncondBranchReg = Select(16,5, n => n != 0x1F,
                 invalid,
                 Mask(21, 0xF,
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, InstrClass.Transfer, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, InstrClass.Transfer | InstrClass.Call, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, InstrClass.Transfer, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key B"), invalid))),
                     invalid,
@@ -2308,22 +2316,22 @@ namespace Reko.Arch.Arm.AArch64
 
             var CompareBranchImm = Mask(31, 1, 
                 Mask(24, 1,
-                    Instr(Opcode.cbz, W(0,5),J(5,19)),
-                    Instr(Opcode.cbnz, W(0,5),J(5,19))),
+                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, W(0,5),J(5,19)),
+                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, W(0,5),J(5,19))),
                 Mask(24, 1,
-                    Instr(Opcode.cbz, X(0,5),J(5,19)),
-                    Instr(Opcode.cbnz, X(0,5),J(5,19))));
+                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, X(0,5),J(5,19)),
+                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, X(0,5),J(5,19))));
 
             var TestBranchImm = Mask(24, 1,
                 Mask(31, 1,
-                    Instr(Opcode.tbz, W(0,5),I(19,5,w32),J(5,14)),
-                    Instr(Opcode.tbnz, W(0,5),I(19,5,w32),J(5,14))),
+                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14))),
                 Mask(31, 1,
-                    Instr(Opcode.tbz, W(0,5),I(19,5,w32),J(5,14)),
-                    Instr(Opcode.tbnz, W(0,5),I(19,5,w32),J(5,14))));
+                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14))));
 
             var CondBranchImm = Mask(24,1,4,1,
-                Instr(Opcode.b, C(0,4),J(5,19)),
+                Instr(Opcode.b, InstrClass.ConditionalTransfer, C(0,4),J(5,19)),
                 invalid,
                 invalid,
                 invalid);

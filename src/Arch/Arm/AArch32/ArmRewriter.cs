@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
-                this.rtlClass = InstrClass.Linear;
+                this.rtlClass = instr.iclass;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.

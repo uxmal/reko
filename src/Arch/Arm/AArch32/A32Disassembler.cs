@@ -1585,7 +1585,7 @@ namespace Reko.Arch.Arm.AArch32
             var Bxj = Instr(Opcode.bxj, InstrClass.Transfer, r(0));
             var Blx = Instr(Opcode.blx, J);
             var Clz = Instr(Opcode.clz, r(3),r(0));
-            var Eret = Instr(Opcode.eret);
+            var Eret = Instr(Opcode.eret, InstrClass.Transfer);
 
             var ChangeProcessState = new MaskDecoder(16, 1, // op
                 Mask(18, 0x3,
@@ -2761,7 +2761,7 @@ namespace Reko.Arch.Arm.AArch32
                                 AdvancedSIMDandFloatingPoint32bitMove),
                             invalid),
                         Select(10, 3, n => n == 2, AdvancedSimd_TwoRegistersScalarExtension, invalid))),
-                    Instr(Opcode.svc, i(0,24)));
+                    Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24)));
 
 
             var ConditionalDecoder = new CondMaskDecoder(25, 0x7,

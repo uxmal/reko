@@ -89,6 +89,7 @@ namespace Reko.Arch.Arm.AArch32
         private class DasmState
         {
             public Opcode opcode;
+            public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public ArmCondition cc = ArmCondition.AL;
             public bool updateFlags = false;
@@ -109,6 +110,7 @@ namespace Reko.Arch.Arm.AArch32
                 return new T32Instruction
                 {
                     opcode = opcode,
+                    iclass = iclass,
                     ops = ops.ToArray(),
                     condition = cc,
                     SetFlags = updateFlags,
@@ -121,9 +123,10 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private AArch32Instruction DecodeFormat(uint wInstr, Opcode opcode, string format)
+        private AArch32Instruction DecodeFormat(uint wInstr, Opcode opcode, InstrClass iclass, string format)
         {
             this.state.opcode = opcode;
+            this.state.iclass = iclass;
             for (int i = 0; i < format.Length; ++i)
             {
                 int offset;
@@ -429,6 +432,7 @@ namespace Reko.Arch.Arm.AArch32
             return new T32Instruction
             {
                 opcode = state.opcode,
+                iclass = state.iclass,
                 condition = state.cc,
                 SetFlags = state.updateFlags,
                 ops = state.ops.ToArray(),
@@ -1252,12 +1256,17 @@ namespace Reko.Arch.Arm.AArch32
         // Factory methods
         private static InstrDecoder Instr(Opcode opcode, string format)
         {
-            return new InstrDecoder(opcode, format);
+            return new InstrDecoder(opcode, InstrClass.Linear, format);
+        }
+
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, string format)
+        {
+            return new InstrDecoder(opcode, iclass, format);
         }
 
         private static InstrDecoder2 Instr(Opcode opcode, params Mutator[] mutators)
         {
-            return new InstrDecoder2(opcode, mutators);
+            return new InstrDecoder2(opcode, InstrClass.Linear, mutators);
         }
 
         private static MaskDecoder Mask(int shift, uint mask, params Decoder [] decoders)
@@ -1387,7 +1396,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.b, "c8p+0:8"),
                 Instr(Opcode.b, "c8p+0:8"),
                 Instr(Opcode.udf, "i0:8"),
-                Instr(Opcode.svc, "i0:8"));
+                Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, "i0:8"));
 
             return Mask(13, 0x07,
                 decAlu,

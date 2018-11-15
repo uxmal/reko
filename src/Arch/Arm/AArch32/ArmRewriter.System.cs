@@ -73,7 +73,6 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteEret()
         {
-            rtlClass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 
@@ -171,7 +170,6 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteSvc()
         {
-            this.rtlClass = InstrClass.Transfer | InstrClass.Call;
             var intrinsic = host.PseudoProcedure("__syscall", VoidType.Instance, Operand(Dst()));
             m.SideEffect(intrinsic);
         }
