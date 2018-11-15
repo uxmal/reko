@@ -52,7 +52,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Verbose };
+        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Warning };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private RtlBlock rtlBlock;
@@ -720,18 +720,6 @@ namespace Reko.Scanning
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
 
-                //var seFound = TryFoundAllConditions(binExp, domLeft, this.assignLhs, ctx);
-                //if (seFound != null)
-                //    return seFound;
-                //foreach (var live in this.Live)
-                //{
-                //    if (live.Value.Type != ContextType.Jumptable)
-                //        continue;
-                //    seFound = TryFoundAllConditions(binExp, domLeft, live.Key, live.Value);
-                //    if (seFound != null)
-                //        return seFound;
-                //}
-
                 if (Live.Count > 0)
                 {
                     foreach (var live in Live)
@@ -795,45 +783,12 @@ namespace Reko.Scanning
             return se;
         }
 
-        /// <summary>
-        /// If all necessary conditions for a bounded indirect jump have been met, we can
-        /// set the jump table bounds and proceed.
-        /// </summary>
-        private SlicerResult TryFoundAllConditions(
-            BinaryExpression subtraction, 
-            StorageDomain domLeft, 
-            Expression indexCandidate, 
-            BackwardSlicerContext ctx)
-        {
-            if (domLeft == StorageDomain.Memory)
-            {
-                if (!this.slicer.AreEqual(indexCandidate, subtraction.Left))
-                    return null;
-            }
-            //else
-            //{
-            //    if (this.assignLhs.DataType.BitSize != subtraction.Left.DataType.BitSize ||
-            //        ctx.Type == ContextType.Condition)
-            //        return null;
-            //}
-            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-            this.JumpTableIndex = indexCandidate;
-            this.JumpTableIndexToUse = subtraction.Left;
-            this.JumpTableIndexInterval = MakeInterval_ISub(indexCandidate, subtraction.Right as Constant);
-            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}:{1}: {2}", indexCandidate, ctx, JumpTableIndexInterval);
-            return new SlicerResult
-            {
-                SrcExpr = subtraction,
-                Stop = true
-            };
-        }
-
         public SlicerResult VisitBranch(RtlBranch branch)
         {
             var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
             var addrTarget = branch.Target as Address;
             if (addrTarget == null)
-                throw new NotImplementedException();    //#REVIEW: do we ever see this?
+                throw new NotImplementedException();    //$REVIEW: do we ever see this?
             if (this.addrSucc != addrTarget)
             {
                 this.invertCondition = true;
@@ -1127,7 +1082,7 @@ namespace Reko.Scanning
 
         public int CompareTo(BitRange that)
         {
-            return (this.end - this.end) - (that.end - that.begin);
+            return (this.end - this.begin) - (that.end - that.begin);
         }
 
         public override bool Equals(object obj)
