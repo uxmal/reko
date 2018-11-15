@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -130,7 +130,20 @@ namespace Reko.Scanning
             {
                 return null;
             }
-            else
+            else if (interval.High == Int64.MaxValue)
+            {
+                // We have no reasonable upper bound. We make the arbitrary
+                // assumption that the jump table has 2 items; it wouldn't 
+                // make sense to be indexing otherwise.
+                listener.Warn(
+                    listener.CreateAddressNavigator(host.Program, addrSwitch),
+                    "Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.");
+                var vs = new IntervalValueSet(
+                    this.JumpTableIndex.DataType,
+                    StridedInterval.Create(1, interval.Low, interval.Low + 1));
+                ctx.Add(this.JumpTableIndexToUse, vs);
+            }
+            else 
             {
                 ctx.Add(this.JumpTableIndex, new IntervalValueSet(this.JumpTableIndex.DataType, interval));
             }
@@ -258,7 +271,7 @@ namespace Reko.Scanning
             }
             else
             {
-                return false;
+                return worklist.Count > 0;
             }
         }
 
@@ -381,11 +394,12 @@ namespace Reko.Scanning
 
     }
 
+    [Flags]
     public enum ContextType
     {
-        None,
-        Jumptable,
-        Condition,
+        None = 0,
+        Jumptable = 1,
+        Condition = 2,
     }
 
     public class BackwardSlicerContext : IComparable<BackwardSlicerContext>
@@ -422,6 +436,13 @@ namespace Reko.Scanning
         public int CompareTo(BackwardSlicerContext that)
         {
             return this.BitRange.CompareTo(that.BitRange);
+        }
+
+        public BackwardSlicerContext Merge(BackwardSlicerContext that)
+        {
+            var type = this.Type | that.Type;
+            var range = this.BitRange | that.BitRange;
+            return new BackwardSlicerContext(type, range);
         }
 
         public override string ToString()
@@ -490,7 +511,7 @@ namespace Reko.Scanning
             }
 
             this.Live = sr.LiveExprs;
-            if (sr.LiveExprs.Count == 0)
+            if (!sr.LiveExprs.Keys.OfType<Identifier>().Any())
             {
                 // Couldn't find any indirect registers, so there is no work to do.
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceWarning, "  No indirect registers?");
@@ -513,7 +534,14 @@ namespace Reko.Scanning
             }
             foreach (var de in sr.LiveExprs)
             {
-                this.Live[de.Key] = de.Value;
+                if (this.Live.ContainsKey(de.Key))
+                {
+                    this.Live[de.Key] = this.Live[de.Key].Merge(de.Value);
+                }
+                else
+                {
+                    this.Live[de.Key] = de.Value;
+                }
             }
             if (sr.Stop)
             {
@@ -624,22 +652,25 @@ namespace Reko.Scanning
                 return null;
             }
             this.assignLhs = ass.Dst;
-            var deadRegs = Live.Where(de => de.Key is Identifier i && i.Storage.Domain == id.Storage.Domain).ToList();
-            if (deadRegs.Count == 0)
+            var killedRegs = Live.Where(de => de.Key is Identifier i && i.Storage.Domain == id.Storage.Domain).ToList();
+            if (killedRegs.Count == 0)
             {
                 // This assignment doesn't affect the end result.
                 return null;
             }
-            foreach (var deadReg in deadRegs)
+            foreach (var killedReg in killedRegs)
             {
-                Live.Remove(deadReg.Key);
+                this.Live.Remove(killedReg.Key);
             }
-            this.assignLhs = deadRegs[0].Key;
-            var se = ass.Src.Accept(this, deadRegs[0].Value);
+            this.assignLhs = killedRegs[0].Key;
+            var se = ass.Src.Accept(this, killedRegs[0].Value);
             if (se == null)
                 return se;
-            var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
-            this.JumpTableFormat = slicer.Simplify(newJt);
+            if (se.SrcExpr != null)
+            {
+                var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
+                this.JumpTableFormat = slicer.Simplify(newJt);
+            }
             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
             this.assignLhs = null;
             return se;
@@ -685,28 +716,47 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if (binExp.Operator == Operator.ISub && Live != null && ctx.Type == ContextType.Condition)
+            if (binExp.Operator == Operator.ISub && this.Live != null && (ctx.Type & ContextType.Condition) != 0)
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
-                foreach (var live in Live)
+
+                if (Live.Count > 0)
                 {
-                    if (live.Value.Type != ContextType.Jumptable)
-                        continue;
-                    if ((domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
-                        ||
-                        (this.slicer.AreEqual(live.Key, binExp.Left)))
+                    foreach (var live in Live)
                     {
-                        //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-                        this.JumpTableIndex = live.Key;
-                        this.JumpTableIndexToUse = binExp.Left;
-                        this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
-                        DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
-                        return new SlicerResult
+                        if (live.Value.Type != ContextType.Jumptable)
+                            continue;
+                        if ((domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
+                            ||
+                            (this.slicer.AreEqual(live.Key, binExp.Left)))
                         {
-                            SrcExpr = binExp,
-                            Stop = true
-                        };
+                            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+                            this.JumpTableIndex = live.Key;
+                            this.JumpTableIndexToUse = binExp.Left;
+                            this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
+                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
+                            return new SlicerResult
+                            {
+                                SrcExpr = binExp,
+                                Stop = true
+                            };
+                        }
                     }
+                }
+                else
+                {
+                    // We have no live variables, which means this subtraction instruction
+                    // is both computing the jumptable index and also performing the 
+                    // comparison.
+                    this.JumpTableIndex = assignLhs;
+                    this.JumpTableIndexToUse = assignLhs;
+                    this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs, binExp.Right as Constant);
+                    DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", assignLhs, JumpTableIndexInterval);
+                    return new SlicerResult
+                    {
+                        SrcExpr = null,     // the jump table expression already has the correct shape.
+                        Stop = true
+                    };
                 }
             }
             else if (binExp.Operator == Operator.And)
@@ -738,7 +788,7 @@ namespace Reko.Scanning
             var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
             var addrTarget = branch.Target as Address;
             if (addrTarget == null)
-                throw new NotImplementedException();    //#REVIEW: do we ever see this?
+                throw new NotImplementedException();    //$REVIEW: do we ever see this?
             if (this.addrSucc != addrTarget)
             {
                 this.invertCondition = true;
@@ -871,7 +921,7 @@ namespace Reko.Scanning
             return new SlicerResult
             {
                 LiveExprs = srEa.LiveExprs,
-                SrcExpr = new MemoryAccess(srEa.SrcExpr, access.DataType),
+                SrcExpr = srEa.SrcExpr != null ? new MemoryAccess(srEa.SrcExpr, access.DataType) : null,
                 Stop = srEa.Stop
             };
         }
@@ -989,6 +1039,8 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void DumpBlock(bool dump)
         {
+            if (!BackwardSlicer.trace.TraceVerbose)
+                return;
             var sw = new StringWriter();
             foreach (var i in instrs)
             {
@@ -1030,7 +1082,7 @@ namespace Reko.Scanning
 
         public int CompareTo(BitRange that)
         {
-            return (this.end - this.end) - (that.end - that.begin);
+            return (this.end - this.begin) - (that.end - that.begin);
         }
 
         public override bool Equals(object obj)
@@ -1056,7 +1108,13 @@ namespace Reko.Scanning
         public static bool operator !=(BitRange a, BitRange b)
         {
             return a.begin != b.begin || a.end != b.end;
-                
+        }
+
+        public static BitRange operator | (BitRange a, BitRange b)
+        {
+            return new BitRange(
+                Math.Min(a.begin, b.begin),
+                Math.Max(a.end, b.end));
         }
 
         public override string ToString()
