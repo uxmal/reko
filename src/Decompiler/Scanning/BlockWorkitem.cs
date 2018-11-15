@@ -996,8 +996,6 @@ namespace Reko.Scanning
             out ImageMapVectorTable imgVector,
             out Expression switchExp)
         {
-            if (addrSwitch.ToLinear() == 0x000A8B0) //$DEBUG
-                addrSwitch.ToString();
             Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
             var listener = scanner.Services.RequireService<DecompilerEventListener>();
             vector = null;
