@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -138,11 +138,10 @@ namespace Reko.Scanning
                 listener.Warn(
                     listener.CreateAddressNavigator(host.Program, addrSwitch),
                     "Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.");
-                ctx.Add(
-                    this.JumpTableIndex,
-                    new IntervalValueSet(
-                        this.JumpTableIndex.DataType, 
-                        StridedInterval.Create(1, interval.Low, interval.Low + 1)));
+                var vs = new IntervalValueSet(
+                    this.JumpTableIndex.DataType,
+                    StridedInterval.Create(1, interval.Low, interval.Low + 1));
+                ctx.Add(this.JumpTableIndexToUse, vs);
             }
             else 
             {
@@ -483,7 +482,7 @@ namespace Reko.Scanning
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray();
             this.iInstr = iInstr;
-            // DumpBlock(BackwardSlicer.trace.TraceVerbose);
+            DumpBlock(BackwardSlicer.trace.TraceVerbose);
         }
 
         // The RTL expression in the executable that computes the destination addresses.
@@ -653,22 +652,27 @@ namespace Reko.Scanning
                 return null;
             }
             this.assignLhs = ass.Dst;
-            var deadRegs = Live.Where(de => de.Key is Identifier i && i.Storage.Domain == id.Storage.Domain).ToList();
-            if (deadRegs.Count == 0)
+            var killedRegs = Live.Where(de => de.Key is Identifier i && i.Storage.Domain == id.Storage.Domain).ToList();
+            if (ass.ToString().Contains("0020"))
+                ass.ToString(); //$DEBUG
+            if (killedRegs.Count == 0)
             {
                 // This assignment doesn't affect the end result.
                 return null;
             }
-            foreach (var killedReg in deadRegs)
+            foreach (var killedReg in killedRegs)
             {
-                Live.Remove(killedReg.Key);
+                this.Live.Remove(killedReg.Key);
             }
-            this.assignLhs = deadRegs[0].Key;
-            var se = ass.Src.Accept(this, deadRegs[0].Value);
+            this.assignLhs = killedRegs[0].Key;
+            var se = ass.Src.Accept(this, killedRegs[0].Value);
             if (se == null)
                 return se;
-            var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
-            this.JumpTableFormat = slicer.Simplify(newJt);
+            if (se.SrcExpr != null)
+            {
+                var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
+                this.JumpTableFormat = slicer.Simplify(newJt);
+            }
             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
             this.assignLhs = null;
             return se;
@@ -714,19 +718,59 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if (binExp.Operator == Operator.ISub && Live != null && (ctx.Type & ContextType.Condition) != 0)
+            if (binExp.Operator == Operator.ISub && this.Live != null && (ctx.Type & ContextType.Condition) != 0)
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
-                var seFound = TryFoundAllConditions(binExp, domLeft, this.assignLhs, ctx);
-                if (seFound != null)
-                    return seFound;
-                foreach (var live in Live)
+
+                //var seFound = TryFoundAllConditions(binExp, domLeft, this.assignLhs, ctx);
+                //if (seFound != null)
+                //    return seFound;
+                //foreach (var live in this.Live)
+                //{
+                //    if (live.Value.Type != ContextType.Jumptable)
+                //        continue;
+                //    seFound = TryFoundAllConditions(binExp, domLeft, live.Key, live.Value);
+                //    if (seFound != null)
+                //        return seFound;
+                //}
+
+                if (Live.Count > 0)
                 {
-                    if (live.Value.Type != ContextType.Jumptable)
-                        continue;
-                    seFound = TryFoundAllConditions(binExp, domLeft, live.Key, live.Value);
-                    if (seFound != null)
-                        return seFound;
+                    foreach (var live in Live)
+                    {
+                        if (live.Value.Type != ContextType.Jumptable)
+                            continue;
+                        if ((domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
+                            ||
+                            (this.slicer.AreEqual(live.Key, binExp.Left)))
+                        {
+                            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+                            this.JumpTableIndex = live.Key;
+                            this.JumpTableIndexToUse = binExp.Left;
+                            this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
+                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
+                            return new SlicerResult
+                            {
+                                SrcExpr = binExp,
+                                Stop = true
+                            };
+                        }
+                    }
+                }
+                else
+                {
+                    // We have no live variables, which means this subtraction instruction
+                    // is both computing the jumptable index and also performing the 
+                    // comparison.
+                    this.JumpTableIndex = assignLhs;
+                    this.JumpTableIndexToUse = assignLhs;
+                    this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs, binExp.Right as Constant);
+                    DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", assignLhs, JumpTableIndexInterval);
+                    return new SlicerResult
+                    {
+                        SrcExpr = null,     // the jump table expression already has the correct shape.
+                        Stop = true
+                    };
                 }
             }
             else if (binExp.Operator == Operator.And)
@@ -763,22 +807,27 @@ namespace Reko.Scanning
             Expression indexCandidate, 
             BackwardSlicerContext ctx)
         {
-            if ((domLeft != StorageDomain.Memory)
-                ||
-                (this.slicer.AreEqual(indexCandidate, subtraction.Left)))
+            if (domLeft == StorageDomain.Memory)
             {
-                //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-                this.JumpTableIndex = indexCandidate;
-                this.JumpTableIndexToUse = subtraction.Left;
-                this.JumpTableIndexInterval = MakeInterval_ISub(indexCandidate, subtraction.Right as Constant);
-                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}:{1}: {2}", indexCandidate, ctx, JumpTableIndexInterval);
-                return new SlicerResult
-                {
-                    SrcExpr = subtraction,
-                    Stop = true
-                };
+                if (!this.slicer.AreEqual(indexCandidate, subtraction.Left))
+                    return null;
             }
-            return null;
+            //else
+            //{
+            //    if (this.assignLhs.DataType.BitSize != subtraction.Left.DataType.BitSize ||
+            //        ctx.Type == ContextType.Condition)
+            //        return null;
+            //}
+            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+            this.JumpTableIndex = indexCandidate;
+            this.JumpTableIndexToUse = subtraction.Left;
+            this.JumpTableIndexInterval = MakeInterval_ISub(indexCandidate, subtraction.Right as Constant);
+            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}:{1}: {2}", indexCandidate, ctx, JumpTableIndexInterval);
+            return new SlicerResult
+            {
+                SrcExpr = subtraction,
+                Stop = true
+            };
         }
 
         public SlicerResult VisitBranch(RtlBranch branch)
@@ -1037,6 +1086,8 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void DumpBlock(bool dump)
         {
+            if (!BackwardSlicer.trace.TraceVerbose)
+                return;
             var sw = new StringWriter();
             foreach (var i in instrs)
             {

@@ -623,7 +623,6 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        [Ignore("Unit test for #691 needs implementing.")]
         public void Bwslc_Issue_691()
         {
             arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
@@ -639,7 +638,7 @@ namespace Reko.UnitTests.Scanning
                 m.Assign(v3, m.ISub(m.Cast(PrimitiveType.Word16, d0), m.Word16(0x20)));
                 m.Assign(d0, m.Dpb(d0, v3, 0));
                 m.Assign(CVZN, m.Cond(v3));
-                m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), RtlClass.ConditionalTransfer);
+                m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), InstrClass.ConditionalTransfer);
             });
 
             var bRet = Given_Block(0xA870);
@@ -670,11 +669,10 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual(1, bwslc.Live.Count);
-            Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) ((word32) d0 * 0x00000002) + 0x0010EC32:word16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("(byte) d0", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
-            Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("(int32) (int16) (word16) ((word16) (v3 * 0x00000002) * 0x00000002) + 0x0000A8B4", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
         }
 
         // Test cases
