@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,11 +114,13 @@ namespace Reko.Core
 
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
-            ImageMapItem item;
-            if (!TryFindItem(addr, out item))
+            if (!TryFindItem(addr, out var item))
             {
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
             }
+            // Do not split items with known data.
+            if (!(item.DataType is UnknownType || item.DataType is CodeType))
+                return;
             long delta = addr - item.Address;
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
             if (delta > 0)
