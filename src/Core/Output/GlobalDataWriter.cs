@@ -201,8 +201,40 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPrimitive(PrimitiveType pt)
         {
-            rdr.Read(pt).Accept(codeFormatter);
+            if (pt.Size > 8)
+            {
+                var bytes = rdr.ReadBytes(pt.Size);
+                FormatRawBytes(bytes);
+            }
+            else
+            {
+                rdr.Read(pt).Accept(codeFormatter);
+            }
             return codeFormatter;
+        }
+
+        private void FormatRawBytes(byte[] bytes)
+        {
+            var fmt = codeFormatter.InnerFormatter;
+            fmt.Terminate();
+            fmt.Indent();
+            fmt.Write("{");
+            fmt.Terminate();
+            fmt.Indentation += fmt.TabSize;
+
+            var structOffset = rdr.Offset;
+            for (int i = 0; i < bytes.Length;)
+            {
+                fmt.Indent();
+                for (int j = 0; i < bytes.Length && j < 16; ++j, ++i)
+                {
+                    fmt.Write("0x{0:X2}, ", bytes[i]);
+                }
+                fmt.Terminate("");
+            }
+            fmt.Indentation -= fmt.TabSize;
+            fmt.Indent();
+            fmt.Write("}");
         }
 
         public CodeFormatter VisitMemberPointer(MemberPointer memptr)
