@@ -157,7 +157,7 @@ namespace Reko.Core.Types
             {
                 dom = Domain.Integer | Domain.Pointer;
             }
-			return Create(dom, (short) bitSize, name);
+			return Create(dom, bitSize, name);
 		}
 
         public static PrimitiveType CreateWord(uint bitSize)
