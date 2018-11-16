@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -858,6 +858,7 @@ Constants: cl:0x00
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void TrfWideThenNarrow()
         {
             var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
@@ -875,5 +876,39 @@ Constants: cl:0x00
             });
             RunTest();
         }
+
+        [Test(Description = "Tests that loops with phi nodes terminate.")]
+        [Category(Categories.UnitTests)]
+        public void TrfLoop()
+        {
+            Expect(
+                "recursive",
+                "Preserved: ",
+                "Trashed: r1",
+                "Constants: r1:0x00000002");
+            builder.Add("recursive", m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 1);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(r1, m.Frame.FramePointer);
+
+                m.Assign(r2, m.Mem32(m.IAdd(r1, 4)));
+                m.Goto("m2_loop_head");
+
+                m.Label("m1_loop_body");
+                m.MStore(m.Word32(0x00123400), m.IAdd(m.Mem32(m.Word32(0x00123400)), r2));
+                m.Assign(r2, m.IAdd(r2, 1));
+
+                m.Label("m2_loop_head");
+                m.BranchIf(m.Lt(r2, 0x1000), "m1_loop_body");
+
+                m.Label("m3_exit");
+                m.Return();
+            });
+            RunTest();
+        }
+
+
     }
 }
