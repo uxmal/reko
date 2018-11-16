@@ -679,8 +679,8 @@ namespace Reko.ImageLoaders.Elf
             while (bytes[u] != 0)
             {
                 ++u;
-        }
-            return Encoding.ASCII.GetString(bytes, (int)fileOffset, u - (int)fileOffset);
+            }
+            return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
 
@@ -1604,9 +1604,10 @@ namespace Reko.ImageLoaders.Elf
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
+                var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
                 DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
-                    RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
                     (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionName(sym.st_shndx),
