@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -253,16 +253,9 @@ namespace Reko.Analysis
 
         private void ProcessBlock(Block block)
         {
-            trace.Level = (block.Procedure.EntryAddress.ToLinear() == 0x00000000000175BC)
-                ? TraceLevel.Verbose
-                : TraceLevel.Off;   //$DEBUG
-            trace.Level = TraceLevel.Verbose;
-
             this.ctx = blockCtx[block];
             this.eval = new ExpressionSimplifier(segmentMap, ctx, listener);
-
             this.block = block;
-
             this.ctx.IsDirty = false;
             foreach (var stm in block.Statements)
             {
@@ -581,7 +574,6 @@ namespace Reko.Analysis
                     }
                     return true;
                 }
-                break;
             case FpuStackStorage fpuStg:
                 {
                     var value = ctx.GetValue(id);
