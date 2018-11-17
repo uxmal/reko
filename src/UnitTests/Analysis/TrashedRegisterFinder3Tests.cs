@@ -884,8 +884,8 @@ Constants: cl:0x00
             Expect(
                 "recursive",
                 "Preserved: ",
-                "Trashed: r1",
-                "Constants: r1:0x00000002");
+                "Trashed: r1,r2,r3,r63",
+                "");
             builder.Add("recursive", m =>
             {
                 var r1 = m.Reg32("r1", 1);

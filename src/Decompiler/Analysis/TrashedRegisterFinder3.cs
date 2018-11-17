@@ -793,11 +793,11 @@ namespace Reko.Analysis
                         IsDirty = true;
                         IdState.Add(id, Tuple.Create(value, range));
                     }
-                    else if (!cmp.Equals(oldValue.Item1, value))
+                    else if (!cmp.Equals(oldValue.Item1, value) && oldValue.Item1 != Constant.Invalid)
                     {
                         DebugEx.PrintIf(trace.TraceVerbose, "Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
-                        IdState[id] = Tuple.Create(value, range);
+                        IdState[id] = Tuple.Create((Expression)Constant.Invalid, range);
                     }
                 }
             }
