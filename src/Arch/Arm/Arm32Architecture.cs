@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -203,12 +203,12 @@ namespace Reko.Arch.Arm
             // The Qx, Dx and Sx registers alias each other.
             if (Registers.QRegs[0].Domain <= domain && domain <= Registers.QRegs[15].Domain)
             {
-                throw new NotImplementedException("");
+                throw new NotImplementedException($"GetRegister({(int)domain}{range}");
             }
             if (Registers.r0.Domain <= domain && domain <= Registers.pc.Domain)
                 return Registers.GpRegs[domain - Registers.r0.Domain];
 
-            throw new NotImplementedException();
+            throw new NotImplementedException($"GetRegister({(int)domain}{range}");
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -232,6 +232,15 @@ namespace Reko.Arch.Arm
 #else
             return Registers.GpRegs;
 #endif
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.NF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.NF);
+            if ((grf & (uint) FlagM.ZF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.ZF);
+            if ((grf & (uint) FlagM.CF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.CF);
+            if ((grf & (uint) FlagM.VF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.VF);
         }
 
         public override int? GetOpcodeNumber(string name)
