@@ -26,6 +26,7 @@ using System;
 using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.X86
 {
@@ -239,7 +240,8 @@ namespace Reko.Arch.X86
 
         private ProcessorMode mode;
         private X86Instruction instrCur;
-		private PrimitiveType dataWidth;
+        private Address addr;
+        private PrimitiveType dataWidth;
 		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
 		private PrimitiveType defaultAddressWidth;
@@ -283,7 +285,7 @@ namespace Reko.Arch.X86
         {
             if (!rdr.IsValid)
                 return null;
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             dataWidth = defaultDataWidth;
             addressWidth = defaultAddressWidth;
 
@@ -312,6 +314,33 @@ namespace Reko.Arch.X86
         private X86Instruction Illegal()
         {
             return new X86Instruction(Opcode.illegal, InstrClass.Invalid, dataWidth, addressWidth);
+        }
+
+        private static HashSet<string> seen = new HashSet<string>();
+
+        private X86Instruction NotYetImplemented(string message, uint wInstr)
+        {
+#if DEBUG
+            // collect bytes from rdr.addr to this.addr 
+            var r2 = rdr.Clone();
+            int len = (int) (r2.Address - this.addr);
+            r2.Offset -= len;
+            var bytes = r2.ReadBytes(len);
+            var strBytes = string.Join("", bytes.Select(b => b.ToString("X2")));
+            if (!seen.Contains(strBytes))
+            {
+                seen.Add(strBytes);
+                Console.WriteLine($"// An x86 decoder for the instruction {strBytes} ({message}) has not been implemented yet.");
+                Console.WriteLine("[Test]");
+                Console.WriteLine($"public void X86dis_{strBytes}()");
+                Console.WriteLine("{");
+                Console.WriteLine("    AssertCode32(\"@@@\", {0}\");",
+                    string.Join(", ", bytes.Select(b => $"0x{b:X2}")));
+                Console.WriteLine("}");
+                Console.WriteLine();
+            }
+#endif
+            return Illegal();
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
@@ -699,7 +728,25 @@ namespace Reko.Arch.X86
             }
         }
         }
-        
+
+        public class NyiDecoder : OpRec
+        {
+            private string message;
+
+            public NyiDecoder(string message)
+            {
+                this.message = message;
+            }
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                return disasm.NotYetImplemented(message, 0);
+            }
+        }
+        public static NyiDecoder nyi(string message)
+        {
+            return new NyiDecoder(message);
+        }
+
         public class FpuOpRec : OpRec
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -928,7 +975,7 @@ namespace Reko.Arch.X86
                 {
                     return opc != Opcode.illegal
                         ? new SingleByteOpRec(opc, iclass, format)
-                        : s_invalid;
+                        : s_nyi;
                 }
 
                 this.op = MakeDecoder(op, opFmt);
@@ -936,7 +983,7 @@ namespace Reko.Arch.X86
                 this.op66 = MakeDecoder(op66, op66Fmt);
                 this.op66Wide = MakeDecoder(op66Wide, op66Fmt);
                 this.opF3 = MakeDecoder(opF3, opF3Fmt);
-                this.opF2 = s_invalid;
+                this.opF2 = s_nyi;
             }
 
             public PrefixedOpRec(
@@ -947,12 +994,12 @@ namespace Reko.Arch.X86
                 OpRec decF3 = null,
                 OpRec decF2 = null)
             {
-                this.op = dec ?? s_invalid;
-                this.opWide = decWide ?? s_invalid;
-                this.op66 = dec66 ?? s_invalid;
-                this.op66Wide = dec66Wide ?? s_invalid;
-                this.opF3 = decF3 ?? s_invalid;
-                this.opF2 = decF2 ?? s_invalid;
+                this.op = dec ?? s_nyi;
+                this.opWide = decWide ?? s_nyi;
+                this.op66 = dec66 ?? s_nyi;
+                this.op66Wide = dec66Wide ?? s_nyi;
+                this.opF3 = decF3 ?? s_nyi;
+                this.opF2 = decF2 ?? s_nyi;
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -1513,6 +1560,7 @@ namespace Reko.Arch.X86
 		}
 
         private static OpRec s_invalid;
+        private static OpRec s_nyi;
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
 		private static OpRec [] s_aOpRec0F38;
@@ -1524,6 +1572,7 @@ namespace Reko.Arch.X86
         static X86Disassembler()
 		{
             s_invalid = new SingleByteOpRec(Opcode.illegal, InstrClass.Invalid, "");
+            s_nyi = nyi("This could be invalid or it could be not yet implemented");
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
             s_aOpRec0F38 = Create0F38Oprecs();
