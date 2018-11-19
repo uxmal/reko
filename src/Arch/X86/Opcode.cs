@@ -462,7 +462,9 @@ namespace Reko.Arch.X86
         vmovapd,
         vmovaps,
         vmovntq,
-        vmovsd,
+		vmovlps,
+		vmovlpd,
+		vmovsd,
         vmovss,
         vmread,
         vmwrite,
@@ -537,5 +539,9 @@ namespace Reko.Arch.X86
         // pseudo-instructions.
         BOR_exp,
         BOR_ln,
-    }
+		vaddsubpd,
+		vaddsubps,
+		addsubpd,
+		addsubps,
+	}
 }

@@ -34,8 +34,8 @@ namespace Reko.Arch.X86
             return new OpRec[]
             {
 				// 00
-				s_nyi,
-                new GroupOpRec(7, ""),
+				new GroupOpRec(6, ""),
+				new GroupOpRec(7, ""),
                 new SingleByteOpRec(Opcode.lar, InstrClass.System, "Gv,Ew"),
                 new SingleByteOpRec(Opcode.lsl, InstrClass.System, "Gv,Ew"),
                 s_nyi,
@@ -72,7 +72,9 @@ namespace Reko.Arch.X86
                     Opcode.movlpd,   "Vq,Hq,Mq",
                     Opcode.movsldup, "Vx,Wx",
                     Opcode.movddup,  "Vx,Wx"),
-                s_nyi,
+                new PrefixedOpRec(
+					Opcode.vmovlps, "Mq,Vq",
+					Opcode.vmovlpd, "Mq,Vq"),
                 new PrefixedOpRec(
                     Opcode.unpcklps, "Vx,Hx,Wx",
                     Opcode.unpcklpd, "Vx,Hx,Wx"),
@@ -427,7 +429,11 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.bswap, "rv"),
 
 				// 0F D0
-				s_nyi,
+				new PrefixedOpRec(
+					Opcode.illegal, "",
+					Opcode.addsubpd, "Vpd,Hpd,Wpd",
+					Opcode.illegal, "",
+					Opcode.addsubps, "Vps,Hps,Wps"),
 				new PrefixedOpRec(
                     Opcode.psrlw, "Pq,Qq",
                     Opcode.vpsrlw, "Vx,Hx,Wx"),

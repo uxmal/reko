@@ -802,7 +802,7 @@ namespace Reko.Arch.X86
             {
                 if (!disasm.rdr.TryReadByte(out op))
                     return null;
-                var r = (~op >> 2) & 4;
+                var r = (~op >> 5) & 4;
                 var vvvv = (~op >> 3) & 0xF;
                 var pp = op & 3;
                 var ctx = disasm.currentDecodingContext;

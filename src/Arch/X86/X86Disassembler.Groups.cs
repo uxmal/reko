@@ -85,7 +85,15 @@ namespace Reko.Arch.X86
                 s_nyi,
 
 				// group 6
-				new SingleByteOpRec(Opcode.sldt, "Ew"),
+				new Group7OpRec(
+					new SingleByteOpRec(Opcode.sldt, "Ew"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv")),
 				new SingleByteOpRec(Opcode.str, "Ew"),
 				new SingleByteOpRec(Opcode.lldt, "Ew"),
 				new SingleByteOpRec(Opcode.ltr, "Ew"),
