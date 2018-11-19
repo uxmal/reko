@@ -24,43 +24,43 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static OpRec [] CreateGroupOprecs()
+        private static Decoder [] CreateGroupOprecs()
         {
-            return new OpRec[] 
+            return new Decoder[] 
 			{
 				// group 1
-				new SingleByteOpRec(Opcode.add),
-				new SingleByteOpRec(Opcode.or),
-				new SingleByteOpRec(Opcode.adc),
-				new SingleByteOpRec(Opcode.sbb),
-				new SingleByteOpRec(Opcode.and),
-				new SingleByteOpRec(Opcode.sub),
-				new SingleByteOpRec(Opcode.xor),
-				new SingleByteOpRec(Opcode.cmp),
+				new InstructionDecoder(Opcode.add),
+				new InstructionDecoder(Opcode.or),
+				new InstructionDecoder(Opcode.adc),
+				new InstructionDecoder(Opcode.sbb),
+				new InstructionDecoder(Opcode.and),
+				new InstructionDecoder(Opcode.sub),
+				new InstructionDecoder(Opcode.xor),
+				new InstructionDecoder(Opcode.cmp),
 
 				// group 2
-				new SingleByteOpRec(Opcode.rol),
-				new SingleByteOpRec(Opcode.ror),
-				new SingleByteOpRec(Opcode.rcl),
-				new SingleByteOpRec(Opcode.rcr),
-				new SingleByteOpRec(Opcode.shl),
-				new SingleByteOpRec(Opcode.shr),
-				new SingleByteOpRec(Opcode.shl),
-				new SingleByteOpRec(Opcode.sar),
+				new InstructionDecoder(Opcode.rol),
+				new InstructionDecoder(Opcode.ror),
+				new InstructionDecoder(Opcode.rcl),
+				new InstructionDecoder(Opcode.rcr),
+				new InstructionDecoder(Opcode.shl),
+				new InstructionDecoder(Opcode.shr),
+				new InstructionDecoder(Opcode.shl),
+				new InstructionDecoder(Opcode.sar),
 
 				// group 3
-				new SingleByteOpRec(Opcode.test, ",Ix"),
-				new SingleByteOpRec(Opcode.test, ",Ix"),
-				new SingleByteOpRec(Opcode.not),
-				new SingleByteOpRec(Opcode.neg),
-				new SingleByteOpRec(Opcode.mul),
-				new SingleByteOpRec(Opcode.imul),
-				new SingleByteOpRec(Opcode.div),
-				new SingleByteOpRec(Opcode.idiv),
+				new InstructionDecoder(Opcode.test, ",Ix"),
+				new InstructionDecoder(Opcode.test, ",Ix"),
+				new InstructionDecoder(Opcode.not),
+				new InstructionDecoder(Opcode.neg),
+				new InstructionDecoder(Opcode.mul),
+				new InstructionDecoder(Opcode.imul),
+				new InstructionDecoder(Opcode.div),
+				new InstructionDecoder(Opcode.idiv),
 				
 				// group 4
-				new SingleByteOpRec(Opcode.inc, "Eb"),
-				new SingleByteOpRec(Opcode.dec, "Eb"),
+				new InstructionDecoder(Opcode.inc, "Eb"),
+				new InstructionDecoder(Opcode.dec, "Eb"),
 				s_nyi,
 				s_nyi,
 				s_nyi,
@@ -69,53 +69,53 @@ namespace Reko.Arch.X86
 				s_nyi, 
 
 				// group 5
-				new SingleByteOpRec(Opcode.inc, "Ev"),
-				new SingleByteOpRec(Opcode.dec, "Ev"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ev"),
-                    new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Eq")),
-                new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ep"),
-                new Alternative64OpRec(
-				    new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Ev"),
-				    new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Eq")),
-				new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Ep"),
-                new Alternative64OpRec(
-				    new SingleByteOpRec(Opcode.push, "Ev"),
-				    new SingleByteOpRec(Opcode.push, "Eq")),
+				new InstructionDecoder(Opcode.inc, "Ev"),
+				new InstructionDecoder(Opcode.dec, "Ev"),
+				new Alternative64Decoder(
+                    new InstructionDecoder(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ev"),
+                    new InstructionDecoder(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Eq")),
+                new InstructionDecoder(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ep"),
+                new Alternative64Decoder(
+				    new InstructionDecoder(Opcode.jmp, InstrClass.Transfer, "Ev"),
+				    new InstructionDecoder(Opcode.jmp, InstrClass.Transfer, "Eq")),
+				new InstructionDecoder(Opcode.jmp, InstrClass.Transfer, "Ep"),
+                new Alternative64Decoder(
+				    new InstructionDecoder(Opcode.push, "Ev"),
+				    new InstructionDecoder(Opcode.push, "Eq")),
                 s_nyi,
 
 				// group 6
-				new Group7OpRec(
-					new SingleByteOpRec(Opcode.sldt, "Ew"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv")),
-				new SingleByteOpRec(Opcode.str, "Ew"),
-				new SingleByteOpRec(Opcode.lldt, "Ew"),
-				new SingleByteOpRec(Opcode.ltr, "Ew"),
-				new SingleByteOpRec(Opcode.verr, "Ew"),
-				new SingleByteOpRec(Opcode.verw, "Ew"),
+				new Group7Decoder(
+					new InstructionDecoder(Opcode.sldt, "Ew"),
+					new InstructionDecoder(Opcode.sldt, "Rv"),
+					new InstructionDecoder(Opcode.sldt, "Rv"),
+					new InstructionDecoder(Opcode.sldt, "Rv"),
+					new InstructionDecoder(Opcode.sldt, "Rv"),
+					new InstructionDecoder(Opcode.sldt, "Rv"),
+					new InstructionDecoder(Opcode.sldt, "Rv"),
+					new InstructionDecoder(Opcode.sldt, "Rv")),
+				new InstructionDecoder(Opcode.str, "Ew"),
+				new InstructionDecoder(Opcode.lldt, "Ew"),
+				new InstructionDecoder(Opcode.ltr, "Ew"),
+				new InstructionDecoder(Opcode.verr, "Ew"),
+				new InstructionDecoder(Opcode.verw, "Ew"),
 				s_nyi,
 				s_nyi,
 
 				// group 7
 				s_nyi,
 				s_nyi,
-				new Group7OpRec(
+				new Group7Decoder(
                     s_nyi,
 
-                    new SingleByteOpRec(Opcode.xgetbv),
-                    new SingleByteOpRec(Opcode.xsetbv),
+                    new InstructionDecoder(Opcode.xgetbv),
+                    new InstructionDecoder(Opcode.xsetbv),
                     s_nyi,
                     s_nyi,
 
-                    new SingleByteOpRec(Opcode.vmfunc),
-                    new SingleByteOpRec(Opcode.xend),
-                    new SingleByteOpRec(Opcode.xtest),
+                    new InstructionDecoder(Opcode.vmfunc),
+                    new InstructionDecoder(Opcode.xend),
+                    new InstructionDecoder(Opcode.xtest),
                     s_nyi),
 				s_nyi,
 				s_nyi,
@@ -128,10 +128,10 @@ namespace Reko.Arch.X86
 				s_nyi,
 				s_nyi,
 				s_nyi,
-				new SingleByteOpRec(Opcode.bt),
-				new SingleByteOpRec(Opcode.bts),
-				new SingleByteOpRec(Opcode.btr),
-				new SingleByteOpRec(Opcode.btc),
+				new InstructionDecoder(Opcode.bt),
+				new InstructionDecoder(Opcode.bts),
+				new InstructionDecoder(Opcode.btr),
+				new InstructionDecoder(Opcode.btc),
 
 				// group 9
 				s_nyi,
@@ -194,54 +194,54 @@ namespace Reko.Arch.X86
 				s_nyi,
 
 				// group 15
-				new Group7OpRec(new SingleByteOpRec(Opcode.fxsave)),
-				new Group7OpRec(new SingleByteOpRec(Opcode.fxrstor)),
-				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
-				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
+				new Group7Decoder(new InstructionDecoder(Opcode.fxsave)),
+				new Group7Decoder(new InstructionDecoder(Opcode.fxrstor)),
+				new InstructionDecoder(Opcode.ldmxcsr, "Md"),
+				new InstructionDecoder(Opcode.stmxcsr, "Md"),
 				s_nyi,
-				new Group7OpRec(
-                    new SingleByteOpRec(Opcode.xrstor, "Md"),
+				new Group7Decoder(
+                    new InstructionDecoder(Opcode.xrstor, "Md"),
 
-                    new SingleByteOpRec(Opcode.lfence, ""),
-                    new SingleByteOpRec(Opcode.lfence, ""),
-                    new SingleByteOpRec(Opcode.lfence, ""),
-                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, ""),
 
-                    new SingleByteOpRec(Opcode.lfence, ""),
-                    new SingleByteOpRec(Opcode.lfence, ""),
-                    new SingleByteOpRec(Opcode.lfence, ""),
-                    new SingleByteOpRec(Opcode.lfence, "")),
-                new Group7OpRec(
-                    new SingleByteOpRec(Opcode.xsaveopt, "Md"),
+                    new InstructionDecoder(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, ""),
+                    new InstructionDecoder(Opcode.lfence, "")),
+                new Group7Decoder(
+                    new InstructionDecoder(Opcode.xsaveopt, "Md"),
 
-                    new SingleByteOpRec(Opcode.mfence, ""),
-                    new SingleByteOpRec(Opcode.mfence, ""),
-                    new SingleByteOpRec(Opcode.mfence, ""),
-                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, ""),
 
-                    new SingleByteOpRec(Opcode.mfence, ""),
-                    new SingleByteOpRec(Opcode.mfence, ""),
-                    new SingleByteOpRec(Opcode.mfence, ""),
-                    new SingleByteOpRec(Opcode.mfence, "")),
+                    new InstructionDecoder(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, ""),
+                    new InstructionDecoder(Opcode.mfence, "")),
 
-                new Group7OpRec(
-                    new SingleByteOpRec(Opcode.clflush, "Md"),
+                new Group7Decoder(
+                    new InstructionDecoder(Opcode.clflush, "Md"),
 
-                    new SingleByteOpRec(Opcode.sfence, ""),
-                    new SingleByteOpRec(Opcode.sfence, ""),
-                    new SingleByteOpRec(Opcode.sfence, ""),
-                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, ""),
 
-                    new SingleByteOpRec(Opcode.sfence, ""),
-                    new SingleByteOpRec(Opcode.sfence, ""),
-                    new SingleByteOpRec(Opcode.sfence, ""),
-                    new SingleByteOpRec(Opcode.sfence, "")),
+                    new InstructionDecoder(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, ""),
+                    new InstructionDecoder(Opcode.sfence, "")),
 
 				// group 16
-				new SingleByteOpRec(Opcode.prefetchnta, "Mb"),
-				new SingleByteOpRec(Opcode.prefetcht0, "Mb"),
-				new SingleByteOpRec(Opcode.prefetcht1, "Mb"),
-				new SingleByteOpRec(Opcode.prefetcht2, "Mb"),
+				new InstructionDecoder(Opcode.prefetchnta, "Mb"),
+				new InstructionDecoder(Opcode.prefetcht0, "Mb"),
+				new InstructionDecoder(Opcode.prefetcht1, "Mb"),
+				new InstructionDecoder(Opcode.prefetcht2, "Mb"),
 				s_nyi,
 				s_nyi,
 				s_nyi,

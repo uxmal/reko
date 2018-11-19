@@ -28,9 +28,9 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static OpRec[] Create0F38Oprecs()
+        private static Decoder[] Create0F38Oprecs()
         {
-            return new OpRec[] {
+            return new Decoder[] {
 
                 // 00
                 s_nyi,
@@ -90,7 +90,7 @@ namespace Reko.Arch.X86
                 s_nyi,
 
                 // 30
-                new PrefixedOpRec(
+                new PrefixedDecoder(
                     Opcode.illegal, "",
                     Opcode.vpmovsxbw, "Vx,Mq"),
                 s_nyi,
@@ -295,7 +295,7 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 s_nyi,
-                new PrefixedOpRec(
+                new PrefixedDecoder(
                     Opcode.illegal, "",
                     Opcode.aesimc, "Vdq,Wdq"),
                 s_nyi,
