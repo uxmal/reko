@@ -119,7 +119,7 @@ namespace Reko.Arch.X86
                     }
                     if (!disasm.rdr.TryReadByte(out var op2))
                         return null;
-                    return s_aOpRec[op].Decode(disasm, op2, opFormat);
+                    return s_aOpRec[op2].Decode(disasm, op2, opFormat);
                 }
                 else
                     return base.Decode(disasm, op, opFormat);
@@ -141,8 +141,9 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 disasm.currentDecodingContext.SegmentOverride = SegFromBits(seg);
-                op = disasm.rdr.ReadByte();
-                return s_aOpRec[op].Decode(disasm, op, opFormat);
+                if (!disasm.rdr.TryReadByte(out var op2))
+                    return null;
+                return s_aOpRec[op2].Decode(disasm, op2, opFormat);
             }
         }
 
@@ -281,6 +282,9 @@ namespace Reko.Arch.X86
             }
         }
 
+        /// <summary>
+        /// Decodes 2-byte VEX encoded instructions.
+        /// </summary>
         public class VexDecoder2 : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -313,6 +317,9 @@ namespace Reko.Arch.X86
             }
         }
 
+        /// <summary>
+        /// Decodes 3-byte VEX encoded instructions.
+        /// </summary>
         public class VexDecoder3 : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -359,7 +366,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class F2ByteOpRec : Decoder
+        public class F2PrefixDecoder : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -370,13 +377,15 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class F3ByteOpRec : Decoder
+        public class F3PrefixDecoder : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                byte b = disasm.rdr.PeekByte(0);
+                if (!disasm.rdr.TryPeekByte(0, out byte b))
+                    return null;
                 if (b == 0xC3)
                 {
+                    // rep ret idiom.
                     op = disasm.rdr.ReadByte();
                     return s_aOpRec[b].Decode(disasm, op, opFormat);
                 }

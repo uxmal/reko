@@ -402,8 +402,8 @@ namespace Reko.Arch.X86
 				// F0
 				new InstructionDecoder(Opcode.@lock),
 				s_invalid,
-				new F2ByteOpRec(),
-				new F3ByteOpRec(),
+				new F2PrefixDecoder(),
+				new F3PrefixDecoder(),
 				new InstructionDecoder(Opcode.hlt, InstrClass.Terminates, ""),
 				new InstructionDecoder(Opcode.cmc),
 				new GroupDecoder(3, "Eb"),
