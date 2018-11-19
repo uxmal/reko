@@ -34,8 +34,8 @@ namespace Reko.Arch.X86
             return new Decoder[]
             {
 				// 00
-				s_nyi,
-                new GroupDecoder(7, ""),
+				new GroupDecoder(6, ""),
+				new GroupDecoder(7, ""),
                 new InstructionDecoder(Opcode.lar, InstrClass.System, "Gv,Ew"),
                 new InstructionDecoder(Opcode.lsl, InstrClass.System, "Gv,Ew"),
                 s_nyi,
@@ -72,7 +72,9 @@ namespace Reko.Arch.X86
                     Opcode.movlpd,   "Vq,Hq,Mq",
                     Opcode.movsldup, "Vx,Wx",
                     Opcode.movddup,  "Vx,Wx"),
-                s_nyi,
+                new PrefixedDecoder(
+					Opcode.vmovlps, "Mq,Vq",
+					Opcode.vmovlpd, "Mq,Vq"),
                 new PrefixedDecoder(
                     Opcode.unpcklps, "Vx,Hx,Wx",
                     Opcode.unpcklpd, "Vx,Hx,Wx"),
@@ -427,7 +429,11 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.bswap, "rv"),
 
 				// 0F D0
-				s_nyi,
+				new PrefixedDecoder(
+					Opcode.illegal, "",
+					Opcode.addsubpd, "Vpd,Hpd,Wpd",
+					Opcode.illegal, "",
+					Opcode.addsubps, "Vps,Hps,Wps"),
 				new PrefixedDecoder(
                     Opcode.psrlw, "Pq,Qq",
                     Opcode.vpsrlw, "Vx,Hx,Wx"),

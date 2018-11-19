@@ -467,6 +467,7 @@ namespace Reko.Arch.X86
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
                 case Opcode.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
+                case Opcode.sldt: RewriteSldt(); break;
                 case Opcode.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
                 case Opcode.sqrtsd: RewriteSqrtsd(); break;
                 case Opcode.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;
