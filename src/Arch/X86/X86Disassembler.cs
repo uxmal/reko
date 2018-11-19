@@ -318,7 +318,7 @@ namespace Reko.Arch.X86
 
         private static HashSet<string> seen = new HashSet<string>();
 
-        private X86Instruction NotYetImplemented(string message, uint wInstr)
+        private X86Instruction NotYetImplemented(string message)
         {
 #if DEBUG
             // collect bytes from rdr.addr to this.addr 
@@ -566,6 +566,11 @@ namespace Reko.Arch.X86
             return new InstructionDecoder(op, iclass, format);
         }
 
+        public static PrefixedDecoder Prefixed(Opcode op, string format)
+        {
+            return new PrefixedDecoder();
+        }
+
         public static NyiDecoder nyi(string message)
         {
             return new NyiDecoder(message);
@@ -666,7 +671,7 @@ namespace Reko.Arch.X86
                         return null;
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
                     break;
-                case 'H':       // reg
+                case 'H':       // If VEX encoding, use vvvv register.
                     if (currentDecodingContext.IsVex)
                     {
                         width = SseOperandWidth(strFormat, ref i);
@@ -860,6 +865,9 @@ namespace Reko.Arch.X86
 				break;
             case 'q':
                 dataWidth = PrimitiveType.Word64;
+                break;
+            case 's':
+                dataWidth = this.dataWidth.BitSize == 64 ? PrimitiveType.CreateWord(80) : PrimitiveType.CreateWord(48);
                 break;
             case 'y':
                 dataWidth = (this.isRegisterExtensionEnabled && this.currentDecodingContext.RegisterExtension.FlagWideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;

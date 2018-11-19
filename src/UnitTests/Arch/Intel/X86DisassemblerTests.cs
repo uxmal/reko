@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1753,73 +1753,122 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("sldt\tecx", instr.ToString());
 		}
 
-		// Sad tests below
+        [Test]
+        public void X86Dis_sgdt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x00);
+            Assert.AreEqual("sgdt\t[rax]", instr.ToString());
+        }
 
-//0x0F, 0xC7,       // grp9
-//0x0F, 0xD0, 
+        [Test]
+        public void X86Dis_vmcall()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xC1);
+            Assert.AreEqual("vmcall", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_sidt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x0d, 0xd6, 0xd7, 0x0a, 0x01);
+            Assert.AreEqual("sidt\t[rip+010AD7D6]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lgdt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x14, 0x0f);
+            Assert.AreEqual("lgdt\t[rdi+rcx]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_mwait()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xC9);
+            Assert.AreEqual("mwait", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_invalid_0f6c()
+        {
+            var instr = Disassemble64(0x0f, 0x6c);
+            Assert.AreEqual("illegal", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpcklqdq()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0x6c, 0xC3);
+            Assert.AreEqual("vpunpcklqdq\txmm0,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_invalid_0f6d()
+        {
+            var instr = Disassemble64(0x0f, 0x6d);
+            Assert.AreEqual("illegal", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_ud0_0fffff()
+        {
+            var instr = Disassemble64(0x0f, 0xff, 0xff);
+            Assert.AreEqual("ud0\tedi,edi", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_bt_imm()
+        {
+            var instr = Disassemble64(0x0F, 0xBA, 0xE3, 0x04);
+            Assert.AreEqual("bt\tebx,04", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_rdrand()
+        {
+            var instr = Disassemble64(0x0f, 0xc7, 0xF3);
+            Assert.AreEqual("rdrand\tebx", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_fcomi()
+        {
+            var instr = Disassemble64(0xdb, 0xf1);
+            Assert.AreEqual("fcomi\tst(0),st(1)", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubpd()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0xd0, 0xfe);
+            Assert.AreEqual("vaddsubpd\txmm7,xmm2,xmm6", instr.ToString());
+        }
+
+        // Sad tests below
 
 #if false
-		[Test]
-		public void X86Dis__bad__0f01() {
-			var instr = Disassemble64(0x0f, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sgdt_0f0100() {
-			var instr = Disassemble64(0x0f, 0x01, 0x00);
-			Assert.AreEqual("sgdt\t[rax]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sgdt_0f0101() {
-			var instr = Disassemble64(0x0f, 0x01, 0x01);
-			Assert.AreEqual("sgdt\t[rcx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sgdt_0f0102() {
-			var instr = Disassemble64(0x0f, 0x01, 0x02);
-			Assert.AreEqual("sgdt\t[rdx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sgdt_0f0103() {
-			var instr = Disassemble64(0x0f, 0x01, 0x03);
-			Assert.AreEqual("sgdt\t[rbx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sgdt_0f010401() {
-			var instr = Disassemble64(0x0f, 0x01, 0x04, 0x01);
-			Assert.AreEqual("sgdt\t[rcx+rax*1]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f010a() {
-			var instr = Disassemble64(0x0f, 0x01, 0x0a);
-			Assert.AreEqual("sidt\t[rdx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f010dd6d70a01() {
-			var instr = Disassemble64(0x0f, 0x01, 0x0d, 0xd6, 0xd7, 0x0a, 0x01);
-			Assert.AreEqual("sidt\t[rip+0x10ad7d6]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f010f() {
-			var instr = Disassemble64(0x0f, 0x01, 0x0f);
-			Assert.AreEqual("sidt\t[rdi]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f01140f() {
-			var instr = Disassemble64(0x0f, 0x01, 0x14, 0x0f);
-			Assert.AreEqual("lgdt\t[rdi+rcx*1]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f0115611f0101() {
-			var instr = Disassemble64(0x0f, 0x01, 0x15, 0x61, 0x1f, 0x01, 0x01);
-			Assert.AreEqual("lgdt\t[rip+0x1011f61]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f0117() {
-			var instr = Disassemble64(0x0f, 0x01, 0x17);
-			Assert.AreEqual("lgdt\t[rdi]", instr.ToString());
-		}
-		[Test]
+                [Test]
+        public void X86Dis_vcvttpd2dq()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0xe6, 0xf5);
+            Assert.AreEqual("vcvttpd2dq\txmm6,xmm5", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_nop_0f19c0()
+        {
+            var instr = Disassemble64(0x0f, 0x19, 0xc0);
+            Assert.AreEqual("nop\teax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_nop_0f19c1()
+        {
+            var instr = Disassemble64(0x0f, 0x19, 0xc0);
+            Assert.AreEqual("nop\teax", instr.ToString());
+        }
+
+        [Test]
 		public void X86Dis_lidt_0f011f() {
 			var instr = Disassemble64(0x0f, 0x01, 0x1f);
 			Assert.AreEqual("lidt\t[rdi]", instr.ToString());
@@ -1870,41 +1919,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("sgdt\t[rbp+0x31]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_sidt_0f014885() {
-			var instr = Disassemble64(0x0f, 0x01, 0x48, 0x85);
-			Assert.AreEqual("sidt\t[rax-0x7b]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f014989() {
-			var instr = Disassemble64(0x0f, 0x01, 0x49, 0x89);
-			Assert.AreEqual("sidt\t[rcx-0x77]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f014c89c0() {
-			var instr = Disassemble64(0x0f, 0x01, 0x4c, 0x89, 0xc0);
-			Assert.AreEqual("sidt\t[rcx+rcx*4-0x40]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f014d85() {
-			var instr = Disassemble64(0x0f, 0x01, 0x4d, 0x85);
-			Assert.AreEqual("sidt\t[rbp-0x7b]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f015348() {
-			var instr = Disassemble64(0x0f, 0x01, 0x53, 0x48);
-			Assert.AreEqual("lgdt\t[rbx+0x48]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f01542406() {
-			var instr = Disassemble64(0x0f, 0x01, 0x54, 0x24, 0x06);
-			Assert.AreEqual("lgdt\t[rsp+0x6]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f015553() {
-			var instr = Disassemble64(0x0f, 0x01, 0x55, 0x53);
-			Assert.AreEqual("lgdt\t[rbp+0x53]", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_lidt_0f015c7434() {
 			var instr = Disassemble64(0x0f, 0x01, 0x5c, 0x74, 0x34);
 			Assert.AreEqual("lidt\t[rsp+rsi*2+0x34]", instr.ToString());
@@ -1914,7 +1928,6 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0x0f, 0x01, 0x61, 0x00);
 			Assert.AreEqual("smsw\tWORD PTR [rcx+0x0]", instr.ToString());
 		}
-		[Test]
 		public void X86Dis_smsw_0f0165ff() {
 			var instr = Disassemble64(0x0f, 0x01, 0x65, 0xff);
 			Assert.AreEqual("smsw\tWORD PTR [rbp-0x1]", instr.ToString());
@@ -1990,26 +2003,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("sgdt\t[rbp-0xcfd8b40]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_sidt_0f0189c30f83af() {
-			var instr = Disassemble64(0x0f, 0x01, 0x89, 0xc3, 0x0f, 0x83, 0xaf);
-			Assert.AreEqual("sidt\t[rcx-0x507cf03d]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f018b434085c0() {
-			var instr = Disassemble64(0x0f, 0x01, 0x8b, 0x43, 0x40, 0x85, 0xc0);
-			Assert.AreEqual("sidt\t[rbx-0x3f7abfbd]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_0f018d51ff85d2() {
-			var instr = Disassemble64(0x0f, 0x01, 0x8d, 0x51, 0xff, 0x85, 0xd2);
-			Assert.AreEqual("sidt\t[rbp-0x2d7a00af]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_lgdt_0f019013010000() {
-			var instr = Disassemble64(0x0f, 0x01, 0x90, 0x13, 0x01, 0x00, 0x00);
-			Assert.AreEqual("lgdt\t[rax+0x113]", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_invlpg_0f01b845000000() {
 			var instr = Disassemble64(0x0f, 0x01, 0xb8, 0x45, 0x00, 0x00, 0x00);
 			Assert.AreEqual("invlpg\tBYTE PTR [rax+0x45]", instr.ToString());
@@ -2054,11 +2047,7 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0x0f, 0x01, 0xc8);
 			Assert.AreEqual("monitor\t", instr.ToString());
 		}
-		[Test]
-		public void X86Dis_mwait_0f01c9() {
-			var instr = Disassemble64(0x0f, 0x01, 0xc9);
-			Assert.AreEqual("mwait\t", instr.ToString());
-		}
+
 		[Test]
 		public void X86Dis_smsw_0f01e6() {
 			var instr = Disassemble64(0x0f, 0x01, 0xe6);
@@ -2110,26 +2099,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("mwaitx\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0f04() {
-			var instr = Disassemble64(0x0f, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f0a() {
-			var instr = Disassemble64(0x0f, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f0c() {
-			var instr = Disassemble64(0x0f, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_femms_0f0e() {
-			var instr = Disassemble64(0x0f, 0x0e);
-			Assert.AreEqual("femms\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_movlps_0f1300() {
 			var instr = Disassemble64(0x0f, 0x13, 0x00);
 			Assert.AreEqual("movlps\tQWORD PTR [rax],xmm0", instr.ToString());
@@ -2139,12 +2108,9 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0x0f, 0x15, 0x00);
 			Assert.AreEqual("unpckhps\txmm0,XMMWORD PTR [rax]", instr.ToString());
 		}
-		[Test]
-		public void X86Dis_nop_0f19c0() {
-			var instr = Disassemble64(0x0f, 0x19, 0xc0);
-			Assert.AreEqual("nop\teax", instr.ToString());
-		}
-		[Test]
+
+
+        [Test]
 		public void X86Dis_bndldx_0f1a11() {
 			var instr = Disassemble64(0x0f, 0x1a, 0x11);
 			Assert.AreEqual("bndldx\tbnd2,[rcx]", instr.ToString());
@@ -2160,41 +2126,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("cldemote\tBYTE PTR [rax]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_nop_0f1d12() {
-			var instr = Disassemble64(0x0f, 0x1d, 0x12);
-			Assert.AreEqual("nop\tDWORD PTR [rdx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_nop_0f1e00() {
-			var instr = Disassemble64(0x0f, 0x1e, 0x00);
-			Assert.AreEqual("nop\tDWORD PTR [rax]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f24() {
-			var instr = Disassemble64(0x0f, 0x24);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f25() {
-			var instr = Disassemble64(0x0f, 0x25);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f26() {
-			var instr = Disassemble64(0x0f, 0x26);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f27() {
-			var instr = Disassemble64(0x0f, 0x27);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f36() {
-			var instr = Disassemble64(0x0f, 0x36);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_pshufb_0f38004154() {
 			var instr = Disassemble64(0x0f, 0x38, 0x00, 0x41, 0x54);
 			Assert.AreEqual("pshufb\tmm0,QWORD PTR [rcx+0x54]", instr.ToString());
@@ -2205,18 +2136,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0f3843() {
-			var instr = Disassemble64(0x0f, 0x38, 0x43);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__0f3882() {
-			var instr = Disassemble64(0x0f, 0x38, 0x82);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f38c2() {
-			var instr = Disassemble64(0x0f, 0x38, 0xc2);
+			var instr = Disassemble64(0x66, 0x0f, 0x38, 0x82, 0xC3);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -2225,109 +2146,42 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("sha1msg2\txmm6,XMMWORD PTR [rbx+rcx*1+0x48]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0f38d0() {
-			var instr = Disassemble64(0x0f, 0x38, 0xd0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f39() {
-			var instr = Disassemble64(0x0f, 0x39);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3a56() {
-			var instr = Disassemble64(0x0f, 0x3a, 0x56);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3abc() {
-			var instr = Disassemble64(0x0f, 0x3a, 0xbc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3b() {
-			var instr = Disassemble64(0x0f, 0x3b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3c() {
-			var instr = Disassemble64(0x0f, 0x3c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3d() {
-			var instr = Disassemble64(0x0f, 0x3d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3e() {
-			var instr = Disassemble64(0x0f, 0x3e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f3f() {
-			var instr = Disassemble64(0x0f, 0x3f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_packsswb_0f63dd() {
 			var instr = Disassemble64(0x0f, 0x63, 0xdd);
 			Assert.AreEqual("packsswb\tmm3,mm5", instr.ToString());
 		}
+
+
 		[Test]
-		public void X86Dis__bad__0f6c() {
-			var instr = Disassemble64(0x0f, 0x6c);
+		public void X86Dis_psrlw() {
+			var instr = Disassemble64(0x0f, 0x71, 0xC3, 0x0F);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0f6d() {
-			var instr = Disassemble64(0x0f, 0x6d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+		public void X86Dis_psrld() {
+			var instr = Disassemble64(0x0f, 0x72, 0xD3, 0x0B);
+			Assert.AreEqual("psrld\tmm3,0B", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0f71() {
-			var instr = Disassemble64(0x0f, 0x71);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+		public void X86Dis_psrlq() {
+			var instr = Disassemble64(0x0f, 0x73, 0xD3, 0x02);
+			Assert.AreEqual("psrlq\tmm3,02", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0f72() {
-			var instr = Disassemble64(0x0f, 0x72);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+		public void X86Dis_vhaddpd() {
+			var instr = Disassemble64(0x66, 0x0f, 0x7c, 0xC3);
+			Assert.AreEqual("vhaddpd\txmm0,xmm3", instr.ToString());
 		}
-		[Test]
-		public void X86Dis__bad__0f73() {
-			var instr = Disassemble64(0x0f, 0x73);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f7a() {
-			var instr = Disassemble64(0x0f, 0x7a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f7b() {
-			var instr = Disassemble64(0x0f, 0x7b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f7c() {
-			var instr = Disassemble64(0x0f, 0x7c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0f7d() {
-			var instr = Disassemble64(0x0f, 0x7d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0fa6() {
-			var instr = Disassemble64(0x0f, 0xa6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0fa7() {
-			var instr = Disassemble64(0x0f, 0xa7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+        [Test]
+        public void X86Dis_vhaddps()
+        {
+            var instr = Disassemble64(0xF2, 0x0f, 0x7c, 0xC3);
+            Assert.AreEqual("vhaddps\tVps,Hps,Wps", instr.ToString());
+        }
+        [Test]
+		public void X86Dis_vhsubpd() {
+			var instr = Disassemble64(0x66, 0x0f, 0x7d, 0xD4);
+			Assert.AreEqual("vhsubpd\txmm2,xmm4", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rsm_0faa() {
@@ -2345,79 +2199,35 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("btr\tDWORD PTR [rsp+0x30],eax", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__0fb8() {
+		public void X86Dis_jmpe() {
 			var instr = Disassemble64(0x0f, 0xb8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+			Assert.AreEqual("jmpe", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_ud1_0fb9a00100000f() {
 			var instr = Disassemble64(0x0f, 0xb9, 0xa0, 0x01, 0x00, 0x00, 0x0f);
 			Assert.AreEqual("ud1\tesp,DWORD PTR [rax+0xf000001]", instr.ToString());
 		}
+
 		[Test]
-		public void X86Dis__bad__0fba() {
-			var instr = Disassemble64(0x0f, 0xba);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0fc7() {
-			var instr = Disassemble64(0x0f, 0xc7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__0fd0() {
-			var instr = Disassemble64(0x0f, 0xd0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+		public void X86Dis_addsubpd() {
+			var instr = Disassemble64(0x66, 0x0f, 0xd0, 0xD3);
+			Assert.AreEqual("addsubpd\txmm2,xmm3", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__0fe6() {
-			var instr = Disassemble64(0x0f, 0xe6);
+			var instr = Disassemble64(0xF3, 0x0F, 0xE6, 0xC4);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__0ff0() {
-			var instr = Disassemble64(0x0f, 0xf0);
+			var instr = Disassemble64(0xF2, 0x0f, 0xf0, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ud0_0fffff() {
-			var instr = Disassemble64(0x0f, 0xff, 0xff);
-			Assert.AreEqual("ud0\tedi,edi", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_sldt_260f004183() {
 			var instr = Disassemble64(0x26, 0x0f, 0x00, 0x41, 0x83);
 			Assert.AreEqual("sldt\tWORD PTR es:[rcx-0x7d]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_262eff() {
-			var instr = Disassemble64(0x26, 0x2e, 0xff);
-			Assert.AreEqual("es\tcs (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_263efe() {
-			var instr = Disassemble64(0x26, 0x3e, 0xfe);
-			Assert.AreEqual("es\tds (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_2643ff() {
-			var instr = Disassemble64(0x26, 0x43, 0xff);
-			Assert.AreEqual("es\trex.XB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_2646ff() {
-			var instr = Disassemble64(0x26, 0x46, 0xff);
-			Assert.AreEqual("es\trex.RX (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_2647ff() {
-			var instr = Disassemble64(0x26, 0x47, 0xff);
-			Assert.AreEqual("es\trex.RXB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_2648ff() {
-			var instr = Disassemble64(0x26, 0x48, 0xff);
-			Assert.AreEqual("es\trex.W (bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_es_26c50400() {
@@ -2430,53 +2240,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("es\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_es_26daff() {
-			var instr = Disassemble64(0x26, 0xda, 0xff);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_es_26dbe6() {
 			var instr = Disassemble64(0x26, 0xdb, 0xe6);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26dbff() {
-			var instr = Disassemble64(0x26, 0xdb, 0xff);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26ddff() {
-			var instr = Disassemble64(0x26, 0xdd, 0xff);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26dffe() {
-			var instr = Disassemble64(0x26, 0xdf, 0xfe);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26dfff() {
-			var instr = Disassemble64(0x26, 0xdf, 0xff);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26f2ff() {
-			var instr = Disassemble64(0x26, 0xf2, 0xff);
-			Assert.AreEqual("es\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26f3ff() {
-			var instr = Disassemble64(0x26, 0xf3, 0xff);
-			Assert.AreEqual("es\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26fe() {
-			var instr = Disassemble64(0x26, 0xfe);
-			Assert.AreEqual("es\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_es_26ff() {
-			var instr = Disassemble64(0x26, 0xff);
 			Assert.AreEqual("es\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -2485,99 +2250,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("str\tWORD PTR cs:[rax-0x7b]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_sidt_2e0f014d85() {
-			var instr = Disassemble64(0x2e, 0x0f, 0x01, 0x4d, 0x85);
-			Assert.AreEqual("sidt\tcs:[rbp-0x7b]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2e36daff() {
-			var instr = Disassemble64(0x2e, 0x36, 0xda, 0xff);
-			Assert.AreEqual("cs\tss (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2e40fe() {
-			var instr = Disassemble64(0x2e, 0x40, 0xfe);
-			Assert.AreEqual("cs\trex (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2e48ff() {
-			var instr = Disassemble64(0x2e, 0x48, 0xff);
-			Assert.AreEqual("cs\trex.W (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2e4dff() {
-			var instr = Disassemble64(0x2e, 0x4d, 0xff);
-			Assert.AreEqual("cs\trex.WRB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2e67ff() {
-			var instr = Disassemble64(0x2e, 0x67, 0xff);
-			Assert.AreEqual("cs\taddr32 (bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_cs_2ec50400() {
 			var instr = Disassemble64(0x2e, 0xc5, 0x04, 0x00);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2edaff() {
-			var instr = Disassemble64(0x2e, 0xda, 0xff);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2edbfe() {
-			var instr = Disassemble64(0x2e, 0xdb, 0xfe);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2edbff() {
-			var instr = Disassemble64(0x2e, 0xdb, 0xff);
 			Assert.AreEqual("cs\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__2edda800ba3800() {
 			var instr = Disassemble64(0x2e, 0xdd, 0xa8, 0x00, 0xba, 0x38, 0x00);
 			Assert.AreEqual("_bad_\tcs:[rax+0x38ba00]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2eddf5() {
-			var instr = Disassemble64(0x2e, 0xdd, 0xf5);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2eddf8() {
-			var instr = Disassemble64(0x2e, 0xdd, 0xf8);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2eddff() {
-			var instr = Disassemble64(0x2e, 0xdd, 0xff);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2edede() {
-			var instr = Disassemble64(0x2e, 0xde, 0xde);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2ef2ff() {
-			var instr = Disassemble64(0x2e, 0xf2, 0xff);
-			Assert.AreEqual("cs\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2ef3ff() {
-			var instr = Disassemble64(0x2e, 0xf3, 0xff);
-			Assert.AreEqual("cs\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2efe() {
-			var instr = Disassemble64(0x2e, 0xfe);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_cs_2eff() {
-			var instr = Disassemble64(0x2e, 0xff);
-			Assert.AreEqual("cs\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_ss_360f00e9() {
@@ -2590,114 +2270,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("ss\tstr WORD PTR es:[rcx+rcx*4-0x19]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_ss_3642ff() {
-			var instr = Disassemble64(0x36, 0x42, 0xff);
-			Assert.AreEqual("ss\trex.X (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_3649ff() {
-			var instr = Disassemble64(0x36, 0x49, 0xff);
-			Assert.AreEqual("ss\trex.WB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_364adbff() {
-			var instr = Disassemble64(0x36, 0x4a, 0xdb, 0xff);
-			Assert.AreEqual("ss\trex.WX (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_364bff() {
-			var instr = Disassemble64(0x36, 0x4b, 0xff);
-			Assert.AreEqual("ss\trex.WXB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_364cff() {
-			var instr = Disassemble64(0x36, 0x4c, 0xff);
-			Assert.AreEqual("ss\trex.WR (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_364efe() {
-			var instr = Disassemble64(0x36, 0x4e, 0xfe);
-			Assert.AreEqual("ss\trex.WRX (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_3664ff() {
-			var instr = Disassemble64(0x36, 0x64, 0xff);
-			Assert.AreEqual("ss\tfs (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_3665fe() {
-			var instr = Disassemble64(0x36, 0x65, 0xfe);
-			Assert.AreEqual("ss\tgs (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36c5faff() {
-			var instr = Disassemble64(0x36, 0xc5, 0xfa, 0xff);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_ss_36d9dc() {
 			var instr = Disassemble64(0x36, 0xd9, 0xdc);
 			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36daff() {
-			var instr = Disassemble64(0x36, 0xda, 0xff);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36dbff() {
-			var instr = Disassemble64(0x36, 0xdb, 0xff);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36ddff() {
-			var instr = Disassemble64(0x36, 0xdd, 0xff);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36dfd1() {
-			var instr = Disassemble64(0x36, 0xdf, 0xd1);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36dfff() {
-			var instr = Disassemble64(0x36, 0xdf, 0xff);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36f2ff() {
-			var instr = Disassemble64(0x36, 0xf2, 0xff);
-			Assert.AreEqual("ss\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36f3ff() {
-			var instr = Disassemble64(0x36, 0xf3, 0xff);
-			Assert.AreEqual("ss\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36fe() {
-			var instr = Disassemble64(0x36, 0xfe);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ss_36ff() {
-			var instr = Disassemble64(0x36, 0xff);
-			Assert.AreEqual("ss\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3e0f00() {
-			var instr = Disassemble64(0x3e, 0x0f, 0x00);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sidt_3e0f0148c7() {
-			var instr = Disassemble64(0x3e, 0x0f, 0x01, 0x48, 0xc7);
-			Assert.AreEqual("sidt\tds:[rax-0x39]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3e2efe() {
-			var instr = Disassemble64(0x3e, 0x2e, 0xfe);
-			Assert.AreEqual("ds\tcs (bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_ds_3e3e0f00() {
@@ -2705,39 +2280,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("ds\tds (bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_ds_3e4cfe() {
-			var instr = Disassemble64(0x3e, 0x4c, 0xfe);
-			Assert.AreEqual("ds\trex.WR (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3ec5e6ff() {
-			var instr = Disassemble64(0x3e, 0xc5, 0xe6, 0xff);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3ec5ffff() {
-			var instr = Disassemble64(0x3e, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_ds_3edae7() {
 			var instr = Disassemble64(0x3e, 0xda, 0xe7);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3edaff() {
-			var instr = Disassemble64(0x3e, 0xda, 0xff);
 			Assert.AreEqual("ds\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__3edb31() {
 			var instr = Disassemble64(0x3e, 0xdb, 0x31);
 			Assert.AreEqual("_bad_\tds:[rcx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__3edb70ff() {
-			var instr = Disassemble64(0x3e, 0xdb, 0x70, 0xff);
-			Assert.AreEqual("_bad_\tds:[rax-0x1]", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_ds_3edbff() {
@@ -2750,49 +2300,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\tds:[rcx]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_ds_3eddff() {
-			var instr = Disassemble64(0x3e, 0xdd, 0xff);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3edfff() {
-			var instr = Disassemble64(0x3e, 0xdf, 0xff);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3ef2ff() {
-			var instr = Disassemble64(0x3e, 0xf2, 0xff);
-			Assert.AreEqual("ds\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3ef3ff() {
-			var instr = Disassemble64(0x3e, 0xf3, 0xff);
-			Assert.AreEqual("ds\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3efe() {
-			var instr = Disassemble64(0x3e, 0xfe);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_ds_3eff() {
-			var instr = Disassemble64(0x3e, 0xff);
-			Assert.AreEqual("ds\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40() {
-			var instr = Disassemble64(0x40);
-			Assert.AreEqual("rex\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_400f004885() {
 			var instr = Disassemble64(0x40, 0x0f, 0x00, 0x48, 0x85);
 			Assert.AreEqual("rex\tstr WORD PTR [rax-0x7b]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40c571ff() {
-			var instr = Disassemble64(0x40, 0xc5, 0x71, 0xff);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_40c59300() {
@@ -2800,129 +2310,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_40c5ffff() {
-			var instr = Disassemble64(0x40, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_40dae3() {
 			var instr = Disassemble64(0x40, 0xda, 0xe3);
 			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40daf2() {
-			var instr = Disassemble64(0x40, 0xda, 0xf2);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dafd() {
-			var instr = Disassemble64(0x40, 0xda, 0xfd);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dbff() {
-			var instr = Disassemble64(0x40, 0xdb, 0xff);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40ddff() {
-			var instr = Disassemble64(0x40, 0xdd, 0xff);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dfc8() {
-			var instr = Disassemble64(0x40, 0xdf, 0xc8);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dfcc() {
-			var instr = Disassemble64(0x40, 0xdf, 0xcc);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dfe5() {
-			var instr = Disassemble64(0x40, 0xdf, 0xe5);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dffa() {
-			var instr = Disassemble64(0x40, 0xdf, 0xfa);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40dfff() {
-			var instr = Disassemble64(0x40, 0xdf, 0xff);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40fe() {
-			var instr = Disassemble64(0x40, 0xfe);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_40ff() {
-			var instr = Disassemble64(0x40, 0xff);
-			Assert.AreEqual("rex\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41() {
-			var instr = Disassemble64(0x41);
-			Assert.AreEqual("rex_B\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_sldt_410f0000() {
-			var instr = Disassemble64(0x41, 0x0f, 0x00, 0x00);
-			Assert.AreEqual("sldt\tWORD PTR [r8]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41c5ffff() {
-			var instr = Disassemble64(0x41, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41dae1() {
-			var instr = Disassemble64(0x41, 0xda, 0xe1);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41daff() {
-			var instr = Disassemble64(0x41, 0xda, 0xff);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41ddff() {
-			var instr = Disassemble64(0x41, 0xdd, 0xff);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41dfff() {
-			var instr = Disassemble64(0x41, 0xdf, 0xff);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41fe() {
-			var instr = Disassemble64(0x41, 0xfe);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_B_41ff() {
-			var instr = Disassemble64(0x41, 0xff);
-			Assert.AreEqual("rex_B\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42() {
-			var instr = Disassemble64(0x42);
-			Assert.AreEqual("rex_X\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_420f004889() {
-			var instr = Disassemble64(0x42, 0x0f, 0x00, 0x48, 0x89);
-			Assert.AreEqual("rex_X\tstr WORD PTR [rax-0x77]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42c501c7() {
-			var instr = Disassemble64(0x42, 0xc5, 0x01, 0xc7);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_X_42c5410f() {
@@ -2940,59 +2330,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_X_42c5ffff() {
-			var instr = Disassemble64(0x42, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42daff() {
-			var instr = Disassemble64(0x42, 0xda, 0xff);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_X_42db6600() {
 			var instr = Disassemble64(0x42, 0xdb, 0x66, 0x00);
 			Assert.AreEqual("rex_X\t(bad) [rsi+0x0]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_X_42ddf3() {
-			var instr = Disassemble64(0x42, 0xdd, 0xf3);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42ddff() {
-			var instr = Disassemble64(0x42, 0xdd, 0xff);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42dffa() {
-			var instr = Disassemble64(0x42, 0xdf, 0xfa);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42fe() {
-			var instr = Disassemble64(0x42, 0xfe);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_X_42ff() {
-			var instr = Disassemble64(0x42, 0xff);
-			Assert.AreEqual("rex_X\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43() {
-			var instr = Disassemble64(0x43);
-			Assert.AreEqual("rex_XB\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_XB_430f00488b() {
 			var instr = Disassemble64(0x43, 0x0f, 0x00, 0x48, 0x8b);
 			Assert.AreEqual("rex_XB\tstr WORD PTR [r8-0x75]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_430f010f() {
-			var instr = Disassemble64(0x43, 0x0f, 0x01, 0x0f);
-			Assert.AreEqual("rex_XB\tsidt [r15]", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_XB_430f04() {
@@ -3023,66 +2368,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_rex_XB_43c539d07325() {
 			var instr = Disassemble64(0x43, 0xc5, 0x39, 0xd0, 0x73, 0x25);
 			Assert.AreEqual("rex_XB\tvaddsubpd xmm14,xmm8,XMMWORD PTR [rbx+0x25]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43c5beff() {
-			var instr = Disassemble64(0x43, 0xc5, 0xbe, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43c5f4ff() {
-			var instr = Disassemble64(0x43, 0xc5, 0xf4, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43c5ffff() {
-			var instr = Disassemble64(0x43, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43daff() {
-			var instr = Disassemble64(0x43, 0xda, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43dbff() {
-			var instr = Disassemble64(0x43, 0xdb, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43ddf1() {
-			var instr = Disassemble64(0x43, 0xdd, 0xf1);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43ddff() {
-			var instr = Disassemble64(0x43, 0xdd, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43dffc() {
-			var instr = Disassemble64(0x43, 0xdf, 0xfc);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43dfff() {
-			var instr = Disassemble64(0x43, 0xdf, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43fe() {
-			var instr = Disassemble64(0x43, 0xfe);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_XB_43ff() {
-			var instr = Disassemble64(0x43, 0xff);
-			Assert.AreEqual("rex_XB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_R_44() {
-			var instr = Disassemble64(0x44);
-			Assert.AreEqual("rex_R\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_R_440f00e9() {
@@ -3135,18 +2420,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_R_44c5e0ff() {
-			var instr = Disassemble64(0x44, 0xc5, 0xe0, 0xff);
-			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_R_44c5eb0a() {
 			var instr = Disassemble64(0x44, 0xc5, 0xeb, 0x0a);
-			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_R_44c5f0ff() {
-			var instr = Disassemble64(0x44, 0xc5, 0xf0, 0xff);
 			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -3200,31 +2475,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_R_44dfff() {
-			var instr = Disassemble64(0x44, 0xdf, 0xff);
-			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_R_44fe() {
-			var instr = Disassemble64(0x44, 0xfe);
-			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_R_44ff() {
-			var instr = Disassemble64(0x44, 0xff);
-			Assert.AreEqual("rex_R\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45() {
-			var instr = Disassemble64(0x45);
-			Assert.AreEqual("rex_RB\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_450f() {
-			var instr = Disassemble64(0x45, 0x0f);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_RB_450f008b550c81() {
 			var instr = Disassemble64(0x45, 0x0f, 0x00, 0x8b, 0x55, 0x0c, 0x81);
 			Assert.AreEqual("rex_RB\tstr WORD PTR [r11-0x1d7ef3ab]", instr.ToString());
@@ -3237,11 +2487,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis_rex_RB_450f73() {
 			var instr = Disassemble64(0x45, 0x0f, 0x73);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45c4a1ffff() {
-			var instr = Disassemble64(0x45, 0xc4, 0xa1, 0xff, 0xff);
 			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -3265,64 +2510,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_RB_45c5ffff() {
-			var instr = Disassemble64(0x45, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45dae8() {
-			var instr = Disassemble64(0x45, 0xda, 0xe8);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_RB_45daeb() {
 			var instr = Disassemble64(0x45, 0xda, 0xeb);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45daf0() {
-			var instr = Disassemble64(0x45, 0xda, 0xf0);
 			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_RB_45dbb2004c89f2() {
 			var instr = Disassemble64(0x45, 0xdb, 0xb2, 0x00, 0x4c, 0x89, 0xf2);
 			Assert.AreEqual("rex_RB\t(bad) [r10-0xd76b400]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45dbff() {
-			var instr = Disassemble64(0x45, 0xdb, 0xff);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45ddff() {
-			var instr = Disassemble64(0x45, 0xdd, 0xff);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45dfff() {
-			var instr = Disassemble64(0x45, 0xdf, 0xff);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45fe() {
-			var instr = Disassemble64(0x45, 0xfe);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RB_45ff() {
-			var instr = Disassemble64(0x45, 0xff);
-			Assert.AreEqual("rex_RB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46() {
-			var instr = Disassemble64(0x46);
-			Assert.AreEqual("rex_RX\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_460f() {
-			var instr = Disassemble64(0x46, 0x0f);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_RX_460f0089c34c89() {
@@ -3350,21 +2545,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_RX_46c5a4ff() {
-			var instr = Disassemble64(0x46, 0xc5, 0xa4, 0xff);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46c5ceff() {
-			var instr = Disassemble64(0x46, 0xc5, 0xce, 0xff);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46c5e1ff() {
-			var instr = Disassemble64(0x46, 0xc5, 0xe1, 0xff);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_RX_46dae4() {
 			var instr = Disassemble64(0x46, 0xda, 0xe4);
 			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
@@ -3373,46 +2553,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_rex_RX_46dae8() {
 			var instr = Disassemble64(0x46, 0xda, 0xe8);
 			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46daf0() {
-			var instr = Disassemble64(0x46, 0xda, 0xf0);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46daff() {
-			var instr = Disassemble64(0x46, 0xda, 0xff);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46ddfb() {
-			var instr = Disassemble64(0x46, 0xdd, 0xfb);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46ddff() {
-			var instr = Disassemble64(0x46, 0xdd, 0xff);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46fe() {
-			var instr = Disassemble64(0x46, 0xfe);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RX_46ff() {
-			var instr = Disassemble64(0x46, 0xff);
-			Assert.AreEqual("rex_RX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47() {
-			var instr = Disassemble64(0x47);
-			Assert.AreEqual("rex_RXB\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_470f() {
-			var instr = Disassemble64(0x47, 0x0f);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_RXB_470f0084c07551() {
@@ -3485,21 +2625,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_RXB_47c5d0ff() {
-			var instr = Disassemble64(0x47, 0xc5, 0xd0, 0xff);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47dafa() {
-			var instr = Disassemble64(0x47, 0xda, 0xfa);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47daff() {
-			var instr = Disassemble64(0x47, 0xda, 0xff);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_RXB_47db21() {
 			var instr = Disassemble64(0x47, 0xdb, 0x21);
 			Assert.AreEqual("rex_RXB\t(bad) [r9]", instr.ToString());
@@ -3508,11 +2633,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_rex_RXB_47db31() {
 			var instr = Disassemble64(0x47, 0xdb, 0x31);
 			Assert.AreEqual("rex_RXB\t(bad) [r9]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47dbff() {
-			var instr = Disassemble64(0x47, 0xdb, 0xff);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_RXB_47dda8020f8590() {
@@ -3525,49 +2645,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_RXB_47ddff() {
-			var instr = Disassemble64(0x47, 0xdd, 0xff);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47dfff() {
-			var instr = Disassemble64(0x47, 0xdf, 0xff);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47fe() {
-			var instr = Disassemble64(0x47, 0xfe);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_RXB_47ff() {
-			var instr = Disassemble64(0x47, 0xff);
-			Assert.AreEqual("rex_RXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48() {
-			var instr = Disassemble64(0x48);
-			Assert.AreEqual("rex_W\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_W_480f0000() {
 			var instr = Disassemble64(0x48, 0x0f, 0x00, 0x00);
 			Assert.AreEqual("rex_W\tsldt WORD PTR [rax]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_480f01() {
-			var instr = Disassemble64(0x48, 0x0f, 0x01);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_480f0101() {
-			var instr = Disassemble64(0x48, 0x0f, 0x01, 0x01);
-			Assert.AreEqual("rex_W\tsgdt [rcx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_480f0148c1() {
-			var instr = Disassemble64(0x48, 0x0f, 0x01, 0x48, 0xc1);
-			Assert.AreEqual("rex_W\tsidt [rax-0x3f]", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_xsave64_480fae27() {
@@ -3610,74 +2690,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_W_48c5ffff() {
-			var instr = Disassemble64(0x48, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_W_48d9d9() {
 			var instr = Disassemble64(0x48, 0xd9, 0xd9);
 			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48d9da() {
-			var instr = Disassemble64(0x48, 0xd9, 0xda);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48dae8() {
-			var instr = Disassemble64(0x48, 0xda, 0xe8);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48daff() {
-			var instr = Disassemble64(0x48, 0xda, 0xff);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48dbff() {
-			var instr = Disassemble64(0x48, 0xdb, 0xff);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48ddf7() {
-			var instr = Disassemble64(0x48, 0xdd, 0xf7);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48ddff() {
-			var instr = Disassemble64(0x48, 0xdd, 0xff);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48dfcf() {
-			var instr = Disassemble64(0x48, 0xdf, 0xcf);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48dfd0() {
-			var instr = Disassemble64(0x48, 0xdf, 0xd0);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48dfff() {
-			var instr = Disassemble64(0x48, 0xdf, 0xff);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48fe() {
-			var instr = Disassemble64(0x48, 0xfe);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_W_48ff() {
-			var instr = Disassemble64(0x48, 0xff);
-			Assert.AreEqual("rex_W\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49() {
-			var instr = Disassemble64(0x49);
-			Assert.AreEqual("rex_WB\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_WB_490f004889() {
@@ -3698,71 +2713,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_cmpxchg16b_490fc74c2420() {
 			var instr = Disassemble64(0x49, 0x0f, 0xc7, 0x4c, 0x24, 0x20);
 			Assert.AreEqual("cmpxchg16b\tOWORD PTR [r12+0x20]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49c5f7ff() {
-			var instr = Disassemble64(0x49, 0xc5, 0xf7, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49c5ffff() {
-			var instr = Disassemble64(0x49, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49daf3() {
-			var instr = Disassemble64(0x49, 0xda, 0xf3);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49dafb() {
-			var instr = Disassemble64(0x49, 0xda, 0xfb);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49daff() {
-			var instr = Disassemble64(0x49, 0xda, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49dbfe() {
-			var instr = Disassemble64(0x49, 0xdb, 0xfe);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49dbff() {
-			var instr = Disassemble64(0x49, 0xdb, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49ddff() {
-			var instr = Disassemble64(0x49, 0xdd, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49dfff() {
-			var instr = Disassemble64(0x49, 0xdf, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49fe() {
-			var instr = Disassemble64(0x49, 0xfe);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WB_49ff() {
-			var instr = Disassemble64(0x49, 0xff);
-			Assert.AreEqual("rex_WB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4a() {
-			var instr = Disassemble64(0x4a);
-			Assert.AreEqual("rex_WX\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4a0f() {
-			var instr = Disassemble64(0x4a, 0x0f);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_WX_4a0f004889() {
@@ -3798,51 +2748,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_rex_WX_4ad9e2() {
 			var instr = Disassemble64(0x4a, 0xd9, 0xe2);
 			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4adaff() {
-			var instr = Disassemble64(0x4a, 0xda, 0xff);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4adbff() {
-			var instr = Disassemble64(0x4a, 0xdb, 0xff);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4addfe() {
-			var instr = Disassemble64(0x4a, 0xdd, 0xfe);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4addff() {
-			var instr = Disassemble64(0x4a, 0xdd, 0xff);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4adffb() {
-			var instr = Disassemble64(0x4a, 0xdf, 0xfb);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4adfff() {
-			var instr = Disassemble64(0x4a, 0xdf, 0xff);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4afe() {
-			var instr = Disassemble64(0x4a, 0xfe);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WX_4aff() {
-			var instr = Disassemble64(0x4a, 0xff);
-			Assert.AreEqual("rex_WX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WXB_4b() {
-			var instr = Disassemble64(0x4b);
-			Assert.AreEqual("rex_WXB\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_WXB_4b0f00e9() {
@@ -3900,33 +2805,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WXB_4bc571ff() {
-			var instr = Disassemble64(0x4b, 0xc5, 0x71, 0xff);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WXB_4bc57a00() {
 			var instr = Disassemble64(0x4b, 0xc5, 0x7a, 0x00);
 			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WXB_4bc5feff() {
-			var instr = Disassemble64(0x4b, 0xc5, 0xfe, 0xff);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WXB_4bc5ffff() {
-			var instr = Disassemble64(0x4b, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WXB_4bdafe() {
 			var instr = Disassemble64(0x4b, 0xda, 0xfe);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WXB_4bdaff() {
-			var instr = Disassemble64(0x4b, 0xda, 0xff);
 			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -3985,31 +2870,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_WXB\t(bad) [r14+0x0]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WXB_4bddff() {
-			var instr = Disassemble64(0x4b, 0xdd, 0xff);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WXB_4bdfff() {
-			var instr = Disassemble64(0x4b, 0xdf, 0xff);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WXB_4bfe() {
-			var instr = Disassemble64(0x4b, 0xfe);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WXB_4bff() {
-			var instr = Disassemble64(0x4b, 0xff);
-			Assert.AreEqual("rex_WXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WR_4c() {
-			var instr = Disassemble64(0x4c);
-			Assert.AreEqual("rex_WR\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WR_4c0f004885() {
 			var instr = Disassemble64(0x4c, 0x0f, 0x00, 0x48, 0x85);
 			Assert.AreEqual("rex_WR\tstr WORD PTR [rax-0x7b]", instr.ToString());
@@ -4060,44 +2920,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WR_4cdaff() {
-			var instr = Disassemble64(0x4c, 0xda, 0xff);
-			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WR_4cdbe5() {
 			var instr = Disassemble64(0x4c, 0xdb, 0xe5);
 			Assert.AreEqual("rex_WR\tfrstpm(287 only)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WR_4cdbff() {
-			var instr = Disassemble64(0x4c, 0xdb, 0xff);
-			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WR_4cddff() {
-			var instr = Disassemble64(0x4c, 0xdd, 0xff);
-			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WR_4cdfff() {
-			var instr = Disassemble64(0x4c, 0xdf, 0xff);
-			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WR_4cfe() {
-			var instr = Disassemble64(0x4c, 0xfe);
-			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WR_4cff() {
-			var instr = Disassemble64(0x4c, 0xff);
-			Assert.AreEqual("rex_WR\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4d() {
-			var instr = Disassemble64(0x4d);
-			Assert.AreEqual("rex_WRB\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_WRB_4d0f00488d() {
@@ -4113,56 +2938,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_rex_WRB_4dc50000() {
 			var instr = Disassemble64(0x4d, 0xc5, 0x00, 0x00);
 			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4dc53dff() {
-			var instr = Disassemble64(0x4d, 0xc5, 0x3d, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4dc5b9ff() {
-			var instr = Disassemble64(0x4d, 0xc5, 0xb9, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4dc5feff() {
-			var instr = Disassemble64(0x4d, 0xc5, 0xfe, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4ddafe() {
-			var instr = Disassemble64(0x4d, 0xda, 0xfe);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4ddaff() {
-			var instr = Disassemble64(0x4d, 0xda, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4dddff() {
-			var instr = Disassemble64(0x4d, 0xdd, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4ddfff() {
-			var instr = Disassemble64(0x4d, 0xdf, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4dfe() {
-			var instr = Disassemble64(0x4d, 0xfe);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRB_4dff() {
-			var instr = Disassemble64(0x4d, 0xff);
-			Assert.AreEqual("rex_WRB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4e() {
-			var instr = Disassemble64(0x4e);
-			Assert.AreEqual("rex_WRX\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_WRX_4e0f0000() {
@@ -4185,79 +2960,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WRX_4ec5ffff() {
-			var instr = Disassemble64(0x4e, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4edaff() {
-			var instr = Disassemble64(0x4e, 0xda, 0xff);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WRX_4edb20() {
 			var instr = Disassemble64(0x4e, 0xdb, 0x20);
 			Assert.AreEqual("rex_WRX\t(bad) [rax]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WRX_4edbf5() {
-			var instr = Disassemble64(0x4e, 0xdb, 0xf5);
-			Assert.AreEqual("rex_WRX\tfcomi st,st(5)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4edbff() {
-			var instr = Disassemble64(0x4e, 0xdb, 0xff);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4eddf6() {
-			var instr = Disassemble64(0x4e, 0xdd, 0xf6);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4eddf7() {
-			var instr = Disassemble64(0x4e, 0xdd, 0xf7);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4eddfd() {
-			var instr = Disassemble64(0x4e, 0xdd, 0xfd);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4eddff() {
-			var instr = Disassemble64(0x4e, 0xdd, 0xff);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4edfff() {
-			var instr = Disassemble64(0x4e, 0xdf, 0xff);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4efe() {
-			var instr = Disassemble64(0x4e, 0xfe);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRX_4eff() {
-			var instr = Disassemble64(0x4e, 0xff);
-			Assert.AreEqual("rex_WRX\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4f() {
-			var instr = Disassemble64(0x4f);
-			Assert.AreEqual("rex_WRXB\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WRXB_4f0f00e9() {
 			var instr = Disassemble64(0x4f, 0x0f, 0x00, 0xe9);
 			Assert.AreEqual("rex_WRXB\tverw r9w", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4f0fffff() {
-			var instr = Disassemble64(0x4f, 0x0f, 0xff, 0xff);
-			Assert.AreEqual("rex_WRXB\tud0 r15,r15", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_rex_WRXB_4fc548c7() {
@@ -4275,69 +2985,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_rex_WRXB_4fc5ffff() {
-			var instr = Disassemble64(0x4f, 0xc5, 0xff, 0xff);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4fdaff() {
-			var instr = Disassemble64(0x4f, 0xda, 0xff);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4fdbb4ff0f0b5b() {
-			var instr = Disassemble64(0x4f, 0xdb, 0xb4, 0xff, 0x0f, 0x0b, 0x5b);
-			Assert.AreEqual("rex_WRXB\t(bad) [r15+r15*8+0x5d5b0b0f]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4fdbff() {
-			var instr = Disassemble64(0x4f, 0xdb, 0xff);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_rex_WRXB_4fddf6() {
 			var instr = Disassemble64(0x4f, 0xdd, 0xf6);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4fddff() {
-			var instr = Disassemble64(0x4f, 0xdd, 0xff);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4fdfff() {
-			var instr = Disassemble64(0x4f, 0xdf, 0xff);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4ffe() {
-			var instr = Disassemble64(0x4f, 0xfe);
-			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_rex_WRXB_4fff() {
-			var instr = Disassemble64(0x4f, 0xff);
 			Assert.AreEqual("rex_WRXB\t(bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_verr_640f006544() {
 			var instr = Disassemble64(0x64, 0x0f, 0x00, 0x65, 0x44);
 			Assert.AreEqual("verr\tWORD PTR fs:[rbp+0x44]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_642efe() {
-			var instr = Disassemble64(0x64, 0x2e, 0xfe);
-			Assert.AreEqual("fs\tcs (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_6442ff() {
-			var instr = Disassemble64(0x64, 0x42, 0xff);
-			Assert.AreEqual("fs\trex.X (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_6443daff() {
-			var instr = Disassemble64(0x64, 0x43, 0xda, 0xff);
-			Assert.AreEqual("fs\trex.XB (bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_fs_6447c481420f() {
@@ -4350,73 +3005,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("fs\trex.RXB (bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_fs_644eff() {
-			var instr = Disassemble64(0x64, 0x4e, 0xff);
-			Assert.AreEqual("fs\trex.WRX (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_6464ddff() {
-			var instr = Disassemble64(0x64, 0x64, 0xdd, 0xff);
-			Assert.AreEqual("fs\tfs (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_6466fe() {
-			var instr = Disassemble64(0x64, 0x66, 0xfe);
-			Assert.AreEqual("fs\tdata16 (bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_fs_64c5bc00() {
 			var instr = Disassemble64(0x64, 0xc5, 0xbc, 0x00);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64c5fbff() {
-			var instr = Disassemble64(0x64, 0xc5, 0xfb, 0xff);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64daff() {
-			var instr = Disassemble64(0x64, 0xda, 0xff);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64dbff() {
-			var instr = Disassemble64(0x64, 0xdb, 0xff);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64ddff() {
-			var instr = Disassemble64(0x64, 0xdd, 0xff);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64dfe4() {
-			var instr = Disassemble64(0x64, 0xdf, 0xe4);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64dfff() {
-			var instr = Disassemble64(0x64, 0xdf, 0xff);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64f2ff() {
-			var instr = Disassemble64(0x64, 0xf2, 0xff);
-			Assert.AreEqual("fs\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64f3ff() {
-			var instr = Disassemble64(0x64, 0xf3, 0xff);
-			Assert.AreEqual("fs\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64fe() {
-			var instr = Disassemble64(0x64, 0xfe);
-			Assert.AreEqual("fs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fs_64ff() {
-			var instr = Disassemble64(0x64, 0xff);
 			Assert.AreEqual("fs\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -4435,16 +3025,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("gs\tcs (bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_gs_6540ff() {
-			var instr = Disassemble64(0x65, 0x40, 0xff);
-			Assert.AreEqual("gs\trex (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_6544ff() {
-			var instr = Disassemble64(0x65, 0x44, 0xff);
-			Assert.AreEqual("gs\trex.R (bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_btr_65480fb33c255a() {
 			var instr = Disassemble64(0x65, 0x48, 0x0f, 0xb3, 0x3c, 0x25, 0x5a);
 			Assert.AreEqual("btr\tQWORD PTR gs:0x2145a,rdi", instr.ToString());
@@ -4460,74 +3040,14 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("gs\trex.WR (bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_gs_654eff() {
-			var instr = Disassemble64(0x65, 0x4e, 0xff);
-			Assert.AreEqual("gs\trex.WRX (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_6564ff() {
-			var instr = Disassemble64(0x65, 0x64, 0xff);
-			Assert.AreEqual("gs\tfs (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_6566dfff() {
-			var instr = Disassemble64(0x65, 0x66, 0xdf, 0xff);
-			Assert.AreEqual("gs\tdata16 (bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_gs_65670f00eb() {
 			var instr = Disassemble64(0x65, 0x67, 0x0f, 0x00, 0xeb);
 			Assert.AreEqual("gs\taddr32 verw bx", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_gs_65c5f7ff() {
-			var instr = Disassemble64(0x65, 0xc5, 0xf7, 0xff);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65daff() {
-			var instr = Disassemble64(0x65, 0xda, 0xff);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65dbff() {
-			var instr = Disassemble64(0x65, 0xdb, 0xff);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65ddff() {
-			var instr = Disassemble64(0x65, 0xdd, 0xff);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65dfff() {
-			var instr = Disassemble64(0x65, 0xdf, 0xff);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65f2ff() {
-			var instr = Disassemble64(0x65, 0xf2, 0xff);
-			Assert.AreEqual("gs\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65fe() {
-			var instr = Disassemble64(0x65, 0xfe);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_gs_65ff() {
-			var instr = Disassemble64(0x65, 0xff);
-			Assert.AreEqual("gs\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_data16_660f004889() {
 			var instr = Disassemble64(0x66, 0x0f, 0x00, 0x48, 0x89);
-			Assert.AreEqual("data16\tstr WORD PTR [rax-0x77]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_660f01488d() {
-			var instr = Disassemble64(0x66, 0x0f, 0x01, 0x48, 0x8d);
-			Assert.AreEqual("data16\tsidt [rax-0x73]", instr.ToString());
+			Assert.AreEqual("str\tword ptr [rax-77]", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_data16_660f01f7() {
@@ -4538,11 +3058,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_invpcid_660f388201() {
 			var instr = Disassemble64(0x66, 0x0f, 0x38, 0x82, 0x01);
 			Assert.AreEqual("invpcid\trax,[rcx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_6640dfff() {
-			var instr = Disassemble64(0x66, 0x40, 0xdf, 0xff);
-			Assert.AreEqual("data16\trex (bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_data16_66c4e2ff48() {
@@ -4557,16 +3072,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis_data16_66c54000() {
 			var instr = Disassemble64(0x66, 0xc5, 0x40, 0x00);
-			Assert.AreEqual("data16\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_66c5d3ff() {
-			var instr = Disassemble64(0x66, 0xc5, 0xd3, 0xff);
-			Assert.AreEqual("data16\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_66c5ffff() {
-			var instr = Disassemble64(0x66, 0xc5, 0xff, 0xff);
 			Assert.AreEqual("data16\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -4615,26 +3120,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("data16\trepnz (bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_data16_66f3fe() {
-			var instr = Disassemble64(0x66, 0xf3, 0xfe);
-			Assert.AreEqual("data16\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_66f3ff() {
-			var instr = Disassemble64(0x66, 0xf3, 0xff);
-			Assert.AreEqual("data16\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_66fe() {
-			var instr = Disassemble64(0x66, 0xfe);
-			Assert.AreEqual("data16\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_data16_66ff() {
-			var instr = Disassemble64(0x66, 0xff);
-			Assert.AreEqual("data16\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_str_670f004885() {
 			var instr = Disassemble64(0x67, 0x0f, 0x00, 0x48, 0x85);
 			Assert.AreEqual("str\tWORD PTR [eax-0x7b]", instr.ToString());
@@ -4653,41 +3138,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_movlps_670f1300() {
 			var instr = Disassemble64(0x67, 0x0f, 0x13, 0x00);
 			Assert.AreEqual("movlps\tQWORD PTR [eax],xmm0", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_6740fe() {
-			var instr = Disassemble64(0x67, 0x40, 0xfe);
-			Assert.AreEqual("addr32\trex (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_6740ff() {
-			var instr = Disassemble64(0x67, 0x40, 0xff);
-			Assert.AreEqual("addr32\trex (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_6743dbff() {
-			var instr = Disassemble64(0x67, 0x43, 0xdb, 0xff);
-			Assert.AreEqual("addr32\trex.XB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_6743ff() {
-			var instr = Disassemble64(0x67, 0x43, 0xff);
-			Assert.AreEqual("addr32\trex.XB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_6748ff() {
-			var instr = Disassemble64(0x67, 0x48, 0xff);
-			Assert.AreEqual("addr32\trex.W (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_674aff() {
-			var instr = Disassemble64(0x67, 0x4a, 0xff);
-			Assert.AreEqual("addr32\trex.WX (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_674dff() {
-			var instr = Disassemble64(0x67, 0x4d, 0xff);
-			Assert.AreEqual("addr32\trex.WRB (bad)", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_addr32_67c51400() {
@@ -4710,69 +3160,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("addr32\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_addr32_67daff() {
-			var instr = Disassemble64(0x67, 0xda, 0xff);
-			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67dbff() {
-			var instr = Disassemble64(0x67, 0xdb, 0xff);
-			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67ddff() {
-			var instr = Disassemble64(0x67, 0xdd, 0xff);
-			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_addr32_67ded8() {
 			var instr = Disassemble64(0x67, 0xde, 0xd8);
 			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67dfff() {
-			var instr = Disassemble64(0x67, 0xdf, 0xff);
-			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67f2ff() {
-			var instr = Disassemble64(0x67, 0xf2, 0xff);
-			Assert.AreEqual("addr32\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67f3ff() {
-			var instr = Disassemble64(0x67, 0xf3, 0xff);
-			Assert.AreEqual("addr32\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67fe() {
-			var instr = Disassemble64(0x67, 0xfe);
-			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_addr32_67ff() {
-			var instr = Disassemble64(0x67, 0xff);
-			Assert.AreEqual("addr32\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4010000() {
-			var instr = Disassemble64(0xc4, 0x01, 0x00, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4010100() {
-			var instr = Disassemble64(0xc4, 0x01, 0x01, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c40131ff() {
-			var instr = Disassemble64(0xc4, 0x01, 0x31, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401410f() {
-			var instr = Disassemble64(0xc4, 0x01, 0x41, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c4014139() {
@@ -4782,16 +3172,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c401413b() {
 			var instr = Disassemble64(0xc4, 0x01, 0x41, 0x3b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4014401() {
-			var instr = Disassemble64(0xc4, 0x01, 0x44, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401440f() {
-			var instr = Disassemble64(0xc4, 0x01, 0x44, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -4817,11 +3197,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c401453b() {
 			var instr = Disassemble64(0xc4, 0x01, 0x45, 0x3b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401480f() {
-			var instr = Disassemble64(0xc4, 0x01, 0x48, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -4865,21 +3240,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c40166ff() {
-			var instr = Disassemble64(0xc4, 0x01, 0x66, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4017404() {
-			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401740a() {
-			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c401740c() {
 			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -4899,22 +3259,7 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x13);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
-		[Test]
-		public void X86Dis__bad__c4017419() {
-			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x19);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401741a() {
-			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401741c() {
-			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x1c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
+        [Test]
 		public void X86Dis__bad__c4017424() {
 			var instr = Disassemble64(0xc4, 0x01, 0x74, 0x24);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5000,11 +3345,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c401c1ff() {
-			var instr = Disassemble64(0xc4, 0x01, 0xc1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c401d239() {
 			var instr = Disassemble64(0xc4, 0x01, 0xd2, 0x39);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5085,16 +3425,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c401fcff() {
-			var instr = Disassemble64(0xc4, 0x01, 0xfc, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c401feff() {
-			var instr = Disassemble64(0xc4, 0x01, 0xfe, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4020000() {
 			var instr = Disassemble64(0xc4, 0x02, 0x00, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5132,16 +3462,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c4020fb6() {
 			var instr = Disassemble64(0xc4, 0x02, 0x0f, 0xb6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4021a01() {
-			var instr = Disassemble64(0xc4, 0x02, 0x1a, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c402400f() {
-			var instr = Disassemble64(0xc4, 0x02, 0x40, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -5247,11 +3567,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c4027408() {
 			var instr = Disassemble64(0xc4, 0x02, 0x74, 0x08);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c402740a() {
-			var instr = Disassemble64(0xc4, 0x02, 0x74, 0x0a);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -5795,11 +4110,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c403ffff() {
-			var instr = Disassemble64(0xc4, 0x03, 0xff, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4210100() {
 			var instr = Disassemble64(0xc4, 0x21, 0x01, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5825,11 +4135,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c44181ff() {
-			var instr = Disassemble64(0xc4, 0x41, 0x81, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c44183c7() {
 			var instr = Disassemble64(0xc4, 0x41, 0x83, 0xc7);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5837,11 +4142,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c44183e6() {
 			var instr = Disassemble64(0xc4, 0x41, 0x83, 0xe6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c44183ff() {
-			var instr = Disassemble64(0xc4, 0x41, 0x83, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -5865,36 +4165,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c441b600() {
-			var instr = Disassemble64(0xc4, 0x41, 0xb6, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c441b801() {
-			var instr = Disassemble64(0xc4, 0x41, 0xb8, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c441bb00() {
-			var instr = Disassemble64(0xc4, 0x41, 0xbb, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c441bbff() {
-			var instr = Disassemble64(0xc4, 0x41, 0xbb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c441bd01() {
-			var instr = Disassemble64(0xc4, 0x41, 0xbd, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c441be01() {
-			var instr = Disassemble64(0xc4, 0x41, 0xbe, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c441f6c7() {
 			var instr = Disassemble64(0xc4, 0x41, 0xf6, 0xc7);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5902,16 +4172,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c441ffc7() {
 			var instr = Disassemble64(0xc4, 0x41, 0xff, 0xc7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4420601() {
-			var instr = Disassemble64(0xc4, 0x42, 0x06, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4420a00() {
-			var instr = Disassemble64(0xc4, 0x42, 0x0a, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -5930,11 +4190,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c443d8ff() {
-			var instr = Disassemble64(0xc4, 0x43, 0xd8, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4612900() {
 			var instr = Disassemble64(0xc4, 0x61, 0x29, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -5950,28 +4205,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vphaddw\tymm9,ymm15,YMMWORD PTR [rdi]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c462fdff() {
-			var instr = Disassemble64(0xc4, 0x62, 0xfd, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c463e67e() {
 			var instr = Disassemble64(0xc4, 0x63, 0xe6, 0x7e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4810000() {
-			var instr = Disassemble64(0xc4, 0x81, 0x00, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4810100() {
-			var instr = Disassemble64(0xc4, 0x81, 0x01, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4812500() {
-			var instr = Disassemble64(0xc4, 0x81, 0x25, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6030,11 +4265,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c481e900() {
-			var instr = Disassemble64(0xc4, 0x81, 0xe9, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c481e91b() {
 			var instr = Disassemble64(0xc4, 0x81, 0xe9, 0x1b);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6045,16 +4275,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c481eaff() {
-			var instr = Disassemble64(0xc4, 0x81, 0xea, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c481fdff() {
-			var instr = Disassemble64(0xc4, 0x81, 0xfd, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4825601() {
 			var instr = Disassemble64(0xc4, 0x82, 0x56, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6062,21 +4282,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c482cfc9() {
 			var instr = Disassemble64(0xc4, 0x82, 0xcf, 0xc9);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c482f1ff() {
-			var instr = Disassemble64(0xc4, 0x82, 0xf1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c482ffff() {
-			var instr = Disassemble64(0xc4, 0x82, 0xff, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4833801() {
-			var instr = Disassemble64(0xc4, 0x83, 0x38, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6230,11 +4435,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c483faff() {
-			var instr = Disassemble64(0xc4, 0x83, 0xfa, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c483fd08() {
 			var instr = Disassemble64(0xc4, 0x83, 0xfd, 0x08);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6250,21 +4450,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c4a1faff() {
-			var instr = Disassemble64(0xc4, 0xa1, 0xfa, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4a1ffff() {
-			var instr = Disassemble64(0xc4, 0xa1, 0xff, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4a2cbff() {
-			var instr = Disassemble64(0xc4, 0xa2, 0xcb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4a2e781() {
 			var instr = Disassemble64(0xc4, 0xa2, 0xe7, 0x81);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6277,11 +4462,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c4a30048() {
 			var instr = Disassemble64(0xc4, 0xa3, 0x00, 0x48);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4c1b2ff() {
-			var instr = Disassemble64(0xc4, 0xc1, 0xb2, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6325,16 +4505,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c4c3b7ff() {
-			var instr = Disassemble64(0xc4, 0xc3, 0xb7, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4c3ffff() {
-			var instr = Disassemble64(0xc4, 0xc3, 0xff, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4e200e8() {
 			var instr = Disassemble64(0xc4, 0xe2, 0x00, 0xe8);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6350,11 +4520,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c4e2a7ff() {
-			var instr = Disassemble64(0xc4, 0xe2, 0xa7, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c4e2ff0f() {
 			var instr = Disassemble64(0xc4, 0xe2, 0xff, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6367,11 +4532,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c4e2ff84() {
 			var instr = Disassemble64(0xc4, 0xe2, 0xff, 0x84);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4e2ffff() {
-			var instr = Disassemble64(0xc4, 0xe2, 0xff, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6395,21 +4555,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c4e3f4ff() {
-			var instr = Disassemble64(0xc4, 0xe3, 0xf4, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c4e3ffff() {
-			var instr = Disassemble64(0xc4, 0xe3, 0xff, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50000() {
-			var instr = Disassemble64(0xc5, 0x00, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50001() {
 			var instr = Disassemble64(0xc5, 0x00, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6417,21 +4562,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c50004() {
 			var instr = Disassemble64(0xc5, 0x00, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5000a() {
-			var instr = Disassemble64(0xc5, 0x00, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5000e() {
-			var instr = Disassemble64(0xc5, 0x00, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5000f() {
-			var instr = Disassemble64(0xc5, 0x00, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6490,16 +4620,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c500ff() {
-			var instr = Disassemble64(0xc5, 0x00, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50100() {
-			var instr = Disassemble64(0xc5, 0x01, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50101() {
 			var instr = Disassemble64(0xc5, 0x01, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6555,11 +4675,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c50200() {
-			var instr = Disassemble64(0xc5, 0x02, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50201() {
 			var instr = Disassemble64(0xc5, 0x02, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6575,11 +4690,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c50300() {
-			var instr = Disassemble64(0xc5, 0x03, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50301() {
 			var instr = Disassemble64(0xc5, 0x03, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6587,11 +4697,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5030f() {
 			var instr = Disassemble64(0xc5, 0x03, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50400() {
-			var instr = Disassemble64(0xc5, 0x04, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6615,46 +4720,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c504ff() {
-			var instr = Disassemble64(0xc5, 0x04, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50500() {
-			var instr = Disassemble64(0xc5, 0x05, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50501() {
-			var instr = Disassemble64(0xc5, 0x05, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c505ff() {
-			var instr = Disassemble64(0xc5, 0x05, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50600() {
-			var instr = Disassemble64(0xc5, 0x06, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50601() {
-			var instr = Disassemble64(0xc5, 0x06, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c506ff() {
-			var instr = Disassemble64(0xc5, 0x06, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50700() {
-			var instr = Disassemble64(0xc5, 0x07, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50701() {
 			var instr = Disassemble64(0xc5, 0x07, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6662,11 +4727,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5070f() {
 			var instr = Disassemble64(0xc5, 0x07, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50800() {
-			var instr = Disassemble64(0xc5, 0x08, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6710,19 +4770,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c50900() {
-			var instr = Disassemble64(0xc5, 0x09, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vaddsubpd_c509d0e8() {
 			var instr = Disassemble64(0xc5, 0x09, 0xd0, 0xe8);
 			Assert.AreEqual("vaddsubpd\txmm13,xmm14,xmm0", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50a00() {
-			var instr = Disassemble64(0xc5, 0x0a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c50a01() {
@@ -6730,18 +4780,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c50b00() {
-			var instr = Disassemble64(0xc5, 0x0b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50b01() {
 			var instr = Disassemble64(0xc5, 0x0b, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50c00() {
-			var instr = Disassemble64(0xc5, 0x0c, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6755,38 +4795,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c50d00() {
-			var instr = Disassemble64(0xc5, 0x0d, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50d01() {
 			var instr = Disassemble64(0xc5, 0x0d, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c50d0c() {
-			var instr = Disassemble64(0xc5, 0x0d, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c50d1e() {
 			var instr = Disassemble64(0xc5, 0x0d, 0x1e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50e00() {
-			var instr = Disassemble64(0xc5, 0x0e, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50eff() {
-			var instr = Disassemble64(0xc5, 0x0e, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c50f00() {
-			var instr = Disassemble64(0xc5, 0x0f, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6797,11 +4812,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c50ff0() {
 			var instr = Disassemble64(0xc5, 0x0f, 0xf0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51000() {
-			var instr = Disassemble64(0xc5, 0x10, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6845,18 +4855,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c51100() {
-			var instr = Disassemble64(0xc5, 0x11, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c51101() {
 			var instr = Disassemble64(0xc5, 0x11, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51200() {
-			var instr = Disassemble64(0xc5, 0x12, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6865,18 +4865,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c51300() {
-			var instr = Disassemble64(0xc5, 0x13, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c51339() {
 			var instr = Disassemble64(0xc5, 0x13, 0x39);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51400() {
-			var instr = Disassemble64(0xc5, 0x14, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6895,16 +4885,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c514ff() {
-			var instr = Disassemble64(0xc5, 0x14, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51500() {
-			var instr = Disassemble64(0xc5, 0x15, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c51527() {
 			var instr = Disassemble64(0xc5, 0x15, 0x27);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -6912,11 +4892,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c515b8() {
 			var instr = Disassemble64(0xc5, 0x15, 0xb8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51600() {
-			var instr = Disassemble64(0xc5, 0x16, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -6935,24 +4910,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c51700() {
-			var instr = Disassemble64(0xc5, 0x17, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5170c() {
-			var instr = Disassemble64(0xc5, 0x17, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vunpckhps_c5171501() {
 			var instr = Disassemble64(0xc5, 0x17, 0x15, 0x01);
 			Assert.AreEqual("vunpckhps\tymm8,ymm13,YMMWORD PTR [rcx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51800() {
-			var instr = Disassemble64(0xc5, 0x18, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c51801() {
@@ -6990,34 +4950,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c518ff() {
-			var instr = Disassemble64(0xc5, 0x18, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51900() {
-			var instr = Disassemble64(0xc5, 0x19, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51a00() {
-			var instr = Disassemble64(0xc5, 0x1a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51b00() {
-			var instr = Disassemble64(0xc5, 0x1b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vcvtpd2dq_c51be6814889df() {
 			var instr = Disassemble64(0xc5, 0x1b, 0xe6, 0x81, 0x48, 0x89, 0xdf);
 			Assert.AreEqual("vcvtpd2dq\txmm8,XMMWORD PTR [rcx+0x49df8948]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51c00() {
-			var instr = Disassemble64(0xc5, 0x1c, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c51c01() {
@@ -7037,51 +4972,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c51ce6() {
 			var instr = Disassemble64(0xc5, 0x1c, 0xe6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51d00() {
-			var instr = Disassemble64(0xc5, 0x1d, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51d0a() {
-			var instr = Disassemble64(0xc5, 0x1d, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51e01() {
-			var instr = Disassemble64(0xc5, 0x1e, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c51f00() {
-			var instr = Disassemble64(0xc5, 0x1f, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c52000() {
-			var instr = Disassemble64(0xc5, 0x20, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c52001() {
-			var instr = Disassemble64(0xc5, 0x20, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c52004() {
-			var instr = Disassemble64(0xc5, 0x20, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5200c() {
-			var instr = Disassemble64(0xc5, 0x20, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5200f() {
-			var instr = Disassemble64(0xc5, 0x20, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7130,23 +5020,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c520ff() {
-			var instr = Disassemble64(0xc5, 0x20, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c52100() {
-			var instr = Disassemble64(0xc5, 0x21, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c52101() {
 			var instr = Disassemble64(0xc5, 0x21, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c52200() {
-			var instr = Disassemble64(0xc5, 0x22, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7155,24 +5030,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c52300() {
-			var instr = Disassemble64(0xc5, 0x23, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-
-		[Test]
 		public void X86Dis__bad__c531f0() {
 			var instr = Disassemble64(0xc5, 0x31, 0xf0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c531ff() {
-			var instr = Disassemble64(0xc5, 0x31, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53200() {
-			var instr = Disassemble64(0xc5, 0x32, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7186,38 +5045,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c53300() {
-			var instr = Disassemble64(0xc5, 0x33, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c53301() {
 			var instr = Disassemble64(0xc5, 0x33, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5330c() {
-			var instr = Disassemble64(0xc5, 0x33, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53400() {
-			var instr = Disassemble64(0xc5, 0x34, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53500() {
-			var instr = Disassemble64(0xc5, 0x35, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53600() {
-			var instr = Disassemble64(0xc5, 0x36, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53700() {
-			var instr = Disassemble64(0xc5, 0x37, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7226,24 +5055,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5370c() {
-			var instr = Disassemble64(0xc5, 0x37, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vaddsubps_c537d0ff() {
 			var instr = Disassemble64(0xc5, 0x37, 0xd0, 0xff);
 			Assert.AreEqual("vaddsubps\tymm15,ymm9,ymm7", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53800() {
-			var instr = Disassemble64(0xc5, 0x38, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53801() {
-			var instr = Disassemble64(0xc5, 0x38, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c53824() {
@@ -7251,19 +5065,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c53900() {
-			var instr = Disassemble64(0xc5, 0x39, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vaddsubpd_c539d07325() {
 			var instr = Disassemble64(0xc5, 0x39, 0xd0, 0x73, 0x25);
-			Assert.AreEqual("vaddsubpd\txmm14,xmm8,XMMWORD PTR [rbx+0x25]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53a00() {
-			var instr = Disassemble64(0xc5, 0x3a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
+			Assert.AreEqual("vaddsubpd\txmm14,xmm8,[rbx+0x25]", instr.ToString());
 		}
 		[Test]
 		public void X86Dis_vcvtdq2pd_c53ae6815b5d41() {
@@ -7271,43 +5075,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vcvtdq2pd\txmm8,QWORD PTR [rcx+0x5c415d5b]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c53b00() {
-			var instr = Disassemble64(0xc5, 0x3b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c53b1c() {
 			var instr = Disassemble64(0xc5, 0x3b, 0x1c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53c00() {
-			var instr = Disassemble64(0xc5, 0x3c, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53d00() {
-			var instr = Disassemble64(0xc5, 0x3d, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53dff() {
-			var instr = Disassemble64(0xc5, 0x3d, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53e00() {
-			var instr = Disassemble64(0xc5, 0x3e, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53f00() {
-			var instr = Disassemble64(0xc5, 0x3f, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c53f01() {
-			var instr = Disassemble64(0xc5, 0x3f, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7316,18 +5085,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54000() {
-			var instr = Disassemble64(0xc5, 0x40, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54001() {
 			var instr = Disassemble64(0xc5, 0x40, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5400c() {
-			var instr = Disassemble64(0xc5, 0x40, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7416,18 +5175,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54100() {
-			var instr = Disassemble64(0xc5, 0x41, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54101() {
 			var instr = Disassemble64(0xc5, 0x41, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5410c() {
-			var instr = Disassemble64(0xc5, 0x41, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7466,16 +5215,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vaddsubpd\txmm13,xmm7,xmm5", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c541ff() {
-			var instr = Disassemble64(0xc5, 0x41, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54200() {
-			var instr = Disassemble64(0xc5, 0x42, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54204() {
 			var instr = Disassemble64(0xc5, 0x42, 0x04);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -7488,16 +5227,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c54213() {
 			var instr = Disassemble64(0xc5, 0x42, 0x13);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54300() {
-			var instr = Disassemble64(0xc5, 0x43, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54400() {
-			var instr = Disassemble64(0xc5, 0x44, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7521,11 +5250,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54500() {
-			var instr = Disassemble64(0xc5, 0x45, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54501() {
 			var instr = Disassemble64(0xc5, 0x45, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -7546,28 +5270,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54600() {
-			var instr = Disassemble64(0xc5, 0x46, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54700() {
-			var instr = Disassemble64(0xc5, 0x47, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54800() {
-			var instr = Disassemble64(0xc5, 0x48, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54801() {
 			var instr = Disassemble64(0xc5, 0x48, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5480c() {
-			var instr = Disassemble64(0xc5, 0x48, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7656,16 +5360,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c549ff() {
-			var instr = Disassemble64(0xc5, 0x49, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54a00() {
-			var instr = Disassemble64(0xc5, 0x4a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54a01() {
 			var instr = Disassemble64(0xc5, 0x4a, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -7681,18 +5375,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54b00() {
-			var instr = Disassemble64(0xc5, 0x4b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54b01() {
 			var instr = Disassemble64(0xc5, 0x4b, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54c00() {
-			var instr = Disassemble64(0xc5, 0x4c, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7721,11 +5405,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54d00() {
-			var instr = Disassemble64(0xc5, 0x4d, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54d01() {
 			var instr = Disassemble64(0xc5, 0x4d, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -7746,16 +5425,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vpacksswb\tymm14,ymm6,ymm5", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c54e00() {
-			var instr = Disassemble64(0xc5, 0x4e, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c54f00() {
-			var instr = Disassemble64(0xc5, 0x4f, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c54f01() {
 			var instr = Disassemble64(0xc5, 0x4f, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -7763,11 +5432,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c54f25() {
 			var instr = Disassemble64(0xc5, 0x4f, 0x25);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55000() {
-			var instr = Disassemble64(0xc5, 0x50, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7791,19 +5455,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c55100() {
-			var instr = Disassemble64(0xc5, 0x51, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vcvttpd2dq_c551e6ff() {
 			var instr = Disassemble64(0xc5, 0x51, 0xe6, 0xff);
 			Assert.AreEqual("vcvttpd2dq\txmm15,xmm7", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55200() {
-			var instr = Disassemble64(0xc5, 0x52, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c55238() {
@@ -7811,23 +5465,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c55300() {
-			var instr = Disassemble64(0xc5, 0x53, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5530f() {
 			var instr = Disassemble64(0xc5, 0x53, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55400() {
-			var instr = Disassemble64(0xc5, 0x54, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55500() {
-			var instr = Disassemble64(0xc5, 0x55, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7843,11 +5482,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5576d() {
 			var instr = Disassemble64(0xc5, 0x57, 0x6d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55800() {
-			var instr = Disassemble64(0xc5, 0x58, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7871,43 +5505,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c55839() {
-			var instr = Disassemble64(0xc5, 0x58, 0x39);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5583f() {
-			var instr = Disassemble64(0xc5, 0x58, 0x3f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55900() {
-			var instr = Disassemble64(0xc5, 0x59, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55a00() {
-			var instr = Disassemble64(0xc5, 0x5a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c55a6d() {
 			var instr = Disassemble64(0xc5, 0x5a, 0x6d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55b00() {
-			var instr = Disassemble64(0xc5, 0x5b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55c00() {
-			var instr = Disassemble64(0xc5, 0x5c, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55c0c() {
-			var instr = Disassemble64(0xc5, 0x5c, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -7921,43 +5520,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c55e00() {
-			var instr = Disassemble64(0xc5, 0x5e, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c55ef0() {
 			var instr = Disassemble64(0xc5, 0x5e, 0xf0);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c55f00() {
-			var instr = Disassemble64(0xc5, 0x5f, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c55f1b() {
 			var instr = Disassemble64(0xc5, 0x5f, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c55fff() {
-			var instr = Disassemble64(0xc5, 0x5f, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56000() {
-			var instr = Disassemble64(0xc5, 0x60, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56001() {
-			var instr = Disassemble64(0xc5, 0x60, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5600c() {
-			var instr = Disassemble64(0xc5, 0x60, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -8036,68 +5605,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c560ff() {
-			var instr = Disassemble64(0xc5, 0x60, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56100() {
-			var instr = Disassemble64(0xc5, 0x61, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5610a() {
-			var instr = Disassemble64(0xc5, 0x61, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56200() {
-			var instr = Disassemble64(0xc5, 0x62, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5621a() {
-			var instr = Disassemble64(0xc5, 0x62, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56300() {
-			var instr = Disassemble64(0xc5, 0x63, 0x00);
+			var instr = Disassemble64(0xc5, 0x62, 0x1a, 0xC0);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c56326() {
 			var instr = Disassemble64(0xc5, 0x63, 0x26);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56500() {
-			var instr = Disassemble64(0xc5, 0x65, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56600() {
-			var instr = Disassemble64(0xc5, 0x66, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5660f() {
-			var instr = Disassemble64(0xc5, 0x66, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c566ff() {
-			var instr = Disassemble64(0xc5, 0x66, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56700() {
-			var instr = Disassemble64(0xc5, 0x67, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c567ff() {
-			var instr = Disassemble64(0xc5, 0x67, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -8111,43 +5625,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c568ff() {
-			var instr = Disassemble64(0xc5, 0x68, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56900() {
-			var instr = Disassemble64(0xc5, 0x69, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56a00() {
-			var instr = Disassemble64(0xc5, 0x6a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56b00() {
-			var instr = Disassemble64(0xc5, 0x6b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56bff() {
-			var instr = Disassemble64(0xc5, 0x6b, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c56c04() {
 			var instr = Disassemble64(0xc5, 0x6c, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56d00() {
-			var instr = Disassemble64(0xc5, 0x6d, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56e00() {
-			var instr = Disassemble64(0xc5, 0x6e, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -8161,23 +5640,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c56f00() {
-			var instr = Disassemble64(0xc5, 0x6f, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c56f1d() {
 			var instr = Disassemble64(0xc5, 0x6f, 0x1d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c56fff() {
-			var instr = Disassemble64(0xc5, 0x6f, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57000() {
-			var instr = Disassemble64(0xc5, 0x70, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -8198,26 +5662,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c57027() {
 			var instr = Disassemble64(0xc5, 0x70, 0x27);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c570ff() {
-			var instr = Disassemble64(0xc5, 0x70, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57100() {
-			var instr = Disassemble64(0xc5, 0x71, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c571ff() {
-			var instr = Disassemble64(0xc5, 0x71, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57200() {
-			var instr = Disassemble64(0xc5, 0x72, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -8281,11 +5725,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5730c() {
-			var instr = Disassemble64(0xc5, 0x73, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vmovlps_c5731342c7() {
 			var instr = Disassemble64(0xc5, 0x73, 0x13, 0x42, 0xc7);
 			Assert.AreEqual("vmovlps\tQWORD PTR [rdx-0x39],xmm8", instr.ToString());
@@ -8336,26 +5775,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57400() {
-			var instr = Disassemble64(0xc5, 0x74, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57404() {
-			var instr = Disassemble64(0xc5, 0x74, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5740a() {
-			var instr = Disassemble64(0xc5, 0x74, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5740c() {
-			var instr = Disassemble64(0xc5, 0x74, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5740e() {
 			var instr = Disassemble64(0xc5, 0x74, 0x0e);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -8374,41 +5793,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_vunpckhps_c574158b500c85() {
 			var instr = Disassemble64(0xc5, 0x74, 0x15, 0x8b, 0x50, 0x0c, 0x85);
 			Assert.AreEqual("vunpckhps\tymm9,ymm1,YMMWORD PTR [rbx-0x2d7af3b0]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57418() {
-			var instr = Disassemble64(0xc5, 0x74, 0x18);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57419() {
-			var instr = Disassemble64(0xc5, 0x74, 0x19);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5741a() {
-			var instr = Disassemble64(0xc5, 0x74, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5741b() {
-			var instr = Disassemble64(0xc5, 0x74, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5741c() {
-			var instr = Disassemble64(0xc5, 0x74, 0x1c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5741d() {
-			var instr = Disassemble64(0xc5, 0x74, 0x1d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5741e() {
-			var instr = Disassemble64(0xc5, 0x74, 0x1e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c57424() {
@@ -8556,31 +5940,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57500() {
-			var instr = Disassemble64(0xc5, 0x75, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57504() {
-			var instr = Disassemble64(0xc5, 0x75, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5750a() {
-			var instr = Disassemble64(0xc5, 0x75, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5750c() {
-			var instr = Disassemble64(0xc5, 0x75, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5750e() {
-			var instr = Disassemble64(0xc5, 0x75, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5750f() {
 			var instr = Disassemble64(0xc5, 0x75, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -8594,41 +5953,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_vunpckhpd_c575154183() {
 			var instr = Disassemble64(0xc5, 0x75, 0x15, 0x41, 0x83);
 			Assert.AreEqual("vunpckhpd\tymm8,ymm1,YMMWORD PTR [rcx-0x7d]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57518() {
-			var instr = Disassemble64(0xc5, 0x75, 0x18);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57519() {
-			var instr = Disassemble64(0xc5, 0x75, 0x19);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5751a() {
-			var instr = Disassemble64(0xc5, 0x75, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5751b() {
-			var instr = Disassemble64(0xc5, 0x75, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5751c() {
-			var instr = Disassemble64(0xc5, 0x75, 0x1c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5751d() {
-			var instr = Disassemble64(0xc5, 0x75, 0x1d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5751e() {
-			var instr = Disassemble64(0xc5, 0x75, 0x1e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c57524() {
@@ -8766,34 +6090,9 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57600() {
-			var instr = Disassemble64(0xc5, 0x76, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5760c() {
-			var instr = Disassemble64(0xc5, 0x76, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vunpckhps_c576158b83cc00() {
 			var instr = Disassemble64(0xc5, 0x76, 0x15, 0x8b, 0x83, 0xcc, 0x00);
 			Assert.AreEqual("vunpckhps\tymm9,ymm1,YMMWORD PTR [rbx+0xcc83]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5761a() {
-			var instr = Disassemble64(0xc5, 0x76, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5761d() {
-			var instr = Disassemble64(0xc5, 0x76, 0x1d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5761e() {
-			var instr = Disassemble64(0xc5, 0x76, 0x1e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c57638() {
@@ -8826,33 +6125,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57700() {
-			var instr = Disassemble64(0xc5, 0x77, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5770a() {
-			var instr = Disassemble64(0xc5, 0x77, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5770c() {
-			var instr = Disassemble64(0xc5, 0x77, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5770e() {
 			var instr = Disassemble64(0xc5, 0x77, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57719() {
-			var instr = Disassemble64(0xc5, 0x77, 0x19);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5771a() {
-			var instr = Disassemble64(0xc5, 0x77, 0x1a);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -8936,16 +6210,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vaddsubps\tymm9,ymm1,YMMWORD PTR [rax-0x77]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5780a() {
-			var instr = Disassemble64(0xc5, 0x78, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5780c() {
-			var instr = Disassemble64(0xc5, 0x78, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vmovlps_c578138b839c01() {
 			var instr = Disassemble64(0xc5, 0x78, 0x13, 0x8b, 0x83, 0x9c, 0x01);
 			Assert.AreEqual("vmovlps\tQWORD PTR [rbx+0x19c83],xmm9", instr.ToString());
@@ -9011,38 +6275,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c578ff() {
-			var instr = Disassemble64(0xc5, 0x78, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57900() {
-			var instr = Disassemble64(0xc5, 0x79, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c57901() {
 			var instr = Disassemble64(0xc5, 0x79, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5790a() {
-			var instr = Disassemble64(0xc5, 0x79, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5791a() {
-			var instr = Disassemble64(0xc5, 0x79, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5791b() {
-			var instr = Disassemble64(0xc5, 0x79, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5791e() {
-			var instr = Disassemble64(0xc5, 0x79, 0x1e);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9076,28 +6310,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vaddsubpd\txmm9,xmm0,XMMWORD PTR [rax-0x77]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57a00() {
-			var instr = Disassemble64(0xc5, 0x7a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57b00() {
-			var instr = Disassemble64(0xc5, 0x7b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c57b1b() {
 			var instr = Disassemble64(0xc5, 0x7b, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57c00() {
-			var instr = Disassemble64(0xc5, 0x7c, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57c0a() {
-			var instr = Disassemble64(0xc5, 0x7c, 0x0a);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9131,48 +6345,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57e00() {
-			var instr = Disassemble64(0xc5, 0x7e, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57e19() {
-			var instr = Disassemble64(0xc5, 0x7e, 0x19);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57e1a() {
-			var instr = Disassemble64(0xc5, 0x7e, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57e1b() {
-			var instr = Disassemble64(0xc5, 0x7e, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57e1e() {
-			var instr = Disassemble64(0xc5, 0x7e, 0x1e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c57eb8() {
 			var instr = Disassemble64(0xc5, 0x7e, 0xb8);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c57f0c() {
-			var instr = Disassemble64(0xc5, 0x7f, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c57f0f() {
 			var instr = Disassemble64(0xc5, 0x7f, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c57f1d() {
-			var instr = Disassemble64(0xc5, 0x7f, 0x1d);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9186,26 +6365,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c58000() {
-			var instr = Disassemble64(0xc5, 0x80, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58001() {
-			var instr = Disassemble64(0xc5, 0x80, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5800e() {
-			var instr = Disassemble64(0xc5, 0x80, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5800f() {
-			var instr = Disassemble64(0xc5, 0x80, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vmovlps_c5801302() {
 			var instr = Disassemble64(0xc5, 0x80, 0x13, 0x02);
 			Assert.AreEqual("vmovlps\tQWORD PTR [rdx],xmm0", instr.ToString());
@@ -9214,16 +6373,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_vunpckhps_c58015c4() {
 			var instr = Disassemble64(0xc5, 0x80, 0x15, 0xc4);
 			Assert.AreEqual("vunpckhps\txmm0,xmm15,xmm4", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5801a() {
-			var instr = Disassemble64(0xc5, 0x80, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5801b() {
-			var instr = Disassemble64(0xc5, 0x80, 0x1b);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c58025() {
@@ -9311,16 +6460,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c582ff() {
-			var instr = Disassemble64(0xc5, 0x82, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5831e() {
-			var instr = Disassemble64(0xc5, 0x83, 0x1e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5833c() {
 			var instr = Disassemble64(0xc5, 0x83, 0x3c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -9339,36 +6478,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_vlddqu_c583f001() {
 			var instr = Disassemble64(0xc5, 0x83, 0xf0, 0x01);
 			Assert.AreEqual("vlddqu\txmm0,[rcx]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c583ff() {
-			var instr = Disassemble64(0xc5, 0x83, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58400() {
-			var instr = Disassemble64(0xc5, 0x84, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c584ff() {
-			var instr = Disassemble64(0xc5, 0x84, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c585ff() {
-			var instr = Disassemble64(0xc5, 0x85, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c586ff() {
-			var instr = Disassemble64(0xc5, 0x86, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58800() {
-			var instr = Disassemble64(0xc5, 0x88, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c58801() {
@@ -9396,11 +6505,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5890c() {
-			var instr = Disassemble64(0xc5, 0x89, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vhsubpd_c5897d00() {
 			var instr = Disassemble64(0xc5, 0x89, 0x7d, 0x00);
 			Assert.AreEqual("vhsubpd\txmm0,xmm14,XMMWORD PTR [rax]", instr.ToString());
@@ -9421,11 +6525,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c58a00() {
-			var instr = Disassemble64(0xc5, 0x8a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c58a1b() {
 			var instr = Disassemble64(0xc5, 0x8a, 0x1b);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -9433,21 +6532,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c58a3d() {
 			var instr = Disassemble64(0xc5, 0x8a, 0x3d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58aff() {
-			var instr = Disassemble64(0xc5, 0x8a, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58b00() {
-			var instr = Disassemble64(0xc5, 0x8b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58b0c() {
-			var instr = Disassemble64(0xc5, 0x8b, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9486,11 +6570,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c58c0c() {
-			var instr = Disassemble64(0xc5, 0x8c, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vunpckhps_c58c1500() {
 			var instr = Disassemble64(0xc5, 0x8c, 0x15, 0x00);
 			Assert.AreEqual("vunpckhps\tymm0,ymm14,YMMWORD PTR [rax]", instr.ToString());
@@ -9501,28 +6580,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c58cff() {
-			var instr = Disassemble64(0xc5, 0x8c, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vpunpcklqdq_c58d6c2dff89e8() {
 			var instr = Disassemble64(0xc5, 0x8d, 0x6c, 0x2d, 0xff, 0x89, 0xe8);
 			Assert.AreEqual("vpunpcklqdq\tymm5,ymm14,YMMWORD PTR [rip+0x4ce889ff]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c58dff() {
-			var instr = Disassemble64(0xc5, 0x8d, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c58e13() {
 			var instr = Disassemble64(0xc5, 0x8e, 0x13);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c58eff() {
-			var instr = Disassemble64(0xc5, 0x8e, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9531,23 +6595,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c59000() {
-			var instr = Disassemble64(0xc5, 0x90, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5901a() {
-			var instr = Disassemble64(0xc5, 0x90, 0x1a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5903f() {
 			var instr = Disassemble64(0xc5, 0x90, 0x3f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5907a() {
-			var instr = Disassemble64(0xc5, 0x90, 0x7a);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9571,31 +6620,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5910f() {
-			var instr = Disassemble64(0xc5, 0x91, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c591c7() {
-			var instr = Disassemble64(0xc5, 0x91, 0xc7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5920c() {
-			var instr = Disassemble64(0xc5, 0x92, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c592ff() {
-			var instr = Disassemble64(0xc5, 0x92, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59300() {
-			var instr = Disassemble64(0xc5, 0x93, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c59304() {
 			var instr = Disassemble64(0xc5, 0x93, 0x04);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -9611,31 +6635,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c593ff() {
-			var instr = Disassemble64(0xc5, 0x93, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59400() {
-			var instr = Disassemble64(0xc5, 0x94, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c597ff() {
-			var instr = Disassemble64(0xc5, 0x97, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59800() {
-			var instr = Disassemble64(0xc5, 0x98, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5980a() {
-			var instr = Disassemble64(0xc5, 0x98, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5980f() {
 			var instr = Disassemble64(0xc5, 0x98, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -9646,43 +6645,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c598ff() {
-			var instr = Disassemble64(0xc5, 0x98, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59a00() {
-			var instr = Disassemble64(0xc5, 0x9a, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c59a39() {
 			var instr = Disassemble64(0xc5, 0x9a, 0x39);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59b00() {
-			var instr = Disassemble64(0xc5, 0x9b, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59b0a() {
-			var instr = Disassemble64(0xc5, 0x9b, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59bff() {
-			var instr = Disassemble64(0xc5, 0x9b, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59c00() {
-			var instr = Disassemble64(0xc5, 0x9c, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59d1c() {
-			var instr = Disassemble64(0xc5, 0x9d, 0x1c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9691,48 +6655,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c59eff() {
-			var instr = Disassemble64(0xc5, 0x9e, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c59f00() {
-			var instr = Disassemble64(0xc5, 0x9f, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vcvtpd2dq_c59fe6ff() {
 			var instr = Disassemble64(0xc5, 0x9f, 0xe6, 0xff);
 			Assert.AreEqual("vcvtpd2dq\txmm7,ymm7", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c59fff() {
-			var instr = Disassemble64(0xc5, 0x9f, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a000() {
-			var instr = Disassemble64(0xc5, 0xa0, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5a001() {
 			var instr = Disassemble64(0xc5, 0xa0, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a00a() {
-			var instr = Disassemble64(0xc5, 0xa0, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a01d() {
-			var instr = Disassemble64(0xc5, 0xa0, 0x1d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a01e() {
-			var instr = Disassemble64(0xc5, 0xa0, 0x1e);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9766,38 +6695,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5a100() {
-			var instr = Disassemble64(0xc5, 0xa1, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a1ff() {
-			var instr = Disassemble64(0xc5, 0xa1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a200() {
-			var instr = Disassemble64(0xc5, 0xa2, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a30c() {
-			var instr = Disassemble64(0xc5, 0xa3, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a400() {
-			var instr = Disassemble64(0xc5, 0xa4, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5a4c7() {
 			var instr = Disassemble64(0xc5, 0xa4, 0xc7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a4ff() {
-			var instr = Disassemble64(0xc5, 0xa4, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9808,26 +6707,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5a639() {
 			var instr = Disassemble64(0xc5, 0xa6, 0x39);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a6ff() {
-			var instr = Disassemble64(0xc5, 0xa6, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a70a() {
-			var instr = Disassemble64(0xc5, 0xa7, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a800() {
-			var instr = Disassemble64(0xc5, 0xa8, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a80c() {
-			var instr = Disassemble64(0xc5, 0xa8, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9851,58 +6730,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5a900() {
-			var instr = Disassemble64(0xc5, 0xa9, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5a9ff() {
-			var instr = Disassemble64(0xc5, 0xa9, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5aaff() {
-			var instr = Disassemble64(0xc5, 0xaa, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5abff() {
-			var instr = Disassemble64(0xc5, 0xab, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5acff() {
-			var instr = Disassemble64(0xc5, 0xac, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ad00() {
-			var instr = Disassemble64(0xc5, 0xad, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5ad04() {
 			var instr = Disassemble64(0xc5, 0xad, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ae00() {
-			var instr = Disassemble64(0xc5, 0xae, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ae0e() {
-			var instr = Disassemble64(0xc5, 0xae, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5afff() {
-			var instr = Disassemble64(0xc5, 0xaf, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b000() {
-			var instr = Disassemble64(0xc5, 0xb0, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -9936,58 +6765,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5b1ff() {
-			var instr = Disassemble64(0xc5, 0xb1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5b327() {
 			var instr = Disassemble64(0xc5, 0xb3, 0x27);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b4ff() {
-			var instr = Disassemble64(0xc5, 0xb4, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b500() {
-			var instr = Disassemble64(0xc5, 0xb5, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b5ff() {
-			var instr = Disassemble64(0xc5, 0xb5, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b6ff() {
-			var instr = Disassemble64(0xc5, 0xb6, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b7ff() {
-			var instr = Disassemble64(0xc5, 0xb7, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b800() {
-			var instr = Disassemble64(0xc5, 0xb8, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b801() {
-			var instr = Disassemble64(0xc5, 0xb8, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b804() {
-			var instr = Disassemble64(0xc5, 0xb8, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b80f() {
-			var instr = Disassemble64(0xc5, 0xb8, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10001,118 +6780,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5b8ff() {
-			var instr = Disassemble64(0xc5, 0xb8, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5b900() {
-			var instr = Disassemble64(0xc5, 0xb9, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vpunpckhqdq_c5b96deb() {
 			var instr = Disassemble64(0xc5, 0xb9, 0x6d, 0xeb);
 			Assert.AreEqual("vpunpckhqdq\txmm5,xmm8,xmm3", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5b9ff() {
-			var instr = Disassemble64(0xc5, 0xb9, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ba00() {
-			var instr = Disassemble64(0xc5, 0xba, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ba01() {
-			var instr = Disassemble64(0xc5, 0xba, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ba04() {
-			var instr = Disassemble64(0xc5, 0xba, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ba0e() {
-			var instr = Disassemble64(0xc5, 0xba, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5baff() {
-			var instr = Disassemble64(0xc5, 0xba, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bb00() {
-			var instr = Disassemble64(0xc5, 0xbb, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bb01() {
-			var instr = Disassemble64(0xc5, 0xbb, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5bb27() {
 			var instr = Disassemble64(0xc5, 0xbb, 0x27);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bbff() {
-			var instr = Disassemble64(0xc5, 0xbb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bc00() {
-			var instr = Disassemble64(0xc5, 0xbc, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bc0a() {
-			var instr = Disassemble64(0xc5, 0xbc, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bcff() {
-			var instr = Disassemble64(0xc5, 0xbc, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bd00() {
-			var instr = Disassemble64(0xc5, 0xbd, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bd0e() {
-			var instr = Disassemble64(0xc5, 0xbd, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bdff() {
-			var instr = Disassemble64(0xc5, 0xbd, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5be00() {
-			var instr = Disassemble64(0xc5, 0xbe, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5be01() {
-			var instr = Disassemble64(0xc5, 0xbe, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5be04() {
-			var instr = Disassemble64(0xc5, 0xbe, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5be0a() {
-			var instr = Disassemble64(0xc5, 0xbe, 0x0a);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10123,46 +6797,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5beb3() {
 			var instr = Disassemble64(0xc5, 0xbe, 0xb3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5beff() {
-			var instr = Disassemble64(0xc5, 0xbe, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bf00() {
-			var instr = Disassemble64(0xc5, 0xbf, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bf04() {
-			var instr = Disassemble64(0xc5, 0xbf, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bf0a() {
-			var instr = Disassemble64(0xc5, 0xbf, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5bfff() {
-			var instr = Disassemble64(0xc5, 0xbf, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c000() {
-			var instr = Disassemble64(0xc5, 0xc0, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c00c() {
-			var instr = Disassemble64(0xc5, 0xc0, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c00f() {
-			var instr = Disassemble64(0xc5, 0xc0, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10261,61 +6895,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5c0ff() {
-			var instr = Disassemble64(0xc5, 0xc0, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c1ff() {
-			var instr = Disassemble64(0xc5, 0xc1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c200() {
-			var instr = Disassemble64(0xc5, 0xc2, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c3ff() {
-			var instr = Disassemble64(0xc5, 0xc3, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c41c() {
-			var instr = Disassemble64(0xc5, 0xc4, 0x1c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c4ff() {
-			var instr = Disassemble64(0xc5, 0xc4, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c5ff() {
-			var instr = Disassemble64(0xc5, 0xc5, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c600() {
-			var instr = Disassemble64(0xc5, 0xc6, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c700() {
-			var instr = Disassemble64(0xc5, 0xc7, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c704() {
-			var instr = Disassemble64(0xc5, 0xc7, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c800() {
-			var instr = Disassemble64(0xc5, 0xc8, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5c824() {
 			var instr = Disassemble64(0xc5, 0xc8, 0x24);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -10331,46 +6910,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5c8ff() {
-			var instr = Disassemble64(0xc5, 0xc8, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c900() {
-			var instr = Disassemble64(0xc5, 0xc9, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5c9ff() {
-			var instr = Disassemble64(0xc5, 0xc9, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5cb00() {
-			var instr = Disassemble64(0xc5, 0xcb, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5cbff() {
-			var instr = Disassemble64(0xc5, 0xcb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ccff() {
-			var instr = Disassemble64(0xc5, 0xcc, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5cd0c() {
-			var instr = Disassemble64(0xc5, 0xcd, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ce00() {
-			var instr = Disassemble64(0xc5, 0xce, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5ceb8() {
 			var instr = Disassemble64(0xc5, 0xce, 0xb8);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -10378,26 +6917,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5cec7() {
 			var instr = Disassemble64(0xc5, 0xce, 0xc7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ceff() {
-			var instr = Disassemble64(0xc5, 0xce, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5cf0a() {
-			var instr = Disassemble64(0xc5, 0xcf, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5cfff() {
-			var instr = Disassemble64(0xc5, 0xcf, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d000() {
-			var instr = Disassemble64(0xc5, 0xd0, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10411,18 +6930,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5d0ff() {
-			var instr = Disassemble64(0xc5, 0xd0, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5d10e() {
 			var instr = Disassemble64(0xc5, 0xd1, 0x0e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d1ff() {
-			var instr = Disassemble64(0xc5, 0xd1, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10431,73 +6940,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5d2ff() {
-			var instr = Disassemble64(0xc5, 0xd2, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d300() {
-			var instr = Disassemble64(0xc5, 0xd3, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d3ff() {
-			var instr = Disassemble64(0xc5, 0xd3, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d40a() {
-			var instr = Disassemble64(0xc5, 0xd4, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d5ff() {
-			var instr = Disassemble64(0xc5, 0xd5, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5d63d() {
 			var instr = Disassemble64(0xc5, 0xd6, 0x3d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d6ff() {
-			var instr = Disassemble64(0xc5, 0xd6, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d700() {
-			var instr = Disassemble64(0xc5, 0xd7, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d7ff() {
-			var instr = Disassemble64(0xc5, 0xd7, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d801() {
-			var instr = Disassemble64(0xc5, 0xd8, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d804() {
-			var instr = Disassemble64(0xc5, 0xd8, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d8ff() {
-			var instr = Disassemble64(0xc5, 0xd8, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5d9ff() {
-			var instr = Disassemble64(0xc5, 0xd9, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5daff() {
-			var instr = Disassemble64(0xc5, 0xda, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10506,48 +6950,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5dbff() {
-			var instr = Disassemble64(0xc5, 0xdb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5dcff() {
-			var instr = Disassemble64(0xc5, 0xdc, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ddff() {
-			var instr = Disassemble64(0xc5, 0xdd, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5de00() {
-			var instr = Disassemble64(0xc5, 0xde, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5de6d() {
 			var instr = Disassemble64(0xc5, 0xde, 0x6d);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5deff() {
-			var instr = Disassemble64(0xc5, 0xde, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5dfff() {
-			var instr = Disassemble64(0xc5, 0xdf, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e000() {
-			var instr = Disassemble64(0xc5, 0xe0, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e001() {
-			var instr = Disassemble64(0xc5, 0xe0, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10596,11 +7000,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5e0ff() {
-			var instr = Disassemble64(0xc5, 0xe0, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_vpacksswb_c5e16300() {
 			var instr = Disassemble64(0xc5, 0xe1, 0x63, 0x00);
 			Assert.AreEqual("vpacksswb\txmm0,xmm3,XMMWORD PTR [rax]", instr.ToString());
@@ -10611,68 +7010,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5e1ff() {
-			var instr = Disassemble64(0xc5, 0xe1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e200() {
-			var instr = Disassemble64(0xc5, 0xe2, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e204() {
-			var instr = Disassemble64(0xc5, 0xe2, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5e3a7() {
 			var instr = Disassemble64(0xc5, 0xe3, 0xa7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e3ff() {
-			var instr = Disassemble64(0xc5, 0xe3, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e400() {
-			var instr = Disassemble64(0xc5, 0xe4, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e4ff() {
-			var instr = Disassemble64(0xc5, 0xe4, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e500() {
-			var instr = Disassemble64(0xc5, 0xe5, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e5ff() {
-			var instr = Disassemble64(0xc5, 0xe5, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e6ff() {
-			var instr = Disassemble64(0xc5, 0xe6, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e700() {
-			var instr = Disassemble64(0xc5, 0xe7, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e7ff() {
-			var instr = Disassemble64(0xc5, 0xe7, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e800() {
-			var instr = Disassemble64(0xc5, 0xe8, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10683,11 +7022,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__c5e804() {
 			var instr = Disassemble64(0xc5, 0xe8, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e80a() {
-			var instr = Disassemble64(0xc5, 0xe8, 0x0a);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -10901,23 +7235,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5e8ff() {
-			var instr = Disassemble64(0xc5, 0xe8, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e900() {
-			var instr = Disassemble64(0xc5, 0xe9, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5e904() {
 			var instr = Disassemble64(0xc5, 0xe9, 0x04);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5e90c() {
-			var instr = Disassemble64(0xc5, 0xe9, 0x0c);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11075,54 +7394,15 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0xc5, 0xe9, 0xc7);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
-		[Test]
-		public void X86Dis_vaddsubpd_c5e9d0fe() {
-			var instr = Disassemble64(0xc5, 0xe9, 0xd0, 0xfe);
-			Assert.AreEqual("vaddsubpd\txmm7,xmm2,xmm6", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_vcvttpd2dq_c5e9e6f5() {
-			var instr = Disassemble64(0xc5, 0xe9, 0xe6, 0xf5);
-			Assert.AreEqual("vcvttpd2dq\txmm6,xmm5", instr.ToString());
-		}
+
 		[Test]
 		public void X86Dis__bad__c5e9f0() {
 			var instr = Disassemble64(0xc5, 0xe9, 0xf0);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5e9ff() {
-			var instr = Disassemble64(0xc5, 0xe9, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5ead0() {
 			var instr = Disassemble64(0xc5, 0xea, 0xd0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5eaff() {
-			var instr = Disassemble64(0xc5, 0xea, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5eb00() {
-			var instr = Disassemble64(0xc5, 0xeb, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5eb0a() {
-			var instr = Disassemble64(0xc5, 0xeb, 0x0a);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5eb0c() {
-			var instr = Disassemble64(0xc5, 0xeb, 0x0c);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5eb0f() {
-			var instr = Disassemble64(0xc5, 0xeb, 0x0f);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11196,38 +7476,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vcvtpd2dq\txmm0,XMMWORD PTR [rax-0x58f980c3]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5ebff() {
-			var instr = Disassemble64(0xc5, 0xeb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ec00() {
-			var instr = Disassemble64(0xc5, 0xec, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5ec0f() {
 			var instr = Disassemble64(0xc5, 0xec, 0x0f);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ecff() {
-			var instr = Disassemble64(0xc5, 0xec, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5edff() {
-			var instr = Disassemble64(0xc5, 0xed, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5eeff() {
-			var instr = Disassemble64(0xc5, 0xee, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ef00() {
-			var instr = Disassemble64(0xc5, 0xef, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11251,16 +7501,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("vaddsubps\tymm7,ymm2,ymm7", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5efff() {
-			var instr = Disassemble64(0xc5, 0xef, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f000() {
-			var instr = Disassemble64(0xc5, 0xf0, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5f001() {
 			var instr = Disassemble64(0xc5, 0xf0, 0x01);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -11281,58 +7521,13 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5f0ff() {
-			var instr = Disassemble64(0xc5, 0xf0, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f1ff() {
-			var instr = Disassemble64(0xc5, 0xf1, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f2ff() {
-			var instr = Disassemble64(0xc5, 0xf2, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f3ff() {
-			var instr = Disassemble64(0xc5, 0xf3, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f4ff() {
-			var instr = Disassemble64(0xc5, 0xf4, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f500() {
-			var instr = Disassemble64(0xc5, 0xf5, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5f513() {
 			var instr = Disassemble64(0xc5, 0xf5, 0x13);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5f5ff() {
-			var instr = Disassemble64(0xc5, 0xf5, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f600() {
-			var instr = Disassemble64(0xc5, 0xf6, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5f6ba() {
 			var instr = Disassemble64(0xc5, 0xf6, 0xba);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f6ff() {
-			var instr = Disassemble64(0xc5, 0xf6, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11349,16 +7544,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis_vaddsubps_c5f7d06621() {
 			var instr = Disassemble64(0xc5, 0xf7, 0xd0, 0x66, 0x21);
 			Assert.AreEqual("vaddsubps\tymm4,ymm1,YMMWORD PTR [rsi+0x21]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f7ff() {
-			var instr = Disassemble64(0xc5, 0xf7, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f800() {
-			var instr = Disassemble64(0xc5, 0xf8, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__c5f801() {
@@ -11391,28 +7576,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5f8ff() {
-			var instr = Disassemble64(0xc5, 0xf8, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f900() {
-			var instr = Disassemble64(0xc5, 0xf9, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5f9f0() {
 			var instr = Disassemble64(0xc5, 0xf9, 0xf0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5f9ff() {
-			var instr = Disassemble64(0xc5, 0xf9, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5fa00() {
-			var instr = Disassemble64(0xc5, 0xfa, 0x00);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11421,28 +7586,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5faff() {
-			var instr = Disassemble64(0xc5, 0xfa, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5fb00() {
-			var instr = Disassemble64(0xc5, 0xfb, 0x00);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5fb7e() {
 			var instr = Disassemble64(0xc5, 0xfb, 0x7e);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5fbff() {
-			var instr = Disassemble64(0xc5, 0xfb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5fcff() {
-			var instr = Disassemble64(0xc5, 0xfc, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11451,18 +7596,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__c5fdff() {
-			var instr = Disassemble64(0xc5, 0xfd, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__c5fe01() {
 			var instr = Disassemble64(0xc5, 0xfe, 0x01);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5feff() {
-			var instr = Disassemble64(0xc5, 0xfe, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -11499,276 +7634,6 @@ movzx	ax,byte ptr [bp+04]
 		public void X86Dis__bad__c5ffc7() {
 			var instr = Disassemble64(0xc5, 0xff, 0xc7);
 			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__c5ffff() {
-			var instr = Disassemble64(0xc5, 0xff, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d1() {
-			var instr = Disassemble64(0xd9, 0xd1);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d2() {
-			var instr = Disassemble64(0xd9, 0xd2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d3() {
-			var instr = Disassemble64(0xd9, 0xd3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d4() {
-			var instr = Disassemble64(0xd9, 0xd4);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d5() {
-			var instr = Disassemble64(0xd9, 0xd5);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d6() {
-			var instr = Disassemble64(0xd9, 0xd6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d7() {
-			var instr = Disassemble64(0xd9, 0xd7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d8() {
-			var instr = Disassemble64(0xd9, 0xd8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9d9() {
-			var instr = Disassemble64(0xd9, 0xd9);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9da() {
-			var instr = Disassemble64(0xd9, 0xda);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9db() {
-			var instr = Disassemble64(0xd9, 0xdb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9dc() {
-			var instr = Disassemble64(0xd9, 0xdc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9dd() {
-			var instr = Disassemble64(0xd9, 0xdd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9de() {
-			var instr = Disassemble64(0xd9, 0xde);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9df() {
-			var instr = Disassemble64(0xd9, 0xdf);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9e2() {
-			var instr = Disassemble64(0xd9, 0xe2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9e3() {
-			var instr = Disassemble64(0xd9, 0xe3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9e6() {
-			var instr = Disassemble64(0xd9, 0xe6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9e7() {
-			var instr = Disassemble64(0xd9, 0xe7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__d9ef() {
-			var instr = Disassemble64(0xd9, 0xef);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae0() {
-			var instr = Disassemble64(0xda, 0xe0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae1() {
-			var instr = Disassemble64(0xda, 0xe1);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae2() {
-			var instr = Disassemble64(0xda, 0xe2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae3() {
-			var instr = Disassemble64(0xda, 0xe3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae4() {
-			var instr = Disassemble64(0xda, 0xe4);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae5() {
-			var instr = Disassemble64(0xda, 0xe5);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae6() {
-			var instr = Disassemble64(0xda, 0xe6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae7() {
-			var instr = Disassemble64(0xda, 0xe7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dae8() {
-			var instr = Disassemble64(0xda, 0xe8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daea() {
-			var instr = Disassemble64(0xda, 0xea);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daeb() {
-			var instr = Disassemble64(0xda, 0xeb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daec() {
-			var instr = Disassemble64(0xda, 0xec);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daed() {
-			var instr = Disassemble64(0xda, 0xed);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daee() {
-			var instr = Disassemble64(0xda, 0xee);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daef() {
-			var instr = Disassemble64(0xda, 0xef);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf0() {
-			var instr = Disassemble64(0xda, 0xf0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf1() {
-			var instr = Disassemble64(0xda, 0xf1);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf2() {
-			var instr = Disassemble64(0xda, 0xf2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf3() {
-			var instr = Disassemble64(0xda, 0xf3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf4() {
-			var instr = Disassemble64(0xda, 0xf4);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf5() {
-			var instr = Disassemble64(0xda, 0xf5);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf6() {
-			var instr = Disassemble64(0xda, 0xf6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf7() {
-			var instr = Disassemble64(0xda, 0xf7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf8() {
-			var instr = Disassemble64(0xda, 0xf8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daf9() {
-			var instr = Disassemble64(0xda, 0xf9);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dafa() {
-			var instr = Disassemble64(0xda, 0xfa);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dafb() {
-			var instr = Disassemble64(0xda, 0xfb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dafc() {
-			var instr = Disassemble64(0xda, 0xfc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dafd() {
-			var instr = Disassemble64(0xda, 0xfd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dafe() {
-			var instr = Disassemble64(0xda, 0xfe);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__daff() {
-			var instr = Disassemble64(0xda, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__db20() {
-			var instr = Disassemble64(0xdb, 0x20);
-			Assert.AreEqual("_bad_\t[rax]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__db21() {
-			var instr = Disassemble64(0xdb, 0x21);
-			Assert.AreEqual("_bad_\t[rcx]", instr.ToString());
 		}
 		[Test]
 		public void X86Dis__bad__db22() {
@@ -11956,51 +7821,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t[rsi+0x1ba0079]", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__dba74f017f0c() {
-			var instr = Disassemble64(0xdb, 0xa7, 0x4f, 0x01, 0x7f, 0x0c);
-			Assert.AreEqual("_bad_\t[rdi+0xc7f014f]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb07b0089ff() {
-			var instr = Disassemble64(0xdb, 0xb0, 0x7b, 0x00, 0x89, 0xff);
-			Assert.AreEqual("_bad_\t[rax-0x76ff85]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb17c004889() {
-			var instr = Disassemble64(0xdb, 0xb1, 0x7c, 0x00, 0x48, 0x89);
-			Assert.AreEqual("_bad_\t[rcx-0x76b7ff84]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb29f0085c0() {
-			var instr = Disassemble64(0xdb, 0xb2, 0x9f, 0x00, 0x85, 0xc0);
-			Assert.AreEqual("_bad_\t[rdx-0x3f7aff61]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb37c005348() {
-			var instr = Disassemble64(0xdb, 0xb3, 0x7c, 0x00, 0x53, 0x48);
-			Assert.AreEqual("_bad_\t[rbx+0x4853007c]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb4e18189eee8() {
-			var instr = Disassemble64(0xdb, 0xb4, 0xe1, 0x81, 0x89, 0xee, 0xe8);
-			Assert.AreEqual("_bad_\t[rcx+riz*8-0x1711767f]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb5f17e89ca() {
-			var instr = Disassemble64(0xdb, 0xb5, 0xf1, 0x7e, 0x89, 0xca);
-			Assert.AreEqual("_bad_\t[rbp-0x3576810f]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb676004889() {
-			var instr = Disassemble64(0xdb, 0xb6, 0x76, 0x00, 0x48, 0x89);
-			Assert.AreEqual("_bad_\t[rsi-0x76b7ff8a]", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbb77b004154() {
-			var instr = Disassemble64(0xdb, 0xb7, 0x7b, 0x00, 0x41, 0x54);
-			Assert.AreEqual("_bad_\t[rdi+0x5441007b]", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_fneni_8087_dbe0() {
 			var instr = Disassemble64(0xdb, 0xe0);
 			Assert.AreEqual("fneni_8087\tonly)", instr.ToString());
@@ -12030,86 +7850,7 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0xdb, 0xe7);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
-		[Test]
-		public void X86Dis_fcomi_dbf0() {
-			var instr = Disassemble64(0xdb, 0xf0);
-			Assert.AreEqual("fcomi\tst,st(0)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf1() {
-			var instr = Disassemble64(0xdb, 0xf1);
-			Assert.AreEqual("fcomi\tst,st(1)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf2() {
-			var instr = Disassemble64(0xdb, 0xf2);
-			Assert.AreEqual("fcomi\tst,st(2)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf3() {
-			var instr = Disassemble64(0xdb, 0xf3);
-			Assert.AreEqual("fcomi\tst,st(3)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf4() {
-			var instr = Disassemble64(0xdb, 0xf4);
-			Assert.AreEqual("fcomi\tst,st(4)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf5() {
-			var instr = Disassemble64(0xdb, 0xf5);
-			Assert.AreEqual("fcomi\tst,st(5)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf6() {
-			var instr = Disassemble64(0xdb, 0xf6);
-			Assert.AreEqual("fcomi\tst,st(6)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_fcomi_dbf7() {
-			var instr = Disassemble64(0xdb, 0xf7);
-			Assert.AreEqual("fcomi\tst,st(7)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbf8() {
-			var instr = Disassemble64(0xdb, 0xf8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbf9() {
-			var instr = Disassemble64(0xdb, 0xf9);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbfa() {
-			var instr = Disassemble64(0xdb, 0xfa);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbfb() {
-			var instr = Disassemble64(0xdb, 0xfb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbfc() {
-			var instr = Disassemble64(0xdb, 0xfc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbfd() {
-			var instr = Disassemble64(0xdb, 0xfd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbfe() {
-			var instr = Disassemble64(0xdb, 0xfe);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dbff() {
-			var instr = Disassemble64(0xdb, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
+
 		[Test]
 		public void X86Dis__bad__dd28() {
 			var instr = Disassemble64(0xdd, 0x28);
@@ -12311,121 +8052,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__ddf8() {
-			var instr = Disassemble64(0xdd, 0xf8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddf9() {
-			var instr = Disassemble64(0xdd, 0xf9);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddfa() {
-			var instr = Disassemble64(0xdd, 0xfa);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddfb() {
-			var instr = Disassemble64(0xdd, 0xfb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddfc() {
-			var instr = Disassemble64(0xdd, 0xfc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddfd() {
-			var instr = Disassemble64(0xdd, 0xfd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddfe() {
-			var instr = Disassemble64(0xdd, 0xfe);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ddff() {
-			var instr = Disassemble64(0xdd, 0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded0() {
-			var instr = Disassemble64(0xde, 0xd0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded1() {
-			var instr = Disassemble64(0xde, 0xd1);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded2() {
-			var instr = Disassemble64(0xde, 0xd2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded3() {
-			var instr = Disassemble64(0xde, 0xd3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded4() {
-			var instr = Disassemble64(0xde, 0xd4);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded5() {
-			var instr = Disassemble64(0xde, 0xd5);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded6() {
-			var instr = Disassemble64(0xde, 0xd6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded7() {
-			var instr = Disassemble64(0xde, 0xd7);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ded8() {
-			var instr = Disassemble64(0xde, 0xd8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__deda() {
-			var instr = Disassemble64(0xde, 0xda);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dedb() {
-			var instr = Disassemble64(0xde, 0xdb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dedc() {
-			var instr = Disassemble64(0xde, 0xdc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dedd() {
-			var instr = Disassemble64(0xde, 0xdd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dede() {
-			var instr = Disassemble64(0xde, 0xde);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dedf() {
-			var instr = Disassemble64(0xde, 0xdf);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_ffreep_dfc0() {
 			var instr = Disassemble64(0xdf, 0xc0);
 			Assert.AreEqual("ffreep\tst(0)", instr.ToString());
@@ -12506,26 +8132,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__dfd0() {
-			var instr = Disassemble64(0xdf, 0xd0);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfd1() {
-			var instr = Disassemble64(0xdf, 0xd1);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfd2() {
-			var instr = Disassemble64(0xdf, 0xd2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfd3() {
-			var instr = Disassemble64(0xdf, 0xd3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__dfd4() {
 			var instr = Disassemble64(0xdf, 0xd4);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -12546,11 +8152,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
-		public void X86Dis__bad__dfd8() {
-			var instr = Disassemble64(0xdf, 0xd8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
 		public void X86Dis__bad__dfda() {
 			var instr = Disassemble64(0xdf, 0xda);
 			Assert.AreEqual("_bad_\t", instr.ToString());
@@ -12558,96 +8159,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis__bad__dfdb() {
 			var instr = Disassemble64(0xdf, 0xdb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfdc() {
-			var instr = Disassemble64(0xdf, 0xdc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfdd() {
-			var instr = Disassemble64(0xdf, 0xdd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfde() {
-			var instr = Disassemble64(0xdf, 0xde);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfdf() {
-			var instr = Disassemble64(0xdf, 0xdf);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfe1() {
-			var instr = Disassemble64(0xdf, 0xe1);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfe2() {
-			var instr = Disassemble64(0xdf, 0xe2);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfe3() {
-			var instr = Disassemble64(0xdf, 0xe3);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfe4() {
-			var instr = Disassemble64(0xdf, 0xe4);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfe5() {
-			var instr = Disassemble64(0xdf, 0xe5);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfe6() {
-			var instr = Disassemble64(0xdf, 0xe6);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dff8() {
-			var instr = Disassemble64(0xdf, 0xf8);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dff9() {
-			var instr = Disassemble64(0xdf, 0xf9);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dffa() {
-			var instr = Disassemble64(0xdf, 0xfa);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dffb() {
-			var instr = Disassemble64(0xdf, 0xfb);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dffc() {
-			var instr = Disassemble64(0xdf, 0xfc);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dffd() {
-			var instr = Disassemble64(0xdf, 0xfd);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dffe() {
-			var instr = Disassemble64(0xdf, 0xfe);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__dfff() {
-			var instr = Disassemble64(0xdf, 0xff);
 			Assert.AreEqual("_bad_\t", instr.ToString());
 		}
 		[Test]
@@ -12671,16 +8182,6 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("repnz\trex.B (bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_repnz_f245fe() {
-			var instr = Disassemble64(0xf2, 0x45, 0xfe);
-			Assert.AreEqual("repnz\trex.RB (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f249ff() {
-			var instr = Disassemble64(0xf2, 0x49, 0xff);
-			Assert.AreEqual("repnz\trex.WB (bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_repnz_f2c50800() {
 			var instr = Disassemble64(0xf2, 0xc5, 0x08, 0x00);
 			Assert.AreEqual("repnz\t(bad)", instr.ToString());
@@ -12698,11 +8199,6 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void X86Dis_repnz_f2c5ffc7() {
 			var instr = Disassemble64(0xf2, 0xc5, 0xff, 0xc7);
-			Assert.AreEqual("repnz\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2c5ffff() {
-			var instr = Disassemble64(0xf2, 0xc5, 0xff, 0xff);
 			Assert.AreEqual("repnz\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -12726,43 +8222,8 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("repnz\t(bad)", instr.ToString());
 		}
 		[Test]
-		public void X86Dis_repnz_f2ddff() {
-			var instr = Disassemble64(0xf2, 0xdd, 0xff);
-			Assert.AreEqual("repnz\t(bad)", instr.ToString());
-		}
-		[Test]
 		public void X86Dis_repnz_f2ded2() {
 			var instr = Disassemble64(0xf2, 0xde, 0xd2);
-			Assert.AreEqual("repnz\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2dfff() {
-			var instr = Disassemble64(0xf2, 0xdf, 0xff);
-			Assert.AreEqual("repnz\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2f2ff() {
-			var instr = Disassemble64(0xf2, 0xf2, 0xff);
-			Assert.AreEqual("repnz\trepnz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2f3dfff() {
-			var instr = Disassemble64(0xf2, 0xf3, 0xdf, 0xff);
-			Assert.AreEqual("repnz\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2f3ff() {
-			var instr = Disassemble64(0xf2, 0xf3, 0xff);
-			Assert.AreEqual("repnz\trepz (bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2fe() {
-			var instr = Disassemble64(0xf2, 0xfe);
-			Assert.AreEqual("repnz\t(bad)", instr.ToString());
-		}
-		[Test]
-		public void X86Dis_repnz_f2ff() {
-			var instr = Disassemble64(0xf2, 0xff);
 			Assert.AreEqual("repnz\t(bad)", instr.ToString());
 		}
 		[Test]
@@ -12855,17 +8316,7 @@ movzx	ax,byte ptr [bp+04]
 			var instr = Disassemble64(0xf3, 0xff);
 			Assert.AreEqual("repz\t(bad)", instr.ToString());
 		}
-		[Test]
-		public void X86Dis__bad__fe() {
-			var instr = Disassemble64(0xfe);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
-		[Test]
-		public void X86Dis__bad__ff() {
-			var instr = Disassemble64(0xff);
-			Assert.AreEqual("_bad_\t", instr.ToString());
-		}
 #endif
-	}
+    }
 }
 
