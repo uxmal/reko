@@ -619,8 +619,10 @@ namespace Reko.Arch.X86
                     break;
                 case 'A':		// Absolute memory address.
                     ++i;
-                    ushort off = rdr.ReadLeUInt16();
-                    ushort seg = rdr.ReadLeUInt16();
+                    if (!rdr.TryReadLeUInt16(out ushort off))
+                        return null;
+                    if (!rdr.TryReadLeUInt16(out ushort seg))
+                        return null;
                     var addr = mode.CreateSegmentedAddress(seg, off);
                     if (addr == null)
                         return null;
@@ -730,7 +732,9 @@ namespace Reko.Arch.X86
                 case 'O':		// Offset of the operand is encoded directly after the opcode.
                     width = OperandWidth(strFormat, ref i);
                     ++i;
-                    pOperand = memOp = new MemoryOperand(width, rdr.ReadLe(addressWidth));
+                    if (!rdr.TryReadLe(addressWidth, out var offset))
+                        return null;
+                    pOperand = memOp = new MemoryOperand(width, offset);
                     memOp.SegOverride = this.currentDecodingContext.SegmentOverride;
                     break;
                 case 'R':	// register operand specified by the mod field of the modRM byte.
@@ -1054,7 +1058,8 @@ namespace Reko.Arch.X86
             {
                 if (!rdr.IsValidOffset(rdr.Offset + (uint)offsetWidth.Size -1))
                     return null;
-                offset = rdr.ReadLe(offsetWidth);
+                if (!rdr.TryReadLe(offsetWidth, out offset))
+                    return null;
             }
             else
             {
