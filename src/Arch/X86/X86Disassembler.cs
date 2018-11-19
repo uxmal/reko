@@ -330,7 +330,7 @@ namespace Reko.Arch.X86
             if (!seen.Contains(strBytes))
             {
                 seen.Add(strBytes);
-                Console.WriteLine($"// An x86 decoder for the instruction {strBytes} ({message}) has not been implemented yet.");
+                Console.WriteLine($"// An x86 decoder for the instruction {strBytes} at address {addr} ({message}) has not been implemented yet.");
                 Console.WriteLine("[Test]");
                 Console.WriteLine($"public void X86dis_{strBytes}()");
                 Console.WriteLine("{");
