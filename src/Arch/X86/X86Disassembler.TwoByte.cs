@@ -33,35 +33,37 @@ namespace Reko.Arch.X86
         {
             return new Decoder[]
             {
-				// 00
+				// 0F 00
 				new GroupOpRec(6, ""),
                 new GroupDecoder(7, ""),
                 new InstructionDecoder(Opcode.lar, InstrClass.System, "Gv,Ew"),
                 new InstructionDecoder(Opcode.lsl, InstrClass.System, "Gv,Ew"),
-                s_nyi,
+                s_invalid,
                 new Alternative64Decoder(
-                    s_nyi,
+                    s_invalid,
                     new InstructionDecoder(Opcode.syscall, InstrClass.Transfer|InstrClass.Call, "")),
                 new InstructionDecoder(Opcode.clts),
                 new Alternative64Decoder(
-                    s_nyi,
+                    s_invalid,
                     new InstructionDecoder(Opcode.sysret, InstrClass.Transfer, "")),
 
                 new InstructionDecoder(Opcode.invd, InstrClass.System, ""),
                 new InstructionDecoder(Opcode.wbinvd, InstrClass.System, ""),
-                s_nyi,
+                s_invalid,
                 new InstructionDecoder(Opcode.ud2),
-                s_nyi,
+                s_invalid,
                 new InstructionDecoder(Opcode.prefetchw, "Ev"),
-                s_nyi,
-                s_nyi,
+                Instr(Opcode.femms),    // AMD-specific
+                nyi("AMD 3D-Now instructions"),
 
-				// 10
+				// 0F 10
 				new PrefixedDecoder(
-                    Opcode.movups, "Vps,Wps",
-                    Opcode.movupd, "Vpd,Wpd",
-                    Opcode.movss,  "Vx,Wss",
-                    Opcode.movsd,  "Vx,Wsd"),
+                    Instr(Opcode.movups, "Vps,Wps"),
+                    Instr(Opcode.movups, "Vps,Wps"),
+                    Instr(Opcode.movupd, "Vpd,Wpd"),
+                    Instr(Opcode.movupd, "Vpd,Wpd"),
+                    Instr(Opcode.movss,  "Vx,Wss"),
+                    Instr(Opcode.movsd,  "Vx,Wsd")),
                 new PrefixedDecoder(
                     Opcode.movups, "Wps,Vps",
                     Opcode.movupd, "Wpd,Vpd",
@@ -88,12 +90,12 @@ namespace Reko.Arch.X86
                     Opcode.movhpd, "Mq,Vq"),
 
                 new GroupDecoder(16, ""),
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
 
 				// 0F 20
@@ -101,10 +103,10 @@ namespace Reko.Arch.X86
                 new InstructionDecoder(Opcode.mov, "Rv,Dd"),
                 new InstructionDecoder(Opcode.mov, "Cd,Rv"),
                 new InstructionDecoder(Opcode.mov, "Dd,Rv"),
-				s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+				s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
 
                 new PrefixedDecoder(
                     Opcode.movaps, "Vps,Wps",
@@ -144,17 +146,17 @@ namespace Reko.Arch.X86
                 new InstructionDecoder(Opcode.rdpmc),
                 new InstructionDecoder(Opcode.sysenter),
                 new InstructionDecoder(Opcode.sysexit, InstrClass.Transfer, ""),
-                s_nyi,
+                s_invalid,
                 new InstructionDecoder(Opcode.getsec, InstrClass.System, ""),
 
                 new ThreeByteOpRec(), // 0F 38
-                s_nyi,
+                s_invalid,
                 new ThreeByteOpRec(), // 0F 3A
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
 
 				// 0F 40
 				new InstructionDecoder(Opcode.cmovo,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
@@ -284,9 +286,13 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.packssdw, "Pq,Qd",
                     Opcode.vpackssdw, "Vx,Hx,Wx"),
-				s_nyi,
-				s_nyi,
-				new InstructionDecoder(Opcode.movd, "Vy,Ey"),
+                 new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vpunpcklqdq, "Vx,Hx,Wx"),
+                 new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vpunpckhqdq, "Vx,Hx,Wx"),
+                new InstructionDecoder(Opcode.movd, "Vy,Ey"),
 				new InstructionDecoder(Opcode.movdqa, "Vx,Wx"),
 
 				// 0F 70
@@ -295,9 +301,13 @@ namespace Reko.Arch.X86
                     Opcode.pshufd, "Vx,Wx,Ib",
                     Opcode.pshufhw, "Vx,Wx,Ib",
                     Opcode.pshuflw, "Vx,Wx,Ib"),
-				s_nyi,
-				s_nyi,
-				s_nyi,
+                new PrefixedDecoder(
+                    new GroupDecoder(12, ""),
+                    new GroupDecoder(12, "")),
+                new PrefixedDecoder(
+                    new GroupDecoder(13, ""),
+                    new GroupDecoder(13, "")),
+                new GroupDecoder(14, ""),
 				new PrefixedDecoder(
                     Opcode.pcmpeqb, "Pq,Qq",
                     Opcode.pcmpeqb, "Vx,Wx"),
@@ -311,11 +321,17 @@ namespace Reko.Arch.X86
 
 				new InstructionDecoder(Opcode.vmread, "Ey,Gy"),
 				new InstructionDecoder(Opcode.vmwrite, "Gy,Ey"),
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				new PrefixedDecoder(
+				s_invalid,
+				s_invalid,
+                new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vhaddpd, "Vpd,Hpd,Wpd",
+                    opF2:Opcode.vhaddps, opF2Fmt:"Vps,Hps,Wps"),
+                new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vhsubpd, "Vpd,Hpd,Wpd",
+                    opF2:Opcode.vhsubps, opF2Fmt:"Vps,Hps,Wps"),
+                new PrefixedDecoder(
                     dec: Instr(Opcode.movd, "Ey,Pd"), decWide: Instr(Opcode.movq, "Ey,Pd"),
                     dec66: Instr(Opcode.movd, "Ey,Vy"), dec66Wide: Instr(Opcode.movq, "Ey,Vy"),
                     decF3: Instr(Opcode.movq, "Vy,Wy")),
@@ -366,13 +382,13 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.bt, "Ev,Gv"),
 				new InstructionDecoder(Opcode.shld, "Ev,Gv,Ib"),
 				new InstructionDecoder(Opcode.shld, "Ev,Gv,c"),
-				s_nyi,
-				s_nyi,
+				s_invalid,
+                s_invalid,
 
 				new InstructionDecoder(Opcode.push, "s5"),
 				new InstructionDecoder(Opcode.pop, "s5"),
-				s_nyi,
-				new InstructionDecoder(Opcode.bts, "Ev,Gv"),
+				new InstructionDecoder(Opcode.rsm, ""),
+                new InstructionDecoder(Opcode.bts, "Ev,Gv"),
 				new InstructionDecoder(Opcode.shrd, "Ev,Gv,Ib"),
 				new InstructionDecoder(Opcode.shrd, "Ev,Gv,c"),
 				new GroupDecoder(15, ""),
@@ -382,14 +398,16 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.cmpxchg, "Eb,Gb"),
 				new InstructionDecoder(Opcode.cmpxchg, "Ev,Gv"),
 				new InstructionDecoder(Opcode.lss, "Gv,Mp"),
-				s_nyi,
-				new InstructionDecoder(Opcode.lfs, "Gv,Mp"),
+				new InstructionDecoder(Opcode.btr, "Ev,Gv"),
+                new InstructionDecoder(Opcode.lfs, "Gv,Mp"),
 				new InstructionDecoder(Opcode.lgs, "Gv,Mp"),
 				new InstructionDecoder(Opcode.movzx, "Gv,Eb"),
 				new InstructionDecoder(Opcode.movzx, "Gv,Ew"),
 
-				s_nyi,
-				s_nyi,
+				new PrefixedDecoder(
+                    Opcode.jmpe, "",
+                    opF3:Opcode.popcnt, opF3Fmt: "Gv,Ev"),
+				Instr(Opcode.ud1, "Gv,Ev"),
 				new GroupDecoder(8, "Ev,Ib"),
 				new InstructionDecoder(Opcode.btc, "Gv,Ev"),
 				new InstructionDecoder(Opcode.bsf, "Gv,Ev"),
@@ -417,7 +435,7 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.vshufps, "Vps,Hps,Wps,Ib",
                     Opcode.vshufpd, "Vpd,Hpd,Wpd,Ib"),
-				s_nyi,
+				new GroupDecoder(9, ""),
 
 				new InstructionDecoder(Opcode.bswap, "rv"),
 				new InstructionDecoder(Opcode.bswap, "rv"),
@@ -479,7 +497,7 @@ namespace Reko.Arch.X86
                     Opcode.pandn, "Pq,Qq",
                     Opcode.vpandn, "Vx,Hx,Wx"),
 
-				// E0
+				// 0F E0
                 new PrefixedDecoder(
                     Opcode.pavgb, "Pq,Qq",
                     Opcode.vpavgb, "Vx,Hx,Wx"),
@@ -492,13 +510,18 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.pavgw, "Pq,Qq",
                     Opcode.vpavgw, "Vx,Hx,Wx"),
+
                 new PrefixedDecoder(
                     Opcode.pmulhuw, "Pq,Qq",
                     Opcode.vpmulhuw, "Vx,Hx,Wx"),
                 new PrefixedDecoder(
                     Opcode.pmulhw, "Pq,Qq",
                     Opcode.vpmulhw, "Vx,Hx,Wx"),
-				s_nyi,
+                new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vcvttpd2dq, "Vx,Wpd",
+                    Opcode.vcvtdq2pd, "Vx,Wpd",
+                    Opcode.vcvtpd2dq, "Vx,Wpd"),
                 new PrefixedDecoder(
                     Opcode.movntq, "Mq,Pq",
                     Opcode.vmovntq, "Mx,Vx"),
@@ -515,6 +538,7 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.por, "Pq,Qq",
                     Opcode.vpor, "Vx,Hx,Wx"),
+
                 new PrefixedDecoder(
                     Opcode.paddsb, "Pq,Qq",
                     Opcode.vpaddsb, "Vx,Hx,Wx"),
@@ -528,8 +552,10 @@ namespace Reko.Arch.X86
                     Opcode.pxor, "Pq,Qq",
                     Opcode.vpxor, "Vx,Hx,Wx"),
 
-				// F0
-				s_nyi,
+				// 0F F0
+                new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    opF2: Opcode.vlddqu, opF2Fmt:"Vx,Mx"),
                 new PrefixedDecoder(
                     Opcode.psllw, "Pq,Qq",
                     Opcode.vpsllw, "Vx,Hx,Wx"),
@@ -573,7 +599,7 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.paddd, "Pq,Qq",
                     Opcode.vpaddd, "Vx,Hx,Wx"),
-				s_nyi,
+				Instr(Opcode.ud0, "Gv,Ev"),
 			};
         }
     }

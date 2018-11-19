@@ -61,12 +61,12 @@ namespace Reko.Arch.X86
 				// group 4
 				new InstructionDecoder(Opcode.inc, "Eb"),
 				new InstructionDecoder(Opcode.dec, "Eb"),
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi, 
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid, 
 
 				// group 5
 				new InstructionDecoder(Opcode.inc, "Ev"),
@@ -82,41 +82,55 @@ namespace Reko.Arch.X86
                 new Alternative64Decoder(
 				    new InstructionDecoder(Opcode.push, "Ev"),
 				    new InstructionDecoder(Opcode.push, "Eq")),
-                s_nyi,
+                s_invalid,
 
 				// group 6
-				new Group7OpRec(
-					new SingleByteOpRec(Opcode.sldt, "Ew"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv"),
-					new SingleByteOpRec(Opcode.sldt, "Rv")),
-				new SingleByteOpRec(Opcode.str, "Ew"),
-				new SingleByteOpRec(Opcode.lldt, "Ew"),
-				new SingleByteOpRec(Opcode.ltr, "Ew"),
-				new SingleByteOpRec(Opcode.verr, "Ew"),
-				new SingleByteOpRec(Opcode.verw, "Ew"),
-				s_nyi,
-				s_nyi,
+				new Group6Decoder(
+					new InstructionDecoder(Opcode.sldt, "Ew"),
+					new InstructionDecoder(Opcode.sldt, "Rv")),
+                new Group6Decoder(
+				    new InstructionDecoder(Opcode.str, "Ew"),
+                    new InstructionDecoder(Opcode.str, "Rv")),
+                new InstructionDecoder(Opcode.lldt, "Ew"),
+				new InstructionDecoder(Opcode.ltr, "Ew"),
+				new InstructionDecoder(Opcode.verr, "Ew"),
+				new InstructionDecoder(Opcode.verw, "Ew"),
+				s_invalid,
+                s_invalid,
 
 				// group 7
-				s_nyi,
-				s_nyi,
 				new Group7Decoder(
-                    s_nyi,
+                    new InstructionDecoder(Opcode.sgdt, "Ms"),
+                    s_invalid,
+                    Instr(Opcode.vmcall),
+                    Instr(Opcode.vmlaunch),
+                    Instr(Opcode.vmresume),
+                    Instr(Opcode.vmxoff),
+                    s_invalid,
+                    s_invalid,
+                    s_invalid),
+                new Group7Decoder(
+                    new InstructionDecoder(Opcode.sidt, "Ms"),
+                    Instr(Opcode.monitor),
+                    Instr(Opcode.mwait),
+                    Instr(Opcode.clac),
+                    Instr(Opcode.stac),
+                    s_invalid,
+                    s_invalid,
+                    s_invalid,
+                    s_invalid),
+                new Group7Decoder(
+                    new InstructionDecoder(Opcode.lgdt, "Ms"),
 
                     new InstructionDecoder(Opcode.xgetbv),
                     new InstructionDecoder(Opcode.xsetbv),
-                    s_nyi,
-                    s_nyi,
+                    s_invalid,
+                    s_invalid,
 
                     new InstructionDecoder(Opcode.vmfunc),
                     new InstructionDecoder(Opcode.xend),
                     new InstructionDecoder(Opcode.xtest),
-                    s_nyi),
+                    s_invalid),
 				s_nyi,
 				s_nyi,
 				s_nyi,
@@ -124,24 +138,33 @@ namespace Reko.Arch.X86
 				s_nyi,
 
 				// group 8
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 				new InstructionDecoder(Opcode.bt),
 				new InstructionDecoder(Opcode.bts),
 				new InstructionDecoder(Opcode.btr),
 				new InstructionDecoder(Opcode.btc),
 
 				// group 9
+				s_invalid,
 				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+                s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				new Group6Decoder(
+                    new PrefixedDecoder(
+                        Opcode.vmptrld, "Mq",
+                        Opcode.vmclear, "Mq",
+                        opF3:Opcode.vmxon, opF3Fmt:"Mq"),
+                    Instr(Opcode.rdrand, "Rv")),
+				new Group6Decoder(
+                    new PrefixedDecoder(
+                        Opcode.vmptrst, "Mq",
+                        opF3:Opcode.vmptrst, opF3Fmt: "Mq"),
+                    Instr(Opcode.rdseed, "Rv")),
 
 				// group 10
 				s_nyi,
@@ -164,24 +187,38 @@ namespace Reko.Arch.X86
 				s_nyi,
 
 				// group 12
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+                s_invalid,
+				new PrefixedDecoder(
+                    Opcode.psrlw, "Nq,Ib",
+                    Opcode.vpsrlw, "Hx,Ux,Ib"),
+                s_invalid,
+                new PrefixedDecoder(
+                    Opcode.psraw, "Nq,Ib",
+                    Opcode.vpsraw, "Hx,Ux,Ib"),
+                s_invalid,
+                new PrefixedDecoder(
+                    Opcode.psllw, "Nq,Ib",
+                    Opcode.vpsllw, "Hx,Ux,Ib"),
+                s_invalid,
 
 				// group 13
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+                new PrefixedDecoder(
+                    Opcode.psrlq, "Nq,Ib",
+                    Opcode.vpsrlq, "Hx,Ux,Ib"),
+                new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vpsrldq, "Hx,Ux,Ib"),
+                s_invalid,
+                s_invalid,
+                new PrefixedDecoder(
+                    Opcode.psllq, "Nq,Ib",
+                    Opcode.vpsllq, "Hx,Ux,Ib"),
+                new PrefixedDecoder(
+                    Opcode.illegal, "",
+                    Opcode.vpslldq, "Hx,Ux,Ib"),
 
 				// group 14
 				s_nyi,
@@ -242,20 +279,20 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.prefetcht0, "Mb"),
 				new InstructionDecoder(Opcode.prefetcht1, "Mb"),
 				new InstructionDecoder(Opcode.prefetcht2, "Mb"),
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
 
 				// group 17
+				s_invalid,
 				s_nyi,
 				s_nyi,
 				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 			};
         }
     }

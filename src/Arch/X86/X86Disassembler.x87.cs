@@ -121,21 +121,21 @@ namespace Reko.Arch.X86
             // FXAM(check TOS value)
             // returns AX = 8087 status word
             case 0xEC:  //  sine(ST0)
-            default:
-                throw new NotImplementedException();
-
             //  EEh cosine(ST0)
             //  F0h tangent(ST0)
             //  F2h arctangent(ST0)
+            default:
+                return this.NotYetImplemented("Emulated x87");
+
             case 0xF4:
                 //  F4h ST0 = ln(ST0)
                 return new X86Instruction(Opcode.BOR_ln, InstrClass.Linear, dataWidth, addressWidth);
-            // F6h    ST0 = log2(ST0)
+            //  F6h ST0 = log2(ST0)
             //  F8h ST0 = log10(ST0)
             case 0xFA:
                 // FAh    ST0 = e** ST0
                 return new X86Instruction(Opcode.BOR_exp, InstrClass.Linear, dataWidth, addressWidth);
-                //  FCh ST0 = 2 * *ST0
+                // FCh    ST0 = 2 * *ST0
                 // FEh    ST0 = 10**ST0
             }
         }
@@ -259,32 +259,32 @@ namespace Reko.Arch.X86
 						
 				// D9 D0
 				new InstructionDecoder(Opcode.fnop, ""),
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// E0
 				new InstructionDecoder(Opcode.fchs),
 				new InstructionDecoder(Opcode.fabs, ""),
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
 				new InstructionDecoder(Opcode.ftst),
 				new InstructionDecoder(Opcode.fxam),
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
 						
 				new InstructionDecoder(Opcode.fld1),
 				new InstructionDecoder(Opcode.fldl2t, ""),
@@ -293,7 +293,7 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fldlg2, ""),
 				new InstructionDecoder(Opcode.fldln2),
 				new InstructionDecoder(Opcode.fldz),
-				s_nyi,
+				s_invalid,
 						
 				// D9 F0
 				new InstructionDecoder(Opcode.f2xm1, "F,f"),
@@ -365,41 +365,41 @@ namespace Reko.Arch.X86
                 new InstructionDecoder(Opcode.fcmovu, "f,F"),
 
                 // DA E0
-                s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
+                s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
-				s_nyi, 
+				s_invalid, 
 				new InstructionDecoder(Opcode.fucompp), 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+                // DA F0
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
 				// DB ///////////////////////////
 				
@@ -407,9 +407,9 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fisttp, "Md"),
 				new InstructionDecoder(Opcode.fist, "Md"),
 				new InstructionDecoder(Opcode.fistp, "Md"),
-				s_nyi,
+				s_invalid,
 				new InstructionDecoder(Opcode.fld, "Mh"),
-				s_nyi,
+				s_invalid,
 				new InstructionDecoder(Opcode.fstp, "Mh"),
 						
 				// DB C0, Conditional moves.
@@ -451,14 +451,14 @@ namespace Reko.Arch.X86
                 new InstructionDecoder(Opcode.fcmovnu, "f,F"),
 
                 // DB E0
-				s_nyi, 
-				s_nyi, 
+				s_invalid, 
+				s_invalid, 
 				new InstructionDecoder(Opcode.fclex), 
 				new InstructionDecoder(Opcode.fninit), 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
 				new InstructionDecoder(Opcode.fucomi, "f,F"), 
 				new InstructionDecoder(Opcode.fucomi, "f,F"), 
@@ -470,23 +470,23 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fucomi, "f,F"), 
 
                 // DB F0
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
+				new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
+                new InstructionDecoder(Opcode.fcomi, "f,F"),
 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
-				s_nyi, 
+                s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 					
 				// DC ////////////////////
 
@@ -580,7 +580,7 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fst, "Mg"),
 				new InstructionDecoder(Opcode.fstp, "Mg"),
 				new InstructionDecoder(Opcode.frstor, "Mw"),
-				s_nyi,
+				s_invalid,
 				new InstructionDecoder(Opcode.fsave, "Mw"),
 				new InstructionDecoder(Opcode.fstsw, "Mw"),
 						
@@ -595,14 +595,14 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.ffree, "F"),
 				new InstructionDecoder(Opcode.ffree, "F"),
 						
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// DD D0
 				new InstructionDecoder(Opcode.fst, "F"),
@@ -643,23 +643,23 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fucomp, "F"),
 						
 				// DD F0
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// DE //////////////////////////
 
@@ -692,23 +692,23 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fmulp, "F,f"),
 						
                 // DE D0
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				s_nyi,
+				s_invalid,
 				new InstructionDecoder(Opcode.fcompp),
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// DE E0	
 				new InstructionDecoder(Opcode.fsubrp, "F,f"),
@@ -760,52 +760,52 @@ namespace Reko.Arch.X86
 				new InstructionDecoder(Opcode.fistp, "Mq"),
 
 				// DF C0
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// DF D0
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// DF E0
 				new InstructionDecoder(Opcode.fstsw, "aw"),
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_nyi,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
                 new InstructionDecoder(Opcode.fucomip, "f,F"),
                 new InstructionDecoder(Opcode.fucomip, "f,F"),
@@ -826,14 +826,14 @@ namespace Reko.Arch.X86
                 new InstructionDecoder(Opcode.fcomip, "f,F"),
                 new InstructionDecoder(Opcode.fcomip, "f,F"),
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
             };
         }
     }

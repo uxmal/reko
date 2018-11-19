@@ -147,6 +147,9 @@ namespace Reko.Arch.X86
             }
         }
 
+        /// <summary>
+        /// Uses bits 3-5 of the ModRM byte to decode further.
+        /// </summary>
         public class GroupDecoder : Decoder
         {
             public readonly int Group;
@@ -168,18 +171,51 @@ namespace Reko.Arch.X86
             }
         }
 
-        // Uses the 2 high bits of the ModRM word for further discrimination
+
+        public class Group6Decoder : Decoder
+        {
+            private readonly Decoder memDecoder;
+            private readonly Decoder regDecoder;
+
+            public Group6Decoder(
+                Decoder memDecoder,
+                Decoder regDecoder)
+            {
+                this.memDecoder = memDecoder;
+                this.regDecoder = regDecoder;
+            }
+
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (!disasm.TryEnsureModRM(out byte modRm))
+                    return null;
+                if ((modRm & 0xC0) == 0xC0)
+                {
+                    return regDecoder.Decode(disasm, op, opFormat);
+                }
+                else
+                {
+                    return memDecoder.Decode(disasm, op, opFormat);
+                }
+            }
+        }
+
+        /// <summary>
+        /// If the the high 2 bits of the ModRM byte are set,
+        /// use the array of register decoders for further discrimination
+        /// using bits 0-2 of ModRM byte.
+        /// </summary>
         public class Group7Decoder : Decoder
         {
-            private Decoder memInstr;
-            private Decoder[] regInstrs;
+            private Decoder memDecoder;
+            private Decoder[] regDecoders;
 
             public Group7Decoder(
-                Decoder memInstr,
-                params Decoder[] regInstrs)
+                Decoder memDecoder,
+                params Decoder[] regDecoder)
             {
-                this.memInstr = memInstr;
-                this.regInstrs = regInstrs;
+                this.memDecoder = memDecoder;
+                this.regDecoders = regDecoder;
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -189,9 +225,9 @@ namespace Reko.Arch.X86
                 if ((modRm & 0xC0) == 0xC0)
                 {
                     var i = modRm & 0x07;
-                    if (i < regInstrs.Length)
+                    if (i < regDecoders.Length)
                     {
-                        return regInstrs[i].Decode(disasm, op, opFormat);
+                        return regDecoders[i].Decode(disasm, op, opFormat);
                     }
                     else
                     {
@@ -200,7 +236,7 @@ namespace Reko.Arch.X86
                 }
                 else
                 {
-                    return memInstr.Decode(disasm, op, opFormat);
+                    return memDecoder.Decode(disasm, op, opFormat);
                 }
             }
         }
@@ -222,7 +258,7 @@ namespace Reko.Arch.X86
             }
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                return disasm.NotYetImplemented(message, 0);
+                return disasm.NotYetImplemented(message);
             }
         }
 
@@ -267,16 +303,17 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
+                byte op2;
                 switch (op)
                 {
                 case 0x38:
-                    if (!disasm.rdr.TryReadByte(out op))
+                    if (!disasm.rdr.TryReadByte(out op2))
                         return null;
-                    return s_aOpRec0F38[op].Decode(disasm, op, "");
+                    return s_aOpRec0F38[op2].Decode(disasm, op2, "");
                 case 0x3A:
-                    if (!disasm.rdr.TryReadByte(out op))
+                    if (!disasm.rdr.TryReadByte(out op2))
                         return null;
-                    return s_aOpRec0F3A[op].Decode(disasm, op, "");
+                    return s_aOpRec0F3A[op2].Decode(disasm, op2, "");
                 default: return null;
                 }
             }
@@ -434,7 +471,6 @@ namespace Reko.Arch.X86
             private readonly Decoder decoderF3;
             private readonly Decoder decoderF2;
 
-            [Obsolete("Use other constructor")]
             public PrefixedDecoder(
                 Opcode op,
                 string opFmt,
@@ -457,33 +493,6 @@ namespace Reko.Arch.X86
                 this.decoder66 = this.decoder66Wide = MakeDecoder(op66, op66Fmt);
                 this.decoderF3 = MakeDecoder(opF3, opF3Fmt);
                 this.decoderF2 = MakeDecoder(opF2, opF2Fmt);
-            }
-
-            [Obsolete("Use other constructor")]
-            public PrefixedDecoder(
-                Opcode op,
-                Opcode opWide,
-                string opFmt,
-                Opcode op66,
-                Opcode op66Wide,
-                string op66Fmt,
-                Opcode opF3 = Opcode.illegal,
-                string opF3Fmt = null,
-                InstrClass iclass = InstrClass.Linear)
-            {
-                Decoder MakeDecoder(Opcode opc, string format)
-                {
-                    return opc != Opcode.illegal
-                        ? new InstructionDecoder(opc, iclass, format)
-                        : s_nyi;
-                }
-
-                this.decoderBase = MakeDecoder(op, opFmt);
-                this.decoderWide = MakeDecoder(opWide, opFmt);
-                this.decoder66 = MakeDecoder(op66, op66Fmt);
-                this.decoder66Wide = MakeDecoder(op66Wide, op66Fmt);
-                this.decoderF3 = MakeDecoder(opF3, opF3Fmt);
-                this.decoderF2 = s_nyi;
             }
 
             public PrefixedDecoder(

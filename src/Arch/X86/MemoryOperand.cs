@@ -81,26 +81,26 @@ namespace Reko.Arch.X86
 			if ((options & MachineInstructionWriterOptions.ExplicitOperandSize) != 0)
 			{
 				string s;
-				if (Width == PrimitiveType.Byte)
-					s = "byte ptr ";
-				else if (Width == PrimitiveType.Word16)
-					s = "word ptr ";
-				else if (Width.Size == 4)
-					s = "dword ptr ";
-				else if (Width == PrimitiveType.Word64)
-					s = "qword ptr ";
-				else if (Width == PrimitiveType.Real32)
-					s = "float ptr ";
-				else if (Width == PrimitiveType.Real64)
-					s = "double ptr ";
-				else if (Width == PrimitiveType.Real80 || Width == PrimitiveType.Bcd80)
-					s = "tword ptr ";
+                if (Width == PrimitiveType.Byte)
+                    s = "byte ptr ";
+                else if (Width == PrimitiveType.Word16)
+                    s = "word ptr ";
+                else if (Width.Size == 4)
+                    s = "dword ptr ";
+                else if (Width == PrimitiveType.Word64)
+                    s = "qword ptr ";
+                else if (Width == PrimitiveType.Real32)
+                    s = "float ptr ";
+                else if (Width == PrimitiveType.Real64)
+                    s = "double ptr ";
+                else if (Width == PrimitiveType.Real80 || Width == PrimitiveType.Bcd80)
+                    s = "tword ptr ";
                 else if (Width == PrimitiveType.Word128)
                     s = "xmmword ptr ";
                 else if (Width == PrimitiveType.Word256)
                     s = "ymmword ptr ";
                 else
-					throw new ArgumentOutOfRangeException();
+                    s = "";
 				writer.WriteString(s);
 			}
 
