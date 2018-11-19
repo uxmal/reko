@@ -186,6 +186,11 @@ namespace Reko.Scanning
                     select b));
                 Debug.WriteLine("");
             }
+
+            public override string ToString()
+            {
+                return $"{Blocks.OrderBy(b => b.Address.ToLinear()).FirstOrDefault()}: {Blocks.Count} blocks";
+            }
         }
 
         /// <summary>
