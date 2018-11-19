@@ -551,19 +551,19 @@ namespace Reko.Arch.X86
 			throw new ArgumentOutOfRangeException("bits", string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
 
-        public static SingleByteOpRec Instr(Opcode op)
+        public static InstructionDecoder Instr(Opcode op)
         {
-            return new SingleByteOpRec(op, InstrClass.Linear, "");
+            return new InstructionDecoder(op, InstrClass.Linear, "");
         }
 
-        public static SingleByteOpRec Instr(Opcode op, string format)
+        public static InstructionDecoder Instr(Opcode op, string format)
         {
-            return new SingleByteOpRec(op, InstrClass.Linear, format);
+            return new InstructionDecoder(op, InstrClass.Linear, format);
         }
 
-        public static SingleByteOpRec Instr(Opcode op, InstrClass iclass, string format)
+        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, string format)
         {
-            return new SingleByteOpRec(op, iclass, format);
+            return new InstructionDecoder(op, iclass, format);
         }
 
         public static NyiDecoder nyi(string message)
@@ -1076,19 +1076,19 @@ namespace Reko.Arch.X86
 			return op is RegisterOperand || op is X86AddressOperand;
 		}
 
-        private static OpRec s_invalid;
-        private static OpRec s_nyi;
-		private static OpRec [] s_aOpRec;
-		private static OpRec [] s_aOpRec0F;
-		private static OpRec [] s_aOpRec0F38;
-		private static OpRec [] s_aOpRec0F3A;
-        private static OpRec [] s_aOpRecGrp;
-		private static OpRec [] s_aFpOpRec;
+        private static Decoder s_invalid;
+        private static Decoder s_nyi;
+		private static Decoder [] s_aOpRec;
+		private static Decoder [] s_aOpRec0F;
+		private static Decoder [] s_aOpRec0F38;
+		private static Decoder [] s_aOpRec0F3A;
+        private static Decoder [] s_aOpRecGrp;
+		private static Decoder [] s_aFpOpRec;
         private static Dictionary<Opcode, Opcode> s_mpVex;
 
         static X86Disassembler()
 		{
-            s_invalid = new SingleByteOpRec(Opcode.illegal, InstrClass.Invalid, "");
+            s_invalid = new InstructionDecoder(Opcode.illegal, InstrClass.Invalid, "");
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();

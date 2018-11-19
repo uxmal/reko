@@ -33,11 +33,10 @@ namespace Reko.Arch.X86
     public partial class X86Disassembler
     {
         /// <summary>
-        /// Opcode Records are used to pick apart the somewhat complex x86 instructions, which have many optional
-        /// prefixes, segment overrides, and two classes of instructions, single-byte and two-byte (that is,
-        /// prefixed with 0F)
+        /// Decoders are used to pick apart the complex x86 instructions, which have many optional
+        /// prefixes, segment overrides, and other warts accumulated over the decades.
         /// </summary>
-		public abstract class OpRec
+		public abstract class Decoder
         {
             public abstract X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat);
         }
@@ -45,23 +44,23 @@ namespace Reko.Arch.X86
 
 
         /// <summary>
-        /// Single byte opcode record.
+        /// Decodes a single instructions by interpreting a format string.
         /// </summary>
-        public class SingleByteOpRec : OpRec
+        public class InstructionDecoder : Decoder
         {
-            public Opcode opcode;
-            public string format;
+            public Opcode opcode;       // mnemonic for the decoded instruction
+            public string format;       // mini language for decoding operands to this instruction
             public InstrClass iclass;
 
-            public SingleByteOpRec(Opcode op) : this(op, InstrClass.Linear, "")
+            public InstructionDecoder(Opcode op) : this(op, InstrClass.Linear, "")
             {
             }
 
-            public SingleByteOpRec(Opcode op, string fmt) : this(op, InstrClass.Linear, fmt)
+            public InstructionDecoder(Opcode op, string fmt) : this(op, InstrClass.Linear, fmt)
             {
             }
 
-            public SingleByteOpRec(Opcode op, InstrClass icl, string fmt)
+            public InstructionDecoder(Opcode op, InstrClass icl, string fmt)
             {
                 opcode = op;
                 format = fmt;
@@ -75,32 +74,36 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
-        /// Use this OpRec when an instruction encoding is dependent on whether the processor
+        /// Use this decoder when an instruction encoding is dependent on whether the processor
         /// is in 64-bit mode or not.
         /// </summary>
-        public class Alternative64OpRec : OpRec
+        public class Alternative64Decoder : Decoder
         {
-            private OpRec oprec32;
-            private OpRec oprec64;
+            private Decoder decoder32;
+            private Decoder decoder64;
 
-            public Alternative64OpRec(OpRec oprec32, OpRec oprec64)
+            public Alternative64Decoder(Decoder decoder32, Decoder decoder64)
             {
-                this.oprec32 = oprec32;
-                this.oprec64 = oprec64;
+                this.decoder32 = decoder32;
+                this.decoder64 = decoder64;
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.defaultAddressWidth.BitSize == 64)
-                    return oprec64.Decode(disasm, op, opFormat);
+                    return decoder64.Decode(disasm, op, opFormat);
                 else
-                    return oprec32.Decode(disasm, op, opFormat);
+                    return decoder32.Decode(disasm, op, opFormat);
             }
         }
 
-        public class Rex_SingleByteOpRec : SingleByteOpRec
+        /// <summary>
+        /// Decodes instructions whose meaning depends on whether REX prefixes
+        /// are to be interpretd or not.
+        /// </summary>
+        public class Rex_or_InstructionDecoder : InstructionDecoder
         {
-            public Rex_SingleByteOpRec(Opcode op, string fmt)
+            public Rex_or_InstructionDecoder(Opcode op, string fmt)
                 : base(op, fmt)
             {
             }
@@ -114,19 +117,23 @@ namespace Reko.Arch.X86
                     {
                         disasm.dataWidth = PrimitiveType.Word64;
                     }
-                    op = disasm.rdr.ReadByte();
-                    return s_aOpRec[op].Decode(disasm, op, opFormat);
+                    if (!disasm.rdr.TryReadByte(out var op2))
+                        return null;
+                    return s_aOpRec[op].Decode(disasm, op2, opFormat);
                 }
                 else
                     return base.Decode(disasm, op, opFormat);
             }
         }
 
-        public class SegmentOverrideOprec : OpRec
+        /// <summary>
+        /// Decodes segment override prefixes.
+        /// </summary>
+        public class SegmentOverrideDecoder : Decoder
         {
             private readonly int seg;
 
-            public SegmentOverrideOprec(int seg)
+            public SegmentOverrideDecoder(int seg)
             {
                 this.seg = seg;
             }
@@ -139,12 +146,12 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class GroupOpRec : OpRec
+        public class GroupDecoder : Decoder
         {
-            public int Group;
-            public string format;
+            public readonly int Group;
+            public readonly string format;
 
-            public GroupOpRec(int group, string format)
+            public GroupDecoder(int group, string format)
             {
                 this.Group = group;
                 this.format = format;
@@ -155,20 +162,20 @@ namespace Reko.Arch.X86
                 int grp = Group - 1;
                 if (!disasm.TryEnsureModRM(out byte modRm))
                     return null;
-                OpRec opRec = s_aOpRecGrp[grp * 8 + ((modRm >> 3) & 0x07)];
+                Decoder opRec = s_aOpRecGrp[grp * 8 + ((modRm >> 3) & 0x07)];
                 return opRec.Decode(disasm, op, opFormat + format);
             }
         }
 
         // Uses the 2 high bits of the ModRM word for further discrimination
-        public class Group7OpRec : OpRec
+        public class Group7Decoder : Decoder
         {
-            private OpRec memInstr;
-            private OpRec[] regInstrs;
+            private Decoder memInstr;
+            private Decoder[] regInstrs;
 
-            public Group7OpRec(
-                OpRec memInstr,
-                params OpRec[] regInstrs)
+            public Group7Decoder(
+                Decoder memInstr,
+                params Decoder[] regInstrs)
             {
                 this.memInstr = memInstr;
                 this.regInstrs = regInstrs;
@@ -197,7 +204,14 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class NyiDecoder : OpRec
+        /// <summary>
+        /// Use this decoder to mark instructions for which no decoder has 
+        /// been written yet.
+        /// </summary>
+        /// <remarks>
+        /// The x86 instruction set is large and keeps growing....
+        /// </remarks>
+        public class NyiDecoder : Decoder
         {
             private readonly string message;
 
@@ -211,13 +225,17 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class FpuOpRec : OpRec
+        /// <summary>
+        /// Decodes X86 FPU instructions, which are encoded in their own
+        /// special way.
+        /// </summary>
+        public class X87Decoder : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (!disasm.TryEnsureModRM(out byte modRM))
                     return null;
-                OpRec opRec;
+                Decoder opRec;
                 int iOpRec = (op & 0x07) * 0x48;
                 if (modRM < 0xC0)
                 {
@@ -231,7 +249,10 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class TwoByteOpRec : OpRec
+        /// <summary>
+        /// Decodes an instruction with a 0x0F prefix.
+        /// </summary>
+        public class AdditionalByteDecoder : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -241,7 +262,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class ThreeByteOpRec : OpRec
+        public class ThreeByteOpRec : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -260,7 +281,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class VexDecoder2 : OpRec
+        public class VexDecoder2 : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -292,7 +313,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class VexDecoder3 : OpRec
+        public class VexDecoder3 : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -319,7 +340,7 @@ namespace Reko.Arch.X86
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
 
-                OpRec[] decoders;
+                Decoder[] decoders;
                 switch (mmmmm)
                 {
                 case 1: decoders = s_aOpRec0F; break;
@@ -338,7 +359,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class F2ByteOpRec : OpRec
+        public class F2ByteOpRec : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -349,7 +370,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class F3ByteOpRec : OpRec
+        public class F3ByteOpRec : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -366,7 +387,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class ChangeDataWidth : OpRec
+        public class ChangeDataWidth : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -379,7 +400,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class ChangeAddressWidth : OpRec
+        public class ChangeAddressWidth : Decoder
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
@@ -391,16 +412,21 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class PrefixedOpRec : OpRec
+        /// <summary>
+        /// Handles the complex 66, F2, and F3 prefixes for instructions in 
+        /// the x86-64 instruction set.
+        /// </summary>
+        public class PrefixedDecoder : Decoder
         {
-            private readonly OpRec op;
-            private readonly OpRec opWide;
-            private readonly OpRec op66;
-            private readonly OpRec op66Wide;
-            private readonly OpRec opF3;
-            private readonly OpRec opF2;
+            private readonly Decoder decoderBase;
+            private readonly Decoder decoderWide;
+            private readonly Decoder decoder66;
+            private readonly Decoder decoder66Wide;
+            private readonly Decoder decoderF3;
+            private readonly Decoder decoderF2;
 
-            public PrefixedOpRec(
+            [Obsolete("Use other constructor")]
+            public PrefixedDecoder(
                 Opcode op,
                 string opFmt,
                 Opcode op66 = Opcode.illegal,
@@ -411,20 +437,21 @@ namespace Reko.Arch.X86
                 string opF2Fmt = null,
                 InstrClass iclass = InstrClass.Linear)
             {
-                OpRec MakeDecoder(Opcode opc, string format)
+                Decoder MakeDecoder(Opcode opc, string format)
                 {
                     return opc != Opcode.illegal
-                        ? new SingleByteOpRec(opc, iclass, format)
+                        ? new InstructionDecoder(opc, iclass, format)
                         : s_invalid;
                 }
 
-                this.op = this.opWide = MakeDecoder(op, opFmt);
-                this.op66 = this.op66Wide = MakeDecoder(op66, op66Fmt);
-                this.opF3 = MakeDecoder(opF3, opF3Fmt);
-                this.opF2 = MakeDecoder(opF2, opF2Fmt);
+                this.decoderBase = this.decoderWide = MakeDecoder(op, opFmt);
+                this.decoder66 = this.decoder66Wide = MakeDecoder(op66, op66Fmt);
+                this.decoderF3 = MakeDecoder(opF3, opF3Fmt);
+                this.decoderF2 = MakeDecoder(opF2, opF2Fmt);
             }
 
-            public PrefixedOpRec(
+            [Obsolete("Use other constructor")]
+            public PrefixedDecoder(
                 Opcode op,
                 Opcode opWide,
                 string opFmt,
@@ -435,71 +462,75 @@ namespace Reko.Arch.X86
                 string opF3Fmt = null,
                 InstrClass iclass = InstrClass.Linear)
             {
-                OpRec MakeDecoder(Opcode opc, string format)
+                Decoder MakeDecoder(Opcode opc, string format)
                 {
                     return opc != Opcode.illegal
-                        ? new SingleByteOpRec(opc, iclass, format)
+                        ? new InstructionDecoder(opc, iclass, format)
                         : s_nyi;
                 }
 
-                this.op = MakeDecoder(op, opFmt);
-                this.opWide = MakeDecoder(opWide, opFmt);
-                this.op66 = MakeDecoder(op66, op66Fmt);
-                this.op66Wide = MakeDecoder(op66Wide, op66Fmt);
-                this.opF3 = MakeDecoder(opF3, opF3Fmt);
-                this.opF2 = s_nyi;
+                this.decoderBase = MakeDecoder(op, opFmt);
+                this.decoderWide = MakeDecoder(opWide, opFmt);
+                this.decoder66 = MakeDecoder(op66, op66Fmt);
+                this.decoder66Wide = MakeDecoder(op66Wide, op66Fmt);
+                this.decoderF3 = MakeDecoder(opF3, opF3Fmt);
+                this.decoderF2 = s_nyi;
             }
 
-            public PrefixedOpRec(
-                OpRec dec = null,
-                OpRec decWide = null,
-                OpRec dec66 = null,
-                OpRec dec66Wide = null,
-                OpRec decF3 = null,
-                OpRec decF2 = null)
+            public PrefixedDecoder(
+                Decoder dec = null,
+                Decoder decWide = null,
+                Decoder dec66 = null,
+                Decoder dec66Wide = null,
+                Decoder decF3 = null,
+                Decoder decF2 = null)
             {
-                this.op = dec ?? s_nyi;
-                this.opWide = decWide ?? s_nyi;
-                this.op66 = dec66 ?? s_nyi;
-                this.op66Wide = dec66Wide ?? s_nyi;
-                this.opF3 = decF3 ?? s_nyi;
-                this.opF2 = decF2 ?? s_nyi;
+                this.decoderBase = dec ?? s_invalid;
+                this.decoderWide = decWide ?? s_invalid;
+                this.decoder66 = dec66 ?? s_invalid;
+                this.decoder66Wide = dec66Wide ?? s_invalid;
+                this.decoderF3 = decF3 ?? s_invalid;
+                this.decoderF2 = decF2 ?? s_invalid;
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.currentDecodingContext.F2Prefix)
                 {
-                    var instr = opF2.Decode(disasm, op, opFormat);
+                    var instr = decoderF2.Decode(disasm, op, opFormat);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.F3Prefix)
                 {
-                    var instr = opF3.Decode(disasm, op, opFormat);
+                    var instr = decoderF3.Decode(disasm, op, opFormat);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.SizeOverridePrefix)
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
-                        return op66Wide.Decode(disasm, op, opFormat);
+                        return decoder66Wide.Decode(disasm, op, opFormat);
                     else
-                        return op66.Decode(disasm, op, opFormat);
+                        return decoder66.Decode(disasm, op, opFormat);
                 }
                 else
                 {
                     if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
-                        return opWide.Decode(disasm, op, opFormat);
+                        return decoderWide.Decode(disasm, op, opFormat);
                     else
-                        return this.op.Decode(disasm, op, opFormat);
+                        return this.decoderBase.Decode(disasm, op, opFormat);
                 }
             }
         }
 
-        public class InterruptOpRec : SingleByteOpRec
+        /// <summary>
+        /// This hacky decoder will interpret old-school software emulated
+        /// X87 instructions implemented as interrupts.
+        /// </summary>
+        public class InterruptDecoder : InstructionDecoder
         {
-            public InterruptOpRec(Opcode op, string fmt) : base(op, fmt)
+            public InterruptDecoder(Opcode op, string fmt) : base(op, fmt)
             {
             }
 
@@ -518,6 +549,5 @@ namespace Reko.Arch.X86
                 return instr;
             }
         }
-
     }
 }
