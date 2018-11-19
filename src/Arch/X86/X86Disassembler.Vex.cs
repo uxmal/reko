@@ -42,6 +42,9 @@ namespace Reko.Arch.X86
                 { Opcode.movss, Opcode.vmovss },
                 { Opcode.xorpd, Opcode.vxorpd },
                 { Opcode.xorps, Opcode.vxorps },
+				{ Opcode.movlps, Opcode.vmovlps },
+				{ Opcode.movlpd, Opcode.vmovlpd },
+				{ Opcode.addsubpd, Opcode.vaddsubpd }
             };
         }
     }

@@ -85,12 +85,20 @@ namespace Reko.Arch.X86
                 s_nyi,
 
 				// group 6
-				new InstructionDecoder(Opcode.sldt, "Ew"),
-				new InstructionDecoder(Opcode.str, "Ew"),
-				new InstructionDecoder(Opcode.lldt, "Ew"),
-				new InstructionDecoder(Opcode.ltr, "Ew"),
-				new InstructionDecoder(Opcode.verr, "Ew"),
-				new InstructionDecoder(Opcode.verw, "Ew"),
+				new Group7OpRec(
+					new SingleByteOpRec(Opcode.sldt, "Ew"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv"),
+					new SingleByteOpRec(Opcode.sldt, "Rv")),
+				new SingleByteOpRec(Opcode.str, "Ew"),
+				new SingleByteOpRec(Opcode.lldt, "Ew"),
+				new SingleByteOpRec(Opcode.ltr, "Ew"),
+				new SingleByteOpRec(Opcode.verr, "Ew"),
+				new SingleByteOpRec(Opcode.verw, "Ew"),
 				s_nyi,
 				s_nyi,
 

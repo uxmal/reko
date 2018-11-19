@@ -930,7 +930,7 @@ namespace Reko.UnitTests.Arch.Intel
                 "2|L--|ecx = __bsr(eax)");
         }
 
-     
+
 
 
         [Test]
@@ -1304,7 +1304,7 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|edx_eax = __xgetbv(ecx)");
         }
 
-     
+
 
         [Test]
         public void X86rw_setc()
@@ -1997,7 +1997,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                "0|L--|10000000(4): 3 instructions",
                "1|L--|v4 = xmm0",
-               "2|L--|v5 = Mem0[edx + 0x00000042:word128]", 
+               "2|L--|v5 = Mem0[edx + 0x00000042:word128]",
                "3|L--|xmm0 = __andps(v4, v5)");
         }
 
@@ -2617,7 +2617,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|mm0 = __pxor(mm0, Mem0[edx + 0x00000042:word64])");
-        } 
+        }
 
         [Test]
         public void X86rw_rcpps()
@@ -2987,7 +2987,7 @@ namespace Reko.UnitTests.Arch.Intel
                 "2|L--|v5 = Mem0[edx + 0x00000042:word64]",
                 "3|L--|mm0 = __psubsb(v4, v5)");
         }
-  
+
         [Test]
         public void X86rw_pmaxsw()
         {
@@ -3018,7 +3018,7 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|mm0 = __por(mm0, Mem0[edx + 0x00000042:word64])");
         }
-        
+
         [Test]
         public void X86rw_pslld()
         {
@@ -3421,6 +3421,16 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|0000000140000000(4): 2 instructions",
                 "1|L--|v3 = __sqrt(xmm0)",
                 "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+        [Test]
+        public void X86Rw_sldt()
+        {
+            Run64bitTest(0x0F, 0x00, 0x01);  // sldt	word ptr [ecx]
+            AssertCode(
+                 "0|S--|0000000140000000(3): 1 instructions",
+                 "1|L--|Mem0[rcx:word16] = __sldt()");
+
         }
     }
 }
