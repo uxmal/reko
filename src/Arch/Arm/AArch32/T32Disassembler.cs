@@ -64,7 +64,6 @@ namespace Reko.Arch.Arm.AArch32
             if (!rdr.TryReadLeUInt16(out var wInstr))
                 return null;
             this.state = new DasmState();
-
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
             instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
             instr.iclass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
@@ -685,28 +684,32 @@ namespace Reko.Arch.Arm.AArch32
 
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
-            Console.WriteLine($"// A T32 decoder for the instruction {wInstr:X} ({Bits.Reverse(wInstr):X8}) - ({message}) has not been implemented yet.");
-            Console.WriteLine("[Test]");
-            Console.WriteLine($"public void ThumbDis_{wInstr:X}()");
-            Console.WriteLine("{");
+            string instrHexBytes;
             if (wInstr > 0xFFFF)
             {
-                Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
+                instrHexBytes = $"{wInstr >> 16:X4}{ wInstr & 0xFFFF:X4}";
             }
             else
             {
-                Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
+                instrHexBytes = $"{wInstr:X4}";
             }
-            Console.WriteLine("    Expect_Code(\"@@@\");");
-
-            Console.WriteLine("}");
-            Console.WriteLine();
-
-#if !DEBUG
-                throw new NotImplementedException($"A T32 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-#else
+            var rev = $"{Bits.Reverse(wInstr):X8}";
+            message = (string.IsNullOrEmpty(message))
+                ? rev
+                : $"{rev} - {message}";
+            base.EmitUnitTest("T32", instrHexBytes, message, "ThumbDis", this.addr, Console =>
+            {
+                if (wInstr > 0xFFFF)
+                {
+                    Console.WriteLine($"    Given_Instructions(0x{wInstr >> 16:X4}, 0x{wInstr & 0xFFFF:X4});");
+                }
+                else
+                {
+                    Console.WriteLine($"    Given_Instructions(0x{wInstr:X4});");
+                }
+                Console.WriteLine("    Expect_Code(\"@@@\");");
+            });
             return Invalid();
-#endif
         }
 
 

@@ -316,30 +316,20 @@ namespace Reko.Arch.X86
             return new X86Instruction(Opcode.illegal, InstrClass.Invalid, dataWidth, addressWidth);
         }
 
-        private static HashSet<string> seen = new HashSet<string>();
-
         private X86Instruction NotYetImplemented(string message)
         {
-#if DEBUG
             // collect bytes from rdr.addr to this.addr 
             var r2 = rdr.Clone();
             int len = (int) (r2.Address - this.addr);
             r2.Offset -= len;
             var bytes = r2.ReadBytes(len);
             var strBytes = string.Join("", bytes.Select(b => b.ToString("X2")));
-            if (!seen.Contains(strBytes))
+
+            base.EmitUnitTest("x86", strBytes, message, "X86Dis", this.addr, w =>
             {
-                seen.Add(strBytes);
-                Console.WriteLine($"// An x86 decoder for the instruction {strBytes} at address {addr} ({message}) has not been implemented yet.");
-                Console.WriteLine("[Test]");
-                Console.WriteLine($"public void X86dis_{strBytes}()");
-                Console.WriteLine("{");
-                Console.WriteLine("    AssertCode32(\"@@@\", {0}\");",
+                w.WriteLine("    AssertCode32(\"@@@\", {0}\");",
                     string.Join(", ", bytes.Select(b => $"0x{b:X2}")));
-                Console.WriteLine("}");
-                Console.WriteLine();
-            }
-#endif
+            });
             return Illegal();
         }
 

@@ -37,8 +37,9 @@ namespace Reko.Arch.SuperH
 
     public class SuperHDisassembler : DisassemblerBase<SuperHInstruction>
     {
-        private EndianImageReader rdr;
-        private DasmState state;
+        private readonly EndianImageReader rdr;
+        private readonly DasmState state;
+        private Address addr;
 
         public SuperHDisassembler(EndianImageReader rdr)
         {
@@ -48,7 +49,7 @@ namespace Reko.Arch.SuperH
 
         public override SuperHInstruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort uInstr))
                 return null;
             var instr = decoders[uInstr >> 12].Decode(this, uInstr);
@@ -102,26 +103,14 @@ namespace Reko.Arch.SuperH
             }
         }
 
-        private static HashSet<ushort> seen = new HashSet<ushort>();
-
         private SuperHInstruction NotYetImplemented(ushort wInstr)
         {
-            if (!seen.Contains(wInstr))
+            var instrHex = $"{wInstr & 0xFF:X2}{wInstr >> 8:X2}";
+            base.EmitUnitTest("SuperH", instrHex, "", "ShDis", this.addr, w =>
             {
-                seen.Add(wInstr);
-                Console.WriteLine($"// A SuperH decoder for the instruction {wInstr:X4} has not been implemented yet.");
-                Console.WriteLine("[Test]");
-                Console.WriteLine($"public void ShDis_{wInstr:X4}()");
-                Console.WriteLine("{");
-                Console.WriteLine($"    AssertCode(\"@@@\", \"{wInstr & 0xFF:X2}{wInstr >> 8:X2}\");");
-                Console.WriteLine("}");
-                Console.WriteLine("");
-            }
-#if !DEBUG
-                throw new NotImplementedException($"A SuperH decoder for the instruction {wInstr:X4} has not been implemented yet.");
-#else
+                w.WriteLine($"    AssertCode(\"@@@\", \"{instrHex}\");");
+            });
             return Invalid();
-#endif
         }
 
         // Mutators

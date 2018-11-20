@@ -37,7 +37,6 @@ namespace Reko.Arch.M6800.M6812
         private readonly static Decoder[] decodersLoops;
         private readonly static Decoder[] decodersRegisters;
         private readonly static RegisterStorage[] BaseRegisters;
-        private readonly static HashSet<byte> seen = new HashSet<byte>();
 
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> operands;
@@ -50,7 +49,7 @@ namespace Reko.Arch.M6800.M6812
 
         public override M6812Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out var bInstr))
                 return null;
             operands.Clear();
@@ -232,7 +231,7 @@ namespace Reko.Arch.M6800.M6812
         {
             1, 2, 3, 4, 5, 6, 7, 8, -8, -7, -6, -5, -4, -3, -2, -1,
         };
-
+        private Address addr;
 
         public static bool XB(byte bInstr, M6812Disassembler dasm)
         {
@@ -360,18 +359,12 @@ namespace Reko.Arch.M6800.M6812
 
         private static bool NotYetImplemented(byte bInstr, M6812Disassembler dasm)
         {
-            if (!seen.Contains(bInstr))
+            var instrHex = $"{bInstr:X2}";
+            dasm.EmitUnitTest("M6812", instrHex, "", "M6812", dasm.addr, w =>
             {
-                seen.Add(bInstr);
-                Debug.Print("// An M6812 decoder for instruction {0:X2} has not been implemented.", bInstr);
-                Debug.Print("[Test]");
-                Debug.Print("public void M6812Dis_{0:X2}()", bInstr);
-                Debug.Print("{");
-                Debug.Print("    Given_Code(\"{0:X2}\");", bInstr);
-                Debug.Print("    Expect_Instruction(\"@@@\");");
-                Debug.Print("}");
-                Debug.WriteLine("");
-            }
+                w.WriteLine("    Given_Code(\"{0:X2}\");", bInstr);
+                w.WriteLine("    Expect_Instruction(\"@@@\");");
+            });
             return true;
         }
 
