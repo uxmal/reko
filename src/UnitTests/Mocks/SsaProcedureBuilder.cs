@@ -75,6 +75,14 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
+        public Identifier Temp(string name, TemporaryStorage stg)
+        {
+            var id = new Identifier(stg.Name, stg.DataType, stg);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
+        }
+
         public new Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
@@ -121,6 +129,14 @@ namespace Reko.UnitTests.Mocks
                     {
                         store.Dst = new MemoryAccess(memId, ea, dt);
                     }
+                }
+                break;
+            case CallInstruction call:
+                foreach (var def in call.Definitions)
+                {
+                    var id = (Identifier) def.Expression;
+                    Ssa.Identifiers[id].DefStatement = stm;
+                    Ssa.Identifiers[id].DefExpression = call.Callee;
                 }
                 break;
             }

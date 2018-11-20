@@ -84,7 +84,7 @@ namespace Reko.Analysis
         private bool IsTrashed(Identifier sp)
         {
             var definition = ssa.Identifiers[sp].DefStatement;
-            switch (definition.Instruction)
+            switch (definition?.Instruction)
             {
             case CallInstruction _:
             case PhiAssignment _:

@@ -21,10 +21,13 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -57,14 +60,8 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private SsaState RunTest(ProcedureBuilder m)
+        private SsaState RunTest(SsaState ssa)
         {
-            var proc = m.Procedure;
-            var scc = new HashSet<Procedure> { proc };
-            var sst = new SsaTransform(program, m.Procedure, scc, null, null);
-            sst.Transform();
-            sst.AddUsesToExitBlock();
-            var ssa = sst.SsaState;
             var spbp = new StackPointerBackpropagator(ssa);
             spbp.BackpropagateStackPointer();
             return ssa;
@@ -73,48 +70,65 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Spbp_LinearProcedure()
         {
-            var m = new ProcedureBuilder(program.Architecture);
+            var m = new SsaProcedureBuilder(nameof(Spbp_LinearProcedure));
 
-            var fp = m.Frame.FramePointer;
-            var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+            var r63_1 = m.Reg("r63_1", m.Architecture.StackRegister);
+            var r63_2 = m.Reg("r63_2", m.Architecture.StackRegister);
+            var r63_3 = m.Reg("r63_3", m.Architecture.StackRegister);
+            var r63_4 = m.Reg("r63_4", m.Architecture.StackRegister);
             var r1 = m.Reg32("r1");
             var r2 = m.Reg32("r2");
-            m.Assign(sp, fp);
-            m.Assign(sp, m.ISub(sp, m.Int32(4)));
-            m.MStore(sp, r1);
-            m.Call(r2, 4);      // Indirect call = hell node
-            m.Assign(r1, m.Mem32(sp));
-            m.Assign(sp, m.IAdd(sp, m.Int32(4)));
+            var r1_1 = m.Reg("r1_1", (RegisterStorage) r1.Storage);
+            var r1_2 = m.Reg("r1_2", (RegisterStorage) r1.Storage);
+            var r2_1 = m.Reg("r2_1", (RegisterStorage) r2.Storage);
+
+            m.AddDefToEntryBlock(fp);
+            m.AddDefToEntryBlock(r1);
+            m.AddDefToEntryBlock(r2);
+
+            m.Assign(r63_1, fp);
+            m.Assign(r63_2, m.ISub(r63_1, m.Int32(4)));
+            m.MStore(r63_2, r1);
+            var ci = m.Call(r2, 4,      // Indirect call = hell node
+                new[] { r1, r2, r63_2 },
+                new[] { r1_1, r2_1, r63_3 });
+            m.Assign(r1_2, m.Mem32(r63_3));
+            m.Assign(r63_4, m.IAdd(r63_3, m.Int32(4)));
             m.Return();
 
-            SsaState ssa = RunTest(m);
+            m.AddUseToExitBlock(r1_2);
+            m.AddUseToExitBlock(r2_1);
+            m.AddUseToExitBlock(r63_4);
+
+            SsaState ssa = RunTest(m.Ssa);
 
             var sExp =
             #region Expected
-@"// ProcedureBuilder
+@"// Spbp_LinearProcedure
 // Return size: 0
-define ProcedureBuilder
-ProcedureBuilder_entry:
+define Spbp_LinearProcedure
+Spbp_LinearProcedure_entry:
 	def fp
 	def r1
 	def r2
 	// succ:  l1
 l1:
-	r63_2 = fp
-	r63_3 = r63_2 - 4
-	Mem5[r63_3:word32] = r1
+	r63_1 = fp
+	r63_2 = r63_1 - 4
+	Mem10[r63_2:word32] = r1
 	call r2 (retsize: 4;)
-		uses: r1:r1,r2:r2,r63:r63_3
-		defs: r1:r1_8,r2:r2_9
-	r63_7 = fp - 4
-	r1_10 = Mem5[r63_7:word32]
-	r63_11 = r63_7 + 4
+		uses: r1:r1,r2:r2,r63:r63_2
+		defs: r1:r1_1,r2:r2_1
+	r63_3 = fp - 4
+	r1_2 = Mem11[r63_3:word32]
+	r63_4 = r63_3 + 4
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
-	use r1_10
-	use r2_9
-	use r63_11
+	// succ:  Spbp_LinearProcedure_exit
+Spbp_LinearProcedure_exit:
+	use r1_2
+	use r2_1
+	use r63_4
 ";
             #endregion
             AssertStringsEqual(sExp, ssa);
@@ -124,7 +138,7 @@ ProcedureBuilder_exit:
         [Ignore("It would be nice if this passed.")]
         public void Spbp_TwoExits()
         {
-            var m = new ProcedureBuilder(program.Architecture);
+            var m = new SsaProcedureBuilder(nameof(Spbp_TwoExits));
 
             var fp = m.Frame.FramePointer;
             var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
@@ -148,7 +162,12 @@ ProcedureBuilder_exit:
             m.Assign(sp, m.IAdd(sp, m.Int32(4)));
             m.Return();
 
-            SsaState ssa = RunTest(m);
+            m.AddUseToExitBlock(r1);
+            m.AddUseToExitBlock(r2);
+            m.AddUseToExitBlock(r3);
+            m.AddUseToExitBlock(sp);
+
+            SsaState ssa = RunTest(m.Ssa);
 
             var sExp =
             #region Expected
