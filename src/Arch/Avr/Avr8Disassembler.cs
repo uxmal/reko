@@ -33,7 +33,6 @@ namespace Reko.Arch.Avr
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
     {
         private static OpRec[] oprecs;
-        private static HashSet<ushort> seen = new HashSet<ushort>();
 
         private Avr8Architecture arch;
         private Address addr;
@@ -231,16 +230,11 @@ namespace Reko.Arch.Avr
 
         private void EmitUnitTest(ushort wInstr)
         {
-            if (seen.Contains(wInstr))
-                return;
-            seen.Add(wInstr);
-
-            Debug.Print("        [Test]");
-            Debug.Print("        public void Avr8_dis_{0:X4}()", wInstr);
-            Debug.Print("        {");
-            Debug.Print("            AssertCode(\"@@@\", 0x{0:X4});", wInstr);
-            Debug.Print("        }");
-            Debug.Print("");
+            var instrHex = $"{wInstr:X4}";
+            base.EmitUnitTest("AVR8", instrHex, "", "Avr8_dis", this.addr, w =>
+            {
+                w.WriteLine("            AssertCode(\"@@@\", 0x{0:X4});", wInstr);
+            });
         }
 
         static Avr8Disassembler()

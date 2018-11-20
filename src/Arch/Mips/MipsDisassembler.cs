@@ -79,28 +79,17 @@ namespace Reko.Arch.Mips
         [Conditional("DEBUG")]
         public void EmitUnitTest(uint wInstr, MipsInstruction instr)
         {
-#if DEBUG
             if (instr.opcode != Opcode.illegal)
-                return;
-            if (seen.Contains(wInstr))
                 return;
             var op = (wInstr >> 26);
             if (op == 0 || op == 1)
                 return;
-            seen.Add(wInstr);
-            Debug.Print(
-@"        [Test]
-        public void MipsDis_{0:X8}()
-        {{
-            AssertCode(""@@@"", 0x{0:X8}); // {1:X2}
-        }}
-",
-            wInstr, op);
-#endif
+            var instrHex = $"{wInstr:X8}";
+            base.EmitUnitTest("MIPS", instrHex, "", "MipsDis", this.addr, w =>
+            {
+                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\"", wInstr);
+            });
         }
-#if DEBUG
-        private static HashSet<uint> seen = new HashSet<uint>();
-#endif
 
         private static OpRec[] opRecs;
 

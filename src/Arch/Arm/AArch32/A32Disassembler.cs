@@ -45,6 +45,7 @@ namespace Reko.Arch.Arm.AArch32
         private Arm32Architecture arch;
         private EndianImageReader rdr;
         private Address addr;
+        private DasmState state;
 
         public A32Disassembler(Arm32Architecture arch, EndianImageReader rdr)
         {
@@ -269,25 +270,15 @@ namespace Reko.Arch.Arm.AArch32
             return imm64;
         }
 
-        private static HashSet<uint> seen = new HashSet<uint>();
-        private DasmState state;
-
         private AArch32Instruction NotYetImplemented(string message, uint wInstr)
         {
-#if DEBUG
-            if (true && !seen.Contains(wInstr))
+            var hexBytes = wInstr.ToString("X8");
+            base.EmitUnitTest("A32", hexBytes, message, "ArmDasm", this.addr,
+                w =>
             {
-                seen.Add(wInstr);
-                Console.WriteLine($"// An A32 decoder for the instruction {wInstr:X8} ({message}) has not been implemented yet.");
-                Console.WriteLine("[Test]");
-                Console.WriteLine($"public void ArmDasm_{wInstr:X8}()");
-                Console.WriteLine("{");
-                Console.WriteLine($"    Disassemble32(0x{wInstr:X8});");
-                Console.WriteLine("    Expect_Code(\"@@@\");");
-                Console.WriteLine("}");
-                Console.WriteLine();
-            }
-#endif
+                w.WriteLine($"    Disassemble32(0x{hexBytes});");
+                w.WriteLine($"    Expect_Code(\"@@@\");");
+            });
             return Invalid();
         }
 

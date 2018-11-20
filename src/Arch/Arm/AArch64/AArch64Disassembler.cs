@@ -1544,28 +1544,16 @@ namespace Reko.Arch.Arm.AArch64
             return new NyiDecoder(str);
         }
 
-        private static HashSet<uint> seen = new HashSet<uint>();
-
         private AArch64Instruction NotYetImplemented(string message, uint wInstr)
         {
-            if (false && !seen.Contains(wInstr))
+            var instrHex = $"{wInstr:X8}";
+            base.EmitUnitTest("AArch64", instrHex, message, "AArch64Dis", this.addr, Console =>
             {
-                seen.Add(wInstr);
-                Console.WriteLine($"// An AArch64 decoder for the instruction {wInstr:X8} ({Bits.Reverse(wInstr):X8}) - ({message}) has not been implemented yet.");
-                Console.WriteLine("[Test]");
-                Console.WriteLine($"public void AArch64Dis_{wInstr:X8}()");
-                Console.WriteLine("{");
                 Console.WriteLine($"    Given_Instruction(0x{wInstr:X8});");
-                Console.WriteLine("    Expect_Code(\"@@@\");");
-                Console.WriteLine("}");
+                Console.WriteLine($"    Expect_Code(\"@@@\");");
                 Console.WriteLine();
-            }
-
-#if !DEBUG
-                throw new NotImplementedException($"An AArch64 decoder for the instruction {wInstr:X} ({message}) has not been implemented yet.");
-#else
+            });
             return Invalid();
-#endif
         }
 
         private AArch64Instruction Invalid()

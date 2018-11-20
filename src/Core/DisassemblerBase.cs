@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ using Reko.Core.Machine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace Reko.Core
 {
@@ -75,6 +77,48 @@ namespace Reko.Core
         protected virtual void Dispose(bool disposing)
         {
 
+        }
+
+        private static Dictionary<string, HashSet<string>> seen =
+            new Dictionary<string, HashSet<string>>();
+
+        /// <summary>
+        /// Emits the text of a unit test that can be pasted into the unit tests 
+        /// for a disassembler.
+        /// </summary>
+        [Conditional("DEBUG")]
+        protected void EmitUnitTest(
+            string archName, 
+            string instrHexBytes,
+            string message,
+            string testPrefix, 
+            Address addrInstr,
+            Action<TextWriter> testBodyGenerator)
+        {
+            //$REVIEW: not thread safe.
+            if (!seen.TryGetValue(archName, out var archSeen))
+            {
+                archSeen = new HashSet<string>();
+                seen.Add(archName, archSeen);
+            }
+            if (archSeen.Contains(instrHexBytes))
+                return;
+            archSeen.Add(instrHexBytes);
+
+            var writer = new StringWriter();
+            writer.Write("// Reko: a decoder for {0} instruction {1} at address {2} has not been implemented.", archName, instrHexBytes, addrInstr);
+            if (!string.IsNullOrEmpty(message))
+            {
+                writer.Write(" ({0})", message);
+            }
+            writer.WriteLine();
+            writer.WriteLine("[Test]");
+            writer.WriteLine("public void {0}_{1}()", testPrefix, instrHexBytes);
+            writer.WriteLine("{");
+            testBodyGenerator(writer);
+            writer.WriteLine("}");
+
+            Console.Out.WriteLine(writer.ToString());
         }
     }
 }

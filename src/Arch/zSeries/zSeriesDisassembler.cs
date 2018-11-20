@@ -116,30 +116,19 @@ namespace Reko.Arch.zSeries
             };
         }
 
-        private static HashSet<ulong> seen = new HashSet<ulong>();
-
         private void Nyi(ulong uInstr, string message)
         {
-#if DEBUG
-            if (true && !seen.Contains(uInstr))
+            var rdr2 = rdr.Clone();
+            int len = (int) (rdr.Address - this.addr);
+            rdr2.Offset -= len;
+            var bytes = rdr2.ReadBytes(len);
+            var leHexBytes = string.Join("", bytes
+                    .Select(b => b.ToString("X2")));
+            var instrHexBytes = $"{uInstr:X8}";
+            base.EmitUnitTest("zSeries", instrHexBytes, message, "zSerDasm", this.addr, w =>
             {
-                seen.Add(uInstr);
-
-                var rdr2 = rdr.Clone();
-                int len = (int)(rdr.Address - this.addr);
-                rdr2.Offset -= len;
-                var bytes = rdr2.ReadBytes(len);
-                var hexBytes = string.Join("", bytes
-                        .Select(b => b.ToString("X2")));
-                Console.WriteLine($"// A zSeries decoder for the instruction {uInstr:X8} ({message}) has not been implemented yet.");
-                Console.WriteLine("[Test]");
-                Console.WriteLine($"public void zSerDasm_{uInstr:X8}()");
-                Console.WriteLine("{");
-                Console.WriteLine("    AssertCode(\"@@@\", \"{0}\");", hexBytes);
-                Console.WriteLine("}");
-                Console.WriteLine();
-            }
-#endif
+                w.WriteLine("    AssertCode(\"@@@\", \"{0}\");", leHexBytes);
+            });
         }
 
         private class State
