@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,6 +182,7 @@ namespace Reko.ImageLoaders.MzExe
 			switch (peMachineType)
 			{
             case MACHINE_ALPHA: arch = "alpha"; break;
+            case MACHINE_ARM64: arch = "arm-64"; break;
             case MACHINE_ARMNT: arch = "arm-thumb"; break;
             case MACHINE_I386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
@@ -201,6 +202,7 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA: env = "winAlpha"; break;
+            case MACHINE_ARM64: env = "winArm64"; break;
             case MACHINE_ARMNT: env= "winArm"; break;
             case MACHINE_I386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
@@ -230,6 +232,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_XBOX360:
                 return new Pe32Loader(this);
             case MACHINE_x86_64:
+            case MACHINE_ARM64:
                 return new Pe64Loader(this);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
@@ -240,6 +243,7 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
+            case MACHINE_ARM64: return new Arm64Relocator(program);
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_I386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
@@ -267,6 +271,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_XBOX360:
                 return 0x010B;
             case MACHINE_x86_64:
+            case MACHINE_ARM64:
                 return 0x020B;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
