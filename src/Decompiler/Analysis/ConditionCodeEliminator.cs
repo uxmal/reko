@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -445,7 +445,11 @@ namespace Reko.Analysis
 				return ComparisonFromOverflow(bin, isNegated);
 			case ConditionCode.NO:
 				return ComparisonFromOverflow(bin, !isNegated);
-			default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
+            case ConditionCode.PE:
+                return ComparisonFromParity(bin, isNegated);
+            case ConditionCode.PO:
+                return ComparisonFromParity(bin, !isNegated);
+            default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
 			}
 
 			Expression e;
@@ -490,8 +494,26 @@ namespace Reko.Analysis
 			}
 			return e;
 		}
-		
-		public static ConditionCode Negate(ConditionCode cc)
+
+        public Expression ComparisonFromParity(BinaryExpression bin, bool isNegated)
+        {
+            var sig = new FunctionType(
+                new Identifier("", PrimitiveType.Bool, null),
+                new Identifier("", bin.DataType, null));
+            Expression e = new Application(
+                new ProcedureConstant(
+                    platform.PointerType,
+                    new PseudoProcedure("PARITY_EVEN", sig)),
+                PrimitiveType.Bool,
+                bin);
+            if (isNegated)
+            {
+                e = m.Not(e);
+            }
+            return e;
+        }
+
+        public static ConditionCode Negate(ConditionCode cc)
 		{
 			switch (cc)
 			{

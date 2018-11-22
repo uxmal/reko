@@ -441,7 +441,7 @@ namespace Reko.Core
         /// <paramref name="width"/>.
         /// </summary>
         /// <remarks>
-        /// Most architectures not have sub-registers, and will use this 
+        /// Most architectures do not have sub-registers, and will use this 
         /// default implementation. This method is overridden for 
         /// architectures like x86 and Z80, where sub-registers <code>(ah, al, etc)</code>
         /// do exist.
@@ -452,7 +452,7 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            return (offset == 0 && reg.BitSize == (ulong)width) ? reg : null;
+            return (offset == 0 && reg.BitSize == (ulong) width) ? reg : null;
         }
 
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)

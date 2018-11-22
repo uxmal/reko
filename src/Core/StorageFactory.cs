@@ -47,7 +47,7 @@ namespace Reko.Core
         {
             var reg = new RegisterStorage(name, iReg, 0, size);
             NamesToRegisters.Add(name, reg);
-            DomainsToRegisters.Add(StorageDomain.Register + iReg, reg);
+            DomainsToRegisters.Add(reg.Domain, reg);
             ++iReg;
             return reg;
         }
@@ -57,6 +57,11 @@ namespace Reko.Core
             return Reg(format, PrimitiveType.Word32);
         }
 
+        /// <summary>
+        /// Generate a range of <paramref name="count"/> registers of the given
+        /// <paramref name="size"/>. The name of each register is syntheiszed by
+        /// the <paramref name="formatter"/>. 
+        /// </summary>
         public RegisterStorage[] RangeOfReg(int count, Func<int, string> formatter, PrimitiveType size)
         {
             return Enumerable.Range(0, count)
