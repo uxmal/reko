@@ -160,8 +160,6 @@ namespace Reko.Analysis
         /// <param name="procs"></param>
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
-            if (procs.Any(p => p.Name == "vPortEnterCritical"))
-                procs.ToString();   //$DEBUG
             this.sccProcs = procs.ToHashSet();
             flow.CreateFlowsFor(program.Architecture, procs);
 

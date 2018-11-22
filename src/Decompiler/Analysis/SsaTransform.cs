@@ -1905,7 +1905,7 @@ namespace Reko.Analysis
                 var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
                 var ass = new AliasAssignment(this.id, seq);
                 var iStm = this.stm.Block.Statements.IndexOf(this.stm);
-                var stm = head.DefStatement.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
+                var stm = this.stm.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
                 var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                 ass.Dst = sidTo.Identifier;
                 head.Uses.Add(stm);

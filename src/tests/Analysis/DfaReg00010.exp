@@ -28,7 +28,6 @@ fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
 	byte al_12 = (Mem6[ds:si:byte] >>u 0x04) + 0x30
-	word32 ds_dx_40 = SEQ(ds, 0x5427)
 	word16 ax_28 = DPB(ax, al_12, 0)
 	branch al_12 <= 0x39 l0C00_0016
 	// succ:  l0C00_0014 l0C00_0016
@@ -45,7 +44,7 @@ l0C00_0023:
 	// succ:  l0C00_0026
 l0C00_0026:
 	Mem35[ds:0x5427:word16] = ax_27
-	msdos_write_file(Mem35[ds:0x5424:word16], 0x0004, ds_dx_40, out ax)
+	msdos_write_file(Mem35[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), out ax)
 	si = si + 0x0001
 	bp = bp - 0x0001
 	branch bp != 0x0000 l0C00_0004
