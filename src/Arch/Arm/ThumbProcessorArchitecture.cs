@@ -257,7 +257,9 @@ namespace Reko.Arch.Arm
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            //$REVIEW: this strips the LSB, do we want to return this fact?
+            // or should the caller be doing the stripping?
+            return Address.Ptr32(c.ToUInt32() >> 1 << 1);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

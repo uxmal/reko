@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -96,7 +96,10 @@ namespace Reko.Analysis
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return map[grf.Domain].Expression;
+            if (!map.TryGetValue(grf.Domain, out var cb))
+                return null;
+            else
+                return cb.Expression;
         }
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)

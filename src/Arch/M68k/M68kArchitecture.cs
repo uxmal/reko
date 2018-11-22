@@ -118,14 +118,9 @@ namespace Reko.Arch.M68k
             return (int)result;
         }
 
-        public RegisterStorage GetRegister(int i)
-        {
-            return Registers.GetRegister(i);
-        }
-
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.GetRegister(domain - StorageDomain.Register);
         }
 
         public override RegisterStorage GetRegister(string name)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
-        public Identifier Reg32(string name)
+        public new Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
         }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -80,6 +80,8 @@ namespace Reko.Analysis
                         return;
                     var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
                     vp.Transform();
+                    if (ssa.Procedure.Name == "vPortEnterCritical")
+                        ssa.ToString();//DEBUG
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                 }
             } while (change);

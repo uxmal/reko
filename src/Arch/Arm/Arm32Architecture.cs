@@ -200,15 +200,10 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            // The Qx, Dx and Sx registers alias each other.
-            if (Registers.QRegs[0].Domain <= domain && domain <= Registers.QRegs[15].Domain)
-            {
-                throw new NotImplementedException($"GetRegister({(int)domain}{range}");
-            }
-            if (Registers.r0.Domain <= domain && domain <= Registers.pc.Domain)
-                return Registers.GpRegs[domain - Registers.r0.Domain];
-
-            throw new NotImplementedException($"GetRegister({(int)domain}{range}");
+            if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(string name)
