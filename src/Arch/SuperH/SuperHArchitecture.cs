@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -95,7 +95,7 @@ namespace Reko.Arch.SuperH
             return (RegisterStorage)regField.GetValue(null);
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -198,7 +198,7 @@ test_exit:
             {
                 var sp = m.Register(m.Architecture.StackRegister);
 
-                var fooProc = GivenFunction("foo", m.Architecture.GetRegister(1), 4, 8);
+                var fooProc = GivenFunction("foo", m.Architecture.GetRegister("r1"), 4, 8);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.MStore(sp, m.Word32(2));
@@ -289,7 +289,7 @@ test_exit:
             pb = new ProgramBuilder();
             pb.Add("main", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Call("level1", 0);
@@ -304,8 +304,8 @@ test_exit:
             });
             pb.Add("level2", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r2, -1);
                 m.Assign(r1, m.IAdd(r1, 1));
@@ -360,7 +360,7 @@ level2_exit:
             pb = new ProgramBuilder();
             pb.Add("main", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
@@ -372,7 +372,7 @@ level2_exit:
             });
             pb.Add("level1", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
@@ -384,8 +384,8 @@ level2_exit:
             });
             pb.Add("level2", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
@@ -441,7 +441,7 @@ level2_exit:
             pb = new ProgramBuilder();
             pb.Add("main", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
@@ -450,7 +450,7 @@ level2_exit:
             });
             pb.Add("level1", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.MStore(m.Word32(0x1234), m.Cast(PrimitiveType.Byte, r1));

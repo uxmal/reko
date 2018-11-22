@@ -264,12 +264,17 @@ namespace Reko.Arch.PowerPC
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Count)
                 return regs[i];
             else
                 return null;
+        }
+
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return GetRegister(domain - StorageDomain.Register);
         }
 
         public override RegisterStorage GetRegister(string name)

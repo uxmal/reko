@@ -64,23 +64,23 @@ namespace Reko.Environments.Windows
         {
             return new HashSet<RegisterStorage>
             {
-                Architecture.GetRegister(2),
-                Architecture.GetRegister(3),
-                Architecture.GetRegister(4),
-                Architecture.GetRegister(5),
-                Architecture.GetRegister(6),
-                Architecture.GetRegister(7),
-                Architecture.GetRegister(8),
-                Architecture.GetRegister(9),
-                Architecture.GetRegister(10),
-                Architecture.GetRegister(11),
-                Architecture.GetRegister(12),
-                Architecture.GetRegister(13),
-                Architecture.GetRegister(14),
-                Architecture.GetRegister(15),
+                Architecture.GetRegister("r2"),
+                Architecture.GetRegister("r3"),
+                Architecture.GetRegister("r4"),
+                Architecture.GetRegister("r5"),
+                Architecture.GetRegister("r6"),
+                Architecture.GetRegister("r7"),
+                Architecture.GetRegister("r8"),
+                Architecture.GetRegister("r9"),
+                Architecture.GetRegister("r10"),
+                Architecture.GetRegister("r11"),
+                Architecture.GetRegister("r12"),
+                Architecture.GetRegister("r13"),
+                Architecture.GetRegister("r14"),
+                Architecture.GetRegister("r15"),
 
-                Architecture.GetRegister(24),
-                Architecture.GetRegister(25),
+                Architecture.GetRegister("r24"),
+                Architecture.GetRegister("r25"),
             };
 
         }

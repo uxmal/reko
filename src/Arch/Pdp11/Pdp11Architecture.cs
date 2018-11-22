@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,7 +147,15 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            int i = domain - StorageDomain.Register;
+            return (0 <= i && i < regs.Length)
+                ? regs[i]
+                : null;
+        }
+
+        public RegisterStorage GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Identifier_GetValue()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();
 
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Bin_LeftInvalid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.IAdd(id, m.Word32(12));
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Bin_BothValid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.IAdd(id, id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
             ctx.Replay();
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Unary_Valid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.Not(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
             ctx.Replay();
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Unary_Invalid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.Not(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Mem_Valid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.Mem16(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
             ctx.Replay();
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Mem_Invalid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.Mem16(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void ConditionOf_Valid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.Cond(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
             ctx.Replay();
@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void ConditionOf_Invalid()
         {
-            var id = m.Register(3);
+            var id = m.Register("r3");
             var e = m.Cond(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();

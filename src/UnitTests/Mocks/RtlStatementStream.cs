@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -88,11 +88,6 @@ namespace Reko.UnitTests.Mocks
         {
             var g = new RtlGoto(Address.Ptr32(target), InstrClass.Transfer);
             return Emit(g);
-        }
-
-        public Identifier Register(int iReg)
-        {
-            return binder.EnsureRegister(arch.GetRegister(iReg));
         }
 
         public RtlInstruction Return()

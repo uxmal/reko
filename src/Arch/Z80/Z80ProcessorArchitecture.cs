@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -114,11 +114,6 @@ namespace Reko.Arch.Z80
             if (!Enum.TryParse(name, true, out result))
                 return null;
             return (int)result;
-        }
-
-        public override RegisterStorage GetRegister(int i)
-        {
-            throw new NotImplementedException();
         }
 
         public override RegisterStorage GetRegister(string name)

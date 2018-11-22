@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Analysis
             var proc = p.Add("main", (m) =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 8)));
                 m.Return();

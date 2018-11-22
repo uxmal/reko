@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Scanning
     {
         private StorageBinder binder;
         private IProcessorArchitecture arch;
+        private FakeArchitecture fakeArch;
         private RtlBackwalkHost host;
         private Program program;
         private DirectedGraph<RtlBlock> graph;
@@ -47,7 +48,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new FakeArchitecture();
+            fakeArch = new FakeArchitecture();
+            arch = fakeArch;
             program = new Program {
                 Architecture = arch,
                 SegmentMap = new SegmentMap(
@@ -61,12 +63,6 @@ namespace Reko.UnitTests.Scanning
             graph = new DiGraph<RtlBlock>();
             host = new RtlBackwalkHost(program, graph);
             processorState = arch.CreateProcessorState();
-        }
-
-        private Identifier Reg(int rn)
-        {
-            var reg = arch.GetRegister(rn);
-            return binder.EnsureRegister(reg);
         }
 
         private Identifier Reg(string name)
@@ -114,7 +110,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectRegister()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(r1));
 
@@ -126,7 +122,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectNoRegister()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(Address.Ptr32(0x00123400)));
 
@@ -138,7 +134,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SeedSlicer()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(r1));
 
@@ -150,7 +146,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectAddition()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
 
@@ -164,8 +160,8 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_KillLiveness()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => { m.Assign(r1, m.Shl(r2, 2)); });
             Given_Instrs(b, m => { m.Goto(m.IAdd(r1, 0x00123400)); });
@@ -180,8 +176,8 @@ namespace Reko.UnitTests.Scanning
         [Test(Description = "Trace across a jump")]
         public void Bwslc_AcrossJump()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
 
             var b = Given_Block(0x100);
             Given_Instrs(b, m => { m.Assign(r1, m.Shl(r2, 2)); });
@@ -205,8 +201,8 @@ namespace Reko.UnitTests.Scanning
         [Test(Description = "Trace across a branch where the branch was taken.")]
         public void Bwslc_BranchTaken()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
@@ -232,8 +228,8 @@ namespace Reko.UnitTests.Scanning
         [Test(Description = "Trace until the comparison that gates the jump is encountered.")]
         public void Bwslc_RangeCheck()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
@@ -263,8 +259,8 @@ namespace Reko.UnitTests.Scanning
         [Category(Categories.UnitTests)]
         public void Bwslc_BoundIndexWithAnd()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
@@ -488,7 +484,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SimplifySum()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
@@ -504,7 +500,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SimplifySumAndProduct()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
@@ -607,8 +603,8 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectUsingExpression()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Assign(r1, m.Mem32(m.IAdd(r2, 8))));
             Given_Instrs(b, m => m.Goto(r1));

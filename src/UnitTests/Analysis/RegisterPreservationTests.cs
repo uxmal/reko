@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Analysis
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(r1, 3);
                 m.Return();
             });
@@ -144,7 +144,7 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(r1, m.Mem32(m.Word32(0x3000)));
                 m.Return();
             });
@@ -180,7 +180,7 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.BranchIf(m.Ge(r1, 0), "m_ge");
 
                 m.Label("m_lt");
@@ -233,8 +233,8 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 m.Assign(r2, r1);
                 m.BranchIf(m.Ge(r1, 0), "m_ge");
 
@@ -294,9 +294,9 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
-                var r3 = m.Register(3);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
                 m.Assign(r2, r1);
                 m.Assign(r3, r2);
                 m.Assign(r1, 10);

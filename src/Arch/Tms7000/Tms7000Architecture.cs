@@ -1,4 +1,4 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
@@ -123,7 +123,7 @@ namespace Reko.Arch.Tms7000
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

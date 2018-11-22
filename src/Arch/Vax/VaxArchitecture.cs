@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -156,10 +156,16 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            int i = domain - StorageDomain.Register;
+            return GetRegister(i);
+        }
+
+        public RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Length)
-            return regs[i];
+                return regs[i];
             else
                 return null;
         }

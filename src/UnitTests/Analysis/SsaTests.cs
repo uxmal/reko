@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Analysis
         public void SsaOutParamters()
         {
             var m = new ProcedureBuilder("foo");
-            Identifier r4 = m.Register(4);
+            Identifier r4 = m.Register("r4");
             m.MStore(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Ptr32, r4)));
             m.Return();
 

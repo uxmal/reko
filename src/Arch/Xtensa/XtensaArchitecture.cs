@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -224,8 +224,7 @@ namespace Reko.Arch.Xtensa
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcodes result;
-            if (!Enum.TryParse(name.Replace('.', '_'), true, out result))
+            if (!Enum.TryParse(name.Replace('.', '_'), true, out Opcodes result))
                 return null;
             return (int)result;
         }
@@ -235,9 +234,9 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return allRegs[i];
+            return allRegs[domain - StorageDomain.Register];
         }
 
         public override RegisterStorage[] GetRegisters()

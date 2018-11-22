@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -114,7 +114,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override RegisterStorage GetRegister(int i)
+		public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
 		{
 			throw new NotImplementedException();
 		}

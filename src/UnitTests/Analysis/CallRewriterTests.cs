@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Analysis
                 protected override void BuildBody()
                 {
                     base.Call("Leaf", 4);
-                    Store(Int32(0x320123), base.Register(0));
+                    Store(Int32(0x320123), base.Register("r0"));
                 }
             }
 
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Analysis
             {
                 protected override void BuildBody()
                 {
-                    Assign(Register(0), Int32(3));
+                    Assign(Register("r0"), Int32(3));
                     Return();
                 }
             }

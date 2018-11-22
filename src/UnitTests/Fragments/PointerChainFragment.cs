@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -33,10 +33,10 @@ namespace Reko.UnitTests.Fragments
     {
         protected override void BuildBody()
         {
-            var r1 = Register(1);
-            var r2 = Register(2);
-            var r3 = Register(3);
-            var r4 = Register(4);
+            var r1 = Register("r1");
+            var r2 = Register("r2");
+            var r3 = Register("r3");
+            var r4 = Register("r4");
             Assign(r2, Cast(r2.DataType, Mem8(IAdd(Mem32(IAdd(Mem32(IAdd(r1, 4)), 8)), 16))));
             Assign(r4, Cast(r4.DataType, Mem16(Mem32(Mem32(Mem32(r3))))));
             Return();

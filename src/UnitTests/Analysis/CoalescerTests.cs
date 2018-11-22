@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,9 +182,9 @@ namespace Reko.UnitTests.Analysis
         public void CoaCallUses()
         {
             var m = new ProcedureBuilder("foo");
-            var r2 = m.Register(2);
-            var r3 = m.Register(3);
-            var r4 = m.Register(4);
+            var r2 = m.Register("r2");
+            var r3 = m.Register("r3");
+            var r4 = m.Register("r4");
             m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
             m.Assign(r4, m.Fn(r2));
             m.Call(r3, 4);
@@ -197,8 +197,8 @@ namespace Reko.UnitTests.Analysis
         public void CoaCallCallee()
         {
             var m = new ProcedureBuilder("foo");
-            var r2 = m.Register(2);
-            var r3 = m.Register(3);
+            var r2 = m.Register("r2");
+            var r3 = m.Register("r3");
             m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
             m.Assign(r3, m.Fn(r2));
             m.Assign(r3, m.IAdd(r3, 4));

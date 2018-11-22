@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
  * inspired by work from:
@@ -172,8 +172,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The register instance or null.
         /// </returns>
-        public override RegisterStorage GetRegister(int i)
-            => PICRegisters.PeekRegisterByIdx(i);
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+            => PICRegisters.PeekRegisterByIdx(domain - StorageDomain.Register);
 
         /// <summary>
         /// Gets a register given its name.

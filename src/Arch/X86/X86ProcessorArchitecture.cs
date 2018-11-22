@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -241,10 +241,10 @@ namespace Reko.Arch.X86
 			return GetFlagGroup(Registers.eflags, (uint) grf);
 		}
 
-		public override RegisterStorage GetRegister(int i)
-		{
-			return Registers.GetRegister(i);
-		}
+        public RegisterStorage GetRegister(int i)
+        {
+            return Registers.GetRegister(i);
+        }
 
         public override RegisterStorage GetRegister(string name)
 		{

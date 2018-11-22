@@ -211,11 +211,6 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException($"GetRegister({(int)domain}{range}");
         }
 
-        public override RegisterStorage GetRegister(int i)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -184,7 +184,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain dom, BitRange range)
         {
             throw new NotImplementedException();
         }

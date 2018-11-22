@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -57,6 +57,7 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage[] FloatRegisters;
 
         private static Dictionary<string, RegisterStorage> mpNameToReg;
+        private static Dictionary<StorageDomain, RegisterStorage> mpDomainToReg;
 
         static Registers()
         {
@@ -105,6 +106,7 @@ namespace Reko.Arch.Sparc
             fsr = stg.Reg32("fsr");
 
             mpNameToReg = stg.NamesToRegisters;
+            mpDomainToReg = stg.DomainsToRegisters;
         }
 
         public static RegisterStorage GetRegister(uint r)
@@ -117,9 +119,14 @@ namespace Reko.Arch.Sparc
             return FloatRegisters[f];
         }
 
-        public static RegisterStorage GetRegister(string regName)
+        public static bool TryGetRegister(string regName, out RegisterStorage reg)
         {
-            if (mpNameToReg.TryGetValue(regName, out var reg))
+            return mpNameToReg.TryGetValue(regName, out reg);
+        }
+
+        public static RegisterStorage GetRegister(StorageDomain domain)
+        {
+            if (mpDomainToReg.TryGetValue(domain, out var reg))
                 return reg;
             else
                 return null;

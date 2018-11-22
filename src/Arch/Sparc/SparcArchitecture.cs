@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -109,20 +109,22 @@ namespace Reko.Arch.Sparc
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.GetRegister(domain);
         }
 
         public override RegisterStorage GetRegister(string name)
         {
-            return Registers.GetRegister(name);
+            if (Registers.TryGetRegister(name, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -134,7 +136,7 @@ namespace Reko.Arch.Sparc
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.TryGetRegister(name, out reg);
         }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
@@ -147,11 +149,10 @@ namespace Reko.Arch.Sparc
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage fl;
-            if (flagGroups.TryGetValue(grf, out fl))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage fl))
                 return fl;
 
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
@@ -177,6 +178,22 @@ namespace Reko.Arch.Sparc
                 }
             }
             return GetFlagGroup(Registers.psr, (uint)grf);
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            if (flags.FlagRegister != Registers.psr)
+                yield break;
+            var grf = flags.FlagGroupBits;
+            if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+
+            if ((grf & Registers.E.FlagGroupBits) != 0) yield return Registers.E;
+            if ((grf & Registers.L.FlagGroupBits) != 0) yield return Registers.L;
+            if ((grf & Registers.G.FlagGroupBits) != 0) yield return Registers.G;
+            if ((grf & Registers.U.FlagGroupBits) != 0) yield return Registers.U;
         }
 
         public override Address MakeAddressFromConstant(Constant c)

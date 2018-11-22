@@ -185,14 +185,14 @@ namespace Reko.Environments.SysV
             case "mips-be-32":
             case "mips-le-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
-                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint)addr.ToLinear()));
+                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister("r25")), Constant.Word32((uint)addr.ToLinear()));
                 break;
             case "zSeries":
                 // Stack parameters are passed in starting at offset +160 from the 
                 // stack; everything at lower addresses is local to the called procedure's
                 // frame.
                 m.Assign(
-                    proc.Frame.EnsureRegister(Architecture.GetRegister(15)),
+                    proc.Frame.EnsureRegister(Architecture.GetRegister("r15")),
                     m.ISub(
                         proc.Frame.FramePointer,
                         Constant.Int(proc.Frame.FramePointer.DataType, 160)));

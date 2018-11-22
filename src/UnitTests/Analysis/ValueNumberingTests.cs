@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -316,7 +316,7 @@ looptest:
             var pb = new ProgramBuilder();
             pb.Add("main", m =>
             {
-                var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(1));
+                var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister("r1"));
                 var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
                 m.Assign(r1, 10);
                 m.Assign(sp, m.ISub(sp, 4));
@@ -327,8 +327,8 @@ looptest:
             });
             pb.Add("foo", m =>
             {
-                var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(1));
-                var r2 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(2));
+                var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister("r1"));
+                var r2 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister("r2"));
                 var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));

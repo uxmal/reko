@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -139,7 +139,13 @@ namespace Reko.Arch.Mips
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            var i = domain - StorageDomain.Register;
+            return GetRegister(i);
+        }
+
+        public RegisterStorage GetRegister(int i)
         {
             if (i >= GeneralRegs.Length)
                 return null;

@@ -313,8 +313,8 @@ Constants: cl:0x00
             // Subroutine does a small calculation in registers
             builder.Add("Addition", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 m.Assign(
                     m.Frame.EnsureRegister(m.Architecture.StackRegister),
                     m.Frame.FramePointer);
@@ -330,8 +330,8 @@ Constants: cl:0x00
 
             builder.Add("main", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, m.Frame.FramePointer);
@@ -358,8 +358,8 @@ Constants: cl:0x00
                 Given_PlatformTrashedRegisters();
 
                 var fp = m.Frame.FramePointer;
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, fp);

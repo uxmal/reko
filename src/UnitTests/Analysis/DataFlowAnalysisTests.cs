@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,8 +312,8 @@ done:
         public void DfaCastCast()
         {
             var m = new ProcedureBuilder();
-            var r1 = m.Register(1);
-            var r2 = m.Register(2);
+            var r1 = m.Register("r1");
+            var r2 = m.Register("r2");
             m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
             r1.DataType = PrimitiveType.Real32;
             r2.DataType = PrimitiveType.Real32;
@@ -386,8 +386,8 @@ ProcedureBuilder_exit:
         public void DfaUnsignedDiv()
         {
             var m = new ProcedureBuilder();
-            var r1 = m.Register(1);
-            var r2 = m.Register(2);
+            var r1 = m.Register("r1");
+            var r2 = m.Register("r2");
             var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
             var tmp = m.Frame.CreateTemporary(r2_r1.DataType);
 

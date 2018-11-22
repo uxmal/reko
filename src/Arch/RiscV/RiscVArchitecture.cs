@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -154,7 +154,12 @@ namespace Reko.Arch.RiscV
                 return null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return regs[domain - StorageDomain.Register];
+        }
+
+        public RegisterStorage GetRegister(int i)
         {
             return regs[i];
         }

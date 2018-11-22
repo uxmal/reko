@@ -185,8 +185,9 @@ namespace Reko.Arch.Arm
                 return null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
+            int i = domain - StorageDomain.Register;
             if (regsByNumber.TryGetValue(i, out RegisterStorage reg))
                 return reg;
             else

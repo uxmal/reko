@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -35,6 +35,7 @@ namespace Reko.Core
         private int iReg;
 
         public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = new Dictionary<string, RegisterStorage>();
+        public Dictionary<StorageDomain, RegisterStorage> DomainsToRegisters { get; } = new Dictionary<StorageDomain, RegisterStorage>();
 
         public RegisterStorage Reg(string format, PrimitiveType size)
         {
@@ -46,6 +47,7 @@ namespace Reko.Core
         {
             var reg = new RegisterStorage(name, iReg, 0, size);
             NamesToRegisters.Add(name, reg);
+            DomainsToRegisters.Add(StorageDomain.Register + iReg, reg);
             ++iReg;
             return reg;
         }

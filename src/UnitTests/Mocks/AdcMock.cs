@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Reko.UnitTests.Mocks
 		{
 			Identifier r0 = Local32("r0");
 			Identifier cf = Flags("C");
-			Identifier r1 = Register(1);
+			Identifier r1 = Register("r1");
 
 			LoadId(r0, Word32(0x01001000));
 			Compare("SZC", r1, Int32(2));

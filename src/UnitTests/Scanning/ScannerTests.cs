@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Scanning
             callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
-            var r1 = arch.GetRegister(1);
+            var r1 = fakeArch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
             this.sc = new ServiceContainer();
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());

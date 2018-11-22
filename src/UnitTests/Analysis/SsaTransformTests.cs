@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
             // another procedure.
             var implicitRegs = new HashSet<RegisterStorage>
             {
-                arch.GetRegister(1)
+                arch.GetRegister("r1")
             };
             program.Platform = platform;
             program.SegmentMap = new SegmentMap(
@@ -715,8 +715,8 @@ proc1_exit:
             addUseInstructions = true;
             RunTest(sExp, m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
 
                 // Simulate the creation of a subroutine.
                 var procSub = this.pb.Add("Adder", mm => { });
@@ -783,8 +783,8 @@ proc1_exit:
 
             RunTest(sExp, m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 var sp = m.Frame.EnsureRegister(m.Procedure.Architecture.StackRegister);
 
                 // Simulate the creation of a subroutine.
@@ -2518,7 +2518,7 @@ proc1_exit:
             RunTest(sExp, m =>
             {
                 var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
-                var r3 = m.Register(3);
+                var r3 = m.Register("r3");
 
                 m.Assign(Z, m.Cond(r3));
                 m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.EQ, Z)));
@@ -2557,7 +2557,7 @@ proc1_exit:
             RunTest(sExp, m =>
             {
                 var CZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
-                var r3 = m.Register(3);
+                var r3 = m.Register("r3");
 
                 m.Assign(CZ, m.Cond(r3));
                 m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.ULE, CZ)));
@@ -2600,7 +2600,7 @@ proc1_exit:
             {
                 var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
                 var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
-                var r3 = m.Register(3);
+                var r3 = m.Register("r3");
 
                 m.Assign(SCZ, m.Cond(r3));
                 m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.LE, SZ)));
@@ -2659,7 +2659,7 @@ proc1_exit:
                 var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
                 var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
                 var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
 
                 m.Assign(SCZ, m.Cond(r1));
                 m.BranchIf(m.Test(ConditionCode.EQ, Z), "mZero");

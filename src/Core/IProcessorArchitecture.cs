@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,12 +164,6 @@ namespace Reko.Core
         /// </summary>
         int? GetOpcodeNumber(string name);
         
-        /// <summary>
-        /// Returns register corresponding to number i, or null if there is no
-        /// such register.
-        /// </summary>
-        RegisterStorage GetRegister(int i);
-
         /// <summary>
         /// Returns regist333er whose name is 'name'
         /// </summary>
@@ -390,13 +384,9 @@ namespace Reko.Core
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
-        public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
 
-        public virtual RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            return GetRegister(domain - StorageDomain.Register);
-        }
+        public abstract RegisterStorage GetRegister(StorageDomain domain, BitRange range);
 
         public abstract RegisterStorage[] GetRegisters();
 

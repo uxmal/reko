@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -115,9 +115,14 @@ namespace Reko.Arch.zSeries
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             return Registers.GpRegisters[i];
+        }
+
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return Registers.GpRegisters[domain - StorageDomain.Register];
         }
 
         public override RegisterStorage GetRegister(string name)

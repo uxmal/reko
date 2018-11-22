@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -175,7 +175,8 @@ namespace Reko.Arch.Sparc
                     ++i;
                 }
                 var regName = fmt.Substring(iStart, i - iStart);
-                var reg = Registers.GetRegister(regName);
+                if (!Registers.TryGetRegister(regName, out var reg))
+                    throw new InvalidOperationException($"Unexpected register '{regName}'.");
                 return new RegisterOperand(reg);
             }
 

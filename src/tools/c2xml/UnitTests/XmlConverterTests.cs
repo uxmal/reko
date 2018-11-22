@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -116,7 +116,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override RegisterStorage GetRegister(int i)
+            public override RegisterStorage GetRegister(StorageDomain domain, BitRange bitRange)
             {
                 throw new NotImplementedException();
             }
