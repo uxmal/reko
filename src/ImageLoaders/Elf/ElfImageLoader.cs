@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf
 
         #endregion
 
-        internal static TraceSwitch trace = new TraceSwitch("ElfImageLoader", "Traces the progress of the ELF image loader") { Level = TraceLevel.Verbose };
+        internal static TraceSwitch trace = new TraceSwitch("ElfImageLoader", "Traces the progress of the ELF image loader") { Level = TraceLevel.Warning };
 
         private byte fileClass;
         private byte endianness;

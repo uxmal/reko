@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -57,6 +57,7 @@ namespace Reko.Arch.zSeries
             state.Reset();
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
+            instr.IClass |= opcode == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 

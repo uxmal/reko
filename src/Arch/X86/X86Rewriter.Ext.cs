@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -54,13 +54,11 @@ namespace Reko.Arch.X86
 
         public void RewriteEmms()
         {
-            rtlc = InstrClass.System;
             m.SideEffect(host.PseudoProcedure("__emms", VoidType.Instance));
         }
 
         private void RewriteGetsec()
         {
-            rtlc = InstrClass.System;
             //$TODO: this is not correct; actual function
             // depends on EAX.
             var arg = binder.EnsureRegister(Registers.eax);
@@ -70,13 +68,11 @@ namespace Reko.Arch.X86
 
         private void RewriteInvd()
         {
-            rtlc = InstrClass.System;
             m.SideEffect(host.PseudoProcedure("__invd", VoidType.Instance));
         }
 
         private void RewriteLar()
         {
-            rtlc = InstrClass.System;
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
@@ -90,7 +86,6 @@ namespace Reko.Arch.X86
 
         private void RewriteLsl()
         {
-            rtlc = InstrClass.System;
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
@@ -133,7 +128,6 @@ namespace Reko.Arch.X86
 
         public void RewriteWrsmr()
         {
-            rtlc = InstrClass.System;
             var edx_eax = binder.EnsureSequence(Registers.edx, Registers.eax, PrimitiveType.Word64);
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.SideEffect(host.PseudoProcedure("__wrmsr", VoidType.Instance, ecx, edx_eax));

@@ -296,7 +296,7 @@ namespace Reko.Arch.Pdp11
             case 0x000:
                 switch (opcode & 0x3F)
                 {
-                case 0x00: cop = 0; oc = Opcode.halt; iclass = InstrClass.Terminates; break;
+                case 0x00: cop = 0; oc = Opcode.halt; iclass = InstrClass.Terminates|InstrClass.Zero; break;
                 case 0x01: cop = 0; oc = Opcode.wait; break;
                 case 0x02: cop = 0; oc = Opcode.rti; iclass = InstrClass.Transfer; break;
                 case 0x03: cop = 0; oc = Opcode.bpt; break;

@@ -84,6 +84,7 @@ namespace Reko.Arch.M68k
                 rdr.Offset = offset + 2;
             }
             instr.Address = addr;
+            instr.iclass |= (instruction == 0) ? InstrClass.Zero : 0;
             return instr;
         }
 

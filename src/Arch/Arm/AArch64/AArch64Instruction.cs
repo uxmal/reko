@@ -76,12 +76,13 @@ namespace Reko.Arch.Arm.AArch64
     public class AArch64Instruction : MachineInstruction
     {
         public Opcode opcode;
+        public InstrClass iclass;
         public MachineOperand[] ops;
         public Opcode shiftCode;
         public MachineOperand shiftAmount;
         public VectorData vectorData;
 
-        public override InstrClass InstructionClass { get; }
+        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int)opcode;
 

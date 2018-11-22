@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -166,7 +166,6 @@ namespace Reko.Arch.X86
                 m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
                 OperandAsCodeAddress(instrCur.op1),
                 InstrClass.ConditionalTransfer);
-            rtlc = InstrClass.ConditionalTransfer;
         }
 
         private void RewriteJmp()
@@ -217,12 +216,10 @@ namespace Reko.Arch.X86
                         m.Ne0(cx)),
                     OperandAsCodeAddress(instrCur.op1),
                     InstrClass.ConditionalTransfer);
-                rtlc = InstrClass.ConditionalTransfer;
             }
             else
             {
                 m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.op1), InstrClass.ConditionalTransfer);
-                rtlc = InstrClass.ConditionalTransfer;
             }
         }
 
@@ -241,7 +238,6 @@ namespace Reko.Arch.X86
             m.Return(
                 this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
                 extraBytesPopped);
-            rtlc = InstrClass.Transfer;
         }
 
         public void RewriteIret()
@@ -252,7 +248,6 @@ namespace Reko.Arch.X86
                 Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
                 0);
-            rtlc = InstrClass.Transfer;
         }
 
         private void RewriteSyscall()
@@ -267,14 +262,12 @@ namespace Reko.Arch.X86
 
         private void RewriteSysexit()
         {
-            rtlc = InstrClass.Transfer;
             m.SideEffect(host.PseudoProcedure("__sysexit", VoidType.Instance));
             m.Return(0,0);
         }
 
         private void RewriteSysret()
         {
-            rtlc = InstrClass.Transfer;
             m.SideEffect(host.PseudoProcedure("__sysret", VoidType.Instance));
             m.Return(0,0);
         }

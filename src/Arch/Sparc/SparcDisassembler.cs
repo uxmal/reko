@@ -32,6 +32,10 @@ namespace Reko.Arch.Sparc
 {
     public class SparcDisassembler : DisassemblerBase<SparcInstruction>
     {
+        private const InstrClass Transfer = InstrClass.Delay | InstrClass.Transfer;
+        private const InstrClass CondTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Conditional;
+        private const InstrClass LinkTransfer = InstrClass.Delay | InstrClass.Transfer | InstrClass.Call;
+
         private SparcInstruction instrCur;
         private EndianImageReader imageReader;
 
@@ -80,6 +84,7 @@ namespace Reko.Arch.Sparc
                 instrCur = new SparcInstruction
                 {
                     Opcode = Opcode.call,
+                    IClass = LinkTransfer,
                     Op1 = new AddressOperand((imageReader.Address - 4) + ((int)wInstr << 2)),
                 };
                 break;
@@ -92,12 +97,14 @@ namespace Reko.Arch.Sparc
             }
             instrCur.Address = addr;
             instrCur.Length = 4;
+            instrCur.IClass |= wInstr == 0 ? InstrClass.Zero : 0;
             return instrCur;
         }
 
         private class OpRec
         {
             public Opcode code;
+            public InstrClass iclass = InstrClass.Linear;
             public string fmt;
 
             public virtual SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
@@ -159,6 +166,7 @@ namespace Reko.Arch.Sparc
                 return new SparcInstruction
                 {
                     Opcode = code,
+                    IClass = iclass,
                     Op1 = ops.Count > 0 ? ops[0] : null,
                     Op2 = ops.Count > 1 ? ops[1] : null,
                     Op3 = ops.Count > 2 ? ops[2] : null,
@@ -341,51 +349,52 @@ namespace Reko.Arch.Sparc
             {
                 uint i = ((wInstr >> 25) & 0xF) + offset;
                 SparcInstruction instr = branchOps[i].Decode(dasm, wInstr);
-                if ((wInstr & (1u << 29)) != 0)
-                    instr.Annul = true;
+                instr.IClass |= ((wInstr & (1u << 29)) != 0) ? InstrClass.Annul : 0;
                 return instr;
             }
         }
 
+        private static OpRec invalid = new OpRec { code = Opcode.illegal, iclass = InstrClass.Invalid, fmt = "" };
+
         private static OpRec[] branchOps = new OpRec[] 
         {
             // 00
-            new OpRec { code=Opcode.bn, fmt="J"},
-            new OpRec { code=Opcode.be, fmt="J"},
-            new OpRec { code=Opcode.ble,fmt="J" },
-            new OpRec { code=Opcode.bl, fmt="J" },
-            new OpRec { code=Opcode.bleu, fmt="J" },
-            new OpRec { code=Opcode.bcs, fmt="J" },
-            new OpRec { code=Opcode.bneg, fmt="J" },
-            new OpRec { code=Opcode.bvs, fmt="J" },
+            new OpRec { code=Opcode.bn,   iclass=CondTransfer, fmt="J"},
+            new OpRec { code=Opcode.be,   iclass=CondTransfer, fmt="J"},
+            new OpRec { code=Opcode.ble,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bl,   iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bleu, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bcs,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bneg, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bvs,  iclass=CondTransfer, fmt="J" },
 
-            new OpRec { code=Opcode.ba, fmt="J" },
-            new OpRec { code=Opcode.bne, fmt="J" },
-            new OpRec { code=Opcode.bg, fmt="J" },
-            new OpRec { code=Opcode.bge, fmt="J" },
-            new OpRec { code=Opcode.bgu, fmt="J" },
-            new OpRec { code=Opcode.bcc, fmt="J" },
-            new OpRec { code=Opcode.bpos, fmt="J" },
-            new OpRec { code=Opcode.bvc, fmt="J" },
+            new OpRec { code=Opcode.ba,   iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bne,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bg,   iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bge,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bgu,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bcc,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bpos, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.bvc,  iclass=CondTransfer, fmt="J" },
 
             // 10
-            new OpRec { code=Opcode.fbn, fmt="J" },
-            new OpRec { code=Opcode.fbne, fmt="J" },
-            new OpRec { code=Opcode.fblg, fmt="J" },
-            new OpRec { code=Opcode.fbul, fmt="J" },
-            new OpRec { code=Opcode.fbug, fmt="J" },
-            new OpRec { code=Opcode.fbg, fmt="J" }, 
-            new OpRec { code=Opcode.fbu, fmt="J" },
-            new OpRec { code=Opcode.fbug, fmt="J" },
+            new OpRec { code=Opcode.fbn, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbne, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fblg, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbul, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbug, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbg,  iclass=CondTransfer, fmt="J" }, 
+            new OpRec { code=Opcode.fbu,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbug, iclass=CondTransfer, fmt="J" },
 
-            new OpRec { code=Opcode.fba, fmt="J" },
-            new OpRec { code=Opcode.fbe, fmt="J" },
-            new OpRec { code=Opcode.fbue, fmt="J" },
-            new OpRec { code=Opcode.fbge, fmt="J" },
-            new OpRec { code=Opcode.fbuge, fmt="J" },
-            new OpRec { code=Opcode.fble, fmt="J" },
-            new OpRec { code=Opcode.fbule, fmt="J" },
-            new OpRec { code=Opcode.fbo, fmt="J" },
+            new OpRec { code=Opcode.fba,   iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbe,   iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbue,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbge,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbuge, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fble,  iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbule, iclass=CondTransfer, fmt="J" },
+            new OpRec { code=Opcode.fbo,   iclass=CondTransfer, fmt="J" },
 
             // 20
             new OpRec { code=Opcode.cbn, fmt="J" },
@@ -439,11 +448,11 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.xnor,fmt="r14,R0,r25" },
 
             new OpRec { code=Opcode.addx, fmt="r14,R0,r25" },
-            new OpRec { code=Opcode.illegal,  },
+            invalid,
             new OpRec { code=Opcode.umul, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.smul, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.subx, fmt="r14,R0,r25" },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.udiv, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.sdiv, fmt="r14,R0,r25" },
 
@@ -458,11 +467,11 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.xnorcc,fmt="r14,R0,r25" },
 
             new OpRec { code=Opcode.addxcc, fmt="r14,R0,r25" },
-            new OpRec { code=Opcode.illegal,  },
+            invalid,
             new OpRec { code=Opcode.umulcc, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.smulcc, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.subxcc, fmt="r14,R0,r25" },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.udivcc, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.sdivcc, fmt="r14,R0,r25" },
 
@@ -479,11 +488,11 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.rd, fmt="ry,r25" },
             new OpRec { code=Opcode.rdpsr, },
             new OpRec { code=Opcode.rdtbr, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
             // 30
             new OpRec { code=Opcode.wrasr, },
@@ -501,8 +510,8 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.flush, },
             new OpRec { code=Opcode.save,    fmt ="r14,R0,r25" },
             new OpRec { code=Opcode.restore, fmt= "r14,R0,r25" },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
+            invalid,
         };
 
         private static OpRec[] opRecs_3 = new OpRec[]
@@ -517,13 +526,13 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.sth,  fmt="r25,Mh"},
             new OpRec { code=Opcode.std,  fmt="r25,Md"},
 
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.ldsb,    fmt="Mb+,r25" },
             new OpRec { code=Opcode.ldsh,    fmt="Mh+,r25" },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldstub,  },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
+            invalid,
+            new OpRec { code=Opcode.ldstub,  iclass=InstrClass.Invalid },
+            invalid,
             new OpRec { code=Opcode.swap,    fmt="Mw,r25" },
 
             // 10
@@ -536,52 +545,52 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.stha, fmt="r25,Ah" },
             new OpRec { code=Opcode.stda, fmt="r25,Ad" },
 
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.ldsba,   fmt="r25,Ab" },
             new OpRec { code=Opcode.ldsha,   fmt="r25,Ah" },
-            new OpRec { code=Opcode.illegal  },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
+            invalid,
             new OpRec { code=Opcode.ldstuba, fmt="Ab,r25"},
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.swapa,  fmt="Aw,r25" },
 
             // 20
             new OpRec { code=Opcode.ldf,   fmt="Mw,f24", },
             new OpRec { code=Opcode.ldfsr, fmt="Mw,%fsr" },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.lddf,  fmt="Md,f24" },
             new OpRec { code=Opcode.stf,   fmt ="f24,Mw" },
             new OpRec { code=Opcode.stfsr, fmt="%fsr,Mw" },
             new OpRec { code=Opcode.stdfq, },
             new OpRec { code=Opcode.stdf, fmt= "f24,Md" },
 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
             // 30
             new OpRec { code=Opcode.ldc, },
             new OpRec { code=Opcode.ldcsr, },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
             new OpRec { code=Opcode.lddc, },
             new OpRec { code=Opcode.stc, },
             new OpRec { code=Opcode.stcsr, },
             new OpRec { code=Opcode.stdcq, },
             new OpRec { code=Opcode.stdc, },
 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+            invalid,
         };
 
         private class FPop1Rec : OpRec

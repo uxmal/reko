@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -46,17 +46,12 @@ namespace Reko.Arch.Xtensa
             { Opcodes.ueq_s, "ueq.s" }
         };
 
-        public override InstrClass InstructionClass
-        {
-            get { return InstrClass.Linear; }
-        }
+        public override InstrClass InstructionClass => IClass;
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public Opcodes Opcode { get; set; }
 
-        public override int OpcodeAsInteger
-        {
-            get { return (int)Opcode; }
-        }
+        public InstrClass IClass { get; set; }
 
         public MachineOperand[] Operands { get; internal set; }
 

@@ -282,6 +282,7 @@
     <Compile Include="Scanning\IcfgBuilder.cs" />
     <Compile Include="Scanning\IScanner.cs" />
     <Compile Include="Scanning\IScannerQueue.cs" />
+    <Compile Include="Scanning\LinearScanner.cs" />
     <Compile Include="Scanning\ProcedurePaddingFinder.cs" />
     <Compile Include="Scanning\RtlBlock.cs" />
     <Compile Include="Scanning\HeuristicDisassembler.cs" />

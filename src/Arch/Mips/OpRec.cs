@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -46,7 +47,7 @@ namespace Reko.Arch.Mips
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            return dasm.DecodeOperands(opcode, wInstr, format);
+            return dasm.DecodeOperands(wInstr, opcode, InstrClass.Linear, format);
         }
     }
 
@@ -67,9 +68,9 @@ namespace Reko.Arch.Mips
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             if (dasm.arch.PointerType.Size == 8)
-                return dasm.DecodeOperands(opcode, wInstr, format);
+                return dasm.DecodeOperands(wInstr, opcode, InstrClass.Linear, format);
             else
-                return dasm.DecodeOperands(Opcode.illegal, wInstr, "");
+                return dasm.DecodeOperands(wInstr, Opcode.illegal, InstrClass.Invalid, "");
         }
     }
 
@@ -414,7 +415,7 @@ namespace Reko.Arch.Mips
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             var opcode = ((wInstr & (1u << 16)) != 0) ? opTrue : opFalse;
-            return dasm.DecodeOperands(opcode, wInstr, "c18,j");
+            return dasm.DecodeOperands(wInstr, opcode, InstrClass.ConditionalTransfer|InstrClass.Delay, "c18,j");
         }
     }
 

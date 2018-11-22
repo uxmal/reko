@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -40,18 +40,18 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IRewriterHost host;
-        private IntelArchitecture arch;
-        private IStorageBinder binder;
-        private EndianImageReader rdr;
-        private LookaheadEnumerator<X86Instruction> dasm;
+        private readonly IntelArchitecture arch;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder binder;
+        private readonly X86State state;
+        private readonly EndianImageReader rdr;
+        private readonly LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
         private X86Instruction instrCur;
         private InstrClass rtlc;
         private int len;
         private List<RtlInstruction> rtlInstructions;
-        private X86State state;
 
         public X86Rewriter(
             IntelArchitecture arch,
@@ -64,9 +64,9 @@ namespace Reko.Arch.X86
                 throw new ArgumentNullException("host");
             this.arch = arch;
             this.host = host;
-            this.binder = binder;
             this.state = state;
             this.rdr = rdr;
+            this.binder = binder;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
 

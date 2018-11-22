@@ -40,15 +40,15 @@ namespace Reko.Arch.M68k
         private static Dictionary<int, double> fpuRomConstants;
 
         // These fields are internal so that the OperandRewriter can use them.
-        internal M68kArchitecture arch;
-        internal IStorageBinder binder;
+        internal readonly M68kArchitecture arch;
+        internal readonly IStorageBinder binder;
+        private readonly M68kState state;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<M68kInstruction> dasm;
         internal M68kInstruction di;
         internal RtlEmitter m;
-        private M68kState state;
-        private IRewriterHost host;
-        private IEnumerator<M68kInstruction> dasm;
-        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
+        private InstrClass rtlc;
         private OperandRewriter orw;
 
         public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)

@@ -618,6 +618,59 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
         }
 
+        [Test]
+        public void Bwslc_Issue_691()
+        {
+            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            var d0 = Reg("d0");
+            var CVZN = Cc("CVZN");
+            var C = Cc("C");
+            var v3 = binder.CreateTemporary(PrimitiveType.Word16);
+            var v16 = binder.CreateTemporary(PrimitiveType.Word16);
+            var v17 = binder.CreateTemporary(PrimitiveType.Word16);
+            var b1 = Given_Block(0xA860);
+            Given_Instrs(b1, m =>
+            {
+                m.Assign(v3, m.ISub(m.Cast(PrimitiveType.Word16, d0), m.Word16(0x20)));
+                m.Assign(d0, m.Dpb(d0, v3, 0));
+                m.Assign(CVZN, m.Cond(v3));
+                m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), InstrClass.ConditionalTransfer);
+            });
+
+            var bRet = Given_Block(0xA870);
+            Given_Instrs(bRet, m =>
+            {
+                m.Return(0, 0);
+            });
+
+            var b2 = Given_Block(0xA900);
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(v16, m.IAdd(m.Cast(PrimitiveType.Word16, d0), m.Cast(PrimitiveType.Word16, d0)));
+                m.Assign(d0, m.Dpb(d0, v16, 0));
+                m.Assign(CVZN, m.Cond(v16));
+                m.Assign(v17, m.IAdd(m.Cast(PrimitiveType.Word16, d0), m.Cast(PrimitiveType.Word16, d0)));
+                m.Assign(CVZN, m.Cond(v17));
+                m.Assign(d0, m.Dpb(d0, v17, 0));
+                m.Goto(m.IAdd(m.Word32(0x0000A8B4), m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d0))));
+            });
+
+            graph.Nodes.Add(b1);
+            graph.Nodes.Add(bRet);
+            graph.Nodes.Add(b2);
+            graph.AddEdge(b1, bRet);
+            graph.AddEdge(b1, b2);
+
+            var bwslc = new BackwardSlicer(host, b2, processorState);
+            Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("(int32) (int16) (word16) ((word16) (v3 * 0x00000002) * 0x00000002) + 0x0000A8B4", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
+        }
+
         // Test cases
         // A one-level jump table from MySQL. JTT represents the jump table.
         // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5

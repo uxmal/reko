@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
-                this.rtlClass = InstrClass.Linear;
+                this.rtlClass = instr.iclass;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.
@@ -200,7 +200,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vacge:
                 case Opcode.vacgt:
                 case Opcode.vaddhn:
-                case Opcode.vaddl:
                 case Opcode.vaddw:
                 case Opcode.vbic:
                 case Opcode.vbif:
@@ -211,7 +210,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vcgt:
                 case Opcode.vcle:
                 case Opcode.vcls:
-                case Opcode.vclt:
                 case Opcode.vclz:
                 case Opcode.vcnt:
                 case Opcode.vcvta:
@@ -481,11 +479,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.yield: RewriteYield(); break;
 
 
-
                 case Opcode.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
                 case Opcode.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
+                case Opcode.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
+                case Opcode.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;
                 case Opcode.vcvt: RewriteVcvt(); break;
                 case Opcode.vdiv: RewriteVecBinOp(m.FDiv); break;

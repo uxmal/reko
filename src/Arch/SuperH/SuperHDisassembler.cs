@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -70,6 +70,7 @@ namespace Reko.Arch.SuperH
         {
             public List<MachineOperand> ops = new List<MachineOperand>();
             public Opcode opcode;
+            public InstrClass iclass;
             public RegisterStorage reg;
 
             public void Clear()
@@ -83,6 +84,7 @@ namespace Reko.Arch.SuperH
                 var instr = new SuperHInstruction
                 {
                     Opcode = this.opcode,
+                    IClass = iclass,
                 };
                 if (ops.Count > 0)
                 {
@@ -521,8 +523,14 @@ namespace Reko.Arch.SuperH
 
         private static InstrDecoder Instr(Opcode opcode, params Mutator[] mutators)
         {
-            return new InstrDecoder(opcode, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
+
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, mutators);
+        }
+
 
         private static FieldDecoder Mask(int pos, int length, params Decoder[] decoders)
         {
@@ -584,17 +592,20 @@ namespace Reko.Arch.SuperH
         private class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
+            private readonly InstrClass iclass;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder(Opcode opcode, Mutator[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, Mutator[] mutators)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.mutators = mutators;
             }
 
             public override SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr)
             {
                 dasm.state.opcode = this.opcode;
+                dasm.state.iclass = this.iclass;
                 foreach (var mutator in this.mutators)
                 {
                     if (!mutator(uInstr, dasm))
@@ -729,7 +740,7 @@ namespace Reko.Arch.SuperH
             // 0...
             Sparse(0, 4, new Dictionary<int, Decoder>
             {
-                { 0x0, invalid },
+                { 0x0, Instr(Opcode.invalid, InstrClass.Invalid|InstrClass.Zero) },
                 { 0x1, invalid },
                 { 0x02, Mask(7, 1,
                     Mask(4, 3,

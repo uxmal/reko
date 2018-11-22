@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -160,6 +160,25 @@ namespace Reko.Core.Lib
                 (((u >> 8) & 0xFF) << 16) |
                 ((u & 0xFF) << 24);
             return uNew;
+        }
+
+        /// <summary>
+        /// Replicates the bits in the least significant <paramref name="length"/> bits
+        /// of <paramref name="pattern"/> <paramref name="times"/>.
+        /// </summary>
+        /// <param name="pattern">Bit pattern to replicate</param>
+        /// <param name="length">Length of the bit pattern</param>
+        /// <param name="times">Number of times to replicate</param>
+        /// <returns>Replicated pattern.</returns>
+        public static ulong Replicate64(ulong pattern, int length, int times)
+        {
+            ulong maskedPattern = pattern & Mask(0, length);
+            ulong value = 0;
+            for (int i = 0; i < times;++i)
+            {
+                value = (value << length) | maskedPattern;
+            }
+            return value;
         }
     }
 }

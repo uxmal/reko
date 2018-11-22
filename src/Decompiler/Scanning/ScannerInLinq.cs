@@ -316,6 +316,11 @@ namespace Reko.Scanning
                 // otherwise we start a new block.
                 if (((instr.type ^ succ.type) & (ushort)InstrClass.Padding) != 0)
                     continue;
+                // If the first instruction was a zero instruction the next one must also be zero,
+                // otherwise we start a new block.
+                if (((instr.type ^ succ.type) & (ushort) InstrClass.Zero) != 0)
+                    continue;
+
                 // If succ follows instr and it's not the entry of a known procedure
                 // or a called address, we don't need the edge between them since they're inside
                 // a basic block. We also mark succ as belonging to the same block as instr.
@@ -497,6 +502,8 @@ namespace Reko.Scanning
             string RenderType(ushort type)
             {
                 var t = (InstrClass)type;
+                if ((t & InstrClass.Zero) != 0)
+                    return "Zer ";
                 if ((t & InstrClass.Padding) != 0)
                     return "Pad ";
                 if ((t & InstrClass.Call) != 0)

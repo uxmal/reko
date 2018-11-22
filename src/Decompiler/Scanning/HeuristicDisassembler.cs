@@ -112,7 +112,7 @@ namespace Reko.Scanning
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
                     Address addrOp;
-                    switch (instr.Class & ~InstrClass.Padding)
+                    switch (instr.Class & ~(InstrClass.Padding|InstrClass.Zero))
                     {
                     case InstrClass.Invalid:
                     case InstrClass.None:

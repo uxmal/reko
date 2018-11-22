@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm.AArch64
                 this.instr = dasm.Current;
                 var cluster = new List<RtlInstruction>();
                 m = new RtlEmitter(cluster);
-                rtlc = InstrClass.Linear;
+                rtlc = instr.InstructionClass;
                 switch (instr.opcode)
                 {
                 default:
@@ -211,7 +211,6 @@ namespace Reko.Arch.Arm.AArch64
                 };
             }
         }
-
 
 
         IEnumerator IEnumerable.GetEnumerator()

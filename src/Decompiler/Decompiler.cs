@@ -17,26 +17,21 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
-using Reko.Loading;
-using Reko.Analysis;
 using Reko.Structure;
 using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
-using Reko.Core.Assemblers;
-using System.Threading;
-using Reko.Core.Configuration;
-using System.Diagnostics;
 
 namespace Reko
 {

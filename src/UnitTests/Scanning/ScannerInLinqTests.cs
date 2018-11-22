@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -23,7 +23,6 @@ using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -34,8 +33,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -327,16 +324,16 @@ namespace Reko.UnitTests.Scanning
                 "00010003-00010009 (6): Lin 00010009" + nl +
                 "00010004-0001000A (6): Lin 0001000A" + nl +
                 "00010006-00010008 (2): Lin 00010008" + nl +
-                "00010007-00010009 (2): Pad 00010009" + nl +
-                "00010008-0001000B (3): Pad 0001000B" + nl +
+                "00010007-00010009 (2): Zer 00010009" + nl +
+                "00010008-0001000B (3): Zer 0001000B" + nl +
                 "00010009-0001000A (1): Lin 0001000A" + nl +
                 "0001000A-0001000B (1): Lin 0001000B" + nl +
                 "0001000B-00010012 (7): Lin 00010012" + nl +
                 "0001000D-00010012 (5): Lin 00010012" + nl +
                 "00010012-00010017 (5): Lin 00010017" + nl +
                 "00010013-00010014 (1): Lin 00010014" + nl +
-                "00010014-00010018 (4): Pad 00010018" + nl +
-                "00010015-00010017 (2): Pad 00010017" + nl +
+                "00010014-00010018 (4): Zer 00010018" + nl +
+                "00010015-00010017 (2): Zer 00010017" + nl +
                 "00010017-00010018 (1): End" + nl +
                 "00010018-00010019 (1): End" + nl +
                 "00010019-0001001A (1): End" + nl;

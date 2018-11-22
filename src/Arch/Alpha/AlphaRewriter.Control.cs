@@ -83,7 +83,6 @@ namespace Reko.Arch.Alpha
 
         private void RewriteFBranch(Operator op)
         {
-            rtlc = InstrClass.ConditionalTransfer;
             var src = Rewrite(instr.op1);
             var dst = ((AddressOperand)instr.op2).Address;
             m.Branch(

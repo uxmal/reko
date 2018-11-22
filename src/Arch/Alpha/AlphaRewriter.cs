@@ -34,11 +34,11 @@ namespace Reko.Arch.Alpha
 {
     public partial class AlphaRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private AlphaArchitecture arch;
-        private IStorageBinder binder;
-        private EndianImageReader rdr;
-        private IEnumerator<AlphaInstruction> dasm;
-        private IRewriterHost host;
+        private readonly AlphaArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly EndianImageReader rdr;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<AlphaInstruction> dasm;
         private AlphaInstruction instr;
         private InstrClass rtlc;
         private RtlEmitter m;

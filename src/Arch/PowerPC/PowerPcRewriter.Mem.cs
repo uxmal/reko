@@ -424,7 +424,6 @@ namespace Reko.Arch.PowerPC
             case 0x14: op = m.Le; break;
             case 0x18: op = m.Ne; break;
             case 0x1F:
-                rtlc = InstrClass.Linear;
                 m.SideEffect(
                     host.PseudoProcedure(
                         "__trap",

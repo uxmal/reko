@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -60,12 +60,14 @@ namespace Reko.Arch.Arm.AArch64
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = addr;
             instr.Length = 4;
+            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
         private class DasmState
         {
             public Opcode opcode;
+            public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public Opcode shiftCode = Opcode.Invalid;
             public MachineOperand shiftAmount = null;
@@ -76,6 +78,7 @@ namespace Reko.Arch.Arm.AArch64
             public void Clear()
             {
                 this.opcode = Opcode.Invalid;
+                this.iclass = InstrClass.Invalid;
                 this.ops.Clear();
                 this.shiftCode = Opcode.Invalid;
                 this.shiftAmount = null;
@@ -94,6 +97,7 @@ namespace Reko.Arch.Arm.AArch64
                 var instr = new AArch64Instruction
                 {
                     opcode = opcode,
+                    iclass = iclass,
                     ops = ops.ToArray(),
                     shiftCode = shiftCode,
                     shiftAmount = shiftAmount,
@@ -1436,17 +1440,27 @@ namespace Reko.Arch.Arm.AArch64
 
         private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
         {
-            return new InstrDecoder(opcode, VectorData.Invalid, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, VectorData.Invalid, mutators);
+        }
+
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, VectorData.Invalid, mutators);
         }
 
         private static Decoder Instr(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
         {
-            return new InstrDecoder(opcode, vectorData, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, vectorData, mutators);
+        }
+
+        private static Decoder Mask(string tag, int pos, uint mask, params Decoder[] decoders)
+        {
+            return new MaskDecoder(tag, pos, mask, decoders);
         }
 
         private static Decoder Mask(int pos, uint mask, params Decoder[] decoders)
         {
-            return new MaskDecoder(pos, mask, decoders);
+            return new MaskDecoder("", pos, mask, decoders);
         }
 
         private static Decoder Mask(
@@ -1477,10 +1491,15 @@ namespace Reko.Arch.Arm.AArch64
             return new BitfieldDecoder(bitfields, decoders);
         }
 
-
         private static Decoder Sparse(int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
         {
-            return new SparseMaskDecoder(pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
+            return new SparseMaskDecoder("", pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
+        }
+
+
+        private static Decoder Sparse(string tag, int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
+        {
+            return new SparseMaskDecoder(tag, pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
         }
 
         private static Decoder Select(int pos, int length, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
@@ -2083,15 +2102,15 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 111110"),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 111111"));
 
-                LoadsAndStores = new MaskDecoder(31, 1,
-                    new MaskDecoder(28, 3,          // op0 = 0 
-                        new MaskDecoder(26, 1,      // op0 = 0 op1 = 0
-                            new MaskDecoder(23, 3,  // op0 = 0 op1 = 00 op2 = 0
+                LoadsAndStores = Mask("LoadsAndStores", 31, 1,
+                    Mask("op0 = 0", 28, 3,          // op0 = 0 
+                        Mask(26, 1,      // op0 = 0 op1 = 0
+                            Mask(23, 3,  // op0 = 0 op1 = 00 op2 = 0
                                 LoadStoreExclusive,
                                 LoadStoreExclusive,
                                 invalid,
                                 invalid),
-                            new MaskDecoder(23, 3,  // op0 = 0 op1 = 00 op2 = 1
+                            Mask(23, 3,  // op0 = 0 op1 = 00 op2 = 1
                                 Select(16, 6, IsZero,
                                     AdvancedSimdLdStMultiple,
                                     invalid),
@@ -2102,12 +2121,12 @@ namespace Reko.Arch.Arm.AArch64
                                     AdvancedSimdLdStSingleStructure,
                                     invalid),
                                 Nyi("AdvancedSimdLdStSingleStructure"))),
-                        new MaskDecoder(23, 3,      // op0 = 0, op1 = 1
+                        Mask(23, 3,      // op0 = 0, op1 = 1
                             LoadRegLit,
                             LoadRegLit,
                             invalid,
                             invalid),
-                        new MaskDecoder(23, 3,      // op0 = 0, op1 = 2
+                        Mask(23, 3,      // op0 = 0, op1 = 2
                             LdStNoallocatePair,
                             LdStRegPairPost,
                             LdStRegPairOffset,
@@ -2125,7 +2144,7 @@ namespace Reko.Arch.Arm.AArch64
                                     LdStRegisterRegOff,
                                     Nyi("*LoadStoreRegister PAC"))),
                             LdStRegUImm)),
-                    new MaskDecoder(28, 3,          // op0 = 1 
+                    Mask(28, 3,          // op0 = 1 
                         Nyi("op1 = 0"),
                         Mask(23, 3,
                             LoadRegLit,
@@ -2188,8 +2207,7 @@ namespace Reko.Arch.Arm.AArch64
                 Instr(Opcode.eor, X(0,5),X(5,5),Ul(10,w64)),
                 Instr(Opcode.ands, X(0,5),X(5,5),Ul(10,w64)));
 
-
-                Nyi("LogicalImmediate");
+            Nyi("LogicalImmediate");
 
             var MoveWideImmediate = Mask(29, 7,
                 Mask(22, 1,
@@ -2239,7 +2257,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             Decoder Extract = Nyi("Extract");
 
-            var DataProcessingImm = new MaskDecoder(23, 0x7,
+            var DataProcessingImm = Mask(23, 0x7,
                 PcRelativeAddressing,
                 PcRelativeAddressing,
                 AddSubImmediate,
@@ -2251,25 +2269,25 @@ namespace Reko.Arch.Arm.AArch64
                 Extract);
 
             var UncondBranchImm = Mask(31, 1,
-                Instr(Opcode.b, J(0,26)),
-                Instr(Opcode.bl, J(0,26)));
+                Instr(Opcode.b, InstrClass.Transfer, J(0,26)),
+                Instr(Opcode.bl, InstrClass.Transfer | InstrClass.Call, J(0,26)));
 
             var UncondBranchReg = Select(16,5, n => n != 0x1F,
                 invalid,
                 Mask(21, 0xF,
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, InstrClass.Transfer, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, InstrClass.Transfer | InstrClass.Call, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, InstrClass.Transfer, X(5,5)), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key B"), invalid))),
                     invalid,
@@ -2298,22 +2316,22 @@ namespace Reko.Arch.Arm.AArch64
 
             var CompareBranchImm = Mask(31, 1, 
                 Mask(24, 1,
-                    Instr(Opcode.cbz, W(0,5),J(5,19)),
-                    Instr(Opcode.cbnz, W(0,5),J(5,19))),
+                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, W(0,5),J(5,19)),
+                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, W(0,5),J(5,19))),
                 Mask(24, 1,
-                    Instr(Opcode.cbz, X(0,5),J(5,19)),
-                    Instr(Opcode.cbnz, X(0,5),J(5,19))));
+                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, X(0,5),J(5,19)),
+                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, X(0,5),J(5,19))));
 
             var TestBranchImm = Mask(24, 1,
                 Mask(31, 1,
-                    Instr(Opcode.tbz, W(0,5),I(19,5,w32),J(5,14)),
-                    Instr(Opcode.tbnz, W(0,5),I(19,5,w32),J(5,14))),
+                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14))),
                 Mask(31, 1,
-                    Instr(Opcode.tbz, W(0,5),I(19,5,w32),J(5,14)),
-                    Instr(Opcode.tbnz, W(0,5),I(19,5,w32),J(5,14))));
+                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14))));
 
             var CondBranchImm = Mask(24,1,4,1,
-                Instr(Opcode.b, C(0,4),J(5,19)),
+                Instr(Opcode.b, InstrClass.ConditionalTransfer, C(0,4),J(5,19)),
                 invalid,
                 invalid,
                 invalid);
@@ -3416,7 +3434,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
                     invalid);
 
-                DataProcessingScalarFpAdvancedSimd = Mask(28, 0xF,
+                DataProcessingScalarFpAdvancedSimd = Mask("DataProcessingScalarFpAdvancedSimd", 28, 0xF,
                     Mask(23, 0b11, // op0 = 0000
                         Mask(19, 0b1111,        // op0=0000 op1=00 op
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000"),
@@ -3643,7 +3661,7 @@ namespace Reko.Arch.Arm.AArch64
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10 op2=0b0001"),
                                 AdvancedSimdShiftByImm)),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b11")),
-                    Mask(23, 0b11, // op0=5 op1
+                    Mask("  op0=5", 23, 0b11, // op0=5 op1
                         Sparse(19, 0b1111, // op0=5 op1=0b00 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???"),
                             (0b0100, Mask(10, 0b11,     // op0=5 op1=0b00 op2=0100 op3
@@ -3658,7 +3676,7 @@ namespace Reko.Arch.Arm.AArch64
                         Sparse(19, 0b1111,  // op0=5 op1=01 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b01 op2=????"),
                             (0b0101, FloatingPointDecoders)),
-                        Sparse(19, 0b1111,  // op0=5 op1=10 op2
+                        Sparse("  op0=5 op1=0b10 ", 19, 0b1111,  // op0=5 op1=10 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b10"),
                             (0b0000, Mask(10, 0b11, // op0=5 op1=0b10 op2=0000 op3=xxxxxxx??
                                 AdvancedSimdScalar_x_IdxElem,
@@ -3824,7 +3842,7 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
             }
 
-            rootDecoder = new MaskDecoder(25, 0x0F,
+            rootDecoder = Mask(25, 0x0F,
                 invalid,
                 invalid,
                 invalid,
@@ -3845,6 +3863,5 @@ namespace Reko.Arch.Arm.AArch64
                 LoadsAndStores,
                 DataProcessingScalarFpAdvancedSimd);
         }
-
     }
 }

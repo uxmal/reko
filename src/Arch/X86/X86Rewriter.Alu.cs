@@ -83,7 +83,6 @@ namespace Reko.Arch.X86
 
         private void RewriteHlt()
         {
-            rtlc = InstrClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,
@@ -182,7 +181,6 @@ namespace Reko.Arch.X86
 
         private void RewriteRdmsr()
         {
-            rtlc = InstrClass.System;
             Identifier edx_eax = binder.EnsureSequence(
                 Registers.edx,
                 Registers.eax,

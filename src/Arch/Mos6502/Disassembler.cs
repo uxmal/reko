@@ -203,7 +203,7 @@ namespace Reko.Arch.Mos6502
 
         private static Decoder[] decoders = new Decoder[] {
             // 00
-new Decoder(Opcode.brk, "", InstrClass.Padding),
+new Decoder(Opcode.brk, "", InstrClass.Padding|InstrClass.Zero),
     new Decoder(Opcode.ora, "Ix"),
     new Decoder(Opcode.illegal, ""),
     new Decoder(Opcode.illegal, ""),

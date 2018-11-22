@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -27,21 +27,18 @@ namespace Reko.Arch.SuperH
 {
     public class SuperHInstruction : MachineInstruction
     {
-        public override InstrClass InstructionClass
-        {
-            get { throw new NotImplementedException(); }
-        }
+
 
         public Opcode Opcode { get; set; }
-
+        public InstrClass IClass { get; set; }
         public MachineOperand op1 { get; set; }
         public MachineOperand op2 { get; set; }
         public MachineOperand op3 { get; set; }
 
-        public override int OpcodeAsInteger
-        {
-            get { throw new NotImplementedException(); }
-        }
+
+        public override InstrClass InstructionClass => IClass;
+
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)
         {

@@ -38,6 +38,8 @@ namespace Reko.Arch.Arm.AArch32
     /// </summary>
     public partial class T32Disassembler : DisassemblerBase<AArch32Instruction>
     {
+        private const uint ArmRegPC = 0xFu;
+
         private static readonly Decoder[] decoders;
         private static readonly Decoder invalid;
 
@@ -64,6 +66,8 @@ namespace Reko.Arch.Arm.AArch32
             this.state = new DasmState();
 
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
+            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instr.iclass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             if ((itState & 0x1F) == 0x10)
@@ -85,6 +89,7 @@ namespace Reko.Arch.Arm.AArch32
         private class DasmState
         {
             public Opcode opcode;
+            public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public ArmCondition cc = ArmCondition.AL;
             public bool updateFlags = false;
@@ -93,7 +98,7 @@ namespace Reko.Arch.Arm.AArch32
             public Opcode shiftType = Opcode.Invalid;
             public MachineOperand shiftValue = null;
             public ArmVectorData vectorData = ArmVectorData.INVALID;
-            public uint n;
+            public bool useQ = false;
 
             internal void Invalid()
             {
@@ -105,6 +110,7 @@ namespace Reko.Arch.Arm.AArch32
                 return new T32Instruction
                 {
                     opcode = opcode,
+                    iclass = iclass,
                     ops = ops.ToArray(),
                     condition = cc,
                     SetFlags = updateFlags,
@@ -117,9 +123,10 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private AArch32Instruction DecodeFormat(uint wInstr, Opcode opcode, string format)
+        private AArch32Instruction DecodeFormat(uint wInstr, Opcode opcode, InstrClass iclass, string format)
         {
             this.state.opcode = opcode;
+            this.state.iclass = iclass;
             for (int i = 0; i < format.Length; ++i)
             {
                 int offset;
@@ -425,6 +432,7 @@ namespace Reko.Arch.Arm.AArch32
             return new T32Instruction
             {
                 opcode = state.opcode,
+                iclass = state.iclass,
                 condition = state.cc,
                 SetFlags = state.updateFlags,
                 ops = state.ops.ToArray(),
@@ -935,10 +943,48 @@ namespace Reko.Arch.Arm.AArch32
 
         #region Mutators
 
+        private static Mutator q(int bitPos)
+        {
+            return (u, d) =>
+            {
+                d.state.useQ = Bits.IsBitSet(u, bitPos);
+                return true;
+            };
+        }
+
+        private static Bitfield[] vifFields = {
+            new Bitfield(10,1), new Bitfield(18, 2)
+        };
+        private static bool vif(uint uInstr, T32Disassembler dasm)
+        {
+            var code = Bitfield.ReadFields(vifFields, uInstr);
+            switch (code)
+            {
+            case 0b0_00: dasm.state.vectorData = ArmVectorData.S8; return true;
+            case 0b0_01: dasm.state.vectorData = ArmVectorData.S16; return true;
+            case 0b0_10: dasm.state.vectorData = ArmVectorData.S32; return true;
+            case 0b1_01: dasm.state.vectorData = ArmVectorData.F16; return true;
+            case 0b1_10: dasm.state.vectorData = ArmVectorData.F32; return true;
+            }
+            return false;
+        }
+
         private static bool R0(uint wInstr, T32Disassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
                 (wInstr & 0xF)]));
+            return true;
+        }
+
+        /// <summary>
+        /// Register bitfield, but don't allow PC
+        /// </summary>
+        private static bool Rnp0(uint wInstr, T32Disassembler dasm)
+        {
+            var iReg = (wInstr & 0xF);
+            if (iReg == ArmRegPC)
+                return false;
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
             return true;
         }
 
@@ -949,6 +995,18 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        /// <summary>
+        /// Register bitfield, but don't allow PC
+        /// </summary>
+        private static bool Rnp8(uint wInstr, T32Disassembler dasm)
+        {
+            var iReg = ((wInstr >> 8) & 0xF);
+            if (iReg == ArmRegPC)
+                return false;
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            return true;
+        }
+
         private static bool R12(uint wInstr, T32Disassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
@@ -956,10 +1014,34 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        /// <summary>
+        /// Register bitfield, but don't allow PC
+        /// </summary>
+        private static bool Rnp12(uint wInstr, T32Disassembler dasm)
+        {
+            var iReg = ((wInstr >> 12) & 0xF);
+            if (iReg == ArmRegPC)
+                return false;
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            return true;
+        }
+
         private static bool R16(uint wInstr, T32Disassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
                 ((wInstr >> 16) & 0xF)]));
+            return true;
+        }
+
+        /// <summary>
+        /// Register bitfield, but don't allow PC
+        /// </summary>
+        private static bool Rnp16(uint wInstr, T32Disassembler dasm)
+        {
+            var iReg = ((wInstr >> 16) & 0xF);
+            if (iReg == ArmRegPC)
+                return false;
+            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
             return true;
         }
 
@@ -974,6 +1056,19 @@ namespace Reko.Arch.Arm.AArch32
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[
                 ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF)]));
+            return true;
+        }
+
+        /// <summary>
+        /// Vector register (depends on useQ being set)
+        /// </summary>
+        private static bool W22_12(uint wInstr, T32Disassembler dasm)
+        {
+            uint iReg = ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF);
+            if (dasm.state.useQ && (iReg & 1) == 1)
+                return false;
+            var reg = (dasm.state.useQ ? Registers.QRegs : Registers.DRegs)[iReg];
+            dasm.state.ops.Add(new RegisterOperand(reg));
             return true;
         }
 
@@ -995,6 +1090,19 @@ namespace Reko.Arch.Arm.AArch32
         {
             var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
             dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q]));
+            return true;
+        }
+
+        /// <summary>
+        /// Vector register (depends on useQ being set)
+        /// </summary>
+        private static bool W5_0(uint wInstr, T32Disassembler dasm)
+        {
+            uint iReg = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
+            if (dasm.state.useQ && (iReg & 1) == 1)
+                return false;
+            var reg = (dasm.state.useQ ? Registers.QRegs : Registers.DRegs)[iReg];
+            dasm.state.ops.Add(new RegisterOperand(reg));
             return true;
         }
 
@@ -1050,6 +1158,17 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 return true;
             };
+        }
+
+        /// <summary>
+        /// Vector immediate quantity.
+        /// </summary>
+        private static bool IW0(uint uInstr, T32Disassembler dasm)
+        {
+            dasm.state.ops.Add(dasm.state.useQ
+                ? ImmediateOperand.Word128(0)
+                : ImmediateOperand.Word64(0));
+            return true;
         }
 
         private static (ArmVectorData, uint)[] vectorImmediateShiftSize = new[]
@@ -1137,12 +1256,17 @@ namespace Reko.Arch.Arm.AArch32
         // Factory methods
         private static InstrDecoder Instr(Opcode opcode, string format)
         {
-            return new InstrDecoder(opcode, format);
+            return new InstrDecoder(opcode, InstrClass.Linear, format);
+        }
+
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, string format)
+        {
+            return new InstrDecoder(opcode, iclass, format);
         }
 
         private static InstrDecoder2 Instr(Opcode opcode, params Mutator[] mutators)
         {
-            return new InstrDecoder2(opcode, mutators);
+            return new InstrDecoder2(opcode, InstrClass.Linear, mutators);
         }
 
         private static MaskDecoder Mask(int shift, uint mask, params Decoder [] decoders)
@@ -1272,7 +1396,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.b, "c8p+0:8"),
                 Instr(Opcode.b, "c8p+0:8"),
                 Instr(Opcode.udf, "i0:8"),
-                Instr(Opcode.svc, "i0:8"));
+                Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, "i0:8"));
 
             return Mask(13, 0x07,
                 decAlu,
@@ -2163,6 +2287,9 @@ namespace Reko.Arch.Arm.AArch32
                         Nyi("AdvancedSimd3RegistersSameLength_opcF U=0 op1 = 0 Q=1")),
                     Nyi("AdvancedSimd3RegistersSameLength_opcF U=0 op1 = 1"))));
 
+            var vclt_imm0 = Instr(Opcode.vclt, q(6), vif, W22_12, W5_0, IW0);
+
+
             var AdvancedSimd2RegsMisc = Mask(16, 3,
                 Mask(7, 0xF,
                     Instr(Opcode.vrev64, "*"),
@@ -2194,7 +2321,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vceq, "*imm0"),
                     Instr(Opcode.vcle, "*imm0"),
 
-                    Instr(Opcode.vclt, "*imm0"),
+                    vclt_imm0,
                     Mask(6, 1,
                         invalid,
                         Instr(Opcode.sha1h, "*")),
@@ -2212,7 +2339,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vceq, "*imm0"),
                     Instr(Opcode.vcle, "*imm0"),
 
-                    Instr(Opcode.vclt, "*imm0"),
+                    vclt_imm0,
                     invalid,
                     Mask(6, 1,
                         Mask(10, 1,
@@ -2812,8 +2939,8 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.smlaltb, "R12,R8,R16,R0"),
                     Instr(Opcode.smlaltt, "R12,R8,R16,R0"),
 
-                    Instr(Opcode.smlald, "R12,R8,R16,R0"),
-                    Instr(Opcode.smlaldx, "R12,R8,R16,R0"),
+                    Instr(Opcode.smlald, Rnp12,Rnp8,Rnp16,Rnp0),
+                    Instr(Opcode.smlaldx, R12,R8,R16,R0),
                     invalid,
                     invalid),
                 Mask(4, 0x0F,

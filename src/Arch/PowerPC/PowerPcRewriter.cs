@@ -35,15 +35,15 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
+        private readonly PowerPcArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<PowerPcInstruction> dasm;
+        private PowerPcInstruction instr;
         private RtlEmitter m;
         private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
-        private PowerPcArchitecture arch;
-        private IEnumerator<PowerPcInstruction> dasm;
-        private IRewriterHost host;
-        private PowerPcInstruction instr;
-        private EndianImageReader rdr;
 
         public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
@@ -56,7 +56,6 @@ namespace Reko.Arch.PowerPC
         public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            //this.state = ppcState;
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
