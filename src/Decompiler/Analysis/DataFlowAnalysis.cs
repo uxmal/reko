@@ -360,7 +360,6 @@ namespace Reko.Analysis
 
                 // Propagate those newly created stack-based identifiers.
                 vp.Transform();
-
                 return sst;
             }
             else

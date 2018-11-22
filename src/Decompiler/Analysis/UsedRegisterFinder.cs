@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -171,6 +171,16 @@ namespace Reko.Analysis
                 var n = Classify(ssa.Identifiers[ass.Dst]);
                 idCur = idOld;
                 return n;
+            }
+            else if (ass.Src is ConditionOf cof)
+            {
+                // a = cond(b) is live only if a is live.
+                var idOld = idCur;
+                idCur = ass.Dst;
+                var n = Classify(ssa.Identifiers[ass.Dst]);
+                idCur = idOld;
+                if (n.IsEmpty)
+                    return n;
             }
             return ass.Src.Accept(this);
         }
