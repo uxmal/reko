@@ -3789,8 +3789,7 @@ B500           	push	{lr}
 4788           	blx	r1
 F85D EB04     	pop	lr
 4770           	bx	lr
-4770           	bx	lr
-BF00           	nop
+0000820C                                     70 47 00 BF             pG..
 
 ;; vApplicationIdleHook: 00008210
 vApplicationIdleHook proc

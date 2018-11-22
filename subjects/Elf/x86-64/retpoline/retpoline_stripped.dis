@@ -3,160 +3,136 @@ void fn0000000000400428()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO ah al ax eax rax
+// Trashed: SCZO rax
 // Preserved: rsp
 fn0000000000400428_entry:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000400428:
-	word64 rax_4 = Mem0[0x0000000000600FF8:word64]
-	branch rax_4 == 0x0000000000000000 l000000000040043A
+	word64 rax_5 = Mem0[0x0000000000600FF8:word64]
+	branch rax_5 == 0x0000000000000000 l000000000040043A
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000400438:
-	word64 rsp_15
-	byte SCZO_16
-	word64 rax_17
-	byte SZO_18
-	bool C_19
-	bool Z_20
-	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
+	call __gmon_start__ (retsize: 8;)
+		uses: rax:rax_5,rsp:fp - 0x0000000000000008
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
+// DataOut (flags):
+// SymbolicIn:
 
 l000000000040043A:
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
+// DataOut (flags):
+// SymbolicIn:
 
 fn0000000000400428_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rax:<invalid>
+// DataOut (flags):
+// SymbolicIn:
 
 
 
 void fn0000000000400480(word64 rdx, word64 qwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rdx
+// MayUse:  rdx:[0..63] Stack +0000:[0..63]
 // LiveOut:
 // Trashed:
 // Preserved:
-// Stack args: Stack +0000(64)
 // Terminates process
 fn0000000000400480_exit:
 // DataOut:
-// DataOut (flags): 
+// DataOut (flags):
 // SymbolicIn:
 
 fn0000000000400480_entry:
-// DataOut: rdx
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-// LocalsOut: fp(64) Stack +0000(64)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000400480:
 	__align(fp + 8)
 	__libc_start_main(0x0000000000400660, qwArg00, fp + 8, 0x0000000000400710, 0x0000000000400780, rdx, fp)
 	__hlt()
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 
 
-void fn00000000004004B0(word64 r8)
+void fn00000000004004B0(word64 rbp, word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8
+// MayUse:  r8:[0..63] rbp:[0..63]
 // LiveOut:
-// Trashed: SCZO ah al ax di dil eax edi rax rdi
+// Trashed: SCZO r8 rax rdi
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
-// DataOut: r8
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l00000000004004B0:
 	branch r8 == 0x0000000000601040 l00000000004004D8
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 l00000000004004C1:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004D8
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 8 rax:0x0000000000601040 rbp:fp - 8 -8(fp):rbp
+// DataOut (flags):
+// SymbolicIn:
 
 l00000000004004D8:
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 8 rax:<invalid> rbp:fp - 8 -8(fp):rbp
+// DataOut (flags):
+// SymbolicIn:
 
 l00000000004004CB:
-	word64 rsp_39
-	word64 rbp_40
-	word32 eax_41
-	word64 rax_42
-	word64 r8_43
-	byte SCZO_44
-	bool Z_45
-	byte SZO_46
-	bool C_47
-	word32 edi_48
-	word64 rdi_49
-	call 0x0000000000000000 (retsize: 8; depth: 8)
-		uses: C_35,eax,edi,qwLoc08_4,r8,rax_32,rbp_36,rdi_38,rsp_37,SCZO_7,SZO_33,Z_34
-		defs: C_47,eax_41,edi_48,r8_43,rax_42,rbp_40,rdi_49,rsp_39,SCZO_44,SZO_46,Z_45
+	call 0x0000000000000000 (retsize: 8;)
+		uses: r8:r8,rax:0x0000000000000000,rbp:rbp,rdi:0x0000000000601040,rsp:fp,Stack +0000:rbp
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 8 rax:0x0000000000000000 rbp:fp - 8 -8(fp):rbp
+// DataOut (flags):
+// SymbolicIn:
 
 fn00000000004004B0_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rax:<invalid> rbp:rbp rdi:<invalid> -8(fp):rbp
+// DataOut (flags):
+// SymbolicIn:
 
 
 
 void fn0000000000400560(word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  edi esi
+// MayUse:  edi:[0..31] esi:[0..31]
 // LiveOut:
-// Trashed: SCZO ah al ax di dil eax edi esi rax rdi rsi si sil
+// Trashed: SCZO rdi rsi
 // Preserved: rbp rsp
 fn0000000000400560_entry:
-// DataOut: edi esi
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000400560:
 	calloc((int64) edi, (int64) esi)
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 fn0000000000400560_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rbp:rbp rdi:<invalid> rsi:<invalid> rax:<invalid> -24(fp):<invalid> -16(fp):esi -12(fp):edi -8(fp):rbp
+// DataOut (flags):
+// SymbolicIn:
 
 
 
@@ -170,25 +146,28 @@ void fn00000000004006F0()
 // Terminates process
 fn00000000004006F0_exit:
 // DataOut:
-// DataOut (flags): 
+// DataOut (flags):
 // SymbolicIn:
 
 fn00000000004006F0_entry:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 l00000000004006F0:
-	fn0000000000400700(qwLoc08)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg0 = <invalid>
+	fn0000000000400700(stackArg0)
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 l00000000004006F5:
 	__pause()
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 
 
@@ -201,19 +180,19 @@ void fn0000000000400700(word64 qwArg00)
 // Preserved: rsp
 fn0000000000400700_entry:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000400700:
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 fn0000000000400700_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp 0(fp):r11
+// DataOut (flags):
+// SymbolicIn:
 
 
 

@@ -1,29 +1,28 @@
 void _f(word32 eax, word32 dwArg00, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al eax
+// MayUse:  eax:[0..31] Stack +0000:[0..31]
 // LiveOut:
-// Trashed: SCZO ah al ax bp bpl eax ebp esp rax rbp rsp sp spl
+// Trashed: SCZO eax ebp esp
 // Preserved:
-// Stack args: Stack +0000(32)
 _f_entry:
-// DataOut: al eax
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
+	byte al_5 = (byte) eax
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l00000004:
-	Mem6[eax:byte] = Mem0[eax:byte] + al
-	Mem8[eax:byte] = Mem6[eax:byte] + al
+	Mem7[eax:byte] = Mem0[eax:byte] + al_5
+	Mem9[eax:byte] = Mem7[eax:byte] + al_5
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 _f_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp + 8 eax:<invalid> ebp:<invalid>
+// DataOut (flags):
+// SymbolicIn:
 
 
 

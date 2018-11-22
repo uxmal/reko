@@ -1,36 +1,36 @@
 void foo(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rdi
+// MayUse:  rdi:[0..63]
 // LiveOut:
-// Trashed: SCZO ah al ax ch cl cx eax ecx rax rcx
+// Trashed: SCZO rax rcx
 // Preserved: rsp
 foo_entry:
-// DataOut: rdi
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000000FA8:
 	branch (word32) (uint64) Mem0[rdi:word32] < 0x00000101 l0000000000000FB7
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000000FB4_1:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rax:<invalid> rcx:0x0000000000000100
+// DataOut (flags):
+// SymbolicIn:
 
 l0000000000000FB7:
 	return
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rax:<invalid> rcx:0x0000000000000100 eax:ecx
+// DataOut (flags):
+// SymbolicIn:
 
 foo_exit:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp rax:<invalid> rcx:0x0000000000000100 eax:ecx
+// DataOut (flags):
+// SymbolicIn:
 
 
 
