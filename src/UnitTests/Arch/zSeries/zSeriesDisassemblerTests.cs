@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -549,7 +549,7 @@ namespace Reko.UnitTests.Arch.zSeries
         [Test]
         public void zSerDasm_mxd()
         {
-            AssertCode("mxd\tf1,-292(r7,r15)","6717FEDC");
+            AssertCode("mxd\tf1,-292(r7,r15)", "6717FEDC");
         }
 
         [Test]

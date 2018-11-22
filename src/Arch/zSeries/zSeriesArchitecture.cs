@@ -138,6 +138,16 @@ namespace Reko.Arch.zSeries
             return Registers.GpRegisters;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            yield return Registers.CC;
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            return reg;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             //$BUG: this is clearly not correct.
@@ -156,7 +166,7 @@ namespace Reko.Arch.zSeries
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)

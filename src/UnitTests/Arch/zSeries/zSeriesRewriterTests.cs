@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_MachineCode("C05000000140");
             AssertCode(     // larl	r5,00100280
                 "0|L--|00100000(6): 1 instructions",
-                "1|L--|r5 = 00100280");
+                "1|L--|r5 = DPB(r5, 0x00100280, 0)");
         }
 
         [Test]

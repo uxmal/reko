@@ -1,4 +1,4 @@
-﻿using Reko.Core.Expressions;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -110,8 +110,12 @@ namespace Reko.Arch.zSeries
 
         private void RewriteLarl()
         {
-            var src = Addr(instr.Ops[1]);
-            var dst = Reg(instr.Ops[0]);
+            Expression src = Addr(instr.Ops[1]);
+            Expression dst = Reg(instr.Ops[0]);
+            if (src.DataType.BitSize < dst.DataType.BitSize)
+            {
+                src = m.Dpb(dst, src, 0);
+            }
             m.Assign(dst, src);
         }
 
