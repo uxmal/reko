@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -70,9 +71,14 @@ namespace Reko.Analysis
         /// </summary>
         public void BackpropagateStackPointer()
         {
-            var spAtExit = FindStackUseAtExit(ssa.Procedure);
-            if (spAtExit == null)
-                return;
+            foreach (var spAtExit in FindStackUsesAtExit(ssa.Procedure))
+            {
+                BackpropagateStackPointer(spAtExit);
+            }
+        }
+
+        private void BackpropagateStackPointer(Identifier spAtExit)
+        {
             var (spPrevious, offset) = MatchStackOffsetPattern(spAtExit);
             if (spPrevious == null)
                 return;
@@ -170,6 +176,17 @@ namespace Reko.Analysis
                 .OfType<Identifier>()
                 .Where(id => id.Storage == proc.Architecture.StackRegister)
                 .SingleOrDefault();
+        }
+
+        private IEnumerable<Identifier> FindStackUsesAtExit(Procedure proc)
+        {
+            var sp = FindStackUseAtExit(proc);
+            if (sp == null)
+                return new Identifier[] { };
+            var def = ssa.Identifiers[sp].DefStatement;
+            if (def?.Instruction is PhiAssignment phi)
+                return phi.Src.Arguments.OfType<Identifier>().Distinct();
+            return new Identifier[] { sp };
         }
     }
 }
