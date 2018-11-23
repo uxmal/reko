@@ -135,7 +135,6 @@ Spbp_LinearProcedure_exit:
         }
 
         [Test(Description = "This mirrors real world code which has more than one epilog")]
-        [Ignore("It would be nice if this passed. I'm leaving the code as is, but it will need to be fixed up")]
         public void Spbp_TwoExits()
         {
             var m = new SsaProcedureBuilder(nameof(Spbp_TwoExits));
