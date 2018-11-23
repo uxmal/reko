@@ -75,6 +75,14 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
+        public Identifier Temp(string name, TemporaryStorage stg)
+        {
+            var id = new Identifier(stg.Name, stg.DataType, stg);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
+        }
+
         public new Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
@@ -94,6 +102,12 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
+            ProcessInstruction(instr, stm);
+            return stm;
+        }
+
+        private void ProcessInstruction(Instruction instr, Statement stm)
+        {
             switch (instr)
             {
             case Assignment ass:
@@ -123,9 +137,42 @@ namespace Reko.UnitTests.Mocks
                     }
                 }
                 break;
+            case CallInstruction call:
+                foreach (var def in call.Definitions)
+                {
+                    var id = (Identifier) def.Expression;
+                    Ssa.Identifiers[id].DefStatement = stm;
+                    Ssa.Identifiers[id].DefExpression = call.Callee;
+                }
+                break;
+            case DefInstruction def:
+                Ssa.Identifiers[def.Identifier].DefStatement = stm;
+                Ssa.Identifiers[def.Identifier].DefExpression = null;
+                break;
             }
             Ssa.AddUses(stm);
-            return stm;
+        }
+
+        public void AddDefToEntryBlock(Identifier id)
+        {
+            var def = new DefInstruction(id);
+            var stm = Procedure.EntryBlock.Statements.Add(0, def);
+            ProcessInstruction(def, stm);
+        }
+
+        public void AddUseToExitBlock(Identifier id)
+        {
+            var use = new UseInstruction(id);
+            var stm = Procedure.ExitBlock.Statements.Add(0, use);
+            ProcessInstruction(use, stm);
+        }
+
+        public void AddPhiToExitBlock(Identifier idDst, params Expression[] exprs)
+        {
+            var phiFunc = new PhiFunction(idDst.DataType, exprs);
+            var phi = new PhiAssignment(idDst, phiFunc);
+            var stm = Procedure.ExitBlock.Statements.Add(0, phi);
+            ProcessInstruction(phi, stm);
         }
 
         private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)

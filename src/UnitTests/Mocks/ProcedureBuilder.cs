@@ -223,11 +223,6 @@ namespace Reko.UnitTests.Mocks
             return Block.Statements.Last;
         }
 
-        public void AddUseToExitBlock(Identifier id)
-        {
-            Procedure.ExitBlock.Statements.Add(0, new UseInstruction(id));
-        }
-
         public Identifier Flags(string s)
         {
             return Frame.EnsureFlagGroup(Architecture.GetFlagGroup(s));

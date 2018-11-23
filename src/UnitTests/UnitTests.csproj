@@ -139,6 +139,7 @@
   <ItemGroup>
     <Compile Include="Analysis\ProcedureFlowTests.cs" />
     <Compile Include="Analysis\SsaMutatorTests.cs" />
+    <Compile Include="Analysis\StackPointerBackpropagatorTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
