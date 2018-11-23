@@ -64,6 +64,7 @@ namespace Reko.UnitTests.Analysis
         {
             var spbp = new StackPointerBackpropagator(ssa);
             spbp.BackpropagateStackPointer();
+            ssa.Validate(s => Assert.Fail(s));
             return ssa;
         }
 
