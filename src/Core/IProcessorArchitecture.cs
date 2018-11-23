@@ -452,7 +452,7 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            return (offset == 0 && reg.BitSize == (ulong) width) ? reg : null;
+            return reg;
         }
 
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
