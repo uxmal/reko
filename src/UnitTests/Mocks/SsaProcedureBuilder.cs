@@ -102,6 +102,12 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
+            ProcessInstruction(instr, stm);
+            return stm;
+        }
+
+        private void ProcessInstruction(Instruction instr, Statement stm)
+        {
             switch (instr)
             {
             case Assignment ass:
@@ -141,7 +147,14 @@ namespace Reko.UnitTests.Mocks
                 break;
             }
             Ssa.AddUses(stm);
-            return stm;
+        }
+
+        public void AddPhiToExitBlock(Identifier idDst, params Expression[] exprs)
+        {
+            var phiFunc = new PhiFunction(idDst.DataType, exprs);
+            var phi = new PhiAssignment(idDst, phiFunc);
+            var stm = Procedure.ExitBlock.Statements.Add(0, phi);
+            ProcessInstruction(phi, stm);
         }
 
         private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)

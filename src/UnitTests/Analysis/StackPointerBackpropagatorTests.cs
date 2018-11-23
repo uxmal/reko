@@ -188,14 +188,14 @@ Spbp_LinearProcedure_exit:
             m.Assign(r63_6, m.IAdd(r63_5, m.Int32(4)));
             m.Return();
 
-            m.Phi(r1_5, r1_2, r1_4);
-            m.Phi(r2_3, r2_1, r2_3);
-            m.Phi(r3_3, r3_1, r2_3);
-            m.Phi(r63_6, r63_3, r63_5);
+            m.AddPhiToExitBlock(r1_5, r1_2, r1_4);
+            m.AddPhiToExitBlock(r2_3, r2_1, r2_3);
+            m.AddPhiToExitBlock(r3_3, r3_1, r2_3);
+            m.AddPhiToExitBlock(r63_7, r63_4, r63_6);
             m.AddUseToExitBlock(r1_5);
             m.AddUseToExitBlock(r2_3);
             m.AddUseToExitBlock(r3_3);
-            m.AddUseToExitBlock(r63_6);
+            m.AddUseToExitBlock(r63_7);
 
             SsaState ssa = RunTest(m.Ssa);
 
@@ -218,32 +218,32 @@ l1:
 	goto m_ne0
 	// succ:  m_ne0 m_eq0
 m_eq0:
-	call Mem22[r2 + 0x00000008:word32] (retsize: 4;)
-		uses: r1:r1,r2:r2,r3:r3,r63:r63_3
-		defs: r1:r1_9,r2:r2_10,r3:r3_11,r63:r63_8
-	r63_14 = fp - 4
-	r1_12 = Mem5[r63_8:word32]
-	r63_13 = r63_8 + 4
+	call Mem25[r2 + 0x00000008:word32] (retsize: 4;)
+		uses: r1:r1,r2:r2,r3:r3,r63:r63_2
+		defs: r1:r1_3,r2:r2_2,r3:r3_2
+	r63_5 = fp - 4
+	r1_4 = Mem26[r63_5:word32]
+	r63_6 = r63_5 + 4
 	return
-	// succ:  ProcedureBuilder_exit
+	// succ:  Spbp_TwoExits_exit
 m_ne0:
-	call Mem5[r2 + 0x00000004:word32] (retsize: 4;)
-		uses: r1:r1,r2:r2,r3:r3,r63:r63_3
-		defs: r1:r1_15,r2:r2_16,r3:r3_17
-	r63_14 = fp - 4
-	r1_18 = Mem5[r63_14:word32]
-	r63_19 = r63_14 + 4
+	call Mem23[r2 + 0x00000004:word32] (retsize: 4;)
+		uses: r1:r1,r2:r2,r3:r3,r63:r63_2
+		defs: r1:r1_1,r2:r2_1,r3:r3_1
+	r63_3 = fp - 4
+	r1_2 = Mem24[r63_3:word32]
+	r63_4 = r63_3 + 4
 	return
 	// succ:  Spbp_TwoExits_exit
 Spbp_TwoExits_exit:
-	r63_23 = PHI(r63_19, r63_13)
-	r3_22 = PHI(r3_17, r3_11)
-	r2_21 = PHI(r2_16, r2_10)
-	r1_20 = PHI(r1_18, r1_12)
-	use r1_20
-	use r2_21
-	use r3_22
-	use r63_23
+	r1_5 = PHI(r1_2, r1_4)
+	r2_3 = PHI(r2_1, r2_3)
+	r3_3 = PHI(r3_1, r2_3)
+	r63_7 = PHI(r63_4, r63_6)
+	use r1_5
+	use r2_3
+	use r3_3
+	use r63_7
 ";
             #endregion
             AssertStringsEqual(sExp, ssa);
