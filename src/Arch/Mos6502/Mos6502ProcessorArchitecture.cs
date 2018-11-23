@@ -37,6 +37,7 @@ namespace Reko.Arch.Mos6502
         public Mos6502ProcessorArchitecture(string archId) : base(archId)
         {
             CarryFlagMask = (uint)FlagM.CF;
+            Endianness = EndianServices.Little;
             InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Byte;       // Yup, stack pointer is a byte register (!)
             PointerType = PrimitiveType.Ptr16;
@@ -47,31 +48,6 @@ namespace Reko.Arch.Mos6502
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Disassembler((LeImageReader)imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -177,11 +153,6 @@ namespace Reko.Arch.Mos6502
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 

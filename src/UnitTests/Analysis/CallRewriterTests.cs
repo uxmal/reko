@@ -552,20 +552,14 @@ CrwManyPredecessorsToExitBlock_exit:
         [Test(Description = "Pops three values off FPU stack and places one back.")]
         public void CrwFpuMultiplyAdd()
         {
-            var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
             var dt = PrimitiveType.Real64;
-            var _top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
-
-            var arch = new FakeArchitecture
-            {
-                FpuStackRegister = _top,
-                FpuStackBase = ST,
-            };
+            var arch = new FakeArchitecture();
+            var ST = arch.FpuStackBase;
+            var _top = arch.FpuStackRegister;
             var pb = new ProgramBuilder(arch);
             pb.Add("main", m =>
             {
-                var Top = m.Frame.EnsureRegister(_top);
-
+                var Top = m.Frame.EnsureRegister(arch.FpuStackRegister);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
                 m.Assign(Top, m.ISub(Top, 1));

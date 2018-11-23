@@ -124,6 +124,17 @@ namespace Reko.Core
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
 
         /// <summary>
+        /// Reads a value from memory, respecting the processor's endianness. Use this
+        /// instead of ImageWriter when random access of memory is requored.
+        /// </summary>
+        /// <param name="mem">Memory area to read from</param>
+        /// <param name="addr">Address to read from</param>
+        /// <param name="dt">Data type of the data to be read</param>
+        /// <param name="value">The value read from memory, if successful.</param>
+        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
+        bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
+
+        /// <summary>
         /// Creates a comparer that compares instructions for equality. 
         /// Normalization means some attributes of the instruction are 
         /// treated as wildcards.
@@ -267,6 +278,7 @@ namespace Reko.Core
         RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
+        EndianServices Endianness { get; }              // Use this to handle endian-specific.
 
         /// <summary>
         /// Parses an address according to the preferred base of the 
@@ -291,16 +303,6 @@ namespace Reko.Core
         /// <param name="program">The program to postprocess.</param>
         void PostprocessProgram(Program program);
         
-        /// <summary>
-        /// Reads a value from memory, respecting the processor's endianness. Use this
-        /// instead of ImageWriter when random access of memory is requored.
-        /// </summary>
-        /// <param name="mem">Memory area to read from</param>
-        /// <param name="addr">Address to read from</param>
-        /// <param name="dt">Data type of the data to be read</param>
-        /// <param name="value">The value read from memory, if successful.</param>
-        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
-        bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
 
         /// <summary>
         /// The dictionary contains options that were loaded from the 
@@ -345,6 +347,7 @@ namespace Reko.Core
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         public int InstructionBitSize { get; protected set; }
+        public EndianServices Endianness { get; protected set; }
 
         /// <summary>
         /// The stack register used by the architecture.
@@ -373,11 +376,13 @@ namespace Reko.Core
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addr);
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, ulong off);
-        public abstract ImageWriter CreateImageWriter();
-        public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
+        public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
+        public EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd) => Endianness.CreateImageReader(img, addrBegin, addrEnd);
+        public EndianImageReader CreateImageReader(MemoryArea img, ulong off) => Endianness.CreateImageReader(img, off);
+        public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
+        public ImageWriter CreateImageWriter(MemoryArea img, Address addr) => Endianness.CreateImageWriter(img, addr);
+        public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
+
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
@@ -482,7 +487,6 @@ namespace Reko.Core
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
-        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
     }
 
 }

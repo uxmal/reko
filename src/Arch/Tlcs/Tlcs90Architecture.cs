@@ -41,6 +41,7 @@ namespace Reko.Arch.Tlcs
     {
         public Tlcs90Architecture(string archId) : base(archId)
         {
+            base.Endianness = EndianServices.Little;
             base.InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.PointerType = PrimitiveType.Ptr32;
@@ -52,32 +53,6 @@ namespace Reko.Arch.Tlcs
         {
             return new Tlcs90Disassembler(this, rdr);
         }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Tlcs90InstructionComparer(norm);
@@ -186,11 +161,6 @@ namespace Reko.Arch.Tlcs
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

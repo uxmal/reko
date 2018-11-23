@@ -39,6 +39,7 @@ namespace Reko.Arch.i8051
 
         public i8051Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Big;
             this.StackRegister = Registers.SP;
             this.WordWidth = PrimitiveType.Byte;
             this.PointerType = PrimitiveType.Ptr16;
@@ -50,31 +51,6 @@ namespace Reko.Arch.i8051
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new i8051Disassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -175,11 +151,6 @@ namespace Reko.Arch.i8051
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

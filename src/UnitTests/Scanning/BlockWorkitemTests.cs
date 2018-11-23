@@ -35,7 +35,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
-using System;
 using System.Linq;
 
 namespace Reko.UnitTests.Scanning

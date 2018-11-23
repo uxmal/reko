@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -125,12 +125,6 @@ Options:
 
             public virtual object process_file(string scan_file)
             {
-                object delta;
-                object end;
-                object fobj;
-                object path;
-                object result;
-                object start;
                 //path = scan_file.get_path();
                 //fobj = scan_file.get_fobj();
                 var hunkBytes = File.ReadAllBytes(scan_file);
@@ -143,7 +137,7 @@ Options:
                 {
                     addr = Address.Ptr32(0);
                 }
-                result = loader.Load(addr);
+                var result = loader.Load(addr);
                 // ignore non hunk files
                 return this.handle_file(scan_file, loader.HunkFile);
             }

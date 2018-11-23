@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900DisassemblerTests : DisassemblerTestBase<Tlcs900Instruction>
     {
-        private Tlcs900Architecture arch;
+        private readonly Tlcs900Architecture arch;
 
         public Tlcs900DisassemblerTests()
         {

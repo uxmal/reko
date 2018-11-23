@@ -204,23 +204,6 @@ namespace Reko.UnitTests.Analysis
             return pb.Add(name, builder);
         }
 
-        private RegisterStorage Given_FpuStackRegister(string name)
-        {
-            var top = new RegisterStorage(name, 123, 0, PrimitiveType.Byte);
-            var arch = (FakeArchitecture)pb.Program.Architecture;
-            arch.FpuStackRegister = top;
-            return arch.FpuStackRegister;
-        }
-
-        private MemoryIdentifier Given_FpuStackBase(string name)
-        {
-            var stg = new MemoryStorage("fpu", StorageDomain.Register + 456);
-            var ST = new MemoryIdentifier(name, PrimitiveType.Ptr32, stg);
-            var arch = (FakeArchitecture)pb.Program.Architecture;
-            arch.FpuStackBase = ST;
-            return arch.FpuStackBase;
-        }
-
         private void Given_ProcedureFlow(string name, Func<Procedure, ProcedureFlow> flowBuilder)
         {
             var proc = Given_Procedure(name, m =>
@@ -3451,8 +3434,9 @@ proc_exit:
         [Test]
         public void SsaFpuCallDefsShouldBeIds()
         {
-            var topReg = Given_FpuStackRegister("Top");
-            var ST = Given_FpuStackBase("ST");
+            var arch = new FakeArchitecture();
+            var topReg = arch.FpuStackRegister;
+            var ST = arch.FpuStackBase;
             Given_Procedure("main", m =>
             {
                 var Top = m.Frame.EnsureRegister(topReg);

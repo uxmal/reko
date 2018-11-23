@@ -50,31 +50,6 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override ImageWriter CreateImageWriter()
-            {
-                throw new NotImplementedException();
-            }
-
-            public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-            {
-                throw new NotImplementedException();
-            }
-
             public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             {
                 throw new NotImplementedException();
@@ -160,12 +135,6 @@ namespace Reko.Tools.C2Xml.UnitTests
             {
                 throw new NotImplementedException();
             }
-
-            public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-            {
-                return mem.TryReadLe(addr, dt, out value);
-            }
-
         }
 
         void RunTest(string c_code, string expectedXml)

@@ -34,6 +34,10 @@ namespace Reko.Arch.Xtensa
     {
         public XtensaArchitecture(string archId)  : base(archId)
         {
+            //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
+            // Fix this if encountering a big-endian binary.
+            this.Endianness = EndianServices.Little;
+
             this.InstructionBitSize = 8;        // Instruction alignment, really.
             this.FramePointerType = PrimitiveType.Ptr32;
             this.PointerType = PrimitiveType.Ptr32;
@@ -132,35 +136,6 @@ namespace Reko.Arch.Xtensa
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new XtensaDisassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
-            // Fix this if encountering a big-endian binary.
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
-            // Fix this if encountering a big-endian binary.
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -267,11 +242,6 @@ namespace Reko.Arch.Xtensa
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }
