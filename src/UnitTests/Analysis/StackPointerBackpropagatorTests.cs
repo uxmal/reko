@@ -23,6 +23,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Analysis
         private void AssertStringsEqual(string sExp, SsaState ssa)
         {
             var sw = new StringWriter();
-            ssa.Procedure.Write(false, sw);
+            ssa.Procedure.WriteBody(false, sw);
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
@@ -60,12 +61,11 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private SsaState RunTest(SsaState ssa)
+        private void RunTest(SsaState ssa)
         {
             var spbp = new StackPointerBackpropagator(ssa);
             spbp.BackpropagateStackPointer();
             ssa.Validate(s => Assert.Fail(s));
-            return ssa;
         }
 
         [Test]
@@ -74,65 +74,42 @@ namespace Reko.UnitTests.Analysis
             var m = new SsaProcedureBuilder(nameof(Spbp_LinearProcedure));
 
             var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
-            var r63_1 = m.Reg("r63_1", m.Architecture.StackRegister);
-            var r63_2 = m.Reg("r63_2", m.Architecture.StackRegister);
-            var r63_3 = m.Reg("r63_3", m.Architecture.StackRegister);
-            var r63_4 = m.Reg("r63_4", m.Architecture.StackRegister);
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
-            var r1_1 = m.Reg("r1_1", (RegisterStorage) r1.Storage);
-            var r1_2 = m.Reg("r1_2", (RegisterStorage) r1.Storage);
-            var r2_1 = m.Reg("r2_1", (RegisterStorage) r2.Storage);
+            var sp = m.RegisterStorage("sp", PrimitiveType.Word32);
+            m.Architecture.StackRegister = sp;
+            var sp_1 = m.Reg("sp_1", m.Architecture.StackRegister);
+            var sp_2 = m.Reg("sp_2", m.Architecture.StackRegister);
+            var sp_3 = m.Reg("sp_3", m.Architecture.StackRegister);
 
             m.AddDefToEntryBlock(fp);
-            m.AddDefToEntryBlock(r1);
-            m.AddDefToEntryBlock(r2);
 
-            m.Assign(r63_1, fp);
-            m.Assign(r63_2, m.ISub(r63_1, m.Int32(4)));
-            m.MStore(r63_2, r1);
-            var ci = m.Call(r2, 4,      // Indirect call = hell node
-                new[] { r1, r2, r63_2 },
-                new[] { r1_1, r2_1, r63_3 });
-            m.Assign(r1_2, m.Mem32(r63_3));
-            m.Assign(r63_4, m.IAdd(r63_3, m.Int32(4)));
+            m.Assign(sp_1, m.ISub(fp, m.Int32(4)));
+            // Indirect call = hell node
+            var ci = m.Call(m.Mem32(m.Word32(0x2)), 4,
+                new[] { sp_1 },
+                new[] { sp_2 });
+            m.Assign(sp_3, m.IAdd(sp_2, m.Int32(4)));
             m.Return();
 
-            m.AddUseToExitBlock(r1_2);
-            m.AddUseToExitBlock(r2_1);
-            m.AddUseToExitBlock(r63_4);
+            m.AddUseToExitBlock(sp_3);
 
-            SsaState ssa = RunTest(m.Ssa);
+            RunTest(m.Ssa);
 
             var sExp =
             #region Expected
-@"// Spbp_LinearProcedure
-// Return size: 0
-define Spbp_LinearProcedure
-Spbp_LinearProcedure_entry:
+@"Spbp_LinearProcedure_entry:
 	def fp
-	def r1
-	def r2
-	// succ:  l1
 l1:
-	r63_1 = fp
-	r63_2 = r63_1 - 4
-	Mem10[r63_2:word32] = r1
-	call r2 (retsize: 4;)
-		uses: r1:r1,r2:r2,r63:r63_2
-		defs: r1:r1_1,r2:r2_1
-	r63_3 = fp - 4
-	r1_2 = Mem11[r63_3:word32]
-	r63_4 = r63_3 + 4
+	sp_1 = fp - 4
+	call Mem4[0x00000002:word32] (retsize: 4;)
+		uses: sp:sp_1
+	sp_2 = fp - 4
+	sp_3 = sp_2 + 4
 	return
-	// succ:  Spbp_LinearProcedure_exit
 Spbp_LinearProcedure_exit:
-	use r1_2
-	use r2_1
-	use r63_4
+	use sp_3
 ";
             #endregion
-            AssertStringsEqual(sExp, ssa);
+            AssertStringsEqual(sExp, m.Ssa);
         }
 
         [Test(Description = "This mirrors real world code which has more than one epilog")]
@@ -141,113 +118,67 @@ Spbp_LinearProcedure_exit:
             var m = new SsaProcedureBuilder(nameof(Spbp_TwoExits));
 
             var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
-            var r63_1 = m.Reg("r63_1", m.Architecture.StackRegister);
-            var r63_2 = m.Reg("r63_2", m.Architecture.StackRegister);
-            var r63_3 = m.Reg("r63_3", m.Architecture.StackRegister);
-            var r63_4 = m.Reg("r63_4", m.Architecture.StackRegister);
-            var r63_5 = m.Reg("r63_5", m.Architecture.StackRegister);
-            var r63_6 = m.Reg("r63_6", m.Architecture.StackRegister);
-            var r63_7 = m.Reg("r63_7", m.Architecture.StackRegister);
-            var r1 = m.Reg32("r1");
-            var r2 = m.Reg32("r2");
-            var r3 = m.Reg32("r3");
-            var r1_1 = m.Reg("r1_1", (RegisterStorage) r1.Storage);
-            var r1_2 = m.Reg("r1_2", (RegisterStorage) r1.Storage);
-            var r1_3 = m.Reg("r1_3", (RegisterStorage) r1.Storage);
-            var r1_4 = m.Reg("r1_4", (RegisterStorage) r1.Storage);
-            var r1_5 = m.Reg("r1_5", (RegisterStorage) r1.Storage);
-            var r2_1 = m.Reg("r2_1", (RegisterStorage) r2.Storage);
-            var r2_2 = m.Reg("r2_2", (RegisterStorage) r2.Storage);
-            var r2_3 = m.Reg("r2_3", (RegisterStorage) r2.Storage);
-            var r3_1 = m.Reg("r3_1", (RegisterStorage) r3.Storage);
-            var r3_2 = m.Reg("r3_2", (RegisterStorage) r3.Storage);
-            var r3_3 = m.Reg("r3_3", (RegisterStorage) r3.Storage);
+            var sp = m.RegisterStorage("sp", PrimitiveType.Word32);
+            m.Architecture.StackRegister = sp;
+            var sp_1 = m.Reg("sp_1", m.Architecture.StackRegister);
+            var sp_2 = m.Reg("sp_2", m.Architecture.StackRegister);
+            var sp_3 = m.Reg("sp_3", m.Architecture.StackRegister);
+            var sp_4 = m.Reg("sp_4", m.Architecture.StackRegister);
+            var sp_5 = m.Reg("sp_5", m.Architecture.StackRegister);
+            var sp_6 = m.Reg("sp_6", m.Architecture.StackRegister);
 
             m.AddDefToEntryBlock(fp);
-            m.AddDefToEntryBlock(r1);
-            m.AddDefToEntryBlock(r2);
-            m.AddDefToEntryBlock(r3);
 
-            m.Assign(r63_1, fp);
-            m.Assign(r63_2, m.ISub(r63_1, m.Int32(4)));
-            m.MStore(r63_2, r1);
-            m.BranchIf(m.Eq0(r3), "m_eq0");
+            m.Assign(sp_1, m.ISub(fp, m.Int32(4)));
+            m.BranchIf(m.Eq0(m.Mem32(m.Word32(0x1))), "m_eq0");
 
             m.Label("m_ne0");
-            m.Call(m.Mem32(m.IAdd(r2, 4)), 4,      // Indirect call = hell node
-                new[] { r1, r2, r3, r63_2 },
-                new[] { r1_1, r2_1, r3_1, r63_3 });
-            m.Assign(r1_2, m.Mem32(r63_3));
-            m.Assign(r63_4, m.IAdd(r63_3, m.Int32(4)));
+            // Indirect call = hell node
+            m.Call(m.Mem32(m.Word32(0x4)), 4,
+                new[] { sp_1 },
+                new[] { sp_2 });
+            m.Assign(sp_3, m.IAdd(sp_2, m.Int32(4)));
             m.Return();
 
             m.Label("m_eq0");
-            m.Call(m.Mem32(m.IAdd(r2, 8)), 4,      // Indirect call = hell node
-                new[] { r1, r2, r3, r63_2 },
-                new[] { r1_3, r2_2, r3_2, r63_5 });
-            m.Assign(r1_4, m.Mem32(r63_5));
-            m.Assign(r63_6, m.IAdd(r63_5, m.Int32(4)));
+            // Indirect call = hell node
+            m.Call(m.Mem32(m.Word32(0x8)), 4,
+                new[] { sp_1 },
+                new[] { sp_4 });
+            m.Assign(sp_5, m.IAdd(sp_4, m.Int32(4)));
             m.Return();
 
-            m.AddPhiToExitBlock(r1_5, r1_2, r1_4);
-            m.AddPhiToExitBlock(r2_3, r2_1, r2_3);
-            m.AddPhiToExitBlock(r3_3, r3_1, r2_3);
-            m.AddPhiToExitBlock(r63_7, r63_4, r63_6);
-            m.AddUseToExitBlock(r1_5);
-            m.AddUseToExitBlock(r2_3);
-            m.AddUseToExitBlock(r3_3);
-            m.AddUseToExitBlock(r63_7);
+            m.AddPhiToExitBlock(sp_6, sp_3, sp_5);
+            m.AddUseToExitBlock(sp_6);
 
-            SsaState ssa = RunTest(m.Ssa);
+            RunTest(m.Ssa);
 
             var sExp =
             #region Expected
-@"// Spbp_TwoExits
-// Return size: 0
-define Spbp_TwoExits
-Spbp_TwoExits_entry:
+@"Spbp_TwoExits_entry:
 	def fp
-	def r1
-	def r2
-	def r3
-	// succ:  l1
 l1:
-	r63_1 = fp
-	r63_2 = r63_1 - 4
-	Mem22[r63_2:word32] = r1
-	branch r3 == 0x00000000 m_eq0
+	sp_1 = fp - 4
+	branch Mem7[0x00000001:word32] == 0x00000000 m_eq0
 	goto m_ne0
-	// succ:  m_ne0 m_eq0
 m_eq0:
-	call Mem25[r2 + 0x00000008:word32] (retsize: 4;)
-		uses: r1:r1,r2:r2,r3:r3,r63:r63_2
-		defs: r1:r1_3,r2:r2_2,r3:r3_2
-	r63_5 = fp - 4
-	r1_4 = Mem26[r63_5:word32]
-	r63_6 = r63_5 + 4
+	call Mem9[0x00000008:word32] (retsize: 4;)
+		uses: sp:sp_1
+	sp_4 = fp - 4
+	sp_5 = sp_4 + 4
 	return
-	// succ:  Spbp_TwoExits_exit
 m_ne0:
-	call Mem23[r2 + 0x00000004:word32] (retsize: 4;)
-		uses: r1:r1,r2:r2,r3:r3,r63:r63_2
-		defs: r1:r1_1,r2:r2_1,r3:r3_1
-	r63_3 = fp - 4
-	r1_2 = Mem24[r63_3:word32]
-	r63_4 = r63_3 + 4
+	call Mem8[0x00000004:word32] (retsize: 4;)
+		uses: sp:sp_1
+	sp_2 = fp - 4
+	sp_3 = sp_2 + 4
 	return
-	// succ:  Spbp_TwoExits_exit
 Spbp_TwoExits_exit:
-	r1_5 = PHI(r1_2, r1_4)
-	r2_3 = PHI(r2_1, r2_3)
-	r3_3 = PHI(r3_1, r2_3)
-	r63_7 = PHI(r63_4, r63_6)
-	use r1_5
-	use r2_3
-	use r3_3
-	use r63_7
+	sp_6 = PHI(sp_3, sp_5)
+	use sp_6
 ";
             #endregion
-            AssertStringsEqual(sExp, ssa);
+            AssertStringsEqual(sExp, m.Ssa);
         }
 
     }
