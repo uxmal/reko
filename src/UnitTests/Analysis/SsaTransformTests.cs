@@ -3672,5 +3672,54 @@ proc_exit:
             #endregion
             AssertProcedureCode(expected);
         }
+
+        [Test]
+        [Ignore("This may lead to abandoning Procedure.Frame completely.")]
+        public void Ssa96BitStackLocal()
+        {
+            var proc = Given_Procedure(nameof(Ssa96BitStackLocal), m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var fp0 = m.Register(new RegisterStorage("fp0", 16, 0, PrimitiveType.CreateWord(96)));
+                var sp = m.Register(m.Architecture.StackRegister);
+                var fp = m.Frame.FramePointer;
+                m.Assign(sp, fp);
+                m.Assign(sp, m.ISubS(fp, 12));  // make space on stack
+                m.Assign(r1, m.Mem32(m.Word32(0x00123400)));
+                m.MStore(m.ISubS(fp, 12), r1);
+                m.Assign(r1, m.Mem32(m.Word32(0x00123404)));
+                m.MStore(m.ISubS(fp, 8), r1);
+                m.Assign(r1, m.Mem32(m.Word32(0x00123408)));
+                m.MStore(m.ISubS(fp, 4), r1);
+
+                m.Assign(fp0, m.Mem(fp0.DataType, m.ISubS(fp, 12)));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"Ssa96BitStackLocal_entry:
+	def fp
+	def Mem0
+l1:
+	r63_2 = fp
+	r63_3 = fp - 12
+	r1_5 = Mem0[0x00123400:word32]
+	dwLoc0C_12 = r1_5
+	r1_7 = Mem6[0x00123404:word32]
+	dwLoc08_13 = r1_7
+	r1_9 = Mem8[0x00123408:word32]
+	dwLoc04_14 = r1_9
+	nLoc0C_15 = SEQ(dwLoc0C_12, dwLoc08_13, dwLoc04_14) (alias)
+	fp0_11 = nLoc0C_15
+	return
+Ssa96BitStackLocal_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
     }
 }
