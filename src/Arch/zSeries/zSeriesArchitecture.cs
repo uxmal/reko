@@ -35,7 +35,7 @@ namespace Reko.Arch.zSeries
     {
         public zSeriesArchitecture(string archId) : base(archId)
         {
-            this.Endianness = EndianServices.Little;
+            this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
