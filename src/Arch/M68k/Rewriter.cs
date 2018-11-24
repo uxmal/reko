@@ -40,13 +40,13 @@ namespace Reko.Arch.M68k
         private static Dictionary<int, double> fpuRomConstants;
 
         // These fields are internal so that the OperandRewriter can use them.
-        internal readonly M68kArchitecture arch;
-        internal readonly IStorageBinder binder;
+        private readonly M68kArchitecture arch;
+        private readonly IStorageBinder binder;
         private readonly M68kState state;
         private readonly IRewriterHost host;
         private readonly IEnumerator<M68kInstruction> dasm;
-        internal M68kInstruction di;
-        internal RtlEmitter m;
+        private M68kInstruction di;
+        private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
         private InstrClass rtlc;
         private OperandRewriter orw;
@@ -294,29 +294,29 @@ VS Overflow Set 1001 V
         {
             fpuRomConstants = new Dictionary<int, double>
             {
-                { 0x00, Math.PI   } ,
-                { 0x0B, Math.Log10(2)  } ,
+                { 0x00, Math.PI } ,
+                { 0x0B, Math.Log10(2) } ,
                 { 0x0C, Math.E } ,
                 { 0x0D, 1.0 / Math.Log(2) } ,   // Log2(E)
                 { 0x0E, Math.Log10(Math.E) } ,
-                { 0x0F, 0.0       } ,
-                { 0x30, Math.Log(2)     } ,
-                { 0x31, Math.Log(10)    } ,
-                { 0x32, 100       } ,
-                { 0x33, 1e1       } ,
-                { 0x34, 1e2       } ,
-                { 0x35, 1e4       } ,
-                { 0x36, 1e8       } ,
-                { 0x37, 1e16      } ,
-                { 0x38, 1e32      } ,
-                { 0x39, 1e64      } ,
-                { 0x3A, 1e128     } ,
-                { 0x3B, 1e256     } ,
+                { 0x0F, 0.0 } ,
+                { 0x30, Math.Log(2) } ,
+                { 0x31, Math.Log(10) } ,
+                { 0x32, 100 } ,
+                { 0x33, 1e1 } ,
+                { 0x34, 1e2 } ,
+                { 0x35, 1e4 } ,
+                { 0x36, 1e8 } ,
+                { 0x37, 1e16 } ,
+                { 0x38, 1e32 } ,
+                { 0x39, 1e64 } ,
+                { 0x3A, 1e128 } ,
+                { 0x3B, 1e256 } ,
                 // These cannot be represented in a 64-bit IEEE constant,
                 // which is the limit of C#.
-                //{ 0x3C, 1e512     } ,
-                //{ 0x3D, 1e1024    } ,
-                //{ 0x3E, 1e2048    } ,
+                //{ 0x3C, 1e512 } ,
+                //{ 0x3D, 1e1024 } ,
+                //{ 0x3E, 1e2048 } ,
                 //{ 0x3F, 1e4096 } }  ,
             };
         }
