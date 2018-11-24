@@ -1738,9 +1738,9 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var prev = offsetInterval;
-                    var sequence = new List<SsaIdentifier>();
-                    foreach (var src in ints)
+                    var prev = ints[0].Item3;
+                    var sequence = new List<SsaIdentifier> { ints[0].Item1 };
+                    foreach (var src in ints.Skip(1))
                     {
                         Debug.Print("Analyze: {0} {1} {2}", src.Item1, src.Item2, src.Item3);
                         if (prev.End == src.Item3.Start)
@@ -1784,16 +1784,16 @@ namespace Reko.Analysis
                         return sequence[0];
                     if (sequence.Count > 1)
                     {
-                        var head = sequence[1];
-                        var tail = sequence[0];
-                        var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                        var seq = outer.arch.Endianness.MakeSequence(this.id.DataType, sequence.Select(s => s.Identifier).ToArray());
                         var ass = new AliasAssignment(id, seq);
                         var iStm = outer.stmCur.Block.Statements.IndexOf(outer.stmCur);
                         var stm = outer.stmCur.Block.Statements.Insert(iStm, outer.stmCur.LinearAddress, ass);
                         var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                         ass.Dst = sidTo.Identifier;
-                        head.Uses.Add(stm);
-                        tail.Uses.Add(stm);
+                        foreach (var sid in sequence)
+                        {
+                            sid.Uses.Add(stm);
+                        }
                         return sidTo;
                     }
                 }
@@ -1817,7 +1817,7 @@ namespace Reko.Analysis
                 {
                     if (this.offsetInterval.Covers(i.Key))
                     { 
-                        // None of the bits of interval `i` will shone thr
+                        // None of the bits of interval `i` will shine through
                         bs.currentStackDef.Delete(i.Key);
                     }
                 }

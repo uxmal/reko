@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Analysis
     [Category("UnitTests")]
     public class SsaTransformTests
     {
+        private FakeArchitecture arch;
         private ProgramBuilder pb;
         private Dictionary<Address, ImportReference> importReferences;
         private ProgramDataFlow programFlow;
@@ -59,7 +60,8 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            this.pb = new ProgramBuilder();
+            this.arch = new FakeArchitecture();
+            this.pb = new ProgramBuilder(this.arch);
             this.importReferences = pb.Program.ImportReferences;
             this.addUseInstructions = false;
             this.importResolver = MockRepository.GenerateStub<IImportResolver>();
@@ -68,6 +70,11 @@ namespace Reko.UnitTests.Analysis
             this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
             this.r4 = new Identifier("r4", PrimitiveType.Word32, new RegisterStorage("r4", 4, 0, PrimitiveType.Word32));
             this.programFlow = new ProgramDataFlow();
+        }
+
+        private void Given_Endianness(EndianServices endianness)
+        {
+            this.arch.Test_Endianness = endianness;
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -3658,9 +3665,9 @@ proc_exit:
         }
 
         [Test]
-        [Ignore("This may lead to abandoning Procedure.Frame completely.")]
         public void Ssa96BitStackLocal()
         {
+            Given_Endianness(EndianServices.Big);
             var proc = Given_Procedure(nameof(Ssa96BitStackLocal), m =>
             {
                 var r1 = m.Reg32("r1", 1);

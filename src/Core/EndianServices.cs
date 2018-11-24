@@ -28,6 +28,10 @@ using System.Threading.Tasks;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// This class contains methods that encapsulate endianness when
+    /// accessing more than one consecutive storage unit in memory.
+    /// </summary>
     public abstract class EndianServices
     {
         public static EndianServices Little { get; } = new LeServices();
@@ -79,6 +83,16 @@ namespace Reko.Core
         public abstract ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
 
         /// <summary>
+        /// Given a sequence of adjacent subexpressions, ordered by ascending memory access,
+        /// group them in a `MkSequence` expression so that they are order by 
+        /// descending significance.
+        /// </summary>
+        /// <param name="dataType">The DataType of the resulting sequence</param>
+        /// <param name="accesses">The memory</param>
+        /// <returns></returns>
+        public abstract MkSequence MakeSequence(DataType dataType, Expression[] accesses);
+
+        /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is requored.
         /// </summary>
@@ -117,6 +131,15 @@ namespace Reko.Core
                 return new LeImageWriter(mem, addr);
             }
 
+            public override MkSequence MakeSequence(DataType dataType, Expression[] accesses)
+            {
+                // Little endian memory accesses are least significant first,
+                // so we must reverse the array before returning.
+                return new MkSequence(
+                    dataType,
+                    accesses.Reverse().ToArray());
+            }
+
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             {
                 return mem.TryReadLe(addr, dt, out value);
@@ -148,6 +171,14 @@ namespace Reko.Core
             public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
             {
                 return new BeImageWriter(mem, addr);
+            }
+
+            public override MkSequence MakeSequence(DataType dataType, Expression[] accesses)
+            {
+                // Big endian accesses are most significant first, so
+                // the accesses can be used directly in the resulting
+                // sequence.
+                return new MkSequence(dataType, accesses);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

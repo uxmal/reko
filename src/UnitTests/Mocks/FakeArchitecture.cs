@@ -79,6 +79,12 @@ namespace Reko.UnitTests.Mocks
 			}
 		}
 
+        public EndianServices Test_Endianness
+        {
+            get { return this.Endianness; }
+            set { this.Endianness = value; }
+        }
+
         public IEnumerable<MachineInstruction> Test_DisassemblyStream { get; set; }
 
         public void Test_AddTrace(RtlTrace trace)
