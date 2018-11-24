@@ -224,6 +224,15 @@ namespace Reko.Arch.Pdp11
             return new FlagGroupStorage(Registers.psw, grf, name, dt);
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+        }
+
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
 			var s = new StringBuilder();
