@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -96,7 +96,14 @@ namespace Reko.Arch.i8051
 
         public static RegisterStorage PC = new RegisterStorage("PC", 0x100, 0, PrimitiveType.Ptr16);
 
+
+        public static FlagGroupStorage CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C", PrimitiveType.Bool);
+        public static FlagGroupStorage AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A", PrimitiveType.Bool);
+        public static FlagGroupStorage OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O", PrimitiveType.Bool);
+        public static FlagGroupStorage PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P", PrimitiveType.Bool);
+
         private static Dictionary<int, RegisterStorage> regsByNumber;
+        private static Dictionary<StorageDomain, RegisterStorage> regsByDomain;
 
         static Registers()
         {
@@ -128,6 +135,8 @@ namespace Reko.Arch.i8051
                 A,
                 B,
             }.ToDictionary(k  => k.Number);
+            regsByDomain = regsByNumber.Values
+                .ToDictionary(k => k.Domain);
         }
 
         public static RegisterStorage GetRegister(int i)

@@ -46,6 +46,7 @@ namespace Reko.Arch.Arm
 
         public ThumbArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
