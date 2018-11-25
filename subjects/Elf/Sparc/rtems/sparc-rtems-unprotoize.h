@@ -1834,9 +1834,9 @@ Eq_3067: pid_t
 	T_3118 (in l1 : Eq_3067)
 	T_8071 (in i0_329 : Eq_3067)
 	T_8110 (in 0xFFFFFFFF : word32)
-	T_8119 (in o0_85 : Eq_3067)
-	T_8122 (in vfork() : pid_t)
-	T_8125 (in 0x00000000 : word32)
+	T_8120 (in o0_85 : Eq_3067)
+	T_8123 (in vfork() : pid_t)
+	T_8126 (in 0x00000000 : word32)
 	T_8147 (in 0x00000000 : word32)
 	T_8230 (in wait(o1) : pid_t)
 	T_8273 (in o0_45 : Eq_3067)
@@ -2900,14 +2900,14 @@ Eq_8111: (union "Eq_8111" (bool u0) (byte u1))
 	T_8111 (in Z_104 : Eq_8111)
 	T_8131 (in SLICE(cond(g0_83), bool, 2) : bool)
 	T_8145 (in SLICE(cond(o0_85 - 0xFFFFFFFF), bool, 2) : bool)
-Eq_8120: (fn Eq_3067 ())
-	T_8120 (in vfork : ptr32)
-	T_8121 (in signature of vfork : void)
-Eq_8127: pid_t
-	T_8127 (in 0xFFFFFFFF : word32)
+Eq_8112: pid_t
+	T_8112 (in g0_83 : Eq_8112)
+	T_8129 (in l1 - 0xFFFFFFFF : word32)
+Eq_8121: (fn Eq_3067 ())
+	T_8121 (in vfork : ptr32)
+	T_8122 (in signature of vfork : void)
 Eq_8128: pid_t
-	T_8128 (in l1 - 0xFFFFFFFF : word32)
-	T_8129 (in g0_83 : word32)
+	T_8128 (in 0xFFFFFFFF : word32)
 Eq_8132: (fn uint32 (uint32))
 	T_8132 (in sleep : ptr32)
 	T_8133 (in signature of sleep : void)
@@ -35478,77 +35478,77 @@ T_8111: (in Z_104 : Eq_8111)
   Class: Eq_8111
   DataType: Eq_8111
   OrigDataType: (union (bool u0) (byte u1))
-T_8112: (in dwLoc28_400 : int32)
+T_8112: (in g0_83 : Eq_8112)
   Class: Eq_8112
+  DataType: Eq_8112
+  OrigDataType: pid_t
+T_8113: (in dwLoc28_400 : int32)
+  Class: Eq_8113
   DataType: int32
   OrigDataType: int32
-T_8113: (in 0x00000003 : word32)
-  Class: Eq_8112
+T_8114: (in 0x00000003 : word32)
+  Class: Eq_8113
   DataType: int32
   OrigDataType: int32
-T_8114: (in dwLoc28_400 > 0x00000003 : bool)
-  Class: Eq_8114
+T_8115: (in dwLoc28_400 > 0x00000003 : bool)
+  Class: Eq_8115
   DataType: bool
   OrigDataType: bool
-T_8115: (in dwLoc2C_399 : uint32)
-  Class: Eq_8115
+T_8116: (in dwLoc2C_399 : uint32)
+  Class: Eq_8116
   DataType: uint32
   OrigDataType: uint32
-T_8116: (in 0x00000001 : word32)
-  Class: Eq_8115
+T_8117: (in 0x00000001 : word32)
+  Class: Eq_8116
   DataType: uint32
   OrigDataType: word32
-T_8117: (in 0x00000000 : word32)
-  Class: Eq_8112
+T_8118: (in 0x00000000 : word32)
+  Class: Eq_8113
   DataType: int32
   OrigDataType: word32
-T_8118: (in 0x0002B000 : word32)
+T_8119: (in 0x0002B000 : word32)
   Class: Eq_3125
   DataType: ptr32
   OrigDataType: word32
-T_8119: (in o0_85 : Eq_3067)
+T_8120: (in o0_85 : Eq_3067)
   Class: Eq_3067
   DataType: Eq_3067
   OrigDataType: (union (pid_t u1))
-T_8120: (in vfork : ptr32)
-  Class: Eq_8120
-  DataType: (ptr32 Eq_8120)
-  OrigDataType: (ptr32 (fn T_8122 ()))
-T_8121: (in signature of vfork : void)
-  Class: Eq_8120
-  DataType: (ptr32 Eq_8120)
+T_8121: (in vfork : ptr32)
+  Class: Eq_8121
+  DataType: (ptr32 Eq_8121)
+  OrigDataType: (ptr32 (fn T_8123 ()))
+T_8122: (in signature of vfork : void)
+  Class: Eq_8121
+  DataType: (ptr32 Eq_8121)
   OrigDataType: 
-T_8122: (in vfork() : pid_t)
+T_8123: (in vfork() : pid_t)
   Class: Eq_3067
   DataType: Eq_3067
   OrigDataType: pid_t
-T_8123: (in 0xFFFFFFFC : word32)
-  Class: Eq_8123
+T_8124: (in 0xFFFFFFFC : word32)
+  Class: Eq_8124
   DataType: int32
   OrigDataType: int32
-T_8124: (in sp_126 + 0xFFFFFFFC : word32)
+T_8125: (in sp_126 + 0xFFFFFFFC : word32)
   Class: Eq_8057
   DataType: ptr32
   OrigDataType: ptr32
-T_8125: (in 0x00000000 : word32)
+T_8126: (in 0x00000000 : word32)
   Class: Eq_3067
   DataType: Eq_3067
   OrigDataType: int32
-T_8126: (in o0_85 < 0x00000000 : bool)
-  Class: Eq_8126
+T_8127: (in o0_85 < 0x00000000 : bool)
+  Class: Eq_8127
   DataType: bool
   OrigDataType: bool
-T_8127: (in 0xFFFFFFFF : word32)
-  Class: Eq_8127
-  DataType: Eq_8127
+T_8128: (in 0xFFFFFFFF : word32)
+  Class: Eq_8128
+  DataType: Eq_8128
   OrigDataType: (union (pid_t u1))
-T_8128: (in l1 - 0xFFFFFFFF : word32)
-  Class: Eq_8128
-  DataType: Eq_8128
-  OrigDataType: pid_t
-T_8129: (in g0_83 : word32)
-  Class: Eq_8128
-  DataType: Eq_8128
+T_8129: (in l1 - 0xFFFFFFFF : word32)
+  Class: Eq_8112
+  DataType: Eq_8112
   OrigDataType: pid_t
 T_8130: (in cond(g0_83) : byte)
   Class: Eq_8130
@@ -35561,13 +35561,13 @@ T_8131: (in SLICE(cond(g0_83), bool, 2) : bool)
 T_8132: (in sleep : ptr32)
   Class: Eq_8132
   DataType: (ptr32 Eq_8132)
-  OrigDataType: (ptr32 (fn T_8135 (T_8115)))
+  OrigDataType: (ptr32 (fn T_8135 (T_8116)))
 T_8133: (in signature of sleep : void)
   Class: Eq_8132
   DataType: (ptr32 Eq_8132)
   OrigDataType: 
 T_8134: (in seconds : uint32)
-  Class: Eq_8115
+  Class: Eq_8116
   DataType: uint32
   OrigDataType: 
 T_8135: (in sleep(dwLoc2C_399) : uint32)
@@ -35587,7 +35587,7 @@ T_8138: (in 0x00000001 : word32)
   DataType: word32
   OrigDataType: word32
 T_8139: (in dwLoc2C_399 << 0x00000001 : word32)
-  Class: Eq_8115
+  Class: Eq_8116
   DataType: uint32
   OrigDataType: ui32
 T_8140: (in 0x00000001 : word32)
@@ -35595,7 +35595,7 @@ T_8140: (in 0x00000001 : word32)
   DataType: word32
   OrigDataType: word32
 T_8141: (in dwLoc28_400 + 0x00000001 : word32)
-  Class: Eq_8112
+  Class: Eq_8113
   DataType: int32
   OrigDataType: int32
 T_8142: (in 0xFFFFFFFF : word32)
@@ -39916,9 +39916,9 @@ typedef union Eq_8111 {
 	byte u1;
 } Eq_8111;
 
-typedef pid_t (Eq_8120)();
+typedef pid_t Eq_8112;
 
-typedef pid_t Eq_8127;
+typedef pid_t (Eq_8121)();
 
 typedef pid_t Eq_8128;
 

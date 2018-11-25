@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -133,7 +133,6 @@ namespace Reko.Analysis
 		public bool CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use)
 		{
             PreCoalesceDump(sid, def, use);
-			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
             use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, use, sid.Identifier, defExpr, false));
 
 			if (defsByStatement.TryGetValue(def, out var sids))
@@ -255,49 +254,5 @@ namespace Reko.Analysis
 			}
 			return MoveAssignment(initialPosition, block.Statements.Count, block);
 		}
-    }
-
-    /// <summary>
-    /// Replace uses of identifiers in the defined statement to reflect that it
-    /// has been moved into the using statement.
-    /// </summary>
-    public class UsedIdentifierAdjuster : InstructionVisitorBase
-    {
-        private Statement def;
-        private Statement use;
-        private SsaIdentifierCollection ssaIds;
-
-        public UsedIdentifierAdjuster(Statement def, SsaIdentifierCollection ssaIds, Statement use)
-        {
-            this.def = def;
-            this.use = use;
-            this.ssaIds = ssaIds;
-        }
-
-        public void Transform()
-        {
-            def.Instruction.Accept(this);
-        }
-
-        public override void VisitAssignment(Assignment a)
-        {
-            a.Src.Accept(this);
-        }
-
-        public override void VisitIdentifier(Identifier id)
-        {
-            SsaIdentifier sid = ssaIds[id];
-            for (int i = 0; i < sid.Uses.Count; ++i)
-            {
-                if (sid.Uses[i] == def)
-                    sid.Uses[i] = use;
-            }
-        }
-
-        public override void VisitStore(Store store)
-        {
-            store.Dst.Accept(this);
-            store.Src.Accept(this);
-        }
     }
 }

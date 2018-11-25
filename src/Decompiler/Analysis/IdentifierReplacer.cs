@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -37,7 +37,6 @@ namespace Reko.Analysis
         private Statement use;
         private Identifier idOld;
         private Expression exprNew;
-        private Identifier idNew;
         private bool replaceDefinitions;
 
         public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
@@ -46,7 +45,6 @@ namespace Reko.Analysis
             this.use = use;
             this.idOld = idOld;
             this.exprNew = exprNew;
-            this.idNew = exprNew as Identifier;
             this.replaceDefinitions = replaceDefinitions;
         }
 
@@ -80,9 +78,10 @@ namespace Reko.Analysis
             if (idOld == id)
             {
                 ssaIds[id].Uses.Remove(use);
-                if (idNew != null)
+                var usedIds = ExpressionIdentifierUseFinder.Find(ssaIds, exprNew);
+                foreach(var usedId in usedIds)
                 {
-                    ssaIds[idNew].Uses.Add(use);
+                    ssaIds[usedId].Uses.Add(use);
                 }
                 return exprNew;
             }

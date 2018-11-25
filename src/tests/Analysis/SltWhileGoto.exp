@@ -28,8 +28,8 @@ SCZO_11: orig: SCZO
 Z_12: orig: Z
 Mem14: orig: Mem0
     def:  Mem14[ds:di:word16] = ax_9
-    uses: Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
-          Mem8 = PHI(Mem0, Mem14, Mem22)
+    uses: Mem8 = PHI(Mem0, Mem14, Mem22)
+          Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
 ax_15: orig: ax
 SZO_16: orig: SZO
 C_17: orig: C
@@ -59,8 +59,8 @@ ds:ds
     uses: ax_9 = Mem8[ds:si_7:word16]
           Mem14[ds:di:word16] = ax_9
           Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
-          Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
           Mem31[ds:0x0300:word16] = ax_29
+          Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
 Mem0:Mem
     def:  def Mem0
     uses: Mem8 = PHI(Mem0, Mem14, Mem22)

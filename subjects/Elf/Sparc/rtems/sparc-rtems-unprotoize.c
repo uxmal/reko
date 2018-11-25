@@ -4157,6 +4157,7 @@ Eq_3067 pexecute(Eq_3067 o0, pid_t * o1, word32 o2, word32 o3, word32 * o4, word
 	while (true)
 	{
 		Eq_8111 Z_104;
+		Eq_8112 g0_83;
 		if (dwLoc28_400 > 0x03)
 			break;
 		g0_83 = l1 - ~0x00;
