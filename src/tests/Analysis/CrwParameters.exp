@@ -57,6 +57,7 @@ fn0C00_0025_entry:
 	def ds
 	def si
 	def Mem0
+	def siOut
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax_7 = Mem0[ds:si:word16]
@@ -91,6 +92,7 @@ fn0C00_0027_entry:
 	def si
 	def ds
 	def Mem0
+	def siOut
 	// succ:  l0C00_0027
 l0C00_0027:
 	ax_4 = 0x0000
@@ -129,6 +131,7 @@ fn0C00_002F_entry:
 	def ds
 	def si
 	def Mem0
+	def siOut
 	// succ:  l0C00_002F
 l0C00_002F:
 	ax_7 = Mem0[ds:si:word16]
@@ -158,6 +161,7 @@ word16 fn0C00_0036(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0036_entry:
 	def ds
 	def si
+	def siOut
 	// succ:  l0C00_0036
 l0C00_0036:
 	ax_9 = fn0C00_0025(si + 0x0002, ds, out si_10)

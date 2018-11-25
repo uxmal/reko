@@ -732,6 +732,7 @@ word32 fnOutParam(word32 r1, word32 r2, ptr32 & r2Out)
 fnOutParam_entry:
 	def r1
 	def r2
+	def r2Out
 	// succ:  m0
 m0:
 	branch r1 == 0x00000000 m2
@@ -864,6 +865,7 @@ main_exit:
             var sExp =
             #region Expected
 @"main_entry:
+	def out
 body:
 	out = <invalid>
 	return <invalid>

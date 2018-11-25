@@ -63,6 +63,7 @@ fn0C00_000A_entry:
 	def ds
 	def Mem0
 	def ax
+	def axOut
 	// succ:  l0C00_000A
 l0C00_000A:
 	si_6 = Mem0[ds:0x0100:word16]

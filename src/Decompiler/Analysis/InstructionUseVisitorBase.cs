@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -54,9 +54,6 @@ namespace Reko.Analysis
         {
             store.Src.Accept(this);
 
-            // Do not count assignments to out identifiers as uses.
-            if (store.Dst is Identifier idOut && idOut.Storage is OutArgumentStorage)
-                return;
             // Do not add memory identifier to uses
             if (store.Dst is MemoryAccess access)
             {

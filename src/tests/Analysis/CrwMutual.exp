@@ -49,6 +49,7 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	def dx
+	def dxOut
 	// succ:  l0C00_0004
 l0C00_0004:
 	branch dx != 0x001E l0C00_000F

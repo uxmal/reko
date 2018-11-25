@@ -55,6 +55,7 @@ FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
 bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	def al
+	def alOut
 	// succ:  l0C00_000A
 l0C00_000A:
 	branch al <u 0x30 l0C00_0032

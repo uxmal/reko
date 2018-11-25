@@ -400,10 +400,12 @@ namespace Reko.Analysis
             Block block,
             int insertPos)
         {
+            var entryBlock = ssa.Procedure.EntryBlock;
+            var paramSid = ssa.EnsureSsaIdentifier(parameter, entryBlock);
             var iAddr = block.Statements[insertPos].LinearAddress;
             var stm = block.Statements.Insert(
                 insertPos, iAddr, 
-                new Store(parameter, e));
+                new Store(paramSid.Identifier, e));
             ssa.AddUses(stm);
         }
     }
