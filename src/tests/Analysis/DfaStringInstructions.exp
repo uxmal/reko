@@ -41,7 +41,7 @@ l0C00_0030:
 l0C00_0030_1:
 	di_12 = di_12 + 0x0001
 	cx_16 = cx_16 - 0x0001
-	branch 0x00 != Mem0[es:di_12:byte] l0C00_0030
+	branch Mem0[es:di_12:byte] != 0x00 l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 l0C00_0032:
 	Mem21[ds:0x0404:word16] = di_12

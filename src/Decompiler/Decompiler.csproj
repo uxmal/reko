@@ -219,6 +219,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\ComparisonConstOnLeft.cs" />
     <Compile Include="Evaluation\DistributedCastRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

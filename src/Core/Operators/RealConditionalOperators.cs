@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,11 @@ namespace Reko.Core.Operators
         {
             return " == ";
         }
+
+        public override ConditionalOperator Transpose()
+        {
+            return this;
+        }
     }
 
     public class RneOperator : RealConditionalOperator
@@ -55,6 +60,11 @@ namespace Reko.Core.Operators
         public override string ToString()
         {
             return " != ";
+        }
+
+        public override ConditionalOperator Transpose()
+        {
+            return this;
         }
     }
 
@@ -71,7 +81,12 @@ namespace Reko.Core.Operators
 		{
 			return " < ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Fgt;
+        }
+    }
 
 	public class RgtOperator : RealConditionalOperator
 	{
@@ -86,9 +101,15 @@ namespace Reko.Core.Operators
 		{
 			return " > ";
 		}
-	}
 
-	public class RleOperator : RealConditionalOperator
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Flt;
+        }
+
+    }
+
+    public class RleOperator : RealConditionalOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -101,9 +122,15 @@ namespace Reko.Core.Operators
 		{
 			return " <= ";
 		}
-	}
 
-	public class RgeOperator : RealConditionalOperator
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Fge;
+        }
+
+    }
+
+    public class RgeOperator : RealConditionalOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -116,6 +143,12 @@ namespace Reko.Core.Operators
 		{
 			return " >= ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Fle;
+        }
+
+    }
 
 }

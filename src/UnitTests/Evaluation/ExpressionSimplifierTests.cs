@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             Expression expr = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32,
                 Constant.Word32(1), Constant.Word32(2));
-            Constant c = (Constant)expr.Accept(simplifier);
+            Constant c = (Constant) expr.Accept(simplifier);
 
             Assert.AreEqual(3, c.ToInt32());
         }
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Conditional(PrimitiveType.Word32, Constant.False(), Constant.Word32(1), Constant.Word32(0));
             Assert.AreEqual("0x00000000", expr.Accept(simplifier).ToString());
         }
-       
+
         [Test]
         public void Exs_UnsignedRangeComparison()
         {
@@ -202,6 +202,14 @@ namespace Reko.UnitTests.Evaluation
             var w32 = PrimitiveType.Word32;
             var expr = m.Cast(w16, (m.Cast(w16, foo)));
             Assert.AreEqual("(word16) foo_1", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_CompareWithConstant()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Le(m.Word32(0x00123400), foo);
+            Assert.AreEqual("foo_1 >= 0x00123400", expr.Accept(simplifier).ToString());
         }
     }
 }
