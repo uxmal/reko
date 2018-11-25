@@ -34,11 +34,11 @@ T_6: (in Mem0[rdi + 0x0000000000000000:word32] : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in (uint64) *rdi : uint64)
+T_7: (in (uint64) Mem0[rdi + 0x0000000000000000:word32] : uint64)
   Class: Eq_7
   DataType: uint64
   OrigDataType: uint64
-T_8: (in (word32) (uint64) *rdi : word32)
+T_8: (in (word32) (uint64) Mem0[rdi + 0x0000000000000000:word32] : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: uint32
@@ -50,11 +50,11 @@ T_10: (in (word32) (uint64) *rdi >> 0x0000000A : word32)
   Class: Eq_10
   DataType: uint32
   OrigDataType: uint32
-T_11: (in (uint64) ((word32) (uint64) *rdi >> 0x0000000A) : uint64)
+T_11: (in (uint64) ((word32) (uint64) Mem0[rdi + 0x0000000000000000:word32] >>u 0x0000000A) : uint64)
   Class: Eq_11
   DataType: uint64
   OrigDataType: uint64
-T_12: (in (byte) (uint64) ((word32) (uint64) *rdi >> 0x0000000A) : byte)
+T_12: (in (byte) (uint64) ((word32) (uint64) Mem0[rdi + 0x0000000000000000:word32] >>u 0x0000000A) : byte)
   Class: Eq_12
   DataType: byte
   OrigDataType: byte
