@@ -209,9 +209,9 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_219 tArg14)
 	{
 		*tArg14 = (word32) *tArg14 + 0x01;
 		int32 v23_65 = dwLoc20_100 + 0x01;
-		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
+		rLoc0C_23.u0 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
 		dwLoc20_100 = v23_65 + 0x03;
-		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x01)) * (real80) (v23_65 + 0x02)) * (real80) (v23_65 + 0x03));
+		rLoc14.u0 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x01)) * (real80) (v23_65 + 0x02)) * (real80) (v23_65 + 0x03));
 	}
 }
 

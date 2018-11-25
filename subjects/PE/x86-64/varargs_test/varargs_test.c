@@ -1318,7 +1318,7 @@ void fn0000000140001E9C(Eq_2004 * rax, int64 rcx, Eq_2006 * rdx, Eq_2012 * r8)
 	int64 r10_19 = rcx;
 	if ((rax->b0000 & 0x04) != 0x00)
 		r10_19 = (int64) r8->dw0004 + rcx & (int64) ((word32) ((uint64) (-((word32) ((uint64) rax->dw0008)))));
-	word64 rdx_24 = *((word64) (int64) r11d_12 + r10_19);
+	word64 rdx_24 = (int64) r11d_12 + r10_19;
 	struct Eq_2040 * rcx_27 = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
 	if ((rcx_27->b0003 & 0x0F) != 0x00)
 		r9_14 = rcx + (uint64) ((word32) rcx_27->b0003 & ~0x0F);

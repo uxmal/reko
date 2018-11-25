@@ -66,7 +66,7 @@ Eq_481: (union "Eq_481" (byte u0) (ptr32 u1))
 	T_541 (in out h_35 : ptr32)
 Eq_482: (struct "Eq_482" (0 uint8 b0000) (1 byte b0001))
 	T_482 (in xde_27 : (ptr32 Eq_482))
-	T_497 (in DPB(0x00009800, (word16) (DPB(bc, 0x00, 8) * 0x0002) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x0040), 0) : word32)
+	T_497 (in DPB(0x00009800, (word16) (DPB(bc, 0x00, 8) *u 0x0002) + 0x9800 + (word16) (DPB(hl, 0x00, 8) *u 0x0040), 0) : word32)
 Eq_517: (fn byte (byte, uint8, word16, word16, word16, Eq_480, Eq_481))
 	T_517 (in fn0020050A : ptr32)
 	T_518 (in signature of fn0020050A : void)
@@ -2027,7 +2027,7 @@ T_487: (in DPB(bc, 0x00, 8) * 0x0002 : word16)
   Class: Eq_487
   DataType: uint16
   OrigDataType: uint16
-T_488: (in (word16) (DPB(bc, 0x00, 8) * 0x0002) : word16)
+T_488: (in (word16) (DPB(bc, 0x00, 8) *u 0x0002) : word16)
   Class: Eq_488
   DataType: word16
   OrigDataType: word16
@@ -2055,7 +2055,7 @@ T_494: (in DPB(hl, 0x00, 8) * 0x0040 : word16)
   Class: Eq_494
   DataType: uint16
   OrigDataType: uint16
-T_495: (in (word16) (DPB(hl, 0x00, 8) * 0x0040) : word16)
+T_495: (in (word16) (DPB(hl, 0x00, 8) *u 0x0040) : word16)
   Class: Eq_495
   DataType: word16
   OrigDataType: word16
@@ -2063,7 +2063,7 @@ T_496: (in (word16) (DPB(bc, 0x00, 8) * 0x0002) + 0x9800 + (word16) (DPB(hl, 0x0
   Class: Eq_496
   DataType: word16
   OrigDataType: word16
-T_497: (in DPB(0x00009800, (word16) (DPB(bc, 0x00, 8) * 0x0002) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x0040), 0) : word32)
+T_497: (in DPB(0x00009800, (word16) (DPB(bc, 0x00, 8) *u 0x0002) + 0x9800 + (word16) (DPB(hl, 0x00, 8) *u 0x0040), 0) : word32)
   Class: Eq_482
   DataType: (ptr32 Eq_482)
   OrigDataType: word32

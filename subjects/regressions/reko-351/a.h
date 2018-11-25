@@ -964,7 +964,7 @@ T_229: (in _sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 0x3F689374, 0), fp - 0x0
 T_230: (in rLoc0C_23 : Eq_230)
   Class: Eq_230
   DataType: Eq_230
-  OrigDataType: (union (real64 u0) (real80 u1))
+  OrigDataType: real64
 T_231: (in rLoc0C : real64)
   Class: Eq_231
   DataType: real64
@@ -1080,7 +1080,7 @@ T_258: (in v23_65 + 0x00000003 : word32)
 T_259: (in rLoc14 : real64)
   Class: Eq_259
   DataType: Eq_259
-  OrigDataType: (union (real64 u0) (real80 u1))
+  OrigDataType: real64
 T_260: (in (real80) rLoc14 : real80)
   Class: Eq_260
   DataType: real80

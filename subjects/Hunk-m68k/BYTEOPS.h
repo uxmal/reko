@@ -232,7 +232,7 @@ Eq_647: (union "Eq_647" ((ptr32 Eq_4110) u0) ((ptr32 Eq_4112) u1) (Eq_1331 u2))
 	T_657 (in  : word32)
 	T_658 (in __swap(d0_22) : word32)
 	T_666 (in __swap(d1_25) : word32)
-	T_671 (in DPB(d4_30, (word16) (d4_30 + __swap(d1_25) * (word16) d0_22), 0) : word32)
+	T_671 (in DPB(d4_30, (word16) (d4_30 + __swap(d1_25) *u (word16) d0_22), 0) : word32)
 	T_672 (in __swap(DPB(d4_30, (word16) (d4_30 + __swap(d1_25) * (word16) d0_22), 0)) : word32)
 	T_679 (in dwArg04 : Eq_647)
 	T_680 (in dwArg08 : Eq_647)
@@ -273,7 +273,7 @@ Eq_647: (union "Eq_647" ((ptr32 Eq_4110) u0) ((ptr32 Eq_4112) u1) (Eq_1331 u2))
 	T_969 (in 10 : int32)
 	T_970 (in __swap(10) : word32)
 	T_979 (in __swap(d5_1608) : word32)
-	T_984 (in DPB(d1_1636, (word16) (d1_1636 + __swap(d5_1608) * 0x000A), 0) : word32)
+	T_984 (in DPB(d1_1636, (word16) (d1_1636 + __swap(d5_1608) *u 0x000A), 0) : word32)
 	T_985 (in __swap(DPB(d1_1636, (word16) (d1_1636 + __swap(d5_1608) * 0x000A), 0)) : word32)
 	T_1012 (in Mem1631[a7_1629 + 0x00000000:word32] : word32)
 	T_1016 (in d1_1651 - 0x00000030 + d0_1643 : word32)
@@ -282,7 +282,7 @@ Eq_647: (union "Eq_647" ((ptr32 Eq_4110) u0) ((ptr32 Eq_4112) u1) (Eq_1331 u2))
 	T_1066 (in 10 : int32)
 	T_1067 (in __swap(10) : word32)
 	T_1076 (in __swap(d2_1134) : word32)
-	T_1081 (in DPB(d1_1720, (word16) (d1_1720 + __swap(d2_1134) * 0x000A), 0) : word32)
+	T_1081 (in DPB(d1_1720, (word16) (d1_1720 + __swap(d2_1134) *u 0x000A), 0) : word32)
 	T_1082 (in __swap(DPB(d1_1720, (word16) (d1_1720 + __swap(d2_1134) * 0x000A), 0)) : word32)
 	T_1110 (in Mem1715[a7_148 - 4 + 0x00000000:word32] : word32)
 	T_1114 (in d1_1735 - 0x00000030 + d0_1727 : word32)
@@ -2115,7 +2115,7 @@ T_170: (in 0x00000000[d0_170 * 0x00000004] : byte)
   Class: Eq_170
   DataType: byte
   OrigDataType: byte
-T_171: (in (int32) null[d0_170].b0000 : int32)
+T_171: (in (int32) 0x00000000[d0_170 * 0x00000004] : int32)
   Class: Eq_166
   DataType: int32
   OrigDataType: int32
@@ -4111,11 +4111,11 @@ T_669: (in d4_30 + __swap(d1_25) * (word16) d0_22 : word16)
   Class: Eq_669
   DataType: uint32
   OrigDataType: uint32
-T_670: (in (word16) (d4_30 + __swap(d1_25) * (word16) d0_22) : word16)
+T_670: (in (word16) (d4_30 + __swap(d1_25) *u (word16) d0_22) : word16)
   Class: Eq_670
   DataType: word16
   OrigDataType: word16
-T_671: (in DPB(d4_30, (word16) (d4_30 + __swap(d1_25) * (word16) d0_22), 0) : word32)
+T_671: (in DPB(d4_30, (word16) (d4_30 + __swap(d1_25) *u (word16) d0_22), 0) : word32)
   Class: Eq_647
   DataType: Eq_647
   OrigDataType: uint32
@@ -4135,7 +4135,7 @@ T_675: (in d0_22 * (word16) d1_25 + DPB(__swap(DPB(d4_30, (word16) (d4_30 + __sw
   Class: Eq_675
   DataType: uint32
   OrigDataType: uint32
-T_676: (in (byte) (d0_22 * (word16) d1_25 + DPB(__swap(DPB(d4_30, (word16) (d4_30 + __swap(d1_25) * (word16) d0_22), 0)), 0x0000, 0)) : byte)
+T_676: (in (byte) (d0_22 *u (word16) d1_25 + DPB(__swap(DPB(d4_30, (word16) (d4_30 + __swap(d1_25) * (word16) d0_22), 0)), 0x0000, 0)) : byte)
   Class: Eq_661
   DataType: byte
   OrigDataType: byte
@@ -4415,11 +4415,11 @@ T_745: (in Mem1779[a4_145 + 0x00000000:byte] : byte)
   Class: Eq_745
   DataType: byte
   OrigDataType: byte
-T_746: (in (int16) *a4_145 : int16)
+T_746: (in (int16) Mem1779[a4_145 + 0x00000000:byte] : int16)
   Class: Eq_746
   DataType: int16
   OrigDataType: int16
-T_747: (in (int32) (int16) *a4_145 : int32)
+T_747: (in (int32) (int16) Mem1779[a4_145 + 0x00000000:byte] : int32)
   Class: Eq_747
   DataType: int32
   OrigDataType: int32
@@ -4783,7 +4783,7 @@ T_837: (in Mem229[a0_1014 + 0x00000000:byte] : byte)
   Class: Eq_837
   DataType: byte
   OrigDataType: byte
-T_838: (in (int32) *a0_1014 : int32)
+T_838: (in (int32) Mem229[a0_1014 + 0x00000000:byte] : int32)
   Class: Eq_834
   DataType: int32
   OrigDataType: int32
@@ -5155,7 +5155,7 @@ T_930: (in Mem229[a0_1014 + 0x00000000:byte] : byte)
   Class: Eq_837
   DataType: byte
   OrigDataType: byte
-T_931: (in (int32) *a0_1014 : int32)
+T_931: (in (int32) Mem229[a0_1014 + 0x00000000:byte] : int32)
   Class: Eq_927
   DataType: int32
   OrigDataType: int32
@@ -5363,11 +5363,11 @@ T_982: (in d1_1636 + __swap(d5_1608) * 0x000A : word16)
   Class: Eq_982
   DataType: uint32
   OrigDataType: uint32
-T_983: (in (word16) (d1_1636 + __swap(d5_1608) * 0x000A) : word16)
+T_983: (in (word16) (d1_1636 + __swap(d5_1608) *u 0x000A) : word16)
   Class: Eq_983
   DataType: word16
   OrigDataType: word16
-T_984: (in DPB(d1_1636, (word16) (d1_1636 + __swap(d5_1608) * 0x000A), 0) : word32)
+T_984: (in DPB(d1_1636, (word16) (d1_1636 + __swap(d5_1608) *u 0x000A), 0) : word32)
   Class: Eq_647
   DataType: Eq_647
   OrigDataType: uint32
@@ -5443,11 +5443,11 @@ T_1002: (in Mem1631[a2_1561 + 0x00000000:byte] : byte)
   Class: Eq_1002
   DataType: byte
   OrigDataType: byte
-T_1003: (in (int16) *a2_1561 : int16)
+T_1003: (in (int16) Mem1631[a2_1561 + 0x00000000:byte] : int16)
   Class: Eq_1003
   DataType: int16
   OrigDataType: int16
-T_1004: (in (int32) (int16) *a2_1561 : int32)
+T_1004: (in (int32) (int16) Mem1631[a2_1561 + 0x00000000:byte] : int32)
   Class: Eq_999
   DataType: int32
   OrigDataType: int32
@@ -5467,7 +5467,7 @@ T_1008: (in Mem1631[a0_1014 + 0x00000000:byte] : byte)
   Class: Eq_837
   DataType: byte
   OrigDataType: byte
-T_1009: (in (int32) *a0_1014 : int32)
+T_1009: (in (int32) Mem1631[a0_1014 + 0x00000000:byte] : int32)
   Class: Eq_1005
   DataType: int32
   OrigDataType: int32
@@ -5539,11 +5539,11 @@ T_1026: (in Mem229[a2_1561 + 0x00000000:byte] : byte)
   Class: Eq_1026
   DataType: byte
   OrigDataType: byte
-T_1027: (in (int16) *a2_1561 : int16)
+T_1027: (in (int16) Mem229[a2_1561 + 0x00000000:byte] : int16)
   Class: Eq_1027
   DataType: int16
   OrigDataType: int16
-T_1028: (in (int32) (int16) *a2_1561 : int32)
+T_1028: (in (int32) (int16) Mem229[a2_1561 + 0x00000000:byte] : int32)
   Class: Eq_781
   DataType: int32
   OrigDataType: int32
@@ -5751,11 +5751,11 @@ T_1079: (in d1_1720 + __swap(d2_1134) * 0x000A : word16)
   Class: Eq_1079
   DataType: uint32
   OrigDataType: uint32
-T_1080: (in (word16) (d1_1720 + __swap(d2_1134) * 0x000A) : word16)
+T_1080: (in (word16) (d1_1720 + __swap(d2_1134) *u 0x000A) : word16)
   Class: Eq_1080
   DataType: word16
   OrigDataType: word16
-T_1081: (in DPB(d1_1720, (word16) (d1_1720 + __swap(d2_1134) * 0x000A), 0) : word32)
+T_1081: (in DPB(d1_1720, (word16) (d1_1720 + __swap(d2_1134) *u 0x000A), 0) : word32)
   Class: Eq_647
   DataType: Eq_647
   OrigDataType: uint32
@@ -5831,11 +5831,11 @@ T_1099: (in Mem1715[a2_1561 + 0x00000000:byte] : byte)
   Class: Eq_1099
   DataType: byte
   OrigDataType: byte
-T_1100: (in (int16) *a2_1561 : int16)
+T_1100: (in (int16) Mem1715[a2_1561 + 0x00000000:byte] : int16)
   Class: Eq_1100
   DataType: int16
   OrigDataType: int16
-T_1101: (in (int32) (int16) *a2_1561 : int32)
+T_1101: (in (int32) (int16) Mem1715[a2_1561 + 0x00000000:byte] : int32)
   Class: Eq_1096
   DataType: int32
   OrigDataType: int32
@@ -5855,7 +5855,7 @@ T_1105: (in Mem1715[a0_1014 + 0x00000000:byte] : byte)
   Class: Eq_837
   DataType: byte
   OrigDataType: byte
-T_1106: (in (int32) *a0_1014 : int32)
+T_1106: (in (int32) Mem1715[a0_1014 + 0x00000000:byte] : int32)
   Class: Eq_1102
   DataType: int32
   OrigDataType: int32
@@ -8003,11 +8003,11 @@ T_1642: (in Mem638[a0_1014 + 0x00000000:byte] : byte)
   Class: Eq_1642
   DataType: byte
   OrigDataType: byte
-T_1643: (in (int16) *a0_1014 : int16)
+T_1643: (in (int16) Mem638[a0_1014 + 0x00000000:byte] : int16)
   Class: Eq_1643
   DataType: int16
   OrigDataType: int16
-T_1644: (in (int32) (int16) *a0_1014 : int32)
+T_1644: (in (int32) (int16) Mem638[a0_1014 + 0x00000000:byte] : int32)
   Class: Eq_1644
   DataType: int32
   OrigDataType: int32
@@ -10814,7 +10814,7 @@ T_2344: (in a0_1014 + 0x00000000 : word32)
 T_2345: (in Mem1483[a0_1014 + 0x00000000:word16] : word16)
   Class: Eq_2342
   DataType: Eq_816
-  OrigDataType: Eq_2342
+  OrigDataType: word16
 T_2346: (in (byte) d1_1006 : byte)
   Class: Eq_2346
   DataType: Eq_2346
@@ -11531,7 +11531,7 @@ T_2524: (in Mem81[a0_75 + 0x00000000:byte] : byte)
   Class: Eq_2518
   DataType: byte
   OrigDataType: byte
-T_2525: (in (int32) *a0_75 : int32)
+T_2525: (in (int32) Mem81[a0_75 + 0x00000000:byte] : int32)
   Class: Eq_2477
   DataType: int32
   OrigDataType: int32
@@ -14875,7 +14875,7 @@ T_3360: (in d2_203 + d3_198 : word16)
   Class: Eq_3360
   DataType: word32
   OrigDataType: word32
-T_3361: (in (word16) ((word32) d2_203 + d3_198) : word16)
+T_3361: (in (word16) (d2_203 + d3_198) : word16)
   Class: Eq_3359
   DataType: cup16
   OrigDataType: word16
@@ -14903,7 +14903,7 @@ T_3367: (in DPB(d2_203, v31_204, 0) + d4_200 : word16)
   Class: Eq_3367
   DataType: word32
   OrigDataType: word32
-T_3368: (in (word16) ((word32) DPB(d2_203, v31_204, 0) + d4_200) : word16)
+T_3368: (in (word16) (DPB(d2_203, v31_204, 0) + d4_200) : word16)
   Class: Eq_3365
   DataType: cup16
   OrigDataType: word16
@@ -15627,7 +15627,7 @@ T_3548: (in d6_222 + d5_217 : word16)
   Class: Eq_3548
   DataType: word32
   OrigDataType: word32
-T_3549: (in (word16) ((word32) d6_222 + d5_217) : word16)
+T_3549: (in (word16) (d6_222 + d5_217) : word16)
   Class: Eq_3547
   DataType: cup16
   OrigDataType: word16
@@ -15655,7 +15655,7 @@ T_3555: (in DPB(d6_222, v45_223, 0) + d2_219 : word16)
   Class: Eq_3555
   DataType: word32
   OrigDataType: word32
-T_3556: (in (word16) ((word32) DPB(d6_222, v45_223, 0) + d2_219) : word16)
+T_3556: (in (word16) (DPB(d6_222, v45_223, 0) + d2_219) : word16)
   Class: Eq_3553
   DataType: cup16
   OrigDataType: word16
@@ -16539,7 +16539,7 @@ T_3776: (in d2_177 + d3_172 : word16)
   Class: Eq_3776
   DataType: word32
   OrigDataType: word32
-T_3777: (in (word16) ((word32) d2_177 + d3_172) : word16)
+T_3777: (in (word16) (d2_177 + d3_172) : word16)
   Class: Eq_3775
   DataType: cup16
   OrigDataType: word16
@@ -16567,7 +16567,7 @@ T_3783: (in DPB(d2_177, v33_178, 0) + d4_174 : word16)
   Class: Eq_3783
   DataType: word32
   OrigDataType: word32
-T_3784: (in (word16) ((word32) DPB(d2_177, v33_178, 0) + d4_174) : word16)
+T_3784: (in (word16) (DPB(d2_177, v33_178, 0) + d4_174) : word16)
   Class: Eq_3781
   DataType: cup16
   OrigDataType: word16

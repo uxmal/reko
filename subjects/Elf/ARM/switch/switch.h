@@ -471,7 +471,7 @@ T_77: (in Mem0[r5_10 + 0x00000000:byte] : byte)
   Class: Eq_77
   DataType: byte
   OrigDataType: byte
-T_78: (in (word32) *r5_10 : word32)
+T_78: (in (word32) Mem0[r5_10 + 0x00000000:byte] : word32)
   Class: Eq_78
   DataType: word32
   OrigDataType: word32

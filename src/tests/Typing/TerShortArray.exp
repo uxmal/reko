@@ -68,7 +68,7 @@ T_11: (in Mem0[fp + 0x00000004:word32][Mem0[fp + 0x00000008:word32] * 0x00000002
   Class: Eq_11
   DataType: int16
   OrigDataType: int16
-T_12: (in (int32) fp->ptr0004[fp->dw0008] : int32)
+T_12: (in (int32) Mem0[fp + 0x00000004:word32][Mem0[fp + 0x00000008:word32] * 0x00000002] : int32)
   Class: Eq_12
   DataType: int32
   OrigDataType: int32

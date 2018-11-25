@@ -2008,7 +2008,7 @@ T_176: (in af : word16)
 T_177: (in c : Eq_10)
   Class: Eq_10
   DataType: Eq_10
-  OrigDataType: uint8
+  OrigDataType: byte
 T_178: (in b : Eq_10)
   Class: Eq_10
   DataType: Eq_10

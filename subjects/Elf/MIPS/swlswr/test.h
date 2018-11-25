@@ -499,7 +499,7 @@ T_107: (in Mem0[r19_10 + 0x00000AF0:byte] : byte)
   Class: Eq_107
   DataType: byte
   OrigDataType: byte
-T_108: (in (word32) r19_10[2800] : word32)
+T_108: (in (word32) Mem0[r19_10 + 0x00000AF0:byte] : word32)
   Class: Eq_108
   DataType: word32
   OrigDataType: word32
@@ -623,7 +623,7 @@ T_138: (in r2_45 < r16_47 : bool)
   Class: Eq_138
   DataType: bool
   OrigDataType: bool
-T_139: (in (word32) (r2_45 < r16_47) : word32)
+T_139: (in (word32) (r2_45 <u r16_47) : word32)
   Class: Eq_139
   DataType: word32
   OrigDataType: word32
@@ -815,7 +815,7 @@ T_186: (in r2_45 < r16_78 : bool)
   Class: Eq_186
   DataType: bool
   OrigDataType: bool
-T_187: (in (word32) (r2_45 < r16_78) : word32)
+T_187: (in (word32) (r2_45 <u r16_78) : word32)
   Class: Eq_187
   DataType: word32
   OrigDataType: word32

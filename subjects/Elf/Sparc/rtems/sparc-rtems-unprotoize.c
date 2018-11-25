@@ -1547,11 +1547,11 @@ Eq_2947 * munge_compile_params(Eq_212 o0, ptr32 & i0Out, ptr32 & i6Out)
 	{
 		ui32 o3_159;
 		int32 g2_155 = l0_153 << 0x02;
-		if (((word32) ((word32) *i0_148)->b2B411 & 0x08) != 0x00)
+		if (((word32) ((word32) *i0_148 + 177169) & 0x08) != 0x00)
 		{
 			o3_159 = l0_153 + 0x01;
 			*i0Out = (word32) i0_148 + 0x01;
-			while (((word32) ((word32) *i0_148)->b2B411 & 0x08) != 0x00)
+			while (((word32) ((word32) *i0_148 + 177169) & 0x08) != 0x00)
 				*i0Out = (word32) i0_148 + 0x01;
 		}
 		else
@@ -1989,7 +1989,7 @@ void seek_to_line(Eq_31 o0)
 Eq_31 forward_to_next_token_char(Eq_31 o0)
 {
 	Eq_31 i0_19 = (word32) o0 + 0x01;
-	if (((word32) ((word32) *((word32) o0 + 0x01))->b2B411 & 0x08) != 0x00)
+	if (((word32) ((word32) *((word32) o0 + 0x01) + 177169) & 0x08) != 0x00)
 	{
 		up32 o0_48 = globals->dw281D0;
 		while (true)
@@ -1998,7 +1998,7 @@ Eq_31 forward_to_next_token_char(Eq_31 o0)
 			word32 i2_58;
 			word32 i6_59;
 			i0_19 = check_source((word32) i0_19 + 0x01 - o0_48 < 0x00, 0x00, out i1_57, out i2_58, out i6_59);
-			if (((word32) ((word32) *i0_19)->b2B411 & 0x08) == 0x00)
+			if (((word32) ((word32) *i0_19 + 177169) & 0x08) == 0x00)
 				break;
 			o0_48 = globals->dw281D0;
 		}
@@ -2151,7 +2151,7 @@ l00013BAC:
 			word32 i6_288;
 			check_source(globals->dw281E0 - &l1_278->bFFFFFFFF < 0x00, 0x00, out i1_286, out i2_287, out i6_288);
 			Eq_212 l0_280 = &l1_278->bFFFFFFFF;
-			if (((word32) ((word32) l1_278->bFFFFFFFF)->b2B411 & 0x08) != 0x00)
+			if (((word32) ((word32) l1_278->bFFFFFFFF + 177169) & 0x08) != 0x00)
 			{
 				uint32 o0_353 = globals->dw281E0;
 				while (true)
@@ -2161,7 +2161,7 @@ l00013BAC:
 					word32 i2_363;
 					word32 i6_364;
 					check_source(o0_353 - l0_280 < 0x00, 0x00, out i1_362, out i2_363, out i6_364);
-					if (((word32) ((word32) *l0_280)->b2B411 & 0x08) == 0x00)
+					if (((word32) ((word32) *l0_280 + 177169) & 0x08) == 0x00)
 						break;
 					o0_353 = globals->dw281E0;
 				}
@@ -2201,7 +2201,7 @@ l00013BAC:
 			Eq_212 l5_145;
 			struct Eq_4390 * o1_139 = i2_150->ptr0010;
 			int8 * l0_140 = &l1_336->bFFFFFFFF;
-			if (((word32) ((word32) l1_336->bFFFFFFFF)->b2B411 & 0x08) != 0x00)
+			if (((word32) ((word32) l1_336->bFFFFFFFF + 177169) & 0x08) != 0x00)
 			{
 				l5_145 = o1_139->t0004;
 				uint32 o0_254 = l2_21->dw01E0;
@@ -2211,7 +2211,7 @@ l00013BAC:
 					word32 i1_263;
 					word32 i6_265;
 					check_source(o0_254 - l0_140 < 0x00, 0x00, out i1_263, out i2_150, out i6_265);
-					if (((word32) ((word32) *l0_140)->b2B411 & 0x08) == 0x00)
+					if (((word32) ((word32) *l0_140 + 177169) & 0x08) == 0x00)
 						break;
 					o0_254 = l2_21->dw01E0;
 				}
@@ -2325,7 +2325,7 @@ Eq_31 find_rightmost_formals_list(Eq_31 o0, ptr32 & i6Out)
 					word32 i2_106;
 					word32 i6_107;
 					i0_108 = check_source(o0_116 - (i0_108 + ~0x00) <u 0x00, 0x00, out i1_105, out i2_106, out i6_107);
-					if (((word32) ((word32) *i0_108)->b2B411 & 0x08) == 0x00)
+					if (((word32) ((word32) *i0_108 + 177169) & 0x08) == 0x00)
 						break;
 					o0_116 = globals->dw281E0;
 				}
@@ -2478,7 +2478,7 @@ l000145B4:
 	{
 		Eq_212 l0_111;
 		globals->t28140 = o3_74;
-		if (((word32) ((word32) *((word32) o3_74 + 0x01))->b2B411 & 0x08) != 0x00)
+		if (((word32) ((word32) *((word32) o3_74 + 0x01) + 177169) & 0x08) != 0x00)
 		{
 			l0_111 = (word32) o3_74 + 0x01;
 			Eq_212 o0_365 = i6_115->tFFFFFFEC;
@@ -2488,7 +2488,7 @@ l000145B4:
 				word32 i1_375;
 				word32 i2_376;
 				check_source(l0_111 - o0_365 < 0x00, i6_115->tFFFFFFEC, out i1_375, out i2_376, out i6_115);
-				if (((word32) ((word32) *l0_111)->b2B411 & 0x08) == 0x00)
+				if (((word32) ((word32) *l0_111 + 177169) & 0x08) == 0x00)
 					break;
 				o0_365 = i6_115->tFFFFFFEC;
 			}
@@ -2508,7 +2508,7 @@ l000145B4:
 				word32 sp_151;
 				struct Eq_5085 * o0_153 = careful_find_l_paren(globals->t28140, out sp_151, out i6_115);
 				globals->t28140 = &o0_153->bFFFFFFFF;
-				if (((word32) ((word32) o0_153->bFFFFFFFF)->b2B411 & 0x08) != 0x00)
+				if (((word32) ((word32) o0_153->bFFFFFFFF + 177169) & 0x08) != 0x00)
 				{
 					Eq_31 i0_328 = 0x00028000;
 					Eq_3711 o2_330 = globals->t28140;
@@ -2520,7 +2520,7 @@ l000145B4:
 						word32 i1_340;
 						word32 i2_341;
 						i0_328 = check_source(0x01 - (o2_334 - o1_333 < 0x00), o1_333, out i1_340, out i2_341, out i6_115);
-						if (((word32) ((word32) *globals->t28140)->b2B411 & 0x08) == 0x00)
+						if (((word32) ((word32) *globals->t28140 + 177169) & 0x08) == 0x00)
 							break;
 						o2_330 = globals->t28140;
 					}
@@ -3594,7 +3594,7 @@ void make_temp_file(word32 o0)
 			l1_139 = o0_60 + 0x01;
 		}
 	}
-	Mem87[o0_74 + l1_139:byte] = (byte) (word32) globals->b17918;
+	Mem87[o0_74 + l1_139:byte] = (byte) (word32) Mem0[0x00017918:byte];
 	word32 o3_86 = o0_74 + l1_139;
 	o3_86->b0001 = (byte) (word32) globals->b17919;
 	o3_86->b0002 = (byte) (word32) globals->b1791A;

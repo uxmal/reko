@@ -431,11 +431,11 @@ T_99: (in Mem0[0x80000538 + 0x00000000:real96] : real96)
   Class: Eq_99
   DataType: real96
   OrigDataType: real96
-T_100: (in (real80) *(real96 *) 0x80000538 : real80)
+T_100: (in (real80) Mem0[0x80000538 + 0x00000000:real96] : real80)
   Class: Eq_100
   DataType: real80
   OrigDataType: real80
-T_101: (in (real96) (real80) *(real96 *) 0x80000538 : real96)
+T_101: (in (real96) (real80) Mem0[0x80000538 + 0x00000000:real96] : real96)
   Class: Eq_95
   DataType: real96
   OrigDataType: real96
