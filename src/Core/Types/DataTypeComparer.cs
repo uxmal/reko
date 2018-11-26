@@ -1,5 +1,6 @@
 #region License
 /* 
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -305,24 +306,17 @@ namespace Reko.Core.Types
 
         public int GetHashCode(DataType dt)
         {
-            var pt = dt as PrimitiveType;
-            if (pt != null)
+            switch (dt)
+            {
+            case PrimitiveType pt:
                 return pt.GetHashCode();
-            if (dt is UnknownType)
+            case UnknownType _:
                 return dt.GetType().GetHashCode();
-            var ptr = dt as Pointer;
-            if (ptr != null)
-            {
+            case Pointer ptr:                ;
                 return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
-            }
-            var rt = dt as ReferenceTo;
-            if (rt != null)
-            {
-                return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
-            }
-            var ft = dt as FunctionType;
-            if (ft != null)
-            {
+            case ReferenceTo rt:
+                return GetHashCode(rt.Referent) * 11 ^ rt.GetType().GetHashCode();
+            case FunctionType ft:
                 if (ft.ParametersValid)
                 {
                     int hash = 0;
@@ -432,9 +426,8 @@ namespace Reko.Core.Types
         }
 		#endregion
 
-		public static DataTypeComparer getGlobalComparer()
-		{
-			return ourGlobalComparer;
-	}
+        //$REVIEW: this is thread-unsafe. We keep it because we have really deep type comparisons due to
+        // unresolved bugs in type inference. Once those are resolved, performance should improve.
+		public static DataTypeComparer Instance => ourGlobalComparer;
 	}
 }

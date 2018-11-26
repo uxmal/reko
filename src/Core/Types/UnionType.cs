@@ -1,5 +1,6 @@
 #region License
 /* 
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +34,7 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class UnionType : DataType
 	{
-		private UnionAlternativeCollection alts = new UnionAlternativeCollection();
+		private readonly UnionAlternativeCollection alts = new UnionAlternativeCollection();
 
         public UnionType() : this(null, null, false)
         {
@@ -65,6 +66,8 @@ namespace Reko.Core.Types
             }
         }
 
+        public UnionAlternativeCollection Alternatives => alts;
+        
         public DataType PreferredType { get; set; }
         public bool UserDefined { get; private set; }
 
@@ -78,11 +81,6 @@ namespace Reko.Core.Types
             return v.VisitUnion(this);
         }
 
-		public UnionAlternativeCollection Alternatives
-		{
-			get { return alts; }
-		}
-
         public UnionAlternative AddAlternative(DataType dt)
         {
             var alt = new UnionAlternative(dt, Alternatives.Count);
@@ -92,7 +90,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			var pre = PreferredType != null ? PreferredType.Clone(clonedTypes) : null;
+			var pre = PreferredType?.Clone(clonedTypes);
 			var u = new UnionType(Name, pre);
             u.Qualifier = Qualifier;
             u.UserDefined = UserDefined;
@@ -184,7 +182,7 @@ namespace Reko.Core.Types
 	public class UnionAlternativeCollection : SortedList<DataType,UnionAlternative>
 	{
         public UnionAlternativeCollection()
-            : base(DataTypeComparer.getGlobalComparer())
+            : base(DataTypeComparer.Instance)
         {
         }
 		public void Add(UnionAlternative a)
