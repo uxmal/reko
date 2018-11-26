@@ -122,7 +122,7 @@ namespace Reko.Core
 
 	    public bool EventHandlerPaused { get; set; }
 
-	    public void AddItemWithSize(Address addr, ImageMapItem itemNew)
+        public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
             if (!TryFindItem(addr, out var item))
             {
@@ -167,7 +167,7 @@ namespace Reko.Core
                     }
                     else
                     {
-                    throw new NotSupportedException("Haven't handled this case yet.");
+                        throw new NotSupportedException("Haven't handled this case yet.");
                     }
                 }
                 Items.Remove(item.Address);

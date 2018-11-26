@@ -972,4 +972,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 48.92 seconds ---
+Decompiled 55 binaries in 73.63 seconds ---
