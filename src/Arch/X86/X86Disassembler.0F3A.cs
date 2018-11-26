@@ -123,8 +123,8 @@ namespace Reko.Arch.X86
 
                 s_invalid,
                 s_invalid,
-                s_nyi,
-                s_nyi,
+                Instr(Opcode.vblendvpsv, "Vx,Hx,Wx,Lx"),
+                Instr(Opcode.vblendvpdv, "Vx,Hx,Wx,Lx"),
                 s_nyi,
                 s_invalid,
                 s_invalid,

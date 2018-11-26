@@ -3430,7 +3430,15 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                  "0|S--|0000000140000000(3): 1 instructions",
                  "1|L--|Mem0[rcx:word16] = __sldt()");
+        }
 
+        [Test]
+        public void X86Rw_minpd()
+        {
+            Run64bitTest(0x66, 0x0F, 0x5D, 0x42, 0x42); // minpd\txmm0,[rdx+42]
+            AssertCode(                "0|L--|0000000140000000(5): 3 instructions",                "1|L--|v4 = xmm0",
+                "2|L--|v5 = Mem0[rdx + 0x0000000000000042:word128]",
+                "3|L--|xmm0 = __minpd(v4, v5)");
         }
     }
 }

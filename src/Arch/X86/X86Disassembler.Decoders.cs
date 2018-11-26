@@ -397,8 +397,10 @@ namespace Reko.Arch.X86
                 var instr = decoders[op].Decode(disasm, op, opFormat);
                 if (instr == null)
                     return instr;
-                if (!s_mpVex.TryGetValue(instr.code, out instr.code))
-                    return null;
+                if (s_mpVex.TryGetValue(instr.code, out var vCode))
+                {
+                    instr.code = vCode;
+                }
                 return instr;
             }
         }

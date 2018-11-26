@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -36,6 +36,9 @@ namespace Reko.Arch.X86
                 { Opcode.addpd, Opcode.vaddpd },
                 { Opcode.cvtsi2sd, Opcode.vcvtsi2sd },
                 { Opcode.cvtsi2ss, Opcode.vcvtsi2ss },
+                { Opcode.cvttpd2dq, Opcode.vcvttpd2dq },
+                { Opcode.cvtdq2pd, Opcode.vcvtdq2pd },
+                { Opcode.cvtpd2dq, Opcode.vcvtpd2dq },
                 { Opcode.movapd, Opcode.vmovapd },
                 { Opcode.movaps, Opcode.vmovaps },
                 { Opcode.movsd, Opcode.vmovsd },

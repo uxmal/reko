@@ -327,7 +327,7 @@ namespace Reko.Arch.X86
 
             base.EmitUnitTest("x86", strBytes, message, "X86Dis", this.addr, w =>
             {
-                w.WriteLine("    AssertCode32(\"@@@\", {0}\");",
+                w.WriteLine("    AssertCode32(\"@@@\", {0});",
                     string.Join(", ", bytes.Select(b => $"0x{b:X2}")));
             });
             return Illegal();
@@ -698,6 +698,21 @@ namespace Reko.Arch.X86
                     if (pOperand == null)
                         return null;
                     break;
+                case 'L': // The upper 4 bits of the 8-bit immediate selects a 128-bit XMM register or a 256-bit YMM register, determined
+                          // by operand type.
+                    if (!rdr.TryReadByte(out var lReg))
+                        return null;
+                    if (strFormat[i] == 'x')
+                    {
+                        iWidth = width; // Use width of the previous operand.
+                    }
+                    else
+                    {
+                        width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
+                    }
+                    ++i;
+                    pOperand = new RegisterOperand(XmmRegFromBits((lReg >> 4) & 0xF, width));
+                    break;
                 case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat, ref i);
                     ++i;
@@ -720,8 +735,8 @@ namespace Reko.Arch.X86
                         return null;
                     if ((modRm & 0xC0) == 0xC0)
                         return null;
-                    pOperand = DecodeModRM(dataWidth, this.currentDecodingContext.SegmentOverride, GpRegFromBits);
-                    if (pOperand is RegisterOperand)
+                    pOperand = DecodeModRM(dataWidth, this.currentDecodingContext.SegmentOverride, GpRegFromBits) as MemoryOperand;
+                    if (pOperand == null)
                         return null;
                     break;
                 case 'O':		// Offset of the operand is encoded directly after the opcode.
@@ -831,7 +846,15 @@ namespace Reko.Arch.X86
 				dataWidth = PrimitiveType.Word16;
 				break;
 			case 'd':
-				dataWidth = PrimitiveType.Word32;
+                if (i < fmt.Length - 1 && fmt[i + 1] == 'q')
+                {
+                    ++i;
+                    dataWidth = PrimitiveType.Word128;
+                }
+                else
+                {
+                    dataWidth = PrimitiveType.Word32;
+                }
 				break;
 			case 'p':
                 if (i < fmt.Length -1 && fmt[i+1] == 's')

@@ -314,6 +314,8 @@ namespace Reko.Arch.X86
                 case Opcode.maskmovq: RewriteMaskmovq(); break;
                 case Opcode.maxps: RewritePackedBinop("__maxps", PrimitiveType.Real32); break;
                 case Opcode.mfence: RewriteMfence(); break;
+                case Opcode.minpd: RewritePackedBinop("__minpd", PrimitiveType.Real64); break;
+                case Opcode.minps: RewritePackedBinop("__minps", PrimitiveType.Real32); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movapd:
                 case Opcode.movaps:
@@ -338,7 +340,6 @@ namespace Reko.Arch.X86
                 case Opcode.vmovsd: RewriteMovssd(PrimitiveType.Real64); break;
                 case Opcode.movss:
                 case Opcode.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
-                case Opcode.minps: RewritePackedBinop("__minps", PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
                 case Opcode.movups: RewriteMov(); break;
                 case Opcode.movupd: RewriteMov(); break;
