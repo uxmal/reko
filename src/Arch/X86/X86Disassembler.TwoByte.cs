@@ -54,7 +54,7 @@ namespace Reko.Arch.X86
                 s_invalid,
                 new InstructionDecoder(Opcode.prefetchw, "Ev"),
                 Instr(Opcode.femms),    // AMD-specific
-                nyi("AMD 3D-Now instructions"),
+                s_invalid, // nyi("AMD 3D-Now instructions"), //$TODO: this requires adding separate processor model for AMD
 
 				// 0F 10
 				new PrefixedDecoder(
@@ -80,7 +80,9 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.unpcklps, "Vx,Hx,Wx",
                     Opcode.unpcklpd, "Vx,Hx,Wx"),
-                s_nyi,
+                new PrefixedDecoder(
+                    Opcode.unpckhps, "Vx,Hx,Wx",
+                    Opcode.unpckhpd, "Vx,Hx,Wx"),
                 new PrefixedDecoder(
                     Opcode.movlhps, "Vx,Wx",
                     Opcode.movhpd, "Vx,Wx",
@@ -93,7 +95,7 @@ namespace Reko.Arch.X86
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.cldemote, "Eb"),
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
                 new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
@@ -260,7 +262,10 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.punpckldq, "Pq,Qd",
                     Opcode.punpckldq, "Vx,Hx,Wx"),
-				s_nyi,
+                new PrefixedDecoder(
+                    Opcode.packsswb, "Pq,Qd",
+                    Opcode.vpacksswb, "Vx,Hx,Wx"),
+
                 new PrefixedDecoder(
                     Opcode.pcmpgtb, "Pq,Qd",
                     Opcode.pcmpgtb, "Vx,Hx,Wx"),
@@ -519,9 +524,9 @@ namespace Reko.Arch.X86
                     Opcode.vpmulhw, "Vx,Hx,Wx"),
                 new PrefixedDecoder(
                     Opcode.illegal, "",
-                    Opcode.vcvttpd2dq, "Vx,Wpd",
-                    Opcode.vcvtdq2pd, "Vx,Wpd",
-                    Opcode.vcvtpd2dq, "Vx,Wpd"),
+                    Opcode.cvttpd2dq, "Vx,Wpd",
+                    Opcode.cvtdq2pd, "Vx,Wpd",
+                    Opcode.cvtpd2dq, "Vx,Wpd"),
                 new PrefixedDecoder(
                     Opcode.movntq, "Mq,Pq",
                     Opcode.vmovntq, "Mx,Vx"),

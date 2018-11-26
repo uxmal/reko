@@ -126,6 +126,7 @@ Parameter name: index
 0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040D43E: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
+000000000040FEF4: warning: x86 instruction 'minpd' is not supported yet.
 00000000004061A2: error: An error occurred while processing instruction at address 00000000004061A2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -657,6 +658,11 @@ l0000000000400E2D: warning: Non-integral switch expression
 0800:1ADD: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE3: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:092E: warning: x86 instruction 'jmpe' is not supported yet.
+0800:0956: warning: x86 instruction 'jmpe' is not supported yet.
+0800:0E6B: warning: x86 instruction 'ud0' is not supported yet.
+09DB:020C: warning: x86 instruction 'ud0' is not supported yet.
+09DB:0211: warning: x86 instruction 'ud0' is not supported yet.
 0800:036F: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0385: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:03FF: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -1563,6 +1569,10 @@ Borland C v3 runtime detected
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+1483:1390: warning: x86 instruction 'vblendvpdv' is not supported yet.
+1483:1DB0: warning: x86 instruction 'phsubsw' is not supported yet.
+1483:254A: warning: x86 instruction 'ud0' is not supported yet.
+1483:254F: warning: x86 instruction 'ud0' is not supported yet.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 1483:0CD2: warning: Call target address 1483:4FE0 is invalid.
 1483:0C8F: warning: Procedure fn1483_0C6C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -1742,4 +1752,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 68.14 seconds ---
+Decompiled 55 binaries in 94.82 seconds ---
