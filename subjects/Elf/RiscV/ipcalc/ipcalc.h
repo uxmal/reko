@@ -161,7 +161,7 @@ Eq_19: (union "Eq_19" (int32 u0) ((ptr64 Eq_499) u1))
 	T_3882 (in -1 : int32)
 	T_3906 (in -1 : int32)
 	T_3915 (in -1 : int32)
-Eq_29: (union "Eq_29" ((ptr64 char) u0) ((ptr64 (ptr64 char)) u1) ((ptr64 FILE) u2) ((ptr64 Eq_5339) u3) ((ptr64 void) u4) (clockid_t u5))
+Eq_29: (union "Eq_29" ((ptr64 char) u0) ((ptr64 (ptr64 char)) u1) ((ptr64 Eq_5339) u2) ((ptr64 FILE) u3) ((ptr64 void) u4) (clockid_t u5))
 	T_29 (in a0 : word64)
 	T_32 (in argc : int32)
 	T_42 (in DPB(a0, getopt_long(a0, a1, "cr:i46bho:gmnpsv", &globals->t108E0, a4), 0) : word64)
@@ -26279,8 +26279,8 @@ typedef union Eq_19 {
 typedef union Eq_29 {
 	char * u0;
 	char ** u1;
-	FILE * u2;
-	struct Eq_5339 * u3;
+	struct Eq_5339 * u2;
+	FILE * u3;
 	void * u4;
 	clockid_t u5;
 } Eq_29;

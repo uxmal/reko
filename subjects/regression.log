@@ -1742,4 +1742,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 91.42 seconds ---
+Decompiled 55 binaries in 68.30 seconds ---

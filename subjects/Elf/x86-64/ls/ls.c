@@ -11504,7 +11504,7 @@ l000000000041198F:
 		else
 		{
 			rsp = fp - 0x0030;
-			SCZO = cond(fp - (FILE *) 0x0030);
+			SCZO = cond(fp - (char *) 0x0030);
 			rbx = qwLoc30;
 			rsp = fp - 0x0028;
 			rbp = qwLoc28;
@@ -11653,7 +11653,7 @@ l0000000000411AC9:
 								SCZO = cond(eax - 0x01);
 								if (Test(LE,SZO))
 									break;
-								rdx = fp - (FILE *) 0xB8;
+								rdx = fp - (char *) 0xB8;
 								do
 								{
 									rcx = (uint64) *rdx;
@@ -11678,7 +11678,7 @@ l0000000000411AC9:
 								al += al;
 								SCZO = cond(al);
 								rdx = rdx - 0x03 - C;
-								rdx -= fp - (FILE *) 0xB8;
+								rdx -= fp - (char *) 0xB8;
 								SCZO = cond(rdx);
 								do
 								{
@@ -11704,7 +11704,7 @@ l0000000000411AC9:
 								SCZO = cond(al);
 								rax = fp - 0x78;
 								r10 = r10 - 0x03 - C;
-								r10 -= fp - (FILE *) 0x78;
+								r10 -= fp - (char *) 0x78;
 								SCZO = cond(qwLocD0 - 0x00);
 								rax = r10 + rdx;
 								if (Test(EQ,Z))
@@ -11747,16 +11747,16 @@ l0000000000411AC9:
 								}
 								r14 = qwLocD0;
 								rdi.u0 = ~0x01;
-								rsi = fp - (FILE *) 0xB8;
+								rsi = fp - (char *) 0xB8;
 								rdi = ~0x01 - rdx;
 								r14 -= r10;
 								rdi += r14;
 								rdi += r13;
-								rax = strcpy(rdi, fp - (FILE *) 0xB8);
+								rax = strcpy(rdi, fp - (char *) 0xB8);
 								rdi = r13 - 0x01 + r14;
 								rsi = fp - 0x78;
 								r14 = r13;
-								rax = strcpy(rdi, fp - (FILE *) 0x78);
+								rax = strcpy(rdi, fp - (char *) 0x78);
 								rax = *((byte) rdi.u0 + 0x08);
 								SCZO = cond(rax - *((byte) rdi.u0 + 0x0010));
 							}
@@ -11835,16 +11835,16 @@ int32 fn0000000000411DB0(Eq_17 rdi, ptr64 & rsiOut)
 // 0000000000411DF0: void fn0000000000411DF0(Register Eq_23610 rdx, Register Eq_23551 rsi, Register Eq_17 rdi)
 void fn0000000000411DF0(Eq_23610 rdx, Eq_23551 rsi, Eq_17 rdi)
 {
-	if ((&rdi.u5->dw0000)[0x04] == (&(rdi.u5)->dw0000)[0x02])
+	if ((&rdi.u6->dw0000)[0x04] == (&(rdi.u6)->dw0000)[0x02])
 	{
-		word64 rax_39 = (&rdi.u5->dw0000)[0x08];
-		if ((&rdi.u5->dw0000)[0x0A] == rax_39 && (&(rdi.u5)->dw0000)[0x0012] == 0x00)
+		word64 rax_39 = (&rdi.u6->dw0000)[0x08];
+		if ((&rdi.u6->dw0000)[0x0A] == rax_39 && (&(rdi.u6)->dw0000)[0x0012] == 0x00)
 		{
 			word64 rax_52 = DPB(rax_39, lseek((uint64) fileno(rdi), rsi, (uint64) edx), 0);
 			if (rax_52 != ~0x00)
 			{
-				rdi.u5->dw0000 &= ~0x10;
-				rdi.u5->qw0090 = rax_52;
+				rdi.u6->dw0000 &= ~0x10;
+				rdi.u6->qw0090 = rax_52;
 			}
 			return;
 		}

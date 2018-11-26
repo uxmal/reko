@@ -1,6 +1,5 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +47,8 @@ namespace Reko.Core.Types
         private const int Void = 15;
 
         private IDictionary<Tuple<DataType, DataType>, int> compareResult;
+
+		private static DataTypeComparer ourGlobalComparer = new DataTypeComparer();
 
         public DataTypeComparer()
         {
@@ -430,5 +431,10 @@ namespace Reko.Core.Types
             return Void;
         }
 		#endregion
+
+		public static DataTypeComparer getGlobalComparer()
+		{
+			return ourGlobalComparer;
+	}
 	}
 }
