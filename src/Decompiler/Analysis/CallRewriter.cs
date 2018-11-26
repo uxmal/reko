@@ -93,7 +93,7 @@ namespace Reko.Analysis
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(platform.Architecture);
-				crw.EnsureSignature(proc, proc.Frame, flow);
+				crw.EnsureSignature(sst.SsaState, proc.Frame, flow);
 			}
 
 			foreach (SsaTransform sst in ssts)
@@ -111,8 +111,9 @@ namespace Reko.Analysis
         /// modified in the exit block, and ensures that all the registers
         /// accessed by the procedure are in the procedure Frame.
 		/// </summary>
-		public void EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow)
+		public void EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
 		{
+            var proc = ssa.Procedure;
             // If we already have a signature, we don't need to do this work.
 			if (proc.Signature.ParametersValid)
 				return;
@@ -178,7 +179,12 @@ namespace Reko.Analysis
 			{
 				if (!IsSubRegisterOfRegisters(r.Key, liveOut))
 				{
-					sb.AddOutParam(frame.EnsureRegister(r.Key));
+                    var regOut = sb.AddOutParam(frame.EnsureRegister(r.Key));
+                    if (regOut.Storage is OutArgumentStorage && 
+                        !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
+                    {
+                        ssa.Identifiers.Add(regOut, null, null, false);
+                    }
 				}
 			}
 
