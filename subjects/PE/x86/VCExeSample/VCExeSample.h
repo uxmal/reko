@@ -564,7 +564,7 @@ T_97: (in 1.0 : real64)
   Class: Eq_96
   DataType: real64
   OrigDataType: real64
-T_98: (in 1.0 >= rArg04 : bool)
+T_98: (in rArg04 <= 1.0 : bool)
   Class: Eq_98
   DataType: bool
   OrigDataType: bool

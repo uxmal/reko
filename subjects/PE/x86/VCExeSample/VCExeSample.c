@@ -52,7 +52,7 @@ void test6(Eq_55 c, int32 a, int32 b)
 // 00401160: void test7(Stack real64 rArg04)
 void test7(real64 rArg04)
 {
-	if (1.0 < rArg04)
+	if (rArg04 > 1.0)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, 0x0D, rArg04);
 }
@@ -69,12 +69,9 @@ void nested_if_blocks_test8(real64 rArg04)
 // 00401230: void loop_test9(Stack real32 rArg04)
 void loop_test9(real32 rArg04)
 {
-	int32 dwLoc08_67 = 0x00;
-	while (globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_67, (real64) rArg04) > (real64) dwLoc08_67)
-	{
+	int32 dwLoc08_67;
+	for (dwLoc08_67 = 0x00; globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_67, (real64) rArg04) > (real64) dwLoc08_67; ++dwLoc08_67)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, (real64) rArg04);
-		++dwLoc08_67;
-	}
 }
 
 // 004012A0: void const_div_test10(Stack word32 dwArg04)

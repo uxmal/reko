@@ -205,7 +205,7 @@ test7_entry:
 // SymbolicIn:
 
 l00401160:
-	branch 1.0 >= rArg04 l00401189
+	branch rArg04 <= 1.0 l00401189
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
