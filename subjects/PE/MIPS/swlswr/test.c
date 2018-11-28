@@ -239,72 +239,73 @@ void fn000114E4(word32 ra)
 	fn0001147C(&globals->dw12000, &globals->dw12004, ra, stackArg0, stackArg4);
 }
 
-// 0001152C: Register (ptr32 code) fn0001152C(Register (ptr32 code) r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
-<anonymous> * fn0001152C(<anonymous> * r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
+// 0001152C: Register word32 fn0001152C(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
+word32 fn0001152C(word32 r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
 {
 	Eq_196 r8_10 = globals->t13040;
 	Eq_196 r8_13 = globals->t1303C;
-	struct Eq_324 * sp_107 = fp + -0x0038;
+	struct Eq_324 * sp_3 = fp + -0x0038;
 	Eq_12 dwLoc20_117 = 0x00;
 	Eq_330 r8_19 = r8_13 - r8_10;
-	if (r8_19 < 0x00)
-		return sp_107->ptr002C;
-	if (r8_10 != 0x00)
+	if (r8_19 >= 0x00)
 	{
-		Eq_12 r2_31;
-		msize();
-		dwLoc20_117 = r2_31;
+		if (r8_10 != 0x00)
+		{
+			Eq_12 r2_31;
+			msize();
+			dwLoc20_117 = r2_31;
+		}
+		if ((word32) (dwLoc20_117 < (word32) r8_19 + 0x04) != 0x00)
+		{
+			if (r8_10 == 0x00)
+			{
+				malloc(0x0010);
+				sp_3 = fp + ~0x3B;
+			}
+			else
+			{
+				Eq_12 dwLoc18_125 = dwLoc20_117 << 0x01;
+				if ((word32) (dwLoc20_117 < 0x0201) == 0x00)
+					dwLoc18_125 = (word32) dwLoc20_117 + 0x0200;
+				if ((word32) (dwLoc20_117 < dwLoc18_125) != 0x00)
+				{
+					realloc(r8_10, dwLoc18_125);
+					sp_3 = fp + ~0x3B;
+				}
+				if (sp_3->t0014 == 0x00 && (word32) (sp_3->t0018 < sp_3->t0024) != 0x00)
+				{
+					sp_3 = (struct Eq_324 *) ((char *) sp_3 - 0x04);
+					sp_3->t0014 = realloc(sp_3->t001C, sp_3->t0024);
+				}
+			}
+			if (sp_3->t0014 == 0x00)
+			{
+				sp_3->ptr002C = null;
+				return dwLoc0C;
+			}
+			sp_3->t0028 = (word32) sp_3->t0014 + ((sp_3->t0028 - sp_3->t001C >> 0x02) << 0x02);
+			sp_3->t001C = sp_3->t0014;
+		}
+		*sp_3->t0028 = sp_3->ptr0038;
+		sp_3->t0028 = (word32) sp_3->t0028 + 0x04;
+		globals->t1303C = sp_3->t0028;
+		globals->t13040 = sp_3->t001C;
+		sp_3->ptr002C = sp_3->ptr0038;
+		return dwLoc0C;
 	}
-	if ((word32) (dwLoc20_117 < (word32) r8_19 + 0x04) != 0x00)
+	else
 	{
-		if (r8_10 == 0x00)
-		{
-			malloc(0x0010);
-			sp_107 = fp + ~0x3B;
-		}
-		else
-		{
-			Eq_12 dwLoc18_125 = dwLoc20_117 << 0x01;
-			if ((word32) (dwLoc20_117 < 0x0201) == 0x00)
-				dwLoc18_125 = (word32) dwLoc20_117 + 0x0200;
-			if ((word32) (dwLoc20_117 < dwLoc18_125) != 0x00)
-			{
-				realloc(r8_10, dwLoc18_125);
-				sp_107 = fp + ~0x3B;
-			}
-			if (sp_107->t0014 == 0x00 && (word32) (sp_107->t0018 < sp_107->t0024) != 0x00)
-			{
-				sp_107 = (struct Eq_324 *) ((char *) sp_107 - 0x04);
-				sp_107->t0014 = realloc(sp_107->t001C, sp_107->t0024);
-			}
-		}
-		if (sp_107->t0014 == 0x00)
-		{
-			sp_107->ptr002C = null;
-			return sp_107->ptr002C;
-		}
-		sp_107->t0028 = (word32) sp_107->t0014 + ((sp_107->t0028 - sp_107->t001C >> 0x02) << 0x02);
-		sp_107->t001C = sp_107->t0014;
+		dwLoc0C = 0x00;
+		return dwLoc0C;
 	}
-	*sp_107->t0028 = sp_107->ptr0038;
-	sp_107->t0028 = (word32) sp_107->t0028 + 0x04;
-	globals->t1303C = sp_107->t0028;
-	globals->t13040 = sp_107->t001C;
-	sp_107->ptr002C = sp_107->ptr0038;
-	return sp_107->ptr002C;
 }
 
-// 000116FC: void fn000116FC(Register (ptr32 code) r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
-void fn000116FC(<anonymous> * r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
+// 000116FC: void fn000116FC(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
+void fn000116FC(word32 r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>;
-	struct Eq_478 * sp_17;
-	if (fn0001152C(r2, r4, r5, ra, stackArg0) != 0x00)
-		sp_17->dw0014 = 0x00;
-	else
-		sp_17->dw0014 = -0x01;
-	sp_17->dw0010 = sp_17->dw0014;
+	fn0001152C(r2, r4, r5, ra, stackArg0) == 0x00;
 }
 

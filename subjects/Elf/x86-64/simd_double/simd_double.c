@@ -94,7 +94,7 @@ void vec_add(word64 rdi)
 {
 	__align(fp);
 	uint64 rax_29 = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
-	if (0x00 >= rax_29)
+	if (rax_29 <= 0x00)
 		;
 }
 

@@ -289,7 +289,7 @@ Eq_2 xQueueGenericReceive(Eq_2 r0, Eq_2 r1, Eq_2 r2, word32 r3, Eq_2 lr, ptr32 c
 	word32 * r8_31 = globals->ptr0424;
 	while (true)
 	{
-		vPortEnterCritical(cpsr, out r0_490);
+		vPortEnterCritical(cpsr, out r0_491);
 		Eq_2 r6_41 = *((word32) r0 + 0x0038);
 		if (r6_41 != 0x00)
 			break;
@@ -304,7 +304,7 @@ l000003A4:
 			vTaskSetTimeOutState(fp - 0x0028);
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
-		vPortEnterCritical(cpsr, out r0_492);
+		vPortEnterCritical(cpsr, out r0_493);
 		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
 			*((word32) r0 + 0x0044) = 0x00;
 		if ((word32) *((word32) r0 + 0x0045) == 0xFF)
@@ -314,14 +314,14 @@ l000003A4:
 		{
 			prvUnlockQueue(r0, r6_41, cpsr);
 			xTaskResumeAll(cpsr);
-			vPortEnterCritical(cpsr, out r0_494);
+			vPortEnterCritical(cpsr, out r0_495);
 			if (*((word32) r0 + 0x0038) == 0x00)
 				goto l000003A4;
 			vPortExitCritical(cpsr);
 		}
 		else
 		{
-			vPortEnterCritical(cpsr, out r0_493);
+			vPortEnterCritical(cpsr, out r0_494);
 			if (*((word32) r0 + 0x0038) != 0x00)
 			{
 				vPortExitCritical(cpsr);
@@ -333,7 +333,7 @@ l000003A4:
 				vPortExitCritical(cpsr);
 				if (*r0 == 0x00)
 				{
-					vPortEnterCritical(cpsr, out r0_495);
+					vPortEnterCritical(cpsr, out r0_496);
 					vTaskPriorityInherit(*((word32) r0 + 0x04));
 					vPortExitCritical(cpsr);
 				}
@@ -352,7 +352,7 @@ l000003A4:
 	Eq_2 lr_51;
 	word32 r5_56;
 	word32 r6_57;
-	struct Eq_546 * r4_55 = prvCopyDataFromQueue(r0, r1, r0, *((word32) r0 + 0x0C), r6_41, 0x00, lr, out r5_56, out r6_57, out r7_491, out lr_51);
+	struct Eq_546 * r4_55 = prvCopyDataFromQueue(r0, r1, r0, *((word32) r0 + 0x0C), r6_41, 0x00, lr, out r5_56, out r6_57, out r7_492, out lr_51);
 	if (r3 == 0x00)
 	{
 		word32 r3_77 = r4_55->dw0000;
@@ -2255,7 +2255,7 @@ Eq_40 xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, unio
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
-	vPortEnterCritical(cpsr, out r0_160);
+	vPortEnterCritical(cpsr, out r0_161);
 	if (*((word32) r0 + 0x0038) == *((word32) r0 + 0x003C))
 	{
 		Eq_40 Z_33 = vPortExitCritical(cpsr);
@@ -2284,7 +2284,7 @@ Eq_40 xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, unio
 	Eq_40 Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2);
 	if (r2_65 < r3_66)
 	{
-		Z_157 = prvCopyDataToQueue(r0, r1, 0x00, r3_66, r7, lr, out r0_161, out r7_78, out lr_73);
+		Z_157 = prvCopyDataToQueue(r0, r1, 0x00, r3_66, r7, lr, out r0_162, out r7_78, out lr_73);
 		if (*((word32) r0 + 0x0024) != 0x00)
 		{
 			word32 r0_85;
@@ -2360,7 +2360,7 @@ Eq_40 xQueueCRReceive(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr3
 		if (r1_25 >= r3_24)
 			*((word32) r0 + 0x0C) = r1_30;
 		struct Eq_5205 * r4_60;
-		Z = memcpy(r1, r1_30, r2_22, (word32) r3_27 - 0x01, r0, r5_16, r6, r7, lr, out r4_60, out r5_185, out r6, out r7, out lr);
+		Z = memcpy(r1, r1_30, r2_22, (word32) r3_27 - 0x01, r0, r5_16, r6, r7, lr, out r4_60, out r5_189, out r6, out r7, out lr);
 		if (r4_60->dw0010 != 0x00)
 		{
 			word32 r0_72;
@@ -3081,7 +3081,7 @@ Eq_1565 vCoRoutineAddToDelayedList(Eq_2 r0, struct Eq_482 * r1)
 word32 vCoRoutineSchedule(struct Eq_1479 * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 pc, ptr32 cpsr, ptr32 & pcOut, ptr32 & cpsrOut)
 {
 	struct Eq_6549 * r5_16 = globals->ptr9088;
-	cpsr_487 = cpsr;
+	cpsr_489 = cpsr;
 	while (r5_16->dw0054 != 0x00)
 	{
 		__msr(cpsr, 191);
@@ -3096,7 +3096,7 @@ word32 vCoRoutineSchedule(struct Eq_1479 * r0, word32 r4, word32 r5, word32 r6, 
 		if (r3_46 > r5_16->dw0070)
 			r5_16->dw0070 = r3_46;
 		vListInsertEnd(r0, (char *) r4_25 + 0x04);
-		cpsr_488 = cpsr;
+		cpsr_490 = cpsr;
 	}
 	MPU_xTaskGetTickCount(cpsr);
 	up32 r3_171 = r5_16->dw0074;
@@ -3126,7 +3126,7 @@ l00008F94:
 			goto l00008F94;
 		do
 		{
-			__msr(cpsr_487, 191);
+			__msr(cpsr_489, 191);
 			__isb_sy();
 			__dsb_sy();
 			struct Eq_1480 * r6_117 = &r4_109->dw0004;
@@ -3134,7 +3134,7 @@ l00008F94:
 			struct Eq_1480 * r0_129 = &r4_109->dw0004 + 0x05;
 			if (r4_109->dw0028 != 0x00)
 				uxListRemove(r0_129);
-			__msr(cpsr_487, 0x00);
+			__msr(cpsr_489, 0x00);
 			uint32 r3_143 = r4_109->dw002C;
 			struct Eq_1479 * r0_153 = r8_84 + r3_143 * 0x14;
 			if (r3_143 > r5_16->dw0070)
@@ -3160,7 +3160,7 @@ l00008F94:
 		if (r1_186 == 0x00)
 		{
 			pcOut = pc;
-			cpsrOut = cpsr_487;
+			cpsrOut = cpsr_489;
 			return lr;
 		}
 		r3_191 = r1_186 - 0x01 << 0x02;
@@ -3172,7 +3172,7 @@ l00008F94:
 l00009046:
 				r5_16->dw0070 = r2_197;
 				pcOut = pc;
-				cpsrOut = cpsr_487;
+				cpsrOut = cpsr_489;
 				return lr;
 			}
 			r3_191 = r1_186 - 0x02 << 0x02;

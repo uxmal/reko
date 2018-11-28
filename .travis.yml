@@ -32,5 +32,4 @@ script:
   - msbuild /p:Configuration=UnixRelease /p:Platform=x64 /verbosity:minimal src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/UnixRelease/c2xml.exe -exclude=UserInterface,FailedTests
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/x64/UnixRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests
-# Disabled temporarily as per discussion in #320
-#  - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=UnixRelease
+  - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=UnixRelease

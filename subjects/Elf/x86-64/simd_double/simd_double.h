@@ -649,7 +649,7 @@ T_132: (in 0x0000000000000000 : word64)
   Class: Eq_125
   DataType: uint64
   OrigDataType: up64
-T_133: (in 0x0000000000000000 < rax_29 : bool)
+T_133: (in rax_29 > 0x0000000000000000 : bool)
   Class: Eq_133
   DataType: bool
   OrigDataType: bool

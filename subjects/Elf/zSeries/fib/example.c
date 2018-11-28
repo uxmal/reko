@@ -193,7 +193,7 @@ int64 fib(int64 r2, word64 r10, Eq_309 r11, word64 r12, word64 r13, Eq_312 r14, 
 		word64 r12_38;
 		word64 r13_39;
 		word64 r10_57;
-		word64 r2_62 = fib((int64) (*((word64) r11_37.u1 + 0x00A4) - 0x02), DPB(r10_36, (word32) fib((int64) (dwLocA4_106 - 0x01), r10, fp - 0x0148, r12, r13, 0x07A8, out r10_36, out r11_37, out r12_38, out r13_39), 0), r11_37, r12_38, r13_39, 1988, out r10_57, out r11_21, out r12_114, out r13_115);
+		word64 r2_62 = fib((int64) (*((word64) r11_37.u1 + 0x00A4) - 0x02), DPB(r10_36, (word32) fib((int64) (dwLocA4_106 - 0x01), r10, fp - 0x0148, r12, r13, 0x07A8, out r10_36, out r11_37, out r12_38, out r13_39), 0), r11_37, r12_38, r13_39, 1988, out r10_57, out r11_21, out r12_118, out r13_119);
 		r1_68 = DPB(r2_62, (word32) (r2_62 + r10_57), 0);
 	}
 	Eq_366 v19_78 = (word64) r11_21 + 0x00F8;

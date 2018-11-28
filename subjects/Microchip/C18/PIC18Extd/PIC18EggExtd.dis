@@ -1,321 +1,246 @@
-void fn00000000()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn00000000_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
+// fn00000000
+// Return size: 0
+define fn00000000
 fn00000000_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp
-
+	// succ:  l00000000
 l00000000:
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp
-
+	STKPTR = fp
+	STATUS = 0x00
+	PCL = 0x00
+	PCLATH = 0x00
+	WREG = 0x00
+	STKPTR = 0x00
+	BSR = 0x00
+	FSR0 = 0x0000
+	FSR1 = 0x0000
+	FSR2 = 0x0000
+	PROD = 0x0000
+	PCLAT = 0x000000
+	TOS = 0x000000
+	TBLPTR = 0x000000
+	// succ:  l00013A
 l00013A:
-	Stack[0x01] = 0x000148
-	fn00000E(0x0000, 0x000000)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:0x00 STATUS:0x00 PCL:0x00 PCLATH:0x00 WREG:0x00 BSR:0x00 FSR0:0x0000 FSR1:0x0000 FSR2:0x0000 PROD:0x0000 PCLAT:0x000000 TOS:0x000000 TBLPTR:0x000000
+	FSR1 = 0x0080
+	FSR2 = 0x0080
+	TBLPTRU = 0x00
+	Z = true
+	STKPTR = STKPTR + 0x01
+	Stack[STKPTR] = 0x000148
+	TOS = 0x000148
+	call fn00000E (retsize: 0;)
+fn00000000_exit:
 
 
-
-void fn00000E(word16 FSR0, word24 TBLPTR)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  FSR0 TBLPTR
-// LiveOut:
-// Trashed: CDCZOVN BSR FSR0 FSR0H FSR0L STKPTR TBLPTRH TBLPTRL TBLPTRU TOS WREG
-// Preserved:
+// fn00000E
+// Return size: 0
+define fn00000E
 fn00000E_entry:
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp
-// LocalsOut: fp(24)
-
+	// succ:  l00000E
 l00000E:
+	STKPTR = fp
+	WREG = 0x06
+	TBLPTRL = WREG
+	WREG = 0x00
+	TBLPTRH = WREG
+	WREG = 0x00
+	TBLPTRU = WREG
+	BSR = 0x00
 	__tblrd(TBLPTR, 0x01)
-	Mem12[0x00:0xC5:byte] = TABLAT
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC5:byte] = WREG
 	__tblrd(TBLPTR, 0x01)
-	Mem17[0x00:0xC6:byte] = TABLAT
-	byte TBLPTRL_24 = 0x06
-	byte TBLPTRH_25 = 0x00
-	byte TBLPTRU_26 = 0x00
-	byte Z_15 = cond(TABLAT)
-// DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
-// DataOut (flags): Z
-// SymbolicIn: STKPTR:fp
-// LocalsOut: fp(24)
-
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC6:byte] = WREG
+	// succ:  l000028
 l000028:
-	branch Z_15 l000030
-// DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
+	branch Test(NE,Z) l000030
+	// succ:  l00002A l000030
 l00002A:
-	branch Mem17[0x00:0xC5:byte] == 0x00 l00002E
-// DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l00002E:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l0000AA:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-
-fn00000E_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp - 0x01 WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 TOS:Stack[fp - 0x01] FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-
+	branch Data[BSR:0xC5:byte] == 0x00 l00002E
+	// succ:  l00002C l00002E
 l00002C:
-// DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
+	goto l000030
+	// succ:  l000030
+l00002E:
+	goto l0000AA
+	// succ:  l0000AA
 l000030:
 	__tblrd(TBLPTR, 0x01)
-	Mem35[0x00:0xC0:byte] = TABLAT
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC0:byte] = WREG
 	__tblrd(TBLPTR, 0x01)
-	Mem37[0x00:0xC1:byte] = TABLAT
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC1:byte] = WREG
 	__tblrd(TBLPTR, 0x01)
-	Mem39[0x00:0xC2:byte] = TABLAT
-	__tblrd(TBLPTR, 0x01)
-	__tblrd(TBLPTR, 0x01)
-	__tblrd(TBLPTR, 0x01)
-	__tblrd(TBLPTR, 0x01)
-	__tblrd(TBLPTR, 0x01)
-	__tblrd(TBLPTR, 0x01)
-	Mem45[0x00:0xC3:byte] = TABLAT
-	__tblrd(TBLPTR, 0x01)
-	Mem47[0x00:0xC4:byte] = TABLAT
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC2:byte] = WREG
 	__tblrd(TBLPTR, 0x01)
 	__tblrd(TBLPTR, 0x01)
-	Mem48[0x00C7:byte] = TBLPTRL_24
-	Mem49[0x00C8:byte] = TBLPTRH_25
-	Mem50[0x00C9:byte] = TBLPTRU_26
-	Mem55[0x00:0xC3:byte] = Mem50[0x00:0xC3:byte]
-	byte Z_57 = cond(Mem55[0x00:0xC3:byte])
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): Z
-// SymbolicIn: STKPTR:fp WREG:<invalid> TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
+	WREG = TABLAT
+	ZN = cond(WREG)
+	FSR0L = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	FSR0H = WREG
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC3:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[BSR:0xC4:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	Data[0x00C7:byte] = TBLPTRL
+	Data[0x00C8:byte] = TBLPTRH
+	Data[0x00C9:byte] = TBLPTRU
+	TBLPTRL = Data[0x00C0:byte]
+	TBLPTRH = Data[0x00C1:byte]
+	TBLPTRU = Data[0x00C2:byte]
+	BSR = 0x00
+	Data[BSR:0xC3:byte] = Data[BSR:0xC3:byte]
+	ZN = cond(Data[BSR:0xC3:byte])
+	// succ:  l000080
 l000080:
-	branch Z_57 l000086
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
+	branch Test(NE,Z) l000086
+	// succ:  l000082 l000086
 l000082:
-	Mem76[0x00:0xC4:byte] = Mem55[0x00:0xC4:byte]
-	branch Mem76[0x00:0xC4:byte] == 0x00 l000094
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l000094:
-	TBLPTRL_24 = Mem76[0x00C7:byte]
-	TBLPTRH_25 = Mem76[0x00C8:byte]
-	TBLPTRU_26 = Mem76[0x00C9:byte]
-	Mem83[0x00:0xC5:byte] = Mem76[0x00:0xC5:byte] - 0x01
-	Mem87[0x00:0xC6:byte] = Mem83[0x00:0xC6:byte] - !cond(Mem83[0x00:0xC5:byte])
-	Z_15 = cond(Mem87[0x00:0xC6:byte]) (alias)
-// DataOut: FSR0 TBLPTR TBLPTRH TBLPTRL TBLPTRU
-// DataOut (flags): Z
-// SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
+	Data[BSR:0xC4:byte] = Data[BSR:0xC4:byte]
+	ZN = cond(Data[BSR:0xC4:byte])
+	branch Test(EQ,Z) l000094
+	// succ:  l000086 l000094
 l000086:
 	__tblrd(TBLPTR, 0x01)
-	Mem67[FSR0:byte] = TABLAT
-	Mem69[0x00:0xC3:byte] = Mem67[0x00:0xC3:byte] - 0x01
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[FSR0:byte] = WREG
 	FSR0 = FSR0 + 0x0001
-	Z_57 = cond(Mem69[0x00:0xC3:byte]) (alias)
-	branch Mem69[0x00:0xC3:byte] <u 0x00 l000080
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): Z
-// SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
+	Data[BSR:0xC3:byte] = Data[BSR:0xC3:byte] - 0x01
+	CDCZOVN = cond(Data[BSR:0xC3:byte])
+	branch Test(ULT,C) l000080
+	// succ:  l000090 l000080
 l000090:
-	Mem74[0x00:0xC4:byte] = Mem69[0x00:0xC4:byte] - 0x01
-// DataOut: FSR0 TBLPTR
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:TABLAT TBLPTRL:<invalid> TBLPTRH:<invalid> TBLPTRU:<invalid> BSR:0x00 FSR0L:TABLAT FSR0H:TABLAT FSR0:<invalid>
-// LocalsOut: fp(24)
-
-
-
-void fn0000D0(byte LATB, byte FSR2L, word16 FSR2, word16 FSR1)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  FSR1 FSR2 FSR2L LATB
-// LiveOut:
-// Trashed: ZN BSR FSR1 FSR2 FSR2L LATB STKPTR TOS WREG
-// Preserved:
-fn0000D0_entry:
-// DataOut: FSR1 FSR2 FSR2L LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp
-// LocalsOut: fp(24)
-
-l0000D0:
-	Mem3[FSR1:byte] = FSR2L
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp
-// LocalsOut: fp(24)
-
-l0000DA:
-	branch Mem3[FSR2 - 0x02:byte] == 0x00 l0000F4
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
-l0000F4:
+	Data[BSR:0xC4:byte] = Data[BSR:0xC4:byte] - 0x01
+	CDCZOVN = cond(Data[BSR:0xC4:byte])
+	goto l000086
+	// succ:  l000086
+l000094:
+	TBLPTRL = Data[0x00C7:byte]
+	TBLPTRH = Data[0x00C8:byte]
+	TBLPTRU = Data[0x00C9:byte]
+	BSR = 0x00
+	Data[BSR:0xC5:byte] = Data[BSR:0xC5:byte] - 0x01
+	CDCZOVN = cond(Data[BSR:0xC5:byte])
+	WREG = 0x00
+	Data[BSR:0xC6:byte] = Data[BSR:0xC6:byte] - WREG - !C
+	CDCZOVN = cond(Data[BSR:0xC6:byte])
+	goto l000028
+	// succ:  l000028
+l0000AA:
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
+	// succ:  fn00000E_exit
+fn00000E_exit:
 
-fn0000D0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp - 0x01 FSR1:FSR1 + 0x0001 FSR2L:<invalid> FSR2:FSR2 - 0x02 WREG:<invalid> TOS:Stack[fp - 0x01] BSR:0x00 LATB:<invalid>
 
+// fn0000D0
+// Return size: 0
+define fn0000D0
+fn0000D0_entry:
+	// succ:  l0000D0
+l0000D0:
+	STKPTR = fp
+	Data[FSR1:byte] = FSR2L
+	FSR1 = FSR1 + 0x0001
+	FSR2L = FSR1L
+	FSR2 = FSR2 - 0x02
+	// succ:  l0000DA
+l0000DA:
+	WREG = Data[FSR2 + 0x00:byte]
+	ZN = cond(WREG)
+	branch Test(EQ,Z) l0000F4
+	// succ:  l0000DE l0000F4
 l0000DE:
-	branch (Mem3[0x00:0xCA:byte] & 0x01) != 0x00 l0000E4
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
+	BSR = 0x00
+	branch (Data[BSR:0xCA:byte] & 0x01) != 0x00 l0000E4
+	// succ:  l0000E2 l0000E4
+l0000E2:
+	goto l0000F2
+	// succ:  l0000F2
 l0000E4:
-	Mem22[0x00:0xCA:byte] = Mem3[0x00:0xCA:byte] & 0xFE
-	branch (LATB & 0x01) == 0x00 l0000F0
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
-l0000F0:
-	LATB = LATB & 0x7F
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
+	Data[BSR:0xCA:byte] = Data[BSR:0xCA:byte] & 0xFE
+	WREG = LATB
+	ZN = cond(WREG)
+	WREG = WREG & 0x01
+	ZN = cond(WREG)
+	branch Test(EQ,Z) l0000F0
+	// succ:  l0000EC l0000F0
 l0000EC:
 	LATB = LATB | 0x80
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
-l0000E2:
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
+	goto l0000F2
+	// succ:  l0000F2
+l0000F0:
+	LATB = LATB & 0x7F
+	// succ:  l0000F2
 l0000F2:
-// DataOut: FSR1 FSR2 LATB
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR1:FSR1 + 0x0001 FSR2L:FSR1L FSR2:FSR2 - 0x02 WREG:<invalid> BSR:0x00 LATB:<invalid>
-// LocalsOut: fp(24)
-
-
-
-void fn000128(byte WREG, byte FSR0L, byte FSR0H, word16 FSR0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  FSR0 FSR0H FSR0L WREG
-// LiveOut:
-// Trashed: ZN FSR0 STKPTR TOS WREG
-// Preserved:
-fn000128_entry:
-// DataOut: FSR0 FSR0H FSR0L WREG
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp
-// LocalsOut: fp(24)
-
-l000128:
-	branch FSR0H <u WREG l00012C
-// DataOut: FSR0 FSR0H FSR0L WREG
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l00012C:
-	Mem20[FSR0:byte] = 0x00
-	FSR0 = FSR0 + 0x0001
-// DataOut: FSR0 FSR0H FSR0L WREG
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l00012A:
-// DataOut: FSR0 FSR0L
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l000130:
-// DataOut: FSR0 FSR0L WREG
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l000132:
-	branch FSR0L <u PRODL l000136
-// DataOut: FSR0 FSR0L WREG
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l000136:
-	Mem17[FSR0:byte] = 0x00
-	FSR0 = FSR0 + 0x0001
-// DataOut: FSR0 FSR0L WREG
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
-// LocalsOut: fp(24)
-
-l000134:
+	goto l0000DA
+	// succ:  l0000DA
+l0000F4:
+	FSR1 = FSR1 - 0x01
+	FSR2L = Data[FSR1:byte]
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp WREG:PRODL FSR0:<invalid>
+	// succ:  fn0000D0_exit
+fn0000D0_exit:
 
+
+// fn000128
+// Return size: 0
+define fn000128
+fn000128_entry:
+	// succ:  l000128
+l000128:
+	STKPTR = fp
+	branch FSR0H <u WREG l00012C
+	// succ:  l00012A l00012C
+l00012A:
+	goto l000130
+	// succ:  l000130
+l00012C:
+	Data[FSR0:byte] = 0x00
+	FSR0 = FSR0 + 0x0001
+	Z = true
+	goto l000128
+	// succ:  l000128
+l000130:
+	WREG = PRODL
+	ZN = cond(WREG)
+	// succ:  l000132
+l000132:
+	branch FSR0L <u WREG l000136
+	// succ:  l000134 l000136
+l000134:
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn000128_exit
+l000136:
+	Data[FSR0:byte] = 0x00
+	FSR0 = FSR0 + 0x0001
+	Z = true
+	goto l000132
+	// succ:  l000132
 fn000128_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: STKPTR:fp - 0x01 WREG:PRODL TOS:Stack[fp - 0x01] FSR0:<invalid>
-
 
 

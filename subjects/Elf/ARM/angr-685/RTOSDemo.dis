@@ -627,7 +627,7 @@ l000002D8:
 // SymbolicIn:
 
 l0000030A:
-	vPortEnterCritical(cpsr, out r0_490)
+	vPortEnterCritical(cpsr, out r0_491)
 	word32 r6_41 = Mem40[r0 + 56:word32]
 	branch r6_41 != 0x00000000 l000003B0
 // DataOut:
@@ -638,7 +638,7 @@ l000003B0:
 	word32 lr_51
 	word32 r5_56
 	word32 r6_57
-	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12:word32], r6_41, 0x00000000, lr, out r5_56, out r6_57, out r7_491, out lr_51)
+	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12:word32], r6_41, 0x00000000, lr, out r5_56, out r6_57, out r7_492, out lr_51)
 	branch r3 != 0x00000000 l000003E8
 // DataOut:
 // DataOut (flags):
@@ -726,7 +726,7 @@ l0000039C:
 l0000031E:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
-	vPortEnterCritical(cpsr, out r0_492)
+	vPortEnterCritical(cpsr, out r0_493)
 	branch (word32) Mem40[r0 + 68:byte] != 0x000000FF l00000336
 // DataOut:
 // DataOut (flags):
@@ -758,7 +758,7 @@ l00000342:
 // SymbolicIn:
 
 l000002F0:
-	vPortEnterCritical(cpsr, out r0_493)
+	vPortEnterCritical(cpsr, out r0_494)
 	branch Mem203[r0 + 56:word32] == 0x00000000 l0000036A
 // DataOut:
 // DataOut (flags):
@@ -772,7 +772,7 @@ l0000036A:
 // SymbolicIn:
 
 l000003D8:
-	vPortEnterCritical(cpsr, out r0_495)
+	vPortEnterCritical(cpsr, out r0_496)
 	vTaskPriorityInherit(Mem203[r0 + 4:word32])
 	vPortExitCritical(cpsr)
 // DataOut:
@@ -806,7 +806,7 @@ l000002FA:
 l00000352:
 	prvUnlockQueue(r0, r6_41, cpsr)
 	xTaskResumeAll(cpsr)
-	vPortEnterCritical(cpsr, out r0_494)
+	vPortEnterCritical(cpsr, out r0_495)
 	branch Mem203[r0 + 56:word32] == 0x00000000 l000003A4
 // DataOut:
 // DataOut (flags):
@@ -6292,7 +6292,7 @@ l00008364:
 	__msr(cpsr, 0x000000BF)
 	__isb_sy()
 	__dsb_sy()
-	vPortEnterCritical(cpsr, out r0_160)
+	vPortEnterCritical(cpsr, out r0_161)
 	branch Mem11[r0 + 56:word32] == Mem11[r0 + 60:word32] l000083B2
 // DataOut:
 // DataOut (flags):
@@ -6338,7 +6338,7 @@ l00008388:
 // SymbolicIn:
 
 l000083C0:
-	Z_157 = prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_161, out r7_78, out lr_73)
+	Z_157 = prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_162, out r7_78, out lr_73)
 	branch Mem11[r0 + 36:word32] != 0x00000000 l000083EE
 // DataOut:
 // DataOut (flags):
@@ -6450,7 +6450,7 @@ l00008464_1:
 
 l00008466:
 	word32 r4_60
-	Z = memcpy(r1, r1_30, r2_22, r3_27 + 0xFFFFFFFF, r0, r5_16, r6, r7, lr, out r4_60, out r5_185, out r6, out r7, out lr)
+	Z = memcpy(r1, r1_30, r2_22, r3_27 + 0xFFFFFFFF, r0, r5_16, r6, r7, lr, out r4_60, out r5_189, out r6, out r7, out lr)
 	branch Mem69[r4_60 + 16:word32] != 0x00000000 l00008478
 // DataOut:
 // DataOut (flags):
@@ -9100,7 +9100,7 @@ vCoRoutineSchedule_entry:
 
 l00008F2C:
 	word32 r5_16 = Mem15[0x00009088:word32]
-	cpsr_487 = cpsr
+	cpsr_489 = cpsr
 	branch Mem15[r5_16 + 84:word32] == 0x00000000 l00008F82
 // DataOut:
 // DataOut (flags):
@@ -9134,7 +9134,7 @@ l00008F76_1:
 
 l00008F78:
 	vListInsertEnd(r0, r4_25 + 0x00000004)
-	cpsr_488 = cpsr
+	cpsr_490 = cpsr
 	branch Mem64[r5_16 + 84:word32] != 0x00000000 l00008F3C
 // DataOut:
 // DataOut (flags):
@@ -9195,7 +9195,7 @@ l00008FAC:
 // SymbolicIn:
 
 l00008FC4:
-	__msr(cpsr_487, 0x000000BF)
+	__msr(cpsr_489, 0x000000BF)
 	__isb_sy()
 	__dsb_sy()
 	word32 r6_117 = r4_109 + 0x00000004
@@ -9213,7 +9213,7 @@ l00008FE4:
 // SymbolicIn:
 
 l00008FE8:
-	__msr(cpsr_487, 0x00000000)
+	__msr(cpsr_489, 0x00000000)
 	word32 r3_143 = Mem127[r4_109 + 44:word32]
 	word32 r0_153 = r8_84 + r3_143 * 0x00000014
 	branch r3_143 <=u Mem127[r5_16 + 112:word32] l00009000
@@ -9280,7 +9280,7 @@ l00009026:
 
 l00009080:
 	pcOut = pc
-	cpsrOut = cpsr_487
+	cpsrOut = cpsr_489
 	return lr
 // DataOut:
 // DataOut (flags):
@@ -9365,7 +9365,7 @@ l00009074:
 l00009046:
 	Mem303[r5_16 + 112:word32] = r2_197
 	pcOut = pc
-	cpsrOut = cpsr_487
+	cpsrOut = cpsr_489
 	return lr
 // DataOut:
 // DataOut (flags):

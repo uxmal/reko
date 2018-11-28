@@ -483,7 +483,7 @@ _Z11sine_taylordi_exit:
 // SymbolicIn:
 
 l80000438:
-	pow_int(SEQ(dwArg08_125, dwArg04_123), dwLoc08_130)
+	pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_130)
 	factorial(dwLoc08_130)
 	dwLoc08_130 = dwLoc08_130 + 0x00000004
 // DataOut:
@@ -491,7 +491,7 @@ l80000438:
 // SymbolicIn:
 
 l800003E0:
-	pow_int(SEQ(dwArg08_125, dwArg04_123), dwLoc08_127)
+	pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_127)
 	factorial(dwLoc08_127)
 	dwLoc08_127 = dwLoc08_127 + 0x00000004
 // DataOut:
@@ -542,7 +542,7 @@ _Z4_sinddRi_entry:
 // SymbolicIn:
 
 l800004DE:
-	real64 v9_14 = (real64) ((real80) SEQ(dwArg08_112, dwArg04_110) * SEQ(dwArg08_112, dwArg04_110))
+	real64 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112))
 	word32 dwLoc20_121 = 0x00000002
 // DataOut:
 // DataOut (flags):
@@ -551,7 +551,7 @@ l800004DE:
 l8000051A:
 	real64 rLoc14_123
 	real64 rLoc0C_122
-	branch (real64) ((real80) rLoc0C_122 / rLoc14_123) < rArg0C l8000060E
+	branch (real64) ((real96) rLoc0C_122 / rLoc14_123) < rArg0C l8000060E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -570,10 +570,10 @@ _Z4_sinddRi_exit:
 l80000530:
 	Mem106[tArg14:word32] = Mem98[tArg14:word32] + 0x00000001
 	word32 v23_57 = dwLoc20_121 + 0x00000000
-	rLoc0C_122 = (real64) ((real80) (real64) ((real80) rLoc0C_122 * v9_14) * v9_14)
+	rLoc0C_122 = (real64) ((real96) (real64) ((real96) rLoc0C_122 * v9_14) * v9_14)
 	dwLoc20_121 = v23_57 + 0x00000003
-	rLoc14_123 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14_123 * (real80) v23_57) * (real80) (v23_57 + 0x00000001)) * (real80) (v23_57 + 0x00000002)) * (real80) (v23_57 + 0x00000003))
-	rLoc0C_122 = SEQ(dwArg08_112, dwArg04_110) (alias)
+	rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003)))
+	rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112) (alias)
 	rLoc14_123 = 0x000000003FF00000 (alias)
 // DataOut:
 // DataOut (flags):

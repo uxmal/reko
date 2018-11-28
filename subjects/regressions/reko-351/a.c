@@ -134,14 +134,14 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 	int32 dwLoc08_127 = 0x03;
 	while (dwLoc08_127 - dwArg0C <= 0x00)
 	{
-		pow_int(SEQ(dwArg08_125, dwArg04_123), dwLoc08_127);
+		pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_127);
 		factorial(dwLoc08_127);
 		dwLoc08_127 += 0x04;
 	}
 	int32 dwLoc08_130 = 0x05;
 	while (dwLoc08_130 - dwArg0C <= 0x00)
 	{
-		pow_int(SEQ(dwArg08_125, dwArg04_123), dwLoc08_130);
+		pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_130);
 		factorial(dwLoc08_130);
 		dwLoc08_130 += 0x04;
 	}
@@ -159,20 +159,20 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_216 tArg14)
 {
 	word32 dwArg04_110 = SLICE(rArg04, word32, 0);
 	word32 dwArg08_112 = SLICE(rArg04, word32, 32);
-	Eq_227 v9_14 = (real64) ((real80) SEQ(dwArg08_112, dwArg04_110) * SEQ(dwArg08_112, dwArg04_110));
+	Eq_227 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
 	word32 dwLoc20_121 = 0x02;
 	while (true)
 	{
 		Eq_255 rLoc14_123;
 		real64 rLoc0C_122;
-		if ((real64) ((real80) rLoc0C_122 / rLoc14_123) < rArg0C)
+		if ((real64) ((real96) rLoc0C_122 / rLoc14_123) < rArg0C)
 			break;
 		*tArg14 = (word32) *tArg14 + 0x01;
 		word32 v23_57 = dwLoc20_121 + 0x00;
-		rLoc0C_122 = (real64) ((real80) (real64) ((real80) rLoc0C_122 * v9_14) * v9_14);
+		rLoc0C_122 = (real64) ((real96) (real64) ((real96) rLoc0C_122 * v9_14) * v9_14);
 		dwLoc20_121 = v23_57 + 0x03;
-		rLoc14_123 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14_123 * (real80) v23_57) * (real80) (v23_57 + 0x01)) * (real80) (v23_57 + 0x02)) * (real80) (v23_57 + 0x03));
-		rLoc0C_122 = SEQ(dwArg08_112, dwArg04_110);
+		rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
+		rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112);
 		rLoc14_123.u0 = 0x3FF00000;
 	}
 }
