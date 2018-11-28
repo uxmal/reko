@@ -39,6 +39,109 @@ namespace Reko.Arch.Tlcs
     /// </summary>
     public class Tlcs90Architecture : ProcessorArchitecture
     {
+        internal static Dictionary<StorageDomain, Dictionary<ulong, RegisterStorage>> Subregisters = new Dictionary<StorageDomain, Dictionary<ulong, RegisterStorage>>
+        {
+            {
+                Registers.af.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.af.BitMask, Registers.af },
+                    { Registers.a.BitMask, Registers.a },
+                    { Registers.f.BitMask, Registers.f },
+                }
+            },
+            {
+                Registers.bc.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.bc.BitMask, Registers.bc },
+                    { Registers.b.BitMask, Registers.b },
+                    { Registers.c.BitMask, Registers.c },
+                }
+            },
+            {
+                Registers.de.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.de.BitMask, Registers.de },
+                    { Registers.d.BitMask, Registers.d },
+                    { Registers.e.BitMask, Registers.e },
+                }
+            },
+            {
+                Registers.hl.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.hl.BitMask, Registers.hl },
+                    { Registers.h.BitMask, Registers.h },
+                    { Registers.l.BitMask, Registers.l },
+                }
+            },
+            {
+                Registers.af_.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.af_.BitMask, Registers.af_ },
+                }
+            },
+            {
+                Registers.bc_.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.bc_.BitMask, Registers.bc_ },
+                }
+            },
+            {
+                Registers.de_.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.de_.BitMask, Registers.de_ },
+                }
+            },
+            {
+                Registers.hl_.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.hl_.BitMask, Registers.hl_ },
+                }
+            },
+            {
+                Registers.bx.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.bx.BitMask, Registers.bx },
+                }
+            },
+            {
+                Registers.by.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.by.BitMask, Registers.by },
+                }
+            },
+            {
+                Registers.sp.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.sp.BitMask, Registers.sp },
+                }
+            },
+            {
+                Registers.pc.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.pc.BitMask, Registers.pc },
+                }
+            },
+            {
+                Registers.f.Domain,
+                new Dictionary<ulong, RegisterStorage>
+                {
+                    { Registers.f.BitMask, Registers.f },
+                }
+            }
+        };
+
         public Tlcs90Architecture(string archId) : base(archId)
         {
             base.Endianness = EndianServices.Little;
@@ -98,7 +201,7 @@ namespace Reko.Arch.Tlcs
             {
                 if (f.FlagGroupBits == grf)
                     return f;
-        }
+            }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(Registers.f, "", grf), dt);
@@ -120,14 +223,31 @@ namespace Reko.Arch.Tlcs
             return Registers.allRegs.FirstOrDefault(r => r.Name == name);
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage GetRegister(StorageDomain regDomain, BitRange range)
         {
-            throw new NotImplementedException();
+            if (!Subregisters.TryGetValue(regDomain, out var subs))
+                return null;
+            var key = range.BitMask();
+            if (!subs.TryGetValue(key, out var subreg))
+                return null;
+            return subreg;
         }
 
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.allRegs;
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.I.FlagGroupBits) != 0) yield return Registers.I;
+            if ((grf & Registers.H.FlagGroupBits) != 0) yield return Registers.H;
+            if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)

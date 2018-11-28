@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -425,7 +425,7 @@ namespace Reko.Core
     /// <summary>
     /// Used to represent a machine register.
     /// </summary>
-	public class RegisterStorage : Storage
+	public class RegisterStorage : Storage, IComparable<RegisterStorage>
     {
         private RegisterStorage(string kind) : base(kind)
         {
@@ -626,6 +626,14 @@ namespace Reko.Core
             }
             else
                 return Constant.Invalid;
+        }
+
+        public int CompareTo(RegisterStorage that)
+        {
+            var d = this.Domain.CompareTo(that.Domain);
+            if (d != 0)
+                return d;
+            return this.BitMask.CompareTo(that.BitMask);
         }
     }
 
