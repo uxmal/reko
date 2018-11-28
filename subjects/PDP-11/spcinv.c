@@ -1133,7 +1133,7 @@ Eq_14 fn0B60(Eq_429 r0, Eq_14 r3, byte * r4, ptr16 & r4Out)
 				}
 				if (0x01 - r3 == 0x00 || *r2_55 == 0x00)
 					goto l0BB4;
-				r5_106 = (int16) globals->b0BC6;
+				r5_106.u0 = (int16) globals->b0BC6;
 			}
 			else
 			{

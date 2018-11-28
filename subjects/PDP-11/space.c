@@ -4275,7 +4275,7 @@ void fn4072(Eq_1293 r0, Eq_2058 * r4, word16 * r5, Eq_4616 * pc)
 	++*globals->w5426;
 	globals->b57DD = 0x59;
 	++*globals->w5426;
-	globals->w57DE = (int16) globals->w57E0;
+	globals->w57DE.u0 = (int16) globals->w57E0;
 	++*globals->w5426;
 	Eq_1293 r0_99 = (int16) globals->w57DE;
 	globals->u57DF = r0_99;
@@ -4409,7 +4409,7 @@ Eq_1293 fn4230(Eq_1293 r0, Eq_2058 * r4, word16 * r5, Eq_4616 * pc, ptr16 & r2Ou
 	++*globals->w5426;
 	globals->b5812 = 0x59;
 	++*globals->w5426;
-	globals->u5813 = (int16) globals->w5856;
+	globals->u5813.u0 = (int16) globals->w5856;
 	++*globals->w5426;
 	Eq_1293 r0_102 = (int16) globals->w5854;
 	globals->u5814 = r0_102;

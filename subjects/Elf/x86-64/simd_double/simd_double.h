@@ -1012,7 +1012,7 @@ T_222: (in qwLoc10_163 >> 0x0000000000000001 | (uint64) (eax_152 & 0x00000001) :
   Class: Eq_222
   DataType: ui64
   OrigDataType: ui64
-T_223: (in (real64) (qwLoc10_163 >> 0x0000000000000001 | (uint64) (eax_152 & 0x00000001)) : real64)
+T_223: (in (real64) (qwLoc10_163 >>u 0x0000000000000001 | (uint64) (eax_152 & 0x00000001)) : real64)
   Class: Eq_216
   DataType: real64
   OrigDataType: real64
@@ -1140,7 +1140,7 @@ T_254: (in rax_117 >> 0x0000000000000001 | (uint64) (eax_118 & 0x00000001) : wor
   Class: Eq_254
   DataType: ui64
   OrigDataType: ui64
-T_255: (in (real64) (rax_117 >> 0x0000000000000001 | (uint64) (eax_118 & 0x00000001)) : real64)
+T_255: (in (real64) (rax_117 >>u 0x0000000000000001 | (uint64) (eax_118 & 0x00000001)) : real64)
   Class: Eq_248
   DataType: real64
   OrigDataType: real64

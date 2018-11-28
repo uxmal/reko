@@ -81,7 +81,7 @@ ptr16 fn040D(Eq_129 c, byte b, Eq_96 e, word16 wArg00, word16 wArg02)
 	globals->b165D = b;
 	globals->t165C = c;
 	globals->b165B = SLICE(wArg02, byte, 8);
-	globals->t165A = (byte) wArg02;
+	globals->t165A.u0 = (byte) wArg02;
 	while (0x00 < globals->t165E)
 	{
 		F_DMAOFF(globals->t165C);
@@ -128,7 +128,7 @@ word16 fn0483(Eq_129 c, byte b, Eq_231 e, byte d, Eq_129 l, byte h, word16 wArg0
 	globals->b1663 = b;
 	globals->t1662 = c;
 	globals->b1661 = SLICE(wArg02, byte, 8);
-	globals->t1660 = (byte) wArg02;
+	globals->t1660.u0 = (byte) wArg02;
 	Eq_231 hl_29 = globals->t1664;
 	byte l_37;
 	byte h_38;
@@ -637,9 +637,9 @@ Eq_96 fn082F(word16 af, Eq_1424 c, byte b, Eq_96 e, byte d, byte h, byte l, word
 	globals->b168C = b;
 	globals->t168B = c;
 	globals->b168A = SLICE(wArg02, byte, 8);
-	globals->t1689 = (byte) wArg02;
+	globals->t1689.u0 = (byte) wArg02;
 	globals->b1688 = SLICE(wArg04, byte, 8);
-	globals->t1687 = (byte) wArg04;
+	globals->t1687.u0 = (byte) wArg04;
 	globals->t168F.u0 = 0x00;
 	globals->t1690.u0 = 0x00;
 	globals->t1691.u0 = 0x00;
@@ -1098,7 +1098,7 @@ Eq_2006 fn0990(word16 af, word16 bc, Eq_1573 e, byte d, byte h, byte l, Eq_1577 
 		*lOut = (byte) hl_317;
 		byte h_319;
 		*hOut = SLICE(hl_317, byte, 8);
-		C_273 = (bool) cond(hl_317);
+		C_273.u0 = (bool) cond(hl_317);
 	} while (a_323 != 0x01);
 	byte b_275;
 	*bOut = 0x00;
@@ -1392,7 +1392,7 @@ void fn100A(word16 af, byte b, Eq_96 e, byte d, Eq_479 l, byte h)
 		struct Eq_3282 * bc_64 = DPB(bc_52, 0x00, 8);
 		bc_64->t14FF = globals->t16A8;
 		globals->t16A8 = fn045B();
-		l = (byte) &bc_64->t14FF;
+		l.u0 = (byte) &bc_64->t14FF;
 		h = SLICE(&bc_64->t14FF, byte, 8);
 		af = DPB(af, 0x00 - (globals->t16A8 < 33), 0);
 	}

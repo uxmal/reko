@@ -832,7 +832,7 @@ T_170: (in 0x00000000[d0_169 * 0x00000004] : byte)
   Class: Eq_170
   DataType: byte
   OrigDataType: byte
-T_171: (in (int32) null[d0_169].b0000 : int32)
+T_171: (in (int32) 0x00000000[d0_169 * 0x00000004] : int32)
   Class: Eq_166
   DataType: int32
   OrigDataType: int32

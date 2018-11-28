@@ -195,7 +195,7 @@ l0800_02F1:
 	si_11.u0 = 0x57;
 l0800_02D8:
 	ds->t01D8 = si_11;
-	si_17 = (int16) (ds->*((word32) si_11 + 474));
+	si_17.u1 = (int16) (ds->*((word32) si_11 + 474));
 	goto l0800_02F1;
 }
 
@@ -1228,11 +1228,11 @@ void __REALCVT()
 Eq_2364 fn0800_1048(Eq_2364 di, Eq_281 es, Eq_281 ds, word16 wArg02)
 {
 	bcu8 dh_8 = SLICE(wArg02, byte, 8);
-	es->*di = ds->*((word16) ((uint16) (dh_8 >> 0x04)) + 0x04E9);
-	es->*((word32) di + 0x01) = ds->*((word16) ((uint16) (dh_8 & 0x0F)) + 0x04E9);
+	es->*di = (uint16) (dh_8 >> 0x04) + 0x04E9;
+	es->*((word32) di + 0x01) = (uint16) (dh_8 & 0x0F) + 0x04E9;
 	bcu8 dl_9 = (byte) wArg02;
-	es->*((word32) di + 0x02) = ds->*((word16) ((uint16) (dl_9 >> 0x04)) + 0x04E9);
-	es->*((word32) di + 0x03) = ds->*((word16) ((uint16) (dl_9 & 0x0F)) + 0x04E9);
+	es->*((word32) di + 0x02) = (uint16) (dl_9 >> 0x04) + 0x04E9;
+	es->*((word32) di + 0x03) = (uint16) (dl_9 & 0x0F) + 0x04E9;
 	return (word32) di + 0x04;
 }
 

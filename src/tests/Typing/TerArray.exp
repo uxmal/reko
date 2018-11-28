@@ -56,7 +56,7 @@ T_8: (in (ecx + 0x00000064)[eax * 0x00000002] : int16)
   Class: Eq_8
   DataType: int16
   OrigDataType: int16
-T_9: (in (int32) ecx->a0064[eax] : int32)
+T_9: (in (int32) (ecx + 0x00000064)[eax * 0x00000002] : int32)
   Class: Eq_9
   DataType: int32
   OrigDataType: int32

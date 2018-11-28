@@ -138,7 +138,7 @@ l0000000000400EC1:
 		eax_113 = (word32) (byte) (word32) v17_52->b0000;
 		break;
 	case 0x10:
-		eax_113 = (word32) (uint64) (word32) ((word64) (uint64) (word32) (uint64) ((word32) (byte) (word32) v17_52->b0000 << 0x08) + (byte) ((word32) v17_52->b0001));
+		eax_113 = (word32) (uint64) (word32) ((byte) (word32) v17_52->b0001 + (uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) v17_52->b0000)) << 0x08))));
 		break;
 	}
 	return eax_113;
@@ -321,7 +321,7 @@ l00000000004012C9:
 			{
 				word32 esi_440;
 				if (eax_270 < 0x00)
-					esi_440 = (word32) (byte) (word32) *(uint64) eax_270;
+					esi_440 = (word32) (byte) (word32) ((uint64) eax_270 + 0x00);
 				else
 					esi_440 = 0xFF;
 				uint64 rdx_461 = (uint64) eax_270;

@@ -992,7 +992,7 @@ void fn59FE(word16 af, word16 bc, Eq_12 de, byte h, byte l, Eq_14 * ix, word16 w
 		ix->tFFFFFFF6 = a_201;
 		a_186 = (bool) (a_201 < 0x00) + ((word16) ix->tFFFFFFF7 + b_28);
 		af_187 = DPB(af, a_186, 8);
-		C_191 = (bool) cond(a_186);
+		C_191.u0 = (bool) cond(a_186);
 	}
 	ix->tFFFFFFF7 = a_186;
 	Eq_10 a_82 = (bool) C_191.u0 + ((word16) ix->tFFFFFFF8 + l_19);
