@@ -46,8 +46,8 @@ T_6: (in dwArg04[dwArg08 * 0x00000002] : int16)
   Class: Eq_6
   DataType: int16
   OrigDataType: int16
-T_12: (in (int32) Mem0[fp + 0x00000004:word32][Mem0[fp + 0x00000008:word32] * 0x00000002] : int32)
-  Class: Eq_12
+T_7: (in (int32) dwArg04[dwArg08 * 0x00000002] : int32)
+  Class: Eq_7
   DataType: int32
   OrigDataType: int32
 T_8: (in 0x00001234 : word32)

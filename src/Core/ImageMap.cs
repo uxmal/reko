@@ -112,14 +112,6 @@ namespace Reko.Core
             }
 		}
 
-	    public void FireMapChanged()
-	    {
-	        if (!EventHandlerPaused)
-	        {
-	            MapChanged.Fire(this);	            
-	        }
-	    }
-
 	    public bool EventHandlerPaused { get; set; }
 
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
