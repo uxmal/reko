@@ -4,8 +4,6 @@
 
 #include "ipcalc.h"
 
-//$BUG: if we can prove that these are .PLT stubs, remove them 
-// from the output.
 // 0000000000014F20: void herror()
 void herror()
 {
@@ -856,7 +854,6 @@ word64 fn0000000000015FCC(struct Eq_3 * gp, Eq_529 a0, ptr64 & a2Out, ptr64 & a3
 	FILE * a3_18 = (word64) gp->qwFFFFF880;
 	if (a0 != 0x00)
 	{
-        //$BUG: all these DPB....
 		a0_19 = DPB(0x00010BE0, fwrite(&globals->v10BE0, 0x01, 0x1A, a3_18), 0);
 		a0_30 = DPB(0x00010C00, fwrite(&globals->v10C00, 0x01, 0x36, (word64) gp->qwFFFFF880), 0);
 		a0_41 = DPB(68664, fwrite(&globals->v10C38, 0x01, 77, (word64) gp->qwFFFFF880), 0);
@@ -891,7 +888,6 @@ word64 fn0000000000015FCC(struct Eq_3 * gp, Eq_529 a0, ptr64 & a2Out, ptr64 & a3
 		a0_350 = DPB(0x00011348, fwrite(&globals->v11348, 0x01, 0x3A, (word64) gp->qwFFFFF880), 0);
 		a0_361 = DPB(0x00011388, fwrite(&globals->v11388, 0x01, 0x39, (word64) gp->qwFFFFF880), 0);
 		a0_375 = DPB(70600, fwrite(&globals->v113C8, 0x01, 0x3E, (word64) gp->qwFFFFF880), 0);
-//$BUG: why are a2 and a3 live out here?
 		a2Out = <invalid>;
 		a3Out = <invalid>;
 		return 0x01;

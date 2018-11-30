@@ -111,7 +111,6 @@ Eq_161 xmalloc(Eq_161 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out, ptr32 & i
 {
 	if (malloc(o0) != null)
 	{
-        //$BUG: we're not returning the result of malloc
 		i1Out = o1;
 		i2Out = o2;
 		i6Out = fp;
@@ -135,7 +134,6 @@ Eq_161 xmalloc(Eq_161 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out, ptr32 & i
 		word32 stackArg80 = <invalid>;
 		word32 stackArg84 = <invalid>;
 		word32 stackArg88 = <invalid>;
-		//$BUG: 0x000170A8 is a pointer to a string; show a string constant
 		notice(0x000170A8, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_61, out i2_62, out i6_63);
 		exit(33);
 	}
@@ -145,7 +143,6 @@ Eq_161 xmalloc(Eq_161 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out, ptr32 & i
 Eq_161 xrealloc(Eq_161 o0, Eq_161 o1, union Eq_161 & i1Out, ptr32 & i2Out)
 {
 	Eq_227 Z_34;
-    //$BUG: cond should have been replaced with a condition.
 	if (o0 != 0x00)
 		Z_34 = SLICE(cond(realloc(o0, o1)), bool, 2);
 	else
@@ -310,7 +307,6 @@ l00011864:
 l00011864_ds_f:
 	branch l0_21 != 0x00 l00011874_ds_t
 l00011864_ds_t:
-    //$BUG: cond should be eliminated.
 	NZV_26 = SLICE(cond(l0_21), bool, 3)
 	goto l00011844
 l00011870:
@@ -617,7 +613,6 @@ struct Eq_799 * visit_each_hash_node(struct Eq_799 * o0)
 // 00011C3C: Register Eq_832 add_symbol(Register Eq_832 o0, Register Eq_161 o1, Register out ptr32 i1Out)
 Eq_832 add_symbol(Eq_832 o0, Eq_161 o1, ptr32 & i1Out)
 {
-    //$BUG: this is a regression.
 	(&(&(&(&(&o0.ptr0000->a0000[0x00].ptr0000.a0000)[0x00].ptr0000.a0000)[0x00].ptr0000.a0000)[0x00].ptr0000.a0000)[0x00].ptr0000.a0000)[0x00].ptr0000 = (struct Eq_8768 *) 0x00;
 	Eq_832 i0_28;
 	ptr32 i1_29;
@@ -1116,7 +1111,6 @@ l000123C8:
 	}
 	Eq_161 l4_101;
 	struct Eq_1719 * i6_134;
-   //$BUG: throwing away the result of malloc.
 	xmalloc(0x0C, out i1_129, out i2_57, out i6_134, out i7_62);
 	if (i1_129 != 0x00)
 	{
