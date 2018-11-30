@@ -168,9 +168,9 @@ Eq_579: (struct "Eq_579" 0028 (8 up32 dw0008) (C up32 dw000C))
 	T_582 (in edxOut : (ptr32 Eq_579))
 	T_583 (in eax_32 : (ptr32 Eq_579))
 	T_589 (in edx_16 : (ptr32 Eq_579))
-	T_596 (in ecx_13 + 0x00000018 + (word32) ecx_13->w0014 : word32)
+	T_596 (in ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
 	T_597 (in esi_19 : (ptr32 Eq_579))
-	T_604 (in (word32) ecx_13->w0006 *s 0x00000028 + edx_16 : word32)
+	T_604 (in (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16 : word32)
 	T_606 (in 0x00000000 : word32)
 	T_608 (in edx_16 + 0x00000028 : word32)
 	T_771 (in out edx : ptr32)
@@ -2715,11 +2715,11 @@ T_594: (in Mem11[ecx_13 + 0x00000014:word16] : word16)
   Class: Eq_594
   DataType: word16
   OrigDataType: word16
-T_595: (in (word32) ecx_13->w0014 : word32)
+T_595: (in (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
   Class: Eq_595
   DataType: word32
   OrigDataType: word32
-T_596: (in ecx_13 + 0x00000018 + (word32) ecx_13->w0014 : word32)
+T_596: (in ecx_13 + 0x00000018 + (word32) Mem11[ecx_13 + 0x00000014:word16] : word32)
   Class: Eq_579
   DataType: (ptr32 Eq_579)
   OrigDataType: word32
@@ -2739,7 +2739,7 @@ T_600: (in Mem11[ecx_13 + 0x00000006:word16] : word16)
   Class: Eq_600
   DataType: word16
   OrigDataType: word16
-T_601: (in (word32) ecx_13->w0006 : word32)
+T_601: (in (word32) Mem11[ecx_13 + 0x00000006:word16] : word32)
   Class: Eq_601
   DataType: int32
   OrigDataType: int32
@@ -2751,7 +2751,7 @@ T_603: (in (word32) ecx_13->w0006 *s 0x00000028 : int32)
   Class: Eq_603
   DataType: int32
   OrigDataType: int32
-T_604: (in (word32) ecx_13->w0006 *s 0x00000028 + edx_16 : word32)
+T_604: (in (word32) Mem11[ecx_13 + 0x00000006:word16] *s 0x00000028 + edx_16 : word32)
   Class: Eq_579
   DataType: (ptr32 Eq_579)
   OrigDataType: int32
@@ -5259,7 +5259,7 @@ T_1230: (in globals->dw403014 != 0x00000000 : bool)
   Class: Eq_1230
   DataType: bool
   OrigDataType: bool
-T_1231: (in (word32) (globals->dw403014 != 0x00000000) : word32)
+T_1231: (in (word32) (Mem0[0x00403014:word32] != 0x00000000) : word32)
   Class: Eq_1226
   DataType: word32
   OrigDataType: word32

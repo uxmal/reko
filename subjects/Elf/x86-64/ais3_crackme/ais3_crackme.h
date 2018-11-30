@@ -512,11 +512,11 @@ T_108: (in Mem11[rax_16 + 0x0000000000000000:byte] : byte)
   Class: Eq_108
   DataType: byte
   OrigDataType: byte
-T_109: (in (word32) *rax_16 : word32)
+T_109: (in (word32) Mem11[rax_16 + 0x0000000000000000:byte] : word32)
   Class: Eq_109
   DataType: word32
   OrigDataType: word32
-T_110: (in (byte) (word32) *rax_16 : byte)
+T_110: (in (byte) (word32) Mem11[rax_16 + 0x0000000000000000:byte] : byte)
   Class: Eq_110
   DataType: byte
   OrigDataType: byte
@@ -560,15 +560,15 @@ T_120: (in Mem11[rdi + (int64) ((word32) ((uint64) dwLoc0C_103)):byte] : byte)
   Class: Eq_120
   DataType: Eq_120
   OrigDataType: byte
-T_121: (in (word32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[(int64) (word32) (uint64) dwLoc0C_103].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0] : word32)
+T_121: (in (word32) Mem11[rdi + (int64) ((word32) ((uint64) dwLoc0C_103)):byte] : word32)
   Class: Eq_121
   DataType: word32
   OrigDataType: word32
-T_122: (in (uint64) (word32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[(int64) (word32) (uint64) dwLoc0C_103].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0] : uint64)
+T_122: (in (uint64) (word32) Mem11[rdi + (int64) ((word32) ((uint64) dwLoc0C_103)):byte] : uint64)
   Class: Eq_122
   DataType: uint64
   OrigDataType: uint64
-T_123: (in (word32) (uint64) (word32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[(int64) (word32) (uint64) dwLoc0C_103].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0].a0000)[0] : word32)
+T_123: (in (word32) (uint64) (word32) Mem11[rdi + (int64) ((word32) ((uint64) dwLoc0C_103)):byte] : word32)
   Class: Eq_123
   DataType: word32
   OrigDataType: word32
@@ -576,11 +576,11 @@ T_124: (in (word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) (&((&((&
   Class: Eq_124
   DataType: ui32
   OrigDataType: ui32
-T_125: (in (uint64) ((word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_103))].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000)[0]))) : uint64)
+T_125: (in (uint64) ((word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) Mem11[rdi + (int64) ((word32) ((uint64) dwLoc0C_103)):byte]))) : uint64)
   Class: Eq_125
   DataType: uint64
   OrigDataType: uint64
-T_126: (in (byte) (uint64) ((word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_103))].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000))[0].a0000)[0]))) : byte)
+T_126: (in (byte) (uint64) ((word32) (uint64) dwLoc0C_103 ^ (word32) ((uint64) ((word32) Mem11[rdi + (int64) ((word32) ((uint64) dwLoc0C_103)):byte]))) : byte)
   Class: Eq_113
   DataType: byte
   OrigDataType: byte
@@ -616,11 +616,11 @@ T_134: (in Mem73[DPB(rax_74, (int16) (byte) rax_74, 0) + 0x0000000000601020:byte
   Class: Eq_134
   DataType: byte
   OrigDataType: byte
-T_135: (in (word32) (DPB(rax_74, (int16) (byte) rax_74, 0) + 0x0000000000601020) : word32)
+T_135: (in (word32) Mem73[DPB(rax_74, (int16) (byte) rax_74, 0) + 0x0000000000601020:byte] : word32)
   Class: Eq_135
   DataType: word32
   OrigDataType: word32
-T_136: (in (byte) (word32) (DPB(rax_74, (int16) (byte) rax_74, 0) + 0x0000000000601020) : byte)
+T_136: (in (byte) (word32) Mem73[DPB(rax_74, (int16) (byte) rax_74, 0) + 0x0000000000601020:byte] : byte)
   Class: Eq_136
   DataType: byte
   OrigDataType: byte

@@ -414,6 +414,7 @@ Eq_959 fn0040188B(HMODULE & ecxOut)
 	if (eax_12 != null)
 	{
 		eax_12 = (struct HINSTANCE__ *) 23117;
+        //$BUG: why unused?
 		if (eax_12->unused == 23117)
 		{
 			eax_12 = (Eq_488) (eax_12 + (&eax_12->unused)[0x0F] / 0x04);

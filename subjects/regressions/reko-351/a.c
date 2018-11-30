@@ -171,7 +171,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_216 tArg14)
 		word32 v23_57 = dwLoc20_121 + 0x00;
 		rLoc0C_122 = (real64) ((real96) (real64) ((real96) rLoc0C_122 * v9_14) * v9_14);
 		dwLoc20_121 = v23_57 + 0x03;
-		rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
+		rLoc14_123.u0 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
 		rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112);
 		rLoc14_123.u0 = 0x3FF00000;
 	}

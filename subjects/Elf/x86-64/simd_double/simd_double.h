@@ -63,7 +63,7 @@ Eq_134: (union "Eq_134" (word128 u0) ((arr word64 2) u1))
 	T_181 (in DPB(xmm0, v26_66 + v26_66, 0) : word128)
 	T_183 (in DPB(xmm0, (real64) qwLoc10_199, 0) : word128)
 	T_214 (in DPB(xmm0, v19_102 + v19_102, 0) : word128)
-	T_217 (in DPB(xmm0, (real64) ((word64) qwLoc18_205 + 1), 0) : word128)
+	T_217 (in DPB(xmm0, (real64) (qwLoc18_205 + 0x0000000000000001), 0) : word128)
 	T_226 (in  : (arr word64 2))
 	T_227 (in  : (arr word64 2))
 	T_228 (in __xorpd(xmm0, xmm0) : (arr word64 2))
@@ -641,7 +641,7 @@ T_130: (in (uint128) (uint64) rdi /u globals->qw0B00 : word64)
   Class: Eq_130
   DataType: uint64
   OrigDataType: uint64
-T_131: (in (uint64) ((uint128) (uint64) rdi /u globals->qw0B00) : uint64)
+T_131: (in (uint64) ((uint128) (uint64) rdi /u Mem22[0x0000000000000B00:word64]) : uint64)
   Class: Eq_125
   DataType: uint64
   OrigDataType: uint64
@@ -833,7 +833,7 @@ T_178: (in qwLoc10_199 >> 0x0000000000000001 | (uint64) (eax_61 & 0x00000001) : 
   Class: Eq_178
   DataType: ui64
   OrigDataType: ui64
-T_179: (in (real64) (qwLoc10_199 >> 0x0000000000000001 | (uint64) (eax_61 & 0x00000001)) : real64)
+T_179: (in (real64) (qwLoc10_199 >>u 0x0000000000000001 | (uint64) (eax_61 & 0x00000001)) : real64)
   Class: Eq_172
   DataType: real64
   OrigDataType: real64
@@ -889,7 +889,7 @@ T_192: (in qwLoc18_205 + 0x0000000000000001 : word64)
   Class: Eq_192
   DataType: up64
   OrigDataType: up64
-T_193: (in (word32) ((word64) qwLoc18_205 + 1) : word32)
+T_193: (in (word32) (qwLoc18_205 + 0x0000000000000001) : word32)
   Class: Eq_190
   DataType: ui32
   OrigDataType: word32
@@ -965,7 +965,7 @@ T_211: (in (word64) qwLoc18_205 + 1 >> 0x0000000000000001 | (uint64) (eax_97 & 0
   Class: Eq_211
   DataType: ui64
   OrigDataType: ui64
-T_212: (in (real64) ((word64) qwLoc18_205 + 1 >> 0x0000000000000001 | (uint64) (eax_97 & 0x00000001)) : real64)
+T_212: (in (real64) (qwLoc18_205 + 0x0000000000000001 >>u 0x0000000000000001 | (uint64) (eax_97 & 0x00000001)) : real64)
   Class: Eq_204
   DataType: real64
   OrigDataType: real64
@@ -981,11 +981,11 @@ T_215: (in qwLoc18_205 + 0x0000000000000001 : word64)
   Class: Eq_215
   DataType: Eq_215
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_216: (in (real64) ((word64) qwLoc18_205 + 1) : real64)
+T_216: (in (real64) (qwLoc18_205 + 0x0000000000000001) : real64)
   Class: Eq_216
   DataType: real64
   OrigDataType: real64
-T_217: (in DPB(xmm0, (real64) ((word64) qwLoc18_205 + 1), 0) : word128)
+T_217: (in DPB(xmm0, (real64) (qwLoc18_205 + 0x0000000000000001), 0) : word128)
   Class: Eq_134
   DataType: Eq_134
   OrigDataType: word128

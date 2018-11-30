@@ -1689,7 +1689,7 @@ T_339: (in *((word64) r11_37.u1 + 164) - 2 : word32)
   Class: Eq_339
   DataType: word32
   OrigDataType: word32
-T_340: (in (int64) (*((word64) r11_37.u1 + 164) - 2) : int64)
+T_340: (in (int64) (Mem24[r11_37 + 164:word32] - 2) : int64)
   Class: Eq_307
   DataType: int64
   OrigDataType: int64

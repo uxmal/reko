@@ -19,9 +19,9 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
    at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 259
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 298
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 321
+   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
+   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
+   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
@@ -29,7 +29,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 0000951A: error: An error occurred while processing the statement Mem21[r3_14 + 0x00000000:word32] = Mem19[r3_14 - r4_11 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_7846 t0000))) and (ptr32 (struct (0 (arr T_9984) a0000))) yet
+    Not handling (ptr32 (struct (0 T_7538 t0000))) and (ptr32 (struct (0 (arr T_9675) a0000))) yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 376
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -48,24 +48,6 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 0000A554: warning: Expected sizes of arrays to have been determined by now
 20000000: warning: Expected sizes of arrays to have been determined by now
 === Elf\ARM\switch\switch
-*** Elf\ARM\switch\switch
-00008420: warning: Call target address 00000000 is invalid.
-error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
-   at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 57
-   at Reko.Analysis.LinearInductionVariableFinder.SsaGraph.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 349
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Core.Code.InstructionVisitorBase.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 126
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Analysis.LinearInductionVariableFinder.SsaGraph.Successors(SsaIdentifier sid) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 313
-   at Reko.Core.Lib.SccFinder`1.<GetSuccessors>d__11.MoveNext() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 109
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 76
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.LinearInductionVariableFinder.Find() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 156
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 284
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === Elf\MIPS\redir\redir
 *** Elf\MIPS\redir\redir
 004006B8: warning: Unable to resolve imported reference __deregister_frame_info.
@@ -254,49 +236,11 @@ Parameter name: index
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 103
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 61
    at Reko.Analysis.WebBuilder..ctor(SsaState ssa, Dictionary`2 ivs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 57
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 298
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 296
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === Elf\MIPS\swlswr\test
 === Elf\RiscV\ipcalc\ipcalc.dcproject
-*** Elf\RiscV\ipcalc\ipcalc.dcproject
-0000000000016A94: warning: Unable to resolve imported reference __strdup.
-0000000000016474: warning: Unable to resolve imported reference __strdup.
-0000000000017654: warning: Unable to resolve imported reference __strdup.
-0000000000017398: warning: Unable to resolve imported reference __strdup.
-00000000000176D8: warning: Unable to resolve imported reference __strdup.
-0000000000018244: warning: Unable to resolve imported reference __strdup.
-0000000000017DEC: warning: Unable to resolve imported reference __strdup.
-0000000000017E70: warning: Unable to resolve imported reference __strdup.
-0000000000017E04: warning: Unable to resolve imported reference __strdup.
-000000000001697C: warning: Unable to resolve imported reference __strdup.
-0000000000017874: warning: Unable to resolve imported reference __strdup.
-00000000000178B8: warning: Unable to resolve imported reference __strdup.
-0000000000016ED8: warning: Unable to resolve imported reference __strdup.
-0000000000016F28: warning: Unable to resolve imported reference __strdup.
-0000000000016F88: warning: Unable to resolve imported reference __strdup.
-0000000000016FF8: warning: Unable to resolve imported reference __strdup.
-00000000000170E0: warning: Unable to resolve imported reference __strdup.
-0000000000017124: warning: Unable to resolve imported reference __strdup.
-000000000001722C: warning: Unable to resolve imported reference __strdup.
-0000000000017264: warning: Unable to resolve imported reference __strdup.
-0000000000017C10: warning: Unable to resolve imported reference __strdup.
-0000000000017C7C: warning: Unable to resolve imported reference __strdup.
-0000000000017C28: warning: Unable to resolve imported reference __strdup.
-00000000000165A0: warning: Unable to resolve imported reference __vasprintf_chk.
-0000000000015000: warning: Unable to resolve imported reference __vasprintf_chk.
-0000000000014F30: warning: Unable to resolve imported reference __strdup.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 127
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
@@ -322,24 +266,18 @@ Parameter name: key
 00015440: warning: Call target address 00000FE8 is invalid.
 00027EB4: warning: Unable to resolve imported reference __udiv64.
 00027EA8: warning: Unable to resolve imported reference __urem64.
-error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
-   at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 57
-   at Reko.Analysis.LinearInductionVariableFinder.SsaGraph.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 349
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Core.Code.InstructionVisitorBase.VisitPhiFunction(PhiFunction phi) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 238
-   at Reko.Core.Expressions.PhiFunction.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\PhiFunction.cs:line 57
-   at Reko.Core.Code.InstructionVisitorBase.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 108
-   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Analysis.LinearInductionVariableFinder.SsaGraph.Successors(SsaIdentifier sid) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 313
-   at Reko.Core.Lib.SccFinder`1.<GetSuccessors>d__11.MoveNext() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 109
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 76
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.LinearInductionVariableFinder.Find() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 156
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 284
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+safe_read: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+       at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+00017540: warning: Expected sizes of arrays to have been determined by now
+00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
 === Elf\x86-64\ls\ls
 *** Elf\x86-64\ls\ls
@@ -349,25 +287,15 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
 0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040D43E: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
-error: An error occurred during decompilation. System.NotImplementedException: Case PE not handled.
-   at Reko.Analysis.ConditionCodeEliminator.ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, Boolean isNegated) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 452
-   at Reko.Analysis.ConditionCodeEliminator.UseGrfConditionally(SsaIdentifier sid, ConditionCode cc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 195
-   at Reko.Analysis.ConditionCodeEliminator.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 412
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Analysis.ConditionCodeEliminator.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 207
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.ConditionCodeEliminator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ConditionCodeEliminator.cs:line 89
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 339
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
+error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
+   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
+   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
+   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
+   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
+   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === Elf\x86-64\pngpixel\pngpixel
@@ -399,9 +327,9 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
    at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 259
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 298
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 321
+   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
+   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
+   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
@@ -413,129 +341,133 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 *** Elf\zSeries\fib\example
 00000702: warning: Unable to resolve imported reference __cxa_finalize.
 000005C0: warning: Unable to resolve imported reference __cxa_finalize.
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+000007BE: error: An error occurred while processing the statement word64 r2_62 = fib((int64) (Mem24[r11_37 + 164:word32] - 2), DPB(r10_36, (word32) fib((int64) (dwLocA4_106 - 1), r10, fp - 328, r12, r13, 0x000007A8, out r10_36, out r11_37, out r12_38, out r13_39), 0), r11_37, r12_38, r13_39, 0x000007C4, out r10_57, out r11_21, out r12_118, out r13_119).
+    Pulling difference ptr32 and (union (int64 u0) (ui32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 64
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 288
+   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 52
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 325
+   at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 68
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 64
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 168
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 === Hunk-m68k\BENCHFN
 *** Hunk-m68k\BENCHFN
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+00002FE6: error: An error occurred while processing the statement branch d0 - d5_876 >=u 0x00000000 l00002F9E.
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4434 t0000))) ptr0000) (4 T_312 t0004) (8 T_27 t0008) (C T_112 t000C) (10 T_172 t0010))) and (union (int32 u0) (uint32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 95
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 142
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+0000288D: warning: Expected sizes of arrays to have been determined by now
+00003EAC: warning: Expected sizes of arrays to have been determined by now
+0000288D: warning: Expected sizes of arrays to have been determined by now
+00003EAC: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHLNG
 *** Hunk-m68k\BENCHLNG
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+0000301E: error: An error occurred while processing the statement branch d0 - d5_876 >=u 0x00000000 l00002FD6.
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4490 t0000))) ptr0000) (4 T_311 t0004) (8 T_27 t0008) (C T_110 t000C) (10 T_170 t0010))) and (union (int32 u0) (uint32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 95
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 142
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+000028C5: warning: Expected sizes of arrays to have been determined by now
+00003E5C: warning: Expected sizes of arrays to have been determined by now
+000028C5: warning: Expected sizes of arrays to have been determined by now
+00003E5C: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHMUL
 *** Hunk-m68k\BENCHMUL
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+0000326E: error: An error occurred while processing the statement branch d0 - d5_876 >=u 0x00000000 l00003226.
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4942 t0000))) ptr0000) (4 T_309 t0004) (8 T_26 t0008) (C T_110 t000C) (10 T_168 t0010))) and (union (int32 u0) (uint32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 95
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 142
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+00002B15: warning: Expected sizes of arrays to have been determined by now
+00004134: warning: Expected sizes of arrays to have been determined by now
+00002B15: warning: Expected sizes of arrays to have been determined by now
+00004134: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BYTEOPS
-*** Hunk-m68k\BYTEOPS
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === Hunk-m68k\FIBO
 *** Hunk-m68k\FIBO
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+0000300A: error: An error occurred while processing the statement branch d0 - d5_876 >=u 0x00000000 l00002FC2.
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4506 t0000))) ptr0000) (4 T_311 t0004) (8 T_27 t0008) (C T_110 t000C) (10 T_170 t0010))) and (union (int32 u0) (uint32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 95
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 142
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+000028B1: warning: Expected sizes of arrays to have been determined by now
+00003ED0: warning: Expected sizes of arrays to have been determined by now
+000028B1: warning: Expected sizes of arrays to have been determined by now
+00003ED0: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\MATRIXMU
 === Hunk-m68k\MAX
 *** Hunk-m68k\MAX
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+0000184A: error: An error occurred while processing the statement branch d0 - d5_876 >=u 0x00000000 l00001802.
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_855 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 95
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 142
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+00002BED: warning: Expected sizes of arrays to have been determined by now
+00003DCC: warning: Expected sizes of arrays to have been determined by now
+00002BED: warning: Expected sizes of arrays to have been determined by now
+00003DCC: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\STRLEN
 === Hunk-m68k\TESTLONG
 *** Hunk-m68k\TESTLONG
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 163
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+00002F6E: error: An error occurred while processing the statement branch d0 - d5_876 >=u 0x00000000 l00002F26.
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4409 t0000))) ptr0000) (4 T_312 t0004) (8 T_27 t0008) (C T_112 t000C) (10 T_172 t0010))) and (union (int32 u0) (uint32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 271
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 108
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 95
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 142
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+00002815: warning: Expected sizes of arrays to have been determined by now
+00003DAC: warning: Expected sizes of arrays to have been determined by now
+00002815: warning: Expected sizes of arrays to have been determined by now
+00003DAC: warning: Expected sizes of arrays to have been determined by now
 === MZ-x86\BENCHFN.dcproject
 *** MZ-x86\BENCHFN.dcproject
 0800:1764: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -558,35 +490,17 @@ Parameter name: key
 0800:0385: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:03FF: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0392: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentOutOfRangeException: Index must be within the bounds of the List.
-Parameter name: index
-   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-   at System.Collections.Generic.List`1.Insert(Int32 index, T item)
-   at Reko.Core.StatementList.Insert(Int32 position, UInt64 linearAddress, Instruction instr) in D:\dev\uxmal\reko\master\src\Core\StatementList.cs:line 46
-   at Reko.Analysis.SsaTransform.SequenceTransformer.FuseIntoMkSequence(SsaIdentifier head, SsaIdentifier tail) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 1908
-   at Reko.Analysis.SsaTransform.SequenceTransformer.Fuse(SsaIdentifier head, SsaIdentifier tail) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 1900
-   at Reko.Analysis.SsaTransform.SequenceTransformer.ReadVariable(SsaBlockState bs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 1849
-   at Reko.Analysis.SsaTransform.IdentifierTransformer.NewUse(SsaBlockState bs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 1125
-   at Reko.Analysis.SsaTransform.NewUse(Identifier id, Statement stm, Boolean force) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 830
-   at Reko.Analysis.SsaTransform.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 784
-   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 86
-   at Reko.Analysis.SsaTransform.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 747
-   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
-   at Reko.Analysis.SsaTransform.TransformAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 364
-   at Reko.Core.Code.Assignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 46
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 122
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 319
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
+error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
+   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
+   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 51
+   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
+   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
+   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
+   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === MachO\const.o
@@ -594,15 +508,15 @@ Parameter name: index
 *** Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 00013A: error: PIC Hardware stack underflow.
 error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
+   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 465
    at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
    at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
    at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 358
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
    at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
@@ -614,15 +528,15 @@ error: An error occurred during decompilation. System.NotImplementedException: Y
 *** Microchip\C18\PIC18\PIC18Legacy.hex
 00013A: error: PIC Hardware stack underflow.
 error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
+   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 465
    at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
    at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
    at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 358
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
    at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
@@ -635,23 +549,14 @@ error: An error occurred during decompilation. System.NotImplementedException: Y
 0B70: warning: Procedure fn0B06 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0AF2: warning: Procedure fn0A94 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 277
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PDP-11\space.dcproject
 *** PDP-11\space.dcproject
@@ -663,34 +568,15 @@ error: An error occurred during decompilation. System.NotImplementedException: Y
 1924: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1930: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 192E: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
-=== PDP-11\spcinv.sav
-*** PDP-11\spcinv.sav
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
+error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ProgramDataFlow.get_Item(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ProgramDataFlow.cs:line 67
+   at Reko.Analysis.TrashedRegisterFinder3.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 391
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 72
+   at Reko.Analysis.TrashedRegisterFinder3.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 262
+   at Reko.Analysis.TrashedRegisterFinder3.Compute() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 98
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 173
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
@@ -698,20 +584,31 @@ error: An error occurred during decompilation. System.NotImplementedException: Y
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
+=== PDP-11\spcinv.sav
+*** PDP-11\spcinv.sav
+error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 277
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PE\MIPS\swlswr\test.exe
 === PE\PPC\hello_ppc.exe
 *** PE\PPC\hello_ppc.exe
 hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
 error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
+   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 465
    at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
    at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
    at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 358
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
    at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
@@ -724,15 +621,23 @@ error: An error occurred during decompilation. System.NotImplementedException: Y
 === PE\m68k\hello_m68k.dcproject
 *** PE\m68k\hello_m68k.dcproject
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
-Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
-   at Reko.Analysis.CallRewriter.EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 127
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
+error: An error occurred during decompilation. System.NotSupportedException: Constants of type uispr48 are not supported.
+   at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in D:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 138
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 577
+   at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 53
+   at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 97
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 89
+   at Reko.Analysis.ValuePropagator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 80
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 366
+   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
+   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
+   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PE\x86-64\varargs_test\varargs_test.exe
@@ -785,7 +690,7 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 72
    at Reko.Analysis.TrashedRegisterFinder3.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 262
    at Reko.Analysis.TrashedRegisterFinder3.Compute() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 98
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 175
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 173
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
@@ -798,58 +703,18 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
 === PE\x86\VCExeSample\VCExeSample.dcproject
 === PE\x86\demo_upx\Demo.exe
 === PE\x86\import-ordinals\import-ordinals.dcproject
-*** PE\x86\import-ordinals\import-ordinals.dcproject
-00401C0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
-00401BF8: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
-00401BF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
-00401BCE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
-00401047: warning: Unable to resolve imported reference driver.dll!Ordinal_1.
-00401047: warning: Unable to resolve imported reference driver.dll!Ordinal_1.
-00401052: warning: Unable to resolve imported reference driver.dll!Ordinal_2.
-00401052: warning: Unable to resolve imported reference driver.dll!Ordinal_2.
-0040105D: warning: Unable to resolve imported reference driver.dll!Ordinal_4.
-0040105D: warning: Unable to resolve imported reference driver.dll!Ordinal_4.
-00401068: warning: Unable to resolve imported reference driver.dll!Ordinal_3.
-00401068: warning: Unable to resolve imported reference driver.dll!Ordinal_3.
-0040106E: warning: Unable to resolve imported reference driver.dll!Ordinal_11.
-0040106E: warning: Unable to resolve imported reference driver.dll!Ordinal_11.
-00401019: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
-00401034: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfprintf.
-00401BFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
-error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
-   at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 57
-   at Reko.Analysis.LinearInductionVariableFinder.SsaGraph.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 349
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Core.Code.InstructionVisitorBase.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 126
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Analysis.LinearInductionVariableFinder.SsaGraph.Successors(SsaIdentifier sid) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 313
-   at Reko.Core.Lib.SccFinder`1.<GetSuccessors>d__11.MoveNext() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 109
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 76
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.LinearInductionVariableFinder.Find() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 156
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 284
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PE\x86\pySample\pySample.dcproject
 === TLCS\900\ngp_iq\NGP_IQ.NGP
 *** TLCS\900\ngp_iq\NGP_IQ.NGP
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
+error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
+Parameter name: key
+   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
+   at Reko.Analysis.CallRewriter.EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 164
+   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 135
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === TLCS\90\TLCS-90.corpus
@@ -859,14 +724,17 @@ error: An error occurred during decompilation. System.NotImplementedException: Y
 5B21: warning: Procedure fn5A49 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0E0F: warning: Procedure fn0CB7 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0E0F: warning: Procedure fn0CB7 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.NotImplementedException: The method or operation is not implemented.
-   at Reko.Arch.Tlcs.Tlcs90Architecture.GetRegister(StorageDomain domain, BitRange range) in D:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs90Architecture.cs:line 150
-   at Reko.Analysis.TrashedRegisterFinder3.VisitUseInstruction(UseInstruction use) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 514
-   at Reko.Core.Code.UseInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 167
-   at Reko.Analysis.TrashedRegisterFinder3.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 262
-   at Reko.Analysis.TrashedRegisterFinder3.Compute() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 98
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 175
+error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 57
+   at Reko.Analysis.TrashedRegisterFinder3.UpdateProcedureSummary(Context ctx, Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 291
+   at Reko.Analysis.TrashedRegisterFinder3.ProcessBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 267
+   at Reko.Analysis.TrashedRegisterFinder3.Compute() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder3.cs:line 138
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 173
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
@@ -874,25 +742,6 @@ error: An error occurred during decompilation. System.NotImplementedException: T
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 217
 === VMS-vax\unzip.dcproject
 === i8051\rtl8188efw.dcproject
-*** i8051\rtl8188efw.dcproject
-0797: warning: Call target address 4EF3 is invalid.
-07A7: warning: Call target address 4AC0 is invalid.
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 460
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 360
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === regressions\angr-148\test
 === regressions\reko-121\m68k_jump.dcproject
 === regressions\reko-351\a.out
@@ -954,11 +803,11 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
    at Reko.Core.Code.InstructionTransformer.TransformPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 95
    at Reko.Core.Code.PhiAssignment.Accept(InstructionTransformer xform) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 51
    at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 122
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 319
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 317
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
    at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
    at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
@@ -972,4 +821,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 73.63 seconds ---
+Decompiled 55 binaries in 66.06 seconds ---

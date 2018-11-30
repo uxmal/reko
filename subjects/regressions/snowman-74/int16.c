@@ -10,6 +10,7 @@ int32 A::get(int32 dwArg04)
 	return this->dw0000 + dwArg04;
 }
 
+//$BUG: lost the Win32 type names
 // 10071010: Register Eq_9 DllMain(Stack Eq_10 hModule, Stack Eq_11 dwReason, Stack Eq_12 lpReserved)
 Eq_9 DllMain(Eq_10 hModule, Eq_11 dwReason, Eq_12 lpReserved)
 {

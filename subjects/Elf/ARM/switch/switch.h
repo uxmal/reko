@@ -435,7 +435,7 @@ T_85: (in Mem8[r5_10 + 0x00000000:byte] : byte)
   Class: Eq_85
   DataType: byte
   OrigDataType: byte
-T_86: (in (word32) *r5_10 : word32)
+T_86: (in (word32) Mem8[r5_10 + 0x00000000:byte] : word32)
   Class: Eq_86
   DataType: word32
   OrigDataType: word32

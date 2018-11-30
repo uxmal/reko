@@ -391,7 +391,7 @@ T_82: (in Mem19[r19_10 + 0x00000AF0:byte] : byte)
   Class: Eq_82
   DataType: byte
   OrigDataType: byte
-T_83: (in (word32) r19_10->b0AF0 : word32)
+T_83: (in (word32) Mem19[r19_10 + 0x00000AF0:byte] : word32)
   Class: Eq_83
   DataType: word32
   OrigDataType: word32
@@ -503,7 +503,7 @@ T_110: (in r2_39 < r16_41 : bool)
   Class: Eq_110
   DataType: bool
   OrigDataType: bool
-T_111: (in (word32) (r2_39 < r16_41) : word32)
+T_111: (in (word32) (r2_39 <u r16_41) : word32)
   Class: Eq_111
   DataType: word32
   OrigDataType: word32
@@ -643,7 +643,7 @@ T_145: (in r2_39 < r16_41 : bool)
   Class: Eq_145
   DataType: bool
   OrigDataType: bool
-T_146: (in (word32) (r2_39 < r16_41) : word32)
+T_146: (in (word32) (r2_39 <u r16_41) : word32)
   Class: Eq_146
   DataType: word32
   OrigDataType: word32

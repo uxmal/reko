@@ -837,7 +837,7 @@ T_160: (in 0x00000000[d0_252 * 0x00000004] : byte)
   Class: Eq_160
   DataType: byte
   OrigDataType: byte
-T_161: (in (int32) null[d0_252].b0000 : int32)
+T_161: (in (int32) 0x00000000[d0_252 * 0x00000004] : int32)
   Class: Eq_137
   DataType: int32
   OrigDataType: int32

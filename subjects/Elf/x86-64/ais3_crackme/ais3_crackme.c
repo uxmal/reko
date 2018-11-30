@@ -4,6 +4,7 @@
 
 #include "ais3_crackme.h"
 
+//$BUG: _init() surely doesn't return anything?
 // 00000000004003C8: Register word64 _init()
 word64 _init()
 {
