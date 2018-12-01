@@ -328,6 +328,12 @@ namespace Reko.Arch.PowerPC
                 return null;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            return ccFlagGroups.Values
+                .Where(cc => cc.OverlapsWith(flags));
+        }
+
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             //$BUG: this needs to be better conceved. There are 
