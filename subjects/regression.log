@@ -507,43 +507,9 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 === Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 *** Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 00013A: error: PIC Hardware stack underflow.
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 465
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 358
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 217
 === Microchip\C18\PIC18\PIC18Legacy.hex
 *** Microchip\C18\PIC18\PIC18Legacy.hex
 00013A: error: PIC Hardware stack underflow.
-error: An error occurred during decompilation. System.NotImplementedException: Your architecture must implement this.
-   at Reko.Core.ProcessorArchitecture.GetSubFlags(FlagGroupStorage flags) in D:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 465
-   at Reko.Analysis.SsaTransform.<ExpandFlagGroups>d__28.MoveNext() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 324
-   at Reko.Analysis.SsaTransform.ResolveOverlaps(IEnumerable`1 ids) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 254
-   at Reko.Analysis.SsaTransform.AddUsesToExitBlock() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 188
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 358
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 217
 === PDP-11\lunar.lda
 *** PDP-11\lunar.lda
 0B70: warning: Procedure fn0B06 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -821,4 +787,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 74.11 seconds ---
+Decompiled 55 binaries in 64.69 seconds ---

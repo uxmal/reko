@@ -147,6 +147,16 @@ namespace Reko.Arch.MicrochipPIC.Common
             return GetFlagGroup(PICRegisters.STATUS, (uint)grf);
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            var grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.C) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.C);
+            if ((grf & (uint) FlagM.Z) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.Z);
+            if ((grf & (uint) FlagM.DC) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.DC);
+            if ((grf & (uint) FlagM.OV) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.OV);
+            if ((grf & (uint) FlagM.N) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.N);
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grpFlags)
         {
             var sb = new StringBuilder();

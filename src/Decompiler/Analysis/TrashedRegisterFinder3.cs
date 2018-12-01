@@ -485,7 +485,10 @@ namespace Reko.Analysis
         public bool VisitStore(Store store)
         {
             var value = store.Src.Accept(eval);
-            ctx.SetValueEa(((MemoryAccess)store.Dst).EffectiveAddress, value);
+            if (store.Dst is MemoryAccess mem)
+            {
+                ctx.SetValueEa(mem.EffectiveAddress, value);
+            }
             return true;
         }
 
