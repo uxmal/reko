@@ -67,6 +67,7 @@ l033E:
 	stackArg0 = <invalid>
 	r0_175 = fn0470(r0_158, r1_157, r2_174, r4_159, r5_160, stackArg0, out r2_176, out r4_177, out r5_178)
 	Mem184[0x0F18:word16] = 0x0078
+	sp_179 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -118,6 +119,7 @@ l0370:
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
 	r0_262 = fn0998(fn07A6(r4_240, pc, out r1_255, out r3_256, out r5_254), r1_255, r4_240, r5_254, pc, stackArg0, out r2_261, out r4_263, out r5_264)
+	sp_265 = <invalid>
 	branch 0x1178 - r4_263 == 0x0000 l0394
 // DataOut:
 // DataOut (flags):
@@ -193,10 +195,12 @@ l040A:
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
 	r0_348 = fn0486(r0_337, r1_346, r4_343, r5_340, stackArg0, out r4_349, out r5_350)
+	sp_351 = <invalid>
 	Mem357[sp_351 - 0x0001:byte] = 0x01
 	Mem358[sp_351:byte] = 0x18
 	r0_376 = fn0AE8(r0_348, fn0AB6(r0_348, r1_346, r4_349, r5_350, Mem358[sp_351 + 0xFFFD:byte], Mem358[sp_351 + 0xFFFE:byte], out r5_371), r5_371, Mem358[sp_351 + 0xFFFD:word16], out r4_377, out r5_378)
 	Mem384[r1_346 - 0x0002:word16] = r4_377
+	sp_379 = <invalid>
 	fn0AE8(r0_376, r4_377, r5_378, Mem384[sp_379 + -2:word16], out r4_544, out r5_545)
 // DataOut:
 // DataOut (flags):
@@ -224,6 +228,7 @@ l038E:
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
 	r4_415 = fn0AF6(r1_413, r4_412, r5_411, stackArg0, out r5_416)
+	sp_417 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -550,6 +555,7 @@ l04E8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	byte stackArg0 = <invalid>
+	sp_108 = <invalid>
 	branch fn067C(r0_20 - 0x0001, r3_101, r4_30 + 0x0001, r5_10, stackArg0, out r1, out r4, out r5_10) l0584
 // DataOut:
 // DataOut (flags):
@@ -572,12 +578,14 @@ l04FE:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	byte stackArg0 = <invalid>
+	sp_108 = <invalid>
 	branch fn05D4(r0_20 - 0x0001, r0_20, r3_101, r4, r5_10, pc, stackArg0, out r0_103, out r1, out r3_101, out r4, out r5_10) l0584
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0504:
+	sp_108 = <invalid>
 	word16 r0_105
 	branch fn064A(r0_103, r1, r3_101, r4, r5_10, out r0_105, out r4, out r5_10) l0584
 // DataOut:
@@ -636,9 +644,9 @@ l058A:
 	word16 r5_155
 	word16 r4_161
 	word16 r5_162
-	word16 sp_163
 	r0_105 = fn0A74(r0_105, fn0AB6(r0_105, r1, r4, r5_10, Mem147[sp_144 + -2:byte], Mem147[sp_144 + -1:byte], out r5_155), r5_155, out r4_161, out r5_162)
 	Mem168[r0_105:word16] = 0x0000
+	word16 sp_163 = <invalid>
 	Mem173[sp_163 - 0x0001:byte] = (int16) Mem168[r5_162 + 0x0EF0:byte] + 0x0001
 	Mem174[sp_163:byte] = Mem173[r5_162 + 0x0EF3:byte]
 	sp_108 = sp_163 - 0x0001
@@ -687,6 +695,7 @@ l0542:
 	byte stackArg0 = <invalid>
 	fn0B1A(r1_229, r4_230, r5_231, stackArg0, out r1, out r3_484, out r4, out r5_10)
 	Mem249[0x0F14:word16] = Mem237[0x0F12:word16] - 0x0001
+	sp_108 = <invalid>
 	branch v79 > 0x0000 l0584
 // DataOut:
 // DataOut (flags):
@@ -731,18 +740,19 @@ l0522:
 l05B4:
 	word16 r4_296
 	word16 r5_297
-	word16 sp_298
 	word16 r0_295 = fn0AE8(r0_105, r4, r5_10, Mem294[sp_108 + -2:word16], out r4_296, out r5_297)
+	word16 sp_298 = <invalid>
 	Mem303[sp_298:word16] = r4_296
 	word16 r4_308
 	word16 r5_309
-	word16 sp_310
 	word16 r0_307 = fn0AE8(r0_295, r4_296, r5_297, Mem303[sp_298:word16], out r4_308, out r5_309)
 	word16 r1_315 = r1 - 0x0002
 	Mem316[r1_315:word16] = r4_308
 	Mem318[r4_308:byte] = Mem316[0x1159:byte]
+	word16 sp_310 = <invalid>
 	fn0AE8(r0_307, r4_308 + 0x0001, r5_309, Mem318[sp_310 + -2:word16], out r4, out r5_10)
 	Mem330[r1_315 - 0x0002:word16] = r4
+	sp_108 = <invalid>
 	r1 = r1_315 - 0x0002
 // DataOut:
 // DataOut (flags):
@@ -805,13 +815,13 @@ l05E0:
 	word16 r1_31
 	word16 r4_32
 	word16 r5_33
-	word16 sp_34
 	fn0A7C(r0, r1, fn0AB6(r0, r1, r4, r5, bLoc03, v9_6, out r5_24), r5_24, pc, out r1_31, out r4_32, out r5_33)
 	fn0A94()
 	word16 r3_45 = __rol(0x0000, 0x0000)
 	word16 r0_49 = Mem16[(__rol(r3_45, r3_45) << 1) + 0x0F2A:word16]
 	word16 v25_50 = Mem16[pc + 0x090A:word16] >> 1
 	Mem51[pc + 0x090A:word16] = v25_50
+	word16 sp_34 = <invalid>
 	branch v25_50 <u 0x0000 l060E
 // DataOut:
 // DataOut (flags):
@@ -830,13 +840,13 @@ l060E:
 	word16 r5_74
 	word16 r4_80
 	word16 r5_81
-	word16 sp_82
 	word16 r0_79 = fn0AE8(r0_49, fn0AB6(r0_49, r1_31, r4_32, r5_33, Mem65[sp_34 + 0xFFFD:byte], Mem65[sp_34 + 0xFFFE:byte], out r5_74), r5_74, Mem65[sp_34 + 0xFFFD:word16], out r4_80, out r5_81)
 	Mem87[r1_31 - 0x0002:word16] = r4_80
 	Mem89[r4_80:byte] = 0x28
 	word16 r4_96
 	word16 r0_95 = fn0B60(r0_79, r1_31 - 0x0002, 0x0003, r4_80 + 0x0001, out r3_160, out r4_96)
 	Mem102[r4_96:byte] = 0x29
+	word16 sp_82 = <invalid>
 	word16 r4_107
 	word16 r5_108
 	fn0AE8(r0_95, r4_96 + 0x0001, r5_81, Mem102[sp_82 + -2:word16], out r4_107, out r5_108)
@@ -922,8 +932,8 @@ l0676:
 
 l0666:
 	word16 r4_40
-	word16 sp_42
 	r0 = fn0AE8(r0, r4, r5, wLoc02, out r4_40, out r5)
+	word16 sp_42 = <invalid>
 	Mem47[sp_42:word16] = r4_40
 	Mem50[r4_40:byte] = 0x20
 	r4 = r4_40 + 0x0001
@@ -1183,11 +1193,11 @@ l075A:
 	word16 r1_130
 	word16 r4_131
 	word16 r5_132
-	word16 sp_133
 	word16 r0_129 = fn0A7C(r0_31 + 0x0001, r1, fn0AB6(r0_31 + 0x0001, r1, r4, r5, Mem112[sp_110 + -2:byte], Mem112[sp_110 + -1:byte], out r5_122), r5_122, pc, out r1_130, out r4_131, out r5_132)
 	Mem137[0x0EFA:word16] = 0x0000
 	Mem139[0x0EFC:word16] = 0x0005
 	Mem140[0x0F1A:word16] = Mem139[0x0F18:word16] - 0x0001
+	word16 sp_133 = <invalid>
 	word16 r4_146
 	word16 r5_147
 	fn0AE8(r0_129, r4_131, r5_132, Mem140[sp_133 + -2:word16], out r4_146, out r5_147)
@@ -1196,6 +1206,7 @@ l075A:
 	// Please report this issue at https://github.com/uxmal/reko
 	byte stackArg0 = <invalid>
 	r1 = fn0B3A(r1_130 - 0x0002, r4_146, r5_147, stackArg0, out r4, out r5)
+	sp_109 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1210,6 +1221,7 @@ l073C:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	byte stackArg0 = <invalid>
+	sp_109 = <invalid>
 	branch fn067C(r0_31 + 0x0001, r3_9, r4, r5, stackArg0, out r1, out r4, out r5) l078A
 // DataOut:
 // DataOut (flags):
@@ -1218,18 +1230,19 @@ l073C:
 l078A:
 	word16 r4_186
 	word16 r5_187
-	word16 sp_188
 	word16 r0_185 = fn0AE8(r0_31 + 0x0001, r4, r5, Mem86[sp_109 + -2:word16], out r4_186, out r5_187)
 	Mem194[Mem86[r3_101:word16]:ptr16] = r4_186
+	word16 sp_188 = <invalid>
 	word16 r4_199
 	word16 r5_200
-	word16 sp_201
 	word16 r0_198 = fn0AE8(r0_185, r4_186, r5_187, Mem194[sp_188 + -2:word16], out r4_199, out r5_200)
 	word16 r1_206 = r1 - 0x0002
 	Mem207[r1_206:word16] = r4_199
 	Mem209[r4_199:byte] = Mem207[0x115A:byte]
+	word16 sp_201 = <invalid>
 	fn0AE8(r0_198, r4_199 + 0x0001, r5_200, Mem209[sp_201 + -2:word16], out r4, out r5)
 	Mem221[r1_206 - 0x0002:word16] = r4
+	sp_109 = <invalid>
 	r1 = r1_206 - 0x0002
 // DataOut:
 // DataOut (flags):
@@ -1326,6 +1339,7 @@ l07D4:
 	Mem42[sp_39 + 0x0001:byte] = r0
 	word16 r5_49
 	r0 = fn0A74(r0, fn0AB6(r0, r1_26, r4, r5_128, Mem42[sp_39 + -2:byte], Mem42[sp_39 + -1:byte], out r5_49), r5_49, out r4, out r5_128)
+	sp_120 = <invalid>
 	branch Mem42[r1_26:word16] > 0x0000 l07E8
 // DataOut:
 // DataOut (flags):
@@ -1384,6 +1398,7 @@ l084A:
 	word16 r5_131
 	r0 = fn0A74(r0, fn0AB6(r0, r1, r4, r5_128, Mem124[sp_121 + -2:byte], Mem124[sp_121 + -1:byte], out r5_131), r5_131, out r4, out r5_128)
 	Mem144[r1:word16] = 0x0000
+	sp_120 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1440,6 +1455,7 @@ l0828:
 	word16 r3_223 = fn096A(r3)
 	r0 = fn0AE8(r0, r4_216, r5_217, Mem204[sp_197 + -2:word16], out r4, out r5_128)
 	Mem236[Mem204[r3_223 - 0x0002:ptr16]:word16] = r4
+	sp_120 = <invalid>
 	r3 = r3_223 - 0x0002
 // DataOut:
 // DataOut (flags):
@@ -1901,8 +1917,8 @@ l0A2A:
 	word16 r5_119
 	word16 r4_125
 	word16 r5_126
-	word16 sp_127
 	word16 r0_124 = fn0A74(r0, fn0AB6(r0, r1, r4, r5, bLoc03, bLoc02, out r5_119), r5_119, out r4_125, out r5_126)
+	word16 sp_127 = <invalid>
 	Mem132[sp_127 - 0x0001:byte] = r2_22
 	Mem133[sp_127:byte] = 0x04
 	word16 r5_141
@@ -1969,9 +1985,9 @@ fn0A60_entry:
 l0A60:
 	word16 r4_8
 	word16 r5_9
-	word16 sp_10
 	word16 r0_7 = fn0AE8(r0, r4, r5, wLoc02, out r4_8, out r5_9)
 	Mem16[r1 - 0x0002:word16] = r4_8
+	word16 sp_10 = <invalid>
 	fn0AE8(r0_7, r4_8, r5_9, Mem16[sp_10 + -2:word16], out r4_28, out r5_29)
 	__halt()
 // DataOut:
@@ -2027,14 +2043,14 @@ l0A7C:
 	Mem6[r4:byte] = Mem0[0x0F24:byte]
 	word16 r4_13
 	word16 r5_14
-	word16 sp_15
 	word16 r0_12 = fn0AE8(r0, r4 + 0x0001, r5, wLoc02, out r4_13, out r5_14)
 	Mem21[r1 - 0x0002:word16] = r4_13
+	word16 sp_15 = <invalid>
 	word16 r4_26
 	word16 r5_27
-	word16 sp_28
 	word16 r0_25 = fn0AE8(r0_12, r4_13, r5_14, Mem21[sp_15 + -2:word16], out r4_26, out r5_27)
 	Mem34[pc:word16] = r5_27
+	word16 sp_28 = <invalid>
 	word16 r4_38
 	word16 r5_39
 	word16 r0_37 = fn0AE8(r0_25, r4_26, r5_27, Mem34[sp_28 + -2:word16], out r4_38, out r5_39)
@@ -2210,11 +2226,11 @@ l0B1A:
 	word16 r5_16
 	word16 r4_22
 	word16 r5_23
-	word16 sp_24
 	word16 r0_21 = fn0AE8(r0_4, fn0AB6(r0_4, r1, r4, r5, bLoc03, bLoc02, out r5_16), r5_16, SEQ(bLoc02, bLoc03), out r4_22, out r5_23)
 	Mem29[r1 - 0x0002:word16] = r4_22
 	word16 r4_35
 	fn0B60(r0_21, r1 - 0x0002, 0x0005, r4_22, out r3_84, out r4_35)
+	word16 sp_24 = <invalid>
 	word16 r0_40 = Mem29[0x0F18:word16]
 	Mem43[sp_24 - 0x0001:byte] = 0x1F
 	Mem44[sp_24:byte] = 0x02
@@ -2575,22 +2591,22 @@ l0CB6:
 l0CBA:
 	word16 r4_94
 	word16 r5_95
-	word16 sp_96
 	word16 r0_93 = fn0AE8(r0_45, 0x1178, r5, wLoc02, out r4_94, out r5_95)
 	Mem102[r1_44:word16] = r4_94
+	word16 sp_96 = <invalid>
 	word16 r4_107
 	word16 r5_108
-	word16 sp_109
 	word16 r0_106 = fn0AE8(r0_93, r4_94, r5_95, Mem102[sp_96 + -2:word16], out r4_107, out r5_108)
 	Mem114[r1_44:word16] = r4_107
+	word16 sp_109 = <invalid>
 	Mem116[sp_109 - 0x0001:byte] = 0x02
 	Mem117[sp_109:byte] = 0x18
 	word16 r5_126
 	word16 r4_132
 	word16 r5_133
-	word16 sp_134
 	word16 r0_131 = fn0AE8(r0_106, fn0AB6(r0_106, r1_44, r4_107, r5_108, Mem117[sp_109 + 0xFFFD:byte], Mem117[sp_109 + 0xFFFE:byte], out r5_126), r5_126, Mem117[sp_109 + 0xFFFD:word16], out r4_132, out r5_133)
 	Mem141[r2_22 - 0x0002:word16] = r4_132
+	word16 sp_134 = <invalid>
 	Mem143[sp_134 - 0x0001:byte] = 0x02
 	Mem144[sp_134:byte] = 0x02
 	word16 r5_153

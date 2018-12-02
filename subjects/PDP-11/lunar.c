@@ -316,7 +316,7 @@ l0888:
 						wLoc02_413 = 0x04;
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+					struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 					fn0C90(stackArg0, r0_89, wLoc02_413);
 					globals->t34B6 -= 0x10;
 					fn0F04(r0_89, r0_89 << 0x01, r2, r3, r4);
@@ -393,11 +393,11 @@ l097C:
 			*(sp_209 - 0x02) = (union Eq_5 *) r1_205;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
-			ptr16 sp_236;
+			struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 			fn0C90(stackArg0, *(sp_209 - 0x02), *sp_209);
 			ui16 r2_243 = *((char *) globals->a28F2 + r1_205 * 0x02) - (&globals->w28F0)[r1_205];
 			ci16 r2_249 = r2_243 - (r2_243 * 0x03 >> 0x02);
+			struct Eq_696 * sp_236 = (struct Eq_696 *) <invalid>;
 			ci16 r2_252 = r2_249 + (r2_249 >> 0x01);
 			if (r2_252 <= 0x00)
 			{
@@ -506,13 +506,13 @@ void fn0A94(int16 r3, Eq_5 r4, word16 * r5)
 		globals->ptr00B0 = r2_25;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+		struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 		fn0AF6(stackArg0);
 	}
 }
 
-// 0AF6: void fn0AF6(Stack (ptr16 Eq_5) wArg00)
-void fn0AF6(union Eq_5 * wArg00)
+// 0AF6: void fn0AF6(Stack (ptr16 Eq_696) wArg00)
+void fn0AF6(struct Eq_696 * wArg00)
 {
 	globals->w34D2 = 13770;
 }
@@ -548,7 +548,7 @@ void fn0B06(int16 r3, Eq_5 r4, word16 * r5, word16 pc)
 			globals->w34CA = 0x24A2;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+			struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 			fn13AA(pc_10, stackArg0);
 			word16 pc_96 = pc_10 - 0x01;
 			if (pc_96 != 0x00)
@@ -559,13 +559,13 @@ void fn0B06(int16 r3, Eq_5 r4, word16 * r5, word16 pc)
 			globals->w34CA = 0x00;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+			struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 			fn13AA(pc_96, stackArg0);
 			if (pc_96 != 0x01)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+				struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 				fn0AF6(stackArg0);
 				return;
 			}
@@ -590,7 +590,7 @@ void fn0B06(int16 r3, Eq_5 r4, word16 * r5, word16 pc)
 			globals->w0054 = 0x00;
 			globals->t0060.u0 = 0x1E;
 			fn0128();
-		} while (globals->w009E != 0x00);
+		} while (globals->ptr009E != null);
 		globals->w34BA = 0x00;
 		globals->w34C2 = 0x00;
 		fn13AA(pc_96 - 0x02, r2_49 + 0x03);
@@ -601,10 +601,10 @@ l0BD0:
 		*(sp_189 - 0x02) = (union Eq_5 *) globals->t0078;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
-		ptr16 sp_202;
+		struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 		fn0C90(stackArg0, *(sp_189 - 0x02), *sp_189);
 		cu16 r5_209 = globals->w0070;
+		struct Eq_696 * sp_202 = (struct Eq_696 *) <invalid>;
 		ci16 r3_208 = 0x30;
 		if (__ror(r5_209, r5_209) < 0x00)
 			r3_208 = -0x30;
@@ -652,8 +652,8 @@ void fn0C76(Eq_5 r0, word16 pc)
 	fn1578(r0, pc);
 }
 
-// 0C90: void fn0C90(Stack (ptr16 Eq_5) wArg00, Stack Eq_5 wArg02, Stack ui16 wArg04)
-void fn0C90(union Eq_5 * wArg00, Eq_5 wArg02, ui16 wArg04)
+// 0C90: void fn0C90(Stack (ptr16 Eq_696) wArg00, Stack Eq_5 wArg02, Stack ui16 wArg04)
+void fn0C90(struct Eq_696 * wArg00, Eq_5 wArg02, ui16 wArg04)
 {
 	if (wArg02 >> 0x01 < 0x00)
 	{
@@ -673,12 +673,12 @@ void fn0CCA(Eq_5 r4, Eq_5 wArg02)
 // 0CEC: void fn0CEC(Register Eq_5 r0, Register ui16 r1, Register word16 r2, Register int16 r3, Register Eq_5 r4)
 void fn0CEC(Eq_5 r0, ui16 r1, word16 r2, int16 r3, Eq_5 r4)
 {
-	struct Eq_1917 * sp_11;
-	struct Eq_1918 * r5_10 = fn0D3C(r0, r1, r2, r3, r4, ptrLoc02);
+	struct Eq_1917 * r5_10 = fn0D3C(r0, r1, r2, r3, r4, ptrLoc02);
 	Eq_23 r4_22 = (globals->w28F0 >> 0x05) + 0x17;
 	r5_10->t0000 = r4_22;
 	globals->t0082 = r4_22;
 	r5_10->w0002 = 0x8C50;
+	struct Eq_696 * sp_11 = (struct Eq_696 *) <invalid>;
 	cui16 * r5_30 = &r5_10->w0002 + 0x01;
 	struct Eq_1948 * r0_31 = &globals->w28F0;
 	while (true)
@@ -773,7 +773,7 @@ int16 fn0E06(int16 r0, word16 & r1Out, word16 & r3Out, union Eq_5 & r4Out)
 		wLoc02_52 = 0x04;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+	struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 	fn0C90(stackArg0, r1_4, wLoc02_52);
 	do
 	{
@@ -814,7 +814,7 @@ word16 fn0E32()
 	} while (0xC0 - globals->w00AE <= 0x00);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	union Eq_5 * stackArg0 = (union Eq_5 *) <invalid>;
+	struct Eq_696 * stackArg0 = (struct Eq_696 *) <invalid>;
 	fn13AA(pc, stackArg0);
 	__reset();
 	return fn0E98(&r5_40->w0002, out r5_70);
@@ -868,10 +868,10 @@ l0EF0:
 // 0F04: void fn0F04(Register Eq_5 r0, Register ui16 r1, Register word16 r2, Register int16 r3, Register Eq_5 r4)
 void fn0F04(Eq_5 r0, ui16 r1, word16 r2, int16 r3, Eq_5 r4)
 {
-	struct Eq_2383 * sp_11;
-	struct Eq_1918 * r5_10 = fn0D3C(r0, r1, r2, r3, r4, ptrLoc02);
+	struct Eq_1917 * r5_10 = fn0D3C(r0, r1, r2, r3, r4, ptrLoc02);
 	globals->w00AA = 0x00;
 	int16 * r0_116 = (globals->w0074 << 0x01) + 0x28F0;
+	struct Eq_696 * sp_11 = (struct Eq_696 *) <invalid>;
 	Eq_23 r4_136 = fn100C(*r0_116);
 	if (r4_136 <= 0x00)
 		r4_136.u0 = 0x00;
@@ -1479,12 +1479,12 @@ l1304:
 	goto l1304;
 }
 
-// 13AA: void fn13AA(Register word16 pc, Stack (ptr16 Eq_5) ptrArg00)
-void fn13AA(word16 pc, union Eq_5 * ptrArg00)
+// 13AA: void fn13AA(Register word16 pc, Stack (ptr16 Eq_696) ptrArg00)
+void fn13AA(word16 pc, struct Eq_696 * ptrArg00)
 {
 	Eq_5 r0_10;
 	globals->w25C0 = 0xF700;
-	Eq_5 r0_4 = *ptrArg00;
+	Eq_5 r0_4 = ptrArg00->t0000;
 	cu16 r1_12 = globals->w0070;
 	r0_10 = r0_4;
 	if (r0_4 <= 0x00)
@@ -1661,7 +1661,7 @@ void fn34E0(word16 pc)
 	fn355A();
 	(word16 *) ~0x99 = 0x40;
 	(word16 *) 0xF400 = 13666;
-	fn13AA(pc, (union Eq_5 **) 0x3FFC);
+	fn13AA(pc, (struct Eq_696 **) 0x3FFC);
 }
 
 // 355A: void fn355A()

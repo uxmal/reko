@@ -839,6 +839,7 @@ l0666:
 
 l064E:
 	r0_382 = fn0E06(0x0280, out r1_383, out r3_384, out r4_385)
+	sp_387 = <invalid>
 	Mem392[0x009E:word16] = sp_387
 	fn0CEC(r0_382, r1_383, r2, r3_384, r4_385)
 // DataOut:
@@ -1173,10 +1174,10 @@ l098E:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
-	word16 sp_236
 	fn0C90(stackArg0, Mem224[sp_209 - 0x0002:word16], Mem224[sp_209:word16])
 	word16 r2_243 = Mem224[(r1_205 << 1) + 0x28F2:word16] - Mem224[(r1_205 << 1) + 0x28F0:word16]
 	word16 r2_249 = r2_243 - (r2_243 * 0x0003 >> 2)
+	word16 sp_236 = <invalid>
 	word16 r2_252 = r2_249 + (r2_249 >> 1)
 	branch r2_252 > 0x0000 l09BE
 // DataOut:
@@ -1822,9 +1823,9 @@ l0BD0:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
-	word16 sp_202
 	fn0C90(stackArg0, Mem192[sp_189 - 0x0002:word16], Mem192[sp_189:word16])
 	word16 r5_209 = Mem192[0x0070:word16]
+	word16 sp_202 = <invalid>
 	word16 r3_208 = 0x0030
 	branch __ror(r5_209, r5_209) >=u 0x0000 l0BEE
 // DataOut:
@@ -2093,12 +2094,12 @@ fn0CEC_entry:
 // SymbolicIn:
 
 l0CEC:
-	word16 sp_11
 	word16 r5_10 = fn0D3C(r0, r1, r2, r3, r4, ptrLoc02)
 	word16 r4_22 = (Mem0[0x28F0:word16] >> 5) + 0x0017
 	Mem25[r5_10:word16] = r4_22
 	Mem27[0x0082:word16] = r4_22
 	Mem29[r5_10 + 0x0002:word16] = 0x8C50
+	word16 sp_11 = <invalid>
 	word16 r5_30 = r5_10 + 0x0004
 	word16 r0_31 = 0x28F0
 // DataOut:
@@ -2532,10 +2533,10 @@ fn0F04_entry:
 // SymbolicIn:
 
 l0F04:
-	word16 sp_11
 	word16 r5_10 = fn0D3C(r0, r1, r2, r3, r4, ptrLoc02)
 	Mem16[0x00AA:word16] = 0x0000
 	word16 r0_116 = (Mem16[0x0074:word16] << 1) + 0x28F0
+	word16 sp_11 = <invalid>
 	word16 r4_136 = fn100C(Mem16[r0_116:word16])
 	branch r4_136 > 0x0000 l0F24
 // DataOut:

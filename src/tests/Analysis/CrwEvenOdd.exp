@@ -62,6 +62,7 @@ l0C00_0019:
 	// succ:  l0C00_001A_thunk_fn0C00_0020
 l0C00_001A_thunk_fn0C00_0020:
 	ax_13 = DPB(0x0000, fn0C00_0020(ax - 0x0001), 0)
+	SCZO_15 = <invalid>
 	return (byte) ax_13
 	// succ:  fn0C00_0015_exit
 l0C00_001D:
@@ -100,6 +101,7 @@ l0C00_0024:
 	// succ:  l0C00_0025_thunk_fn0C00_0015
 l0C00_0025_thunk_fn0C00_0015:
 	ax_15 = DPB(0x0000, fn0C00_0015(ax - 0x0001), 0)
+	SCZO_17 = <invalid>
 	return (byte) ax_15
 	// succ:  fn0C00_0020_exit
 l0C00_0028:

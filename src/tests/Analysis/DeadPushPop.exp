@@ -85,8 +85,8 @@ di:di
           fn0C00_0008(0x0014, di, ds)
 ds:ds
     def:  def ds
-    uses: ax_7 = fn0C00_0008(0x0014, di, ds)
-          Mem13[ds:si:word16] = ax_7
+    uses: Mem13[ds:si:word16] = ax_7
+          ax_7 = fn0C00_0008(0x0014, di, ds)
           fn0C00_0008(0x0014, di, ds)
 ax_7: orig: ax
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)

@@ -55,6 +55,7 @@ l0C00_0004:
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
 	dx_10 = fn0C00_0013(dx)
+	SCZO_14 = <invalid>
 	goto l0C00_0010
 	// succ:  l0C00_0010
 l0C00_000F:
@@ -97,10 +98,12 @@ l0C00_0013:
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:
 	ax_19 = fn0C00_0004(dx - 0x0001, out dx_18)
+	SCZO_21 = <invalid>
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
 	ax_12 = fn0C00_0004(dx - 0x000A, out dx_10)
+	SCZO_14 = <invalid>
 	// succ:  l0C00_0025
 l0C00_0025:
 	dx_28 = PHI((dx_18, l0C00_0018), (dx_10, l0C00_001F))

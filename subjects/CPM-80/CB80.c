@@ -121,10 +121,10 @@ word16 fn0483(byte b, Eq_101 c, byte d, Eq_198 e, Eq_13 wArg00, word16 wArg02)
 	globals->b1661 = SLICE(wArg02, byte, 8);
 	globals->t1660.u0 = (byte) wArg02;
 	Eq_198 hl_28 = globals->t1664;
-	byte c_37;
 	cu8 l_39;
 	fn1326(0x07, SLICE((word16) hl_28.u1 + 0x007F, byte, 8), (byte) ((word16) hl_28.u1 + 0x007F), out l_39);
 	globals->b1667 = l_39;
+	Eq_13 c_37 = <invalid>;
 	word16 bc_125 = DPB(wArg02, c_37, 0);
 	while (globals->b1667 > 0x00)
 	{
@@ -140,9 +140,9 @@ word16 fn0483(byte b, Eq_101 c, byte d, Eq_198 e, Eq_13 wArg00, word16 wArg02)
 			globals->ptr1668 = &globals->t02A3;
 			while (*globals->ptr1668 != 0x24)
 			{
-				byte c_105;
 				fn0473(*globals->ptr1668);
 				globals->ptr1668 = (union Eq_182 *) ((char *) globals->ptr1668 + 0x01);
+				Eq_13 c_105 = <invalid>;
 				bc_125 = DPB(bc_125, c_105, 0);
 			}
 			if (*globals->t1660 == 0x00)
@@ -151,9 +151,9 @@ word16 fn0483(byte b, Eq_101 c, byte d, Eq_198 e, Eq_13 wArg00, word16 wArg02)
 				bc_125 = DPB(bc_125, 0x19, 0);
 			}
 			fn0473((word16) *globals->t1660 + 0x0060);
-			byte c_98;
 			fn0473(0x3A);
 			fn0387(out sp_143);
+			Eq_13 c_98 = <invalid>;
 			bc_125 = DPB(bc_125, c_98, 0);
 		}
 	}
@@ -195,14 +195,14 @@ bool fn056B(Eq_395 c, ptr16 & bcOut, union Eq_13 & fOut)
 	globals->t166C = c;
 	if (globals->b14F3 == 0x01)
 	{
-		byte c_36;
 		fn0524((byte) globals->t166C);
+		Eq_13 c_36 = <invalid>;
 		bc_19 = DPB(bc, c_36, 0);
 	}
 	else if (globals->b14F3 == 0x02)
 	{
-		byte c_30;
 		fn0473((byte) globals->t166C);
+		Eq_13 c_30 = <invalid>;
 		bc_19 = DPB(bc, c_30, 0);
 	}
 	else if (globals->b14F3 == 0x04)
@@ -304,8 +304,8 @@ void fn063E(byte b, Eq_608 c, byte d, Eq_610 e)
 			if (C_46)
 				break;
 			byte * de_114;
-			word16 hl_115;
 			fn1348(&globals->t1676, DPB(globals->t167A, 0x00, 8) * 0x02 + 0x0227, out de_114, out l_143);
+			Eq_13 hl_115 = <invalid>;
 			*(de_114 - 0x01) = (byte) hl_115;
 			*de_114 = SLICE(hl_115, byte, 8);
 			globals->b167B = 0x01;
@@ -1363,8 +1363,8 @@ void fn1315(word16 de)
 {
 }
 
-// 1326: Register Eq_13 fn1326(Register byte c, Register byte h, Register Eq_224 l, Register out Eq_224 lOut)
-Eq_13 fn1326(byte c, byte h, Eq_224 l, union Eq_224 & lOut)
+// 1326: Register Eq_13 fn1326(Register byte c, Register byte h, Register Eq_223 l, Register out Eq_223 lOut)
+Eq_13 fn1326(byte c, byte h, Eq_223 l, union Eq_223 & lOut)
 {
 	do
 	{
@@ -1388,17 +1388,17 @@ void fn133C(byte a, byte e, byte d)
 {
 }
 
-// 1346: Register byte fn1346(Register byte b, Register (ptr16 Eq_678) de)
-byte fn1346(byte b, struct Eq_678 * de)
+// 1346: Register byte fn1346(Register byte b, Register (ptr16 Eq_677) de)
+byte fn1346(byte b, struct Eq_677 * de)
 {
-	struct Eq_679 * hl_9 = DPB(DPB(hl, c, 0), b, 8);
-	word16 hl_15;
+	struct Eq_678 * hl_9 = DPB(DPB(hl, c, 0), b, 8);
 	fn1348(de, hl_9, out de_20, out l_21);
+	Eq_13 hl_15 = <invalid>;
 	return (byte) hl_15;
 }
 
-// 1348: FlagGroup bool fn1348(Register (ptr16 Eq_678) de, Register (ptr16 Eq_679) hl, Register out (ptr16 ui8) deOut, Register out Eq_13 lOut)
-bool fn1348(struct Eq_678 * de, struct Eq_679 * hl, ui8 & deOut, union Eq_13 & lOut)
+// 1348: FlagGroup bool fn1348(Register (ptr16 Eq_677) de, Register (ptr16 Eq_678) hl, Register out (ptr16 ui8) deOut, Register out Eq_13 lOut)
+bool fn1348(struct Eq_677 * de, struct Eq_678 * hl, ui8 & deOut, union Eq_13 & lOut)
 {
 	bool C_22 = SLICE(cond(SLICE(SEQ(de->b0001, de->b0000) - SEQ(hl->b0001, hl->b0000), byte, 8)), bool, 0);
 	deOut = (ui8 *) &de->b0001;

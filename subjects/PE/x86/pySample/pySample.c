@@ -127,15 +127,15 @@ l10001384:
 			word32 ebx_214;
 			word32 edi_216;
 			word32 esi_218;
-			struct Eq_384 * esp_219;
 			word32 eax_212 = fn10001742(InterlockedCompareExchange, 268448684, 0x02, out edx, out ebx_214, out ebp_213, out esi_218, out edi_216);
-			ecx = esp_219->ptr0000;
-			esp_120 = (LPVOID *) ((char *) &esp_219->ptr0000 + 0x04);
+			Eq_404 esp_219 = <invalid>;
+			ecx = (word32 *) *esp_219;
+			esp_120 = (word32) esp_219 + 0x04;
 			if (eax_212 != 0x00)
 			{
-				esp_219->ptr0000 = esp_219->ptr0020;
+				*esp_219 = *((word32) esp_219 + 0x0020);
 				*(esp_219 - 0x04) = edi_216;
-				*(esp_219 - 0x08) = esp_219->dw0018;
+				*(esp_219 - 0x08) = (word32) *((word32) esp_219 + 0x0018);
 				globals->ptr100033B8();
 			}
 		}
@@ -191,14 +191,14 @@ word32 fn10001388(Eq_140 ecx, Eq_136 edx, Eq_150 (* ebx)(LONG *, Eq_150, Eq_150)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	ptr32 stackArg4 = <invalid>;
-	struct Eq_441 * esp_103;
+	Eq_404 stackArg4 = <invalid>;
 	struct Eq_138 * ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x10);
 	Eq_137 ebx_116 = ebp_13->t0008;
 	*(ebp_13 - 0x1C) = 0x01;
 	*(ebp_13 - 0x04) = 0x00;
 	globals->t10003008 = edx;
 	*(ebp_13 - 0x04) = 0x01;
+	Eq_404 esp_103 = <invalid>;
 	Eq_140 edi_110 = ecx;
 	Eq_136 esi_113 = edx;
 	if (edx == 0x00 && globals->dw10003070 == 0x00)
@@ -235,11 +235,11 @@ l1000147A:
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			word32 eax_261 = *(ebp_13 - 0x1C);
-			ptr32 stackArg4 = <invalid>;
-			ptr32 stackArg8 = <invalid>;
-			ptr32 stackArg12 = <invalid>;
-			ptr32 stackArg16 = <invalid>;
-			fn1000182D(ebp_13, esp_103->ptrFFFFFFFC, stackArg4, stackArg8, stackArg12, stackArg16, out ebp_307, out esi_308, out edi_309);
+			Eq_404 stackArg4 = <invalid>;
+			Eq_404 stackArg8 = <invalid>;
+			Eq_404 stackArg12 = <invalid>;
+			Eq_404 stackArg16 = <invalid>;
+			fn1000182D(ebp_13, *((word32) esp_103 - 0x04), stackArg4, stackArg8, stackArg12, stackArg16, out ebp_307, out esi_308, out edi_309);
 			return eax_261;
 		}
 		LPVOID * esp_81 = esp_103 - 0x04;
@@ -248,7 +248,7 @@ l1000147A:
 		*(esp_81 - 0x08) = (union Eq_137 *) ebx_116;
 		ui32 eax_92 = fn100011E9(edx_65, ebx_116, ebp_13, edx, ecx, *(esp_81 - 0x04), out ecx_310, out edx, out ebx_116, out esi_113, out edi_110);
 		*(ebp_13 - 0x1C) = eax_92;
-		esp_103 = (struct Eq_441 *) ((char *) esp_81 + 0x04);
+		esp_103 = (char *) esp_81 + 0x04;
 		if (eax_92 == 0x00)
 			goto l1000147A;
 	}
@@ -258,7 +258,7 @@ l1000147A:
 	*(esp_109 - 0x08) = (union Eq_137 *) ebx_116;
 	word32 eax_118 = fn100017C6(*(esp_109 - 0x08), *(esp_109 - 0x04));
 	*(ebp_13 - 0x1C) = eax_118;
-	esp_103 = (struct Eq_441 *) ((char *) esp_109 + 0x04);
+	esp_103 = (char *) esp_109 + 0x04;
 	if (esi_113 == 0x01 && eax_118 == 0x00)
 	{
 		*esp_109 = (LPVOID *) edi_110;
@@ -269,9 +269,9 @@ l1000147A:
 		*(esp_109 - 0x04) = 0x00;
 		*(esp_109 - 0x08) = (union Eq_137 *) ebx_116;
 		word32 ecx_153;
-		int8 Top_155;
 		fn100011E9(edx, ebx_116, ebp_13, esi_113, edi_110, *(esp_109 - 0x04), out ecx_153, out edx, out ebx_116, out esi_113, out edi_110);
-		esp_103 = (struct Eq_441 *) ((char *) esp_109 + 0x04);
+		Eq_404 Top_155 = <invalid>;
+		esp_103 = (char *) esp_109 + 0x04;
 		word32 eax_163 = globals->dw100020CC;
 		if (eax_163 != 0x00)
 		{
@@ -290,11 +290,11 @@ l1000147A:
 		word32 ebx_205;
 		word32 ecx_206;
 		word32 esi_207;
-		int8 Top_208;
 		Eq_140 edi_209;
 		word32 edx_210;
 		ui32 eax_204 = fn100011E9(edx, ebx_116, ebp_13, esi_113, edi_110, *(esp_187 - 0x04), out ecx_206, out edx_210, out ebx_205, out esi_207, out edi_209);
-		esp_103 = (struct Eq_441 *) ((char *) esp_187 + 0x04);
+		Eq_404 Top_208 = <invalid>;
+		esp_103 = (char *) esp_187 + 0x04;
 		if (eax_204 == 0x00)
 			*(ebp_13 - 0x1C) &= eax_204;
 		if (*(ebp_13 - 0x1C) != 0x00)
@@ -332,12 +332,12 @@ Eq_831 DllMain(Eq_832 hModule, Eq_136 dwReason, Eq_140 lpReserved)
 Eq_846 fn100015CF(Eq_150 (* ebx)(LONG *, Eq_150, Eq_150), ptr32 esi, word32 edi)
 {
 	Eq_846 eax_110;
-	struct Eq_851 * esp_81;
+	Eq_404 esp_81;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	ptr32 stackArg4 = <invalid>;
-	struct Eq_851 * esp_14;
+	Eq_404 stackArg4 = <invalid>;
 	struct Eq_138 * ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x14);
+	Eq_404 esp_14 = <invalid>;
 	*(esp_14 - 0x04) = globals->ptr100033B4;
 	word32 * eax_23 = _decode_pointer(*(esp_14 - 0x04));
 	word32 ecx_24 = *(esp_14 - 0x04);
@@ -391,11 +391,11 @@ Eq_846 fn100015CF(Eq_150 (* ebx)(LONG *, Eq_150, Eq_150), ptr32 esi, word32 edi)
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	ptr32 stackArg4 = <invalid>;
-	ptr32 stackArg8 = <invalid>;
-	ptr32 stackArg12 = <invalid>;
-	ptr32 stackArg16 = <invalid>;
-	fn1000182D(ebp_13, esp_81->ptrFFFFFFFC, stackArg4, stackArg8, stackArg12, stackArg16, out ebp_125, out esi_126, out edi_127);
+	Eq_404 stackArg4 = <invalid>;
+	Eq_404 stackArg8 = <invalid>;
+	Eq_404 stackArg12 = <invalid>;
+	Eq_404 stackArg16 = <invalid>;
+	fn1000182D(ebp_13, *((word32) esp_81 - 0x04), stackArg4, stackArg8, stackArg12, stackArg16, out ebp_125, out esi_126, out edi_127);
 	return eax_110;
 }
 
@@ -470,10 +470,10 @@ ui32 fn10001742(Eq_150 (* ebx)(LONG *, Eq_150, Eq_150), ptr32 esi, word32 edi, p
 	ui32 eax_60;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	ptr32 stackArg4 = <invalid>;
-	struct Eq_1175 * esp_14;
+	Eq_404 stackArg4 = <invalid>;
 	struct Eq_138 * ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x08);
 	*(ebp_13 - 0x04) &= 0x00;
+	Eq_404 esp_14 = <invalid>;
 	*(esp_14 - 0x04) = 0x10000000;
 	ptr32 edx_23 = 0x10000000;
 	if (fn100016D0(*(esp_14 - 0x04)) != 0x00)
@@ -494,14 +494,14 @@ l100017A8:
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			ptr32 stackArg4 = <invalid>;
-			ptr32 stackArg8 = <invalid>;
-			ptr32 stackArg12 = <invalid>;
-			ptr32 stackArg16 = <invalid>;
+			Eq_404 stackArg4 = <invalid>;
+			Eq_404 stackArg8 = <invalid>;
+			Eq_404 stackArg12 = <invalid>;
+			Eq_404 stackArg16 = <invalid>;
 			ptr32 ebp_76;
 			ptr32 edi_79;
 			ptr32 esi_80;
-			ptr32 ebx_77 = fn1000182D(ebp_13, esp_14->ptrFFFFFFFC, stackArg4, stackArg8, stackArg12, stackArg16, out ebp_76, out esi_80, out edi_79);
+			ptr32 ebx_77 = fn1000182D(ebp_13, *((word32) esp_14 - 0x04), stackArg4, stackArg8, stackArg12, stackArg16, out ebp_76, out esi_80, out edi_79);
 			edxOut = edx_23;
 			ebxOut = ebx_77;
 			ebpOut = ebp_76;
@@ -523,8 +523,8 @@ word32 fn100017C6(Eq_573 dwArg04, word32 dwArg08)
 	return 0x01;
 }
 
-// 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_189) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack ptr32 dwArg04, Stack ui32 dwArg08)
-ptr32 fn100017E8(Eq_150 (* ebx)(LONG *, Eq_150, Eq_150), ptr32 esi, word32 edi, word32 dwArg00, ptr32 dwArg04, ui32 dwArg08)
+// 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_189) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack Eq_404 dwArg04, Stack ui32 dwArg08)
+ptr32 fn100017E8(Eq_150 (* ebx)(LONG *, Eq_150, Eq_150), ptr32 esi, word32 edi, word32 dwArg00, Eq_404 dwArg04, ui32 dwArg08)
 {
 	ptr32 esp_14 = fp - 0x08 - dwArg08;
 	*(esp_14 - 0x04) = (Eq_150 (**)(LONG *, Eq_150, Eq_150)) ebx;
@@ -536,8 +536,8 @@ ptr32 fn100017E8(Eq_150 (* ebx)(LONG *, Eq_150, Eq_150), ptr32 esi, word32 edi, 
 	return fp + 0x08;
 }
 
-// 1000182D: Register ptr32 fn1000182D(Register (ptr32 Eq_138) ebp, Stack ptr32 dwArg00, Stack ptr32 dwArg04, Stack ptr32 dwArg08, Stack ptr32 dwArg0C, Stack ptr32 dwArg10, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-ptr32 fn1000182D(struct Eq_138 * ebp, ptr32 dwArg00, ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C, ptr32 dwArg10, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+// 1000182D: Register Eq_404 fn1000182D(Register (ptr32 Eq_138) ebp, Stack ptr32 dwArg00, Stack Eq_404 dwArg04, Stack Eq_404 dwArg08, Stack Eq_404 dwArg0C, Stack Eq_404 dwArg10, Register out ptr32 ebpOut, Register out Eq_404 esiOut, Register out Eq_404 ediOut)
+Eq_404 fn1000182D(struct Eq_138 * ebp, ptr32 dwArg00, Eq_404 dwArg04, Eq_404 dwArg08, Eq_404 dwArg0C, Eq_404 dwArg10, ptr32 & ebpOut, union Eq_404 & esiOut, union Eq_404 & ediOut)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ptr32 ebp_19 = ebp->ptr0000;
