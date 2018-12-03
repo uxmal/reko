@@ -63,15 +63,14 @@ register_tm_clones_entry:
 // SymbolicIn:
 
 l800000AE:
-	word32 d0_10 = 0
-	word32 d0_12 = d0_10
-	branch d0_10 > 0x00000000 l800000C6
+	word32 d0_12 = 0
+	branch false l800000C6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l800000C4:
-	d0_12 = d0_10 + 0x00000001
+	d0_12 = 0x00000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -130,11 +129,10 @@ l800000E4:
 // SymbolicIn:
 
 l800000F4:
-	word32 d2_24 = 1
 	word32 d0_21 = Mem15[0x80002726:word32]
 	word32 a2_20 = 0x80002714
-	word32 d2_25 = d2_24 - 0x00000001
-	branch d2_24 - 0x00000001 - d0_21 <=u 0x00000000 l8000012C
+	word32 d2_25 = 0x00000000
+	branch 0x00000000 - d0_21 <=u 0x00000000 l8000012C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -124,9 +124,7 @@ register_tm_clones_entry:
 // SymbolicIn:
 
 l00000000004004A0:
-	word64 rax_9 = 8
-	word64 rax_13 = rax_9 + (rax_9 >>u 0x000000000000003F)
-	branch rax_13 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
+	branch true l00000000004004C4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -139,7 +137,7 @@ l00000000004004C4:
 
 l00000000004004CE:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8 - 6295616,rax:rax_13 >> 0x0000000000000001,rbp:rbp,rdi:0x0000000000601040,rdx:0x0000000000000000,rsi:rax_13 >> 0x0000000000000001,rsp:fp,Stack +0000:rbp
+		uses: r8:r8 - 6295616,rax:393476,rbp:rbp,rdi:0x0000000000601040,rdx:0x0000000000000000,rsi:393476,rsp:fp,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):

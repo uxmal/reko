@@ -54,7 +54,7 @@ void g_v115A8 = ??void??;
 char g_str115C8[] = "%.2x";
 char g_str115D0[] = "/dev/urandom";
 void g_v115E0 = ??void??;
-Eq_3927 g_t11780 = 
+Eq_3920 g_t11780 = 
 	{
 		0x31,
 		0x00,
@@ -99,7 +99,7 @@ char g_str11D18[] = "COUNTRY=%s\n";
 char g_str11D28[] = "CITY=\"%s\"\n";
 char g_str11D38[] = "CITY=%s\n";
 char g_str11D48[] = "COORDINATES=\"%s\"\n";
-Eq_3927 g_t12660 = 
+Eq_3920 g_t12660 = 
 	{
 		0x32,
 		0x00,

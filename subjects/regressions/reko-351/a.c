@@ -22,10 +22,9 @@ word32 deregister_tm_clones(ptr32 a6, union Eq_4 & d1Out, ptr32 & a6Out, ptr32 &
 // 800000AE: void register_tm_clones(Register word32 a6)
 void register_tm_clones(word32 a6)
 {
-	Eq_27 d0_10 = 0x00;
-	Eq_27 d0_12 = d0_10;
-	if (d0_10 <= 0x00)
-		d0_12 = (word32) d0_10 + 0x01;
+	int32 d0_12 = 0x00;
+	if (true)
+		d0_12 = 0x01;
 	int32 d0_18 = d0_12 >> 0x01;
 	if (d0_18 != 0x00 && 0x00 != 0x00)
 		null();
@@ -38,19 +37,18 @@ void __do_global_dtors_aux(word32 d1, word32 d2, word32 a2, word32 a6)
 	ptr32 a7_12 = fp - 0x0C;
 	if (globals->b80002724 == 0x00)
 	{
-		Eq_58 d2_24 = 0x01;
-		Eq_60 d0_21 = globals->t80002726;
+		uint32 d0_21 = globals->dw80002726;
 		<anonymous> * a2_20[] = globals->a80002714;
-		Eq_65 d2_25 = d2_24 - 0x01;
-		if (d2_24 - 0x01 - d0_21 > 0x00)
+		up32 d2_25 = 0x00;
+		if (0x00 - d0_21 > 0x00)
 		{
 			do
 			{
-				Eq_60 d0_31 = (word32) d0_21 + 0x01;
-				globals->t80002726 = d0_31;
+				uint32 d0_31 = d0_21 + 0x01;
+				globals->dw80002726 = d0_31;
 				<anonymous> * a0_37 = a2_20[d0_31];
 				a0_37();
-				d0_21 = globals->t80002726;
+				d0_21 = globals->dw80002726;
 			} while (d2_25 - d0_21 > 0x00);
 		}
 		word32 d1_54;
@@ -154,16 +152,16 @@ void main()
 	_sin(1374396351.0, 1.8446744072626e+19, fp - 0x08);
 }
 
-// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_216 tArg14)
-void _sin(real64 rArg04, real64 rArg0C, Eq_216 tArg14)
+// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_210 tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_210 tArg14)
 {
 	word32 dwArg04_110 = SLICE(rArg04, word32, 0);
 	word32 dwArg08_112 = SLICE(rArg04, word32, 32);
-	Eq_227 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
+	Eq_221 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
 	word32 dwLoc20_121 = 0x02;
 	while (true)
 	{
-		Eq_255 rLoc14_123;
+		Eq_249 rLoc14_123;
 		real64 rLoc0C_122;
 		if ((real64) ((real96) rLoc0C_122 / rLoc14_123) < rArg0C)
 			break;

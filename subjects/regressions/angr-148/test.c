@@ -32,9 +32,7 @@ void deregister_tm_clones(ptr64 rbp, word64 r8)
 // 00000000004004A0: void register_tm_clones(Register word64 rbp, Register word64 r8)
 void register_tm_clones(word64 rbp, word64 r8)
 {
-	Eq_45 rax_9 = 0x08;
-	word64 rax_13 = rax_9 + (rax_9 >>u 0x3F);
-	if (rax_13 >> 0x01 == 0x00 || 0x00 == 0x00)
+	if (false || 0x00 == 0x00)
 		return;
 	null();
 }
@@ -81,7 +79,7 @@ void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi,
 	word32 r15d_80 = (word32) r15_7;
 	uint64 r15_52 = DPB(r15_7, r15d_80, 0);
 	int64 rbp_29 = 0x00600E18 - 0x00600E10;
-	Eq_120 rbx_30 = 0x00;
+	Eq_111 rbx_30 = 0x00;
 	word64 rax_34 = _init();
 	if (rbp_29 >> 0x03 != 0x00)
 	{
