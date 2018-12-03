@@ -515,13 +515,14 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 0B70: warning: Procedure fn0B06 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0AF2: warning: Procedure fn0A94 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
-   at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 195
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 277
+error: An error occurred during decompilation. System.ArgumentException: Can't add types of disjoint domains 1 and int16
+   at Reko.Core.Operators.IAddOperator.ApplyConstants(Constant c1, Constant c2) in D:\dev\uxmal\reko\master\src\Core\Operators\IAddOperator.cs:line 57
+   at Reko.Analysis.LinearInductionVariableFinder.CreateInductionVariable() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 81
+   at Reko.Analysis.LinearInductionVariableFinder.ProcessScc(IList`1 scc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 405
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
+   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
+   at Reko.Analysis.LinearInductionVariableFinder.Find() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\LinearInductionVariableFinder.cs:line 156
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 282
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PDP-11\space.dcproject
@@ -563,28 +564,6 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PE\MIPS\swlswr\test.exe
 === PE\PPC\hello_ppc.exe
-*** PE\PPC\hello_ppc.exe
-hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
-error: An error occurred during decompilation. System.ArgumentException: Can't add types of disjoint domains int32 and ptr32
-   at Reko.Evaluation.ExpressionSimplifier.SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 133
-   at Reko.Evaluation.ExpressionSimplifier.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 308
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Analysis.ValuePropagator.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 104
-   at Reko.Core.Code.Branch.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 50
-   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 89
-   at Reko.Analysis.ValuePropagator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 80
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 339
-   at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
-   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 168
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 97
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
-   at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 151
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 121
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 172
 === PE\m68k\hello_m68k.dcproject
 *** PE\m68k\hello_m68k.dcproject
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
@@ -788,4 +767,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 64.52 seconds ---
+Decompiled 55 binaries in 79.10 seconds ---
