@@ -290,7 +290,8 @@ namespace Reko.Arch.PowerPC
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            reg = GetRegister(name);
+            return reg != null;
         }
 
         public FlagGroupStorage GetCcFieldAsFlagGroup(RegisterStorage reg)
