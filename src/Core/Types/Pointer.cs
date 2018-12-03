@@ -40,6 +40,8 @@ namespace Reko.Core.Types
 			this.bitSize = bitSize;
 		}
 
+        public override bool IsPointer {  get { return true; } }
+
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitPointer(this);

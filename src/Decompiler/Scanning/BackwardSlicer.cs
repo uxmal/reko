@@ -355,6 +355,11 @@ namespace Reko.Scanning
                 return appl;
             }
 
+            public bool IsFramePointer(Expression e)
+            {
+                return false;
+            }
+
             public bool IsUsedInPhi(Identifier id)
             {
                 return false;

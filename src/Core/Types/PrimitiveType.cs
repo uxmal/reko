@@ -78,6 +78,8 @@ namespace Reko.Core.Types
 			this.Name = name;
 		}
 
+        public override bool IsPointer { get { return Domain == Domain.Pointer; } }
+
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitPrimitive(this);
@@ -248,7 +250,7 @@ namespace Reko.Core.Types
         /// <summary>
         /// True if the type can only be some kind of integral numeric type
         /// </summary>
-		public bool IsIntegral
+		public override bool IsIntegral
 		    => (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0; 
 
         /// <summary>

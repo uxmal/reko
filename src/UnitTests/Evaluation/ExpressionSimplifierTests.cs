@@ -211,5 +211,27 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Le(m.Word32(0x00123400), foo);
             Assert.AreEqual("foo_1 >= 0x00123400", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_ConstIntPtr()
+        {
+            Given_ExpressionSimplifier();
+            var c1 = Constant.Create(PrimitiveType.Ptr64, 0x00123400);
+            var c2 = Constant.Create(PrimitiveType.Int64, 0x00000016);
+            var expr = m.IAdd(c1, c2);
+            var result = expr.Accept(simplifier);
+            Assert.AreSame(PrimitiveType.Ptr64, result.DataType);
+            Assert.AreEqual("0x0000000000123416", result.ToString());
+        }
+
+        [Test]
+        public void Exs_CompareFrameAccess()
+        {
+            Given_ExpressionSimplifier();
+            foo.DataType = PrimitiveType.Ptr32;
+            Assert.AreEqual("foo_1 == 0x00000010", m.Eq0(m.ISubS(foo, 16))
+                .Accept(simplifier)
+                .ToString());
+        }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,10 +85,10 @@ namespace Reko.Analysis
         public void Transform(Statement stm)
         {
             evalCtx.Statement = stm;
-                if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
-                stm.Instruction = stm.Instruction.Accept(this);
-                if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
-            }
+            if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
+            stm.Instruction = stm.Instruction.Accept(this);
+            if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
+        }
 
         #region InstructionVisitor<Instruction> Members
 

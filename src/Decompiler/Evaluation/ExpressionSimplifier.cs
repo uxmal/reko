@@ -128,8 +128,6 @@ namespace Reko.Evaluation
         {
             var lType = (PrimitiveType)l.DataType;
             var rType = (PrimitiveType)r.DataType;
-            if ((lType.Domain & rType.Domain) == 0)
-                throw new ArgumentException(string.Format("Can't add types of disjoint domains {0} and {1}", l.DataType, r.DataType));
             return op.ApplyConstants(l, r);
         }
 
@@ -372,9 +370,11 @@ namespace Reko.Evaluation
         {
             PrimitiveType lType = (PrimitiveType) l.DataType;
             PrimitiveType rType = (PrimitiveType) r.DataType;
-            if ((lType.Domain & rType.Domain) == 0)
-                throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
-            return ((BinaryOperator) op).ApplyConstants(l, r);
+            if ((lType.Domain & rType.Domain) != 0)
+            {
+                return ((BinaryOperator) op).ApplyConstants(l, r);
+            }
+            throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
         }
 
         public virtual Expression VisitCast(Cast cast)
