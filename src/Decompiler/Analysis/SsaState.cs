@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,14 +206,19 @@ namespace Reko.Analysis
                 var definitions = dc.CollectDefinitions(stm);
                 foreach (var defId in definitions)
                 {
-                    if (actualDefs.ContainsKey(defId))
+                    if (actualDefs.TryGetValue(defId, out var def))
+                    {
                         error(string.Format(
                             "{0}: multiple definitions for {1} ({2} and {3})",
                             Procedure.Name,
                             defId,
                             stm,
-                            actualDefs[defId]));
-                    actualDefs.Add(defId, stm);
+                            def));
+                    }
+                    else
+                    {
+                        actualDefs.Add(defId, stm);
+                    }
                 }
             }
             foreach (var sid in Identifiers)
