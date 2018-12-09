@@ -12423,6 +12423,7 @@ l00016A98:
 
 l00016AC8:
 	byte Z_104
+	word32 g0_83
 	branch dwLoc28_400 > 0x00000003 l00016AC8_ds_t
 // DataOut:
 // DataOut (flags):

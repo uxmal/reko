@@ -7,19 +7,19 @@ r0_3: orig: r0
 Mem4: orig: Mem0
     def:  Mem4 = PHI(Mem0, Mem15, Mem9)
     uses: r1_5 = Mem4[r0_3:byte]
-          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
           Mem12[0x33333330:word32] = Mem4[r0_6:byte]
+          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
 r1_5: orig: r1
     def:  r1_5 = Mem4[r0_3:byte]
     uses: branch r1_5 != 1 not1
           branch r1_5 != 2 done
 r0_6: orig: r0
     def:  r0_6 = r0_3 + 0x00000001
-    uses: Mem9[0x33333330:word32] = Mem4[r0_6:byte]
-          r0_8 = r0_6 + 0x00000001
+    uses: r0_8 = r0_6 + 0x00000001
+          r0_14 = r0_6 + 0x00000002
           Mem12[0x33333330:word32] = Mem4[r0_6:byte]
           Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
-          r0_14 = r0_6 + 0x00000002
+          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
 r1_7: orig: r1
 r0_8: orig: r0
     def:  r0_8 = r0_6 + 0x00000001

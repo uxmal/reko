@@ -36,8 +36,8 @@ ss:ss
 Mem7: orig: Mem0
 cx:cx
     def:  def cx
-    uses: ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
-          branch cx <= 0x0001 l0C00_001C
+    uses: branch cx <= 0x0001 l0C00_001C
+          ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
           ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 SCZO_9: orig: SCZO
 SZO_10: orig: SZO

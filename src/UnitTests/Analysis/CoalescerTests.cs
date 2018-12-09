@@ -243,5 +243,23 @@ b = Mem3[Mem2[0x00123400:word32]:word32]
 ";
             AssertProcedureCode(sExp);
         }
+
+        [Test]
+        public void CoaIdentifier()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            var c = m.Reg32("c");
+            m.Assign(a, b);
+            m.Assign(c, m.IAddS(a, 1));
+
+            RunCoalescer();
+
+            var sExp =
+@"
+c = b + 1
+";
+            AssertProcedureCode(sExp);
+        }
     }
 }

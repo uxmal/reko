@@ -25,8 +25,8 @@ ax_11: orig: ax
 cx_12: orig: cx
     def:  cx_12 = PHI(cx_10, cx_16)
     uses: ax_14 = ax_11 + cx_12 + cx_12
-          ax_14 = ax_11 + cx_12 + cx_12
           cx_16 = cx_12 - 0x0001
+          ax_14 = ax_11 + cx_12 + cx_12
 ax_13: orig: ax
 ax_14: orig: ax
     def:  ax_14 = ax_11 + cx_12 + cx_12

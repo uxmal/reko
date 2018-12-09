@@ -1,7 +1,7 @@
 a:Local -0004
     def:  def a
-    uses: Mem4[0x10000000:word32] = a + b
-          Mem5[0x10000004:word32] = a
+    uses: Mem5[0x10000004:word32] = a
+          Mem4[0x10000000:word32] = a + b
 b:Local -0008
     def:  def b
     uses: Mem4[0x10000000:word32] = a + b

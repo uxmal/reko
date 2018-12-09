@@ -5,8 +5,8 @@ si_4: orig: si
 ds:ds
     def:  def ds
     uses: Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
           Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+          Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
           Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 ax_6: orig: ax
 Mem7: orig: Mem0

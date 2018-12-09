@@ -7,13 +7,13 @@ ds:ds
           Mem8[ds:0x0200:word16] = 0x0000
           Mem9[ds:0x0300:word16] = ax_7
           Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
-          Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
-          Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
-          Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
           Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
           ax_16 = Mem14[ds:0x0200:word16]
           fn0C00_002A(ds)
           Mem17[ds:0x0200:word16] = ax_16
+          Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
+          Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
+          Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
 si:si
     def:  def si
     uses: ax_7 = Mem0[ds:si + 0x0200:word16]
