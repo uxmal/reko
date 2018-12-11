@@ -1174,6 +1174,14 @@ namespace Reko.Analysis
             }
 
 
+            /// <summary>
+            /// If the `id` has an SsaIdentifier available (not necessarily
+            /// defined) in this block, return that SsaIdentifier.
+            /// </summary>
+            /// <param name="bs">SsaBlockState we look in.</param>
+            /// <returns>An SsaIdentifier if it is available, 
+            /// otherwise null.
+            /// </returns>
             public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs);
 
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs)
@@ -1718,6 +1726,8 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
+                if (outer.stmCur.LinearAddress == 0x00000000000014ae)
+                    outer.ToString();   //$DEBUG
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
                     .OrderByDescending(i => i.Key.End - i.Key.Start)
                     .ThenBy(i => i.Key.Start)
@@ -1742,7 +1752,7 @@ namespace Reko.Analysis
                     var sequence = new List<SsaIdentifier> { ints[0].Item1 };
                     foreach (var src in ints.Skip(1))
                     {
-                        Debug.Print("Analyze: {0} {1} {2}", src.Item1, src.Item2, src.Item3);
+                        DebugEx.PrintIf(SsaTransform.trace.TraceVerbose, "Analyze: {0} {1} {2}", src.Item1, src.Item2, src.Item3);
                         if (prev.End == src.Item3.Start)
                         {
                             // Previous item ended where next starts:
