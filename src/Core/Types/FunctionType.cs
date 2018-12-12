@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,14 +54,12 @@ namespace Reko.Core.Types
             Identifier returnValue,
             params Identifier [] parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
+            this.Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
             this.ParametersValid = true;
             this.FpuStackArgumentMax = -1;
             if (returnValue == null)
                 returnValue = new Identifier("", VoidType.Instance, null);
             this.ReturnValue = returnValue;
-            this.Parameters = parameters;
         }
 
         public static FunctionType Func(Identifier returnId, params Identifier[] formals)
